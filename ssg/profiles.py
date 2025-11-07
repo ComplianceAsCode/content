@@ -4,23 +4,15 @@ from __future__ import print_function
 import os
 import sys
 import yaml
+from typing import Optional, Tuple, List, Dict
 
+import ssg.controls
 from .controls import ControlsManager, Policy
 from .products import (
     get_profile_files_from_root,
     load_product_yaml,
     product_yaml_path,
 )
-
-
-if sys.version_info >= (3, 9):
-    dict_type = dict    # Python 3.9+ supports built-in generics
-    list_type = list
-    tuple_type = tuple
-else:
-    from typing import Dict as dict_type    # Fallback for older versions
-    from typing import List as list_type
-    from typing import Tuple as tuple_type
 
 
 class ProfileSelections:
@@ -48,7 +40,7 @@ class ProfileSelections:
         self.variables = {}
 
 
-def _load_product_yaml(content_dir: str, product: str) -> object:
+def _load_product_yaml(content_dir: str, product: str) -> ssg.products.Product:
     """
     Load the product YAML file and return its content as a Python object.
 
@@ -63,7 +55,7 @@ def _load_product_yaml(content_dir: str, product: str) -> object:
     return load_product_yaml(file_yaml_path)
 
 
-def _load_yaml_profile_file(file_path: str) -> dict_type:
+def _load_yaml_profile_file(file_path: str) -> Dict:
     """
     Load the content of a YAML file intended to profiles definitions.
 
@@ -83,7 +75,7 @@ def _load_yaml_profile_file(file_path: str) -> dict_type:
             return {}
 
 
-def _get_extended_profile_path(profiles_files: list, profile_name: str) -> str:
+def _get_extended_profile_path(profiles_files: list, profile_name: str) -> Optional[str]:
     """
     Retrieve the full path of a profile file from a list of profile file paths.
 
@@ -92,10 +84,11 @@ def _get_extended_profile_path(profiles_files: list, profile_name: str) -> str:
         profile_name (str): The name of the profile to search for.
 
     Returns:
-        str: The full path of the profile file if found, otherwise None.
+        Optional[str]: The full path of the profile file if found, otherwise None.
     """
     profile_file = f"{profile_name}.profile"
-    profile_path = next((path for path in profiles_files if profile_file in path), None)
+    profile_path: Optional[str] = next((path for path in profiles_files if profile_file in path),
+                                       None)
     return profile_path
 
 
@@ -123,7 +116,7 @@ def _process_profile_extension(profile: ProfileSelections, profile_yaml: dict,
     return profile
 
 
-def _parse_control_line(control_line: str) -> tuple_type[str, str]:
+def _parse_control_line(control_line: str) -> Tuple[str, str]:
     """
     Parses a control line string and returns a tuple containing the first and third parts of the
     string, separated by a colon. If the string does not contain three parts, the second element
@@ -172,7 +165,7 @@ def _process_selected_rule(profile: ProfileSelections, rule: str) -> None:
         profile.rules.append(rule)
 
 
-def _process_control(profile: ProfileSelections, control: object) -> None:
+def _process_control(profile: ProfileSelections, control: ssg.controls.Control) -> None:
     """
     Processes a control by iterating through its rules and applying the appropriate processing
     function. Note that at this level rules list in control can include both variables and rules.
@@ -288,7 +281,7 @@ def _process_profile(profile: ProfileSelections, profile_yaml: dict, profiles_fi
     return profile
 
 
-def _load_controls_manager(controls_dir: str, product_yaml: dict) -> object:
+def _load_controls_manager(controls_dir: str, product_yaml: dict) -> ssg.controls.ControlsManager:
     """
     Loads and initializes a ControlsManager instance.
 
@@ -308,7 +301,7 @@ def _load_controls_manager(controls_dir: str, product_yaml: dict) -> object:
     return control_mgr
 
 
-def _sort_profiles_selections(profiles: list) -> list_type[ProfileSelections]:
+def _sort_profiles_selections(profiles: list) -> List[ProfileSelections]:
     """
     Sorts profiles selections (rules and variables) by selections ids.
 
@@ -326,13 +319,14 @@ def _sort_profiles_selections(profiles: list) -> list_type[ProfileSelections]:
 
 
 def get_profiles_from_products(content_dir: str, products: list,
-                               sorted: bool = False) -> list_type:
+                               sorted: bool = False) -> list:
     """
     Retrieves profiles with respective variables from the given products.
 
     Args:
         content_dir (str): The directory containing the content.
         products (list): A list of product names to retrieve profiles from.
+        sorted (bool): Sorts the profile selections if true, defaults to False
 
     Returns:
         list: A list of ProfileVariables objects containing profile variables for each product.

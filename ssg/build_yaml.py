@@ -3426,13 +3426,13 @@ class Platform(XCCDFEntity):
         ** XCCDFEntity.KEYS
     )
 
-    MANDATORY_KEYS = [
+    MANDATORY_KEYS = {
         "name",
         "xml_content",
         "original_expression",
         "bash_conditional",
         "ansible_conditional"
-    ]
+    }
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]

@@ -7,7 +7,7 @@ import os
 import copy
 import sys
 from glob import glob
-from typing import List, Dict
+from typing import Dict, List, Set
 
 import ssg.entities.common
 import ssg.yaml
@@ -144,7 +144,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         description=str,
         rationale=str,
         automated=str,
-        status=None,
+        status=lambda: None,
         mitigation=str,
         artifact_description=str,
         status_justification=str,
@@ -812,7 +812,7 @@ class ControlsManager:
         self.controls_dirs = [os.path.abspath(controls_dir) for controls_dir in controls_dirs]
         self.env_yaml = env_yaml
         self.existing_rules = existing_rules
-        self.policies = {}
+        self.policies: Dict = {}
 
     def _load(self, format):
         for controls_dir in self.controls_dirs:

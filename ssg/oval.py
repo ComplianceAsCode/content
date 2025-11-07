@@ -19,13 +19,8 @@ from .products import _get_implied_properties
 
 ASSUMED_OVAL_VERSION_STRING = "5.11"
 # globals, to make recursion easier in case we encounter extend_definition
-try:
-    ET.register_namespace("oval", ovalns)
-except AttributeError:
-    # Legacy Python 2.6 fix, see e.g.
-    # https://www.programcreek.com/python/example/57552/xml.etree.ElementTree._namespace_map
-    from xml.etree import ElementTree as ET
-    ET._namespace_map[ovalns] = "oval"
+ET.register_namespace("oval", ovalns)
+
 
 
 def applicable_platforms(oval_file, oval_version_string=None):
