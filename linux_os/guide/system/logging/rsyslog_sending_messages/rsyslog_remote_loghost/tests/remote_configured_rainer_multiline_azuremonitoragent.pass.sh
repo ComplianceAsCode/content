@@ -1,6 +1,8 @@
 #!/bin/bash
 # packages = rsyslog
 
+# This TS is a regression test of https://issues.redhat.com/browse/RHEL-104207.
+
 {{{ setup_rsyslog_common() }}}
 
 cat << EOF >> "$RSYSLOG_CONF"
