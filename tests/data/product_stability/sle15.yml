@@ -4,15 +4,16 @@ aide_bin_path: /usr/bin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
 audit_binaries:
-  - /usr/sbin/auditctl
-  - /usr/sbin/aureport
-  - /usr/sbin/ausearch
-  - /usr/sbin/autrace
-  - /usr/sbin/auditd
-  - /usr/sbin/augenrules
-  - /usr/sbin/audisp-syslog
+- /usr/sbin/auditctl
+- /usr/sbin/aureport
+- /usr/sbin/ausearch
+- /usr/sbin/autrace
+- /usr/sbin/auditd
+- /usr/sbin/augenrules
+- /usr/sbin/audisp-syslog
 audit_watches_style: legacy
 auid: 1000
+base_policy: DEFAULT:NO-SHA1
 basic_properties_derived: true
 benchmark_id: SLE-15
 benchmark_root: ../../linux_os/guide
@@ -101,6 +102,19 @@ reference_uris:
 release_key_fingerprint: FEAB502539D846DB2C0961CA70AF9E8139DB7C82
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
+sub_policies:
+  NO-SSHCBC:
+    key: cipher@SSH
+    value: -*-CBC
+  NO-SSHWEAKCIPHERS:
+    key: cipher@SSH
+    value: -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+  NO-SSHWEAKMACS:
+    key: mac@SSH
+    value: -HMAC-MD5* -UMAC-64* -UMAC-128*
+  NO-WEAKMAC:
+    key: mac
+    value: -*-128*
 sysctl_remediate_drop_in_file: 'true'
 target_oval_version:
 - 5
