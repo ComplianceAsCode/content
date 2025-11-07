@@ -48,7 +48,6 @@ selections:
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
-    - '!no_nis_in_nsswitch'
     - '!audit_rules_mac_modification_etc_selinux'
     - '!service_chronyd_enabled'
     # package not available in OL8
