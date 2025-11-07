@@ -1597,9 +1597,9 @@ controls:
       levels:
           - l2_server
           - l1_workstation
-      status: pending
-      notes: |-
-          New templated rule is necessary for "disableforwarding" option.
+      status: automated
+      rules:
+          - sshd_disable_forwarding
       related_rules:
           - sshd_disable_tcp_forwarding
           - sshd_disable_x11_forwarding
