@@ -5,7 +5,10 @@
       <criterion comment="kernel is installed" test_ref="bootc_platform_test_kernel_installed" />
       <criterion comment="rpm-ostree is installed" test_ref="bootc_platform_test_rpm_ostree_installed" />
       <criterion comment="bootc is installed" test_ref="bootc_platform_test_bootc_installed" />
-      <criterion comment="/run/ostree-booted exists" test_ref="bootc_platform_test_run_ostree_booted_exists" />
+      <criteria operator="OR">
+        <criterion comment="/run/ostree-booted exists, suggesting that we are in a running bootc environment" test_ref="bootc_platform_test_run_ostree_booted_exists" />
+        <criterion comment="/ostree symlink exists, suggesting that we are in a bootc environment being built and hardened" test_ref="bootc_platform_test_ostree_symlink_exists" />
+      </criteria>
       <criterion comment="openshift-kubelet is not installed" test_ref="bootc_platform_test_openshift_kubelet_removed" />
     </criteria>
   </definition>
@@ -26,5 +29,19 @@
   <unix:file_object id="bootc_platform_obj_run_ostree_booted_exists" comment="The file /run/ostree-booted exists" version="1">
     <unix:filepath operation="equals">/run/ostree-booted</unix:filepath>
   </unix:file_object>
+
+  <unix:file_test id="bootc_platform_test_ostree_symlink_exists" check="all" check_existence="all_exist" comment="The file /ostree is a symlink" version="1">
+    <unix:object object_ref="bootc_platform_obj_ostree_symlink_exists" />
+    <unix:state state_ref="bootc_platform_ste_ostree_symlink_exists" />
+  </unix:file_test>
+
+  <unix:file_object id="bootc_platform_obj_ostree_symlink_exists" comment="The file /ostree exists" version="1">
+    <unix:filepath operation="equals">/ostree</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="bootc_platform_ste_ostree_symlink_exists" comment="The file /ostree is a symlink" version="1">
+    <unix:filepath operation="equals">/ostree</unix:filepath>
+<unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
 
 </def-group>
