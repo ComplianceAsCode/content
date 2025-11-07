@@ -4,6 +4,10 @@
 # complexity = low
 # disruption = low
 
+{{{ ansible_setup_rsyslog_common(rule_title) }}}
+
+{{{ ansible_remove_rainerscript_block_entries(rule_title, "action", "StreamDriverAuthMode") }}}
+
 {{{ ansible_set_config_file_dir(msg, "/etc/rsyslog.conf", "/etc/rsyslog.d", "/etc/rsyslog.conf", 
                                 "$ActionSendStreamDriverAuthMode", separator=' ', separator_regex='\s',
                                 value="x509/name", create='yes', rule_title=rule_title)
