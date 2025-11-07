@@ -76,6 +76,7 @@ file_groupowner_cron_daily
 file_groupowner_cron_hourly
 file_groupowner_cron_monthly
 file_groupowner_cron_weekly
+file_groupowner_cron_yearly
 file_groupowner_crontab
 file_groupowner_etc_group
 file_groupowner_etc_gshadow
@@ -101,6 +102,7 @@ file_owner_cron_daily
 file_owner_cron_hourly
 file_owner_cron_monthly
 file_owner_cron_weekly
+file_owner_cron_yearly
 file_owner_crontab
 file_owner_etc_group
 file_owner_etc_gshadow
@@ -128,6 +130,7 @@ file_permissions_cron_daily
 file_permissions_cron_hourly
 file_permissions_cron_monthly
 file_permissions_cron_weekly
+file_permissions_cron_yearly
 file_permissions_crontab
 file_permissions_etc_group
 file_permissions_etc_gshadow
