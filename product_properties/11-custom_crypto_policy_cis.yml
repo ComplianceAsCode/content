@@ -29,6 +29,7 @@ overrides:
       key: mac
       value: -*-64*
 {{% elif product == "rhel10" %}}
+  base_policy: "DEFAULT"
   sub_policies:
     NO-SSHCBC:
       key: cipher@SSH
