@@ -8,10 +8,11 @@
 
 {{{ ansible_remove_rainerscript_range_entries(rule_title, "[[:space:]]*cron\.\*.*action(", ")", "cron.* action()") }}}
 
-{{{ ansible_lineinfile(msg=rule_title + " - Remove *.* entries pointing to /var/log/cron from rsyslog.conf",
+{{{ ansible_lineinfile(msg="Remove *.* entries pointing to /var/log/cron from rsyslog.conf",
                        path="/etc/rsyslog.conf",
                        regex='^\s*\*\.\*\s+/var/log/cron\s*$',
-                       state='absent') 
+                       state='absent',
+                       rule_title=rule_title)
 }}}
 
 -   name: "{{{ rule_title }}} - Remove *.* entries pointing to /var/log/cron from rsyslog.d/*.conf"
