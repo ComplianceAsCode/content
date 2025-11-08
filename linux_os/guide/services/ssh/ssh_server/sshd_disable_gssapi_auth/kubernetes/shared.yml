@@ -1,0 +1,8 @@
+# platform = multi_platform_ocp,multi_platform_rhcos
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ kubernetes_sshd_set() }}}
+---
+{{{ kubernetes_sshd_dropin('GSSAPIAuthentication no', config_basename='75-complianceascode-sshd_disable_gssapi_auth.conf') }}}
