@@ -17,4 +17,3 @@ description: |-
 
 selections:
     - base_sle16:all
-    - restrict_serial_port_logins

@@ -14,3 +14,11 @@ controls:
       rules:
           - installed_OS_is_vendor_supported
       status: automated
+
+    - id: SLES-16-16016010
+      levels:
+          - hipaa
+      title: SLES 16 should restrict serial port root logins
+      rules:
+          - restrict_serial_port_logins
+      status: automated
