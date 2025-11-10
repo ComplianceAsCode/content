@@ -28,7 +28,7 @@
     regexp: "^\\*\\.\\*\\s+.*$"
     state: absent
   loop: "{{  rsyslog_dropin_config_files.files }}"
-  
+
 - name: "Set rsyslog remote loghost"
   ansible.builtin.lineinfile:
     dest: /etc/rsyslog.d/remote.conf

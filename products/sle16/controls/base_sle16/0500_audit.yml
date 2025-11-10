@@ -1,0 +1,28 @@
+#
+# A group of rules regarding audit operating system functionality
+#
+# SLES-16 ids allocated for this group from SLES-16-16016500 till SLES-16-16016699
+#
+
+controls:
+    - id: SLES-16-16016500
+      levels:
+          - hipaa
+      title: Enable the selinuxuser_execmod SELinux Boolean in SLE16
+      rules:
+          - sebool_selinuxuser_execmod
+      status: automated
+    - id: SLES-16-16016505
+      levels:
+          - hipaa
+      title: Enable service for audit logs in SLE16
+      rules:
+          - service_auditd_enabled
+      status: automated
+    - id: SLES-16-16016510
+      levels:
+          - hipaa
+      title: Enable remote logging functionality in SLE16
+      rules:
+          - rsyslog_remote_loghost
+      status: automated
