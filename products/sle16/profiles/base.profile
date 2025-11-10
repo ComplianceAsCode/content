@@ -17,6 +17,3 @@ description: |-
 
 selections:
     - base_sle16:all
-    - sebool_selinuxuser_execmod
-    - rsyslog_remote_loghost
-    - service_auditd_enabled
