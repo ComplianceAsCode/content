@@ -149,6 +149,7 @@ firewalld_loopback_traffic_trusted
 gid_passwd_group_same
 gnome_gdm_disable_xdmcp
 group_unique_id
+groups_no_zero_gid_except_root
 grub2_enable_selinux
 grub2_password
 has_nonlocal_mta

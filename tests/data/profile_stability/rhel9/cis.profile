@@ -230,6 +230,7 @@ firewalld_loopback_traffic_trusted
 gid_passwd_group_same
 gnome_gdm_disable_xdmcp
 group_unique_id
+groups_no_zero_gid_except_root
 grub2_audit_argument
 grub2_audit_backlog_limit_argument
 grub2_enable_selinux
