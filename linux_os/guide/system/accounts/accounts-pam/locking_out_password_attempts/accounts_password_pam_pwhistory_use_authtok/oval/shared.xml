@@ -1,58 +1,68 @@
 {{% if "sle12" in product or "debian" in product or "ubuntu" in product %}}
-{{%- set accounts_password_pam_file = '/etc/pam.d/common-password' -%}}
+{{%- set pam_files = ['/etc/pam.d/common-password'] -%}}
+{{% elif product == "rhel10" %}}
+{{%- set pam_files = ['/etc/pam.d/password-auth', '/etc/pam.d/system-auth'] -%}}
 {{% else %}}
-{{%- set accounts_password_pam_file = '/etc/pam.d/system-auth' -%}}
+{{%- set pam_files = ['/etc/pam.d/system-auth'] -%}}
 {{% endif %}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Configure the system to include use_authtok for pam_pwhistory common_password configuration file", rule_title=rule_title) }}}
-    <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
-      <criterion test_ref="{{{ rule_id }}}_test_pwhistory_exists"
+
+    <criteria operator="AND">
+    {{% for pam_file in pam_files %}}
+    {{% set file_id = pam_file.split("/")|last %}}
+    <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured in {{{ pam_file }}} file">
+      <criterion test_ref="{{{ rule_id }}}_test_pwhistory_exists_{{{ file_id }}}"
         comment="At least one pwhistory line exists"/>
-      <criterion test_ref="{{{ rule_id }}}_test_password_pam_pwhistory_use_authtok"
-        comment="use_authtok is configured in pam pwhistory in common_password file"/>
+      <criterion test_ref="{{{ rule_id }}}_test_password_pam_pwhistory_use_authtok_{{{ file_id }}}"
+        comment="use_authtok is configured in pam pwhistory in {{{ pam_file }}} file"/>
+    </criteria>
+    {{% endfor %}}
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="{{{ rule_id }}}_test_pwhistory_exists" version="1"
+    {{% for pam_file in pam_files %}}
+    {{% set file_id = pam_file.split("/")|last %}}
+  <ind:textfilecontent54_test id="{{{ rule_id }}}_test_pwhistory_exists_{{{ file_id }}}" version="1"
     check="all" check_existence="at_least_one_exists"
     comment="At least one pwhistory line exists">
-    <ind:object object_ref="{{{ rule_id }}}_obj_pwhistory_exists" />
+    <ind:object object_ref="{{{ rule_id }}}_obj_pwhistory_exists_{{{ file_id }}}" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_pwhistory_exists" version="1">
-    <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_pwhistory_exists_{{{ file_id }}}" version="1">
+    <ind:filepath>{{{ pam_file }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[^#\n\r]*password[ \t]+.*pam_pwhistory\.so.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test id="{{{ rule_id }}}_test_password_pam_pwhistory_use_authtok" version="1"
+  <ind:textfilecontent54_test id="{{{ rule_id }}}_test_password_pam_pwhistory_use_authtok_{{{ file_id }}}" version="1"
     check="all" check_existence="any_exist" state_operator="AND"
     comment="use_authtok is configured in pam pwhistory in common_password file">
-    <ind:object object_ref="{{{ rule_id }}}_obj_use_authtok" />
+    <ind:object object_ref="{{{ rule_id }}}_obj_use_authtok_{{{ file_id }}}" />
     <ind:state state_ref="{{{ rule_id }}}_ste_use_authtok" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_use_authtok" version="1">
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_use_authtok_{{{ file_id }}}" version="1">
     <set>
-      <object_reference>{{{ rule_id }}}_obj_use_authtok_password_lines_except_first</object_reference>
+      <object_reference>{{{ rule_id }}}_obj_use_authtok_password_lines_except_first_{{{ file_id }}}</object_reference>
       <filter action="include">{{{ rule_id }}}_ste_use_authtok_pam_pwhistory_lines</filter>
     </set>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="{{{ rule_id }}}_ste_use_authtok" version="1">
-      <ind:subexpression operation="pattern match">^[^#\n\r]*pam_pwhistory\.so[ \t]+[^#\n\r]*use_authtok.*$</ind:subexpression>
-  </ind:textfilecontent54_state>
-
   <!-- Get all password lines except the first line. This is to avoid matching a pam_pwhistory
   line on the top of the stack, which does not need use_authtok to pass -->
-  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_use_authtok_password_lines_except_first" version="1">
-    <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_use_authtok_password_lines_except_first_{{{ file_id }}}" version="1">
+    <ind:filepath>{{{ pam_file }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[ \t]*password[ \t]+(.+)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">2</ind:instance>
   </ind:textfilecontent54_object>
+    {{% endfor %}}
 
+  <ind:textfilecontent54_state id="{{{ rule_id }}}_ste_use_authtok" version="1">
+      <ind:subexpression operation="pattern match">^[^#\n\r]*pam_pwhistory\.so[ \t]+[^#\n\r]*use_authtok.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
   <ind:textfilecontent54_state id="{{{ rule_id }}}_ste_use_authtok_pam_pwhistory_lines" version="1">
       <ind:subexpression operation="pattern match">^[^#\n\r]*pam_pwhistory\.so.*$</ind:subexpression>
   </ind:textfilecontent54_state>

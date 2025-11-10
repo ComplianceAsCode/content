@@ -1,0 +1,3 @@
+# platform = multi_platform_rhel
+{{{ ansible_ensure_pam_module_option("/etc/pam.d/system-auth", "password", "required", "pam_pwhistory.so", "use_authtok", rule_id=rule_id, rule_title=rule_title) }}}
+{{{ ansible_ensure_pam_module_option("/etc/pam.d/password-auth", "password", "required", "pam_pwhistory.so", "use_authtok", rule_id=rule_id, rule_title=rule_title) }}}
