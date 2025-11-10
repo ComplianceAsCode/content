@@ -248,6 +248,34 @@ spec:
 {{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config.d/' + config_basename, file_permissions_mode='0600', source=sshd_dropin_content, ocp_version_range=ocp_version_range) }}}
 {{%- endmacro -%}}
 
+{{#
+  High level macro to generate Kubernetes remediation to remove SSH daemon configuration drop-in files.
+  This is used to clean up old or incorrectly named drop-in files.
+  Parameters:
+    config_basename: Basename of the drop-in file to remove (e.g., '00-complianceascode-GSSAPIAuthentication.conf')
+    ocp_version_range: Optional OpenShift version range (default: '>=4.13.0')
+#}}
+{{%- macro kubernetes_sshd_remove_dropin(config_basename, ocp_version_range='>=4.13.0') -%}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+{{%- if ocp_version_range|length > 0 %}}
+metadata:
+  annotations:
+    complianceascode.io/ocp-version: '{{{ ocp_version_range }}}'
+{{%- endif %}}
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - path: /etc/ssh/sshd_config.d/{{{ config_basename }}}
+        overwrite: true
+        contents:
+          source: data:,
+        mode: 0600
+{{%- endmacro -%}}
+
 
 {{% macro usbguard_config_source() %}}
 #
