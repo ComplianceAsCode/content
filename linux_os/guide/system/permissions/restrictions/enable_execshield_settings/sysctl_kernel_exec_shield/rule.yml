@@ -25,7 +25,9 @@ rationale: |-
 
 severity: medium
 
-platform: system_with_kernel  # The oscap sysctl probe doesn't support offline mode
+# The oscap sysctl probe doesn't support offline mode
+# the execshield is relevant only to x86_64 platform
+platform: system_with_kernel and x86_64_arch
 
 identifiers:
     cce@rhel8: CCE-80914-5
