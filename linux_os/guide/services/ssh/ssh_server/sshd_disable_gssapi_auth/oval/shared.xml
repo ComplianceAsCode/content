@@ -1,0 +1,68 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    <metadata>
+      <title>Disable GSSAPI Authentication</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Ensure 'GSSAPIAuthentication' is configured with value 'no' in /etc/ssh/sshd_config</description>
+    </metadata>
+    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+          definition_ref="sshd_not_required_or_unset" />
+        {{% if product == "sle12" %}}
+        <extend_definition definition_ref="package_openssh_removed"
+          comment="rpm package openssh removed"/>
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server removed"
+          definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
+      </criteria>
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+          definition_ref="sshd_required_or_unset" />
+        {{% if product == "sle12" %}}
+        <extend_definition comment="rpm package openssh installed"
+          definition_ref="package_openssh_installed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server installed"
+          definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
+        <criteria comment="sshd is configured correctly" operator="AND">
+          <criteria comment="the configuration is correct if it exists" operator="AND">
+            <criterion comment="Check the GSSAPIAuthentication in /etc/ssh/sshd_config"
+              test_ref="test_{{{ rule_id }}}" />
+          </criteria>
+          <criterion comment="the configuration exists" test_ref="test_GSSAPIAuthentication_present_{{{ rule_id }}}" />
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- Main test: Check /etc/ssh/sshd_config only -->
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="tests the value of GSSAPIAuthentication setting in the /etc/ssh/sshd_config file"
+    id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)GSSAPIAuthentication(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^no$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <!-- Test that configuration exists -->
+  <ind:textfilecontent54_test id="test_GSSAPIAuthentication_present_{{{ rule_id }}}" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Verify that the value of GSSAPIAuthentication is present">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+</def-group>
