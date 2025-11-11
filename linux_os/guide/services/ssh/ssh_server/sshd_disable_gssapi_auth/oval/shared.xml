@@ -1,0 +1,116 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    <metadata>
+      <title>Disable GSSAPI Authentication</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Ensure GSSAPIAuthentication is effectively disabled by checking that either no config sets it, or the first config that sets it uses 'no'</description>
+    </metadata>
+    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+          definition_ref="sshd_not_required_or_unset" />
+        {{% if product == "sle12" %}}
+        <extend_definition definition_ref="package_openssh_removed"
+          comment="rpm package openssh removed"/>
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server removed"
+          definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
+      </criteria>
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+          definition_ref="sshd_required_or_unset" />
+        {{% if product == "sle12" %}}
+        <extend_definition comment="rpm package openssh installed"
+          definition_ref="package_openssh_installed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server installed"
+          definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
+        <criteria comment="Runtime effective configuration has GSSAPIAuthentication no" operator="OR">
+          <!-- PASS if: Our compliance config exists and comes before any conflicting config -->
+          <criteria operator="AND">
+            <criterion comment="Compliance config file exists with GSSAPIAuthentication no"
+              test_ref="test_{{{ rule_id }}}_compliance_config_correct" />
+            <criterion comment="No conflicting earlier config file exists"
+              test_ref="test_{{{ rule_id }}}_no_earlier_conflict" negate="true" />
+          </criteria>
+          <!-- PASS if: Main config has it set to no and no dropin overrides it -->
+          <criteria operator="AND">
+            <criterion comment="Main sshd_config has GSSAPIAuthentication no"
+              test_ref="test_{{{ rule_id }}}_main_config_no" />
+            <criterion comment="No dropin config overrides to yes"
+              test_ref="test_{{{ rule_id }}}_dropin_override_yes" negate="true" />
+          </criteria>
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- Test 1: Check if our compliance config file has GSSAPIAuthentication no -->
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    comment="Check compliance config has GSSAPIAuthentication no"
+    id="test_{{{ rule_id }}}_compliance_config_correct" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_compliance_config" />
+    <ind:state state_ref="state_{{{ rule_id }}}_value_no" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_compliance_config" version="1">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">^\d+-complianceascode.*gssapi.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)GSSAPIAuthentication(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test 2: Check if there's a conflicting config that comes BEFORE our compliance config
+       This looks for files 00-*.conf through 74-*.conf that set GSSAPIAuthentication to yes -->
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    comment="Check if earlier config files set GSSAPIAuthentication to yes"
+    id="test_{{{ rule_id }}}_no_earlier_conflict" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_earlier_configs_yes" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_earlier_configs_yes" version="1">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <!-- Match files that come before 75- in lexicographic order -->
+    <ind:filename operation="pattern match">^[0-6][0-9]-.*\.conf$|^7[0-4]-.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)GSSAPIAuthentication(?-i)[ \t]+(yes)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test 3: Check main sshd_config -->
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    comment="Check main config has GSSAPIAuthentication no"
+    id="test_{{{ rule_id }}}_main_config_no" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_main_config" />
+    <ind:state state_ref="state_{{{ rule_id }}}_value_no" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_main_config" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)GSSAPIAuthentication(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test 4: Check if any dropin overrides to yes -->
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    comment="Check if dropin configs set GSSAPIAuthentication to yes"
+    id="test_{{{ rule_id }}}_dropin_override_yes" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_dropin_yes" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_dropin_yes" version="1">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)GSSAPIAuthentication(?-i)[ \t]+(yes)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- State: value should be "no" -->
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_value_no" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(?i)no(?-i)$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>
