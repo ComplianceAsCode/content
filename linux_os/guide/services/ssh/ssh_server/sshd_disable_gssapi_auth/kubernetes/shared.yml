@@ -3,6 +3,6 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{{ kubernetes_sshd_set() }}}
+{{{ kubernetes_disable_sshd_config_option('GSSAPIAuthentication') }}}
 ---
-{{{ kubernetes_sshd_dropin('GSSAPIAuthentication no', config_basename='00-complianceascode-sshd_disable_gssapi_auth.conf') }}}
+{{{ kubernetes_disable_sshd_config_option_dropin('GSSAPIAuthentication') }}}

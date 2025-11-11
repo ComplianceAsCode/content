@@ -248,6 +248,29 @@ spec:
 {{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config.d/' + config_basename, file_permissions_mode='0600', source=sshd_dropin_content, ocp_version_range=ocp_version_range) }}}
 {{%- endmacro -%}}
 
+{{#
+  Disable SSH options in existing configuration files.
+
+  GSSAPI authentication is enabled by default in
+  `/etc/ssh/sshd_config.d/50-redhat.conf`. Using a drop-in file for another
+  parameter in the same directory breaks the rule. Even if the drop-in file is
+  placed correctly, and disables the GSSAPI, the rule still detects that there
+  is a string in `/etc/ssh/sshd_config.d/50-redhat.conf` that has
+  `GSSAPIAuthentication yes`.
+
+  We need this specific macro so that we can override the setting in
+  `/etc/ssh/sshd_config.d/50-redhat.conf` on 4.13+ and `/etc/ssh/sshd_config` on
+  4.12.
+
+#}}
+{{%- macro kubernetes_disable_sshd_config_option(parameter) -%}}
+{{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config', file_permissions_mode='0600', source=parameter + ' no' , ocp_version_range='<4.13.0') }}}
+{{%- endmacro -%}}
+
+{{%- macro kubernetes_disable_sshd_config_option_dropin(parameter) -%}}
+{{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config.d/50-redhat.conf', file_permissions_mode='0600', source=parameter + ' no' , ocp_version_range='>=4.13.0') }}}
+{{%- endmacro -%}}
+
 
 {{% macro usbguard_config_source() %}}
 #
