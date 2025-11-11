@@ -20,9 +20,11 @@ description: |-
         kubeletConfig:
           tlsCipherSuites:
             [ {{ .var_kubelet_tls_cipher_suites }} ]
+          tlsMinVersion: "{{.var_kubelet_tls_min_version}}"
     </pre>
   In order to configure this rule to check for an alternative cipher, both var_kubelet_tls_cipher_suites_regex
-  and var_kubelet_tls_cipher_suites have to be set
+  and var_kubelet_tls_cipher_suites have to be set. Furthermore you can set var_kubelet_tls_min_version to configure the tlsMinVersion.
+  Be aware that the tlsMinVersion must be set to a value that is supported by the cipher suites.
 rationale: |-
   TLS ciphers have had a number of known vulnerabilities and weaknesses,
   which can reduce the protection provided by them. By default Kubernetes
