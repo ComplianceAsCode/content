@@ -20,7 +20,7 @@
     changed_when: true
 
 {{{ ansible_set_config_file_dir(msg, "/etc/rsyslog.conf", "/etc/rsyslog.d", "/etc/rsyslog.d/cron.conf",
-                                "cron.*", separator='\t', separator_regex='',
+                                "cron.*", separator=' ', separator_regex='',
                                 value="/var/log/cron", create='yes', rule_title=rule_title)
 }}}
 
