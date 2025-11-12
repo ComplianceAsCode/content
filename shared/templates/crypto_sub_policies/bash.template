@@ -8,4 +8,8 @@
 {{{ bash_file_contents("/etc/crypto-policies/policies/modules/" ~ sub_policy.module_name ~ ".pmod", sub_policy.key ~ " = " ~ sub_policy.value) }}}
 {{% endfor %}}
 
-update-crypto-policies --set {{{ BASE_POLICY }}}:{{{ CONFIGURE_CRYPTO_POLICY_MODULES }}}
+current_crypto_policy=$(update-crypto-policies --show)
+expected_crypto_policy="{{{ BASE_POLICY }}}:{{{ CONFIGURE_CRYPTO_POLICY_MODULES }}}"
+if [[ "$current_crypto_policy" != "$expected_crypto_policy" ]] ; then
+    update-crypto-policies --set "$expected_crypto_policy"
+fi
