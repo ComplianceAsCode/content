@@ -4,6 +4,10 @@
 # complexity = low
 # disruption = low
 
+{{{ ansible_setup_rsyslog_common(rule_title) }}}
+
+{{{ ansible_remove_rainerscript_block_entries(rule_title, "global", "DefaultNetstreamDriver") }}}
+
 {{{ ansible_set_config_file_dir(msg, "/etc/rsyslog.conf", "/etc/rsyslog.d", "/etc/rsyslog.conf",
                                 parameter="$DefaultNetstreamDriver", value="gtls", create=true,
                                 separator=" ", separator_regex=" ", rule_title=rule_title)

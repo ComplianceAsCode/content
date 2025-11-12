@@ -120,3 +120,159 @@ PRM_NAME={{{ prm_name }}}
 
 {{%- endmacro -%}}
 
+
+{{#
+This macro sets up files and directories for rsyslog environment
+#}}
+{{%- macro setup_rsyslog_common() -%}}
+RSYSLOG_CONF='/etc/rsyslog.conf'
+RSYSLOG_D_FOLDER='/etc/rsyslog.d'
+RSYSLOG_D_CONF='/etc/rsyslog.d/encrypt.conf'
+test -f $RSYSLOG_CONF || touch $RSYSLOG_CONF
+mkdir -p $RSYSLOG_D_FOLDER
+{{%- endmacro -%}}
+
+
+{{#
+Removes legacy format rsyslog entries (starting with $) from rsyslog.conf and rsyslog.d/*.conf files.
+
+:param legacy_parameter: The legacy parameter to remove (e.g., "ActionSendStreamDriverAuthMode", "DefaultNetstreamDriver")
+:type legacy_parameter: str
+
+#}}
+{{%- macro remove_rsyslog_legacy_entry(legacy_parameter) -%}}
+sed -i '/^[[:space:]]*\${{{ legacy_parameter }}}/d' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*\${{{ legacy_parameter }}}/d' {} +
+{{%- endmacro -%}}
+
+
+{{#
+Removes multilined and onelined RainerScript block entries (action/global/etc) containing a specific pattern.
+
+:param block_type: The RainerScript block type (e.g., "action", "global")
+:type block_type: str
+:param pattern: The pattern to search for within blocks (e.g., "StreamDriverAuthMode", "type=\"omfwd\"")
+:type pattern: str
+
+#}}
+{{%- macro remove_rsyslog_rainerscript_block_entry(block_type, pattern) -%}}
+sed -i '/^[[:space:]]*{{{ block_type }}}(/ { :a; N; /)/!ba; /{{{ pattern }}}/d }' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*{{{ block_type }}}(/ { :a; N; /)/!ba; /{{{ pattern }}}/d }' {} +
+{{%- endmacro -%}}
+
+
+{{#
+Removes entries from a start pattern to an end pattern (range deletion).
+
+:param start_pattern: The pattern that marks the start of the range (e.g., "cron\.\*.*action(")
+:type start_pattern: str
+:param end_pattern: The pattern that marks the end of the range (e.g., ")")
+:type end_pattern: str
+
+#}}
+{{%- macro remove_rsyslog_range_entry(start_pattern, end_pattern) -%}}
+sed -i '/^[[:space:]]*{{{ start_pattern }}}/,/{{{ end_pattern }}}/d' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/^[[:space:]]*{{{ start_pattern }}}/,/{{{ end_pattern }}}/d' {} +
+{{%- endmacro -%}}
+
+
+{{#
+Removes entries matching a simple pattern from rsyslog.conf and rsyslog.d/*.conf files.
+
+:param pattern: The sed pattern to match and remove (e.g., "cron\.\*", "^\s*\*\.\*\s+/var/log/cron\s*$")
+:type pattern: str
+
+#}}
+{{%- macro remove_rsyslog_entry(pattern) -%}}
+sed -i '/{{{ pattern }}}/d' $RSYSLOG_CONF
+find $RSYSLOG_D_FOLDER -type f -name "*.conf" -exec sed -i '/{{{ pattern }}}/d' {} +
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_encrypt_offload_actionsendstreamdriverauthmode rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+multilined and legacy format entries.
+#}}
+{{%- macro setup_rsyslog_encrypt_offload_actionsendstreamdriverauthmode() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove legacy entries
+{{{ remove_rsyslog_legacy_entry("ActionSendStreamDriverAuthMode") }}}
+# remove all multilined and onelined RainerScript entries
+{{{ remove_rsyslog_rainerscript_block_entry("action", "StreamDriverAuthMode") }}}
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_cron_logging rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+multilined and legacy format entries.
+#}}
+{{%- macro setup_rsyslog_cron_logging() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove all multilined cron.* entries
+{{{ remove_rsyslog_range_entry("cron\.\*.*action(", ")") }}}
+# remove all legacy format and one line cron.* entries
+{{{ remove_rsyslog_entry("^\s*\*\.\*\s+/var/log/cron\s*$") }}}
+{{{ remove_rsyslog_entry("^[[:space:]]*cron\.\*") }}}
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_encrypt_offload_actionsendstreamdrivermode rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+multilined and legacy format entries.
+#}}
+{{%- macro setup_rsyslog_encrypt_offload_actionsendstreamdrivermode() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove ActionSendStreamDriverMode entries
+{{{ remove_rsyslog_legacy_entry("ActionSendStreamDriverMode") }}}
+# remove all multilined and onelined RainerScript entries
+{{{ remove_rsyslog_rainerscript_block_entry("action", "StreamDriverMode") }}}
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_encrypt_offload_defaultnetstreamdriver rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+multilined and legacy format entries.
+#}}
+{{%- macro setup_rsyslog_encrypt_offload_defaultnetstreamdriver() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove DefaultNetstreamDriver entries
+{{{ remove_rsyslog_legacy_entry("DefaultNetstreamDriver") }}}
+# remove all multilined and onelined RainerScript entries
+{{{ remove_rsyslog_rainerscript_block_entry("global", "DefaultNetstreamDriver") }}}
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up the rsyslog environment for testing rsyslog_remote_tls rule.
+It ensures the rsyslog directory structure and rsyslog conf file exist, then removes any existing
+multilined and onelined RainerScript entries.
+#}}
+{{%- macro setup_rsyslog_remote_tls() -%}}
+{{{ setup_rsyslog_common() }}}
+# remove all multilined and onelined RainerScript entries
+{{{ remove_rsyslog_rainerscript_block_entry("action", 'type="omfwd"') }}}
+{{%- endmacro -%}}
+
+
+{{#
+This macro sets up remote loghost configuration in rsyslog.conf.
+It checks if a line starting with *.* exists and replaces it with a configuration line,
+or appends configuration line if no such line exists.
+
+:param loghost_line: contains rsyslog configuration
+:type loghost_line: str
+
+#}}
+{{%- macro setup_rsyslog_remote_loghost(loghost_line) -%}}
+{{{ setup_rsyslog_common() }}}
+
+if grep -q "^\*\.\*" "$RSYSLOG_CONF"; then
+	sed -i 's|^\*\.\*.*|{{{ loghost_line }}}|' "$RSYSLOG_CONF"
+else
+	echo '{{{ loghost_line }}}' >> "$RSYSLOG_CONF"
+fi
+{{%- endmacro -%}}

@@ -1,8 +1,8 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
+{{{ setup_rsyslog_encrypt_offload_defaultnetstreamdriver() }}}
 
-if [[ -f encrypt.conf ]]; then
-  sed -i i/\$DefaultNetstreamDriver*.$//g /etc/rsyslog.d/encrypt.conf
+if [[ -f RSYSLOG_D_CONF ]]; then
+  sed -i i/\$DefaultNetstreamDriver*.$//g $RSYSLOG_D_CONF
 fi
-  sed -i i/\$DefaultNetstreamDriver*.$//g /etc/rsyslog.conf
+  sed -i i/\$DefaultNetstreamDriver*.$//g $RSYSLOG_CONF

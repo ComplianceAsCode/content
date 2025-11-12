@@ -17,7 +17,7 @@
     </definition>
 
 {{% set legacy_regex = "^\\$DefaultNetstreamDriver gtls$" %}}
-{{% set rainer_script_regex = "^\\s*global\\(.*(?i)\\bDefaultNetStreamDriver\\b(?-i)=\"gtls\".*\\)\\s*$" %}}
+{{% set rainer_script_regex = "(?ms)^\\s*global\\(.*(?i)\\bDefaultNetStreamDriver\\b(?-i)=\"gtls\".*\\)\\s*$" %}}
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
                                 comment="Check if $DefaultNetstreamDriver gtls is set in /etc/rsyslog.conf"

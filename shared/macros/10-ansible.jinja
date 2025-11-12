@@ -2151,3 +2151,75 @@ Part of the grub2_bootloader_argument_absent template.
   when:
     - item.device is search("localhost:")
 {{%- endmacro -%}}
+
+
+{{#
+  Macro to ensure rsyslog common setup (rsyslog.conf exists and rsyslog.d directory exists).
+  This is equivalent to the setup_rsyslog_common() bash macro.
+
+  :parameter rule_title: The title of the rule for task naming
+  :type rule_title: str
+#}}
+{{%- macro ansible_setup_rsyslog_common(rule_title) -%}}
+-   name: "{{{ rule_title }}} - Ensure /etc/rsyslog.conf exists"
+    ansible.builtin.file:
+        path: /etc/rsyslog.conf
+        state: touch
+        modification_time: preserve
+        access_time: preserve
+
+-   name: "{{{ rule_title }}} - Ensure /etc/rsyslog.d directory exists"
+    ansible.builtin.file:
+        path: /etc/rsyslog.d
+        state: directory
+{{%- endmacro -%}}
+
+
+{{#
+  Generic macro to remove RainerScript block entries (action/global/etc) containing a specific pattern.
+  This removes multilined and onelined RainerScript blocks that contain
+  the specified pattern from both rsyslog.conf and rsyslog.d/*.conf files.
+
+  :parameter rule_title: The title of the rule for task naming
+  :type rule_title: str
+  :parameter block_type: The RainerScript block type (e.g., "action", "global")
+  :type block_type: str
+  :parameter pattern: The pattern to search for within blocks (e.g., "StreamDriverMode")
+  :type pattern: str
+#}}
+{{%- macro ansible_remove_rainerscript_block_entries(rule_title, block_type, pattern) -%}}
+-   name: "{{{ rule_title }}} - Remove RainerScript {{{ block_type }}}() entries with {{{ pattern }}} from rsyslog.conf"
+    ansible.builtin.shell: |
+      sed -i '/^[[:space:]]*{{{ block_type }}}(/ { :a; N; /)/!ba; /{{{ pattern }}}/d }' /etc/rsyslog.conf
+    changed_when: true
+
+-   name: "{{{ rule_title }}} - Remove RainerScript {{{ block_type }}}() entries with {{{ pattern }}} from rsyslog.d/*.conf"
+    ansible.builtin.shell: |
+      find /etc/rsyslog.d -type f -name "*.conf" -exec sed -i '/^[[:space:]]*{{{ block_type }}}(/ { :a; N; /)/!ba; /{{{ pattern }}}/d }' {} +
+    changed_when: true
+{{%- endmacro -%}}
+
+
+{{#
+  Macro to remove multilined RainerScript entries using range deletion.
+  This removes entries from a line matching start_pattern to the next line matching end_pattern.
+  Used for cleanup patterns like cron.* action(...) entries.
+
+  :parameter rule_title: The title of the rule for task naming
+  :type rule_title: str
+  :parameter start_pattern: The pattern that marks the start of the range to delete (e.g., "cron\.\*.*action(")
+  :type start_pattern: str
+  :parameter end_pattern: The pattern that marks the end of the range (e.g., ")")
+  :type end_pattern: str
+  :parameter description: Description of what is being removed (e.g., "cron.* action()")
+  :type description: str
+#}}
+{{%- macro ansible_remove_rainerscript_range_entries(rule_title, start_pattern, end_pattern, description) -%}}
+-   name: "{{{ rule_title }}} - Remove multilined {{{ description }}} entries from rsyslog.conf"
+    ansible.builtin.shell: sed -i '/^{{{ start_pattern }}}/,/{{{ end_pattern }}}/d' /etc/rsyslog.conf
+    changed_when: true
+
+-   name: "{{{ rule_title }}} - Remove multilined {{{ description }}} entries from rsyslog.d/*.conf"
+    ansible.builtin.shell: find /etc/rsyslog.d -type f -name "*.conf" -exec sed -i '/^{{{ start_pattern }}}/,/{{{ end_pattern }}}/d' {} +
+    changed_when: true
+{{%- endmacro -%}}

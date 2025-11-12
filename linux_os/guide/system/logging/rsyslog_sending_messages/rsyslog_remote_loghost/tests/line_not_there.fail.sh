@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
 
-CONF_FILE="/etc/rsyslog.conf"
-sed -i "/^\*\.\*.*/d" "$CONF_FILE"
+{{{ setup_rsyslog_common() }}}
+sed -i "/^\*\.\*.*/d" "$RSYSLOG_CONF"
