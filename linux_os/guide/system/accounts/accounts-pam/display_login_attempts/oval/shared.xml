@@ -1,7 +1,7 @@
-{{%- if "sle" in product or "slmicro5" in product or "ubuntu" in product %}}
+{{%- if product in ['sle12', 'sle15', 'slmicro5' ] or "ubuntu" in product %}}
 {{% set pam_lastlog_path = "/etc/pam.d/login" %}}
 {{% set pam_lastlog = "pam_lastlog.so" %}}
-{{% elif product == 'slmicro6' %}}
+{{% elif product in ['sle16', 'slmicro6'] %}}
 {{% set pam_lastlog_path = "/etc/pam.d/postlogin-session" %}}
 {{% set pam_lastlog = "pam_lastlog2.so" %}}
 {{% else %}}
