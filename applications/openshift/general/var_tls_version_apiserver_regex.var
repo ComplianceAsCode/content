@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Configure Apiserver to use secure TLS version'
+
+description: 'TLS versions available for configuring Apiserver, excluding insecure versions. Do not forget to also configure the non regex value'
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+  default: "^(?!VersionTLS10|VersionTLS11)"
+  TLS13: "^(?!VersionTLS10|VersionTLS11|VersionTLS12)"
