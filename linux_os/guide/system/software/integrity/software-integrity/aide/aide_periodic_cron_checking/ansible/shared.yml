@@ -17,20 +17,30 @@
 {{% endif %}}
     state: present
 
+- name: "Gather list of installed packages"
+  ansible.builtin.package_facts:
+    manager: auto
+
 {{% if product != 'ubuntu2404' %}}
 - name: "{{{ rule_title }}}"
   ansible.builtin.cron:
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15", "sle16"] %}}
     name: "{{{ rule_title }}}"
-    cron_file: /etc/crontab
+    cron_file: /etc/cron.d/dailyaidecheck
 {{% else %}}
     name: "run AIDE check"
 {{% endif %}}
     minute: 05
     hour: 04
-    weekday: 0
     user: root
     job: "{{{ aide_bin_path }}} --check"
+  register: crontab_check
+{{% if "ubuntu" in product or "debian" in product %}}
+  when: "'cron' in ansible_facts.packages"
+{{% else %}}
+  when: "'cronie' in ansible_facts.packages"
+{{% endif %}}
+
 {{% else %}}
 - name: "{{{ rule_title }}} - Install AIDE Cron Job"
   ansible.builtin.lineinfile:
