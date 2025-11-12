@@ -270,7 +270,10 @@
 
         -   **key** - entry key, eg. `cipher@SSH`
 
-        -   **value** - entry value, eg. `-3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305`
+        -   **value** - entry value, eg. `-3DES-CBC`
+
+        Example:
+        `sub_policies = [{"module_name": "NO-SSHCBC", "key": "cipher@SSH", "value": "-*-CBC"}, {"module_name": "NO-WEAKMAC", "key": "mac", "value": "-*-64*"}]`
 
 -   Languages: Ansible, Bash, OVAL
 
