@@ -3853,12 +3853,11 @@ controls:
       levels:
           - medium
       title: RHEL 9 crypto policy must not be overridden.
-      notes: >-
-          The rule for this STIG is intentionally not implemented. Checking whether files under /etc/crypto-policies/back-ends/ 
+      notes: The rule for this STIG is intentionally not implemented. Checking whether files under /etc/crypto-policies/back-ends/
           are symlinks is not an appropriate way to verify the consistency of the system's cryptographic settings.
-          The suggested fix for the mentioned STIG does not fully satisfy its own requirements, as it also symlinks the nss.config file. 
-          Furthermore, running sudo 'update-crypto-policies --set FIPS' is not a reliable way to ensure FIPS compliance. Customers should 
-          refer to the official Red Hat Documentation and use the 'fips=1' kernel option during system installation to ensure the system is 
+          The suggested fix for the mentioned STIG does not fully satisfy its own requirements, as it also symlinks the nss.config file.
+          Furthermore, running sudo 'update-crypto-policies --set FIPS' is not a reliable way to ensure FIPS compliance. Customers should
+          refer to the official Red Hat Documentation and use the 'fips=1' kernel option during system installation to ensure the system is
           in FIPS mode.
       status: pending
 
