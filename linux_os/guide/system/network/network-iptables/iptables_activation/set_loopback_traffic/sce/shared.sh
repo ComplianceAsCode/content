@@ -26,3 +26,4 @@ if [[ ! "$rules" =~ "-A INPUT -s 127.0.0.0/8 -j DROP" ]]; then
 fi
 
 exit "$XCCDF_RESULT_PASS"
+
