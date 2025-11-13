@@ -1,4 +1,4 @@
-documentation_complete: True
+documentation_complete: true
 
 reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 
