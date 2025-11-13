@@ -7,7 +7,7 @@ description: |-
     The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
     consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
     which contain more than that number of consecutive characters from the same character class. Modify the
-    <tt>maxclassrepeat</tt> setting in <tt>/etc/security/pwquality.conf</tt> to equal {{{ xccdf_value("var_password_pam_maxclassrepeat") }}}
+    <tt>maxclassrepeat</tt> setting in <tt>{{{ pwquality_path }}}</tt> to equal {{{ xccdf_value("var_password_pam_maxclassrepeat") }}}
     to prevent a run of ({{{ xccdf_value("var_password_pam_maxclassrepeat") }}} + 1) or more identical characters.
 
 rationale: |-
@@ -41,9 +41,9 @@ references:
 ocil_clause: the value of "maxclassrepeat" is set to "0", more than "{{{ xccdf_value("var_password_pam_maxclassrepeat") }}}" or is commented out
 
 ocil: |-
-    Verify the value of the "maxclassrepeat" option in "/etc/security/pwquality.conf" with the following command:
+    Verify the value of the "maxclassrepeat" option in "{{{ pwquality_path }}}" with the following command:
 
-    <pre>$ grep maxclassrepeat /etc/security/pwquality.conf
+    <pre>$ grep maxclassrepeat {{{ pwquality_path }}}
 
     maxclassrepeat = {{{ xccdf_value("var_password_pam_maxclassrepeat") }}}</pre>
 
@@ -59,7 +59,7 @@ template:
 fixtext: |-
     Configure {{{ full_name }}} to require the change of the number of repeating characters of the same character class when passwords are changed by setting the "maxclassrepeat" option.
 
-    Add the following line to "/etc/security/pwquality.conf" conf (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" conf (or modify the line to have the required value):
 
     maxclassrepeat = {{{ xccdf_value("var_password_pam_maxclassrepeat") }}}
 

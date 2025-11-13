@@ -35,9 +35,9 @@ ocil_clause: '"dictcheck" does not have a value other than "0", or is commented 
 ocil: |-
     Verify {{{ full_name }}} prevents the use of dictionary words for passwords with the following command:
 
-    <pre>$ sudo grep dictcheck /etc/security/pwquality.conf /etc/pwquality.conf.d/*.conf
+    <pre>$ sudo grep dictcheck {{{ pwquality_path }}} /etc/pwquality.conf.d/*.conf
 
-    /etc/security/pwquality.conf:dictcheck=1</pre>
+    {{{ pwquality_path }}}:dictcheck=1</pre>
 
 platform: package[libpwquality]
 
@@ -50,7 +50,7 @@ template:
 fixtext: |-
     Configure {{{ full_name }}} to prevent the use of dictionary words for passwords.
 
-    Add or update the following line in the "/etc/security/pwquality.conf" file or a configuration file in the /etc/pwquality.conf.d/ directory to contain the "dictcheck" parameter:
+    Add or update the following line in the "{{{ pwquality_path }}}" file or a configuration file in the /etc/pwquality.conf.d/ directory to contain the "dictcheck" parameter:
 
     dictcheck=1
 

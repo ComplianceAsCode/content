@@ -4,6 +4,6 @@
 # platform = Not Applicable
 {{% endif %}}
 
-truncate -s 0 /etc/security/pwquality.conf
+truncate -s 0 "{{{ pwquality_path }}}"
 
-echo "{{{ VARIABLE }}} = {{{ TEST_WRONG_VS_ZERO_VALUE }}}" >> /etc/security/pwquality.conf
+echo "{{{ VARIABLE }}} = {{{ TEST_WRONG_VS_ZERO_VALUE }}}" >> "{{{ pwquality_path }}}"

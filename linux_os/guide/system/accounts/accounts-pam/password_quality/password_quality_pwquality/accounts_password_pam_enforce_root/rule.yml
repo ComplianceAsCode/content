@@ -6,7 +6,7 @@ title: 'Ensure PAM Enforces Password Requirements - Enforce for root User'
 description: |-
     The pam_pwquality module's <tt>enforce_for_root</tt> parameter controls requirements for
     enforcing password complexity for the root user. Enable the <tt>enforce_for_root</tt>
-    setting in <tt>/etc/security/pwquality.conf</tt> to require the <tt>root</tt> user
+    setting in <tt>{{{ pwquality_path }}}</tt> to require the <tt>root</tt> user
     to use complex passwords.
 
 rationale: |-
@@ -36,14 +36,14 @@ ocil: |-
 
     Check if root user is required to use complex passwords with the following command:
 
-    <pre>$ grep enforce_for_root /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+    <pre>$ grep enforce_for_root {{{ pwquality_path }}} /etc/security/pwquality.conf.d/*.conf
 
-    /etc/security/pwquality.conf:enforce_for_root</pre>
+    {{{ pwquality_path }}}:enforce_for_root</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity on the root account.
 
-    Add or update the following line in /etc/security/pwquality.conf:
+    Add or update the following line in {{{ pwquality_path }}}:
 
     enforce_for_root
 
@@ -56,6 +56,6 @@ template:
     name: "lineinfile"
     vars:
         text: "enforce_for_root"
-        path: "/etc/security/pwquality.conf"
+        path: "{{{ pwquality_path }}}"
     backends:
         oval: off

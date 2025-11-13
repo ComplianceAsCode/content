@@ -7,7 +7,7 @@ description: |-
     The pam_pwquality module's <tt>local_users_only</tt> parameter controls requirements for
     enforcing password complexity by pam_pwquality only for local user accounts and ignoring
     centralized user account management password complexity configurations. Enable the <tt>local_users_only</tt>
-    setting in <tt>/etc/security/pwquality.conf</tt> to require password complexity enforcement
+    setting in <tt>{{{ pwquality_path }}}</tt> to require password complexity enforcement
     for only local user accounts.
 
 rationale: |-
@@ -29,7 +29,7 @@ ocil_clause: 'local_users_only is not uncommented or configured correctly'
 
 ocil: |-
     To verify if password complexities are only enforce on local users, run the following command:
-    <pre>$ grep local_users_only /etc/security/pwquality.conf</pre>
+    <pre>$ grep local_users_only {{{ pwquality_path }}}</pre>
     The output should return <tt>local_users_only</tt> uncommented.
 
 platform: package[libpwquality]
@@ -43,6 +43,6 @@ template:
     name: "lineinfile"
     vars:
         text: "local_users_only"
-        path: "/etc/security/pwquality.conf"
+        path: "{{{ pwquality_path }}}"
         oval_extend_definitions:
             - accounts_password_pam_pwquality

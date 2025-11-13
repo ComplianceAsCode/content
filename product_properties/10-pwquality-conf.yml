@@ -1,0 +1,7 @@
+default:
+  pwquality_path: "/etc/security/pwquality.conf"
+
+overrides:
+{{% if product == 'sle16' %}}
+  pwquality_path: "/usr/lib/security/pwquality.conf"
+{{% endif %}}

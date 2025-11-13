@@ -20,15 +20,15 @@ checktext: |-
 
     Check the value for "dcredit" with the following command:
 
-    $ sudo grep dcredit /etc/security/pwquality.conf /etc/security/pwquality.conf/*.conf
+    $ sudo grep dcredit {{{ pwquality_path }}} /etc/security/pwquality.conf/*.conf
 
-    /etc/security/pwquality.conf:dcredit = -1
+    {{{ pwquality_path }}}:dcredit = -1
 
     If the value of "dcredit" is a positive number or is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity by requiring that at least one numeric character be used by setting the "dcredit" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     dcredit = -1

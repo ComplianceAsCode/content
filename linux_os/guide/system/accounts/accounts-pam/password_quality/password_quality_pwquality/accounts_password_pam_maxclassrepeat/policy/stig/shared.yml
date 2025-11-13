@@ -11,9 +11,9 @@ vuldiscussion: |-
     password is compromised.
 
 checktext: |-
-    Verify the value of the "maxclassrepeat" option in "/etc/security/pwquality.conf" with the following command:
+    Verify the value of the "maxclassrepeat" option in "{{{ pwquality_path }}}" with the following command:
 
-    $ grep maxclassrepeat /etc/security/pwquality.conf
+    $ grep maxclassrepeat {{{ pwquality_path }}}
 
     maxclassrepeat = 4
 
@@ -22,6 +22,6 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to require the change of the number of repeating characters of the same character class when passwords are changed by setting the "maxclassrepeat" option.
 
-    Add the following line to "/etc/security/pwquality.conf" conf (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" conf (or modify the line to have the required value):
 
     maxclassrepeat = 4
