@@ -76,6 +76,7 @@ selections:
     - '!sssd_enable_smartcards'
     - '!system_booted_in_fips_mode'
     - '!sshd_use_directory_configuration'
+    - '!ensure_oracle_gpgkey_installed'
     # Adjust variables to match the origianl RHEL 8 profiles
     - var_password_hashing_algorithm_pam=sha512
     - var_accounts_password_minlen_login_defs=15
