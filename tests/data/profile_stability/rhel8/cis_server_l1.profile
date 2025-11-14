@@ -40,7 +40,7 @@ banner_etc_motd_cis
 chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 cis_banner_text=cis
-configure_crypto_policy
+configure_custom_crypto_policy_cis
 configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
@@ -251,7 +251,6 @@ set_password_hashing_algorithm_logindefs
 set_password_hashing_algorithm_passwordauth
 set_password_hashing_algorithm_systemauth
 socket_systemd-journal-remote_disabled
-sshd_approved_ciphers=cis_rhel8
 sshd_disable_empty_passwords
 sshd_disable_rhosts
 sshd_disable_root_login
@@ -269,10 +268,7 @@ sshd_set_max_auth_tries
 sshd_set_max_sessions
 sshd_set_maxstartups
 sshd_strong_kex=cis_rhel8
-sshd_strong_macs=cis_rhel8
-sshd_use_approved_ciphers
 sshd_use_strong_kex
-sshd_use_strong_macs
 sudo_add_use_pty
 sudo_custom_logfile
 sudo_require_authentication
@@ -349,6 +345,5 @@ var_sshd_max_sessions=10
 var_sshd_set_keepalive=1
 var_sshd_set_login_grace_time=60
 var_sshd_set_maxstartups=10:30:60
-var_system_crypto_policy=default_nosha1
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces
