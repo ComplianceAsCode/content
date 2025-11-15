@@ -1036,7 +1036,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, runtime_check="false", xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
-{{%- set sshd_runtime_path = "/etc/compliance-operator/runtime/sshd_effective_config" -%}}
+{{%- set sshd_runtime_path = "/tmp/runtime/sshd_effective_config" -%}}
 {{%- if xccdf_variable -%}}
 {{%- set description = "Ensure '" ~ parameter ~ "' is configured with value configured in " ~ xccdf_variable ~ " variable in " ~ sshd_config_path %}}
 {{%- else -%}}
@@ -1072,17 +1072,15 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         <extend_definition comment="rpm package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
         {{% endif %}}
-        <criteria comment="sshd is configured correctly" operator="OR">
+        <criteria comment="sshd is configured correctly" operator="{{% if runtime_check == "true" %}}AND{{% else %}}OR{{% endif %}}">
           {{%- if runtime_check == "true" %}}
           <criteria comment="runtime configuration exists and is correct" operator="AND">
             <criterion comment="runtime config file exists" test_ref="test_runtime_config_present_{{{ rule_id }}}" />
             <criterion comment="runtime config matches expected value" test_ref="test_runtime_{{{ parameter }}}_{{{ rule_id }}}" />
           </criteria>
           {{%- endif %}}
-          <criteria comment="static configuration is correct (when runtime config doesn't exist or runtime check disabled)" operator="AND">
-            {{%- if runtime_check == "true" %}}
-            <criterion comment="runtime config file does not exist" test_ref="test_runtime_config_absent_{{{ rule_id }}}" />
-            {{%- endif %}}
+          {{%- if runtime_check != "true" %}}
+          <criteria comment="static configuration is correct" operator="AND">
             <criteria comment="the configuration is correct if it exists" operator="AND">
               {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
               {{%- if config_is_distributed == "true" %}}
@@ -1096,6 +1094,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
             <criterion comment="the configuration exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}" />
             {{% endif %}}
           </criteria>
+          {{%- endif %}}
         </criteria>
       </criteria>
     </criteria>
