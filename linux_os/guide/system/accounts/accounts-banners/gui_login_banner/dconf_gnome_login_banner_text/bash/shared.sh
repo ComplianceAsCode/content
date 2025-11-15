@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-login_banner_text="(bash-populate login_banner_text)"
+login_banner_text='(bash-populate login_banner_text)'
 
 # Multiple regexes transform the banner regex into a usable banner
 # 0 - Remove anchors around the banner text

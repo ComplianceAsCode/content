@@ -1,6 +1,6 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu,multi_platform_almalinux
 
-login_banner_text="(bash-populate login_banner_text)"
+login_banner_text='(bash-populate login_banner_text)'
 
 # Multiple regexes transform the banner regex into a usable banner
 # 0 - Remove anchors around the banner text

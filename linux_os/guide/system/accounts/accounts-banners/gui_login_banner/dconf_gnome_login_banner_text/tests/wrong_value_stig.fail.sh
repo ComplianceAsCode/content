@@ -1,5 +1,7 @@
 #!/bin/bash
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_fedora
 # profiles = xccdf_org.ssgproject.content_profile_stig
+# packages = dconf,gdm
 
 login_banner_text="Wrong Banner Text"
 expanded=$(echo "$login_banner_text" | sed 's/(\\\\\x27)\*/\\\x27/g;s/(\\\x27)\*//g;s/(\\\\\x27)/tamere/g;s/(\^\(.*\)\$|.*$/\1/g;s/\[\\s\\n\][+*]/ /g;s/\\//g;s/(n)\*/\\n/g;s/\x27/\\\x27/g;')
