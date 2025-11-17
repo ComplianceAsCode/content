@@ -1,0 +1,93 @@
+name: TMT Tests with Artifact Upload
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test-and-upload:
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # TODO: Add TMT+FMF test steps here
+      - name: Run TMT+FMF tests
+        run: |
+          echo "TODO: Add TMT+FMF test commands here"
+          # Example:
+          # dnf -y install tmt
+          # tmt run
+
+
+      - name: Install dependencies
+        if: always()  # Run even if previous steps fail
+        run: |
+          dnf -y install git-core python3-pip
+          pip install fmf atex==0.10
+
+      - name: Checkout RHSecurityCompliance repository to submit test results to Testing Farm Infrastructure
+        if: always()
+        uses: actions/checkout@v4
+        with:
+          repository: RHSecurityCompliance/atex-results-testing-farm
+          ref: main
+          path: atex-results-testing-farm
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Initialize FMF metadata
+        if: always()
+        run: |
+          fmf init
+
+      - name: Create TMT dummy plan for artifact transport
+        if: always()
+        run: |
+          cat > main.fmf <<'EOF'
+          /dummy_plan:
+              discover:
+                  how: shell
+                  tests:
+                    - name: /dummy_test
+                      test: mv * "$TMT_TEST_DATA/."
+              execute:
+                  how: tmt
+          EOF
+
+      - name: Push artifacts as tag to Testing Farm repository
+        if: always()
+        working-directory: atex-results-testing-farm
+        env:
+          GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
+        run: |
+          git config user.name "openscap-ci[bot]"
+          git config user.email "openscap.ci@gmail.com"
+
+          # Copy artifacts from main workspace to the TF repo
+          cp -r ../* . 2>/dev/null || true
+
+          # Commit and push as a tag
+          git add .
+          git commit -m "Test outputs from PR #${{ github.event.pull_request.number }}" || true
+          git tag PR${{ github.event.pull_request.number }}
+          git push origin PR${{ github.event.pull_request.number }}
+
+      - name: Submit test to Testing Farm
+        if: always()
+        env:
+          TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
+        run: |
+          python tests/submit_results_to_testing_farm.py \
+            --repo-url "https://github.com/RHSecurityCompliance/atex-results-testing-farm" \
+            --pr-number "${{ github.event.pull_request.number }}"
+
+      - name: Cleanup temporary tag
+        if: always()
+        working-directory: atex-results-testing-farm
+        env:
+          GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
+        run: |
+          git push --delete origin PR${{ github.event.pull_request.number }} || true
