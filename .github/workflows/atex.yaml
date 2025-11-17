@@ -1,0 +1,286 @@
+name: TMT Tests with Artifact Upload
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build_content:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        centos_stream_major: [8, 9, 10]
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Deps
+        run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel libxml2-devel libxslt-devel python3-setuptools gawk
+
+      - name: Install deps python
+        run: pip install pcre2==0.4.0 -r requirements.txt -r test-requirements.txt
+
+      - name: Build content
+        env:
+          CENTOS_STREAM_MAJOR: ${{ matrix.centos_stream_major }}
+        run: |
+          rm -rf build
+          mkdir build
+          cd build
+          # defaults used by Contest (and scap-security-guide.spec),
+          # plus any build options needed by any tests (so the tests don't have to rebuild
+          # the content to add these options)
+          cmake ../ \
+              -DCMAKE_BUILD_TYPE:STRING=Release \
+              -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=ON \
+              -DSSG_PRODUCT_DEFAULT:BOOL=OFF \
+              "-DSSG_PRODUCT_RHEL${CENTOS_STREAM_MAJOR}:BOOL=ON" \
+              -DSSG_SCE_ENABLED:BOOL=ON \
+              -DSSG_BASH_SCRIPTS_ENABLED:BOOL=OFF \
+              -DSSG_BUILD_DISA_DELTA_FILES:BOOL=OFF \
+              -DSSG_SEPARATE_SCAP_FILES_ENABLED:BOOL=OFF \
+              -DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON
+          cores=$(nproc) || cores=4
+          make "-j$cores"
+
+          # clean up useless metadata
+          rm -rf jinja2_cache
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-centos-stream${{ matrix.centos_stream_major }}
+          path: .
+          retention-days: 1
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build_content
+    strategy:
+      matrix:
+        centos_stream_major: [9] #[8, 9, 10]
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: content-centos-stream${{ matrix.centos_stream_major }}
+          path: content-centos-stream${{ matrix.centos_stream_major }}/
+
+      - name: Checkout RHSecurityCompliance contest
+        uses: actions/checkout@v4
+        with:
+          repository: RHSecurityCompliance/contest
+          ref: main
+          path: contest
+          fetch-depth: 1
+
+      - name: Install test dependencies
+        run: |
+          # Install utility and pip
+          dnf -y install python3-pip git rsync
+
+          # Install dependencies into the isolated environment
+          pip install fmf git+https://github.com/RHSecurityCompliance/atex.git
+
+      - name: Run tests on Testing Farm
+        env:
+          TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
+        run: |
+          python3 tests/run_tests_testingfarm.py \
+            --contest-dir contest \
+            --content-dir content-centos-stream${{ matrix.centos_stream_major }} \
+            --plan "/plans/daily" \
+            --tests "/hardening/host-os/oscap/stig" \
+            --compose "CentOS-Stream-${{ matrix.centos_stream_major }}" \
+            --arch x86_64 \
+            --os-major-version "${{ matrix.centos_stream_major }}" \
+            --timeout 120
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-centos-stream${{ matrix.centos_stream_major }}
+          path: |
+            results-centos-stream-${{ matrix.centos_stream_major }}-x86_64.json.gz
+            files-centos-stream-${{ matrix.centos_stream_major }}-x86_64/
+            atex_debug.log.gz
+          retention-days: 1
+
+  upload:
+    runs-on: ubuntu-latest
+    needs: test
+    if: always() # run even if the tests have failed
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        if: always()  # Run even if previous steps fail
+        run: |
+          # Install utility and pip
+          dnf -y install python3-pip git rsync
+
+          # Install dependencies into the isolated environment
+          pip install fmf git+https://github.com/RHSecurityCompliance/atex.git
+
+      - name: Checkout RHSecurityCompliance repository to submit test results to Testing Farm Infrastructure
+        if: always()
+        uses: actions/checkout@v4
+        with:
+          repository: RHSecurityCompliance/atex-results-testing-farm
+          ref: main
+          path: atex-results-testing-farm
+          token: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
+
+      - name: Initialize FMF metadata
+        if: always()
+        working-directory: atex-results-testing-farm
+        run: |
+          fmf init
+
+      - name: Create TMT dummy plan for artifact transport
+        if: always()
+        working-directory: atex-results-testing-farm
+        run: |
+          cat > main.fmf <<'EOF'
+          /dummy_plan:
+              discover:
+                  how: shell
+                  tests:
+                    - name: /dummy_test
+                      test: mv * "$TMT_TEST_DATA/."
+              execute:
+                  how: tmt
+          EOF
+
+      - name: Download test results - CentOS Stream 8
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results-centos-stream8
+          path: test-results/cs8/
+        continue-on-error: true
+
+      - name: Download test results - CentOS Stream 9
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results-centos-stream9
+          path: test-results/cs9/
+        continue-on-error: true
+
+      - name: Download test results - CentOS Stream 10
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results-centos-stream10
+          path: test-results/cs10/
+        continue-on-error: true
+
+      - name: Checkout atex-html repository
+        if: always()
+        uses: actions/checkout@v4
+        with:
+          repository: RHSecurityCompliance/atex-html
+          ref: main
+          path: atex-html
+
+      - name: Process test results with json2db.py
+        if: always()
+        run: |
+          sed "/<title>/s/>.*</>Test outputs from PR #${{ github.event.pull_request.number }} HTML</" -i atex-html/index.html
+
+      - name: Create final merged results artifact
+        if: always()
+        run: |
+          # Process results for each version
+          mkdir -p atex-results-testing-farm/files_dir/
+          for version in 8 9 10; do
+            if [ -f "test-results/cs${version}/results-centos-stream-${version}-x86_64.json.gz" ]; then
+              cat "test-results/cs${version}/results-centos-stream-${version}-x86_64.json.gz"
+              rm -f "test-results/cs${version}/results-centos-stream-${version}-x86_64.json.gz" >/dev/null
+              cp -r test-results/cs${version}/files-centos-stream-${version}-x86_64/* atex-results-testing-farm/files_dir/ >/dev/null
+            fi
+          done > results.json.gz
+
+      - name: Process test results with json2db.py
+        if: always()
+        run: |
+          python atex-html/json2db.py results.json.gz atex-results-testing-farm/results.sqlite.gz
+
+      - name: Prepare the html-hosted results viewer
+        if: always()
+        run: |
+          cp -rf atex-html/index.html atex-html/sqljs/ atex-results-testing-farm/
+
+      - name: Push artifacts as tag to Testing Farm repository
+        if: always()
+        working-directory: atex-results-testing-farm
+        env:
+          GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
+        run: |
+          git config user.name "openscap-ci[bot]"
+          git config user.email "openscap.ci@gmail.com"
+
+          # Commit and push as a tag
+          git add .
+          git commit -m "Test outputs from PR #${{ github.event.pull_request.number }}"
+          git tag PR${{ github.event.pull_request.number }}
+          git push origin PR${{ github.event.pull_request.number }}
+
+      - name: Submit test to Testing Farm
+        if: always()
+        id: testing_farm_request
+        env:
+          TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
+        run: |
+          python3 tests/submit_results_to_testing_farm.py \
+            --repo-url "https://github.com/RHSecurityCompliance/atex-results-testing-farm" \
+            --pr-number "${{ github.event.pull_request.number }}" 2>&1 | tee tf_output.log
+          echo "HTML_LINK=$(grep -oP 'HTML: \K.*' tf_output.log || echo 'No HTML link found')" >> "$GITHUB_OUTPUT"
+
+      - name: Find Comment
+        if: always()
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Testing Farm Results
+
+      - name: Create or update comment
+        if: always()
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### Testing Farm Results
+
+            Test artifacts have been submitted to Testing Farm.
+
+            **Results:** [View Test Results](${{ steps.testing_farm_request.outputs.HTML_LINK }})
+
+            _This comment was automatically generated by the atex workflow._
+          edit-mode: replace
+
+      - name: Cleanup temporary tag
+        if: always()
+        working-directory: atex-results-testing-farm
+        env:
+          GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
+        run: |
+          git push --delete origin PR${{ github.event.pull_request.number }}
