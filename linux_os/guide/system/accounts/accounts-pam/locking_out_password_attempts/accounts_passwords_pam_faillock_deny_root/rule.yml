@@ -52,7 +52,7 @@ ocil: |-
     Verify {{{ full_name }}} is configured to lock the root account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
     unsuccessful logon attempts with the command:
 
-    <pre>$ grep even_deny_root /etc/security/faillock.conf</pre>
+    <pre>$ grep even_deny_root {{{ pam_faillock_conf_path }}}</pre>
     even_deny_root
 
 
@@ -62,7 +62,7 @@ fixtext: |-
 
     $ sudo authselect enable-feature with-faillock
 
-    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    Then edit the <tt>{{{ pam_faillock_conf_path }}}</tt> file as follows:
     add or uncomment the following line:
     <pre>even_deny_root</pre>
 
@@ -74,7 +74,7 @@ warnings:
         PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
         aborted in order to preserve intentional changes. In this case, an informative message will
         be shown in the remediation report.
-        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        If the system supports the <tt>{{{ pam_faillock_conf_path }}}</tt> file, the pam_faillock
         parameters should be defined in <tt>faillock.conf</tt> file.
 
 srg_requirement: |-
