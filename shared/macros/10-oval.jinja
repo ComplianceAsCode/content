@@ -1217,7 +1217,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_state>
   {{%- else -%}}
   <ind:textfilecontent54_state id="state_runtime_{{{ parameter }}}_{{{ rule_id }}}" version="1">
-    <ind:subexpression operation="{{{ 'pattern match' if datatype == 'string' else 'equals' }}}" datatype="{{{ datatype }}}">{{{ value }}}</ind:subexpression>
+    <ind:subexpression operation="{{{ 'pattern match' if datatype == 'string' else 'equals' }}}" datatype="{{{ datatype }}}">{{{ value | lower if datatype == 'string' else value }}}</ind:subexpression>
   </ind:textfilecontent54_state>
   {{%- endif -%}}
   {{%- endif %}}
