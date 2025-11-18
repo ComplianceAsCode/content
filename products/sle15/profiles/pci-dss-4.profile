@@ -12,14 +12,14 @@ description: |-
     Ensures PCI-DSS v4 security configuration settings are applied.
 
 selections:
-    -  pcidss_4:all:base
-    -  ensure_pam_wheel_group_empty
-    -  sshd_strong_kex=pcidss
-    -  sshd_approved_macs=cis_sle15
-    -  sshd_approved_ciphers=cis_sle15
-    -  var_multiple_time_servers=suse
-    -  var_multiple_time_pools=suse
-    -  audit_rules_enable_syscall_auditing
+    - pcidss_4:all:base
+    - ensure_pam_wheel_group_empty
+    - sshd_strong_kex=pcidss
+    - sshd_approved_macs=cis_sle15
+    - sshd_approved_ciphers=cis_sle15
+    - var_multiple_time_servers=suse
+    - var_multiple_time_pools=suse
+    - audit_rules_enable_syscall_auditing
 # Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only
 # rules related to chrony
     - '!ntpd_specify_multiple_servers'
@@ -29,9 +29,9 @@ selections:
     - '!service_timesyncd_enabled'
     - '!package_libreswan_installed'
     - '!use_pam_wheel_for_su'
-    -  use_pam_wheel_group_for_su
-    -  var_pam_wheel_group_for_su=cis
-    -  var_accounts_tmout=15_min
+    - use_pam_wheel_group_for_su
+    - var_pam_wheel_group_for_su=cis
+    - var_accounts_tmout=15_min
 # Following rules once had a prodtype incompatible with the sle15 product
     - '!aide_periodic_cron_checking'
     - '!accounts_password_pam_dcredit'
