@@ -17,11 +17,11 @@ jobs:
       - name: Install deps python
         run: pip3 install gitpython xmldiff compliance-trestle==2.4.0 lxml lxml-stubs requests
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
         with:
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
@@ -78,7 +78,7 @@ jobs:
       - name: Install Deps
         run: sudo apt update && sudo apt install -y cmake ninja-build libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman wget libdbus-1-dev libdbus-glib-1-dev libcurl4-openssl-dev libgcrypt20-dev libselinux1-dev libxslt1-dev libgconf2-dev libacl1-dev libblkid-dev libcap-dev libxml2-dev libldap2-dev libpcre3-dev python3 swig libxml-parser-perl libxml-xpath-perl libperl-dev libbz2-dev librpm-dev g++ libyaml-dev libxmlsec1-dev libxmlsec1-openssl
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
       - name: Get cached CTF output
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
         id: get_ctf_output

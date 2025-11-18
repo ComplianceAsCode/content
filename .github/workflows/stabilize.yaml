@@ -19,7 +19,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible libxslt python3-ansible-lint linkchecker java-latest-openjdk unar wget python-unversioned-command git-core python3-setuptools
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
       - name: Configure
         run: cmake -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF -DANSIBLE_CHECKS=ON -DENABLE_SCAPVAL13=ON -DSCAPVAL_PATH='/opt/scapval/SCAP-Content-Validation-Tool-1.3.5/scapval-1.3.5.jar' ..
         working-directory: ./build
