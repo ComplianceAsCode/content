@@ -13,7 +13,7 @@ jobs:
             -   name: Install Dependencies
                 run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible-lint libxslt ansible python3-setuptools
             -   name: Checkout
-                uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+                uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
             -   name: Install python deps
                 run: pip install -r requirements-base.txt -r test-requirements.txt
             -   name: Configure
