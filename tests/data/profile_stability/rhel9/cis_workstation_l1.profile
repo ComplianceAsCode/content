@@ -11,6 +11,7 @@ accounts_password_pam_dictcheck
 accounts_password_pam_difok
 accounts_password_pam_enforce_root
 accounts_password_pam_maxrepeat
+accounts_password_pam_maxsequence
 accounts_password_pam_minclass
 accounts_password_pam_minlen
 accounts_password_pam_pwhistory_remember_password_auth
@@ -320,6 +321,7 @@ var_password_hashing_algorithm_pam=sha512
 var_password_pam_dictcheck=1
 var_password_pam_difok=2
 var_password_pam_maxrepeat=3
+var_password_pam_maxsequence=3
 var_password_pam_minclass=4
 var_password_pam_minlen=14
 var_password_pam_remember=24
