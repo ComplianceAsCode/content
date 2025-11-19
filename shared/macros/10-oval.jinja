@@ -1072,7 +1072,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         <extend_definition comment="rpm package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
         {{% endif %}}
-        <criteria comment="sshd is configured correctly" operator="{{% if runtime_check == "true" %}}AND{{% else %}}OR{{% endif %}}">
+        <criteria comment="sshd is configured correctly" operator="AND">
           {{%- if runtime_check == "true" %}}
           <criteria comment="runtime configuration exists and is correct" operator="AND">
             <criterion comment="runtime config file exists" test_ref="test_runtime_config_present_{{{ rule_id }}}" />
