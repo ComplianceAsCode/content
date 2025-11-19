@@ -68,6 +68,7 @@ disable_users_coredumps
 ensure_gpgcheck_globally_activated
 ensure_pam_wheel_group_empty
 ensure_root_password_configured
+file_at_allow_exists
 file_at_deny_not_exist
 file_cron_allow_exists
 file_cron_deny_not_exist

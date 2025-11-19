@@ -2,13 +2,8 @@ documentation_complete: true
 
 title: 'Verify Permissions on /etc/at.allow file'
 
-{{%  if 'rhel' not in product %}}
-    {{% set target_perms_octal="0640" %}}
-    {{% set target_perms="-rw-r-----" %}}
-{{% else %}}
-    {{% set target_perms_octal="0600" %}}
-    {{% set target_perms="-rw-------" %}}
-{{% endif %}}
+{{% set target_perms_octal="0640" %}}
+{{% set target_perms="-rw-r-----" %}}
 
 description: |-
     If <tt>/etc/at.allow</tt> exists, it must have permissions <tt>{{{ target_perms_octal }}}</tt>
