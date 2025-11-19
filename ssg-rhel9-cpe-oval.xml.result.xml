@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns="http://oval.mitre.org/XMLSchema/oval-results-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-results-5 oval-results-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+  <generator>
+    <oval:product_name>build_cpe.py from SCAP Security Guide</oval:product_name>
+    <oval:product_version>1.3.11</oval:product_version>
+    <oval:schema_version>5.11</oval:schema_version>
+    <oval:timestamp>2025-11-19T07:05:45</oval:timestamp>
+  </generator>
+  <directives>
+    <definition_true reported="true" content="full"/>
+    <definition_false reported="true" content="full"/>
+    <definition_unknown reported="true" content="full"/>
+    <definition_error reported="true" content="full"/>
+    <definition_not_evaluated reported="true" content="full"/>
+    <definition_not_applicable reported="true" content="full"/>
+  </directives>
+  <oval_definitions xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:lin-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xmlns:mac-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#macos" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#windows windows-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#macos macos-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+    <generator>
+      <oval:product_name>build_cpe.py from SCAP Security Guide</oval:product_name>
+      <oval:product_version>ssg: [0, 1, 79], python: 3.14.0</oval:product_version>
+      <oval:schema_version>5.11</oval:schema_version>
+      <oval:timestamp>2025-11-19T11:01:42</oval:timestamp>
+    </generator>
+    <definitions>
+      <definition id="oval:ssg-system_with_kernel:def:1" version="1" class="inventory">
+        <metadata>
+          <title/>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 9</platform>
+          </affected>
+          <description>The kernel is installed</description>
+        </metadata>
+        <criteria operator="OR">
+          <criterion test_ref="oval:ssg-inventory_test_kernel_installed:tst:1" comment="kernel is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel9:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 9</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 9</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:9"/>
+          <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 9</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel9_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+          <criteria operator="OR">
+            <criteria comment="RHEL 9 is installed">
+              <criterion test_ref="oval:ssg-test_rhel9:tst:1" comment="RHEL 9 is installed"/>
+              <extend_definition definition_ref="oval:ssg-installed_OS_is_ol9:def:1" negate="true" comment="Installed OS is not OL9"/>
+            </criteria>
+            <criteria comment="Red Hat Enterprise Virtualization Host is installed">
+              <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" comment="Red Hat Virtualization Host (RHVH)"/>
+              <criterion test_ref="oval:ssg-test_rhevh_rhel9_version:tst:1" comment="Red Hat Enterprise Virtualization Host is based on RHEL 9"/>
+            </criteria>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Installed operating system is part of the Unix family</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 9</platform>
+          </affected>
+          <description>The operating system installed on the system is part of the Unix OS family</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_ol9:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Oracle Linux 9</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 9</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:oracle:linux:9"/>
+          <description>The operating system installed on the system is
+      Oracle Linux 9</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_ol9_system:tst:1" comment="Oracle Linux 9 System is installed"/>
+          </criteria>
+        </criteria>
+      </definition>
+    </definitions>
+    <tests>
+      <ind-def:family_test id="oval:ssg-test_unix_family:tst:1" version="1" check="all" comment="Test installed OS is part of the unix family">
+        <ind-def:object object_ref="oval:ssg-object_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhvh4_version:tst:1" version="1" check_existence="only_one_exists" check="all" comment="redhat-release-virtualization-host RPM package is installed">
+        <lin-def:object object_ref="oval:ssg-obj_rhvh4_version:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhvh4_version:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_rhevh_rhel9_version:tst:1" version="1" check="all" comment="RHEVH base RHEL is version 9">
+        <ind-def:object object_ref="oval:ssg-obj_rhevh_rhel9_version:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhevh_rhel9_version:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:family_test id="oval:ssg-test_rhel9_unix_family:tst:1" version="1" check="all" comment="installed OS part of unix family">
+        <ind-def:object object_ref="oval:ssg-obj_rhel9_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhel9_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel9:tst:1" version="1" check="all" comment="redhat-release is version 9">
+        <lin-def:object object_ref="oval:ssg-obj_rhel9:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel9:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_ol9_system:tst:1" version="1" check="all" comment="oraclelinux-release is version 9">
+        <lin-def:object object_ref="oval:ssg-obj_ol9_system:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_ol9_system:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_kernel_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package kernel-core is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_kernel_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+    </tests>
+    <objects>
+      <ind-def:family_object id="oval:ssg-object_unix_family:obj:1" version="1"/>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhvh4_version:obj:1" version="1">
+        <lin-def:name>redhat-release-virtualization-host</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_rhevh_rhel9_version:obj:1" version="1">
+        <ind-def:filepath>/etc/redhat-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:family_object id="oval:ssg-obj_rhel9_unix_family:obj:1" version="1"/>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel9:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_ol9_system:obj:1" version="1">
+        <lin-def:name>oraclelinux-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_kernel_installed:obj:1" version="1">
+        <lin-def:name>kernel-core</lin-def:name>
+      </lin-def:rpminfo_object>
+    </objects>
+    <states>
+      <ind-def:family_state id="oval:ssg-state_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhvh4_version:ste:1" version="1">
+        <lin-def:evr operation="greater than or equal" datatype="evr_string">0:4.4</lin-def:evr>
+      </lin-def:rpminfo_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_rhevh_rhel9_version:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">9</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:family_state id="oval:ssg-state_rhel9_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel9:ste:1" version="1">
+        <lin-def:version operation="pattern match">^9.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_ol9_system:ste:1" version="1">
+        <lin-def:version operation="pattern match">^9.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+    </states>
+  </oval_definitions>
+  <results>
+    <system>
+      <definitions>
+        <definition definition_id="oval:ssg-system_with_kernel:def:1" result="true" version="1">
+          <criteria operator="OR" result="true">
+            <criterion test_ref="oval:ssg-inventory_test_kernel_installed:tst:1" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel9:def:1" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:ssg-test_rhel9_unix_family:tst:1" version="1" result="true"/>
+            <criteria operator="OR" result="true">
+              <criteria operator="AND" result="true">
+                <criterion test_ref="oval:ssg-test_rhel9:tst:1" version="1" result="true"/>
+                <extend_definition definition_ref="oval:ssg-installed_OS_is_ol9:def:1" version="1" result="true" negate="true"/>
+              </criteria>
+              <criteria operator="AND" result="false">
+                <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" version="1" result="false"/>
+                <criterion test_ref="oval:ssg-test_rhevh_rhel9_version:tst:1" version="1" result="false"/>
+              </criteria>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:ssg-test_unix_family:tst:1" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_ol9:def:1" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="true"/>
+            <criteria operator="OR" result="false">
+              <criterion test_ref="oval:ssg-test_ol9_system:tst:1" version="1" result="false"/>
+            </criteria>
+          </criteria>
+        </definition>
+      </definitions>
+      <tests>
+        <test test_id="oval:ssg-inventory_test_kernel_installed:tst:1" version="1" check_existence="all_exist" check="all" result="true">
+          <tested_item item_id="1016765" result="not evaluated"/>
+        </test>
+        <test test_id="oval:ssg-test_ol9_system:tst:1" version="1" check="all" result="false"/>
+        <test test_id="oval:ssg-test_rhel9:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1016764" result="true"/>
+        </test>
+        <test test_id="oval:ssg-test_rhel9_unix_family:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1016763" result="true"/>
+        </test>
+        <test test_id="oval:ssg-test_rhevh_rhel9_version:tst:1" version="1" check="all" result="false"/>
+        <test test_id="oval:ssg-test_rhvh4_version:tst:1" version="1" check_existence="only_one_exists" check="all" result="false"/>
+        <test test_id="oval:ssg-test_unix_family:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1016763" result="true"/>
+        </test>
+      </tests>
+      <oval_system_characteristics xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" xmlns:ind-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" xmlns:lin-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" xmlns:win-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows" xmlns="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5 oval-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent independent-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix unix-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux linux-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows windows-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#macos macos-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+        <generator>
+          <oval:product_name>build_cpe.py from SCAP Security Guide</oval:product_name>
+          <oval:product_version>ssg: [0, 1, 79], python: 3.14.0</oval:product_version>
+          <oval:schema_version>5.11</oval:schema_version>
+          <oval:timestamp>2025-11-19T07:05:45</oval:timestamp>
+        </generator>
+        <system_info>
+          <os_name>Red Hat Enterprise Linux</os_name>
+          <os_version>9.6 (Plow)</os_version>
+          <architecture>x86_64</architecture>
+          <primary_host_name>localhost.localdomain</primary_host_name>
+          <interfaces>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>127.0.0.1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>192.168.122.41</ip_address>
+              <mac_address>52:54:00:F9:70:DB</mac_address>
+            </interface>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>::1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>fe80::5054:ff:fef9:70db</ip_address>
+              <mac_address>52:54:00:F9:70:DB</mac_address>
+            </interface>
+          </interfaces>
+        </system_info>
+        <collected_objects>
+          <object id="oval:ssg-obj_inventory_test_kernel_installed:obj:1" version="1" flag="complete">
+            <reference item_ref="1016765"/>
+          </object>
+          <object id="oval:ssg-obj_ol9_system:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-obj_rhel9:obj:1" version="1" flag="complete">
+            <reference item_ref="1016764"/>
+          </object>
+          <object id="oval:ssg-obj_rhel9_unix_family:obj:1" version="1" flag="complete">
+            <reference item_ref="1016763"/>
+          </object>
+          <object id="oval:ssg-obj_rhevh_rhel9_version:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-obj_rhvh4_version:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-object_unix_family:obj:1" version="1" flag="complete">
+            <reference item_ref="1016763"/>
+          </object>
+        </collected_objects>
+        <system_data>
+          <lin-sys:rpminfo_item id="1016765" status="exists">
+            <lin-sys:name>kernel-core</lin-sys:name>
+            <lin-sys:arch>x86_64</lin-sys:arch>
+            <lin-sys:epoch>(none)</lin-sys:epoch>
+            <lin-sys:release>570.12.1.el9_6</lin-sys:release>
+            <lin-sys:version>5.14.0</lin-sys:version>
+            <lin-sys:evr datatype="evr_string">0:5.14.0-570.12.1.el9_6</lin-sys:evr>
+            <lin-sys:signature_keyid>199e2f91fd431d51</lin-sys:signature_keyid>
+            <lin-sys:extended_name>kernel-core-0:5.14.0-570.12.1.el9_6.x86_64</lin-sys:extended_name>
+          </lin-sys:rpminfo_item>
+          <lin-sys:rpminfo_item id="1016764" status="exists">
+            <lin-sys:name>redhat-release</lin-sys:name>
+            <lin-sys:arch>x86_64</lin-sys:arch>
+            <lin-sys:epoch>(none)</lin-sys:epoch>
+            <lin-sys:release>0.1.el9</lin-sys:release>
+            <lin-sys:version>9.6</lin-sys:version>
+            <lin-sys:evr datatype="evr_string">0:9.6-0.1.el9</lin-sys:evr>
+            <lin-sys:signature_keyid>199e2f91fd431d51</lin-sys:signature_keyid>
+            <lin-sys:extended_name>redhat-release-0:9.6-0.1.el9.x86_64</lin-sys:extended_name>
+          </lin-sys:rpminfo_item>
+          <ind-sys:family_item id="1016763" status="exists">
+            <ind-sys:family>unix</ind-sys:family>
+          </ind-sys:family_item>
+        </system_data>
+      </oval_system_characteristics>
+    </system>
+  </results>
+</oval_results>

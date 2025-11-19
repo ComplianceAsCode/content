@@ -1,0 +1,2396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns="http://oval.mitre.org/XMLSchema/oval-results-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-results-5 oval-results-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+  <generator>
+    <oval:product_name>build_cpe.py from SCAP Security Guide</oval:product_name>
+    <oval:product_version>1.3.11</oval:product_version>
+    <oval:schema_version>5.11</oval:schema_version>
+    <oval:timestamp>2025-11-02T09:22:33</oval:timestamp>
+  </generator>
+  <directives>
+    <definition_true reported="true" content="full"/>
+    <definition_false reported="true" content="full"/>
+    <definition_unknown reported="true" content="full"/>
+    <definition_error reported="true" content="full"/>
+    <definition_not_evaluated reported="true" content="full"/>
+    <definition_not_applicable reported="true" content="full"/>
+  </directives>
+  <oval_definitions xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:lin-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xmlns:mac-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#macos" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#windows windows-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#macos macos-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+    <generator>
+      <oval:product_name>build_cpe.py from SCAP Security Guide</oval:product_name>
+      <oval:product_version>ssg: [0, 1, 79], python: 3.13.7</oval:product_version>
+      <oval:schema_version>5.11</oval:schema_version>
+      <oval:timestamp>2025-11-10T12:59:44</oval:timestamp>
+    </generator>
+    <definitions>
+      <definition id="oval:ssg-system_with_kernel:def:1" version="1" class="inventory">
+        <metadata>
+          <title/>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The kernel is installed</description>
+        </metadata>
+        <criteria operator="OR">
+          <criterion test_ref="oval:ssg-inventory_test_kernel_installed:tst:1" comment="kernel is installed"/>
+          <criterion test_ref="oval:ssg-inventory_test_kernel_uek_installed:tst:1" comment="kernel-uek is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-system_boot_mode_is_uefi:def:1" version="1" class="inventory">
+        <metadata>
+          <title>UEFI system boot mode check</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:uefi"/>
+          <description>Check if system boot mode is UEFI.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_efi_dir_existence:tst:1" comment="check if /sys/firmware/efi folder exists"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-system_boot_mode_is_non_uefi:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Non-UEFI system boot mode check</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:non-uefi"/>
+          <description>Check if System boot mode is non-UEFI.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-system_boot_mode_is_uefi:def:1" negate="true" comment="Pass if System boot mode is non-UEFI"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-sssd_conf_uses_ldap:def:1" version="1" class="inventory">
+        <metadata>
+          <title>SSSD is configured to use LDAP</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:sssd-ldap"/>
+          <description>Identification provider is not set to ad within /etc/sssd/sssd.conf</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_id_provider_is_set_to_ldap:tst:1" comment="Identification provider is set to ldap within /etc/sssd/sssd.conf"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-service_disabled_ufw:def:1" version="1" class="inventory">
+        <metadata>
+          <title>The ufw is disabled on the system</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The ufw service should be disabled.</description>
+        </metadata>
+        <criteria operator="OR" comment="package ufw removed or service ufw is not configured to start">
+          <criterion test_ref="oval:ssg-service_disabled_ufwtest_service_ufw_package_ufw_removed:tst:1" comment="ufw removed"/>
+          <criteria operator="OR" comment="service is not present or not configured">
+            <criteria comment="service ufw is not configured to start">
+              <criterion test_ref="oval:ssg-test_service_not_running_service_disabled_ufw_ufw:tst:1" comment="ufw is not running"/>
+              <criterion test_ref="oval:ssg-test_service_loadstate_is_masked_service_disabled_ufw_ufw:tst:1" comment="Property LoadState of service ufw is masked"/>
+            </criteria>
+            <criterion test_ref="oval:ssg-test_service_not_found_service_disabled_ufw_ufw:tst:1" comment="ufw is not found"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-service_disabled_nftables:def:1" version="1" class="inventory">
+        <metadata>
+          <title>The nftables is disabled on the system</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The nftables service should be disabled.</description>
+        </metadata>
+        <criteria operator="OR" comment="package nftables removed or service nftables is not configured to start">
+          <criterion test_ref="oval:ssg-service_disabled_nftablestest_service_nftables_package_nftables_removed:tst:1" comment="nftables removed"/>
+          <criteria operator="OR" comment="service is not present or not configured">
+            <criteria comment="service nftables is not configured to start">
+              <criterion test_ref="oval:ssg-test_service_not_running_service_disabled_nftables_nftables:tst:1" comment="nftables is not running"/>
+              <criterion test_ref="oval:ssg-test_service_loadstate_is_masked_service_disabled_nftables_nftables:tst:1" comment="Property LoadState of service nftables is masked"/>
+            </criteria>
+            <criterion test_ref="oval:ssg-test_service_not_found_service_disabled_nftables_nftables:tst:1" comment="nftables is not found"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-service_disabled_firewalld:def:1" version="1" class="inventory">
+        <metadata>
+          <title>The firewalld is disabled on the system</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The firewalld service should be disabled.</description>
+        </metadata>
+        <criteria operator="OR" comment="package firewalld removed or service firewalld is not configured to start">
+          <criterion test_ref="oval:ssg-service_disabled_firewalldtest_service_firewalld_package_firewalld_removed:tst:1" comment="firewalld removed"/>
+          <criteria operator="OR" comment="service is not present or not configured">
+            <criteria comment="service firewalld is not configured to start">
+              <criterion test_ref="oval:ssg-test_service_not_running_service_disabled_firewalld_firewalld:tst:1" comment="firewalld is not running"/>
+              <criterion test_ref="oval:ssg-test_service_loadstate_is_masked_service_disabled_firewalld_firewalld:tst:1" comment="Property LoadState of service firewalld is masked"/>
+            </criteria>
+            <criterion test_ref="oval:ssg-test_service_not_found_service_disabled_firewalld_firewalld:tst:1" comment="firewalld is not found"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-selinux_is_enabled:def:1" version="1" class="inventory">
+        <metadata>
+          <title>SELinux status check</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:selinux"/>
+          <description>Check if System has SELinux enabled.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_etc_selinux_configured:tst:1" comment="enforce is disabled"/>
+          <criterion test_ref="oval:ssg-test_selinux_sys_fs_exist:tst:1" comment="/sys/fs/selinux is present"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-runtime_kernel_fips_enabled:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Running kernel has fips mode enabled</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:runtime-kernel-fips-enabled"/>
+          <description>Check if sysctl crypto.fips_enabled = 1</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_runtime_kernel_fips_enabled:tst:1" comment="check if sysctl crypto.fips_enabled = 1"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-proc_sys_kernel_osrelease_arch_x86_64:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Test that the architecture is x86_64</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>Check that architecture of kernel in /proc/sys/kernel is x86_64</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_proc_sys_kernel_osrelease_arch_x86_64:tst:1" comment="Architecture is x86_64"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Test that the architecture is s390x</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>Check that architecture of kernel in /proc/sys/kernel is s390x</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_proc_sys_kernel_osrelease_arch_s390x:tst:1" comment="Architecture is s390x"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-proc_sys_kernel_osrelease_arch_not_s390x:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Test for different architecture than s390x</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>Check that architecture of kernel in /proc/sys/kernel/osrelease is not s390x</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1" negate="true" comment="Architecture is not s390x"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-proc_sys_kernel_osrelease_arch_aarch64:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Test that the architecture is aarch64</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>Check that architecture of kernel in /proc/sys/kernel is aarch64</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_proc_sys_kernel_osrelease_arch_aarch64:tst:1" comment="Architecture is aarch64"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_yum:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package yum is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package yum should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_yum_installed:tst:1" comment="Platform package yum is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_ufw:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package ufw is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package ufw should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_ufw_installed:tst:1" comment="Platform package ufw is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_tftp-server:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package tftp-server is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package tftp-server should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_tftp-server_installed:tst:1" comment="Platform package tftp-server is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_telnet-server:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package telnet-server is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package telnet-server should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_telnet-server_installed:tst:1" comment="Platform package telnet-server is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_systemd:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package systemd is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package systemd should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_systemd_installed:tst:1" comment="Platform package systemd is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_sudo:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package sudo is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package sudo should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_sudo_installed:tst:1" comment="Platform package sudo is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_sssd:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package sssd-common is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package sssd-common should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_sssd_installed:tst:1" comment="Platform package sssd-common is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_squid:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package squid is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package squid should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_squid_installed:tst:1" comment="Platform package squid is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_shadow-utils:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package shadow-utils is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package shadow-utils should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_shadow-utils_installed:tst:1" comment="Platform package shadow-utils is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_rsyslog:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package rsyslog is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package rsyslog should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_rsyslog_installed:tst:1" comment="Platform package rsyslog is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_rsh-server:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package rsh-server is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package rsh-server should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_rsh-server_installed:tst:1" comment="Platform package rsh-server is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_postfix:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package postfix is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package postfix should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_postfix_installed:tst:1" comment="Platform package postfix is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_pam:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package pam is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package pam should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_pam_installed:tst:1" comment="Platform package pam is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_openssh:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package openssh is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package openssh should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_openssh_installed:tst:1" comment="Platform package openssh is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_ntp:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package ntp is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package ntp should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_ntp_installed:tst:1" comment="Platform package ntp is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_nss-pam-ldapd:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package nss-pam-ldapd is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package nss-pam-ldapd should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_nss-pam-ldapd_installed:tst:1" comment="Platform package nss-pam-ldapd is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_nftables:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package nftables is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package nftables should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_nftables_installed:tst:1" comment="Platform package nftables is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_net-snmp:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package net-snmp is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package net-snmp should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_net-snmp_installed:tst:1" comment="Platform package net-snmp is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_logrotate:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package logrotate is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package logrotate should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_logrotate_installed:tst:1" comment="Platform package logrotate is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_libuser:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package libuser is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package libuser should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_libuser_installed:tst:1" comment="Platform package libuser is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_libreswan:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package libreswan is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package libreswan should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_libreswan_installed:tst:1" comment="Platform package libreswan is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_libpwquality:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package libpwquality is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package libpwquality should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_libpwquality_installed:tst:1" comment="Platform package libpwquality is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_iptables:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package iptables is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package iptables should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_iptables_installed:tst:1" comment="Platform package iptables is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_gdm:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package gdm is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package gdm should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_gdm_installed:tst:1" comment="Platform package gdm is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_firewalld:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package firewalld is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package firewalld should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_firewalld_installed:tst:1" comment="Platform package firewalld is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_chrony:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package chrony is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package chrony should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_chrony_installed:tst:1" comment="Platform package chrony is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_bash:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package bash is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package bash should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_bash_installed:tst:1" comment="Platform package bash is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_avahi:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package avahi is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package avahi should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_avahi_installed:tst:1" comment="Platform package avahi is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_autofs:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package autofs is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package autofs should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_autofs_installed:tst:1" comment="Platform package autofs is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_audit:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package audit is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package audit should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_audit_installed:tst:1" comment="Platform package audit is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-package_apparmor:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package apparmor is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The RPM package apparmor should be installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-inventory_test_package_apparmor_installed:tst:1" comment="Platform package apparmor is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-os_linux_rhel_ne_9_0:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Operating System is rhel</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The installed operating system is Red Hat Enterprise Linux</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_os_id_is_os_linux_rhel_ne_9_0:tst:1" comment="The operating system installed on the system is Red Hat Enterprise Linux"/>
+          <criterion test_ref="oval:ssg-test_os_linux_rhel_ne_9_0_ne_9_0:tst:1" comment="The operating system Red Hat Enterprise Linux of version not equal 9.0 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-os_linux_rhel_le_or_eq_8_4:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Operating System is rhel</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The installed operating system is Red Hat Enterprise Linux</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_os_id_is_os_linux_rhel_le_or_eq_8_4:tst:1" comment="The operating system installed on the system is Red Hat Enterprise Linux"/>
+          <criterion test_ref="oval:ssg-test_os_linux_rhel_le_or_eq_8_4_le_or_eq_8_4:tst:1" comment="The operating system Red Hat Enterprise Linux of version less than or equal 8.4 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-os_linux_rhel_gt_or_eq_9_0:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Operating System is rhel</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The installed operating system is Red Hat Enterprise Linux</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_os_id_is_os_linux_rhel_gt_or_eq_9_0:tst:1" comment="The operating system installed on the system is Red Hat Enterprise Linux"/>
+          <criterion test_ref="oval:ssg-test_os_linux_rhel_gt_or_eq_9_0_gt_or_eq_9_0:tst:1" comment="The operating system Red Hat Enterprise Linux of version greater than or equal 9.0 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-os_linux_rhel_gt_or_eq_8_7:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Operating System is rhel</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The installed operating system is Red Hat Enterprise Linux</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_os_id_is_os_linux_rhel_gt_or_eq_8_7:tst:1" comment="The operating system installed on the system is Red Hat Enterprise Linux"/>
+          <criterion test_ref="oval:ssg-test_os_linux_rhel_gt_or_eq_8_7_gt_or_eq_8_7:tst:1" comment="The operating system Red Hat Enterprise Linux of version greater than or equal 8.7 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-os_linux_ol_le_7_4:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Operating System is ol</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The installed operating system is Oracle Linux</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_os_id_is_os_linux_ol_le_7_4:tst:1" comment="The operating system installed on the system is Oracle Linux"/>
+          <criterion test_ref="oval:ssg-test_os_linux_ol_le_7_4_le_7_4:tst:1" comment="The operating system Oracle Linux of version less than 7.4 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-os_linux_ol_gt_or_eq_9_0:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Operating System is ol</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The installed operating system is Oracle Linux</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_os_id_is_os_linux_ol_gt_or_eq_9_0:tst:1" comment="The operating system installed on the system is Oracle Linux"/>
+          <criterion test_ref="oval:ssg-test_os_linux_ol_gt_or_eq_9_0_gt_or_eq_9_0:tst:1" comment="The operating system Oracle Linux of version greater than or equal 9.0 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-os_linux_ol_gt_or_eq_8_7:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Operating System is ol</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The installed operating system is Oracle Linux</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_os_id_is_os_linux_ol_gt_or_eq_8_7:tst:1" comment="The operating system installed on the system is Oracle Linux"/>
+          <criterion test_ref="oval:ssg-test_os_linux_ol_gt_or_eq_8_7_gt_or_eq_8_7:tst:1" comment="The operating system Oracle Linux of version greater than or equal 8.7 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-nfs_mount_defined:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Remote NFS file system mount is defined</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:nfs_mount_defined"/>
+          <description>At least one remote NFS file system mount is defined in  /etc/fstab</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_nfs_mount_exists:tst:1" comment="remote nfs filesystem exist"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-krb5_workstation_older_than_1_17_18:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Kerberos workstation is older than 1.17-18</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:krb5_workstation_older_than_1_17-18"/>
+          <description>Check if version of Kerberos workstation is lesser than 1.17-18
+            </description>
+        </metadata>
+        <criteria operator="OR" comment="Kerberos workstation version is lesser than 1.17-18">
+          <criterion test_ref="oval:ssg-test_krb5_workstation_version_1_17_18:tst:1" comment="Check if version of Kerberos workstation is lesser than 1.17-18"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-krb5_server_older_than_1_17_18:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Kerberos server is older than 1.17-18</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:krb5_server_older_than_1_17-18"/>
+          <description>Check if version of Kerberos server is lesser than 1.17-18
+            </description>
+        </metadata>
+        <criteria operator="OR" comment="Kerberos server version is lesser than 1.17-18">
+          <criterion test_ref="oval:ssg-test_krb5_server_version_1_17_18:tst:1" comment="Check if version of Kerberos server is lesser than 1.17-18"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-ipv6_enabled:def:1" version="1" class="inventory">
+        <metadata>
+          <title>IPv6 is enabled on system</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criterion test_ref="oval:ssg-test_grub2_ipv6_disable_is_correct:tst:1" comment="check if ipv6.disable argument is correct in GRUB_CMDLINE_LINUX"/>
+          <criterion test_ref="oval:ssg-test_grub2_ipv6_disable_is_absent:tst:1" comment="check if ipv6.disable parameter is defined in /etc/default/grub"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_mount_var:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Mountpoint /var is active (mounted) or configured in /etc/fstab</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_active_var_exists:tst:1" comment="The path /var is an active (mounted) mount point"/>
+          </criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_configured_fstab_var_exists:tst:1" comment="The path /var is a mount point configured in /etc/fstab"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_mount_var-tmp:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Mountpoint /var/tmp is active (mounted) or configured in /etc/fstab</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_active_var_tmp_exists:tst:1" comment="The path /var/tmp is an active (mounted) mount point"/>
+          </criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_configured_fstab_var_tmp_exists:tst:1" comment="The path /var/tmp is a mount point configured in /etc/fstab"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_mount_var-log:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Mountpoint /var/log is active (mounted) or configured in /etc/fstab</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_active_var_log_exists:tst:1" comment="The path /var/log is an active (mounted) mount point"/>
+          </criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_configured_fstab_var_log_exists:tst:1" comment="The path /var/log is a mount point configured in /etc/fstab"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_mount_var-log-audit:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Mountpoint /var/log/audit is active (mounted) or configured in /etc/fstab</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_active_var_log_audit_exists:tst:1" comment="The path /var/log/audit is an active (mounted) mount point"/>
+          </criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_configured_fstab_var_log_audit_exists:tst:1" comment="The path /var/log/audit is a mount point configured in /etc/fstab"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_mount_tmp:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Mountpoint /tmp is active (mounted) or configured in /etc/fstab</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_active_tmp_exists:tst:1" comment="The path /tmp is an active (mounted) mount point"/>
+          </criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_configured_fstab_tmp_exists:tst:1" comment="The path /tmp is a mount point configured in /etc/fstab"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_mount_srv:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Mountpoint /srv is active (mounted) or configured in /etc/fstab</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_active_srv_exists:tst:1" comment="The path /srv is an active (mounted) mount point"/>
+          </criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_configured_fstab_srv_exists:tst:1" comment="The path /srv is a mount point configured in /etc/fstab"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_mount_opt:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Mountpoint /opt is active (mounted) or configured in /etc/fstab</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_active_opt_exists:tst:1" comment="The path /opt is an active (mounted) mount point"/>
+          </criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_configured_fstab_opt_exists:tst:1" comment="The path /opt is a mount point configured in /etc/fstab"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_mount_home:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Mountpoint /home is active (mounted) or configured in /etc/fstab</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description/>
+        </metadata>
+        <criteria operator="OR">
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_active_home_exists:tst:1" comment="The path /home is an active (mounted) mount point"/>
+          </criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_mount_configured_fstab_home_exists:tst:1" comment="The path /home is a mount point configured in /etc/fstab"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_is_osbuild:def:1" version="2" class="inventory">
+        <metadata>
+          <title>Check if the environment is a OSBuild pipeline</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:osbuild"/>
+          <description>Check the value of environment variable container.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_installed_env_is_osbuild:tst:1" comment="Check the value of container variable"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_is_a_machine:def:1" version="2" class="inventory">
+        <metadata>
+          <title>Check if the scan target is a machine</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:machine"/>
+          <description>Check for absence of files characterizing container filesystems.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_env_is_a_container:def:1" negate="true" comment="If environment is not a container, it is machine"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_is_a_container:def:1" version="2" class="inventory">
+        <metadata>
+          <title>Check if the scan target is a container</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:container"/>
+          <description>Check for presence of files characterizing container filesystems.</description>
+        </metadata>
+        <criteria operator="OR">
+          <criterion test_ref="oval:ssg-test_installed_env_is_a_docker_container:tst:1" comment="Check if /.dockerenv exists"/>
+          <criterion test_ref="oval:ssg-test_installed_env_is_a_podman_container:tst:1" comment="Check if /run/.containerenv exists"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_wifi_interface:def:1" version="1" class="inventory">
+        <metadata>
+          <title>WiFi interface is present</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:wifi-iface"/>
+          <description>Checks if any wifi interface is present.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_proc_net_wireless_exists:tst:1" comment="WiFi interface is present"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_grub2_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package grub2 is installed</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:grub2"/>
+          <description>Checks if package grub2-common is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_grub2_installed:tst:1" comment="Package grub2-common is installed"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_system_info_architecture_ppcle_64:tst:1" negate="true" comment="Test for ppcle64 architecture"/>
+            <criterion test_ref="oval:ssg-test_system_using_opal:tst:1" negate="true" comment="Test if OPAL is not used"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhcos4_rhel9:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux CoreOS RHEL9 Based</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:rhcos4:9"/>
+          <description>The operating system installed on the system is
+      Red Hat Enterprise Linux CoreOS RHEL9 Based</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhcos4_rhel9:tst:1" comment="RHCOS RHEL 9 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Installed operating system is part of the Unix family</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>The operating system installed on the system is part of the Unix OS family</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_ol7:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Oracle Linux 7</title>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:oracle:linux:7"/>
+          <description>The operating system installed on the system is
+      Oracle Linux 7</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_ol7_system:tst:1" comment="Oracle Linux 7 System is installed"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-bootc:def:1" version="1" class="inventory">
+        <metadata>
+          <title/>
+          <affected family="unix">
+            <platform>Oracle Linux 7</platform>
+          </affected>
+          <description>Bootable container or bootc system</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-bootc_platform_test_kernel_installed:tst:1" comment="kernel is installed"/>
+          <criterion test_ref="oval:ssg-bootc_platform_test_rpm_ostree_installed:tst:1" comment="rpm-ostree is installed"/>
+          <criterion test_ref="oval:ssg-bootc_platform_test_bootc_installed:tst:1" comment="bootc is installed"/>
+          <criterion test_ref="oval:ssg-bootc_platform_test_openshift_kubelet_removed:tst:1" comment="openshift-kubelet is not installed"/>
+        </criteria>
+      </definition>
+    </definitions>
+    <tests>
+      <ind-def:family_test id="oval:ssg-test_unix_family:tst:1" version="1" check="all" comment="Test installed OS is part of the unix family">
+        <ind-def:object object_ref="oval:ssg-object_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <unix-def:file_test id="oval:ssg-test_system_using_opal:tst:1" version="1" check_existence="all_exist" check="all" comment="Check if /sys/firmware/opal exists">
+        <unix-def:object object_ref="oval:ssg-object_system_using_opal:obj:1"/>
+      </unix-def:file_test>
+      <unix-def:uname_test id="oval:ssg-test_system_info_architecture_ppcle_64:tst:1" version="1" check="all" comment="64 bit architecture">
+        <unix-def:object object_ref="oval:ssg-object_system_info_architecture_ppcle_64:obj:1"/>
+        <unix-def:state state_ref="oval:ssg-state_system_info_architecture_ppcle_64:ste:1"/>
+      </unix-def:uname_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_not_running_service_disabled_ufw_ufw:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the ufw service is not running">
+        <lin-def:object object_ref="oval:ssg-obj_service_not_running_service_disabled_ufw_ufw:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_not_running_service_disabled_ufw_ufw:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_not_running_service_disabled_nftables_nftables:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the nftables service is not running">
+        <lin-def:object object_ref="oval:ssg-obj_service_not_running_service_disabled_nftables_nftables:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_not_running_service_disabled_nftables_nftables:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_not_running_service_disabled_firewalld_firewalld:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the firewalld service is not running">
+        <lin-def:object object_ref="oval:ssg-obj_service_not_running_service_disabled_firewalld_firewalld:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_not_running_service_disabled_firewalld_firewalld:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_not_found_service_disabled_ufw_ufw:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the service ufw is not found">
+        <lin-def:object object_ref="oval:ssg-obj_service_loadstate_is_masked_service_disabled_ufw_ufw:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_is_not_found_service_disabled_ufw_ufw:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_not_found_service_disabled_nftables_nftables:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the service nftables is not found">
+        <lin-def:object object_ref="oval:ssg-obj_service_loadstate_is_masked_service_disabled_nftables_nftables:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_is_not_found_service_disabled_nftables_nftables:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_not_found_service_disabled_firewalld_firewalld:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the service firewalld is not found">
+        <lin-def:object object_ref="oval:ssg-obj_service_loadstate_is_masked_service_disabled_firewalld_firewalld:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_is_not_found_service_disabled_firewalld_firewalld:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_loadstate_is_masked_service_disabled_ufw_ufw:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the property LoadState from the service ufw is masked">
+        <lin-def:object object_ref="oval:ssg-obj_service_loadstate_is_masked_service_disabled_ufw_ufw:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_loadstate_is_masked_service_disabled_ufw_ufw:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_loadstate_is_masked_service_disabled_nftables_nftables:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the property LoadState from the service nftables is masked">
+        <lin-def:object object_ref="oval:ssg-obj_service_loadstate_is_masked_service_disabled_nftables_nftables:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_loadstate_is_masked_service_disabled_nftables_nftables:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <lin-def:systemdunitproperty_test id="oval:ssg-test_service_loadstate_is_masked_service_disabled_firewalld_firewalld:tst:1" version="1" check_existence="any_exist" check="all" comment="Test that the property LoadState from the service firewalld is masked">
+        <lin-def:object object_ref="oval:ssg-obj_service_loadstate_is_masked_service_disabled_firewalld_firewalld:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_service_loadstate_is_masked_service_disabled_firewalld_firewalld:ste:1"/>
+      </lin-def:systemdunitproperty_test>
+      <unix-def:file_test id="oval:ssg-test_selinux_sys_fs_exist:tst:1" version="1" check_existence="all_exist" check="all" comment="check if /sys/fs/selinux exists">
+        <unix-def:object object_ref="oval:ssg-object_selinux_sys_fs_exist:obj:1"/>
+      </unix-def:file_test>
+      <unix-def:sysctl_test id="oval:ssg-test_runtime_kernel_fips_enabled:tst:1" version="1" check_existence="all_exist" check="all" comment="kernel runtime parameter crypto.fips_enabled set to 1">
+        <unix-def:object object_ref="oval:ssg-obj_runtime_kernel_fips_enabled:obj:1"/>
+        <unix-def:state state_ref="oval:ssg-state_runtime_kernel_fips_enabled:ste:1"/>
+      </unix-def:sysctl_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_rhcos4_rhel9:tst:1" version="1" check="all" comment="rhcoreos is rhel9 based">
+        <ind-def:object object_ref="oval:ssg-obj_rhcos4_rhel9:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhcos4_rhel9:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_proc_sys_kernel_osrelease_arch_x86_64:tst:1" version="1" check="all" comment="proc_sys_kernel is for x86_64 architecture">
+        <ind-def:object object_ref="oval:ssg-object_proc_sys_kernel_osrelease_arch_x86_64:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_proc_sys_kernel_osrelease_arch_s390x:tst:1" version="1" check="all" comment="proc_sys_kernel is for s390x architecture">
+        <ind-def:object object_ref="oval:ssg-object_proc_sys_kernel_osrelease_arch_s390x:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_proc_sys_kernel_osrelease_arch_aarch64:tst:1" version="1" check="all" comment="proc_sys_kernel is for aarch64 architecture">
+        <ind-def:object object_ref="oval:ssg-object_proc_sys_kernel_osrelease_arch_aarch64:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <unix-def:file_test id="oval:ssg-test_proc_net_wireless_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Test if /proc/net/wireless exists">
+        <unix-def:object object_ref="oval:ssg-object_proc_net_wireless_exists:obj:1"/>
+      </unix-def:file_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_linux_rhel_ne_9_0_ne_9_0:tst:1" version="1" check="all" comment="VERSION_ID in os-release is not equal 9.0">
+        <ind-def:object object_ref="oval:ssg-obj_os_linux_rhel_ne_9_0_ne_9_0:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_linux_rhel_ne_9_0_ne_9_0:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_linux_rhel_le_or_eq_8_4_le_or_eq_8_4:tst:1" version="1" check="all" comment="VERSION_ID in os-release is less than or equal 8.4">
+        <ind-def:object object_ref="oval:ssg-obj_os_linux_rhel_le_or_eq_8_4_le_or_eq_8_4:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_linux_rhel_le_or_eq_8_4_le_or_eq_8_4:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_linux_rhel_gt_or_eq_9_0_gt_or_eq_9_0:tst:1" version="1" check="all" comment="VERSION_ID in os-release is greater than or equal 9.0">
+        <ind-def:object object_ref="oval:ssg-obj_os_linux_rhel_gt_or_eq_9_0_gt_or_eq_9_0:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_linux_rhel_gt_or_eq_9_0_gt_or_eq_9_0:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_linux_rhel_gt_or_eq_8_7_gt_or_eq_8_7:tst:1" version="1" check="all" comment="VERSION_ID in os-release is greater than or equal 8.7">
+        <ind-def:object object_ref="oval:ssg-obj_os_linux_rhel_gt_or_eq_8_7_gt_or_eq_8_7:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_linux_rhel_gt_or_eq_8_7_gt_or_eq_8_7:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_linux_ol_le_7_4_le_7_4:tst:1" version="1" check="all" comment="VERSION_ID in os-release is less than 7.4">
+        <ind-def:object object_ref="oval:ssg-obj_os_linux_ol_le_7_4_le_7_4:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_linux_ol_le_7_4_le_7_4:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_linux_ol_gt_or_eq_9_0_gt_or_eq_9_0:tst:1" version="1" check="all" comment="VERSION_ID in os-release is greater than or equal 9.0">
+        <ind-def:object object_ref="oval:ssg-obj_os_linux_ol_gt_or_eq_9_0_gt_or_eq_9_0:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_linux_ol_gt_or_eq_9_0_gt_or_eq_9_0:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_linux_ol_gt_or_eq_8_7_gt_or_eq_8_7:tst:1" version="1" check="all" comment="VERSION_ID in os-release is greater than or equal 8.7">
+        <ind-def:object object_ref="oval:ssg-obj_os_linux_ol_gt_or_eq_8_7_gt_or_eq_8_7:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_linux_ol_gt_or_eq_8_7_gt_or_eq_8_7:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_id_is_os_linux_rhel_ne_9_0:tst:1" version="1" check="all" comment="ID in os-release is rhel">
+        <ind-def:object object_ref="oval:ssg-obj_os_id_is_os_linux_rhel_ne_9_0:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_id_is_os_linux_rhel_ne_9_0:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_id_is_os_linux_rhel_le_or_eq_8_4:tst:1" version="1" check="all" comment="ID in os-release is rhel">
+        <ind-def:object object_ref="oval:ssg-obj_os_id_is_os_linux_rhel_le_or_eq_8_4:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_id_is_os_linux_rhel_le_or_eq_8_4:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_id_is_os_linux_rhel_gt_or_eq_9_0:tst:1" version="1" check="all" comment="ID in os-release is rhel">
+        <ind-def:object object_ref="oval:ssg-obj_os_id_is_os_linux_rhel_gt_or_eq_9_0:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_id_is_os_linux_rhel_gt_or_eq_9_0:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_id_is_os_linux_rhel_gt_or_eq_8_7:tst:1" version="1" check="all" comment="ID in os-release is rhel">
+        <ind-def:object object_ref="oval:ssg-obj_os_id_is_os_linux_rhel_gt_or_eq_8_7:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_id_is_os_linux_rhel_gt_or_eq_8_7:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_id_is_os_linux_ol_le_7_4:tst:1" version="1" check="all" comment="ID in os-release is ol">
+        <ind-def:object object_ref="oval:ssg-obj_os_id_is_os_linux_ol_le_7_4:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_id_is_os_linux_ol_le_7_4:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_id_is_os_linux_ol_gt_or_eq_9_0:tst:1" version="1" check="all" comment="ID in os-release is ol">
+        <ind-def:object object_ref="oval:ssg-obj_os_id_is_os_linux_ol_gt_or_eq_9_0:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_id_is_os_linux_ol_gt_or_eq_9_0:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_os_id_is_os_linux_ol_gt_or_eq_8_7:tst:1" version="1" check="all" comment="ID in os-release is ol">
+        <ind-def:object object_ref="oval:ssg-obj_os_id_is_os_linux_ol_gt_or_eq_8_7:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_os_id_is_os_linux_ol_gt_or_eq_8_7:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_ol7_system:tst:1" version="1" check="all" comment="oraclelinux-release is version 7">
+        <lin-def:object object_ref="oval:ssg-obj_ol7_system:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_ol7_system:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_nfs_mount_exists:tst:1" version="1" check="all" comment="at least one nfs is defined">
+        <ind-def:object object_ref="oval:ssg-object_nfs_mount_defined:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_mount_configured_fstab_var_tmp_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /var/tmp is configured">
+        <ind-def:object object_ref="oval:ssg-object_mount_configured_fstab_var_tmp_exists:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_mount_configured_fstab_var_log_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /var/log is configured">
+        <ind-def:object object_ref="oval:ssg-object_mount_configured_fstab_var_log_exists:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_mount_configured_fstab_var_log_audit_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /var/log/audit is configured">
+        <ind-def:object object_ref="oval:ssg-object_mount_configured_fstab_var_log_audit_exists:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_mount_configured_fstab_var_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /var is configured">
+        <ind-def:object object_ref="oval:ssg-object_mount_configured_fstab_var_exists:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_mount_configured_fstab_tmp_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /tmp is configured">
+        <ind-def:object object_ref="oval:ssg-object_mount_configured_fstab_tmp_exists:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_mount_configured_fstab_srv_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /srv is configured">
+        <ind-def:object object_ref="oval:ssg-object_mount_configured_fstab_srv_exists:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_mount_configured_fstab_opt_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /opt is configured">
+        <ind-def:object object_ref="oval:ssg-object_mount_configured_fstab_opt_exists:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_mount_configured_fstab_home_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /home is configured">
+        <ind-def:object object_ref="oval:ssg-object_mount_configured_fstab_home_exists:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <lin-def:partition_test id="oval:ssg-test_mount_active_var_tmp_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /var/tmp exists">
+        <lin-def:object object_ref="oval:ssg-object_mount_active_var_tmp_exists:obj:1"/>
+      </lin-def:partition_test>
+      <lin-def:partition_test id="oval:ssg-test_mount_active_var_log_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /var/log exists">
+        <lin-def:object object_ref="oval:ssg-object_mount_active_var_log_exists:obj:1"/>
+      </lin-def:partition_test>
+      <lin-def:partition_test id="oval:ssg-test_mount_active_var_log_audit_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /var/log/audit exists">
+        <lin-def:object object_ref="oval:ssg-object_mount_active_var_log_audit_exists:obj:1"/>
+      </lin-def:partition_test>
+      <lin-def:partition_test id="oval:ssg-test_mount_active_var_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /var exists">
+        <lin-def:object object_ref="oval:ssg-object_mount_active_var_exists:obj:1"/>
+      </lin-def:partition_test>
+      <lin-def:partition_test id="oval:ssg-test_mount_active_tmp_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /tmp exists">
+        <lin-def:object object_ref="oval:ssg-object_mount_active_tmp_exists:obj:1"/>
+      </lin-def:partition_test>
+      <lin-def:partition_test id="oval:ssg-test_mount_active_srv_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /srv exists">
+        <lin-def:object object_ref="oval:ssg-object_mount_active_srv_exists:obj:1"/>
+      </lin-def:partition_test>
+      <lin-def:partition_test id="oval:ssg-test_mount_active_opt_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /opt exists">
+        <lin-def:object object_ref="oval:ssg-object_mount_active_opt_exists:obj:1"/>
+      </lin-def:partition_test>
+      <lin-def:partition_test id="oval:ssg-test_mount_active_home_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Mountpoint /home exists">
+        <lin-def:object object_ref="oval:ssg-object_mount_active_home_exists:obj:1"/>
+      </lin-def:partition_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_krb5_workstation_version_1_17_18:tst:1" version="1" check="all" comment="Kerberos workstation version is lesser than 1.17-18">
+        <lin-def:object object_ref="oval:ssg-obj_krb5_workstation_version_1_17_18:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_krb5_workstation_version_1_17_18:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_krb5_server_version_1_17_18:tst:1" version="1" check="all" comment="Kerberos server version is lesser than 1.17-18">
+        <lin-def:object object_ref="oval:ssg-obj_krb5_server_version_1_17_18:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_krb5_server_version_1_17_18:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:environmentvariable58_test id="oval:ssg-test_installed_env_is_osbuild:tst:1" version="1" check_existence="all_exist" check="all" comment="environment variable container is set to bwrap-osbuild">
+        <ind-def:object object_ref="oval:ssg-object_installed_env_is_osbuild:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_installed_env_is_osbuild:ste:1"/>
+      </ind-def:environmentvariable58_test>
+      <unix-def:file_test id="oval:ssg-test_installed_env_is_a_podman_container:tst:1" version="1" check_existence="all_exist" check="all" comment="Check if /run/.containerenv exists">
+        <unix-def:object object_ref="oval:ssg-object_installed_env_is_a_podman_container:obj:1"/>
+      </unix-def:file_test>
+      <unix-def:file_test id="oval:ssg-test_installed_env_is_a_docker_container:tst:1" version="1" check_existence="all_exist" check="all" comment="Check if /.dockerenv exists">
+        <unix-def:object object_ref="oval:ssg-object_installed_env_is_a_docker_container:obj:1"/>
+      </unix-def:file_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_id_provider_is_set_to_ldap:tst:1" version="1" check_existence="all_exist" check="all" comment="SSSD Configuration is set to use LDAP">
+        <ind-def:object object_ref="oval:ssg-object_id_provider_is_set_to_ldap:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_grub2_ipv6_disable_is_correct:tst:1" version="1" check_existence="all_exist" check="all" comment="check GRUB_CMDLINE_LINUX parameters in /etc/default/grub">
+        <ind-def:object object_ref="oval:ssg-object_grub2_ipv6_disable_parameter:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_grub2_ipv6_disable_argument:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_grub2_ipv6_disable_is_absent:tst:1" version="1" check_existence="none_exist" check="all" comment="ipv6.disable is not defined in /etc/default/grub">
+        <ind-def:object object_ref="oval:ssg-object_grub2_ipv6_disable_parameter:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_etc_selinux_configured:tst:1" version="1" check_existence="all_exist" check="all" comment="/selinux/enforce is 1">
+        <ind-def:object object_ref="oval:ssg-object_etc_selinux_configured:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_etc_selinux_configured:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_grub2_installed:tst:1" version="1" check="all" comment="system has package grub2-common installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_grub2_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <unix-def:file_test id="oval:ssg-test_efi_dir_existence:tst:1" version="1" check="all" comment="Verify if /sys/firmware/efi folder exists">
+        <unix-def:object object_ref="oval:ssg-object_file_sys_firmware_efi:obj:1"/>
+      </unix-def:file_test>
+      <lin-def:rpminfo_test id="oval:ssg-service_disabled_ufwtest_service_ufw_package_ufw_removed:tst:1" version="1" check_existence="none_exist" check="all" comment="package ufw is removed">
+        <lin-def:object object_ref="oval:ssg-obj_service_disabled_ufwtest_service_ufw_package_ufw_removed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-service_disabled_nftablestest_service_nftables_package_nftables_removed:tst:1" version="1" check_existence="none_exist" check="all" comment="package nftables is removed">
+        <lin-def:object object_ref="oval:ssg-obj_service_disabled_nftablestest_service_nftables_package_nftables_removed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-service_disabled_firewalldtest_service_firewalld_package_firewalld_removed:tst:1" version="1" check_existence="none_exist" check="all" comment="package firewalld is removed">
+        <lin-def:object object_ref="oval:ssg-obj_service_disabled_firewalldtest_service_firewalld_package_firewalld_removed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_yum_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package yum is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_yum_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_ufw_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package ufw is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_ufw_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_tftp-server_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package tftp-server is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_tftp-server_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_telnet-server_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package telnet-server is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_telnet-server_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_systemd_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package systemd is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_systemd_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_sudo_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package sudo is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_sudo_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_sssd_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package sssd-common is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_sssd_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_squid_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package squid is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_squid_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_shadow-utils_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package shadow-utils is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_shadow-utils_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_rsyslog_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package rsyslog is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_rsyslog_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_rsh-server_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package rsh-server is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_rsh-server_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_postfix_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package postfix is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_postfix_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_pam_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package pam is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_pam_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_openssh_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package openssh is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_openssh_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_ntp_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package ntp is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_ntp_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_nss-pam-ldapd_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package nss-pam-ldapd is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_nss-pam-ldapd_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_nftables_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package nftables is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_nftables_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_net-snmp_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package net-snmp is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_net-snmp_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_logrotate_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package logrotate is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_logrotate_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_libuser_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package libuser is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_libuser_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_libreswan_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package libreswan is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_libreswan_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_libpwquality_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package libpwquality is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_libpwquality_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_iptables_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package iptables is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_iptables_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_gdm_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package gdm is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_gdm_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_firewalld_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package firewalld is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_firewalld_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_chrony_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package chrony is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_chrony_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_bash_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package bash is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_bash_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_avahi_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package avahi is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_avahi_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_autofs_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package autofs is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_autofs_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_audit_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package audit is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_audit_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_package_apparmor_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package apparmor is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_package_apparmor_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_kernel_uek_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package kernel-uek is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_kernel_uek_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-inventory_test_kernel_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package kernel-core is installed">
+        <lin-def:object object_ref="oval:ssg-obj_inventory_test_kernel_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-bootc_platform_test_rpm_ostree_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package rpm-ostree is installed">
+        <lin-def:object object_ref="oval:ssg-obj_bootc_platform_test_rpm_ostree_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-bootc_platform_test_openshift_kubelet_removed:tst:1" version="1" check_existence="none_exist" check="all" comment="package openshift-kubelet is removed">
+        <lin-def:object object_ref="oval:ssg-obj_bootc_platform_test_openshift_kubelet_removed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-bootc_platform_test_kernel_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package kernel is installed">
+        <lin-def:object object_ref="oval:ssg-obj_bootc_platform_test_kernel_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-bootc_platform_test_bootc_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package bootc is installed">
+        <lin-def:object object_ref="oval:ssg-obj_bootc_platform_test_bootc_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+    </tests>
+    <objects>
+      <ind-def:family_object id="oval:ssg-object_unix_family:obj:1" version="1"/>
+      <unix-def:file_object id="oval:ssg-object_system_using_opal:obj:1" version="1">
+        <unix-def:filepath>/sys/firmware/opal</unix-def:filepath>
+      </unix-def:file_object>
+      <unix-def:uname_object id="oval:ssg-object_system_info_architecture_ppcle_64:obj:1" version="1" comment="64 bit architecture"/>
+      <unix-def:file_object id="oval:ssg-object_selinux_sys_fs_exist:obj:1" version="1" comment="/sys/fs/selinux">
+        <unix-def:path>/sys/fs/selinux</unix-def:path>
+        <unix-def:filename xsi:nil="true"/>
+      </unix-def:file_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_proc_sys_kernel_osrelease_arch_x86_64:obj:1" version="1">
+        <ind-def:filepath operation="pattern match">^/proc/sys/kernel/(osrelease|arch)</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^.*\.x86_64$|^x86_64$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_proc_sys_kernel_osrelease_arch_s390x:obj:1" version="1">
+        <ind-def:filepath operation="pattern match">^/proc/sys/kernel/(osrelease|arch)</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^.*\.s390x$|^s390x$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_proc_sys_kernel_osrelease_arch_aarch64:obj:1" version="1">
+        <ind-def:filepath operation="pattern match">^/proc/sys/kernel/(osrelease|arch)</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^.*\.aarch64$|^aarch64$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <unix-def:file_object id="oval:ssg-object_proc_net_wireless_exists:obj:1" version="1" comment="/proc/net/wireless file">
+        <unix-def:filepath>/proc/net/wireless</unix-def:filepath>
+      </unix-def:file_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_nfs_mount_defined:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^\s*\[?[\.\w:-]+\]?[:=][/\w-]+\s+[/\w\\-]+\s+nfs[4]?\s+(.*)$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_mount_configured_fstab_var_tmp_exists:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+/var/tmp[\s]+[\S]+[\s]+([\S]+)</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_mount_configured_fstab_var_log_exists:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+/var/log[\s]+[\S]+[\s]+([\S]+)</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_mount_configured_fstab_var_log_audit_exists:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+/var/log/audit[\s]+[\S]+[\s]+([\S]+)</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_mount_configured_fstab_var_exists:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+/var[\s]+[\S]+[\s]+([\S]+)</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_mount_configured_fstab_tmp_exists:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+/tmp[\s]+[\S]+[\s]+([\S]+)</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_mount_configured_fstab_srv_exists:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+/srv[\s]+[\S]+[\s]+([\S]+)</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_mount_configured_fstab_opt_exists:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+/opt[\s]+[\S]+[\s]+([\S]+)</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_mount_configured_fstab_home_exists:obj:1" version="1">
+        <ind-def:filepath>/etc/fstab</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+/home[\s]+[\S]+[\s]+([\S]+)</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <lin-def:partition_object id="oval:ssg-object_mount_active_var_tmp_exists:obj:1" version="1">
+        <lin-def:mount_point>/var/tmp</lin-def:mount_point>
+      </lin-def:partition_object>
+      <lin-def:partition_object id="oval:ssg-object_mount_active_var_log_exists:obj:1" version="1">
+        <lin-def:mount_point>/var/log</lin-def:mount_point>
+      </lin-def:partition_object>
+      <lin-def:partition_object id="oval:ssg-object_mount_active_var_log_audit_exists:obj:1" version="1">
+        <lin-def:mount_point>/var/log/audit</lin-def:mount_point>
+      </lin-def:partition_object>
+      <lin-def:partition_object id="oval:ssg-object_mount_active_var_exists:obj:1" version="1">
+        <lin-def:mount_point>/var</lin-def:mount_point>
+      </lin-def:partition_object>
+      <lin-def:partition_object id="oval:ssg-object_mount_active_tmp_exists:obj:1" version="1">
+        <lin-def:mount_point>/tmp</lin-def:mount_point>
+      </lin-def:partition_object>
+      <lin-def:partition_object id="oval:ssg-object_mount_active_srv_exists:obj:1" version="1">
+        <lin-def:mount_point>/srv</lin-def:mount_point>
+      </lin-def:partition_object>
+      <lin-def:partition_object id="oval:ssg-object_mount_active_opt_exists:obj:1" version="1">
+        <lin-def:mount_point>/opt</lin-def:mount_point>
+      </lin-def:partition_object>
+      <lin-def:partition_object id="oval:ssg-object_mount_active_home_exists:obj:1" version="1">
+        <lin-def:mount_point>/home</lin-def:mount_point>
+      </lin-def:partition_object>
+      <ind-def:environmentvariable58_object id="oval:ssg-object_installed_env_is_osbuild:obj:1" version="1">
+        <ind-def:pid xsi:nil="true" datatype="int"/>
+        <ind-def:name>container</ind-def:name>
+      </ind-def:environmentvariable58_object>
+      <unix-def:file_object id="oval:ssg-object_installed_env_is_a_podman_container:obj:1" version="1" comment="Check file /run/.containerenv">
+        <unix-def:filepath>/run/.containerenv</unix-def:filepath>
+      </unix-def:file_object>
+      <unix-def:file_object id="oval:ssg-object_installed_env_is_a_docker_container:obj:1" version="1" comment="Check file /.dockerenv">
+        <unix-def:filepath>/.dockerenv</unix-def:filepath>
+      </unix-def:file_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_id_provider_is_set_to_ldap:obj:1" version="1">
+        <ind-def:filepath>/etc/sssd/sssd.conf</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*id_provider[ \t]*=[ \t]*((?i)ldap)[ \t]*$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_grub2_ipv6_disable_parameter:obj:1" version="1">
+        <ind-def:filepath>/etc/default/grub</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX=".*ipv6\.disable=(\d).*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <unix-def:file_object id="oval:ssg-object_file_sys_firmware_efi:obj:1" version="1" comment="/sys/firmware/efi">
+        <unix-def:path>/sys/firmware/efi</unix-def:path>
+        <unix-def:filename xsi:nil="true"/>
+      </unix-def:file_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_etc_selinux_configured:obj:1" version="1">
+        <ind-def:filepath>/etc/selinux/config</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^SELINUX=(.*)$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <lin-def:systemdunitproperty_object id="oval:ssg-obj_service_not_running_service_disabled_ufw_ufw:obj:1" version="1" comment="Retrieve the ActiveState property of ufw">
+        <lin-def:unit operation="pattern match">^ufw\.(service|socket)$</lin-def:unit>
+        <lin-def:property>ActiveState</lin-def:property>
+      </lin-def:systemdunitproperty_object>
+      <lin-def:systemdunitproperty_object id="oval:ssg-obj_service_not_running_service_disabled_nftables_nftables:obj:1" version="1" comment="Retrieve the ActiveState property of nftables">
+        <lin-def:unit operation="pattern match">^nftables\.(service|socket)$</lin-def:unit>
+        <lin-def:property>ActiveState</lin-def:property>
+      </lin-def:systemdunitproperty_object>
+      <lin-def:systemdunitproperty_object id="oval:ssg-obj_service_not_running_service_disabled_firewalld_firewalld:obj:1" version="1" comment="Retrieve the ActiveState property of firewalld">
+        <lin-def:unit operation="pattern match">^firewalld\.(service|socket)$</lin-def:unit>
+        <lin-def:property>ActiveState</lin-def:property>
+      </lin-def:systemdunitproperty_object>
+      <lin-def:systemdunitproperty_object id="oval:ssg-obj_service_loadstate_is_masked_service_disabled_ufw_ufw:obj:1" version="1" comment="Retrieve the LoadState property of ufw">
+        <lin-def:unit operation="pattern match">^ufw\.(service|socket)$</lin-def:unit>
+        <lin-def:property>LoadState</lin-def:property>
+      </lin-def:systemdunitproperty_object>
+      <lin-def:systemdunitproperty_object id="oval:ssg-obj_service_loadstate_is_masked_service_disabled_nftables_nftables:obj:1" version="1" comment="Retrieve the LoadState property of nftables">
+        <lin-def:unit operation="pattern match">^nftables\.(service|socket)$</lin-def:unit>
+        <lin-def:property>LoadState</lin-def:property>
+      </lin-def:systemdunitproperty_object>
+      <lin-def:systemdunitproperty_object id="oval:ssg-obj_service_loadstate_is_masked_service_disabled_firewalld_firewalld:obj:1" version="1" comment="Retrieve the LoadState property of firewalld">
+        <lin-def:unit operation="pattern match">^firewalld\.(service|socket)$</lin-def:unit>
+        <lin-def:property>LoadState</lin-def:property>
+      </lin-def:systemdunitproperty_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_service_disabled_ufwtest_service_ufw_package_ufw_removed:obj:1" version="1">
+        <lin-def:name>ufw</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_service_disabled_nftablestest_service_nftables_package_nftables_removed:obj:1" version="1">
+        <lin-def:name>nftables</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_service_disabled_firewalldtest_service_firewalld_package_firewalld_removed:obj:1" version="1">
+        <lin-def:name>firewalld</lin-def:name>
+      </lin-def:rpminfo_object>
+      <unix-def:sysctl_object id="oval:ssg-obj_runtime_kernel_fips_enabled:obj:1" version="1">
+        <unix-def:name>crypto.fips_enabled</unix-def:name>
+      </unix-def:sysctl_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_rhcos4_rhel9:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^RHEL_VERSION="(\d).*"$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_linux_rhel_ne_9_0_ne_9_0:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID=["']?([\w.]+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_linux_rhel_le_or_eq_8_4_le_or_eq_8_4:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID=["']?([\w.]+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_linux_rhel_gt_or_eq_9_0_gt_or_eq_9_0:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID=["']?([\w.]+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_linux_rhel_gt_or_eq_8_7_gt_or_eq_8_7:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID=["']?([\w.]+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_linux_ol_le_7_4_le_7_4:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID=["']?([\w.]+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_linux_ol_gt_or_eq_9_0_gt_or_eq_9_0:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID=["']?([\w.]+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_linux_ol_gt_or_eq_8_7_gt_or_eq_8_7:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID=["']?([\w.]+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_id_is_os_linux_rhel_ne_9_0:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID=["']?(\w+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_id_is_os_linux_rhel_le_or_eq_8_4:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID=["']?(\w+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_id_is_os_linux_rhel_gt_or_eq_9_0:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID=["']?(\w+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_id_is_os_linux_rhel_gt_or_eq_8_7:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID=["']?(\w+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_id_is_os_linux_ol_le_7_4:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID=["']?(\w+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_id_is_os_linux_ol_gt_or_eq_9_0:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID=["']?(\w+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_os_id_is_os_linux_ol_gt_or_eq_8_7:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID=["']?(\w+)["']?$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_ol7_system:obj:1" version="1">
+        <lin-def:name>oraclelinux-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_krb5_workstation_version_1_17_18:obj:1" version="1">
+        <lin-def:name>krb5-workstation</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_krb5_server_version_1_17_18:obj:1" version="1">
+        <lin-def:name>krb5-server</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_yum_installed:obj:1" version="1">
+        <lin-def:name>yum</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_ufw_installed:obj:1" version="1">
+        <lin-def:name>ufw</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_tftp-server_installed:obj:1" version="1">
+        <lin-def:name>tftp-server</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_telnet-server_installed:obj:1" version="1">
+        <lin-def:name>telnet-server</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_systemd_installed:obj:1" version="1">
+        <lin-def:name>systemd</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_sudo_installed:obj:1" version="1">
+        <lin-def:name>sudo</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_sssd_installed:obj:1" version="1">
+        <lin-def:name>sssd-common</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_squid_installed:obj:1" version="1">
+        <lin-def:name>squid</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_shadow-utils_installed:obj:1" version="1">
+        <lin-def:name>shadow-utils</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_rsyslog_installed:obj:1" version="1">
+        <lin-def:name>rsyslog</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_rsh-server_installed:obj:1" version="1">
+        <lin-def:name>rsh-server</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_postfix_installed:obj:1" version="1">
+        <lin-def:name>postfix</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_pam_installed:obj:1" version="1">
+        <lin-def:name>pam</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_openssh_installed:obj:1" version="1">
+        <lin-def:name>openssh</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_ntp_installed:obj:1" version="1">
+        <lin-def:name>ntp</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_nss-pam-ldapd_installed:obj:1" version="1">
+        <lin-def:name>nss-pam-ldapd</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_nftables_installed:obj:1" version="1">
+        <lin-def:name>nftables</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_net-snmp_installed:obj:1" version="1">
+        <lin-def:name>net-snmp</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_logrotate_installed:obj:1" version="1">
+        <lin-def:name>logrotate</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_libuser_installed:obj:1" version="1">
+        <lin-def:name>libuser</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_libreswan_installed:obj:1" version="1">
+        <lin-def:name>libreswan</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_libpwquality_installed:obj:1" version="1">
+        <lin-def:name>libpwquality</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_iptables_installed:obj:1" version="1">
+        <lin-def:name>iptables</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_gdm_installed:obj:1" version="1">
+        <lin-def:name>gdm</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_firewalld_installed:obj:1" version="1">
+        <lin-def:name>firewalld</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_chrony_installed:obj:1" version="1">
+        <lin-def:name>chrony</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_bash_installed:obj:1" version="1">
+        <lin-def:name>bash</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_avahi_installed:obj:1" version="1">
+        <lin-def:name>avahi</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_autofs_installed:obj:1" version="1">
+        <lin-def:name>autofs</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_audit_installed:obj:1" version="1">
+        <lin-def:name>audit</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_package_apparmor_installed:obj:1" version="1">
+        <lin-def:name>apparmor</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_kernel_uek_installed:obj:1" version="1">
+        <lin-def:name>kernel-uek</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_inventory_test_kernel_installed:obj:1" version="1">
+        <lin-def:name>kernel-core</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_grub2_installed:obj:1" version="1">
+        <lin-def:name>grub2-common</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_bootc_platform_test_rpm_ostree_installed:obj:1" version="1">
+        <lin-def:name>rpm-ostree</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_bootc_platform_test_openshift_kubelet_removed:obj:1" version="1">
+        <lin-def:name>openshift-kubelet</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_bootc_platform_test_kernel_installed:obj:1" version="1">
+        <lin-def:name>kernel</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_bootc_platform_test_bootc_installed:obj:1" version="1">
+        <lin-def:name>bootc</lin-def:name>
+      </lin-def:rpminfo_object>
+    </objects>
+    <states>
+      <ind-def:family_state id="oval:ssg-state_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <unix-def:uname_state id="oval:ssg-state_system_info_architecture_ppcle_64:ste:1" version="1" comment="64 bit architecture">
+        <unix-def:processor_type>ppc64le</unix-def:processor_type>
+      </unix-def:uname_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_not_running_service_disabled_ufw_ufw:ste:1" version="1" comment="ufw is not running">
+        <lin-def:value operation="pattern match">inactive|failed</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_not_running_service_disabled_nftables_nftables:ste:1" version="1" comment="nftables is not running">
+        <lin-def:value operation="pattern match">inactive|failed</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_not_running_service_disabled_firewalld_firewalld:ste:1" version="1" comment="firewalld is not running">
+        <lin-def:value operation="pattern match">inactive|failed</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_loadstate_is_masked_service_disabled_ufw_ufw:ste:1" version="1" comment="LoadState is set to masked">
+        <lin-def:value>masked</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_loadstate_is_masked_service_disabled_nftables_nftables:ste:1" version="1" comment="LoadState is set to masked">
+        <lin-def:value>masked</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_loadstate_is_masked_service_disabled_firewalld_firewalld:ste:1" version="1" comment="LoadState is set to masked">
+        <lin-def:value>masked</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_is_not_found_service_disabled_ufw_ufw:ste:1" version="1" comment="Service is not found">
+        <lin-def:value>not-found</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_is_not_found_service_disabled_nftables_nftables:ste:1" version="1" comment="Service is not found">
+        <lin-def:value>not-found</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <lin-def:systemdunitproperty_state id="oval:ssg-state_service_is_not_found_service_disabled_firewalld_firewalld:ste:1" version="1" comment="Service is not found">
+        <lin-def:value>not-found</lin-def:value>
+      </lin-def:systemdunitproperty_state>
+      <unix-def:sysctl_state id="oval:ssg-state_runtime_kernel_fips_enabled:ste:1" version="1">
+        <unix-def:value datatype="int">1</unix-def:value>
+      </unix-def:sysctl_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_rhcos4_rhel9:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">9</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_linux_rhel_ne_9_0_ne_9_0:ste:1" version="1">
+        <ind-def:subexpression operation="not equal" datatype="version">9.0</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_linux_rhel_le_or_eq_8_4_le_or_eq_8_4:ste:1" version="1">
+        <ind-def:subexpression operation="less than or equal" datatype="version">8.4</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_linux_rhel_gt_or_eq_9_0_gt_or_eq_9_0:ste:1" version="1">
+        <ind-def:subexpression operation="greater than or equal" datatype="version">9.0</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_linux_rhel_gt_or_eq_8_7_gt_or_eq_8_7:ste:1" version="1">
+        <ind-def:subexpression operation="greater than or equal" datatype="version">8.7</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_linux_ol_le_7_4_le_7_4:ste:1" version="1">
+        <ind-def:subexpression operation="less than" datatype="version">7.4</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_linux_ol_gt_or_eq_9_0_gt_or_eq_9_0:ste:1" version="1">
+        <ind-def:subexpression operation="greater than or equal" datatype="version">9.0</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_linux_ol_gt_or_eq_8_7_gt_or_eq_8_7:ste:1" version="1">
+        <ind-def:subexpression operation="greater than or equal" datatype="version">8.7</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_id_is_os_linux_rhel_ne_9_0:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">rhel</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_id_is_os_linux_rhel_le_or_eq_8_4:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">rhel</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_id_is_os_linux_rhel_gt_or_eq_9_0:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">rhel</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_id_is_os_linux_rhel_gt_or_eq_8_7:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">rhel</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_id_is_os_linux_ol_le_7_4:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">ol</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_id_is_os_linux_ol_gt_or_eq_9_0:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">ol</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_os_id_is_os_linux_ol_gt_or_eq_8_7:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">ol</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_ol7_system:ste:1" version="1">
+        <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_krb5_workstation_version_1_17_18:ste:1" version="1">
+        <lin-def:evr operation="less than" datatype="evr_string">0:1.17-18</lin-def:evr>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_krb5_server_version_1_17_18:ste:1" version="1">
+        <lin-def:evr operation="less than" datatype="evr_string">0:1.17-18</lin-def:evr>
+      </lin-def:rpminfo_state>
+      <ind-def:environmentvariable58_state id="oval:ssg-state_installed_env_is_osbuild:ste:1" version="1">
+        <ind-def:value>bwrap-osbuild</ind-def:value>
+      </ind-def:environmentvariable58_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_grub2_ipv6_disable_argument:ste:1" version="1">
+        <ind-def:subexpression datatype="int">0</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_etc_selinux_configured:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">^(enforcing|permissive)$</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+    </states>
+  </oval_definitions>
+  <results>
+    <system>
+      <definitions>
+        <definition definition_id="oval:ssg-system_with_kernel:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_kernel_installed:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-inventory_test_kernel_uek_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-system_boot_mode_is_uefi:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_efi_dir_existence:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-system_boot_mode_is_non_uefi:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-system_boot_mode_is_uefi:def:1" version="1" result="not evaluated" negate="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-sssd_conf_uses_ldap:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_id_provider_is_set_to_ldap:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-service_disabled_ufw:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criterion test_ref="oval:ssg-service_disabled_ufwtest_service_ufw_package_ufw_removed:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criteria operator="AND" result="not evaluated">
+                <criterion test_ref="oval:ssg-test_service_not_running_service_disabled_ufw_ufw:tst:1" version="1" result="not evaluated"/>
+                <criterion test_ref="oval:ssg-test_service_loadstate_is_masked_service_disabled_ufw_ufw:tst:1" version="1" result="not evaluated"/>
+              </criteria>
+              <criterion test_ref="oval:ssg-test_service_not_found_service_disabled_ufw_ufw:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-service_disabled_nftables:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criterion test_ref="oval:ssg-service_disabled_nftablestest_service_nftables_package_nftables_removed:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criteria operator="AND" result="not evaluated">
+                <criterion test_ref="oval:ssg-test_service_not_running_service_disabled_nftables_nftables:tst:1" version="1" result="not evaluated"/>
+                <criterion test_ref="oval:ssg-test_service_loadstate_is_masked_service_disabled_nftables_nftables:tst:1" version="1" result="not evaluated"/>
+              </criteria>
+              <criterion test_ref="oval:ssg-test_service_not_found_service_disabled_nftables_nftables:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-service_disabled_firewalld:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criterion test_ref="oval:ssg-service_disabled_firewalldtest_service_firewalld_package_firewalld_removed:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criteria operator="AND" result="not evaluated">
+                <criterion test_ref="oval:ssg-test_service_not_running_service_disabled_firewalld_firewalld:tst:1" version="1" result="not evaluated"/>
+                <criterion test_ref="oval:ssg-test_service_loadstate_is_masked_service_disabled_firewalld_firewalld:tst:1" version="1" result="not evaluated"/>
+              </criteria>
+              <criterion test_ref="oval:ssg-test_service_not_found_service_disabled_firewalld_firewalld:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-selinux_is_enabled:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_etc_selinux_configured:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_selinux_sys_fs_exist:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-runtime_kernel_fips_enabled:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_runtime_kernel_fips_enabled:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-proc_sys_kernel_osrelease_arch_x86_64:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_proc_sys_kernel_osrelease_arch_x86_64:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_proc_sys_kernel_osrelease_arch_s390x:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-proc_sys_kernel_osrelease_arch_not_s390x:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1" version="1" result="not evaluated" negate="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-proc_sys_kernel_osrelease_arch_aarch64:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_proc_sys_kernel_osrelease_arch_aarch64:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_yum:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_yum_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_ufw:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_ufw_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_tftp-server:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_tftp-server_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_telnet-server:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_telnet-server_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_systemd:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_systemd_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_sudo:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_sudo_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_sssd:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_sssd_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_squid:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_squid_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_shadow-utils:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_shadow-utils_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_rsyslog:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_rsyslog_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_rsh-server:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_rsh-server_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_postfix:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_postfix_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_pam:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_pam_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_openssh:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_openssh_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_ntp:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_ntp_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_nss-pam-ldapd:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_nss-pam-ldapd_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_nftables:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_nftables_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_net-snmp:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_net-snmp_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_logrotate:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_logrotate_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_libuser:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_libuser_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_libreswan:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_libreswan_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_libpwquality:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_libpwquality_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_iptables:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_iptables_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_gdm:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_gdm_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_firewalld:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_firewalld_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_chrony:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_chrony_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_bash:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_bash_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_avahi:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_avahi_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_autofs:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_autofs_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_audit:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_audit_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-package_apparmor:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-inventory_test_package_apparmor_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-os_linux_rhel_ne_9_0:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_os_id_is_os_linux_rhel_ne_9_0:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_os_linux_rhel_ne_9_0_ne_9_0:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-os_linux_rhel_le_or_eq_8_4:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_os_id_is_os_linux_rhel_le_or_eq_8_4:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_os_linux_rhel_le_or_eq_8_4_le_or_eq_8_4:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-os_linux_rhel_gt_or_eq_9_0:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_os_id_is_os_linux_rhel_gt_or_eq_9_0:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_os_linux_rhel_gt_or_eq_9_0_gt_or_eq_9_0:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-os_linux_rhel_gt_or_eq_8_7:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_os_id_is_os_linux_rhel_gt_or_eq_8_7:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_os_linux_rhel_gt_or_eq_8_7_gt_or_eq_8_7:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-os_linux_ol_le_7_4:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_os_id_is_os_linux_ol_le_7_4:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_os_linux_ol_le_7_4_le_7_4:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-os_linux_ol_gt_or_eq_9_0:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_os_id_is_os_linux_ol_gt_or_eq_9_0:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_os_linux_ol_gt_or_eq_9_0_gt_or_eq_9_0:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-os_linux_ol_gt_or_eq_8_7:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_os_id_is_os_linux_ol_gt_or_eq_8_7:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_os_linux_ol_gt_or_eq_8_7_gt_or_eq_8_7:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-nfs_mount_defined:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_nfs_mount_exists:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-krb5_workstation_older_than_1_17_18:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_krb5_workstation_version_1_17_18:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-krb5_server_older_than_1_17_18:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_krb5_server_version_1_17_18:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-ipv6_enabled:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_grub2_ipv6_disable_is_correct:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_grub2_ipv6_disable_is_absent:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_mount_var:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_active_var_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_configured_fstab_var_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_mount_var-tmp:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_active_var_tmp_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_configured_fstab_var_tmp_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_mount_var-log:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_active_var_log_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_configured_fstab_var_log_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_mount_var-log-audit:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_active_var_log_audit_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_configured_fstab_var_log_audit_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_mount_tmp:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_active_tmp_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_configured_fstab_tmp_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_mount_srv:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_active_srv_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_configured_fstab_srv_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_mount_opt:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_active_opt_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_configured_fstab_opt_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_mount_home:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_active_home_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_mount_configured_fstab_home_exists:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_is_osbuild:def:1" result="not evaluated" version="2">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_installed_env_is_osbuild:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_is_a_machine:def:1" result="not evaluated" version="2">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_env_is_a_container:def:1" version="2" result="not evaluated" negate="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_is_a_container:def:1" result="not evaluated" version="2">
+          <criteria operator="OR" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_installed_env_is_a_docker_container:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_installed_env_is_a_podman_container:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_wifi_interface:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_proc_net_wireless_exists:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_grub2_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_grub2_installed:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_system_info_architecture_ppcle_64:tst:1" version="1" result="not evaluated" negate="true"/>
+              <criterion test_ref="oval:ssg-test_system_using_opal:tst:1" version="1" result="not evaluated" negate="true"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhcos4_rhel9:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhcos4_rhel9:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:ssg-test_unix_family:tst:1" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_ol7:def:1" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="true"/>
+            <criteria operator="OR" result="false">
+              <criterion test_ref="oval:ssg-test_ol7_system:tst:1" version="1" result="false"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-bootc:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-bootc_platform_test_kernel_installed:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-bootc_platform_test_rpm_ostree_installed:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-bootc_platform_test_bootc_installed:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-bootc_platform_test_openshift_kubelet_removed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+      </definitions>
+      <tests>
+        <test test_id="oval:ssg-bootc_platform_test_bootc_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-bootc_platform_test_kernel_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-bootc_platform_test_openshift_kubelet_removed:tst:1" version="1" check_existence="none_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-bootc_platform_test_rpm_ostree_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_kernel_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_kernel_uek_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_apparmor_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_audit_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_autofs_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_avahi_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_bash_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_chrony_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_firewalld_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_gdm_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_iptables_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_libpwquality_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_libreswan_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_libuser_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_logrotate_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_net-snmp_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_nftables_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_nss-pam-ldapd_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_ntp_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_openssh_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_pam_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_postfix_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_rsh-server_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_rsyslog_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_shadow-utils_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_squid_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_sssd_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_sudo_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_systemd_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_telnet-server_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_tftp-server_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_ufw_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-inventory_test_package_yum_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-service_disabled_firewalldtest_service_firewalld_package_firewalld_removed:tst:1" version="1" check_existence="none_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-service_disabled_nftablestest_service_nftables_package_nftables_removed:tst:1" version="1" check_existence="none_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-service_disabled_ufwtest_service_ufw_package_ufw_removed:tst:1" version="1" check_existence="none_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_efi_dir_existence:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_grub2_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_etc_selinux_configured:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_grub2_ipv6_disable_is_absent:tst:1" version="1" check_existence="none_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_grub2_ipv6_disable_is_correct:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_id_provider_is_set_to_ldap:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_installed_env_is_a_docker_container:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_installed_env_is_a_podman_container:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_installed_env_is_osbuild:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_krb5_server_version_1_17_18:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_krb5_workstation_version_1_17_18:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_active_home_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_active_opt_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_active_srv_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_active_tmp_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_active_var_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_active_var_log_audit_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_active_var_log_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_active_var_tmp_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_configured_fstab_home_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_configured_fstab_opt_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_configured_fstab_srv_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_configured_fstab_tmp_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_configured_fstab_var_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_configured_fstab_var_log_audit_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_configured_fstab_var_log_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_mount_configured_fstab_var_tmp_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_nfs_mount_exists:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_ol7_system:tst:1" version="1" check="all" result="false"/>
+        <test test_id="oval:ssg-test_os_id_is_os_linux_ol_gt_or_eq_8_7:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_id_is_os_linux_ol_gt_or_eq_9_0:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_id_is_os_linux_ol_le_7_4:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_id_is_os_linux_rhel_gt_or_eq_8_7:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_id_is_os_linux_rhel_gt_or_eq_9_0:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_id_is_os_linux_rhel_le_or_eq_8_4:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_id_is_os_linux_rhel_ne_9_0:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_linux_ol_gt_or_eq_8_7_gt_or_eq_8_7:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_linux_ol_gt_or_eq_9_0_gt_or_eq_9_0:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_linux_ol_le_7_4_le_7_4:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_linux_rhel_gt_or_eq_8_7_gt_or_eq_8_7:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_linux_rhel_gt_or_eq_9_0_gt_or_eq_9_0:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_linux_rhel_le_or_eq_8_4_le_or_eq_8_4:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_os_linux_rhel_ne_9_0_ne_9_0:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_proc_net_wireless_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_proc_sys_kernel_osrelease_arch_aarch64:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_proc_sys_kernel_osrelease_arch_s390x:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_proc_sys_kernel_osrelease_arch_x86_64:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhcos4_rhel9:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_runtime_kernel_fips_enabled:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_selinux_sys_fs_exist:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_loadstate_is_masked_service_disabled_firewalld_firewalld:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_loadstate_is_masked_service_disabled_nftables_nftables:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_loadstate_is_masked_service_disabled_ufw_ufw:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_not_found_service_disabled_firewalld_firewalld:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_not_found_service_disabled_nftables_nftables:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_not_found_service_disabled_ufw_ufw:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_not_running_service_disabled_firewalld_firewalld:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_not_running_service_disabled_nftables_nftables:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_service_not_running_service_disabled_ufw_ufw:tst:1" version="1" check_existence="any_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_system_info_architecture_ppcle_64:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_system_using_opal:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_unix_family:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1051373" result="true"/>
+        </test>
+      </tests>
+      <oval_system_characteristics xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" xmlns:ind-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" xmlns:lin-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" xmlns:win-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows" xmlns="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5 oval-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent independent-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix unix-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux linux-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows windows-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#macos macos-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+        <generator>
+          <oval:product_name>build_cpe.py from SCAP Security Guide</oval:product_name>
+          <oval:product_version>ssg: [0, 1, 79], python: 3.13.7</oval:product_version>
+          <oval:schema_version>5.11</oval:schema_version>
+          <oval:timestamp>2025-11-02T09:22:33</oval:timestamp>
+        </generator>
+        <system_info>
+          <os_name>Red Hat Enterprise Linux</os_name>
+          <os_version>9.6 (Plow)</os_version>
+          <architecture>x86_64</architecture>
+          <primary_host_name>localhost.localdomain</primary_host_name>
+          <interfaces>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>127.0.0.1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>192.168.122.41</ip_address>
+              <mac_address>52:54:00:F9:70:DB</mac_address>
+            </interface>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>::1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>fe80::5054:ff:fef9:70db</ip_address>
+              <mac_address>52:54:00:F9:70:DB</mac_address>
+            </interface>
+          </interfaces>
+        </system_info>
+        <collected_objects>
+          <object id="oval:ssg-obj_ol7_system:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-object_unix_family:obj:1" version="1" flag="complete">
+            <reference item_ref="1051373"/>
+          </object>
+        </collected_objects>
+        <system_data>
+          <ind-sys:family_item id="1051373" status="exists">
+            <ind-sys:family>unix</ind-sys:family>
+          </ind-sys:family_item>
+        </system_data>
+      </oval_system_characteristics>
+    </system>
+  </results>
+</oval_results>

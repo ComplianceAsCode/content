@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns="http://oval.mitre.org/XMLSchema/oval-results-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-results-5 oval-results-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+  <generator>
+    <oval:product_name>cpe:/a:open-scap:oscap</oval:product_name>
+    <oval:product_version>1.3.11</oval:product_version>
+    <oval:schema_version>5.11</oval:schema_version>
+    <oval:timestamp>2025-11-19T07:05:45</oval:timestamp>
+  </generator>
+  <directives>
+    <definition_true reported="true" content="full"/>
+    <definition_false reported="true" content="full"/>
+    <definition_unknown reported="true" content="full"/>
+    <definition_error reported="true" content="full"/>
+    <definition_not_evaluated reported="true" content="full"/>
+    <definition_not_applicable reported="true" content="full"/>
+  </directives>
+  <oval_definitions xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:lin-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xmlns:mac-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#macos" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#windows windows-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#macos macos-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+    <generator>
+      <oval:product_name>OVALFileLinker from SCAP Security Guide</oval:product_name>
+      <oval:product_version>ssg: [0, 1, 79], python: 3.14.0</oval:product_version>
+      <oval:schema_version>5.11</oval:schema_version>
+      <oval:timestamp>2025-11-19T11:01:39</oval:timestamp>
+    </generator>
+    <definitions>
+      <definition id="oval:ssg-accounts_root_gid_zero:def:1" version="1" class="compliance">
+        <metadata>
+          <title>Verify Only Root Has A Primary GID 0</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 9</platform>
+          </affected>
+          <reference source="CCE" ref_id="CCE-86298-7"/>
+          <reference source="ssg" ref_id="accounts_root_gid_zero"/>
+          <description>The root account should have primary group of 0</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_accounts_root_gid_zero:tst:1" comment="tests that the root account's gid is equal to 0"/>
+          <criterion test_ref="oval:ssg-test_accounts_root_gid_zero_no_other_gid_0:tst:1" comment="no other users have primary group ID 0"/>
+        </criteria>
+      </definition>
+    </definitions>
+    <tests>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_accounts_root_gid_zero_no_other_gid_0:tst:1" version="1" check_existence="none_exist" check="all" comment="test that there are no other accounts with GID 0 except root">
+        <ind-def:object object_ref="oval:ssg-object_accounts_root_gid_zero_no_other_gid_0:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_accounts_root_gid_zero:tst:1" version="1" check="all" comment="test that the root user has GID 0 in the /etc/passwd file">
+        <ind-def:object object_ref="oval:ssg-object_accounts_root_gid_zero:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_accounts_root_gid_zero:ste:1"/>
+      </ind-def:textfilecontent54_test>
+    </tests>
+    <objects>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_accounts_root_gid_zero_no_other_gid_0:obj:1" version="1">
+        <ind-def:filepath>/etc/passwd</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^(?!\b(root|sync|shutdown|halt|operator)\b).+:.+:\d+:0:.+$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_accounts_root_gid_zero:obj:1" version="1">
+        <ind-def:filepath>/etc/passwd</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^root:.+:\d+:(\d+).+</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+    </objects>
+    <states>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_accounts_root_gid_zero:ste:1" version="1" comment="root account's gid is equal to 0">
+        <ind-def:subexpression datatype="int">0</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+    </states>
+  </oval_definitions>
+  <results>
+    <system>
+      <definitions>
+        <definition definition_id="oval:ssg-accounts_root_gid_zero:def:1" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:ssg-test_accounts_root_gid_zero:tst:1" version="1" result="true"/>
+            <criterion test_ref="oval:ssg-test_accounts_root_gid_zero_no_other_gid_0:tst:1" version="1" result="false"/>
+          </criteria>
+        </definition>
+      </definitions>
+      <tests>
+        <test test_id="oval:ssg-test_accounts_root_gid_zero:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1016766" result="true"/>
+        </test>
+        <test test_id="oval:ssg-test_accounts_root_gid_zero_no_other_gid_0:tst:1" version="1" check_existence="none_exist" check="all" result="false">
+          <tested_item item_id="1016767" result="not evaluated"/>
+        </test>
+      </tests>
+      <oval_system_characteristics xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" xmlns:ind-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" xmlns:lin-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" xmlns:win-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows" xmlns="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5 oval-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent independent-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix unix-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux linux-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows windows-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#macos macos-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+        <generator>
+          <oval:product_name>cpe:/a:open-scap:oscap</oval:product_name>
+          <oval:product_version>ssg: [0, 1, 79], python: 3.14.0</oval:product_version>
+          <oval:schema_version>5.11</oval:schema_version>
+          <oval:timestamp>2025-11-19T07:05:45</oval:timestamp>
+        </generator>
+        <system_info>
+          <os_name>Red Hat Enterprise Linux</os_name>
+          <os_version>9.6 (Plow)</os_version>
+          <architecture>x86_64</architecture>
+          <primary_host_name>localhost.localdomain</primary_host_name>
+          <interfaces>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>127.0.0.1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>192.168.122.41</ip_address>
+              <mac_address>52:54:00:F9:70:DB</mac_address>
+            </interface>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>::1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>fe80::5054:ff:fef9:70db</ip_address>
+              <mac_address>52:54:00:F9:70:DB</mac_address>
+            </interface>
+          </interfaces>
+        </system_info>
+        <collected_objects>
+          <object id="oval:ssg-object_accounts_root_gid_zero:obj:1" version="1" flag="complete">
+            <reference item_ref="1016766"/>
+          </object>
+          <object id="oval:ssg-object_accounts_root_gid_zero_no_other_gid_0:obj:1" version="1" flag="complete">
+            <reference item_ref="1016767"/>
+          </object>
+        </collected_objects>
+        <system_data>
+          <ind-sys:textfilecontent_item id="1016767" status="exists">
+            <ind-sys:filepath>/etc/passwd</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>passwd</ind-sys:filename>
+            <ind-sys:pattern>^(?!\b(root|sync|shutdown|halt|operator)\b).+:.+:\d+:0:.+$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^(?!\b(root|sync|shutdown|halt|operator)\b).+:.+:\d+:0:.+$</ind-sys:line>
+            <ind-sys:text>root2:x:1001:0::/home/root2:/bin/bash</ind-sys:text>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1016766" status="exists">
+            <ind-sys:filepath>/etc/passwd</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>passwd</ind-sys:filename>
+            <ind-sys:pattern>^root:.+:\d+:(\d+).+</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^root:.+:\d+:(\d+).+</ind-sys:line>
+            <ind-sys:text>root:x:0:0:root:/root:/bin/bash</ind-sys:text>
+            <ind-sys:subexpression>0</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+        </system_data>
+      </oval_system_characteristics>
+    </system>
+  </results>
+</oval_results>

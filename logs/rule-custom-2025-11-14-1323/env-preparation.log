@@ -1,0 +1,119 @@
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@192.168.122.41 oscap --version
+STDOUT: OpenSCAP command line tool (oscap) 1.3.11
+Copyright 2009--2023 Red Hat Inc., Durham, North Carolina.
+
+==== Supported specifications ====
+SCAP Version: 1.3
+XCCDF Version: 1.2
+OVAL Version: 5.11.1
+CPE Version: 2.3
+CVSS Version: 2.0
+CVE Version: 2.0
+Asset Identification Version: 1.1
+Asset Reporting Format Version: 1.1
+CVRF Version: 1.1
+
+==== Capabilities added by auto-loaded plugins ====
+No plugins have been auto-loaded...
+
+==== Paths ====
+Schema files: /usr/share/openscap/schemas
+Default CPE files: /usr/share/openscap/cpe
+
+==== Inbuilt CPE names ====
+Red Hat Enterprise Linux - cpe:/o:redhat:enterprise_linux:-
+Red Hat Enterprise Linux 5 - cpe:/o:redhat:enterprise_linux:5
+Red Hat Enterprise Linux 6 - cpe:/o:redhat:enterprise_linux:6
+Red Hat Enterprise Linux 7 - cpe:/o:redhat:enterprise_linux:7
+Red Hat Enterprise Linux 8 - cpe:/o:redhat:enterprise_linux:8
+Community Enterprise Operating System 5 - cpe:/o:centos:centos:5
+Community Enterprise Operating System 6 - cpe:/o:centos:centos:6
+Community Enterprise Operating System 7 - cpe:/o:centos:centos:7
+Community Enterprise Operating System 8 - cpe:/o:centos:centos:8
+Fedora 32 - cpe:/o:fedoraproject:fedora:32
+Fedora 33 - cpe:/o:fedoraproject:fedora:33
+Fedora 34 - cpe:/o:fedoraproject:fedora:34
+Fedora 35 - cpe:/o:fedoraproject:fedora:35
+
+==== Supported OVAL objects and associated OpenSCAP probes ====
+OVAL family   OVAL object                  OpenSCAP probe              
+----------    ----------                   ----------                  
+independent   environmentvariable          probe_environmentvariable
+independent   environmentvariable58        probe_environmentvariable58
+independent   family                       probe_family
+independent   filehash58                   probe_filehash58 (SHA-224, SHA-256, SHA-384, SHA-512)
+independent   system_info                  probe_system_info
+independent   textfilecontent              probe_textfilecontent
+independent   textfilecontent54            probe_textfilecontent54
+independent   variable                     probe_variable
+independent   xmlfilecontent               probe_xmlfilecontent
+independent   yamlfilecontent              probe_yamlfilecontent
+linux         iflisteners                  probe_iflisteners
+linux         inetlisteningservers         probe_inetlisteningservers
+linux         partition                    probe_partition
+linux         rpminfo                      probe_rpminfo
+linux         rpmverify                    probe_rpmverify
+linux         rpmverifyfile                probe_rpmverifyfile
+linux         rpmverifypackage             probe_rpmverifypackage
+linux         selinuxboolean               probe_selinuxboolean
+linux         selinuxsecuritycontext       probe_selinuxsecuritycontext
+linux         systemdunitdependency        probe_systemdunitdependency
+linux         systemdunitproperty          probe_systemdunitproperty
+linux         fwupdsecattr                 probe_fwupdsecattr
+unix          dnscache                     probe_dnscache
+unix          file                         probe_file
+unix          fileextendedattribute        probe_fileextendedattribute
+unix          interface                    probe_interface
+unix          password                     probe_password
+unix          process                      probe_process
+unix          process58                    probe_process58
+unix          routingtable                 probe_routingtable
+unix          runlevel                     probe_runlevel
+unix          shadow                       probe_shadow
+unix          symlink                      probe_symlink
+unix          sysctl                       probe_sysctl
+unix          uname                        probe_uname
+unix          xinetd                       probe_xinetd
+STDERR: Warning: Permanently added '192.168.122.41' (ED25519) to the list of known hosts.
+Setting up test setup scripts
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@192.168.122.41 mkdir -p /root/ssgts
+STDERR: Warning: Permanently added '192.168.122.41' (ED25519) to the list of known hosts.
+scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null /tmp/tmpkwdoq0jx.tar.gz root@192.168.122.41:/root/ssgts
+STDERR: Warning: Permanently added '192.168.122.41' (ED25519) to the list of known hosts.
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@192.168.122.41 tar xf /root/ssgts/tmpkwdoq0jx.tar.gz -C /root/ssgts
+STDERR: Warning: Permanently added '192.168.122.41' (ED25519) to the list of known hosts.
+tar: shared/accounts_common.sh: time stamp 2025-11-14 07:23:39.4773285 is 0.279052668 s in the future
+tar: shared/audit_open.rules: time stamp 2025-11-14 07:23:39.4773426 is 0.278997785 s in the future
+tar: shared/audit_open_o_creat.rules: time stamp 2025-11-14 07:23:39.4773552 is 0.278980637 s in the future
+tar: shared/audit_open_o_trunc_write.rules: time stamp 2025-11-14 07:23:39.4773664 is 0.278962797 s in the future
+tar: shared/audit_openat_o_creat.rules: time stamp 2025-11-14 07:23:39.4773798 is 0.278940999 s in the future
+tar: shared/audit_openat_o_trunc_write.rules: time stamp 2025-11-14 07:23:39.4773896 is 0.278924828 s in the future
+tar: shared/audit_rules_watch/auditctl_correct.pass.sh: time stamp 2025-11-14 07:23:39.4775472 is 0.279049519 s in the future
+tar: shared/audit_rules_watch/auditctl_correct_extra_permission.pass.sh: time stamp 2025-11-14 07:23:39.47756 is 0.279032938 s in the future
+tar: shared/audit_rules_watch/auditctl_correct_without_key.pass.sh: time stamp 2025-11-14 07:23:39.477573 is 0.279021085 s in the future
+tar: shared/audit_rules_watch/auditctl_remove_all_rules.fail.sh: time stamp 2025-11-14 07:23:39.477584 is 0.278991933 s in the future
+tar: shared/audit_rules_watch/auditctl_wrong_rule.fail.sh: time stamp 2025-11-14 07:23:39.4775946 is 0.278974437 s in the future
+tar: shared/audit_rules_watch/auditctl_wrong_rule_without_key.fail.sh: time stamp 2025-11-14 07:23:39.4776075 is 0.278962041 s in the future
+tar: shared/audit_rules_watch/augenrules_correct.pass.sh: time stamp 2025-11-14 07:23:39.4776187 is 0.278946316 s in the future
+tar: shared/audit_rules_watch/augenrules_correct_extra_permission.pass.sh: time stamp 2025-11-14 07:23:39.47763 is 0.2789307 s in the future
+tar: shared/audit_rules_watch/augenrules_correct_without_key.pass.sh: time stamp 2025-11-14 07:23:39.477642 is 0.278919009 s in the future
+tar: shared/audit_rules_watch/augenrules_remove_all_rules.fail.sh: time stamp 2025-11-14 07:23:39.477654 is 0.278899554 s in the future
+tar: shared/audit_rules_watch/augenrules_wrong_rule.fail.sh: time stamp 2025-11-14 07:23:39.4776647 is 0.27888136 s in the future
+tar: shared/audit_rules_watch/augenrules_wrong_rule_without_key.fail.sh: time stamp 2025-11-14 07:23:39.477676 is 0.278864162 s in the future
+tar: shared/audit_rules_watch: time stamp 2025-11-14 07:23:39.4776647 is 0.278842155 s in the future
+tar: shared/auditd_utils.sh: time stamp 2025-11-14 07:23:39.4773996 is 0.278554231 s in the future
+tar: shared/authconfig: time stamp 2025-11-14 07:23:39.4774096 is 0.278540486 s in the future
+tar: shared/dconf_test_functions.sh: time stamp 2025-11-14 07:23:39.4774194 is 0.278526817 s in the future
+tar: shared/fstab: time stamp 2025-11-14 07:23:39.4774292 is 0.278509163 s in the future
+tar: shared/group_updating_utils.sh: time stamp 2025-11-14 07:23:39.4774392 is 0.278493237 s in the future
+tar: shared/grub2.sh: time stamp 2025-11-14 07:23:39.4775286 is 0.278539796 s in the future
+tar: shared/partition.sh: time stamp 2025-11-14 07:23:39.477449 is 0.278434098 s in the future
+tar: shared/removable_partitions.sh: time stamp 2025-11-14 07:23:39.4774609 is 0.278416443 s in the future
+tar: shared/rsyslog_log_utils.sh: time stamp 2025-11-14 07:23:39.4774706 is 0.278402319 s in the future
+tar: shared/setup_config_files.sh: time stamp 2025-11-14 07:23:39.4774861 is 0.278394511 s in the future
+tar: shared/sssd.conf: time stamp 2025-11-14 07:23:39.4774969 is 0.278370924 s in the future
+tar: shared/utilities.sh: time stamp 2025-11-14 07:23:39.4775085 is 0.278354136 s in the future
+tar: shared/utils.sh: time stamp 2025-11-14 07:23:39.4775186 is 0.278338694 s in the future
+tar: shared: time stamp 2025-11-14 07:23:39.4775286 is 0.278337443 s in the future
+tar: accounts_root_gid_zero/other_user_uid_0.fail.sh: time stamp 2025-11-14 07:23:39.477276 is 0.278048939 s in the future
+tar: accounts_root_gid_zero: time stamp 2025-11-14 07:23:39.477247 is 0.278008802 s in the future

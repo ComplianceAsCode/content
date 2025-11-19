@@ -1,0 +1,27 @@
+DEBUG - Starting domain 'rhel9_test'
+DEBUG - Waiting 30s for domain to start
+DEBUG - Creating snapshot '_ssgts_origin'
+DEBUG - Fetching IP address of the domain
+DEBUG - IP address is 192.168.122.41
+DEBUG - Added the (all) profile to the list of available profiles for correct_value.pass.sh
+DEBUG - Skipping script correct_value.pass.sh - it did not match --scenarios regex
+DEBUG - Added the (all) profile to the list of available profiles for other_user_gid_0.fail.sh
+DEBUG - Uploading scripts.
+DEBUG - LogHelper.LOG_DIR /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305
+DEBUG - Creating snapshot '_ssgts_tests_uploaded'
+INFO - xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
+DEBUG - Testing rule directory /home/adenisov/projects/content/linux_os/guide/system/accounts/accounts-restrictions/root_logins/accounts_root_gid_zero/tests
+DEBUG - Applying script other_user_gid_0.fail.sh
+DEBUG - Using test script other_user_gid_0.fail.sh with context fail
+DEBUG - viable profiles are ['(all)']
+DEBUG - Searching for viable /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305/accounts_root_gid_zero-other_user_gid_0.fail.sh-initial.verbose.log
+DEBUG - Found /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305/accounts_root_gid_zero-other_user_gid_0.fail.sh-initial.verbose.log
+DEBUG - Searching for viable /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305/accounts_root_gid_zero-other_user_gid_0.fail.sh-initial.html
+DEBUG - Found /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305/accounts_root_gid_zero-other_user_gid_0.fail.sh-initial.html
+DEBUG - Searching for viable /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305/accounts_root_gid_zero-other_user_gid_0.fail.sh-(all)-results-initial.xml
+DEBUG - Found /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305/accounts_root_gid_zero-other_user_gid_0.fail.sh-(all)-results-initial.xml
+DEBUG - Running oscap-ssh root@192.168.122.41 22 xccdf eval --verbose DEVEL --results-arf /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305/accounts_root_gid_zero-other_user_gid_0.fail.sh-initial-arf.xml --benchmark-id xccdf_org.ssgproject.content_benchmark_RHEL-9 --profile (all) --progress --oval-results --report /home/adenisov/projects/content/logs/rule-custom-2025-11-19-1305/accounts_root_gid_zero-other_user_gid_0.fail.sh-initial.html --rule xccdf_org.ssgproject.content_rule_accounts_root_gid_zero /tmp/_ssgts_ds_modifiedty4_dccq
+INFO - Script other_user_gid_0.fail.sh using profile (all) OK
+DEBUG - Soft revert to snapshot '_ssgts_tests_uploaded' successful
+DEBUG - Snapshot '_ssgts_tests_uploaded' deleted successfully
+DEBUG - Snapshot '_ssgts_origin' deleted successfully
