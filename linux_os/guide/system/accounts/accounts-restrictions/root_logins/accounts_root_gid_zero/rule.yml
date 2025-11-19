@@ -28,7 +28,7 @@ ocil_clause: 'root has a primary gid not equal to zero or other non-system accou
 ocil: |-
     To verify that root's primary group is zero run the following command:
     <pre>
-        awk -F: '($1 !~ /^(sync|shutdown|halt|operator)/ && $4=="0") {print $1":"$4}' /etc/passwd
+        awk -F: '($1 !~ /^(sync|shutdown|halt|operator)/ &amp;&amp; $4=="0") {print $1":"$4}' /etc/passwd
     </pre>
     The command should return:
     <pre>
