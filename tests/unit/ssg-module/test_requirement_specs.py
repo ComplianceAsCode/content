@@ -33,3 +33,14 @@ def test_parse_version_into_evr():
         v = requirement_specs._parse_version_into_evr(':')
     with pytest.raises(ValueError):
         v = requirement_specs._parse_version_into_evr('-')
+
+def test_requirement_parse():
+    req = requirement_specs.RequirementParser("package[NetworkManager]>=8.7")
+    assert req.project_name == 'package'
+    assert req.operation == '>='
+    assert req.version == '8.7'
+    assert req.extras == ['networkmanager']
+    assert req.specs == [('>=', '8.7')]
+
+    req = requirement_specs.RequirementParser('linux_os')
+    assert req.project_name == 'linux_os'

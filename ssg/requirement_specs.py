@@ -1,18 +1,43 @@
 """
 Common functions for processing Requirements Specs in SSG
 """
-
-import pkg_resources
 import re
+from typing import Tuple, List
 
 from ssg import utils
 
-# Monkey-patch pkg_resources.safe_name function to keep underscores intact
-# Setuptools recognize the issue: https://github.com/pypa/setuptools/issues/2522
-pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
-# Monkey-patch pkg_resources.safe_extras function to keep dashes intact
-# Setuptools recognize the issue: https://github.com/pypa/setuptools/pull/732
-pkg_resources.safe_extra = lambda extra: re.sub('[^A-Za-z0-9.-]+', '_', extra).lower()
+
+class RequirementParser:
+    name: str
+    operation: str
+    version: str
+    extra: str
+
+    def __init__(self, target_v):
+        match = re.match(r'^(?P<name>[a-zA-Z0-9\-_.]+)\[?(?P<extra>[a-zA-Z0-9\-_]+)?]?\s*(?P<operation>[><!~=]*)?\s*(?P<version>.*)?$',
+                         target_v)
+        if match:
+            self.name = match.groupdict().get('name', '')
+            self.operation = match.groupdict().get('operation', '')
+            self.version = match.groupdict().get('version', '')
+            self.extra = match.groupdict().get('extra', '')
+
+    @property
+    def specs(self) -> List[Tuple[str, str]]:
+        if self.operation and self.version:
+            return [(self.operation, self.version)]
+        else:
+            return []
+
+    @property
+    def project_name(self) -> str:
+        return self.name
+
+    @property
+    def extras(self) -> List[str]:
+        if self.extra:
+            return [self.extra.lower()]
+        return []
 
 
 def _parse_version_into_evr(version):
@@ -62,11 +87,11 @@ class Requirement:
     A class to represent a package requirement with version specifications.
 
     Attributes:
-        _req (pkg_resources.Requirement): The parsed requirement object.
+        _req (RequirementParser): The parsed requirement object.
         _specs (utils.VersionSpecifierSet): The set of version specifiers for the requirement.
     """
-    def __init__(self, obj):
-        self._req = pkg_resources.Requirement.parse(obj)
+    def __init__(self, obj: str):
+        self._req = RequirementParser(obj)
         self._specs = utils.VersionSpecifierSet(
             [_spec_to_version_specifier(spec) for spec in self._req.specs]
         )
@@ -131,7 +156,7 @@ class Requirement:
             bool: True if the package requirement is parametrized (includes extras),
                   False otherwise.
         """
-        return bool(pkg_resources.Requirement.parse(name).extras)
+        return bool(RequirementParser(name).extras)
 
     @staticmethod
     def get_base_for_parametrized(name):
@@ -144,4 +169,4 @@ class Requirement:
         Returns:
             str: The base project name of the package.
         """
-        return pkg_resources.Requirement.parse(name).project_name
+        return RequirementParser(name).project_name
