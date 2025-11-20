@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import argparse
 
 from prometheus_client import CollectorRegistry, Gauge, generate_latest, write_to_textfile
@@ -34,7 +34,7 @@ def create_prometheus_content_metric(policy_id: str, registry: CollectorRegistry
 
 
 def append_prometheus_content_metric(
-        metric: object, level: str, content_type: str, value: float) -> Gauge:
+        metric: Gauge, level: str, content_type: str, value: float) -> Gauge:
     metric.labels(level=level, content_type=content_type).set(value)
     return metric
 
@@ -47,7 +47,7 @@ def create_prometheus_policy_metric(policy_id: str, registry: CollectorRegistry)
 
 
 def append_prometheus_policy_metric(
-        metric: object, level: str, status: str, value: float) -> Gauge:
+        metric: Gauge, level: str, status: str, value: float) -> Gauge:
     metric.labels(level=level, status=status).set(value)
     return metric
 
@@ -88,12 +88,12 @@ def prometheus(args):
         print(metrics.decode('utf-8'))
 
 
-subcmds = dict(
+subcommands = dict(
     prometheus=prometheus
 )
 
 
-def parse_arguments():
+def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Tool used to evaluate control files",
         epilog="Usage example: utils/controleval.py prometheus -p rhel9")
@@ -115,9 +115,9 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def main():
+def main() -> None:
     args = parse_arguments()
-    subcmds[args.subcmd](args)
+    subcommands[args.subcmd](args)
 
 
 if __name__ == "__main__":
