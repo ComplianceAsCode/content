@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2025-11-19 15:50 UTC
+Last Modified: 2025-11-20 08:44 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -45,7 +45,6 @@ The following people have contributed to the SCAP Security Guide project
 * Jeff Blank <blank@eclipse.ncsc.mil>
 * Olivier Bonhomme <ptitoliv@ptitoliv.net>
 * bontreger <bontreger@users.noreply.github.com>
-* Svetlin Boychev <127389217+svet-se@users.noreply.github.com>
 * Lance Bragstad <lbragstad@gmail.com>
 * Ted Brunell <tbrunell@redhat.com>
 * Marcus Burghardt <maburgha@redhat.com>
@@ -231,7 +230,6 @@ The following people have contributed to the SCAP Security Guide project
 * Mike Ralph <mralph@redhat.com>
 * Federico Ramirez <federico.r.ramirez@oracle.com>
 * rchikov <rumen.chikov@suse.com>
-* red-hat-konflux-kflux-prd-rh02[bot] <190377777+red-hat-konflux-kflux-prd-rh02[bot]@users.noreply.github.com>
 * Rick Renshaw <Richard_Renshaw@xtoenergy.com>
 * Paul Rensing <prensing@cimetrics.com>
 * Chris Reynolds <c.reynolds82@gmail.com>

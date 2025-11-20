@@ -29,6 +29,7 @@ ignored_emails = (
     "konflux@no-reply.konflux-ci.dev",
     "126015336+red-hat-konflux[bot]@users.noreply.github.com",
     "49699333+dependabot[bot]@users.noreply.github.com",
+    "190377777+red-hat-konflux-kflux-prd-rh02[bot]@users.noreply.github.com"
 )
 
 
