@@ -92,22 +92,23 @@ def get_parameter_from_yaml(yaml_file: str, section: str) -> Optional[List]:
 
 
 def get_controls_from_profiles(controls: List[controls.Control], profiles_files: List[str],
-                               used_controls: set) -> Set[str]:
+                               used_controls: Set) -> Set[str]:
     for file in profiles_files:
         selections = get_parameter_from_yaml(file, 'selections')
-        for selection in selections:
-            if any(selection.startswith(control) for control in controls):
-                used_controls.add(selection.split(':')[0])
+        if selections:
+            for selection in selections:
+                if any(selection.startswith(control) for control in controls):
+                    used_controls.add(selection.split(':')[0])
     return used_controls
 
 
-def get_controls_used_by_products(ctrls_mgr: controls.ControlsManager, products: List[str]) -> list:
-    used_controls = set()
-    controls = ctrls_mgr.policies.keys()
+def get_policies_used_by_products(ctrls_mgr: controls.ControlsManager, products: List[str]) -> Set[str]:
+    used_policies = set()
+    policies = ctrls_mgr.policies.keys()
     for product in products:
         profiles_files = get_product_profiles_files(product)
-        used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
-    return used_controls
+        used_policies = get_controls_from_profiles(policies, profiles_files, used_policies)
+    return used_policies
 
 
 def get_policy_levels(ctrls_mgr: controls.ControlsManager, control_id: str) -> List[str]:
@@ -154,7 +155,7 @@ def get_formatted_name(text_name: str) -> str:
     return text_name
 
 
-def count_implicit_status(ctrls: List[controls.Control], status_count: Dict[str, int]):
+def count_implicit_status(ctrls: List[controls.Control], status_count: Dict[str, int]) -> Dict[str, int]:
     automated = status_count[controls.Status.AUTOMATED]
     documentation = status_count[controls.Status.DOCUMENTATION]
     inherently_met = status_count[controls.Status.INHERENTLY_MET]

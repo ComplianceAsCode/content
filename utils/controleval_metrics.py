@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 import argparse
+import os
+import sys
 
 from prometheus_client import CollectorRegistry, Gauge, generate_latest, write_to_textfile
 from utils.controleval import (
     count_controls_by_status,
     count_rules_and_vars,
-    get_controls_used_by_products,
+    get_policies_used_by_products,
     get_policy_levels,
-    load_controls_manager
+    load_controls_manager,
+    load_product_yaml
 )
 
 try:
@@ -77,10 +80,35 @@ def get_prometheus_metrics_registry(
     return registry
 
 
-def prometheus(args):
-    ctrls_mgr = load_controls_manager(args.controls_dir, args.products[0])
-    used_controls = get_controls_used_by_products(ctrls_mgr, args.products)
-    registry = get_prometheus_metrics_registry(used_controls, ctrls_mgr)
+def prometheus(args: argparse.Namespace) -> None:
+    """
+    Generate Prometheus metrics for control policies across products.
+
+    Creates a single ControlsManager with all controls directories (root + all products)
+    to ensure all policies are visible. Product-specific controls override root controls
+    following the same precedence as the build system.
+    """
+    registry = CollectorRegistry()
+
+    # Build a single ControlsManager with all control directories
+    all_controls_dirs = [args.controls_dir]
+    for product in sorted(args.products):
+        product_yaml = load_product_yaml(product)
+        product_controls_dir = os.path.join(product_yaml['product_dir'], 'controls')
+        all_controls_dirs.append(product_controls_dir)
+
+    # Use the first product's yaml for env_yaml (required by ControlsManager)
+    # This is arbitrary since we're loading all controls
+    first_product_yaml = load_product_yaml(sorted(args.products)[0])
+    ctrls_mgr = controls.ControlsManager(all_controls_dirs, dict(first_product_yaml))
+    ctrls_mgr.load()
+
+    # Find all policies used across all products
+    used_policies = get_policies_used_by_products(ctrls_mgr, args.products)
+
+    for policy_id in sorted(used_policies):
+        registry = get_prometheus_metrics(ctrls_mgr, policy_id, registry)
+
     if args.output_file:
         write_to_textfile(args.output_file, registry)
     else:
@@ -108,7 +136,9 @@ def parse_arguments() -> argparse.Namespace:
         help="calculate and return benchmarks metrics in Prometheus format")
     prometheus_parser.add_argument(
         '-p', '--products', nargs='+', required=True,
-        help="list of products to process the respective controls files")
+        help=("list of products to process the respective controls files. "
+              "Metrics are aggregated across all specified products by building "
+              "a single ControlsManager from all control directories"))
     prometheus_parser.add_argument(
         '-f', '--output-file',
         help="save policy metrics in a file instead of showing in stdout")

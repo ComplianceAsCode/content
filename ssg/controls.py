@@ -984,9 +984,9 @@ class ControlsManager:
         """
         try:
             policy = self.policies[policy_id]
-        except KeyError:
-            msg = "policy '%s' doesn't exist" % policy_id
-            raise ValueError(msg)
+        except KeyError as e:
+            msg = f"policy '{policy_id}' doesn't exist"
+            raise ValueError(msg) from e
         return policy
 
     def get_all_controls_of_level(self, policy_id: str, level_id: str) -> List[Control]:
@@ -1033,7 +1033,7 @@ class ControlsManager:
         Remove specified variables from a control object.
 
         Args:
-            variables_to_remove (set): A list of variable names to be removed from the control.
+            variables_to_remove (set): A set of variable names to be removed from the control.
             control (object): The control object from which variables will be removed.
 
         Returns:
