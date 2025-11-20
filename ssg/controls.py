@@ -972,7 +972,7 @@ class ControlsManager:
         policy = self._get_policy(policy_id)
         return policy.controls_by_id
 
-    def _get_policy(self, policy_id):
+    def _get_policy(self, policy_id) -> Policy:
         """
         Retrieve a policy by its ID.
 
@@ -992,7 +992,7 @@ class ControlsManager:
             raise ValueError(msg)
         return policy
 
-    def get_all_controls_of_level(self, policy_id, level_id):
+    def get_all_controls_of_level(self, policy_id: str, level_id: str) -> List[Control]:
         """
         Retrieve all controls associated with a specific policy and level, including inherited levels.
 
@@ -1001,8 +1001,8 @@ class ControlsManager:
         variables defined in lower levels.
 
         Args:
-            policy_id (int): The unique identifier of the policy.
-            level_id (int): The unique identifier of the level within the policy.
+            policy_id (str): The unique identifier of the policy.
+            level_id (str): The unique identifier of the level within the policy.
 
         Returns:
             list: A list of controls that are eligible for the specified level, with variables
