@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-{{% if 'ol' in families or 'rhel' in product  %}}
+{{% if 'ol' in families or 'rhel' in product %}}
 {{% set configuration_files = ["password-auth","system-auth"] %}}
 {{% elif product in ['sle15', 'sle16'] %}}
 {{% set configuration_files = ["common-password"] %}}
