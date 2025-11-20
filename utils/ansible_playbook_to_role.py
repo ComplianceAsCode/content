@@ -65,6 +65,7 @@ yaml.add_constructor(_mapping_tag, dict_constructor)
 PRODUCT_ALLOWLIST = set([
     "rhel8",
     "rhel9",
+    "rhel10",
 ])
 
 PROFILE_ALLOWLIST = set([
