@@ -6,11 +6,11 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import multiprocessing
-import errno
 import os
 import re
 from collections import namedtuple
 import hashlib
+from typing import Dict
 
 from .constants import (FULL_NAME_TO_PRODUCT_MAPPING,
                         MAKEFILE_ID_TO_PRODUCT_MAP,
@@ -47,6 +47,25 @@ class VersionSpecifierSet(set):
                 raise ValueError('VersionSpecifierSet can only work with VersionSpecifier objects,'
                                  ' invalid object: {0}'.format(repr(el)))
         super(VersionSpecifierSet, self).__init__(s)
+
+    def __contains__(self, version_str):
+        """Check if a version string satisfies all version specifiers in the set."""
+        # If checking for VersionSpecifier object membership, use parent implementation
+        if isinstance(version_str, VersionSpecifier):
+            return super(VersionSpecifierSet, self).__contains__(version_str)
+
+        # Otherwise, check if the version string satisfies all specs
+        from ssg import requirement_specs
+        try:
+            evr = requirement_specs.parse_version_into_evr(version_str)
+        except ValueError:
+            return False
+
+        # All specs must be satisfied
+        for spec in self:
+            if not spec.matches(evr):
+                return False
+        return True
 
     @property
     def title(self):
@@ -116,6 +135,52 @@ class VersionSpecifier:
     @property
     def oval_id(self):
         return '{0}_{1}'.format(escape_comparison(self.op), escape_id(self.ver))
+
+    def matches(self, evr: Dict):
+        """
+        Check if a given EVR dictionary satisfies this version specifier.
+
+        Args:
+            evr (dict): A dictionary containing 'epoch', 'version', and 'release' keys.
+
+        Returns:
+            bool: True if the EVR satisfies this version specifier, False otherwise.
+        """
+        # Compare EVR components for proper version comparison
+        def evr_to_tuple(e):
+            """Convert EVR dict to comparable tuple (epoch, version_parts, release)."""
+            epoch = int(e['epoch']) if e['epoch'] is not None else 0
+            # Split version into numeric parts for comparison
+            version_parts = [int(p) if p.isdigit() else p for p in e['version'].split('.')]
+            release = int(e['release']) if e['release'] is not None else 0
+            return (epoch, version_parts, release)
+
+        spec_epoch, spec_ver, spec_rel = evr_to_tuple(self._evr_ver_dict)
+        input_epoch, input_ver, input_rel = evr_to_tuple(evr)
+
+        # Normalize version lists to same length for comparison
+        max_len = max(len(spec_ver), len(input_ver))
+        spec_ver_norm = spec_ver + [0] * (max_len - len(spec_ver))
+        input_ver_norm = input_ver + [0] * (max_len - len(input_ver))
+
+        spec_tuple = (spec_epoch, spec_ver_norm, spec_rel)
+        input_tuple = (input_epoch, input_ver_norm, input_rel)
+
+        # Perform comparison based on operator
+        if self.op == '==':
+            return input_tuple == spec_tuple
+        elif self.op == '!=':
+            return input_tuple != spec_tuple
+        elif self.op == '>':
+            return input_tuple > spec_tuple
+        elif self.op == '<':
+            return input_tuple < spec_tuple
+        elif self.op == '>=':
+            return input_tuple >= spec_tuple
+        elif self.op == '<=':
+            return input_tuple <= spec_tuple
+        else:
+            return False
 
     @staticmethod
     def evr_dict_to_str(evr, fully_formed_evr_string=False):

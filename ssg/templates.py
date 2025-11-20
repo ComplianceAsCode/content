@@ -60,7 +60,7 @@ def load_module(module_name: str, module_path: str):
         ValueError: If the module cannot be loaded due to an invalid spec or loader.
     """
     # https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
-    import importlib
+    import importlib.util
     spec = importlib.util.spec_from_file_location(module_name, module_path) # type: ignore
     if not spec:
         raise ValueError("Error loading '%s' module" % module_path)
