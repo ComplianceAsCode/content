@@ -5,5 +5,10 @@
 {{{ bash_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
 {{% endif %}}
 
+# apply fix for enable_dconf_user_profile, OVAL checks it
+{{% if product in ['sle15', 'sle16']%}}
+{{{ bash_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}
+
 {{{ bash_dconf_settings("org/gnome/desktop/media-handling", "automount-open", "false", "local.d", "00-security-settings", rule_id=rule_id) }}}
 {{{ bash_dconf_lock("org/gnome/desktop/media-handling", "automount-open", "local.d", "00-security-settings-lock") }}}
