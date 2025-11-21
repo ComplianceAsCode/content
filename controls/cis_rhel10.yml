@@ -2375,33 +2375,6 @@ controls:
           It is necessary to create a new rule to check the status of journald and rsyslog.
           It would also be necessary a new rule to disable or remove rsyslog.
 
-    - id: 6.2.2.2
-      title: Ensure journald ForwardToSyslog is disabled (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - journald_disable_forward_to_syslog
-
-    - id: 6.2.2.3
-      title: Ensure journald Compress is configured (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - journald_compress
-
-    - id: 6.2.2.4
-      title: Ensure journald Storage is configured (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: automated
-      rules:
-          - journald_storage
-
     - id: 6.2.2.1.1
       title: Ensure systemd-journal-remote is installed (Automated)
       levels:
@@ -2435,6 +2408,33 @@ controls:
       status: automated
       rules:
           - socket_systemd-journal-remote_disabled
+
+    - id: 6.2.2.2
+      title: Ensure journald ForwardToSyslog is disabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - journald_disable_forward_to_syslog
+
+    - id: 6.2.2.3
+      title: Ensure journald Compress is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - journald_compress
+
+    - id: 6.2.2.4
+      title: Ensure journald Storage is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - journald_storage
 
     - id: 6.2.3.1
       title: Ensure rsyslog is installed (Automated)
