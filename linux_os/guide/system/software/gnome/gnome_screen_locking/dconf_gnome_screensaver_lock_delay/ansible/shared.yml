@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = unknown
 # complexity = low
@@ -14,6 +14,16 @@
     create: yes
     no_extra_spaces: yes
   register: result_ini
+
+# apply fix for enable_dconf_user_profile, OVAL checks it
+{{% if product in ['sle15', 'sle16']%}}
+- name: "Configure GNOME3 DConf User Profile"
+  ansible.builtin.lineinfile:
+    dest: "/etc/dconf/profile/gdm"
+    line: "user-db:user\nsystem-db:gdm"
+    create: yes
+    state: present
+{{% endif %}}
 
 - name: Dconf Update
   ansible.builtin.command: dconf update

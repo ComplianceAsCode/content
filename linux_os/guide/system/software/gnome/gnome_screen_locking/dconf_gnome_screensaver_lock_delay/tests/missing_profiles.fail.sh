@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_sle,multi_platform_ubuntu
 # packages = dconf,gdm
 # variables = var_screensaver_lock_delay=5
 
