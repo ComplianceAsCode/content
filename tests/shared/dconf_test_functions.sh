@@ -46,7 +46,7 @@ add_dconf_lock(){
 
 # Adds the user profile
 add_dconf_profiles() {
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or product in ['sle15', 'sle16'] %}}
     mkdir -p /etc/dconf/profile
     echo -e "user-db:user\nsystem-db:gdm" > /etc/dconf/profile/gdm
     echo -e "user-db:user\nsystem-db:local" > /etc/dconf/profile/user
