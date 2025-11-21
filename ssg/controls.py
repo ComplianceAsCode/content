@@ -318,9 +318,6 @@ class Level(ssg.entities.common.XCCDFEntity):
         id (str): The unique identifier for the level.
         inherits_from (str or None): The identifier of the level from which this level inherits, if any.
 
-    Args:
-        level_dict (dict): A dictionary containing the level data.
-
     Returns:
         Level: An instance of the Level class.
     """
@@ -805,7 +802,7 @@ class ControlsManager:
         Initializes the Controls class.
 
         Args:
-            controls_dir (str): The directory where control files are located.
+            controls_dirs (List[str]): The directory where control files are located.
             env_yaml (str, optional): Path to the environment YAML file. Defaults to None.
             existing_rules (dict, optional): Dictionary of existing rules. Defaults to None.
         """
@@ -972,7 +969,7 @@ class ControlsManager:
         policy = self._get_policy(policy_id)
         return policy.controls_by_id
 
-    def _get_policy(self, policy_id):
+    def _get_policy(self, policy_id) -> Policy:
         """
         Retrieve a policy by its ID.
 
@@ -987,12 +984,12 @@ class ControlsManager:
         """
         try:
             policy = self.policies[policy_id]
-        except KeyError:
-            msg = "policy '%s' doesn't exist" % (policy_id)
-            raise ValueError(msg)
+        except KeyError as e:
+            msg = f"policy '{policy_id}' doesn't exist"
+            raise ValueError(msg) from e
         return policy
 
-    def get_all_controls_of_level(self, policy_id, level_id):
+    def get_all_controls_of_level(self, policy_id: str, level_id: str) -> List[Control]:
         """
         Retrieve all controls associated with a specific policy and level, including inherited levels.
 
@@ -1001,8 +998,8 @@ class ControlsManager:
         variables defined in lower levels.
 
         Args:
-            policy_id (int): The unique identifier of the policy.
-            level_id (int): The unique identifier of the level within the policy.
+            policy_id (str): The unique identifier of the policy.
+            level_id (str): The unique identifier of the level within the policy.
 
         Returns:
             list: A list of controls that are eligible for the specified level, with variables
@@ -1012,7 +1009,7 @@ class ControlsManager:
         levels = policy.get_level_with_ancestors_sequence(level_id)
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
-        already_defined_variables = set()
+        already_defined_variables: Set[str] = set()
         # we will go level by level, from top to bottom
         # this is done to enable overriding of variables by higher levels
         for lv in levels:
@@ -1036,7 +1033,7 @@ class ControlsManager:
         Remove specified variables from a control object.
 
         Args:
-            variables_to_remove (list): A list of variable names to be removed from the control.
+            variables_to_remove (set): A set of variable names to be removed from the control.
             control (object): The control object from which variables will be removed.
 
         Returns:
