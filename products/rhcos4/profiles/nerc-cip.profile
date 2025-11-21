@@ -6,7 +6,7 @@ metadata:
         - mrogers950
         - jhrozek
 
-reference: https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx
+reference: https://www.nerc.com/standards/reliability-standards/cip
 
 title: >-
   North American Electric Reliability Corporation (NERC) Critical Infrastructure
