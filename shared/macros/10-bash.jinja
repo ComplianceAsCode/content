@@ -802,10 +802,10 @@ authselect enable-feature {{{ feature }}}
 
 #}}
 {{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
-{{% if 'debian' in product or 'sle15' in product %}}
+{{% if 'debian' in product or product in ['sle15', 'sle16'] %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
-    {{% if  'sle15' in product %}}
+    {{% if  product in ['sle15', 'sle16'] %}}
     # insert before pam_unix.so
     sed -i --follow-symlinks '/^auth.*required.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
     {{% else %}}
@@ -837,7 +837,12 @@ fi
 
 pam_file="/etc/pam.d/common-account"
 if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
+    {{% if  product in ['sle15', 'sle16'] %}}
+    # insert before pam_unix.so(so only consecutive authentication failures are lock)
+    sed -i --follow-symlinks '/^account.*required.*pam_unix\.so.*/i account   required     pam_faillock.so' "$pam_file"
+    {{% else %}}
     echo 'account   required     pam_faillock.so' >> "$pam_file"
+    {{% endif %}}
 fi
 {{% elif 'ubuntu' in product %}}
 conf_name=cac_faillock
@@ -1128,7 +1133,7 @@ fi
 
 {{#
     Sets PAM faillock module options and values. In case the file
-    /etc/security/faillock.conf is present in the system, the option is removed from pam files
+    "{{{ pam_faillock_conf_path }}}" is present in the system, the option is removed from pam files
     since it is not needed there in that case.
     It also adds pam_faillock.so as required module for account.
 
@@ -1141,14 +1146,14 @@ fi
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
-{{% if 'ubuntu' in product or 'debian' in product or 'sle15' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['sle15', 'sle16'] %}}
 AUTH_FILES=("/etc/pam.d/common-auth")
 SKIP_FAILLOCK_CHECK=true
 {{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 SKIP_FAILLOCK_CHECK=false
 {{% endif %}}
-FAILLOCK_CONF="/etc/security/faillock.conf"
+FAILLOCK_CONF="{{{ pam_faillock_conf_path }}}"
 if [ -f $FAILLOCK_CONF ] || [ "$SKIP_FAILLOCK_CHECK" = "true" ]; then
     {{%- if value == '' %}}
     regex="^\s*{{{ option }}}"

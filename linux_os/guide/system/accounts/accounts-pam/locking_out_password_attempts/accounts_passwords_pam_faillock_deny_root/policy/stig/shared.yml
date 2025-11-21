@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} is configured to lock the root account after three unsuccessful logon attempts with the command:
 
-    $ sudo grep even_deny_root /etc/security/faillock.conf
+    $ sudo grep even_deny_root {{{ pam_faillock_conf_path }}}
 
     even_deny_root
 
@@ -20,8 +20,6 @@ fixtext: |-
 
     $ sudo authselect enable-feature with-faillock
 
-    Edit the "/etc/security/faillock.conf" by uncommenting or adding the following line:
+    Edit the "{{{ pam_faillock_conf_path }}}" by uncommenting or adding the following line:
 
     even_deny_root
-
-
