@@ -39,7 +39,7 @@
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
     cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{ sysctl_{{{ SYSCTLID }}}_value }}$'
 {{%- else %}}
-    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{{ SYSCTLVAL }}}$'
+    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{{ SYSCTLVAL | escape_regex }}}$'
 {{%- endif %}}
   register: find_correct_value
   check_mode: false
