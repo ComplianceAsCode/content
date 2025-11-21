@@ -35,7 +35,6 @@ selections:
 # Following rules once had a prodtype incompatible with the sle15 product
     - '!aide_periodic_cron_checking'
     - '!accounts_password_pam_dcredit'
-    - '!dconf_gnome_screensaver_lock_delay'
     - '!accounts_password_pam_pwhistory_remember_system_auth'
     - '!sysctl_kernel_core_pattern'
     - '!configure_firewalld_ports'
@@ -59,9 +58,7 @@ selections:
     - '!enable_authselect'
     - '!file_permissions_user_cfg'
     - '!package_audispd-plugins_installed'
-    - '!dconf_gnome_disable_automount'
     - '!firewalld_loopback_traffic_trusted'
-    - '!dconf_gnome_disable_automount_open'
     - '!network_nmcli_permissions'
     - '!package_cryptsetup-luks_installed'
     - '!audit_rules_dac_modification_fchmodat2'
