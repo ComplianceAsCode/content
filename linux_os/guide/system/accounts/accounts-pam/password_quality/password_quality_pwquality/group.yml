@@ -11,7 +11,7 @@ description: |-
     character, make sure that <tt>pam_pwquality</tt> exists in <tt>/etc/pam.d/system-auth</tt>:
     <pre>password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=</pre>
     If no such line exists, add one as the first line of the password section in <tt>/etc/pam.d/system-auth</tt>.
-    Next, modify the settings in <tt>/etc/security/pwquality.conf</tt> to match the following:
+    Next, modify the settings in <tt>{{{ pwquality_path }}}</tt> to match the following:
     <pre>difok = 4
     minlen = 14
     dcredit = -1

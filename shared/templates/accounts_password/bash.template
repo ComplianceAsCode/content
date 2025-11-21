@@ -31,4 +31,8 @@ fi
 {{{ bash_pam_pwquality_enable() }}}
 {{% endif %}}
 
-{{{ bash_replace_or_append('/etc/security/pwquality.conf', '^' ~ VARIABLE , '$var_password_pam_' ~ VARIABLE , '%s = %s', cce_identifiers=cce_identifiers) }}}
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ bash_ensure_pam_module_configuration('/etc/pam.d/common-password', 'password', 'requisite', 'pam_pwquality.so', '', '', 'BOF') }}}
+{{% endif %}}
+
+{{{ bash_replace_or_append(pwquality_path, '^' ~ VARIABLE , '$var_password_pam_' ~ VARIABLE , '%s = %s', cce_identifiers=cce_identifiers) }}}

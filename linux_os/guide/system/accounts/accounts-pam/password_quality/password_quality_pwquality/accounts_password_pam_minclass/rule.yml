@@ -17,7 +17,7 @@ description: |-
     * Digits
     * Special characters (for example, punctuation)
     </pre>
-    Modify the <tt>minclass</tt> setting in <tt>/etc/security/pwquality.conf</tt> entry
+    Modify the <tt>minclass</tt> setting in <tt>{{{ pwquality_path }}}</tt> entry
     to require {{{ xccdf_value("var_password_pam_minclass") }}}
     differing categories of characters when changing passwords.
 
@@ -55,9 +55,9 @@ references:
 ocil_clause: the value of "minclass" is set to less than "{{{ xccdf_value("var_password_pam_minclass") }}}" or is commented out
 
 ocil: |-
-    Verify the value of the "minclass" option in "/etc/security/pwquality.conf" with the following command:
+    Verify the value of the "minclass" option in "{{{ pwquality_path }}}" with the following command:
 
-    <pre>$ grep minclass /etc/security/pwquality.conf
+    <pre>$ grep minclass {{{ pwquality_path }}}
 
     minclass = {{{ xccdf_value("var_password_pam_minclass") }}}</pre>
 
@@ -72,7 +72,7 @@ template:
 fixtext: |-
     Configure {{{ full_name }}} to require the change of at least {{{ xccdf_value("var_password_pam_minclass") }}} character classes when passwords are changed by setting the "minclass" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     minclass = {{{ xccdf_value("var_password_pam_minclass") }}}
 

@@ -15,5 +15,5 @@ else
 fi
 authselect apply-changes -b
 
-> /etc/security/pwhistory.conf
-echo "remember = $remember_cnt" >> /etc/security/pwhistory.conf
+> {{{ pwhistory_path }}}
+echo "remember = $remember_cnt" >> {{{ pwhistory_path }}}

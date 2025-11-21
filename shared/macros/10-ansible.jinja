@@ -1163,16 +1163,16 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 #}}
 {{%- macro ansible_pam_pwhistory_parameter_value(pam_file, parameter, pwhistory_var_name='', rule_title=None, rule_id=None) -%}}
-- name: '{{{ rule_title }}} - Check the presence of /etc/security/pwhistory.conf file'
+- name: '{{{ rule_title }}} - Check the presence of {{{ pwhistory_path }}} file'
   ansible.builtin.stat:
-    path: /etc/security/pwhistory.conf
+    path: {{{ pwhistory_path }}}
   register: result_pwhistory_conf_check
 
-- name: '{{{ rule_title }}} - pam_pwhistory.so parameters are configured in /etc/security/pwhistory.conf file'
+- name: '{{{ rule_title }}} - pam_pwhistory.so parameters are configured in {{{ pwhistory_path }}} file'
   block:
-    - name: '{{{ rule_title }}} - Ensure the pam_pwhistory.so {{{ parameter }}} parameter in /etc/security/pwhistory.conf'
+    - name: '{{{ rule_title }}} - Ensure the pam_pwhistory.so {{{ parameter }}} parameter in {{{ pwhistory_path }}}'
       ansible.builtin.lineinfile:
-        path: /etc/security/pwhistory.conf
+        path: {{{ pwhistory_path }}}
         {{%- if pwhistory_var_name == '' %}}
         regexp: ^\s*{{{ parameter }}}
         line: {{{ parameter }}}

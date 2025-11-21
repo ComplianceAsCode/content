@@ -8,7 +8,7 @@ description: |-
     usage of lowercase letters in a password. When set to a negative number, any password will be required to
     contain that many lowercase characters. When set to a positive number, pam_pwquality will grant +1 additional
     length credit for each lowercase character. Modify the <tt>lcredit</tt> setting in
-    <tt>/etc/security/pwquality.conf</tt> to require the use of a lowercase character in passwords.
+    <tt>{{{ pwquality_path }}}</tt> to require the use of a lowercase character in passwords.
 
 rationale: |-
     Use of a complex password helps to increase the time and resources required
@@ -52,14 +52,14 @@ ocil: |-
 
     Check the value for "lcredit" with the following command:
 
-    <pre>$ sudo grep lcredit /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+    <pre>$ sudo grep lcredit {{{ pwquality_path }}} /etc/security/pwquality.conf.d/*.conf
 
-    /etc/security/pwquality.conf:lcredit = -1</pre>
+    {{{ pwquality_path }}}:lcredit = -1</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity by requiring that at least one lower-case character be used by setting the "lcredit" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     lcredit = {{{ xccdf_value('var_password_pam_lcredit') }}}
 

@@ -10,7 +10,7 @@ description: |-
     Verify the pwquality module is being enforced by operating system by
     running the following command:
     <pre>
-    $ grep -i enforcing /etc/security/pwquality.conf
+    $ grep -i enforcing {{{ pwquality_path }}}
     enforcing = 1
     </pre>
 
@@ -34,7 +34,7 @@ ocil_clause: 'enforcing is not uncommented or configured correctly'
 
 ocil: |-
     To verify that enforcing is correctly applied, run the following command:
-    <pre>$ grep -i enforcing /etc/security/pwquality.conf</pre>
+    <pre>$ grep -i enforcing {{{ pwquality_path }}}</pre>
     The output should return <tt>enforcing = 1</tt> uncommented.
 
 platform: package[libpwquality]
@@ -50,8 +50,7 @@ template:
     name: "lineinfile"
     vars:
         text: "enforcing = 1"
-        path: "/etc/security/pwquality.conf"
+        path: "{{{ pwquality_path }}}"
     oval_extend_definitions:
         - accounts_password_pam_pwquality
 {{% endif %}}
-
