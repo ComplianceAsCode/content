@@ -460,7 +460,7 @@ if ! rpm -q --quiet "{{{ package }}}" ; then
     {{{ pkg_manager }}} install -y "{{{ package }}}"
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
-DEBIAN_FRONTEND=noninteractive apt-get install -y "{{{ package }}}"
+DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 install -y "{{{ package }}}"
 {{%- elif pkg_manager == "zypper" -%}}
 zypper install -y "{{{ package }}}"
 {{%- else -%}}
@@ -498,7 +498,7 @@ if rpm -q --quiet "{{{ package }}}" ; then
 {{% endif %}}
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
-DEBIAN_FRONTEND=noninteractive apt-get remove -y "{{{ package }}}"
+DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y "{{{ package }}}"
 {{%- elif pkg_manager == "zypper" -%}}
 zypper remove -y "{{{ package }}}"
 {{%- else -%}}
