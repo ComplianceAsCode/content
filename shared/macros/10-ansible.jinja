@@ -1836,7 +1836,13 @@ Part of the grub2_bootloader_argument_absent template.
 - name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
   ansible.builtin.stat:
     path: "{{{ pam_file }}}"
+  {{%- if pam_file == "/etc/pam.d/password-auth" %}}
+  register: result_pam_password_auth_file_present
+  {{%- elif pam_file in ["/etc/pam.d/common-password", "/etc/pam.d/system-auth"] %}}
+  register: result_pam_auth_file_present
+  {{%- else %}}
   register: result_pam_file_present
+  {{%- endif %}}
 
 - name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" option from "{{{ module }}}" is not present in {{{ pam_file }}}'
   ansible.builtin.replace:
@@ -1848,7 +1854,14 @@ Part of the grub2_bootloader_argument_absent template.
     {{%- endif %}}
     replace: '\1\2'
   register: result_pam_option_removal
-  when: result_pam_file_present.stat.exists
+  when:
+  {{%- if pam_file == "/etc/pam.d/password-auth" %}}
+    - result_pam_password_auth_file_present.stat.exists
+  {{%- elif pam_file in ["/etc/pam.d/common-password", "/etc/pam.d/system-auth"] %}}
+    - result_pam_auth_file_present.stat.exists
+  {{%- else %}}
+    - result_pam_file_present.stat.exists
+  {{%- endif %}}
 {{%- endmacro -%}}
 
 
@@ -2016,7 +2029,13 @@ Part of the grub2_bootloader_argument_absent template.
 - name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
   ansible.builtin.stat:
     path: {{{ pam_file }}}
+  {{%- if pam_file == "/etc/pam.d/password-auth" %}}
+  register: result_pam_password_auth_file_present
+  {{%- elif pam_file in ["/etc/pam.d/common-password", "/etc/pam.d/system-auth"] %}}
+  register: result_pam_auth_file_present
+  {{%- else %}}
   register: result_pam_file_present
+  {{%- endif %}}
 
 - name: '{{{ rule_title }}} - Check the proper remediation for the system'
   block:
@@ -2035,7 +2054,13 @@ Part of the grub2_bootloader_argument_absent template.
           (result_pam_{{{ rule_id }}}_add is defined and result_pam_{{{ rule_id }}}_add.changed)
            or (result_pam_{{{ rule_id }}}_edit is defined and result_pam_{{{ rule_id }}}_edit.changed)
   when:
+  {{%- if pam_file == "/etc/pam.d/password-auth" %}}
+    - result_pam_password_auth_file_present.stat.exists
+  {{%- elif pam_file in ["/etc/pam.d/common-password", "/etc/pam.d/system-auth"] %}}
+    - result_pam_auth_file_present.stat.exists
+  {{%- else %}}
     - result_pam_file_present.stat.exists
+  {{%- endif %}}
 {{%- endmacro -%}}
 
 
@@ -2060,7 +2085,13 @@ Part of the grub2_bootloader_argument_absent template.
 - name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
   ansible.builtin.stat:
     path: {{{ pam_file }}}
+  {{%- if pam_file == "/etc/pam.d/password-auth" %}}
+  register: result_pam_password_auth_file_present
+  {{%- elif pam_file in ["/etc/pam.d/common-password", "/etc/pam.d/system-auth"] %}}
+  register: result_pam_auth_file_present
+  {{%- else %}}
   register: result_pam_file_present
+  {{%- endif %}}
 
 - name: '{{{ rule_title }}} - Check the proper remediation for the system'
   block:
@@ -2073,7 +2104,13 @@ Part of the grub2_bootloader_argument_absent template.
         - result_authselect_present.stat.exists
         - result_pam_option_removal is changed
   when:
+  {{%- if pam_file == "/etc/pam.d/password-auth" %}}
+    - result_pam_password_auth_file_present.stat.exists
+  {{%- elif pam_file in ["/etc/pam.d/common-password", "/etc/pam.d/system-auth"] %}}
+    - result_pam_auth_file_present.stat.exists
+  {{%- else %}}
     - result_pam_file_present.stat.exists
+  {{%- endif %}}
 {{%- endmacro -%}}
 
 
