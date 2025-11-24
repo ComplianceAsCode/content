@@ -69,7 +69,11 @@ args:
       pkgname: snmp
     {{% endif %}}
   networkmanager:
+    {{% if product in ["ubuntu2204", "ubuntu2404"] %}}
+    pkgname: network-manager
+    {{% else %}}
     pkgname: NetworkManager
+    {{% endif %}}
   nftables:
       pkgname: nftables
   nss-pam-ldapd:

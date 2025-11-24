@@ -4,19 +4,19 @@
 # complexity = low
 # disruption = medium
 
-- name: Service facts
+- name: "{{{ rule_title }}} - Service facts"
   ansible.builtin.service_facts:
 
 {{% if product in ["sle12", "sle15", "slmicro5"] %}}
 
-- name: Wicked Deactivate Wireless Network Interfaces
+- name: "{{{ rule_title }}} - Wicked Deactivate Wireless Network Interfaces"
   ansible.builtin.command: wicked ifdown {{ item }}
   loop: '{{ ansible_facts.interfaces }}'
   when:
     - ansible_facts.services['wickedd.service'].state == 'running'
     - 'item.startswith("wl")'
 
-- name: Wicked Disable Wireless Network Interfaces
+- name: "{{{ rule_title }}} - Wicked Disable Wireless Network Interfaces"
   ansible.builtin.lineinfile:
     path: /etc/sysconfig/network/ifcfg-{{ item }}
     regexp: '^STARTMODE='
@@ -27,7 +27,7 @@
     - 'item.startswith("wl")'
 {{%- else %}}
 
-- name: Ensure NetworkManager is installed
+- name: "{{{ rule_title }}} - Ensure NetworkManager is installed"
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
@@ -36,7 +36,7 @@
 
 {{%- endif %}}
 
-- name: NetworkManager Deactivate Wireless Network Interfaces
+- name: "{{{ rule_title }}} - NetworkManager Deactivate Wireless Network Interfaces"
   ansible.builtin.command: nmcli radio wifi off
   when:
     - "'NetworkManager' in ansible_facts.packages"
