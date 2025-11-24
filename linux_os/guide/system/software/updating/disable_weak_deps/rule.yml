@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: Disable Installation of Weak Dependencies in DNF
+
+description: |-
+    To disable weak dependencies, set the <tt>install_weak_deps</tt> option to <tt>0</tt> in the <tt>/etc/dnf/dnf.conf</tt> file.
+
+rationale: |-
+    Unless a system specifically requires the additional capabilities provides by the weak
+    dependencies, it is recommended that the packages are not installed to reduce the
+    potential attack surface.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-86970-1
+
+ocil_clause: 'the install_weak_deps option is not set to 0'
+
+ocil: |-
+    To verify that weak dependencies are disabled, run the following command:
+    <pre># grep -Pi -- '^\h*install_weak_deps\h*=\h*(0|false|no)\b' /etc/dnf/dnf.conf</pre>
+    The output should return the following:
+    <pre>install_weak_deps = 0</pre>

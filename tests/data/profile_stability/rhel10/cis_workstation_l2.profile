@@ -145,6 +145,7 @@ directory_permissions_sshd_config_d
 directory_permissions_var_log_audit
 disable_host_auth
 disable_users_coredumps
+disable_weak_deps
 ensure_gpgcheck_globally_activated
 ensure_pam_wheel_group_empty
 ensure_root_password_configured
