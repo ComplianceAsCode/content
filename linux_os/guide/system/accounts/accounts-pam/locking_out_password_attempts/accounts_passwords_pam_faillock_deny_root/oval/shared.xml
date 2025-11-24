@@ -18,7 +18,7 @@
         </criteria>
 
         <!-- pam_faillock.so parameters can be defined directly in pam files or, in newer
-             versions, in /etc/security/faillock.conf. The last is the recommended option when
+             versions, in {{{ pam_faillock_conf_path }}}. The last is the recommended option when
              available. Also, is the option used by auselect tool. However, regardless the
              approach, a minimal declaration is common in pam files. -->
         {{% if 'ol' not in families %}}
@@ -39,11 +39,11 @@
         {{% endif %}}
       </criteria>
 
-      <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
+      <!-- pam_faillock.so parameters should be defined in {{{ pam_faillock_conf_path }}} whenever
            possible. But due to backwards compatibility, they are also allowed in pam files
            directly. In case they are defined in both places, pam files have precedence and this
            may confuse the assessment. The following tests ensure only one option is used. Note
-           that if faillock.conf is available, authselect tool only manage parameters on it -->
+           that if {{{ pam_faillock_conf_path }}} is available, authselect tool only manage parameters on it -->
       <criteria operator="OR"
                 comment="Check expected value for pam_faillock.so even_deny_root parameter">
         {{% if 'ol' not in families %}}
@@ -57,11 +57,11 @@
               comment="Check the even_deny_root parameter in auth section of password-auth file"/>
           <criterion
               test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_no_faillock_conf"
-              comment="Ensure /etc/security/faillock.conf is not used together with pam files"/>
+              comment="Ensure {{{ pam_faillock_conf_path }}} is not used together with pam files"/>
         </criteria>
         {{% endif %}}
         <criteria operator="AND"
-              comment="Check expected pam_faillock.so even_deny_root parameter in faillock.conf">
+              comment="Check expected pam_faillock.so even_deny_root parameter in {{{ pam_faillock_conf_path }}}">
           <criterion
               test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_no_pamd_system"
               comment="Check the even_deny_root parameter is not present system-auth file"/>
@@ -70,7 +70,7 @@
               comment="Check the even_deny_root parameter is not present password-auth file"/>
           <criterion
               test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"
-              comment="Ensure the even_deny_root parameter is present in /etc/security/faillock.conf"/>
+              comment="Ensure the even_deny_root parameter is present in {{{ pam_faillock_conf_path }}}"/>
         </criteria>
       </criteria>
     </criteria>
@@ -106,7 +106,7 @@
   <constant_variable
               id="var_accounts_passwords_pam_faillock_deny_root_faillock_conf_parameter_regex"
               datatype="string" version="1"
-              comment="regex to identify deny entry in /etc/security/faillock.conf">
+              comment="regex to identify deny entry in {{{ pam_faillock_conf_path }}}">
     <value>^[\s]*even_deny_root</value>
   </constant_variable>
 
@@ -257,11 +257,11 @@
          object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_pamd_password"/>
   </ind:textfilecontent54_test>
 
-  <!-- Check pam_faillock.so even_deny_root parameter in /etc/security/faillock.conf -->
+  <!-- Check pam_faillock.so even_deny_root parameter in {{{ pam_faillock_conf_path }}} -->
   <ind:textfilecontent54_object version="1"
       id="object_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"
-      comment="Try to get the even_deny_root parameter from /etc/security/faillock.conf">
-    <ind:filepath operation="pattern match">^/etc/security/faillock.conf$</ind:filepath>
+      comment="Try to get the even_deny_root parameter from {{{ pam_faillock_conf_path }}}">
+    <ind:filepath operation="pattern match">^{{{ pam_faillock_conf_path }}}$</ind:filepath>
     <ind:pattern operation="pattern match"
           var_ref="var_accounts_passwords_pam_faillock_deny_root_faillock_conf_parameter_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
@@ -269,14 +269,14 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
         id="test_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"
-        comment="Check the expected even_deny_root parameter in /etc/security/faillock.conf">
+        comment="Check the expected even_deny_root parameter in {{{ pam_faillock_conf_path }}}">
     <ind:object
          object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
         id="test_accounts_passwords_pam_faillock_deny_root_parameter_no_faillock_conf"
-        comment="Check the absence of even_deny_root parameter in /etc/security/faillock.conf">
+        comment="Check the absence of even_deny_root parameter in {{{ pam_faillock_conf_path }}}">
     <ind:object
          object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"/>
   </ind:textfilecontent54_test>

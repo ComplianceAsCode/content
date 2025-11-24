@@ -16,6 +16,6 @@ else
     sed -i --follow-symlinks 's/\(pam_faillock.so \(preauth silent\|authfail\)\).*$/\1 '$PRM_NAME'='$TEST_VALUE'/g' /etc/pam.d/system-auth /etc/pam.d/password-auth
 fi
 sed -i --follow-symlinks 's/\(^\s*auth\s*\)\(\s.*\)\(pam_faillock\.so.*$\)/\1 sufficient \3/g' /etc/pam.d/system-auth /etc/pam.d/password-auth
-if [ -f /etc/security/faillock.conf ]; then
-    > /etc/security/faillock.conf
+if [ -f "{{{ pam_faillock_conf_path }}}" ]; then
+    > "{{{ pam_faillock_conf_path }}}"
 fi
