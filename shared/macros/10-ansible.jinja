@@ -164,7 +164,7 @@ value: :code:`Setting={{ varname1 }}`
 {{%- set line_regex = prefix_regex + "{{ \"" + parameter + "\"| regex_escape }}" + separator_regex -%}}
 {{%- set find_when = dir_exists + ".stat.isdir is defined and " + dir_exists + ".stat.isdir" -%}}
 {{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
-{{%- set lineinfile_when = dir_parameter + ".matched" -%}}
+{{%- set lineinfile_when = dir_parameter + ".matched | bool" -%}}
 {{%- set new_line = parameter + separator + value -%}}
 - name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured
   ansible.builtin.find:
