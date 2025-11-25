@@ -756,7 +756,9 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      status: automated
+      rules:
+          - xwayland_disabled
 
     - id: 2.1.1
       title: Ensure autofs services are not in use (Automated)

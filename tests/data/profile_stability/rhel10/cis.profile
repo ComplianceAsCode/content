@@ -497,3 +497,4 @@ var_sshd_set_maxstartups=10:30:60
 var_sudo_timestamp_timeout=15_minutes
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces
+xwayland_disabled
