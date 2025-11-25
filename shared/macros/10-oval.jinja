@@ -1176,12 +1176,6 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
   {{%- if runtime_check == "true" %}}
   <!-- Runtime configuration checks -->
-  <ind:textfilecontent54_test id="test_runtime_config_absent_{{{ rule_id }}}" version="1"
-                              check="none satisfy" check_existence="none_exist"
-                              comment="Check if runtime config file exists">
-    <ind:object object_ref="obj_runtime_config_file_{{{ rule_id }}}" />
-  </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_test id="test_runtime_config_present_{{{ rule_id }}}" version="1"
                               check="all" check_existence="at_least_one_exists"
                               comment="Check if runtime config file exists">
