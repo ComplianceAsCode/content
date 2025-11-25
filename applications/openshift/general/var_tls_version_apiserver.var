@@ -2,7 +2,13 @@ documentation_complete: true
 
 title: 'Configure Apiserver to use secure TLS version'
 
-description: 'Secure version of TLS available for configuring Apiserver. Do not forget to also configure the regex value'
+description: |
+  Secure version of TLS available for configuring Apiserver.
+  Do not forget to also configure the regex value.
+  Currently only VersionTLS12 and earlier are possible.
+  VersionTLS13 will cause remediation errors, as it currently
+  expects to be used without cipher-list, but the remediation
+  provides one
 
 type: string
 

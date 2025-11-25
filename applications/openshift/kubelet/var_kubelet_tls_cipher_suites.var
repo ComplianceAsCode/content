@@ -2,7 +2,11 @@ documentation_complete: true
 
 title: 'Configure Kubelet use of the Strong Cryptographic Ciphers'
 
-description: 'Cryptographic Ciphers Available for Kubelet comma separated string, used for Remediation and manual check text. They need to follow openSSL notation'
+description: |
+  Cryptographic Ciphers Available for Kubelet comma separated string,
+  used for Remediation and manual check text. They need to follow openSSL notation
+  You may not provide a cipher list, which only provides TLS1.3 ciphers, as some
+  TLS1.2 ciphers are currently expected.
 
 type: string
 

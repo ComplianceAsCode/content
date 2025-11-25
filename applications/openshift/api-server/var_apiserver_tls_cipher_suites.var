@@ -2,7 +2,11 @@ documentation_complete: true
 
 title: 'OpenShift Kube APIServer TLS Cipher Suites'
 
-description: 'OpenShift Kube APIServer TLS Cipher Suites comma separated string, used for Remediation and manual check text. They need to follow openSSL notation'
+description: |
+  OpenShift Kube APIServer TLS Cipher Suites comma separated string,
+  used for Remediation and manual check text. They need to follow openSSL notation.
+  You should not provide a cipher list, which only provides TLS1.3 ciphers, as some
+  TLS1.2 ciphers are currently expected.
 
 type: string
 
