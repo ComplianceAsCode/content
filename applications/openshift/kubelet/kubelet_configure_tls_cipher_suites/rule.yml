@@ -18,8 +18,7 @@ description: |-
             matchLabels:
                 pools.operator.machineconfiguration.openshift.io/$pool_name: ""
         kubeletConfig:
-          tlsCipherSuites:
-            [ {{ .var_kubelet_tls_cipher_suites }} ]
+          tlsCipherSuites: [ {{ .var_kubelet_tls_cipher_suites }} ]
           tlsMinVersion: "{{.var_kubelet_tls_min_version}}"
     </pre>
   In order to configure this rule to check for an alternative cipher, both var_kubelet_tls_cipher_suites_regex
