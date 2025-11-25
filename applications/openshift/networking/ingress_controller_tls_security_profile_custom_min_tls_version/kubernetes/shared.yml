@@ -1,10 +1,16 @@
+---
 # platform = multi_platform_ocp
+# this remediation is the same as tls_version_check_router
+# and ingress_controller_tls_cipher_suites
+# if you change one, you should change the other two
 apiVersion: operator.openshift.io/v1
 kind: IngressController
 metadata:
-    name: default
-    namespace: openshift-ingress-operator
+  name: default
+  namespace: openshift-ingress-operator
 spec:
-    tlsSecurityProfile:
-        Custom:
-            minTLSVersion: VersionTLS12
+  tlsSecurityProfile:
+    custom:
+      ciphers: [ {{ .var_ingresscontroller_tls_cipher_suites }} ]
+      minTLSVersion: {{ .var_tls_version_ingress }}
+    type: Custom
