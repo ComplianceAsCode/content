@@ -59,7 +59,11 @@
     opts: "{{ mount_info.options | default('') }}"
     state: "mounted"
     fstype: "{{ mount_info.fstype | default('') }}"
-  ignore_errors: yes
+  register: mount_result
+  failed_when:
+    - mount_result is failed
+    - "'target is busy' not in (mount_result.msg | default(''))"
+    - "'already mounted' not in (mount_result.msg | default(''))"
   when:
     - mount_info is defined
     - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("{{{ TABFILE }}}" | length == 0)
