@@ -6,7 +6,7 @@
 {{% endif %}}
 
 # apply fix for enable_dconf_user_profile, OVAL checks it
-{{% if product in ['sle15', 'sle16']%}}
+{{% if product in ['sle15', 'sle16'] %}}
 {{{ bash_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
 {{% endif %}}
 

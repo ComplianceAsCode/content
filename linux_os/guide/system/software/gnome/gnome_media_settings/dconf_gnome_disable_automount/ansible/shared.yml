@@ -22,7 +22,7 @@
   register: result_lineinfile
 
 # apply fix for enable_dconf_user_profile, OVAL checks it
-{{% if product in ['sle15', 'sle16']%}}
+{{% if product in ['sle15', 'sle16'] %}}
 - name: "Configure GNOME3 DConf User Profile"
   ansible.builtin.lineinfile:
     dest: "/etc/dconf/profile/gdm"
