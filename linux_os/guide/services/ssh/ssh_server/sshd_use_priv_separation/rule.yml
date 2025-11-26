@@ -46,6 +46,8 @@ ocil: |-
     <pre>$ sudo grep UsePrivilegeSeparation /etc/ssh/sshd_config</pre>
     If configured properly, output should be <tt>{{{ xccdf_value("var_sshd_priv_separation") }}}</tt>.
 
+platform: package[openssh-server]<7.5
+
 template:
     name: sshd_lineinfile
     vars:
