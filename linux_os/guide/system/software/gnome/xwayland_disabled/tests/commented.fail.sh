@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # packages = gdm
 cat <<EOF >/etc/gdm/custom.conf
 # GDM configuration storage
