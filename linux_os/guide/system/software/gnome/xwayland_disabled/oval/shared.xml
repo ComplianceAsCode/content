@@ -1,0 +1,7 @@
+
+{{% set gdm_conf_path = "/etc/gdm/custom.conf" %}}
+{{{- oval_check_ini_file(
+    path=gdm_conf_path, section='daemon', parameter='WaylandEnable',
+    value='false', missing_parameter_pass=false, application='gdm',
+    multi_value=false, missing_config_file_fail=true, rule_id=rule_id,
+    rule_title=rule_title) }}}

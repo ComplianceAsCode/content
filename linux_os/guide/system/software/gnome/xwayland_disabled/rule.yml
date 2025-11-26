@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: Disable XWayland
+
+description: |-
+  Edit the file <tt>/etc/gdm/custom.conf</tt> and add or modify the following line in the
+  <tt>[daemon]</tt> block:
+  <pre>
+  [daemon]
+  WaylandEnable=false
+  </pre>
+  <p>
+  This will disable XWayland support in GDM.
+  </p>
+
+rationale: |-
+  XWayland is a compatibility layer for running X11 applications on Wayland.
+  It is not secure and should be disabled. Wayland's security benefits from not relying on X11's network listener. Without X11,
+  there's no network listener, making it harder for malicious actors to exploit vulnerabilities
+  in X11. However, enabling Xwayland (running X11 applications on Wayland) introduces
+  X11's security concerns.
+  All X vulnerabilities apply to Xwayland, including keylogging, but they only affect X
+  windows and interactions with them.
+  Malware can potentially exploit Xwayland vulnerabilities to keylog or intercept other
+  input events.
+
+severity: medium
+
+identifiers:
+  cce@rhel10: CCE-87228-3
+
+ocil_clause: |-
+  The WaylandEnable parameter is not set to false in the [daemon] section of the /etc/gdm/custom.conf file.
+
+ocil: |-
+  To verify that XWayland is disabled, run the following command:
+  <pre>sed -n '/\[daemon\]/,/\[/p' /etc/gdm/custom.conf | grep -Psi '^\h*waylandenable\b'</pre>
+  The output should return the following:
+  <pre>
+  [daemon]
+  WaylandEnable=false
+  </pre>
