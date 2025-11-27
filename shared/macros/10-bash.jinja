@@ -1098,7 +1098,7 @@ fi
 
 #}}
 {{%- macro bash_pam_pwhistory_parameter_value(pam_file, option, value='') -%}}
-PWHISTORY_CONF="/etc/security/pwhistory.conf"
+PWHISTORY_CONF="{{{ pwhistory_path }}}"
 if [ -f $PWHISTORY_CONF ]; then
     {{%- if value == '' %}}
     regex="^\s*{{{ option }}}"

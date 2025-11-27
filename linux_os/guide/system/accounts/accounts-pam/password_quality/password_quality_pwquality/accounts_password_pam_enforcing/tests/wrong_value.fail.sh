@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo 'enforcing = 0' > /etc/security/pwquality.conf
+echo 'enforcing = 0' > {{{ pwquality_path }}}

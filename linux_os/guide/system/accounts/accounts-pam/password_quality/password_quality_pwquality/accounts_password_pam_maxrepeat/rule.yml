@@ -7,7 +7,7 @@ description: |-
     The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
     consecutive repeating characters. When set to a positive number, it will reject passwords
     which contain more than that number of consecutive characters. Modify the <tt>maxrepeat</tt> setting
-    in <tt>/etc/security/pwquality.conf</tt> to equal {{{ xccdf_value("var_password_pam_maxrepeat") }}} to prevent a
+    in <tt>{{{ pwquality_path }}}</tt> to equal {{{ xccdf_value("var_password_pam_maxrepeat") }}} to prevent a
     run of ({{{ xccdf_value("var_password_pam_maxrepeat") }}} + 1) or more identical characters.
 
 rationale: |-
@@ -43,9 +43,9 @@ references:
 ocil_clause: the value of "maxrepeat" is set to more than "{{{ xccdf_value("var_password_pam_maxrepeat") }}}" or is commented out
 
 ocil: |-
-    Verify the value of the "maxrepeat" option in "/etc/security/pwquality.conf" with the following command:
+    Verify the value of the "maxrepeat" option in "{{{ pwquality_path }}}" with the following command:
 
-    <pre>$ grep maxrepeat /etc/security/pwquality.conf
+    <pre>$ grep maxrepeat {{{ pwquality_path }}}
 
     maxrepeat = {{{ xccdf_value("var_password_pam_maxrepeat") }}}</pre>
 
@@ -63,7 +63,7 @@ template:
 fixtext: |-
     Configure {{{ full_name }}} to require the change of the number of repeating consecutive characters when passwords are changed by setting the "maxrepeat" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "/{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     maxrepeat = {{{ xccdf_value("var_password_pam_maxrepeat") }}}
 

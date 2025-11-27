@@ -35,7 +35,7 @@
             comment="Check the pam_pwhistory.so remember parameter is absent in password-auth file"/>
           <criterion
             test_ref="test_accounts_password_pam_pwhistory_remember_password_auth_pwhistory_conf"
-            comment="Check the remember parameter in /etc/security/pwhistory.conf"/>
+            comment="Check the remember parameter in {{{ pwhistory_path }}}"/>
         </criteria>
       </criteria>
     </criteria>
@@ -82,15 +82,15 @@
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
     id="test_accounts_password_pam_pwhistory_remember_password_auth_no_pwhistory_conf"
-    comment="Check the absence of remember parameter in /etc/security/pwhistory.conf">
+    comment="Check the absence of remember parameter in {{{ pwhistory_path }}}">
     <ind:object
       object_ref="object_accounts_password_pam_pwhistory_remember_password_auth_param_conf"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object
     id="object_accounts_password_pam_pwhistory_remember_password_auth_param_conf" version="1"
-    comment="Collect the pam_pwhistory.so remember parameter from /etc/security/pwhistory.conf">
-    <ind:filepath operation="pattern match">^/etc/security/pwhistory.conf$</ind:filepath>
+    comment="Collect the pam_pwhistory.so remember parameter from {{{ pwhistory_path }}}">
+    <ind:filepath operation="pattern match">^{{{ pwhistory_path }}}$</ind:filepath>
     <ind:pattern operation="pattern match"
       var_ref="var_accounts_password_pam_pwhistory_remember_password_auth_conf_param_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
@@ -107,7 +107,7 @@
   <ind:textfilecontent54_test
     id="test_accounts_password_pam_pwhistory_remember_password_auth_pwhistory_conf" version="1"
     check="all" check_existence="all_exist"
-    comment="Check remember parameter is present and correct in /etc/security/pwhistory.conf">
+    comment="Check remember parameter is present and correct in {{{ pwhistory_path }}}">
     <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_password_auth_param_conf"/>
     <ind:state state_ref="state_accounts_password_pam_pwhistory_remember_password_auth"/>
   </ind:textfilecontent54_test>

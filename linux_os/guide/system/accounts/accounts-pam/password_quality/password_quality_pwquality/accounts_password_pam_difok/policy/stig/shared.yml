@@ -17,9 +17,9 @@ vuldiscussion: |-
     Note that passwords which are changed on compromised systems will still be compromised, however.
 
 checktext: |-
-    Verify the value of the "difok" option in "/etc/security/pwquality.conf" with the following command:
+    Verify the value of the "difok" option in "{{{ pwquality_path }}}" with the following command:
 
-    $ sudo grep difok /etc/security/pwquality.conf
+    $ sudo grep difok {{{ pwquality_path }}}
 
     difok = 8
 
@@ -28,6 +28,6 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to require the change of at least 8 of the total number of characters when passwords are changed by setting the "difok" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     difok = 8

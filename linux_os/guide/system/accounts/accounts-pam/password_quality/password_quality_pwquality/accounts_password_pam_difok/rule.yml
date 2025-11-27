@@ -7,7 +7,7 @@ description: |-
     The pam_pwquality module's <tt>difok</tt> parameter sets the number of characters
     in a password that must not be present in and old password during a password change.
     <br /><br />
-    Modify the <tt>difok</tt> setting in <tt>/etc/security/pwquality.conf</tt>
+    Modify the <tt>difok</tt> setting in <tt>{{{ pwquality_path }}}</tt>
     to equal {{{ xccdf_value("var_password_pam_difok") }}} to require differing characters
     when changing passwords.
 
@@ -49,9 +49,9 @@ references:
 ocil_clause: 'the value of "difok" is set to less than "{{{ xccdf_value("var_password_pam_difok") }}}", or is commented out'
 
 ocil: |-
-    Verify the value of the "difok" option in "/etc/security/pwquality.conf" with the following command:
+    Verify the value of the "difok" option in "{{{ pwquality_path }}}" with the following command:
 
-    <pre>$ sudo grep difok /etc/security/pwquality.conf
+    <pre>$ sudo grep difok {{{ pwquality_path }}}
 
     difok = {{{ xccdf_value("var_password_pam_difok") }}}</pre>
 
@@ -66,7 +66,7 @@ template:
 fixtext: |-
     Configure {{{ full_name }}} to require the change of at least {{{ xccdf_value("var_password_pam_difok") }}} of the total number of characters when passwords are changed by setting the "difok" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     difok = {{{ xccdf_value("var_password_pam_difok") }}}
 

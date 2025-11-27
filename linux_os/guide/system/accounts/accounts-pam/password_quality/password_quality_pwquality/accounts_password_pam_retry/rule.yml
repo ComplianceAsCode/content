@@ -5,8 +5,8 @@ title: 'Ensure PAM Enforces Password Requirements - Authentication Retry Prompts
 
 description: |-
     To configure the number of retry prompts that are permitted per-session:
-    {{% if product in ['ol8', 'ol9'] or 'rhel' in product %}}
-    Edit the <tt>/etc/security/pwquality.conf</tt> to include
+    {{% if product in ['ol8', 'ol9'] or 'rhel' in product or product in ['sle15', 'sle16'] %}}
+    Edit the <tt>{{{ pwquality_path }}}</tt> to include
     {{% else %}}
     Edit the <tt>pam_pwquality.so</tt> statement in
     {{% if 'ubuntu' not in product and 'debian' not in product %}}
@@ -50,12 +50,12 @@ ocil_clause: 'the value of "retry" is set to "0" or greater than "{{{ xccdf_valu
 ocil: |-
     Verify {{{ full_name }}} is configured to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.
 
-    {{% if product in ['ol8', 'ol9'] or 'rhel' in product %}}
-    Check for the use of the "pwquality" retry option in the pwquality.conf file with the following command:
-    <pre>$ grep retry /etc/security/pwquality.conf</pre>
+    {{% if product in ['ol8', 'ol9', 'sle15', 'sle16'] or 'rhel' in product %}}
+    Check for the use of the "pwquality" retry option in the {{{ pwquality_path }}} file with the following command:
+    <pre>$ grep retry {{{ pwquality_path }}}</pre>
     {{% else %}}
     Check for the use of the "pwquality" retry option in the PAM files with the following command:
-    {{% if 'ubuntu' in product or 'debian' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product or product in ['sle15', 'sle16'] %}}
     <pre>$ grep pam_pwquality /etc/pam.d/common-password</pre>
     {{% else %}}
     <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
@@ -73,8 +73,8 @@ platform: package[libpwquality]
 fixtext: |-
     Configure {{{ full_name }}} to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.
 
-    {{% if product in ['ol8', 'ol9'] or 'rhel' in product %}}
-    Add the following line to the "/etc/security/pwquality.conf" file (or modify the line to have the required value):
+    {{% if product in ['ol8', 'ol9', 'sle15', 'sle16'] or 'rhel' in product %}}
+    Add the following line to the "{{{ pwquality_path }}}" file (or modify the line to have the required value):
 
     retry={{{ xccdf_value("var_password_pam_retry") }}}
     {{% else %}}

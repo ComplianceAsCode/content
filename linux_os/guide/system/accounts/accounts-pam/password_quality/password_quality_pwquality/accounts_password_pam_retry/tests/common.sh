@@ -1,4 +1,4 @@
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or product in ['sle15', 'sle16'] %}}
 configuration_files=("common-password")
 {{% elif 'ol' in families or 'rhel' in product %}}
 configuration_files=("password-auth" "system-auth")
@@ -24,4 +24,4 @@ for file in ${configuration_files[@]}; do
 done
 {{% endif%}}
 
-truncate -s 0 /etc/security/pwquality.conf
+truncate -s 0 {{{ pwquality_path }}}

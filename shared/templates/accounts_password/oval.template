@@ -1,7 +1,7 @@
 {{% if 'ol' in families or 'rhel' in product %}}
 {{% set filepath_regex="^/etc/security/pwquality\.conf(\.d/[^/]+\.conf)?$" %}}
 {{% else %}}
-{{% set filepath_regex="^/etc/security/pwquality\.conf$" %}}
+{{% set filepath_regex="^" + pwquality_path + "$" %}}
 {{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
@@ -51,7 +51,7 @@
   {{% endif %}}
 
   <ind:textfilecontent54_test check="all" state_operator="AND"
-    comment="check the configuration of /etc/security/pwquality.conf"
+    comment="check the configuration of {{{ filepath_regex }}}"
     id="test_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
     <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}" />
     <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}" />
