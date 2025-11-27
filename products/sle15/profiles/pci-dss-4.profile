@@ -12,13 +12,14 @@ description: |-
     Ensures PCI-DSS v4 security configuration settings are applied.
 
 selections:
-    -  pcidss_4:all:base
-    -  ensure_pam_wheel_group_empty
-    -  sshd_strong_kex=pcidss
-    -  sshd_approved_macs=cis_sle15
-    -  sshd_approved_ciphers=cis_sle15
-    -  var_multiple_time_servers=suse
-    -  var_multiple_time_pools=suse
+    - pcidss_4:all:base
+    - ensure_pam_wheel_group_empty
+    - sshd_strong_kex=pcidss
+    - sshd_approved_macs=cis_sle15
+    - sshd_approved_ciphers=cis_sle15
+    - var_multiple_time_servers=suse
+    - var_multiple_time_pools=suse
+    - audit_rules_enable_syscall_auditing
 # Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only
 # rules related to chrony
     - '!ntpd_specify_multiple_servers'
@@ -28,9 +29,9 @@ selections:
     - '!service_timesyncd_enabled'
     - '!package_libreswan_installed'
     - '!use_pam_wheel_for_su'
-    -  use_pam_wheel_group_for_su
-    -  var_pam_wheel_group_for_su=cis
-    -  var_accounts_tmout=15_min
+    - use_pam_wheel_group_for_su
+    - var_pam_wheel_group_for_su=cis
+    - var_accounts_tmout=15_min
 # Following rules once had a prodtype incompatible with the sle15 product
     - '!aide_periodic_cron_checking'
     - '!accounts_password_pam_dcredit'
@@ -50,7 +51,6 @@ selections:
     - '!gnome_gdm_disable_guest_login'
     - '!accounts_password_pam_minlen'
     - '!no_password_auth_for_systemaccounts'
-    - '!auditd_name_format'
     - '!file_groupowner_user_cfg'
     - '!directory_access_var_log_audit'
     - '!ensure_root_password_configured'
@@ -64,7 +64,5 @@ selections:
     - '!dconf_gnome_disable_automount_open'
     - '!network_nmcli_permissions'
     - '!package_cryptsetup-luks_installed'
-    - '!audit_rules_file_deletion_events_renameat2'
-    - '!audit_rules_mac_modification_etc_selinux'
     - '!audit_rules_dac_modification_fchmodat2'
     - '!accounts_password_pam_unix_remember'

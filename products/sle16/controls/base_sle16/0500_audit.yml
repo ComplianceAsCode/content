@@ -33,3 +33,49 @@ controls:
       status: automated
       rules:
           - display_login_attempts
+
+    - id: SLES-16-16016520
+      levels:
+          - pcidss4
+      title: SLE16 system should audit syscalls
+      status: automated
+      rules:
+          - audit_rules_enable_syscall_auditing
+
+    - id: SLES-16-16016525
+      levels:
+          - pcidss4
+          - anssi_minimal
+          - hipaa
+      title: SLE16 system should audit renameat2 syscalls
+      status: automated
+      rules:
+          - audit_rules_file_deletion_events_renameat2
+
+    - id: SLES-16-16016530
+      levels:
+          - pcidss4
+          - anssi_minimal
+      title: SLE16 system should audit SELinux settings modifications
+      status: automated
+      rules:
+          - audit_rules_mac_modification_etc_selinux
+
+    - id: SLES-16-16016535
+      levels:
+          - pcidss4
+      title: SLE16 system should record the computer node name in the audit events
+      status: automated
+      rules:
+          - var_auditd_name_format=fqd
+          - auditd_name_format
+
+    - id: SLES-16-16016540
+      levels:
+          - pcidss4
+          - anssi_minimal
+          - hipaa
+      title: SLE16 system should audit fchmodat2 syscalls
+      status: automated
+      rules:
+          - audit_rules_dac_modification_fchmodat2

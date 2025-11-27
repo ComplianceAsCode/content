@@ -12,4 +12,8 @@ config_file="/etc/audit/auditd.conf"
 
 # remove any occurrence
 sed -i "s/^.*name_format.*$//" $config_file
+{{%- if product in ["sle15", "sle16"] %}}
+echo "name_format = fqd" >> $config_file
+{{%- else %}}
 echo "name_format = hostname" >> $config_file
+{{%- endif %}}
