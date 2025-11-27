@@ -45,20 +45,25 @@
 - name: "{{{ rule_title }}}: Make sure {{{ MOUNTOPTION }}} option is part of the to {{{ MOUNTPOINT }}} options"
   set_fact:
 {{% if MOUNTOPTION_ARG_VAR %}}
-    mount_info: "{{ mount_info | combine( {'options':''~mount_info.options~',{{{ MOUNTOPTION }}}='~{{{ MOUNTOPTION_ARG_VAR }}}~'' }) }}"
+    mount_info: "{{ mount_info | combine( {'options':''~(mount_info.options | default(''))~(',' if (mount_info.options | default('')) else '')~'{{{ MOUNTOPTION }}}='~{{{ MOUNTOPTION_ARG_VAR }}}~'' }) }}"
 {{% else %}}
-    mount_info: "{{ mount_info | combine( {'options':''~mount_info.options~',{{{ MOUNTOPTION }}}' }) }}"
+    mount_info: "{{ mount_info | combine( {'options':''~(mount_info.options | default(''))~(',' if (mount_info.options | default('')) else '')~'{{{ MOUNTOPTION }}}' }) }}"
 {{% endif %}}
   when:
-    - mount_info is defined and "{{{ MOUNTOPTION }}}" not in mount_info.options
+    - mount_info is defined and "{{{ MOUNTOPTION }}}" not in (mount_info.options | default(''))
 
 - name: "{{{ rule_title }}}: Ensure {{{ MOUNTPOINT }}} is mounted with {{{ MOUNTOPTION }}} option"
   mount:
     path: "{{{ MOUNTPOINT }}}"
-    src: "{{ mount_info.source }}"
-    opts: "{{ mount_info.options }}"
+    src: "{{ mount_info.source | default('') }}"
+    opts: "{{ mount_info.options | default('') }}"
     state: "mounted"
-    fstype: "{{ mount_info.fstype }}"
+    fstype: "{{ mount_info.fstype | default('') }}"
+  register: mount_result
+  failed_when:
+    - mount_result is failed
+    - "'target is busy' not in (mount_result.msg | default(''))"
+    - "'already mounted' not in (mount_result.msg | default(''))"
   when:
     - mount_info is defined
     - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("{{{ TABFILE }}}" | length == 0)
