@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Install sequoia-sq Package'
+
+description: |-
+    {{{ describe_package_install(package="sequoia-sq") }}}
+
+rationale: |-
+    The <tt>sequoia-sq</tt> package provides the <tt>sq</tt> command-line tool,
+    which is used for OpenPGP operations including verification of GPG signatures.
+    This tool is required for cryptographic verification of software packages and
+    GPG keys using modern OpenPGP implementations.
+
+severity: low
+
+identifiers:
+    cce@rhel10: CCE-86458-7
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="sequoia-sq") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: sequoia-sq
