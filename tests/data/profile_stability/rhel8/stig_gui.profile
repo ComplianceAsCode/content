@@ -180,6 +180,7 @@ enable_dracut_fips_module
 enable_fips_mode
 enable_gpgcheck_for_all_repositories
 encrypt_partitions
+ensure_epel_repos_disabled
 ensure_gpgcheck_local_packages
 ensure_redhat_gpgkey_installed
 fapolicy_default_deny
