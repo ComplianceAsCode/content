@@ -193,6 +193,7 @@ enable_authselect
 enable_dracut_fips_module
 enable_fips_mode
 encrypt_partitions
+ensure_epel_repos_disabled
 ensure_gpgcheck_globally_activated
 ensure_gpgcheck_local_packages
 ensure_gpgcheck_never_disabled

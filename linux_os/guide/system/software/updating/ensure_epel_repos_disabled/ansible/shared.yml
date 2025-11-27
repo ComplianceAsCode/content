@@ -1,0 +1,44 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+- name: Ensure dnf-plugins-core is installed
+  package:
+    name: dnf-plugins-core
+    state: present
+  when: ansible_pkg_mgr == "dnf"
+
+- name: Find all repository files
+  find:
+    paths: /etc/yum.repos.d/
+    patterns: '*.repo'
+  register: repo_files
+
+- name: Find EPEL repository IDs by name
+  shell: |
+    set -o pipefail
+    # Find repository IDs by name (case-insensitive)
+    grep -ioP '^\[\K[^\]]*epel[^\]]*(?=\])' "{{ item.path }}" || true
+  register: epel_repo_ids
+  loop: "{{ repo_files.files }}"
+  changed_when: false
+  when: repo_files.files is defined
+
+- name: Disable EPEL repositories using dnf/yum config-manager
+  command: >-
+    {% if ansible_pkg_mgr == "dnf" %}
+    dnf config-manager --set-disabled {{ item.1 }}
+    {% else %}
+    yum-config-manager --set-disabled {{ item.1 }}
+    {% endif %}
+  loop: "{{ epel_repo_ids.results | subelements('stdout_lines', skip_missing=True) }}"
+  when:
+    - epel_repo_ids.results is defined
+    - item.1 | length > 0
+  loop_control:
+    label: "{{ item.1 }}"
+  register: disable_result
+  changed_when: disable_result.rc == 0
+  failed_when: false
