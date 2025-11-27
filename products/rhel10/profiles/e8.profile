@@ -38,3 +38,5 @@ selections:
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
     - '!security_patches_up_to_date'
+     # the rule ensure_redhat_gpgkey_installed needs a special package on RHEL 10 which is not installed by default
+    - package_sequoia-sq_installed

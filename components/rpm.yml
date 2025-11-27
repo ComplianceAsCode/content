@@ -4,6 +4,7 @@ groups:
 name: rpm
 packages:
 - rpm
+- sequoia-sq
 rules:
 - clean_components_post_updating
 - disable_weak_deps
@@ -24,6 +25,7 @@ rules:
 - ensure_almalinux_gpgkey_installed
 - package_dnf-automatic_installed
 - package_gnome_software_installed
+- package_sequoia-sq_installed
 - rpm_verify_crypto_policies
 - rpm_verify_hashes
 - rpm_verify_ownership
