@@ -89,7 +89,9 @@ PROFILE_ALLOWLIST = set([
     "rhvh-stig",
     "rhvh-vpp",
     "e8",
-    "ism",
+    "ism_o",
+    "ism_o_secret",
+    "ism_o_top_secret",
 ])
 
 
