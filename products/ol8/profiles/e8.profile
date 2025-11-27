@@ -25,5 +25,6 @@ selections:
     - '!package_talk-server_removed'
     - '!ensure_redhat_gpgkey_installed'
     - '!sysctl_kernel_exec_shield'
+    - '!package_sequoia-sq_installed'
 
     - ensure_oracle_gpgkey_installed

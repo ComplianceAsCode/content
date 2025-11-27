@@ -82,6 +82,7 @@ selections:
     - '!package_ypbind_removed'
     - '!package_xinetd_removed'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!enable_authselect'
     - '!service_xinetd_disabled'
 
