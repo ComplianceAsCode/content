@@ -10,10 +10,12 @@
         </criteria>
         <criterion comment="package gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}} is installed"
         test_ref="test_redhat_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
-        <criteria comment="Auxiliary Red Hat Key Installed" operator="OR">
           <criterion comment="package gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}} is installed"
           test_ref="test_redhat_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" />
-        </criteria>
+{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
+          <criterion comment="package gpg-pubkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}} is installed"
+          test_ref="test_redhat_package_gpgkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}}_installed" />
+{{% endif %}}
       </criteria>
       {{%- if centos_major_version %}}
       <criteria comment="CentOS Vendor Keys" operator="AND">
@@ -56,6 +58,21 @@
     <linux:release>{{{ aux_pkg_release }}}</linux:release>
     <linux:version>{{{ aux_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
+
+{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
+  <!-- Test for Red Hat post quantom cryptography key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_redhat_package_gpgkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}}_installed" version="1"
+  comment="Red Hat post quantum cryptography key package is installed">
+    <linux:object object_ref="object_redhat_package_gpg-pubkey" />
+    <linux:state state_ref="state_redhat_package_gpg-pubkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}}" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_redhat_package_gpg-pubkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}}" version="1">
+    <linux:release>{{{ pqc_pkg_release }}}</linux:release>
+    <linux:version>{{{ pqc_pkg_version }}}</linux:version>
+  </linux:rpminfo_state>
+{{%endif %}}
 
   {{%- if centos_major_version %}}
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
