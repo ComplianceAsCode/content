@@ -363,7 +363,7 @@ StrictHostKeyChecking no
 UserKnownHostsFile /dev/null
 ```
 
-All test logs are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
+All test logs are stored in `logs` directory. The specific directory is shown at the beginning of each test run.
 
 If you want more verbose logs, pass the `--dontclean` argument that preserves result files, reports and verbose scanner output
 even in cases when the test result went according to the expectations.
@@ -508,7 +508,7 @@ scenario will be executed using the tested profile. If there is the `profiles`
 key but it doesn't contain the tested profile the test scenario will be skipped
 and won't be executed. Most of the test scenarios do not have `profiles` key,
 therefore using the virtual `(all)` profile is the most frequent behavior.
-This way we can re-use test scenarios when testing any profile.
+This way we can reuse test scenarios when testing any profile.
 
 If you want to have a specific regression test only for a certain profile(s)
 which relies on a specific value being selected by some variable in this profile
@@ -535,7 +535,7 @@ If you would like to test all profile's rules against their test scenarios:
 
 In this mode you can test all rules that use a template.
 This is very useful when one fixes a bug or makes improvements to the template.
-Each rule may use the template in a specfic way and this provides a way to easily
+Each rule may use the template in a specific way and this provides a way to easily
 run the test scenarios for all rules based on their template.
 
 The test scenarios executed are based on the template and the rule that uses it.

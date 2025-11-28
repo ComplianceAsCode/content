@@ -51,13 +51,13 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <local_variable id="var_sshd_config_macs" datatype="string" version="1" comment="MACs values splitted on comma">
+  <local_variable id="var_sshd_config_macs" datatype="string" version="1" comment="MACs values split on comma">
     <split delimiter=",">
       <object_component item_field="subexpression" object_ref="obj_sshd_config_macs" />
     </split>
   </local_variable>
 
-  <local_variable id="var_sshd_approved_macs" datatype="string" version="1" comment="approved MACs values splitted on comma">
+  <local_variable id="var_sshd_approved_macs" datatype="string" version="1" comment="approved MACs values split on comma">
     <split delimiter=",">
       <variable_component var_ref="sshd_approved_macs" />
     </split>

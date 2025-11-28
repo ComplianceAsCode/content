@@ -139,7 +139,7 @@ def main():
 
     controls_manager = None
     if os.path.exists(args.controls):
-        controls_manager = ssg.controls.ControlsManager(args.controls, env_yaml)
+        controls_manager = ssg.controls.ControlsManager([args.controls], env_yaml)
         controls_manager.load()
 
     profiles_root = os.path.join(product_base, "profiles")

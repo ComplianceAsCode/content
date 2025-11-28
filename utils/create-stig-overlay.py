@@ -42,7 +42,7 @@ def element_value(element, element_obj):
         elem = elem.text
     try:
         return elem
-    except UnboundLocalError as e:
+    except UnboundLocalError:
         return ""
 
 
@@ -85,7 +85,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile, quiet):
     for group in xccdftree.findall("./{%s}Group" % XCCDF11_NS):
         vkey = group.get("id").strip('V-')
         for title in group.findall("./{%s}title" % XCCDF11_NS):
-            srg = title.text
+            srg = title.text  # noqa: F841
         for rule in group.findall("./{%s}Rule" % XCCDF11_NS):
             svkey_raw = rule.get("id")
             svkey = svkey_raw.strip()[3:9]
@@ -99,13 +99,13 @@ def new_stig_overlay(xccdftree, ssgtree, outfile, quiet):
         else:
             try:
                 mapped_id = ''.join(ssg_mapping[version].keys())
-            except KeyError as e:
+            except KeyError:
                 mapped_id = "XXXX"
 
         overlay = ET.SubElement(new_stig_overlay, "overlay", owner=owner,
                                 ruleid=mapped_id, ownerid=version,
                                 severity=severity)
-        vmsinfo = ET.SubElement(overlay, "VMSinfo", VKey=vkey,
+        vmsinfo = ET.SubElement(overlay, "VMSinfo", VKey=vkey,  # noqa: F841
                                 SVKey=svkey, VRelease=release)
         title = ET.SubElement(overlay, "title", text=rule_title)
 

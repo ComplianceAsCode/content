@@ -13,7 +13,12 @@ title: Bootable containers
 # Bootable containers and running bootc systems both contain these packages.
 # Normal bare-metal systems usually don't have the rpm-ostree, normal
 # containers don't contain kernel.
-#
+# Also normal containers are not supposed to have the /run/ostree-booted file.
 check_id: bootc
-bash_conditional: "{ rpm --quiet -q kernel ;} && { rpm --quiet -q rpm-ostree ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;}"
-ansible_conditional: '"kernel" in ansible_facts.packages and "rpm-ostree" in ansible_facts.packages and "bootc" in ansible_facts.packages and not "openshift-kubelet" in ansible_facts.packages'
+{{% if product == "fedora" or "rhel" in product %}}
+{{% set kernel_package = "kernel-core" %}}
+{{% else %}}
+{{% set kernel_package = "kernel" %}}
+{{% endif %}}
+bash_conditional: "{ rpm --quiet -q {{{ kernel_package }}} ;} && { rpm --quiet -q rpm-ostree ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;} && ([ -f /run/ostree-booted ] || [ -L /ostree ])"
+ansible_conditional: '"{{{ kernel_package }}}" in ansible_facts.packages and "rpm-ostree" in ansible_facts.packages and "bootc" in ansible_facts.packages and not "openshift-kubelet" in ansible_facts.packages and "ostree" in ansible_proc_cmdline'

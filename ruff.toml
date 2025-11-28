@@ -1,0 +1,20 @@
+line-length = 99
+indent-width = 4
+target-version = "py39"
+
+[lint]
+select = [
+    "F",    # Pyflakes
+    "E",    # pycodestyle
+    "W",    # pycodestyle
+    "DTZ",  # flake8-datetime
+    "T10",  # flake8-debugger
+    "PLE",  # pylint-error
+    "YTT",  # flake8-2020
+]
+
+ignore = [
+    "F401",     # unused-import
+    "E402",     # module-import-not-at-top-of-file
+    "E501",     # line-too-long
+]

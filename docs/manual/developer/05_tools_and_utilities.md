@@ -770,7 +770,7 @@ $ ./utils/ansible_playbook_to_role.py --dry-run output
 ### `utils/find_unused_rules.py` &ndash; List Rules That Are Not Used In Any Data stream
 
 This script will output rules are not in any data streams.
-To prevent false positives the script will not run if the number of build datas treams less than the total number of products in the project.
+To prevent false positives the script will not run if the number of build data treams less than the total number of products in the project.
 The script assumes that `./build_project --derivatives` was executed before the script is used.
 This script does require that `./utils/rule_dir_json.py` was executed before this script is used as well.
 

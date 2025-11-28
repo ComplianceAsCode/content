@@ -5,7 +5,6 @@ Common functions for processing YAML in SSG
 from __future__ import absolute_import
 from __future__ import print_function
 
-import codecs
 import re
 import sys
 import yaml
@@ -20,17 +19,17 @@ from .jinja import (
 try:
     from yaml import CSafeLoader as yaml_SafeLoader
 except ImportError:
-    from yaml import SafeLoader as yaml_SafeLoader
+    from yaml import SafeLoader as yaml_SafeLoader  # type: ignore[assignment]
 
 try:
     from yaml import CLoader as yaml_Loader
 except ImportError:
-    from yaml import Loader as yaml_Loader
+    from yaml import Loader as yaml_Loader  # type: ignore[assignment]
 
 try:
     from yaml import CDumper as yaml_Dumper
 except ImportError:
-    from yaml import Dumper as yaml_Dumper
+    from yaml import Dumper as yaml_Dumper  # type: ignore[assignment]
 
 def _bool_constructor(self, node):
     """
@@ -190,7 +189,7 @@ def open_and_expand(yaml_file, substitutions_dict=None):
     expanded_template = process_file(yaml_file, substitutions_dict)
     try:
         yaml_contents = _open_yaml(expanded_template, yaml_file, substitutions_dict)
-    except yaml.scanner.ScannerError as e:
+    except yaml.scanner.ScannerError:
         print("A Jinja template expansion can mess up the indentation.")
         print("Please, check if the contents below are correctly expanded:")
         print("Source yaml: {}".format(yaml_file))
@@ -234,7 +233,7 @@ def open_raw(yaml_file):
     See also:
         _open_yaml: The function used to parse the YAML contents.
     """
-    with codecs.open(yaml_file, "r", "utf8") as stream:
+    with open(yaml_file, "r", encoding="utf8") as stream:
         yaml_contents = _open_yaml(stream, original_file=yaml_file)
     return yaml_contents
 

@@ -44,7 +44,7 @@ PROFILE_ALL_ID_SINGLE_QUOTED = False
 def analysis_to_serializable(analysis):
     result = dict(analysis)
     for key, value in analysis.items():
-        if type(value) == set:
+        if isinstance(value, set):
             result[key] = tuple(value)
     return result
 
@@ -674,7 +674,7 @@ class Checker(object):
         self.remediate_using = ""
         self.benchmark_cpes = set()
 
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(tz=datetime.timezone.utc)
         self.test_timestamp_str = now.strftime("%Y-%m-%d %H:%M")
 
     def test_target(self):

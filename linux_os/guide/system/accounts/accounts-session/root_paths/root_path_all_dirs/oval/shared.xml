@@ -1,9 +1,11 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("Check each directory in root's path and ensure it is a directory", rule_title=rule_title) }}}
-    <criteria comment="Check that each entry in root's path is a directory">
+    <criteria comment="Check that each entry in root's path is a directory" operator="AND">
       <criterion comment="Check for directory type in root's path"
       test_ref="test_accounts_root_path_dirs_are_directories" />
+      <criterion comment="Check that each entry in root's path exists"
+      test_ref="test_accounts_root_path_dirs_exist" />
     </criteria>
   </definition>
 
@@ -20,11 +22,35 @@
     </split>
   </local_variable>
 
+  <local_variable id="var_accounts_root_path_expected_count"
+                  datatype="int" version="1"
+                  comment="Variable including expected count of directories in PATH">
+    <count>
+      <variable_component var_ref="var_accounts_root_path_all_dirs"/>
+    </count>
+  </local_variable>
+
+  <local_variable id="var_accounts_root_path_existing_count"
+                  datatype="int" version="1"
+                  comment="Variable including count of PATH directories that exist on filesystem">
+    <count>
+      <object_component item_field="path"
+                  object_ref="object_accounts_root_path_dirs"/>
+    </count>
+  </local_variable>
+
   <unix:file_test check="all" check_existence="none_exist"
   comment="Check if all entries in root's path are directories"
   id="test_accounts_root_path_dirs_are_directories" version="1">
     <unix:object object_ref="object_accounts_root_path_not_dirs" />
   </unix:file_test>
+
+  <ind:variable_test id="test_accounts_root_path_dirs_exist" check="all"
+                     check_existence="at_least_one_exists" version="1"
+                     comment="Check that all PATH directories exist by comparing counts">
+    <ind:object object_ref="object_accounts_root_path_existing_count"/>
+    <ind:state state_ref="state_accounts_root_path_expected_count"/>
+  </ind:variable_test>
 
   <unix:file_object comment="root's path directories"
   id="object_accounts_root_path_not_dirs" version="1">
@@ -32,6 +58,21 @@
     <unix:filepath var_ref="var_accounts_root_path_all_dirs" var_check="at least one" />
     <filter action="exclude">state_accounts_root_path_dirs_symlink</filter>
   </unix:file_object>
+
+  <unix:file_object comment="root's path directories"
+  id="object_accounts_root_path_dirs" version="1">
+    <unix:path operation="equals" var_ref="var_accounts_root_path_all_dirs" var_check="at least one" />
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <ind:variable_object id="object_accounts_root_path_existing_count" version="1">
+    <ind:var_ref>var_accounts_root_path_existing_count</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_accounts_root_path_expected_count" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+               var_ref="var_accounts_root_path_expected_count"/>
+  </ind:variable_state>
 
   <unix:file_state comment="symbolic link"
   id="state_accounts_root_path_dirs_symlink" version="1">

@@ -48,7 +48,6 @@ accounts_user_interactive_home_directory_defined
 accounts_user_interactive_home_directory_exists
 aide_build_database
 aide_check_audit_tools
-aide_periodic_cron_checking
 aide_scan_notification
 aide_use_fips_hashes
 aide_verify_acls
@@ -501,6 +500,7 @@ var_accounts_passwords_pam_faillock_fail_interval=900
 var_accounts_passwords_pam_faillock_unlock_time=never
 var_accounts_tmout=10_min
 var_accounts_user_umask=077
+var_audit_backlog_limit=8192
 var_auditd_action_mail_acct=root
 var_auditd_admin_space_left_action=single
 var_auditd_admin_space_left_percentage=5pc

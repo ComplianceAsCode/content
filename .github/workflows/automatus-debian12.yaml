@@ -17,11 +17,11 @@ jobs:
       - name: Install deps python
         run: pip3 install gitpython xmldiff compliance-trestle==2.4.0 lxml lxml-stubs requests
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
         with:
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
@@ -38,7 +38,7 @@ jobs:
       - name: Test if there are no content changes
         run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: output.json
@@ -65,7 +65,7 @@ jobs:
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product debian12
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ${{ env.DATASTREAM }}
@@ -78,9 +78,9 @@ jobs:
       - name: Install Deps
         run: sudo apt update && sudo apt install -y cmake ninja-build libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman wget libdbus-1-dev libdbus-glib-1-dev libcurl4-openssl-dev libgcrypt20-dev libselinux1-dev libxslt1-dev libgconf2-dev libacl1-dev libblkid-dev libcap-dev libxml2-dev libldap2-dev libpcre3-dev python3 swig libxml-parser-perl libxml-xpath-perl libperl-dev libbz2-dev librpm-dev g++ libyaml-dev libxmlsec1-dev libxmlsec1-openssl
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
       - name: Get cached CTF output
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v4
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
         id: get_ctf_output
         with:
           name: output.json
@@ -146,7 +146,7 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'ansible'
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v4
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ${{ env.DATASTREAM }}
@@ -167,7 +167,7 @@ jobs:
         continue-on-error: true
       - name: Upload logs in case of failure
         if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v4
         with:
           name: logs_bash
           path: logs_bash/
@@ -183,7 +183,7 @@ jobs:
         continue-on-error: true
       - name: Upload logs in case of failure
         if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v4
         with:
           name: logs_ansible
           path: logs_ansible/

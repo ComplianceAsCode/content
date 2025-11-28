@@ -28,4 +28,4 @@ filter_rules: '"ocp4-node" in platform or "ocp4-master-node" in platform or "ocp
     or "ocp4-node-on-ovn" in platform'
 
 selections:
-    - cis_ocp_1_4_0:all
+    - cis_ocp:all

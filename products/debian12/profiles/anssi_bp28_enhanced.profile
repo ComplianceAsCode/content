@@ -68,6 +68,11 @@ selections:
   - '!package_dracut-fips-aesni_installed'
   - '!audit_rules_file_deletion_events_renameat2'
   - '!audit_rules_dac_modification_fchmodat2'
+  - '!audit_rules_mac_modification_etc_selinux'
+  - '!no_nis_in_nsswitch'
+  - '!service_chronyd_enabled'
+  - '!ldap_client_tls_cacertpath'
+  - '!ldap_client_start_tls'
 
-  # The following rule is not applicable to Debian 12
+    # The following rule is not applicable to Debian 12
   - '!logind_session_timeout'

@@ -75,6 +75,7 @@ selections:
     - '!secure_boot_enabled'
     - '!audit_rules_unsuccessful_file_modification_open_by_handle_at'
     - '!accounts_password_minlen_login_defs'
-    - usbguard_allow_hid_and_hub
-    - sshd_allow_only_protocol2
-    - accounts_password_all_shadowed
+    - '!package_ypbind_removed'
+    - '!package_ypbind_removed'
+    - '!package_xinetd_removed'
+    - '!service_xinetd_disabled'

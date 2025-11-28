@@ -23,7 +23,7 @@ jobs:
       - name: Install deps python
         run: pip3 install json2html prometheus_client
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
       - name: Build
         run: cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
         working-directory: ./build
@@ -50,7 +50,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
         if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' && github.ref == 'refs/heads/master'  }}
-        uses: JamesIves/github-pages-deploy-action@6c2d9db40f9296374acc17b90404b6e8864128c8 # v4.7.3
+        uses: JamesIves/github-pages-deploy-action@4a3abc783e1a24aeb44c16e869ad83caf6b4cc23 # v4.7.4
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
@@ -61,7 +61,7 @@ jobs:
           git-config-name: openscap-ci
           git-config-email: openscap-ci@gmail.com
       - name: Upload artifact if the event is pull request
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v4
         if: ${{ github.event_name == 'pull_request' }}
         with:
           name: built-content

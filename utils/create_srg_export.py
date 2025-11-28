@@ -33,7 +33,7 @@ SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
 OUTPUT = os.path.join(SSG_ROOT, 'build',
-                      f'{datetime.datetime.now().strftime("%s")}_stig_export.csv')
+                      f'{datetime.datetime.now(tz=datetime.timezone.utc).strftime("%s")}_stig_export.csv')
 SRG_PATH = os.path.join(SSG_ROOT, 'shared', 'references', 'disa-os-srg-v3r2.xml')
 NS = {'scap': ssg.constants.datastream_namespace,
       'xccdf-1.2': ssg.constants.XCCDF12_NS,
@@ -455,7 +455,7 @@ def main() -> None:
     check_product_value_path(args.root, args.product)
 
     srgs = ssg.build_stig.parse_srgs(args.manual)
-    product_dir = os.path.join(args.root, "products", args.product)
+    product_dir = os.path.join(args.root, "products", args.product)  # noqa: F841
     env_yaml = get_env_yaml(
             args.root, args.product, args.build_config_yaml)
     policy = get_policy(args, env_yaml)

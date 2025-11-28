@@ -8,10 +8,12 @@
   ansible.builtin.lineinfile:
     create: yes
     dest: "/etc/logrotate.conf"
-    regexp: "^daily$"
+    regexp: '^\s*(weekly|monthly|yearly)$'
     line: "daily"
+    state: present
+    insertbefore: BOF
 
-- name: Make sure daily log rotation setting is not overriden in /etc/logrotate.conf
+- name: Make sure daily log rotation setting is not overridden in /etc/logrotate.conf
   ansible.builtin.lineinfile:
     create: no
     dest: "/etc/logrotate.conf"
@@ -20,7 +22,7 @@
 
 {{% if 'sle' in product or product == 'slmicro5' %}}
 - name: Enable timer logrotate
-  ansible.builtin.systemd_service:
+  ansible.builtin.systemd:
     name: "logrotate.timer"
     enabled: "yes"
     state: "started"

@@ -21,7 +21,7 @@ rationale: |-
 severity: medium
 
 ocil: |-
-    Use <tt>udo systemctl show tftp</tt> to verify that tftp service is using secure mode.
+    Use <tt>sudo systemctl show tftp</tt> to verify that tftp service is using secure mode.
     <pre>$ sudo systemctl show tftp | grep ExecStart=
     ExecStart={ path=/usr/sbin/in.tftpd ; argv[]=/usr/sbin/in.tftpd -s /var/lib/tftpboot ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }e
     </pre>

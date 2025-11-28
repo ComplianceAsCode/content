@@ -36,6 +36,7 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    - '!no_nis_in_nsswitch'
     # authselect is enabled by default
     - '!enable_authselect'
     # this rule is not automated anymore
@@ -72,6 +73,8 @@ selections:
     - '!kernel_config_refcount_full'
     - '!kernel_config_retpoline'
     - '!kernel_config_security_writable_hooks'
+    - '!ldap_client_tls_cacertpath'
+    - '!ldap_client_start_tls'
     # OL 10 uses a different rule for auditing changes to selinux configuration (R73)
     - '!audit_rules_mac_modification'
     - audit_rules_mac_modification_etc_selinux

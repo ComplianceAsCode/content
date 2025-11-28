@@ -4,5 +4,5 @@
 
 ./generate_privileged_commands_rule.sh {{{ uid_min }}} privileged /etc/audit/rules.d/privileged.rules
 # change key of rules for binaries in /usr/sbin
-# A mixed conbination of -k and -F key= should be accepted
+# A mixed combination of -k and -F key= should be accepted
 sed -i '/sbin/s/-k /-F key=/g' /etc/audit/rules.d/privileged.rules

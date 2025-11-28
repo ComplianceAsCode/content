@@ -15,7 +15,7 @@ from .shims import subprocess_check_output
 
 MANUAL_EDIT_WARNING = """This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!
 Last Modified: %s UTC
-""" % (os.path.basename(__file__), datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M"))
+""" % (os.path.basename(__file__), datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d %H:%M"))
 
 ignored_emails = (
     # No idea / ignore
@@ -29,6 +29,7 @@ ignored_emails = (
     "konflux@no-reply.konflux-ci.dev",
     "126015336+red-hat-konflux[bot]@users.noreply.github.com",
     "49699333+dependabot[bot]@users.noreply.github.com",
+    "190377777+red-hat-konflux-kflux-prd-rh02[bot]@users.noreply.github.com"
 )
 
 

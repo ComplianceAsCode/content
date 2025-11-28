@@ -64,7 +64,11 @@ template:
             - /usr/lib/
             - /usr/lib64/
         recursive: 'true'
+{{% if 'ol8' in product or 'rhel' in product %}}
+        file_regex: ^.*\.so.*$
+{{% else %}}
         file_regex: ^.*$
+{{% endif %}}
         filemode: '7755'
 
 fixtext: |-

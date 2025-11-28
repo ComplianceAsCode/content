@@ -65,6 +65,7 @@ rules:
 - audit_privileged_commands_poweroff
 - audit_privileged_commands_reboot
 - audit_privileged_commands_shutdown
+- audit_rules_continue_loading
 - audit_rules_dac_modification_chmod
 - audit_rules_dac_modification_chown
 - audit_rules_dac_modification_fchmod
@@ -132,7 +133,16 @@ rules:
 - audit_rules_mac_modification_usr_share
 - audit_rules_media_export
 - audit_rules_networkconfig_modification
+- audit_rules_networkconfig_modification_etc_hosts
+- audit_rules_networkconfig_modification_etc_issue
+- audit_rules_networkconfig_modification_etc_issue_net
+- audit_rules_networkconfig_modification_etc_networkmanager_system_connections
+- audit_rules_networkconfig_modification_etc_sysconfig_network
+- audit_rules_networkconfig_modification_hostname_file
 - audit_rules_networkconfig_modification_network_scripts
+- audit_rules_networkconfig_modification_networkmanager
+- audit_rules_networkconfig_modification_setdomainname
+- audit_rules_networkconfig_modification_sethostname
 - audit_rules_privileged_commands
 - audit_rules_privileged_commands_apparmor_parser
 - audit_rules_privileged_commands_at

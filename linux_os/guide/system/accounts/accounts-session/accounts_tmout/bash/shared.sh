@@ -7,7 +7,7 @@
 
 {{{ bash_instantiate_variables("var_accounts_tmout") }}}
 
-# if 0, no occurence of tmout found, if 1, occurence found
+# if 0, no occurrence of tmout found, if 1, occurrence found
 tmout_found=0
 
 {{% if system_configuration_using_etc_bashrc_expected %}}

@@ -34,3 +34,6 @@ selections:
     - '!ensure_redhat_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'
+    # package not available in OL8
+    - '!package_talk-server_removed'
+    - '!package_talk_removed'

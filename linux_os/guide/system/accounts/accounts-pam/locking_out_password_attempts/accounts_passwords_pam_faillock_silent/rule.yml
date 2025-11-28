@@ -27,7 +27,7 @@ identifiers:
 
 references:
     srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
-    stigid@ol8: OL08-00-020018,OL08-00-020019
+    stigid@ol8: OL08-00-020019
 
 ocil_clause: 'the system shows messages when three unsuccessful logon attempts occur'
 
@@ -48,7 +48,11 @@ fixtext: |-
     add or uncomment the following line:
     <pre>silent</pre>
 
+{{% if product == "ol8" %}}
+platform: os_linux[ol]>=8.2 and package[pam]
+{{% else %}}
 platform: package[pam]
+{{% endif %}}
 
 warnings:
     - general: |-

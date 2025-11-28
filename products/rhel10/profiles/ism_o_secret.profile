@@ -52,3 +52,13 @@ selections:
     # This rule is not applicable for RHEL 10
     - '!force_opensc_card_drivers'
     - '!service_chronyd_or_ntpd_enabled'
+    - '!accounts_password_all_shadowed'
+    - '!usbguard_allow_hid_and_hub'
+    - '!sshd_allow_only_protocol2'
+    - '!security_patches_up_to_date'
+    - '!rpm_verify_ownership'
+    - '!rpm_verify_permissions'
+    - '!package_rear_installed'
+    - '!package_ypbind_removed'
+    - '!package_xinetd_removed'
+    - '!service_xinetd_disabled'

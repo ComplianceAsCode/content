@@ -122,17 +122,17 @@ value: :code:`Setting={{ varname1 }}`
   the new line is appended to the file.
 
 #}}
-{{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, insensitive='false', create='no', block=False, validate='', insert_after='', insert_before='', mode='', rule_title=None) -%}}
+{{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, insensitive='false', create='no', block=False, validate='', insert_after='', insert_before='', mode='', register='', rule_title=None) -%}}
 {{%- if block %}}
 - name: "{{{ msg or rule_title }}}"
   block:
     {{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', register='dupes', check_mode=True)|indent }}}
     {{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', when='dupes.found is defined and dupes.found > 1')|indent }}}
-    {{{ ansible_lineinfile("Insert correct line to " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
+    {{{ ansible_lineinfile("Insert correct line to " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before, register=register)|indent }}}
 {{%- else %}}
 {{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', register='dupes', check_mode=True, rule_title=rule_title) }}}
 {{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, create=create, state='absent', when='dupes.found is defined and dupes.found > 1', rule_title=rule_title) }}}
-{{{ ansible_lineinfile("Insert correct line into " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before, rule_title=rule_title) }}}
+{{{ ansible_lineinfile("Insert correct line into " + path, path, mode=mode, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before, rule_title=rule_title, register=register) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
@@ -144,8 +144,8 @@ value: :code:`Setting={{ varname1 }}`
   instead of lineinfile-based solutions.
 
 #}}
-{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', insensitive='false', create='no', validate='', insert_after='', insert_before='', mode='', rule_title=None) %}}
-{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, insensitive=insensitive, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before, mode=mode, rule_title=rule_title) }}}
+{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', insensitive='false', create='no', validate='', insert_after='', insert_before='', mode='', register='', rule_title=None) %}}
+{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, insensitive=insensitive, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before, mode=mode, register=register, rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 
@@ -166,6 +166,20 @@ value: :code:`Setting={{ varname1 }}`
 {{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
 {{%- set lineinfile_when = dir_parameter + ".matched" -%}}
 {{%- set new_line = parameter + separator + value -%}}
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured
+  ansible.builtin.find:
+    paths:
+    - {{{ config_file }}}
+    - {{{ config_dir }}}
+    contains: {{{ line_regex }}}
+  register: _sshd_config_has_parameter
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly
+  ansible.builtin.find:
+    paths:
+    - {{{ config_file }}}
+    - {{{ config_dir }}}
+    contains: {{{ line_regex ~ value ~ "$" }}}
+  register: _sshd_config_correctly
 - name: '{{{ msg or rule_title }}}'
   block:
     {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, insensitive=insensitive, create='no', state='absent')|indent }}}
@@ -173,6 +187,7 @@ value: :code:`Setting={{ varname1 }}`
     {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
     {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, insensitive=insensitive, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
     {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
+  when: _sshd_config_correctly.matched == 0 or _sshd_config_has_parameter.matched != 1
 {{%- endmacro %}}
 
 
@@ -222,6 +237,8 @@ value: :code:`Setting={{ varname1 }}`
     path: {{{ config_file }}}
     mode: '0600'
     state: touch
+    modification_time: preserve
+    access_time: preserve
 {{%- else %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
 {{%- endif %}}
@@ -1479,20 +1496,24 @@ Part of the grub2_bootloader_argument template.
 :type arg_name: str
 :param arg_name_value: Kernel command line argument concatenated with the value of this argument using an equal sign, eg. "noexec=off".
 :type arg_name_value: str
+:param arg_variable: Name of the XCCDF Value parametrizing the rule (can be None)
+:type arg_variable: str
 
 #}}
-{{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'slmicro5'] %}}
+{{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value, arg_variable) -%}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'sle16', 'slmicro5'] %}}
 - name: Check {{{ arg_name }}} argument exists
   ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
   check_mode: False
   failed_when: False
+  changed_when: False
   register: argcheck
 
 - name: Check {{{ arg_name }}} argument exists
   ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
   check_mode: False
   failed_when: False
+  changed_when: False
   register: linecheck
 
 - name: Add {{{ arg_name }}} argument
@@ -1520,15 +1541,32 @@ Part of the grub2_bootloader_argument template.
 
 {{% endif -%}}
 
-{{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
+{{% if product in ['sle12', 'sle15', 'sle16', 'slmicro5'] %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/update-grub
 {{% else %}}
+- name: Check if {{{ arg_name }}} argument is already present in /etc/default/grub
+  ansible.builtin.slurp:
+    src: /etc/default/grub
+  register: etc_default_grub
+
+- name: Check if {{{ arg_name }}} argument is already present
+  ansible.builtin.command: /sbin/grubby --info=ALL
+  register: grubby_info
+  check_mode: False
+  changed_when: False
+  failed_when: False
+
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
+{{%- if arg_variable %}}
+  when: (grubby_info.stdout is not search('{{{ arg_name }}}=' ~ {{{ arg_variable }}})) or ((etc_default_grub['content'] | b64decode) is not search('{{{ arg_name }}}=' ~ {{{ arg_variable }}}))
+{{% else %}}
+  when: (grubby_info.stdout is not search('{{{ arg_name_value }}}')) or ((etc_default_grub['content'] | b64decode) is not search('{{{ arg_name_value }}}'))
+{{% endif %}}
 {{% endif -%}}
 {{%- endmacro -%}}
 
@@ -1542,31 +1580,45 @@ Part of the grub2_bootloader_argument_absent template.
 
 #}}
 {{%- macro ansible_grub2_bootloader_argument_absent(arg_name) -%}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'sle16'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  ansible.builtin.command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  ansible.builtin.command: grep -E '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=?.*"' /etc/default/grub
   check_mode: False
   failed_when: False
+  changed_when: False
   register: argcheck
 
 - name: Replace existing {{{ arg_name }}} argument
   ansible.builtin.replace:
       path: /etc/default/grub
-      regexp: '\(^GRUB_CMDLINE_LINUX=".*\){{{ arg_name }}}=?[^[:space:]]*\(.*"\)'
-      replace: '\1 \2'
+      regexp: (^GRUB_CMDLINE_LINUX=\".*){{{ arg_name }}}(\s|=[0-9a-zA-Z]+)?(.*\")
+      replace: '\1 \3'
   when: argcheck is not skipped and argcheck.rc == 0
 
 {{% endif -%}}
 
-{{% if product in ['sle12', 'sle15'] %}}
+{{% if product in ['sle12', 'sle15', 'sle16'] %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/update-grub
 {{% else %}}
+- name: Check if {{{ arg_name }}} argument is already present in /etc/default/grub
+  ansible.builtin.slurp:
+    src: /etc/default/grub
+  register: etc_default_grub
+
+- name: Check if {{{ arg_name }}} argument is present
+  ansible.builtin.command: /sbin/grubby --info=ALL
+  register: grubby_info
+  check_mode: False
+  changed_when: False
+  failed_when: False
+
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"
+  when: (grubby_info.stdout is search('{{{ arg_name }}}')) or ((etc_default_grub['content'] | b64decode) is search('{{{ arg_name }}}'))
 {{% endif -%}}
 {{%- endmacro -%}}
 
@@ -2098,4 +2150,76 @@ Part of the grub2_bootloader_argument_absent template.
   loop: '{{ ansible_mounts }}'
   when:
     - item.device is search("localhost:")
+{{%- endmacro -%}}
+
+
+{{#
+  Macro to ensure rsyslog common setup (rsyslog.conf exists and rsyslog.d directory exists).
+  This is equivalent to the setup_rsyslog_common() bash macro.
+
+  :parameter rule_title: The title of the rule for task naming
+  :type rule_title: str
+#}}
+{{%- macro ansible_setup_rsyslog_common(rule_title) -%}}
+-   name: "{{{ rule_title }}} - Ensure /etc/rsyslog.conf exists"
+    ansible.builtin.file:
+        path: /etc/rsyslog.conf
+        state: touch
+        modification_time: preserve
+        access_time: preserve
+
+-   name: "{{{ rule_title }}} - Ensure /etc/rsyslog.d directory exists"
+    ansible.builtin.file:
+        path: /etc/rsyslog.d
+        state: directory
+{{%- endmacro -%}}
+
+
+{{#
+  Generic macro to remove RainerScript block entries (action/global/etc) containing a specific pattern.
+  This removes multilined and onelined RainerScript blocks that contain
+  the specified pattern from both rsyslog.conf and rsyslog.d/*.conf files.
+
+  :parameter rule_title: The title of the rule for task naming
+  :type rule_title: str
+  :parameter block_type: The RainerScript block type (e.g., "action", "global")
+  :type block_type: str
+  :parameter pattern: The pattern to search for within blocks (e.g., "StreamDriverMode")
+  :type pattern: str
+#}}
+{{%- macro ansible_remove_rainerscript_block_entries(rule_title, block_type, pattern) -%}}
+-   name: "{{{ rule_title }}} - Remove RainerScript {{{ block_type }}}() entries with {{{ pattern }}} from rsyslog.conf"
+    ansible.builtin.shell: |
+      sed -i '/^[[:space:]]*{{{ block_type }}}(/ { :a; N; /)/!ba; /{{{ pattern }}}/d }' /etc/rsyslog.conf
+    changed_when: true
+
+-   name: "{{{ rule_title }}} - Remove RainerScript {{{ block_type }}}() entries with {{{ pattern }}} from rsyslog.d/*.conf"
+    ansible.builtin.shell: |
+      find /etc/rsyslog.d -type f -name "*.conf" -exec sed -i '/^[[:space:]]*{{{ block_type }}}(/ { :a; N; /)/!ba; /{{{ pattern }}}/d }' {} +
+    changed_when: true
+{{%- endmacro -%}}
+
+
+{{#
+  Macro to remove multilined RainerScript entries using range deletion.
+  This removes entries from a line matching start_pattern to the next line matching end_pattern.
+  Used for cleanup patterns like cron.* action(...) entries.
+
+  :parameter rule_title: The title of the rule for task naming
+  :type rule_title: str
+  :parameter start_pattern: The pattern that marks the start of the range to delete (e.g., "cron\.\*.*action(")
+  :type start_pattern: str
+  :parameter end_pattern: The pattern that marks the end of the range (e.g., ")")
+  :type end_pattern: str
+  :parameter description: Description of what is being removed (e.g., "cron.* action()")
+  :type description: str
+#}}
+{{%- macro ansible_remove_rainerscript_range_entries(rule_title, start_pattern, end_pattern, description) -%}}
+-   name: "{{{ rule_title }}} - Remove multilined {{{ description }}} entries from rsyslog.conf"
+    ansible.builtin.shell: sed -i '/^{{{ start_pattern }}}/,/{{{ end_pattern }}}/d' /etc/rsyslog.conf
+    changed_when: true
+
+-   name: "{{{ rule_title }}} - Remove multilined {{{ description }}} entries from rsyslog.d/*.conf"
+    ansible.builtin.shell: find /etc/rsyslog.d -type f -name "*.conf" -exec sed -i '/^{{{ start_pattern }}}/,/{{{ end_pattern }}}/d' {} +
+    changed_when: true
 {{%- endmacro -%}}

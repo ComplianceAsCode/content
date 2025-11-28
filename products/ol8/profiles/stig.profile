@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R4
+    version: V2R5
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V2R4.
+    DISA STIG for Oracle Linux 8 V2R5.
 
 selections:
     ### Variables
@@ -489,26 +489,26 @@ selections:
     # OL08-00-020000, OL08-00-020270
     - account_temp_expire_date
 
-    # OL08-00-020010, OL08-00-020011
+    # OL08-00-020011
     - accounts_passwords_pam_faillock_deny
 
-    # OL08-00-020012, OL08-00-020013
+    # OL08-00-020013
     - accounts_passwords_pam_faillock_interval
 
 
-    # OL08-00-020014, OL08-00-020015
+    # OL08-00-020015
     - accounts_passwords_pam_faillock_unlock_time
 
-    # OL08-00-020016, OL08-00-020017
+    # OL08-00-020017
     - accounts_passwords_pam_faillock_dir
 
-    # OL08-00-020018, OL08-00-020019
+    # OL08-00-020019
     - accounts_passwords_pam_faillock_silent
 
-    # OL08-00-020020, OL08-00-020021
+    # OL08-00-020021
     - accounts_passwords_pam_faillock_audit
 
-    # OL08-00-020022, OL08-00-020023
+    # OL08-00-020023
     - accounts_passwords_pam_faillock_deny_root
 
     # OL08-00-020024
@@ -520,7 +520,7 @@ selections:
     # OL08-00-020026
     - account_password_pam_faillock_password_auth
 
-    # OL08-00-020027, OL08-00-020028
+    # OL08-00-020027
     - account_password_selinux_faillock_dir
 
     # OL08-00-020030, OL08-00-020082
@@ -529,7 +529,7 @@ selections:
     # OL08-00-020031
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
-    
+
     # OL08-00-020032
     - dconf_gnome_disable_user_list
 
@@ -561,8 +561,11 @@ selections:
     # OL08-00-020101
     - accounts_password_pam_pwquality_system_auth
 
-    # OL08-00-020102, OL08-00-020103, OL08-00-020104
+    # OL08-00-020102, OL08-00-020103
     - accounts_password_pam_retry
+
+    # OL08-00-020104
+    - accounts_password_pam_pwquality_retry
 
     # OL08-00-020110
     - accounts_password_pam_ucredit
@@ -882,6 +885,7 @@ selections:
 
     # OL08-00-030602
     - grub2_audit_backlog_limit_argument
+    - var_audit_backlog_limit=8192
 
     # OL08-00-030603
     - configure_usbguard_auditbackend
@@ -898,6 +902,10 @@ selections:
 
     # OL08-00-030640
     - file_audit_tools_group_ownership
+
+    # OL08-00-030645
+    - audit_rules_etc_cron_d
+    - audit_rules_var_spool_cron
 
     # OL08-00-030650
     - aide_check_audit_tools
@@ -1190,8 +1198,7 @@ selections:
     - sshd_use_approved_kex_ordered_stig
 
     # OL08-00-040350
-    - tftpd_uses_secure_mode
-    - tftpd_uses_secure_mode.severity=medium
+    - tftp_uses_secure_mode_systemd
 
     # OL08-00-040360
     - package_vsftpd_removed

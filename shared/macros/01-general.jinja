@@ -351,7 +351,12 @@ Describe allowing access to a service in firewalld.
     To configure the system to prevent the <code>{{{ module }}}</code>
     kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>install {{{ module }}} /bin/false</pre>
-    {{% if "ol" in product or product in ["rhel8"] %}}
+    This entry will cause a non-zero return value during a <code>{{{ module }}}</code> module installation
+    and additionally convey the meaning of the entry to the user in form of an error message.
+    If you would like to omit a non-zero return value and an error message, you may want to add a different line instead
+    (both <code>/bin/true</code> and <code>/bin/false</code> are allowed by OVAL and will be accepted by the scan):
+    <pre>install {{{ module }}} /bin/true</pre>
+    {{% if "ol" in families or product in ["rhel8"] %}}
     To configure the system to prevent the <code>{{{ module }}}</code> from being used,
     add the following line to file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>blacklist {{{ module }}}</pre>
@@ -1147,7 +1152,7 @@ Operator see
 
 #}}
 {{%- macro describe_grub2_argument(arg_name_value) -%}}
-{{%- if product in ["ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] or 'ubuntu' in product -%}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] or 'ubuntu' in product -%}}
 To ensure that <tt>{{{ arg_name_value }}}</tt> is added as a kernel command line
 argument to newly installed kernels, add <tt>{{{ arg_name_value }}}</tt> to the
 default Grub2 command line for Linux operating systems. Modify the line within
@@ -1219,7 +1224,7 @@ For more details on configuring kernel arguments in bootable container images, p
 
 #}}
 {{%- macro aide_string() -%}}
-{{%- if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in product -%}}
+{{%- if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in families and product not in ['fedora'] -%}}
 p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
 {{%- else -%}}
 p+i+n+u+g+s+b+acl+xattrs+sha512
@@ -1237,8 +1242,8 @@ p+i+n+u+g+s+b+acl+xattrs+sha512
     /usr/sbin/ausearch {{{ aide_string() }}}
     /usr/sbin/aureport {{{ aide_string() }}}
     /usr/sbin/autrace {{{ aide_string() }}}
-    {{% if 'rhel' not in product and 'ol' not in product %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
-    {{% if 'ol' in product %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
+    {{% if 'rhel' not in product and 'ol' not in families %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
+    {{% if 'ol' in families %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
     /usr/sbin/augenrules {{{ aide_string() }}}
 {{% endmacro %}}
 
@@ -1397,7 +1402,7 @@ Create a rule description for rules using the `audit_rules_privileged_commands` 
 {{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif -%}}
-{{%- if product == "rhel10" -%}}
+{{%- if product in ["fedora", "rhel10"] -%}}
 {{% set arch_clause=", setting ARCH to either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit" %}}
 {{% set rule="-a always,exit -F arch=ARCH -F path=" ~ path ~ " " ~ perm_x ~ "-F auid&gt;=" ~ auid ~ " -F auid!=unset -F key=privileged" %}}
 {{% else %}}
@@ -1418,3 +1423,43 @@ Create a rule description for rules using the `audit_rules_privileged_commands` 
     following form to <tt>/etc/audit/audit.rules</tt>{{{ arch_clause }}}:
     <pre>{{{ rule }}}</pre>
 {{%- endmacro -%}}
+
+{{#
+Create a rule description for rules using the `audit_rules_kernel_module_loading` template.
+
+:param path: name of the syscall for which the audit rule should be defined
+:type path: str
+#}}
+{{% macro describe_audit_rules_kernel_module_loading(name) %}}
+    To capture kernel module loading and unloading events, use the following line, setting ARCH to
+    either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    {{% if "ol" in families or 'rhel' in product or 'ubuntu' in product %}}
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S {{{ name }}} -F auid>={{{ uid_min }}} -F auid!=unset -F key=modules</pre>
+    {{% else %}}
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S {{{ name }}} -F key=modules</pre>
+    {{% endif %}}
+
+    Place to add the line depends on a way <tt>auditd</tt> daemon is configured. If it is configured
+    to use the <tt>augenrules</tt> program (the default), add the line to a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility,
+    add the line to file <tt>/etc/audit/audit.rules</tt>.
+{{% endmacro %}}
+
+{{#
+Create a description text for rules that use the crypto_sub_policies template.
+
+:param module_name: crypto sub policy name, eg. `NO-SSHWEAKCIPHERS`
+:type module_name: str
+:param key: The entry key, eg. cipher@SSH
+:type key: str
+:param value: The entry value, eg. -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+:type value: str
+#}}
+{{% macro describe_crypto_sub_policy(module_name, key, value) %}}
+    Add the following line to the file <tt>/etc/crypto-policies/policies/modules/{{{ module_name }}}.pmod</tt>:
+    <pre>
+    {{{ key }}} = {{{ value }}}
+    </pre>
+{{%- endmacro %}}

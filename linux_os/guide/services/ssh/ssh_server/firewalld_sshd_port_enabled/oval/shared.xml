@@ -69,7 +69,7 @@
          least one NIC assigned to it. Since it was possible to easily have the list of active
          zones, it was cumbersome to use that list in other OVAL objects without introduce a high
          level of complexity to ensure proper assessment in environments where multiple NICs and
-         multiple zones are in use. So, in favor of simplicity and readbility it was decided to
+         multiple zones are in use. So, in favor of simplicity and readability it was decided to
          work with a static list. It means that, in the future, it is possible this list needs to
          be updated. -->
     <local_variable id="var_firewalld_sshd_port_enabled_default_zones" version="1"
@@ -149,7 +149,7 @@
          properly configured by the administrator. -->
     <ind:xmlfilecontent_test id="test_firewalld_sshd_port_enabled_ssh_service_usr"
         check="all" check_existence="all_exist" version="1"
-        comment="SSH service is interger in the /usr/lib/firewalld/services dir">
+        comment="SSH service is integer in the /usr/lib/firewalld/services dir">
       <ind:object object_ref="object_firewalld_sshd_port_enabled_ssh_service_file_usr"/>
     </ind:xmlfilecontent_test>
 

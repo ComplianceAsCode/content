@@ -18,7 +18,7 @@ controls:
             {{% if 'rhel' in product %}}
             - ensure_redhat_gpgkey_installed
             {{% endif %}}
-            {{% if 'ol' in product %}}
+            {{% if 'ol' in families %}}
             - ensure_oracle_gpgkey_installed
             {{% endif %}}
             {{% if 'almalinux' in product %}}

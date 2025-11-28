@@ -13,6 +13,8 @@
     value: "uint32 {{ inactivity_timeout_value }}"
     create: yes
     no_extra_spaces: yes
+  register: result_ini
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_ini is changed

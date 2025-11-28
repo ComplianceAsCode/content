@@ -1,0 +1,11 @@
+summary: Runs oscap remediation using the CIS profile
+description: |-
+    This ensures that the CIS profile is in a fairly good condition on Fedora,
+    to be used for ComplyTime demos, and as a baseline profile for the community
+    to target if they choose to adapt the ComplyTime tooling.
+test: ./test.sh
+duration: 1h
+require:
+    - openscap-scanner
+    - openscap-report
+    - scap-security-guide

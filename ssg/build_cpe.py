@@ -6,8 +6,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
-import ssg.id_translate
 
+import ssg.id_translate
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
 from .utils import required_key, apply_formatting_on_dict_values
@@ -45,7 +45,7 @@ class ProductCPEs(object):
         try:
             product_cpes_list = env_yaml["cpes"]
             self.load_product_cpes_from_list(product_cpes_list)
-        except KeyError as exc:
+        except KeyError:
             raise Exception("Product %s does not define 'cpes'" % (env_yaml["product"]))
 
     def load_product_cpes_from_list(self, product_cpes_list):
@@ -207,9 +207,9 @@ class CPEItem(XCCDFEntity, Templatable):
     )
     KEYS.update(**Templatable.KEYS)
 
-    MANDATORY_KEYS = [
+    MANDATORY_KEYS = {
         "name",
-    ]
+    }
 
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]

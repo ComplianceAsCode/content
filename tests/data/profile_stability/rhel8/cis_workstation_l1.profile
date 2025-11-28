@@ -11,6 +11,7 @@ accounts_password_pam_dictcheck
 accounts_password_pam_difok
 accounts_password_pam_enforce_root
 accounts_password_pam_maxrepeat
+accounts_password_pam_maxsequence
 accounts_password_pam_minclass
 accounts_password_pam_minlen
 accounts_password_pam_pwhistory_remember_password_auth
@@ -40,7 +41,7 @@ banner_etc_motd_cis
 chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 cis_banner_text=cis
-configure_crypto_policy
+configure_custom_crypto_policy_cis
 configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
@@ -62,6 +63,7 @@ ensure_gpgcheck_globally_activated
 ensure_gpgcheck_never_disabled
 ensure_pam_wheel_group_empty
 ensure_root_password_configured
+file_at_allow_exists
 file_at_deny_not_exist
 file_cron_allow_exists
 file_cron_deny_not_exist
@@ -245,8 +247,8 @@ set_password_hashing_algorithm_logindefs
 set_password_hashing_algorithm_passwordauth
 set_password_hashing_algorithm_systemauth
 socket_systemd-journal-remote_disabled
-sshd_approved_ciphers=cis_rhel8
 sshd_disable_empty_passwords
+sshd_disable_forwarding
 sshd_disable_rhosts
 sshd_disable_root_login
 sshd_do_not_permit_user_env
@@ -263,10 +265,7 @@ sshd_set_max_auth_tries
 sshd_set_max_sessions
 sshd_set_maxstartups
 sshd_strong_kex=cis_rhel8
-sshd_strong_macs=cis_rhel8
-sshd_use_approved_ciphers
 sshd_use_strong_kex
-sshd_use_strong_macs
 sudo_add_use_pty
 sudo_custom_logfile
 sudo_require_authentication
@@ -332,6 +331,7 @@ var_password_hashing_algorithm_pam=sha512
 var_password_pam_dictcheck=1
 var_password_pam_difok=2
 var_password_pam_maxrepeat=3
+var_password_pam_maxsequence=3
 var_password_pam_minclass=4
 var_password_pam_minlen=14
 var_password_pam_remember=24
@@ -343,5 +343,4 @@ var_sshd_max_sessions=10
 var_sshd_set_keepalive=1
 var_sshd_set_login_grace_time=60
 var_sshd_set_maxstartups=10:30:60
-var_system_crypto_policy=default_nosha1
 var_user_initialization_files_regex=all_dotfiles

@@ -9,7 +9,7 @@
 
 {{%- if init_system == "systemd" %}}
 - name: Start ntpd service if ntp installed
-  ansible.builtin.systemd_service:
+  ansible.builtin.systemd:
     name: "ntpd"
     enabled: "yes"
     state: "started"
@@ -18,7 +18,7 @@
 
 
 - name: Start chronyd service if chrony or chronyd installed
-  ansible.builtin.systemd_service:
+  ansible.builtin.systemd:
     name: "chronyd"
     enabled: "yes"
     state: "started"

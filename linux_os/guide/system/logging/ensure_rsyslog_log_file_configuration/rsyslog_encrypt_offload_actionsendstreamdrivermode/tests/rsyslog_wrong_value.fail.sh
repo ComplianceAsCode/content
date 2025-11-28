@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
+{{{ setup_rsyslog_encrypt_offload_actionsendstreamdrivermode() }}}
 
-echo "\$ActionSendStreamDriverMode 0" >> /etc/rsyslog.d/encrypt.conf
+echo "\$ActionSendStreamDriverMode 0" >> $RSYSLOG_D_CONF

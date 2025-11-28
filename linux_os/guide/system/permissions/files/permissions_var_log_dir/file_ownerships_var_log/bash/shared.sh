@@ -1,4 +1,4 @@
-# platform = Ubuntu 24.04
+# platform = multi_platform_ubuntu
 # reboot = false
 # strategy = configure
 # complexity = low

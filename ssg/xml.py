@@ -21,11 +21,7 @@ from .constants import (
     cpe_language_namespace,
 )
 
-
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    from xml.etree import ElementTree as ElementTree
+from xml.etree import ElementTree as ElementTree
 
 
 def oval_generated_header(product_name, schema_version, ssg_version):
@@ -102,8 +98,7 @@ def get_namespaces_from(file):
         # Probably an old version of Python
         # Doesn't matter, as this is non-essential.
         pass
-    finally:
-        return result
+    return result
 
 
 def open_xml(filename):

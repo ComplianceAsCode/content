@@ -8,7 +8,7 @@ def preprocess(data, lang):
         data[var] = data.get(var, None)
         if data.get(var) is not None and \
            data.get(var) != "use_ext_variable" and \
-           type(data.get(var)) != int:
+            not isinstance(data.get(var), int):
             errmsg = ("The template instance of the rule {0} requires the "
                       "parameter {1} is either 'use_ext_variable' or "
                       "a number or undefined".format(data["_rule_id"], data["var"]))

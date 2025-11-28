@@ -151,10 +151,6 @@ multiple benchmarks in our project:
 <td><p>Firefox</p></td>
 <td><p><code>/products/firefox/guide</code></p></td>
 </tr>
-<tr class="odd">
-<td><p>Chromium</p></td>
-<td><p><code>/products/chromium/guide</code></p></td>
-</tr>
 </tbody>
 </table>
 
@@ -353,7 +349,6 @@ endif()
 <pre>
 ...
 all_cmake_products=(
-	CHROMIUM
 	DEBIAN11
  <b>CUSTOM6</b>
 	EAP6
@@ -366,14 +361,13 @@ all_cmake_products=(
 product_directories = ['debian11', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel8', 'rhel9', 'sle12',
                        'ubuntu2404', 'rhosp13',
-                       'chromium', 'eap6', 'firefox',
+                       'eap6', 'firefox',
                        'example'<b>, 'custom6'</b>]
 ...
 </pre>
 <pre>
 ...
 FULL_NAME_TO_PRODUCT_MAPPING = {
-    "Chromium": "chromium",
     "Debian 11": "debian11",
     "Custom 6": "custom6",
     "JBoss EAP 6": "eap6",
@@ -400,7 +394,6 @@ MULTI_PLATFORM_MAPPING = {
 <pre>
 ...
 MAKEFILE_ID_TO_PRODUCT_MAP = {
-    'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'rhosp': 'Red Hat OpenStack Platform',
@@ -844,6 +837,8 @@ controls:
        - systemd_target_multi_user
 ```
 
+Control files that apply to multiple products should be stored in `controls` folder in the root of the project.
+If the control file is only applicable to one product it should be store in the `controls` directory under the products folder.
 
 ### Defining levels
 
@@ -1085,7 +1080,7 @@ The `references` key in `rule.yml` maps the rule to a requirement of an external
 If a control file is used to map the policy requirements, then the references don't need to be specified in `rule.yml`.
 Instead, the build system is able to assign the references to rules automatically at the build time.
 This feature of the build system saves time and avoids data duplication, because the references are centralized in the control file, and they are not specified in `rule.yml` files.
-To use the automated reference assignement, the `reference_type` key must be added to the control file.
+To use the automated reference assignment, the `reference_type` key must be added to the control file.
 The value of this key represents the type of reference that will be assigned.
 
 For example, to instruct the build system to use the control file to automatically assign `anssi` references to all rules listed in the control file, add the following line to the control file:

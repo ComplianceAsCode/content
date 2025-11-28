@@ -70,7 +70,7 @@ ocil_clause: '<tt>aescbc</tt> or <tt>aesgcm</tt> is not configured as the encryp
 
 ocil: |-
     OpenShift supports encryption of data at rest of etcd datastore, but it is
-    up to the customer to configure. The asecbc and aesgcm ciphers are
+    up to the customer to configure. The aescbc and aesgcm ciphers are
     available for use within OpenShift. Keys are stored on the filesystem of
     the master and automatically rotated. Run the following command to review
     the Encrypted status condition for the OpenShift API server to verify that its
@@ -83,7 +83,7 @@ ocil: |-
     If the output shows <tt>EncryptionInProgress</tt> this means that encryption is still in
     progress. Wait a few minutes and try again.
     To display the encryption configured, run the following command:
-    <pre>$ oc get --raw {{.var_apiserver_encryption_path}} | jq {{.var_apiserver_encryption_filter}} </pre>
+    <pre>$ oc get --raw {{{custom_api_path}}} | jq '{{{custom_jqfilter}}}' </pre>
     If the output does not list <tt>aescbc</tt> or <tt>aesgcm</tt>, the encryption is not configured correctly.
 
 warnings:

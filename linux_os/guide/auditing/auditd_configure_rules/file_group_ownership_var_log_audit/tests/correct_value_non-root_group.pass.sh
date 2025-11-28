@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = audit
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_sle,multi_platform_fedora
 
 if grep -iwq "log_file" /etc/audit/auditd.conf; then
     FILE=$(awk -F "=" '/^log_file/ {print $2}' /etc/audit/auditd.conf | tr -d ' ')

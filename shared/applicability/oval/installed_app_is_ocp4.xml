@@ -8,7 +8,7 @@
         <platform>multi_platform_ocp</platform>
       </affected>
       <reference ref_id="cpe:/a:redhat:openshift_container_platform:4.1" source="CPE" />
-      <description>The application installed installed on the system is OpenShift 4.</description>
+      <description>The application installed on the system is OpenShift 4.</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="cluster is OpenShift 4" test_ref="test_ocp4" />
@@ -101,7 +101,7 @@
       </ind:value>
   </ind:yamlfilecontent_state>
 
-{{% for minorversion in range(6, 19) %}}
+{{% for minorversion in range(6, 25) %}}
   <!-- Check for OpenShift Container Platform 4.{{{ minorversion }}} -->
   <definition class="inventory" id="installed_app_is_ocp4_{{{ minorversion }}}" version="1">
     <metadata>
@@ -110,7 +110,7 @@
         <platform>Red Hat OpenShift Container Platform 4.{{{ minorversion }}}</platform>
       </affected>
       <reference ref_id="cpe:/a:redhat:openshift_container_platform:4.{{{ minorversion }}}" source="CPE" />
-      <description>The application installed installed on the system is OpenShift version 4.{{{ minorversion }}}.</description>
+      <description>The application installed on the system is OpenShift version 4.{{{ minorversion }}}.</description>
     </metadata>
     <criteria operator="OR">
       <criteria operator="AND">
@@ -172,7 +172,7 @@
         <platform>Red Hat OpenShift Container Platform 4 on {{{ platform }}}</platform>
       </affected>
       <reference ref_id="cpe:/a:redhat:openshift_container_platform_on_{{{ platform|lower }}}:4" source="CPE" />
-      <description>The application installed installed on the system is OpenShift version 4 on {{{ platform }}}.</description>
+      <description>The application installed on the system is OpenShift version 4 on {{{ platform }}}.</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="cluster is OpenShift 4 on {{{ platform }}}" test_ref="test_ocp4_on_{{{ platform|lower }}}" />
@@ -220,7 +220,7 @@
         <platform>Red Hat OpenShift Container network 4 on {{{ network }}}</platform>
       </affected>
       <reference ref_id="cpe:/a:redhat:openshift_container_network_on_{{{ network|lower }}}:4" source="CPE" />
-      <description>The application installed installed on the system is OpenShift version 4 on {{{ network }}}.</description>
+      <description>The application installed on the system is OpenShift version 4 on {{{ network }}}.</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="cluster is OpenShift 4 on {{{ network }}}" test_ref="test_ocp4_on_{{{ network|lower }}}" />
@@ -252,7 +252,7 @@
         <platform>Red Hat OpenShift Container Platform 4 on HyperShift</platform>
       </affected>
       <reference ref_id="cpe:/a:redhat:openshift_container_platform_on_hypershift:4" source="CPE" />
-      <description>The application installed installed on the system is OpenShift 4 on HyperShift Management Cluster.</description>
+      <description>The application installed on the system is OpenShift 4 on HyperShift Management Cluster.</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="Make sure there is version for HyperShift HostedCluster" test_ref="test_hypershift_version"/>
@@ -267,7 +267,7 @@
         <platform>Red Hat OpenShift Container Platform 4 on HyperShift</platform>
       </affected>
       <reference ref_id="cpe:/a:redhat:openshift_container_platform_on_hypershift_hosted:4" source="CPE" />
-      <description>The application installed installed on the system is OpenShift 4 on HyperShift Hosted Cluster.</description>
+      <description>The application installed on the system is OpenShift 4 on HyperShift Hosted Cluster.</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="Make sure there is HyperShift in the Compliance Operator Command flag" test_ref="test_hypershift_hosted"/>

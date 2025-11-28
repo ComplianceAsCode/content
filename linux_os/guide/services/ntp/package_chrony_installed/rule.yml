@@ -26,7 +26,6 @@ identifiers:
 references:
     cis@sle12: 2.2.1.1
     cis@sle15: 2.2.1.1
-    ism: 0988,1405
     ospp: FMT_SMF_EXT.1
     pcidss: Req-10.4
     srg: SRG-OS-000355-GPOS-00143
@@ -39,7 +38,7 @@ fixtext: '{{{ describe_package_install(package="chrony") }}}'
 
 srg_requirement: '{{{ srg_requirement_package_installed("chrony") }}}'
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if 'ubuntu' in product %}}
 template:
     name: package_installed_guard_var
     vars:

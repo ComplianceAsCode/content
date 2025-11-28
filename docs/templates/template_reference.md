@@ -57,6 +57,8 @@
 
     -   **key** - audit key. If this isn't specified then the default value `perm_mod` is used.
 
+    -   **syscall_grouping** - a list of syscalls that can be grouped together in a single audit rule
+
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### audit_rules_file_deletion_events
@@ -66,7 +68,20 @@
 
     -   **name** - value of `-S` argument in Audit rule, eg. `unlink`
 
+    -   **syscall_grouping** - a list of syscalls that can be grouped together in a single audit rule
+
 -   Languages: Ansible, Bash, OVAL
+
+#### audit_rules_kernel_module_loading
+-   Ensure auditd collects information on kernel module loading
+
+-   Parameters:
+
+    -   **name** - value of `-S` argument in Audit rule, eg. `create_module`
+
+    -   **syscall_grouping** - a list of syscalls that can be grouped together in a single audit rule
+
+-   Languages: Ansible, Bash, Kubernetes, OVAL
 
 #### audit_rules_path_syscall
 -   Check if there are Audit rules to record events that modify
@@ -124,6 +139,8 @@
 -   Parameters:
 
     -   **name** - name of the unsuccessful system call, eg. `creat`
+
+    -   **syscall_grouping** - a list of syscalls that can be grouped together in a single audit rule
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -235,6 +252,30 @@
         are regexes.
 
 -   Languages: OVAL, Kubernetes
+
+#### crypto_sub_policies
+-   Configures a sub policy for system wide crypto policies. Creates a module
+    file `module_name.pmod` in `/etc/crypto-policies/policies/modules/` that
+    contains `key = value`. Then, it applies this module. The template allows
+    to specify multiple crypto policy sub modules at once, which is convenient
+    for use in benchmarks that require multiple custom crypto settings.
+
+-   Parameters:
+
+    -   **base_policy** - The base system wide crypto policy, eg. `DEFAULT`
+
+    -   **sub_policies** - A list of dictionaries. Each dictionary represents one custom crypto sub policy module. The dictionary has the following members:
+
+        -   **module_name** - crypto sub policy name, eg. `NO-SSHWEAKCIPHERS`
+
+        -   **key** - entry key, eg. `cipher@SSH`
+
+        -   **value** - entry value, eg. `-3DES-CBC`
+
+        Example:
+        `sub_policies = [{"module_name": "NO-SSHCBC", "key": "cipher@SSH", "value": "-*-CBC"}, {"module_name": "NO-WEAKMAC", "key": "mac", "value": "-*-64*"}]`
+
+-   Languages: Ansible, Bash, OVAL
 
 #### dconf_ini_file
 -   Checks for `dconf` configuration. Additionally checks if the
@@ -959,7 +1000,7 @@ The selected value can be changed in the profile (consult the actual variable fo
     -   **missing_parameter_pass** - if set to `true` the check will pass if the
         setting for the given **sysctlvar** is not present in sysctl
         configuration files. In other words, the check will pass if the system
-        default isn't overriden by configuration. Default value: `false`.
+        default isn't overridden by configuration. Default value: `false`.
 
     -   **operation** - operation used for comparison of collected object
         with **sysctlval**. Default value: `equals`.
@@ -1012,7 +1053,7 @@ The selected value can be changed in the profile (consult the actual variable fo
     - **remediation_xccdf_variable** - if specified, then the given XCCDF
         variable is used during remediation instead of hardcoded value. The
         variable is NOT used during checking. But you can specify multiple values
-        separated by | as a `value` parameter and they wil be used during
+        separated by | as a `value` parameter and they will be used during
         checking.
 
 -   Languages: Ansible, Bash, OVAL

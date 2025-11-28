@@ -5,10 +5,10 @@ title: 'The Installed Operating System Is Vendor Supported'
 
 description: |-
     The installed operating system must be maintained by a vendor.
-{{% if 'ol' in product %}}
+{{% if 'ol' in families %}}
     Oracle Linux is supported by Oracle Corporation. As the Oracle
     Linux vendor, Oracle Corporation is responsible for providing security patches.
-{{% elif product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
+{{% elif product in ["sle12", "sle15", "sle16", "slmicro5", "slmicro6"] %}}
     SUSE Linux Enterprise is supported by SUSE. As the SUSE Linux Enterprise
     vendor, SUSE is responsible for providing security patches.
 {{% elif 'almalinux' in product %}}
@@ -39,7 +39,7 @@ identifiers:
     cce@sle12: CCE-83001-8
     cce@sle15: CCE-83260-0
     cce@slmicro5: CCE-93601-3
-    cce@slmicro6: CCE-95035-2 
+    cce@slmicro6: CCE-95035-2
 
 references:
     cis-csc: 18,20,4
@@ -61,9 +61,9 @@ ocil: |-
     the following command:
 {{% if product.startswith("rhel") %}}
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
-{{% elif 'ol' in product %}}
+{{% elif 'ol' in families %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
-{{% elif product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
+{{% elif product in ["sle12", "sle15", "sle16", "slmicro5", "slmicro6"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>
 {{% elif 'ubuntu' in product %}}
     <pre>$ grep DISTRIB_DESCRIPTION /etc/lsb-release</pre>

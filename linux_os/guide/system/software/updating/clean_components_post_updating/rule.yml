@@ -78,7 +78,7 @@ ocil: |-
     <pre>clean_requirements_on_remove=1</pre>
     {{% endif %}}
 
-{{% if product in ['fedora'] or 'rhel' in product or 'ol' in product %}}
+{{% if product in ['fedora'] or 'rhel' in product or 'ol' in families %}}
 fixtext: |-
     Configure {{{ full_name }}} to remove all software components after updated versions have been installed.
 
@@ -91,5 +91,5 @@ srg_requirement: |-
     {{{ full_name }}} must remove all software components after updated versions have been installed.
 
 {{% if 'ubuntu' not in product %}}
-platform: package[{{{ pkg_manager }}}]
+platform: package[{{{ pkg_manager }}}] and not bootc
 {{% endif %}}

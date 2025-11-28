@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cat >> /etc/rsyslog.conf <<EOF
+{{{ setup_rsyslog_remote_tls() }}}
+
+cat >> $RSYSLOG_CONF <<EOF
 action(type="omfwd"
        protocol="tcp"
        Target="remote.system.com"

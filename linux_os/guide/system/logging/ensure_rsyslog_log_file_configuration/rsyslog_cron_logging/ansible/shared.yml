@@ -4,26 +4,25 @@
 # complexity = low
 # disruption = low
 
--   name: "{{{ rule_title }}} - Search if cron configuration exists"
-    {{% if 'ol' in families %}}
-    ansible.builtin.command: grep -Pzo '(?m)^\s*(cron|\*)\.\*\s*(/var/log/(cron|messages)|action\(\s*.*(?i:\btype\b)="omfile"\s*.*(?i:\bfile\b)="/var/log/(cron|messages)"\s*\))\s*$' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
-    {{% else %}}
-    ansible.builtin.command: grep -Pzo '(?m)^\s*cron\.\*\s*(/var/log/cron|action\(\s*.*(?i:\btype\b)="omfile"\s*.*(?i:\bfile\b)="/var/log/cron"\s*\))\s*$' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
-    {{% endif %}}
-    register: cron_log_config_exists
-    failed_when: false
+{{{ ansible_setup_rsyslog_common(rule_title) }}}
 
--   name: "{{{ rule_title }}} - Ensure the /etc/rsyslog.d directory exists"
-    ansible.builtin.file:
-        path: /etc/rsyslog.d
-        state: directory
+{{{ ansible_remove_rainerscript_range_entries(rule_title, "[[:space:]]*cron\.\*.*action(", ")", "cron.* action()") }}}
 
--   name: "{{{ rule_title }}} - Add cron log configuration line"
-    ansible.builtin.lineinfile:
-        path: /etc/rsyslog.d/cron.conf
-        line: "cron.*  /var/log/cron"
-        create: true
-    when: cron_log_config_exists.stdout_lines | length == 0
+{{{ ansible_lineinfile(msg="Remove *.* entries pointing to /var/log/cron from rsyslog.conf",
+                       path="/etc/rsyslog.conf",
+                       regex='^\s*\*\.\*\s+/var/log/cron\s*$',
+                       state='absent',
+                       rule_title=rule_title)
+}}}
+
+-   name: "{{{ rule_title }}} - Remove *.* entries pointing to /var/log/cron from rsyslog.d/*.conf"
+    ansible.builtin.shell: find /etc/rsyslog.d -type f -name "*.conf" -exec sed -i '\|^\s*\*\.\*\s\+/var/log/cron\s*$|d' {} +
+    changed_when: true
+
+{{{ ansible_set_config_file_dir(msg, "/etc/rsyslog.conf", "/etc/rsyslog.d", "/etc/rsyslog.d/cron.conf",
+                                "cron.*", separator=' ', separator_regex='',
+                                value="/var/log/cron", create='yes', rule_title=rule_title)
+}}}
 
 -   name: "{{{ rule_title }}} - Restart the rsyslog service now"
     ansible.builtin.service:

@@ -11,5 +11,6 @@ done
 authselect select --force custom/testingProfile
 {{{ bash_pam_faillock_enable() }}}
 
-
+{{% if 'ol' not in families %}}
 rm -f /etc/security/faillock.conf
+{{% endif %}}

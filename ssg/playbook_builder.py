@@ -258,7 +258,7 @@ class PlaybookBuilder():
             profile_path = os.path.join(self.profiles_dir, profile_file)
             try:
                 profile = self.open_profile(profile_path)
-            except ssg.yaml.DocumentationNotComplete as e:
+            except ssg.yaml.DocumentationNotComplete:
                 msg = "Skipping incomplete profile {0}. To include incomplete " + \
                     "profiles, build in debug mode.\n"
                 sys.stderr.write(msg.format(profile_path))

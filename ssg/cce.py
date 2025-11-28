@@ -5,9 +5,7 @@ Common functions for processing CCE (Common Configuration Enumeration) in SSG
 import re
 import random
 import os
-
-
-CCE_POOLS = dict()
+from typing import Dict, Type
 
 
 class CCEFile:
@@ -136,6 +134,7 @@ class SLE15CCEFile(CCEFile):
         return os.path.join(self.project_root, "shared", "references", "cce-sle15-avail.txt")
 
 
+CCE_POOLS: Dict[str, Type[CCEFile]] = {}
 CCE_POOLS["redhat"] = RedhatCCEFile
 CCE_POOLS["sle12"] = SLE12CCEFile
 CCE_POOLS["sle15"] = SLE15CCEFile

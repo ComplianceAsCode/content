@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
+{{{ setup_rsyslog_encrypt_offload_defaultnetstreamdriver() }}}
 
-echo 'global(DefaultNetstreamDriver="tftp" DefaultNetstreamDriverKeyFile="/path/to/contrib/gnutls/key.pem")' > /etc/rsyslog.d/encrypt.conf
+echo 'global(DefaultNetstreamDriver="tftp" DefaultNetstreamDriverKeyFile="/path/to/contrib/gnutls/key.pem")' > $RSYSLOG_D_CONF

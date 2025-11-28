@@ -6,12 +6,12 @@ import os
 import yaml
 from collections import defaultdict
 from copy import deepcopy
+from typing import Set, Dict, Callable, Any, Optional
 
 from ssg.yaml import yaml_Dumper
 
 from ..xml import ElementTree as ET, add_xhtml_namespace
 from ..yaml import DocumentationNotComplete, open_and_expand
-from ..shims import unicode_func
 
 from ..constants import (
     xhtml_namespace,
@@ -112,7 +112,7 @@ def add_sub_element(parent, tag, ns, data):
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func('<{0} xmlns="{3}" xmlns:xhtml="{2}">{1}</{0}>').format(
+    ustr = str('<{0} xmlns="{3}" xmlns:xhtml="{2}">{1}</{0}>').format(
         tag, namespaced_data, xhtml_namespace, ns)
 
     try:
@@ -156,15 +156,15 @@ class XCCDFEntity(object):
     when entities are defined in the benchmark tree,
     and they are compiled into flat YAMLs to the build directory.
     """
-    KEYS = dict(
+    KEYS: Dict[str, Callable[[], Optional[Any]]] = dict(
             id_=lambda: "",
             title=lambda: "",
             definition_location=lambda: "",
     )
 
-    MANDATORY_KEYS = set()
+    MANDATORY_KEYS: Set[str] = set()
 
-    ALTERNATIVE_KEYS = dict()
+    ALTERNATIVE_KEYS: Dict[str, str] = {}
 
     GENERIC_FILENAME = ""
     ID_LABEL = "id"
@@ -291,7 +291,7 @@ class XCCDFEntity(object):
 
         try:
             data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml, product_cpes)
-        except DocumentationNotComplete as exc:
+        except DocumentationNotComplete:
             raise
         except Exception as exc:
             msg = (

@@ -24,7 +24,7 @@ UNRELEASED_DISTROS_AND_OSINFO = {
 
 DISTRO_URL = {
     "fedora":
-        "https://download.fedoraproject.org/pub/fedora/linux/releases/41/Everything/x86_64/os",
+        "https://download.fedoraproject.org/pub/fedora/linux/releases/42/Everything/x86_64/os",
     "centos8": "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/",
     "centos9": "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/",
 }
@@ -208,11 +208,14 @@ def handle_ssh_pubkey(data):
     data.ssh_pubkey_used = bool(data.ssh_pubkey)
     if not data.ssh_pubkey:
         home_dir = os.path.expanduser('~')
-        user_default_key = f'{home_dir}/.ssh/id_rsa.pub'
-        if os.path.isfile(user_default_key):
-            data.ssh_pubkey = user_default_key
-            with open(data.ssh_pubkey) as f:
-                data.pub_key_content = f.readline().rstrip()
+        key_types = ['ed25519', 'rsa',]
+        for key_type in key_types:
+            user_default_key = f'{home_dir}/.ssh/id_{key_type}.pub'
+            if os.path.isfile(user_default_key):
+                data.ssh_pubkey = user_default_key
+                with open(data.ssh_pubkey) as f:
+                    data.pub_key_content = f.readline().rstrip()
+                    return
         else:
             err('SSH public key was not found or informed by "--ssh-pubkey" option.')
 
@@ -253,8 +256,8 @@ def handle_kickstart(data):
 
         if data.uefi:
             content = content.replace(
-                "part /boot --fstype=xfs --size=512",
-                "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200",
+                "part /boot --fstype=xfs --size=1152",
+                "part /boot --fstype=xfs --size=640\npart /boot/efi --fstype=efi --size=512",
             ).replace(
                 "part biosboot ",
                 "# part biosboot ",

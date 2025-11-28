@@ -24,9 +24,9 @@ identifiers:
     cce@rhel8: CCE-82875-6
     cce@rhel9: CCE-84217-9
     cce@rhel10: CCE-90511-7
+    cce@sle15: CCE-92601-4
 
 references:
-    ism: 0988,1405
     srg: SRG-OS-000355-GPOS-00143
 
 ocil_clause: 'the chronyd process is not running'
@@ -38,7 +38,7 @@ fixtext: '{{{ fixtext_service_enabled(service="chronyd") }}}'
 
 srg_requirement: '{{{ srg_requirement_service_enabled(service="chronyd") }}}'
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if 'ubuntu' in product %}}
 template:
     name: service_enabled_guard_var
     vars:

@@ -1,6 +1,10 @@
 # platform = multi_platform_all
 
+{{% if 'ol' in families %}}
+FAILLOCK_CONF_FILES="/etc/security/faillock.conf"
+{{% else %}}
 FAILLOCK_CONF_FILES="/etc/security/faillock.conf /etc/pam.d/system-auth /etc/pam.d/password-auth"
+{{% endif %}}
 faillock_dirs=$(grep -oP "^\s*(?:auth.*pam_faillock.so.*)?dir\s*=\s*(\S+)" $FAILLOCK_CONF_FILES \
                | sed -r 's/.*=\s*(\S+)/\1/')
 

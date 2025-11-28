@@ -16,13 +16,9 @@ description: |-
 selections:
 
   ### Remove obsolete packages
-  - package_talk_removed
-  - package_talk-server_removed
   - package_telnet_removed
   - service_telnet_disabled
   - package_telnet-server_removed
-  - package_rsh_removed
-  - package_rsh-server_removed
   - service_avahi-daemon_disabled
   - package_squid_removed
   - service_squid_disabled

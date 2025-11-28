@@ -2,7 +2,7 @@
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="6">
     {{{ oval_metadata(DESCRIPTION, rule_title=rule_title) }}}
 
-    {{% if 'debian' in product or 'ubuntu' in product %}}
+    {{% if 'debian' in product or 'ubuntu' in product or 'sle15' in product %}}
 
     <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
       <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
@@ -53,6 +53,7 @@
 	  <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_password_pam_unix_auth"
                      comment="pam_unix.so appears only once in auth section of password-auth"/>
 	</criteria>
+        {{% if 'ol' not in families %}}
 	
         <!-- pam_faillock.so parameters can be defined directly in pam files or, in newer
              versions, in /etc/security/faillock.conf. The last is the recommended option when
@@ -72,6 +73,7 @@
 	      test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_password_pam_faillock_account"
 	      comment="pam_faillock.so is properly defined in account section of password-auth"/>
         </criteria>
+        {{% endif %}}
       </criteria>
 
       <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
@@ -80,6 +82,7 @@
            may confuse the assessment. The following tests ensure only one option is used. Note
            that if faillock.conf is available, authselect tool only manage parameters on it -->
       <criteria operator="OR" comment="Check expected value for pam_faillock.so {{{ PRM_NAME }}} parameter">
+        {{% if 'ol' not in families %}}
         <criteria operator="AND"
                   comment="Check expected pam_faillock.so {{{ PRM_NAME }}} parameter in pam files">
           <criterion
@@ -92,6 +95,7 @@
               test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_faillock_conf"
               comment="Ensure the {{{ PRM_NAME }}} parameter is not present in /etc/security/faillock.conf"/>
         </criteria>
+        {{% endif %}}
         <criteria operator="AND"
                   comment="Check expected pam_faillock.so {{{ PRM_NAME }}} parameter in faillock.conf">
           <criterion
@@ -122,7 +126,7 @@
       id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_auth_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entries in auth section of pam files">
-    {{% if 'debian' in product %}}
+    {{% if 'debian' in product or 'sle15' in product %}}
     <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
     {{% elif 'ubuntu' in product %}}
     <value>^\s*auth\s+(requisite|required)\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail</value>
@@ -137,7 +141,7 @@
       id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_account_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entry in account section of pam files">
-    {{% if 'debian' in product or 'ubuntu' in product %}}
+    {{% if 'debian' in product or 'ubuntu' in product or 'sle15' in product %}}
     <value>^\s*account\s+required\s+pam_faillock\.so\s*(#.*)?$</value>
     {{% elif 'openeuler' in product or 'kylinserver' in product %}}
     <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so</value>

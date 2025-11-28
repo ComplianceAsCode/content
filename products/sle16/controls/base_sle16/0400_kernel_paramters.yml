@@ -1,0 +1,14 @@
+#
+# A group of rules regarding kernel parameters and modules configuration and installation
+#
+# SLES-16 ids allocated for this group from SLES-16-16016400 till SLES-16-16016499
+#
+controls:
+    - id: SLES-16-16016400
+      title: Enable NX/XD Support
+      levels:
+          - pcidss4
+      automated: partially
+      rules:
+          - bios_enable_execution_restrictions
+          - install_PAE_kernel_on_x86-32

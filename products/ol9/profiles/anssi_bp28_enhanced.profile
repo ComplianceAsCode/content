@@ -54,9 +54,21 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    - '!grub2_uefi_password'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
+    - '!no_nis_in_nsswitch'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!service_chronyd_enabled'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
+
+    # package not available in OL9
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'

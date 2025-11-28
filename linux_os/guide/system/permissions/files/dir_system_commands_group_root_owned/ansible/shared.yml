@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 
--  name: "{{{ RULE_TITLE }}} - Set group ownership of directories that contain system commands to root"
+-  name: "{{{ rule_title }}} - Set group ownership of directories that contain system commands to root"
    ansible.builtin.file: 
      path: "{{ item }}"
      group: "root"

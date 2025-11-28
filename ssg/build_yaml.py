@@ -3159,7 +3159,7 @@ class LinearLoader(object):
         for gid in benchmark_first_groups:
             try:
                 self.benchmark.add_group(self.groups[gid], self.env_yaml, self.product_cpes)
-            except KeyError as exc:
+            except KeyError:
                 # Add only the groups we have compiled and loaded
                 pass
         self.benchmark.drop_rules_not_included_in_a_profile()
@@ -3426,13 +3426,13 @@ class Platform(XCCDFEntity):
         ** XCCDFEntity.KEYS
     )
 
-    MANDATORY_KEYS = [
+    MANDATORY_KEYS = {
         "name",
         "xml_content",
         "original_expression",
         "bash_conditional",
         "ansible_conditional"
-    ]
+    }
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]

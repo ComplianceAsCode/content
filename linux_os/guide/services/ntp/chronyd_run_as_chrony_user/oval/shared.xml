@@ -10,13 +10,13 @@
     {{{ oval_metadata("Ensure that no other user than chrony is configured to run the chrony service", rule_title=rule_title) }}}
 
       <criteria comment="chronyd enabled and multiple remote servers specified" operator="AND">
-        <criterion comment="The default chrony user hasn't been overriden" test_ref="test_no_user_override" />
+        <criterion comment="The default chrony user hasn't been overridden" test_ref="test_no_user_override" />
       </criteria>
 
   </definition>
 
   <ind:textfilecontent54_test id="test_no_user_override"
-    comment="The default chrony user hasn't been overriden"
+    comment="The default chrony user hasn't been overridden"
     check_existence="none_exist" check="all" version="1">
     <ind:object object_ref="obj_user_override" />
   </ind:textfilecontent54_test>

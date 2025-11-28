@@ -1,33 +1,37 @@
-aide_also_checks_audispd: 'yes'
-aide_also_checks_rsyslog: 'no'
+aide_also_checks_audispd: "yes"
+aide_also_checks_rsyslog: "no"
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
+audit_binaries:
+  - /sbin/auditctl
+  - /sbin/aureport
+  - /sbin/ausearch
+  - /sbin/autrace
+  - /sbin/auditd
+  - /sbin/audispd
+  - /sbin/augenrules
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
 benchmark_id: OPENSUSE
 benchmark_root: ../../linux_os/guide
-bootable_containers_supported: 'false'
+bootable_containers_supported: "false"
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- opensuse-42.1:
-    check_id: installed_OS_is_opensuse_leap42
-    name: cpe:/o:opensuse:leap:42.1
-    title: openSUSE Leap 42.1
-- opensuse-42.2:
-    check_id: installed_OS_is_opensuse_leap42
-    name: cpe:/o:opensuse:leap:42.2
-    title: openSUSE Leap 42.2
-- opensuse-42.3:
-    check_id: installed_OS_is_opensuse_leap42
-    name: cpe:/o:opensuse:leap:42.3
-    title: openSUSE Leap 42.3
-- opensuse-15:
-    check_id: installed_OS_is_opensuse_leap15
-    name: cpe:/o:opensuse:leap:15.0
-    title: openSUSE Leap 15.0
+  - opensuse-15:
+      check_id: installed_OS_is_opensuse_leap15
+      name: cpe:/o:opensuse:leap:15
+      title: openSUSE Leap 15
+  - opensuse-16:
+      check_id: installed_OS_is_opensuse_leap16
+      name: cpe:/o:opensuse:leap:16
+      title: openSUSE Leap 16
+  - opensuse-tumbleweed:
+      check_id: installed_OS_is_opensuse
+      name: cpe:/o:opensuse:tumbleweed
+      title: openSUSE Tumbleweed
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
@@ -78,7 +82,7 @@ reference_uris:
   isa-62443-2013: https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu
   ism: https://www.cyber.gov.au/acsc/view-all-content/ism
   iso27001-2013: https://www.iso.org/contents/data/standard/05/45/54534.html
-  nerc-cip: https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx
+  nerc-cip: https://www.nerc.com/standards/reliability-standards/cip
   nist: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf
   nist-csf: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf
   os-srg: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os
@@ -88,12 +92,16 @@ reference_uris:
   stigid: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
 rsyslog_cafile: /etc/pki/tls/cert.pem
-sshd_distributed_config: 'false'
-sysctl_remediate_drop_in_file: 'false'
+sshd_distributed_config: "false"
+sysctl_remediate_drop_in_file: "false"
+target_oval_version:
+  - 5
+  - 11
+target_oval_version_str: "5.11"
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland

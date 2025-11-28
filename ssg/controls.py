@@ -5,7 +5,9 @@ Common functions for processing Controls in SSG
 import collections
 import os
 import copy
+import sys
 from glob import glob
+from typing import Dict, List, Set
 
 import ssg.entities.common
 import ssg.yaml
@@ -142,7 +144,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         description=str,
         rationale=str,
         automated=str,
-        status=None,
+        status=lambda: None,
         mitigation=str,
         artifact_description=str,
         status_justification=str,
@@ -300,7 +302,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 continue
             try:
                 rule.add_control_reference(reference_type, self.id)
-            except ValueError as exc:
+            except ValueError:
                 msg = (
                     "Please remove any duplicate listing of rule '%s' in "
                     "control '%s'." % (
@@ -369,6 +371,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         product (list): A list of products associated with the policy.
     """
     def __init__(self, filepath, env_yaml=None):
+        self.controls_dirs = []
         self.id = None
         self.env_yaml = env_yaml
         self.filepath = filepath
@@ -403,7 +406,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         data["source"] = self.source
         data["definition_location"] = self.filepath
         data["controls"] = [c.represent_as_dict() for c in self.controls]
-        data["levels"] = [l.represent_as_dict() for l in self.levels]
+        data["levels"] = [level.represent_as_dict() for level in self.levels]
         return data
 
     @property
@@ -637,6 +640,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         controls_dir = yaml_contents.get("controls_dir")
         if controls_dir:
             self.controls_dir = os.path.join(os.path.dirname(self.filepath), controls_dir)
+            self.controls_dirs = [self.controls_dir]
         self.id = ssg.utils.required_key(yaml_contents, "id")
         self.policy = ssg.utils.required_key(yaml_contents, "policy")
         self.title = ssg.utils.required_key(yaml_contents, "title")
@@ -726,9 +730,9 @@ class Policy(ssg.entities.common.XCCDFEntity):
         levels[level] = ""
         if level.inherits_from:
             for lv in level.inherits_from:
-                eligible_levels = [l for l in self.get_level_with_ancestors_sequence(lv) if l not in levels.keys()]
-                for l in eligible_levels:
-                    levels[l] = ""
+                eligible_levels = [le for le in self.get_level_with_ancestors_sequence(lv) if le not in levels.keys()]
+                for le in eligible_levels:
+                    levels[le] = ""
         return list(levels.keys())
 
     def _check_conflict_in_rules(self, rules):
@@ -786,17 +790,17 @@ class Policy(ssg.entities.common.XCCDFEntity):
             control.add_references(self.reference_type, rules)
 
 
-class ControlsManager():
+class ControlsManager:
     """
     Manages the loading, processing, and saving of control policies.
 
     Attributes:
-        controls_dir (str): The directory where control policy files are located.
+        controls_dirs (List[str]): The directories where control policy files are located.
         env_yaml (str, optional): The environment YAML file.
         existing_rules (dict, optional): Existing rules to check against.
         policies (dict): A dictionary of loaded policies.
     """
-    def __init__(self, controls_dir, env_yaml=None, existing_rules=None):
+    def __init__(self, controls_dirs: List[str], env_yaml=None, existing_rules=None):
         """
         Initializes the Controls class.
 
@@ -805,19 +809,25 @@ class ControlsManager():
             env_yaml (str, optional): Path to the environment YAML file. Defaults to None.
             existing_rules (dict, optional): Dictionary of existing rules. Defaults to None.
         """
-        self.controls_dir = os.path.abspath(controls_dir)
+        self.controls_dirs = [os.path.abspath(controls_dir) for controls_dir in controls_dirs]
         self.env_yaml = env_yaml
         self.existing_rules = existing_rules
-        self.policies = {}
+        self.policies: Dict = {}
 
     def _load(self, format):
-        if not os.path.exists(self.controls_dir):
-            return
-        for filename in sorted(glob(os.path.join(self.controls_dir, "*." + format))):
-            filepath = os.path.join(self.controls_dir, filename)
-            policy = Policy(filepath, self.env_yaml)
-            policy.load()
-            self.policies[policy.id] = policy
+        for controls_dir in self.controls_dirs:
+            if not os.path.isdir(controls_dir):
+                continue
+            for filepath in sorted(glob(os.path.join(controls_dir, "*." + format))):
+                policy = Policy(filepath, self.env_yaml)
+                policy.load()
+                if policy.id in self.policies:
+                    print(f"Policy {policy.id} was defined first at "
+                                     f"{self.policies[policy.id].filepath} and now another policy "
+                                     f"with the same ID is being loaded from {policy.filepath}."
+                                     f"Overriding with later.",
+                                     file=sys.stderr)
+                self.policies[policy.id] = policy
         self.check_all_rules_exist()
         self.resolve_controls()
 
@@ -948,7 +958,7 @@ class ControlsManager():
         control = policy.get_control(control_id)
         return control
 
-    def get_all_controls_dict(self, policy_id):
+    def get_all_controls_dict(self, policy_id: str) -> Dict[str, Control]:
         """
         Retrieve all controls for a given policy as a dictionary.
 
@@ -959,7 +969,6 @@ class ControlsManager():
             Dict[str, list]: A dictionary where the keys are control IDs and the values are lists
                              of controls.
         """
-        # type: (str) -> typing.Dict[str, list]
         policy = self._get_policy(policy_id)
         return policy.controls_by_id
 

@@ -24,6 +24,14 @@
         create: true
         regexp: "^mac@SSH="
 
+-   name: "{{{ rule_title }}} - Check current crypto policy"
+    ansible.builtin.command: update-crypto-policies --show
+    register: current_crypto_policy
+    changed_when: false
+    failed_when: false
+    check_mode: false
+
 -   name: "{{{ rule_title }}} - Update crypto-policies"
     ansible.builtin.command: update-crypto-policies --set FIPS:STIG
+    when: current_crypto_policy.stdout.strip() != "FIPS:STIG"
 

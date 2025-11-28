@@ -109,6 +109,7 @@ mypy_test("utils/import_disa_stig.py" "skip")
 mypy_test("tests/cces-removed.py" "normal")
 mypy_test("utils/build_control_from_reference.py" "skip")
 mypy_test("tests/rule_removal.py" "skip")
+mypy_test("ssg" "skip")
 
 if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
     mypy_test("utils/oscal/" "skip")
@@ -287,7 +288,7 @@ endif()
 if(Python_VERSION_MAJOR GREATER 2)
     add_test(
         NAME "test-check-eof"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/check_eof.py" "${CMAKE_SOURCE_DIR}/ssg" "${CMAKE_SOURCE_DIR}/linux_os" "${CMAKE_SOURCE_DIR}/utils" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/products" "${CMAKE_SOURCE_DIR}/shared" "${CMAKE_SOURCE_DIR}/docs" "${CMAKE_SOURCE_DIR}/apple_os" "${CMAKE_SOURCE_DIR}/applications" "${CMAKE_SOURCE_DIR}/build-scripts" "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_SOURCE_DIR}/Dockerfiles" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/controls" "${CMAKE_SOURCE_DIR}/.github"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/check_eof.py" "${CMAKE_SOURCE_DIR}/ssg" "${CMAKE_SOURCE_DIR}/linux_os" "${CMAKE_SOURCE_DIR}/utils" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/products" "${CMAKE_SOURCE_DIR}/shared" "${CMAKE_SOURCE_DIR}/docs" "${CMAKE_SOURCE_DIR}/applications" "${CMAKE_SOURCE_DIR}/build-scripts" "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_SOURCE_DIR}/Dockerfiles" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/controls" "${CMAKE_SOURCE_DIR}/.github"
     )
 endif()
 

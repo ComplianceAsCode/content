@@ -7,19 +7,19 @@
 # 1. The flag, "true" means the second requirement is policy_id.
 # 2. The related policy_id or profile id of the CaC updates.
 # 3. The product.
-# 4. The CaC content PR number.
+# 4. The oscal-content branch name.
 # 5. The GitHub workspace path.
 # 6. The mapping file for the specific product.
 
 # Usage:
-# sh utils/complyscribe-cli-compd.sh false anssi_bp28_minimal rhel10 4 "/User/huiwang" rhel10_map.json
-# sh utils/complyscribe-cli-compd.sh true anssi rhel10 4 "/User/huiwang" rhel10_map.json
+# sh utils/complyscribe-cli-compd.sh false anssi_bp28_minimal rhel10 branch_name "/User/huiwang" rhel10_map.json
+# sh utils/complyscribe-cli-compd.sh true anssi rhel10 branch_name "/User/huiwang" rhel10_map.json
 
 # Get the arguments
 flag=$1
 policy_or_profile=$2
 product=$3
-pr_number=$4
+branch_name=$4
 workspace_path=$5
 product_mapping_file=$6
 
@@ -47,9 +47,9 @@ while IFS= read -r line; do
         type="software"
       fi
       sed -i "/href/s|\(trestle://\)[^ ]*\(catalogs\)|\1\2|g" "../oscal-content/profiles/$oscal_profile/profile.json"
-      poetry run complyscribe sync-cac-content component-definition --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$workspace_path/cac-content" --product "$product" --component-definition-type "$type" --cac-profile "$profile" --oscal-profile "$oscal_profile"
+      poetry run complyscribe sync-cac-content component-definition --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "$branch_name" --cac-content-root "$workspace_path/cac-content" --product "$product" --component-definition-type "$type" --cac-profile "$profile" --oscal-profile "$oscal_profile"
       type="validation"
-      poetry run complyscribe sync-cac-content component-definition --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "sync_cac_pr$pr_number" --cac-content-root "$workspace_path/cac-content" --product "$product" --component-definition-type "$type" --cac-profile "$profile" --oscal-profile "$oscal_profile"
+      poetry run complyscribe sync-cac-content component-definition --repo-path ../oscal-content --committer-email "openscap-ci@gmail.com" --committer-name "openscap-ci" --branch "$branch_name" --cac-content-root "$workspace_path/cac-content" --product "$product" --component-definition-type "$type" --cac-profile "$profile" --oscal-profile "$oscal_profile"
     done < levels
   fi
 done < "$product_mapping_file"

@@ -105,3 +105,6 @@ selections:
   - '!sysctl_net_ipv6_conf_all_autoconf'
   - '!ensure_oracle_gpgkey_installed'
   - '!ensure_almalinux_gpgkey_installed'
+  - '!ldap_client_tls_cacertpath'
+  - '!ldap_client_start_tls'
+  - '!no_nis_in_nsswitch'

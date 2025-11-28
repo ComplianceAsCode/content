@@ -4,10 +4,10 @@
 
 aide --init
 
-
 declare -a bins
 bins=('/usr/sbin/auditctl' '/usr/sbin/auditd' '/usr/sbin/augenrules' '/usr/sbin/aureport' '/usr/sbin/ausearch' '/usr/sbin/autrace' '/usr/sbin/rsyslogd' '/usr/sbin/audispd')
 
+echo >> {{{ aide_conf_path }}}
 for theFile in "${bins[@]}"
 do
     echo "$theFile p+i+n+u+g+s+b+acl+xattrs+sha512"  >> {{{ aide_conf_path }}}

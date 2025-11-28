@@ -71,7 +71,6 @@ def corresponding_product_built(build_dir, product_id):
 
 
 def get_matching_compiled_product_filename(build_dir, product_id):
-    ref_path_components = reference_fname.split(os.path.sep)
     matching_filename = os.path.join(build_dir, product_id, "product.yml")
     if os.path.isfile(matching_filename):
         return matching_filename
@@ -96,6 +95,8 @@ def inform_and_append_fix_based_on_reference_compiled_product(ref, build_root):
     compiled_product = ssg.products.Product(compiled_path)
     difference = get_reference_vs_built_difference(ref_product, compiled_product)
     all_ok = difference.empty
+    if not all_ok:
+        print(describe_change(difference, product_id), file=sys.stderr)
     return all_ok
 
 

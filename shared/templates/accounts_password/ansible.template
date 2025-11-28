@@ -5,7 +5,7 @@
 # disruption = low
 - (xccdf-var var_password_pam_{{{ VARIABLE }}})
 
-{{% if product in ["ol8","ol9"] or 'rhel' in product %}}
+{{% if 'ol' in families or 'rhel' in product %}}
 - name: {{{ rule_title }}} - Find pwquality.conf.d files
   ansible.builtin.find:
     paths: /etc/security/pwquality.conf.d/
@@ -20,8 +20,14 @@
   with_items: "{{ pwquality_conf_d_files.files }}"
 {{% endif %}}
 
-{{% if "ol" in product %}}
+{{% if "ol" in families %}}
 {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth',
+                                  'password',
+                                  '',
+                                  'pam_pwquality.so',
+                                  VARIABLE, rule_title=rule_title)
+}}}
+{{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth',
                                   'password',
                                   '',
                                   'pam_pwquality.so',

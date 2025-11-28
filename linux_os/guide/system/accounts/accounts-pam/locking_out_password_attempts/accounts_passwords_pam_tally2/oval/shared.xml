@@ -3,14 +3,14 @@
     {{{ oval_metadata("The number of allowed failed logins should be set correctly.", rule_title=rule_title) }}}
     <criteria operator="AND" comment="Checks common to both scenarios">
       <criterion test_ref="test_accounts_passwords_pam_tally2_deny_auth"
-      comment="Verify deny configuation of pam_tally2 in common-auth" />
+      comment="Verify deny configuration of pam_tally2 in common-auth" />
       <criterion test_ref="test_accounts_passwords_pam_tally2_deny_account"
-      comment="Verify deny configuation of pam_tally2 in common-account" />
+      comment="Verify deny configuration of pam_tally2 in common-account" />
     </criteria>
   </definition>
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_deny_auth"
   check="all" check_existence="all_exist"
-  comment="Verify deny configuation of pam_tally2" version="1">
+  comment="Verify deny configuration of pam_tally2" version="1">
     <ind:object object_ref="object_accounts_passwords_pam_tally2_deny_auth" />
     <ind:state state_ref="state_var_accounts_passwords_pam_tally2_deny_value_upper_bound" />
     <ind:state state_ref="state_var_accounts_passwords_pam_tally2_deny_value_lower_bound" />
@@ -41,7 +41,7 @@
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_deny_account"
   check="all" check_existence="all_exist"
-  comment="Verify deny configuation of pam_tally2_account" version="1">
+  comment="Verify deny configuration of pam_tally2_account" version="1">
     <ind:object object_ref="object_accounts_passwords_pam_tally2_deny_account" />
   </ind:textfilecontent54_test>
 

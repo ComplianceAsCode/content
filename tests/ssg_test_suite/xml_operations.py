@@ -153,6 +153,7 @@ def remove_bash_machine_remediation_condition(root):
     system = "urn:xccdf:fix:script:sh"
     considered_machine_platform_checks = [
         r"\[\s+!\s+-f\s+/\.dockerenv\s+\]\s+&&\s+\[\s+!\s+-f\s+/run/\.containerenv\s+\]",
+        r"rpm\s+--quiet\s+-q\s+kernel-core",
         r"rpm\s+--quiet\s+-q\s+kernel"
     ]
     repl = "true"

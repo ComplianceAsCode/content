@@ -1,0 +1,48 @@
+title: Ensure No Unsupported Configuration Overrides are Used
+
+platform: not ocp4-on-hypershift-hosted
+
+description: |-
+  Kubernetes API servers should not use unsupported configuration overrides that
+  can potentially compromise the security and stability of the cluster. This
+  rule checks that no unsupported configuration overrides are present in the
+  cluster API server configurations.
+
+rationale: |-
+  Unsupported configuration overrides can introduce security vulnerabilities,
+  performance issues, and unexpected behaviors in the cluster. They bypass the
+  standard configuration mechanisms and can potentially weaken the cluster's
+  security posture or introduce instability.
+
+severity: medium
+
+identifiers:
+  cce@ocp4: CCE-89304-0
+
+references:
+  cis@ocp4: 1.2.31
+
+{{% set jqfilter = '[.items[] | select(.spec.unsupportedConfigOverrides != null and .spec.unsupportedConfigOverrides != {}) | .metadata.name]' %}}
+
+ocil_clause: 'Unsupported Kubernetes API server configuration overrides are detected'
+
+ocil: |-
+  Run the following commands to check for unsupported configuration overrides:
+  <pre>$ oc get kubeapiserver/cluster -o jsonpath='{.spec.unsupportedConfigOverrides}'</pre>
+  Verify that these commands return an empty object or no output.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/operator.openshift.io/v1/kubeapiservers': jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: {{{ openshift_filtered_path('/apis/operator.openshift.io/v1/kubeapiservers', jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "none_exist"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"

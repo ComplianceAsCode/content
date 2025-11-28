@@ -20,6 +20,32 @@ rationale: |-
     SSL/TLS certificates.
 
 severity: medium
-
 identifiers:
+    cce@ocp4: CCE-87411-5
+    cce@rhcos4: CCE-87849-6
     cce@rhel9: CCE-89013-7
+
+ocil_clause: non-trusted CA is installed in the system
+
+ocil: |-
+    To check which CAs are trusted in your system, use
+{{% if 'ocp4' == product %}}
+    <code>$ oc get proxy cluster </code> to see, which configmap is referenced and use
+    <code>$ oc get configmap custom-ca -n openshift-config </code> to list the CAs
+{{% elif 'rhcos4' == product %}}
+    <code>$ for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; trust list';done </code>
+{{% else %}}
+    <code>$ trust list --filter ca-anchors </code> on the Operating System
+{{% endif %}}
+    and manually compare the supplied list with your internal list of allowed Certificate Authorities
+
+fixtext: |-
+{{% if 'ocp4' == product %}}
+    Create a configmap and reference it by the proxy cluster object following the guidance here {{ weblink(link=https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/networking/enable-cluster-wide-proxy#nw-proxy-configure-object_config-cluster-wide-proxy) }}
+{{% elif 'rhcos4' == product %}}
+    Due to the immutable nature of RHCOS4 it is not possible to remove CAs. Instead you should blacklist them using a MachineConfigObject following the guidance here {{ weblink(link=https://access.redhat.com/solutions/6963204) }}
+{{% else %}}
+    To remove CAs use
+    <code> $ trust anchor --remove "pkcs11:id=<%AA%BB%CC%DD%EE>;type=cert" </code> after
+    getting the id with <code> $ trust list </code>
+{{% endif %}}

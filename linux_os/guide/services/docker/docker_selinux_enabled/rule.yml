@@ -11,7 +11,7 @@ description: |-
     <pre>OPTIONS='--selinux-enabled'</pre>
 
 rationale: |-
-    If SELinux is not explicitely enabled in the Docker daemon configuration,
+    If SELinux is not explicitly enabled in the Docker daemon configuration,
     Docker does not use SELinux which means Docker runs unconfined,
     and SELinux will not provide security separation for Docker container
     processes. However enabling SELinux for the Docker service prevents
@@ -20,6 +20,6 @@ rationale: |-
 
 severity: high
 
-platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
+platform: machine  # The check uses service_... extended definition, which doesn't support offline mode
 
 platform: machine

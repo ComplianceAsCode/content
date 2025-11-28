@@ -14,7 +14,7 @@
     patterns: "*.config"
   register: ssh_config_include_files
 
-- name: Remove all occurences of RekeyLimit configuration from include config files of ssh client
+- name: Remove all occurrences of RekeyLimit configuration from include config files of ssh client
   ansible.builtin.lineinfile:
     path: "{{ item }}"
     regexp: '^[\s]*RekeyLimit.*$'

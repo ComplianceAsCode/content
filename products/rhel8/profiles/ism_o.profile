@@ -30,10 +30,6 @@ extends: e8
 
 selections:
     - ism_o:all
-    # Add rules missing from the control file that where in RHEL 8
-    - accounts_password_all_shadowed
-    - usbguard_allow_hid_and_hub
-    - sshd_allow_only_protocol2
     # Remove rules that where not the original profile for RHEL 8
     - '!accounts_password_minlen_login_defs'
     - '!accounts_password_pam_dcredit'
@@ -79,6 +75,7 @@ selections:
     - '!set_password_hashing_algorithm_systemauth'
     - '!sssd_enable_smartcards'
     - '!system_booted_in_fips_mode'
+    - '!sshd_use_directory_configuration'
     # Adjust variables to match the origianl RHEL 8 profiles
     - var_password_hashing_algorithm_pam=sha512
     - var_accounts_password_minlen_login_defs=15

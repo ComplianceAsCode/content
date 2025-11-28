@@ -25,7 +25,7 @@ systemctl restart NetworkManager
 # Active zones are zones with at least one interface assigned to it.
 readarray -t firewalld_active_zones < <(firewall-cmd --get-active-zones | grep -v interfaces)
 
-# It is possible that traffic is comming by any active interface and consequently any
+# It is possible that traffic is coming by any active interface and consequently any
 # active zone. So, this make sure all active zones are permanently allowing SSH service.
 # Most of the zones already allow ssh, so it is also allowed http to ensure a custom file is
 # created in /etc/firewalld/zones.

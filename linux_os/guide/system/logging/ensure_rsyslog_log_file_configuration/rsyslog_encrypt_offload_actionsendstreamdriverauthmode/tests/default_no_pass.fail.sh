@@ -1,8 +1,8 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
+{{{ setup_rsyslog_encrypt_offload_actionsendstreamdriverauthmode() }}}
 
-if [[ -f encrypt.conf ]]; then
-  sed -i "/^\$ActionSendStreamDriverMod.*/d" /etc/rsyslog.conf
+if [[ -f $RSYSLOG_D_CONF ]]; then
+  sed -i "/^\$ActionSendStreamDriverAuthMode.*/d" $RSYSLOG_D_CONF
 fi
-  sed -i "/^\$ActionSendStreamDriverMod.*/d" /etc/rsyslog.conf
+  sed -i "/^\$ActionSendStreamDriverAuthMode.*/d" $RSYSLOG_CONF

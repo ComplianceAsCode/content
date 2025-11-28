@@ -31,8 +31,8 @@ class CombinedChecker(rule.RuleChecker):
     If a rule doesn't have any test scenario, it is skipped.
     Skipped rules are reported at the end.
     """
-    def __init__(self, test_env):
-        super(CombinedChecker, self).__init__(test_env)
+    def __init__(self, local_test_env):
+        super(CombinedChecker, self).__init__(local_test_env)
 
         self.rules_not_tested_yet = set()
         self.results = list()

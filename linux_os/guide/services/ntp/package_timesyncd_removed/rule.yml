@@ -14,7 +14,7 @@ rationale: |
 
 severity: low
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if 'ubuntu' in product %}}
 template:
     name: package_removed_guard_var
     vars:

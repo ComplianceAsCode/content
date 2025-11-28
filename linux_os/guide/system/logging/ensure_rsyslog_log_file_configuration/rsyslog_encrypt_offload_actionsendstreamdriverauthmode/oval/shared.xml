@@ -16,7 +16,7 @@
     </definition>
 
 {{% set legacy_regex = "^\\$ActionSendStreamDriverAuthMode x509/name$" %}}
-{{% set rainer_script_regex = "^\\s*action\\(.*(?i)\\btype\\b(?-i)=\"omfwd\".*(?i)\\bStreamDriverAuthMode\\b(?-i)=\"x509/name\".*\\)\\s*$" %}}
+{{% set rainer_script_regex = "(?ms)^\\s*action\\(.*(?i)\\btype\\b(?-i)=\"omfwd\".*(?i)\\bStreamDriverAuthMode\\b(?-i)=\"x509/name\".*\\)\\s*$" %}}
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
                                 comment="Check if $ActionSendStreamDriverAuthMode x509/name is set in /etc/rsyslog.conf"
