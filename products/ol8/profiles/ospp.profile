@@ -206,3 +206,4 @@ selections:
     - '!zipl_audit_backlog_limit_argument'
     - '!zipl_bls_entries_only'
     - '!zipl_bootmap_is_up_to_date'
+    - '!package_libreport-plugin-rhtsupport_removed'
