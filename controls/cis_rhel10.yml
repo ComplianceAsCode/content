@@ -499,15 +499,12 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: This requirement demands a deeper review of the rules.
       rules:
-          - file_groupowner_grub2_cfg
-          - file_owner_grub2_cfg
-          - file_permissions_grub2_cfg
-          - file_groupowner_user_cfg
-          - file_owner_user_cfg
-          - file_permissions_user_cfg
+          - file_permissions_boot_grub2
+          - file_owner_boot_grub2
+          - file_groupowner_boot_grub2
 
     - id: 1.5.1
       title: Ensure core file size is configured (Automated)
