@@ -45,6 +45,11 @@ fixtext: '{{{ fixtext_service_disabled("systemd-coredump") }}}'
 
 srg_requirement: '{{{ srg_requirement_service_disabled("systemd-coredump") }}}'
 
+{{% if product in ["rhel8"] %}}
+conflicts:
+    - sysctl_kernel_core_pattern
+{{% endif %}}
+
 template:
     name: socket_disabled
     vars:
