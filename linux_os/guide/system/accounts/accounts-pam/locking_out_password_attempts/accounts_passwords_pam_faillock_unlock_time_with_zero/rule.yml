@@ -1,0 +1,71 @@
+documentation_complete: true
+
+title: 'Set Lockout Time for Failed Password Attempts'
+
+description: |-
+    This rule configures the system to lock out accounts during a specified time period after a
+    number of incorrect login attempts using <tt>pam_faillock.so</tt>.
+
+    Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
+    <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where
+    <tt>interval-in-seconds</tt> is set to <tt>0</tt> or is set to
+    <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+
+    pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
+    defined to work as expected. In order to avoid any errors when manually editing these files,
+    it is recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
+    depending on the OS version.
+
+    If <tt>unlock_time</tt> is set to <tt>0</tt>, manual intervention by an administrator is required
+    to unlock a user. This should be done using the <tt>faillock</tt> tool.
+
+rationale: |-
+    By limiting the number of failed logon attempts the risk of unauthorized system
+    access via user password guessing, otherwise known as brute-forcing, is reduced.
+    Limits are imposed by locking the account.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-87367-9
+
+platform: package[pam]
+
+ocil_clause: |-
+    the "unlock_time" option is not set to "0" or is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}",
+    the line is missing, or commented out
+
+ocil: |-
+    Verify {{{ full_name }}} is configured to lock an account until released by an administrator
+    after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unsuccessful logon
+    attempts with the command:
+
+    <pre>$ grep 'unlock_time =' /etc/security/faillock.conf</pre>
+    <tt>unlock_time = {{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt>
+
+fixtext: |-
+    Configure {{{ full_name }}} to lock an account until released by an administrator after
+    {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unsuccessful logon attempts with the command:
+
+    $ sudo authselect enable-feature with-faillock
+
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    <pre>unlock_time = {{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</pre>
+
+warnings:
+    - general: |-
+       If the system supports the new <tt>/etc/security/faillock.conf</tt> file but the
+       pam_faillock.so parameters are defined directly in <tt>/etc/pam.d/system-auth</tt> and
+       <tt>/etc/pam.d/password-auth</tt>, the remediation will migrate the <tt>unlock_time</tt> parameter
+       to <tt>/etc/security/faillock.conf</tt> to ensure compatibility with <tt>authselect</tt> tool.
+       The parameters <tt>deny</tt> and <tt>fail_interval</tt>, if used, also have to be migrated
+       by their respective remediation.
+
+    - general: |-
+        If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+        will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+        aborted in order to preserve intentional changes. In this case, an informative message will
+        be shown in the remediation report.
+        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        parameters should be defined in <tt>faillock.conf</tt> file.
