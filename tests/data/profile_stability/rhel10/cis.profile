@@ -256,6 +256,7 @@ file_permissions_user_cfg
 file_permissions_var_log_audit
 firewalld_loopback_traffic_trusted
 gid_passwd_group_same
+group_server_with_gui_removed
 group_unique_id
 group_unique_name
 groups_no_zero_gid_except_root

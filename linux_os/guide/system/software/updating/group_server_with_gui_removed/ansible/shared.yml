@@ -1,0 +1,16 @@
+# platform = multi_platform_rhel
+# strategy = configure
+# complexity = low
+# disruption = low
+
+# Note: This is important to update dependencies to allow the removal of the Server
+# with GUI group with minimal impact to the system functionality.
+- name: "{{{ rule_title }}} - Install Minimal Install group"
+  ansible.builtin.command:
+    cmd: dnf groupinstall -y 'Minimal Install'
+- name: "{{{ rule_title }}} - Remove Server with GUI group"
+  ansible.builtin.command:
+    cmd: dnf groupremove -y 'Server with GUI'
+- name: "{{{ rule_title }}} - Install Server group"
+  ansible.builtin.command:
+    cmd: dnf groupinstall -y 'Server'
