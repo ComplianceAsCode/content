@@ -520,7 +520,6 @@ controls:
           - package_aide_installed
           - aide_scan_notification
           - aide_periodic_cron_checking
-          - aide_periodic_checking_systemd_timer
       # currently not in rhel9, causes massive error with filesystem walk
       # - aide_disable_silentreports
           - aide_build_database
@@ -534,6 +533,8 @@ controls:
       # it is more important to harden the permissions to prevent change, than it is to
       # ensure that the permissions are the same as in the rpm database.
           - rpm_verify_permissions
+      # Section 4
+          - aide_periodic_checking_systemd_timer
 
     - id: SYS.1.1.A28
       title: Increasing Availability Through Redundancy
