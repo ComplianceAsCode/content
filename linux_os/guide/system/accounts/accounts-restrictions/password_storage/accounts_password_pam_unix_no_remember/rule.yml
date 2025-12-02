@@ -41,3 +41,16 @@ warnings:
         PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
         aborted in order to preserve intentional changes. In this case, an informative message will
         be shown in the remediation report.
+
+ocil_clause: 'the remember option is found in pam_unix.so configuration'
+
+ocil: |-
+    To verify that the <tt>remember</tt> option is not present in <tt>pam_unix.so</tt> configuration,
+    run the following command:
+    {{% if 'ubuntu' in product or 'debian' in product %}}
+    <pre>$ grep -rE "^\s*password\s+.*pam_unix\.so.*\bremember=" /etc/pam.d/common-*</pre>
+    {{% else %}}
+    <pre>$ grep -E "^\s*password\s+.*pam_unix\.so.*\bremember=" /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+    {{% endif %}}
+    The command should not return any output. If any lines are returned, it means the <tt>remember</tt>
+    option is configured in <tt>pam_unix.so</tt>, which is not compliant with this requirement.
