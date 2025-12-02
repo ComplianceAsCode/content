@@ -1991,13 +1991,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
           Usage of pam_unix.so module together with "remember" option is deprecated and is not
-          recommened by this policy. Instead, it should be used remember option of pam_pwhistory
+          recommended by this policy. Instead, it should be used remember option of pam_pwhistory
           module, as required in 4.4.3.3.1. See here for more details about pam_unix.so:
           https://bugzilla.redhat.com/show_bug.cgi?id=1778929
-          A new rule needs to be created to remove the remember option from pam_unix module.
+      rules:
+          - accounts_password_pam_unix_no_remember
 
     - id: 4.4.3.4.3
       title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
