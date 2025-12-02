@@ -585,3 +585,6 @@ selections:
     - package_quagga_removed
     - package_rsh-server_removed
     - sshd_use_strong_macs
+    - audit_rules_etc_cron_d
+    - audit_rules_var_spool_cron
+    - audit_rules_login_events_tallylog
