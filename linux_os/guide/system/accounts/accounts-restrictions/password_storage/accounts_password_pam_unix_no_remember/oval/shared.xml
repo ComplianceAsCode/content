@@ -12,7 +12,11 @@
     <ind:object object_ref="object_pam_unix_no_remember" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_pam_unix_no_remember" version="1">
+{{% if 'ubuntu' in product or 'debian' in product %}}
     <ind:filepath operation="pattern match">^/etc/pam.d/common-(password|auth|account|session|session-noninteractive)$</ind:filepath>
+{{% else %}}
+    <ind:filepath operation="pattern match">^/etc/pam.d/(system|password)-auth$</ind:filepath>
+{{% endif %}}
     <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required)|(?:\[.*\]))\s+pam_unix\.so[^#]+\bremember=\d+\b.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
