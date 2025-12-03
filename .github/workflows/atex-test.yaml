@@ -1,8 +1,10 @@
-name: ATEX Testing Farm Integration
+name: ATEX - Test and Upload Results
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_run:
+    workflows: ["ATEX - Build Content"]
+    types:
+      - completed
 
 env:
   ATEX_REPO: RHSecurityCompliance/atex-results-testing-farm
@@ -11,70 +13,43 @@ env:
   ARTIFACT_RETENTION_DAYS: 1
   TEST_TIMEOUT: 1440 # 24 hours
 
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+  issues: write
+
 jobs:
-  build_content:
-    name: Build content for CentOS Stream ${{ matrix.centos_stream_major }}
+  # Only run if the build workflow succeeded
+  check_build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        centos_stream_major: [8, 9, 10]
-    container:
-      image: fedora:latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      pr_number: ${{ steps.get_pr.outputs.pr_number }}
+      pr_sha: ${{ steps.get_pr.outputs.pr_sha }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install system dependencies
-        run: |
-          dnf install -y \
-            cmake make openscap-utils python3-pyyaml \
-            bats ansible python3-pip ShellCheck git \
-            gcc gcc-c++ python3-devel libxml2-devel \
-            libxslt-devel python3-setuptools gawk
-
-      - name: Install Python dependencies
-        run: pip install pcre2==0.4.0 -r requirements.txt -r test-requirements.txt
-
-      - name: Build content
-        env:
-          CENTOS_STREAM_MAJOR: ${{ matrix.centos_stream_major }}
-        run: |
-          rm -rf build
-          mkdir build
-          cd build
-
-          # Build configuration matching Contest and scap-security-guide.spec defaults
-          # Includes options required by tests to avoid rebuilds
-          cmake ../ \
-              -DCMAKE_BUILD_TYPE:STRING=Release \
-              -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=ON \
-              -DSSG_PRODUCT_DEFAULT:BOOL=OFF \
-              "-DSSG_PRODUCT_RHEL${CENTOS_STREAM_MAJOR}:BOOL=ON" \
-              -DSSG_SCE_ENABLED:BOOL=ON \
-              -DSSG_BASH_SCRIPTS_ENABLED:BOOL=OFF \
-              -DSSG_BUILD_DISA_DELTA_FILES:BOOL=OFF \
-              -DSSG_SEPARATE_SCAP_FILES_ENABLED:BOOL=OFF \
-              -DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON
-
-          # Build using all available cores
-          cores=$(nproc) || cores=4
-          make "-j$cores"
-
-          # Clean up temporary metadata
-          rm -rf jinja2_cache
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - name: Download PR info
+        uses: actions/download-artifact@v4
         with:
-          name: content-centos-stream${{ matrix.centos_stream_major }}
-          path: .
-          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          name: pr-info-9
+          path: pr-info/
+
+      - name: Get PR number and SHA
+        id: get_pr
+        run: |
+          PR_NUMBER=$(cat pr-info/pr-number.txt)
+          PR_SHA=$(cat pr-info/pr-sha.txt)
+          echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
+          echo "pr_sha=${PR_SHA}" >> $GITHUB_OUTPUT
+          echo "PR Number: ${PR_NUMBER}"
+          echo "PR SHA: ${PR_SHA}"
 
   test:
     name: Test on CentOS Stream ${{ matrix.centos_stream_major }}
     runs-on: ubuntu-latest
-    needs: build_content
+    needs: check_build
     strategy:
       matrix:
         centos_stream_major: [8, 9, 10]
@@ -88,6 +63,8 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
           name: content-centos-stream${{ matrix.centos_stream_major }}
           path: content-centos-stream${{ matrix.centos_stream_major }}/
 
@@ -133,7 +110,7 @@ jobs:
   upload:
     name: Upload and publish test results
     runs-on: ubuntu-latest
-    needs: test
+    needs: [check_build, test]
     if: always() # Run even if tests fail
     container:
       image: fedora:latest
@@ -213,7 +190,7 @@ jobs:
       - name: Update HTML title with PR number
         if: always()
         run: |
-          sed "/<title>/s/>.*</>Test outputs from PR #${{ github.event.pull_request.number }} HTML</" \
+          sed "/<title>/s/>.*</>Test outputs from PR #${{ needs.check_build.outputs.pr_number }} HTML</" \
             -i atex-html/index.html
 
       - name: Merge test results from all versions
@@ -248,7 +225,7 @@ jobs:
         working-directory: atex-results-testing-farm
         env:
           GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
         run: |
           git config user.name "openscap-ci[bot]"
           git config user.email "openscap.ci@gmail.com"
@@ -263,7 +240,7 @@ jobs:
         id: testing_farm_request
         env:
           TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
         run: |
           python3 tests/submit_results_to_testing_farm.py \
             --repo-url "https://github.com/${{ env.ATEX_REPO }}" \
@@ -278,7 +255,7 @@ jobs:
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
         id: fc
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ needs.check_build.outputs.pr_number }}
           comment-author: 'github-actions[bot]'
           body-includes: Testing Farm Results
 
@@ -287,7 +264,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v4
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ needs.check_build.outputs.pr_number }}
           body: |
             ### Testing Farm Results
 
@@ -303,6 +280,6 @@ jobs:
         working-directory: atex-results-testing-farm
         env:
           GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
         run: |
           git push --delete origin PR${PR_NUMBER}

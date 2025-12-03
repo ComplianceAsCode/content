@@ -1,0 +1,84 @@
+name: ATEX - Build Content
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  ARTIFACT_RETENTION_DAYS: 1
+
+permissions:
+  contents: read
+
+jobs:
+  build_content:
+    name: Build content for CentOS Stream ${{ matrix.centos_stream_major }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        centos_stream_major: [8, 9, 10]
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          dnf install -y \
+            cmake make openscap-utils python3-pyyaml \
+            bats ansible python3-pip ShellCheck git \
+            gcc gcc-c++ python3-devel libxml2-devel \
+            libxslt-devel python3-setuptools gawk
+
+      - name: Install Python dependencies
+        run: pip install pcre2==0.4.0 -r requirements.txt -r test-requirements.txt
+
+      - name: Build content
+        env:
+          CENTOS_STREAM_MAJOR: ${{ matrix.centos_stream_major }}
+        run: |
+          rm -rf build
+          mkdir build
+          cd build
+
+          # Build configuration matching Contest and scap-security-guide.spec defaults
+          # Includes options required by tests to avoid rebuilds
+          cmake ../ \
+              -DCMAKE_BUILD_TYPE:STRING=Release \
+              -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=ON \
+              -DSSG_PRODUCT_DEFAULT:BOOL=OFF \
+              "-DSSG_PRODUCT_RHEL${CENTOS_STREAM_MAJOR}:BOOL=ON" \
+              -DSSG_SCE_ENABLED:BOOL=ON \
+              -DSSG_BASH_SCRIPTS_ENABLED:BOOL=OFF \
+              -DSSG_BUILD_DISA_DELTA_FILES:BOOL=OFF \
+              -DSSG_SEPARATE_SCAP_FILES_ENABLED:BOOL=OFF \
+              -DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON
+
+          # Build using all available cores
+          cores=$(nproc) || cores=4
+          make "-j$cores"
+
+          # Clean up temporary metadata
+          rm -rf jinja2_cache
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-centos-stream${{ matrix.centos_stream_major }}
+          path: .
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+
+      - name: Save PR number for workflow_run
+        run: |
+          mkdir -p pr-info
+          echo ${{ github.event.pull_request.number }} > pr-info/pr-number.txt
+          echo ${{ github.event.pull_request.head.sha }} > pr-info/pr-sha.txt
+
+      - name: Upload PR info
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-info-${{ matrix.centos_stream_major }}
+          path: pr-info/
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
