@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys
 import time
@@ -79,12 +79,6 @@ with contextlib.ExitStack() as stack:
     partial_runs.mkdir(parents=True, exist_ok=True)
 
     platform_name = f"cs{args.os_major_version}@{args.arch}"
-
-    # Hardware requirements for Testing Farm
-    # if args.arch == "x86_64":
-    #     hw = {"virtualization": {"is-supported": True}, "memory": ">= 7 GB"}
-    # else:
-    #     hw = None
 
     # Setup Testing Farm provisioner
     prov = TestingFarmProvisioner(

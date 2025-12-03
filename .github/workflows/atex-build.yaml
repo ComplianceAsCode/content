@@ -33,7 +33,7 @@ jobs:
             libxslt-devel python3-setuptools gawk
 
       - name: Install Python dependencies
-        run: pip install pcre2==0.4.0 -r requirements.txt -r test-requirements.txt
+        run: pip install -r requirements.txt -r test-requirements.txt
 
       - name: Build content
         env:
