@@ -40,5 +40,3 @@ ocil: |-
     <pre>$ grep -A 5 "^\[.*epel.*\]" /etc/yum.repos.d/*.repo | grep "enabled"</pre>
     The output should show <tt>enabled=0</tt> for all EPEL repositories, or no EPEL repositories
     should be present.
-
-platform: package[yum]
