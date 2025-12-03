@@ -166,6 +166,7 @@ file_permissions_sshd_private_key
 file_permissions_sshd_pub_key
 file_permissions_unauthorized_world_writable
 file_permissions_user_cfg
+firewalld-backend
 firewalld_loopback_traffic_trusted
 gid_passwd_group_same
 group_unique_id
