@@ -60,7 +60,7 @@
   </linux:rpminfo_state>
 
 {{% if "rhel" in families  and major_version_ordinal >= 10 %}}
-  <!-- Test for Red Hat post quantom cryptography key -->
+  <!-- Test for Red Hat post quantum cryptography key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
   id="test_redhat_package_gpgkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}}_installed" version="1"
   comment="Red Hat post quantum cryptography key package is installed">
