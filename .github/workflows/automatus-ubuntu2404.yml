@@ -19,11 +19,11 @@ jobs:
       - name: Install deps python
         run: pip3 install gitpython xmldiff
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
         with:
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
@@ -71,7 +71,7 @@ jobs:
       - name: Install test deps
         run: sudo apt-get update && sudo apt-get install -y cmake ninja-build xsltproc libxml2-utils python3-yaml python3-jinja2 openscap-utils podman
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
       - name: Get cached CTF output
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
         id: get_ctf_output
