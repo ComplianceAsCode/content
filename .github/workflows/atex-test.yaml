@@ -33,7 +33,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
-          name: pr-info-9
+          name: pr-info
           path: pr-info/
 
       - name: Get PR number and SHA

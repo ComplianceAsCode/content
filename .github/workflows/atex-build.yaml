@@ -70,7 +70,11 @@ jobs:
           path: .
           retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
 
-      - name: Save PR number for workflow_run
+  save_pr_info:
+    name: Save PR information for workflow_run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Save PR number and SHA
         run: |
           mkdir -p pr-info
           echo ${{ github.event.pull_request.number }} > pr-info/pr-number.txt
@@ -79,6 +83,6 @@ jobs:
       - name: Upload PR info
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          name: pr-info-${{ matrix.centos_stream_major }}
+          name: pr-info
           path: pr-info/
           retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
