@@ -68,7 +68,7 @@ jobs:
           name: content-centos-stream${{ matrix.centos_stream_major }}
           path: content-centos-stream${{ matrix.centos_stream_major }}/
 
-      - name: Checkout Contest framework
+      - name: Checkout Contest Test Suite
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
         with:
           repository: ${{ env.CONTEST_REPO }}
@@ -257,7 +257,7 @@ jobs:
         with:
           issue-number: ${{ needs.check_build.outputs.pr_number }}
           comment-author: 'github-actions[bot]'
-          body-includes: Testing Farm Results
+          body-includes: ATEX Test Results
 
       - name: Create or update PR comment with results
         if: always()
@@ -266,7 +266,7 @@ jobs:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ needs.check_build.outputs.pr_number }}
           body: |
-            ### Testing Farm Results
+            ### ATEX Test Results
 
             Test artifacts have been submitted to Testing Farm.
 
