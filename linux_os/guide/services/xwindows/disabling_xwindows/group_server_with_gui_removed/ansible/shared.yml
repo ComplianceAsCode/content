@@ -9,9 +9,14 @@
 - name: "{{{ rule_title }}} - Install Minimal Install group"
   ansible.builtin.command:
     cmd: dnf groupinstall -y 'Minimal Install'
+  when: not ansible_check_mode
+
 - name: "{{{ rule_title }}} - Remove Server with GUI group"
   ansible.builtin.command:
     cmd: dnf groupremove -y 'Server with GUI'
+  when: not ansible_check_mode
+
 - name: "{{{ rule_title }}} - Install Server group"
   ansible.builtin.command:
     cmd: dnf groupinstall -y 'Server'
+  when: not ansible_check_mode
