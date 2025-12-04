@@ -95,6 +95,13 @@ def main():
     # Do faster queries than the default 30 secs, because we don't track
     # many dozens of requests, just one
     class FastRequest(api.Request):
+        """
+        A request class that executes queries faster than the default 30 seconds.
+
+        This optimization is implemented because the system does not track
+        many dozens of requests, typically just one, eliminating the need
+        for the standard, longer default timeout.
+        """
         api_query_limit = 5
 
     req = FastRequest()
