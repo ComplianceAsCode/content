@@ -1,6 +1,4 @@
 #!/bin/bash
-# remediation = none
-# packages = util-linux,dosfstools
 
 # This test verifies that the rule passes when /boot/efi is mounted with vfat filesystem
 # Even with nosuid set, vfat is excluded from the requirement (nosuid has no effect on vfat)

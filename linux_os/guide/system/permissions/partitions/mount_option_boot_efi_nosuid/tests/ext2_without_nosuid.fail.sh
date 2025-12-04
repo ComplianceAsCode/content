@@ -1,5 +1,4 @@
 #!/bin/bash
-# remediation = none
 
 # This test verifies that the rule fails when /boot/efi is mounted with ext2 filesystem
 # without nosuid option
