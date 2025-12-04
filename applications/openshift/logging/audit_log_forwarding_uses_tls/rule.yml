@@ -37,7 +37,8 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting() | indent(4) }}}
+    {{{ openshift_cluster_setting(
+            "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders") | indent(4) }}}
     {{{ openshift_filtered_cluster_setting_suppressed({
             "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance": 'try [.spec.outputs[].url] catch []',
             "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": 'try [.items[].spec.outputs[][]|objects|select(.url != null).url] catch []',
