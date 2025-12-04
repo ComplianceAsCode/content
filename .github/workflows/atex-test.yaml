@@ -30,7 +30,7 @@ jobs:
       pr_sha: ${{ steps.get_pr.outputs.pr_sha }}
     steps:
       - name: Download PR info
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
@@ -59,10 +59,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
 
       - name: Download build artifacts
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
@@ -70,7 +70,7 @@ jobs:
           path: content-centos-stream${{ matrix.centos_stream_major }}/
 
       - name: Checkout Contest framework
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
         with:
           repository: ${{ env.CONTEST_REPO }}
           ref: main
@@ -99,7 +99,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: test-results-centos-stream${{ matrix.centos_stream_major }}
           path: |
@@ -118,7 +118,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
 
       - name: Install dependencies
         if: always()
@@ -128,7 +128,7 @@ jobs:
 
       - name: Checkout ATEX results repository
         if: always()
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
         with:
           repository: ${{ env.ATEX_REPO }}
           ref: main
@@ -158,7 +158,7 @@ jobs:
       # Download test results for all CentOS Stream versions
       - name: Download test results - CentOS Stream 8
         if: always()
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: test-results-centos-stream8
           path: test-results/cs8/
@@ -166,7 +166,7 @@ jobs:
 
       - name: Download test results - CentOS Stream 9
         if: always()
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: test-results-centos-stream9
           path: test-results/cs9/
@@ -174,7 +174,7 @@ jobs:
 
       - name: Download test results - CentOS Stream 10
         if: always()
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: test-results-centos-stream10
           path: test-results/cs10/
@@ -182,7 +182,7 @@ jobs:
 
       - name: Checkout ATEX HTML viewer
         if: always()
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
         with:
           repository: ${{ env.ATEX_HTML_REPO }}
           ref: main

@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
 
       - name: Install system dependencies
         run: |
@@ -64,7 +64,7 @@ jobs:
           rm -rf jinja2_cache
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: content-centos-stream${{ matrix.centos_stream_major }}
           path: .
@@ -77,7 +77,7 @@ jobs:
           echo ${{ github.event.pull_request.head.sha }} > pr-info/pr-sha.txt
 
       - name: Upload PR info
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: pr-info-${{ matrix.centos_stream_major }}
           path: pr-info/
