@@ -5,6 +5,7 @@ on:
     workflows: ["ATEX - Build Content"]
     types:
       - completed
+    branches: [master, 'stabilization*']
 
 env:
   ATEX_REPO: RHSecurityCompliance/atex-results-testing-farm
