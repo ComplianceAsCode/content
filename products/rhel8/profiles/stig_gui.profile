@@ -2,7 +2,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R4
+    version: V2R5
     SMEs:
         - mab879
         - ggbecker
@@ -13,7 +13,7 @@ title: 'DISA STIG with GUI for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V2R4.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V2R5.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, this
     configuration baseline is applicable to the operating system tier of

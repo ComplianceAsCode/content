@@ -65,6 +65,11 @@ warnings:
 
 platform: package[systemd]
 
+{{% if product in ["rhel8", "rhel9"] %}}
+conflicts:
+    - sysctl_kernel_core_pattern
+{{% endif %}}
+
 template:
     name: systemd_dropin_configuration
     vars:
