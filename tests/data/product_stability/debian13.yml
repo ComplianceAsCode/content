@@ -4,13 +4,13 @@ aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide/aide.conf
 audisp_conf_path: /etc/audit
 audit_binaries:
-  - /sbin/auditctl
-  - /sbin/aureport
-  - /sbin/ausearch
-  - /sbin/autrace
-  - /sbin/auditd
-  - /sbin/audispd
-  - /sbin/augenrules
+- /sbin/auditctl
+- /sbin/aureport
+- /sbin/ausearch
+- /sbin/autrace
+- /sbin/auditd
+- /sbin/audispd
+- /sbin/augenrules
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
@@ -50,6 +50,7 @@ pkg_manager: apt_get
 pkg_system: dpkg
 platform_package_overrides:
   aarch64_arch: null
+  audit: auditd
   gdm: gdm3
   grub2: grub2-common
   login_defs: login
