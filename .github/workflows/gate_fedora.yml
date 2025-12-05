@@ -45,7 +45,7 @@ jobs:
                         rhel8 \
                         rhel9 \
                         rhel10 \
-                        rhv4 \
+                        rhv4
                 env:
                     ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON -DSSG_SCAP_VALIDATION_ENABLED:BOOL=OFF -DENABLE_CHECK_RULE_REMOVAL:BOOL=ON -DOLD_RELEASE_DIR=/__w/content/content/old_release -DENABLE_PYTHON_COVERAGE:BOOL=ON"
             -   name: Get Latest Release
