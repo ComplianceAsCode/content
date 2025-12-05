@@ -450,10 +450,10 @@ controls:
     - id: RHEL-09-215035
       levels:
           - medium
-      title: RHEL 9 must not have the rsh-server package installed.
-      related_rules:
-          - package_rsh-server_removed
-      status: not applicable  # The rsh-server package is not available in RHEL 9
+      title: RHEL 9 must not install packages from the Extra Packages for Enterprise Linux (EPEL) repository.
+      rules:
+          - ensure_epel_repos_disabled
+      status: automated
 
     - id: RHEL-09-215040
       levels:
@@ -3500,13 +3500,6 @@ controls:
           - audit_rules_privileged_commands_crontab
       status: automated
 
-    - id: RHEL-09-654096
-      title: RHEL 9 must audit any script or executable called by cron as root or by any privileged user.
-      rules:
-          - audit_rules_etc_cron_d
-          - audit_rules_var_spool_cron
-      status: automated
-
     - id: RHEL-09-654100
       levels:
           - medium
@@ -3772,15 +3765,6 @@ controls:
           and termination events that affect /var/log/lastlog.
       rules:
           - audit_rules_login_events_lastlog
-      status: automated
-
-    - id: RHEL-09-654260
-      levels:
-          - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
-          and termination events that affect /var/log/tallylog.
-      rules:
-          - audit_rules_login_events_tallylog
       status: automated
 
     - id: RHEL-09-654265

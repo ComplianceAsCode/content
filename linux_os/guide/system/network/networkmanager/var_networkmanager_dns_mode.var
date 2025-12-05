@@ -7,8 +7,9 @@ type: string
 description: |-
     This sets how NetworkManager handles DNS.
 
-    none -  NetworkManager will not modify resolv.conf.
     default - NetworkManager will update /etc/resolv.conf to reflect the nameservers provided by currently active connections.
+    none - NetworkManager will not modify /etc/resolv.conf. Used when DNS is managed manually or by another service.
+    systemd-resolved - Uses systemd-resolved to manage DNS.
 
 interactive: true
 
@@ -18,3 +19,4 @@ options:
     none: none
     default: default
     explicit_default: default
+    systemd_resolved: systemd-resolved
