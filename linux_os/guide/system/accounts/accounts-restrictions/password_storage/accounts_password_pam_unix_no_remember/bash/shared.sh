@@ -18,10 +18,10 @@ DEBIAN_FRONTEND=noninteractive pam-auth-update
 {{% else %}}
 # RHEL-based systems: Use authselect-aware approach
 if [ -f /usr/bin/authselect ]; then
-    {{{ bash_remove_pam_module_option_configuration('/etc/pam.d/system-auth', 'password', '', 'pam_unix.so', 'remember') }}}
-    {{{ bash_remove_pam_module_option_configuration('/etc/pam.d/password-auth', 'password', '', 'pam_unix.so', 'remember') }}}
+    {{{ bash_remove_pam_module_option_configuration('/etc/pam.d/system-auth', 'password', '.*', 'pam_unix.so', 'remember') }}}
+    {{{ bash_remove_pam_module_option_configuration('/etc/pam.d/password-auth', 'password', '.*', 'pam_unix.so', 'remember') }}}
 else
-    {{{ bash_remove_pam_module_option('/etc/pam.d/system-auth', 'password', '', 'pam_unix.so', 'remember') }}}
-    {{{ bash_remove_pam_module_option('/etc/pam.d/password-auth', 'password', '', 'pam_unix.so', 'remember') }}}
+    {{{ bash_remove_pam_module_option('/etc/pam.d/system-auth', 'password', '.*', 'pam_unix.so', 'remember') }}}
+    {{{ bash_remove_pam_module_option('/etc/pam.d/password-auth', 'password', '.*', 'pam_unix.so', 'remember') }}}
 fi
 {{% endif %}}
