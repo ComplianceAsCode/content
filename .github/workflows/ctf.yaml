@@ -10,7 +10,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install git python3-jinja2 python3-yaml python3-setuptools python3-deepdiff python3-git python3-github python3-requests xmldiff python3-setuptools
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
@@ -23,12 +23,12 @@ jobs:
         run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
       - name: Checkout fork point
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
         with:
           ref: ${{ steps.fork_point.outputs.FORK_POINT }}
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf

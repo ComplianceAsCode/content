@@ -20,7 +20,7 @@ jobs:
       - name: Install deps python
         run: pip install gitpython xmldiff
       - name: Checkout master
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
         with:
           repo: ComplianceAsCode/content
           ref: master
@@ -34,7 +34,7 @@ jobs:
         run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
       - name: Checkout (CTF)
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
