@@ -2,7 +2,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R5
+    version: V2R6
     SMEs:
         - mab879
         - ggbecker
@@ -13,7 +13,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 9'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 9 V2R5.
+    DISA STIG for Red Hat Enterprise Linux 9 V2R6.
 
     In addition to being applicable to Red Hat Enterprise Linux 9, this
     configuration baseline is applicable to the operating system tier of
