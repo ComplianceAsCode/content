@@ -79,3 +79,11 @@ controls:
       status: automated
       rules:
           - audit_rules_dac_modification_fchmodat2
+
+    - id: SLES-16-16016545
+      levels:
+          - pcidss4
+      title: SLE16 system should audit access to /var/log/audit
+      status: automated
+      rules:
+          - directory_access_var_log_audit

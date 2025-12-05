@@ -22,3 +22,4 @@ selections:
     - grub2_spectre_v2_argument
     - grub2_nosmep_argument_absent
     - grub2_audit_argument
+    - directory_access_var_log_audit
