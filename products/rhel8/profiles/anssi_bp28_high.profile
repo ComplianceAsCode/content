@@ -25,6 +25,7 @@ selections:
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_unix_rounds=65536
     - '!service_chronyd_enabled'
+    - '!package_sequoia-sq_installed'
 
     # the following rule renders UEFI systems unbootable
     - '!sebool_secure_mode_insmod'

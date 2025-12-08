@@ -136,6 +136,7 @@ package_aide_installed
 package_audit_installed
 package_dnf-automatic_installed
 package_kea_removed
+package_sequoia-sq_installed
 package_sssd_installed
 package_sudo_installed
 package_telnet-server_removed
