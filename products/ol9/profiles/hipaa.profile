@@ -53,6 +53,7 @@ selections:
     - "!ensure_fedora_gpgkey_installed"
     - "!ensure_gpgcheck_repo_metadata"
     - "!ensure_redhat_gpgkey_installed"
+    - "!package_sequoia-sq_installed"
     - "!ensure_suse_gpgkey_installed"
     - "!file_groupowner_user_cfg"
     - "!file_owner_user_cfg"

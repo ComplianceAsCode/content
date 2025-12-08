@@ -82,6 +82,7 @@ selections:
     - '!sshd_use_directory_configuration'
     - '!sshd_use_priv_separation'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!sysctl_kernel_exec_shield'
     - var_sshd_set_keepalive=0
     - ensure_oracle_gpgkey_installed
