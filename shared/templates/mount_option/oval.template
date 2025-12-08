@@ -38,13 +38,20 @@
   <ind:textfilecontent54_object version="1"
     id="object_{{{ local_id }}}_in_fstab">
     <ind:filepath>/etc/fstab</ind:filepath>
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+    <ind:pattern operation="pattern match">^[\s]*(?!#)[\S]+[\s]+{{{ POINTREGEX }}}[\s]+(?!{{{ EXCLUDE_FILESYSTEM_TYPE }}})[\S]+[\s]+([\S]+)</ind:pattern>
+{{% else %}}
     <ind:pattern operation="pattern match">^[\s]*(?!#)[\S]+[\s]+{{{ POINTREGEX }}}[\s]+[\S]+[\s]+([\S]+)</ind:pattern>
+{{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
 
   <linux:partition_state version="1"
     id="state_{{{ local_id }}}">
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+    <linux:fs_type operation="not equal">{{{ EXCLUDE_FILESYSTEM_TYPE }}}</linux:fs_type>
+{{% endif %}}
 {{% if not MOUNTOPTION_ARG_VAR %}}
     <linux:mount_options datatype="string" entity_check="at least one" operation="equals">{{{ MOUNTOPTION }}}</linux:mount_options>
 {{% else %}}
@@ -52,6 +59,13 @@
       var_ref="local_var_mountoption_{{{ MOUNTOPTION }}}_with_value"/>
 {{% endif %}}
   </linux:partition_state>
+
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+  <linux:partition_state version="1"
+    id="state_{{{ local_id }}}_exist">
+    <linux:fs_type operation="not equal">{{{ EXCLUDE_FILESYSTEM_TYPE }}}</linux:fs_type>
+  </linux:partition_state>
+{{% endif %}}
 
   <ind:textfilecontent54_state version="1"
     id="state_{{{ local_id }}}_in_fstab">
@@ -98,6 +112,9 @@
     comment="{{{ MOUNTPOINT }}} exists"
     id="test_{{{ local_id }}}_exist">
     <linux:object object_ref="object_{{{ local_id }}}"/>
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+    <linux:state state_ref="state_{{{ local_id }}}_exist"/>
+{{% endif %}}
   </linux:partition_test>
 
 {{% if MOUNT_HAS_TO_EXIST %}}

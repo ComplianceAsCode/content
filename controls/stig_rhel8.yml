@@ -2168,10 +2168,10 @@ controls:
     - id: RHEL-08-040010
       levels:
           - high
-      title: RHEL 8 must not have the rsh-server package installed.
-      related_rules:
-          - package_rsh-server_removed
-      status: not applicable
+      title: RHEL 8 must not install packages from the Extra Packages for Enterprise Linux (EPEL) repository.
+      rules:
+          - ensure_epel_repos_disabled
+      status: automated
 
     - id: RHEL-08-040020
       levels:
