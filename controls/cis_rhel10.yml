@@ -1930,13 +1930,11 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: partial
-      notes: |-
-          This module is always present by default. It is necessary to investigate if a new rule to
-          check its existence needs to be created. But so far the rule no_empty_passwords, used in
-          5.3.3.4 can ensure this requirement is attended.
+      status: automated
       related_rules:
           - no_empty_passwords
+      rules:
+          - accounts_password_pam_unix_enabled
 
     - id: 5.3.2.1.1
       title: Ensure password failed attempts lockout is configured (Automated)

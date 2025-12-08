@@ -28,3 +28,9 @@ rationale: |-
 severity: medium
 
 platform: package[pam]
+
+{{% if product == "rhel10" %}}
+warnings:
+    - general: |-
+        Automated remediation of this rule isn't available, you should use authselect to manage PAM settings.
+{{% endif %}}
