@@ -51,7 +51,6 @@ selections:
     - '!accounts_password_pam_minlen'
     - '!no_password_auth_for_systemaccounts'
     - '!file_groupowner_user_cfg'
-    - '!directory_access_var_log_audit'
     - '!ensure_root_password_configured'
     - '!gnome_gdm_disable_automatic_login'
     - '!accounts_password_pam_pwhistory_remember_password_auth'

@@ -6,7 +6,11 @@ This macro changes the configuration of the audit service so that it looks like 
   {{% if product in ["fedora", "ol10", "rhel10"] %}}
   sed -i "s%^ExecStart=.*%ExecStart=/sbin/auditctl%" /usr/lib/systemd/system/audit-rules.service
   {{% else %}}
-sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
+  {{% if product == "sle15" %}}
+  sed -i "s%^#ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
+  {{% else %}}
+  sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
+  {{% endif %}}
   {{% endif %}}
 {{%- endmacro -%}}
 
