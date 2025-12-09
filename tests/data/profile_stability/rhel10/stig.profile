@@ -382,6 +382,7 @@ package_policycoreutils_installed
 package_rsyslog-gnutls_installed
 package_rsyslog_installed
 package_s-nail_installed
+package_sequoia-sq_installed
 package_sssd_installed
 package_subscription-manager_installed
 package_sudo_installed
