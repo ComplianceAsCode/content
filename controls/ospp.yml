@@ -464,6 +464,8 @@ controls:
           - ensure_gpgcheck_local_packages
           - ensure_gpgcheck_never_disabled
           - ensure_redhat_gpgkey_installed
+          # This package is needed for RHEL 10
+          - package_sequoia-sq_installed
       status: automated
 
     - id: FPT_TST_EXT.1
