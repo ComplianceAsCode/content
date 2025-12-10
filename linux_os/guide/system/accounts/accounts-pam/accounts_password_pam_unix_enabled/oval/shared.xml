@@ -1,36 +1,52 @@
-{{% set file_stem = ["auth","account","password","session"] %}}
+{{% if product == "rhel10" %}}
+{{% set pam_files = ["password-auth", "system-auth"] %}}
+{{% else %}}
+{{% set pam_files = ["common"] %}}
+{{% endif %}}
+{{% set pam_sections = ["auth","account","password","session"] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
   {{{ oval_metadata("Ensure pam_unix.so is properly configured in PAM configuration files", rule_title=rule_title) }}}
-    <criteria operator="AND" comment="Check if pam_unix.so is properly defined in all PAM files">      
-      {{% for stem in file_stem %}}
-      <criterion test_ref="test_pam_unix_common_{{{ stem }}}"
-          comment="pam_unix has correctly set in common-{{{ stem }}}"/>
+    <criteria operator="AND" comment="Check if pam_unix.so is properly defined in all PAM files">
+      {{% for pam_file in pam_files %}}
+        {{% for pam_section in pam_sections %}}
+          <criterion test_ref="test_pam_unix_{{{ pam_file }}}_{{{ pam_section }}}" comment="pam_unix is configured in {{{ pam_section }}} section in {{{ pam_file }}}" />
+        {{% endfor %}}
       {{% endfor %}}
     </criteria>
   </definition>
 
   <!-- Check occurrences of pam_unix.so in common-{auth,account,password} file -->
-  {{% macro test_pam_unix(stem) %}}
-  <ind:textfilecontent54_test check="all" id="test_pam_unix_common_{{{ stem }}}" version="1"
+  {{% macro test_pam_unix(full_path, pam_file, pam_section) %}}
+  <ind:textfilecontent54_test check="all" id="test_pam_unix_{{{ pam_file }}}_{{{ pam_section }}}" version="1"
         check_existence="only_one_exists"
-        comment="No more than one pam_unix.so is expected in {{{ stem }}} section of /etc/pam.d/common-{{{ stem }}}">
-    <ind:object object_ref="obj_pam_unix_common_{{{ stem }}}" />
+        comment="No more than one pam_unix.so is expected in {{{ pam_section }}} section of {{{ full_path }}}">
+    <ind:object object_ref="obj_pam_unix_{{{ pam_file }}}_{{{ pam_section }}}" />
   </ind:textfilecontent54_test>
   {{% endmacro %}}
 
-  {{% macro object_pam_unix(stem) %}}
-  <ind:textfilecontent54_object id="obj_pam_unix_common_{{{ stem }}}" version="1"
-        comment="Get the occurrences of pam_unix.so in {{{ stem }}} section of /etc/pam.d/common-{{{ stem }}}">
-    <ind:filepath>/etc/pam.d/common-{{{ stem }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*{{{stem}}}[\s]+(required|\[(?=.*?\bsuccess=\d+\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bdefault=ignore\b)?.*\])[\s]+pam_unix\.so.*$</ind:pattern>
+  {{% macro object_pam_unix(full_path, pam_file, pam_section) %}}
+  <ind:textfilecontent54_object id="obj_pam_unix_{{{ pam_file }}}_{{{ pam_section }}}" version="1"
+        comment="Get the occurrences of pam_unix.so in {{{ pam_section }}} section of {{{ full_path }}}">
+    <ind:filepath>{{{ full_path }}}</ind:filepath>
+{{% if product == "rhel10" %}}
+    <ind:pattern operation="pattern match">^[\s]*{{{ pam_section }}}[\s]+(required|sufficient)[\s]+pam_unix\.so.*$</ind:pattern>
+{{% else %}}
+    <ind:pattern operation="pattern match">^[\s]*{{{ pam_section }}}[\s]+(required|\[(?=.*?\bsuccess=\d+\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bdefault=ignore\b)?.*\])[\s]+pam_unix\.so.*$</ind:pattern>
+{{% endif %}}
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endmacro %}}
 
-  {{% for file in file_stem %}}
-  {{{ test_pam_unix(stem=file) }}}
-  {{{ object_pam_unix(stem=file) }}}
+  {{% for pam_file in pam_files %}}
+    {{% for pam_section in pam_sections %}}
+      {{% if product == "rhel10" %}}
+        {{% set full_path = "/etc/pam.d/" + pam_file %}}
+      {{% else %}}
+        {{% set full_path = "/etc/pam.d/" + pam_file + "-" + pam_section %}}
+      {{% endif %}}
+      {{{ test_pam_unix(full_path, pam_file, pam_section) }}}
+      {{{ object_pam_unix(full_path, pam_file, pam_section) }}}
+    {{% endfor %}}
   {{% endfor %}}
-
 </def-group>
