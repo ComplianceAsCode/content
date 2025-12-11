@@ -1,5 +1,5 @@
 
-title: Ensure TLS v1.2 is minimum for Openshift Router
+title: Ensure TLS Version is at a Safe Minimum for Openshift Router
 
 description: |-
   Verify tls version for the Openshift Router.
@@ -22,7 +22,7 @@ ocil_clause: 'TLS version is not configured or contains insecure version'
 ocil: |-
     Run the following command to check the TLS version for the openshift router:
     <pre>$  oc get deployment.apps/router-default -n openshift-ingress -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="SSL_MIN_VERSION")].value}'</pre>
-    Make sure that the result has a one of TLSvX.X where X.X is 1.2 or greater.
+    Make sure that the result has a one of TLSvX.X where X.X is 1.2 or greater, depending on the configured value {{ .var_tls_version_ingress }}.
 
 severity: medium
 warnings:
@@ -35,6 +35,5 @@ template:
     filepath: |-
       {{{ openshift_filtered_path('/apis/apps/v1/namespaces/openshift-ingress/deployments/router-default','.spec.template.spec.containers[0].env[] | select(.name == "SSL_MIN_VERSION")') }}}
     yamlpath: ".value"
-    values:
-      - value: "TLSv1.[2-9]{1}"
-        operation: "pattern match"
+    xccdf_variable: var_tls_version_ingress_regex
+    regex_data: true
