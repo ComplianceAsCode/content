@@ -50,7 +50,7 @@
   ansible.builtin.shell: |
     {{%- if not 'debian' in product %}}
     set -o pipefail{{% endif %}}
-    grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item.1.path }} | \
+    grep -oP '^[^(\s|#|\$)]+[\s]*.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item.1.path }} | \
     awk '{print $NF}' | \
     sed -e 's/^-//' || true
   loop: "{{ rsyslog_config_files.results | default([]) | subelements('files') }}"
