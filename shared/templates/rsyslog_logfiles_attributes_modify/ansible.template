@@ -62,10 +62,11 @@
   ansible.builtin.shell: |
     {{%- if not 'debian' in product %}}
     set -o pipefail{{% endif %}}
-    grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item.1.path }} | \
-    grep -aoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)" | \
+    grep -iozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item.1.path }} | \
+    grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)" | \
     grep -oE "\"([/[:alnum:][:punct:]]*)\"" | \
-    tr -d "\""|| true
+    tr -d "\"" | \
+    grep -v '^/dev/' || true
   loop: "{{ rsyslog_config_files.results | default([]) | subelements('files') }}"
   register: log_files_new
   changed_when: False
