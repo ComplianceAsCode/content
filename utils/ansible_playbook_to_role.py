@@ -18,13 +18,6 @@ import collections
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PLAYBOOK_ROOT = os.path.join(SSG_ROOT, "build", "ansible")
 
-try:
-    from github import Github, InputGitAuthor, UnknownObjectException
-except ImportError:
-    print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
-          file=sys.stderr)
-    raise SystemExit(1)
-
 
 try:
     import ssg.ansible
@@ -95,7 +88,7 @@ PROFILE_ALLOWLIST = set([
 ])
 
 
-ORGANIZATION_NAME = "RedHatOfficial"
+ORGANIZATION_NAME = "ComplianceAsCode"
 GIT_COMMIT_AUTHOR_NAME = "ComplianceAsCode development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
 META_TEMPLATE_PATH = os.path.join(
@@ -404,7 +397,6 @@ class PlaybookToRoleConverter():
         return ("%s%s%s" % ("\n".join(header), default_vars_local_content, "\n".join(lines)))
 
     def save_to_disk(self, directory):
-        print("Converting Ansible Playbook {} to Ansible Role {}".format(self._local_playbook_filename, os.path.join(directory, self.name)))
         for filename in self.PRODUCED_FILES:
             abs_path = os.path.join(directory, self.name, filename)
             mkdir_p(os.path.dirname(abs_path))
@@ -446,6 +438,13 @@ class RoleGithubUpdater(object):
 
         blob = self._get_blob_content(branch, path_name)
         if blob is None:
+
+            try:
+                from github import UnknownObjectException
+            except ImportError:
+                print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+                    file=sys.stderr)
+                raise SystemExit(1)
             raise UnknownObjectException(
                 'unable to locate file: ' + path_name + ' in branch: ' + branch)
         return blob
@@ -465,6 +464,12 @@ class RoleGithubUpdater(object):
         remote_content, sha = self._remote_content(filepath)
 
         if self._local_content(filepath) != remote_content:
+            try:
+                from github import InputGitAuthor
+            except ImportError:
+                print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+                    file=sys.stderr)
+                raise SystemExit(1)
             self.remote_repo.update_file(
                 filepath,
                 "Updated " + filepath,
@@ -513,7 +518,7 @@ def parse_args():
         help="What profiles to upload, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--product", "-r", default=[], action="append",
-        metavar="PRODUCT", choices=PRODUCT_ALLOWLIST,
+        metavar="PRODUCT",
         help="What products to upload, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--tag-release", "-n", default=False, action="store_true",
@@ -537,14 +542,14 @@ def locally_clone_and_init_repositories(organization, repo_list):
 
 
 def select_roles_to_upload(product_allowlist, profile_allowlist,
-                           build_playbooks_dir):
+                           build_playbooks_dir, dry_run):
     selected_roles = dict()
     for filename in sorted(os.listdir(build_playbooks_dir)):
         root, ext = os.path.splitext(filename)
         if ext == ".yml":
             # the format is product-playbook-profile.yml
             product, _, profile = root.split("-", 2)
-            if product in product_allowlist and profile in profile_allowlist:
+            if dry_run or (product in product_allowlist and profile in profile_allowlist):
                 role_name = "ansible-role-%s-%s" % (product, profile)
                 selected_roles[role_name] = (product, profile)
     return selected_roles
@@ -567,7 +572,7 @@ def main():
         profile_allowlist &= set(args.profile)
 
     selected_roles = select_roles_to_upload(
-        product_allowlist, profile_allowlist, args.build_playbooks_dir
+        product_allowlist, profile_allowlist, args.build_playbooks_dir, args.dry_run
     )
 
     if args.dry_run:
@@ -585,6 +590,13 @@ def main():
             username = args.token
             password = ""
 
+
+        try:
+            from github import Github
+        except ImportError:
+            print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+                file=sys.stderr)
+            raise SystemExit(1)
         github = Github(username, password)
         github_org = github.get_organization(args.organization)
         github_repositories = [repo.name for repo in github_org.get_repos()]
