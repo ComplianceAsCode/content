@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: "Set PAM''s Password Hashing Algorithm - password-auth"
+title: "Set PAM Password Hashing Algorithm - password-auth"
 
 description: |-
     The PAM system service can be configured to only store encrypted representations of passwords.
@@ -82,3 +82,10 @@ warnings:
         defined and is aligned to the "var_password_hashing_algorithm_pam" variable. The
         remediation will ensure the correct option and remove any other extra hashing algorithm
         option.
+{{% if "rhel" in product %}}
+    - general: |-
+        The CIS {{{ full_name }}} Benchmark permits both "sha512" and "yescrypt" algorithms for password hashing.
+        This profile is configured to check for "{{{ xccdf_value("var_password_hashing_algorithm_pam") }}}",
+        but a system using either algorithm is compliant with the CIS Benchmark requirements.
+        To use a different algorithm, create a tailored profile and select your preferred value for the <tt>var_password_hashing_algorithm_pam</tt> variable.
+{{% endif %}}
