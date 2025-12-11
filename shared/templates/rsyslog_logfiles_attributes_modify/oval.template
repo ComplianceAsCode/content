@@ -86,7 +86,7 @@
               regex now matches both syntaxes.
       -->
     <ind:pattern
-      operation="pattern match">^\s*[^#$].*?(?:[Ff]ile="([^"\s]+)"|[\s]+-?(\/[^:;\s]+)).*$</ind:pattern>
+      operation="pattern match">^\s*[^#$].*?(?:\b[Ff]ile="([^"\s]+)"|[\s]+-?(\/[^:;\s]+)).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_{{{ _RULE_ID }}}_ignore_include_paths</filter>
   </ind:textfilecontent54_object>
@@ -96,9 +96,10 @@
     <!-- Among the paths matched in object_{{{ _RULE_ID }}}_log_files_paths there can be paths
          from include() or $IncludeConfig statements. These paths are conf files, not log files.
          Their properties don't need to be as required for log files, thus, lets exclude them
-         from the list of objects found. -->
+         from the list of objects found. Also exclude lines that are part of multiline include
+         statements (lines starting with whitespace followed by file=) and /dev/* device files. -->
     <ind:text
-    operation="pattern match">(?:include\([\n\s]*file="[^\s;]+"|\$IncludeConfig[\s]+[^\s;]+|\/dev\/.*)</ind:text>
+    operation="pattern match">(?:include\([\n\s]*\b[Ff]ile="[^\s;]+"|\$IncludeConfig[\s]+[^\s;]+|^\s+\b[Ff]ile="|\/dev\/.*)</ind:text>
   </ind:textfilecontent54_state>
 
   <!-- Define OVAL variable to hold all the various system log files locations
