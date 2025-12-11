@@ -1,0 +1,310 @@
+name: ATEX - Test and Upload Results
+
+on:
+  workflow_run:
+    workflows: ["ATEX - Build Content"]
+    types:
+      - completed
+
+env:
+  ATEX_REPO: RHSecurityCompliance/atex-results-testing-farm
+  ATEX_HTML_REPO: RHSecurityCompliance/atex-html
+  CONTEST_REPO: RHSecurityCompliance/contest
+  ARTIFACT_RETENTION_DAYS: 1
+  TEST_TIMEOUT: 1440 # 24 hours
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  # Only run if the build workflow succeeded
+  check_build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      pr_number: ${{ steps.get_pr.outputs.pr_number }}
+      pr_sha: ${{ steps.get_pr.outputs.pr_sha }}
+      check_id: ${{ steps.create_check.outputs.check_id }}
+    steps:
+      - name: Download PR info
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          name: pr-info
+          path: pr-info/
+
+      - name: Get PR number and SHA
+        id: get_pr
+        run: |
+          PR_NUMBER=$(cat pr-info/pr-number.txt)
+          PR_SHA=$(cat pr-info/pr-sha.txt)
+          echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
+          echo "pr_sha=${PR_SHA}" >> $GITHUB_OUTPUT
+          echo "PR Number: ${PR_NUMBER}"
+          echo "PR SHA: ${PR_SHA}"
+
+      - name: Create GitHub check run
+        uses: LouisBrunner/checks-action@6b626ffbad7cc56fd58627f774b9067e6118af23 # v2.0.0
+        id: create_check
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ATEX - Test and Upload Results
+          status: in_progress
+          sha: ${{ steps.get_pr.outputs.pr_sha }}
+          output: |
+            {"summary":"Running ATEX tests: Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}","title":"ATEX Testing in Progress"}
+
+  test:
+    name: Test on CentOS Stream ${{ matrix.centos_stream_major }}
+    runs-on: ubuntu-latest
+    needs: check_build
+    strategy:
+      matrix:
+        centos_stream_major: [8, 9, 10]
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          name: content-centos-stream${{ matrix.centos_stream_major }}
+          path: content-centos-stream${{ matrix.centos_stream_major }}/
+
+      - name: Checkout Contest Test Suite
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
+        with:
+          repository: ${{ env.CONTEST_REPO }}
+          ref: main
+          path: contest
+          fetch-depth: 1
+
+      - name: Install test dependencies
+        run: |
+          dnf -y install python3-pip git rsync
+          pip install fmf git+https://github.com/RHSecurityCompliance/atex.git
+
+      - name: Run tests on Testing Farm
+        env:
+          TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
+          CS_MAJOR: ${{ matrix.centos_stream_major }}
+        run: |
+          python3 tests/run_tests_testingfarm.py \
+            --contest-dir contest \
+            --content-dir content-centos-stream${CS_MAJOR} \
+            --plan "/plans/daily" \
+            --tests "/hardening/host-os/oscap/stig" \
+            --compose "CentOS-Stream-${CS_MAJOR}" \
+            --arch x86_64 \
+            --os-major-version "${CS_MAJOR}" \
+            --timeout ${{ env.TEST_TIMEOUT }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: test-results-centos-stream${{ matrix.centos_stream_major }}
+          path: |
+            results-centos-stream-${{ matrix.centos_stream_major }}-x86_64.json.gz
+            files-centos-stream-${{ matrix.centos_stream_major }}-x86_64/
+            atex_debug.log.gz
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+
+  upload:
+    name: Upload and publish test results
+    runs-on: ubuntu-latest
+    needs: [check_build, test]
+    if: always() # Run even if tests fail
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
+
+      - name: Install dependencies
+        if: always()
+        run: |
+          dnf -y install python3-pip git rsync
+          pip install fmf git+https://github.com/RHSecurityCompliance/atex.git
+
+      - name: Checkout ATEX results repository
+        if: always()
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
+        with:
+          repository: ${{ env.ATEX_REPO }}
+          ref: main
+          path: atex-results-testing-farm
+          token: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
+
+      - name: Initialize FMF metadata
+        if: always()
+        working-directory: atex-results-testing-farm
+        run: fmf init
+
+      - name: Create TMT dummy plan for artifact transport
+        if: always()
+        working-directory: atex-results-testing-farm
+        run: |
+          cat > main.fmf <<'EOF'
+          /dummy_plan:
+              discover:
+                  how: shell
+                  tests:
+                    - name: /dummy_test
+                      test: mv * "$TMT_TEST_DATA/."
+              execute:
+                  how: tmt
+          EOF
+
+      # Download test results for all CentOS Stream versions
+      - name: Download test results - CentOS Stream 8
+        if: always()
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: test-results-centos-stream8
+          path: test-results/cs8/
+        continue-on-error: true
+
+      - name: Download test results - CentOS Stream 9
+        if: always()
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: test-results-centos-stream9
+          path: test-results/cs9/
+        continue-on-error: true
+
+      - name: Download test results - CentOS Stream 10
+        if: always()
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: test-results-centos-stream10
+          path: test-results/cs10/
+        continue-on-error: true
+
+      - name: Checkout ATEX HTML viewer
+        if: always()
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.1
+        with:
+          repository: ${{ env.ATEX_HTML_REPO }}
+          ref: main
+          path: atex-html
+
+      - name: Update HTML title with PR number
+        if: always()
+        run: |
+          sed "/<title>/s/>.*</>Test outputs from PR #${{ needs.check_build.outputs.pr_number }} HTML</" \
+            -i atex-html/index.html
+
+      - name: Merge test results from all versions
+        if: always()
+        run: |
+          mkdir -p atex-results-testing-farm/files_dir/
+
+          # Process and merge results for all CentOS Stream versions
+          for version in 8 9 10; do
+            results_file="test-results/cs${version}/results-centos-stream-${version}-x86_64.json.gz"
+            files_dir="test-results/cs${version}/files-centos-stream-${version}-x86_64"
+
+            if [ -f "${results_file}" ]; then
+              cat "${results_file}"
+              rm -f "${results_file}"
+              [ -d "${files_dir}" ] && cp -r "${files_dir}"/* atex-results-testing-farm/files_dir/
+            fi
+          done > results.json.gz
+
+      - name: Convert results to SQLite database
+        if: always()
+        run: |
+          python atex-html/json2db.py results.json.gz atex-results-testing-farm/results.sqlite.gz
+
+      - name: Prepare HTML results viewer
+        if: always()
+        run: |
+          cp -rf atex-html/index.html atex-html/sqljs/ atex-results-testing-farm/
+
+      - name: Commit and tag results in ATEX repository
+        if: always()
+        working-directory: atex-results-testing-farm
+        env:
+          GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
+          PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
+        run: |
+          git config user.name "openscap-ci[bot]"
+          git config user.email "openscap.ci@gmail.com"
+
+          git add .
+          git commit -m "Test outputs from PR #${PR_NUMBER}"
+          git tag PR${PR_NUMBER}
+          git push origin PR${PR_NUMBER}
+
+      - name: Submit results to Testing Farm
+        if: always()
+        id: testing_farm_request
+        env:
+          TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
+          PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
+        run: |
+          python3 tests/submit_results_to_testing_farm.py \
+            --repo-url "https://github.com/${{ env.ATEX_REPO }}" \
+            --pr-number "${PR_NUMBER}" 2>&1 | tee tf_output.log
+
+          # Extract HTML link from output
+          html_link=$(grep -oP 'HTML: \K.*' tf_output.log || echo 'No HTML link found')
+          echo "HTML_LINK=${html_link}" >> "$GITHUB_OUTPUT"
+
+      - name: Find existing PR comment
+        if: always()
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
+        id: fc
+        with:
+          issue-number: ${{ needs.check_build.outputs.pr_number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: ATEX Test Results
+
+      - name: Create or update PR comment with results
+        if: always()
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ needs.check_build.outputs.pr_number }}
+          body: |
+            ### ATEX Test Results
+
+            Test artifacts have been submitted to Testing Farm.
+
+            **Results:** [View Test Results](${{ steps.testing_farm_request.outputs.HTML_LINK }})
+            **Workflow Run:** [View Workflow Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            _This comment was automatically generated by the ATEX workflow._
+          edit-mode: replace
+
+      - name: Cleanup temporary tag
+        if: always()
+        working-directory: atex-results-testing-farm
+        env:
+          GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
+          PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
+        run: |
+          git push --delete origin PR${PR_NUMBER}
+
+      - name: Update GitHub check run
+        if: always()
+        uses: LouisBrunner/checks-action@6b626ffbad7cc56fd58627f774b9067e6118af23 # v2.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          check_id: ${{ needs.check_build.outputs.check_id }}
+          sha: ${{ needs.check_build.outputs.pr_sha }}
+          status: completed
+          conclusion: ${{ job.status }}
+          output: |
+            {"summary":"ATEX tests completed. Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. View results: ${{ steps.testing_farm_request.outputs.HTML_LINK }}","title":"ATEX Testing Complete"}
