@@ -14,7 +14,7 @@
     replace: '\1\2'
   loop: {{{ pam_config_paths }}}
 {{% else %}}
-{{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth', 'password', '.*', 'pam_unix.so', 'remember', rule_title=rule_title) }}}
+{{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth', 'password', '', 'pam_unix.so', 'remember', rule_title=rule_title) }}}
 
-{{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth', 'password', '.*', 'pam_unix.so', 'remember', rule_title=rule_title) }}}
+{{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth', 'password', '', 'pam_unix.so', 'remember', rule_title=rule_title) }}}
 {{% endif %}}
