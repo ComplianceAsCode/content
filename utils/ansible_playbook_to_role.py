@@ -583,11 +583,10 @@ def main():
             print("Input your GitHub credentials:")
             username = input("username or token: ")
             password = getpass.getpass("password (or empty for token): ")
+            github = Github(username, password)
         else:
-            username = args.token
-            password = ""
+            github = Github(args.token)
 
-        github = Github(username, password)
         github_org = github.get_organization(args.organization)
         github_repositories = [repo.name for repo in github_org.get_repos()]
 
