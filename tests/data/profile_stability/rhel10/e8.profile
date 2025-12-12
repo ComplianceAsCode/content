@@ -52,6 +52,7 @@ no_empty_passwords
 package_fapolicyd_installed
 package_firewalld_installed
 package_rsyslog_installed
+package_sequoia-sq_installed
 package_squid_removed
 package_telnet-server_removed
 package_telnet_removed

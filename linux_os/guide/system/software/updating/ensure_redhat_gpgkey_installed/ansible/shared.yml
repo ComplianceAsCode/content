@@ -3,7 +3,7 @@
 # strategy = restrict
 # complexity = medium
 # disruption = medium
-- name: "Read permission of GPG key directory"
+- name: "{{{ rule_title }}}: Read permission of GPG key directory"
   ansible.builtin.stat:
     path: /etc/pki/rpm-gpg/
   register: gpg_key_directory_permission
@@ -11,7 +11,22 @@
 
 # It should fail if it doesn't find any fingerprints in file - maybe file was not parsed well.
 
-- name: Read signatures in GPG key
+{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
+# RHEL >= 10: Use sq command from sequoia-sq package
+- name: "{{{ rule_title }}}:  Read signatures in GPG key using sq"
+  ansible.builtin.command: sq inspect /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+  changed_when: false
+  failed_when: False
+  check_mode: no
+  register: gpg_fingerprints
+
+- name: "{{{ rule_title }}}: Set Fact - Installed GPG Fingerprints (sq format)"
+  ansible.builtin.set_fact:
+    gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('Fingerprint:\\s*([0-9A-Fa-f]+)', '\\1') | list }}"
+{{% else %}}
+# RHEL 8, 9 and other versions: Use gpg command
+
+- name: "{{{ rule_title }}}: Read signatures in GPG key"
   # According to /usr/share/doc/gnupg2/DETAILS fingerprints are in "fpr" record in field 10
   ansible.builtin.command: gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
   changed_when: False
@@ -19,17 +34,22 @@
   failed_when: False
   check_mode: no
 
-- name: Set Fact - Installed GPG Fingerprints
+- name: "{{{ rule_title }}}: Set Fact - Installed GPG Fingerprints"
   ansible.builtin.set_fact:
-    gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('^pub.*\n(?:^fpr[:]*)([0-9A-Fa-f]*)', '\\1') | list }}"
+    gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('^pub.*\\n(?:^fpr[:]*)([0-9A-Fa-f]*)', '\\1') | list }}"
 
-- name: Set Fact - Valid fingerprints
+{{% endif %}}
+
+- name: "{{{ rule_title }}}: Set Fact - Valid fingerprints"
   ansible.builtin.set_fact:
     gpg_valid_fingerprints:
     - "{{{ release_key_fingerprint }}}"
     - "{{{ auxiliary_key_fingerprint }}}"
+{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
+    - "{{{ pqc_key_fingerprint }}}"
+{{% endif %}}
 
-- name: Import RedHat GPG key
+- name: "{{{ rule_title }}}: Import RedHat GPG key"
   ansible.builtin.rpm_key:
     state: present
     key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release

@@ -26,6 +26,7 @@ selections:
     - var_password_pam_unix_rounds=65536
     - '!timer_logrotate_enabled'
     - '!service_chronyd_enabled'
+    - '!package_sequoia-sq_installed'
 
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'

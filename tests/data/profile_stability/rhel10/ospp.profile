@@ -100,6 +100,7 @@ package_gnutls-utils_installed
 package_openscap-scanner_installed
 package_openssh-clients_installed
 package_openssh-server_installed
+package_sequoia-sq_installed
 package_subscription-manager_installed
 package_sudo_installed
 package_usbguard_installed

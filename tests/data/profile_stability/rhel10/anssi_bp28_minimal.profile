@@ -28,6 +28,7 @@ file_permissions_ungroupowned
 no_files_unowned_by_user
 package_dnf-automatic_installed
 package_kea_removed
+package_sequoia-sq_installed
 package_telnet-server_removed
 package_telnet_removed
 package_tftp-server_removed

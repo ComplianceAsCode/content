@@ -55,6 +55,7 @@ selections:
     - '!audit_perm_change_success_aarch64'
     - '!audit_perm_change_success_ppc64le'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - 'ensure_oracle_gpgkey_installed'
     - '!zipl_audit_argument'
     - '!zipl_audit_backlog_limit_argument'

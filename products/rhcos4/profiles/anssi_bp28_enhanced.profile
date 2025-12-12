@@ -125,3 +125,4 @@ selections:
     - '!service_chronyd_enabled'
     - '!ldap_client_start_tls'
     - '!ldap_client_tls_cacertpath'
+    - '!package_sequoia-sq_installed'

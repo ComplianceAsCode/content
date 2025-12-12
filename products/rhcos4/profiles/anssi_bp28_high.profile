@@ -161,3 +161,4 @@ selections:
     - '!service_chronyd_enabled'
     - '!audit_rules_mac_modification_etc_selinux'
     - '!no_nis_in_nsswitch'
+    - '!package_sequoia-sq_installed'

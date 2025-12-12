@@ -67,6 +67,7 @@ selections:
     - '!sshd_allow_only_protocol2'
     - '!sshd_use_directory_configuration'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!sysctl_kernel_exec_shield'
     - '!secure_boot_enabled'
 

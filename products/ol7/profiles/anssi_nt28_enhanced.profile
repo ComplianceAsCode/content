@@ -21,6 +21,7 @@ selections:
     - '!rsyslog_remote_tls'
     - '!timer_logrotate_enabled'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_dnf-automatic_installed'
     - '!audit_rules_privileged_commands_rmmod'

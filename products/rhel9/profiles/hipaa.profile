@@ -91,3 +91,4 @@ selections:
     - "!sshd_use_approved_ciphers"
     - "!sshd_use_approved_macs"
     - "!sshd_use_priv_separation"
+    - "!package_sequoia-sq_installed"

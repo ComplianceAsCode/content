@@ -17,6 +17,7 @@ selections:
     - e8:all
 
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - ensure_oracle_gpgkey_installed
 

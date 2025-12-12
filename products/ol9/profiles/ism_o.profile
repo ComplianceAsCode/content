@@ -74,6 +74,7 @@ selections:
     - '!package_ypbind_removed'
     - '!package_xinetd_removed'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!audit_rules_usergroup_modification_opasswd'
     - '!audit_rules_usergroup_modification_gshadow'
     - '!audit_rules_usergroup_modification_passwd'

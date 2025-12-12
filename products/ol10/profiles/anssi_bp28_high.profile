@@ -22,6 +22,7 @@ selections:
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!install_PAE_kernel_on_x86-32'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!aide_periodic_checking_systemd_timer'
     - '!package_dracut-fips-aesni_installed'
