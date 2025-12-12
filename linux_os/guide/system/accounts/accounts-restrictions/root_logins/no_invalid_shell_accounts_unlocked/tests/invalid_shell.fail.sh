@@ -1,5 +1,5 @@
 #!/bin/bash
 # remediation = none
 
-echo "testuser:x:8000:8000:testuser:/home/testuser:/bin/dash" > /etc/passwd
-echo "/bin/bash" > /etc/shells
+echo "newuser:x:8000:8000:newuser:/home/newuser:/bin/invalid_shell" >> /etc/passwd
+echo "/bin/someothershell" > /etc/shells
