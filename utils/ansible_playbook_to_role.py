@@ -457,6 +457,8 @@ class RoleGithubUpdater(object):
         branch = 'master'
         if "rhel9" in self.remote_repo.full_name:
             branch = 'main'
+        if "rhel10" in self.remote_repo.full_name:
+             branch = 'main'
 
         content, sha = self._get_contents(filepath, branch)
         return content, sha
