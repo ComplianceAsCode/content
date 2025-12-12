@@ -312,6 +312,7 @@ no_empty_passwords_etc_shadow
 no_files_or_dirs_ungroupowned
 no_files_or_dirs_unowned_by_user
 no_forward_files
+no_invalid_shell_accounts_unlocked
 no_netrc_files
 no_nologin_in_shells
 no_password_auth_for_systemaccounts
