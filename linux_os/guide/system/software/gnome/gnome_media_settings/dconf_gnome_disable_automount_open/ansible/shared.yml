@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = unknown
 # complexity = low
@@ -11,6 +11,7 @@
     value: "false"
     create: yes
     no_extra_spaces: yes
+  register: result_ini
 
 - name: "Prevent user modification of GNOME3 Automounting - automount-open"
   ansible.builtin.lineinfile:
@@ -18,6 +19,18 @@
     regexp: '^/org/gnome/desktop/media-handling/automount-open$'
     line: '/org/gnome/desktop/media-handling/automount-open'
     create: yes
+  register: result_lineinfile
+
+# apply fix for enable_dconf_user_profile, OVAL checks it
+{{% if product in ['sle15', 'sle16'] %}}
+- name: "Configure GNOME3 DConf User Profile"
+  ansible.builtin.lineinfile:
+    dest: "/etc/dconf/profile/gdm"
+    line: "user-db:user\nsystem-db:gdm"
+    create: yes
+    state: present
+{{% endif %}}
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_ini is changed or result_lineinfile is changed

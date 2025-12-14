@@ -35,6 +35,7 @@ selections:
     - '!sysctl_kernel_unprivileged_bpf_disabled'
     - '!accounts_passwords_pam_faillock_deny'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!accounts_passwords_pam_faillock_unlock_time'
     - '!accounts_passwords_pam_faillock_interval'
@@ -63,3 +64,6 @@ selections:
 
     # The following rules are not applicable to SLE 12
     - '!logind_session_timeout'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
+    - '!no_nis_in_nsswitch'

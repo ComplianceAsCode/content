@@ -17,7 +17,7 @@
   when: ansible_facts.services["vsftpd.service"] is defined
 
 - name: Restart vsftpd
-  ansible.builtin.systemd_service:
+  ansible.builtin.systemd:
     name: vsftpd.service
     state: restarted
   when: banner_file_update_result.changed and ansible_facts.services["vsftpd.service"].state == "running"

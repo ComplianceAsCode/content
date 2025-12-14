@@ -9,16 +9,19 @@
                             separator=': ',
                             separator_regex='\s*:\s*',
                             value='root',
-                            create='yes', rule_title=rule_title) }}}
+                            create='yes',
+                            register='aliases_postmaster_changed',
+                            rule_title=rule_title) }}}
 
-- name: 'Check if newaliases command is available'
+- name: {{{ rule_title }}} - Check if newaliases command is available
   ansible.builtin.stat:
     path: /usr/bin/newaliases
   register: result_newaliases_present
 
-- name: Update postfix aliases
+- name: {{{ rule_title }}} - Update postfix aliases
   ansible.builtin.command:
     cmd: newaliases
   when:
     - result_newaliases_present.stat.exists
+    - aliases_postmaster_changed is changed
 

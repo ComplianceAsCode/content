@@ -53,6 +53,8 @@ selections:
     - '!package_kea_removed'
     - '!audit_rules_file_deletion_events_renameat2'
     - '!audit_rules_dac_modification_fchmodat2'
+    - '!ldap_client_tls_cacertpath'
+    - '!package_sequoia-sq_installed'
     # RHEL9 unified the paths for grub2 files. These rules are selected in control file by R5 and R29.
     - '!file_groupowner_efi_grub2_cfg'
     - '!file_owner_efi_grub2_cfg'
@@ -76,3 +78,7 @@ selections:
     # Following rules are not applicable to RHEL
     - '!package_talk_removed'
     - '!package_talk-server_removed'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!no_nis_in_nsswitch'
+    - '!service_chronyd_enabled'
+    - '!ldap_client_start_tls'

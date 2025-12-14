@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2025-08-21 12:31 UTC
+Last Modified: 2025-11-20 08:44 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -22,6 +22,7 @@ The following people have contributed to the SCAP Security Guide project
 * anivan-suse <anastasija.ivanovic@suse.com>
 * anixon-rh <55244503+anixon-rh@users.noreply.github.com>
 * Anna-Koudelkova <akoudelk@redhat.com>
+* Arden97 <arden2545@gmail.com>
 * Steve Arnold <sarnold@vctlabs.com>
 * Ikko Ashimine <eltociear@gmail.com>
 * Chuck Atkins <chuck.atkins@kitware.com>
@@ -113,6 +114,7 @@ The following people have contributed to the SCAP Security Guide project
 * Vern Hart <vern.hart@canonical.com>
 * Alex Haydock <alex@alexhaydock.co.uk>
 * Rebekah Hayes <rhayes@corp.rivierautilities.com>
+* hazerre <kotadouglas2@gmail.com>
 * Trey Henefield <thenefield@gmail.com>
 * Henning Henkel <henning.henkel@helvetia.ch>
 * hex2a <hex2a@users.noreply.github.com>
@@ -151,11 +153,13 @@ The following people have contributed to the SCAP Security Guide project
 * Amit Kumar <amitkuma@redhat.com>
 * Fen Labalme <fen@civicactions.com>
 * Dexter Le <dexter.le@sap.com>
+* Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
 * Ade Lee <alee@redhat.com>
 * Christopher Lee <Crleekwc@gmail.com>
 * Ian Lee <lee1001@llnl.gov>
 * Jarrett Lee <jarrettl@umd.edu>
 * Joseph Lenox <joseph.lenox@collins.com>
+* Stefano Libero <stefano.libero@nozominetworks.com>
 * lichtblaugue <guenther.lichtblau@eviden.com>
 * Jan Lieskovsky <jlieskov@redhat.com>
 * Markus Linnala <Markus.Linnala@knowit.fi>

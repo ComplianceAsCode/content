@@ -1,7 +1,6 @@
 documentation_complete: true
 
-
-title: 'Disable Samba'
+title: "Disable Samba"
 
 description: |-
     {{{ describe_service_disable(service="smb") }}}
@@ -35,5 +34,6 @@ template:
     name: service_disabled
     vars:
         servicename: smb
+        servicename@ubuntu2204: smbd
         servicename@ubuntu2404: smbd
         packagename: samba

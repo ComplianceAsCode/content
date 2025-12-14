@@ -8,7 +8,7 @@
     {{{ oval_metadata("Verify MTA is not listening on any non-loopback address", rule_title=rule_title) }}}
     <criteria operator="AND">
       {{{ generate_criteria_listening_port("25")}}}
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'rhel' in product %}}
       {{{ generate_criteria_listening_port("465")}}}
       {{{ generate_criteria_listening_port("587")}}}
 {{% endif %}}
@@ -42,7 +42,7 @@
   {{% endmacro %}}
 
   {{{ generate_test_listening_port("25") }}}
-  {{% if 'ubuntu' in product %}}
+  {{% if 'ubuntu' in product or 'rhel' in product %}}
   {{{ generate_test_listening_port("465")}}}
   {{{ generate_test_listening_port("587")}}}
   {{% endif %}}

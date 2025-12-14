@@ -36,6 +36,7 @@ selections:
     - '!accounts_password_pam_ocredit'
     - '!accounts_password_pam_lcredit'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!accounts_passwords_pam_faillock_deny'
     - '!accounts_passwords_pam_faillock_unlock_time'
     - '!accounts_passwords_pam_faillock_interval'
@@ -54,3 +55,4 @@ selections:
     - '!accounts_password_pam_retry'
     - '!file_groupowner_etc_chrony_keys'
     - accounts_password_pam_pwhistory_remember
+    - '!ldap_client_start_tls'

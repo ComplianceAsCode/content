@@ -28,8 +28,10 @@ selections:
     - '!cracklib_accounts_password_pam_ocredit'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!security_patches_up_to_date'
+    - '!no_nis_in_nsswitch'
     # authselect is enabled by default
     - '!enable_authselect'
     # these packages do not exist in ol10 (R62)

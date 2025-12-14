@@ -8,7 +8,7 @@ description: |-
     kernel boot parameters.
 
     Ensure that Supervisor Mode Execution Prevention (SMEP) is not disabled by
-    the <tt>nosmep</tt> boot paramenter option.
+    the <tt>nosmep</tt> boot parameter option.
 
     {{{ describe_grub2_argument_absent("nosmep") | indent(4) }}}
 
@@ -22,6 +22,7 @@ identifiers:
     cce@rhel8: CCE-85989-2
     cce@rhel9: CCE-86089-0
     cce@rhel10: CCE-89827-0
+    cce@sle16: CCE-95717-5
 
 ocil_clause: 'the kernel is configured to disable SMEP'
 

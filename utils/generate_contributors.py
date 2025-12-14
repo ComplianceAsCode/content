@@ -2,7 +2,6 @@
 
 import argparse
 import os.path
-import codecs
 import ssg
 import ssg.contributors
 
@@ -23,11 +22,11 @@ def main():
         exit(0)
 
     root_dir = os.path.dirname(os.path.dirname(__file__))
-    with codecs.open(os.path.join(root_dir, "Contributors.md"),
+    with open(os.path.join(root_dir, "Contributors.md"),
                      mode="w", encoding="utf-8") as f:
         f.write(contributors_md)
 
-    with codecs.open(os.path.join(root_dir, "Contributors.xml"),
+    with open(os.path.join(root_dir, "Contributors.xml"),
                      mode="w", encoding="utf-8") as f:
         f.write(contributors_xml)
 

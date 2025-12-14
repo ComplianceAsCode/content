@@ -34,7 +34,7 @@ else
     if {{{ in_chrooted_environment() }}}; then
         # TODO: NM (nmcli) now has --offline mode support, and it could operate without NM service.
         # See: https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/merge_requests/1183
-        # The feature is not quite straighforward (and probably incomplete), though.
+        # The feature is not quite straightforward (and probably incomplete), though.
         echo "Not applicable in offline mode. Remediation aborted!"
     else
         if systemctl is-active NetworkManager && systemctl is-active firewalld; then

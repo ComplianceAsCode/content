@@ -5,9 +5,7 @@ Common functions for processing CCE (Common Configuration Enumeration) in SSG
 import re
 import random
 import os
-
-
-CCE_POOLS = dict()
+from typing import Dict, Type
 
 
 class CCEFile:
@@ -136,10 +134,26 @@ class SLE15CCEFile(CCEFile):
         return os.path.join(self.project_root, "shared", "references", "cce-sle15-avail.txt")
 
 
+class SLE16CCEFile(CCEFile):
+    """
+    SLE16CCEFile is a subclass of CCEFile that represents a file containing
+    SLE16 Common Configuration Enumeration (CCE) data.
+
+    This class provides a property to get the absolute path of the SLE12 CCE file.
+
+    Properties:
+        absolute_path (str): The absolute path to the SLE15 CCE file, which is located in the
+                             "shared/references" directory.
+    """
+    @property
+    def absolute_path(self):
+        return os.path.join(self.project_root, "shared", "references", "cce-sle16-avail.txt")
+
+CCE_POOLS: Dict[str, Type[CCEFile]] = {}
 CCE_POOLS["redhat"] = RedhatCCEFile
 CCE_POOLS["sle12"] = SLE12CCEFile
 CCE_POOLS["sle15"] = SLE15CCEFile
-
+CCE_POOLS["sle16"] = SLE16CCEFile
 
 def is_cce_format_valid(cceid):
     """

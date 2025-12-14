@@ -1,5 +1,5 @@
 <def-group>
-    <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    <definition class="compliance" id="{{{ rule_id }}}" version="3">
         {{{ oval_metadata("rsyslogd should reject remote messages", rule_title=rule_title) }}}
         <criteria operator="AND">
             <criterion test_ref="test_rsyslog_nolisten_legacy"
@@ -9,28 +9,34 @@
         </criteria>
     </definition>
 
+    <!-- Legacy syntax test: $InputTCPServerRun, $UDPServerRun, $InputRELPServerRun,
+         $ModLoad imtcp/imudp/imrelp -->
     <ind:textfilecontent54_test id="test_rsyslog_nolisten_legacy" version="1"
         check="all" check_existence="none_exist"
-        comment="rsyslog configuration files don't contain $InputTCPServerRun | $UDPServerRun |
-            $InputRELPServerRun | $ModLoad imtcp | $ModLoad imudp | $ModLoad imrelp">
+        comment="rsyslog configuration files don't contain legacy syntax for remote message reception">
         <ind:object object_ref="object_rsyslog_nolisten_legacy"/>
     </ind:textfilecontent54_test>
 
     <ind:textfilecontent54_object id="object_rsyslog_nolisten_legacy" version="2">
         <ind:filepath operation="pattern match">^\/etc\/rsyslog(\.conf|\.d\/.*\.conf)$</ind:filepath>
+        <!-- Matches: $InputTCPServerRun, $UDPServerRun, $InputRELPServerRun, $ModLoad imtcp/imudp/imrelp -->
         <ind:pattern operation="pattern match">^[\s]*\$((?:Input(?:TCP|RELP)|UDP)ServerRun|ModLoad[\s]+(imtcp|imudp|imrelp))</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
-    <ind:textfilecontent54_test id="test_rsyslog_nolisten_rainerscript" version="1"
+    <!-- RainerScript syntax test: module(load="imtcp/imudp/imrelp"),
+         input(type="imtcp/imudp/imrelp") -->
+    <ind:textfilecontent54_test id="test_rsyslog_nolisten_rainerscript" version="2"
         check="all" check_existence="none_exist"
-        comment="rsyslog configuration files don't use imtcp or imudp modules">
+        comment="rsyslog configuration files don't use imtcp, imudp, or imrelp modules">
         <ind:object object_ref="object_rsyslog_nolisten_rainerscript"/>
     </ind:textfilecontent54_test>
 
-    <ind:textfilecontent54_object id="object_rsyslog_nolisten_rainerscript" version="2">
+    <ind:textfilecontent54_object id="object_rsyslog_nolisten_rainerscript" version="3">
         <ind:filepath operation="pattern match">^\/etc\/rsyslog(\.conf|\.d\/.*\.conf)$</ind:filepath>
-        <ind:pattern operation="pattern match">^\s*(?:module|input)\((?:load|type)="(imtcp|imudp)".*$</ind:pattern>
+        <!-- Matches: module(load="imtcp"), module(load="imudp"), module(load="imrelp"),
+             input(type="imtcp"), input(type="imudp"), input(type="imrelp") -->
+        <ind:pattern operation="pattern match">^\s*(?:module|input)\((?:load|type)="(imtcp|imudp|imrelp)".*$</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 </def-group>

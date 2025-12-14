@@ -1,0 +1,14 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Disable weak dependencies"
+  community.general.ini_file:
+    path: /etc/dnf/dnf.conf
+    section: main
+    option: install_weak_deps
+    value: 0
+    create: yes
+    state: present

@@ -40,7 +40,7 @@ ocil: |-
     Check that fapolicyd employs a deny-all policy on system mounts with the following commands:
 
     {{%- if product in ["ol8", "rhel8"] %}}
-    {{% set product_short_name = "OL" if "ol" in product else "RHEL" %}}
+    {{% set product_short_name = "OL" if "ol" in families else "RHEL" %}}
     For {{{ product_short_name }}} 8.5 systems and older:
     $ sudo tail /etc/fapolicyd/fapolicyd.rules
 

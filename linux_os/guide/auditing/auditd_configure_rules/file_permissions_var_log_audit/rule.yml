@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'System Audit Logs Must Have Mode 0640 or Less Permissive'
 
 description: |-
-    {{% if 'ol' in product or "rhel" in product or "rhcos4" in product %}}
+    {{% if 'ol' in families or "rhel" in product or "rhcos4" in product %}}
     Determine where the audit logs are stored with the following command:
     <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf
     log_file = /var/log/audit/audit.log</pre>
@@ -74,13 +74,13 @@ fixtext: |-
 
     If the log_group is not defined or it is set to root, configure the permissions the following way:
 
-    $ sudo chmod 0640 $log_file
-    $ sudo chmod 0440 $log_file.*
-
-    Otherwise, configure the permisssions the following way:
-
     $ sudo chmod 0600 $log_file
     $ sudo chmod 0400 $log_file.*
+
+    Otherwise, configure the permissions the following way:
+
+    $ sudo chmod 0640 $log_file
+    $ sudo chmod 0440 $log_file.*
 
 srg_requirement: |-
    {{{ full_name }}} audit log file must have mode 0640 or less permissive to prevent unauthorized access to the audit log.

@@ -2,6 +2,9 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_rhcos
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
+metadata:
+  annotations:
+    complianceascode.io/ocp-version: '<=4.12'
 spec:
   config:
     ignition:
@@ -13,3 +16,5 @@ spec:
         mode: 0600
         path: /etc/ssh/sshd_config
         overwrite: true
+---
+{{{ kubernetes_sshd_dropin('HostbasedAuthentication no', config_basename='00-complianceascode-disable_host_auth.conf') }}}

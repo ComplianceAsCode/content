@@ -31,7 +31,6 @@ references:
     cobit5: DSS05.04,DSS05.10,DSS06.10
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
-    ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     nist: CM-6(a),AC-7(b),IA-5(c)
     nist-csf: PR.AC-7
@@ -53,7 +52,7 @@ ocil: |-
     Verify {{{ full_name }}} is configured to lock the root account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
     unsuccessful logon attempts with the command:
 
-    <pre>$ grep even_deny_root /etc/security/faillock.conf</pre>
+    <pre>$ grep even_deny_root {{{ pam_faillock_conf_path }}}</pre>
     even_deny_root
 
 
@@ -63,7 +62,7 @@ fixtext: |-
 
     $ sudo authselect enable-feature with-faillock
 
-    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    Then edit the <tt>{{{ pam_faillock_conf_path }}}</tt> file as follows:
     add or uncomment the following line:
     <pre>even_deny_root</pre>
 
@@ -75,7 +74,7 @@ warnings:
         PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
         aborted in order to preserve intentional changes. In this case, an informative message will
         be shown in the remediation report.
-        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        If the system supports the <tt>{{{ pam_faillock_conf_path }}}</tt> file, the pam_faillock
         parameters should be defined in <tt>faillock.conf</tt> file.
 
 srg_requirement: |-

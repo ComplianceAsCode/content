@@ -29,19 +29,8 @@ import itertools
 from operator import and_ as and_operator
 from operator import or_ as or_operator
 
-# Python 2 and 3
-try:
-    basestring  # NOQA
-except NameError:
-    basestring = str  # NOQA
-
-# Python 2 and 3
-try:
-    # Python 2
-    reduce  # NOQA
-except NameError:
-    # Python 3
-    from functools import reduce  # NOQA
+from functools import reduce
+from typing import Optional, Any
 
 # Set to True to enable tracing for parsing
 TRACE_PARSE = False
@@ -208,7 +197,7 @@ class BooleanAlgebra(object):
 
         precedence = {self.NOT: 5, self.AND: 10, self.OR: 15, TOKEN_LPAR: 20}
 
-        if isinstance(expr, basestring):
+        if isinstance(expr, str):
             tokenized = self.tokenize(expr)
         else:
             tokenized = iter(expr)
@@ -445,7 +434,7 @@ class BooleanAlgebra(object):
             - True symbols: 1 and True
             - False symbols: 0, False and None
         """
-        if not isinstance(expr, basestring):
+        if not isinstance(expr, str):
             raise TypeError('expr must be string but it is %s.' % type(expr))
 
         # mapping of lowercase token strings to a token type id for the standard
@@ -556,17 +545,17 @@ class Expression(object):
     variable symbols.
     """
     # Defines sort and comparison order between expressions arguments
-    sort_order = None
+    sort_order: Optional[int] = None
 
     # Store arguments aka. subterms of this expressions.
     # subterms are either literals or expressions.
-    args = tuple()
+    args: Any = ()
 
     # True is this is a literal expression such as a Symbol, TRUE or FALSE
-    isliteral = False
+    isliteral: bool = False
 
     # True if this expression has been simplified to in canonical form.
-    iscanonical = False
+    iscanonical: bool = False
 
     # these class attributes are configured when a new BooleanAlgebra is created
     TRUE = None
@@ -809,7 +798,7 @@ class BaseElement(Expression):
             return self == self.FALSE
         return NotImplemented
 
-    __nonzero__ = __bool__ = lambda s: None
+    __nonzero__ = __bool__ = lambda s: None # type: ignore
 
     def pretty(self, indent=0, debug=False):
         """
@@ -843,7 +832,7 @@ class _TRUE(BaseElement):
     def __call__(self):
         return self
 
-    __nonzero__ = __bool__ = lambda s: True
+    __nonzero__ = __bool__ = lambda s: True # type: ignore
 
 
 class _FALSE(BaseElement):
@@ -871,7 +860,7 @@ class _FALSE(BaseElement):
     def __call__(self):
         return self
 
-    __nonzero__ = __bool__ = lambda s: False
+    __nonzero__ = __bool__ = lambda s: False # type: ignore
 
 
 class Symbol(Expression):
@@ -920,7 +909,7 @@ class Symbol(Expression):
         return str(self.obj)
 
     def __repr__(self):
-        obj = "'%s'" % self.obj if isinstance(self.obj, basestring) else repr(self.obj)
+        obj = "'%s'" % self.obj if isinstance(self.obj, str) else repr(self.obj)
         return '%s(%s)' % (self.__class__.__name__, obj)
 
     def pretty(self, indent=0, debug=False):
@@ -931,7 +920,7 @@ class Symbol(Expression):
         if debug:
             debug_details += '<isliteral=%r, iscanonical=%r>' % (self.isliteral, self.iscanonical)
 
-        obj = "'%s'" % self.obj if isinstance(self.obj, basestring) else repr(self.obj)
+        obj = "'%s'" % self.obj if isinstance(self.obj, str) else repr(self.obj)
         return (' ' * indent) + ('%s(%s%s)' % (self.__class__.__name__, debug_details, obj))
 
 
@@ -1470,7 +1459,7 @@ class AND(DualBase):
     """
 
     sort_order = 10
-    _pyoperator = and_operator
+    _pyoperator = and_operator # type: ignore
 
     def __init__(self, arg1, arg2, *args):
         super(AND, self).__init__(arg1, arg2, *args)
@@ -1496,7 +1485,7 @@ class OR(DualBase):
     """
 
     sort_order = 25
-    _pyoperator = or_operator
+    _pyoperator = or_operator # type: ignore
 
     def __init__(self, arg1, arg2, *args):
         super(OR, self).__init__(arg1, arg2, *args)

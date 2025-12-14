@@ -12,6 +12,6 @@ authselect enable-feature with-faillock
 # authselect integrity check will fail and the remediation will be aborted in order to preserve
 # intentional changes. In this case, an informative message will be shown in the remediation report.
 sed -i --follow-symlinks 's/\(pam_faillock.so \(preauth silent\|authfail\)\).*$/\1 '$PRM_NAME'='$TEST_VALUE'/g' /etc/pam.d/system-auth /etc/pam.d/password-auth
-> /etc/security/faillock.conf
-echo "$PRM_NAME = $TEST_VALUE" >> /etc/security/faillock.conf
-echo "silent" >> /etc/security/faillock.conf
+> "{{{ pam_faillock_conf_path }}}"
+echo "$PRM_NAME = $TEST_VALUE" >> "{{{ pam_faillock_conf_path }}}"
+echo "silent" >> "{{{ pam_faillock_conf_path }}}"

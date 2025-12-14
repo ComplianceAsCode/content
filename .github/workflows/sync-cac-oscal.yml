@@ -12,7 +12,7 @@ jobs:
     steps:
       # Step 1: Set up Python 3
       - name: Set up Python 3
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: '3.9'
       # Step 2: Install Git
@@ -20,7 +20,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y git
       # Step 3: Checkout the CaC repo
       - name: Checkout CaC repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           repository: ${{ github.repository }}
           path: cac-content
@@ -48,7 +48,7 @@ jobs:
       # Step 4: Get the access token for content write permission to OSCAL content
       - name: Get GitHub app token
         if: ${{ env.SKIP == 'false' }}
-        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2.1.1
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
         id: app-token
         with:
           app-id: ${{ secrets.APP_ID }}
@@ -57,44 +57,81 @@ jobs:
           repositories: |
             content
             oscal-content
-      # Step 5: Detect the updates of CAC content
+      # Step 5: Checkout complyscribe and setup the environment
+      - name: Checkout complyscribe repo
+        if: ${{ env.SKIP == 'false' }}
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          repository: complytime/complyscribe
+          path: complyscribe
+      - name: Setup complyscribe
+        if: ${{ env.SKIP == 'false' }}
+        run: |
+          cd complyscribe && python3 -m venv venv && source venv/bin/activate
+          python3 -m pip install --no-cache-dir "poetry==1.7.1"
+          poetry install
+      # Step 6: Detect the updates of CAC content
       - name: Detect files changed by PR
         if: ${{ env.SKIP == 'false' }}
         id: changed-files
         run: |
-          repo=${{ github.repository }}
+          OWNER="ComplianceAsCode"
+          REPO="content"
           # Fetch all pages of the files for the pull request
-          url="repos/$repo/pulls/${{ env.PR_NUMBER }}/files"
+          url="repos/$OWNER/$REPO/pulls/${{ env.PR_NUMBER }}/files"
           response=$(gh api "$url" --paginate)
           echo "$response" | jq -r '.[].filename' > filenames.txt
           echo "CHANGE_FOUND=false" >> $GITHUB_ENV
-          if grep -E "controls/|.profile|rule.yml|.var" filenames.txt ; then
+          source complyscribe/venv/bin/activate
+          cd cac-content
+          has_change() {
+            local file="$1"
+            local key="$2"
+            ! python utils/compare_rule_var.py \
+              --owner "$OWNER" \
+              --repo "$REPO" \
+              "${{ env.PR_NUMBER }}" \
+              "$file" \
+              "$key"
+          }
+          while IFS= read -r line; do
+            # Exclude lines containing 'tests/data/'
+            if [[ "$line" == *tests/data/* ]]; then
+              continue
+            fi
+            case "$line" in
+              *controls/*|*.profile*)
+                echo "$line" >> updated_filenames.txt
+                ;;
+              *rule.yml)
+                if has_change "$line" "title"; then
+                  echo "Change detected: The title in '$line' was updated."
+                  echo "$line" >> updated_filenames.txt
+                fi
+                ;;
+              *.var)
+                if has_change "$line" "description" || has_change "$line" "options"; then
+                  echo "Change detected: The description or options in '$line' were updated."
+                  echo "$line" >> updated_filenames.txt
+                fi
+              ;;
+            esac
+          done < ../filenames.txt
+          if [[ -f updated_filenames.txt ]]; then
+            echo "Shows updated_filenames:"
+            cat updated_filenames.txt
             echo "CHANGE_FOUND=true" >> $GITHUB_ENV
           fi
-          cat filenames.txt
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-      # Step 6: Setup the complyscribe environment
       - name: Checkout OSCAL content repo
         if: ${{ env.CHANGE_FOUND == 'true' }}
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           repository: ComplianceAsCode/oscal-content
           path: oscal-content
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
-      - name: Checkout complyscribe repo
-        if: ${{ env.CHANGE_FOUND == 'true' }}
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          repository: complytime/complyscribe
-          path: complyscribe
-      - name: Setup complyscribe
-        if: ${{ env.CHANGE_FOUND == 'true' }}
-        run: |
-          cd complyscribe && python3 -m venv venv && source venv/bin/activate
-          python3 -m pip install --no-cache-dir "poetry==1.7.1"
-          poetry install
       - name: Set RH_PRODUCTS
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
@@ -130,8 +167,7 @@ jobs:
       - name: Handle the detected updates
         if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
-          cat filenames.txt
-          python cac-content/utils/handle_detected_updates.py 'filenames.txt' > updates 2>&1
+          python cac-content/utils/handle_detected_updates.py 'cac-content/updated_filenames.txt' > updates 2>&1
           cd complyscribe && source venv/bin/activate
           RH_PRODUCTS=${{ env.RH_PRODUCTS }}
           i=0
@@ -162,6 +198,7 @@ jobs:
           done < "$GITHUB_WORKSPACE"/updates
       # Step 10: Check if there is any existing open PR
       - name: Check if there is any existing open PR
+        if: ${{ env.CHANGE_FOUND == 'true' }}
         run: |
           cd oscal-content
           # Use the GitHub CLI to search for an open PR.
@@ -324,7 +361,7 @@ jobs:
           commit=$(git log -1 --format=%H)
           PR_BODY="This is an auto-generated commit $commit from CAC PR [${{ env.PR_NUMBER }}]("$CAC_PR_URL")"
           if [[ "$(git branch --show-current)" == "${{ env.BRANCH_NAME }}" ]]; then
-            if [ "${{ env.SQUASH_COUNT }} -eq 0" ]; then
+            if [ "${{ env.SQUASH_COUNT }}" -eq 0 ]; then
               echo "No commits from the CAC PR ${{ env.PR_NUMBER }}. Skipping PR creation."
             else
               # Check if the PR exists
@@ -332,7 +369,7 @@ jobs:
                 --head $BRANCH_NAME --state open --json id \
                 | jq length)
               if [ "$PR_EXISTS" -gt 0 ]; then
-                echo "PR ${{ env.BRANCH_NAME }} already exists. Skipping PR creation.
+                echo "PR ${{ env.BRANCH_NAME }} already exists. Skipping PR creation."
                 echo "Add a comment for the CAC PR ${{ env.PR_NUMBER }}."
                 gh pr comment ${{ env.BRANCH_NAME }} --body "${PR_BODY}"
               else

@@ -17,6 +17,7 @@ selections:
     - installed_OS_is_vendor_supported
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
+    - var_audit_backlog_limit=8192
     - service_auditd_enabled
     - enable_fips_mode
     - var_system_crypto_policy=fips

@@ -8,6 +8,8 @@
   ansible.builtin.shell: |-
     grep -oP '^\s*(?:auth.*pam_faillock.so.*)?dir\s*=\s*(\S+)' "{{ item }}" | sed -r 's/.*=\s*(\S+)/\1/'
   register: faillock_output
+  changed_when: false
+  check_mode: false
   with_items:
     - /etc/security/faillock.conf
     {{% if 'ol' not in families %}}
@@ -26,18 +28,32 @@
   with_items: "{{ list_faillock_dir }}"
   when: item != ""
 
-- name: {{{ rule_title }}} - Set up SELinux context for faillock
-  ansible.builtin.shell: |-
-    if ! semanage fcontext -a -t faillog_t "{{ item }}(/.*)?"; then
-      semanage fcontext -m -t faillog_t "{{ item }}(/.*)?"
-    fi
-  with_items: "{{ list_faillock_dir }}"
+- name: {{{ rule_title}}} - Get SELinux context for faillock directories
+  ansible.builtin.command: ls -dZ "{{ item }}"
+  register: faillock_selinux_context
+  changed_when: false
+  check_mode: false
+  with_items: '{{ list_faillock_dir }}'
   when: item != ""
 
+- name: {{{ rule_title }}} - Set up SELinux context for faillock
+  ansible.builtin.shell: |-
+    if ! semanage fcontext -a -t faillog_t "{{ item.item }}(/.*)?"; then
+      semanage fcontext -m -t faillog_t "{{ item.item }}(/.*)?"
+    fi
+  with_items: "{{ faillock_selinux_context.results }}"
+  when:
+    - item.item != ""
+    - item.stdout is defined
+    - '"faillog_t" not in item.stdout'
+
 - name: {{{ rule_title }}} - Restore SELinux context
-  ansible.builtin.command: restorecon -R -v "{{ item }}"
-  with_items: "{{ list_faillock_dir }}"
-  when: item != ""
+  ansible.builtin.command: restorecon -R -v "{{ item.item }}"
+  with_items: "{{ faillock_selinux_context.results }}"
+  when:
+    - item.item != ""
+    - item.stdout is defined
+    - '"faillog_t" not in item.stdout'
 
 - name: {{{ rule_title }}} - Verify pam_faillock.so configuration
   ansible.builtin.debug:

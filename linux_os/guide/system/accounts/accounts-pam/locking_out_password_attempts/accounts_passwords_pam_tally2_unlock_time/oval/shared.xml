@@ -3,15 +3,15 @@
     {{{ oval_metadata("The unlock time after number of failed logins should be set correctly.", rule_title=rule_title) }}}
     <criteria operator="AND" comment="Checks common to both scenarios">
       <criterion test_ref="test_accounts_passwords_pam_tally2_unlock_time"
-      comment="Verify unlock time configuation of pam_tally2 in common-auth" />
+      comment="Verify unlock time configuration of pam_tally2 in common-auth" />
       <criterion test_ref="test_accounts_passwords_pam_tally2_unlock_time_account"
-      comment="Verify unlock time configuation of pam_tally2 in common-account" />
+      comment="Verify unlock time configuration of pam_tally2 in common-account" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_unlock_time"
   check="all" check_existence="all_exist"
-  comment="Verify unlock_time configuation of pam_tally2" version="1">
+  comment="Verify unlock_time configuration of pam_tally2" version="1">
     <ind:object object_ref="object_accounts_passwords_pam_tally2_unlock_time" />
     <ind:state state_ref="state_accounts_passwords_pam_tally2_unlock_time" />
   </ind:textfilecontent54_test>
@@ -32,7 +32,7 @@
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_unlock_time_account"
   check="all" check_existence="all_exist"
-  comment="Verify  configuation of pam_tally2_account" version="1">
+  comment="Verify  configuration of pam_tally2_account" version="1">
     <ind:object object_ref="object_accounts_passwords_pam_tally2_unlock_time_account" />
   </ind:textfilecontent54_test>
 

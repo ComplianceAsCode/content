@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'Verify that local /var/log/messages is not world-readable'
 
 description: |-
-    Files containing sensitive informations should be protected by restrictive
+    Files containing sensitive information should be protected by restrictive
     permissions. Most of the time, there is no need that these files need to be read by any non-root user
     {{{ describe_file_permissions(file="/var/log/messages", perms="0640") }}}
 

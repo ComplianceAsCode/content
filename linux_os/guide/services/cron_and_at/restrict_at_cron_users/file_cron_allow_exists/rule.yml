@@ -19,6 +19,7 @@ identifiers:
     cce@rhel8: CCE-86184-9
     cce@rhel9: CCE-86185-6
     cce@rhel10: CCE-87235-8
+    cce@sle15: CCE-92533-9
 
 ocil_clause: 'the file /etc/cron.allow does not exist'
 
@@ -36,4 +37,4 @@ template:
         filepath: /etc/cron.allow
         exists: true
         fileuid: "0"
-        filemode: "0600"
+        filemode: "0640"

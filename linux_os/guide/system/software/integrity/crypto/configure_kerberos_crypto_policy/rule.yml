@@ -24,7 +24,6 @@ identifiers:
     cce@rhel10: CCE-88640-8
 
 references:
-    ism: 0418,1055,1402
     nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
     nist: SC-13,SC-12(2),SC-12(3)
     srg: SRG-OS-000120-GPOS-00061
@@ -35,7 +34,7 @@ ocil_clause: 'the symlink does not exist or points to a different target'
 ocil: |-
     Check that the symlink exists and target the correct Kerberos crypto policy, with the following command:
     <pre>file /etc/krb5.conf.d/crypto-policies</pre>
-    If command ouput shows the following line, Kerberos is configured to use the system-wide crypto policy.
+    If command output shows the following line, Kerberos is configured to use the system-wide crypto policy.
     <pre>/etc/krb5.conf.d/crypto-policies: symbolic link to /etc/crypto-policies/back-ends/krb5.config</pre>
 
 fixtext: |-

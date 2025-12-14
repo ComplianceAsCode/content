@@ -20,6 +20,7 @@ identifiers:
     cce@rhel9: CCE-83622-1
     cce@rhel10: CCE-89728-0
     cce@sle15: CCE-91429-1
+    cce@sle16: CCE-95713-4
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
@@ -40,3 +41,5 @@ ocil: |-
     run the following command:
     <pre>$ sudo grep ^ttyS/[0-9] /etc/securetty</pre>
     If any output is returned, then root login over serial ports is permitted.
+
+platform: system_with_kernel

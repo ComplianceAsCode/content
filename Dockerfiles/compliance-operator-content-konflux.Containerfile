@@ -60,8 +60,13 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/bsi-2022.profile && \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/bsi-node-2022.profile &&  \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v2r2.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v2r3.profile && \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r2.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r3.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/bsi.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/bsi-2022.profile && \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v2r2.profile; \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v2r3.profile; \
     fi
 
 # Enable the DISA-STIG profiles for ppc64le
@@ -78,7 +83,7 @@ RUN grep -lr 'documentation_complete: false' ./products | xargs -I '{}' \
 
 # Build the OpenShift and RHCOS content for x86, aarch64 and ppc64le architectures.
 # Only build OpenShift content for s390x architectures.
-RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "ppc64le"]; then \
+RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "ppc64le" ]; then \
         ./build_product ocp4 rhcos4 --datastream-only; \
         else ./build_product ocp4 --datastream-only; \
         fi
@@ -94,7 +99,8 @@ LABEL \
         description="OpenSCAP content for the compliance-operator" \
         maintainer="Red Hat ISC <isc-team@redhat.com>" \
         License="GPLv2+" \
-        name="openshift-compliance-content" \
+        name="compliance/openshift-compliance-content-rhel8" \
+        cpe="cpe:/a:redhat:openshift_compliance_operator:1::el9" \
         com.redhat.component="openshift-compliance-content-container" \
         io.openshift.maintainer.product="OpenShift Container Platform" \
         io.openshift.maintainer.component="Compliance Operator"

@@ -33,6 +33,17 @@ rationale: |-
     For AIDE to be effective, an initial database of "known-good" information about files
     must be captured and it should be able to be verified against the installed files.
 
+warnings:
+    - general: |-
+        In RHEL Image Mode (bootc) systems, the AIDE database must be regenerated after each system update.
+        Image Mode systems receive updates through new container images that may include modified files.
+        After applying system updates, run the following commands to regenerate the AIDE database:
+        <pre>$ sudo {{{ aide_bin_path }}} --init</pre>
+        Then replace the existing database:
+        <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+        Failure to regenerate the AIDE database after updates will result in false positive alerts
+        for legitimate system changes introduced by the update process.
+
 severity: medium
 
 identifiers:
@@ -41,6 +52,7 @@ identifiers:
     cce@rhel10: CCE-86942-0
     cce@sle12: CCE-91483-8
     cce@sle15: CCE-85787-0
+    cce@sle16: CCE-95701-9
     cce@slmicro5: CCE-93710-2
     cce@slmicro6: CCE-94713-5
 

@@ -4,17 +4,20 @@
 # complexity = low
 # disruption = medium
 
-- name: List /etc/sysctl.d/*.conf files
+{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
+- (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
+{{% endif %}}
+
+- name: {{{ rule_title }}} - Set fact for sysctl paths
+  ansible.builtin.set_fact:
 {{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
-  ansible.builtin.find:
-    paths:
+    sysctl_paths:
       - "/run/sysctl.d/"
       - "/etc/sysctl.d/"
       - "/usr/local/lib/sysctl.d/"
       - "/lib/sysctl.d/"
 {{% else %}}
-  ansible.builtin.find:
-    paths:
+    sysctl_paths:
       - "/etc/sysctl.d/"
       - "/run/sysctl.d/"
       - "/usr/local/lib/sysctl.d/"
@@ -22,20 +25,37 @@
 {{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
       - "/usr/lib/sysctl.d/"
 {{% endif %}}
-    contains: '^[\s]*{{{ SYSCTLVAR }}}.*$'
-    patterns: "*.conf"
-    file_type: any
-  register: find_sysctl_d
 
-- name: Comment out any occurrences of {{{ SYSCTLVAR }}} from config files
+- name: {{{ rule_title }}} - Find all files that contain {{{ SYSCTLVAR }}}
+  ansible.builtin.shell:
+    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*.*$'
+  register: find_all_values
+  check_mode: false
+  changed_when: false
+  failed_when: false
+
+- name: {{{ rule_title }}} - Find all files that set {{{ SYSCTLVAR }}} to correct value
+  ansible.builtin.shell:
+{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
+    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{ sysctl_{{{ SYSCTLID }}}_value }}$'
+{{%- else %}}
+    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{{ SYSCTLVAL | escape_regex }}}$'
+{{%- endif %}}
+  register: find_correct_value
+  check_mode: false
+  changed_when: false
+  failed_when: false
+
+- name: {{{ rule_title }}} - Comment out any occurrences of {{{ SYSCTLVAR }}} from config files
   ansible.builtin.replace:
-    path: "{{ item.path }}"
+    path: '{{ item | split(":") | first }}'
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'
     replace: '#{{{ SYSCTLVAR }}}'
-  loop: "{{ find_sysctl_d.files }}"
+  loop: '{{ find_all_values.stdout_lines }}'
+  when: find_correct_value.stdout_lines | length == 0 or find_all_values.stdout_lines | length > find_correct_value.stdout_lines | length
 
 {{% if product in [ "ubuntu2204", "ubuntu2404"] %}}
-- name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/ufw/sysctl.conf
+- name: {{{ rule_title }}} - Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/ufw/sysctl.conf
   ansible.builtin.replace:
     path: "/etc/ufw/sysctl.conf"
     regexp: '(^[\s]*{{{ SYSCTLVAR }}}.*$)'
@@ -43,7 +63,7 @@
 {{% endif %}}
 
 {{% if sysctl_remediate_drop_in_file == "true" %}}
-- name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
+- name: {{{ rule_title }}} - Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
   ansible.builtin.replace:
     path: "/etc/sysctl.conf"
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'
@@ -51,14 +71,12 @@
 {{% endif %}}
 
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
-- (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
-
-- name: Ensure sysctl {{{ SYSCTLVAR }}} is set
+- name: {{{ rule_title }}} - Ensure sysctl {{{ SYSCTLVAR }}} is set
   ansible.posix.sysctl:
     name: "{{{ SYSCTLVAR }}}"
     value: "{{ sysctl_{{{ SYSCTLID }}}_value }}"
 {{%- else %}}
-- name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
+- name: {{{ rule_title }}} - Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
   ansible.posix.sysctl:
     name: "{{{ SYSCTLVAR }}}"
     value: "{{{ SYSCTLVAL }}}"

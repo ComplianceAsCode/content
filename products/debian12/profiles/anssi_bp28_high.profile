@@ -44,6 +44,7 @@ selections:
   # Following rules once had a prodtype incompatible with the debian12 product
   - '!accounts_passwords_pam_tally2_deny_root'
   - '!ensure_redhat_gpgkey_installed'
+  - '!package_sequoia-sq_installed'
   - '!set_password_hashing_algorithm_systemauth'
   - '!package_dnf-automatic_installed'
   - '!dnf-automatic_security_updates_only'
@@ -71,3 +72,9 @@ selections:
 
   # The following rule is not applicable to Debian 12
   - '!logind_session_timeout'
+  - '!ldap_client_tls_cacertpath'
+  - '!ldap_client_start_tls'
+  - '!service_chronyd_enabled'
+  - '!audit_rules_mac_modification_etc_selinux'
+  - '!no_nis_in_nsswitch'
+

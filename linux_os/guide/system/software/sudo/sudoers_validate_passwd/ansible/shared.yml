@@ -21,7 +21,7 @@
 {{%- endmacro %}}
 
 {{%- macro delete_line_in_sudoers_file(line) %}}
-- name: "Remove any ocurrences of {{{ line }}} in /etc/sudoers"
+- name: "Remove any occurrences of {{{ line }}} in /etc/sudoers"
   ansible.builtin.lineinfile:
     path: "/etc/sudoers"
     regexp: "^{{{ line }}}$"

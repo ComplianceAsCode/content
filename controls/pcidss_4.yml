@@ -1556,6 +1556,8 @@ controls:
             status: automated
             rules:
                 - ensure_redhat_gpgkey_installed
+                # This package is needed for RHEL 10
+                - package_sequoia-sq_installed
                 - ensure_suse_gpgkey_installed
                 - ensure_almalinux_gpgkey_installed
                 - ensure_gpgcheck_globally_activated
@@ -3093,6 +3095,7 @@ controls:
             rules:
                 - grub2_audit_argument
                 - grub2_audit_backlog_limit_argument
+                - var_audit_backlog_limit=8192
 
           - id: 10.7.3
             title: Failures of any critical security controls systems are responded to restore security

@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 24.04
+# platform = multi_platform_ubuntu
 # packages = rsyslog
 
 chgrp root -R /var/log/*
@@ -69,4 +69,3 @@ touch /var/log/sssd/sssd
 touch /var/log/sssd/SSSD
 chgrp nogroup /var/log/sssd/sssd
 chgrp nogroup /var/log/sssd/SSSD
-

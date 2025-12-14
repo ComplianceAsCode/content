@@ -9,6 +9,8 @@
   ansible.builtin.command:
     cmd: awk -F':' '(/^[^:]+:[^!*]/ && ($5 > {{ var_accounts_maximum_age_login_defs }} || $5 == "")) {print $1}' /etc/shadow
   register: user_names
+  changed_when: false
+  check_mode: false
 
 - name: Change the maximum time period between password changes
 {{% if product in ["ol7"] %}}

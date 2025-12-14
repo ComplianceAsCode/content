@@ -34,7 +34,7 @@ fixtext: '{{{ fixtext_mount_option("/home", "noexec") }}}'
 
 srg_requirement: '{{{ srg_requirement_mount_option("/home", "noexec") }}}'
 
-{{% if "ol" not in product %}}
+{{% if "ol" not in families %}}
 template:
     name: mount_option
     vars:

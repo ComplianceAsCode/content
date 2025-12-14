@@ -39,6 +39,7 @@ selections:
     - '!kernel_config_hardened_usercopy_fallback'
     - '!accounts_passwords_pam_faillock_deny'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!accounts_passwords_pam_faillock_unlock_time'
     - '!accounts_passwords_pam_faillock_interval'
@@ -92,3 +93,8 @@ selections:
 
     # The following rules are not applicable to SLE 12
     - '!logind_session_timeout'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
+    - '!service_chronyd_enabled'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!no_nis_in_nsswitch'

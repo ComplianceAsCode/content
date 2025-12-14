@@ -1,0 +1,28 @@
+
+<def-group>
+    <definition id="{{{ rule_id }}}" version="1" class="compliance">
+        {{{ oval_metadata("Ensure 'install_weak_deps' is configured with value '0' in section 'main' in /etc/dnf/dnf.conf", rule_title=rule_title) }}}
+        <criteria comment="dnf is configured correctly and configuration file exists" operator="AND">
+            <criterion comment="Check the install_weak_deps in /etc/dnf/dnf.conf" test_ref="{{{ rule_id }}}_test_disable_weak_deps" />
+            <criterion comment="test if configuration file /etc/dnf/dnf.conf exists for disable_weak_deps" test_ref="{{{ rule_id }}}_test_disable_weak_deps_config_file_exists" />
+        </criteria>
+    </definition>
+    <ind:textfilecontent54_test id="{{{ rule_id }}}_test_disable_weak_deps" version="1" check="all" comment="tests the value of install_weak_deps setting in the /etc/dnf/dnf.conf file" check_existence="all_exist" state_operator="AND">
+        <ind:object object_ref="{{{ rule_id }}}_obj_disable_weak_deps" />
+        <ind:state state_ref="{{{ rule_id }}}_state_disable_weak_deps" />
+    </ind:textfilecontent54_test>
+    <unix:file_test id="{{{ rule_id }}}_test_disable_weak_deps_config_file_exists" version="1" check="all" comment="The configuration file /etc/dnf/dnf.conf exists for disable_weak_deps" check_existence="all_exist" state_operator="AND">
+        <unix:object object_ref="{{{ rule_id }}}_obj_disable_weak_deps_config_file" />
+    </unix:file_test>
+    <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_disable_weak_deps" version="1">
+        <ind:filepath>/etc/dnf/dnf.conf</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*\[main\].*(?:\n\s*[^[\s].*)*\n^\s*install_weak_deps[ \t]*=[ \t]*(.+?)[ \t]*(?:$|#)</ind:pattern>
+        <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+    <unix:file_object id="{{{ rule_id }}}_obj_disable_weak_deps_config_file" version="1" comment="The configuration file /etc/dnf/dnf.conf for disable_weak_deps">
+        <unix:filepath operation="pattern match">^/etc/dnf/dnf.conf</unix:filepath>
+    </unix:file_object>
+    <ind:textfilecontent54_state id="{{{ rule_id }}}_state_disable_weak_deps" version="1" operator="AND">
+        <ind:subexpression datatype="string" operation="pattern match">^(0|false|no)$</ind:subexpression>
+    </ind:textfilecontent54_state>
+</def-group>

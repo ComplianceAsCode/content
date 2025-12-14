@@ -4,7 +4,7 @@ srg_requirement: |-
 vuldiscussion: |-
     SSH implementation in {{{ full_name }}} uses the openssl library, which doesn't use high-entropy sources by default.
     Randomness is needed to generate data-encryption keys, and as plaintext padding and initialization vectors
-    in encryption algorithms, and high-quality entropy elliminates the possibility that the output of
+    in encryption algorithms, and high-quality entropy eliminates the possibility that the output of
     the random number generator used by SSH would be known to potential attackers.
 
 checktext: |-

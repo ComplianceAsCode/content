@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = aide
 
-# default instalation
+# default installation
 true

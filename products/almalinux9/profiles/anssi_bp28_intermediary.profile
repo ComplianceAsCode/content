@@ -39,4 +39,8 @@ selections:
   - '!sudo_add_env_reset'
   - '!ensure_oracle_gpgkey_installed'
   - '!ensure_redhat_gpgkey_installed'
+  - '!package_sequoia-sq_installed'
   - '!package_kea_removed'
+  - '!ldap_client_tls_cacertpath'
+  - '!ldap_client_start_tls'
+  - '!no_nis_in_nsswitch'

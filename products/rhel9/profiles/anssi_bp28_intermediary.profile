@@ -49,6 +49,7 @@ selections:
     - '!package_xinetd_removed'
     - '!package_ypbind_removed'
     - '!package_ypserv_removed'
+    - '!package_sequoia-sq_installed'
 
     # RHEL9 unified the paths for grub2 files. These rules are selected in control file by R5.
     - '!grub2_uefi_password'
@@ -56,3 +57,7 @@ selections:
     # Following rules are not applicable to RHEL
     - '!package_talk_removed'
     - '!package_talk-server_removed'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!no_nis_in_nsswitch'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'

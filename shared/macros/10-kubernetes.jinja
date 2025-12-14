@@ -6,8 +6,6 @@
 
 # This sshd was compiled with PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
 
-Include /etc/ssh/sshd_config.d/*.conf
-
 # The strategy used for options in the default sshd_config shipped with
 # OpenSSH is to specify options with their default value where
 # possible, but leave them commented.  Uncommented options override the
@@ -159,10 +157,22 @@ UsePrivilegeSeparation {{.var_sshd_priv_separation}}
     - path (String): Path to the configuration file.
     - file_permissions_mode (String): File permissions to be applied to the file represented by path argument
     - source_content (String): The source of the content to be applied.
+    - ocp_version_deps (String): States that the remediation needs a certain OpenShift version range to work
+    - k8s_version_deps (String): States that the remediation needs a certain Kubernetes version range to work
 #}}
-{{%- macro kubernetes_machine_config_file(path='', file_permissions_mode='', source='') -%}}
+{{%- macro kubernetes_machine_config_file(path='', file_permissions_mode='', source='', ocp_version_range='', k8s_version_range='') -%}}
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
+{{%- if ocp_version_range|length > 0 or k8s_version_range|length > 0 %}}
+metadata:
+  annotations:
+    {{%- if ocp_version_range|length > 0 %}}
+    complianceascode.io/ocp-version: '{{{ ocp_version_range }}}'
+    {{%- endif %}}
+    {{%- if k8s_version_range|length > 0 %}}
+    complianceascode.io/k8s-version: '{{{ k8s_version_range }}}'
+    {{%- endif %}}
+{{%- endif %}}
 spec:
   config:
     ignition:
@@ -219,9 +229,23 @@ spec:
 
 {{#
   High level macro to generate Kubernetes remediation to set the ssh daemon configuration file.
+  Parameters:
+    ocp_version_range: Optional OpenShift version range (default: '<4.13.0')
 #}}
-{{%- macro kubernetes_sshd_set() -%}}
-{{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config', file_permissions_mode='0600', source=sshd_config_source()) }}}
+{{%- macro kubernetes_sshd_set(ocp_version_range='<4.13.0') -%}}
+{{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config', file_permissions_mode='0600', source=sshd_config_source(), ocp_version_range=ocp_version_range) }}}
+{{%- endmacro -%}}
+
+{{#
+  High level macro to generate Kubernetes remediation to set SSH daemon configuration via drop-in files.
+  This is used for OCP >= 4.13.0 where drop-in files are preferred over modifying /etc/ssh/sshd_config directly.
+  Parameters:
+    sshd_dropin_content: Content for the SSHD drop-in configuration file
+    ocp_version_range: Optional OpenShift version range (default: '>=4.13.0')
+    config_basename: Optional basename for the drop-in file (default: '00-complianceascode-hardening.conf')
+#}}
+{{%- macro kubernetes_sshd_dropin(sshd_dropin_content, ocp_version_range='>=4.13.0', config_basename='00-complianceascode-hardening.conf') -%}}
+{{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config.d/' + config_basename, file_permissions_mode='0600', source=sshd_dropin_content, ocp_version_range=ocp_version_range) }}}
 {{%- endmacro -%}}
 
 

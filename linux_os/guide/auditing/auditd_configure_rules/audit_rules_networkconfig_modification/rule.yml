@@ -16,7 +16,7 @@ description: |-
     {{% if product in ['ubuntu2404'] %}}
     -w /etc/netplan/ -p wa -k audit_rules_networkconfig_modification
     {{% endif %}}
-    {{% if 'ubuntu' in product -%}}
+    {{% if 'ubuntu' in product or 'debian' in product -%}}
     -w /etc/networks -p wa -k audit_rules_networkconfig_modification
     -w /etc/network/ -p wa -k audit_rules_networkconfig_modification</pre>
     {{% else -%}}
@@ -31,7 +31,7 @@ description: |-
     -w /etc/issue -p wa -k audit_rules_networkconfig_modification
     -w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
     -w /etc/hosts -p wa -k audit_rules_networkconfig_modification
-    {{% if 'ubuntu' in product -%}}
+    {{% if 'ubuntu' in product or 'debian' in product -%}}
     -w /etc/networks -p wa -k audit_rules_networkconfig_modification
     -w /etc/network/ -p wa -k audit_rules_networkconfig_modification</pre>
     {{% else -%}}
@@ -76,7 +76,7 @@ ocil: |-
     run the following command:
     {{% if product in ['ubuntu2404'] -%}}
     <pre>auditctl -l | grep -E '(/etc/issue|/etc/issue.net|/etc/hosts|/etc/networks|/etc/network/|/etc/netplan/)'</pre>
-    {{% elif 'ubuntu' in product -%}}
+    {{% elif 'ubuntu' in product or 'debian' in product -%}}
     <pre>auditctl -l | grep -E '(/etc/issue|/etc/issue.net|/etc/hosts|/etc/networks|/etc/network/)'</pre>
     {{% else -%}}
     <pre>auditctl -l | grep -E '(/etc/issue|/etc/issue.net|/etc/hosts|/etc/sysconfig/network)'</pre>

@@ -1828,7 +1828,7 @@ controls:
           - package_pam_runtime_installed
       status: automated
       notes: |
-          The CIS control checks that version >= 1.5.3-5 and not that
+          The CIS control checks that version >= 1.5.2-6 and not that
           it is the latest version as the title suggests.
 
     - id: 5.3.1.2
@@ -1911,7 +1911,7 @@ controls:
           - l2_server
           - l2_workstation
       rules:
-          - var_accounts_passwords_pam_faillock_unlock_time=900
+          - var_accounts_passwords_pam_faillock_root_unlock_time=900
           - accounts_passwords_pam_faillock_root_unlock_time
       status: automated
 
@@ -2515,6 +2515,7 @@ controls:
           - l2_workstation
       rules:
           - grub2_audit_backlog_limit_argument
+          - var_audit_backlog_limit=8192
           - zipl_audit_backlog_limit_argument
       status: automated
 

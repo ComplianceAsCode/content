@@ -50,8 +50,11 @@ selections:
     - '!package_cryptsetup-luks_installed'
     - '!audit_rules_file_deletion_events_renameat2'
     - '!audit_rules_dac_modification_fchmodat2'
+    - '!enable_dconf_user_profile'
+    - '!audit_rules_mac_modification_etc_selinux'
     # Use Oracle gpgkey rule
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_suse_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - 'ensure_oracle_gpgkey_installed'

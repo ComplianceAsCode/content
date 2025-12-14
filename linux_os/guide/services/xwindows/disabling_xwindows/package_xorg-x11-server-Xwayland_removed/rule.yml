@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: "Remove the X Windows Xwayland Package"
+
+description: |-
+    {{{ describe_package_remove("xorg-x11-server-Xwayland") }}}
+
+rationale: |-
+    Unnecessary service packages must not be installed to decrease the attack
+    surface of the system. X Windows has a long history of security
+    vulnerabilities and should not be installed unless approved and documented.
+    Unless your organization specifically requires graphical login access via
+    X Windows, remove it to reduce the potential attack surface.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-90601-6
+
+ocil_clause: The xorg-x11-server-Xwayland package is installed.
+
+ocil: |-
+    {{{ describe_package_remove("xorg-x11-server-Xwayland") }}}
+
+platform: not package[gdm]
+
+template:
+    name: package_removed
+    vars:
+        pkgname: xorg-x11-server-Xwayland

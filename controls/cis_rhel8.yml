@@ -537,8 +537,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_crypto_policy
-          - var_system_crypto_policy=default_nosha1
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.2
       title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
@@ -548,32 +547,26 @@ controls:
       status: automated
       notes: |-
           This requirement is already satisfied by 1.6.1.
-      related_rules:
-          - configure_crypto_policy
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.3
       title: Ensure system wide crypto policy disables cbc for ssh (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling CBC in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.4
       title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling weak MACs in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 1.7.1
       title: Ensure message of the day is configured properly (Automated)
@@ -1001,10 +994,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: partial
-      notes: |-
-          The rule has_nonlocal_mta currently checks for services listening only on
-          port 25, but the policy checks also for ports 465 and 587
+      status: automated
       rules:
           - postfix_network_listening_disabled
           - var_postfix_inet_interfaces=loopback-only
@@ -1429,12 +1419,10 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: partial
-      notes: |-
-          It is necessary to create a rule to ensure the existence of at.allow.
-          file_cron_allow_exists can be used as reference for a new templated rule.
+      status: automated
       rules:
           - file_at_deny_not_exist
+          - file_at_allow_exists
           - file_groupowner_at_allow
           - file_owner_at_allow
           - file_permissions_at_allow
@@ -1504,8 +1492,7 @@ controls:
       notes: |-
           Introduced in CIS RHEL8 v3.0.0
       rules:
-          - sshd_use_approved_ciphers
-          - sshd_approved_ciphers=cis_rhel8
+          - configure_custom_crypto_policy_cis
 
     - id: 4.2.7
       title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
@@ -1527,9 +1514,9 @@ controls:
       levels:
           - l2_server
           - l1_workstation
-      status: pending
-      notes: |-
-          New templated rule is necessary for "disableforwarding" option.
+      status: automated
+      rules:
+          - sshd_disable_forwarding
       related_rules:
           - sshd_disable_tcp_forwarding
           - sshd_disable_x11_forwarding
@@ -1594,8 +1581,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - sshd_use_strong_macs
-          - sshd_strong_macs=cis_rhel8
+          - configure_custom_crypto_policy_cis
 
     - id: 4.2.15
       title: Ensure sshd MaxAuthTries is configured (Automated)
@@ -1922,9 +1908,10 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: |-
-          A new templated rule and variable are necessary for the maxsequence option.
+      status: automated
+      rules:
+          - accounts_password_pam_maxsequence
+          - var_password_pam_maxsequence=3
 
     - id: 4.4.3.2.6
       title: Ensure password dictionary check is enabled (Automated)
@@ -2004,13 +1991,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
           Usage of pam_unix.so module together with "remember" option is deprecated and is not
-          recommened by this policy. Instead, it should be used remember option of pam_pwhistory
+          recommended by this policy. Instead, it should be used remember option of pam_pwhistory
           module, as required in 4.4.3.3.1. See here for more details about pam_unix.so:
           https://bugzilla.redhat.com/show_bug.cgi?id=1778929
-          A new rule needs to be created to remove the remember option from pam_unix module.
+      rules:
+          - accounts_password_pam_unix_no_remember
 
     - id: 4.4.3.4.3
       title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
@@ -2356,6 +2344,7 @@ controls:
       status: automated
       rules:
           - grub2_audit_backlog_limit_argument
+          - var_audit_backlog_limit=8192
 
     - id: 5.2.1.4
       title: Ensure auditd service is enabled (Automated)

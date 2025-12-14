@@ -7,7 +7,7 @@
         <platform>multi_platform_ocp</platform>
       </affected>
       <reference ref_id="cpe:/o:redhat:openshift_container_platform_node:4" source="CPE" />
-      <description>The application installed installed on the system is OpenShift 4.</description>
+      <description>The application installed on the system is OpenShift 4.</description>
     </metadata>
     <criteria>
       <criterion comment="Kubelet is installed" test_ref="test_kubelet_conf_exists" />
@@ -49,7 +49,7 @@
         <platform>Red Hat OpenShift Container network 4 on {{{ network }}}</platform>
       </affected>
       <reference ref_id="cpe:/a:redhat:openshift_container_node_network_on_{{{ network|lower }}}:4" source="CPE" />
-      <description>The application installed installed on the system is OpenShift version 4 on {{{ network }}}.</description>
+      <description>The application installed on the system is OpenShift version 4 on {{{ network }}}.</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="cluster is OpenShift 4 on {{{ network }}}" test_ref="test_ocp4_on_{{{ network|lower }}}" />

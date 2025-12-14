@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-login_banner_text="(bash-populate login_banner_text)"
+login_banner_text='(bash-populate login_banner_text)'
 
 # Multiple regexes transform the banner regex into a usable banner
 # 0 - Remove anchors around the banner text
@@ -12,7 +12,7 @@ login_banner_text="(bash-populate login_banner_text)"
 {{{ bash_deregexify_banner_space("login_banner_text") }}}
 # 3 - Adds newline "tokens". (Transforms "(?:\[\\n\]+|(?:\\n)+)" into "(n)*")
 {{{ bash_deregexify_banner_newline("login_banner_text", "(n)*") }}}
-# 4 - Remove any leftover backslash. (From any parethesis in the banner, for example).
+# 4 - Remove any leftover backslash. (From any parenthesis in the banner, for example).
 {{{ bash_deregexify_banner_backslash("login_banner_text") }}}
 # 5 - Removes the newline "token." (Transforms them into newline escape sequences "\n").
 #    ( Needs to be done after 4, otherwise the escapce sequence will become just "n".

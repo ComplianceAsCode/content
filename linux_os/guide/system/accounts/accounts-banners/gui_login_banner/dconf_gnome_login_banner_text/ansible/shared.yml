@@ -35,6 +35,7 @@
     value: '{{{ ansible_deregexify_banner_dconf_gnome("login_banner_text") }}}'
     create: yes
     no_extra_spaces: yes
+  register: result_ini
 
 - name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
   ansible.builtin.lineinfile:
@@ -43,6 +44,8 @@
     line: '/org/gnome/login-screen/banner-message-text'
     create: yes
     state: present
+  register: result_lineinfile
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  when: result_ini is changed or result_lineinfile is changed

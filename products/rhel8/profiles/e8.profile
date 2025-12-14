@@ -31,3 +31,4 @@ selections:
     # Following rules are not applicable to RHEL
     - '!package_talk_removed'
     - '!package_talk-server_removed'
+    - '!package_sequoia-sq_installed'

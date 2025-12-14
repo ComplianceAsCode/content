@@ -5,7 +5,7 @@
 
 source common.sh
 
-CONF_FILE="/etc/security/pwquality.conf"
+CONF_FILE="{{{ pwquality_path }}}"
 
 retry_cnt=3
 if grep -q "^.*retry\s*=" "$CONF_FILE"; then

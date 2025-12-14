@@ -36,7 +36,6 @@ references:
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1'
-    ism: 0421,0422,0431,0974,1173,1401,1504,1505,1546,1557,1558,1559,1560,1561
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
@@ -51,14 +50,14 @@ ocil_clause: 'the command does not return a "minlen" value of "{{{ xccdf_value("
 ocil: |-
     Verify that {{{ full_name }}} enforces a minimum {{{ xccdf_value("var_password_pam_minlen") }}}-character password length with the following command:
 
-    <pre>$ grep minlen /etc/security/pwquality.conf
+    <pre>$ grep minlen {{{ pwquality_path }}}
 
     minlen = {{{ xccdf_value("var_password_pam_minlen") }}}</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce a minimum {{{ xccdf_value("var_password_pam_minlen") }}}-character password length.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     minlen = {{{ xccdf_value("var_password_pam_minlen") }}}
 

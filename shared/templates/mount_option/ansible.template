@@ -14,11 +14,28 @@
    {{% set TABFILE='--fstab' %}}
 {{% endif %}}
 
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+- name: "{{{ rule_title }}}: Check filesystem type of {{{ MOUNTPOINT }}}"
+  command: findmnt --kernel --raw --evaluate --output=FSTYPE '{{{ MOUNTPOINT }}}'
+  register: fs_type_check
+  failed_when: fs_type_check.rc > 1
+  changed_when: False
+  check_mode: False
+
+- name: "{{{ rule_title }}}: Set fact for excluded filesystem"
+  set_fact:
+    is_excluded_fstype: "{{ fs_type_check.rc == 0 and '{{{ EXCLUDE_FILESYSTEM_TYPE }}}' in fs_type_check.stdout_lines }}"
+{{% endif %}}
+
 - name: "{{{ rule_title }}}: Check information associated to mountpoint"
   command: findmnt {{{ TABFILE }}} '{{{ MOUNTPOINT }}}'
   register: device_name
   failed_when: device_name.rc > 1
   changed_when: False
+  check_mode: False
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+  when: not is_excluded_fstype | default(false)
+{{% endif %}}
 
 - name: "{{{ rule_title }}}: Create mount_info dictionary variable"
   set_fact:
@@ -29,6 +46,9 @@
   when:
     - device_name.stdout is defined and device_name.stdout_lines is defined
     - (device_name.stdout | length > 0)
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+    - not is_excluded_fstype | default(false)
+{{% endif %}}
 
 - name: "{{{ rule_title }}}: If {{{ MOUNTPOINT }}} not mounted, craft mount_info manually"
   set_fact:
@@ -40,24 +60,38 @@
     - ("{{{ TABFILE }}}" | length == 0)
     - device_name.stdout is defined and device_name.stdout_lines is defined
     - (device_name.stdout | length == 0)
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+    - not is_excluded_fstype | default(false)
+{{% endif %}}
 
 - name: "{{{ rule_title }}}: Make sure {{{ MOUNTOPTION }}} option is part of the to {{{ MOUNTPOINT }}} options"
   set_fact:
 {{% if MOUNTOPTION_ARG_VAR %}}
-    mount_info: "{{ mount_info | combine( {'options':''~mount_info.options~',{{{ MOUNTOPTION }}}='~{{{ MOUNTOPTION_ARG_VAR }}}~'' }) }}"
+    mount_info: "{{ mount_info | combine( {'options':''~(mount_info.options | default(''))~(',' if (mount_info.options | default('')) else '')~'{{{ MOUNTOPTION }}}='~{{{ MOUNTOPTION_ARG_VAR }}}~'' }) }}"
 {{% else %}}
-    mount_info: "{{ mount_info | combine( {'options':''~mount_info.options~',{{{ MOUNTOPTION }}}' }) }}"
+    mount_info: "{{ mount_info | combine( {'options':''~(mount_info.options | default(''))~(',' if (mount_info.options | default('')) else '')~'{{{ MOUNTOPTION }}}' }) }}"
 {{% endif %}}
   when:
-    - mount_info is defined and "{{{ MOUNTOPTION }}}" not in mount_info.options
+    - mount_info is defined and "{{{ MOUNTOPTION }}}" not in (mount_info.options | default(''))
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+    - not is_excluded_fstype | default(false)
+{{% endif %}}
 
 - name: "{{{ rule_title }}}: Ensure {{{ MOUNTPOINT }}} is mounted with {{{ MOUNTOPTION }}} option"
   mount:
     path: "{{{ MOUNTPOINT }}}"
-    src: "{{ mount_info.source }}"
-    opts: "{{ mount_info.options }}"
+    src: "{{ mount_info.source | default('') }}"
+    opts: "{{ mount_info.options | default('') }}"
     state: "mounted"
-    fstype: "{{ mount_info.fstype }}"
+    fstype: "{{ mount_info.fstype | default('') }}"
+  register: mount_result
+  failed_when:
+    - mount_result is failed
+    - "'target is busy' not in (mount_result.msg | default(''))"
+    - "'already mounted' not in (mount_result.msg | default(''))"
   when:
     - mount_info is defined
     - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("{{{ TABFILE }}}" | length == 0)
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+    - not is_excluded_fstype | default(false)
+{{% endif %}}

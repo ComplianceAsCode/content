@@ -20,6 +20,8 @@ check_id: system_with_kernel
 bash_conditional: "rpm --quiet -q kernel-default || rpm --quiet -q kernel-default-base"
 {{% elif "ol" in families %}}
 bash_conditional: "rpm --quiet -q kernel || rpm --quiet -q kernel-uek"
+{{% elif product == "fedora" or "rhel" in product %}}
+bash_conditional: "rpm --quiet -q kernel-core"
 {{% else %}}
 bash_conditional: "rpm --quiet -q kernel"
 {{% endif %}}
@@ -36,6 +38,8 @@ ansible_conditional: '"linux-base" in ansible_facts.packages'
 ansible_conditional: '("kernel-default" in ansible_facts.packages or "kernel-default-base" in ansible_facts.packages)'
 {{% elif "ol" in families %}}
 ansible_conditional: '("kernel" in ansible_facts.packages or "kernel-uek" in ansible_facts.packages)'
+{{% elif product == "fedora" or "rhel" in product %}}
+ansible_conditional: '"kernel-core" in ansible_facts.packages'
 {{% else %}}
 ansible_conditional: '"kernel" in ansible_facts.packages'
 {{% endif %}}

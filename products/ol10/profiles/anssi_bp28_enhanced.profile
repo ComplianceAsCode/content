@@ -21,6 +21,7 @@ selections:
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!install_PAE_kernel_on_x86-32'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_dracut-fips-aesni_installed'
     - '!cracklib_accounts_password_pam_lcredit'
@@ -32,6 +33,9 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    - '!no_nis_in_nsswitch'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
     # authselect is enabled by default
     - '!enable_authselect'
     # this rule is not automated anymore

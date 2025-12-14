@@ -7,7 +7,7 @@
       <criterion comment="make sure a password is defined in {{{ grub2_boot_path }}}/user.cfg" test_ref="test_grub2_password_usercfg" />
       {{% else %}}
       <criteria operator="AND">
-        <criteria comment="check both files to account for procedure change in documenation" operator="OR">
+        <criteria comment="check both files to account for procedure change in documentation" operator="OR">
           <criterion comment="make sure a password is defined in {{{ grub2_boot_path }}}/user.cfg" test_ref="test_grub2_password_usercfg" />
           <criterion comment="make sure a password is defined in {{{ grub2_boot_path }}}/grub.cfg" test_ref="test_grub2_password_grubcfg" />
         </criteria>

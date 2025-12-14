@@ -19,4 +19,6 @@ def preprocess(data, lang):
                                                               default_value=True)
     if lang == "oval":
         data["mountoptionid"] = data["mountoption"].split()[0]
+    # Handle exclude_filesystem_type parameter (optional)
+    data["exclude_filesystem_type"] = data.get("exclude_filesystem_type", "")
     return _mount_option(data, lang)

@@ -100,6 +100,7 @@ package_gnutls-utils_installed
 package_openscap-scanner_installed
 package_openssh-clients_installed
 package_openssh-server_installed
+package_sequoia-sq_installed
 package_subscription-manager_installed
 package_sudo_installed
 package_usbguard_installed
@@ -138,6 +139,7 @@ use_pam_wheel_for_su
 var_accounts_passwords_pam_faillock_deny=3
 var_accounts_passwords_pam_faillock_fail_interval=900
 var_accounts_passwords_pam_faillock_unlock_time=never
+var_audit_backlog_limit=8192
 var_auditd_flush=incremental_async
 var_authselect_profile=local
 var_logind_session_timeout=30_minutes

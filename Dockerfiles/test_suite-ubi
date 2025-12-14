@@ -21,4 +21,3 @@ RUN true \
         && chmod og-rw /root/.ssh "$AUTH_KEYS" \
         && sed -i '/session\s\+required\s\+pam_loginuid.so/d' /etc/pam.d/sshd \
 && true
-

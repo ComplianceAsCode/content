@@ -188,7 +188,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
 {{%- set prefix_text = prefix_text + " absence of" -%}}
 {{%- elif avoid_conflicting -%}}
-{{%- set suffix_text = "if any" -%}}
+{{%- set suffix_text = " if any" -%}}
 {{%- endif %}}
 {{%- if not comment -%}}
 {{%- set comment = prefix_text ~ " " ~ parameter ~ " in " ~ path ~ suffix_text -%}}
@@ -222,7 +222,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- elif  avoid_conflicting -%}}
 {{%- set check_existence = "any_exist" -%}}
 {{%- set prefix_text = "value" -%}}
-{{%- set suffix_text = "if any" -%}}
+{{%- set suffix_text = " if any" -%}}
 {{%- else %}}
 {{%- set check_existence = "all_exist" -%}}
 {{%- set prefix_text = "value" -%}}
@@ -846,7 +846,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </linux:dpkginfo_object>
   {{% if evr %}}
     <linux:dpkginfo_state id="ste_{{{ test_id }}}" version="1">
-      <linux:evr datatype="evr_string" operation="{{{ evr_op }}}">{{{ evr }}}</linux:evr>
+      <linux:evr datatype="debian_evr_string" operation="{{{ evr_op }}}">{{{ evr }}}</linux:evr>
     </linux:dpkginfo_state>
   {{% endif %}}
 {{% endif %}}
@@ -1033,9 +1033,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type datatype: str
 
 #}}
-{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
+{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, runtime_check="false", xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set sshd_runtime_path = "/tmp/runtime/sshd_effective_config" -%}}
 {{%- if xccdf_variable -%}}
 {{%- set description = "Ensure '" ~ parameter ~ "' is configured with value configured in " ~ xccdf_variable ~ " variable in " ~ sshd_config_path %}}
 {{%- else -%}}
@@ -1072,18 +1073,28 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
           definition_ref="package_openssh-server_installed" />
         {{% endif %}}
         <criteria comment="sshd is configured correctly" operator="AND">
-          <criteria comment="the configuration is correct if it exists" operator="AND">
-            {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(10)}}}
-            {{%- if config_is_distributed == "true" %}}
-            {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(10) }}}
-            {{%- endif %}}
-            {{% if product in ["ol8", "ol9"] %}}
-            {{{- oval_line_in_file_criterion("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true, rule_id=rule_id) | indent(10)}}}
+          {{%- if runtime_check == "true" %}}
+          <criteria comment="runtime configuration exists and is correct" operator="AND">
+            <criterion comment="runtime config file exists" test_ref="test_runtime_config_present_{{{ rule_id }}}" />
+            <criterion comment="runtime config matches expected value" test_ref="test_runtime_{{{ parameter }}}_{{{ rule_id }}}" />
+          </criteria>
+          {{%- endif %}}
+          {{%- if runtime_check != "true" %}}
+          <criteria comment="static configuration is correct" operator="AND">
+            <criteria comment="the configuration is correct if it exists" operator="AND">
+              {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
+              {{%- if config_is_distributed == "true" %}}
+              {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12) }}}
+              {{%- endif %}}
+              {{% if product in ["ol8", "ol9"] %}}
+              {{{- oval_line_in_file_criterion("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
+              {{% endif %}}
+            </criteria>
+            {{%- if not missing_parameter_pass %}}
+            <criterion comment="the configuration exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}" />
             {{% endif %}}
           </criteria>
-          {{%- if not missing_parameter_pass %}}
-          <criterion comment="the configuration exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}" />
-          {{% endif %}}
+          {{%- endif %}}
         </criteria>
       </criteria>
     </criteria>
@@ -1162,13 +1173,56 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_test>
 
   {{% endif %}}
+
+  {{%- if runtime_check == "true" %}}
+  <!-- Runtime configuration checks -->
+  <ind:textfilecontent54_test id="test_runtime_config_present_{{{ rule_id }}}" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Check if runtime config file exists">
+    <ind:object object_ref="obj_runtime_config_file_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_runtime_config_file_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ sshd_runtime_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">.*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_runtime_{{{ parameter }}}_{{{ rule_id }}}" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Check runtime {{{ parameter }}} value">
+    <ind:object object_ref="obj_runtime_{{{ parameter }}}_{{{ rule_id }}}" />
+    {{%- if xccdf_variable -%}}
+    <ind:state state_ref="state_runtime_{{{ parameter }}}_{{{ rule_id }}}_xccdf" />
+    {{%- else -%}}
+    <ind:state state_ref="state_runtime_{{{ parameter }}}_{{{ rule_id }}}" />
+    {{%- endif -%}}
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_runtime_{{{ parameter }}}_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ sshd_runtime_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*{{{ parameter | lower }}}[\s]+(.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  {{%- if xccdf_variable -%}}
+  <ind:textfilecontent54_state id="state_runtime_{{{ parameter }}}_{{{ rule_id }}}_xccdf" version="1">
+    <ind:subexpression operation="equals" datatype="{{{ datatype }}}" var_ref="{{{ xccdf_variable }}}" />
+  </ind:textfilecontent54_state>
+  {{%- else -%}}
+  <ind:textfilecontent54_state id="state_runtime_{{{ parameter }}}_{{{ rule_id }}}" version="1">
+    <ind:subexpression operation="{{{ 'pattern match' if datatype == 'string' else 'equals' }}}" datatype="{{{ datatype }}}">{{{ value | lower if datatype == 'string' else value }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{%- endif -%}}
+  {{%- endif %}}
+
 </def-group>
 {{%- endmacro %}}
 
 
 {{#
   Extract from system password database a list composed of password objects related to non-system UIDs.
-  This list is then filtered to exclude some special usernames and users with /sbin/nologin shell.
+  This list is then filtered to exclude some special usernames and users with /sbin/nologin or /usr/sbin/nologin shell.
   The list includes non-local (LDAP) users, because the implementation of "unix:password_object" in OpenSCAP makes use of getpwent(), which browses all users provided by the NSS.
 
   The macro receives a string as parameter, which is used as the password_object id in the rule.
@@ -1213,7 +1267,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </unix:password_state>
 
   <unix:password_state id="state_{{{ rule_id }}}_users_nologin_shell" version="1">
-    <unix:login_shell datatype="string" operation="pattern match">^/sbin/nologin$</unix:login_shell>
+    <unix:login_shell datatype="string" operation="pattern match">^(?:/usr)?/sbin/nologin$</unix:login_shell>
   </unix:password_state>
 {{%- endmacro %}}
 
@@ -1802,4 +1856,25 @@ Macro to check if external variable is set to value
   </ind:variable_state>
 
   <external_variable comment="External variable {{{ variable }}}" datatype="string" id="{{{ variable }}}" version="1" />
+{{%- endmacro -%}}
+
+{{#
+Macro generates an OVAL test definition to verify that a specified audit tool is correctly configured within the AIDE configuration file.
+:param audit_tool: Audit tool binary name
+:type audit_tool: str
+#}}
+{{%- macro oval_test_aide_audit_tools(audit_tool) -%}}
+  <ind:textfilecontent54_test id="test_aide_verify_{{{ audit_tool }}}"
+  comment="{{{ audit_tool }}} is checked in {{{ aide_conf_path }}}" check="all"
+  check_existence="all_exist" version="1">
+    <ind:object object_ref="object_aide_verify_{{{ audit_tool }}}" />
+    <ind:state state_ref="state_aide_check_attributes" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_verify_{{{ audit_tool }}}"
+  version="1">
+    <ind:filepath>{{{ aide_conf_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^(?:/usr)?/sbin/{{{ audit_tool }}}\s+([^\n]+)$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 {{%- endmacro -%}}

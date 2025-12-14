@@ -53,7 +53,7 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/apps/v1/namespaces/openshift-sdn/daemonsets/sdn") | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/apps/v1/namespaces/openshift-sdn/daemonsets/sdn", true) | indent(4) }}}
 
 template:
   name: yamlfile_value

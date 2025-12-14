@@ -22,6 +22,7 @@ selections:
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!install_PAE_kernel_on_x86-32'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!aide_periodic_checking_systemd_timer'
     - '!package_dracut-fips-aesni_installed'
@@ -36,6 +37,7 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    - '!no_nis_in_nsswitch'
     # authselect is enabled by default
     - '!enable_authselect'
     # this rule is not automated anymore
@@ -72,6 +74,8 @@ selections:
     - '!kernel_config_refcount_full'
     - '!kernel_config_retpoline'
     - '!kernel_config_security_writable_hooks'
+    - '!ldap_client_tls_cacertpath'
+    - '!ldap_client_start_tls'
     # OL 10 uses a different rule for auditing changes to selinux configuration (R73)
     - '!audit_rules_mac_modification'
     - audit_rules_mac_modification_etc_selinux

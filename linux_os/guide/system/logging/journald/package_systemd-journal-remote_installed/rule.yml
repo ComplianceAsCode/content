@@ -19,6 +19,7 @@ identifiers:
     cce@rhel8: CCE-86467-8
     cce@rhel9: CCE-86760-6
     cce@rhel10: CCE-89465-9
+    cce@sle15: CCE-92598-2
     cce@slmicro5: CCE-94085-8
     cce@slmicro6: CCE-94738-2
 
@@ -34,7 +35,7 @@ template:
     vars:
         pkgname: systemd-journal-remote
 
-{{% if product in ['ubuntu2404'] %}}
+{{% if 'ubuntu' in product %}}
 platform: service_disabled[rsyslog]
 {{% endif %}}
 

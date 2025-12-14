@@ -5,7 +5,7 @@ title: 'Ensure the Root Bash Umask is Set Correctly'
 description: |-
     To ensure the root user's umask of the Bash shell is set properly,
     add or correct the <tt>umask</tt> setting in <tt>/root/.bashrc</tt>
-    or <tt>/root/.bashrc</tt> to read as follows:
+    or <tt>/root/.profile</tt> to read as follows:
     <pre>umask 0027</pre>
 
 rationale: |-
@@ -14,5 +14,9 @@ rationale: |-
     written to by unauthorized users.
 
 severity: medium
+
+identifiers:
+    cce@rhel10: CCE-87074-1
+    cce@sle15: CCE-92484-5
 
 platform: package[bash]

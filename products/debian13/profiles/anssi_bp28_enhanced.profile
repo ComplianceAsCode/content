@@ -48,6 +48,7 @@ selections:
   # Following rules aren't compatible with Debian 13
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!set_password_hashing_algorithm_systemauth'
     - '!package_dnf-automatic_installed'
     - '!dnf-automatic_security_updates_only'
@@ -72,6 +73,11 @@ selections:
     - '!package_dracut-fips-aesni_installed'
     - '!audit_rules_file_deletion_events_renameat2'
     - '!audit_rules_dac_modification_fchmodat2'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
 
   # The following rule is not applicable to Debian 13
     - '!logind_session_timeout'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!no_nis_in_nsswitch'
+    - '!service_chronyd_enabled'

@@ -1,0 +1,48 @@
+product: sle16
+full_name: SUSE Linux Enterprise 16
+type: platform
+
+families:
+  - suse
+
+major_version_ordinal: 16
+
+benchmark_id: SLE-16
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+init_system: "systemd"
+
+pkg_manager: "zypper"
+pkg_manager_config_file: "/etc/zypp/zypp.conf"
+
+aide_bin_path: "/usr/bin/aide"
+audisp_conf_path: "/etc/audit"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - sle16:
+      name: "cpe:/o:suse:linux_enterprise_server:16"
+      title: "SUSE Linux Enterprise Server 16"
+      check_id: installed_OS_is_sle16
+
+platform_package_overrides:
+  login_defs: "shadow"
+  grub2: "grub2"
+  sssd: "sssd"
+  crontabs: "cronie"
+  passwd: "shadow"
+
+reference_uris:
+  suse-base-sle16: 'not_publicly_available'
+
+dconf_gdm_dir: "gdm.d"
+
+sysctl_remediate_drop_in_file: "true"
+journald_conf_dir_path: /etc/systemd/journal.d
+xwindows_packages:
+  - xorg-x11-server
+  - xorg-x11-server-extra
+  - xorg-x11-server-Xvfb
+  - xwayland

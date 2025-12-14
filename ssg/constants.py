@@ -29,7 +29,7 @@ SSG_REF_URIS = {
     'hipaa': 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
     'ism': 'https://www.cyber.gov.au/acsc/view-all-content/ism',
     'iso27001-2013': 'https://www.iso.org/contents/data/standard/05/45/54534.html',
-    'nerc-cip': 'https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx',
+    'nerc-cip': 'https://www.nerc.com/standards/reliability-standards/cip',
     'stigid': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
     'os-srg': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
     'app-srg': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
@@ -44,7 +44,6 @@ product_directories = [
     'anolis8',
     'anolis23',
     'al2023',
-    'chromium',
     'debian11', 'debian12', 'debian13',
     'example',
     'eks',
@@ -59,7 +58,7 @@ product_directories = [
     'openembedded',
     'rhel8', 'rhel9', 'rhel10',
     'rhv4',
-    'sle12', 'sle15', 'slmicro5', 'slmicro6',
+    'sle12', 'sle15', 'sle16', 'slmicro5', 'slmicro6',
     'tencentos4',
     'ubuntu2204', 'ubuntu2404'
 ]
@@ -215,7 +214,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
     "Amazon Linux 2023": "al2023",
-    "Chromium": "chromium",
     "Debian 11": "debian11",
     "Debian 12": "debian12",
     "Debian 13": "debian13",
@@ -238,6 +236,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
+    "SUSE Linux Enterprise 16": "sle16",
     "SUSE Linux Enterprise Micro 5": "slmicro5",
     "SUSE Linux Enterprise Micro 6": "slmicro6",
     "TencentOS Server 4": "tencentos4",
@@ -315,7 +314,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhcos": ["rhcos4"],
     "multi_platform_rhel": ["rhel8", "rhel9", "rhel10"],
     "multi_platform_rhv": ["rhv4"],
-    "multi_platform_sle": ["sle12", "sle15"],
+    "multi_platform_sle": ["sle12", "sle15", "sle16"],
     "multi_platform_slmicro": ["slmicro5", "slmicro6"],
     "multi_platform_tencentos": ["tencentos4"],
     "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404"],
@@ -429,7 +428,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'alinux': 'Alibaba Cloud Linux',
     'almalinux': 'AlmaLinux OS',
     'anolis': 'Anolis OS',
-    'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'kylinserver': 'Kylin Server',
@@ -464,6 +462,7 @@ DEFAULT_AUDIT_WATCHES_STYLE = 'legacy'
 DEFAULT_RSYSLOG_CAFILE = '/etc/pki/tls/cert.pem'
 DEFAULT_FAILLOCK_PATH = '/var/run/faillock'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
+DEFAULT_SSH_RUNTIME_CHECK = 'false'
 DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
 DEFAULT_CHRONY_D_PATH = '/etc/chrony.d/'
@@ -502,10 +501,8 @@ DERIVATIVES_PRODUCT_MAPPING = {
 }
 
 BENCHMARKS = {
-    "apple_os",
     "applications",
     "linux_os/guide",
-    "products/chromium/guide",
     "products/firefox/guide",
 }
 

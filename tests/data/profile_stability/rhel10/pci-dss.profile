@@ -190,6 +190,7 @@ package_libselinux_installed
 package_logrotate_installed
 package_net-snmp_removed
 package_nftables_installed
+package_sequoia-sq_installed
 package_sudo_installed
 package_telnet-server_removed
 package_telnet_removed
@@ -256,6 +257,7 @@ var_accounts_password_warn_age_login_defs=7
 var_accounts_passwords_pam_faillock_deny=10
 var_accounts_passwords_pam_faillock_unlock_time=1800
 var_accounts_passwords_pam_tally2_unlock_time=1800
+var_audit_backlog_limit=8192
 var_auditd_admin_space_left_action=single
 var_auditd_name_format=fqd
 var_auditd_space_left=100MB

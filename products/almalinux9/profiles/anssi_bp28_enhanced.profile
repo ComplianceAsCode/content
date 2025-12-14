@@ -46,6 +46,7 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!ensure_oracle_gpgkey_installed'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!package_kea_removed'
     - '!file_groupowner_efi_grub2_cfg'
     - '!file_owner_efi_grub2_cfg'
@@ -55,6 +56,12 @@ selections:
     - '!file_permissions_efi_user_cfg'
     - '!audit_rules_file_deletion_events_renameat2'
     - '!audit_rules_dac_modification_fchmodat2'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!no_nis_in_nsswitch'
+    - '!service_chronyd_enabled'
+    - '!ldap_client_start_tls'
+    - '!ldap_client_tls_cacertpath'
+
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'

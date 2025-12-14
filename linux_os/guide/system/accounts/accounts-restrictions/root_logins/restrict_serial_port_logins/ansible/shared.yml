@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_almalinux
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -8,3 +8,7 @@
     dest: /etc/securetty
     regexp: 'ttyS[0-9]'
     state: absent
+
+{{% if product == "sle16" %}}
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/login', 'auth', 'required', 'pam_securetty.so', 'noconsole', '', '', rule_id=rule_id, rule_title=rule_title) }}}
+{{% endif %}}

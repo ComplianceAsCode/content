@@ -1932,7 +1932,7 @@ controls:
           - l2_server
           - l2_workstation
       rules:
-          - var_accounts_passwords_pam_faillock_unlock_time=900
+          - var_accounts_passwords_pam_faillock_root_unlock_time=60
           - accounts_passwords_pam_faillock_root_unlock_time
       status: automated
 
@@ -2536,6 +2536,7 @@ controls:
           - l2_workstation
       rules:
           - grub2_audit_backlog_limit_argument
+          - var_audit_backlog_limit=8192
           - zipl_audit_backlog_limit_argument
       status: automated
 

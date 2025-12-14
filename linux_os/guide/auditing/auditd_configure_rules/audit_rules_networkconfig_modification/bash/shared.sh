@@ -33,6 +33,11 @@ done
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/network/", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/netplan/", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/netplan/", "wa", "audit_rules_networkconfig_modification") }}}
+{{% elif 'debian' in product -%}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/networks", "wa", "audit_rules_networkconfig_modification") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/networks", "wa", "audit_rules_networkconfig_modification") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/network/", "wa", "audit_rules_networkconfig_modification") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/network/", "wa", "audit_rules_networkconfig_modification") }}}
 {{% else -%}}
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/sysconfig/network", "wa", "audit_rules_networkconfig_modification") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/sysconfig/network", "wa", "audit_rules_networkconfig_modification") }}}

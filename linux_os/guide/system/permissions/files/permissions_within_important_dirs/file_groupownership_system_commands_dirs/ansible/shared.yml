@@ -4,13 +4,24 @@
 # complexity = medium
 # disruption = medium
 
-- name: "Retrieve the system command files and set their group ownership to root"
-{{% if 'ubuntu' in product %}}
-  ansible.builtin.command: "find -P {{ item }} ! -gid -{{{ gid_min }}} -type f -exec chgrp root '{}' \\;"
-{{% else %}}
-  ansible.builtin.command: "find -P {{ item }} ! -group root -type f -exec chgrp root '{}' \\;"
-{{% endif %}}
+- name: "{{{ rule_title }}} - Find system command files with incorrect group ownership"
+  ansible.builtin.find:
+    paths: "{{ item }}"
+    file_type: file
+    follow: no
+    recurse: no
+  register: system_command_files_found
   with_items: ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin']
-  changed_when: False
-  failed_when: False
-  check_mode: no
+  changed_when: false
+
+- name: "{{{ rule_title }}} - Set group ownership to root for system command files"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    group: root
+{{% if 'ubuntu' in product %}}
+  with_items: '{{ system_command_files_found.results | map(attribute=''files'')
+      | flatten | rejectattr(''gid'', ''lesserthan'', {{{ gid_min }}}) | list }}'
+{{% else %}}
+  with_items: '{{ system_command_files_found.results | map(attribute=''files'')
+      | flatten | rejectattr(''gr_name'', ''equalto'', ''root'') | list }}'
+{{% endif %}}

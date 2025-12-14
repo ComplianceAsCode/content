@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R4
+    version: V2R5
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V2R4.
+    DISA STIG for Oracle Linux 8 V2R5.
 
 selections:
     ### Variables
@@ -885,6 +885,7 @@ selections:
 
     # OL08-00-030602
     - grub2_audit_backlog_limit_argument
+    - var_audit_backlog_limit=8192
 
     # OL08-00-030603
     - configure_usbguard_auditbackend
@@ -901,6 +902,10 @@ selections:
 
     # OL08-00-030640
     - file_audit_tools_group_ownership
+
+    # OL08-00-030645
+    - audit_rules_etc_cron_d
+    - audit_rules_var_spool_cron
 
     # OL08-00-030650
     - aide_check_audit_tools
@@ -1193,8 +1198,7 @@ selections:
     - sshd_use_approved_kex_ordered_stig
 
     # OL08-00-040350
-    - tftpd_uses_secure_mode
-    - tftpd_uses_secure_mode.severity=medium
+    - tftp_uses_secure_mode_systemd
 
     # OL08-00-040360
     - package_vsftpd_removed

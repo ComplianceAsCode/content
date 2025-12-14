@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Verify No .rhost Files Exist'
+
+description: |-
+    Local system users should not have a <tt>.rhost</tt> file in their home directory.
+
+rationale: |-
+    User configuration files with excessive or incorrect access may enable malicious users
+    to steal or modify other users' data or to gain another user's system privileges.
+    The <tt>.rhost</tt> file provides the "remote authentication" database for the rcp, rlogin, and
+    rsh commands and the rcmd() function. These files bypass the standard
+    password-based user authentication mechanism. They specify remote hosts and
+    users that are considered trusted (i.e. are allowed to access the local system
+    without supplying a password).
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-87390-1
+
+ocil_clause: 'any .rhost files exist'
+
+warnings:
+    - general: |-
+        Automatic remediation of this rule is not available due to the unique
+        requirements of each system. Any .rhost files should be investigated
+        and removed manually.
+
+ocil: |-
+    To check the system for the existence of any <tt>.rhost</tt> files,
+    run the following command:
+    <pre>$ sudo find /home -xdev -name .rhost</pre>
+
+platform: system_with_kernel

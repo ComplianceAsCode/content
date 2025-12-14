@@ -110,6 +110,7 @@ controls:
           - base
       rules:
           - grub2_audit_backlog_limit_argument
+          - var_audit_backlog_limit=8192
           - zipl_audit_backlog_limit_argument
       status: automated
     - id: FCS_CKM.1
@@ -447,6 +448,8 @@ controls:
           - ensure_gpgcheck_local_packages
           - ensure_gpgcheck_never_disabled
           - ensure_redhat_gpgkey_installed
+          # This package is needed for RHEL 10
+          - package_sequoia-sq_installed
       status: automated
 
     - id: FPT_TUD_EXT.2
@@ -461,6 +464,8 @@ controls:
           - ensure_gpgcheck_local_packages
           - ensure_gpgcheck_never_disabled
           - ensure_redhat_gpgkey_installed
+          # This package is needed for RHEL 10
+          - package_sequoia-sq_installed
       status: automated
 
     - id: FPT_TST_EXT.1

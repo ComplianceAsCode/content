@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 22.04
+# platform = multi_platform_ubuntu
 # packages = rsyslog
 
 chown root -R /var/log/*

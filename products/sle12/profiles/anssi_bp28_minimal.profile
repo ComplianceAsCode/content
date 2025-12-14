@@ -36,6 +36,7 @@ selections:
     - '!accounts_password_pam_ocredit'
     - '!accounts_password_pam_lcredit'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!accounts_passwords_pam_faillock_deny'
     - '!accounts_passwords_pam_faillock_unlock_time'
@@ -49,3 +50,4 @@ selections:
     - '!timer_dnf-automatic_enabled'
     - '!dnf-automatic_apply_updates'
     - '!dnf-automatic_security_updates_only'
+    - '!ldap_client_start_tls'

@@ -1,6 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-
-RSYSLOG_CONF='/etc/rsyslog.conf'
+{{{ setup_rsyslog_encrypt_offload_actionsendstreamdrivermode() }}}
 
 echo 'action(type="omfwd" Target="some.example.com" StreamDriverAuthMode="0" StreamDriverMode="42")' >> "$RSYSLOG_CONF"

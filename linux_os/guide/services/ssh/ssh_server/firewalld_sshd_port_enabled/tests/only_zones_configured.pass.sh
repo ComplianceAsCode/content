@@ -26,6 +26,6 @@ for zone in $firewalld_all_zones; do
     firewall-cmd --permanent --zone="$zone" --add-service=ssh
 done
 
-# It is not a problem to reload the settings since all interfaces without an explicit assgined zone
+# It is not a problem to reload the settings since all interfaces without an explicit assigned zone
 # will be automatically assigned to the default zone.
 firewall-cmd --reload

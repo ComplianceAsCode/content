@@ -72,4 +72,17 @@ selections:
     # Packages not available in OL
     - "!package_libdnf-plugin-subscription-manager_installed"
     - "!package_subscription-manager_installed"
+    - "!accounts_password_all_shadowed"
+    - "!usbguard_allow_hid_and_hub"
+    - "!sshd_allow_only_protocol2"
     - var_authselect_profile=local
+
+    # Needed for references in other products
+    - '!security_patches_up_to_date'
+    - '!rpm_verify_ownership'
+    - '!rpm_verify_permissions'
+    - '!package_rear_installed'
+    - '!package_ypbind_removed'
+    - '!package_xinetd_removed'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'

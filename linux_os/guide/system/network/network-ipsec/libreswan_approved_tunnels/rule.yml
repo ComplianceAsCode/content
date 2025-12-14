@@ -38,7 +38,7 @@ ocil_clause: 'the IPSec tunnels are not approved'
 ocil: |-
     Verify that {{{ full_name }}} does not have unauthorized IP tunnels configured.
 
-    {{% if 'rhel' in product or 'ol' in product %}}
+    {{% if 'rhel' in product or 'ol' in families %}}
     # {{{ pkg_manager }}} list installed libreswan
     libreswan.x86-64 3.20-5.el7_4
     {{% endif %}}
@@ -65,3 +65,5 @@ warnings:
     - general: |-
         Automatic remediation of this control is not available due to the unique
         requirements of each system.
+
+platform: system_with_kernel

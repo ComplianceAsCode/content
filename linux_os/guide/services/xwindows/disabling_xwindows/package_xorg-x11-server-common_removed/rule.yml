@@ -1,7 +1,6 @@
 documentation_complete: true
 
-
-title: 'Remove the X Windows Package Group'
+title: "Remove the X Windows Package Group"
 
 description: |-
     By removing the xorg-x11-server-common package, the system no longer has X Windows
@@ -35,13 +34,13 @@ references:
     cis@sle15: 2.2.2
     cobit5: APO13.01,DSS01.04,DSS05.02,DSS05.03
     isa-62443-2009: 4.3.3.6.6
-    isa-62443-2013: 'SR 1.13,SR 2.6,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    isa-62443-2013: "SR 1.13,SR 2.6,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6"
     iso27001-2013: A.11.2.6,A.13.1.1,A.13.2.1,A.14.1.3,A.6.2.1,A.6.2.2
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.AC-3,PR.PT-4
     srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: 'the X Windows package group or xorg-x11-server-common has not be removed'
+ocil_clause: "the X Windows package group or xorg-x11-server-common has not be removed"
 
 ocil: |-
     To ensure the X Windows package group is removed, run the following command:
@@ -51,15 +50,15 @@ ocil: |-
 
 warnings:
     - functionality: |-
-        The installation and use of a Graphical User Interface (GUI) increases your attack vector and decreases your
-        overall security posture. Removing the package xorg-x11-server-common package will remove the graphical target
-        which might bring your system to an inconsistent state requiring additional configuration to access the system
-        again. If a GUI is an operational requirement, a tailored profile that removes this rule should used before
-        continuing installation.
+          The installation and use of a Graphical User Interface (GUI) increases your attack vector and decreases your
+          overall security posture. Removing the package xorg-x11-server-common package will remove the graphical target
+          which might bring your system to an inconsistent state requiring additional configuration to access the system
+          again. If a GUI is an operational requirement, a tailored profile that removes this rule should used before
+          continuing installation.
 
 template:
     name: package_removed
     vars:
         pkgname: xorg-x11-server-common
-        pkgname@ubuntu2204: xserver-xorg
+        pkgname@ubuntu2204: xserver-common
         pkgname@ubuntu2404: xserver-common

@@ -13,7 +13,7 @@ severity: medium
 
 platform: package[chrony]
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if 'ubuntu' in product %}}
 template:
     name: service_disabled_guard_var
     vars:

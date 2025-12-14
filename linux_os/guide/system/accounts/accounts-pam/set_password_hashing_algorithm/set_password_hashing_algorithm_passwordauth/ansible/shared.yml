@@ -12,7 +12,7 @@
 - name: '{{{ rule_title }}} - Check if {{{ pam_file }}} File is Present'
   ansible.builtin.stat:
     path: {{{ pam_file }}}
-  register: result_pam_file_present
+  register: result_pam_password_auth_file_present
 
 - name: '{{{ rule_title }}} - Check The Proper Remediation For The System'
   block:
@@ -46,4 +46,4 @@
         - result_authselect_present.stat.exists
         - result_pam_hashing_options_removal is changed
   when:
-    - result_pam_file_present.stat.exists
+    - result_pam_password_auth_file_present.stat.exists

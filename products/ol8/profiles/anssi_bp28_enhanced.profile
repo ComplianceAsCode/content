@@ -22,6 +22,7 @@ selections:
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!timer_logrotate_enabled'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!audit_rules_privileged_commands_rmmod'
     - '!grub2_mds_argument'
@@ -48,3 +49,8 @@ selections:
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
+    - '!audit_rules_mac_modification_etc_selinux'
+    - '!service_chronyd_enabled'
+    # package not available in OL8
+    - '!package_talk-server_removed'
+    - '!package_talk_removed'

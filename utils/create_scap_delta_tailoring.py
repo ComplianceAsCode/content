@@ -167,7 +167,7 @@ setup_tailoring_profile.__annotations__ = {'profile_id': str, 'profile_root': ET
 
 def _get_datetime():
     return datetime.datetime.fromtimestamp(
-        int(os.environ.get('SOURCE_DATE_EPOCH', time.time()))).isoformat()
+        int(os.environ.get('SOURCE_DATE_EPOCH', time.time())), tz=datetime.timezone.utc).isoformat()
 
 
 def create_tailoring(args):
@@ -244,7 +244,7 @@ def parse_args():
 parse_args.__annotations__ = {'return': argparse.Namespace}
 
 
-def main():
+def main() -> int:
     args = parse_args()
     ET.register_namespace('xccdf-1.2', ssg.constants.XCCDF12_NS)
     tailoring_root = create_tailoring(args)
@@ -253,7 +253,7 @@ def main():
     if manual_version is None:
         sys.stderr.write("Unable to find version from file name.\n")
         sys.stderr.write("The string v[NUM]r[NUM] must be in the filename.\n")
-        exit(1)
+        return 1
 
     if args.dry_run:
         return 0
@@ -272,4 +272,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

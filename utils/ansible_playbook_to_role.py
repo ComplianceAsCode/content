@@ -65,6 +65,7 @@ yaml.add_constructor(_mapping_tag, dict_constructor)
 PRODUCT_ALLOWLIST = set([
     "rhel8",
     "rhel9",
+    "rhel10",
 ])
 
 PROFILE_ALLOWLIST = set([
@@ -88,7 +89,9 @@ PROFILE_ALLOWLIST = set([
     "rhvh-stig",
     "rhvh-vpp",
     "e8",
-    "ism",
+    "ism_o",
+    "ism_o_secret",
+    "ism_o_top_secret",
 ])
 
 

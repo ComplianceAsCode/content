@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-bash -x setup.sh
+{{{ setup_rsyslog_encrypt_offload_defaultnetstreamdriver() }}}
 
-echo "\$DefaultNetstreamDriver gtls" >> /etc/rsyslog.d/encrypt.conf
+echo "\$DefaultNetstreamDriver gtls" >> $RSYSLOG_D_CONF

@@ -28,6 +28,14 @@ selections:
   - '!cracklib_accounts_password_pam_ocredit'
   - '!accounts_passwords_pam_tally2_unlock_time'
   - '!ensure_redhat_gpgkey_installed'
+  - '!package_sequoia-sq_installed'
   - '!ensure_almalinux_gpgkey_installed'
   - '!package_xinetd_removed'
   - '!package_kea_removed'
+  - '!no_nis_in_nsswitch'
+
+  # talk package not available in OL9
+  - '!package_talk_removed'
+  - '!package_talk-server_removed'
+  - '!package_rsh-server_removed'
+  - '!package_rsh_removed'

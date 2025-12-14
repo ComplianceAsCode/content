@@ -7,16 +7,22 @@ metadata:
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: 'Red Hat STIG for Red Hat Enterprise Linux 10'
+title: 'Red Hat STIG with GUI for Red Hat Enterprise Linux 10'
 
 description: |-
-    This is a profile based on what is expected in the RHEL 10 STIG.:
+    This is a profile based on what is expected in the RHEL 10 STIG.
     It is not based on the DISA STIG for RHEL 10, because it was not available at time of
     the release.
 
     In addition to being applicable to Red Hat Enterprise Linux 10, this
     configuration baseline is applicable to the operating system tier of
     Red Hat technologies that are based on Red Hat Enterprise Linux 10.
+
+    Warning: The installation and use of a Graphical User Interface (GUI)
+    increases your attack vector and decreases your overall security posture. If
+    your Information Systems Security Officer (ISSO) lacks a documented operational
+    requirement for a graphical user interface, please consider using the
+    standard DISA STIG for Red Hat Enterprise Linux 10 profile.
 
 extends: stig
 

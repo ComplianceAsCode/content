@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 import sys
 import os
-
+from typing import Optional
 
 from .constants import (
     OSCAP_RULE, OSCAP_VALUE, oval_namespace, XCCDF12_NS, cce_uri, ocil_cs,
@@ -26,8 +26,8 @@ class FileLinker(object):
     Bass class which represents the linking of checks to their identifiers.
     """
 
-    CHECK_SYSTEM = None
-    CHECK_NAMESPACE = None
+    CHECK_SYSTEM: Optional[str] = None
+    CHECK_NAMESPACE: Optional[str] = None
 
     def __init__(self, translator, xccdftree, checks, output_file_name):
         self.translator = translator

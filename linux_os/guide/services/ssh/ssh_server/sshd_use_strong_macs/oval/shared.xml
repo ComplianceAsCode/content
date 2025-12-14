@@ -84,20 +84,20 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <local_variable id="var_sshd_config_macs_config_dir" datatype="string" version="1" comment="MACs values splitted on comma">
+  <local_variable id="var_sshd_config_macs_config_dir" datatype="string" version="1" comment="MACs values split on comma">
     <split delimiter=",">
       <object_component item_field="subexpression" object_ref="obj_sshd_config_macs_config_dir" />
     </split>
   </local_variable>
   {{%- endif %}}
 
-  <local_variable id="var_sshd_config_strong_macs" datatype="string" version="1" comment="MACs values splitted on comma">
+  <local_variable id="var_sshd_config_strong_macs" datatype="string" version="1" comment="MACs values split on comma">
     <split delimiter=",">
       <object_component item_field="subexpression" object_ref="obj_sshd_config_strong_macs" />
     </split>
   </local_variable>
 
-  <local_variable id="var_sshd_strong_macs" datatype="string" version="1" comment="strong MACs values splitted on comma">
+  <local_variable id="var_sshd_strong_macs" datatype="string" version="1" comment="strong MACs values split on comma">
     <split delimiter=",">
       <variable_component var_ref="sshd_strong_macs" />
     </split>

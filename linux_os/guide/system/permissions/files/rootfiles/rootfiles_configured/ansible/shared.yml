@@ -10,7 +10,7 @@
     {{% set dest_path = "/root/." ~  file -%}}
     {{% set source_path = "/usr/share/rootfiles/." ~ file -%}}
     {{% set new_line = "C " ~ dest_path ~ " 600 root root - "  ~ source_path  %}}
-- name: "{{{ rule_title }}} - Find configation files"
+- name: "{{{ rule_title }}} - Find configuration files"
   ansible.builtin.find:
     paths: /etc/tmpfiles.d/
     file_type: file

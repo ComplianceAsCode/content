@@ -41,11 +41,6 @@ For example, a PR moves things around without making them worse, but the gating 
 Alternatively, a PR can contribute code that is not tested, and tests are planned to come in later PRs.
 Such failing tests should be addressed in a reviewer's comment to waive them.
 
-Noteworthy additions to these principles:
-
-* CodeClimate: Failures should be taken seriously, especially when they can be fixed easily &mdash; that includes issues related to the complexity of code.
-  If code that looks reasonably complex is labelled as too complex, relaxation of the corresponding setting in CodeClimate can be proposed and discussed.
-
 ### Merging
 
 * Should use the [merge commit method](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
@@ -169,7 +164,7 @@ and keep these guidelines in mind when writing new code.
 ### Python
 
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
-    * We use [Code Climate](https://codeclimate.com/quality) to help automate the checking for PEP 8 issues.
+    * We use [Ruff](https://docs.astral.sh/ruff/) in [CI](https://github.com/ComplianceAsCode/content/actions/workflows/ruff.yaml) to help enforce this
     * We do make one change from PEP 8; our maximum line length is 99 characters
 * Methods should be defined before they are called
 * Shall use the `.py` for the file extension
@@ -317,7 +312,8 @@ Benchmark sections must be in the following order, if they are present.
 
 ### Controls
 
-These rules apply to the files in `controls/`.
+These rules apply to the files in `controls/` and `products/*/controls`.
+Product specific controls should be stored under the respective controls directory.
 All the above [YAML](#yaml) rules apply.
 
 #### Control Sections

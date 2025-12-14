@@ -32,6 +32,7 @@ selections:
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     # Following rules once had a prodtype incompatible with the anolis8 product
     - '!auditd_data_retention_space_left'
     - '!set_firewalld_default_zone'

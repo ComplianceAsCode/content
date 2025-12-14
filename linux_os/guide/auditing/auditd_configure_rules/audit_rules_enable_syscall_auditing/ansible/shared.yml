@@ -53,7 +53,7 @@
   register: auditctl_syscall_auditing_rule_update_result
 
 - name: Restart auditd.service
-  ansible.builtin.systemd_service:
+  ansible.builtin.systemd:
     name: auditd.service
     state: restarted
   when:

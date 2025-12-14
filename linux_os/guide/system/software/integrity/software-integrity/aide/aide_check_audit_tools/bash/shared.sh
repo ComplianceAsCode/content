@@ -7,25 +7,25 @@
 {{{ bash_package_install("aide") }}}
 
 {{% set auditfiles = [
-      "/usr/sbin/auditctl",
-      "/usr/sbin/auditd",
-      "/usr/sbin/ausearch",
-      "/usr/sbin/aureport",
-      "/usr/sbin/autrace",
-      "/usr/sbin/augenrules" ] %}}
+      "auditctl",
+      "auditd",
+      "ausearch",
+      "aureport",
+      "autrace",
+      "augenrules" ] %}}
 
 {{% if aide_also_checks_audispd == "yes" %}}
-{{% set auditfiles = auditfiles + ["/usr/sbin/audispd"] %}}
+{{% set auditfiles = auditfiles + ["audispd"] %}}
 {{% endif %}}
 
 {{% if aide_also_checks_rsyslog == "yes" %}}
-{{% set auditfiles = auditfiles + ["/usr/sbin/rsyslogd"] %}}
+{{% set auditfiles = auditfiles + ["rsyslogd"] %}}
 {{% endif %}}
 
 {{% for file in auditfiles %}}
-if grep -i '^.*{{{file}}}.*$' {{{ aide_conf_path }}}; then
-sed -i "s#.*{{{file}}}.*#{{{file}}} {{{ aide_string() }}}#" {{{ aide_conf_path }}}
+if grep -i -E '^.*(/usr)?/sbin/{{{file}}}.*$' {{{ aide_conf_path }}}; then
+sed -i -r "s#.*(/usr)?/sbin/{{{file}}}.*#/usr/sbin/{{{file}}} {{{ aide_string() }}}#" {{{ aide_conf_path }}}
 else
-echo "{{{ file }}} {{{ aide_string() }}}" >> {{{ aide_conf_path }}}
+echo "/usr/sbin/{{{ file }}} {{{ aide_string() }}}" >> {{{ aide_conf_path }}}
 fi
 {{% endfor %}}

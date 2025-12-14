@@ -55,7 +55,7 @@ ocil: |-
     the default policy for the INPUT chain. It should be set to DROP:
     <pre>$ sudo grep ":INPUT" /etc/sysconfig/ip6tables</pre>
 
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'sle15' in product %}}
 warnings:
     - general: |-
         Automated remediation for this rule is disabled.

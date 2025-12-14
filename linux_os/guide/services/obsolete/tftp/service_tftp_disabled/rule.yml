@@ -1,6 +1,6 @@
 documentation_complete: true
 
-{{% if product in ['ubuntu2404'] %}}
+{{% if 'ubuntu' in product %}}
 {{% set service_name = "tftpd-hpa" %}}
 {{% set package_name = "tftpd-hpa" %}}
 {{% else %}}
@@ -22,6 +22,7 @@ severity: high
 
 identifiers:
     cce@rhel8: CCE-82435-9
+    cce@sle15: CCE-92606-3
 
 references:
     cis-csc: 11,12,14,15,3,8,9

@@ -3,7 +3,12 @@ documentation_complete: true
 title: 'Disable SSH Forwarding'
 
 description: |-
-    The DisableForwarding parameter disables all forwarding features, 
+    The DisableForwarding parameter disables all forwarding features, including X11,
+    ssh-agent(1), TCP and StreamLocal. This option overrides all other forwarding-related
+    options and may simplify restricted configurations.
+    <br/>
+    To explicitly disable SSHD forwarding, add or correct the following line in {{{ sshd_config_file() }}}
+    <pre>DisableForwarding yes</pre>
 
 rationale: |-
     Disable ssh forwarding unless there is an operational requirement to use it. 
@@ -11,7 +16,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: "The DisableForwarding option exists and is yes"
+identifiers:
+    cce@rhel8: CCE-90196-7
+    cce@rhel9: CCE-90197-5
+    cce@rhel10: CCE-87508-8
+
+ocil_clause: "The DisableForwarding option doesn't exist or isn't set to yes"
 
 ocil: |-
     {{{ ocil_sshd_option(default="yes", option="DisableForwarding", value="yes") }}}

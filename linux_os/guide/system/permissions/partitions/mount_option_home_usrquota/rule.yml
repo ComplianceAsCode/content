@@ -34,7 +34,7 @@ warnings:
         It is not possible to enable them by remounting an already mounted partition. Therefore,
         if the desired options were not defined before mounting the partition, dismount and mount
         it again to apply the quota options.
-{{% if "ol" in product %}}
+{{% if "ol" in families %}}
     - functionality: |-
         OVAL looks for partitions whose mount point is a substring of any interactive user's home
         directory and validates that usrquota option is there. Because of this, there could be
@@ -47,7 +47,7 @@ warnings:
         applied.
 {{% endif %}}
 
-{{% if "ol" in product %}}
+{{% if "ol" in families %}}
 template:
     name: mount_option_home
     vars:

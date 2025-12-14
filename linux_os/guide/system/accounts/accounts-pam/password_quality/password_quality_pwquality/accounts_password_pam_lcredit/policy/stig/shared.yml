@@ -9,7 +9,7 @@ vuldiscussion: |-
 
     Password complexity is one factor of several that determines how long it takes
     to crack a password. The more complex the password, the greater the number of
-    possble combinations that need to be tested before the password is compromised.
+    possible combinations that need to be tested before the password is compromised.
     Requiring a minimum number of lowercase characters makes password guessing attacks
     more difficult by ensuring a larger search space.
 
@@ -18,15 +18,15 @@ checktext: |-
 
     Check the value for "lcredit" with the following command:
 
-    $ sudo grep lcredit /etc/security/pwquality.conf /etc/security/pwquality.conf/*.conf
+    $ sudo grep lcredit {{{ pwquality_path }}} /etc/security/pwquality.conf/*.conf
 
-    /etc/security/pwquality.conf:lcredit = -1
+    {{{ pwquality_path }}}:lcredit = -1
 
     If the value of "lcredit" is a positive number or is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity by requiring that at least one lower-case character be used by setting the "lcredit" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     lcredit = -1

@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_ol,multi_platform_almalinux
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 # reboot = true
 # strategy = restrict
 # complexity = low
@@ -23,5 +23,3 @@ var_auditd_name_format="$(echo $var_auditd_name_format | cut -d \| -f 1)"
                   separator=" = ",
                   separator_regex="\s*=\s*",
                   prefix_regex="^\s*", rule_id=rule_id)}}}
-
-

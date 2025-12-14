@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Record Events that Modify the System''s Network Environment - /etc/NetworkManager/'
+
+description: |-
+    {{{ describe_audit_rules_watch("/etc/NetworkManager", "audit_rules_networkconfig_modification_networkmanager") }}}
+
+rationale: |-
+    The network environment should not be modified by anything other
+    than administrator action. Any change to network parameters should be
+    audited.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86481-9
+    cce@rhel10: CCE-89924-5
+
+ocil_clause: 'the system is not configured to audit changes of the network configuration'
+
+ocil: |-
+    To determine if the system is configured to audit changes to its network configuration,
+    run the following command:
+    <pre>auditctl -l | grep -E '/etc/NetworkManager'</pre>
+    If the system is configured to watch for network configuration changes, a line should
+    be returned and <tt>perm=wa</tt> should be indicated.
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: /etc/NetworkManager

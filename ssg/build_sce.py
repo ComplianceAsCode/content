@@ -27,6 +27,10 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     metadata headers the file contains. Note that the last keyword of a
     specified type is the recorded one.
 
+    Args:
+        file_path (str): The path to the SCE audit file
+        local_env_yaml (dict): The local environment dict
+
     Returns (audit_content, metadata).
     """
 

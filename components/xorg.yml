@@ -4,7 +4,9 @@ name: xorg
 packages:
 - xorg
 - xorg-x11-server-common
+- xorg-x11-server-Xwayland
 rules:
 - package_xorg-x11-server-common_removed
+- package_xorg-x11-server-Xwayland_removed
 - xwindows_remove_packages
 - xwindows_runlevel_target

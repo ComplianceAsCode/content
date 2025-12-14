@@ -7,6 +7,8 @@
 - name: "{{{ rule_title }}} - Get Audit Log Files"
   ansible.builtin.command: grep -iw ^log_file /etc/audit/auditd.conf
   failed_when: false
+  changed_when: false
+  check_mode: false
   register: log_file_exists
 
 - name: "{{{ rule_title }}} - Set Log File Facts"
@@ -33,6 +35,8 @@
 - name: "{{{ rule_title }}} - Get Audit Log Group"
   ansible.builtin.command: grep -iw ^log_group /etc/audit/auditd.conf
   failed_when: false
+  changed_when: false
+  check_mode: false
   register: log_group_exists
 
 - name: "{{{ rule_title }}} - Set Log Group Facts"

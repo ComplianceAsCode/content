@@ -17,7 +17,27 @@ platform: package[systemd]
 
 severity: medium
 
-{{%- if product in ["rhel8", "rhel9", "sle15"] %}}
+ocil: |-
+    Run the following command to verify that journald is not forwarding logs to syslog.
+    <pre>
+{{%- if product == "sle15" or "rhel" in product %}}
+    grep "^\sForwardToSyslog" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
+{{% else %}}
+    grep "^\sForwardToSyslog" /etc/systemd/journald.conf
+{{% endif %}}
+    </pre>
+    and it should return
+    <pre>
+    ForwardToSyslog=no
+    </pre>
+
+ocil_clause: 'is commented out or not configured correctly'
+
+identifiers:
+    cce@rhel10: CCE-88340-5
+    cce@sle15: CCE-92566-9
+
+{{%- if product == "sle15" or "rhel" in product %}}
 template:
     name: systemd_dropin_configuration
     vars:

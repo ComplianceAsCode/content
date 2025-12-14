@@ -171,6 +171,8 @@ controls:
           - ensure_gpgcheck_never_disabled
           - ensure_gpgcheck_repo_metadata
           - ensure_redhat_gpgkey_installed
+          # This is needed for RHEL 10
+          - package_sequoia-sq_installed
           - ensure_suse_gpgkey_installed
           - ensure_almalinux_gpgkey_installed
       status: automated
