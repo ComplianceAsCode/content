@@ -5,7 +5,7 @@ metadata:
     SMEs:
         - jesse.j.borden@gmail.com
 
-reference: https://public.cyber.mil/stigs/downloads/
+reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
 title: 'DISA STIG for Amazon Linux 2023'
 
