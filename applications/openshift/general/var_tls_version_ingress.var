@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Configure Ingress to use secure TLS version'
+
+description: |-
+  Secure version of TLS available for configuring Ingress Router.
+  Do not forget to also configure the regex value.
+  Be aware of potential not working combinations of VersionTLS12 and TLS1.3 only Ciphers.
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+  default: "VersionTLS12"
+  TLS13: "VersionTLS13"
