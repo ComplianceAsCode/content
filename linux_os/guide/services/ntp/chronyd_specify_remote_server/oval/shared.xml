@@ -1,21 +1,107 @@
 <def-group>
-  <definition class="compliance" id="chronyd_specify_remote_server" version="1">
+  <definition class="compliance" id="chronyd_specify_remote_server" version="2">
     {{{ oval_metadata("A remote NTP Server for time synchronization should be
       specified (and dependencies are met)", rule_title=rule_title) }}}
-    <criteria comment="chrony.conf conditions are met">
-      <criterion test_ref="test_chronyd_remote_server" />
+    <criteria comment="chrony.conf conditions are met" operator="OR">
+      <criterion test_ref="test_chronyd_server_in_main_conf"
+        comment="server/pool in main chrony.conf"/>
+      <criterion test_ref="test_chronyd_server_in_sourcedir_files"
+        comment="server/pool in sourcedir .sources files"/>
+      <criterion test_ref="test_chronyd_server_in_confdir_files"
+        comment="server/pool in confdir .conf files"/>
     </criteria>
   </definition>
 
+  <!-- Test 1: Check main chrony.conf for server/pool -->
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
-  comment="Ensure at least one NTP server is set" id="test_chronyd_remote_server"
-  version="1">
-    <ind:object object_ref="object_chronyd_remote_server" />
+    id="test_chronyd_server_in_main_conf" version="1"
+    comment="Check for server/pool in main chrony.conf">
+    <ind:object object_ref="obj_chronyd_server_in_main_conf" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object comment="Ensure at least one NTP server is set"
-  id="object_chronyd_remote_server" version="1">
-    <ind:filepath operation="pattern match">^({{{ chrony_conf_path }}}|{{{ chrony_d_path }}}.+\.conf)$</ind:filepath>
+  <ind:textfilecontent54_object id="obj_chronyd_server_in_main_conf" version="1"
+    comment="Check main chrony.conf for server/pool directives">
+    <ind:filepath>{{{ chrony_conf_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?:server|pool)[\s]+.+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Extract sourcedir paths from chrony.conf -->
+  <ind:textfilecontent54_object id="obj_extract_sourcedir_paths" version="1"
+    comment="Extract sourcedir paths from chrony.conf">
+    <ind:filepath>{{{ chrony_conf_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*sourcedir[\s]+(\S+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Build glob patterns for .sources files in sourcedir directories -->
+  <local_variable id="var_sourcedir_file_paths" datatype="string" version="1"
+    comment="Construct glob patterns for .sources files">
+    <concat>
+      <object_component item_field="subexpression" object_ref="obj_extract_sourcedir_paths" />
+      <literal_component>/*.sources</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- Convert glob patterns to regex for filepath matching -->
+  <local_variable id="var_sourcedir_file_paths_regex" datatype="string" version="1"
+    comment="Convert to regex for filepath matching">
+    <glob_to_regex>
+      <variable_component var_ref="var_sourcedir_file_paths" />
+    </glob_to_regex>
+  </local_variable>
+
+  <!-- Test 2: Check sourcedir .sources files for server/pool -->
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    id="test_chronyd_server_in_sourcedir_files" version="1"
+    comment="Check for server/pool in sourcedir .sources files">
+    <ind:object object_ref="obj_chronyd_server_in_sourcedir_files" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_chronyd_server_in_sourcedir_files" version="1"
+    comment="Check .sources files in sourcedir for server/pool directives">
+    <ind:filepath operation="pattern match" var_ref="var_sourcedir_file_paths_regex"
+      var_check="at least one"/>
+    <ind:pattern operation="pattern match">^[\s]*(?:server|pool)[\s]+.+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Extract confdir paths from chrony.conf -->
+  <ind:textfilecontent54_object id="obj_extract_confdir_paths" version="1"
+    comment="Extract confdir paths from chrony.conf">
+    <ind:filepath>{{{ chrony_conf_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*confdir[\s]+(\S+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Build glob patterns for .conf files in confdir directories -->
+  <local_variable id="var_confdir_file_paths" datatype="string" version="1"
+    comment="Construct glob patterns for .conf files">
+    <concat>
+      <object_component item_field="subexpression" object_ref="obj_extract_confdir_paths" />
+      <literal_component>/*.conf</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- Convert glob patterns to regex for filepath matching -->
+  <local_variable id="var_confdir_file_paths_regex" datatype="string" version="1"
+    comment="Convert to regex for filepath matching">
+    <glob_to_regex>
+      <variable_component var_ref="var_confdir_file_paths" />
+    </glob_to_regex>
+  </local_variable>
+
+  <!-- Test 3: Check confdir .conf files for server/pool -->
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    id="test_chronyd_server_in_confdir_files" version="1"
+    comment="Check for server/pool in confdir .conf files">
+    <ind:object object_ref="obj_chronyd_server_in_confdir_files" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_chronyd_server_in_confdir_files" version="1"
+    comment="Check .conf files in confdir for server/pool directives">
+    <ind:filepath operation="pattern match" var_ref="var_confdir_file_paths_regex"
+      var_check="at least one"/>
     <ind:pattern operation="pattern match">^[\s]*(?:server|pool)[\s]+.+$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
