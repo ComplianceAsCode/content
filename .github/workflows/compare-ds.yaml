@@ -54,7 +54,7 @@ jobs:
           prop_path: 'product'
       - name: Download built product ${{ github.base_ref }} (${{ steps.fork_point.outputs.FORK_POINT }})
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
             name: pr-artifacts-${{ github.event.workflow_run.head_sha }}
             path: pr_artifacts
