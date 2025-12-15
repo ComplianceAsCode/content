@@ -269,7 +269,6 @@ service_nfs_disabled
 service_rpcbind_disabled
 service_systemd-journal-upload_enabled
 service_systemd-journald_enabled
-set_password_hashing_algorithm_libuserconf
 set_password_hashing_algorithm_logindefs
 set_password_hashing_algorithm_passwordauth
 set_password_hashing_algorithm_systemauth
@@ -360,7 +359,7 @@ var_accounts_user_umask=027
 var_authselect_profile=local
 var_multiple_time_servers=rhel
 var_pam_wheel_group_for_su=cis
-var_password_hashing_algorithm=yescrypt
+var_password_hashing_algorithm=cis_rhel10
 var_password_hashing_algorithm_pam=yescrypt
 var_password_pam_dictcheck=1
 var_password_pam_difok=2
