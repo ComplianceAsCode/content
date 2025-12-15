@@ -1,5 +1,5 @@
-policy: 'Amazon Linux 2023 Security Technical Implementation Guide'
-title: 'Amazon Linux 2023 Security Technical Implementation Guide'
+policy: "Amazon Linux 2023 Security Technical Implementation Guide"
+title: "Amazon Linux 2023 Security Technical Implementation Guide"
 id: stig_al2023
 source: https://www.cyber.mil/stigs/downloads/
 version: V1R1
@@ -7,1743 +7,1777 @@ reference_type: stigid
 product: al2023
 
 levels:
-- id: high
-- id: medium
-- id: low
+  - id: high
+  - id: medium
+  - id: low
 
 controls:
-- id: AZLX-23-000100
-  levels:
-  - high
-  title: Amazon Linux 2023 local disk partitions must implement cryptographic 
-    mechanisms to prevent unauthorized disclosure or modification of all 
-    information that requires at rest protection.
-  rules:
-  - encrypt_partitions
-  status: automated
-
-- id: AZLX-23-000110
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure cryptographic verification of vendor 
-    software packages.
-  rules: []
-  status: pending
-- id: AZLX-23-000115
-  levels:
-  - high
-  title: Amazon Linux 2023 must check the GPG signature of locally installed 
-    software packages before installation.
-  rules:
-  - ensure_gpgcheck_local_packages
-  status: automated
-
-- id: AZLX-23-000120
-  levels:
-  - high
-  title: Amazon Linux 2023 must check the GPG signature of software packages 
-    originating from external software repositories before installation.
-  rules:
-  - ensure_gpgcheck_globally_activated
-  status: automated
-
-- id: AZLX-23-000125
-  levels:
-  - high
-  title: Amazon Linux 2023 must have GPG signature verification enabled for all 
-    software repositories.
-  rules:
-  - ensure_gpgcheck_never_disabled
-  status: automated
-
-- id: AZLX-23-000130
-  levels:
-  - high
-  title: Amazon Linux 2023 must be a vendor-supported release.
-  rules:
-  - installed_OS_is_vendor_supported
-  status: automated
-
-- id: AZLX-23-000135
-  levels:
-  - medium
-  title: Amazon Linux 2023 systemd-journald service must be enabled.
-  rules:
-  - service_systemd-journald_enabled
-  status: automated
-
-- id: AZLX-23-000200
-  levels:
-  - medium
-  title: Amazon Linux 2023 must restrict access to the kernel message buffer.
-  rules:
-  - sysctl_kernel_dmesg_restrict
-  status: automated
-
-- id: AZLX-23-000205
-  levels:
-  - medium
-  title: Amazon Linux 2023 must prevent kernel profiling by nonprivileged users.
-  rules:
-  - sysctl_kernel_perf_event_paranoid
-  status: automated
-
-- id: AZLX-23-000210
-  levels:
-  - medium
-  title: Amazon Linux 2023 must restrict exposed kernel pointer addresses 
-    access.
-  rules:
-  - sysctl_kernel_kptr_restrict
-  status: automated
-
-- id: AZLX-23-000215
-  levels:
-  - medium
-  title: Amazon Linux 2023 must disable access to network bpf system call from 
-    nonprivileged processes.
-  rules:
-  - sysctl_kernel_unprivileged_bpf_disabled
-  status: automated
-
-- id: AZLX-23-000220
-  levels:
-  - medium
-  title: Amazon Linux 2023 must restrict usage of ptrace to descendant 
-    processes.
-  rules:
-  - sysctl_kernel_yama_ptrace_scope
-  status: automated
-
-- id: AZLX-23-000225
-  levels:
-  - medium
-  title: Amazon Linux 2023 must implement address space layout randomization 
-    (ASLR) to protect its memory from unauthorized code execution.
-  rules:
-  - sysctl_kernel_randomize_va_space
-  status: automated
-
-- id: AZLX-23-000300
-  levels:
-  - high
-  title: Amazon Linux 2023 must not have the vsftpd package installed.
-  rules:
-  - package_vsftpd_removed
-  status: automated
-
-- id: AZLX-23-000305
-  levels:
-  - medium
-  title: Amazon Linux 2023 must not have the sendmail package installed.
-  rules:
-  - package_sendmail_removed
-  status: automated
-
-- id: AZLX-23-000310
-  levels:
-  - medium
-  title: Amazon Linux 2023 must not have the nfs-utils package installed.
-  rules:
-  - package_nfs-utils_removed
-  status: automated
-
-- id: AZLX-23-000315
-  levels:
-  - medium
-  title: Amazon Linux 2023 must not have the telnet-server package installed.
-  rules:
-  - package_telnet-server_removed
-  status: automated
-
-- id: AZLX-23-000320
-  levels:
-  - medium
-  title: Amazon Linux 2023 must not have the gssproxy package installed.
-  rules:
-  - package_gssproxy_removed
-  status: automated
-
-- id: AZLX-23-001000
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the sudo package installed.
-  rules:
-  - package_sudo_installed
-  status: automated
-
-- id: AZLX-23-001005
-  levels:
-  - medium
-  title: Amazon Linux 2023 must not be configured to bypass password 
-    requirements for privilege escalation.
-  rules:
-  - disallow_bypass_password_sudo
-  status: automated
-
-- id: AZLX-23-001010
-  levels:
-  - medium
-  title: Amazon Linux 2023 must require reauthentication when using the "sudo" 
-    command.
-  rules:
-  - sudo_require_reauthentication
-  - var_sudo_timestamp_timeout=always_prompt
-  status: automated
-
-- id: AZLX-23-001015
-  levels:
-  - medium
-  title: Amazon Linux 2023 must require users to reauthenticate for privilege 
-    escalation.
-  rules:
-  - sudo_remove_no_authenticate
-  status: automated
-
-- id: AZLX-23-001020
-  levels:
-  - medium
-  title: Amazon Linux 2023 must require users to provide a password for 
-    privilege escalation.
-  rules:
-  - sudo_remove_nopasswd
-  status: automated
-
-- id: AZLX-23-001025
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the audit package installed.
-  rules:
-  - package_audit_installed
-  status: automated
-
-- id: AZLX-23-001030
-  levels:
-  - medium
-  title: Amazon Linux 2023 must produce audit records containing information to 
-    establish what type of events occurred.
-  rules:
-  - service_auditd_enabled
-  status: automated
-
-- id: AZLX-23-001035
-  levels:
-  - medium
-  title: Amazon Linux 2023 audispd-plugins package must be installed.
-  rules:
-  - package_audispd-plugins_installed
-  status: automated
-
-- id: AZLX-23-001040
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the rsyslog package installed.
-  rules:
-  - service_rsyslog_enabled
-  status: automated
-
-- id: AZLX-23-001045
-  levels:
-  - medium
-  title: Amazon Linux 2023 must monitor remote access methods.
-  rules:
-  - rsyslog_remote_access_monitoring
-  status: automated
-
-- id: AZLX-23-001050
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the chrony package installed.
-  rules:
-  - package_chrony_installed
-  status: automated
-
-- id: AZLX-23-001055
-  levels:
-  - medium
-  title: Amazon Linux 2023 chronyd service must be enabled.
-  rules:
-  - service_chronyd_enabled
-  status: automated
-
-- id: AZLX-23-001060
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the Advanced Intrusion Detection 
-    Environment (AIDE) package installed.
-  rules:
-  - package_aide_installed
-  - aide_build_database
-  status: automated
-
-- id: AZLX-23-001065
-  levels:
-  - medium
-  title: Amazon Linux 2023 must routinely check the baseline configuration for 
-    unauthorized changes and notify the system administrator when anomalies in 
-    the operation of any security functions are discovered.
-  rules: []
-  status: pending
-- id: AZLX-23-001070
-  levels:
-  - medium
-  title: Amazon Linux 2023 must use cryptographic mechanisms to protect the 
-    integrity of audit tools.
-  rules:
-  - aide_check_audit_tools
-  status: automated
-
-- id: AZLX-23-001075
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the firewalld package installed.
-  rules:
-  - package_firewalld_installed
-  status: automated
-
-- id: AZLX-23-001080
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the firewalld servicew active.
-  rules:
-  - service_firewalld_enabled
-  status: automated
-
-- id: AZLX-23-001085
-  levels:
-  - medium
-  title: Amazon Linux 2023 must be configured to disable nonessential 
-    capabilities.
-  rules:
-  - firewalld_sshd_port_enabled
-  status: automated
-
-- id: AZLX-23-001090
-  levels:
-  - medium
-  title: Amazon Linux 2023 must manage excess capacity, bandwidth, or other 
-    redundancy to limit the effects of information flooding types of 
-    denial-of-service (DoS) attacks.
-  rules:
-  - firewalld-backend
-  status: automated
-
-- id: AZLX-23-001095
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the s-nail package installed.
-  rules:
-  - package_s-nail_installed
-  status: automated
-
-- id: AZLX-23-001105
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the libreswan package installed.
-  rules:
-  - package_libreswan_installed
-  status: automated
-
-- id: AZLX-23-001110
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the policycoreutils package installed.
-  rules:
-  - package_policycoreutils_installed
-  status: automated
-
-- id: AZLX-23-001115
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the pcsc-lite package installed.
-  rules:
-  - package_pcsc-lite_installed
-  status: automated
-
-- id: AZLX-23-001120
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the packages required for encrypting 
-    off-loaded audit logs installed.
-  rules: []
-  status: pending
-- id: AZLX-23-001125
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the opensc package installed.
-  rules:
-  - package_opensc_installed
-  status: automated
-
-- id: AZLX-23-001130
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the openssl-pkcs11 package installed.
-  rules:
-  - install_smartcard_packages
-  status: automated
-
-- id: AZLX-23-001180
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have SSH installed.
-  rules:
-  - package_openssh-server_installed
-  status: automated
-
-- id: AZLX-23-001185
-  levels:
-  - medium
-  title: Amazon Linux 2023 must implement SSH to protect the confidentiality and
-    integrity of transmitted and received information, as well as information 
-    during preparation for transmission.
-  rules:
-  - service_sshd_enabled
-  status: automated
-
-- id: AZLX-23-001195
-  levels:
-  - medium
-  title: Amazon Linux 2023 must have the crypto-policies package installed.
-  rules: []
-  status: pending
-- id: AZLX-23-001200
-  levels:
-  - medium
-  title: Amazon Linux 2023 SSH server must be configured to use systemwide 
-    crypto policies.
-  rules:
-  - file_sshd_50_redhat_exists
-  - sshd_include_crypto_policy
-  status: automated
-
-- id: AZLX-23-001205
-  levels:
-  - medium
-  title: Amazon Linux 2023 server must be configured to use only DOD-approved 
-    encryption ciphers employing FIPS 140-2/140-3 validated cryptographic hash 
-    algorithms to protect the confidentiality of SSH server connections.
-  status: pending
-
-- id: AZLX-23-001210
-  levels:
-  - medium
-  title: Amazon Linux 2023 SSH server must be configured to use only Message 
-    Authentication Codes (MACs) employing FIPS 140-2/140-3 validated 
-    cryptographic hash algorithms to protect the confidentiality of SSH server 
-    connections.
-  rules: []
-  status: pending
-- id: AZLX-23-001215
-  levels:
-  - medium
-  title: Amazon Linux 2023 SSH daemon must not allow Generic Security Service 
-    Application Program Interface (GSSAPI) authentication.
-  rules:
-  - sshd_disable_gssapi_auth
-  status: automated
-
-- id: AZLX-23-001220
-  levels:
-  - medium
-  title: Amazon Linux 2023 SSH daemon must not allow Kerberos authentication.
-  rules:
-  - sshd_disable_kerb_auth
-  status: automated
-
-- id: AZLX-23-001225
-  levels:
-  - medium
-  title: Amazon Linux 2023 must force a frequent session key renegotiation for 
-    SSH connections to the server.
-  rules:
-  - sshd_rekey_limit
-  - var_rekey_limit_size=1G
-  - var_rekey_limit_time=1hour
-  status: automated
-
-- id: AZLX-23-001230
-  levels:
-  - medium
-  title: Amazon Linux 2023 SSHD must accept public key authentication.
-  rules:
-  - sshd_enable_pubkey_auth
-  status: automated
-
-- id: AZLX-23-001235
-  levels:
-  - high
-  title: Amazon Linux 2023 SSHD must not allow blank passwords.
-  rules:
-  - sshd_disable_empty_passwords
-  status: automated
-
-- id: AZLX-23-001240
-  levels:
-  - medium
-  title: Amazon Linux 2023 must not permit direct logons to the root account 
-    using remote access via SSH.
-  rules:
-  - sshd_disable_root_login
-  status: automated
-
-- id: AZLX-23-001245
-  levels:
-  - medium
-  title: Amazon Linux 2023 must be configured so that all network connections 
-    associated with SSH traffic are terminated after 10 minutes of becoming 
-    unresponsive.
-  rules:
-  - sshd_set_idle_timeout
-  - sshd_idle_timeout_value=10_minutes
-  status: automated
-
-- id: AZLX-23-001250
-  levels:
-  - medium
-  title: Amazon Linux 2023 must be configured so that all network connections 
-    associated with SSH traffic terminate after becoming unresponsive.
-  rules:
-  - sshd_set_keepalive
-  - var_sshd_set_keepalive=1
-  status: automated
-
-- id: AZLX-23-001255
-  levels:
-  - high
-  title: Amazon Linux 2023 must enable the Pluggable Authentication Module (PAM)
-    interface for SSHD.
-  rules:
-  - sshd_enable_pam
-  status: automated
-
-- id: AZLX-23-001260
-  levels:
-  - medium
-  title: Amazon Linux 2023 must implement DOD-approved encryption in the OpenSSL
-    package.
-  rules: []
-  status: pending
-- id: AZLX-23-001265
-  levels:
-  - medium
-  title: Amazon Linux 2023 must implement DOD-approved TLS encryption in the 
-    OpenSSL package.
-  rules: []
-  status: pending
-- id: AZLX-23-001270
-  levels:
-  - medium
-  title: Amazon Linux 2023 must implement a FIPS 140-2/140-3 compliant 
-    systemwide cryptographic policy.
-  rules: []
-  status: pending
-- id: AZLX-23-001275
-  levels:
-  - medium
-  title: Amazon Linux 2023 must implement DOD-approved encryption to protect the
-    confidentiality of remote access sessions.
-  rules:
-  - harden_sshd_ciphers_opensshserver_conf_crypto_policy
-  - sshd_approved_ciphers=stig_rhel9
-  status: automated
-- id: AZLX-23-001280
-  levels:
-  - high
-  title: Amazon Linux 2023 must enable FIPS mode.
-  rules:
-  - enable_fips_mode
-  - sysctl_crypto_fips_enabled
-  - var_system_crypto_policy=fips
-  - enable_dracut_fips_module
-  status: automated
-
-- id: AZLX-23-001285
-  levels:
-  - medium
-  title: Amazon Linux 2023 crypto policy must not be overridden.
-  rules: []
-  status: pending
-- id: AZLX-23-001290
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enable certificate-based smart card 
-    authentication.
-  rules:
-  - sssd_enable_smartcards
-  status: automated
-
-- id: AZLX-23-001295
-  levels:
-  - medium
-  title: Amazon Linux 2023 must map the authenticated identity to the user or 
-    group account for PKI-based authentication.
-  rules:
-  - sssd_enable_certmap
-  status: automated
-
-- id: AZLX-23-001300
-  levels:
-  - medium
-  title: Amazon Linux 2023 must implement certificate status checking for 
-    multifactor authentication.
-  rules:
-  - sssd_certificate_verification
-  - var_sssd_certificate_verification_digest_function=sha512
-  status: automated
-
-- id: AZLX-23-001305
-  levels:
-  - medium
-  title: Amazon Linux 2023 must prohibit the use of cached authenticators after 
-    one day.
-  rules:
-  - sssd_offline_cred_expiration
-  status: automated
-
-- id: AZLX-23-001310
-  levels:
-  - medium
-  title: Amazon Linux 2023, for PKI-based authentication, must validate 
-    certificates by constructing a certification path (which includes status 
-    information) to an accepted trust anchor.
-  rules: []
-  status: pending
-- id: AZLX-23-001315
-  levels:
-  - medium
-  title: Amazon Linux 2023, for PKI-based authentication, must enforce 
-    authorized access to the corresponding private key.
-  rules:
-  - ssh_keys_passphrase_protected
-  status: automated
-
-- id: AZLX-23-002000
-  levels:
-  - medium
-  title: Amazon Linux 2023 must display the Standard Mandatory DOD Notice and 
-    Consent Banner before granting local or remote access to the system.
-  rules:
-  - banner_etc_issue
-  - login_banner_text=dod_banners
-  status: automated
-
-- id: AZLX-23-002005
-  levels:
-  - medium
-  title: Amazon Linux 2023 must display the Standard Mandatory DOD Notice and 
-    Consent Banner before granting local or remote access to the system via a 
-    SSH logon.
-  rules:
-  - sshd_enable_warning_banner
-  status: automated
-
-- id: AZLX-23-002015
-  levels:
-  - medium
-  title: Amazon Linux 2023 must allocate audit record storage capacity to store 
-    at least one week's worth of audit records, when audit records are not 
-    immediately sent to a central audit record storage facility.
-  rules:
-  - auditd_audispd_configure_sufficiently_large_partition
-  status: automated
-
-- id: AZLX-23-002020
-  levels:
-  - low
-  title: Amazon Linux 2023 must use a separate file system for the system audit 
-    data path.
-  rules:
-  - partition_for_var_log_audit
-  status: automated
-
-- id: AZLX-23-002025
-  levels:
-  - medium
-  title: Amazon Linux 2023 must label all off-loaded audit logs before sending 
-    them to the central log server.
-  rules:
-  - auditd_name_format
-  - var_auditd_name_format=stig
-  status: automated
-
-- id: AZLX-23-002030
-  levels:
-  - medium
-  title: Amazon Linux 2023 must take appropriate action when the internal event 
-    queue is full.
-  rules:
-  - auditd_overflow_action
-  status: automated
-
-- id: AZLX-23-002035
-  levels:
-  - medium
-  title: Amazon Linux 2023 must take action when allocated audit record storage 
-    volume reaches 75 percent of the repository maximum audit record storage 
-    capacity.
-  rules:
-  - auditd_data_retention_space_left_percentage
-  - var_auditd_space_left_percentage=25pc
-  status: automated
-
-- id: AZLX-23-002040
-  levels:
-  - medium
-  title: Amazon Linux 2023 must notify the system administrator (SA) and 
-    information system security officer (ISSO) (at a minimum) when allocated 
-    audit record storage volume 75 percent utilization.
-  rules:
-  - auditd_data_retention_space_left_action
-  - var_auditd_space_left_action=email
-  status: automated
-
-- id: AZLX-23-002045
-  levels:
-  - medium
-  title: Amazon Linux 2023 must take action when allocated audit record storage 
-    volume reaches 95 percent of the audit record storage capacity.
-  rules:
-  - auditd_data_retention_admin_space_left_percentage
-  - var_auditd_admin_space_left_percentage=5pc
-  status: automated
-
-- id: AZLX-23-002050
-  levels:
-  - medium
-  title: Amazon Linux 2023 must take action when allocated audit record storage 
-    volume reaches 95 percent of the repository maximum audit record storage 
-    capacity.
-  rules:
-  - auditd_data_retention_admin_space_left_action
-  - var_auditd_admin_space_left_action=single
-  status: automated
-
-- id: AZLX-23-002055
-  levels:
-  - medium
-  title: Amazon Linux 2023 must immediately notify the system administrator (SA)
-    and information system security officer (ISSO), at a minimum, of an audit 
-    processing failure event.
-  rules:
-  - auditd_data_retention_action_mail_acct
-  - var_auditd_action_mail_acct=root
-  status: automated
-
-- id: AZLX-23-002060
-  levels:
-  - medium
-  title: Amazon Linux 2023 must be configured to off-load audit records onto a 
-    different system from the system being audited via syslog.
-  rules: []
-  status: pending
-- id: AZLX-23-002065
-  levels:
-  - medium
-  title: Amazon Linux 2023 must authenticate the remote logging server for 
-    off-loading audit logs via rsyslog.
-  rules:
-  - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
-  status: automated
-
-- id: AZLX-23-002070
-  levels:
-  - medium
-  title: Amazon Linux 2023 must encrypt the transfer of audit records off-loaded
-    onto a different system or media from the system being audited via rsyslog.
-  rules:
-  - rsyslog_encrypt_offload_actionsendstreamdrivermode
-  status: automated
-
-- id: AZLX-23-002075
-  levels:
-  - medium
-  title: Amazon Linux 2023 must encrypt via the gtls driver the transfer of 
-    audit records off-loaded onto a different system or media from the system 
-    being audited via rsyslog.
-  rules:
-  - rsyslog_encrypt_offload_defaultnetstreamdriver
-  status: automated
-
-- id: AZLX-23-002080
-  levels:
-  - medium
-  title: Amazon Linux 2023 must be configured to off-load audit records onto a 
-    different system from the system being audited via syslog.
-  rules:
-  - rsyslog_remote_loghost
-  status: automated
-
-- id: AZLX-23-002085
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /etc/sudoers.
-  rules:
-  - audit_rules_sudoers
-  status: automated
-
-- id: AZLX-23-002090
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /etc/sudoers.d/ directory.
-  rules: []
-  status: pending
-- id: AZLX-23-002095
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /etc/group.
-  rules:
-  - audit_rules_usergroup_modification_group
-  status: automated
-
-- id: AZLX-23-002100
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /etc/gshadow.
-  rules:
-  - audit_rules_usergroup_modification_gshadow
-  status: automated
-
-- id: AZLX-23-002105
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /etc/opasswd.
-  rules:
-  - audit_rules_usergroup_modification_opasswd
-  status: automated
-
-- id: AZLX-23-002110
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit uses of the "execve" system call.
-  rules:
-  - audit_rules_suid_privilege_function
-  status: automated
-
-- id: AZLX-23-002115
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the chmod, fchmod, and 
-    fchmodat system calls.
-  rules:
-  - audit_rules_dac_modification_chmod
-  - audit_rules_dac_modification_fchmod
-  - audit_rules_dac_modification_fchmodat
-  status: automated
-
-- id: AZLX-23-002120
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the chown, fchown, fchownat, 
-    and lchown system calls.
-  rules:
-  - audit_rules_dac_modification_chown
-  - audit_rules_dac_modification_fchown
-  - audit_rules_dac_modification_fchownat
-  - audit_rules_dac_modification_lchown
-  status: automated
-
-- id: AZLX-23-002125
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the setxattr, fsetxattr, 
-    lsetxattr, removexattr, fremovexattr, and lremovexattr system calls.
-  rules:
-  - audit_rules_dac_modification_setxattr
-  - audit_rules_dac_modification_fsetxattr
-  - audit_rules_dac_modification_lsetxattr
-  - audit_rules_dac_modification_removexattr
-  - audit_rules_dac_modification_fremovexattr
-  - audit_rules_dac_modification_lremovexattr
-  status: automated
-
-- id: AZLX-23-002130
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the truncate, ftruncate, 
-    creat, open, openat, and open_by_handle_at system calls.
-  rules:
-  - audit_rules_unsuccessful_file_modification_creat
-  - audit_rules_unsuccessful_file_modification_truncate
-  - audit_rules_unsuccessful_file_modification_ftruncate
-  - audit_rules_unsuccessful_file_modification_open
-  - audit_rules_unsuccessful_file_modification_openat
-  - audit_rules_unsuccessful_file_modification_open_by_handle_at
-  status: automated
-
-- id: AZLX-23-002135
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the init_module and 
-    finit_module system calls.
-  rules:
-  - audit_rules_kernel_module_loading_finit
-  - audit_rules_kernel_module_loading_init
-  status: automated
-
-- id: AZLX-23-002140
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the create_module system call.
-  rules:
-  - audit_rules_execution_semanage
-  status: automated
-
-- id: AZLX-23-002145
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the kmod command.
-  rules:
-  - audit_rules_privileged_commands_kmod
-  status: automated
-
-- id: AZLX-23-002150
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the rename, unlink, rmdir, 
-    renameat, and unlinkat system calls.
-  rules:
-  - audit_rules_file_deletion_events_rename
-  - audit_rules_file_deletion_events_unlink
-  - audit_rules_file_deletion_events_rmdir
-  - audit_rules_file_deletion_events_renameat
-  - audit_rules_file_deletion_events_unlinkat
-  status: automated
-
-- id: AZLX-23-002155
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the chcon command.
-  rules:
-  - audit_rules_execution_chcon
-  status: automated
-
-- id: AZLX-23-002160
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /var/log/faillock.
-  rules:
-  - audit_rules_login_events_faillock
-  status: automated
-
-- id: AZLX-23-002165
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /var/log/lastlog.
-  rules:
-  - audit_rules_login_events_lastlog
-  status: automated
-
-- id: AZLX-23-002175
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the init command.
-  rules:
-  - audit_privileged_commands_init
-  status: automated
-
-- id: AZLX-23-002180
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the reboot command.
-  rules:
-  - audit_privileged_commands_reboot
-  status: automated
-
-- id: AZLX-23-002185
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the shutdown command.
-  rules:
-  - audit_privileged_commands_shutdown
-  status: automated
-
-- id: AZLX-23-002190
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit tools must have a mode of "0755" or less 
-    permissive.
-  rules:
-  - file_audit_tools_permissions
-  status: automated
-
-- id: AZLX-23-002195
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit tools must be owned by root.
-  rules:
-  - file_audit_tools_ownership
-  status: automated
-
-- id: AZLX-23-002200
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit tools must be group-owned by root.
-  rules:
-  - file_audit_tools_group_ownership
-  status: automated
-
-- id: AZLX-23-002205
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /etc/passwd.
-  rules: []
-  status: pending
-- id: AZLX-23-002210
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all successful/unsuccessful uses of the 
-    chage command.
-  rules:
-  - audit_rules_privileged_commands_chage
-  status: automated
-
-- id: AZLX-23-002215
-  levels:
-  - medium
-  title: Amazon Linux 2023 must alert the information system security officer 
-    (ISSO) and system administrator (SA), at a minimum, in the event of an audit
-    processing failure.
-  rules: []
-  status: pending
-- id: AZLX-23-002220
-  levels:
-  - medium
-  title: Amazon Linux 2023 must off-load audit records onto a different system 
-    in the event the audit storage volume is full.
-  rules:
-  - auditd_data_disk_full_action_stig
-  - var_auditd_disk_full_action=halt
-  status: automated
-
-- id: AZLX-23-002225
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit logs must be group-owned by root or by a 
-    restricted logging group to prevent unauthorized read access.
-  rules: []
-  status: pending
-- id: AZLX-23-002230
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit log directory must be owned by root to prevent 
-    unauthorized read access.
-  rules: []
-  status: pending
-- id: AZLX-23-002235
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit logs file must have mode "0600" or less 
-    permissive to prevent unauthorized access to the audit log.
-  rules: []
-  status: pending
-- id: AZLX-23-002240
-  levels:
-  - medium
-  title: Amazon Linux 2023 must allow only the information system security 
-    manager (ISSM) (or individuals or roles appointed by the ISSM) to select 
-    which auditable events are to be audited.
-  rules:
-  - file_permissions_audit_configuration
-  status: automated
-
-- id: AZLX-23-002245
-  levels:
-  - medium
-  title: Amazon Linux 2023 must audit all uses of the sudo command.
-  rules:
-  - audit_rules_privileged_commands_sudo
-  status: automated
-
-- id: AZLX-23-002250
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /etc/passwd.
-  rules:
-  - audit_rules_usergroup_modification_passwd
-  status: automated
-
-- id: AZLX-23-002255
-  levels:
-  - medium
-  title: Amazon Linux 2023 must generate audit records for all account 
-    creations, modifications, disabling, and termination events that affect 
-    /etc/shadow.
-  rules:
-  - audit_rules_usergroup_modification_shadow
-  status: automated
-
-- id: AZLX-23-002260
-  levels:
-  - medium
-  title: Amazon Linux 2023 must produce audit records containing information to 
-    establish the identity of any individual or process associated with the 
-    event.
-  rules:
-  - auditd_log_format
-  status: automated
-
-- id: AZLX-23-002265
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit logs must be group-owned by root or by a 
-    restricted logging group to prevent unauthorized read access.
-  rules:
-  - directory_group_ownership_var_log_audit
-  status: automated
-
-- id: AZLX-23-002270
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the audit log directory be owned by root 
-    to prevent unauthorized read access.
-  rules:
-  - directory_ownership_var_log_audit
-  status: automated
-
-- id: AZLX-23-002275
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit logs file must have mode "0600" or less 
-    permissive to prevent unauthorized access to the audit log.
-  rules:
-  - file_permissions_var_log_audit
-  status: automated
-
-- id: AZLX-23-002280
-  levels:
-  - medium
-  title: Amazon Linux 2023 library directories must be group-owned by root or a 
-    system account.
-  rules:
-  - dir_group_ownership_library_dirs
-  status: automated
-
-- id: AZLX-23-002285
-  levels:
-  - medium
-  title: Amazon Linux 2023 library directories must have mode "755" or less 
-    permissive.
-  rules:
-  - dir_permissions_library_dirs
-  status: automated
-
-- id: AZLX-23-002290
-  levels:
-  - medium
-  title: Amazon Linux 2023 library files must have mode "755" or less 
-    permissive.
-  rules:
-  - file_permissions_library_dirs
-  status: automated
-
-- id: AZLX-23-002295
-  levels:
-  - medium
-  title: Amazon Linux 2023 library files must be owned by root.
-  rules:
-  - file_ownership_library_dirs
-  status: automated
-
-- id: AZLX-23-002300
-  levels:
-  - medium
-  title: Amazon Linux 2023 library files must be group-owned by root or a system
-    account.
-  rules:
-  - root_permissions_syslibrary_files
-  status: automated
-
-- id: AZLX-23-002305
-  levels:
-  - medium
-  title: Amazon Linux 2023 library directories must be owned by root.
-  rules:
-  - dir_ownership_library_dirs
-  status: automated
-
-- id: AZLX-23-002315
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the /var/log directory have mode "0755" 
-    or less permissive.
-  rules:
-  - file_permissions_var_log
-  status: automated
-
-- id: AZLX-23-002320
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the /var/log directory be owned by root.
-  rules:
-  - file_owner_var_log
-  status: automated
-
-- id: AZLX-23-002325
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the /var/log directory be group-owned by 
-    root.
-  rules:
-  - file_groupowner_var_log
-  status: automated
-
-- id: AZLX-23-002330
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the /var/log/messages file have mode 
-    "0640" or less permissive.
-  rules:
-  - file_permissions_var_log_messages
-  status: automated
-
-- id: AZLX-23-002335
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the /var/log/messages file be group-owned
-    by root.
-  rules:
-  - file_groupowner_var_log_messages
-  status: automated
-
-- id: AZLX-23-002340
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the /var/log/messages file be owned by 
-    root.
-  rules:
-  - file_owner_var_log_messages
-  status: automated
-
-- id: AZLX-23-002345
-  levels:
-  - medium
-  title: Amazon Linux 2023 system commands must be owned by root.
-  rules:
-  - file_ownership_binary_dirs
-  status: automated
-
-- id: AZLX-23-002350
-  levels:
-  - medium
-  title: Amazon Linux 2023 system commands must be group-owned by root or a 
-    system account.
-  rules:
-  - file_groupownership_system_commands_dirs
-  status: automated
-
-- id: AZLX-23-002355
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enforce password complexity by requiring that at
-    least one uppercase character be used.
-  rules:
-  - accounts_password_pam_ucredit
-  - var_password_pam_ucredit=1
-  status: automated
-
-- id: AZLX-23-002360
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enforce password complexity by requiring that at
-    least one lowercase character be used.
-  rules:
-  - accounts_password_pam_lcredit
-  - var_password_pam_lcredit=1
-  status: automated
-
-- id: AZLX-23-002365
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enforce password complexity by requiring that at
-    least one numeric character be used.
-  rules:
-  - accounts_password_pam_dcredit
-  - var_password_pam_dcredit=1
-  status: automated
-
-- id: AZLX-23-002370
-  levels:
-  - medium
-  title: Amazon Linux 2023 must require the change of at least 50 percent of the
-    total number of characters when passwords are changed.
-  rules:
-  - accounts_password_pam_difok
-  - var_password_pam_difok=8
-  status: automated
-
-- id: AZLX-23-002375
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enforce a minimum 15-character password length.
-  rules:
-  - accounts_password_pam_minlen
-  - var_password_pam_minlen=15
-  status: automated
-
-- id: AZLX-23-002380
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enforce password complexity by requiring that at
-    least one special character be used.
-  rules:
-  - accounts_password_pam_ocredit
-  - var_password_pam_ocredit=1
-  status: automated
-
-- id: AZLX-23-002385
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enforce password complexity rules for the root 
-    account.
-  rules:
-  - accounts_password_pam_enforce_root
-  status: automated
-
-- id: AZLX-23-002390
-  levels:
-  - medium
-  title: Amazon Linux 2023 must prevent the use of dictionary words for 
-    passwords.
-  rules:
-  - accounts_password_pam_dictcheck
-  - var_password_pam_dictcheck=1
-  status: automated
-
-- id: AZLX-23-002395
-  levels:
-  - low
-  title: Amazon Linux 2023 must limit the number of concurrent sessions to ten 
-    for all accounts and/or account types.
-  rules:
-  - accounts_max_concurrent_login_sessions
-  - var_accounts_max_concurrent_login_sessions=10
-  status: automated
-
-- id: AZLX-23-002396
-  levels:
-  - medium
-  title: Amazon Linux 2023 must automatically exit interactive command shell 
-    user sessions after 15 minutes of inactivity.
-  rules:
-  - accounts_tmout
-  - var_accounts_tmout=10_min
-  status: automated
-
-- id: AZLX-23-002400
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enforce 24 hours/1 day as the minimum password 
-    lifetime.
-  rules:
-  - accounts_minimum_age_login_defs
-  status: automated
-
-- id: AZLX-23-002405
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enforce a delay of at least four seconds between
-    logon prompts following a failed logon attempt.
-  rules:
-  - accounts_logon_fail_delay
-  - var_accounts_fail_delay=4
-  status: automated
-
-- id: AZLX-23-002410
-  levels:
-  - medium
-  title: Amazon Linux 2023 must define default permissions for all authenticated
-    users in such a way that the user can only read and modify their own files.
-  rules:
-  - accounts_umask_etc_login_defs
-  status: automated
-
-- id: AZLX-23-002415
-  levels:
-  - medium
-  title: Amazon Linux 2023 must automatically remove or disable temporary user 
-    accounts after 72 hours.
-  rules: []
-  status: pending
-- id: AZLX-23-002420
-  levels:
-  - medium
-  title: Amazon Linux 2023 must automatically lock an account when three 
-    unsuccessful logon attempts occur.
-  rules: []
-  status: pending
-- id: AZLX-23-002425
-  levels:
-  - medium
-  title: Amazon Linux 2023 must be able to enforce a 60-day maximum password 
-    lifetime restriction.
-  rules:
-  - accounts_password_set_max_life_existing
-  - var_accounts_maximum_age_login_defs=60
-  status: automated
-
-- id: AZLX-23-002430
-  levels:
-  - medium
-  title: Amazon Linux 2023 must disable account identifiers (individuals, 
-    groups, roles, and devices) after 35 days of inactivity.
-  rules:
-  - account_disable_post_pw_expiration
-  - var_account_disable_post_pw_expiration=35
-  status: automated
-
-- id: AZLX-23-002435
-  levels:
-  - medium
-  title: Amazon Linux 2023 must automatically expire temporary accounts within 
-    72 hours.
-  rules:
-  - account_temp_expire_date
-  status: automated
-
-- id: AZLX-23-002440
-  levels:
-  - medium
-  title: Amazon Linux 2023 must restrict the use of the "su" command.
-  rules:
-  - use_pam_wheel_for_su
-  status: automated
-
-- id: AZLX-23-002445
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enable the SELinux targeted policy.
-  rules:
-  - selinux_policytype
-  - var_selinux_policy_name=targeted
-  status: automated
-
-- id: AZLX-23-002450
-  levels:
-  - high
-  title: Amazon Linux 2023 must use a Linux Security Module configured to 
-    enforce limits on system services.
-  rules:
-  - selinux_state
-  - var_selinux_state=enforcing
-  status: automated
-
-- id: AZLX-23-002455
-  levels:
-  - medium
-  title: Amazon Linux 2023 must automatically lock an account when three 
-    unsuccessful logon attempts occur.
-  rules:
-  - accounts_passwords_pam_faillock_deny
-  - var_accounts_passwords_pam_faillock_deny=3
-  status: automated
-
-- id: AZLX-23-002460
-  levels:
-  - medium
-  title: Amazon Linux 2023 must automatically lock the root account until the 
-    root account is released by an administrator when three unsuccessful logon 
-    attempts occur during a 15-minute time period.
-  rules:
-  - accounts_passwords_pam_faillock_deny_root
-  status: automated
-
-- id: AZLX-23-002465
-  levels:
-  - medium
-  title: Amazon Linux 2023 must automatically lock an account until the locked 
-    account is released by an administrator when three unsuccessful logon 
-    attempts in 15 minutes occur.
-  rules:
-  - accounts_passwords_pam_faillock_interval
-  - var_accounts_passwords_pam_faillock_fail_interval=900
-  status: automated
-
-- id: AZLX-23-002470
-  levels:
-  - medium
-  title: Amazon Linux 2023 must maintain an account lock until the locked 
-    account is released by an administrator.
-  rules:
-  - accounts_passwords_pam_faillock_unlock_time
-  - var_accounts_passwords_pam_faillock_unlock_time=never
-  status: automated
-
-- id: AZLX-23-002475
-  levels:
-  - medium
-  title: Amazon Linux 2023 must be configured to prohibit or restrict the use of
-    functions, ports, protocols, and/or services, as defined in the Ports, 
-    Protocols, and Services Management Category Assurance List (PPSM CAL) and 
-    vulnerability assessments.
-  rules:
-  - configured_firewalld_default_deny
-  status: automated
-
-- id: AZLX-23-002480
-  levels:
-  - medium
-  title: Amazon Linux 2023 must insure all interactive users have a primary 
-    group that exists.
-  rules:
-  - gid_passwd_group_same
-  status: automated
-
-- id: AZLX-23-002485
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure all interactive users have unique User 
-    IDs (UIDs).
-  rules:
-  - account_unique_id
-  status: automated
-
-- id: AZLX-23-002489
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the password complexity module is enabled
-    in the password-auth file.
-  rules:
-  - accounts_password_pam_pwquality_password_auth
-  status: automated
-
-- id: AZLX-23-002490
-  levels:
-  - medium
-  title: Amazon Linux 2023 password-auth must be configured to use a sufficient 
-    number of hashing rounds.
-  rules:
-  - accounts_password_pam_unix_rounds_password_auth
-  - var_password_pam_unix_rounds=100000
-  status: automated
-
-- id: AZLX-23-002495
-  levels:
-  - medium
-  title: Amazon Linux 2023 system-auth must be configured to use a sufficient 
-    number of hashing rounds.
-  rules:
-  - accounts_password_pam_unix_rounds_system_auth
-  status: automated
-
-- id: AZLX-23-002500
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure a sticky bit be set on all public 
-    directories.
-  rules:
-  - dir_perms_world_writable_sticky_bits
-  status: automated
-
-- id: AZLX-23-002505
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure all world-writable directories be owned 
-    by root, sys, bin, or an application user.
-  rules:
-  - dir_perms_world_writable_root_owned
-  status: automated
-
-- id: AZLX-23-002510
-  levels:
-  - medium
-  title: Amazon Linux 2023 must terminate idle user sessions.
-  rules:
-  - logind_session_timeout
-  - var_logind_session_timeout=15_minutes
-  status: automated
-
-- id: AZLX-23-002515
-  levels:
-  - low
-  title: Amazon Linux 2023 must enable auditing of processes that start prior to
-    the audit daemon.
-  rules:
-  - grub2_audit_argument
-  status: automated
-
-- id: AZLX-23-002520
-  levels:
-  - low
-  title: Amazon Linux 2023 must allocate an audit_backlog_limit of sufficient 
-    size to capture processes that start prior to the audit daemon.
-  rules:
-  - grub2_audit_backlog_limit_argument
-  status: automated
-
-- id: AZLX-23-002535
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enable discretionary access control on 
-    hardlinks.
-  rules:
-  - sysctl_fs_protected_hardlinks
-  status: automated
-
-- id: AZLX-23-002540
-  levels:
-  - medium
-  title: Amazon Linux 2023 must enable kernel parameters to enforce 
-    discretionary access control on symlinks.
-  rules:
-  - sysctl_fs_protected_symlinks
-  status: automated
-
-- id: AZLX-23-002555
-  levels:
-  - medium
-  title: Amazon Linux 2023 debug-shell systemd service must be disabled.
-  status: automated
-  rules:
-  - service_debug-shell_disabled
-
-- id: AZLX-23-002560
-  levels:
-  - medium
-  title: Amazon Linux 2023 chrony must be configured with a maximum interval of 
-    24 hours between requests sent to a USNO server or a time server designated 
-    for the appropriate DOD network.
-  rules: []
-  status: pending
-- id: AZLX-23-002565
-  levels:
-  - medium
-  title: Amazon Linux 2023 must synchronize internal information system clocks 
-    to the authoritative time source at least every 24 hours.
-  rules:
-  - chronyd_or_ntpd_set_maxpoll
-  - chronyd_server_directive
-  - chronyd_specify_remote_server
-  - var_multiple_time_servers=stig
-  - var_time_service_set_maxpoll=18_hours
-  status: automated
-
-- id: AZLX-23-002570
-  levels:
-  - medium
-  title: Amazon Linux 2023 must routinely check the baseline configuration for 
-    unauthorized changes and notify the system administrator when anomalies in 
-    the operation of any security functions are discovered.
-  rules:
-  - aide_periodic_cron_checking
-  - aide_scan_notification
-  status: automated
-
-- id: AZLX-23-002575
-  levels:
-  - medium
-  title: Amazon Linux 2023 must prevent the loading of a new kernel for later 
-    execution.
-  rules:
-  - sysctl_kernel_kexec_load_disabled
-  status: automated
-
-- id: AZLX-23-002580
-  levels:
-  - medium
-  title: Amazon Linux 2023 must prevent files with the setuid and setgid bit set
-    from being executed on the /boot/efi directory.
-  rules:
-  - mount_option_boot_efi_nosuid
-  status: automated
-
-- id: AZLX-23-002585
-  levels:
-  - medium
-  title: Amazon Linux 2023 must mount /dev/shm with the nodev option.
-  rules:
-  - mount_option_dev_shm_nodev
-  status: automated
-
-- id: AZLX-23-002590
-  levels:
-  - medium
-  title: Amazon Linux 2023 must mount /dev/shm with the nosuid option.
-  rules:
-  - mount_option_dev_shm_nosuid
-  status: automated
-
-- id: AZLX-23-002595
-  levels:
-  - medium
-  title: Amazon Linux 2023 must ensure the pcscd service is active.
-  rules:
-  - service_pcscd_enabled
-  status: automated
-
-- id: AZLX-23-002600
-  levels:
-  - medium
-  title: Amazon Linux 2023 file system automount function must be disabled 
-    unless required.
-  rules:
-  - service_autofs_disabled
-  status: automated
-
-- id: AZLX-23-002605
-  levels:
-  - medium
-  title: Amazon Linux 2023 must protect against or limit the effects of 
-    denial-of-service (DoS) attacks by ensuring rate-limiting measures are 
-    configured on impacted network interfaces.
-  rules: []
-  status: pending
-- id: AZLX-23-002610
-  levels:
-  - medium
-  title: Amazon Linux 2023 must implement nonexecutable data to protect its 
-    memory from unauthorized code execution.
-  rules: []
-  status: pending
-- id: AZLX-23-002615
-  levels:
-  - low
-  title: Amazon Linux 2023 must remove all software components after updated 
-    versions have been installed.
-  rules:
-  - clean_components_post_updating
-  status: automated
-
-- id: AZLX-23-002620
-  levels:
-  - medium
-  title: Amazon Linux 2023 must configure the use of the pam_faillock.so module 
-    in the /etc/pam.d/system-auth file.
-  rules:
-  - account_password_pam_faillock_system_auth
-  status: automated
-
-- id: AZLX-23-005000
-  levels:
-  - medium
-  title: Amazon Linux 2023 audit system must protect logon user identifiers 
-    (UIDs) from unauthorized change.
-  rules:
-  - audit_rules_immutable_login_uids
-  status: automated
-
-- id: needed_rules
-  levels:
-  - medium
-  rules:
-  - enable_authselect
-  - var_authselect_profile=sssd
-
+  - id: AZLX-23-000100
+    levels:
+      - high
+    title: Amazon Linux 2023 local disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at rest protection.
+    rules:
+      - encrypt_partitions
+    status: automated
+
+  - id: AZLX-23-000110
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure cryptographic verification of vendor
+      software packages.
+    rules: []
+    status: pending
+
+  - id: AZLX-23-000115
+    levels:
+      - high
+    title: Amazon Linux 2023 must check the GPG signature of locally installed
+      software packages before installation.
+    rules:
+      - ensure_gpgcheck_local_packages
+    status: automated
+
+  - id: AZLX-23-000120
+    levels:
+      - high
+    title: Amazon Linux 2023 must check the GPG signature of software packages
+      originating from external software repositories before installation.
+    rules:
+      - ensure_gpgcheck_globally_activated
+    status: automated
+
+  - id: AZLX-23-000125
+    levels:
+      - high
+    title:
+      Amazon Linux 2023 must have GPG signature verification enabled for all
+      software repositories.
+    rules:
+      - ensure_gpgcheck_never_disabled
+    status: automated
+
+  - id: AZLX-23-000130
+    levels:
+      - high
+    title: Amazon Linux 2023 must be a vendor-supported release.
+    rules:
+      - installed_OS_is_vendor_supported
+    status: automated
+
+  - id: AZLX-23-000135
+    levels:
+      - medium
+    title: Amazon Linux 2023 systemd-journald service must be enabled.
+    rules:
+      - service_systemd-journald_enabled
+    status: automated
+
+  - id: AZLX-23-000200
+    levels:
+      - medium
+    title: Amazon Linux 2023 must restrict access to the kernel message buffer.
+    rules:
+      - sysctl_kernel_dmesg_restrict
+    status: automated
+
+  - id: AZLX-23-000205
+    levels:
+      - medium
+    title: Amazon Linux 2023 must prevent kernel profiling by nonprivileged users.
+    rules:
+      - sysctl_kernel_perf_event_paranoid
+    status: automated
+
+  - id: AZLX-23-000210
+    levels:
+      - medium
+    title: Amazon Linux 2023 must restrict exposed kernel pointer addresses
+      access.
+    rules:
+      - sysctl_kernel_kptr_restrict
+    status: automated
+
+  - id: AZLX-23-000215
+    levels:
+      - medium
+    title: Amazon Linux 2023 must disable access to network bpf system call from
+      nonprivileged processes.
+    rules:
+      - sysctl_kernel_unprivileged_bpf_disabled
+    status: automated
+
+  - id: AZLX-23-000220
+    levels:
+      - medium
+    title: Amazon Linux 2023 must restrict usage of ptrace to descendant
+      processes.
+    rules:
+      - sysctl_kernel_yama_ptrace_scope
+    status: automated
+
+  - id: AZLX-23-000225
+    levels:
+      - medium
+    title: Amazon Linux 2023 must implement address space layout randomization
+      (ASLR) to protect its memory from unauthorized code execution.
+    rules:
+      - sysctl_kernel_randomize_va_space
+    status: automated
+
+  - id: AZLX-23-000300
+    levels:
+      - high
+    title: Amazon Linux 2023 must not have the vsftpd package installed.
+    rules:
+      - package_vsftpd_removed
+    status: automated
+
+  - id: AZLX-23-000305
+    levels:
+      - medium
+    title: Amazon Linux 2023 must not have the sendmail package installed.
+    rules:
+      - package_sendmail_removed
+    status: automated
+
+  - id: AZLX-23-000310
+    levels:
+      - medium
+    title: Amazon Linux 2023 must not have the nfs-utils package installed.
+    rules:
+      - package_nfs-utils_removed
+    status: automated
+
+  - id: AZLX-23-000315
+    levels:
+      - medium
+    title: Amazon Linux 2023 must not have the telnet-server package installed.
+    rules:
+      - package_telnet-server_removed
+    status: automated
+
+  - id: AZLX-23-000320
+    levels:
+      - medium
+    title: Amazon Linux 2023 must not have the gssproxy package installed.
+    rules:
+      - package_gssproxy_removed
+    status: automated
+
+  - id: AZLX-23-001000
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the sudo package installed.
+    rules:
+      - package_sudo_installed
+    status: automated
+
+  - id: AZLX-23-001005
+    levels:
+      - medium
+    title: Amazon Linux 2023 must not be configured to bypass password
+      requirements for privilege escalation.
+    rules:
+      - disallow_bypass_password_sudo
+    status: automated
+
+  - id: AZLX-23-001010
+    levels:
+      - medium
+    title: Amazon Linux 2023 must require reauthentication when using the "sudo"
+      command.
+    rules:
+      - sudo_require_reauthentication
+      - var_sudo_timestamp_timeout=always_prompt
+    status: automated
+
+  - id: AZLX-23-001015
+    levels:
+      - medium
+    title: Amazon Linux 2023 must require users to reauthenticate for privilege
+      escalation.
+    rules:
+      - sudo_remove_no_authenticate
+    status: automated
+
+  - id: AZLX-23-001020
+    levels:
+      - medium
+    title: Amazon Linux 2023 must require users to provide a password for
+      privilege escalation.
+    rules:
+      - sudo_remove_nopasswd
+    status: automated
+
+  - id: AZLX-23-001025
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the audit package installed.
+    rules:
+      - package_audit_installed
+    status: automated
+
+  - id: AZLX-23-001030
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must produce audit records containing information to
+      establish what type of events occurred.
+    rules:
+      - service_auditd_enabled
+    status: automated
+
+  - id: AZLX-23-001035
+    levels:
+      - medium
+    title: Amazon Linux 2023 audispd-plugins package must be installed.
+    rules:
+      - package_audispd-plugins_installed
+    status: automated
+
+  - id: AZLX-23-001040
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the rsyslog package installed.
+    rules:
+      - service_rsyslog_enabled
+    status: automated
+
+  - id: AZLX-23-001045
+    levels:
+      - medium
+    title: Amazon Linux 2023 must monitor remote access methods.
+    rules:
+      - rsyslog_remote_access_monitoring
+    status: automated
+
+  - id: AZLX-23-001050
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the chrony package installed.
+    rules:
+      - package_chrony_installed
+    status: automated
+
+  - id: AZLX-23-001055
+    levels:
+      - medium
+    title: Amazon Linux 2023 chronyd service must be enabled.
+    rules:
+      - service_chronyd_enabled
+    status: automated
+
+  - id: AZLX-23-001060
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the Advanced Intrusion Detection
+      Environment (AIDE) package installed.
+    rules:
+      - package_aide_installed
+      - aide_build_database
+    status: automated
+
+  - id: AZLX-23-001065
+    levels:
+      - medium
+    title: Amazon Linux 2023 must routinely check the baseline configuration for
+      unauthorized changes and notify the system administrator when anomalies in
+      the operation of any security functions are discovered.
+    rules: []
+    status: pending
+  - id: AZLX-23-001070
+    levels:
+      - medium
+    title: Amazon Linux 2023 must use cryptographic mechanisms to protect the
+      integrity of audit tools.
+    rules:
+      - aide_check_audit_tools
+    status: automated
+
+  - id: AZLX-23-001075
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the firewalld package installed.
+    rules:
+      - package_firewalld_installed
+    status: automated
+
+  - id: AZLX-23-001080
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the firewalld servicew active.
+    rules:
+      - service_firewalld_enabled
+    status: automated
+
+  - id: AZLX-23-001085
+    levels:
+      - medium
+    title: Amazon Linux 2023 must be configured to disable nonessential
+      capabilities.
+    rules:
+      - firewalld_sshd_port_enabled
+    status: automated
+
+  - id: AZLX-23-001090
+    levels:
+      - medium
+    title: Amazon Linux 2023 must manage excess capacity, bandwidth, or other
+      redundancy to limit the effects of information flooding types of
+      denial-of-service (DoS) attacks.
+    rules:
+      - firewalld-backend
+    status: automated
+
+  - id: AZLX-23-001095
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the s-nail package installed.
+    rules:
+      - package_s-nail_installed
+    status: automated
+
+  - id: AZLX-23-001105
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the libreswan package installed.
+    rules:
+      - package_libreswan_installed
+    status: automated
+
+  - id: AZLX-23-001110
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the policycoreutils package installed.
+    rules:
+      - package_policycoreutils_installed
+    status: automated
+
+  - id: AZLX-23-001115
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the pcsc-lite package installed.
+    rules:
+      - package_pcsc-lite_installed
+    status: automated
+
+  - id: AZLX-23-001120
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the packages required for encrypting
+      off-loaded audit logs installed.
+    rules: []
+    status: pending
+  - id: AZLX-23-001125
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the opensc package installed.
+    rules:
+      - package_opensc_installed
+    status: automated
+
+  - id: AZLX-23-001130
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the openssl-pkcs11 package installed.
+    rules:
+      - install_smartcard_packages
+    status: automated
+
+  - id: AZLX-23-001180
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have SSH installed.
+    rules:
+      - package_openssh-server_installed
+    status: automated
+
+  - id: AZLX-23-001185
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must implement SSH to protect the confidentiality and
+      integrity of transmitted and received information, as well as information
+      during preparation for transmission.
+    rules:
+      - service_sshd_enabled
+    status: automated
+
+  - id: AZLX-23-001195
+    levels:
+      - medium
+    title: Amazon Linux 2023 must have the crypto-policies package installed.
+    rules: []
+    status: pending
+  - id: AZLX-23-001200
+    levels:
+      - medium
+    title: Amazon Linux 2023 SSH server must be configured to use systemwide
+      crypto policies.
+    rules:
+      - file_sshd_50_redhat_exists
+      - sshd_include_crypto_policy
+    status: automated
+
+  - id: AZLX-23-001205
+    levels:
+      - medium
+    title: Amazon Linux 2023 server must be configured to use only DOD-approved
+      encryption ciphers employing FIPS 140-2/140-3 validated cryptographic hash
+      algorithms to protect the confidentiality of SSH server connections.
+    status: pending
+
+  - id: AZLX-23-001210
+    levels:
+      - medium
+    title: Amazon Linux 2023 SSH server must be configured to use only Message
+      Authentication Codes (MACs) employing FIPS 140-2/140-3 validated
+      cryptographic hash algorithms to protect the confidentiality of SSH server
+      connections.
+    rules: []
+    status: pending
+  - id: AZLX-23-001215
+    levels:
+      - medium
+    title: Amazon Linux 2023 SSH daemon must not allow Generic Security Service
+      Application Program Interface (GSSAPI) authentication.
+    rules:
+      - sshd_disable_gssapi_auth
+    status: automated
+
+  - id: AZLX-23-001220
+    levels:
+      - medium
+    title: Amazon Linux 2023 SSH daemon must not allow Kerberos authentication.
+    rules:
+      - sshd_disable_kerb_auth
+    status: automated
+
+  - id: AZLX-23-001225
+    levels:
+      - medium
+    title: Amazon Linux 2023 must force a frequent session key renegotiation for
+      SSH connections to the server.
+    rules:
+      - sshd_rekey_limit
+      - var_rekey_limit_size=1G
+      - var_rekey_limit_time=1hour
+    status: automated
+
+  - id: AZLX-23-001230
+    levels:
+      - medium
+    title: Amazon Linux 2023 SSHD must accept public key authentication.
+    rules:
+      - sshd_enable_pubkey_auth
+    status: automated
+
+  - id: AZLX-23-001235
+    levels:
+      - high
+    title: Amazon Linux 2023 SSHD must not allow blank passwords.
+    rules:
+      - sshd_disable_empty_passwords
+    status: automated
+
+  - id: AZLX-23-001240
+    levels:
+      - medium
+    title: Amazon Linux 2023 must not permit direct logons to the root account
+      using remote access via SSH.
+    rules:
+      - sshd_disable_root_login
+    status: automated
+
+  - id: AZLX-23-001245
+    levels:
+      - medium
+    title: Amazon Linux 2023 must be configured so that all network connections
+      associated with SSH traffic are terminated after 10 minutes of becoming
+      unresponsive.
+    rules:
+      - sshd_set_idle_timeout
+      - sshd_idle_timeout_value=10_minutes
+    status: automated
+
+  - id: AZLX-23-001250
+    levels:
+      - medium
+    title: Amazon Linux 2023 must be configured so that all network connections
+      associated with SSH traffic terminate after becoming unresponsive.
+    rules:
+      - sshd_set_keepalive
+      - var_sshd_set_keepalive=1
+    status: automated
+
+  - id: AZLX-23-001255
+    levels:
+      - high
+    title:
+      Amazon Linux 2023 must enable the Pluggable Authentication Module (PAM)
+      interface for SSHD.
+    rules:
+      - sshd_enable_pam
+    status: automated
+
+  - id: AZLX-23-001260
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must implement DOD-approved encryption in the OpenSSL
+      package.
+    rules: []
+    status: pending
+  - id: AZLX-23-001265
+    levels:
+      - medium
+    title: Amazon Linux 2023 must implement DOD-approved TLS encryption in the
+      OpenSSL package.
+    rules: []
+    status: pending
+  - id: AZLX-23-001270
+    levels:
+      - medium
+    title: Amazon Linux 2023 must implement a FIPS 140-2/140-3 compliant
+      systemwide cryptographic policy.
+    rules: []
+    status: pending
+  - id: AZLX-23-001275
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must implement DOD-approved encryption to protect the
+      confidentiality of remote access sessions.
+    rules:
+      - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+      - sshd_approved_ciphers=stig_rhel9
+    status: automated
+  - id: AZLX-23-001280
+    levels:
+      - high
+    title: Amazon Linux 2023 must enable FIPS mode.
+    rules:
+      - enable_fips_mode
+      - sysctl_crypto_fips_enabled
+      - var_system_crypto_policy=fips
+      - enable_dracut_fips_module
+    status: automated
+
+  - id: AZLX-23-001285
+    levels:
+      - medium
+    title: Amazon Linux 2023 crypto policy must not be overridden.
+    rules: []
+    status: pending
+  - id: AZLX-23-001290
+    levels:
+      - medium
+    title: Amazon Linux 2023 must enable certificate-based smart card
+      authentication.
+    rules:
+      - sssd_enable_smartcards
+    status: automated
+
+  - id: AZLX-23-001295
+    levels:
+      - medium
+    title: Amazon Linux 2023 must map the authenticated identity to the user or
+      group account for PKI-based authentication.
+    rules:
+      - sssd_enable_certmap
+    status: automated
+
+  - id: AZLX-23-001300
+    levels:
+      - medium
+    title: Amazon Linux 2023 must implement certificate status checking for
+      multifactor authentication.
+    rules:
+      - sssd_certificate_verification
+      - var_sssd_certificate_verification_digest_function=sha512
+    status: automated
+
+  - id: AZLX-23-001305
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must prohibit the use of cached authenticators after
+      one day.
+    rules:
+      - sssd_offline_cred_expiration
+    status: automated
+
+  - id: AZLX-23-001310
+    levels:
+      - medium
+    title: Amazon Linux 2023, for PKI-based authentication, must validate
+      certificates by constructing a certification path (which includes status
+      information) to an accepted trust anchor.
+    rules: []
+    status: pending
+  - id: AZLX-23-001315
+    levels:
+      - medium
+    title: Amazon Linux 2023, for PKI-based authentication, must enforce
+      authorized access to the corresponding private key.
+    rules:
+      - ssh_keys_passphrase_protected
+    status: automated
+
+  - id: AZLX-23-002000
+    levels:
+      - medium
+    title: Amazon Linux 2023 must display the Standard Mandatory DOD Notice and
+      Consent Banner before granting local or remote access to the system.
+    rules:
+      - banner_etc_issue
+      - login_banner_text=dod_banners
+    status: automated
+
+  - id: AZLX-23-002005
+    levels:
+      - medium
+    title: Amazon Linux 2023 must display the Standard Mandatory DOD Notice and
+      Consent Banner before granting local or remote access to the system via a
+      SSH logon.
+    rules:
+      - sshd_enable_warning_banner
+    status: automated
+
+  - id: AZLX-23-002015
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must allocate audit record storage capacity to store
+      at least one week's worth of audit records, when audit records are not
+      immediately sent to a central audit record storage facility.
+    rules:
+      - auditd_audispd_configure_sufficiently_large_partition
+    status: automated
+
+  - id: AZLX-23-002020
+    levels:
+      - low
+    title:
+      Amazon Linux 2023 must use a separate file system for the system audit
+      data path.
+    rules:
+      - partition_for_var_log_audit
+    status: automated
+
+  - id: AZLX-23-002025
+    levels:
+      - medium
+    title: Amazon Linux 2023 must label all off-loaded audit logs before sending
+      them to the central log server.
+    rules:
+      - auditd_name_format
+      - var_auditd_name_format=stig
+    status: automated
+
+  - id: AZLX-23-002030
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must take appropriate action when the internal event
+      queue is full.
+    rules:
+      - auditd_overflow_action
+    status: automated
+
+  - id: AZLX-23-002035
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must take action when allocated audit record storage
+      volume reaches 75 percent of the repository maximum audit record storage
+      capacity.
+    rules:
+      - auditd_data_retention_space_left_percentage
+      - var_auditd_space_left_percentage=25pc
+    status: automated
+
+  - id: AZLX-23-002040
+    levels:
+      - medium
+    title: Amazon Linux 2023 must notify the system administrator (SA) and
+      information system security officer (ISSO) (at a minimum) when allocated
+      audit record storage volume 75 percent utilization.
+    rules:
+      - auditd_data_retention_space_left_action
+      - var_auditd_space_left_action=email
+    status: automated
+
+  - id: AZLX-23-002045
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must take action when allocated audit record storage
+      volume reaches 95 percent of the audit record storage capacity.
+    rules:
+      - auditd_data_retention_admin_space_left_percentage
+      - var_auditd_admin_space_left_percentage=5pc
+    status: automated
+
+  - id: AZLX-23-002050
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must take action when allocated audit record storage
+      volume reaches 95 percent of the repository maximum audit record storage
+      capacity.
+    rules:
+      - auditd_data_retention_admin_space_left_action
+      - var_auditd_admin_space_left_action=single
+    status: automated
+
+  - id: AZLX-23-002055
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must immediately notify the system administrator (SA)
+      and information system security officer (ISSO), at a minimum, of an audit
+      processing failure event.
+    rules:
+      - auditd_data_retention_action_mail_acct
+      - var_auditd_action_mail_acct=root
+    status: automated
+
+  - id: AZLX-23-002060
+    levels:
+      - medium
+    title: Amazon Linux 2023 must be configured to off-load audit records onto a
+      different system from the system being audited via syslog.
+    rules: []
+    status: pending
+  - id: AZLX-23-002065
+    levels:
+      - medium
+    title: Amazon Linux 2023 must authenticate the remote logging server for
+      off-loading audit logs via rsyslog.
+    rules:
+      - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+    status: automated
+
+  - id: AZLX-23-002070
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must encrypt the transfer of audit records off-loaded
+      onto a different system or media from the system being audited via rsyslog.
+    rules:
+      - rsyslog_encrypt_offload_actionsendstreamdrivermode
+    status: automated
+
+  - id: AZLX-23-002075
+    levels:
+      - medium
+    title: Amazon Linux 2023 must encrypt via the gtls driver the transfer of
+      audit records off-loaded onto a different system or media from the system
+      being audited via rsyslog.
+    rules:
+      - rsyslog_encrypt_offload_defaultnetstreamdriver
+    status: automated
+
+  - id: AZLX-23-002080
+    levels:
+      - medium
+    title: Amazon Linux 2023 must be configured to off-load audit records onto a
+      different system from the system being audited via syslog.
+    rules:
+      - rsyslog_remote_loghost
+    status: automated
+
+  - id: AZLX-23-002085
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /etc/sudoers.
+    rules:
+      - audit_rules_sudoers
+    status: automated
+
+  - id: AZLX-23-002090
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /etc/sudoers.d/ directory.
+    rules: []
+    status: pending
+  - id: AZLX-23-002095
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /etc/group.
+    rules:
+      - audit_rules_usergroup_modification_group
+    status: automated
+
+  - id: AZLX-23-002100
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /etc/gshadow.
+    rules:
+      - audit_rules_usergroup_modification_gshadow
+    status: automated
+
+  - id: AZLX-23-002105
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /etc/opasswd.
+    rules:
+      - audit_rules_usergroup_modification_opasswd
+    status: automated
+
+  - id: AZLX-23-002110
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit uses of the "execve" system call.
+    rules:
+      - audit_rules_suid_privilege_function
+    status: automated
+
+  - id: AZLX-23-002115
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the chmod, fchmod, and
+      fchmodat system calls.
+    rules:
+      - audit_rules_dac_modification_chmod
+      - audit_rules_dac_modification_fchmod
+      - audit_rules_dac_modification_fchmodat
+    status: automated
+
+  - id: AZLX-23-002120
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the chown, fchown, fchownat,
+      and lchown system calls.
+    rules:
+      - audit_rules_dac_modification_chown
+      - audit_rules_dac_modification_fchown
+      - audit_rules_dac_modification_fchownat
+      - audit_rules_dac_modification_lchown
+    status: automated
+
+  - id: AZLX-23-002125
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the setxattr, fsetxattr,
+      lsetxattr, removexattr, fremovexattr, and lremovexattr system calls.
+    rules:
+      - audit_rules_dac_modification_setxattr
+      - audit_rules_dac_modification_fsetxattr
+      - audit_rules_dac_modification_lsetxattr
+      - audit_rules_dac_modification_removexattr
+      - audit_rules_dac_modification_fremovexattr
+      - audit_rules_dac_modification_lremovexattr
+    status: automated
+
+  - id: AZLX-23-002130
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the truncate, ftruncate,
+      creat, open, openat, and open_by_handle_at system calls.
+    rules:
+      - audit_rules_unsuccessful_file_modification_creat
+      - audit_rules_unsuccessful_file_modification_truncate
+      - audit_rules_unsuccessful_file_modification_ftruncate
+      - audit_rules_unsuccessful_file_modification_open
+      - audit_rules_unsuccessful_file_modification_openat
+      - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    status: automated
+
+  - id: AZLX-23-002135
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the init_module and
+      finit_module system calls.
+    rules:
+      - audit_rules_kernel_module_loading_finit
+      - audit_rules_kernel_module_loading_init
+    status: automated
+
+  - id: AZLX-23-002140
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the create_module system call.
+    rules:
+      - audit_rules_execution_semanage
+    status: automated
+
+  - id: AZLX-23-002145
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the kmod command.
+    rules:
+      - audit_rules_privileged_commands_kmod
+    status: automated
+
+  - id: AZLX-23-002150
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the rename, unlink, rmdir,
+      renameat, and unlinkat system calls.
+    rules:
+      - audit_rules_file_deletion_events_rename
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_file_deletion_events_rmdir
+      - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_unlinkat
+    status: automated
+
+  - id: AZLX-23-002155
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the chcon command.
+    rules:
+      - audit_rules_execution_chcon
+    status: automated
+
+  - id: AZLX-23-002160
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /var/log/faillock.
+    rules:
+      - audit_rules_login_events_faillock
+    status: automated
+
+  - id: AZLX-23-002165
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /var/log/lastlog.
+    rules:
+      - audit_rules_login_events_lastlog
+    status: automated
+
+  - id: AZLX-23-002175
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the init command.
+    rules:
+      - audit_privileged_commands_init
+    status: automated
+
+  - id: AZLX-23-002180
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the reboot command.
+    rules:
+      - audit_privileged_commands_reboot
+    status: automated
+
+  - id: AZLX-23-002185
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the shutdown command.
+    rules:
+      - audit_privileged_commands_shutdown
+    status: automated
+
+  - id: AZLX-23-002190
+    levels:
+      - medium
+    title: Amazon Linux 2023 audit tools must have a mode of "0755" or less
+      permissive.
+    rules:
+      - file_audit_tools_permissions
+    status: automated
+
+  - id: AZLX-23-002195
+    levels:
+      - medium
+    title: Amazon Linux 2023 audit tools must be owned by root.
+    rules:
+      - file_audit_tools_ownership
+    status: automated
+
+  - id: AZLX-23-002200
+    levels:
+      - medium
+    title: Amazon Linux 2023 audit tools must be group-owned by root.
+    rules:
+      - file_audit_tools_group_ownership
+    status: automated
+
+  - id: AZLX-23-002205
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /etc/passwd.
+    rules: []
+    status: pending
+  - id: AZLX-23-002210
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all successful/unsuccessful uses of the
+      chage command.
+    rules:
+      - audit_rules_privileged_commands_chage
+    status: automated
+
+  - id: AZLX-23-002215
+    levels:
+      - medium
+    title: Amazon Linux 2023 must alert the information system security officer
+      (ISSO) and system administrator (SA), at a minimum, in the event of an audit
+      processing failure.
+    rules: []
+    status: pending
+  - id: AZLX-23-002220
+    levels:
+      - medium
+    title: Amazon Linux 2023 must off-load audit records onto a different system
+      in the event the audit storage volume is full.
+    rules:
+      - auditd_data_disk_full_action_stig
+      - var_auditd_disk_full_action=halt
+    status: automated
+
+  - id: AZLX-23-002225
+    levels:
+      - medium
+    title: Amazon Linux 2023 audit logs must be group-owned by root or by a
+      restricted logging group to prevent unauthorized read access.
+    rules: []
+    status: pending
+  - id: AZLX-23-002230
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 audit log directory must be owned by root to prevent
+      unauthorized read access.
+    rules: []
+    status: pending
+  - id: AZLX-23-002235
+    levels:
+      - medium
+    title: Amazon Linux 2023 audit logs file must have mode "0600" or less
+      permissive to prevent unauthorized access to the audit log.
+    rules: []
+    status: pending
+  - id: AZLX-23-002240
+    levels:
+      - medium
+    title: Amazon Linux 2023 must allow only the information system security
+      manager (ISSM) (or individuals or roles appointed by the ISSM) to select
+      which auditable events are to be audited.
+    rules:
+      - file_permissions_audit_configuration
+    status: automated
+
+  - id: AZLX-23-002245
+    levels:
+      - medium
+    title: Amazon Linux 2023 must audit all uses of the sudo command.
+    rules:
+      - audit_rules_privileged_commands_sudo
+    status: automated
+
+  - id: AZLX-23-002250
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /etc/passwd.
+    rules:
+      - audit_rules_usergroup_modification_passwd
+    status: automated
+
+  - id: AZLX-23-002255
+    levels:
+      - medium
+    title: Amazon Linux 2023 must generate audit records for all account
+      creations, modifications, disabling, and termination events that affect
+      /etc/shadow.
+    rules:
+      - audit_rules_usergroup_modification_shadow
+    status: automated
+
+  - id: AZLX-23-002260
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must produce audit records containing information to
+      establish the identity of any individual or process associated with the
+      event.
+    rules:
+      - auditd_log_format
+    status: automated
+
+  - id: AZLX-23-002265
+    levels:
+      - medium
+    title: Amazon Linux 2023 audit logs must be group-owned by root or by a
+      restricted logging group to prevent unauthorized read access.
+    rules:
+      - directory_group_ownership_var_log_audit
+    status: automated
+
+  - id: AZLX-23-002270
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must ensure the audit log directory be owned by root
+      to prevent unauthorized read access.
+    rules:
+      - directory_ownership_var_log_audit
+    status: automated
+
+  - id: AZLX-23-002275
+    levels:
+      - medium
+    title: Amazon Linux 2023 audit logs file must have mode "0600" or less
+      permissive to prevent unauthorized access to the audit log.
+    rules:
+      - file_permissions_var_log_audit
+    status: automated
+
+  - id: AZLX-23-002280
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 library directories must be group-owned by root or a
+      system account.
+    rules:
+      - dir_group_ownership_library_dirs
+    status: automated
+
+  - id: AZLX-23-002285
+    levels:
+      - medium
+    title: Amazon Linux 2023 library directories must have mode "755" or less
+      permissive.
+    rules:
+      - dir_permissions_library_dirs
+    status: automated
+
+  - id: AZLX-23-002290
+    levels:
+      - medium
+    title: Amazon Linux 2023 library files must have mode "755" or less
+      permissive.
+    rules:
+      - file_permissions_library_dirs
+    status: automated
+
+  - id: AZLX-23-002295
+    levels:
+      - medium
+    title: Amazon Linux 2023 library files must be owned by root.
+    rules:
+      - file_ownership_library_dirs
+    status: automated
+
+  - id: AZLX-23-002300
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 library files must be group-owned by root or a system
+      account.
+    rules:
+      - root_permissions_syslibrary_files
+    status: automated
+
+  - id: AZLX-23-002305
+    levels:
+      - medium
+    title: Amazon Linux 2023 library directories must be owned by root.
+    rules:
+      - dir_ownership_library_dirs
+    status: automated
+
+  - id: AZLX-23-002315
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure the /var/log directory have mode "0755"
+      or less permissive.
+    rules:
+      - file_permissions_var_log
+    status: automated
+
+  - id: AZLX-23-002320
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure the /var/log directory be owned by root.
+    rules:
+      - file_owner_var_log
+    status: automated
+
+  - id: AZLX-23-002325
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must ensure the /var/log directory be group-owned by
+      root.
+    rules:
+      - file_groupowner_var_log
+    status: automated
+
+  - id: AZLX-23-002330
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure the /var/log/messages file have mode
+      "0640" or less permissive.
+    rules:
+      - file_permissions_var_log_messages
+    status: automated
+
+  - id: AZLX-23-002335
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must ensure the /var/log/messages file be group-owned
+      by root.
+    rules:
+      - file_groupowner_var_log_messages
+    status: automated
+
+  - id: AZLX-23-002340
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure the /var/log/messages file be owned by
+      root.
+    rules:
+      - file_owner_var_log_messages
+    status: automated
+
+  - id: AZLX-23-002345
+    levels:
+      - medium
+    title: Amazon Linux 2023 system commands must be owned by root.
+    rules:
+      - file_ownership_binary_dirs
+    status: automated
+
+  - id: AZLX-23-002350
+    levels:
+      - medium
+    title: Amazon Linux 2023 system commands must be group-owned by root or a
+      system account.
+    rules:
+      - file_groupownership_system_commands_dirs
+    status: automated
+
+  - id: AZLX-23-002355
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must enforce password complexity by requiring that at
+      least one uppercase character be used.
+    rules:
+      - accounts_password_pam_ucredit
+      - var_password_pam_ucredit=1
+    status: automated
+
+  - id: AZLX-23-002360
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must enforce password complexity by requiring that at
+      least one lowercase character be used.
+    rules:
+      - accounts_password_pam_lcredit
+      - var_password_pam_lcredit=1
+    status: automated
+
+  - id: AZLX-23-002365
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must enforce password complexity by requiring that at
+      least one numeric character be used.
+    rules:
+      - accounts_password_pam_dcredit
+      - var_password_pam_dcredit=1
+    status: automated
+
+  - id: AZLX-23-002370
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must require the change of at least 50 percent of the
+      total number of characters when passwords are changed.
+    rules:
+      - accounts_password_pam_difok
+      - var_password_pam_difok=8
+    status: automated
+
+  - id: AZLX-23-002375
+    levels:
+      - medium
+    title: Amazon Linux 2023 must enforce a minimum 15-character password length.
+    rules:
+      - accounts_password_pam_minlen
+      - var_password_pam_minlen=15
+    status: automated
+
+  - id: AZLX-23-002380
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must enforce password complexity by requiring that at
+      least one special character be used.
+    rules:
+      - accounts_password_pam_ocredit
+      - var_password_pam_ocredit=1
+    status: automated
+
+  - id: AZLX-23-002385
+    levels:
+      - medium
+    title: Amazon Linux 2023 must enforce password complexity rules for the root
+      account.
+    rules:
+      - accounts_password_pam_enforce_root
+    status: automated
+
+  - id: AZLX-23-002390
+    levels:
+      - medium
+    title: Amazon Linux 2023 must prevent the use of dictionary words for
+      passwords.
+    rules:
+      - accounts_password_pam_dictcheck
+      - var_password_pam_dictcheck=1
+    status: automated
+
+  - id: AZLX-23-002395
+    levels:
+      - low
+    title: Amazon Linux 2023 must limit the number of concurrent sessions to ten
+      for all accounts and/or account types.
+    rules:
+      - accounts_max_concurrent_login_sessions
+      - var_accounts_max_concurrent_login_sessions=10
+    status: automated
+
+  - id: AZLX-23-002396
+    levels:
+      - medium
+    title: Amazon Linux 2023 must automatically exit interactive command shell
+      user sessions after 15 minutes of inactivity.
+    rules:
+      - accounts_tmout
+      - var_accounts_tmout=10_min
+    status: automated
+
+  - id: AZLX-23-002400
+    levels:
+      - medium
+    title: Amazon Linux 2023 must enforce 24 hours/1 day as the minimum password
+      lifetime.
+    rules:
+      - accounts_minimum_age_login_defs
+    status: automated
+
+  - id: AZLX-23-002405
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must enforce a delay of at least four seconds between
+      logon prompts following a failed logon attempt.
+    rules:
+      - accounts_logon_fail_delay
+      - var_accounts_fail_delay=4
+    status: automated
+
+  - id: AZLX-23-002410
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must define default permissions for all authenticated
+      users in such a way that the user can only read and modify their own files.
+    rules:
+      - accounts_umask_etc_login_defs
+    status: automated
+
+  - id: AZLX-23-002415
+    levels:
+      - medium
+    title: Amazon Linux 2023 must automatically remove or disable temporary user
+      accounts after 72 hours.
+    rules: []
+    status: pending
+  - id: AZLX-23-002420
+    levels:
+      - medium
+    title: Amazon Linux 2023 must automatically lock an account when three
+      unsuccessful logon attempts occur.
+    rules: []
+    status: pending
+  - id: AZLX-23-002425
+    levels:
+      - medium
+    title: Amazon Linux 2023 must be able to enforce a 60-day maximum password
+      lifetime restriction.
+    rules:
+      - accounts_password_set_max_life_existing
+      - var_accounts_maximum_age_login_defs=60
+    status: automated
+
+  - id: AZLX-23-002430
+    levels:
+      - medium
+    title: Amazon Linux 2023 must disable account identifiers (individuals,
+      groups, roles, and devices) after 35 days of inactivity.
+    rules:
+      - account_disable_post_pw_expiration
+      - var_account_disable_post_pw_expiration=35
+    status: automated
+
+  - id: AZLX-23-002435
+    levels:
+      - medium
+    title: Amazon Linux 2023 must automatically expire temporary accounts within
+      72 hours.
+    rules:
+      - account_temp_expire_date
+    status: automated
+
+  - id: AZLX-23-002440
+    levels:
+      - medium
+    title: Amazon Linux 2023 must restrict the use of the "su" command.
+    rules:
+      - use_pam_wheel_for_su
+    status: automated
+
+  - id: AZLX-23-002445
+    levels:
+      - medium
+    title: Amazon Linux 2023 must enable the SELinux targeted policy.
+    rules:
+      - selinux_policytype
+      - var_selinux_policy_name=targeted
+    status: automated
+
+  - id: AZLX-23-002450
+    levels:
+      - high
+    title: Amazon Linux 2023 must use a Linux Security Module configured to
+      enforce limits on system services.
+    rules:
+      - selinux_state
+      - var_selinux_state=enforcing
+    status: automated
+
+  - id: AZLX-23-002455
+    levels:
+      - medium
+    title: Amazon Linux 2023 must automatically lock an account when three
+      unsuccessful logon attempts occur.
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - var_accounts_passwords_pam_faillock_deny=3
+    status: automated
+
+  - id: AZLX-23-002460
+    levels:
+      - medium
+    title: Amazon Linux 2023 must automatically lock the root account until the
+      root account is released by an administrator when three unsuccessful logon
+      attempts occur during a 15-minute time period.
+    rules:
+      - accounts_passwords_pam_faillock_deny_root
+    status: automated
+
+  - id: AZLX-23-002465
+    levels:
+      - medium
+    title: Amazon Linux 2023 must automatically lock an account until the locked
+      account is released by an administrator when three unsuccessful logon
+      attempts in 15 minutes occur.
+    rules:
+      - accounts_passwords_pam_faillock_interval
+      - var_accounts_passwords_pam_faillock_fail_interval=900
+    status: automated
+
+  - id: AZLX-23-002470
+    levels:
+      - medium
+    title: Amazon Linux 2023 must maintain an account lock until the locked
+      account is released by an administrator.
+    rules:
+      - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_unlock_time=never
+    status: automated
+
+  - id: AZLX-23-002475
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must be configured to prohibit or restrict the use of
+      functions, ports, protocols, and/or services, as defined in the Ports,
+      Protocols, and Services Management Category Assurance List (PPSM CAL) and
+      vulnerability assessments.
+    rules:
+      - configured_firewalld_default_deny
+    status: automated
+
+  - id: AZLX-23-002480
+    levels:
+      - medium
+    title: Amazon Linux 2023 must insure all interactive users have a primary
+      group that exists.
+    rules:
+      - gid_passwd_group_same
+    status: automated
+
+  - id: AZLX-23-002485
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure all interactive users have unique User
+      IDs (UIDs).
+    rules:
+      - account_unique_id
+    status: automated
+
+  - id: AZLX-23-002489
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must ensure the password complexity module is enabled
+      in the password-auth file.
+    rules:
+      - accounts_password_pam_pwquality_password_auth
+    status: automated
+
+  - id: AZLX-23-002490
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 password-auth must be configured to use a sufficient
+      number of hashing rounds.
+    rules:
+      - accounts_password_pam_unix_rounds_password_auth
+      - var_password_pam_unix_rounds=100000
+    status: automated
+
+  - id: AZLX-23-002495
+    levels:
+      - medium
+    title: Amazon Linux 2023 system-auth must be configured to use a sufficient
+      number of hashing rounds.
+    rules:
+      - accounts_password_pam_unix_rounds_system_auth
+    status: automated
+
+  - id: AZLX-23-002500
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure a sticky bit be set on all public
+      directories.
+    rules:
+      - dir_perms_world_writable_sticky_bits
+    status: automated
+
+  - id: AZLX-23-002505
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure all world-writable directories be owned
+      by root, sys, bin, or an application user.
+    rules:
+      - dir_perms_world_writable_root_owned
+    status: automated
+
+  - id: AZLX-23-002510
+    levels:
+      - medium
+    title: Amazon Linux 2023 must terminate idle user sessions.
+    rules:
+      - logind_session_timeout
+      - var_logind_session_timeout=15_minutes
+    status: automated
+
+  - id: AZLX-23-002515
+    levels:
+      - low
+    title:
+      Amazon Linux 2023 must enable auditing of processes that start prior to
+      the audit daemon.
+    rules:
+      - grub2_audit_argument
+    status: automated
+
+  - id: AZLX-23-002520
+    levels:
+      - low
+    title: Amazon Linux 2023 must allocate an audit_backlog_limit of sufficient
+      size to capture processes that start prior to the audit daemon.
+    rules:
+      - grub2_audit_backlog_limit_argument
+    status: automated
+
+  - id: AZLX-23-002535
+    levels:
+      - medium
+    title: Amazon Linux 2023 must enable discretionary access control on
+      hardlinks.
+    rules:
+      - sysctl_fs_protected_hardlinks
+    status: automated
+
+  - id: AZLX-23-002540
+    levels:
+      - medium
+    title: Amazon Linux 2023 must enable kernel parameters to enforce
+      discretionary access control on symlinks.
+    rules:
+      - sysctl_fs_protected_symlinks
+    status: automated
+
+  - id: AZLX-23-002555
+    levels:
+      - medium
+    title: Amazon Linux 2023 debug-shell systemd service must be disabled.
+    status: automated
+    rules:
+      - service_debug-shell_disabled
+
+  - id: AZLX-23-002560
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 chrony must be configured with a maximum interval of
+      24 hours between requests sent to a USNO server or a time server designated
+      for the appropriate DOD network.
+    rules: []
+    status: pending
+  - id: AZLX-23-002565
+    levels:
+      - medium
+    title: Amazon Linux 2023 must synchronize internal information system clocks
+      to the authoritative time source at least every 24 hours.
+    rules:
+      - chronyd_or_ntpd_set_maxpoll
+      - chronyd_server_directive
+      - chronyd_specify_remote_server
+      - var_multiple_time_servers=stig
+      - var_time_service_set_maxpoll=18_hours
+    status: automated
+
+  - id: AZLX-23-002570
+    levels:
+      - medium
+    title: Amazon Linux 2023 must routinely check the baseline configuration for
+      unauthorized changes and notify the system administrator when anomalies in
+      the operation of any security functions are discovered.
+    rules:
+      - aide_periodic_cron_checking
+      - aide_scan_notification
+    status: automated
+
+  - id: AZLX-23-002575
+    levels:
+      - medium
+    title: Amazon Linux 2023 must prevent the loading of a new kernel for later
+      execution.
+    rules:
+      - sysctl_kernel_kexec_load_disabled
+    status: automated
+
+  - id: AZLX-23-002580
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must prevent files with the setuid and setgid bit set
+      from being executed on the /boot/efi directory.
+    rules:
+      - mount_option_boot_efi_nosuid
+    status: automated
+
+  - id: AZLX-23-002585
+    levels:
+      - medium
+    title: Amazon Linux 2023 must mount /dev/shm with the nodev option.
+    rules:
+      - mount_option_dev_shm_nodev
+    status: automated
+
+  - id: AZLX-23-002590
+    levels:
+      - medium
+    title: Amazon Linux 2023 must mount /dev/shm with the nosuid option.
+    rules:
+      - mount_option_dev_shm_nosuid
+    status: automated
+
+  - id: AZLX-23-002595
+    levels:
+      - medium
+    title: Amazon Linux 2023 must ensure the pcscd service is active.
+    rules:
+      - service_pcscd_enabled
+    status: automated
+
+  - id: AZLX-23-002600
+    levels:
+      - medium
+    title: Amazon Linux 2023 file system automount function must be disabled
+      unless required.
+    rules:
+      - service_autofs_disabled
+    status: automated
+
+  - id: AZLX-23-002605
+    levels:
+      - medium
+    title: Amazon Linux 2023 must protect against or limit the effects of
+      denial-of-service (DoS) attacks by ensuring rate-limiting measures are
+      configured on impacted network interfaces.
+    rules: []
+    status: pending
+  - id: AZLX-23-002610
+    levels:
+      - medium
+    title: Amazon Linux 2023 must implement nonexecutable data to protect its
+      memory from unauthorized code execution.
+    rules: []
+    status: pending
+  - id: AZLX-23-002615
+    levels:
+      - low
+    title: Amazon Linux 2023 must remove all software components after updated
+      versions have been installed.
+    rules:
+      - clean_components_post_updating
+    status: automated
+
+  - id: AZLX-23-002620
+    levels:
+      - medium
+    title:
+      Amazon Linux 2023 must configure the use of the pam_faillock.so module
+      in the /etc/pam.d/system-auth file.
+    rules:
+      - account_password_pam_faillock_system_auth
+    status: automated
+
+  - id: AZLX-23-005000
+    levels:
+      - medium
+    title: Amazon Linux 2023 audit system must protect logon user identifiers
+      (UIDs) from unauthorized change.
+    rules:
+      - audit_rules_immutable_login_uids
+    status: automated
+
+  - id: needed_rules
+    levels:
+      - medium
+    rules:
+      - enable_authselect
+      - var_authselect_profile=sssd
