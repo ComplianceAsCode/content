@@ -421,9 +421,9 @@ controls:
     - id: OL09-00-000105
       levels:
           - medium
-      title: OL 9 must not have the rsh-server package installed.
+      title: OL 9 must not install packages from the Extra Packages for Enterprise Linux (EPEL) repository.
       rules:
-          - package_rsh-server_removed
+          - ensure_epel_repos_disabled
       status: automated
 
     - id: OL09-00-000110
@@ -920,6 +920,16 @@ controls:
           - file_permissions_cron_monthly
           - file_permissions_cron_weekly
       status: automated
+
+    - id: OL09-00-002584
+      levels:
+          - medium
+      title: |-
+        Added control to audit any script or executable called by cron as root or by any
+        privileged user.
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
 
     - id: OL09-00-002513
       levels:
@@ -2176,14 +2186,6 @@ controls:
       title: OL 9 must block unauthorized peripherals before establishing a connection.
       rules:
           - usbguard_generate_policy
-      status: automated
-
-    - id: OL09-00-002332
-      levels:
-          - medium
-      title: OL 9 must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.
-      rules:
-          - kernel_module_usb-storage_disabled
       status: automated
 
     - id: OL09-00-000046
