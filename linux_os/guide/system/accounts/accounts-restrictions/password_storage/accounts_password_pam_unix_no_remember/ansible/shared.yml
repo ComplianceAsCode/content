@@ -6,9 +6,6 @@
 
 {{% if 'ubuntu' in product or 'debian' in product %}}
 {{%- set pam_config_paths = "['/etc/pam.d/common-password', '/etc/pam.d/common-auth', '/etc/pam.d/common-account', '/etc/pam.d/common-session', '/etc/pam.d/common-session-noninteractive']" %}}
-{{% else %}}
-{{%- set pam_config_paths = "['/etc/pam.d/system-auth', '/etc/pam.d/password-auth']" -%}}
-{{% endif %}}
 
 - name: '{{{ rule_title }}} - Remove remember option from pam_unix.so'
   ansible.builtin.replace:
@@ -16,3 +13,8 @@
     regexp: '(\s+pam_unix\.so.*)\s+remember=\d+\b(.*)'
     replace: '\1\2'
   loop: {{{ pam_config_paths }}}
+{{% else %}}
+{{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth', 'password', '', 'pam_unix.so', 'remember', rule_title=rule_title) }}}
+
+{{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth', 'password', '', 'pam_unix.so', 'remember', rule_title=rule_title) }}}
+{{% endif %}}
