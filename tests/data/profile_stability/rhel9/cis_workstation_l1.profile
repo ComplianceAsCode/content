@@ -187,6 +187,7 @@ no_empty_passwords
 no_empty_passwords_etc_shadow
 no_files_unowned_by_user
 no_forward_files
+no_invalid_shell_accounts_unlocked
 no_netrc_files
 no_password_auth_for_systemaccounts
 no_rsh_trust_files

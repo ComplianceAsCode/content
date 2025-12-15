@@ -2212,10 +2212,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          Introduced in CIS RHEL9 v2.0.0.
-          New rule is necessary.
+      status: automated
+      rules:
+          - no_invalid_shell_accounts_unlocked
 
     - id: 5.4.3.1
       title: Ensure nologin is not listed in /etc/shells (Automated)
