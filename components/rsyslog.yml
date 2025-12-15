@@ -9,6 +9,7 @@ packages:
 - rsyslog-gnutls
 rules:
 - disable_logwatch_for_logserver
+- ensure_journald_and_rsyslog_not_active_together
 - ensure_logrotate_activated
 - ensure_rtc_utc_configuration
 - file_groupowner_var_log_syslog

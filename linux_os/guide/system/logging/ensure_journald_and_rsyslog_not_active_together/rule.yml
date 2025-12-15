@@ -1,0 +1,45 @@
+documentation_complete: true
+
+title: 'Ensure journald and rsyslog Are Not Active Together'
+
+description: |-
+    Ensure that exactly one logging system is active. Running both rsyslog and
+    systemd-journald simultaneously can lead to duplicate logging, resource
+    contention, and configuration conflicts. Running neither service means no
+    logging is occurring, which is also a violation.
+    <pre>
+    systemctl is-active rsyslog systemd-journald
+    </pre>
+    The command should return exactly one <tt>active</tt> service. Both services
+    should not be active at the same time, and at least one must be active.
+
+rationale: |-
+    Running multiple logging systems concurrently can cause conflicts, resource
+    contention, and inconsistent logging behavior. Systems should use either
+    rsyslog or systemd-journald, but not both simultaneously. This ensures
+    predictable logging behavior and prevents potential issues with log
+    duplication or loss.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-90723-8
+
+platform: machine
+
+warnings:
+    - general: |-
+        This rule does not come with a remediation. The choice of logging
+        system (rsyslog vs systemd-journald) is an architectural decision
+        that should be made based on organizational requirements. Use
+        service_rsyslog_enabled/disabled or service_systemd-journald_enabled
+        rules to configure the desired logging system.
+
+ocil_clause: 'both rsyslog and systemd-journald services are active, or neither service is active'
+
+ocil: |-
+    To verify that exactly one logging system is active, run the following command:
+    <pre>systemctl is-active rsyslog systemd-journald | grep -c active</pre>
+    The output should be exactly 1. If the output is 0, no logging is active.
+    If the output is 2, both logging systems are active simultaneously. Both
+    cases are findings.

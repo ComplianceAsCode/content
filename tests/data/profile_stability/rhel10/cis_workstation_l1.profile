@@ -68,6 +68,7 @@ directory_permissions_sshd_config_d
 disable_host_auth
 disable_users_coredumps
 ensure_gpgcheck_globally_activated
+ensure_journald_and_rsyslog_not_active_together
 ensure_pam_wheel_group_empty
 ensure_root_password_configured
 file_at_allow_exists

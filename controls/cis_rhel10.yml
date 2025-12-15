@@ -2377,10 +2377,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary to create a new rule to check the status of journald and rsyslog.
-          It would also be necessary a new rule to disable or remove rsyslog.
+      status: automated
+      rules:
+          - ensure_journald_and_rsyslog_not_active_together
 
     - id: 6.2.2.1.1
       title: Ensure systemd-journal-remote is installed (Automated)
