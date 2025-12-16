@@ -2,6 +2,9 @@
 
 {{{ bash_instantiate_variables("var_password_hashing_algorithm_pam") }}}
 
+# Allow multiple algorithms, but choose the first one for remediation
+var_password_hashing_algorithm_pam="$(echo $var_password_hashing_algorithm_pam | cut -d \| -f 1)"
+
 {{% if 'sle' in product or 'slmicro' in product -%}}
 PAM_FILE_PATH="/etc/pam.d/common-password"
 {{% set control = "required" %}}
