@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title:  'All GRUB configuration files must be group-owned by root'
+
+description: |-
+    The files in <tt>{{{ grub2_uefi_boot_path }}}</tt> should
+    be group-owned by the <tt>root</tt> group to prevent
+    destruction or modification of the file.
+    {{{ describe_file_group_owner(file=grub2_uefi_boot_path, group="root") }}}
+
+rationale: |-
+    The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
+    file should not have any access privileges anyway.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-89940-1
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: {{{ grub2_uefi_boot_path }}}/
+        gid_or_name: '0'
+        file_regex: ^.*$
