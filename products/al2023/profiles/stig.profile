@@ -3,7 +3,8 @@ documentation_complete: true
 metadata:
     version: 1.0.0
     SMEs:
-        - jesse.j.borden@gmail.com
+        - bordencastle
+        - Eric-Domeier
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
