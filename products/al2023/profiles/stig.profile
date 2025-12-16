@@ -10,11 +10,11 @@ reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-syst
 title: 'DISA STIG for Amazon Linux 2023'
 
 description: |-
-    This profile contains configuration checks that align to the 
+    This profile contains configuration checks that align to the
     DISA STIG (Security Technical Implementation Guide) for Amazon Linux 2023.
-    
-    DISA STIGs are the configuration standards for DOD IA and IA-enabled 
-    devices/systems. The requirements are derived from the NIST 800-53 
+
+    DISA STIGs are the configuration standards for DOD IA and IA-enabled
+    devices/systems. The requirements are derived from the NIST 800-53
     and related documents.
 
 selections:
