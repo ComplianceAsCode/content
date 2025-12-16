@@ -23,7 +23,9 @@ jobs:
       - name: Install deps python
         run: pip3 install json2html prometheus_client
       - name: Checkout
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+            persist-credentials: false
       - name: Build
         run: cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
         working-directory: ./build
