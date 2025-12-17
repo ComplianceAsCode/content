@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # packages = rsyslog
+# remediation = none
 
 # Ensure both services are active
 systemctl start rsyslog
