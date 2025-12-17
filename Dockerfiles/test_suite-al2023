@@ -9,7 +9,7 @@ ARG ADDITIONAL_PACKAGES
 # Install Python so Ansible remediations can work
 # Don't clean all, as the test scenario may require package install.
 RUN true \
-        && dnf install -y openssh-clients openssh-server openscap-scanner \
+        && dnf install -y openssh-clients openssh-server openscap-scanner tar \
 		python \
 		$ADDITIONAL_PACKAGES \
         && true
