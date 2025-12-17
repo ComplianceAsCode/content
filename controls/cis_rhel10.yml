@@ -2126,7 +2126,7 @@ controls:
       rules:
           - set_password_hashing_algorithm_systemauth
           - set_password_hashing_algorithm_passwordauth
-          - var_password_hashing_algorithm_pam=yescrypt
+          - var_password_hashing_algorithm_pam=cis_rhel10
 
     - id: 5.3.2.4.4
       title: Ensure pam_unix includes use_authtok (Automated)
@@ -2180,13 +2180,9 @@ controls:
           - l1_server
           - l1_workstation
       status: automated
-      notes: |-
-          There's a "new" set of options in /etc/login.defs file to define the number of iterations
-          performed during the hashing process.
       rules:
-          - set_password_hashing_algorithm_libuserconf
           - set_password_hashing_algorithm_logindefs
-          - var_password_hashing_algorithm=yescrypt
+          - var_password_hashing_algorithm=cis_rhel10
 
     - id: 5.4.1.5
       title: Ensure inactive password lock is configured (Automated)

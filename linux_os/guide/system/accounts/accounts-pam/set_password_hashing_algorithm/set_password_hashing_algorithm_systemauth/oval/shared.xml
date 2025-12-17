@@ -49,9 +49,17 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_pam_unix_hashing_algorithm_systemauth" version="1">
-    <ind:subexpression operation="equals" datatype="string" var_ref="var_password_hashing_algorithm_pam"/>
+  <ind:textfilecontent54_state id="state_pam_unix_hashing_algorithm_systemauth" version="2">
+    <ind:subexpression operation="pattern match" datatype="string" var_ref="var_password_hashing_algorithm_pam_regex"/>
   </ind:textfilecontent54_state>
+
+  <local_variable datatype="string" id="var_password_hashing_algorithm_pam_regex" version="1" comment="Limit regex">
+    <concat>
+      <literal_component>^</literal_component>
+      <variable_component var_ref="var_password_hashing_algorithm_pam"/>
+      <literal_component>$</literal_component>
+    </concat>
+  </local_variable>
 
   <external_variable id="var_password_hashing_algorithm_pam" datatype="string" version="1"
     comment="hashing algorithm for pam_unix.so"/>

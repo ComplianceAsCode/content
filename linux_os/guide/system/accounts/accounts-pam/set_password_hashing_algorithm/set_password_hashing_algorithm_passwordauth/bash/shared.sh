@@ -1,6 +1,10 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_rhv,multi_platform_ol,multi_platform_almalinux
 
 {{{ bash_instantiate_variables("var_password_hashing_algorithm_pam") }}}
+
+# Allow multiple algorithms, but choose the first one for remediation
+var_password_hashing_algorithm_pam="$(echo $var_password_hashing_algorithm_pam | cut -d \| -f 1)"
+
 PAM_FILE_PATH="/etc/pam.d/password-auth"
 
 {{{ bash_ensure_pam_module_configuration("$PAM_FILE_PATH", 'password', 'sufficient', 'pam_unix.so', "$var_password_hashing_algorithm_pam", '', '') }}}
