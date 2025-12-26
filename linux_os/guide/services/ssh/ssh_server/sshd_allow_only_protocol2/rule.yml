@@ -59,6 +59,8 @@ warnings:
         supported is version 2, and line <pre>Protocol 2</pre> in
         <tt>/etc/ssh/sshd_config</tt> is not necessary.
 
+platform: package[openssh-server]<7.0
+
 template:
     name: sshd_lineinfile
     vars:
