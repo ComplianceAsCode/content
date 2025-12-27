@@ -963,6 +963,13 @@ controls:
       levels:
           - l2_server
       status: automated
+      notes: |-
+          The requirement recommends to remove the whole 'Server with GUI' dnf package group.
+          Unfortunately, OVAL can't check for dnf package groups.
+          Remediations that would remove and install large package groups are problematic and too destructive.
+          We decided to not have a rule for the 'Server with GUI' removal and instead just cover the most singificant package - gdm.
+          For more context, see https://github.com/ComplianceAsCode/content/pull/14204 where we failed to create a rule for the package group removal.
+          We shall recomend users who want to use the GUI to use the CIS Workstation L2 profile instead.
       rules:
           - package_gdm_removed
 
