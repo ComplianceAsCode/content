@@ -1517,13 +1517,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
-          The status was automated but we need to double check the approach used in this rule.
-          Therefore I moved it to pending until deeper investigation.
+          We don't select rule sshd_use_strong_kex because the CIS Benchmark
+          recommends using system-wide crypto policies to disable the weak
+          SHA1 key exchange algorithms instead of configuring KexAlgorithms
+          in sshd configuration.
       rules:
-          - sshd_use_strong_kex
-          - sshd_strong_kex=cis_rhel9
+          - configure_custom_crypto_policy_cis
 
     - id: 5.1.6
       title: Ensure sshd MACs are configured (Automated)

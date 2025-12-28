@@ -391,8 +391,6 @@ sshd_set_loglevel_verbose
 sshd_set_max_auth_tries
 sshd_set_max_sessions
 sshd_set_maxstartups
-sshd_strong_kex=cis_rhel10
-sshd_use_strong_kex
 sudo_add_use_pty
 sudo_custom_logfile
 sudo_remove_no_authenticate
