@@ -74,7 +74,6 @@ chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 configure_crypto_policy
 configure_firewalld_ports
-configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
 dconf_db_up_to_date

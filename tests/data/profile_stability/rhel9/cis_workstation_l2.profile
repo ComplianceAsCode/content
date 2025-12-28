@@ -113,7 +113,6 @@ chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 cis_banner_text=cis
 configure_custom_crypto_policy_cis
-configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
 dconf_db_up_to_date

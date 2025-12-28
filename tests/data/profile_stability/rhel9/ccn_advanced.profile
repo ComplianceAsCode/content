@@ -51,7 +51,6 @@ banner_etc_motd
 chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 configure_crypto_policy
-configure_ssh_crypto_policy
 dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_disable_automount

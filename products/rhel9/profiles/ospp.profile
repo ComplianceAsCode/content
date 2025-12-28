@@ -26,3 +26,4 @@ selections:
     - var_authselect_profile=minimal
     - '!package_dnf-plugin-subscription-manager_installed'
     - '!package_sequoia-sq_installed'
+    - '!configure_ssh_crypto_policy'

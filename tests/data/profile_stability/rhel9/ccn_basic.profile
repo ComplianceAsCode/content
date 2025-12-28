@@ -37,7 +37,6 @@ banner_etc_issue
 banner_etc_issue_net
 banner_etc_motd
 configure_crypto_policy
-configure_ssh_crypto_policy
 dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_login_banner_text

@@ -74,3 +74,4 @@ selections:
     - '!audit_rules_mac_modification_etc_selinux'
     - '!audit_rules_dac_modification_fchmodat2'
     - '!package_sequoia-sq_installed'
+    - '!configure_ssh_crypto_policy'

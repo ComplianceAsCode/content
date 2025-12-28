@@ -64,7 +64,6 @@ configure_crypto_policy
 configure_firewalld_ports
 configure_kerberos_crypto_policy
 configure_opensc_card_drivers
-configure_ssh_crypto_policy
 dir_perms_world_writable_sticky_bits
 disable_host_auth
 dnf-automatic_apply_updates

@@ -47,7 +47,6 @@ auditd_write_logs
 chronyd_specify_remote_server
 configure_crypto_policy
 configure_firewalld_ports
-configure_ssh_crypto_policy
 dir_perms_world_writable_sticky_bits
 disable_host_auth
 dnf-automatic_security_updates_only

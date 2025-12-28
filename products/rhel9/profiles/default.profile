@@ -588,3 +588,4 @@ selections:
     - audit_rules_etc_cron_d
     - audit_rules_var_spool_cron
     - audit_rules_login_events_tallylog
+    - configure_ssh_crypto_policy
