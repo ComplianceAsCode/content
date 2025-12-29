@@ -11,10 +11,28 @@ import ssg.environment
 import ssg.jinja
 
 
+def get_default_var_value(var_dir, varname):
+    var_path = os.path.join(var_dir, varname + ".json")
+    var = ssg.build_yaml.Value.from_compiled_json(var_path)
+    return var.options["default"]
+
+
 def fix_var_sub_in_text(text, varname, value):
+    if text is None:
+        return None
     return re.sub(
         r'<sub\s+idref="{var}"\s*/>'.format(var=varname),
         r"<tt>{val}</tt>".format(val=value), text)
+
+
+def resolve_var_substitutions(var_dir, rule):
+    variables = set(re.findall(r'<sub\s+idref="([^"]*)"\s*/>', rule.description))
+    for var in variables:
+        val = get_default_var_value(var_dir, var)
+        rule.description = fix_var_sub_in_text(rule.description, var, val)
+        rule.ocil = fix_var_sub_in_text(rule.ocil, var, val)
+        rule.ocil_clause = fix_var_sub_in_text(rule.ocil_clause, var, val)
+    return rule
 
 
 def render_template(data, template_path, output_filename):

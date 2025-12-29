@@ -5,7 +5,7 @@ import os
 import re
 
 import ssg.build_yaml
-from utils.template_renderer import render_template, fix_var_sub_in_text
+from utils.template_renderer import render_template, resolve_var_substitutions
 
 
 TABLE_DIR = os.path.join(os.path.dirname(__file__), "tables")
@@ -21,20 +21,6 @@ def parse_args():
         "product", help="Short product ID, eg. rhel8")
     parser.add_argument("output")
     return parser.parse_args()
-
-
-def get_default_var_value(var_dir, varname):
-    var_path = os.path.join(var_dir, varname + ".json")
-    var = ssg.build_yaml.Value.from_compiled_json(var_path)
-    return var.options["default"]
-
-
-def resolve_var_substitutions(var_dir, rule):
-    variables = set(re.findall(r'<sub\s+idref="([^"]*)"\s*/>', rule.description))
-    for var in variables:
-        val = get_default_var_value(var_dir, var)
-        rule.description = fix_var_sub_in_text(rule.description, var, val)
-    return rule
 
 
 def get_rules_by_cce(build_dir, product):
