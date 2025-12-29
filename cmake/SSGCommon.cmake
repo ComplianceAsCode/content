@@ -1095,7 +1095,7 @@ macro(ssg_build_html_cce_table PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-cce.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_cce_table.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-tables] generating HTML CCE identifiers table"
     )
