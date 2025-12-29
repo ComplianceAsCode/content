@@ -11,10 +11,15 @@ import ssg.environment
 import ssg.jinja
 
 
-def get_default_var_value(var_dir, varname):
+def get_var_value(var_dir, varname, profile=None):
     var_path = os.path.join(var_dir, varname + ".json")
     var = ssg.build_yaml.Value.from_compiled_json(var_path)
-    return var.options["default"]
+    if profile is None:
+        return var.options["default"]
+    for s in profile.selections:
+        if s.startswith(varname + "="):
+            selector = s.split("=")[1]
+            return var.options[selector]
 
 
 def fix_var_sub_in_text(text, varname, value):
@@ -25,10 +30,10 @@ def fix_var_sub_in_text(text, varname, value):
         r"<tt>{val}</tt>".format(val=value), text)
 
 
-def resolve_var_substitutions(var_dir, rule):
+def resolve_var_substitutions(var_dir, rule, profile=None):
     variables = set(re.findall(r'<sub\s+idref="([^"]*)"\s*/>', rule.description))
     for var in variables:
-        val = get_default_var_value(var_dir, var)
+        val = get_var_value(var_dir, var, profile)
         rule.description = fix_var_sub_in_text(rule.description, var, val)
         rule.ocil = fix_var_sub_in_text(rule.ocil, var, val)
         rule.ocil_clause = fix_var_sub_in_text(rule.ocil_clause, var, val)
