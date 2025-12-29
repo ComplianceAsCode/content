@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import re
 
 import argparse
 
@@ -8,6 +9,12 @@ import ssg.build_yaml
 import ssg.controls
 import ssg.environment
 import ssg.jinja
+
+
+def fix_var_sub_in_text(text, varname, value):
+    return re.sub(
+        r'<sub\s+idref="{var}"\s*/>'.format(var=varname),
+        r"<tt>{val}</tt>".format(val=value), text)
 
 
 def render_template(data, template_path, output_filename):

@@ -5,7 +5,7 @@ import os
 import re
 
 import ssg.build_yaml
-from utils.template_renderer import render_template
+from utils.template_renderer import render_template, fix_var_sub_in_text
 
 
 TABLE_DIR = os.path.join(os.path.dirname(__file__), "tables")
@@ -27,12 +27,6 @@ def get_default_var_value(var_dir, varname):
     var_path = os.path.join(var_dir, varname + ".json")
     var = ssg.build_yaml.Value.from_compiled_json(var_path)
     return var.options["default"]
-
-
-def fix_var_sub_in_text(text, varname, value):
-    return re.sub(
-        r'<sub\s+idref="{var}"\s*/>'.format(var=varname),
-        r"<tt>{val}</tt>".format(val=value), text)
 
 
 def resolve_var_substitutions(var_dir, rule):

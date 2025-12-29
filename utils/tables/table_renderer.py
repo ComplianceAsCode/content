@@ -58,9 +58,7 @@ class TableHtmlOutput(template_renderer.Renderer):
         return var.options["default"]
 
     def _fix_var_sub_in_text(self, text, varname, value):
-        return re.sub(
-            r'<sub\s+idref="{var}"\s*/>'.format(var=varname),
-            r"<tt>{val}</tt>".format(val=value), text)
+        return template_renderer.fix_var_sub_in_text(text, varname, value)
 
     def _resolve_var_substitutions(self, rule):
         # The <sub .../> here is not the HTML subscript element <sub>...</sub>,
