@@ -512,22 +512,7 @@ cat << EOF >  $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 EOF
 ```
 
-13. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
-```
-cat << EOF >  $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="https://www.cyber.mil/stigs/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
-
-<xsl:import href="../../../shared/transforms/shared_xccdf2table-profileccirefs.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-```
-
-14. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
+13. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
 cat << EOF >  shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
