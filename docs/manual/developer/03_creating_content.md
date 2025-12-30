@@ -253,9 +253,8 @@ For example:
     ├── kickstart
     ├── overlays
     ├── profiles
-    └── transforms
 
-    4 directories
+    3 directories
 
 #### Product Level Directory Descriptions
 
@@ -280,10 +279,6 @@ For example:
 <tr class="even">
 <td><p><code>profiles</code></p></td>
 <td><p><code>Required</code> Contains profiles that are created and tailored to meet government or commercial compliance standards.</p></td>
-</tr>
-<tr class="odd">
-<td><p><code>transforms</code></p></td>
-<td><p><code>Required</code> Contains XSLT files and scripts that are used to transform the content into the expected compliance document such as XCCDF, OVAL, data stream, etc.</p></td>
 </tr>
 </tbody>
 </table>
@@ -313,8 +308,7 @@ export NEW_PRODUCT=$NAME$VERSION
 export CAPITAL_NAME="CUSTOM"
 mkdir $NEW_PRODUCT \
         $NEW_PRODUCT/overlays \
-        $NEW_PRODUCT/profiles \
-        $NEW_PRODUCT/transforms
+        $NEW_PRODUCT/profiles
 </pre>
 2. Add the product to [CMakeLists.txt](https://github.com/ComplianceAsCode/content/blob/master/CMakeLists.txt) by adding the following lines:
 <pre>

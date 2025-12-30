@@ -10,8 +10,7 @@ export CAPITAL_NAME="CUSTOM"
 mkdir $NEW_PRODUCT \
         $NEW_PRODUCT/cpe \
         $NEW_PRODUCT/overlays \
-        $NEW_PRODUCT/profiles \
-        $NEW_PRODUCT/transforms
+        $NEW_PRODUCT/profiles
 
 cat << EOF >> $NEW_PRODUCT/CMakeLists.txt
 # Sometimes our users will try to do: "cd $NEW_PRODUCT; cmake ." That needs to error in a nice way.

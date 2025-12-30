@@ -53,7 +53,6 @@ set(SSG_BUILD_SCRIPTS "${CMAKE_SOURCE_DIR}/build-scripts")
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
-set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
 
 # Content Generation Opetions

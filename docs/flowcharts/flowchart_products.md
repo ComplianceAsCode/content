@@ -18,7 +18,6 @@ flowchart TD
                 65[profile_name.profile] --> |refers to| 66([rules])
                 65[profile_name.profile] --> |may override| 67[variables]
                 65[profile_name.profile] --> |may use| 68[controls]
-        61[product_name] --> |contains| 69[transforms]
         61[product_name] --> |may have| 70[kickstart]
         61[product_name] --> |may have| 71[checks]
             71[checks] --> |instructed using| 72([OVAL + XCCDF])
