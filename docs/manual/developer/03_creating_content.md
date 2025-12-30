@@ -465,29 +465,7 @@ selections:
 EOF
 ```
 
-9. Create a new file under `transforms` directory called `constants.xslt` (you may want to review the links below):
-```
-cat << EOF >  $NEW_PRODUCT/transforms/constants.xslt
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:include href="../../../shared/transforms/shared_constants.xslt"/>
-
-<xsl:variable name="product_long_name">$FULL_NAME</xsl:variable>
-<xsl:variable name="product_short_name">$FULL_SHORT_NAME</xsl:variable>
-<xsl:variable name="product_stig_id_name">${CAPITAL_NAME}_STIG</xsl:variable>
-<xsl:variable name="prod_type">$NEW_PRODUCT</xsl:variable>
-
-<!-- Define URI of official Center for Internet Security Benchmark for $FULL_NAME -->
-<xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_${CAMEL_CASE_NAME}_Benchmark_v1.0.pdf</xsl:variable>
-
-<!-- Define URI for custom policy reference which can be used for linking to corporate policy -->
-<!--xsl:variable name="custom-ref-uri">https://www.example.org</xsl:variable-->
-
-</xsl:stylesheet>
-EOF
-```
-
-11. Create a new file under `transforms` directory called `table-style.xslt`:
+10. Create a new file under `transforms` directory called `table-style.xslt`:
 ```
 cat << EOF >  $NEW_PRODUCT/transforms/table-style.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -498,7 +476,7 @@ cat << EOF >  $NEW_PRODUCT/transforms/table-style.xslt
 EOF
 ```
 
-12. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
+11. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
 cat << EOF >  shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
