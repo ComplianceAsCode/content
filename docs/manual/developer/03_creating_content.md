@@ -412,7 +412,7 @@ ssg_build_product("$NEW_PRODUCT")
 EOF
 ```
 
-7. Create a new file in the product directory called `product.yml` (note: you may want to change the `pkg_manager` attribute):
+6. Create a new file in the product directory called `product.yml` (note: you may want to change the `pkg_manager` attribute):
 ```
 cat << EOF >  $NEW_PRODUCT/product.yml
 product: $NEW_PRODUCT
@@ -442,7 +442,7 @@ reference_uris:
 EOF
 ```
 
-8. Create a draft profile under `profiles` directory called `standard.profile`:
+7. Create a draft profile under `profiles` directory called `standard.profile`:
 ```
 cat << EOF >  $NEW_PRODUCT/profiles/standard.profile
 documentation_complete: true
@@ -459,7 +459,7 @@ selections:
 EOF
 ```
 
-10. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
+8. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
 cat << EOF >  shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
