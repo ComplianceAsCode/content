@@ -123,7 +123,8 @@ def main():
     output_root = create_output_root(benchmark_id, product)
     add_overlays_to_output(overlays_root, xccdf_rules, ocil_questions, output_root)
     out_tree = ET.ElementTree(output_root)
-    ET.indent(out_tree)
+    if hasattr(ET, "indent"):
+        ET.indent(out_tree)
     out_tree.write(args.output)
 
 
