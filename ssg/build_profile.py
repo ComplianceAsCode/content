@@ -102,18 +102,11 @@ class RuleStats(object):
             self.fix = self.anaconda_fix
 
 
-def get_cis_uri(product):
-    cis_uri = cis_ns
-    if product:
-        constants_path = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            "products", product, "transforms/constants.xslt")
-        if os.path.exists(constants_path):
-            root = ElementTree.parse(constants_path)
-            cis_var = root.find('./{%s}variable[@name="cisuri"]' % (xslt_ns))
-            if cis_var is not None and cis_var.text:
-                cis_uri = cis_var.text
-    return cis_uri
+def get_cis_uri(benchmark_tree):
+    for reference_el in benchmark_tree.findall("./{%s}reference" % XCCDF12_NS):
+        if reference_el.text == "cis":
+            return reference_el.get("href")
+    return cis_ns
 
 
 class XCCDFBenchmark(object):
@@ -149,7 +142,7 @@ class XCCDFBenchmark(object):
                 raise RuntimeError("Multiple rules exist with same id attribute: %s!" % rule_id)
 
             self.indexed_rules[rule_id] = rule
-        self.cis_ns = get_cis_uri(product)
+        self.cis_ns = get_cis_uri(self.tree)
 
     def get_profile_stats(self, profile):
         """Obtain statistics for the profile"""
