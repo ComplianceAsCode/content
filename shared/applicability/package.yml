@@ -35,7 +35,11 @@ args:
   chrony:
     pkgname: chrony
   dnf:
+    {{% if product == "fedora" %}}
+    pkgname: dnf5
+    {{% else %}}
     pkgname: dnf
+    {{% endif %}}
   firewalld:
     pkgname: firewalld
   gdm:
