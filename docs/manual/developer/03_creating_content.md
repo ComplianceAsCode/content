@@ -465,18 +465,7 @@ selections:
 EOF
 ```
 
-10. Create a new file under `transforms` directory called `table-style.xslt`:
-```
-cat << EOF >  $NEW_PRODUCT/transforms/table-style.xslt
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:import href="../../../shared/transforms/shared_table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-```
-
-11. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
+10. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
 cat << EOF >  shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>

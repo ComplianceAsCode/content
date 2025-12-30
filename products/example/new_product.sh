@@ -66,14 +66,6 @@ selections:
     - accounts_password_minlen_login_defs
 EOF
 
-cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:import href="../../../shared/transforms/shared_table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-
 cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
   <definition class="inventory" id="installed_OS_is_$NEW_PRODUCT" version="3">
