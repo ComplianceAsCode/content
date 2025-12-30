@@ -1160,9 +1160,8 @@ macro(ssg_build_html_stig_tables PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml" --stringparam ocil-document "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_unlinked_stig_xccdf.py" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --overlay "${CMAKE_CURRENT_BINARY_DIR}/overlays/stig_overlay.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt"
         DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml"
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         COMMENT "[${PRODUCT}-tables] generating unlinked STIG XCCDF XML file"
