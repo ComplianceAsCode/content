@@ -93,17 +93,6 @@ cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
 </xsl:stylesheet>
 EOF
 
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
-<?xml version="1.0"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://checklists.nist.gov/xccdf/1.1" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
-
-<xsl:include href="../../../shared/transforms/shared_xccdf-apply-overlay-stig.xslt"/>
-<xsl:include href="constants.xslt"/>
-<xsl:variable name="overlays" select="document($overlay)/xccdf:overlays" />
-
-</xsl:stylesheet>
-EOF
-
 cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
   <definition class="inventory" id="installed_OS_is_$NEW_PRODUCT" version="3">
