@@ -1,11 +1,38 @@
+{{% if product in ["sle15", "sle16"] %}}
+{{% set logind_conf_file = "/etc/systemd/logind.conf.d/" %}}
+{{% else %}}
+{{% set logind_conf_file = "/etc/systemd/logind.conf" %}}
+{{% endif %}}
+
 <def-group>
   <definition class="compliance" id="logind_session_timeout" version="1">
+    {{% if product in ["sle15", "sle16"] %}}
+    {{{ oval_metadata("Ensure 'StopIdleSessionSec' is configured with desired value in section 'Login' in {{{ logind_conf_file }}}", rule_title=rule_title) }}}
+    <criteria comment="logind is configured correctly and configuration file exists" operator="AND">
+      <criterion comment="Check the StopIdleSessionSec in {{{ logind_conf_file }}}" test_ref="test_logind_session_timeout_drop_in"/>
+    </criteria>
+    {{% else %}}
     {{{ oval_metadata("Ensure 'StopIdleSessionSec' is configured with desired value in section 'Login' in /etc/systemd/logind.conf", rule_title=rule_title) }}}
     <criteria comment="logind is configured correctly and configuration file exists" operator="AND">
       <criterion comment="Check the StopIdleSessionSec in /etc/systemd/logind.conf" test_ref="test_logind_session_timeout"/>
       <criterion comment="test if configuration file /etc/systemd/logind.conf exists for logind_session_timeout" test_ref="test_logind_session_timeout_config_file_exists"/>
     </criteria>
+    {{% endif %}}
   </definition>
+
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of StopIdleSessionSec setting in the {{{ logind_conf_file }}} file"
+  id="test_logind_session_timeout_drop_in" version="1">
+    <ind:object object_ref="obj_logind_session_timeout_drop_in"/>
+    <ind:state state_ref="state_logind_session_timeout"/>
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_logind_session_timeout_drop_in" version="1">
+    <ind:path>{{{ logind_conf_file }}}</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*\[Login\].*(?:\n\s*[^[\s].*)*\n^\s*StopIdleSessionSec[ \t]*=[ \t]*(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of StopIdleSessionSec setting in the /etc/systemd/logind.conf file" id="test_logind_session_timeout" version="1">
     <ind:object object_ref="obj_logind_session_timeout"/>
@@ -17,13 +44,13 @@
   </unix:file_test>
 
   <ind:textfilecontent54_object id="obj_logind_session_timeout" version="1">
-    <ind:filepath>/etc/systemd/logind.conf</ind:filepath>
+    <ind:filepath>{{{ logind_conf_file }}}</ind:filepath>
     <ind:pattern operation="pattern match">^\s*\[Login\].*(?:\n\s*[^[\s].*)*\n^\s*StopIdleSessionSec[ \t]*=[ \t]*(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <unix:file_object id="obj_logind_session_timeout_config_file" comment="The configuration file /etc/systemd/logind.conf for logind_session_timeout" version="1">
-    <unix:filepath operation="pattern match">^/etc/systemd/logind.conf</unix:filepath>
+    <unix:filepath operation="pattern match">^{{{ logind_conf_file }}}</unix:filepath>
   </unix:file_object>
 
   <ind:textfilecontent54_state id="state_logind_session_timeout" version="1">
