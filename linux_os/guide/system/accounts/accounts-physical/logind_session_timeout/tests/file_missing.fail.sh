@@ -1,3 +1,4 @@
 #!/bin/bash
+source common.sh
 
-rm -f /etc/systemd/logind.conf
+rm -f "$LOGIND_CONF_FILE"
