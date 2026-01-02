@@ -99,7 +99,6 @@ selections:
     - accounts_password_pam_pwhistory_remember
 
     # The following rules are not applicable to SLE 15
-    - '!logind_session_timeout'
     - '!ldap_client_start_tls'
     - '!ldap_client_tls_cacertpath'
     - '!service_chronyd_enabled'
