@@ -59,6 +59,18 @@ def check_all_rules(root, filter_profiles):
                 rules_missing_cce.append(rule_id)
     return rules_missing_cce
 
+def print_results(ds, rules_missing_cce, quiet):
+    if quiet:
+        for rule in rules_missing_cce:
+            print(rule.replace(OSCAP_RULE, ""))
+    else:
+        if len(rules_missing_cce) > 0:
+            print("The following rules in %s are missing CCEs:" % (ds))
+            for rule in rules_missing_cce:
+                print(rule)
+        else:
+            print("%s is OK" % (ds))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -70,14 +82,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "-p", "--profiles", help="Comma-separated list to check for missing CCEs",
         default='', required=False)
+    parser.add_argument(
+        "-q", "--quiet", action="store_true", help="Output only rule IDs")
     args = parser.parse_args()
     root = ssg.xml.parse_file(args.datastream_path)
     rules_missing_cce = check_all_rules(root, args.profiles.split(","))
     ds = os.path.basename(args.datastream_path)
+    print_results(ds, rules_missing_cce, args.quiet)
     if len(rules_missing_cce) > 0:
-        print("The following rules in %s are missing CCEs:" % (ds))
-        for rule in rules_missing_cce:
-            print(rule)
         sys.exit(1)
-    else:
-        print("%s is OK" % (ds))
