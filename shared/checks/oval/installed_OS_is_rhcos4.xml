@@ -18,6 +18,10 @@
         <criterion comment="CoreOS variant" test_ref="test_rhel_coreos_variant" />
         <criterion comment="Major version is 9" test_ref="test_rhel_coreos_version9" />
       </criteria>
+      <criteria operator="AND">
+        <criterion comment="CoreOS variant" test_ref="test_rhel_coreos_variant" />
+        <criterion comment="Major version is 10" test_ref="test_rhel_coreos_version10" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -58,6 +62,19 @@
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_state id="state_rhel_coreos_version9" version="1">
     <ind:subexpression operation="pattern match">^9\.</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" id="test_rhel_coreos_version10" comment="Check if VERSION_ID=10.x" version="1">
+    <ind:object object_ref="obj_rhel_coreos_version10" />
+    <ind:state state_ref="state_rhel_coreos_version10" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhel_coreos_version10" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^VERSION_ID=&quot;(\d+\.\d+)&quot;$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhel_coreos_version10" version="1">
+    <ind:subexpression operation="pattern match">^10\.</ind:subexpression>
   </ind:textfilecontent54_state>
 
 
@@ -102,5 +119,35 @@
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_state id="state_rhcos4_rhel9" version="1">
     <ind:subexpression operation="pattern match">9</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>
+
+<def-group>
+  <definition class="inventory" id="installed_OS_is_rhcos4_rhel10" version="1">
+    <metadata>
+      <title>Red Hat Enterprise Linux CoreOS RHEL10 Based</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:rhcos4:10" source="CPE" />
+      <description>The operating system installed on the system is
+      Red Hat Enterprise Linux CoreOS RHEL10 Based</description>
+    </metadata>
+    <criteria>
+        <criterion comment="RHCOS RHEL 10 is installed" test_ref="test_rhcos4_rhel10" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="rhcoreos is rhel10 based" id="test_rhcos4_rhel10" version="1">
+    <ind:object object_ref="obj_rhcos4_rhel10" />
+    <ind:state state_ref="state_rhcos4_rhel10" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhcos4_rhel10" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^RHEL_VERSION=&quot;(\d).*&quot;$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhcos4_rhel10" version="1">
+    <ind:subexpression operation="pattern match">10</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
