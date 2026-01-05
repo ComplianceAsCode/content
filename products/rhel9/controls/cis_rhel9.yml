@@ -560,9 +560,11 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
-      rules:
-          - configure_ssh_crypto_policy
+      status: not applicable
+      notes: |-
+          The variable CRYPTO_POLICY required by this CIS requirement is no longer honored by sshd on any RHEL 9 system.
+          This requirement will be removed from CIS Benchmark in future releases,
+          see https://workbench.cisecurity.org/tickets/26215.
 
     - id: 1.6.3
       title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)

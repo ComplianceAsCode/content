@@ -44,3 +44,4 @@ selections:
     - partition_for_dev_shm
     - file_etc_security_opasswd
     - sshd_use_strong_macs
+    - configure_ssh_crypto_policy

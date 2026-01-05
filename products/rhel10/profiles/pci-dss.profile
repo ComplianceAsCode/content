@@ -84,3 +84,4 @@ selections:
     - '!sshd_use_approved_ciphers'
     - '!security_patches_up_to_date'
     - '!kernel_module_dccp_disabled'
+    - '!configure_ssh_crypto_policy'

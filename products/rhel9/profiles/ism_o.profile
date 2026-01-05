@@ -80,5 +80,6 @@ selections:
     - '!package_xinetd_removed'
     - '!service_xinetd_disabled'
     - '!ensure_oracle_gpgkey_installed'
+    - '!configure_ssh_crypto_policy'
     # This package is not  available in RHEL 9
     - '!package_sequoia-sq_installed'
