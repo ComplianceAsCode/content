@@ -70,17 +70,16 @@ jobs:
           cd complyscribe && python3 -m venv venv && source venv/bin/activate
           python3 -m pip install --no-cache-dir "poetry==1.7.1"
           poetry install
-      # Step 6: Detect the updates of CAC content
-      - name: Detect files changed by PR
+      # Step 6: Get changed files and detect updates
+      - name: Get changed files
         if: ${{ env.SKIP == 'false' }}
+        uses: tj-actions/changed-files@e0021407031f5be11a464abee9a0776171c79891 # v47.0.1
         id: changed-files
+      - name: Detect updates in changed files
+        if: ${{ env.SKIP == 'false' }}
         run: |
           OWNER="ComplianceAsCode"
           REPO="content"
-          # Fetch all pages of the files for the pull request
-          url="repos/$OWNER/$REPO/pulls/${{ env.PR_NUMBER }}/files"
-          response=$(gh api "$url" --paginate)
-          echo "$response" | jq -r '.[].filename' > filenames.txt
           echo "CHANGE_FOUND=false" >> $GITHUB_ENV
           source complyscribe/venv/bin/activate
           cd cac-content
@@ -94,35 +93,36 @@ jobs:
               "$file" \
               "$key"
           }
-          while IFS= read -r line; do
-            # Exclude lines containing 'tests/data/'
-            if [[ "$line" == *tests/data/* ]]; then
+          for file in ${ALL_CHANGED_FILES}; do
+            # Exclude files containing 'tests/data/'
+            if [[ "$file" == *tests/data/* ]]; then
               continue
             fi
-            case "$line" in
+            case "$file" in
               *controls/*|*.profile*)
-                echo "$line" >> updated_filenames.txt
+                echo "$file" >> updated_filenames.txt
                 ;;
               *rule.yml)
-                if has_change "$line" "title"; then
-                  echo "Change detected: The title in '$line' was updated."
-                  echo "$line" >> updated_filenames.txt
+                if has_change "$file" "title"; then
+                  echo "Change detected: The title in '$file' was updated."
+                  echo "$file" >> updated_filenames.txt
                 fi
                 ;;
               *.var)
-                if has_change "$line" "description" || has_change "$line" "options"; then
-                  echo "Change detected: The description or options in '$line' were updated."
-                  echo "$line" >> updated_filenames.txt
+                if has_change "$file" "description" || has_change "$file" "options"; then
+                  echo "Change detected: The description or options in '$file' were updated."
+                  echo "$file" >> updated_filenames.txt
                 fi
               ;;
             esac
-          done < ../filenames.txt
+          done
           if [[ -f updated_filenames.txt ]]; then
             echo "Shows updated_filenames:"
             cat updated_filenames.txt
             echo "CHANGE_FOUND=true" >> $GITHUB_ENV
           fi
         env:
+          ALL_CHANGED_FILES: "${{ steps.changed-files.outputs.all_changed_files }}"
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
       - name: Checkout OSCAL content repo
         if: ${{ env.CHANGE_FOUND == 'true' }}
@@ -355,7 +355,7 @@ jobs:
         if: ${{ env.PR_SKIP == 'false' }}
         run: |
           cd oscal-content
-          OWNER="ComplianceAsCode" 
+          OWNER="ComplianceAsCode"
           REPO="oscal-content"
           CAC_PR_URL="https://github.com/$OWNER/content/pull/${{ env.PR_NUMBER }}"
           commit=$(git log -1 --format=%H)
