@@ -1959,10 +1959,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: |-
-          A new rule needs to be created to check and remediate the enforce_for_root option in
-          /etc/security/pwhistory.conf. accounts_password_pam_enforce_root can be used as reference.
+      status: automated
+      rules:
+          - accounts_password_pam_pwhistory_enforce_for_root
 
     - id: 4.4.3.3.3
       title: Ensure pam_pwhistory includes use_authtok (Automated)
