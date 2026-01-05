@@ -50,7 +50,7 @@ title: Implement Custom Crypto Policy Modules for CIS Benchmark
         "value": "-*-128*"
     },
 ] %}}
-{{% elif product == "rhel10" %}}
+{{% elif product == "rhel10" or product == "fedora" %}}
 {{% set base_policy = "DEFAULT" %}}
 {{% set sub_policies = [
     {
