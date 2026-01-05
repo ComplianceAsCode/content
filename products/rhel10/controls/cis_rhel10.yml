@@ -1695,13 +1695,11 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: not applicable
       notes: |-
-          The status was automated but we need to double check the approach used in this rule.
-          Therefore I moved it to pending until deeper investigation.
-      rules:
-          - sshd_use_strong_kex
-          - sshd_strong_kex=cis_rhel10
+          This CIS requirement shall be notapplicable on RHEL 10. The CIS
+          Benchmark requires disabling the weak SHA1 key exchange algorithms,
+          but RHEL 10 doesn't provide these algorithms.
 
     - id: 5.1.13
       title: Ensure sshd LoginGraceTime is configured (Automated)

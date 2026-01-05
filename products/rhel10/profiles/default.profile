@@ -12,6 +12,7 @@ description: |-
     this profile is to keep a rule in the product's XCCDF Benchmark.
 
 selections:
+    - sshd_use_strong_kex
     - grub2_nousb_argument
     - audit_rules_kernel_module_loading_create
     - grub2_uefi_admin_username
