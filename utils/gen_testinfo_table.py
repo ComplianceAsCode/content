@@ -14,10 +14,12 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Create a STIG testinfo table")
     parser.add_argument(
-        "--build-dir", default="build", help="Path to the build directory")
+        "--build-dir", required=True, help="Path to the build directory")
     parser.add_argument(
-        "product", help="Short product ID, eg. rhel8")
-    parser.add_argument("testinfo", help="Output path")
+        "--product", required=True, help="Short product ID, eg. rhel8")
+    parser.add_argument(
+        "--profile", required=True, help="Profile to use, eg. stig")
+    parser.add_argument("--output", required=True, help="Output path")
     return parser.parse_args()
 
 
@@ -37,9 +39,9 @@ if __name__ == "__main__":
     args = parse_args()
     data = dict()
     profile_filename = os.path.join(
-        args.build_dir, args.product, "profiles", "stig.profile")
+        args.build_dir, args.product, "profiles", f"{args.profile}.profile")
     profile = ssg.build_yaml.Profile.from_yaml(profile_filename)
     data["description"] = profile.description
+    data["title"] = profile.title
     data["rules"] = get_rules(args.build_dir, args.product, profile)
-    data["full_name"] = ssg.utils.product_to_name(args.product)
-    render_template(data, TESTINFO_TEMPLATE, args.testinfo)
+    render_template(data, TESTINFO_TEMPLATE, args.output)
