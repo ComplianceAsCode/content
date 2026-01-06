@@ -23,3 +23,4 @@ selections:
     - grub2_nosmep_argument_absent
     - grub2_audit_argument
     - directory_access_var_log_audit
+    - logind_session_timeout
