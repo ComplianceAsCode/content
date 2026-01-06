@@ -10,7 +10,7 @@ from pathlib import Path
 
 from atex.provisioner.testingfarm import TestingFarmProvisioner
 from atex.orchestrator.contest import ContestOrchestrator
-from atex.aggregator.json import JSONAggregator
+from atex.aggregator.json import LZMAJSONAggregator
 from atex.fmf import FMFTests
 
 logger = logging.getLogger("ATEX")
@@ -87,10 +87,10 @@ def main():
             logger.info(f"    {test}")
 
         # Setup result aggregator
-        output_results = f"results-centos-stream-{args.os_major_version}-{args.arch}.json.gz"
+        output_results = f"results-centos-stream-{args.os_major_version}-{args.arch}.json.xz"
         output_files = f"files-centos-stream-{args.os_major_version}-{args.arch}"
         partial_runs = Path(output_files) / "old_runs"
-        aggregator = JSONAggregator(output_results, output_files)
+        aggregator = LZMAJSONAggregator(output_results, output_files)
         stack.enter_context(aggregator)
 
         partial_runs.mkdir(parents=True, exist_ok=True)

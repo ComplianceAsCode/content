@@ -91,7 +91,7 @@ jobs:
       - name: Install test dependencies
         run: |
           dnf -y install python3-pip git rsync
-          pip install fmf git+https://github.com/RHSecurityCompliance/atex.git
+          pip install fmf atex
 
       - name: Run tests on Testing Farm
         env:
@@ -114,7 +114,7 @@ jobs:
         with:
           name: test-results-centos-stream${{ matrix.centos_stream_major }}
           path: |
-            results-centos-stream-${{ matrix.centos_stream_major }}-x86_64.json.gz
+            results-centos-stream-${{ matrix.centos_stream_major }}-x86_64.json.xz
             files-centos-stream-${{ matrix.centos_stream_major }}-x86_64/
             atex_debug.log.gz
           retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
@@ -135,7 +135,7 @@ jobs:
         if: always()
         run: |
           dnf -y install python3-pip git rsync
-          pip install fmf git+https://github.com/RHSecurityCompliance/atex.git
+          pip install fmf atex
 
       - name: Checkout ATEX results repository
         if: always()
@@ -212,7 +212,7 @@ jobs:
 
           # Process and merge results for all CentOS Stream versions
           for version in 8 9 10; do
-            results_file="test-results/cs${version}/results-centos-stream-${version}-x86_64.json.gz"
+            results_file="test-results/cs${version}/results-centos-stream-${version}-x86_64.json.xz"
             files_dir="test-results/cs${version}/files-centos-stream-${version}-x86_64"
 
             if [ -f "${results_file}" ]; then
@@ -220,12 +220,12 @@ jobs:
               rm -f "${results_file}"
               [ -d "${files_dir}" ] && cp -r "${files_dir}"/* atex-results-testing-farm/files_dir/
             fi
-          done > results.json.gz
+          done > results.json.xz
 
       - name: Convert results to SQLite database
         if: always()
         run: |
-          python atex-html/json2db.py results.json.gz atex-results-testing-farm/results.sqlite.gz
+          python atex-html/json2db.py results.json.xz atex-results-testing-farm/results.sqlite.gz
 
       - name: Prepare HTML results viewer
         if: always()
