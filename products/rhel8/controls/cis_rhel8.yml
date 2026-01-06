@@ -1943,16 +1943,18 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: New rule needs to be created.
+      status: automated
+      rules:
+          - package_pam_installed
 
     - id: 5.3.1.2
       title: Ensure latest version of authselect is installed (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: New rule needs to be created.
+      status: automated
+      rules:
+          - package_authselect_installed
 
     - id: 5.3.2.1
       title: Ensure active authselect profile includes pam modules (Automated)

@@ -223,6 +223,7 @@ no_password_auth_for_systemaccounts
 no_rhost_files
 no_shelllogin_for_systemaccounts
 package_aide_installed
+package_authselect_installed
 package_bind_removed
 package_chrony_installed
 package_cron_installed
@@ -237,6 +238,7 @@ package_libselinux_installed
 package_mcstrans_removed
 package_net-snmp_removed
 package_nginx_removed
+package_pam_installed
 package_pam_pwquality_installed
 package_rsync_removed
 package_rsyslog_installed
