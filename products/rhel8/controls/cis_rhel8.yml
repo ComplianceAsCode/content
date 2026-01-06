@@ -1645,8 +1645,11 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: New rules need to be created.
+      status: automated
+      rules:
+          - file_groupowner_etc_sysconfig_sshd
+          - file_owner_etc_sysconfig_sshd
+          - file_permissions_etc_sysconfig_sshd
 
     - id: 5.1.4
       title: Ensure access to SSH private host key files is configured (Automated)
