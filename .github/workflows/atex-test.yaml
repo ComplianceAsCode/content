@@ -91,7 +91,7 @@ jobs:
       - name: Install test dependencies
         run: |
           dnf -y install python3-pip git rsync
-          pip install fmf git+https://github.com/RHSecurityCompliance/atex.git
+          pip install fmf atex
 
       - name: Run tests on Testing Farm
         env:
@@ -135,7 +135,7 @@ jobs:
         if: always()
         run: |
           dnf -y install python3-pip git rsync
-          pip install fmf git+https://github.com/RHSecurityCompliance/atex.git
+          pip install fmf atex
 
       - name: Checkout ATEX results repository
         if: always()
