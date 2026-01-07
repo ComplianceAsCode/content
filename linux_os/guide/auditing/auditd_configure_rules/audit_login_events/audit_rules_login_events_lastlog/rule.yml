@@ -52,6 +52,7 @@ template:
     name: audit_rules_watch
     vars:
         path: /var/log/lastlog
+        path@sle16: /var/lib/lastlog
         key: logins
 
 fixtext: |-
