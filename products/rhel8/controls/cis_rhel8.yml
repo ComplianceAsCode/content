@@ -1977,15 +1977,24 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: partial
+      status: automated
       notes: |-
-          This requirement is hard to be automated without any specific requirement. The policy even
-          states that provided commands are examples, other custom settings might be in place and the
-          settings might be different depending on site policies. The other rules will already make
-          sure there is a correct autheselect profile regardless of the existing settings. It is
-          necessary to better discuss with CIS Community.
+          This rule verifies that the active authselect profile includes the required PAM modules:
+          pam_pwquality.so, pam_pwhistory.so, pam_faillock.so, and pam_unix.so in both system-auth
+          and password-auth files. The rule checks the authselect profile source files directly,
+          not the symlinked files in /etc/pam.d/. Other rules ensure these modules are properly
+          configured with correct options.
+      rules:
+          - accounts_password_pam_modules_in_authselect_profile
       related_rules:
-          - no_empty_passwords
+          - enable_authselect
+          - account_password_pam_faillock_password_auth
+          - account_password_pam_faillock_system_auth
+          - accounts_password_pam_pwquality_password_auth
+          - accounts_password_pam_pwquality_system_auth
+          - accounts_password_pam_pwhistory_remember_password_auth
+          - accounts_password_pam_pwhistory_remember_system_auth
+          - accounts_password_pam_unix_enabled
 
     - id: 5.3.2.2
       title: Ensure pam_faillock module is enabled (Automated)
