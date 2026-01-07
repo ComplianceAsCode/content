@@ -3,15 +3,15 @@ default:
     - /sbin/auditctl
     - /sbin/aureport
     - /sbin/ausearch
-    {{% if product not in ["rhel10"] %}}
+    {{% if product not in ['rhel10', 'sle16'] %}}
     - /sbin/autrace
     {{% endif %}}
     - /sbin/auditd
-    {{% if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in families and product not in ['anolis8', 'anolis23']  %}}
+    {{% if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in families and product not in ['anolis8', 'anolis23', 'sle16'] %}}
     - /sbin/audispd
     {{% endif %}}
     - /sbin/augenrules
-    {{% if 'rhel' in product %}}
+    {{% if 'rhel' in product or product == 'sle16' %}}
     - /sbin/audisp-syslog
     {{% endif %}}
 overrides:
