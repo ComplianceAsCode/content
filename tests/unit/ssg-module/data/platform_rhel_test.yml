@@ -1,0 +1,7 @@
+name: platform_rhel_test
+original_expression: os_linux[rhel]>=8.7
+xml_content: <ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="platform_rhel_test"><ns0:logical-test operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:platform_rhel_test" /></ns0:logical-test></ns0:platform>
+bash_conditional: 'grep -qP "^ID=[\"'']?rhel[\"'']?$" "/etc/os-release" && { real="$(grep -P "^VERSION_ID=[\"'']?[\w.]+[\"'']?$" /etc/os-release | sed "s/^VERSION_ID=[\"'']\?\([^\"'']\+\)[\"'']\?$/\1/")"; expected="8.7"; printf "%s\n%s" "$expected" "$real" | sort -VC; }'
+ansible_conditional: 'ansible_distribution == "RedHat" and ansible_distribution_version >= "8.7"'
+title: 'Test RHEL Platform >=8.7'
+documentation_complete: true
