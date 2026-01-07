@@ -130,3 +130,85 @@ def test_parse_remediation_if_platform_has_version_comparison(cpe_platforms_with
     remediation_obj = remediation_cls(rhel_bash)
     conditionals = remediation_obj.get_stripped_conditionals("bash", ["package_ntp_eq_1_0"], cpe_platforms_with_version_comparison)
     assert conditionals == ["rpm --quiet -q ntp && { real=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}' ntp); ver=1.0;[[ \"$real\" == \"$ver\" ]]; }"]
+
+
+@pytest.fixture
+def cpe_platforms_with_multiple_os(env_yaml):
+    """
+    Fixture providing multiple OS platforms with version comparisons.
+    Used to test proper parenthesization when combining platform conditionals with OR operators.
+    """
+    platforms = dict()
+
+    # Load RHEL platform
+    rhel_platform_path = os.path.join(DATADIR, "platform_rhel_test.yml")
+    rhel_platform = ssg.build_yaml.Platform.from_yaml(rhel_platform_path, env_yaml)
+    platforms[rhel_platform.name] = rhel_platform
+
+    # Load Oracle Linux platform
+    ol_platform_path = os.path.join(DATADIR, "platform_ol_test.yml")
+    ol_platform = ssg.build_yaml.Platform.from_yaml(ol_platform_path, env_yaml)
+    platforms[ol_platform.name] = ol_platform
+
+    # Load SLES platform
+    sles_platform_path = os.path.join(DATADIR, "platform_sles_test.yml")
+    sles_platform = ssg.build_yaml.Platform.from_yaml(sles_platform_path, env_yaml)
+    platforms[sles_platform.name] = sles_platform
+
+    return platforms
+
+
+def test_bash_remediation_wraps_platform_conditionals_with_operators(cpe_platforms_with_multiple_os):
+    """
+    Regression test for proper wrapping of platform conditionals containing operators.
+
+    When multiple platform conditionals are joined with OR (||), each conditional that
+    contains operators (&& or ||) must be wrapped in parentheses to ensure proper
+    bash short-circuit evaluation.
+
+    Without proper wrapping:
+        grep ... && { version_check } || grep ... && { version_check }
+    causes all version checks to execute due to bash operator precedence.
+
+    With proper wrapping:
+        ( grep ... && { version_check } ) || ( grep ... && { version_check } )
+    ensures only the matching platform's version check executes.
+    """
+    remediation_cls = sbr.REMEDIATION_TO_CLASS["bash"]
+    remediation_obj = remediation_cls(rhel_bash)
+
+    # Get conditionals for all three platforms
+    platform_names = ["platform_rhel_test", "platform_ol_test", "platform_sles_test"]
+    conditionals = remediation_obj.get_stripped_conditionals(
+        "bash", platform_names, cpe_platforms_with_multiple_os
+    )
+
+    # Verify we got all three conditionals
+    assert len(conditionals) == 3, f"Expected 3 conditionals, got {len(conditionals)}"
+
+    # Each conditional should contain && operator (ID check && version check)
+    for cond in conditionals:
+        assert " && " in cond, f"Conditional should contain &&: {cond}"
+
+    # Call the production wrapping method
+    wrapped = sbr.BashRemediation.wrap_conditionals_with_operators(conditionals)
+
+    # Verify all three conditionals are wrapped
+    assert len(wrapped) == 3, f"Expected 3 wrapped conditionals, got {len(wrapped)}"
+
+    # Verify each wrapped conditional is properly wrapped with parentheses
+    for i, wrapped_cond in enumerate(wrapped):
+        assert wrapped_cond.startswith("( "), \
+            f"Conditional {i} should start with '( ': {wrapped_cond}"
+        assert wrapped_cond.endswith(" )"), \
+            f"Conditional {i} should end with ' )': {wrapped_cond}"
+        # Verify the original conditional is preserved inside
+        assert conditionals[i] in wrapped_cond, \
+            f"Wrapped conditional {i} should contain original: {wrapped_cond}"
+
+    # Verify conditionals without operators are not wrapped
+    simple_conditionals = ["test -f /etc/os-release", "[ $UID -eq 0 ]"]
+    wrapped_simple = sbr.BashRemediation.wrap_conditionals_with_operators(simple_conditionals)
+    for i, wrapped_cond in enumerate(wrapped_simple):
+        assert wrapped_cond == simple_conditionals[i], \
+            f"Simple conditional {i} should not be wrapped: {wrapped_cond}"
