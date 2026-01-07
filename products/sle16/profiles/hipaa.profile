@@ -23,7 +23,7 @@ description: |-
 
 selections:
     - hipaa:all
-    
+
     # Ensure audit_backlog_limit is sufficient
     - grub2_audit_backlog_limit_argument
     - var_audit_backlog_limit=8192
