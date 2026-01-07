@@ -2,9 +2,9 @@
 
 import argparse
 import os
-import re
 
 import ssg.build_yaml
+import ssg.utils
 from utils.template_renderer import render_template, resolve_var_substitutions
 
 
