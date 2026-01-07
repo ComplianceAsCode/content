@@ -394,13 +394,9 @@ A rule may contain those reference-type attributes:
     for an example of reference-type attributes as there are others that
     are not referenced above.
 
-Some of existing rule definitions contain attributes that use macros.
-There are two implementations of macros:
-
--   [Jinja macros](http://jinja.pocoo.org/docs/2.10/), that are defined
-    in `*.jinja` files in `shared/macros` directory.
-
--   Legacy XSLT macros, which are defined in `shared/transforms/*.xslt`.
+Some of existing rule definitions contain attributes that use
+[Jinja macros](http://jinja.pocoo.org/docs/2.10/), that are defined
+in `*.jinja` files in `shared/macros` directory.
 
 For example, the `ocil` attribute of `service_ntpd_enabled` uses the
 `ocil_service_enabled` jinja macro. Due to the need of supporting

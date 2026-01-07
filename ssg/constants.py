@@ -246,9 +246,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Not Applicable": "example",
 }
 
-
-# see xccdf-addremediations.xslt <- shared_constants.xslt
-# if you want to know how the map was constructed
 REF_PREFIX_MAP = {
     "nist": "NIST-800-53",
     "cui": "NIST-800-171",
