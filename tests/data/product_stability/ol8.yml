@@ -3,13 +3,8 @@ aide_also_checks_rsyslog: 'yes'
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
-audit_binaries:
-  - /sbin/auditctl
-  - /sbin/aureport
-  - /sbin/ausearch
-  - /sbin/autrace
-  - /sbin/auditd
-  - /sbin/augenrules
+audit_binaries: [/sbin/auditctl, /sbin/aureport, /sbin/ausearch, /sbin/autrace, /sbin/auditd,
+  /sbin/augenrules]
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
@@ -19,23 +14,18 @@ bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- ol8:
-    check_id: installed_OS_is_ol8
-    name: cpe:/o:oracle:linux:8
-    title: Oracle Linux 8
+- ol8: {check_id: installed_OS_is_ol8, name: 'cpe:/o:oracle:linux:8', title: Oracle
+      Linux 8}
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: local.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/log/faillock
-families:
-- rhel-like
-- ol
+families: [rhel-like, ol]
 full_name: Oracle Linux 8
 gid_min: 1000
 groups:
-  dedicated_ssh_keyowner:
-    name: ssh_keys
+  dedicated_ssh_keyowner: {name: ssh_keys}
 grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/efi/EFI/redhat
 grub_helper_executable: grubby
@@ -51,63 +41,38 @@ pkg_manager_config_file: /etc/yum.conf
 pkg_release: 5cabf60d
 pkg_system: rpm
 pkg_version: ad986da3
-platform_package_overrides:
-  aarch64_arch: null
-  grub2: grub2-common
-  login_defs: shadow-utils
-  no_ovirt: null
-  non-uefi: null
-  not_aarch64_arch: null
-  not_s390x_arch: null
-  ovirt: null
-  s390x_arch: null
-  sssd: sssd-common
-  sssd-ldap: null
-  uefi: null
-  zipl: s390utils-base
+platform_package_overrides: {aarch64_arch: null, grub2: grub2-common, login_defs: shadow-utils,
+  no_ovirt: null, non-uefi: null, not_aarch64_arch: null, not_s390x_arch: null, ovirt: null,
+  s390x_arch: null, sssd: sssd-common, sssd-ldap: null, uefi: null, zipl: s390utils-base}
 product: ol8
 profiles_root: ./profiles
 pwhistory_path: /etc/security/pwhistory.conf
 pwquality_path: /etc/security/pwquality.conf
-reference_uris:
-  anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
-  app-srg: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
-  app-srg-ctr: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security
-  bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
-  cis: https://www.cisecurity.org/benchmark/oracle_linux/
-  cis-csc: https://www.cisecurity.org/controls/
-  cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
-  cobit5: https://www.isaca.org/resources/cobit
-  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
-  dcid: not_officially_available
-  disa: https://www.cyber.mil/stigs/cci/
-  hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
-  isa-62443-2009: https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat
-  isa-62443-2013: https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu
-  ism: https://www.cyber.gov.au/acsc/view-all-content/ism
-  iso27001-2013: https://www.iso.org/contents/data/standard/05/45/54534.html
-  nerc-cip: https://www.nerc.com/standards/reliability-standards/cip
-  nist: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf
-  nist-csf: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf
-  os-srg: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os
-  ospp: https://www.niap-ccevs.org/Profile/PP.cfm
-  pcidss: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
-  pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
-  stigid: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
-  stigref: https://www.cyber.mil/stigs/srg-stig-tools/
+reference_uris: {anssi: 'https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf',
+  app-srg: 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+  app-srg-ctr: 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security',
+  bsi: 'https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf',
+  cis: 'https://www.cisecurity.org/benchmark/oracle_linux/', cis-csc: 'https://www.cisecurity.org/controls/',
+  cjis: 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
+  cobit5: 'https://www.isaca.org/resources/cobit', cui: 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
+  dcid: not_officially_available, disa: 'https://www.cyber.mil/stigs/cci/', hipaa: 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
+  isa-62443-2009: 'https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat',
+  isa-62443-2013: 'https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu',
+  ism: 'https://www.cyber.gov.au/acsc/view-all-content/ism', iso27001-2013: 'https://www.iso.org/contents/data/standard/05/45/54534.html',
+  nerc-cip: 'https://www.nerc.com/standards/reliability-standards/cip', nist: 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf',
+  nist-csf: 'https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf', os-srg: 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
+  ospp: 'https://www.niap-ccevs.org/Profile/PP.cfm', pcidss: 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
+  pcidss4: 'https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf',
+  stigid: 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
+  stigref: 'https://www.cyber.mil/stigs/srg-stig-tools/'}
 release_key_fingerprint: 76FD3DB13AB67410B89DB10E82562EA9AD986DA3
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
 sshd_runtime_check: 'false'
-sysctl_remediate_drop_in_file: 'false'
-target_oval_version:
-- 5
-- 11
+sysctl_remediate_drop_in_file: 'true'
+target_oval_version: [5, 11]
 target_oval_version_str: '5.11'
 type: platform
 uid_min: 1000
-xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+xwindows_packages: [xorg-x11-server-Xorg, xorg-x11-server-common, xorg-x11-server-utils,
+  xorg-x11-server-Xwayland]
