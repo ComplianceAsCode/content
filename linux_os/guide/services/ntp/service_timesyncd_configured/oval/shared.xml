@@ -13,7 +13,7 @@
   <local_variable id="{{{ rule_id }}}_variable_test_servers" datatype="string" version="1"
     comment="a local variable which includes all vendor-approved pool servers">
       <concat>
-          <literal_component>^[[:space:]]*(NTP|FallbackNTP)[[:space:]]*=[[:space:]]*</literal_component>
+          <literal_component>^\s*\[Time\].*(?:\n\s*[^[\s].*)*\n^[[:space:]]*(NTP|FallbackNTP)[[:space:]]*=[[:space:]]*</literal_component>
           <split delimiter=",">
               <variable_component var_ref="var_multiple_time_servers" />
           </split>
