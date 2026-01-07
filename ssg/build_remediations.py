@@ -218,6 +218,37 @@ class BashRemediation(Remediation):
     def __init__(self, file_path):
         super(BashRemediation, self).__init__(file_path, "bash")
 
+    @staticmethod
+    def wrap_conditionals_with_operators(conditionals):
+        """
+        Wrap bash conditionals that contain operators to ensure proper short-circuit evaluation.
+
+        When multiple platform conditionals are joined with OR (||), each conditional that
+        contains operators (&& or ||) must be wrapped in parentheses to ensure proper
+        bash short-circuit evaluation.
+
+        Without proper wrapping:
+            grep ... && { version_check } || grep ... && { version_check }
+        causes all version checks to execute due to bash operator precedence.
+
+        With proper wrapping:
+            ( grep ... && { version_check } ) || ( grep ... && { version_check } )
+        ensures only the matching platform's version check executes.
+
+        Args:
+            conditionals: List of bash conditional expressions
+
+        Returns:
+            List of conditionals with those containing operators wrapped in parentheses
+        """
+        wrapped_conditionals = []
+        for cond in conditionals:
+            if " && " in cond or " || " in cond:
+                wrapped_conditionals.append("( " + cond + " )")
+            else:
+                wrapped_conditionals.append(cond)
+        return wrapped_conditionals
+
     def parse_from_file(self, env_yaml, cpe_platforms):
         self.local_env_yaml.update(env_yaml)
         result = super(BashRemediation, self).parse_from_file(
@@ -241,10 +272,14 @@ class BashRemediation(Remediation):
             if inherited_conditionals:
                 all_conditions += " && ".join(inherited_conditionals)
             if rule_specific_conditionals:
+                # Wrap rule-specific conditionals that contain operators to ensure
+                # proper bash short-circuit evaluation
+                wrapped_conditionals = BashRemediation.wrap_conditionals_with_operators(
+                    rule_specific_conditionals)
                 if all_conditions:
-                    all_conditions += " && { " + " || ".join(rule_specific_conditionals) + "; }"
+                    all_conditions += " && { " + " || ".join(wrapped_conditionals) + "; }"
                 else:
-                    all_conditions = " || ".join(rule_specific_conditionals)
+                    all_conditions = " || ".join(wrapped_conditionals)
             wrapped_fix_text.append("if {0}; then".format(all_conditions))
             wrapped_fix_text.append("")
             # It is possible to indent the original body of the remediation with textwrap.indent(),
