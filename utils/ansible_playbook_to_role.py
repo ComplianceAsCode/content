@@ -68,30 +68,7 @@ PRODUCT_ALLOWLIST = set([
     "rhel10",
 ])
 
-PROFILE_ALLOWLIST = set([
-    "anssi_nt28_enhanced",
-    "anssi_nt28_high",
-    "anssi_nt28_intermediary",
-    "anssi_nt28_minimal",
-    "anssi_bp28_enhanced",
-    "anssi_bp28_high",
-    "anssi_bp28_intermediary",
-    "anssi_bp28_minimal",
-    "C2S",
-    "cis",
-    "cjis",
-    "hipaa",
-    "cui",
-    "ospp",
-    "pci-dss",
-    "rht-ccp",
-    "stig",
-    "rhvh-stig",
-    "rhvh-vpp",
-    "e8",
-    "ism_o",
-    "ism_o_secret",
-    "ism_o_top_secret",
+PROFILE_DENYLIST = set([
 ])
 
 
@@ -511,8 +488,8 @@ def parse_args():
              "Defaults to {}.".format(ORGANIZATION_NAME))
     parser.add_argument(
         "--profile", "-p", default=[], action="append",
-        metavar="PROFILE", choices=PROFILE_ALLOWLIST,
-        help="What profiles to upload, if not specified, upload all that are applicable.")
+        metavar="PROFILE", choices=PROFILE_DENYLIST,
+        help="What profiles to prevent uploading, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--product", "-r", default=[], action="append",
         metavar="PRODUCT", choices=PRODUCT_ALLOWLIST,
@@ -538,7 +515,7 @@ def locally_clone_and_init_repositories(organization, repo_list):
         shutil.rmtree(temp_dir)
 
 
-def select_roles_to_upload(product_allowlist, profile_allowlist,
+def select_roles_to_upload(product_allowlist, profile_denylist,
                            build_playbooks_dir):
     selected_roles = dict()
     for filename in sorted(os.listdir(build_playbooks_dir)):
@@ -546,9 +523,11 @@ def select_roles_to_upload(product_allowlist, profile_allowlist,
         if ext == ".yml":
             # the format is product-playbook-profile.yml
             product, _, profile = root.split("-", 2)
-            if product in product_allowlist and profile in profile_allowlist:
+            if product in product_allowlist and profile not in profile_denylist:
                 role_name = "ansible-role-%s-%s" % (product, profile)
                 selected_roles[role_name] = (product, profile)
+            else:
+                print(profile)
     return selected_roles
 
 
@@ -556,20 +535,15 @@ def main():
     args = parse_args()
 
     product_allowlist = set(PRODUCT_ALLOWLIST)
-    profile_allowlist = set(PROFILE_ALLOWLIST)
-
-    potential_roles = {
-        ("ansible-role-%s-%s" % (product, profile))
-        for product in product_allowlist for profile in profile_allowlist
-    }
+    profile_denylist = set(PROFILE_DENYLIST)
 
     if args.product:
         product_allowlist &= set(args.product)
     if args.profile:
-        profile_allowlist &= set(args.profile)
+        profile_denylist &= set(args.profile)
 
     selected_roles = select_roles_to_upload(
-        product_allowlist, profile_allowlist, args.build_playbooks_dir
+        product_allowlist, profile_denylist, args.build_playbooks_dir
     )
 
     if args.dry_run:
