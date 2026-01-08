@@ -96,6 +96,7 @@ file_groupowner_etc_security_opasswd
 file_groupowner_etc_security_opasswd_old
 file_groupowner_etc_shadow
 file_groupowner_etc_shells
+file_groupowner_etc_sysconfig_sshd
 file_groupowner_grub2_cfg
 file_groupowner_sshd_config
 file_groupowner_user_cfg
@@ -126,6 +127,7 @@ file_owner_etc_security_opasswd
 file_owner_etc_security_opasswd_old
 file_owner_etc_shadow
 file_owner_etc_shells
+file_owner_etc_sysconfig_sshd
 file_owner_grub2_cfg
 file_owner_sshd_config
 file_owner_user_cfg
@@ -159,6 +161,7 @@ file_permissions_etc_security_opasswd
 file_permissions_etc_security_opasswd_old
 file_permissions_etc_shadow
 file_permissions_etc_shells
+file_permissions_etc_sysconfig_sshd
 file_permissions_grub2_cfg
 file_permissions_home_directories
 file_permissions_sshd_config
