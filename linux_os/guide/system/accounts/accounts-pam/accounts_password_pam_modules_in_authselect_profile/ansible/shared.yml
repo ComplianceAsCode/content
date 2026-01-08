@@ -9,8 +9,7 @@
 {{{ ansible_ensure_authselect_custom_profile(rule_title) }}}
 
 - name: '{{{ rule_title }}} - Get authselect current profile'
-  ansible.builtin.shell:
-    cmd: head -1 /etc/authselect/authselect.conf
+  ansible.builtin.command: head -1 /etc/authselect/authselect.conf
   register: result_authselect_profile_name
   changed_when: false
   when:
