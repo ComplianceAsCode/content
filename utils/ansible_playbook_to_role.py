@@ -21,7 +21,7 @@ PLAYBOOK_ROOT = os.path.join(SSG_ROOT, "build", "ansible")
 try:
     from github import Github, InputGitAuthor, UnknownObjectException
 except ImportError:
-    print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+    print("Please install PyGithub, you need a specific version of pygithub, install it through $ pip install \"PyGithub>=1.58.2,<2.0\"",
           file=sys.stderr)
     raise SystemExit(1)
 
