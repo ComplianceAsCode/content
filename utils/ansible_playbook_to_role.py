@@ -31,7 +31,7 @@ try:
     import ssg.yaml
     from ssg.utils import mkdir_p
 except ImportError:
-    print("Unable to find the ssg module. Please run 'source .pyenv'", file=sys.stderr)
+    print("Unable to find the ssg module. Please run 'source .pyenv.sh'", file=sys.stderr)
     raise SystemExit(1)
 
 
@@ -99,11 +99,14 @@ def create_empty_repositories(github_new_repos, github_org):
 
 
 def clone_and_init_repository(parent_dir, organization, repo):
-    os.system(
-        "git clone git@github.com:%s/%s" % (organization, repo))
-    os.system("ansible-galaxy init " + repo + " --force")
+    # 1. Initialize the Ansible role first (creates the directory)
+    os.system(f"ansible-galaxy init {repo}")
+
+    # 2. Change directory and initialize git
     os.chdir(repo)
     try:
+        os.system("git init --initial-branch=main")
+        os.system(f"git remote add origin git@github.com:{organization}/{repo}")
         os.system('git add .')
         os.system('git commit -a -m "Initial commit" --author "%s <%s>"'
                   % (GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL))
@@ -524,8 +527,6 @@ def select_roles_to_upload(product_allowlist, profile_denylist,
             if product in product_allowlist and profile not in profile_denylist:
                 role_name = "ansible-role-%s-%s" % (product, profile)
                 selected_roles[role_name] = (product, profile)
-            else:
-                print(profile)
     return selected_roles
 
 
@@ -578,7 +579,7 @@ def main():
                 RoleGithubUpdater(repo, playbook_full_path).update_repository()
                 if args.tag_release:
                     update_repo_release(github, repo)
-            elif repo.name not in potential_roles:
+            elif "ansible-role-rhel" in repo.name:
                 print("Repo '%s' is not managed by this script. "
                       "It may need to be deleted, please verify and do that "
                       "manually!" % repo.name, file=sys.stderr)
