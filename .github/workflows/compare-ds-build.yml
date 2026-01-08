@@ -66,3 +66,16 @@ jobs:
                     name: pr-artifacts-${{ github.event.pull_request.head.sha }}
                     retention-days: 1
                     path: artifacts.tar.gz
+            -   name: Save PR info
+                run: |
+                    mkdir -p pr-info
+                    echo "${{ github.event.pull_request.number }}" > pr-info/pr-number.txt
+                    echo "${{ github.event.pull_request.head.sha }}" > pr-info/pr-sha.txt
+                    echo "${{ github.base_ref }}" > pr-info/base-branch.txt
+                    echo "${{ steps.fork_point.outputs.FORK_POINT }}" > pr-info/fork-point.txt
+            -   name: Upload PR info
+                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+                with:
+                    name: pr-info
+                    retention-days: 1
+                    path: pr-info/
