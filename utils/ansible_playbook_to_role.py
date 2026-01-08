@@ -430,12 +430,10 @@ class RoleGithubUpdater(object):
     def _remote_content(self, filepath):
         # We want the raw string to compare against _local_content
 
-        # New repos use main instead of master
-        branch = 'master'
-        if "rhel9" in self.remote_repo.full_name:
-            branch = 'main'
-        if "rhel10" in self.remote_repo.full_name:
-             branch = 'main'
+        # any version higher than rhel8 should use branch main
+        branch = 'main'
+        if "rhel8" in self.remote_repo.full_name:
+            branch = 'master'
 
         content, sha = self._get_contents(filepath, branch)
         return content, sha
