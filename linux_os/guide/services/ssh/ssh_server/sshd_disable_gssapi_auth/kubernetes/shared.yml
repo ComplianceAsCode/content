@@ -1,0 +1,15 @@
+# platform = multi_platform_ocp,multi_platform_rhcos
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+# Remove any old dropin configs that may have been created
+{{{ kubernetes_sshd_remove_dropin('00-complianceascode-GSSAPIAuthentication.conf') }}}
+---
+{{{ kubernetes_sshd_remove_dropin('01-complianceascode-reinforce-os-defaults.conf') }}}
+---
+{{{ kubernetes_sshd_remove_dropin('75-complianceascode-sshd_disable_gssapi_auth.conf') }}}
+---
+# Modify the main sshd_config file directly (no version restriction)
+{{{ kubernetes_sshd_set(ocp_version_range='') }}}
