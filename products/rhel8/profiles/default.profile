@@ -727,3 +727,7 @@ selections:
     - service_zebra_disabled
     - package_rsh-server_removed
     - sshd_use_strong_macs
+    - file_etc_security_opasswd
+    - package_xorg-x11-server-common_removed
+    - accounts_users_netrc_file_permissions
+    - journald_forward_to_syslog
