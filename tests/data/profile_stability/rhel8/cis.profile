@@ -320,13 +320,13 @@ package_bind_removed
 package_chrony_installed
 package_cron_installed
 package_cyrus-imapd_removed
+package_dhcp_removed
 package_dnsmasq_removed
 package_dovecot_removed
 package_firewalld_installed
 package_ftp_removed
 package_gdm_removed
 package_httpd_removed
-package_kea_removed
 package_libselinux_installed
 package_mcstrans_removed
 package_net-snmp_removed
