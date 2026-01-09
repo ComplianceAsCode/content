@@ -6,20 +6,13 @@ else
     FILE="/var/log/audit/audit.log"
 fi
 
-{{% if 'ol' not in families and "rhel" not in product %}}
 if LC_ALL=C grep -m 1 -q ^log_group /etc/audit/auditd.conf; then
-  GROUP=$(awk -F "=" '/log_group/ {print $2}' /etc/audit/auditd.conf | tr -d ' ')
-  if ! [ "${GROUP}" == 'root' ] ; then
-    chmod 0640 $FILE
-    chmod 0440 $FILE.*
-  else
-    chmod 0600 $FILE
-    chmod 0400 $FILE.*
-  fi
+    GROUP=$(awk -F "=" '/log_group/ {print $2}' /etc/audit/auditd.conf | tr -d ' ')
+    if ! [ "${GROUP}" == 'root' ] ; then
+       chmod 0640 $FILE
+    else
+       chmod 0600 $FILE
+    fi
 else
-  chmod 0600 $FILE
-  chmod 0400 $FILE.*
+    chmod 0600 $FILE
 fi
-{{% else %}}
-chmod 0600 $FILE
-{{% endif %}}
