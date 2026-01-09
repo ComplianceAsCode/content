@@ -73,6 +73,7 @@ jobs:
         with:
             name: pr-artifacts-${{ github.event.workflow_run.head_sha }}
             path: pr_artifacts
+            run-id: ${{ github.event.workflow_run.id }}
       - name: Unpack built artifacts
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: tar -xvzf pr_artifacts/artifacts.tar.gz -C pr_artifacts/unpacked_artifacts
