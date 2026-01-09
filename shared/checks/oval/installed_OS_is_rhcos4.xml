@@ -11,15 +11,19 @@
     </metadata>
     <criteria operator="OR">
       <criteria operator="AND">
-        <criterion comment="RHCOS is installed (ID='rhcos')" test_ref="test_rhcos" />
+        <criterion comment="CoreOS variant" test_ref="test_rhel_coreos_variant" />
         <criterion comment="RHCOS version 4 is installed" test_ref="test_rhcos4" />
       </criteria>
       <criteria operator="AND">
-        <criterion comment="CoreOS variant" test_ref="test_rhel_coreos_variant" />
+        <criterion comment="RHCOS is installed (ID='rhcos')" test_ref="test_rhcos" />
+        <criterion comment="RHEL_VERSION is 9" test_ref="test_rhcos4_rhel9_rhel_version" />
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="ID is rhel" test_ref="test_rhel_id" />
         <criterion comment="Major version is 9" test_ref="test_rhel_coreos_version9" />
       </criteria>
       <criteria operator="AND">
-        <criterion comment="CoreOS variant" test_ref="test_rhel_coreos_variant" />
+        <criterion comment="ID is rhel" test_ref="test_rhel_id" />
         <criterion comment="Major version is 10" test_ref="test_rhel_coreos_version10" />
       </criteria>
     </criteria>
@@ -84,7 +88,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_rhcos4" version="1">
     <ind:filepath>/etc/os-release</ind:filepath>
-    <ind:pattern operation="pattern match">^VERSION_ID=&quot;(\d)\.\d+&quot;$</ind:pattern>
+    <ind:pattern operation="pattern match">^OPENSHIFT_VERSION=&quot;(\d)\.\d+&quot;$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_state id="state_rhcos4" version="1">
@@ -103,22 +107,43 @@
       <description>The operating system installed on the system is
       Red Hat Enterprise Linux CoreOS RHEL9 Based</description>
     </metadata>
-    <criteria>
-        <criterion comment="RHCOS RHEL 9 is installed" test_ref="test_rhcos4_rhel9" />
+    <criteria operator="OR">
+      <criteria operator="AND" comment="Old format: ID=rhcos with RHEL_VERSION=9.x">
+        <criterion comment="ID is rhcos" test_ref="test_rhcos" />
+        <criterion comment="RHEL_VERSION is 9" test_ref="test_rhcos4_rhel9_rhel_version" />
+      </criteria>
+      <criteria operator="AND" comment="New format: ID=rhel with VERSION_ID=9.x">
+        <criterion comment="ID is rhel" test_ref="test_rhel_id" />
+        <criterion comment="CoreOS variant" test_ref="test_rhel_coreos_variant" />
+        <criterion comment="VERSION_ID is 9.x" test_ref="test_rhel_coreos_version9" />
+      </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="rhcoreos is rhel9 based" id="test_rhcos4_rhel9" version="1">
-    <ind:object object_ref="obj_rhcos4_rhel9" />
-    <ind:state state_ref="state_rhcos4_rhel9" />
+  <ind:textfilecontent54_test check="all" comment="ID is rhel" id="test_rhel_id" version="1">
+    <ind:object object_ref="obj_rhel_id" />
+    <ind:state state_ref="state_rhel_id" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_rhcos4_rhel9" version="1">
+  <ind:textfilecontent54_object id="obj_rhel_id" version="1">
     <ind:filepath>/etc/os-release</ind:filepath>
-    <ind:pattern operation="pattern match">^RHEL_VERSION=&quot;(\d).*&quot;$</ind:pattern>
+    <ind:pattern operation="pattern match">^ID=&quot;(\w+)&quot;$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhel_id" version="1">
+    <ind:subexpression operation="pattern match">rhel</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" comment="rhcoreos RHEL_VERSION is 9 (old format)" id="test_rhcos4_rhel9_rhel_version" version="1">
+    <ind:object object_ref="obj_rhcos4_rhel9_rhel_version" />
+    <ind:state state_ref="state_rhcos4_rhel9_rhel_version" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhcos4_rhel9_rhel_version" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^RHEL_VERSION=(\d+\.?\d*)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_state id="state_rhcos4_rhel9" version="1">
-    <ind:subexpression operation="pattern match">9</ind:subexpression>
+  <ind:textfilecontent54_state id="state_rhcos4_rhel9_rhel_version" version="1">
+    <ind:subexpression operation="pattern match">^9\.</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
 
@@ -133,21 +158,10 @@
       <description>The operating system installed on the system is
       Red Hat Enterprise Linux CoreOS RHEL10 Based</description>
     </metadata>
-    <criteria>
-        <criterion comment="RHCOS RHEL 10 is installed" test_ref="test_rhcos4_rhel10" />
+    <criteria operator="AND">
+      <criterion comment="ID is rhel" test_ref="test_rhel_id" />
+      <criterion comment="CoreOS variant" test_ref="test_rhel_coreos_variant" />
+      <criterion comment="VERSION_ID is 10.x" test_ref="test_rhel_coreos_version10" />
     </criteria>
   </definition>
-
-  <ind:textfilecontent54_test check="all" comment="rhcoreos is rhel10 based" id="test_rhcos4_rhel10" version="1">
-    <ind:object object_ref="obj_rhcos4_rhel10" />
-    <ind:state state_ref="state_rhcos4_rhel10" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_rhcos4_rhel10" version="1">
-    <ind:filepath>/etc/os-release</ind:filepath>
-    <ind:pattern operation="pattern match">^RHEL_VERSION=&quot;(\d).*&quot;$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_state id="state_rhcos4_rhel10" version="1">
-    <ind:subexpression operation="pattern match">10</ind:subexpression>
-  </ind:textfilecontent54_state>
 </def-group>
