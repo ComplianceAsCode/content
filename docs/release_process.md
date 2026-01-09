@@ -331,7 +331,7 @@ updated to reflect the latest content.
 
 ## Get a GitHub Token
 
-- Get a token from your GitHub account that can access the RedHatOfficial repos and has write permissions:
+- Get a token from your GitHub account that can access the RedHatOfficial repos and has write permissions (the classic token should be easier to setup):
     - https://github.com/settings/tokens
 
 ## Set Up the Environment
@@ -354,24 +354,28 @@ provided.
 
 ## Refresh Ansible Roles in Ansible Galaxy
 
-After the roles are updated in the RedHatOfficial organization, they need to be refreshed in
+After the roles are updated in the [RedHatOfficial](https://github.com/RedHatOfficial/) organization, they need to be refreshed in
 Ansible Galaxy.
 
-### Get an Ansible Galaxy Token
+### Get the Required Tokens
 
-- Log in to Ansible Galaxy with your GitHub account and get a token:
+- Get an Ansible Galaxy token by logging in with your GitHub account:
     - https://galaxy.ansible.com/ui/token/
+- Get a GitHub token with read access to the [RedHatOfficial](https://github.com/RedHatOfficial/) organization or use the same as in previous steps:
+    - https://github.com/settings/tokens
 
-### Set the Galaxy Token Environment Variable
+### Set the Environment Variables
 
-- Set the token to the `GALAXY_TOKEN` environment variable.
+- Set both the `GALAXY_TOKEN` and `GITHUB_TOKEN` environment variables.
     - For **bash**:
     ```bash
     export GALAXY_TOKEN=<your_galaxy_token>
+    export GITHUB_TOKEN=<your_github_token>
     ```
     - For **fish**:
     ```fish
     set -x GALAXY_TOKEN <your_galaxy_token>
+    set -x GITHUB_TOKEN <your_github_token>
     ```
 
 ### Run the Galaxy Update Script
