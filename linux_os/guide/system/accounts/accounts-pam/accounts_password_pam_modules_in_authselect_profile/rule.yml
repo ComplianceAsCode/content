@@ -1,0 +1,49 @@
+documentation_complete: true
+
+title: 'Ensure Active Authselect Profile Includes PAM Modules'
+
+description: |-
+    The active authselect profile must include the required PAM modules:
+    <tt>pam_pwquality.so</tt>, <tt>pam_pwhistory.so</tt>, <tt>pam_faillock.so</tt>, and <tt>pam_unix.so</tt>
+    in both <tt>system-auth</tt> and <tt>password-auth</tt> files.
+
+    A custom authselect profile can be created by copying and customizing one of the default profiles.
+    The default profiles include: <tt>local</tt>, <tt>sssd</tt>, and <tt>winbind</tt>. These profiles can be customized
+    to follow site specific requirements.
+
+rationale: |-
+    A custom profile is required to customize many of the PAM options.
+    Modifications made to a default profile may be overwritten during an update.
+    When you deploy a profile, the profile is applied to every user logging into the given host.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-90716-2
+    cce@rhel9: CCE-90719-6
+    cce@rhel10: CCE-90464-9
+
+ocil_clause: 'the active authselect profile does not include all required PAM modules'
+
+ocil: |-
+    Run the following command to verify the active authselect profile includes lines for the
+    pwquality, pwhistory, faillock, and unix modules:
+
+    <pre># grep -P '\b(pam_pwquality\.so|pam_pwhistory\.so|pam_faillock\.so|pam_unix\.so)\b' /etc/authselect/"$(head -1 /etc/authselect/authselect.conf)"/{system,password}-auth</pre>
+
+    The output should show entries for all four modules in both system-auth and password-auth files.
+
+fixtext: |-
+    Ensure that the active authselect profile includes all required PAM modules.
+    If using a default profile, create a custom profile and ensure it includes:
+    <tt>pam_pwquality.so</tt>, <tt>pam_pwhistory.so</tt>, <tt>pam_faillock.so</tt>, and <tt>pam_unix.so</tt>
+    in both system-auth and password-auth files.
+
+platform: package[pam]
+
+warnings:
+    - general: |-
+        If local site customizations have been made to the authselect template or files in
+        /etc/pam.d, these custom entries should be added to the newly created custom profile
+        before it's applied to the system. The order within the PAM stacks is important when
+        adding these entries.
