@@ -1,73 +1,33 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_almalinux
+# platform = multi_platform_all
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
 
-- name: Get audit log files
+- name: "{{{ rule_title }}} - Get audit log file from /etc/audit/auditd.conf"
   ansible.builtin.command: grep -iw ^log_file /etc/audit/auditd.conf
+  check_mode: False
   failed_when: false
   changed_when: false
-  check_mode: false
   register: log_file_exists
 
-- name: Parse log file line
-  ansible.builtin.command: awk -F '=' '/^log_file/ {print $2}' /etc/audit/auditd.conf
-  register: log_file_line
-  changed_when: false
-  check_mode: false
-  when: log_file_exists is not skipped and (log_file_exists.stdout | length > 0)
-
-- name: Set default log_file if not set
+- name: "{{{ rule_title }}} - Set audit log file path"
   ansible.builtin.set_fact:
-    log_file: "/var/log/audit/audit.log"
-  when: (log_file_exists is skipped) or (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
+      log_file_path: "{{ (log_file_exists.stdout | default('') | split(' ') | last) | default('/var/log/audit/audit.log', true) }}"
 
-- name: Set log_file from log_file_line if not set already
+- name: "{{{ rule_title }}} - Get audit log group from /etc/audit/auditd.conf"
+  ansible.builtin.command: grep -iw ^log_group /etc/audit/auditd.conf
+  check_mode: False
+  failed_when: false
+  changed_when: false
+  register: log_group_exists
+
+- name: "{{{ rule_title }}} - Set audit log group"
   ansible.builtin.set_fact:
-    log_file: "{{ log_file_line.stdout | trim }}"
-  when: (log_file_exists is not skipped) and (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
+      log_group: "{{ (log_group_exists.stdout | default('') | split(' ') | last) | default('root', true) }}"
 
-{{% if 'ol' not in families and "rhel" not in product and 'almalinux' not in product %}}
-- name: Get log files group
-  ansible.builtin.command: grep -m 1 ^log_group /etc/audit/auditd.conf
-  failed_when: false
-  changed_when: false
-  check_mode: false
-  register: log_group_line
-
-- name: Parse log group line
-  ansible.builtin.command: awk -F '=' '/log_group/ {print $2}' /etc/audit/auditd.conf
-  changed_when: false
-  check_mode: false
-  register: log_group
-  when: (log_group_line is not skipped) and (log_group_line.stdout | length > 0)
-
-- name: Apply mode to log file when group root
+- name: "{{{ rule_title }}} - Set audit log file permissions"
   ansible.builtin.file:
-    path: "{{ log_file }}"
-    mode: (( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' )) | ternary( '0600', '0640')
-  failed_when: false
-  when: log_group is not skipped
-
-- name: List all log file backups
-  ansible.builtin.find:
-    path: "{{ log_file | dirname }}"
-    patterns: "{{ log_file | basename }}.*"
-  register: backup_files
-
-- name: Apply mode to log file when group not root
-  ansible.builtin.file:
-    path: "{{ item }}"
-    mode: (( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' ))  | ternary( '0400', '0440')
-  loop: "{{ backup_files.files| map(attribute='path') | list }}"
-  failed_when: false
-  when: backup_files is not skipped
-
-{{% else %}}
-- name: Apply mode to log file
-  ansible.builtin.file:
-    path: "{{ log_file }}"
-    mode: 0600
-  failed_when: false
-{{% endif %}}
+      path: "{{ log_file_path }}"
+      state: touch
+      mode: "{{ '0600' if log_group == 'root' else '0640' }}"
