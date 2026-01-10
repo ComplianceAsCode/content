@@ -7,7 +7,7 @@ if [ -n "$files_with_incorrect_hash" ]; then
     # From files names get package names and change newline to space, because rpm writes each package to new line
     packages_to_reinstall="$(rpm -qf $files_with_incorrect_hash | tr '\n' ' ')"
 
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "sle16"] %}}
     {{{ pkg_manager }}} install -f -y $packages_to_reinstall
     {{% else %}}
     {{{ pkg_manager }}} reinstall -y $packages_to_reinstall

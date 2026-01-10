@@ -7,7 +7,7 @@ service_dropin_file="${service_dropin_cfg_dir}/10-oscap.conf"
 service_file="/usr/lib/systemd/system/emergency.service"
 {{% endif %}}
 
-{{% if product in ["fedora", "ol8", "ol9", "sle12", "sle15", "slmicro5"] or 'rhel' in product -%}}
+{{% if product in ["fedora", "ol8", "ol9", "sle12", "sle15", "sle16", "slmicro5"] or 'rhel' in product -%}}
 sulogin="/usr/lib/systemd/systemd-sulogin-shell emergency"
 {{%- else -%}}
 sulogin='/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'

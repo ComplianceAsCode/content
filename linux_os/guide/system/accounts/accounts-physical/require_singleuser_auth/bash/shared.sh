@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-{{% if product in ["fedora", "sle12", "sle15", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
+{{% if product in ["fedora", "sle12", "sle15", "sle16", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
 {{% set sulogin="\\nExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue" %}}
 {{%- else -%}}
 {{% set sulogin='-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'  %}}

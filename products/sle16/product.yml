@@ -14,6 +14,8 @@ profiles_root: "./profiles"
 
 init_system: "systemd"
 
+sshd_distributed_config: "true"
+
 pkg_manager: "zypper"
 pkg_manager_config_file: "/etc/zypp/zypp.conf"
 
@@ -42,7 +44,4 @@ dconf_gdm_dir: "gdm.d"
 sysctl_remediate_drop_in_file: "true"
 journald_conf_dir_path: /etc/systemd/journal.d
 xwindows_packages:
-  - xorg-x11-server
-  - xorg-x11-server-extra
-  - xorg-x11-server-Xvfb
   - xwayland

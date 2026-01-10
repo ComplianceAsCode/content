@@ -21,6 +21,7 @@ identifiers:
     cce@rhel10: CCE-88938-6
     cce@sle12: CCE-83108-1
     cce@sle15: CCE-85598-1
+    cce@sle16: CCE-95975-9
     cce@slmicro5: CCE-93665-8
     cce@slmicro6: CCE-94629-3
 
@@ -52,6 +53,7 @@ template:
     name: audit_rules_watch
     vars:
         path: /var/log/lastlog
+        path@sle16: /var/lib/lastlog
         key: logins
 
 fixtext: |-
