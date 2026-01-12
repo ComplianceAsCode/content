@@ -1,5 +1,5 @@
 {{%- set unix_chkpwd_binary="/usr/sbin/unix_chkpwd" %}}
-{{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in product %}}  
+{{%- if product in ["fedora", "rhcos4", "ubuntu2204", "ubuntu2404"] or 'ol' in families or 'rhel' in product or 'sle' in product or 'slmicro' in product %}}
     {{%- set unix_chkpwd_binary="/sbin/unix_chkpwd" %}}
 {{%- endif %}}
 
@@ -32,6 +32,7 @@ identifiers:
     cce@rhel10: CCE-89529-2
     cce@sle12: CCE-83109-9
     cce@sle15: CCE-85727-6
+    cce@sle16: CCE-96089-8
     cce@slmicro5: CCE-93606-2
     cce@slmicro6: CCE-94610-3
 
@@ -57,8 +58,4 @@ references:
 template:
     name: audit_rules_privileged_commands
     vars:
-        path: /usr/sbin/unix_chkpwd
-        path@sle12: /sbin/unix_chkpwd
-        path@sle15: /sbin/unix_chkpwd
-        path@slmicro5: /sbin/unix_chkpwd
-        path@slmicro6: /sbin/unix_chkpwd
+        path: {{{ unix_chkpwd_binary }}}

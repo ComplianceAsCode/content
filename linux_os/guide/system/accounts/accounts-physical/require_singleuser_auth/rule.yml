@@ -25,6 +25,7 @@ identifiers:
     cce@rhel10: CCE-90014-2
     cce@sle12: CCE-92324-3
     cce@sle15: CCE-91428-3
+    cce@sle16: CCE-96443-7
     cce@slmicro5: CCE-94048-6
 
 references:
@@ -52,7 +53,7 @@ ocil: |-
     To check if authentication is required for single-user mode, run the following command:
     <pre>$ grep sulogin /usr/lib/systemd/system/rescue.service</pre>
     The output should be similar to the following, and the line must begin with
-    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
+    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "sle16", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
         ExecStart and /usr/lib/systemd/systemd-sulogin-shell.
         <pre>ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue</pre>
     {{%- else -%}}
@@ -64,7 +65,7 @@ ocil: |-
     <pre>grep ExecStart /etc/systemd/system/rescue.service.d/*.conf</pre>
     The output should contain two lines:
     <pre>ExecStart=
-    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
+    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "sle16", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue</pre>
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"</pre>
@@ -94,7 +95,7 @@ fixtext: |-
 
     Ensure that there are following two lines  in <tt>/etc/systemd/system/rescue.service.d/10-remediation.conf</tt>:
     <pre>ExecStart=
-    {{% if product in ["fedora", "sle12", "sle15", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
+    {{% if product in ["fedora", "sle12", "sle15", "sle16", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue</pre>
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"</pre>

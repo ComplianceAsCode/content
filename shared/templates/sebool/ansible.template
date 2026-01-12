@@ -7,7 +7,7 @@
 {{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'rhel10'] %}}
 {{% set PACKAGE_NAME = "python3-libsemanage" %}}
 {{% elif product in [ "sle15", "sle16" ] %}}
-{{% set PACKAGE_NAME = "policycoreutils" %}}
+{{% set PACKAGE_NAME = "libsemanage2" %}}
 {{% else %}}
 {{% set PACKAGE_NAME = "libsemanage-python" %}}
 {{% endif %}}

@@ -20,6 +20,7 @@ identifiers:
     cce@rhel9: CCE-84150-2
     cce@rhel10: CCE-89078-0
     cce@sle15: CCE-91435-8
+    cce@sle16: CCE-96398-3
 
 references:
     cis-csc: 1,11,12,14,15,16,3,5,8,9
@@ -42,7 +43,7 @@ warnings:
        is disabled by the following line: <tt>disable = yes</tt>. Note that the xinetd file for
        telnet is not created automatically, therefore it might have different names.
 
-{{% if "sle15" in product or "rhel" in product %}}
+{{% if "sle" in product or "rhel" in product %}}
 template:
     name: socket_disabled
     vars:
