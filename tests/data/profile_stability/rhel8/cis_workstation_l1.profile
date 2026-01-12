@@ -63,6 +63,7 @@ dconf_gnome_session_idle_user_locks
 dir_perms_world_writable_sticky_bits
 disable_host_auth
 disable_users_coredumps
+enable_authselect
 ensure_gpgcheck_globally_activated
 ensure_gpgcheck_never_disabled
 ensure_pam_wheel_group_empty
@@ -363,7 +364,7 @@ var_accounts_passwords_pam_faillock_deny=5
 var_accounts_passwords_pam_faillock_unlock_time=900
 var_accounts_tmout=15_min
 var_accounts_user_umask=027
-var_authselect_profile=local
+var_authselect_profile=sssd
 var_multiple_time_servers=rhel
 var_pam_wheel_group_for_su=cis
 var_password_hashing_algorithm=cis_rhel8

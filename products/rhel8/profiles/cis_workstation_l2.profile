@@ -22,4 +22,3 @@ description: |-
 
 selections:
     - cis_rhel8:all:l2_workstation
-    - var_authselect_profile=local

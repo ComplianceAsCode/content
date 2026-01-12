@@ -134,6 +134,7 @@ directory_permissions_var_log_audit
 disable_host_auth
 disable_users_coredumps
 disable_weak_deps
+enable_authselect
 ensure_gpgcheck_globally_activated
 ensure_gpgcheck_never_disabled
 ensure_pam_wheel_group_empty
@@ -474,7 +475,7 @@ var_auditd_disk_full_action=cis_rhel8
 var_auditd_max_log_file=8
 var_auditd_max_log_file_action=keep_logs
 var_auditd_space_left_action=cis_rhel8
-var_authselect_profile=local
+var_authselect_profile=sssd
 var_multiple_time_servers=rhel
 var_pam_wheel_group_for_su=cis
 var_password_hashing_algorithm=cis_rhel8
