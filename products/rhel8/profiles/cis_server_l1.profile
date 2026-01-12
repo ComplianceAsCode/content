@@ -22,4 +22,3 @@ description: |-
 
 selections:
     - cis_rhel8:all:l1_server
-    - var_authselect_profile=local
