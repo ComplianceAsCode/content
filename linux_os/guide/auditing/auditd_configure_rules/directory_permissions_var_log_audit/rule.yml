@@ -3,24 +3,34 @@ documentation_complete: true
 title: 'System Audit Logs Must Have Mode 0750 or Less Permissive'
 
 description: |-
-    {{% if product in ["ol8", "rhel8"] %}}
-    Verify the audit log directories have a mode of "0700" or less permissive by first determining
+    Verify the audit log directories have a mode of "0750" or less permissive by first determining
     where the audit logs are stored with the following command:
     <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf
-
     log_file = /var/log/audit/audit.log</pre>
-    Configure the audit log directory to be protected from unauthorized read access by setting the
-    correct permissive mode with the following command:
-    <pre>$ sudo chmod 0700 <i>audit_log_directory</i></pre>
-    By default, <tt><i>audit_log_directory</i></tt> is "/var/log/audit".
-    {{% else %}}
-    If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the <tt>root</tt>
-    group account, change the mode of the audit log files with the following command:
-    <pre>$ sudo chmod 0750 /var/log/audit</pre>
+    By default, the audit log directory is <tt>/var/log/audit</tt>.
     <br />
-    Otherwise, change the mode of the audit log files with the following command:
-    <pre>$ sudo chmod 0700 /var/log/audit</pre>
-    {{% endif %}}
+    Configure the audit log directory to be protected from unauthorized read access by setting the
+    correct permissive mode.
+    <br />
+    The appropriate directory permissions depend on the <tt>log_group</tt> setting in <tt>/etc/audit/auditd.conf</tt>:
+    <br />
+    <ul>
+    <li>If <tt>log_group</tt> is set to <tt>root</tt> or is not set, the directory should have mode <tt>0700</tt>.
+    This restricts access to root only, which is the most secure configuration.</li>
+    <li>If <tt>log_group</tt> is set to a group other than <tt>root</tt>, the directory should have mode <tt>0750</tt>.
+    This is necessary because when <tt>log_group</tt> is set to a non-root group, the audit log files are
+    typically configured with mode <tt>0640</tt> (allowing group read access). For group members to access
+    these files, they need execute permission on the directory to traverse it. The <tt>0750</tt> mode allows
+    root full access and the specified group read and execute access, while preventing others from accessing
+    the directory.</li>
+    </ul>
+    <br />
+    If <tt>log_group</tt> is set to a group other than <tt>root</tt>, change the mode of the audit log directory
+    with the following command:
+    <pre>$ sudo chmod 0750 audit_log_directory</pre>
+    Otherwise, change the mode of the audit log directory with the following command:
+    <pre>$ sudo chmod 0700 audit_log_directory</pre>
+    Replace <tt><i>audit_log_directory</i></tt> with the correct audit log directory path.
 
 rationale: 'If users can write to audit logs, audit trails can be modified or destroyed.'
 
@@ -54,11 +64,9 @@ ocil: |-
 
     $ sudo grep "^log_file" /etc/audit/auditd.conf
 
-    {{% if product not in ["ol8", "rhel8"] %}}
     Find the group that owns audit logs:
 
     $ sudo grep "^log_group" /etc/audit/auditd.conf
-    {{% endif %}}
 
     Run the following command to check the mode of the system audit logs:
 
@@ -66,11 +74,7 @@ ocil: |-
 
     Replace "[audit_log_directory]" to the correct audit log directory path, by default this location is "/var/log/audit".
 
-    {{% if product in ["ol8", "rhel8"] %}}
-    The correct permissions are 0700
-    {{% else %}}
     If the log_group is "root" or is not set, the correct permissions are 0700, otherwise they are 0750.
-    {{% endif %}}
 
 fixtext: |-
     Configure the audit log directory to be protected from unauthorized read access by setting the correct permissive mode.
@@ -79,11 +83,6 @@ fixtext: |-
 
     $ sudo grep "^log_file" /etc/audit/auditd.conf
 
-    {{% if product in ["ol8", "rhel8"] %}}
-    Set the correct permissions mode by the following command:
-
-    $ sudo chmod 0700 [audit_log_directory]
-    {{% else %}}
     Find the group that owns audit logs:
 
     $ sudo grep "^log_group" /etc/audit/auditd.conf
@@ -93,7 +92,6 @@ fixtext: |-
     Set the correct permissions mode by the following command:
 
     $ sudo chmod [correct_permissions] [audit_log_directory]
-    {{% endif %}}
 
     Replace "[audit_log_directory]" to the correct audit log directory path, by default this location is "/var/log/audit".
 

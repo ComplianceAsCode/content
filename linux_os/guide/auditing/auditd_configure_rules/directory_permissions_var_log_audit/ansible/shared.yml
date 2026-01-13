@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_all
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -11,35 +11,23 @@
   changed_when: false
   register: log_file_exists
 
-- name: "{{{ rule_title }}} - Set audit log file fact"
+- name: "{{{ rule_title }}} - Set audit log directory path"
   ansible.builtin.set_fact:
-      log_file_line: "{{ log_file_exists.stdout | split(' ') | last }}"
+      log_file_dir: "{{ (log_file_exists.stdout | default('') | split(' ') | last | dirname) | default('/var/log/audit', true) }}"
 
-- name: "{{{ rule_title }}} - Set default log_file if not configured in /etc/audit/auditd.conf"
-  ansible.builtin.set_fact:
-      log_file_dir: "/var/log/audit"
-  when: (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
-
-- name: "{{{ rule_title }}} - Set log_file_dir from log_file_line if configured"
-  ansible.builtin.set_fact:
-      log_file_dir: "{{ log_file_line | dirname}}"
-  when: (log_file_line is defined) and (log_file_line | length > 0)
-
-- name: "{{{ rule_title }}} - Get audit log group"
+- name: "{{{ rule_title }}} - Get audit log group from /etc/audit/auditd.conf"
   ansible.builtin.command: grep -iw ^log_group /etc/audit/auditd.conf
   check_mode: False
   failed_when: false
   changed_when: false
   register: log_group_exists
 
-- name: "{{{ rule_title }}} - Set audit log directory mode to 0700"
-  ansible.builtin.file:
-      path: "{{ log_file_dir }}"
-      mode: 0700
-  when: log_group_exists.stdout | length == 0
+- name: "{{{ rule_title }}} - Set audit log group"
+  ansible.builtin.set_fact:
+      log_group: "{{ (log_group_exists.stdout | default('') | split(' ') | last) | default('root', true) }}"
 
-- name: "{{{ rule_title }}} - Set audit log directory mode to 0750"
+- name: "{{{ rule_title }}} - Set audit log directory permissions"
   ansible.builtin.file:
       path: "{{ log_file_dir }}"
-      mode: 0750
-  when: log_group_exists.stdout | length > 0
+      state: directory
+      mode: "{{ '0700' if log_group == 'root' else '0750' }}"
