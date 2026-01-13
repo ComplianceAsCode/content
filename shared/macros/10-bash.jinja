@@ -2290,6 +2290,31 @@ fi
 
 
 {{#
+    Ensure pam_unix.so module is enabled in specified PAM files and sections.
+    Iterates through the provided PAM files and sections, ensuring that
+    the pam_unix.so module is properly configured with the appropriate control flag.
+    For auth and password sections, it uses "sufficient" control, while for other
+    sections (account, session) it uses "required" control.
+
+:param pam_files: List of PAM configuration file names (without /etc/pam.d/ prefix)
+:type pam_files: list
+:param pam_sections: List of PAM management groups to configure (auth, account, password, session)
+:type pam_sections: list
+
+#}}
+{{%- macro bash_ensure_pam_module_line_unix_enable(pam_files, pam_sections) -%}}
+{{% for pam_file in pam_files %}}
+    {{% for pam_section in pam_sections %}}
+        {{% if pam_section in ["auth", "password"] %}}
+            {{{ bash_ensure_pam_module_line("/etc/pam.d/" + pam_file, pam_section, "sufficient", "pam_unix.so") }}}
+        {{% else %}}
+            {{{ bash_ensure_pam_module_line("/etc/pam.d/" + pam_file, pam_section, "required", "pam_unix.so") }}}
+        {{% endif %}}
+    {{% endfor %}}
+{{% endfor %}}
+{{%- endmacro -%}}
+
+{{#
     Make sure that a line with a specific PAM module is present with the correct control.
     If the line is not present, it will be included after the regex informed in the "after_match"
     parameter. If the "after_match" parameter is empty, the line will be included at the end of

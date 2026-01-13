@@ -1,7 +1,7 @@
-{{% if product == "rhel10" %}}
-{{% set pam_files = ["password-auth", "system-auth"] %}}
-{{% else %}}
-{{% set pam_files = ["common"] %}}
+{{% if "ubuntu" in product or "debian" in product %}}                                                                     
+  {{% set pam_files = ["common"] %}}
+{{% else %}}                                                                                                                                                 
+  {{% set pam_files = ["password-auth", "system-auth"] %}} 
 {{% endif %}}
 {{% set pam_sections = ["auth","account","password","session"] %}}
 <def-group>
@@ -29,10 +29,10 @@
   <ind:textfilecontent54_object id="obj_pam_unix_{{{ pam_file }}}_{{{ pam_section }}}" version="1"
         comment="Get the occurrences of pam_unix.so in {{{ pam_section }}} section of {{{ full_path }}}">
     <ind:filepath>{{{ full_path }}}</ind:filepath>
-{{% if product == "rhel10" %}}
-    <ind:pattern operation="pattern match">^[\s]*{{{ pam_section }}}[\s]+(required|sufficient)[\s]+pam_unix\.so.*$</ind:pattern>
-{{% else %}}
+{{% if "ubuntu" in product or "debian" in product %}}
     <ind:pattern operation="pattern match">^[\s]*{{{ pam_section }}}[\s]+(required|\[(?=.*?\bsuccess=\d+\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bdefault=ignore\b)?.*\])[\s]+pam_unix\.so.*$</ind:pattern>
+{{% else %}}
+    <ind:pattern operation="pattern match">^[\s]*{{{ pam_section }}}[\s]+(required|sufficient)[\s]+pam_unix\.so.*$</ind:pattern>
 {{% endif %}}
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -40,10 +40,10 @@
 
   {{% for pam_file in pam_files %}}
     {{% for pam_section in pam_sections %}}
-      {{% if product == "rhel10" %}}
-        {{% set full_path = "/etc/pam.d/" + pam_file %}}
-      {{% else %}}
+      {{% if "ubuntu" in product or "debian" in product %}}
         {{% set full_path = "/etc/pam.d/" + pam_file + "-" + pam_section %}}
+      {{% else %}}                                                                                                                                          
+        {{% set full_path = "/etc/pam.d/" + pam_file %}}
       {{% endif %}}
       {{{ test_pam_unix(full_path, pam_file, pam_section) }}}
       {{{ object_pam_unix(full_path, pam_file, pam_section) }}}
