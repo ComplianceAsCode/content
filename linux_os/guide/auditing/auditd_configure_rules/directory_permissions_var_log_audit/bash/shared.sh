@@ -8,11 +8,11 @@ fi
 
 if LC_ALL=C grep -m 1 -q ^log_group /etc/audit/auditd.conf; then
   GROUP=$(awk -F "=" '/log_group/ {print $2}' /etc/audit/auditd.conf | tr -d ' ')
-  if ! [ "${GROUP}" == 'root' ] ; then
-    chmod 0750 $DIR
+  if ! [ "$GROUP" == 'root' ] ; then
+    chmod 0750 "$DIR"
   else
-    chmod 0700 $DIR
+    chmod 0700 "$DIR"
   fi
 else
-  chmod 0700 $DIR
+  chmod 0700 "$DIR"
 fi

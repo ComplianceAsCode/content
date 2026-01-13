@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_ol,multi_platform_fedora,multi_platform_rhv,multi_platform_sle,multi_platform_ubuntu,multi_platform_almalinux
+# platform = multi_platform_all
 
 if LC_ALL=C grep -iw ^log_file /etc/audit/auditd.conf; then
     FILE=$(awk -F "=" '/^log_file/ {print $2}' /etc/audit/auditd.conf | tr -d ' ')
@@ -8,11 +8,11 @@ fi
 
 if LC_ALL=C grep -m 1 -q ^log_group /etc/audit/auditd.conf; then
     GROUP=$(awk -F "=" '/log_group/ {print $2}' /etc/audit/auditd.conf | tr -d ' ')
-    if ! [ "${GROUP}" == 'root' ] ; then
-       chmod 0640 $FILE
+    if ! [ "$GROUP" == 'root' ] ; then
+       chmod 0640 "$FILE"
     else
-       chmod 0600 $FILE
+       chmod 0600 "$FILE"
     fi
 else
-    chmod 0600 $FILE
+    chmod 0600 "$FILE"
 fi

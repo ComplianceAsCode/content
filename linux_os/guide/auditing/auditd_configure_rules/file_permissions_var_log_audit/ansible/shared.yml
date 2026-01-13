@@ -29,5 +29,5 @@
 - name: "{{{ rule_title }}} - Set audit log file permissions"
   ansible.builtin.file:
       path: "{{ log_file_path }}"
-      state: touch
+      state: file
       mode: "{{ '0600' if log_group == 'root' else '0640' }}"

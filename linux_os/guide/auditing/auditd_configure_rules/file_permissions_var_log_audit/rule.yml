@@ -11,12 +11,10 @@ description: |-
     By default, the audit log file is <tt>/var/log/audit/audit.log</tt>.
     <br />
     Configure the audit log to be protected from unauthorized read access by setting the correct
-    permissive mode with the following command:
-    <pre>$ sudo chmod 0600 <i>audit_log_file</i></pre>
+    permissive mode.
     If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the
-    <tt>root</tt>
-    group account, change the mode of the audit log files with the following command:
-    <pre>$ sudo chmod 0640 <i>audit_log_ file</i></pre>
+    <tt>root</tt> group account, change the mode of the audit log files with the following command:
+    <pre>$ sudo chmod 0640 <i>audit_log_file</i></pre>
     <br />
     Otherwise, change the mode of the audit log files with the following command:
     <pre>$ sudo chmod 0600 <i>audit_log_file</i></pre>
