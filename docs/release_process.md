@@ -305,6 +305,92 @@ Using `release_helper.py` script:
 ./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content cleanup --branch
 ```
 
+# Update Ansible Roles in Galaxy
+
+After the release is published, the Ansible roles in the RedHatOfficial organization should be
+updated to reflect the latest content.
+
+## Download the Latest Release
+
+- Download the latest released upstream scap-security-guide that contains the built playbooks:
+    - https://github.com/ComplianceAsCode/content/releases
+
+## Switch to the Release Tag
+
+- In your ComplianceAsCode/content repository, switch to the target tag of the release.
+    - For example:
+    ```bash
+    git checkout v0.1.79
+    ```
+
+## Verify the Product Allow List
+
+- Make sure the product allow list in the script contains all the correct RHEL major versions.
+    - If it wasn't updated already in the upstream, update it before proceeding.
+    - Reference: https://github.com/ComplianceAsCode/content/blob/f266b7fdac909a3ce84fdda61355437e00ed761b/utils/ansible_playbook_to_role.py#L65
+
+## Get a GitHub Token
+
+- Get a token from your GitHub account that can access the RedHatOfficial repos and has write permissions (the classic token should be easier to setup):
+    - https://github.com/settings/tokens
+
+## Set Up the Environment
+
+- Switch the environment to use the `ssg` Python environment and install the required dependencies:
+    ```bash
+    source .pyenv.sh
+    pip install "PyGithub>=1.58.2,<2.0"
+    ```
+
+## Run the Ansible Role Update Script
+
+- Run the following command to update the Ansible roles, replacing the token with your GitHub token:
+    ```bash
+    python utils/ansible_playbook_to_role.py --build-playbooks-dir <unzipped built ansible playbooks dir> --token <github_dev_token> --tag-release
+    ```
+
+> **_NOTE:_** It is also possible to use a GitHub user/password combination if the token is not
+provided.
+
+## Refresh Ansible Roles in Ansible Galaxy
+
+After the roles are updated in the [RedHatOfficial](https://github.com/RedHatOfficial/) organization, they need to be refreshed in
+Ansible Galaxy.
+
+### Get the Required Tokens
+
+- Get an Ansible Galaxy token by logging in with your GitHub account:
+    - https://galaxy.ansible.com/ui/token/
+- Get a GitHub token with read access to the [RedHatOfficial](https://github.com/RedHatOfficial/) organization or use the same as in previous steps:
+    - https://github.com/settings/tokens
+
+### Set the Environment Variables
+
+- Set both the `GALAXY_TOKEN` and `GITHUB_TOKEN` environment variables.
+    - For **bash**:
+    ```bash
+    export GALAXY_TOKEN=<your_galaxy_token>
+    export GITHUB_TOKEN=<your_github_token>
+    ```
+    - For **fish**:
+    ```fish
+    set -x GALAXY_TOKEN <your_galaxy_token>
+    set -x GITHUB_TOKEN <your_github_token>
+    ```
+
+### Run the Galaxy Update Script
+
+- Run the following command to refresh the Ansible roles in Ansible Galaxy:
+    ```bash
+    python utils/update_ansible_galaxy_roles.py
+    ```
+
+### Monitor the Import Status
+
+- It usually takes some time until all the roles are refreshed in Galaxy.
+- You can follow the import progress here:
+    - https://galaxy.ansible.com/ui/standalone/imports/
+
 # Announce It!
 
 - Announce the new release on the following communication channels:

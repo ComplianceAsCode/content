@@ -2,14 +2,24 @@ import os
 import subprocess
 import sys
 
+try:
+    from github import Github
+except ImportError:
+    print("Please install PyGithub, you need a specific version of pygithub, "
+          "install it through $ pip install \"PyGithub>=1.58.2,<2.0\"",
+          file=sys.stderr)
+    sys.exit(1)
+
 # --- CONFIGURATION ---
 GITHUB_NAMESPACE = "RedHatOfficial"
 RHEL_ROLE_PREFIX = "ansible-role-rhel"
 ROLE_PREFIX = "ansible-role-"
 
-# The token must be exported in your terminal session before running the script:
-# export GALAXY_TOKEN="your_token_here"
+# The tokens must be exported in your terminal session before running the script:
+# export GALAXY_TOKEN="your_galaxy_token_here"
+# export GITHUB_TOKEN="your_github_token_here"
 GALAXY_TOKEN = os.getenv("GALAXY_TOKEN")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 
 if not GALAXY_TOKEN:
@@ -17,35 +27,27 @@ if not GALAXY_TOKEN:
     print("Please set it (export GALAXY_TOKEN=\"...\") and try again.")
     sys.exit(1)
 
+if not GITHUB_TOKEN:
+    print("ERROR: The GITHUB_TOKEN environment variable is not set.")
+    print("Please set it (export GITHUB_TOKEN=\"...\") and try again.")
+    sys.exit(1)
+
 
 def get_role_repositories():
     """
-    Searches for the list of repositories in the namespace using the GitHub CLI (gh).
+    Retrieves the list of repositories in the namespace using PyGithub.
     """
     print(f"Searching for repositories in '{GITHUB_NAMESPACE}'")
 
-    # Command 'gh search repos' to search for repositories and extract only the name
-    command = [
-        "gh", "search", "repos",
-        f"org:{GITHUB_NAMESPACE}",
-        "--json", "name",
-        "--jq", ".[].name",
-        "--limit", "1000"
-    ]
+    github = Github(GITHUB_TOKEN)
 
     try:
-        # Execute the command and capture the output
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
-        repos = result.stdout.strip().split('\n')
-        return [repo for repo in repos if repo]
+        github_org = github.get_organization(GITHUB_NAMESPACE)
+        repos = [repo.name for repo in github_org.get_repos()]
+        return repos
 
-    except subprocess.CalledProcessError as e:
-        print("\nERROR running the 'gh' command. Check if GitHub CLI is installed and authenticated.")
-        print(f"Error details: {e.stderr}")
-        sys.exit(1)
-    except FileNotFoundError:
-        print("\nERROR: The 'gh' command (GitHub CLI) was not found.")
-        print("Ensure that GitHub CLI is installed and accessible in your PATH.")
+    except Exception as e:
+        print(f"\nERROR accessing GitHub API: {e}")
         sys.exit(1)
 
 
