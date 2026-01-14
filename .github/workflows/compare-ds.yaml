@@ -53,7 +53,10 @@ jobs:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
       - name: Detect content changes in the PR
-        run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.pr_info.outputs.fork_point }} --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json ${{ steps.pr_info.outputs.pr_number }} > output.json
+        env:
+            PR_NUMBER: ${{ steps.pr_info.outputs.pr_number }}
+            FORK_POINT: ${{ steps.pr_info.outputs.fork_point }}
+        run: python3 ./ctf/content_test_filtering.py pr --base "$FORK_POINT" --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json "$PR_NUMBER" > output.json
       - name: Test if there are no content changes
         run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
