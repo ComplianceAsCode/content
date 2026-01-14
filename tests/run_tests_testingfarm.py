@@ -133,9 +133,9 @@ def main():
 
         logger.info("Test execution completed!")
 
-    # Log final output locations
-    logger.info(f"Results written to: {output_results}")
-    logger.info(f"Test files in: {output_files}")
+        # Log final output locations
+        logger.info(f"Results written to: {output_results}")
+        logger.info(f"Test files in: {output_files}")
 
 
 if __name__ == "__main__":
