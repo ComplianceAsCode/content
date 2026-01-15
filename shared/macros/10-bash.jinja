@@ -2454,6 +2454,17 @@ fi
 
 
 {{#
+    Macro used to force re-select the current authselect profile, overwriting any manual modifications.
+    This can fix integrity check failures caused by manual PAM file edits.
+    The --force flag will overwrite modified files without prompting.
+
+#}}
+{{% macro bash_authselect_force_reselect() -%}}
+authselect select $(authselect current --raw) --force
+{{%- endmacro %}}
+
+
+{{#
     Macro used to ensure a custom authselect profile is in use before changing any PAM file.
     This macro is useful in cases where an authselect profile doesn't provide a feature to enable
     the desired PAM module or option. In these cases, a custom authselect profile is necessary.
