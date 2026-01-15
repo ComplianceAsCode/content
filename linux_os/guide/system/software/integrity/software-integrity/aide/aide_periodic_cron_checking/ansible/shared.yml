@@ -3,12 +3,12 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Ensure AIDE is installed"
+- name: "{{{ rule_title }}} - Ensure AIDE is installed"
   ansible.builtin.package:
     name: aide
     state: present
 
-- name: Install cron
+- name: "{{{ rule_title }}} - Install cron"
   ansible.builtin.package:
 {{% if "ubuntu" in product or "debian" in product %}}
     name: cron
@@ -17,12 +17,12 @@
 {{% endif %}}
     state: present
 
-- name: "Gather list of installed packages"
+- name: "{{{ rule_title }}} - Gather List of Installed Packages"
   ansible.builtin.package_facts:
     manager: auto
 
 {{% if product != 'ubuntu2404' %}}
-- name: "{{{ rule_title }}}"
+- name: "{{{ rule_title }}} - Setup Cron Tab"
   ansible.builtin.cron:
 {{% if product in ["sle12", "sle15", "sle16"] %}}
     name: "{{{ rule_title }}}"
