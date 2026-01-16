@@ -85,6 +85,33 @@ jobs:
           name: content-centos-stream${{ matrix.centos_stream_major }}
           path: content-centos-stream${{ matrix.centos_stream_major }}/
 
+      - name: Restore file permissions lost during artifact download
+        run: |
+          # GitHub Actions artifact download strips execute permissions
+          # Restore permissions from the saved file created during build
+          CONTENT_DIR="content-centos-stream${{ matrix.centos_stream_major }}"
+          PERMS_FILE="${CONTENT_DIR}/file-permissions.txt"
+          
+          if [ -f "${PERMS_FILE}" ]; then
+            echo "=== Restoring file permissions from ${PERMS_FILE} ==="
+            cd "${CONTENT_DIR}"
+            while IFS=' ' read -r mode filepath; do
+              # Remove leading ./ from filepath if present
+              filepath="${filepath#./}"
+              if [ -f "${filepath}" ]; then
+                chmod "${mode}" "${filepath}"
+              fi
+            done < file-permissions.txt
+            echo "Restored permissions for $(wc -l < file-permissions.txt) files"
+            # Show sample of restored executable files
+            echo "=== Sample executable files after restore ==="
+            find . -type f -executable -name "*.py" 2>/dev/null | head -5 || true
+            find . -type f -executable -name "*.sh" 2>/dev/null | head -5 || true
+          else
+            echo "WARNING: ${PERMS_FILE} not found, permissions may be incorrect"
+            exit 1
+          fi
+
       - name: Checkout Contest Test Suite
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
