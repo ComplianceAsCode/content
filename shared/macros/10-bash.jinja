@@ -2460,7 +2460,7 @@ fi
 
 #}}
 {{% macro bash_authselect_force_reselect() -%}}
-authselect select $(authselect current --raw) --force
+authselect select "$(authselect current --raw)" --force
 {{%- endmacro %}}
 
 
