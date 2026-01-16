@@ -46,7 +46,7 @@
     - name: '{{{ rule_title }}} - Check if pam_faillock.so exists in auth section of {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
-        regexp: ^\s*auth\s+\S+\s+pam_faillock\.so
+        regexp: ^\s*auth\s+\S+\s+pam_faillock\.so\s+preauth
         state: absent
       check_mode: true
       changed_when: false
@@ -59,6 +59,7 @@
     - name: '{{{ rule_title }}} - Add pam_faillock.so preauth entry in auth section of {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
+        regexp: ^\s*auth\s+\S+\s+pam_faillock\.so\s+preauth
         insertbefore: "^auth"
         line: "auth     required    pam_faillock.so preauth"
         state: present
@@ -85,6 +86,7 @@
     - name: '{{{ rule_title }}} - Add pam_faillock.so entry in account section of {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
+        regexp: ^\s*account\s+\S+\s+pam_faillock\.so
         insertafter: "^account"
         line: "account     required    pam_faillock.so"
         state: present
@@ -98,7 +100,7 @@
     - name: '{{{ rule_title }}} - Check if pam_pwquality.so exists in {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
-        regexp: ^\s*\S+\s+\S+\s+pam_pwquality\.so
+        regexp: ^\s*password\s+\S+\s+pam_pwquality\.so
         state: absent
       check_mode: true
       changed_when: false
@@ -111,6 +113,7 @@
     - name: '{{{ rule_title }}} - Add pam_pwquality.so entry in password section of {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
+        regexp: ^\s*password\s+\S+\s+pam_pwquality\.so
         insertbefore: "^password"
         line: "password     requisite    pam_pwquality.so"
         state: present
@@ -124,7 +127,7 @@
     - name: '{{{ rule_title }}} - Check if pam_pwhistory.so exists in {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
-        regexp: ^\s*\S+\s+\S+\s+pam_pwhistory\.so
+        regexp: ^\s*password\s+\S+\s+pam_pwhistory\.so
         state: absent
       check_mode: true
       changed_when: false
@@ -137,6 +140,7 @@
     - name: '{{{ rule_title }}} - Add pam_pwhistory.so entry after pam_pwquality in {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
+        regexp: ^\s*password\s+\S+\s+pam_pwhistory\.so
         insertafter: "^.*pam_pwquality\\.so.*"
         line: "password     requisite    pam_pwhistory.so"
         state: present
@@ -151,6 +155,7 @@
     - name: '{{{ rule_title }}} - Add pam_pwhistory.so entry at beginning of password section in {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
+        regexp: ^\s*password\s+\S+\s+pam_pwhistory\.so
         insertbefore: "^password"
         line: "password     requisite    pam_pwhistory.so"
         state: present
@@ -178,6 +183,7 @@
     - name: '{{{ rule_title }}} - Add pam_unix.so entry after pam_pwhistory in {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
+        regexp: ^\s*password\s+\S+\s+pam_unix\.so
         insertafter: "^.*pam_pwhistory\\.so.*"
         line: "password     sufficient    pam_unix.so"
         state: present
@@ -192,6 +198,7 @@
     - name: '{{{ rule_title }}} - Add pam_unix.so entry at end of password section in {{ item }}'
       ansible.builtin.lineinfile:
         path: "{{ pam_profile_path }}/{{ item }}"
+        regexp: ^\s*password\s+\S+\s+pam_unix\.so
         insertafter: "^password.*"
         line: "password     sufficient    pam_unix.so"
         state: present
