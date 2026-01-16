@@ -917,6 +917,21 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- endmacro %}}
 
 {{#
+    Macro used to force reselect the current authselect profile. This is equivalent to running
+    'authselect select $(authselect current --raw) --force' which reapplies the current profile
+    with the --force option.
+
+:param rule_title:        The title of the rule using this macro.
+:type rule_title: str
+
+#}}
+{{% macro ansible_authselect_force_reselect(rule_title=None) -%}}
+- name: '{{{ rule_title }}} - Force reselect authselect profile'
+  ansible.builtin.shell:
+    cmd: authselect select $(authselect current --raw) --force
+{{%- endmacro %}}
+
+{{#
     Macro used to apply changes on pam-auth-update profiles. If the "profile_name" parameter is not defined, the
     pam-auth-update will apply all profile changes by default.
 
