@@ -10,6 +10,4 @@ authselect select $CUSTOM_PROFILE --force
 authselect enable-feature with-pwhistory
 authselect enable-feature with-faillock
 
-pam_profile_path="/etc/authselect/$CUSTOM_PROFILE"
-
 authselect apply-changes
