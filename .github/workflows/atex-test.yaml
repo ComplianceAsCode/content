@@ -46,6 +46,10 @@ jobs:
           echo "pr_sha=${PR_SHA}" >> $GITHUB_OUTPUT
           echo "PR Number: ${PR_NUMBER}"
           echo "PR SHA: ${PR_SHA}"
+          if ! [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "Invalid PR number: $PR_NUMBER"
+          exit 1
+          fi
 
       - name: Create GitHub check run
         uses: LouisBrunner/checks-action@6b626ffbad7cc56fd58627f774b9067e6118af23 # v2.0.0
@@ -201,8 +205,10 @@ jobs:
 
       - name: Update HTML title with PR number
         if: always()
+        env:
+            PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
         run: |
-          sed "/<title>/s/>.*</>Test outputs from PR #${{ needs.check_build.outputs.pr_number }} HTML</" \
+          sed "/<title>/s/>.*</>Test outputs from PR #${PR_NUMBER} HTML</" \
             -i atex-html/index.html
 
       - name: Merge test results from all versions
@@ -244,8 +250,8 @@ jobs:
 
           git add .
           git commit -m "Test outputs from PR #${PR_NUMBER}"
-          git tag PR${PR_NUMBER}
-          git push origin PR${PR_NUMBER}
+          git tag "PR${PR_NUMBER}"
+          git push origin "PR${PR_NUMBER}"
 
       - name: Submit results to Testing Farm
         if: always()
@@ -295,7 +301,7 @@ jobs:
           GH_TOKEN: ${{ secrets.ATEX_RESULTS_TF_REPO_TOKEN }}
           PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
         run: |
-          git push --delete origin PR${PR_NUMBER}
+          git push --delete origin "PR${PR_NUMBER}"
 
       - name: Update GitHub check run
         if: always()
