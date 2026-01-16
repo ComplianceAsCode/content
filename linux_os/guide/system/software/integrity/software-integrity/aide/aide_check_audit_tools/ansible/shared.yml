@@ -10,18 +10,18 @@
     manager: auto
 
 
-- name: Ensure aide is installed
+- name: "{{{ rule_title }}} - Ensure AIDE is Installed"
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items:
     - aide
 
-- name: "{{{ rule_title }}} - Gather the package facts"
+- name: "{{{ rule_title }}} - Gather the Package Facts"
   ansible.builtin.package_facts:
     manager: auto
 
-- name: Set audit_tools fact
+- name: Set "{{{ rule_title }}} - audit_tools fact"
   ansible.builtin.set_fact:
     audit_tools:
       {{% if aide_also_checks_audispd == "yes" -%}}
@@ -37,7 +37,7 @@
       - /usr/sbin/rsyslogd
       {{%- endif %}}
 
-- name: Ensure existing AIDE configuration for audit tools are correct
+- name: "{{{ rule_title }}} - Ensure Existing AIDE Configuration for Audit Tools are Correct"
   ansible.builtin.lineinfile:
     path: {{{ aide_conf_path }}}
     regexp: ^{{ item }}\s
@@ -47,7 +47,7 @@
   when:
     - '"aide" in ansible_facts.packages'
 
-- name: Configure AIDE to properly protect audit tools
+- name: "{{{ rule_title }}} - Configure AIDE to Properly Protect Audit Tools"
   ansible.builtin.lineinfile:
     path: {{{ aide_conf_path }}}
     line: "{{ item }} {{{ aide_string() }}}"
