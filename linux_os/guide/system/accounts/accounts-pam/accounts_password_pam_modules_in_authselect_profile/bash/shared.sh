@@ -4,13 +4,6 @@
 
 {{{ bash_ensure_authselect_custom_profile() }}}
 
-pam_profile="$(head -1 /etc/authselect/authselect.conf)"
-if grep -Pq -- '^custom/' <<< "$pam_profile"; then
-    pam_profile_path="/etc/authselect/$pam_profile"
-else
-    pam_profile_path="/usr/share/authselect/default/$pam_profile"
-fi
-
 # Function to add a missing PAM module to a file
 # This function handles module placement based on typical PAM stack ordering
 add_pam_module() {
@@ -125,6 +118,8 @@ add_pam_module() {
 }
 
 # Check and ensure modules are present in both system-auth and password-auth
+pam_profile="$(head -1 /etc/authselect/authselect.conf)"
+pam_profile_path="/etc/authselect/$pam_profile"
 for authselect_file in "$pam_profile_path"/system-auth "$pam_profile_path"/password-auth; do
     if [ ! -f "$authselect_file" ]; then
         echo "Warning: $authselect_file not found"
