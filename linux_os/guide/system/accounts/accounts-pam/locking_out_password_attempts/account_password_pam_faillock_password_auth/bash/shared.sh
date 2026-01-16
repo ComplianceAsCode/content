@@ -4,4 +4,5 @@
 # complexity = low
 # disruption = low
 
+{{{ bash_authselect_force_reselect() }}}
 {{{ bash_pam_faillock_enable() }}}
