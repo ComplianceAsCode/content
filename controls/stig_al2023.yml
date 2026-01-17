@@ -209,6 +209,14 @@ controls:
       - sudo_remove_nopasswd
     status: automated
 
+  - id: AZLX-23-002610
+    levels:
+      - medium
+    title: Amazon Linux 2023 must implement nonexecutable data to protect its memory from unauthorized code execution.
+    rules:
+      - bios_enable_execution_restrictions
+    status: automated
+
   - id: AZLX-23-001025
     levels:
       - medium
@@ -1740,13 +1748,7 @@ controls:
       configured on impacted network interfaces.
     rules: []
     status: pending
-  - id: AZLX-23-002610
-    levels:
-      - medium
-    title: Amazon Linux 2023 must implement nonexecutable data to protect its
-      memory from unauthorized code execution.
-    rules: []
-    status: pending
+
   - id: AZLX-23-002615
     levels:
       - low
