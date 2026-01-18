@@ -248,7 +248,7 @@ controls:
       - medium
     title: Amazon Linux 2023 must have the rsyslog package installed.
     rules:
-      - service_rsyslog_enabled
+      - package_rsyslog_installed
     status: automated
 
   - id: AZLX-23-001045
@@ -291,8 +291,10 @@ controls:
     title: Amazon Linux 2023 must routinely check the baseline configuration for
       unauthorized changes and notify the system administrator when anomalies in
       the operation of any security functions are discovered.
-    rules: []
-    status: pending
+    rules: 
+      - aide_scan_notification
+    status: automated
+
   - id: AZLX-23-001070
     levels:
       - medium
@@ -374,8 +376,10 @@ controls:
       - medium
     title: Amazon Linux 2023 must have the packages required for encrypting
       off-loaded audit logs installed.
-    rules: []
-    status: pending
+    rules: 
+      - package_rsyslog-gnutls_installed
+    status: automated
+
   - id: AZLX-23-001125
     levels:
       - medium
@@ -415,8 +419,10 @@ controls:
     levels:
       - medium
     title: Amazon Linux 2023 must have the crypto-policies package installed.
-    rules: []
+    rules: 
+      - package_crypto-policies_installed
     status: pending
+
   - id: AZLX-23-001200
     levels:
       - medium
@@ -433,7 +439,9 @@ controls:
     title: Amazon Linux 2023 server must be configured to use only DOD-approved
       encryption ciphers employing FIPS 140-2/140-3 validated cryptographic hash
       algorithms to protect the confidentiality of SSH server connections.
-    status: pending
+    status: automated
+    rules:
+        - harden_sshd_ciphers_opensshserver_conf_crypto_policy
 
   - id: AZLX-23-001210
     levels:
@@ -442,8 +450,11 @@ controls:
       Authentication Codes (MACs) employing FIPS 140-2/140-3 validated
       cryptographic hash algorithms to protect the confidentiality of SSH server
       connections.
-    rules: []
+    rules:
+      - harden_sshd_ciphers_openssh_conf_crypto_policy
+      - harden_sshd_macs_openssh_conf_crypto_policy
     status: pending
+
   - id: AZLX-23-001215
     levels:
       - medium
@@ -534,24 +545,34 @@ controls:
     title:
       Amazon Linux 2023 must implement DOD-approved encryption in the OpenSSL
       package.
-    rules: []
-    status: pending
+    rules: 
+      - configure_openssl_crypto_policy
+    status: automated
 
   - id: AZLX-23-001265
     levels:
       - medium
     title: Amazon Linux 2023 must implement DOD-approved TLS encryption in the
       OpenSSL package.
-    rules: []
-    status: pending
+    rules:
+      - configure_openssl_tls_crypto_policy
+    status: automated
 
   - id: AZLX-23-001270
     levels:
       - medium
     title: Amazon Linux 2023 must implement a FIPS 140-2/140-3 compliant
       systemwide cryptographic policy.
-    rules: []
-    status: pending
+    rules:
+      - harden_sshd_ciphers_openssh_conf_crypto_policy
+      - harden_sshd_macs_openssh_conf_crypto_policy
+      - enable_fips_mode
+      - configure_bind_crypto_policy
+      - configure_crypto_policy
+      - configure_kerberos_crypto_policy
+      - configure_libreswan_crypto_policy
+      - sysctl_crypto_fips_enabled
+    status: automated
 
   - id: AZLX-23-001275
     levels:
@@ -579,7 +600,8 @@ controls:
     levels:
       - medium
     title: Amazon Linux 2023 crypto policy must not be overridden.
-    rules: []
+    rules: 
+      - configure_ssh_crypto_policy
     status: pending
 
   - id: AZLX-23-001290
@@ -1647,6 +1669,7 @@ controls:
       size to capture processes that start prior to the audit daemon.
     rules:
       - grub2_audit_backlog_limit_argument
+      - var_audit_backlog_limit=8192
     status: automated
 
   - id: AZLX-23-002535
@@ -1804,3 +1827,10 @@ controls:
     rules:
       - enable_authselect
       - var_authselect_profile=sssd
+      - enable_fips_mode
+      - var_system_crypto_policy=fips
+      - configure_crypto_policy
+      - configure_bind_crypto_policy
+      - configure_libreswan_crypto_policy
+      - configure_kerberos_crypto_policy
+
