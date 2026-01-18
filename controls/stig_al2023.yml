@@ -610,6 +610,7 @@ controls:
     title: Amazon Linux 2023 must enable certificate-based smart card
       authentication.
     rules:
+      - package_sssd_installed
       - sssd_enable_smartcards
     status: automated
 
@@ -824,7 +825,8 @@ controls:
     title: Amazon Linux 2023 must be configured to off-load audit records onto a
       different system from the system being audited via syslog.
     rules:
-      - rsyslog_remote_loghost
+      - service_systemd-journal-upload_enabled
+      - systemd_journal_upload_url
     status: automated
 
   - id: AZLX-23-002085
@@ -951,7 +953,7 @@ controls:
       - medium
     title: Amazon Linux 2023 must audit all uses of the create_module system call.
     rules:
-      - audit_rules_execution_semanage
+      - audit_rules_kernel_module_loading_create
     status: automated
 
   - id: AZLX-23-002145
@@ -1837,4 +1839,5 @@ controls:
       - configure_bind_crypto_policy
       - configure_libreswan_crypto_policy
       - configure_kerberos_crypto_policy
+      - package_authselect_installed
 
