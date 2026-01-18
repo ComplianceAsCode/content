@@ -25,3 +25,13 @@ overrides:
     - /usr/sbin/augenrules
     - /usr/sbin/audisp-syslog
 {{% endif %}}
+{{% if product == 'al2023' %}}
+  audit_binaries:
+    - /sbin/auditctl
+    - /sbin/aureport
+    - /sbin/ausearch
+    - /sbin/autrace
+    - /sbin/auditd
+    - /sbin/augenrules
+    - /sbin/audisp-syslog
+{{% endif %}}

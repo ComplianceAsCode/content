@@ -6,6 +6,8 @@ description: |-
     TLS protocol support for rsyslog is installed.
     {{% if 'sle' not in product %}}
     {{{ describe_package_install(package="rsyslog-gnutls") }}}
+    {{% elif 'amzn' in families %}}
+    {{{ describe_package_install(package="rsyslog-openssl") }}}
     {{% else %}}
     {{{ describe_package_install(package="rsyslog-module-gtls") }}}
     {{% endif %}}
@@ -32,6 +34,8 @@ ocil_clause: 'the package is not installed'
 
 {{% if 'sle' not in product %}}
 {{{ complete_ocil_entry_package(package="rsyslog-gnutls") }}}
+{{% elif 'amzn' in families %}}
+{{{ complete_ocil_entry_package(package="rsyslog-openssl") }}}
 {{% else %}}
 {{{ complete_ocil_entry_package(package="rsyslog-module-gtls") }}}
 {{% endif %}}
