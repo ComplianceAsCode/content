@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Ensure authselect is Installed'
+
+description: 'The authselect package should be installed.'
+
+rationale: |-
+    The authselect package is required to configure system authentication.
+    It provides a way to select a system authentication profile instead of
+    manually building the PAM stack. This helps prevent potential breakage
+    of configuration by providing tested profiles for different use cases.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88249-8
+    cce@rhel9: CCE-89733-0
+    cce@rhel10: CCE-87408-1
+    cce@al2023: CCE-89733-0
+
+references:
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    nist: AC-3
+    ospp: FIA_UAU.1,FIA_AFL.1
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'the authselect package is not installed'
+
+ocil: '{{{ ocil_package("authselect") }}}'
+
+fixtext: |-
+    Install the authselect package with the following command:
+
+    {{{ package_install("authselect") }}}
+
+srg_requirement: '{{{ srg_requirement_package_installed("authselect") }}}'
+
+template:
+    name: package_installed
+    vars:
+      pkgname: authselect
