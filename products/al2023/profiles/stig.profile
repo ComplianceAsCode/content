@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: 1.0.0
+    version: V1R1
     SMEs:
         - bordencastle
         - Eric-Domeier
