@@ -421,7 +421,7 @@ controls:
     title: Amazon Linux 2023 must have the crypto-policies package installed.
     rules: 
       - package_crypto-policies_installed
-    status: pending
+    status: automated
 
   - id: AZLX-23-001200
     levels:
@@ -453,7 +453,7 @@ controls:
     rules:
       - harden_sshd_ciphers_openssh_conf_crypto_policy
       - harden_sshd_macs_openssh_conf_crypto_policy
-    status: pending
+    status: automated
 
   - id: AZLX-23-001215
     levels:
@@ -602,7 +602,7 @@ controls:
     title: Amazon Linux 2023 crypto policy must not be overridden.
     rules: 
       - configure_ssh_crypto_policy
-    status: pending
+    status: automated
 
   - id: AZLX-23-001290
     levels:
@@ -845,7 +845,8 @@ controls:
       /etc/sudoers.d/ directory.
     rules: 
       - audit_rules_sudoers_d
-    status: pending
+    status: automated
+
   - id: AZLX-23-002095
     levels:
       - medium
@@ -1059,7 +1060,7 @@ controls:
       /etc/passwd.
     rules: 
       - audit_rules_usergroup_modification_shadow
-    status: pending
+    status: automated
 
   - id: AZLX-23-002210
     levels:
@@ -1078,7 +1079,7 @@ controls:
       processing failure.
     rules: 
       - auditd_data_retention_action_mail_acct
-    status: pending
+    status: automated
 
   - id: AZLX-23-002220
     levels:
@@ -1097,7 +1098,7 @@ controls:
       restricted logging group to prevent unauthorized read access.
     rules: 
       - file_group_ownership_var_log_audit
-    status: pending
+    status: automated
 
   - id: AZLX-23-002230
     levels:
@@ -1107,7 +1108,7 @@ controls:
       unauthorized read access.
     rules:
       - file_ownership_var_log_audit_stig
-    status: pending
+    status: automated
 
   - id: AZLX-23-002235
     levels:
@@ -1116,7 +1117,7 @@ controls:
       permissive to prevent unauthorized access to the audit log.
     rules: 
       - file_permissions_var_log_audit
-    status: pending
+    status: automated
 
   - id: AZLX-23-002240
     levels:
@@ -1461,13 +1462,16 @@ controls:
       accounts after 72 hours.
     rules: []
     status: pending
+
   - id: AZLX-23-002420
     levels:
       - medium
     title: Amazon Linux 2023 must automatically lock an account when three
       unsuccessful logon attempts occur.
-    rules: []
-    status: pending
+    rules:
+      - accounts_passwords_pam_faillock_deny
+    status: automated
+
   - id: AZLX-23-002425
     levels:
       - medium

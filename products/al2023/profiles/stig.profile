@@ -20,6 +20,8 @@ description: |-
 
 selections:
     - stig_al2023:all
+    - aide_use_fips_hashes
+    - aide_build_database
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime
@@ -52,3 +54,5 @@ selections:
     - grub2_audit_backlog_limit_argument
     - grub2_audit_argument
     - file_permissions_var_log_audit
+    - rsyslog_logging_configured
+    
