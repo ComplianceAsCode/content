@@ -17,10 +17,11 @@ overrides:
     {{% else %}}
   aide_also_checks_audispd: "no"
     {{% endif %}}
-  {{% elif "amzn" in families %}}
-  aide_also_checks_audispd: "yes"
   {{% endif %}}
 {{% elif "rhel-like" not in families %}}
   aide_also_checks_rsyslog: "no"
+  aide_also_checks_audispd: "yes"
+{{% elif "amzn" in families %}}
+  aide_also_checks_rsyslog: "yes"
   aide_also_checks_audispd: "yes"
 {{% endif %}}
