@@ -46,10 +46,13 @@ template:
         pkgname: rsyslog-gnutls
         pkgname@sle12: rsyslog-module-gtls
         pkgname@sle15: rsyslog-module-gtls
+        pkgname@al2023: rsyslog-openssl
 
 fixtext: |-
     {{% if 'sle' not in product %}}
     {{{ describe_package_install(package="rsyslog-gnutls") }}}
+    {{% elif 'amzn' in families %}}
+    {{{ describe_package_install(package="rsyslog-openssl") }}}
     {{% else %}}
     {{{ describe_package_install(package="rsyslog-module-gtls") }}}
     {{% endif %}}
