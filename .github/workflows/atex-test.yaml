@@ -67,6 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check_build
     strategy:
+      fail-fast: false
       matrix:
         centos_stream_major: [8, 9, 10]
     container:
