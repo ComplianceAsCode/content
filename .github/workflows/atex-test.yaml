@@ -311,6 +311,7 @@ jobs:
           check_id: ${{ needs.check_build.outputs.check_id }}
           sha: ${{ needs.check_build.outputs.pr_sha }}
           status: completed
-          conclusion: ${{ job.status }}
+          # Use test job result to determine conclusion - needs.test.result will be 'failure' if any matrix job failed
+          conclusion: ${{ needs.test.result }}
           output: |
             {"summary":"ATEX tests completed. Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. View results: ${{ steps.testing_farm_request.outputs.HTML_LINK }}","title":"ATEX Testing Complete"}
