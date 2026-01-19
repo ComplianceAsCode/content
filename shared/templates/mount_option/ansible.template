@@ -16,7 +16,7 @@
 
 {{% if EXCLUDE_FILESYSTEM_TYPE %}}
 - name: "{{{ rule_title }}}: Check filesystem type of {{{ MOUNTPOINT }}}"
-  command: findmnt --kernel --raw --evaluate --output=FSTYPE '{{{ MOUNTPOINT }}}'
+  ansible.builtin.command: findmnt --kernel --raw --evaluate --output=FSTYPE '{{{ MOUNTPOINT }}}'
   register: fs_type_check
   failed_when: fs_type_check.rc > 1
   changed_when: False
@@ -28,7 +28,7 @@
 {{% endif %}}
 
 - name: "{{{ rule_title }}}: Check information associated to mountpoint"
-  command: findmnt {{{ TABFILE }}} '{{{ MOUNTPOINT }}}'
+  ansible.builtin.command: findmnt {{{ TABFILE }}} '{{{ MOUNTPOINT }}}'
   register: device_name
   failed_when: device_name.rc > 1
   changed_when: False
@@ -78,7 +78,7 @@
 {{% endif %}}
 
 - name: "{{{ rule_title }}}: Ensure {{{ MOUNTPOINT }}} is mounted with {{{ MOUNTOPTION }}} option"
-  mount:
+  ansible.posix.mount:
     path: "{{{ MOUNTPOINT }}}"
     src: "{{ mount_info.source | default('') }}"
     opts: "{{ mount_info.options | default('') }}"
