@@ -472,7 +472,7 @@ controls:
       title: OL 9 must not have the quagga package installed.
       rules:
           - package_quagga_removed
-      status: automated
+      status: not applicable  # The quagga package is not available in OL 9
 
     - id: OL09-00-000145
       levels:
@@ -914,6 +914,7 @@ controls:
           - medium
       title: OL 9 cron configuration directories must have a mode of 0700 or less permissive.
       rules:
+          - package_cron_installed
           - file_permissions_cron_d
           - file_permissions_cron_daily
           - file_permissions_cron_hourly
@@ -936,7 +937,7 @@ controls:
           - medium
       title: OL 9 local initialization files must have mode 0740 or less permissive.
       rules:
-          - file_permission_user_init_files
+          - file_permission_user_init_files_root
       status: automated
 
     - id: OL09-00-002515
@@ -2931,6 +2932,7 @@ controls:
       title: OL 9 must have the AIDE package installed.
       rules:
           - package_aide_installed
+          - aide_build_database
       status: automated
 
     - id: OL09-00-000301
@@ -2939,7 +2941,6 @@ controls:
       title: OL 9 must routinely check the baseline configuration for unauthorized changes and notify
           the system administrator when anomalies in the operation of any security functions are discovered.
       rules:
-          - aide_periodic_cron_checking
           - aide_scan_notification
       status: automated
 
