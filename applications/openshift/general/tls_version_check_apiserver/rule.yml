@@ -1,5 +1,5 @@
 
-title: Ensure TLS v1.2 is minimum for Openshift APIServer
+title: Ensure TLS configured on a minimum for Openshift APIServer
 
 description: |-
   Verify tls version for the openshift APIServer.
@@ -27,12 +27,13 @@ references:
 
 platform: not ocp4-on-hypershift-hosted
 
-ocil_clause: 'Ensure TLS version is equal to 1.2 or greater for the openshift api server'
+ocil_clause: 'Ensure TLS version is equal to {{ .var_tls_version_apiserver }} or greater for the openshift api server'
 
 ocil: |-
     Run the following command to check for TLS version:
     <pre>$ oc get configmap config  -n openshift-apiserver -o json | grep -o VersionTLS[0-9]*</pre>
-    Make sure that the result has a value of VersionTLSXX where XX is 12 or greater.
+    Make sure that the result has a value of VersionTLSXX where XX is 12 or greater, depending on the configured value.
+    The current configured value is {{ .var_tls_version_apiserver }}.
 
 severity: medium
 
@@ -44,10 +45,7 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    entity_check: "at least one"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath:  '.servingInfo["minTLSVersion"]'
-    values:
-    - value: 'VersionTLS1[2-9]{1}'
-      operation: "pattern match"
-      type: "string"
+    xccdf_variable: var_tls_version_apiserver_regex
+    regex_data: true
