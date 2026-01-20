@@ -80,6 +80,7 @@ jobs:
           name: content-centos-stream${{ matrix.centos_stream_major }}
           path: .
           retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+          include-hidden-files: true # make sure all .dot files are included e.g. .cmakelintrc
 
   save_pr_info:
     name: Save PR information for workflow_run
