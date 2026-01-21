@@ -49,6 +49,11 @@ title: Implement Custom Crypto Policy Modules for CIS Benchmark
         "key": "mac",
         "value": "-*-128*"
     },
+    {
+        "module_name": "NO-RPMSHA1",
+        "key": "hash@rpm",
+        "value": "-SHA1"
+    },
 ] %}}
 {{% elif product == "rhel10" or product == "fedora" %}}
 {{% set base_policy = "DEFAULT" %}}
