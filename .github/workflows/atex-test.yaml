@@ -12,6 +12,9 @@ env:
   CONTEST_REPO: RHSecurityCompliance/contest
   ARTIFACT_RETENTION_DAYS: 1
   TEST_TIMEOUT: 1440 # 24 hours
+  # CentOS Stream versions to test (space-separated for shell loops)
+  # NOTE: Keep in sync with matrix.centos_stream_major in the test job
+  CS_VERSIONS: "8 9 10"
 
 permissions:
   contents: read
@@ -66,9 +69,14 @@ jobs:
     name: Test on CentOS Stream ${{ matrix.centos_stream_major }}
     runs-on: ubuntu-latest
     needs: check_build
+    outputs:
+      # Contest SHA from any matrix job (all use same ref, so same SHA)
+      contest_sha: ${{ steps.get_contest.outputs.contest_sha }}
+      contest_ref: ${{ steps.get_contest.outputs.contest_ref }}
     strategy:
       fail-fast: false
       matrix:
+        # NOTE: Keep in sync with env.CS_VERSIONS at the top of this file
         centos_stream_major: [8, 9, 10]
     container:
       image: fedora:latest
@@ -112,6 +120,9 @@ jobs:
             exit 1
           fi
 
+      - name: Install git for checkout
+        run: dnf -y install git
+
       - name: Checkout Contest Test Suite
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
@@ -120,9 +131,18 @@ jobs:
           path: contest
           fetch-depth: 1
 
+      - name: Get Contest SHA
+        id: get_contest
+        run: |
+          CONTEST_SHA=$(cd contest && git rev-parse HEAD)
+          CONTEST_REF="main"
+          echo "contest_sha=${CONTEST_SHA}" >> $GITHUB_OUTPUT
+          echo "contest_ref=${CONTEST_REF}" >> $GITHUB_OUTPUT
+          echo "Contest: ${CONTEST_SHA:0:12} (${CONTEST_REF})"
+
       - name: Install test dependencies
         run: |
-          dnf -y install python3-pip git rsync
+          dnf -y install python3-pip rsync
           pip install fmf atex==0.11
 
       - name: Run tests on Testing Farm
@@ -244,7 +264,7 @@ jobs:
           mkdir -p atex-results-testing-farm/files_dir/
 
           # Process and merge results for all CentOS Stream versions
-          for version in 8 9 10; do
+          for version in ${{ env.CS_VERSIONS }}; do
             results_file="test-results/cs${version}/results-centos-stream-${version}-x86_64.json.xz"
             files_dir="test-results/cs${version}/files-centos-stream-${version}-x86_64"
 
@@ -264,6 +284,74 @@ jobs:
         if: always()
         run: |
           cp -rf atex-html/index.html atex-html/sqljs/ atex-results-testing-farm/
+
+      - name: Generate header.html for results page
+        if: always()
+        env:
+          PR_NUMBER: ${{ needs.check_build.outputs.pr_number }}
+          PR_SHA: ${{ needs.check_build.outputs.pr_sha }}
+          CONTEST_SHA: ${{ needs.test.outputs.contest_sha }}
+          CONTEST_REF: ${{ needs.test.outputs.contest_ref }}
+          WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+          RUN_STARTED: ${{ github.event.workflow_run.created_at }}
+          CS_VERSIONS: ${{ env.CS_VERSIONS }}
+        run: |
+          cat > atex-results-testing-farm/header.html <<'HEADER_EOF'
+          <style>
+              #header table {
+                  display: inline-table;
+                  margin-right: 1em;
+                  vertical-align: top;
+                  border-collapse: collapse;
+              }
+              #header th, td {
+                  border: 1px solid black;
+                  padding: 0.3em;
+              }
+              #header h1 {
+                  color: #aaa;
+                  margin: 0;
+              }
+              #header h2 {
+                  color: #555;
+                  margin: 0;
+              }
+          </style>
+          HEADER_EOF
+
+          # Add dynamic content - header section
+          cat >> atex-results-testing-farm/header.html <<EOF
+          <h1>ATEX Upstream Testing</h1>
+          <h2>PR <a href="${REPO_URL}/pull/${PR_NUMBER}">#${PR_NUMBER}</a>
+           - Workflow <a href="${WORKFLOW_URL}">#${{ github.run_id }}</a>
+           started on <span id="header-started-on"></span>
+           by <a href="https://github.com/${ACTOR}"><code>${ACTOR}</code></a></h2>
+          <script>document.getElementById('header-started-on').textContent = new Date('${RUN_STARTED}').toLocaleString()</script>
+          <div style="margin-top: 1em; margin-bottom: 1em">
+              <table>
+                  <tr><th colspan="1">CentOS Stream</th></tr>
+          EOF
+
+          # List each CentOS Stream version that was tested
+          for version in ${CS_VERSIONS}; do
+            echo "            <tr><td>${version}</td></tr>" >> atex-results-testing-farm/header.html
+          done
+
+          # Add commit info table
+          cat >> atex-results-testing-farm/header.html <<EOF
+              </table>
+              <table>
+                  <tr><th>Repo</th><th>Commit used</th></tr>
+                  <tr><td>Content</td><td style="font-family: monospace, monospace;"><a href="${REPO_URL}/commit/${PR_SHA}">${PR_SHA:0:12}</a></td></tr>
+                  <tr><td>Contest (${CONTEST_REF})</td><td style="font-family: monospace, monospace;"><a href="https://github.com/${{ env.CONTEST_REPO }}/commit/${CONTEST_SHA}">${CONTEST_SHA:0:12}</a></td></tr>
+              </table>
+          </div>
+          EOF
+
+          echo "=== Generated header.html ==="
+          cat atex-results-testing-farm/header.html
 
       - name: Commit and tag results in ATEX repository
         if: always()
