@@ -18,12 +18,12 @@ jobs:
             -   name: Install deps python
                 run: pip install gitpython xmldiff
             -   name: Checkout
-                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.1
                 with:
                     ref: ${{ github.event.pull_request.head.sha }}
                     fetch-depth: 0
             -   name: Checkout (CTF)
-                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.1
                 with:
                     repository: ComplianceAsCode/content-test-filtering
                     path: ctf
@@ -61,7 +61,7 @@ jobs:
                     tar -czvf artifacts.tar.gz artifacts
             -   name: Upload artifacts
                 if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
                 with:
                     name: pr-artifacts-${{ github.event.pull_request.head.sha }}
                     retention-days: 1
@@ -74,7 +74,7 @@ jobs:
                     echo "${{ github.base_ref }}" > pr-info/base-branch.txt
                     echo "${{ steps.fork_point.outputs.FORK_POINT }}" > pr-info/fork-point.txt
             -   name: Upload PR info
-                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
                 with:
                     name: pr-info
                     retention-days: 1
