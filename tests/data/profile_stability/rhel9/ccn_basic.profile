@@ -1,5 +1,6 @@
 accounts_maximum_age_login_defs
 accounts_minimum_age_login_defs
+accounts_password_minlen_login_defs
 accounts_password_pam_dcredit
 accounts_password_pam_lcredit
 accounts_password_pam_minlen
@@ -102,6 +103,7 @@ sysctl_net_ipv6_conf_default_accept_source_route
 usbguard_generate_policy
 var_accounts_maximum_age_login_defs=45
 var_accounts_minimum_age_login_defs=2
+var_accounts_password_minlen_login_defs=12
 var_accounts_password_warn_age_login_defs=10
 var_auditd_max_log_file_action=rotate
 var_authselect_profile=sssd
