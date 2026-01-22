@@ -9,13 +9,13 @@
     conf_files: [ '/etc/rsyslog.conf' ]
     remote_methods:
       - selector: 'auth.*'
-        regexp: ^.*auth\.\*.*$
+        regexp: ^[^#]*auth\.\*.*$
         location: "/var/log/secure"
       - selector: 'authpriv.*'
-        regexp: ^.*authpriv\.\*.*$
+        regexp: ^[^#]*authpriv\.\*.*$
         location: "/var/log/secure"
       - selector: 'daemon.*'
-        regexp: ^.*daemon\.\*.*$
+        regexp: ^[^#]*daemon\.\*.*$
         location: "/var/log/messages"
 
 - name: "{{{ rule_title }}}: Ensure rsyslog.conf exists"

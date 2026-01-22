@@ -27,7 +27,7 @@
   {{% macro object_remote_method(method, test_ref) %}}
   <ind:textfilecontent54_object id="obj_{{{ test_ref }}}" version="1">
     <ind:filepath operation="pattern match">^/etc/rsyslog\.(conf|d/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">^[^#\n]*{{{ method }}}(,\w+)*\.\*[^\n]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*(?:(?:\w+,)*{{{ method }}}(?:,\w+)*\.\*|\S+;{{{ method }}}\.\*|{{{ method }}}\.\*;\S+|\S+;{{{ method }}}\.\*;\S+)[ \t]+(?:(?!action\()\S+|action\([^)]*file\s*=\s*["'][^"']+["'][^)]*\))\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endmacro %}}
