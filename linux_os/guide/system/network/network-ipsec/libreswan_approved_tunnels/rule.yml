@@ -8,7 +8,11 @@ description: |-
     and IKE, which permits the creation of secure tunnels over
     untrusted networks. As such, IPsec can be used to circumvent certain
     network requirements such as filtering. Verify that if any IPsec connection
+    {{% if product in ['sle15', 'sle16'] %}}
+    (<tt>conn</tt>) configured in <tt>/etc/swanctl/swanctl.conf</tt> and <tt>/etc/swanctl/conf.d/</tt>
+    {{% else %}}
     (<tt>conn</tt>) configured in <tt>/etc/ipsec.conf</tt> and <tt>/etc/ipsec.d</tt>
+    {{% endif %}}
     exists is an approved organizational connection.
 
 rationale: 'IP tunneling mechanisms can be used to bypass network filtering.'
@@ -20,6 +24,7 @@ identifiers:
     cce@rhel9: CCE-90319-5
     cce@rhel10: CCE-87382-8
     cce@sle15: CCE-91153-7
+    cce@sle16: CCE-95793-6
 
 references:
     cis-csc: 1,12,13,14,15,16,18,4,6,8,9
@@ -41,18 +46,36 @@ ocil: |-
     {{% if 'rhel' in product or 'ol' in families %}}
     # {{{ pkg_manager }}} list installed libreswan
     libreswan.x86-64 3.20-5.el7_4
+    {{% elif product in ['sle15', 'sle16'] %}}
+    strongswan
     {{% endif %}}
 
+    {{% if product in ['sle15', 'sle16'] %}}
     If "libreswan" is installed, check to see if the "IPsec" service is active with the following command:
+    {{% else %}}
+    If "libreswan" is installed, check to see if the "IPsec" service is active with the following command:
+    {{% endif %}}
 
+    {{% if product in ['sle15', 'sle16'] %}}
+    # systemctl status strongswan
+    strongswan.service - strongSwan IPsec IKEv1/IKEv2 daemon using swanctl
+    Loaded: loaded (/usr/lib/systemd/system/strongswan.service; disabled; preset: disabled)
+    Active: inactive (dead)
+    {{% else %}}
     # systemctl status ipsec
     ipsec.service - Internet Key Exchange (IKE) Protocol Daemon for IPsec
     Loaded: loaded (/usr/lib/systemd/system/ipsec.service; disabled)
     Active: inactive (dead)
+    {{% endif %}}
 
 
     If the "IPsec" service is active, check for configured IPsec connections (<tt>conn</tt>), perform the following:
     <pre>grep -rni conn /etc/ipsec.conf /etc/ipsec.d/</pre>
+    {{% if product in ['sle15', 'sle16'] %}}
+    Also:
+    <pre>grep -rni conn /etc/swanctl/swanctl.conf /etc/swanctl/conf.d/</pre>
+    {{% endif %}}
+
     Verify any returned results for organizational approval.
 
 fixtext: |-
