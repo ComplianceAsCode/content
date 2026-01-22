@@ -242,9 +242,14 @@ controls:
           - basic
           - intermediate
           - advanced
-      status: pending
-      notes: |-
-          Related to nosuid, noexec and nodev options but in /boot. More context is needed.
+      status: automated
+      rules:
+          - mount_option_boot_nodev
+          - mount_option_boot_noexec
+          - mount_option_boot_nosuid
+      # the noauto option could block proper evaluation of other mount options on /boot
+      related_rules:
+          - mount_option_boot_noauto
 
     - id: A.5.SEC-RHEL1
       title: Login and Impersonation Permissions Are Controlled
