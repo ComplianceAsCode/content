@@ -143,7 +143,7 @@ jobs:
       - name: Install test dependencies
         run: |
           dnf -y install python3-pip rsync
-          pip install fmf atex==0.11
+          pip install fmf atex==0.12
 
       - name: Run tests on Testing Farm
         env:
@@ -186,7 +186,7 @@ jobs:
         if: always()
         run: |
           dnf -y install python3-pip git rsync
-          pip install fmf atex==0.11
+          pip install fmf atex==0.12
 
       - name: Checkout ATEX results repository
         if: always()
