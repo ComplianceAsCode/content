@@ -202,16 +202,16 @@ jobs:
         working-directory: atex-results-testing-farm
         run: fmf init
 
-      - name: Create TMT dummy plan for artifact transport
+      - name: Create TMT atex_results plan for artifact transport
         if: always()
         working-directory: atex-results-testing-farm
         run: |
           cat > main.fmf <<'EOF'
-          /dummy_plan:
+          /atex_results_plan:
               discover:
                   how: shell
                   tests:
-                    - name: /dummy_test
+                    - name: /atex_results_test
                       test: mv * "$TMT_TEST_DATA/."
               execute:
                   how: tmt
