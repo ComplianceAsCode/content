@@ -30,13 +30,13 @@ jobs:
         run: cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
         working-directory: ./build
       - name: Build Guides and Mapping Tables
-        run: ninja -j2
+        run: ninja -j$(nproc)
         working-directory: ./build
       - name: Build Statistics
-        run: ninja html-stats html-profile-stats -j2
+        run: ninja html-stats html-profile-stats -j$(nproc)
         working-directory: ./build
       - name: Render Policies (Using control files)
-        run: ninja render-policies -j2
+        run: ninja render-policies -j$(nproc)
         working-directory: ./build
       - name: Generate Prometheus Metrics
         run: utils/controleval_metrics.py prometheus -p fedora ocp4 rhcos4 rhel10 rhel9 rhel8 sle12 sle15 -f ./build/policies_metrics
