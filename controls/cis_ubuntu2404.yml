@@ -2,7 +2,7 @@
 policy: CIS Benchmark for Ubuntu 24.04 LTS
 title: CIS Benchmark for Ubuntu 24.04 LTS
 id: cis_ubuntu2404
-version: '1.0.0'
+version: "1.0.0"
 source: https://www.cisecurity.org/cis-benchmarks
 
 levels:
@@ -1116,7 +1116,8 @@ controls:
           - file_owner_at_deny
           - file_permissions_at_deny
       status: automated
-      notes: file_owner_at_deny and file_owner_at_allow currently require root as owner and don't accept
+      notes:
+          file_owner_at_deny and file_owner_at_allow currently require root as owner and don't accept
           daemon
 
     - id: 3.1.1
@@ -1568,8 +1569,11 @@ controls:
           - l1_workstation
       rules:
           - file_groupowner_sshd_config
+          - file_groupowner_sshd_drop_in_config
           - file_owner_sshd_config
+          - file_owner_sshd_drop_in_config
           - file_permissions_sshd_config
+          - file_permissions_sshd_drop_in_config
       status: automated
 
     - id: 5.1.2
@@ -2192,7 +2196,8 @@ controls:
       rules:
           - ensure_root_access_controlled
       status: automated
-      notes: This rule doesn't come with a remediation, as the exact requirement allows root to either
+      notes:
+          This rule doesn't come with a remediation, as the exact requirement allows root to either
           have a password or be locked.
 
     - id: 5.4.2.5
