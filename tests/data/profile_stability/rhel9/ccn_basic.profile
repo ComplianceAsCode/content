@@ -57,6 +57,7 @@ firewalld_loopback_traffic_restricted
 firewalld_loopback_traffic_trusted
 grub2_password
 login_banner_text=cis_banners
+mount_option_boot_efi_nosuid
 mount_option_boot_nodev
 mount_option_boot_noexec
 mount_option_boot_nosuid

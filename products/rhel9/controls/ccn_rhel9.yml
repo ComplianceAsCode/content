@@ -242,8 +242,10 @@ controls:
           - basic
           - intermediate
           - advanced
-      status: automated
+      status: partial
+      notes: Remaining rules for /boot/efi are not implemented yet.
       rules:
+          - mount_option_boot_efi_nosuid
           - mount_option_boot_nodev
           - mount_option_boot_noexec
           - mount_option_boot_nosuid
