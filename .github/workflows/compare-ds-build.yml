@@ -18,12 +18,12 @@ jobs:
             -   name: Install deps python
                 run: pip install gitpython xmldiff
             -   name: Checkout
-                uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
                 with:
                     ref: ${{ github.event.pull_request.head.sha }}
                     fetch-depth: 0
             -   name: Checkout (CTF)
-                uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
                 with:
                     repository: ComplianceAsCode/content-test-filtering
                     path: ctf

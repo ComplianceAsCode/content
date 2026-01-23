@@ -19,7 +19,7 @@ jobs:
             -   name: Install Deps
                 run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel python3-lxml python3-pytest python3-setuptools
             -   name: Checkout
-                uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
             -   name: Install deps python
                 # pytest-xdist is used for parallel execution of thin ds test
                 run: pip install pcre2==0.4.0 pytest-xdist -r requirements.txt -r test-requirements.txt
