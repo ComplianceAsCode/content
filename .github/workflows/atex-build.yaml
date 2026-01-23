@@ -63,12 +63,24 @@ jobs:
           # Clean up temporary metadata
           rm -rf jinja2_cache
 
+      - name: Save file permissions before artifact upload
+        run: |
+          # GitHub Actions artifact upload/download strips execute permissions
+          # Save all file permissions so they can be restored after download
+          echo "=== Saving file permissions ==="
+          find . -type f -printf '%m %p\n' > file-permissions.txt
+          echo "Saved permissions for $(wc -l < file-permissions.txt) files"
+          # Show sample of executable files being saved
+          echo "=== Sample executable files ==="
+          grep -E '^[0-7]*[1357][0-7]* ' file-permissions.txt | head -10 || true
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: content-centos-stream${{ matrix.centos_stream_major }}
           path: .
           retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+          include-hidden-files: true # make sure all .dot files are included e.g. .cmakelintrc
 
   save_pr_info:
     name: Save PR information for workflow_run

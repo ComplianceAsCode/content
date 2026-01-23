@@ -3,6 +3,10 @@
 import sys
 import time
 import gzip
+import json
+import lzma
+import atexit
+import signal
 import logging
 import argparse
 import contextlib
@@ -34,10 +38,12 @@ def parse_args():
 
 def setup_logging():
     """Setup logging configuration with console and file handlers."""
+    # Log brief info to console, but be verbose in a separate file-based log (uploaded as artifact)
     console_log = logging.StreamHandler(sys.stderr)
     console_log.setLevel(logging.INFO)
 
     debug_log_fobj = gzip.open("atex_debug.log.gz", "wt")
+    atexit.register(debug_log_fobj.close)
     file_log = logging.StreamHandler(debug_log_fobj)
     file_log.setLevel(logging.DEBUG)
 
@@ -49,11 +55,22 @@ def setup_logging():
         force=True,
     )
 
-    return debug_log_fobj
+
+def setup_signal_handlers():
+    """Setup signal handlers for graceful abort."""
+    def abort_on_signal(signum, _):
+        logger.error(f"got signal {signum}, aborting")
+        raise SystemExit(1)
+
+    signal.signal(signal.SIGTERM, abort_on_signal)
+    signal.signal(signal.SIGHUP, abort_on_signal)
 
 
 def main():
     """Main function to run tests on Testing Farm."""
+    setup_logging()
+    setup_signal_handlers()
+
     args = parse_args()
 
     # Variables exported to tests
@@ -63,10 +80,6 @@ def main():
     }
 
     with contextlib.ExitStack() as stack:
-        # Setup logging
-        debug_log_fobj = setup_logging()
-        stack.enter_context(contextlib.closing(debug_log_fobj))
-
         # Load FMF tests from contest directory
         fmf_tests = FMFTests(
             args.contest_dir,
@@ -133,9 +146,18 @@ def main():
 
         logger.info("Test execution completed!")
 
-        # Log final output locations
-        logger.info(f"Results written to: {output_results}")
-        logger.info(f"Test files in: {output_files}")
+    # Log final output locations
+    logger.info(f"Results written to: {output_results}")
+    logger.info(f"Test files in: {output_files}")
+
+    # Read back the compressed JSON results and exit with non-0 if anything failed
+    with lzma.open(output_results, "rt") as results:
+        for line in results:
+            fields = json.loads(line)
+            # [platform, status, test name, subtest name, files, note]
+            if fields[1] in ("fail", "error", "infra"):
+                logger.warning("failures found in the results, exiting with 1")
+                sys.exit(1)
 
 
 if __name__ == "__main__":

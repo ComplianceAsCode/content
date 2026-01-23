@@ -20,7 +20,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Submit TMT test to Testing Farm")
     parser.add_argument("--repo-url", required=True, help="GitHub repository URL")
     parser.add_argument("--pr-number", required=True, help="Pull request number")
-    parser.add_argument("--plan-name", default="/dummy_plan", help="TMT plan name to run")
+    parser.add_argument("--plan-name", default="/atex_results_plan", help="TMT plan name to run")
     parser.add_argument("--os", default=None, help="OS to test on (e.g., rhel-9)")
     parser.add_argument("--arch", default="x86_64", help="Architecture to test on")
     return parser.parse_args()
@@ -82,7 +82,7 @@ def get_html_link(artifacts_url):
     #         {workdir_url}/testing-farm/sanity/execute/results.yaml
     #       as YAML and look for the test name and get its 'data-path'
     #       relative to the /execute/ dir
-    return f"{workdir_url}/dummy_plan/execute/data/guest/default-0/dummy_test-1/data/index.html?q=TRUE"
+    return f"{workdir_url}/atex_results_plan/execute/data/guest/default-0/atex_results_test-1/data/index.html?q=status%20IN%20%28%27fail%27%2C%20%27error%27%2C%20%27infra%27%29%20OR%20subtest%20IS%20NULL"
 
 
 def main():
