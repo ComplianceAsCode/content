@@ -365,7 +365,8 @@ sshd_set_max_sessions
 sshd_set_maxstartups
 sudo_add_use_pty
 sudo_custom_logfile
-sudo_require_authentication
+sudo_remove_no_authenticate
+sudo_remove_nopasswd
 sudo_require_reauthentication
 sysctl_kernel_randomize_va_space
 sysctl_kernel_yama_ptrace_scope
@@ -451,4 +452,5 @@ var_sshd_max_sessions=10
 var_sshd_set_keepalive=1
 var_sshd_set_login_grace_time=60
 var_sshd_set_maxstartups=10:30:60
+var_sudo_timestamp_timeout=15_minutes
 var_user_initialization_files_regex=all_dotfiles
