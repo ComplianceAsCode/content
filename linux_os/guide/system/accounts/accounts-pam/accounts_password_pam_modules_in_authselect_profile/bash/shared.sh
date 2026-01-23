@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_all
 
 {{{ bash_check_authselect_integrity() }}}
 
