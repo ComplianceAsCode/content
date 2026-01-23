@@ -118,7 +118,7 @@ controls:
       status: automated
       rules:
           - auditd_data_retention_max_log_file_action
-          - var_auditd_max_log_file_action=keep_logs
+          - var_auditd_max_log_file_action=rotate
 
     - id: A.3.SEC-RHEL7
       title: Modifications to the Sudoers File Are Audited, As Are Changes to Permissions, Users, Groups,
@@ -242,9 +242,16 @@ controls:
           - basic
           - intermediate
           - advanced
-      status: pending
-      notes: |-
-          Related to nosuid, noexec and nodev options but in /boot. More context is needed.
+      status: partial
+      notes: Remaining rules for /boot/efi are not implemented yet.
+      rules:
+          - mount_option_boot_efi_nosuid
+          - mount_option_boot_nodev
+          - mount_option_boot_noexec
+          - mount_option_boot_nosuid
+      # the noauto option could block proper evaluation of other mount options on /boot
+      related_rules:
+          - mount_option_boot_noauto
 
     - id: A.5.SEC-RHEL1
       title: Login and Impersonation Permissions Are Controlled
@@ -311,6 +318,9 @@ controls:
           - var_accounts_maximum_age_login_defs=45
           - var_accounts_minimum_age_login_defs=2
           - var_accounts_password_warn_age_login_defs=10
+          - accounts_password_pam_pwhistory_remember_password_auth
+          - accounts_password_pam_pwhistory_remember_system_auth
+          - var_password_pam_remember=20
 
     - id: A.5.SEC-RHEL6
       title: Secure Protocols Are Used For the Network Authentication Processes
@@ -601,11 +611,15 @@ controls:
           - advanced
       status: automated
       rules:
-          - accounts_password_pam_minclass
+          - accounts_password_pam_lcredit
+          - accounts_password_pam_ocredit
+          - accounts_password_pam_ucredit
+          - accounts_password_pam_dcredit
           - accounts_password_pam_minlen
+          - accounts_password_minlen_login_defs
           - accounts_password_pam_retry
-          - var_password_pam_minclass=4
-          - var_password_pam_minlen=14
+          - var_password_pam_minlen=12
+          - var_accounts_password_minlen_login_defs=12
 
     - id: A.11.SEC-RHEL4
       title: During Login, the System Displays a Text in Compliance With the Organization's Standards
@@ -625,7 +639,6 @@ controls:
           - dconf_gnome_login_banner_text
           - sshd_enable_warning_banner_net
           - login_banner_text=cis_banners
-          - motd_banner_text=cis_banners
           - remote_login_banner_text=cis_banners
 
     - id: A.11.SEC-RHEL5
