@@ -1116,7 +1116,7 @@ controls:
           - file_owner_at_deny
           - file_permissions_at_deny
       status: automated
-      notes:
+      notes: |-
           file_owner_at_deny and file_owner_at_allow currently require root as owner and don't accept
           daemon
 
@@ -2196,7 +2196,7 @@ controls:
       rules:
           - ensure_root_access_controlled
       status: automated
-      notes:
+      notes: |-
           This rule doesn't come with a remediation, as the exact requirement allows root to either
           have a password or be locked.
 
