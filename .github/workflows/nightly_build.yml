@@ -20,16 +20,16 @@ jobs:
                 run: cmake -G Ninja ..
                 working-directory: ./build
             -   name: Build All
-                run: ninja -j2 all
+                run: ninja -j$(nproc) all
                 working-directory: ./build
             -   name: Build ZIP
-                run: ninja -j2 zipfile
+                run: ninja -j$(nproc) zipfile
                 working-directory: ./build
             -   name: Test
-                run: ctest -j2 --output-on-failure -E linkchecker
+                run: ctest -j$(nproc) --output-on-failure -E linkchecker
                 working-directory: ./build
             -   name: Build Package Source
-                run: ninja -j2 package_source
+                run: ninja -j$(nproc) package_source
                 working-directory: ./build
             -   name: 'Upload Artifact'
                 uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
