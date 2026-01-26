@@ -535,8 +535,7 @@ def write_fix_to_file(fix, file_path):
     """
     fix_contents, config = fix
     with open(file_path, "w") as f:
-        for k, v in config.items():
-            f.write("# %s = %s\n" % (k, v))
+        f.writelines("# %s = %s\n" % (k, v) for k, v in config.items())
         f.write(fix_contents)
 
 

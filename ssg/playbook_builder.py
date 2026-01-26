@@ -165,8 +165,7 @@ class PlaybookBuilder():
         playbook_path = os.path.join(output_dir, rule_id + ".yml")
         with open(playbook_path, "w") as playbook_file:
             # write remediation metadata (complexity, strategy, etc.) first
-            for k, v in fix.config.items():
-                playbook_file.write("# %s = %s\n" % (k, v))
+            playbook_file.writelines("# %s = %s\n" % (k, v) for k, v in fix.config.items())
             ssg.yaml.ordered_dump(
                 playbook, playbook_file, default_flow_style=False
             )
