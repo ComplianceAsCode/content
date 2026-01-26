@@ -43,7 +43,7 @@ def _get_cces_in_use(data: dict, products: str) -> Set[str]:
 def _get_avail_cces(cce_list: str) -> Set[str]:
     avail_cces: Set[str] = set()
     with open(cce_list) as f:
-        for line in f.readlines():
+        for line in f:
             avail_cces.add(line.strip())
     return avail_cces
 
