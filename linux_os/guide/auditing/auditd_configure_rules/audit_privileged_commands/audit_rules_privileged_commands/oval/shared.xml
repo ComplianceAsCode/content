@@ -7,19 +7,55 @@
         <extend_definition definition_ref="audit_rules_augenrules"
           comment="audit augenrules format is used"/>
         <criteria operator="OR">
-          <criteria operator="AND">
+          <criteria operator="AND"  comment="Audit rules are configured for RHEL Image Mode">
             <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" />
+{{% if product in ["fedora", "rhel10"] %}}
+            <criterion test_ref="test_augenrules_all_priv_cmds_covered_bootc_32bit"
+              comment="augenrules 32bit cover all privileged commands on the system"/>
+            <criterion test_ref="test_augenrules_count_matches_system_priv_cmds_bootc_32bit"
+              comment="count of augenrules 32bit for priv cmds matches count of priv cmds in the system"/>
+            <criteria operator="OR">
+              <!-- System either isn't 64-bit => we just check presence of 32-bit version of audit rule -->
+              <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
+              <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of audit rule -->
+              <criteria operator="AND">
+                <criterion test_ref="test_augenrules_all_priv_cmds_covered_bootc_64bit"
+                  comment="augenrules 64bit cover all privileged commands on the system"/>
+                <criterion test_ref="test_augenrules_count_matches_system_priv_cmds_bootc_64bit"
+                  comment="count of augenrules 64bit for priv cmds matches count of priv cmds in the system"/>
+              </criteria>
+            </criteria>
+{{% else %}}
             <criterion test_ref="test_augenrules_all_priv_cmds_covered_bootc"
               comment="augenrules cover all privileged commands on the system"/>
             <criterion test_ref="test_augenrules_count_matches_system_priv_cmds_bootc"
               comment="count of augenrules for priv cmds matches count of priv cmds in the system"/>
+{{% endif %}}
           </criteria>
-          <criteria operator="AND">
+          <criteria operator="AND" comment="Audit rules are configured for Package Mode">
             <extend_definition comment="The system isn't RHEL Image Mode" definition_ref="bootc" negate="true" />
+{{% if product in ["fedora", "rhel10"] %}}
+            <criterion test_ref="test_augenrules_all_priv_cmds_covered_32bit"
+              comment="augenrules 32bit cover all privileged commands on the system"/>
+            <criterion test_ref="test_augenrules_count_matches_system_priv_cmds_32bit"
+              comment="count of augenrules 32bit for priv cmds matches count of priv cmds in the system"/>
+            <criteria operator="OR">
+              <!-- System either isn't 64-bit => we just check presence of 32-bit version of audit rule -->
+              <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
+              <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of audit rule -->
+              <criteria operator="AND">
+                <criterion test_ref="test_augenrules_all_priv_cmds_covered_64bit"
+                  comment="augenrules 64bit cover all privileged commands on the system"/>
+                <criterion test_ref="test_augenrules_count_matches_system_priv_cmds_64bit"
+                  comment="count of augenrules 64bit for priv cmds matches count of priv cmds in the system"/>
+              </criteria>
+            </criteria>
+{{% else %}}
             <criterion test_ref="test_augenrules_all_priv_cmds_covered"
               comment="augenrules cover all privileged commands on the system"/>
             <criterion test_ref="test_augenrules_count_matches_system_priv_cmds"
               comment="count of augenrules for priv cmds matches count of priv cmds in the system"/>
+{{% endif %}}
           </criteria>
         </criteria>
       </criteria>
@@ -28,19 +64,55 @@
         <extend_definition definition_ref="audit_rules_auditctl"
           comment="audit auditctl format is used"/>
         <criteria operator="OR">
-          <criteria operator="AND">
+          <criteria operator="AND" comment="Audit rules are configured for RHEL Image Mode">
             <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" />
+{{% if product in ["fedora", "rhel10"] %}}
+            <criterion test_ref="test_auditctl_all_priv_cmds_covered_bootc_32bit"
+              comment="auditctl 32bit cover all privileged commands on the system"/>
+            <criterion test_ref="test_auditctl_count_matches_system_priv_cmds_bootc_32bit"
+              comment="count of auditctl 32bit for priv cmds matches count of priv cmds in the system"/>
+            <criteria operator="OR">
+              <!-- System either isn't 64-bit => we just check presence of 32-bit version of audit rule -->
+              <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
+              <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of audit rule -->
+              <criteria operator="AND">
+                <criterion test_ref="test_auditctl_all_priv_cmds_covered_bootc_64bit"
+                  comment="auditctl 64bit cover all privileged commands on the system"/>
+                <criterion test_ref="test_auditctl_count_matches_system_priv_cmds_bootc_64bit"
+                  comment="count of auditctl 64bit for priv cmds matches count of priv cmds in the system"/>
+              </criteria>
+            </criteria>
+{{% else %}}
             <criterion test_ref="test_auditctl_all_priv_cmds_covered"
               comment="auditctl covers all privileged commands on the system"/>
             <criterion test_ref="test_auditctl_count_matches_system_priv_cmds"
               comment="count of auditctl for priv cmds matches count of priv cmds in the system"/>
+{{% endif %}}
           </criteria>
-          <criteria operator="AND">
+          <criteria operator="AND" comment="Audit rules are configured for Package Mode">
             <extend_definition comment="The system isn't RHEL Image Mode" definition_ref="bootc" negate="true" />
+{{% if product in ["fedora", "rhel10"] %}}
+            <criterion test_ref="test_auditctl_all_priv_cmds_covered_32bit"
+              comment="auditctl 32bit cover all privileged commands on the system"/>
+            <criterion test_ref="test_auditctl_count_matches_system_priv_cmds_32bit"
+              comment="count of auditctl 32bit for priv cmds matches count of priv cmds in the system"/>
+            <criteria operator="OR">
+              <!-- System either isn't 64-bit => we just check presence of 32-bit version of audit rule -->
+              <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
+              <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of audit rule -->
+              <criteria operator="AND">
+                <criterion test_ref="test_auditctl_all_priv_cmds_covered_64bit"
+                  comment="auditctl 64bit cover all privileged commands on the system"/>
+                <criterion test_ref="test_auditctl_count_matches_system_priv_cmds_64bit"
+                  comment="count of auditctl 64bit for priv cmds matches count of priv cmds in the system"/>
+              </criteria>
+            </criteria>
+{{% else %}}
             <criterion test_ref="test_auditctl_all_priv_cmds_covered"
               comment="auditctl covers all privileged commands on the system"/>
             <criterion test_ref="test_auditctl_count_matches_system_priv_cmds"
               comment="count of auditctl for priv cmds matches count of priv cmds in the system"/>
+{{% endif %}}
           </criteria>
         </criteria>
       </criteria>
@@ -156,11 +228,21 @@
   <!-- The intention of the first test is to ensure that exists at least one rule for each
        privileged command found in the system. Therefore, a list of objects will be extracted
        from auditd rules and compared to privileged commands found in relevant partitions. -->
+{{% if product in ["fedora", "rhel10"] %}}
+  <local_variable id="var_audit_rules_privileged_commands_rule_regex_32bit" version="1"
+    datatype="string" comment="Regex for auditd rule">
+    <literal_component>^[\s]*-a always,exit -F arch=b32 (?:-F path=([\S]+))+(?: -F perm=x)? -F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</literal_component>
+  </local_variable>
+  <local_variable id="var_audit_rules_privileged_commands_rule_regex_64bit" version="1"
+    datatype="string" comment="Regex for auditd rule">
+    <literal_component>^[\s]*-a always,exit -F arch=b64 (?:-F path=([\S]+))+(?: -F perm=x)? -F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</literal_component>
+  </local_variable>
+{{% else %}}
   <local_variable id="var_audit_rules_privileged_commands_rule_regex" version="1"
     datatype="string" comment="Regex for auditd rule">
     <literal_component>^[\s]*-a always,exit (?:-F path=([\S]+))+(?: -F perm=x)? -F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</literal_component>
   </local_variable>
-
+{{% endif %}}
   <!-- This state is used to filter out all the auditd rules related to non privileged commands.
        When collectiong the paths in the textfilecontent54_object objects below, this state will
        ensure that the list is composed only by privileged commands present in the system. Other
@@ -175,6 +257,36 @@
   </ind:textfilecontent54_state>
 
   <!-- augenrules -->
+{{% if product in ["fedora", "rhel10"] %}}
+  <ind:textfilecontent54_object id="object_priv_cmds_from_augenrules_32bit" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex_32bit"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands</filter>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_priv_cmds_from_augenrules_64bit" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex_64bit"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands</filter>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_priv_cmds_from_augenrules_bootc_32bit" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex_32bit"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands_bootc</filter>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_priv_cmds_from_augenrules_bootc_64bit" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex_64bit"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands_bootc</filter>
+  </ind:textfilecontent54_object>
+{{% else %}}
   <ind:textfilecontent54_object id="object_priv_cmds_from_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match"
@@ -189,6 +301,7 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     <filter action="exclude">state_unprivileged_commands_bootc</filter>
   </ind:textfilecontent54_object>
+{{% endif %}}
 
   <ind:textfilecontent54_state id="state_priv_cmds_from_system" version="1">
     <ind:subexpression datatype="string" operation="pattern match" var_check="at least one"
@@ -199,6 +312,32 @@
       var_ref="var_audit_rules_privileged_commands_priv_cmds_bootc"/>
   </ind:textfilecontent54_state>
 
+{{% if product in ["fedora", "rhel10"] %}}
+  <ind:textfilecontent54_test id="test_augenrules_all_priv_cmds_covered_32bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one augenrules rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_augenrules_32bit" />
+    <ind:state state_ref="state_priv_cmds_from_system" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_augenrules_all_priv_cmds_covered_64bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one augenrules rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_augenrules_64bit" />
+    <ind:state state_ref="state_priv_cmds_from_system" />
+  </ind:textfilecontent54_test>
+    <ind:textfilecontent54_test id="test_augenrules_all_priv_cmds_covered_bootc_32bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one augenrules rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_augenrules_bootc_32bit" />
+    <ind:state state_ref="state_priv_cmds_from_system_bootc" />
+  </ind:textfilecontent54_test>
+    <ind:textfilecontent54_test id="test_augenrules_all_priv_cmds_covered_bootc_64bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one augenrules rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_augenrules_bootc_64bit" />
+    <ind:state state_ref="state_priv_cmds_from_system_bootc" />
+  </ind:textfilecontent54_test>
+{{% else %}}
   <ind:textfilecontent54_test id="test_augenrules_all_priv_cmds_covered" version="1"
     check="all" check_existence="all_exist"
     comment="There is one augenrules rule for each privileged command on the system.">
@@ -211,7 +350,35 @@
     <ind:object object_ref="object_priv_cmds_from_augenrules_bootc" />
     <ind:state state_ref="state_priv_cmds_from_system_bootc" />
   </ind:textfilecontent54_test>
+{{% endif %}}
 
+
+{{% if product in ["fedora", "rhel10"] %}}
+  <local_variable id="var_priv_cmds_from_augenrules_count_32bit" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in augenrules format">
+    <count>
+      <object_component item_field="subexpression" object_ref="object_priv_cmds_from_augenrules_32bit"/>
+    </count>
+  </local_variable>
+  <local_variable id="var_priv_cmds_from_augenrules_count_64bit" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in augenrules format">
+    <count>
+      <object_component item_field="subexpression" object_ref="object_priv_cmds_from_augenrules_64bit"/>
+    </count>
+  </local_variable>
+  <local_variable id="var_priv_cmds_from_augenrules_count_bootc_32bit" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in augenrules format">
+    <count>
+      <object_component item_field="subexpression" object_ref="object_priv_cmds_from_augenrules_bootc_32bit"/>
+    </count>
+  </local_variable>
+  <local_variable id="var_priv_cmds_from_augenrules_count_bootc_64bit" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in augenrules format">
+    <count>
+      <object_component item_field="subexpression" object_ref="object_priv_cmds_from_augenrules_bootc_64bit"/>
+    </count>
+  </local_variable>
+{{% else %}}
   <local_variable id="var_priv_cmds_from_augenrules_count" version="1"
     datatype="int" comment="Count privileged commands found in audit rules in augenrules format">
     <count>
@@ -224,7 +391,27 @@
       <object_component item_field="subexpression" object_ref="object_priv_cmds_from_augenrules_bootc"/>
     </count>
   </local_variable>
+{{% endif %}}
 
+
+{{% if product in ["fedora", "rhel10"] %}}
+  <ind:variable_state id="state_priv_cmds_from_augenrules_count_32bit" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_augenrules_count_32bit"/>
+  </ind:variable_state>
+  <ind:variable_state id="state_priv_cmds_from_augenrules_count_64bit" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_augenrules_count_64bit"/>
+  </ind:variable_state>
+  <ind:variable_state id="state_priv_cmds_from_augenrules_count_bootc_32bit" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_augenrules_count_bootc_32bit"/>
+  </ind:variable_state>
+  <ind:variable_state id="state_priv_cmds_from_augenrules_count_bootc_64bit" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_augenrules_count_bootc_64bit"/>
+  </ind:variable_state>
+{{% else %}}
   <ind:variable_state id="state_priv_cmds_from_augenrules_count" version="1">
     <ind:value datatype="int" operation="equals" var_check="at least one"
       var_ref="var_priv_cmds_from_augenrules_count"/>
@@ -233,7 +420,35 @@
     <ind:value datatype="int" operation="equals" var_check="at least one"
       var_ref="var_priv_cmds_from_augenrules_count_bootc"/>
   </ind:variable_state>
+{{% endif %}}
 
+
+{{% if product in ["fedora", "rhel10"] %}}
+  <ind:variable_test id="test_augenrules_count_matches_system_priv_cmds_32bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of augenrules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count"/>
+    <ind:state state_ref="state_priv_cmds_from_augenrules_count_32bit"/>
+  </ind:variable_test>
+  <ind:variable_test id="test_augenrules_count_matches_system_priv_cmds_64bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of augenrules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count"/>
+    <ind:state state_ref="state_priv_cmds_from_augenrules_count_64bit"/>
+  </ind:variable_test>
+  <ind:variable_test id="test_augenrules_count_matches_system_priv_cmds_bootc_32bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of augenrules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count_bootc"/>
+    <ind:state state_ref="state_priv_cmds_from_augenrules_count_bootc_32bit"/>
+  </ind:variable_test>
+  <ind:variable_test id="test_augenrules_count_matches_system_priv_cmds_bootc_64bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of augenrules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count_bootc"/>
+    <ind:state state_ref="state_priv_cmds_from_augenrules_count_bootc_64bit"/>
+  </ind:variable_test>
+{{% else %}}
   <ind:variable_test id="test_augenrules_count_matches_system_priv_cmds" version="1"
     check="all" check_existence="all_exist"
     comment="Count of augenrules for priv cmds matches the count of priv cmds in the system">
@@ -246,8 +461,39 @@
     <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count_bootc"/>
     <ind:state state_ref="state_priv_cmds_from_augenrules_count_bootc"/>
   </ind:variable_test>
+{{% endif %}}
 
   <!-- auditctl -->
+{{% if product in ["fedora", "rhel10"] %}}
+  <ind:textfilecontent54_object id="object_priv_cmds_from_auditctl_32bit" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex_32bit"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands</filter>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_priv_cmds_from_auditctl_64bit" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex_64bit"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands</filter>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_priv_cmds_from_auditctl_bootc_32bit" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex_32bit"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands_bootc</filter>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_priv_cmds_from_auditctl_bootc_64bit" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex_64bit"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands_bootc</filter>
+  </ind:textfilecontent54_object>
+{{% else %}}
   <ind:textfilecontent54_object id="object_priv_cmds_from_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
     <ind:pattern operation="pattern match"
@@ -262,7 +508,34 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     <filter action="exclude">state_unprivileged_commands_bootc</filter>
   </ind:textfilecontent54_object>
+{{% endif %}}
 
+{{% if product in ["fedora", "rhel10"] %}}
+  <ind:textfilecontent54_test id="test_auditctl_all_priv_cmds_covered_32bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one auditctl rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_auditctl_32bit"/>
+    <ind:state state_ref="state_priv_cmds_from_system"/>
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_auditctl_all_priv_cmds_covered_64bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one auditctl rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_auditctl_64bit"/>
+    <ind:state state_ref="state_priv_cmds_from_system"/>
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_auditctl_all_priv_cmds_covered_bootc_32bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one auditctl rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_auditctl_bootc_32bit"/>
+    <ind:state state_ref="state_priv_cmds_from_system_bootc"/>
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_auditctl_all_priv_cmds_covered_bootc_64bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one auditctl rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_auditctl_bootc_64bit"/>
+    <ind:state state_ref="state_priv_cmds_from_system_bootc"/>
+  </ind:textfilecontent54_test>
+{{% else %}}
   <ind:textfilecontent54_test id="test_auditctl_all_priv_cmds_covered" version="1"
     check="all" check_existence="all_exist"
     comment="There is one auditctl rule for each privileged command on the system.">
@@ -275,7 +548,35 @@
     <ind:object object_ref="object_priv_cmds_from_auditctl_bootc"/>
     <ind:state state_ref="state_priv_cmds_from_system_bootc"/>
   </ind:textfilecontent54_test>
+{{% endif %}}
 
+
+{{% if product in ["fedora", "rhel10"] %}}
+  <local_variable id="var_priv_cmds_from_auditctl_count_32bit" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in auditctl format">
+    <count>
+      <object_component object_ref="object_priv_cmds_from_auditctl_32bit" item_field="subexpression"/>
+    </count>
+  </local_variable>
+  <local_variable id="var_priv_cmds_from_auditctl_count_64bit" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in auditctl format">
+    <count>
+      <object_component object_ref="object_priv_cmds_from_auditctl_64bit" item_field="subexpression"/>
+    </count>
+  </local_variable>
+  <local_variable id="var_priv_cmds_from_auditctl_count_bootc_32bit" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in auditctl format">
+    <count>
+      <object_component object_ref="object_priv_cmds_from_auditctl_bootc_32bit" item_field="subexpression"/>
+    </count>
+  </local_variable>
+  <local_variable id="var_priv_cmds_from_auditctl_count_bootc_64bit" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in auditctl format">
+    <count>
+      <object_component object_ref="object_priv_cmds_from_auditctl_bootc_64bit" item_field="subexpression"/>
+    </count>
+  </local_variable>
+{{% else %}}
   <local_variable id="var_priv_cmds_from_auditctl_count" version="1"
     datatype="int" comment="Count privileged commands found in audit rules in auditctl format">
     <count>
@@ -288,7 +589,27 @@
       <object_component object_ref="object_priv_cmds_from_auditctl_bootc" item_field="subexpression"/>
     </count>
   </local_variable>
+{{% endif %}}
 
+
+{{% if product in ["fedora", "rhel10"] %}}
+  <ind:variable_state id="state_priv_cmds_from_auditctl_count_32bit" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_auditctl_count_32bit"/>
+  </ind:variable_state>
+  <ind:variable_state id="state_priv_cmds_from_auditctl_count_64bit" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_auditctl_count_64bit"/>
+  </ind:variable_state>
+  <ind:variable_state id="state_priv_cmds_from_auditctl_count_bootc_32bit" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_auditctl_count_bootc_32bit"/>
+  </ind:variable_state>
+  <ind:variable_state id="state_priv_cmds_from_auditctl_count_bootc_64bit" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_auditctl_count_bootc_64bit"/>
+  </ind:variable_state>
+{{% else %}}
   <ind:variable_state id="state_priv_cmds_from_auditctl_count" version="1">
     <ind:value datatype="int" operation="equals" var_check="at least one"
       var_ref="var_priv_cmds_from_auditctl_count"/>
@@ -297,7 +618,34 @@
     <ind:value datatype="int" operation="equals" var_check="at least one"
       var_ref="var_priv_cmds_from_auditctl_count_bootc"/>
   </ind:variable_state>
+{{% endif %}}
 
+{{% if product in ["fedora", "rhel10"] %}}
+  <ind:variable_test id="test_auditctl_count_matches_system_priv_cmds_32bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of 32bit auditctl rules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count" />
+    <ind:state state_ref="state_priv_cmds_from_auditctl_count_32bit" />
+  </ind:variable_test>
+  <ind:variable_test id="test_auditctl_count_matches_system_priv_cmds_64bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of 64bit auditctl rules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count" />
+    <ind:state state_ref="state_priv_cmds_from_auditctl_count_64bit" />
+  </ind:variable_test>
+  <ind:variable_test id="test_auditctl_count_matches_system_priv_cmds_bootc_32bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of 32bit auditctl rules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count_bootc" />
+    <ind:state state_ref="state_priv_cmds_from_auditctl_count_bootc_32bit" />
+  </ind:variable_test>
+  <ind:variable_test id="test_auditctl_count_matches_system_priv_cmds_bootc_64bit" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of 64bit auditctl rules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count_bootc" />
+    <ind:state state_ref="state_priv_cmds_from_auditctl_count_bootc_64bit" />
+  </ind:variable_test>
+{{% else %}}
   <ind:variable_test id="test_auditctl_count_matches_system_priv_cmds" version="1"
     check="all" check_existence="all_exist"
     comment="Count of auditctl rules for priv cmds matches the count of priv cmds in the system">
@@ -310,5 +658,7 @@
     <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count_bootc" />
     <ind:state state_ref="state_priv_cmds_from_auditctl_count_bootc" />
   </ind:variable_test>
+{{% endif %}}
+
 </def-group>
 {{% endif %}}
