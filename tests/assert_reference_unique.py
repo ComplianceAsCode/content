@@ -59,7 +59,7 @@ def print_refs(ref: str, refs_found: RefsFoundType) -> bool:
         filenames = refs_found[dup]
         if len(filenames) > 1:
             okay = False
-            print("", file=sys.stderr)
+            print(file=sys.stderr)
             print(f"{ref} {dup} is included in files: ", file=sys.stderr)
             for filename in sorted(filenames):
                 print(f" - {filename}", file=sys.stderr)
