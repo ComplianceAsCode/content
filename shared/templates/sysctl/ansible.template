@@ -10,7 +10,7 @@
 
 - name: {{{ rule_title }}} - Set fact for sysctl paths
   ansible.builtin.set_fact:
-{{% if product in ["sle12", "sle15", "sle16", "slmicro5", "slmicro6"] %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
     sysctl_paths:
       - "/run/sysctl.d/"
       - "/etc/sysctl.d/"
