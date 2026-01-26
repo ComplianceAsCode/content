@@ -1158,7 +1158,7 @@ selections:
     - sysctl_kernel_kptr_restrict
 
     # OL08-00-040284
-    - sysctl_user_max_user_namespaces
+    - sysctl_user_max_user_namespaces_no_remediation
 
     # OL08-00-040285
     - sysctl_net_ipv4_conf_all_rp_filter
