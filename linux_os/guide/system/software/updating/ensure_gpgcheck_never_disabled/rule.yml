@@ -1,6 +1,6 @@
 documentation_complete: true
 
-{{%- if product in ["sle12", "sle15", "slmicro5"] %}}
+{{%- if 'sle' in product or 'slmicro' in product %}}
   {{%- set pkg_manager_repos="/etc/zypp/repos.d" %}}
 {{%- else %}}
   {{%- set pkg_manager_repos="/etc/yum.repos.d" %}}
