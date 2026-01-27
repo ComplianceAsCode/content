@@ -51,7 +51,7 @@ args:
   iptables:
     pkgname: iptables
   libpwquality:
-    {{% if 'ubuntu' in product or 'debian' in product or product in ['sle15', 'sle16', 'slmicro6'] %}}
+    {{% if 'debian' in product or 'sle' in product or 'slmicro' in product or'ubuntu' in product %}}
     pkgname: libpwquality1
     {{% else %}}
     pkgname: libpwquality
@@ -113,7 +113,7 @@ args:
     pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
-    {{% if product in ["kylinserver10", "openeuler2203", "sle12", "sle15", "slmicro5", "slmicro6"] %}}
+    {{% if 'sle' in product or 'slmicro' in product or product in ["kylinserver10", "openeuler2203"] %}}
       pkgname: shadow
     {{% else %}}
       pkgname: shadow-utils
@@ -133,7 +133,7 @@ args:
   squid:
     pkgname: squid
   sssd:
-    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+    {{% if 'sle' in product or 'ubuntu' in product %}}
       pkgname: sssd
     {{% else %}}
       pkgname: sssd-common
