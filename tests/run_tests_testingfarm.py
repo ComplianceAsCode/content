@@ -20,6 +20,11 @@ from atex.fmf import FMFTests
 logger = logging.getLogger("ATEX")
 
 
+def kv_pair(keyval):
+    if "=" not in keyval:
+        raise argparse.ArgumentTypeError(f"expected KEY=VALUE, got: {keyval}")
+    return keyval.split("=", 1)
+
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(description="Run tests on Testing Farm using atex")
@@ -33,6 +38,7 @@ def parse_args():
     parser.add_argument("--timeout", type=int, default=120, help="Timeout in minutes")
     parser.add_argument("--max-remotes", type=int, default=10, help="Maximum number of parallel test executions")
     parser.add_argument("--reruns", type=int, default=1, help="Number of test reruns on failure")
+    parser.add_argument("--tag", type=kv_pair, default=[], action="append", help="Additional tag(s) to store in TF Request")
     return parser.parse_args()
 
 
@@ -116,6 +122,7 @@ def main():
             arch=args.arch,
             max_retries=2,
             timeout=args.timeout,
+            tags=dict(args.tag),
         )
 
         # Setup Contest orchestrator
