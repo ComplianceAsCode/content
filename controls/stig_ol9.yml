@@ -1859,6 +1859,8 @@ controls:
       title: OL 9 SSH server configuration file must be group-owned by root.
       rules:
           - file_groupowner_sshd_config
+          - directory_groupowner_sshd_config_d
+          - file_groupowner_sshd_drop_in_config
       status: automated
 
     - id: OL09-00-002508
@@ -1867,6 +1869,8 @@ controls:
       title: OL 9 SSH server configuration file must be owned by root.
       rules:
           - file_owner_sshd_config
+          - directory_owner_sshd_config_d
+          - file_owner_sshd_drop_in_config
       status: automated
 
     - id: OL09-00-002509
@@ -1875,6 +1879,8 @@ controls:
       title: OL 9 SSH server configuration file must have mode 0600 or less permissive.
       rules:
           - file_permissions_sshd_config
+          - directory_permissions_sshd_config_d
+          - file_permissions_sshd_drop_in_config
       status: automated
 
     - id: OL09-00-002502
@@ -3258,7 +3264,7 @@ controls:
       title: OL 9 must allow only the information system security manager (ISSM) (or individuals or roles
           appointed by the ISSM) to select which auditable events are to be audited.
       rules:
-          - file_permissions_etc_audit_rulesd
+          - file_permissions_audit_configuration
       status: automated
 
     - id: OL09-00-000810
