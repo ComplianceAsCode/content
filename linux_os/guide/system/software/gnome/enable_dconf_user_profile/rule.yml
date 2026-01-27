@@ -8,7 +8,7 @@ description: |-
     highest priority. As such the DConf User profile should always exist and be
     configured correctly.
     <br /><br />
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if 'sle' in product %}}
     To make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/gdm</tt>
     should be set as follows:
     <pre>user-db:user
@@ -58,7 +58,7 @@ ocil_clause: 'DConf User profile does not exist or is not configured correctly'
 ocil: |-
     To verify that the DConf User profile is configured correctly, run the following
     command:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if 'sle' in product %}}
     <pre>$ cat /etc/dconf/profile/gdm</pre>
     The output should show the following:
     <pre>user-db:user
