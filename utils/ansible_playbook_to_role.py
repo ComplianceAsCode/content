@@ -433,12 +433,7 @@ class RoleGithubUpdater(object):
     def _remote_content(self, filepath):
         # We want the raw string to compare against _local_content
 
-        # any version higher than rhel8 should use branch main
-        branch = 'main'
-        if "rhel8" in self.remote_repo.full_name:
-            branch = 'master'
-
-        content, sha = self._get_contents(filepath, branch)
+        content, sha = self._get_contents(filepath, 'main')
         return content, sha
 
     def _update_content_if_needed(self, filepath):
@@ -569,10 +564,9 @@ def main():
             create_empty_repositories(github_new_repos, github_org)
 
             locally_clone_and_init_repositories(args.organization, github_new_repos)
-
         # Update repositories
         for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
-            if repo.name in selected_roles:
+            if repo.name in selected_roles.keys():
                 playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
                 playbook_full_path = os.path.join(
                     args.build_playbooks_dir, playbook_filename)
