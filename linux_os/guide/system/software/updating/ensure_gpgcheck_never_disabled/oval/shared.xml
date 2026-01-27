@@ -14,7 +14,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_ensure_gpgcheck_never_disabled"
   version="1">
-  {{%- if product in ["sle12", "sle15", "slmicro5"] %}}
+  {{%- if 'sle' in product or 'slmicro' in product %}}
       <ind:path>/etc/zypp/repos.d</ind:path>
   {{%- else %}}
       <ind:path>/etc/yum.repos.d</ind:path>
