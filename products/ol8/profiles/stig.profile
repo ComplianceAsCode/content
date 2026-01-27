@@ -464,6 +464,7 @@ selections:
 
     # OL08-00-010770
     - file_permission_user_init_files_root
+    - rootfiles_configured
 
     # OL08-00-010780
     - no_files_unowned_by_user
