@@ -1,7 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
 
-{{%- if product in ["sle12", "sle15", "slmicro5"] %}}
+{{%- if 'sle' in product or 'slmicro' in product %}}
   sed -i 's/gpgcheck\s*=.*/gpgcheck=0/g' /etc/zypp/repos.d/*
 {{%- else %}}
   sed -i 's/gpgcheck\s*=.*/gpgcheck=0/g' /etc/yum.repos.d/*
