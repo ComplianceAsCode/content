@@ -6,7 +6,7 @@
 - name: Grep for {{{ pkg_manager }}} repo section names
   ansible.builtin.shell: |
     set -o pipefail
-{{%- if product in ["sle12", "sle15", "slmicro5"] %}}
+{{%- if 'sle' in product or 'slmicro' in product %}}
     grep -HEr '^\[.+\]' -r /etc/zypp/repos.d/
 {{%- else %}}
     grep -HEr '^\[.+\]' -r /etc/yum.repos.d/
