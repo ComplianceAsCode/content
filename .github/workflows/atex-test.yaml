@@ -143,12 +143,14 @@ jobs:
       - name: Install test dependencies
         run: |
           dnf -y install python3-pip rsync
-          pip install fmf atex==0.12
+          pip install fmf atex==0.13
 
       - name: Run tests on Testing Farm
         env:
           TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
           CS_MAJOR: ${{ matrix.centos_stream_major }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+          ACTOR: ${{ github.actor }}
         run: |
           python3 tests/run_tests_testingfarm.py \
             --contest-dir contest \
@@ -157,7 +159,9 @@ jobs:
             --compose "CentOS-Stream-${CS_MAJOR}" \
             --arch x86_64 \
             --os-major-version "${CS_MAJOR}" \
-            --timeout ${{ env.TEST_TIMEOUT }}
+            --timeout ${{ env.TEST_TIMEOUT }} \
+            --tag github_actor=$ACTOR \
+            --tag github_repo=$REPO_URL
 
       - name: Upload test results
         if: always()
@@ -186,7 +190,7 @@ jobs:
         if: always()
         run: |
           dnf -y install python3-pip git rsync
-          pip install fmf atex==0.12
+          pip install fmf atex==0.13
 
       - name: Checkout ATEX results repository
         if: always()
