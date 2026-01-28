@@ -123,9 +123,7 @@ def _is_skipped_profile(profile_id):
 def _get_guide_filename(path_base, profile_id, benchmark_id, benchmarks):
     profile_id_for_path = "default" if not profile_id else profile_id
     benchmark_id_for_path = benchmark_id
-    if benchmark_id_for_path.startswith(OSCAP_DS_STRING):
-        benchmark_id_for_path = \
-            benchmark_id_for_path[len(OSCAP_DS_STRING):]
+    benchmark_id_for_path = benchmark_id_for_path.removeprefix(OSCAP_DS_STRING)
 
     if len(benchmarks) == 1 or len(benchmark_id_for_path) == len("RHEL-X"):
         # treat the base RHEL benchmark as a special case to preserve

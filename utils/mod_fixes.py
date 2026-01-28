@@ -44,7 +44,7 @@ def list_platforms(rule_obj, lang):
         for product in sorted(fix.get('products', [])):
             print("   - %s" % product)
 
-    print("")
+    print()
 
     print("Actual platforms:")
     for rule_id in sorted(rule_obj['remediations'].get(lang, {})):
@@ -56,7 +56,7 @@ def list_platforms(rule_obj, lang):
         for platform in platforms:
             print("   - %s" % platform)
 
-    print("")
+    print()
 
 
 def add_platforms(rule_obj, lang, platforms):

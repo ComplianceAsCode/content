@@ -42,7 +42,7 @@ def list_platforms(rule_obj):
         for product in sorted(oval.get('products', [])):
             print("   - %s" % product)
 
-    print("")
+    print()
 
     print("Actual platforms:")
     for oval_id in sorted(rule_obj.get('ovals', {})):
@@ -54,7 +54,7 @@ def list_platforms(rule_obj):
         for platform in platforms:
             print("   - %s" % platform)
 
-    print("")
+    print()
 
 
 def add_platforms(rule_obj, platforms):

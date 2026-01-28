@@ -11,15 +11,15 @@ import re
 
 
 BASH_MACHINE_CONDITIONAL = re.compile(
-    r'^.*\[ ! -f /.dockerenv \] && \[ ! -f /run/.containerenv \].*$', re.M)
+    r'^.*\[ ! -f /.dockerenv \] && \[ ! -f /run/.containerenv \].*$', re.MULTILINE)
 ANSIBLE_MACHINE_CONDITIONAL = re.compile(
     r'ansible_virtualization_type not in \["docker",\s+"lxc",\s+"openvz",\s+"podman",\s+' +
     r'"container"\]',
-    re.M)
+    re.MULTILINE)
 MACHINE_PLATFORM_ONE_LINE = re.compile(
-    r'^\s*platform:\s+machine\s*$', re.M)
+    r'^\s*platform:\s+machine\s*$', re.MULTILINE)
 MACHINE_PLATFORM_MULTILINE = re.compile(
-    r'^\s*platforms:\s*\n(\s+-\s+.*machine.*)+', re.M)
+    r'^\s*platforms:\s*\n(\s+-\s+.*machine.*)+', re.MULTILINE)
 
 
 def main():
