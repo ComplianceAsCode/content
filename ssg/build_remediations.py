@@ -653,20 +653,20 @@ def expand_xccdf_subs(fix, remediation_type):
             fix_text
         )
 
-        pattern = r'\(ansible-populate\s*(\S+)\)'
+        pattern = r'\(ansible-populate\s*([a-zA-Z0-9_]+)\)'
 
     elif remediation_type == "puppet":
-        pattern = r'\(puppet-populate\s*(\S+)\)'
+        pattern = r'\(puppet-populate\s*([a-zA-Z0-9_]+)\)'
 
     elif remediation_type == "anaconda":
-        pattern = r'\(anaconda-populate\s*(\S+)\)'
+        pattern = r'\(anaconda-populate\s*([a-zA-Z0-9_]+)\)'
 
     elif remediation_type == "bash":
-        pattern = r'\(bash-populate\s*(\S+)\)'
+        pattern = r'\(bash-populate\s*([a-zA-Z0-9_]+)\)'
     elif remediation_type == "kickstart":
-        pattern = r'\(kickstart-populate\s*(\S+)\)'
+        pattern = r'\(kickstart-populate\s*([a-zA-Z0-9_]+)\)'
     elif remediation_type == "bootc":
-        pattern = r'\(bootc-populate\s*(\S+)\)'
+        pattern = r'\(bootc-populate\s*([a-zA-Z0-9_]+)\)'
     else:
         sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
         sys.exit(1)
