@@ -20,6 +20,7 @@ id "{{{ own }}}" &>/dev/null || useradd {{{ own }}}
 if [ ! -d {{{ path }}} ]; then
     mkdir -p {{{ path }}}
 fi
+touch "{{{ path }}}"/cac_file_owner_test_file
 {{% if FILE_REGEX %}}
 find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown testuser_123 {} \;
 {{% elif RECURSIVE %}}
