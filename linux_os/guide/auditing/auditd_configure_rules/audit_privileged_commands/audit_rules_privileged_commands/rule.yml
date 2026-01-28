@@ -13,10 +13,16 @@ description: |-
     setuid / setgid programs using the following command:
     <pre>$ sudo find <i>PARTITION</i> -xdev -perm /6000 -type f 2&gt;/dev/null</pre>
 
+{{% if product in ["fedora", "rhel10"] %}}
     For each setuid / setgid program identified by the previous command, an audit rule must be
     present in the appropriate place using the following line structure, setting ARCH to either b32 for 32-bit
     system, or having two lines for both b32 and b64 in case your system is 64-bit:
     <pre>-a always,exit -F arch=ARCH -F path=<i>PROG_PATH</i> -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+{{% else %}}
+    For each setuid / setgid program identified by the previous command, an audit rule must be
+    present in the appropriate place using the following line structure:
+    <pre>-a always,exit -F path=<i>PROG_PATH</i> -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+{{% endif %}}
 
     If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program to read
     audit rules during daemon startup, add the line to a file with suffix <tt>.rules</tt> in the

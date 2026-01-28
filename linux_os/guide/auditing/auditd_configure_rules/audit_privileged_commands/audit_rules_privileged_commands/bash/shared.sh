@@ -15,8 +15,19 @@ function add_audit_rule()
     local PRIV_CMD="$1"
     local OTHER_FILTERS="-F path=$PRIV_CMD -F perm=x"
     # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
+{{% if product in ["fedora", "rhel10"] %}}
+    [ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
+    for ARCH in "${RULE_ARCHS[@]}" ; do
+        ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+        {{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") | indent(4) }}}
+        {{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") | indent(4) }}}
+    done
+{{% else %}}
+    ACTION_ARCH_FILTERS="-a always,exit"
     {{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") | indent(4) }}}
     {{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") | indent(4) }}}
+{{% endif %}}
+
 }
 
 if {{{ bash_bootc_build() }}} ; then
