@@ -384,7 +384,7 @@ value: :code:`Setting={{ varname1 }}`
 
 #}}
 {{% macro ansible_deregexify_banner_etc_issue(banner_var_name) -%}}
-{{ {{{ banner_var_name }}} |
+{{ "{{{ banner_var_name }}}" |
 {{{ ansible_deregexify_banner_anchors() }}} |
 {{{ ansible_deregexify_multiple_banners() }}} |
 {{{ ansible_deregexify_banner_space() }}} |
