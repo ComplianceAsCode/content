@@ -9,7 +9,6 @@ import json
 import re
 
 from ssg import yaml, cce, products
-from ssg.shims import input_func
 from ssg.utils import read_file_list
 import ssg
 import ssg.products
@@ -540,7 +539,7 @@ def fix_file_prompt(path, product_yaml, func, args):
 
     response = 'n'
     if need_input:
-        response = input_func("Confirm writing output to %s: (y/n): " % path)
+        response = input("Confirm writing output to %s: (y/n): " % path)
 
     if args.assume_yes or response.strip().lower() == 'y':
         changes = True
