@@ -48,7 +48,6 @@ selections:
     - '!file_permissions_user_cfg'
     - '!grub2_admin_username'
     - '!grub2_uefi_admin_username'
-    - '!libreswan_approved_tunnels'
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
     - '!package_talk_removed'

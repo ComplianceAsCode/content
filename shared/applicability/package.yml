@@ -57,7 +57,7 @@ args:
     pkgname: libpwquality
     {{% endif %}}
   libreswan:
-    {{% if product == "sle15" %}}
+    {{% if product in  ["sle15", "sle16"] %}}
     pkgname: strongswan-ipsec
     {{% else %}}
     pkgname: libreswan
