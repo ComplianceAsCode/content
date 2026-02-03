@@ -337,6 +337,14 @@ controls:
           - file_groupowner_var_log
       status: automated
 
+    - id: RHEL-08-010275
+      levels:
+          - medium
+      title: RHEL 8 must implement DOD-approved encryption in the bind package.
+      rules:
+          - configure_bind_crypto_policy
+      status: automated
+
     - id: RHEL-08-010290
       levels:
           - medium
