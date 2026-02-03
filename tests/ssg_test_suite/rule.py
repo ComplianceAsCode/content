@@ -302,7 +302,7 @@ class RuleChecker(oscap.Checker):
             self.datastream, self.benchmark_id)
         rules = []
 
-        for dirpath, dirnames, filenames in common.walk_through_benchmark_dirs(
+        for dirpath, _, _ in common.walk_through_benchmark_dirs(
                 product):
             if not is_rule_dir(dirpath):
                 continue
