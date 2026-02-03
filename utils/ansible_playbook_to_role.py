@@ -197,7 +197,7 @@ class PlaybookToRoleConverter():
         variables = set()
         for task in self.tasks_data:
             if "tags" not in task:
-                next
+                continue
             if "when" not in task:
                 task["when"] = []
             elif isinstance(task["when"], str):
