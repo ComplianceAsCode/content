@@ -6,9 +6,6 @@ import json
 import logging
 import os.path
 import re
-import socket
-import subprocess
-import sys
 import time
 import xml.etree.ElementTree
 
@@ -19,12 +16,6 @@ from tests.ssg_test_suite import test_env
 from tests.ssg_test_suite import common
 
 from ssg.shims import input_func
-
-# Needed for compatibility as there is no TimeoutError in python2.
-if sys.version_info[0] < 3:
-    TimeoutException = socket.timeout
-else:
-    TimeoutException = TimeoutError
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -684,7 +675,7 @@ class Checker(object):
             logging.info("Terminating the test run due to keyboard interrupt.")
         except RuntimeError as exc:
             logging.error("Terminating due to error: {msg}.".format(msg=str(exc)))
-        except TimeoutException as exc:
+        except TimeoutError as exc:
             logging.error("Terminating due to timeout: {msg}".format(msg=str(exc)))
         finally:
             self.finalize()
