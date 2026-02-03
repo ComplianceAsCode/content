@@ -51,7 +51,7 @@ args:
   iptables:
     pkgname: iptables
   libpwquality:
-    {{% if 'debian' in product or 'sle' in product or 'slmicro' in product or'ubuntu' in product %}}
+    {{% if 'debian' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
     pkgname: libpwquality1
     {{% else %}}
     pkgname: libpwquality
