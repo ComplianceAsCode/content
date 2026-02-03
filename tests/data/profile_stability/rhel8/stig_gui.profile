@@ -279,6 +279,7 @@ package_abrt-plugin-sosreport_removed
 package_abrt_removed
 package_aide_installed
 package_audit_installed
+package_crypto-policies_installed
 package_fapolicyd_installed
 package_firewalld_installed
 package_gssproxy_removed
