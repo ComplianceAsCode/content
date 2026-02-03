@@ -73,12 +73,5 @@ jobs:
                 working-directory: ./build
             -   name: "Set git safe directory, ref: https://github.com/actions/checkout/issues/760"
                 run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-            -   name: Upload coverage to Qlty  # Requires: git package
-                if: ${{ github.repository == 'ComplianceAsCode/content' }}
-                uses: qltysh/qlty-action/coverage@a19242102d17e497f437d7466aa01b528537e899 # v2.2.0
-                with:
-                    token: qltcp_kdIPsqNZzW5rYoxq
-                    files: build/tests/coverage.xml
-                    strip-prefix: /__w/content/content
             -   name: Validate gitmailmap
                 run: grep -E "\S" .mailmap | grep -Ev '^#' | git check-mailmap --stdin
