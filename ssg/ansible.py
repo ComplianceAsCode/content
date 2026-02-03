@@ -67,7 +67,7 @@ def remove_too_many_blank_lines(ansible_src):
     Returns:
         str: The modified string with excessive blank lines reduced.
     """
-    return re.sub(r'\n{4,}', '\n\n\n', ansible_src, 0, flags=re.M)
+    return re.sub(r'\n{4,}', '\n\n\n', ansible_src, count=0, flags=re.MULTILINE)
 
 
 def remove_trailing_whitespace(ansible_src):
@@ -81,7 +81,7 @@ def remove_trailing_whitespace(ansible_src):
         str: The Ansible source code with trailing whitespace removed from each line.
     """
 
-    return re.sub(r'[ \t]+$', '', ansible_src, 0, flags=re.M)
+    return re.sub(r'[ \t]+$', '', ansible_src, count=0, flags=re.MULTILINE)
 
 
 package_facts_task = collections.OrderedDict([
