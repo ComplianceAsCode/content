@@ -211,7 +211,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 raise ValueError("Key %s is not allowed in a control file." % key)
 
     @classmethod
-    def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
+    def from_control_dict(cls, control_dict, env_yaml=None, default_level=None):
         """
         Create a control instance from a dictionary of control attributes.
 
@@ -227,6 +227,8 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         Raises:
             ValueError: If the 'automated' key has an invalid value or if 'levels' is not a list.
         """
+        if default_level is None:
+            default_level = ["default"]
         cls._check_keys(control_dict)
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
