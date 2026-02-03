@@ -97,6 +97,14 @@ controls:
           - security_patches_up_to_date
       status: automated
 
+    - id: RHEL-08-010015
+      levels:
+          - high
+      title: RHEL 8 must have the crypto-policies package installed.
+      rules:
+          - package_crypto-policies_installed
+      status: automated
+
     - id: RHEL-08-010020
       levels:
           - high
