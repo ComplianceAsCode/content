@@ -391,7 +391,7 @@ class AnsibleRemediation(Remediation):
 
             # When clause of the task can be string or a list, lets normalize to list
             task_when = p_task.get("when", "")
-            if type(task_when) is str:
+            if isinstance(task_when, str):
                 task_when = [task_when]
             for when in task_when:
                 if "ansible_facts.packages" in when:
