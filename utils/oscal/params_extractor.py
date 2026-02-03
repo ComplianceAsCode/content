@@ -96,6 +96,7 @@ class ParameterExtractor:
 
     def _load_param_info(self, param_id: str) -> ParamInfo:
         """Load the param from the var file."""
+        file = None
         try:
             file = self.param_files_for_product[param_id]
             value_yaml = ssg.build_yaml.Value.from_yaml(file, self.env_yaml)
@@ -113,4 +114,4 @@ class ParameterExtractor:
             raise ValueError(f"Could not find parameter {param_id}: {e}") from e
         except ValueError as e:
             logger.warning(f"Var file {file} has missing fields: {e}")
-            return param_obj
+            raise
