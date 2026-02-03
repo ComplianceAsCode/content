@@ -184,7 +184,6 @@ disable_ctrlaltdel_reboot
 disable_host_auth
 disable_users_coredumps
 disallow_bypass_password_sudo
-display_login_attempts
 enable_authselect
 enable_dracut_fips_module
 enable_fips_mode
