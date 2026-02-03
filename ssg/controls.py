@@ -307,7 +307,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                     "Please remove any duplicate listing of rule '%s' in "
                     "control '%s'." % (
                         rule.id_, self.id))
-                raise ValueError(msg)
+                raise ValueError(msg) from None
 
 
 class Level(ssg.entities.common.XCCDFEntity):
@@ -499,7 +499,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = (
                 "Unable to parse controls from {filename}: {error}"
                 .format(filename=self.filepath, error=str(exc)))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
         return control
 
     def _extract_and_record_subcontrols(self, current_control, controls_tree):
@@ -683,7 +683,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = "%s not found in policy %s" % (
                 control_id, self.id
             )
-            raise ValueError(msg)
+            raise ValueError(msg) from None
 
     def get_level(self, level_id):
         """
@@ -705,7 +705,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = "Level %s not found in policy %s" % (
                 level_id, self.id
             )
-            raise ValueError(msg)
+            raise ValueError(msg) from None
 
     def get_level_with_ancestors_sequence(self, level_id):
         """

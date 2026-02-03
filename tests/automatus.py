@@ -432,7 +432,7 @@ def normalize_passed_arguments(options):
         options.benchmark_id = bench_id
     except RuntimeError as exc:
         msg = "Error inferring benchmark ID from component refId: {}".format(str(exc))
-        raise RuntimeError(msg)
+        raise RuntimeError(msg) from exc
 
     if options.docker:
         options.test_env = ssg_test_suite.test_env.DockerTestEnv(
@@ -469,7 +469,7 @@ def normalize_passed_arguments(options):
         options.benchmark_cpes = benchmark_cpes
     except RuntimeError as exc:
         msg = "Error inferring platform from benchmark: {}".format(str(exc))
-        raise RuntimeError(msg)
+        raise RuntimeError(msg) from exc
 
 
 def main():

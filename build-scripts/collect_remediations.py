@@ -118,7 +118,7 @@ def collect_remediations(
             msg = (
                 "Failed to dispatch {lang} remediation for {rule_id}: {error}"
                 .format(lang=lang, rule_id=rule.id_, error=str(exc)))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
 
 
 def main():

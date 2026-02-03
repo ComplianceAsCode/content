@@ -22,7 +22,7 @@ try:
 except ImportError:
     print("Please install PyGithub, you need a specific version of pygithub, install it through $ pip install \"PyGithub>=1.58.2,<2.0\"",
           file=sys.stderr)
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 
 try:
@@ -31,7 +31,7 @@ try:
     from ssg.utils import mkdir_p
 except ImportError:
     print("Unable to find the ssg module. Please run 'source .pyenv.sh'", file=sys.stderr)
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 
 def memoize(f):

@@ -110,7 +110,7 @@ class ParameterExtractor:
             logger.info(f"Adding parameter {parameter_id}")
             return param_obj
         except KeyError as e:
-            raise ValueError(f"Could not find parameter {param_id}: {e}")
+            raise ValueError(f"Could not find parameter {param_id}: {e}") from e
         except ValueError as e:
             logger.warning(f"Var file {file} has missing fields: {e}")
             return param_obj
