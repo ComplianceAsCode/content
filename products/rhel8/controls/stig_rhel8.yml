@@ -345,6 +345,14 @@ controls:
           - configure_bind_crypto_policy
       status: automated
 
+    - id: RHEL-08-010280
+      levels:
+          - medium
+      title: RHEL 8 IP tunnels must use FIPS 140-3-approved cryptographic algorithms.
+      rules:
+          - configure_libreswan_crypto_policy
+      status: automated
+
     - id: RHEL-08-010290
       levels:
           - medium
