@@ -734,3 +734,6 @@ selections:
     - harden_sshd_ciphers_opensshserver_conf_crypto_policy
     - harden_sshd_macs_opensshserver_conf_crypto_policy
     - sysctl_crypto_fips_enabled
+    - configure_gnutls_tls_crypto_policy
+    - configure_openssl_tls_crypto_policy
+    - sshd_use_approved_kex_ordered_stig
