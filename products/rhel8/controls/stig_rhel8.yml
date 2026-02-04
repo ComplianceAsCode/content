@@ -72,12 +72,6 @@ controls:
           - var_time_service_set_maxpoll=18_hours
             # Enable / Configure FIPS
           - enable_fips_mode
-          - var_system_crypto_policy=fips_stig
-          - configure_crypto_policy
-          - configure_bind_crypto_policy
-          - configure_libreswan_crypto_policy
-          - configure_kerberos_crypto_policy
-          - enable_dracut_fips_module
             # Other needed rules
           - enable_authselect
 
