@@ -141,7 +141,6 @@ configure_bind_crypto_policy
 configure_crypto_policy
 configure_firewalld_ports
 configure_gnutls_tls_crypto_policy
-configure_kerberos_crypto_policy
 configure_libreswan_crypto_policy
 configure_openssl_crypto_policy
 configure_openssl_tls_crypto_policy
@@ -176,7 +175,6 @@ disable_users_coredumps
 disallow_bypass_password_sudo
 display_login_attempts
 enable_authselect
-enable_dracut_fips_module
 enable_fips_mode
 enable_gpgcheck_for_all_repositories
 encrypt_partitions
@@ -210,6 +208,7 @@ file_permissions_var_log
 file_permissions_var_log_audit
 file_permissions_var_log_messages
 fips_crypto_subpolicy
+fips_custom_stig_sub_policy
 firewalld-backend
 gnome_gdm_disable_automatic_login
 grub2_admin_username
@@ -222,10 +221,6 @@ grub2_pti_argument
 grub2_uefi_admin_username
 grub2_uefi_password
 grub2_vsyscall_argument
-harden_sshd_ciphers_openssh_conf_crypto_policy
-harden_sshd_ciphers_opensshserver_conf_crypto_policy
-harden_sshd_macs_openssh_conf_crypto_policy
-harden_sshd_macs_opensshserver_conf_crypto_policy
 install_smartcard_packages
 installed_OS_is_vendor_supported
 kerberos_disable_no_keytab
@@ -372,7 +367,6 @@ sudo_require_reauthentication
 sudo_restrict_privilege_elevation_to_authorized
 sudoers_default_includedir
 sudoers_validate_passwd
-sysctl_crypto_fips_enabled
 sysctl_fs_protected_hardlinks
 sysctl_fs_protected_symlinks
 sysctl_kernel_core_pattern
@@ -450,7 +444,7 @@ var_ssh_client_rekey_limit_time=1hour
 var_sshd_set_keepalive=1
 var_sssd_certificate_verification_digest_function=sha1
 var_sudo_timestamp_timeout=always_prompt
-var_system_crypto_policy=fips
+var_system_crypto_policy=fips_stig
 var_time_service_set_maxpoll=18_hours
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces
