@@ -337,6 +337,14 @@ controls:
           - file_groupowner_var_log
       status: automated
 
+    - id: RHEL-08-010270
+      levels:
+          - high
+      title: RHEL 8 cryptographic policy must not be overridden.
+      rules:
+          - configure_crypto_policy
+      status: automated
+
     - id: RHEL-08-010275
       levels:
           - medium
