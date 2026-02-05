@@ -2,7 +2,6 @@
 
 import sys
 import time
-import gzip
 import json
 import lzma
 import atexit
@@ -16,8 +15,6 @@ from atex.provisioner.testingfarm import TestingFarmProvisioner
 from atex.orchestrator.contest import ContestOrchestrator
 from atex.aggregator.json import LZMAJSONAggregator
 from atex.fmf import FMFTests
-
-logger = logging.getLogger("ATEX")
 
 
 def kv_pair(keyval):
@@ -42,21 +39,43 @@ def parse_args():
     return parser.parse_args()
 
 
+class OrchestratorLogFilter(logging.Filter):
+    """
+    Filter (show) only messages from the atex.orchestrator logger,
+    show all warnings (and above) from everywhere,
+    show all from the root logger (logging.*).
+    """
+    def filter(self, record):
+        return (
+            record.levelno >= logging.WARNING
+            or record.name.startswith("atex.orchestrator")
+            or record.name == "root"
+        )
+
+
 def setup_logging():
     """Setup logging configuration with console and file handlers."""
-    # Log brief info to console, but be verbose in a separate file-based log (uploaded as artifact)
+    # console - keep it brief, just basic orchestration + warnings
     console_log = logging.StreamHandler(sys.stderr)
     console_log.setLevel(logging.INFO)
+    console_log.addFilter(OrchestratorLogFilter())
+    console_log.setFormatter(logging.Formatter(
+        fmt="%(asctime)s: %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    ))
 
-    debug_log_fobj = gzip.open("atex_debug.log.gz", "wt")
+    # debug log - store ALL debugging info, compressed
+    debug_log_fobj = lzma.open("atex_debug.log.xz", "wt")
     atexit.register(debug_log_fobj.close)
     file_log = logging.StreamHandler(debug_log_fobj)
     file_log.setLevel(logging.DEBUG)
+    file_log.setFormatter(logging.Formatter(
+        fmt="%(asctime)s %(name)s: %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    ))
 
     logging.basicConfig(
         level=logging.DEBUG,
-        format="%(asctime)s %(name)s: %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
         handlers=(console_log, file_log),
         force=True,
     )
@@ -65,7 +84,7 @@ def setup_logging():
 def setup_signal_handlers():
     """Setup signal handlers for graceful abort."""
     def abort_on_signal(signum, _):
-        logger.error(f"got signal {signum}, aborting")
+        logging.error(f"got signal {signum}, aborting")
         raise SystemExit(1)
 
     signal.signal(signal.SIGTERM, abort_on_signal)
@@ -97,13 +116,13 @@ def main():
             },
         )
 
-        logger.info(f"plan: {args.plan}")
-        logger.info(f"os major version: {args.os_major_version}")
-        logger.info(f"arch: {args.arch}")
-        logger.info(f"compose: {args.compose}")
-        logger.info("will run:")
+        logging.info(f"plan: {args.plan}")
+        logging.info(f"os major version: {args.os_major_version}")
+        logging.info(f"arch: {args.arch}")
+        logging.info(f"compose: {args.compose}")
+        logging.info("will run:")
         for test in fmf_tests.tests:
-            logger.info(f"    {test}")
+            logging.info(f"    {test}")
 
         # Setup result aggregator
         output_results = f"results-centos-stream-{args.os_major_version}-{args.arch}.json.xz"
@@ -140,22 +159,23 @@ def main():
         )
         stack.enter_context(orchestrator)
 
-        logger.info("Starting test execution...")
+        logging.info("Starting test execution...")
         next_writeout = time.monotonic() + 600
         while orchestrator.serve_once():
             if time.monotonic() > next_writeout:
-                logger.info(
+                logging.info(
+                    "STATISTICS: "
                     f"queued: {len(orchestrator.to_run)}/{len(fmf_tests.tests)} tests, "
                     f"running: {len(orchestrator.running_tests)} tests",
                 )
                 next_writeout = time.monotonic() + 600
             time.sleep(1)
 
-        logger.info("Test execution completed!")
+        logging.info("Test execution completed!")
 
     # Log final output locations
-    logger.info(f"Results written to: {output_results}")
-    logger.info(f"Test files in: {output_files}")
+    logging.info(f"Results written to: {output_results}")
+    logging.info(f"Test files in: {output_files}")
 
     # Read back the compressed JSON results and exit with non-0 if anything failed
     with lzma.open(output_results, "rt") as results:
@@ -163,7 +183,7 @@ def main():
             fields = json.loads(line)
             # [platform, status, test name, subtest name, files, note]
             if fields[1] in ("fail", "error", "infra"):
-                logger.warning("failures found in the results, exiting with 1")
+                logging.error("failures found in the results, exiting with 1")
                 sys.exit(1)
 
 

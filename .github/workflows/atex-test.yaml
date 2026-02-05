@@ -99,7 +99,7 @@ jobs:
           # Restore permissions from the saved file created during build
           CONTENT_DIR="content-centos-stream${{ matrix.centos_stream_major }}"
           PERMS_FILE="${CONTENT_DIR}/file-permissions.txt"
-          
+
           if [ -f "${PERMS_FILE}" ]; then
             echo "=== Restoring file permissions from ${PERMS_FILE} ==="
             cd "${CONTENT_DIR}"
@@ -143,7 +143,7 @@ jobs:
       - name: Install test dependencies
         run: |
           dnf -y install python3-pip rsync
-          pip install fmf atex==0.13
+          pip install fmf atex==0.15
 
       - name: Run tests on Testing Farm
         env:
@@ -171,7 +171,7 @@ jobs:
           path: |
             results-centos-stream-${{ matrix.centos_stream_major }}-x86_64.json.xz
             files-centos-stream-${{ matrix.centos_stream_major }}-x86_64/
-            atex_debug.log.gz
+            atex_debug.log.xz
           retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
 
   upload:
@@ -190,7 +190,7 @@ jobs:
         if: always()
         run: |
           dnf -y install python3-pip git rsync
-          pip install fmf atex==0.13
+          pip install fmf atex==0.15
 
       - name: Checkout ATEX results repository
         if: always()
