@@ -195,6 +195,6 @@ def xccdf_with_no_cce():
 
 def test_verify_correct_form_of_referenced_cce_identifiers_no_cce(
         xccdf_with_no_cce):
-      # Should not raise an exception when there's no CCE
+    # Should not raise an exception when there's no CCE
     ssg.build_renumber.verify_correct_form_of_referenced_cce_identifiers(
             xccdf_with_no_cce)
