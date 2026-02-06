@@ -5,7 +5,7 @@
 # disruption = medium
 - name: "Implement Blank Screensaver"
   community.general.ini_file:
-    dest: "/etc/dconf/db/local.d/00-security-settings"
+    dest: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings"
     section: "org/gnome/desktop/screensaver"
     option: picture-uri
     value: string ''
@@ -15,7 +15,7 @@
 
 - name: "Prevent user modification of GNOME picture-uri"
   ansible.builtin.lineinfile:
-    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
     regexp: '^/org/gnome/desktop/screensaver/picture-uri$'
     line: '/org/gnome/desktop/screensaver/picture-uri'
     create: yes
@@ -24,3 +24,7 @@
 - name: Dconf Update
   ansible.builtin.command: dconf update
   when: result_ini is changed or result_lineinfile is changed
+
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ ansible_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}

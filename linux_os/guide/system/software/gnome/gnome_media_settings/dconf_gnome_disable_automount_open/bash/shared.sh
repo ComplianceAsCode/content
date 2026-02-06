@@ -10,5 +10,5 @@
 {{{ bash_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
 {{% endif %}}
 
-{{{ bash_dconf_settings("org/gnome/desktop/media-handling", "automount-open", "false", "local.d", "00-security-settings", rule_id=rule_id) }}}
-{{{ bash_dconf_lock("org/gnome/desktop/media-handling", "automount-open", "local.d", "00-security-settings-lock") }}}
+{{{ bash_dconf_settings("org/gnome/desktop/media-handling", "automount-open", "false", dconf_gdm_dir , "00-security-settings", rule_id=rule_id) }}}
+{{{ bash_dconf_lock("org/gnome/desktop/media-handling", "automount-open", dconf_gdm_dir, "00-security-settings-lock") }}}

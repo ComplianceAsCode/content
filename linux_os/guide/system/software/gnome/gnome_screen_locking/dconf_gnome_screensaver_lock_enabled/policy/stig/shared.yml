@@ -24,9 +24,9 @@ fixtext: |-
 
     Create a database to contain the systemwide screensaver settings (if it does not already exist) with the following command:
 
-    Note: The example below is using the database "local" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
+    Note: The example below is using the database "{{{ dconf_gdm_dir }}}" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
 
-    $ sudo touch /etc/dconf/db/local.d/locks/session
+    $ sudo touch /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/session
 
     Add the following setting to prevent nonprivileged users from modifying it:
 

@@ -6,7 +6,7 @@ title: 'Set GNOME3 Screensaver Lock Delay After Activation Period'
 description: |-
     To activate the locking delay of the screensaver in the GNOME3 desktop when
     the screensaver is activated, add or set <tt>lock-delay</tt> to <tt>uint32 {{{ xccdf_value("var_screensaver_lock_delay") }}}</tt> in
-    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/desktop/screensaver]
     lock-delay=uint32 {{{ xccdf_value("var_screensaver_lock_delay") }}}
     </pre>
@@ -50,4 +50,3 @@ fixtext: |-
     {{{ fixtext_dconf_ini_file("org/gnome/desktop/screensaver/lock-delay", "lock-delay", xccdf_value("var_screensaver_lock_delay")) }}}
 
 srg_requirement: '{{{ full_name }}} must initiate a session lock for graphical user interfaces when the screensaver is activated.'
-

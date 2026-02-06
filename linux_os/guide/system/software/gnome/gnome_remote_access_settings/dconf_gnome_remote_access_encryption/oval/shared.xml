@@ -18,7 +18,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_configure_remote_access_encryption"
   version="1">
-    <ind:path>/etc/dconf/db/local.d/</ind:path>
+    <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^\[org/gnome/Vino\]([^\n]*\n+)+?require-encryption=true$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
@@ -31,7 +31,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_prevent_user_remote_access_encryption"
   version="1">
-    <ind:path>/etc/dconf/db/local.d/locks/</ind:path>
+    <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^/org/gnome/Vino/require-encryption$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>

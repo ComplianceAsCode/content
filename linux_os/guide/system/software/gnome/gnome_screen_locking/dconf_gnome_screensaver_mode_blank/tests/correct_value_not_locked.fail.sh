@@ -5,4 +5,4 @@
 . $SHARED/dconf_test_functions.sh
 
 clean_dconf_settings
-add_dconf_setting "org/gnome/desktop/screensaver" "picture-uri" "string ''" "local.d" "00-security-settings"
+add_dconf_setting "org/gnome/desktop/screensaver" "picture-uri" "string ''" "{{{ dconf_gdm_dir }}}" "00-security-settings"

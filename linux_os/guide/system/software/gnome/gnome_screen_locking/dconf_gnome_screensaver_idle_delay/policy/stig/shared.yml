@@ -20,9 +20,9 @@ fixtext: |-
 
     Create a database to contain the system-wide screensaver settings (if it does not already exist) with the following command:
 
-    $ sudo touch /etc/dconf/db/local.d/00-screensaver
+    $ sudo touch /etc/dconf/db/{{{ dconf_gdm_dir }}}/00-screensaver
 
-    Edit /etc/dconf/db/local.d/00-screensaver and add or update the following lines:
+    Edit /etc/dconf/db/{{{ dconf_gdm_dir }}}/00-screensaver and add or update the following lines:
 
     [org/gnome/desktop/session]
     # Set the lock time out to 900 seconds before the session is considered idle
