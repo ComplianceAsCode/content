@@ -39,7 +39,7 @@ selections:
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
     - sshd_approved_macs=stig_extended
-    - sshd_approved_ciphers=stig_extended
+    - sshd_approved_ciphers=stig_ol8
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_authorized_local_users_regex=ol8
     - var_accounts_passwords_pam_faillock_deny=3
@@ -408,9 +408,6 @@ selections:
     # OL08-00-010650
     - mount_option_nosuid_remote_filesystems
 
-    # OL08-00-010660
-    - accounts_user_dot_no_world_writable_programs
-
     # OL08-00-010670
     - service_kdump_disabled
 
@@ -532,7 +529,11 @@ selections:
 
     # OL08-00-020035
     - logind_session_timeout
-    - var_logind_session_timeout=15_minutes
+    - var_logind_session_timeout=10_minutes
+
+    # OL08-00-020040
+    - accounts_tmout
+    - var_accounts_tmout=10_min
 
     # OL08-00-020043
     - vlock_installed
@@ -542,6 +543,7 @@ selections:
 
     # OL08-00-020060
     - dconf_gnome_screensaver_idle_delay
+    - inactivity_timeout_value=10_minutes
 
     # OL08-00-020080
     - dconf_gnome_screensaver_user_locks
@@ -650,9 +652,6 @@ selections:
 
     # OL08-00-020331, OL08-00-020332
     - no_empty_passwords
-
-    # OL08-00-020340
-    - display_login_attempts
 
     # OL08-00-020350
     - sshd_print_last_log
