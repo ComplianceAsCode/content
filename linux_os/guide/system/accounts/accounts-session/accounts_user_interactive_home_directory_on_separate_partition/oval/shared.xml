@@ -1,0 +1,71 @@
+<def-group>
+  <definition class="compliance"
+              id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("All interactive user home directories must reside on a separate partition from root.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criterion test_ref="test_{{{ rule_id }}}"
+                 comment="All interactive user home directories are on a separate partition"/>
+      <criterion test_ref="test_{{{ rule_id }}}_no_interactive_users"
+                 comment="No interactive users exist on the system"/>
+    </criteria>
+  </definition>
+
+  <!-- ============================================================ -->
+  <!-- Part 1: Collect all non-root mount points from the system     -->
+  <!-- ============================================================ -->
+  <linux:partition_object id="object_{{{ rule_id }}}_non_root_partitions" version="1">
+    <linux:mount_point operation="not equal">/</linux:mount_point>
+  </linux:partition_object>
+
+  <!-- Build regex patterns from mount points: ^<mount_point>(/|$)
+       The (/|$) suffix prevents substring false matches, e.g.
+       mount point /home should not match home directory /home2/user -->
+  <local_variable id="var_{{{ rule_id }}}_mount_regex" datatype="string" version="1"
+                  comment="Regex patterns to match home dirs on non-root partitions">
+    <concat>
+      <literal_component>^</literal_component>
+      <object_component item_field="mount_point"
+                        object_ref="object_{{{ rule_id }}}_non_root_partitions"/>
+      <literal_component>(/|$)</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- ============================================================ -->
+  <!-- Part 2: Extract home directories of interactive users         -->
+  <!-- Interactive users: UID >= 1000, shell not nologin/false,      -->
+  <!-- username not nobody/nfsnobody                                 -->
+  <!-- ============================================================ -->
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_interactive_users" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match"
+      >^(?:(?!nobody|nfsnobody)[^:]*):(?:[^:]*:)[1-9]\d{3,}:(?:[^:]*:){2}([^:]+):(?!(?:/usr)?/sbin/nologin$|/bin/false$)[^:]*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- ============================================================ -->
+  <!-- Part 3: Test that ALL interactive users' home directories     -->
+  <!-- match at least one non-root mount point regex                 -->
+  <!-- ============================================================ -->
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}"
+                              check="all" check_existence="at_least_one_exists"
+                              version="1"
+                              comment="All interactive user home dirs are on separate partitions">
+    <ind:object object_ref="object_{{{ rule_id }}}_interactive_users"/>
+    <ind:state state_ref="state_{{{ rule_id }}}_on_separate_partition"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_on_separate_partition" version="1">
+    <ind:subexpression operation="pattern match" var_check="at least one"
+                       var_ref="var_{{{ rule_id }}}_mount_regex"/>
+  </ind:textfilecontent54_state>
+
+  <!-- ============================================================ -->
+  <!-- Part 4: Handle edge case - no interactive users on system     -->
+  <!-- ============================================================ -->
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_interactive_users"
+                              check="all" check_existence="none_exist"
+                              version="1"
+                              comment="No interactive users exist on the system">
+    <ind:object object_ref="object_{{{ rule_id }}}_interactive_users"/>
+  </ind:textfilecontent54_test>
+</def-group>
