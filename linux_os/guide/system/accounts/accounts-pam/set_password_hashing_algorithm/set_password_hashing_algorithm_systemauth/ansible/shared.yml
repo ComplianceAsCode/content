@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 
-{{% if product in ["sle15", "sle12", "slmicro5", "slmicro6"] -%}}
+{{% if 'sle' in product or 'slmicro' in product -%}}
 {{%- set pam_file="/etc/pam.d/common-password" %}}
 {{%- set control="required" %}}
 {{%- else -%}}

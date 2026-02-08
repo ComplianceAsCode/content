@@ -50,6 +50,7 @@ selections:
     - '!grub2_uefi_admin_username'
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
+    - '!package_sequoia-sq_installed'
     - '!package_talk_removed'
     - '!package_talk-server_removed'
     - '!package_xinetd_removed'
