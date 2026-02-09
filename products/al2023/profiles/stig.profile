@@ -48,3 +48,7 @@ selections:
     - audit_rules_sysadmin_actions
     - audit_rules_kernel_module_loading
     - audit_rules_immutable_login_uids
+    - mount_option_boot_efi_nosuid
+    - grub2_audit_backlog_limit_argument
+    - grub2_audit_argument
+    - file_permissions_var_log_audit

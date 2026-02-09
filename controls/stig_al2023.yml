@@ -581,7 +581,7 @@ controls:
     title: Amazon Linux 2023 crypto policy must not be overridden.
     rules: []
     status: pending
-    
+
   - id: AZLX-23-001290
     levels:
       - medium
@@ -626,8 +626,10 @@ controls:
     title: Amazon Linux 2023, for PKI-based authentication, must validate
       certificates by constructing a certification path (which includes status
       information) to an accepted trust anchor.
-    rules: []
+    rules: 
+      - sssd_has_trust_anchor
     status: pending
+
   - id: AZLX-23-001315
     levels:
       - medium
@@ -761,8 +763,10 @@ controls:
       - medium
     title: Amazon Linux 2023 must be configured to off-load audit records onto a
       different system from the system being audited via syslog.
-    rules: []
-    status: pending
+    rules: 
+      - rsyslog_remote_loghost
+    status: automated
+
   - id: AZLX-23-002065
     levels:
       - medium
@@ -817,7 +821,8 @@ controls:
     title: Amazon Linux 2023 must generate audit records for all account
       creations, modifications, disabling, and termination events that affect
       /etc/sudoers.d/ directory.
-    rules: []
+    rules: 
+      - audit_rules_sudoers_d
     status: pending
   - id: AZLX-23-002095
     levels:
@@ -1030,8 +1035,10 @@ controls:
     title: Amazon Linux 2023 must generate audit records for all account
       creations, modifications, disabling, and termination events that affect
       /etc/passwd.
-    rules: []
+    rules: 
+      - audit_rules_usergroup_modification_shadow
     status: pending
+
   - id: AZLX-23-002210
     levels:
       - medium
@@ -1047,8 +1054,10 @@ controls:
     title: Amazon Linux 2023 must alert the information system security officer
       (ISSO) and system administrator (SA), at a minimum, in the event of an audit
       processing failure.
-    rules: []
+    rules: 
+      - auditd_data_retention_action_mail_acct
     status: pending
+
   - id: AZLX-23-002220
     levels:
       - medium
@@ -1064,23 +1073,29 @@ controls:
       - medium
     title: Amazon Linux 2023 audit logs must be group-owned by root or by a
       restricted logging group to prevent unauthorized read access.
-    rules: []
+    rules: 
+      - file_group_ownership_var_log_audit
     status: pending
+
   - id: AZLX-23-002230
     levels:
       - medium
     title:
       Amazon Linux 2023 audit log directory must be owned by root to prevent
       unauthorized read access.
-    rules: []
+    rules:
+      - file_ownership_var_log_audit_stig
     status: pending
+
   - id: AZLX-23-002235
     levels:
       - medium
     title: Amazon Linux 2023 audit logs file must have mode "0600" or less
       permissive to prevent unauthorized access to the audit log.
-    rules: []
+    rules: 
+      - file_permissions_var_log_audit
     status: pending
+
   - id: AZLX-23-002240
     levels:
       - medium
@@ -1669,6 +1684,7 @@ controls:
       for the appropriate DOD network.
     rules: []
     status: pending
+
   - id: AZLX-23-002565
     levels:
       - medium
