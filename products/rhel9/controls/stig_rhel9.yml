@@ -2418,14 +2418,6 @@ controls:
           - group_unique_id
       status: automated
 
-    - id: RHEL-09-411115
-      levels:
-          - medium
-      title: Local RHEL 9 initialization files must not execute world-writable programs.
-      rules:
-          - accounts_user_dot_no_world_writable_programs
-      status: automated
-
     - id: RHEL-09-412035
       levels:
           - medium
@@ -2495,14 +2487,6 @@ controls:
       title: RHEL 9 must define default permissions for the system default profile.
       rules:
           - accounts_umask_etc_profile
-      status: automated
-
-    - id: RHEL-09-412075
-      levels:
-          - low
-      title: RHEL 9 must display the date and time of the last successful account logon upon logon.
-      rules:
-          - display_login_attempts
       status: automated
 
     - id: RHEL-09-412080
