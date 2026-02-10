@@ -4,6 +4,8 @@ title: 'Record Events that Modify the System''s Mandatory Access Controls in /va
 
 description: |-
     {{{ describe_audit_rules_watch("/var/lib/selinux/", "MAC-policy") }}}
+    Note that monitoring /var/lib/selinux/ will generate a significant burst of audit events
+    during both selinux-policy* package upgrade and policy rebuild.
 
 rationale: |-
     The system's mandatory access policy (SELinux) should not be
