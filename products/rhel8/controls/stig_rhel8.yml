@@ -1419,6 +1419,16 @@ controls:
           - accounts_umask_etc_profile
       status: automated
 
+    - id: RHEL-08-020353
+      levels:
+          - medium
+      title: RHEL 8 must automatically exit interactive command shell user sessions after 10 minutes of inactivity.
+      rules:
+          - accounts_tmout
+          - var_accounts_tmout=10_min
+      status: automated
+
+
     - id: RHEL-08-030000
       levels:
           - medium
