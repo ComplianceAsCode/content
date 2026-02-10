@@ -44,8 +44,8 @@
     - "item.options is not search('nodev')"
     - "item.fstype not in excluded_fstypes"
     # Attempting to change polyinstantiated mounts for /tmp and /var/tmp, if present, will fail
-    - "not accounts_polyinstantiated_var_tmp or item.mount != '/var/tmp/tmp-inst'"
-    - "not accounts_polyinstantiated_tmp or item.mount != '/tmp/tmp-inst'"
+    - "not accounts_polyinstantiated_var_tmp | default(false) or item.mount != '/var/tmp/tmp-inst'"
+    - "not accounts_polyinstantiated_tmp | default(false) or item.mount != '/tmp/tmp-inst'"
   with_items:
     - "{{ ansible_facts.mounts }}"
 
