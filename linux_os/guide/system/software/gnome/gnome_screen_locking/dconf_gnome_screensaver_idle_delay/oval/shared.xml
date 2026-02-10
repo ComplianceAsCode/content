@@ -21,7 +21,11 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_screensaver_idle_delay"
   version="1">
+{{% if product in ['sle15', 'sle16'] %}}
     <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/</ind:path>
+{{% else %}}
+    <ind:path>/etc/dconf/db/local.d/</ind:path>
+{{% endif %}}
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <!-- GSettings expects unsigned integer when setting 'idle-delay' per:
          https://bugzilla.redhat.com/show_bug.cgi?id=1141779#c3
@@ -40,7 +44,11 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_screensaver_idle_delay_setting"
   version="1">
+{{% if product in ['sle15', 'sle16'] %}}
     <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/</ind:path>
+{{% else %}}
+    <ind:path>/etc/dconf/db/local.d/</ind:path>
+{{% endif %}}
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <!-- GSettings expects unsigned integer when setting 'idle-delay' per:
          https://bugzilla.redhat.com/show_bug.cgi?id=1141779#c3
@@ -60,6 +68,7 @@
   <external_variable comment="inactivity timeout variable" datatype="int"
   id="inactivity_timeout_value" version="1" />
 
+{{% if 'ubuntu' in product or product in ["sle15", "sle16"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
       comment="screensaver idle delay setting is locked"
       id="test_screensaver_idle_delay_locked" version="1">
@@ -67,9 +76,14 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_screensaver_idle_delay_locked"
   version="1">
+{{% if product in ['sle15', 'sle16'] %}}
     <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/</ind:path>
+{{% else %}}
+    <ind:path>/etc/dconf/db/local.d/locks/</ind:path>
+{{% endif %}}
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^/org/gnome/desktop/session/idle-delay$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+{{% endif %}}
 </def-group>

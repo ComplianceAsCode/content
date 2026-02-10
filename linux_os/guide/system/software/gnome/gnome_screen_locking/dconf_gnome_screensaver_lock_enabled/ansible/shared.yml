@@ -6,7 +6,7 @@
 
 - name: "{{{ rule_title }}} - Enable GNOME3 Screensaver Lock After Idle Period"
   community.general.ini_file:
-    dest: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings"
+    dest: "/etc/dconf/db/local.d/00-security-settings"
     section: "org/gnome/desktop/screensaver"
     option: lock-enabled
     value: "true"
@@ -17,7 +17,7 @@
 
 - name: "{{{ rule_title }}} - Prevent user modification of GNOME lock-enabled"
   ansible.builtin.lineinfile:
-    path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
     regexp: '^/org/gnome/desktop/screensaver/lock-enabled$'
     line: '/org/gnome/desktop/screensaver/lock-enabled'
     create: yes

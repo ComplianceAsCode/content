@@ -20,7 +20,7 @@ checktext: |-
 fixtext: |-
     Configure the GNOME desktop to not allow a user to change the setting that disables autorun on removable media.
 
-    Add the following line to "/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock" to prevent user modification:
+    Add the following line to "/etc/dconf/db/local.d/locks/00-security-settings-lock" to prevent user modification:
 
     /org/gnome/desktop/media-handling/autorun-never
 

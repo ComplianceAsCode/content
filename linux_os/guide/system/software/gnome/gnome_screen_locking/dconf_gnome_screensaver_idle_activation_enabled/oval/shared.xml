@@ -18,7 +18,11 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_screensaver_idle_activation_enabled"
   version="1">
+{{% if product in ['sle15', 'sle16'] %}}
     <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/</ind:path>
+{{% else %}}
+    <ind:path>/etc/dconf/db/local.d/</ind:path>
+{{% endif %}}
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^\[org/gnome/desktop/screensaver\]([^\n]*\n+)+?idle-activation-enabled=true$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
@@ -31,7 +35,11 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_prevent_user_change_idle_activation_enabled"
   version="1">
+{{% if product in ['sle15', 'sle16'] %}}
     <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/</ind:path>
+{{% else %}}
+    <ind:path>/etc/dconf/db/local.d/locks/</ind:path>
+{{% endif %}}
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^/org/gnome/desktop/screensaver/idle-activation-enabled$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>

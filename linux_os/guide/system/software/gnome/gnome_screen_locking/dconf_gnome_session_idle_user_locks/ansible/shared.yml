@@ -6,7 +6,11 @@
 
 - name: "Prevent user modification of GNOME Session idle-delay"
   ansible.builtin.lineinfile:
+{{% if product in ['sle15', 'sle16'] %}}
     path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
+{{% else %}}
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+{{% endif %}}
     regexp: '^/org/gnome/desktop/session/idle-delay$'
     line: '/org/gnome/desktop/session/idle-delay'
     create: yes

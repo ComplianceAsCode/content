@@ -10,6 +10,6 @@ add_dconf_profiles
 add_dconf_setting "org/gnome/desktop/lockdown", "disable-lock-screen", "true", "{{{ dconf_gdm_dir }}}", "00-security-settings"
 add_dconf_lock "org/gnome/desktop/lockdown", "disable-lock-screen", "{{{ dconf_gdm_dir }}}", "00-security-settings-lock"
 {{% else %}}
-add_dconf_setting "org/gnome/desktop/screensaver", "lock-enabled", "false", "{{{ dconf_gdm_dir }}}", "00-security-settings"
-add_dconf_lock "org/gnome/desktop/screensaver", "lock-enabled", "{{{ dconf_gdm_dir }}}", "00-security-settings"
+add_dconf_setting "org/gnome/desktop/screensaver", "lock-enabled", "false", "local.d", "00-security-settings"
+add_dconf_lock "org/gnome/desktop/screensaver", "lock-enabled", "local.d", "00-security-settings"
 {{% endif %}}
