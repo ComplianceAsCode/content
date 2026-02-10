@@ -32,13 +32,13 @@
 
   <!-- ============================================================ -->
   <!-- Part 2: Extract home directories of interactive users         -->
-  <!-- Interactive users: UID >= 1000, shell not nologin/false,      -->
+  <!-- Interactive users: UID >= 1000, shell not nologin,             -->
   <!-- username not nobody/nfsnobody                                 -->
   <!-- ============================================================ -->
   <ind:textfilecontent54_object id="object_{{{ rule_id }}}_interactive_users" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
     <ind:pattern operation="pattern match"
-      >^(?:(?!nobody|nfsnobody)[^:]*):(?:[^:]*:)[1-9]\d{3,}:(?:[^:]*:){2}([^:]+):(?!(?:/usr)?/sbin/nologin$|/bin/false$)[^:]*$</ind:pattern>
+      >^(?:(?!nobody|nfsnobody)[^:]*):(?:[^:]*:)[1-9]\d{3,}:(?:[^:]*:){2}([^:]+):(?!(?:/usr)?/sbin/nologin$)[^:]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
