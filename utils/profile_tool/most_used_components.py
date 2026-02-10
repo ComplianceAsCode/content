@@ -1,4 +1,3 @@
-import sys
 import os
 from collections import defaultdict
 
@@ -7,13 +6,10 @@ import ssg.components
 from .most_used_rules import _sorted_dict_by_num_value
 from .common import generate_output, merge_dicts, remove_zero_counts
 
-PYTHON_2 = sys.version_info[0] < 3
-
-if not PYTHON_2:
-    from .most_used_rules import _get_profiles_for_product
-    from ..controleval import (
-        load_controls_manager,
-        load_product_yaml,
+from .most_used_rules import _get_profiles_for_product
+from ..controleval import (
+    load_controls_manager,
+    load_product_yaml,
     )
 
 

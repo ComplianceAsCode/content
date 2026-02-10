@@ -4,7 +4,6 @@ Also contains definitions of basic classes like Rule, Group, Value and Platform.
 """
 
 from __future__ import absolute_import
-from __future__ import print_function
 
 from copy import deepcopy
 import datetime

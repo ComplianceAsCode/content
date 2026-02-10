@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-from __future__ import print_function
-
 """
 Takes given XCCDF or data stream and for every profile in it it generates one
 OpenSCAP HTML guide. Also generates an index file that lists all the profiles
