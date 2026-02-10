@@ -31,6 +31,7 @@
       - lustre
       - davfs
       - fuse.sshfs
+      - vfat
 
 - name: "{{{ rule_title }}}: Ensure non-root local partitions are mounted with nodev option"
   ansible.posix.mount:
@@ -41,6 +42,7 @@
     fstype: "{{ item.fstype }}"
   when:
     - "item.mount is match('/\\w')"
+    - "item.mount is not match('/(boot|efi)')"
     - "item.options is not search('nodev')"
     - "item.fstype not in excluded_fstypes"
   with_items:
@@ -49,5 +51,5 @@
 - name: "{{{ rule_title }}}: Ensure non-root local partitions are present with nodev option in /etc/fstab"
   ansible.builtin.replace:
     path: /etc/fstab
-    regexp: '^\s*(?!#)(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(?!.*\bnodev\b)(\S+)(.*)$'
+    regexp: '^\s*(?!#)(/dev/\S+|UUID=\S+)\s+(/(?!boot|efi)\w\S*)\s+(?!vfat\s)(\S+)\s+(?!.*\bnodev\b)(\S+)(.*)$'
     replace: '\1 \2 \3 \4,nodev \5'

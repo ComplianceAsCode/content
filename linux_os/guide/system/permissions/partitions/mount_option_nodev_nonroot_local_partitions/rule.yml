@@ -24,6 +24,7 @@ ocil: |
 
 ocil_clause: "some mounts appear among output lines"
 
+
 severity: medium
 
 identifiers:
@@ -50,3 +51,16 @@ fixtext: |-
     Configure the "/etc/fstab" to use the "nodev" option on all non-root local partitions.
 
 srg_requirement: '{{{ full_name }}} must prevent special devices on non-root local partitions.'
+
+warnings:
+    - general: |-
+        This rule checks only local partitions, identified as those backed by
+        a device node in <tt>/dev</tt>. Network file systems such as NFS, CIFS,
+        GlusterFS and others are excluded because they do not expose local
+        device nodes. The <tt>/boot</tt> and <tt>/efi</tt> partitions are
+        excluded because they are special partitions usually handled by a
+        systemd mount unit, and enforcing <tt>nodev</tt> on them during
+        operating system installation causes issues. Partitions with the
+        <tt>vfat</tt> file system type are excluded because vfat does not
+        support Unix device special files, so <tt>nodev</tt> enforcement on
+        them is not meaningful.
