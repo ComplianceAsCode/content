@@ -214,7 +214,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
     "Amazon Linux 2023": "al2023",
-    "Contemporary Controls BAScontrol22D 4": "bascontrol33d4",
+    "Contemporary Controls BAScontrol22D BACnet/IP Sedona Unitary Controller 4": "bascontrol22d4",
     "Debian 11": "debian11",
     "Debian 12": "debian12",
     "Debian 13": "debian13",
