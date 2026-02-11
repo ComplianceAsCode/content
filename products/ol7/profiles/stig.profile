@@ -8,6 +8,7 @@ description: |-
 
 selections:
     - login_banner_text=dod_banners
+    - login_banner_contents=dod_default
     - inactivity_timeout_value=15_minutes
     - var_screensaver_lock_delay=5_seconds
     - sshd_idle_timeout_value=10_minutes

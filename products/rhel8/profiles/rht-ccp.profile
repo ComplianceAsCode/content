@@ -27,6 +27,7 @@ selections:
     - var_password_pam_difok=3
     - var_password_pam_unix_remember=5
     - var_accounts_user_umask=077
+    - login_banner_contents=usgcb_default
     - login_banner_text=usgcb_default
     - partition_for_tmp
     - partition_for_var

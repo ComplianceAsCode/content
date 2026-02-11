@@ -375,6 +375,7 @@ selections:
     ### Level 1
     - banner_etc_issue
     - login_banner_text=cis_banners
+    - login_banner_contents=cis_default
 
     ## 4.3-ensure-remote-login-warning-banner-is-configured-properly
     ### Level 1

@@ -36,6 +36,7 @@ extends: ospp
 selections:
     - installed_OS_is_vendor_supported
     - login_banner_text=usgcb_default
+    - login_banner_contents=usgcb_default
     - inactivity_timeout_value=15_minutes
     - var_password_pam_minlen=15
     - accounts_password_all_shadowed

@@ -103,6 +103,7 @@ selections:
     - rsyslog_remote_loghost
     - auditd_audispd_encrypt_sent_records
     - login_banner_text=usgcb_default
+    - login_banner_contents=usgcb_default
     - sshd_enable_warning_banner
     - banner_etc_issue
     - sshd_rekey_limit

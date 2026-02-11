@@ -114,6 +114,7 @@ selections:
     - motd_banner_text=cis_banners
     - banner_etc_issue
     - login_banner_text=cis_banners
+    - login_banner_contents=cis_default
     - file_groupowner_etc_motd
     - file_owner_etc_motd
     - file_permissions_etc_motd
