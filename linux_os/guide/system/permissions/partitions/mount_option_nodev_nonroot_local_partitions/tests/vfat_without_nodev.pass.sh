@@ -5,7 +5,7 @@
 # Add nodev option to all records in fstab to ensure that test will
 # run on environment where everything is set correctly for rule check.
 cp /etc/fstab /etc/fstab.backup
-sed -e 's/\bnodev\b/,/g' -e 's/,,//g' -e 's/\s,\s/defaults/g' /etc/fstab.backup
+sed -i -e 's/\bnodev\b/,/g' -e 's/,,//g' -e 's/\s,\s/defaults/g' /etc/fstab.backup
 awk '{$4 = $4",nodev"; print}' /etc/fstab.backup > /etc/fstab
 # Remount all partitions. (--all option can't be used because it doesn't
 # mount e.g. /boot partition
