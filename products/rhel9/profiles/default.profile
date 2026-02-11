@@ -590,3 +590,4 @@ selections:
     - audit_rules_var_spool_cron
     - audit_rules_login_events_tallylog
     - configure_ssh_crypto_policy
+    - accounts_user_dot_no_world_writable_programs

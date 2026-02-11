@@ -80,13 +80,13 @@ jobs:
             run-id: ${{ github.event.workflow_run.id }}
       - name: Unpack built artifacts
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tar -xvzf pr_artifacts/artifacts.tar.gz -C pr_artifacts/unpacked_artifacts
+        run: tar -xvzf pr_artifacts/artifacts.tar.gz -C pr_artifacts
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
       - name: Compare datastreams
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: utils/compare_ds.py pr_artifacts/unpacked_artifacts/ssg-${{steps.product.outputs.prop}}-ds.xml build/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
+        run: utils/compare_ds.py pr_artifacts/artifacts/ssg-${{steps.product.outputs.prop}}-ds.xml build/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Test if there are datastream changes

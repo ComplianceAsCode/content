@@ -42,7 +42,6 @@ accounts_umask_etc_csh_cshrc
 accounts_umask_etc_login_defs
 accounts_umask_etc_profile
 accounts_umask_interactive_users
-accounts_user_dot_no_world_writable_programs
 accounts_user_home_paths_only
 accounts_user_interactive_home_directory_defined
 accounts_user_interactive_home_directory_exists
@@ -185,7 +184,6 @@ disable_ctrlaltdel_reboot
 disable_host_auth
 disable_users_coredumps
 disallow_bypass_password_sudo
-display_login_attempts
 enable_authselect
 enable_dracut_fips_module
 enable_fips_mode

@@ -3,7 +3,6 @@ Common functions for processing Environment in SSG
 """
 
 from __future__ import absolute_import
-from __future__ import print_function
 
 
 from .products import load_product_yaml
