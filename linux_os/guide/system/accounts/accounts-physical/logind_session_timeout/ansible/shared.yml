@@ -6,7 +6,7 @@
 
 {{{ ansible_instantiate_variables("var_logind_session_timeout") }}}
 
-{{% if product in ["sle15", "sle16"] %}}
+{{% if product in ["rhel9", "sle15", "sle16"] %}}
 # create drop-in in the /etc/systemd/logind.conf.d/ directory
 {{% set logind_conf_file = "/etc/systemd/logind.conf.d/oscap-idle-sessions.conf" %}}
 {{% else %}}
