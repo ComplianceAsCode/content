@@ -16,6 +16,7 @@ sulogin='/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default
 {{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5' or 'ol' in families  %}}
 mkdir -p "${service_dropin_cfg_dir}"
 echo "[Service]" >> "${service_dropin_file}"
+echo "ExecStart=" >> "${service_dropin_file}"
 echo "ExecStart=-$sulogin" >> "${service_dropin_file}"
 {{% else %}}
 if grep "^ExecStart=.*" "$service_file" ; then
