@@ -16,6 +16,23 @@ This macro changes the configuration of the audit service so that it looks like 
 
 
 {{#
+This macro changes the configuration of the audit service so that it looks like augenrules is used to load rules.
+#}}
+
+{{%- macro setup_augenrules_environment () -%}}
+  {{% if product in ["fedora", "ol10", "rhel10"] %}}
+  sed -i "s%^ExecStart=.*%ExecStart=/sbin/augenrules%" /usr/lib/systemd/system/audit-rules.service
+  {{% else %}}
+  {{% if product == "sle15" %}}
+  sed -i "s%^#ExecStartPost=.*%ExecStartPost=-/sbin/augenrules%" /usr/lib/systemd/system/auditd.service
+  {{% else %}}
+  sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/augenrules%" /usr/lib/systemd/system/auditd.service
+  {{% endif %}}
+  {{% endif %}}
+{{%- endmacro -%}}
+
+
+{{#
 This macro is used by pam_account_password_faillock template to initialize
 the external variable and parameter value to a desired state.
 
