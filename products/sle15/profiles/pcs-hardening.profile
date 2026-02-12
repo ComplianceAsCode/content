@@ -5,7 +5,7 @@ metadata:
     SMEs:
         - esampson
 
-reference: 
+reference:
 
 title: 'Public Cloud Hardening for SUSE Linux Enterprise 15'
 
@@ -413,7 +413,7 @@ selections:
     #- package_net-snmp_removed
     #- package_telnet_removed
     #- package_telnet-server_removed
-    #### OTHER 
+    #### OTHER
     #### can't do at image build time
     #- accounts_authorized_local_users
     #- accounts_max_concurrent_login_sessions
