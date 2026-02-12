@@ -254,6 +254,7 @@ kernel_module_squashfs_disabled
 kernel_module_tipc_disabled
 kernel_module_udf_disabled
 kernel_module_usb-storage_disabled
+login_banner_contents=cis_default
 login_banner_text=cis_banners
 mount_option_dev_shm_nodev
 mount_option_dev_shm_noexec

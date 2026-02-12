@@ -165,6 +165,7 @@ kernel_module_hfs_disabled
 kernel_module_hfsplus_disabled
 kernel_module_jffs2_disabled
 kernel_module_usb-storage_disabled
+login_banner_contents=cis_default
 login_banner_text=cis_banners
 mount_option_dev_shm_nodev
 mount_option_dev_shm_noexec
