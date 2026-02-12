@@ -532,7 +532,8 @@ class PodmanTestEnv(ContainerTestEnv):
                       "--cap-add=cap_audit_write",
                       "--cap-add=cap_sys_admin",
                       "--cap-add=cap_sys_chroot",
-                    #   "--privileged",
+                      "--cap-add=cap_net_admin",
+                      #   "--privileged",
                       "--publish", "{}".format(self.internal_ssh_port), "--detach", image_name,
                       "/usr/sbin/sshd", "-p", "{}".format(self.internal_ssh_port), "-D"]
         try:
