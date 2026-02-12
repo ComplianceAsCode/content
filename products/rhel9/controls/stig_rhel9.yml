@@ -1303,7 +1303,7 @@ controls:
       title: All RHEL 9 world-writable directories must be owned by root, sys, bin, or an application
           user.
       rules:
-          - dir_perms_world_writable_root_owned
+          - dir_perms_world_writable_system_owned
       status: automated
 
     - id: RHEL-09-232245
@@ -2087,9 +2087,10 @@ controls:
     - id: RHEL-09-271065
       levels:
           - medium
-      title: RHEL 9 must automatically lock graphical user sessions after 15 minutes of inactivity.
+      title: RHEL 9 must automatically lock graphical user sessions after 10 minutes of inactivity.
       rules:
           - dconf_gnome_screensaver_idle_delay
+          - inactivity_timeout_value=10_minutes
       status: automated
 
     - id: RHEL-09-271070
@@ -2495,7 +2496,7 @@ controls:
       title: RHEL 9 must terminate idle user sessions.
       rules:
           - logind_session_timeout
-          - var_logind_session_timeout=15_minutes
+          - var_logind_session_timeout=10_minutes
       status: automated
 
     - id: RHEL-09-431010
@@ -3483,6 +3484,16 @@ controls:
       rules:
           - audit_rules_privileged_commands_crontab
       status: automated
+
+    - id: RHEL-09-654097
+      levels:
+          - medium
+      title: RHEL 9 must audit any script or executable called by cron as root or by any privileged user.
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
+      status: automated
+
 
     - id: RHEL-09-654100
       levels:
