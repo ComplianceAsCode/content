@@ -260,7 +260,7 @@ class XCCDFEntity(object):
             msg = (
                 "Unparsed YAML data in '{yaml_file}': {keys}"
                 .format(yaml_file=yaml_file, keys=list(yaml_data.keys())))
-            raise RuntimeError(msg) from None
+            raise RuntimeError(msg)
 
         if not processed_data.get("definition_location", ""):
             processed_data["definition_location"] = yaml_file
