@@ -62,6 +62,7 @@ selections:
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
     - login_banner_contents=dod_default
+    - dconf_login_banner_contents=dod_default
     - var_authselect_profile=sssd
     - var_multiple_time_servers=stig
 

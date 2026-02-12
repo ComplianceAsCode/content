@@ -55,6 +55,7 @@ selections:
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
+    - dconf_login_banner_contents=dod_default
     - banner_etc_issue
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_lock_locked
