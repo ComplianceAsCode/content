@@ -31,6 +31,9 @@ selections:
     - var_password_pam_delay=4000000
     #- login_banner_text=dod_banners
     - login_banner_text=cis_banners
+    - login_banner_contents=cis_default
+    - motd_banner_text=cis_banners
+    - motd_banner_contents=cis_default
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled

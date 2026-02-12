@@ -369,7 +369,8 @@ selections:
     ## 4.1-ensure-message-of-the-day-is-configured-properly
     ### Level 1
     - banner_etc_motd
-    - login_banner_text=cis_banners
+    - motd_banner_text=cis_banners
+    - motd_banner_contents=cis_default
 
     ## 4.2-ensure-local-login-warning-banner-is-configured-properly
     ### Level 1
