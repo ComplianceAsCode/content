@@ -3,7 +3,7 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-{{{ ansible_instantiate_variables("login_banner_text") }}}
+{{{ ansible_instantiate_variables("dconf_login_banner_contents") }}}
 
 - name: "{{{ rule_title }}}"
   ansible.builtin.file:
@@ -32,7 +32,7 @@
     dest: /etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings
     section: org/gnome/login-screen
     option: banner-message-text
-    value: '{{{ ansible_deregexify_banner_dconf_gnome("login_banner_text") }}}'
+    value: '''{{ dconf_login_banner_contents }}'''
     create: yes
     no_extra_spaces: yes
   register: result_ini
