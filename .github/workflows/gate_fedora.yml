@@ -24,7 +24,7 @@ jobs:
                 run: pip install pcre2==0.4.0 -r requirements.txt -r test-requirements.txt
             -   name: Build
                 run: |-
-                    ./build_product -j2 \
+                    ./build_product -j$(nproc) \
                         al2023 \
                         alinux2 \
                         alinux3 \
@@ -69,7 +69,7 @@ jobs:
                 unzip /__w/content/content/old_release.zip -d /__w/content/content/old_release
                 mv /__w/content/content/old_release/*/* /__w/content/content/old_release/
             -   name: Test
-                run: ctest -j2 --output-on-failure -E unique-stigids
+                run: ctest -j$(nproc) --output-on-failure -E unique-stigids
                 working-directory: ./build
             -   name: "Set git safe directory, ref: https://github.com/actions/checkout/issues/760"
                 run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
