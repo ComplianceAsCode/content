@@ -318,6 +318,7 @@ kernel_module_sctp_disabled
 kernel_module_tipc_disabled
 kernel_module_usb-storage_disabled
 libreswan_approved_tunnels
+login_banner_contents=dod_default
 login_banner_text=dod_banners
 mount_option_boot_nodev
 mount_option_boot_nosuid
