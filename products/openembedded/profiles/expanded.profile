@@ -112,6 +112,7 @@ selections:
     - service_dovecot_disabled
     - banner_etc_motd
     - motd_banner_text=cis_banners
+    - motd_banner_contents=cis_default
     - banner_etc_issue
     - login_banner_text=cis_banners
     - login_banner_contents=cis_default
