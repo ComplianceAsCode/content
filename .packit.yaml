@@ -23,133 +23,32 @@ jobs:
   trigger: commit
   branch: "gh-readonly-queue/.*"
 
-- &test-static-checks
+- &contest-oscap
   job: tests
   trigger: pull_request
+  fmf_url: https://github.com/RHSecurityCompliance/contest.git
+  fmf_ref: main
+  tmt_plan: /plans/upstream-parallel/oscap
+  identifier: contest-oscap
+  targets:
+    centos-stream-8: {}
+    centos-stream-9: {}
+    centos-stream-10: {}
+  tf_extra_params:
+    settings:
+      pipeline:
+        parallel-limit: 32
+
+- <<: *contest-oscap
+  tmt_plan: /plans/upstream-parallel/ansible
+  identifier: contest-ansible
+
+# when modifying anything below, modify also tests/tmt/
+
+- job: tests
+  trigger: pull_request
   fmf_path: tests/tmt
-  identifier: /static-checks
-  tmt_plan: /plans/contest/static-checks$
-  targets:
-    centos-stream-8: {}
-    centos-stream-9: {}
-    centos-stream-10: {}
-
-# when modifying this, modify also tests/tmt-plans/
-
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/anssi_bp28_high
-  tmt_plan: /plans/contest/hardening/host-os/ansible/anssi_bp28_high$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/bsi
-  tmt_plan: /plans/contest/hardening/host-os/ansible/bsi$
-  targets:
-    centos-stream-9: {}
-    centos-stream-10: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/ccn_advanced
-  tmt_plan: /plans/contest/hardening/host-os/ansible/ccn_advanced$
-  targets:
-    centos-stream-9: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/cis
-  tmt_plan: /plans/contest/hardening/host-os/ansible/cis$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/cis_server_l1
-  tmt_plan: /plans/contest/hardening/host-os/ansible/cis_server_l1$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/cis_workstation_l1
-  tmt_plan: /plans/contest/hardening/host-os/ansible/cis_workstation_l1$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/cis_workstation_l2
-  tmt_plan: /plans/contest/hardening/host-os/ansible/cis_workstation_l2$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/cui
-  tmt_plan: /plans/contest/hardening/host-os/ansible/cui$
-  targets:
-    centos-stream-8: {}
-    centos-stream-9: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/e8
-  tmt_plan: /plans/contest/hardening/host-os/ansible/e8$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/hipaa
-  tmt_plan: /plans/contest/hardening/host-os/ansible/hipaa$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/ism_o
-  tmt_plan: /plans/contest/hardening/host-os/ansible/ism_o$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/ism_o_top_secret
-  tmt_plan: /plans/contest/hardening/host-os/ansible/ism_o_top_secret$
-  targets:
-    centos-stream-10: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/ospp
-  tmt_plan: /plans/contest/hardening/host-os/ansible/ospp$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/pci-dss
-  tmt_plan: /plans/contest/hardening/host-os/ansible/pci-dss$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/stig
-  tmt_plan: /plans/contest/hardening/host-os/ansible/stig$
-
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/anssi_bp28_high
-  tmt_plan: /plans/contest/hardening/host-os/oscap/anssi_bp28_high$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/bsi
-  tmt_plan: /plans/contest/hardening/host-os/oscap/bsi$
-  targets:
-    centos-stream-9: {}
-    centos-stream-10: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/ccn_advanced
-  tmt_plan: /plans/contest/hardening/host-os/oscap/ccn_advanced$
-  targets:
-    centos-stream-9: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/cis
-  tmt_plan: /plans/contest/hardening/host-os/oscap/cis$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/cis_server_l1
-  tmt_plan: /plans/contest/hardening/host-os/oscap/cis_server_l1$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/cis_workstation_l1
-  tmt_plan: /plans/contest/hardening/host-os/oscap/cis_workstation_l1$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/cis_workstation_l2
-  tmt_plan: /plans/contest/hardening/host-os/oscap/cis_workstation_l2$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/cui
-  tmt_plan: /plans/contest/hardening/host-os/oscap/cui$
-  targets:
-    centos-stream-8: {}
-    centos-stream-9: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/e8
-  tmt_plan: /plans/contest/hardening/host-os/oscap/e8$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/hipaa
-  tmt_plan: /plans/contest/hardening/host-os/oscap/hipaa$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/ism_o
-  tmt_plan: /plans/contest/hardening/host-os/oscap/ism_o$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/ism_o_top_secret
-  tmt_plan: /plans/contest/hardening/host-os/oscap/ism_o_top_secret$
-  targets:
-    centos-stream-10: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/ospp
-  tmt_plan: /plans/contest/hardening/host-os/oscap/ospp$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/pci-dss
-  tmt_plan: /plans/contest/hardening/host-os/oscap/pci-dss$
-- <<: *test-static-checks
-  identifier: /hardening/host-os/oscap/stig
-  tmt_plan: /plans/contest/hardening/host-os/oscap/stig$
-
-- <<: *test-static-checks
-  identifier: fedora-cis
   tmt_plan: /fedora-cis/plan$
+  identifier: fedora-cis
   targets:
     fedora-all: {}
