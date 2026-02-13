@@ -1,17 +1,20 @@
 documentation_complete: true
 
-title: 'Remote Login Banner Verbiage'
+title: Remote Login Banner Verbiage Regular Expression
 
-description: |-
-    Enter an appropriate login banner for your organization. Please note that new lines must
-    be expressed by the '\n' character and special characters like parentheses and quotation marks must be escaped with '\\'.
+description: >-
+    Enter an appropriate login banner regular expression for your organization.
+    Using a regular expression is needed because some profiles (eg. STIG) allow multiple different banners.
+    This regular expression is used only in OVAL checks.
+    In remediations the motd_banner_contents variable is used instead.
+    For information about how to generate banner regular expression for your tailoring files,
+    see: https://complianceascode.readthedocs.io/en/latest/manual/developer/05_tools_and_utilities.html#generating-login-banner-regular-expressions
 
 type: string
 
 operator: equals
 
-interactive: false
-
+interactive: true
 
 options:
 # CIS doesn't enforce any specific content for login banners, but doesn't allow technical information.
