@@ -71,7 +71,7 @@ class Symbol(boolean.Symbol):
             full_name += '[' + self.arg + ']'
         val = kwargs.get(full_name, False)
         if self.requirement.has_version_specs():
-            if type(val) is str:
+            if isinstance(val, str):
                 return val in self.requirement
             return False
         return bool(val)

@@ -22,7 +22,7 @@ try:
 except ImportError:
     print("Please install PyGithub, you need a specific version of pygithub, install it through $ pip install \"PyGithub>=1.58.2,<2.0\"",
           file=sys.stderr)
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 
 try:
@@ -31,7 +31,7 @@ try:
     from ssg.utils import mkdir_p
 except ImportError:
     print("Unable to find the ssg module. Please run 'source .pyenv.sh'", file=sys.stderr)
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 
 def memoize(f):
@@ -197,7 +197,7 @@ class PlaybookToRoleConverter():
         variables = set()
         for task in self.tasks_data:
             if "tags" not in task:
-                next
+                continue
             if "when" not in task:
                 task["when"] = []
             elif isinstance(task["when"], str):
@@ -280,7 +280,7 @@ class PlaybookToRoleConverter():
                 break
             else:
                 desc += (line + "\n")
-        return desc.strip("\n\n")
+        return desc.strip("\n")
 
     @property
     def _update_galaxy_tags(self):

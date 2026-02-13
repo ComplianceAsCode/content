@@ -56,7 +56,7 @@ def gather_profiles_from_datastream(path, build_dir, profiles_per_benchmark):
     benchmark_profile_pairs = ssg.build_guides.get_benchmark_profile_pairs(
         input_tree, benchmarks)
 
-    for bench_id, profile_id, title in benchmark_profile_pairs:
+    for bench_id, profile_id, _ in benchmark_profile_pairs:
         bench_short_id = bench_id[len(BENCHMARK_ID_PREFIX):]
         if respective_datastream_absent(bench_short_id, build_dir):
             continue

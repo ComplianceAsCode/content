@@ -50,7 +50,7 @@ class PlaybookBuilder():
         try:
             options = variables[var_id]
         except KeyError:
-            raise ValueError("Variable '%s' doesn't exist." % var_id)
+            raise ValueError("Variable '%s' doesn't exist." % var_id) from None
         try:
             value = options[selector]
         except KeyError:
@@ -67,7 +67,7 @@ class PlaybookBuilder():
                     "Selector '%s' doesn't exist in variable '%s'. "
                     "Available selectors: %s." %
                     (selector, var_id, ", ".join(options.keys()))
-                )
+                ) from None
         return value
 
     def get_data_from_snippet(self, snippet_yaml, variables, refinements):

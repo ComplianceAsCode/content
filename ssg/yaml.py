@@ -118,7 +118,7 @@ def _get_yaml_contents_without_documentation_complete(parsed_yaml, substitutions
     return parsed_yaml
 
 
-def _open_yaml(stream, original_file=None, substitutions_dict={}):
+def _open_yaml(stream, original_file=None, substitutions_dict=None):
     """
     Open given file-like object and parse it as YAML.
 
@@ -137,6 +137,8 @@ def _open_yaml(stream, original_file=None, substitutions_dict={}):
                                   set to "false".
         Exception: For any other exceptions, including tab indentation errors in the file.
     """
+    if substitutions_dict is None:
+        substitutions_dict = {}
     try:
         yaml_contents = yaml.load(stream, Loader=yaml_SafeLoader)
 

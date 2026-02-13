@@ -572,7 +572,8 @@ def test_profile_with_version(profile_with_version):
     profile_el = profile_with_version.to_xml_element()
     assert profile_el.find("{%s}version" % XCCDF12_NS).text == "3.2.1"
 
+
 def test_profile_ospp_with_invalid_status():
     value_file = os.path.join(DATADIR, "ospp_invalid_status.profile")
-    with pytest.raises(Exception):
+    with pytest.raises(RuntimeError):
         profile = ssg.build_yaml.Profile.from_yaml(value_file)  # noqa: F841

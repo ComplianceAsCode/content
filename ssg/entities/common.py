@@ -119,7 +119,7 @@ def add_sub_element(parent, tag, ns, data):
     except Exception:
         msg = ("Error adding subelement to an element '{0}' from string: '{1}'"
                .format(parent.tag, ustr))
-        raise RuntimeError(msg)
+        raise RuntimeError(msg) from None
 
     # Apart from HTML and XML elements the rule descriptions and similar
     # also contain <xccdf:sub> elements, where we need to add the prefix
@@ -254,7 +254,7 @@ class XCCDFEntity(object):
             msg = (
                 "Error processing {yaml_file}: {exc}"
                 .format(yaml_file=yaml_file, exc=str(exc)))
-            raise ValueError(msg)
+            raise ValueError(msg) from exc
 
         if yaml_data:
             msg = (
@@ -296,7 +296,7 @@ class XCCDFEntity(object):
             msg = (
                 "Error loading a {class_name} from {filename}: {error}"
                 .format(class_name=cls.__name__, filename=yaml_file, error=str(exc)))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
 
         result = cls.get_instance_from_full_dict(data_dict)
 
@@ -312,7 +312,7 @@ class XCCDFEntity(object):
             msg = (
                 "Error loading a {class_name} from {filename}: {error}"
                 .format(class_name=cls.__name__, filename=json_file_path, error=str(exc)))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
 
         result = cls.get_instance_from_full_dict(data_dict)
 
@@ -465,7 +465,7 @@ class Templatable(object):
             return self.template["name"]
         except KeyError:
             raise ValueError(
-                "Templatable {0} is missing template name under template key".format(self))
+                "Templatable {0} is missing template name under template key".format(self)) from None
 
     def get_template_context(self, env_yaml):
         # TODO: The first two variables, 'rule_id' and 'rule_title' are expected by some

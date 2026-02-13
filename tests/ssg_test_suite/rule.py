@@ -272,7 +272,7 @@ class RuleChecker(oscap.Checker):
                 self.test_env, test_content_by_rule_id)
         except RuntimeError as exc:
             msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
 
         self._ensure_package_present_for_all_scenarios(test_content_by_rule_id)
 
@@ -302,7 +302,7 @@ class RuleChecker(oscap.Checker):
             self.datastream, self.benchmark_id)
         rules = []
 
-        for dirpath, dirnames, filenames in common.walk_through_benchmark_dirs(
+        for dirpath, _, _ in common.walk_through_benchmark_dirs(
                 product):
             if not is_rule_dir(dirpath):
                 continue

@@ -8,8 +8,7 @@ import collections
 import datetime
 import re
 import os.path
-
-from .shims import subprocess_check_output
+import subprocess
 
 
 MANUAL_EDIT_WARNING = """This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!
@@ -124,7 +123,7 @@ def generate():
             - contributors_md (str): The contributors list in Markdown format.
             - contributors_xml (str): The contributors list in XML format.
     """
-    output = subprocess_check_output(["git", "shortlog", "-se"]).decode("utf-8")
+    output = subprocess.check_output(["git", "shortlog", "-se"]).decode("utf-8")
     contributions_by_email = _get_contributions_by_canonical_email(output)
     contributors = _get_contributor_email_mapping(contributions_by_email)
 

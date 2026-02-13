@@ -211,7 +211,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 raise ValueError("Key %s is not allowed in a control file." % key)
 
     @classmethod
-    def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
+    def from_control_dict(cls, control_dict, env_yaml=None, default_level=None):
         """
         Create a control instance from a dictionary of control attributes.
 
@@ -227,6 +227,8 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         Raises:
             ValueError: If the 'automated' key has an invalid value or if 'levels' is not a list.
         """
+        if default_level is None:
+            default_level = ["default"]
         cls._check_keys(control_dict)
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
@@ -254,7 +256,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 % (control.automated,  control.id, control.title))
             raise ValueError(msg)
         control.levels = control_dict.get("levels", default_level)
-        if type(control.levels) is not list:
+        if not isinstance(control.levels, list):
             msg = "Levels for %s must be an array" % control.id
             raise ValueError(msg)
         control.notes = control_dict.get("notes", "")
@@ -307,7 +309,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                     "Please remove any duplicate listing of rule '%s' in "
                     "control '%s'." % (
                         rule.id_, self.id))
-                raise ValueError(msg)
+                raise ValueError(msg) from None
 
 
 class Level(ssg.entities.common.XCCDFEntity):
@@ -499,7 +501,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = (
                 "Unable to parse controls from {filename}: {error}"
                 .format(filename=self.filepath, error=str(exc)))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
         return control
 
     def _extract_and_record_subcontrols(self, current_control, controls_tree):
@@ -683,7 +685,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = "%s not found in policy %s" % (
                 control_id, self.id
             )
-            raise ValueError(msg)
+            raise ValueError(msg) from None
 
     def get_level(self, level_id):
         """
@@ -705,7 +707,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = "Level %s not found in policy %s" % (
                 level_id, self.id
             )
-            raise ValueError(msg)
+            raise ValueError(msg) from None
 
     def get_level_with_ancestors_sequence(self, level_id):
         """

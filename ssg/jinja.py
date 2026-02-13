@@ -66,7 +66,7 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
         except Exception as exc:
             msg = ("Error reading file {template}: {exc}"
                    .format(template=template, exc=str(exc)))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
         finally:
             template_file.close()
 
@@ -255,7 +255,7 @@ def _load_macros_from_directory(macros_directory, substitutions_dict):
     except Exception as exc:
         msg = ("Error extracting macro definitions from '{1}': {0}"
                .format(str(exc), filename))
-        raise RuntimeError(msg)
+        raise RuntimeError(msg) from exc
 
 
 def _load_macros(macros_directory, substitutions_dict=None):

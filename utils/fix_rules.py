@@ -9,7 +9,6 @@ import json
 import re
 
 from ssg import yaml, cce, products
-from ssg.shims import input_func
 from ssg.utils import read_file_list
 import ssg
 import ssg.products
@@ -439,7 +438,7 @@ def has_product_cce(yaml_contents, product):
     if not yaml_contents[section]:
         return False
 
-    for i_type, i_value in yaml_contents[section].items():
+    for i_type, _ in yaml_contents[section].items():
         if i_type[0:3] != 'cce' or "@" not in i_type:
             continue
 
@@ -499,7 +498,7 @@ def _fixed_file_contents(path, file_contents, product_yaml, func):
         new_file_contents = func(file_contents, yaml_contents)
     except Exception as exc:
         msg = "Refusing to fix file: {path}: {error}".format(path=path, error=str(exc))
-        raise RuntimeError(msg)
+        raise RuntimeError(msg) from exc
 
     return new_file_contents
 
@@ -540,7 +539,7 @@ def fix_file_prompt(path, product_yaml, func, args):
 
     response = 'n'
     if need_input:
-        response = input_func("Confirm writing output to %s: (y/n): " % path)
+        response = input("Confirm writing output to %s: (y/n): " % path)
 
     if args.assume_yes or response.strip().lower() == 'y':
         changes = True
@@ -576,16 +575,16 @@ def _add_cce(directory, cce_pool, rules, product_yaml, args):
 
         cce = cce_pool.random_cce()
 
-        def fix_callback(file_contents, yaml_contents):
+        def fix_callback(file_contents, yaml_contents, cce=cce):
             return add_product_cce(file_contents, yaml_contents, product_yaml["product"], cce)
 
         try:
             changes = fix_file(rule_path, product_yaml, fix_callback)
         except RuntimeError as exc:
-            msg = (  # noqa: F841
+            msg = (
                 "Error adding CCE into {rule_path}: {exc}"
                 .format(rule_path=rule_path, exc=str(exc)))
-            raise RuntimeError(exc)
+            raise RuntimeError(msg) from exc
 
         if changes:
             cce_pool.remove_cce_from_file(cce)

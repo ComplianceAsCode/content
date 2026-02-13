@@ -585,7 +585,7 @@ class Benchmark(XCCDFEntity):
             except Exception as exc:
                 msg = ("Error building profile from '{fname}': '{error}'"
                        .format(fname=dir_item_path, error=str(exc)))
-                raise RuntimeError(msg)
+                raise RuntimeError(msg) from exc
             if new_profile is None:
                 continue
 
@@ -1753,7 +1753,7 @@ class Rule(XCCDFEntity, Templatable):
             except Exception as e:
                 msg = "Unable to process platforms in rule '%s': %s" % (
                     rule.id_, str(e))
-                raise Exception(msg)
+                raise Exception(msg) from e
             cpe_platform = add_platform_if_not_defined(
                 cpe_platform, product_cpes)
             rule.cpe_platform_names.add(cpe_platform.id_)
@@ -1839,7 +1839,7 @@ class Rule(XCCDFEntity, Templatable):
                 "Error normalizing '{rule}': {msg}"
                 .format(rule=self.id_, msg=str(exc))
             )
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
 
     def add_stig_references(self, stig_references):
         """
@@ -2058,7 +2058,7 @@ class Rule(XCCDFEntity, Templatable):
                     "Error processing {what} for rule '{rid}': {msg}"
                     .format(what=name, rid=self.id_, msg=str(exc))
                 )
-                raise ValueError(msg)
+                raise ValueError(msg) from exc
             dic.clear()
             dic.update(new_items)
 

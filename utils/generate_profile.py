@@ -194,8 +194,8 @@ class Generator:
             d['levels'] = node.level.replace(' ', '_').lower()
         if node.children:
             d['controls'] = []
-        for node in node.children:
-            d['controls'].append(self._generate(node))
+            for sub_node in node.children:
+                d['controls'].append(self._generate(sub_node))
         return d
 
 

@@ -84,7 +84,7 @@ class Profile(XCCDFEntity, SelectionHandler):
                     msg = (
                         "Unsupported platform '{platform}' in a profile."
                         .format(platform=platform))
-                    raise CPEDoesNotExist(msg)
+                    raise CPEDoesNotExist(msg) from None
 
         allowed_profile_statuses = ["draft", "interim", "accepted", "deprecated"]
         if input_contents["status"] and input_contents["status"] not in allowed_profile_statuses:
