@@ -170,7 +170,6 @@ disable_users_coredumps
 disallow_bypass_password_sudo
 display_login_attempts
 enable_authselect
-enable_fips_mode
 enable_gpgcheck_for_all_repositories
 encrypt_partitions
 ensure_epel_repos_disabled
