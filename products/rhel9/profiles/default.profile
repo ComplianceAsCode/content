@@ -13,6 +13,7 @@ description: |-
     is to keep a rule in the product's XCCDF Benchmark.
 
 selections:
+    - configure_kerberos_crypto_policy
     - sshd_use_strong_kex
     - sebool_nfsd_anon_write
     - sebool_squid_connect_any
