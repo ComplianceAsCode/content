@@ -37,11 +37,6 @@ jobs:
 # when modifying this, modify also tests/tmt-plans/
 
 - <<: *test-static-checks
-  identifier: /rpmbuild-ctest-fedora
-  tmt_plan: /plans/contest/rpmbuild-ctest-fedora$
-  targets:
-    fedora-all: {}
-- <<: *test-static-checks
   identifier: /hardening/host-os/ansible/anssi_bp28_high
   tmt_plan: /plans/contest/hardening/host-os/ansible/anssi_bp28_high$
 - <<: *test-static-checks

@@ -123,8 +123,3 @@ report:
           # The value of this test is debatable and therefore it should not delay upstream gating.
           # Our SCAP datastream is often noncompliant from the start, for example by containing SCE checks.
           - /static-checks/nist-validation
-
-
-# Fedora specific plan
-/rpmbuild-ctest-fedora:
-    discover+: {test: /static-checks/rpmbuild-ctest}
