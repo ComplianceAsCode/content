@@ -737,3 +737,4 @@ selections:
     - configure_gnutls_tls_crypto_policy
     - configure_openssl_tls_crypto_policy
     - sshd_use_approved_kex_ordered_stig
+    - accounts_user_dot_no_world_writable_programs

@@ -806,14 +806,6 @@ controls:
           - mount_option_nosuid_remote_filesystems
       status: automated
 
-    - id: RHEL-08-010660
-      levels:
-          - medium
-      title: Local RHEL 8 initialization files must not execute world-writable programs.
-      rules:
-          - accounts_user_dot_no_world_writable_programs
-      status: automated
-
     - id: RHEL-08-010670
       levels:
           - medium
@@ -1373,14 +1365,6 @@ controls:
       title: RHEL 8 must not allow accounts configured with blank or null passwords.
       rules:
           - sshd_disable_empty_passwords
-      status: automated
-
-    - id: RHEL-08-020340
-      levels:
-          - low
-      title: RHEL 8 must display the date and time of the last successful account logon upon logon.
-      rules:
-          - display_login_attempts
       status: automated
 
     - id: RHEL-08-020350
