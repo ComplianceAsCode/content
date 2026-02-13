@@ -2,7 +2,7 @@
 policy: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 title: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 id: stig_rhel8
-version: V2R5
+version: V2R6
 source: https://www.cyber.mil/stigs/downloads
 reference_type: stigid
 product: rhel8
@@ -70,14 +70,6 @@ controls:
           - var_authselect_profile=sssd
           - var_multiple_time_servers=stig
           - var_time_service_set_maxpoll=18_hours
-            # Enable / Configure FIPS
-          - enable_fips_mode
-          - var_system_crypto_policy=fips
-          - configure_crypto_policy
-          - configure_bind_crypto_policy
-          - configure_libreswan_crypto_policy
-          - configure_kerberos_crypto_policy
-          - enable_dracut_fips_module
             # Other needed rules
           - enable_authselect
 
@@ -97,24 +89,23 @@ controls:
           - security_patches_up_to_date
       status: automated
 
+    - id: RHEL-08-010015
+      levels:
+          - high
+      title: RHEL 8 must have the crypto-policies package installed.
+      rules:
+          - package_crypto-policies_installed
+      status: automated
+
     - id: RHEL-08-010020
       levels:
           - high
-      title: 'RHEL 8 must implement NIST FIPS-validated cryptography for the following: To provision
-          digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest
-          protections in accordance with applicable federal laws, Executive Orders, directives, policies,
-          regulations, and standards.'
+      title: RHEL 8 must implement a FIPS 140-3-compliant systemwide cryptographic policy.
       rules:
-          - configure_bind_crypto_policy
           - configure_crypto_policy
-          - configure_kerberos_crypto_policy
-          - configure_libreswan_crypto_policy
-          - enable_dracut_fips_module
-          - enable_fips_mode
           - fips_crypto_subpolicy
-          - harden_sshd_ciphers_openssh_conf_crypto_policy
-          - harden_sshd_macs_openssh_conf_crypto_policy
-          - sysctl_crypto_fips_enabled
+          - fips_custom_stig_sub_policy
+          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010030
@@ -338,13 +329,41 @@ controls:
           - file_groupowner_var_log
       status: automated
 
+    - id: RHEL-08-010270
+      levels:
+          - high
+      title: RHEL 8 cryptographic policy must not be overridden.
+      rules:
+          - configure_crypto_policy
+      status: automated
+
+    - id: RHEL-08-010275
+      levels:
+          - medium
+      title: RHEL 8 must implement DOD-approved encryption in the bind package.
+      rules:
+          - configure_bind_crypto_policy
+      status: automated
+
+    - id: RHEL-08-010280
+      levels:
+          - medium
+      title: RHEL 8 IP tunnels must use FIPS 140-3-approved cryptographic algorithms.
+      rules:
+          - configure_libreswan_crypto_policy
+      status: automated
+
     - id: RHEL-08-010290
       levels:
           - medium
       title: The RHEL 8 SSH server must be configured to use only Message Authentication Codes (MACs)
           employing FIPS 140-3 validated cryptographic hash algorithms.
+      notes: This is implemented by a special STIG subpolicy.
       rules:
-          - harden_sshd_macs_opensshserver_conf_crypto_policy
+          - configure_crypto_policy
+          - fips_crypto_subpolicy
+          - fips_custom_stig_sub_policy
+          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010291
@@ -352,8 +371,12 @@ controls:
           - medium
       title: The RHEL 8 operating system must implement DOD-approved encryption to protect the confidentiality
           of SSH server connections.
+      notes: This is implemented by a special STIG subpolicy.
       rules:
-          - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+          - configure_crypto_policy
+          - fips_crypto_subpolicy
+          - fips_custom_stig_sub_policy
+          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010292
@@ -362,30 +385,6 @@ controls:
       title: RHEL 8 must ensure the SSH server uses strong entropy.
       rules:
           - sshd_use_strong_rng
-      status: automated
-
-    - id: RHEL-08-010293
-      levels:
-          - medium
-      title: The RHEL 8 operating system must implement DoD-approved encryption in the OpenSSL package.
-      rules:
-          - configure_openssl_crypto_policy
-      status: automated
-
-    - id: RHEL-08-010294
-      levels:
-          - medium
-      title: The RHEL 8 operating system must implement DoD-approved TLS encryption in the OpenSSL package.
-      rules:
-          - configure_openssl_tls_crypto_policy
-      status: automated
-
-    - id: RHEL-08-010295
-      levels:
-          - medium
-      title: The RHEL 8 operating system must implement DoD-approved TLS encryption in the GnuTLS package.
-      rules:
-          - configure_gnutls_tls_crypto_policy
       status: automated
 
     - id: RHEL-08-010300
@@ -807,14 +806,6 @@ controls:
           - mount_option_nosuid_remote_filesystems
       status: automated
 
-    - id: RHEL-08-010660
-      levels:
-          - medium
-      title: Local RHEL 8 initialization files must not execute world-writable programs.
-      rules:
-          - accounts_user_dot_no_world_writable_programs
-      status: automated
-
     - id: RHEL-08-010670
       levels:
           - medium
@@ -975,6 +966,7 @@ controls:
           equivalent).
       rules:
           - partition_for_home
+          - accounts_user_interactive_home_directory_on_separate_partition
       status: automated
 
     - id: RHEL-08-010820
@@ -1375,14 +1367,6 @@ controls:
           - sshd_disable_empty_passwords
       status: automated
 
-    - id: RHEL-08-020340
-      levels:
-          - low
-      title: RHEL 8 must display the date and time of the last successful account logon upon logon.
-      rules:
-          - display_login_attempts
-      status: automated
-
     - id: RHEL-08-020350
       levels:
           - medium
@@ -1417,6 +1401,16 @@ controls:
           - accounts_umask_etc_csh_cshrc
           - accounts_umask_etc_profile
       status: automated
+
+    - id: RHEL-08-020353
+      levels:
+          - medium
+      title: RHEL 8 must automatically exit interactive command shell user sessions after 10 minutes of inactivity.
+      rules:
+          - accounts_tmout
+          - var_accounts_tmout=10_min
+      status: automated
+
 
     - id: RHEL-08-030000
       levels:
@@ -2810,14 +2804,6 @@ controls:
           - sshd_set_idle_timeout
       status: automated
 
-    - id: RHEL-08-010287
-      levels:
-          - medium
-      title: The RHEL 8 SSH daemon must be configured to use system-wide crypto policies.
-      rules:
-          - configure_ssh_crypto_policy
-      status: automated
-
     - id: RHEL-08-010472
       levels:
           - low
@@ -3159,14 +3145,6 @@ controls:
           - selinux_user_login_roles
       status: automated
 
-    - id: RHEL-08-040342
-      levels:
-          - medium
-      title: RHEL 8 SSH server must be configured to use only FIPS-validated key exchange algorithms.
-      rules:
-          - sshd_use_approved_kex_ordered_stig
-      status: automated
-
     - id: RHEL-08-010019
       levels:
           - medium
@@ -3204,20 +3182,26 @@ controls:
     - id: RHEL-08-010296
       levels:
           - medium
-      title: RHEL 8 SSH client must be configured to use only Message Authentication Codes (MACs) employing
-          FIPS 140-3 validated cryptographic hash algorithms.
+      title: The RHEL 8 SSH client must be configured to use only DOD-approved Message Authentication Codes (MACs) employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
+      notes: This is implemented by a special STIG subpolicy.
       rules:
-          - harden_sshd_ciphers_openssh_conf_crypto_policy
-          - harden_sshd_macs_openssh_conf_crypto_policy
+          - configure_crypto_policy
+          - fips_crypto_subpolicy
+          - fips_custom_stig_sub_policy
+          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010297
       levels:
           - medium
-      title: RHEL 8 SSH client must be configured to use only ciphers employing FIPS 140-3 validated
-          cryptographic hash algorithms.
-      rules: []
-      status: pending
+      title: The RHEL 8 SSH client must be configured to use only DOD-approved encryption ciphers employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
+      notes: This is implemented by a special STIG subpolicy.
+      rules:
+          - configure_crypto_policy
+          - fips_crypto_subpolicy
+          - fips_custom_stig_sub_policy
+          - var_system_crypto_policy=fips_stig
+      status: automated
 
     - id: RHEL-08-010455
       levels:
