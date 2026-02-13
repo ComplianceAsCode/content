@@ -29,12 +29,12 @@ description: |-
     {{% endif %}}
     To set the screensaver mode in the GNOME3 desktop to a blank screen,
     add or set <tt>picture-uri</tt> to <tt>string ''</tt> in
-    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/desktop/screensaver]
     picture-uri=string ''
     </pre>
     Once the settings have been added, add a lock to
-    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/desktop/screensaver/picture-uri</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -76,10 +76,8 @@ ocil: |-
     If properly configured, the output should be <tt>''</tt>.
 
     To ensure that users cannot set the screensaver background, run the following:
-    <pre>$ grep picture-uri /etc/dconf/db/local.d/locks/*</pre>
+    <pre>$ grep picture-uri /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/picture-uri</tt>
 
 fixtext: |-
     {{{ fixtext_dconf_ini_file("org/gnome/desktop/screensaver", "picture-uri", "string ''") }}}
-
-

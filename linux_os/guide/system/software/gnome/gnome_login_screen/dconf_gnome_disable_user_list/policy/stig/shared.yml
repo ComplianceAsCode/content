@@ -19,9 +19,9 @@ fixtext: |-
     Configure {{{ full_name }}} to disable the user list at logon for graphical user interfaces.
 
     Create a database to contain the systemwide screensaver settings (if it does not already exist) with the following command:
-    Note: The example below is using the database "local" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
+    Note: The example below is using the database "{{{ dconf_gdm_dir }}}" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
 
-    $ sudo touch /etc/dconf/db/local.d/02-login-screen
+    $ sudo touch /etc/dconf/db/{{{ dconf_gdm_dir }}}/02-login-screen
 
     [org/gnome/login-screen]
     disable-user-list=true
@@ -29,4 +29,3 @@ fixtext: |-
     Update the system databases:
 
     $ sudo dconf update
-

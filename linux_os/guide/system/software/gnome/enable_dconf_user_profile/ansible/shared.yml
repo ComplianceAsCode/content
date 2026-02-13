@@ -4,9 +4,4 @@
 # complexity = low
 # disruption = medium
 
-- name: "Configure GNOME3 DConf User Profile"
-  ansible.builtin.lineinfile:
-    dest: "/etc/dconf/profile/gdm"
-    line: "user-db:user\nsystem-db:gdm"
-    create: yes
-    state: present
+{{{ ansible_enable_dconf_user_profile(profile="gdm", database="gdm") }}}

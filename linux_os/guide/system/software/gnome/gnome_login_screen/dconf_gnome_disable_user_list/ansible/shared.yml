@@ -21,6 +21,10 @@
     create: yes
   register: result_lineinfile
 
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ ansible_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}
+
 - name: Dconf Update
   ansible.builtin.command: dconf update
   when: result_ini is changed or result_lineinfile is changed

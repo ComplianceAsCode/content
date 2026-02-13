@@ -2353,3 +2353,37 @@ Part of the grub2_bootloader_argument_absent template.
     ansible.builtin.shell: find /etc/rsyslog.d -type f -name "*.conf" -exec sed -i '/^{{{ start_pattern }}}/,/{{{ end_pattern }}}/d' {} +
     changed_when: true
 {{%- endmacro -%}}
+
+{{#
+Macro for enabling dconf user profile in /etc/dconf/profile/<PROFILE>
+
+The macro adds the following lines to the profile:
+---
+user-db:user
+system-db:<DATABASE>
+---
+If the profile exists but does not contain the above lines, the
+lines will be inserted at the beginning of the profile.
+
+:param profile: name of dconf profile (e.g. user, gdm)
+:type profile: str
+:param database: name of dconf database (e.g. local, gdm)
+:type database: str
+#}}
+{{% macro ansible_enable_dconf_user_profile(profile, database) -%}}
+
+- name: "Configure GNOME3 DConf User Profile"
+  ansible.builtin.lineinfile:
+    path: "/etc/dconf/profile/{{{ profile }}}"
+    line: "{{ item }}"
+    create: yes
+    state: present
+  loop:
+    - "user-db:user"
+    - "system-db:{{{ database }}}"
+  register: dconf_user_profile_blockinfile
+
+- name: Dconf Update
+  ansible.builtin.command: dconf update
+  when: dconf_user_profile_blockinfile is changed
+{{%- endmacro -%}}
