@@ -1,16 +1,35 @@
 <def-group>
   <definition class="compliance" id="accounts_no_uid_except_zero" version="1">
-    {{{ oval_metadata("Only the root account should be assigned a user id of 0.", rule_title=rule_title) }}}
+    {{{ oval_metadata("Only the root account should be assigned a user id of 0, or the account must be locked.", rule_title=rule_title) }}}
     <criteria>
       <criterion comment="tests that there are no accounts with UID 0 except root in the /etc/passwd file" test_ref="test_accounts_no_uid_except_root" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="test that there are no accounts with UID 0 except root in the /etc/passwd file" id="test_accounts_no_uid_except_root" version="1">
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+     comment="test that there are no accounts with UID 0 except root in the /etc/passwd file"
+     id="test_accounts_no_uid_except_root" version="1">
     <ind:object object_ref="object_accounts_no_uid_except_root" />
+    <ind:state state_ref="state_is_locked_in_shadow" />
   </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="object_accounts_no_uid_except_root" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!root:)[^:]*:[^:]*:0</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">^(?!root:)([^:]+):[^:]+:0:.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_shadow_locked_users" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <ind:pattern operation="pattern match">^([^:]+):[!*][^:]*:.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_locked_users" datatype="string" version="1" comment="Variable containing all locked users">
+    <object_component item_field="subexpression" object_ref="object_shadow_locked_users" />
+  </local_variable>
+
+  <ind:textfilecontent54_state id="state_is_locked_in_shadow" version="1">
+    <ind:subexpression datatype="string" operation="equals" var_check="at least one" var_ref="var_locked_users" />
+  </ind:textfilecontent54_state>
 </def-group>
