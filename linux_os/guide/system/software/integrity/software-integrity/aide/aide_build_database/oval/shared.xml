@@ -22,7 +22,7 @@
     {{% elif product == "rhel9" %}}
       <!-- RHEL 9.8 (aide-0.19.2-2.el9 and newer) uses _in suffix for database_in line -->
       <ind:pattern operation="pattern match">^database(?:_in)?=file:(?:@@{DBDIR})?/(?:[a-z.]+/)*([a-z.]+)$</ind:pattern>
-    {{% elif product in ['ol10', 'rhel10', 'fedora' ] %}}
+    {{% elif product in ['ol10', 'rhel10', 'fedora', 'al2023' ] %}}
       <ind:pattern operation="pattern match">^database_in=file:(?:@@{DBDIR})?/(?:[a-z.]+/)*([a-z.]+)$</ind:pattern>
     {{% else %}}
       <ind:pattern operation="pattern match">^database=file:(?:@@{DBDIR})?/(?:[a-z.]+/)*([a-z.]+)$</ind:pattern>
