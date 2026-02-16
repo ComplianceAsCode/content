@@ -353,9 +353,10 @@ def get_next_stabilization_date(release_date: datetime) -> datetime:
 
 def get_next_release_date(latest_release_date: datetime) -> datetime:
     month = get_next_quarter_second_month(latest_release_date)
-    now = datetime.now(UTC)
 
-    if month > 9 and latest_release_date <= now:
+    # If the next release month is earlier in the year than the latest release month,
+    # it means we've wrapped around to the next year
+    if month <= latest_release_date.month:
         year = latest_release_date.year + 1
     else:
         year = latest_release_date.year
