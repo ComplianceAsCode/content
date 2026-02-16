@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2025-11-20 08:44 UTC
+Last Modified: 2026-02-16 16:01 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -73,6 +73,7 @@ The following people have contributed to the SCAP Security Guide project
 * cyarbrough76 <42849651+cyarbrough76@users.noreply.github.com>
 * Maura Dailey <maura@eclipse.ncsc.mil>
 * Benjamin Deering <ben_deering@jeepingben.net>
+* Shane Dell <shanedell100@gmail.com>
 * Klaas Demter <demter@atix.de>
 * denknorr <dennis.knorr@suse.com>
 * dhanushkar-wso2 <dhanushkar@wso2.com>
@@ -82,6 +83,7 @@ The following people have contributed to the SCAP Security Guide project
 * Marco De Donno <mdedonno1337@gmail.com>
 * dperrone <dperrone@redhat.com>
 * drax <applezip@gmail.com>
+* Qingmin Duanmu <qduanmu@redhat.com>
 * Sebastian Dunne <sdunne@redhat.com>
 * François Duthilleul <francoisduthilleul@gmail.com>
 * Greg Elin <gregelin@gitmachines.com>
@@ -91,6 +93,8 @@ The following people have contributed to the SCAP Security Guide project
 * Evelyn <evansvevelyn@gmail.com>
 * Alexis Facques <alexis.facques@mythalesgroup.io>
 * Jan Fader <jan.fader@web.de>
+* felixmarch <felixmarch@users.noreply.github.com>
+* Asser Schrøder Femø <asser@asser.org>
 * Henry Finucane <hfinucane@zscaler.com>
 * Leah Fisher <lfisher047@gmail.com>
 * Marco Fortina <marco_fortina@hotmail.it>
@@ -135,6 +139,7 @@ The following people have contributed to the SCAP Security Guide project
 * Simon John <sjohn@tuxcare.com>
 * Hunter Jones <hjones2199@gmail.com>
 * Jono <jono@ubuntu-18.localdomain>
+* julius.ish <julius.ish@zetier.com>
 * justchris1 <justchris1@justchris1.email>
 * Kacper <kacper@kacper.se>
 * Kai Kang <kai.kang@windriver.com>
@@ -303,6 +308,7 @@ The following people have contributed to the SCAP Security Guide project
 * Nico Truzzolino <nico.truzzolino@gmx.de>
 * Brian Turek <brian.turek@gmail.com>
 * Matěj Týč <matyc@redhat.com>
+* Jörgen Uhr <jorgen.uhr@sitevision.se>
 * VadimDor <29509093+VadimDor@users.noreply.github.com>
 * Trevor Vaughan <tvaughan@onyxpoint.com>
 * vtrubovics <82443408+vtrubovics@users.noreply.github.com>
