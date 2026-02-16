@@ -4,19 +4,27 @@
 # complexity = low
 # disruption = low
 
-- name: "{{{ rule_title }}} - Check current SELinux state"
-  ansible.builtin.command:
-    cmd: getenforce
-  register: current_selinux_state
+- name: "{{{ rule_title }}} - Check current SELinux configuration"
+  ansible.builtin.slurp:
+    src: /etc/selinux/config
+  register: selinux_config_content
   check_mode: false
   changed_when: false
+  failed_when: false
 
-{{{ ansible_selinux_config_set(parameter="SELINUX", value="permissive", rule_title=rule_title) }}}
+- name: "{{{ rule_title }}} - Extract SELinux state from config"
+  ansible.builtin.set_fact:
+    selinux_config_state: "{{ selinux_config_content.content | b64decode | regex_search('^\\s*SELINUX=(enforcing|permissive|disabled)', '\\1', multiline=True) | default([]) | first | default('') }}"
+  when: selinux_config_content.content is defined
 
-- name: "{{{ rule_title }}} - Mark system to relabel SELinux on next boot"
-  ansible.builtin.file:
-    path: /.autorelabel
-    state: touch
-    access_time: preserve
-    modification_time: preserve
-  when: current_selinux_state.stdout | lower != "permissive"
+- name: "{{{ rule_title }}} - Set SELinux state to permissive if disabled or not configured"
+  block:
+    {{{ ansible_selinux_config_set(parameter="SELINUX", value="permissive", rule_title=rule_title) | indent(4) }}}
+
+    - name: "{{{ rule_title }}} - Mark system to relabel SELinux on next boot"
+      ansible.builtin.file:
+        path: /.autorelabel
+        state: touch
+        access_time: preserve
+        modification_time: preserve
+  when: selinux_config_state | default('') not in ['enforcing', 'permissive']
