@@ -5,17 +5,12 @@
 # disruption = low
 
 - name: "{{{ rule_title }}} - Check current SELinux configuration"
-  ansible.builtin.slurp:
-    src: /etc/selinux/config
-  register: selinux_config_content
+  ansible.builtin.command:
+    cmd: grep -oP '^\s*SELINUX=\K(enforcing|permissive|disabled)' /etc/selinux/config
+  register: selinux_config_state
   check_mode: false
   changed_when: false
   failed_when: false
-
-- name: "{{{ rule_title }}} - Extract SELinux state from config"
-  ansible.builtin.set_fact:
-    selinux_config_state: "{{ selinux_config_content.content | b64decode | regex_search('^\\s*SELINUX=(enforcing|permissive|disabled)', '\\1', multiline=True) | default([]) | first | default('') }}"
-  when: selinux_config_content.content is defined
 
 - name: "{{{ rule_title }}} - Set SELinux state to permissive if disabled or not configured"
   block:
@@ -27,4 +22,4 @@
         state: touch
         access_time: preserve
         modification_time: preserve
-  when: selinux_config_state | default('') not in ['enforcing', 'permissive']
+  when: selinux_config_state.stdout not in ['enforcing', 'permissive']
