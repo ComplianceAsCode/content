@@ -33,7 +33,7 @@ include(SSGCommon)
 # Define Version values
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 80)
+set(SSG_PATCH_VERSION 81)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
