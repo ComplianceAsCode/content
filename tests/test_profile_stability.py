@@ -34,7 +34,7 @@ def compare_sets(reference, sample):
 
 def get_references_filenames(ref_root):
     found = []
-    for root, dirs, files in os.walk(ref_root):
+    for root, _, files in os.walk(ref_root):
         for basename in files:
             if fnmatch.fnmatch(basename, "*.profile"):
                 filename = os.path.join(root, basename)

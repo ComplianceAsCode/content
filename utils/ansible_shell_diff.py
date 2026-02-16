@@ -25,7 +25,7 @@ def get_shell_tasks(tasks):
     for task in tasks:
         for task_name in ['shell', 'ansible.builtin.shell', 'command', 'ansible.builtin.command']:
             if task_name in task:
-                if type(task[task_name]) is dict and 'cmd' in task[task_name]:
+                if isinstance(task[task_name], dict) and 'cmd' in task[task_name]:
                     shell_tasks.append(task[task_name]['cmd'])
                 else:
                     shell_tasks.append(task[task_name])

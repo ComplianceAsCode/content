@@ -45,7 +45,7 @@ class ProductCPEs(object):
             product_cpes_list = env_yaml["cpes"]
             self.load_product_cpes_from_list(product_cpes_list)
         except KeyError:
-            raise Exception("Product %s does not define 'cpes'" % (env_yaml["product"]))
+            raise Exception("Product %s does not define 'cpes'" % (env_yaml["product"])) from None
 
     def load_product_cpes_from_list(self, product_cpes_list):
         for cpe_dict_repr in product_cpes_list:
@@ -107,7 +107,7 @@ class ProductCPEs(object):
                         cpe_id_or_name)
                 return self.cpes_by_id[cpe_id_or_name]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name)
+            raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name) from None
 
     def add_resolved_cpe_items_from_platform(self, platform):
         for fact_ref in platform.get_fact_refs():
@@ -267,7 +267,7 @@ class CPEItem(XCCDFEntity, Templatable):
             raise KeyError(
                 "The {0} CPE item does not support the argument {1}. "
                 "Following arguments are supported: {2}".format(
-                    self.id_, fact_ref.arg, [a for a in self.args.keys()]))
+                    self.id_, fact_ref.arg, [a for a in self.args.keys()])) from None
         resolved_parameters.update(fact_ref.as_dict())
         cpe_item_as_dict = self.represent_as_dict()
         cpe_item_as_dict["args"] = None

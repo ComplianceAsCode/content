@@ -382,7 +382,7 @@ class Builder(object):
                                                    language, local_env_yaml)
         except Exception as e:
             raise RuntimeError("Unable to generate {0} template language for Templatable {1}: {2}"
-                               .format(language.name, templatable, e))
+                               .format(language.name, templatable, e)) from e
 
     def write_lang_contents_for_templatable(self, filled_template, lang, templatable):
         """

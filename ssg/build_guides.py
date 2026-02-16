@@ -1,10 +1,11 @@
 from __future__ import absolute_import
 
 import os
+import queue
+import subprocess
 import sys
 from collections import namedtuple
 
-from .shims import subprocess_check_output, Queue
 from .xccdf import get_profile_choices_for_input, get_profile_short_id
 from .xccdf import PROFILE_ID_SKIPLIST
 from .constants import OSCAP_DS_STRING, OSCAP_PATH
@@ -48,10 +49,10 @@ def generate_for_input_content(input_content, benchmark_id, profile_id):
         args.extend(["--profile", profile_id])
     args.append(input_content)
 
-    return subprocess_check_output(args).decode("utf-8")
+    return subprocess.check_output(args).decode("utf-8")
 
 
-def builder(queue):
+def builder(task_queue):
     """
     Fetch from a queue of tasks, process tasks until the queue is empty.
     Each task is processed with generate_for_input_content, and the
@@ -62,7 +63,7 @@ def builder(queue):
     while True:
         try:
             benchmark_id, profile_id, input_path, guide_path = \
-                queue.get(False)
+                task_queue.get(False)
 
             guide_html = generate_for_input_content(
                 input_path, benchmark_id, profile_id
@@ -71,16 +72,16 @@ def builder(queue):
             with open(guide_path, "wb") as guide_file:
                 guide_file.write(guide_html.encode("utf-8"))
 
-            queue.task_done()
-        except Queue.Empty:
+            task_queue.task_done()
+        except queue.Empty:
             break
         except Exception as error:
             sys.stderr.write(
                 "Fatal error encountered when generating guide '%s'. "
                 "Error details:\n%s\n\n" % (guide_path, error)
             )
-            with queue.mutex:
-                queue.queue.clear()
+            with task_queue.mutex:
+                task_queue.queue.clear()
             raise error
 
 
@@ -172,7 +173,7 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
     index_links = []
     index_options = {}
     index_initial_src = None
-    queue = Queue.Queue()
+    task_queue = queue.Queue()
 
     task = namedtuple('task', ['benchmark_id', 'profile_id', 'input_path', 'guide_path'])
 
@@ -202,9 +203,9 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
         if index_initial_src is None:
             index_initial_src = guide_filename
 
-        queue.put(task(benchmark_id, profile_id, input_path, guide_path))
+        task_queue.put(task(benchmark_id, profile_id, input_path, guide_path))
 
-    return index_links, index_options, index_initial_src, queue
+    return index_links, index_options, index_initial_src, task_queue
 
 
 def build_index(benchmarks, input_basename, index_links, index_options,

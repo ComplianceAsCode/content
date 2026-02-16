@@ -157,7 +157,7 @@ class TestEnv(object):
         except Exception as exc:
             error_msg = error_msg + ": " + str(exc)
             logging.error(error_msg)
-            raise RuntimeError(error_msg)
+            raise RuntimeError(error_msg) from exc
 
     def finalize(self):
         """
@@ -221,7 +221,7 @@ class VMTestEnv(TestEnv):
             import libvirt
         except ImportError:
             raise RuntimeError("Can't import libvirt module, libvirt backend will "
-                               "therefore not work.")
+                               "therefore not work.") from None
 
         self.domain = None
 
@@ -367,13 +367,13 @@ class ContainerTestEnv(TestEnv):
                     "This usually means that the container backend reported its configuration "
                     "in an unexpected format."
                 )
-                raise RuntimeError(msg)
+                raise RuntimeError(msg) from None
 
             if self.internal_ssh_port in ports:
                 ssh_port = ports[self.internal_ssh_port]
             else:
                 msg = "Unable to detect the SSH port for the container."
-                raise RuntimeError(msg)
+                raise RuntimeError(msg) from None
         else:
             ssh_port = self.internal_ssh_port
         return ssh_port
@@ -455,7 +455,7 @@ class DockerTestEnv(ContainerTestEnv):
         try:
             import docker
         except ImportError:
-            raise RuntimeError("Can't import the docker module, Docker backend will not work.")
+            raise RuntimeError("Can't import the docker module, Docker backend will not work.") from None
         try:
             self.client = docker.from_env(version="auto")
             self.client.ping()
@@ -466,7 +466,7 @@ class DockerTestEnv(ContainerTestEnv):
                 "is the Docker service started "
                 "and do you have rights to access it?"
                 .format(str(exc)))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
 
     def _commit(self, container, image):
         container.commit(repository=image)
@@ -521,7 +521,7 @@ class PodmanTestEnv(ContainerTestEnv):
         except subprocess.CalledProcessError as e:
             msg = "Command '{0}' returned {1}:\n{2}".format(
                 " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from e
 
     def _new_container_from_image(self, image_name, container_name):
         long_name = "{0}_{1}".format(self._name_stem, container_name)
@@ -541,7 +541,7 @@ class PodmanTestEnv(ContainerTestEnv):
         except subprocess.CalledProcessError as e:
             msg = "Command '{0}' returned {1}:\n{2}".format(
                 " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from e
         container_id = podman_output.decode("utf-8").strip()
         return container_id
 
@@ -555,7 +555,7 @@ class PodmanTestEnv(ContainerTestEnv):
         except subprocess.CalledProcessError as e:
             msg = "Command '{0}' returned {1}:\n{2}".format(
                 " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from e
         ip_address = podman_output.decode("utf-8").strip()
         if not ip_address:
             ip_address = "localhost"
@@ -569,7 +569,7 @@ class PodmanTestEnv(ContainerTestEnv):
         except subprocess.CalledProcessError as e:
             msg = "Command '{0}' returned {1}:\n{2}".format(
                 " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from e
         return self.extract_port_map(json.loads(podman_output))
 
     def extract_port_map(self, podman_network_data):
@@ -592,14 +592,14 @@ class PodmanTestEnv(ContainerTestEnv):
             except subprocess.CalledProcessError as e:
                 msg = "Command '{0}' returned {1}:\n{2}".format(
                     " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-                raise RuntimeError(msg)
+                raise RuntimeError(msg) from e
             podman_cmd = ["podman", "rm", running_state]
             try:
                 subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
             except subprocess.CalledProcessError as e:
                 msg = "Command '{0}' returned {1}:\n{2}".format(
                     " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-                raise RuntimeError(msg)
+                raise RuntimeError(msg) from e
 
     def _remove_image(self, image):
         podman_cmd = ["podman", "rmi", image]
@@ -608,7 +608,7 @@ class PodmanTestEnv(ContainerTestEnv):
         except subprocess.CalledProcessError as e:
             msg = "Command '{0}' returned {1}:\n{2}".format(
                 " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from e
 
     def _local_oscap_check_base_arguments(self):
         raise NotImplementedError("OpenSCAP doesn't support offline scanning of Podman Containers")

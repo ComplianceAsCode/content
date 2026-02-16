@@ -57,7 +57,7 @@ def vendor_dir() -> Generator[str, None, None]:
         except Exception as e:
             raise TrestleError(
                 f"Initialization failed for temporary trestle directory: {e}."
-            )
+            ) from e
         yield tmpdir
 
 
