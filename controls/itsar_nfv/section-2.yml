@@ -110,3 +110,125 @@ controls:
                       - configure_network_policies
                       - configure_network_policies_namespaces
                       - project_config_and_template_network_policy
+          - id: '2.2'
+            title: Authentication Attribute Management
+            status: pending
+            rules: []
+            controls:
+                - id: 2.2.1
+                  title: Authentication Policy
+                  status: partial
+                  notes: |-
+                      OpenShift delegates authentication to an external Identity
+                      Provider. The automated rules verify that an MFA-capable
+                      IdP is configured and that weak single-factor methods
+                      (htpasswd, basic-auth, static tokens) are disabled.
+                      However, actual MFA enforcement must be verified at the
+                      IdP level (e.g., Keycloak, Okta, Active Directory). For
+                      machine accounts, ServiceAccount tokens satisfy the
+                      single-attribute requirement.
+                  rules:
+                      - idp_is_configured
+                      - ocp_idp_no_htpasswd
+                      - kubeadmin_removed
+                      - ocp_no_ldap_insecure
+                      - api_server_token_auth
+                      - api_server_basic_auth
+                - id: 2.2.2
+                  title: Authentication Support - External
+                  status: automated
+                  rules:
+                      - ocp_no_ldap_insecure
+                - id: 2.2.3
+                  title: Protection against Brute Force and Dictionary Attacks
+                  status: partial
+                  notes: |-
+                      Brute force and dictionary attack protections are primarily
+                      enforced at the Identity Provider level. The automated rule
+                      ensures an IdP capable of account lockout is used instead of
+                      htpasswd. Verify that the external IdP is configured with at
+                      least two countermeasures such as account lockout after failed
+                      attempts, login delays, or password blacklists.
+                  rules:
+                      - ocp_idp_no_htpasswd
+                - id: 2.2.4
+                  title: Enforce Strong Password
+                  status: partial
+                  notes: |-
+                      Password complexity is primarily enforced at the Identity
+                      Provider level. The automated rules ensure Kubernetes
+                      Secrets are encrypted at rest in etcd and that node-level
+                      password storage uses strong hashing. Verify that the
+                      external IdP enforces minimum length, character class,
+                      and password history requirements.
+                  rules:
+                      - api_server_encryption_provider_cipher
+                      - no_empty_passwords
+                - id: 2.2.5
+                  title: Inactive Session Timeout
+                  status: automated
+                  rules:
+                      - oauth_inactivity_timeout
+                      - oauthclient_inactivity_timeout
+                      - oauth_or_oauthclient_inactivity_timeout
+                      - oauth_token_maxage
+                      - oauthclient_token_maxage
+                      - oauth_or_oauthclient_token_maxage
+                      - sshd_set_idle_timeout
+                      - sshd_set_keepalive
+                - id: 2.2.6
+                  title: Password Changes
+                  status: manual
+                  notes: |-
+                      Password change enforcement, expiration, and history are
+                      functions of the external Identity Provider. Verify that
+                      the IdP linked to OpenShift enforces password changes on
+                      initial login and upon expiry, and prevents reuse of at
+                      least the last 3 passwords. Kubernetes does not track
+                      password history.
+                  rules: []
+                - id: 2.2.7
+                  title: Protected Authentication Feedback
+                  status: inherently met
+                  notes: |-
+                      Password masking is inherent behavior in OpenShift and
+                      Linux. The OpenShift Console, oc CLI, and node-level
+                      authentication commands (passwd, login, sudo) all
+                      obscure password input using system calls that do not
+                      echo characters to the terminal. This cannot be
+                      misconfigured.
+                  rules: []
+                - id: 2.2.8
+                  title: Removal of Predefined or Default Authentication Attributes
+                  status: automated
+                  rules:
+                      - kubeadmin_removed
+                - id: 2.2.9
+                  title: Logout Function
+                  status: automated
+                  rules:
+                      - oauth_logout_url_set
+                - id: 2.2.10
+                  title: Policy Regarding Consecutive Failed Login Attempts
+                  status: partial
+                  notes: |-
+                      Account lockout after failed login attempts is enforced
+                      at the Identity Provider level. The automated rule
+                      ensures an IdP capable of account lockout is used.
+                      Verify that the external IdP locks accounts after no
+                      more than 8 consecutive failed attempts, with a
+                      recommended default of 5.
+                  rules:
+                      - ocp_idp_no_htpasswd
+                - id: 2.2.11
+                  title: Suspend Accounts on Non-Use
+                  status: partial
+                  notes: |-
+                      Account suspension after non-use is primarily managed
+                      by the external Identity Provider. The automated rule
+                      enforces account disabling on RHCOS nodes after
+                      password expiration inactivity. Verify that the IdP
+                      linked to OpenShift is configured to suspend accounts
+                      after a defined period without valid login.
+                  rules:
+                      - account_disable_post_pw_expiration
