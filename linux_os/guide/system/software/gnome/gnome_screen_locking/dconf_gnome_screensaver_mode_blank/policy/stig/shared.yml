@@ -4,12 +4,12 @@ srg_requirement: |-
 fixtext: |-
     Configure {{{ full_name }}} to prevent a user from overriding the picture-uri setting for graphical user interfaces.
 
-    In the file "/etc/dconf/db/local.d/00-security-settings", add or update the following lines:
+    In the file "/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings", add or update the following lines:
 
     [org/gnome/desktop/screensaver]
     picture-uri=''
 
-    Prevent user modification by adding the following line to "/etc/dconf/db/local.d/locks/00-security-settings-lock":
+    Prevent user modification by adding the following line to "/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock":
 
     /org/gnome/desktop/screensaver/picture-uri
 

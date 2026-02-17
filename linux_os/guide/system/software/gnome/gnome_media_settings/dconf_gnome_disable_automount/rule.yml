@@ -7,12 +7,12 @@ description: |-
     The system's default desktop environment, GNOME3, will mount
     devices and removable media (such as DVDs, CDs and USB flash drives) whenever
     they are inserted into the system. To disable automount within GNOME3, add or set
-    <tt>automount</tt> to <tt>false</tt> in <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
+    <tt>automount</tt> to <tt>false</tt> in <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>.
     For example:
     <pre>[org/gnome/desktop/media-handling]
     automount=false</pre>
     Once the settings have been added, add a lock to
-    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/desktop/media-handling/automount</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -51,6 +51,5 @@ ocil: |-
     <pre>$ gsettings get org.gnome.desktop.media-handling automount</pre>
     If properly configured, the output for <tt>automount</tt> should be <tt>false</tt>.
     To ensure that users cannot enable automount in GNOME3, run the following:
-    <pre>$ grep 'automount' /etc/dconf/db/local.d/locks/*</pre>
+    <pre>$ grep 'automount' /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output for <tt>automount</tt> should be <tt>/org/gnome/desktop/media-handling/automount</tt>
-

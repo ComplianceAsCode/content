@@ -5,5 +5,9 @@
 {{{ bash_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
 {{% endif %}}
 
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ bash_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}
+
 {{{ bash_dconf_settings("org/gnome/login-screen", "disable-user-list", "true", dconf_gdm_dir, "00-security-settings", rule_id=rule_id) }}}
 {{{ bash_dconf_lock("org/gnome/login-screen", "disable-user-list", dconf_gdm_dir, "00-security-settings-lock") }}}
