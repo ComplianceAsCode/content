@@ -43,6 +43,7 @@ product_directories = [
     'anolis8',
     'anolis23',
     'al2023',
+    'bascontrol22d4',
     'debian11', 'debian12', 'debian13',
     'example',
     'eks',
@@ -213,6 +214,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
     "Amazon Linux 2023": "al2023",
+    "Contemporary Controls BAScontrol22D BACnet/IP Sedona Unitary Controller 4": "bascontrol22d4",
     "Debian 11": "debian11",
     "Debian 12": "debian12",
     "Debian 13": "debian13",
@@ -287,17 +289,15 @@ REFERENCES = dict(
     )
 )
 
-
-MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
-                       "openeuler", "kylinserver",
-                       "opensuse", "sle", "tencentos", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "anolis", "openembedded", "al",
-                       "slmicro", "almalinux"]
+MULTI_PLATFORM_LIST = ["al", "alinux", "almalinux", "anolis", "bascontrol22d", "debian", "eks",
+                       "example", "fedora", "kylinserver", "ocp", "ol", "openembedded", "openeuler",
+                       "opensuse", "rhcos", "rhel", "rhv", "sle", "slmicro", "tencentos", "ubuntu"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
     "multi_platform_almalinux": ["almalinux9"],
     "multi_platform_anolis": ["anolis8", "anolis23"],
+    "multi_platform_bascontrol22d": ["bascontrol22d4"],
     "multi_platform_debian": ["debian11", "debian12", "debian13"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
@@ -429,6 +429,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'kylinserver': 'Kylin Server',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
+    'bascontrol22d': 'Contemporary Controls BAScontrol22D',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
     'eap': 'JBoss Enterprise Application Platform',

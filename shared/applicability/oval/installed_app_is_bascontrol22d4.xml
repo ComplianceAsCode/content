@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_app_is_bascontrol22d" version="4">
+    <metadata>
+      <title>Mozilla Firefox</title>
+      <affected family="unix">
+        <product>Mozilla Firefox</product>
+      </affected>
+      <reference ref_id="cpe:/a:bascontrol22d:4"
+      source="CPE" />
+      <description>The application installed on the system is firefox.</description>
+       </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family"
+      definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="Firefox is installed"
+      test_ref="test_bascontroll2d4" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Firefox is installed via RPM" id="test_bascontroll2d4" version="1">
+    <linux:object object_ref="obj_bascontrol22d" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_bascontrol22d" version="1">
+    <linux:name>firefox</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>
