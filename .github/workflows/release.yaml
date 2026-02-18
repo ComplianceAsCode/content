@@ -19,16 +19,16 @@ jobs:
         run: cmake ..
         working-directory: ./build
       - name: Build All
-        run: make -j2 all
+        run: make -j$(nproc) all
         working-directory: ./build
       - name: Build ZIP
-        run: make -j2 zipfile
+        run: make -j$(nproc) zipfile
         working-directory: ./build
       - name: Test
-        run: ctest -j2 --output-on-failure -E linkchecker
+        run: ctest -j$(nproc) --output-on-failure -E linkchecker
         working-directory: ./build
       - name: Build Package Source
-        run: make -j2 package_source
+        run: make -j$(nproc) package_source
         working-directory: ./build
       - name: Set Version
         id: set_version
