@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R5
+    version: V2R6
     SMEs:
         - svet-se
         - rumch-se
@@ -13,7 +13,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V2R5.
+    DISA STIG for SUSE Linux Enterprise 15 V2R6.
 
 
 selections:
