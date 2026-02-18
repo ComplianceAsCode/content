@@ -11,7 +11,7 @@
       test_ref="test_logrotate_conf_no_other_keyword" />
       <criteria comment="Check if either logrotate timer or cron job is enabled" operator="OR">
         <criterion comment="Check if /etc/cron.daily/logrotate file exists (and calls logrotate)" test_ref="test_cron_daily_logrotate_existence" />
-{{% if product in ["ol9", "rhcos4", "rhel9", "rhel10", "sle12", "sle15", "slmicro5"] %}}
+{{% if 'sle' in product or product in ["ol9", "rhcos4", "rhel9", "rhel10", "slmicro5"] %}}
         <criterion comment="Check if logrotate timer is enabled" test_ref="test_logrotate_enabled_systemd_target" />
 {{% endif %}}
       </criteria>
@@ -54,7 +54,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product in ["ol9", "rhcos4", "rhel9", "rhel10", "sle12", "sle15", "slmicro5"] %}}
+  {{% if 'sle' in product or product in ["ol9", "rhcos4", "rhel9", "rhel10", "slmicro5"] %}}
   <unix:file_test check="all" check_existence="all_exist"
    comment="look for logrotate.timer in multi-user.target.wants and timers.target.wants"
    id="test_logrotate_enabled_systemd_target" version="1">
