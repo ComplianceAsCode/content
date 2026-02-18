@@ -1260,6 +1260,15 @@ controls:
           - audit_rules_privileged_commands_crontab
       status: automated
 
+    - id: UBTU-22-654041
+      title: Ubuntu 22.04 LTS must audit any script or executable called by cron as root or by any privileged user.
+      levels:
+          - medium
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
+      status: automated
+
     - id: UBTU-22-654045
       title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful attempts to use
           the fdisk command.
