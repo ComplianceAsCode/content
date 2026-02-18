@@ -191,7 +191,6 @@ selections:
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_reboot
     - disallow_bypass_password_sudo
-    - display_login_attempts
     - enable_dconf_user_profile
     - encrypt_partitions
     - ensure_gpgcheck_globally_activated
