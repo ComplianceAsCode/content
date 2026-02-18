@@ -5,6 +5,7 @@
 {{% if product in ["rhel9", "rhel10", "sle15", "sle16"] %}}
 # create drop-in in the /etc/systemd/logind.conf.d/ directory
 {{% set logind_conf_file = "/etc/systemd/logind.conf.d/oscap-idle-sessions.conf" %}}
+mkdir -p "/etc/systemd/logind.conf.d/"
 {{% else %}}
 {{% set logind_conf_file = "/etc/systemd/logind.conf" %}}
 {{% endif %}}
