@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Uninstall nfs-common Package'
+
+description: |-
+    {{{ describe_package_remove(package="nfs-common") }}}
+
+rationale: |-
+    If the system does not export NFS shares or act as an NFS client, it is
+    recommended that these services be removed to reduce the remote attack
+    surface.
+
+severity: low
+
+{{{ complete_ocil_entry_package(package="nfs-common") }}}
+
+fixtext: '{{{ fixtext_package_removed("nfs-common") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: nfs-common
