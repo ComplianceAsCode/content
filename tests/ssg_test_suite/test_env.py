@@ -367,7 +367,6 @@ class ContainerTestEnv(TestEnv):
                     "This usually means that the container backend reported its configuration "
                     "in an unexpected format."
                 )
-                logging.error(f"{msg} Original error: {exc}")
                 raise RuntimeError(msg) from exc
 
             if self.internal_ssh_port in ports:
@@ -581,7 +580,7 @@ class PodmanTestEnv(ContainerTestEnv):
             host_port = podman_network_data['hostPort']
         else:
             container_port_with_protocol, host_data = podman_network_data.popitem()
-            if not host_data or not isinstance(host_data, list) or len(host_data) == 0:
+            if not host_data or not isinstance(host_data, list):
                 raise ValueError(f"Invalid port mapping data: {host_data}")
             container_port = container_port_with_protocol.split("/")[0]
             host_port = host_data[0]['HostPort']
