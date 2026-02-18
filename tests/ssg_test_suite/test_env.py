@@ -361,13 +361,14 @@ class ContainerTestEnv(TestEnv):
         if self.domain_ip == 'localhost':
             try:
                 ports = self._get_container_ports(self.current_container)
-            except Exception:
+            except Exception as exc:
                 msg = (
                     "Unable to extract SSH ports from the container. "
                     "This usually means that the container backend reported its configuration "
                     "in an unexpected format."
                 )
-                raise RuntimeError(msg) from None
+                logging.error(f"{msg} Original error: {exc}")
+                raise RuntimeError(msg) from exc
 
             if self.internal_ssh_port in ports:
                 ssh_port = ports[self.internal_ssh_port]
@@ -533,7 +534,6 @@ class PodmanTestEnv(ContainerTestEnv):
                       "--cap-add=cap_sys_admin",
                       "--cap-add=cap_sys_chroot",
                     #   "--privileged",
-                      "--network", "slirp4netns",
                       "--publish", "{}".format(self.internal_ssh_port), "--detach", image_name,
                       "/usr/sbin/sshd", "-p", "{}".format(self.internal_ssh_port), "-D"]
         try:
@@ -573,11 +573,16 @@ class PodmanTestEnv(ContainerTestEnv):
         return self.extract_port_map(json.loads(podman_output))
 
     def extract_port_map(self, podman_network_data):
+        if not podman_network_data:
+            raise ValueError("Port data is empty or None")
+        
         if 'containerPort' in podman_network_data:
             container_port = podman_network_data['containerPort']
             host_port = podman_network_data['hostPort']
         else:
             container_port_with_protocol, host_data = podman_network_data.popitem()
+            if not host_data or not isinstance(host_data, list) or len(host_data) == 0:
+                raise ValueError(f"Invalid port mapping data: {host_data}")
             container_port = container_port_with_protocol.split("/")[0]
             host_port = host_data[0]['HostPort']
         port_map = {int(container_port): int(host_port)}
