@@ -886,7 +886,9 @@ controls:
       levels:
           - medium
       rules:
-          - set_password_hashing_algorithm_systemauth
+          - var_password_pam_unix_rounds=100000
+          - set_password_hashing_algorithm_auth_stig
+          - accounts_password_pam_unix_rounds_password_auth
       status: automated
 
     - id: UBTU-22-611060
