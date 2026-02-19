@@ -10,10 +10,22 @@ declare -a ARGS=()
 declare -a NEW_ARGS=()
 declare -a DEL_ARGS=()
 
+{{% if product == 'sle16' %}}
+PAM_DEFAULTS_FILE_NAME="/usr/lib/pam.d/$(basename "{{{ PATH }}}")"
+if ! [ -e "{{{ PATH }}}" ] ; then
+    cp "${PAM_DEFAULTS_FILE_NAME}" "{{{ PATH }}}"
+fi
+{{% endif %}}
+
 {{% for arg in ARGUMENTS -%}}
 {{% if arg['variable'] | length -%}}
-{{{ bash_instantiate_variables("var_password_pam_" + arg['variable']) }}}
-VALUES+=("${{{ "var_password_pam_" + arg['variable'] }}}")
+{{% if arg['variable_name'] %}}
+{{% set pam_variable_name = arg['variable_name'] %}}
+{{% else %}}
+{{% set pam_variable_name = "var_password_pam_" + arg['variable'] %}}
+{{% endif %}}
+{{{ bash_instantiate_variables(pam_variable_name) }}}
+VALUES+=("${{{ pam_variable_name }}}")
 VALUE_NAMES+=("{{{ arg['variable'] }}}")
 {{%- else %}}
 VALUES+=("")
