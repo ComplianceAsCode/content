@@ -500,7 +500,9 @@ fi
 {{%- elif pkg_manager == "apt_get" -%}}
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y "{{{ package }}}"
 {{%- elif pkg_manager == "zypper" -%}}
-zypper remove -y "{{{ package }}}"
+if rpm -q --quiet "{{{ package }}}" ; then
+   zypper remove -y "{{{ package }}}"
+fi
 {{%- else -%}}
 {{{ die("Can't generate a remediation for " + pkg_manager) }}}
 {{%- endif -%}}

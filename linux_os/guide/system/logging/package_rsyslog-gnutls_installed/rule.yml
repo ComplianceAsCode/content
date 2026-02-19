@@ -23,6 +23,7 @@ identifiers:
     cce@rhel10: CCE-89106-9
     cce@sle12: CCE-91512-4
     cce@sle15: CCE-91199-0
+    cce@sle16: CCE-95816-5
 
 references:
     srg: SRG-OS-000480-GPOS-00227,SRG-OS-000120-GPOS-00061
@@ -42,6 +43,7 @@ template:
         pkgname: rsyslog-gnutls
         pkgname@sle12: rsyslog-module-gtls
         pkgname@sle15: rsyslog-module-gtls
+        pkgname@sle16: rsyslog-module-gtls
 
 fixtext: |-
     {{% if 'sle' not in product %}}
