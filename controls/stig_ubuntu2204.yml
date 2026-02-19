@@ -790,7 +790,15 @@ controls:
       levels:
           - medium
       rules:
-          - sudo_require_authentication
+          - sudo_remove_no_authenticate
+      status: automated
+
+    - id: UBTU-22-432011
+      title: Ubuntu 22.04 LTS must require users to provide a password for privilege escalation.
+      levels:
+          - medium
+      rules:
+          - sudo_remove_nopasswd
       status: automated
 
     - id: UBTU-22-432015
