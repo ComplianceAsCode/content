@@ -14,6 +14,14 @@ reference_type: stigid
 product: ubuntu2204
 
 controls:
+    - id: UBTU-22-211000
+      title: Ubuntu 22.04 LTS must be a vendor-supported release.
+      levels:
+          - high
+      rules:
+          - installed_OS_is_vendor_supported
+      status: automated
+
     - id: UBTU-22-211015
       title: Ubuntu 22.04 LTS must disable the x86 Ctrl-Alt-Delete key sequence.
       levels:
@@ -472,6 +480,42 @@ controls:
           - medium
       rules:
           - sysctl_net_ipv4_tcp_syncookies
+      status: automated
+
+    - id: UBTU-22-254010
+      title: Ubuntu 22.04 LTS must have the "SSSD" package installed.
+      levels:
+          - medium
+      rules:
+          - package_nss_sss_installed
+          - package_pam_sss_installed
+          - package_sssd_installed
+      status: automated
+
+    - id: UBTU-22-254015
+      title: Ubuntu 22.04 LTS must use the "SSSD" package for multifactor authentication services.
+      levels:
+          - medium
+      rules:
+          - service_sssd_enabled
+      status: automated
+
+    - id: UBTU-22-254020
+      title: Ubuntu 22.04 LTS must ensure SSSD performs certificate path validation, including revocation checking, against a trusted anchor for PKI-based authentication.
+      levels:
+          - medium
+      rules:
+          - sssd_enable_pam_services
+          - sssd_enable_smartcards
+          - sssd_certification_path_trust_anchor
+      status: automated
+
+    - id: UBTU-22-254030
+      title: Ubuntu 22.04 LTS must map the authenticated identity to the user or group account for PKI-based authentication.
+      levels:
+          - medium
+      rules:
+          - sssd_enable_user_cert
       status: automated
 
     - id: UBTU-22-255010
@@ -1600,6 +1644,14 @@ controls:
           - medium
       rules:
           - audit_rules_sudoers
+      status: automated
+
+    - id: UBTU-22-654224
+      title: The operating system must restrict privilege elevation to authorized personnel.
+      levels:
+          - medium
+      rules:
+          - sudo_restrict_privilege_elevation_to_authorized
       status: automated
 
     - id: UBTU-22-654225
