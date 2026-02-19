@@ -28,7 +28,7 @@ filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platfor
     not in platform and "ocp4-node-on-ovn" not in platform'
 
 selections:
-    - cis_ocp:all
+    - cis_ocp_190:all
     ### Variables
     - var_openshift_audit_profile=WriteRequestBodies
     ### Helper Rules
