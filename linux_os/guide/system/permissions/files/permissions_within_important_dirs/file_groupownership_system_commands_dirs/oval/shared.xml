@@ -17,7 +17,11 @@
   <unix:file_object comment="system commands files" id="object_groupownership_system_commands_dirs" version="1">
     <!-- Check that system commands within directories /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
          belong to group with gid 0 (root) or gid < {{{ gid_min }}} (system account)-->
+    {{% if 'ol9' in product %}}
+    <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/libexec|^\/usr\/local\/s?bin</unix:path>
+    {{% else %}}
     <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
+    {{% endif %}}
     <unix:filename operation="pattern match">^.*$</unix:filename>
    <filter action="include">state_groupowner_system_commands_dirs_not_root_or_system_account</filter>
    <filter action="exclude">state_groupowner_system_commands_dirs_symlink</filter>

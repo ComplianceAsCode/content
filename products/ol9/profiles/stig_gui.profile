@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R3
+    version: V1R4
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG with GUI for Oracle Linux 9'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 9 V1R3.
+    DISA STIG for Oracle Linux 9 V1R4.
 
     Warning: The installation and use of a Graphical User Interface (GUI)
     increases your attack vector and decreases your overall security posture. If

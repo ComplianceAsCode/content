@@ -9,6 +9,9 @@ description: |-
     /sbin
     /usr/bin
     /usr/sbin
+    {{%- if 'ol9' in product %}}
+    /usr/libexec
+    {{%- endif %}}
     /usr/local/bin
     /usr/local/sbin
     </pre>
@@ -54,7 +57,11 @@ ocil_clause: 'any system commands are returned and is not group-owned by a requi
 ocil: |-
     Verify the system commands contained in the following directories are group-owned by "root", or a required system account, with the following command:
 
+    {{%- if 'ol9' in product %}}
+    $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/libexec /usr/local/bin /usr/local/sbin ! -group root -exec ls -l {} \;
+    {{%- else %}}
     $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -exec ls -l {} \;
+    {{%- endif %}}
 
 fixtext: |-
     Configure the system commands to be protected from unauthorized access.

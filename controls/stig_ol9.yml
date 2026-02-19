@@ -621,14 +621,6 @@ controls:
           - mount_option_home_noexec
       status: automated
 
-    - id: OL09-00-002010
-      levels:
-          - medium
-      title: OL 9 must be configured so that the Network File System (NFS) is configured to use RPCSEC_GSS.
-      rules:
-          - mount_option_krb_sec_remote_filesystems
-      status: automated
-
     - id: OL09-00-002011
       levels:
           - medium
@@ -1262,7 +1254,7 @@ controls:
           - medium
       title: OL 9 world-writable directories must be owned by root, sys, bin, or an application user.
       rules:
-          - dir_perms_world_writable_root_owned
+          - dir_perms_world_writable_system_owned
       status: automated
 
     - id: OL09-00-002510
@@ -2063,9 +2055,10 @@ controls:
     - id: OL09-00-002104
       levels:
           - medium
-      title: OL 9 must automatically lock graphical user sessions after 15 minutes of inactivity.
+      title: OL 9 must automatically lock graphical user sessions after 10 minutes of inactivity.
       rules:
           - dconf_gnome_screensaver_idle_delay
+          - inactivity_timeout_value=10_minutes
       status: automated
 
     - id: OL09-00-002124
@@ -2408,14 +2401,6 @@ controls:
       title: OL 9 must implement nonexecutable data to protect its memory from unauthorized code execution.
       rules:
           - sysctl_kernel_exec_shield
-      status: automated
-
-    - id: OL09-00-002427
-      levels:
-          - medium
-      title: Local OL 9 initialization files must not execute world-writable programs.
-      rules:
-          - accounts_user_dot_no_world_writable_programs
       status: automated
 
     - id: OL09-00-002411
@@ -3835,16 +3820,6 @@ controls:
       title: OL 9 crypto policy must not be overridden.
       rules:
           - fips_crypto_policy_symlinks
-      status: automated
-
-    - id: OL09-00-002424
-      levels:
-          - medium
-      title: OL 9 must use mechanisms meeting the requirements of applicable federal laws, executive
-          orders, directives, policies, regulations, standards, and guidance for authentication to a
-          cryptographic module.
-      rules:
-          - configure_kerberos_crypto_policy
       status: automated
 
     - id: OL09-00-000241
