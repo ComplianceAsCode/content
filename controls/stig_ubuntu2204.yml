@@ -23,7 +23,8 @@ controls:
       status: automated
 
     - id: UBTU-22-212010
-      title: Ubuntu 22.04 LTS, when booted, must require authentication upon booting into single-user
+      title:
+          Ubuntu 22.04 LTS, when booted, must require authentication upon booting into single-user
           and maintenance modes.
       levels:
           - high
@@ -49,7 +50,8 @@ controls:
       status: automated
 
     - id: UBTU-22-213015
-      title: Ubuntu 22.04 LTS must disable kernel core dumps so that it can fail to a secure state if
+      title:
+          Ubuntu 22.04 LTS must disable kernel core dumps so that it can fail to a secure state if
           system initialization fails, shutdown fails or aborts fail.
       levels:
           - medium
@@ -58,7 +60,8 @@ controls:
       status: automated
 
     - id: UBTU-22-213020
-      title: Ubuntu 22.04 LTS must implement address space layout randomization to protect its memory
+      title:
+          Ubuntu 22.04 LTS must implement address space layout randomization to protect its memory
           from unauthorized code execution.
       levels:
           - medium
@@ -67,7 +70,8 @@ controls:
       status: automated
 
     - id: UBTU-22-213025
-      title: Ubuntu 22.04 LTS must implement nonexecutable data to protect its memory from unauthorized
+      title:
+          Ubuntu 22.04 LTS must implement nonexecutable data to protect its memory from unauthorized
           code execution.
       levels:
           - medium
@@ -76,7 +80,8 @@ controls:
       status: automated
 
     - id: UBTU-22-214010
-      title: Ubuntu 22.04 LTS must be configured so that the Advance Package Tool (APT) prevents the
+      title:
+          Ubuntu 22.04 LTS must be configured so that the Advance Package Tool (APT) prevents the
           installation of patches, service packs, device drivers, or operating system components without
           verification they have been digitally signed using a certificate that is recognized and approved
           by the organization.
@@ -87,7 +92,8 @@ controls:
       status: automated
 
     - id: UBTU-22-214015
-      title: Ubuntu 22.04 LTS must be configured so that the Advance Package Tool (APT) removes all software
+      title:
+          Ubuntu 22.04 LTS must be configured so that the Advance Package Tool (APT) removes all software
           components after updated versions have been installed.
       levels:
           - medium
@@ -153,7 +159,8 @@ controls:
       status: automated
 
     - id: UBTU-22-231010
-      title: Ubuntu 22.04 LTS must implement cryptographic mechanisms to prevent unauthorized disclosure
+      title:
+          Ubuntu 22.04 LTS must implement cryptographic mechanisms to prevent unauthorized disclosure
           and modification of all information that requires protection at rest.
       levels:
           - medium
@@ -162,7 +169,8 @@ controls:
       status: automated
 
     - id: UBTU-22-232010
-      title: Ubuntu 22.04 LTS must have directories that contain system commands set to a mode of "755"
+      title:
+          Ubuntu 22.04 LTS must have directories that contain system commands set to a mode of "755"
           or less permissive.
       levels:
           - medium
@@ -195,7 +203,8 @@ controls:
       status: automated
 
     - id: UBTU-22-232026
-      title: Ubuntu 22.04 LTS must generate error messages that provide information necessary for corrective
+      title:
+          Ubuntu 22.04 LTS must generate error messages that provide information necessary for corrective
           actions without revealing information that could be exploited by adversaries.
       levels:
           - medium
@@ -204,7 +213,8 @@ controls:
       status: automated
 
     - id: UBTU-22-232027
-      title: Ubuntu 22.04 LTS must generate system journal entries without revealing information that
+      title:
+          Ubuntu 22.04 LTS must generate system journal entries without revealing information that
           could be exploited by adversaries.
       levels:
           - medium
@@ -294,7 +304,8 @@ controls:
       status: automated
 
     - id: UBTU-22-232080
-      title: Ubuntu 22.04 LTS must configure the directories used by the system journal to be owned by
+      title:
+          Ubuntu 22.04 LTS must configure the directories used by the system journal to be owned by
           "root".
       levels:
           - medium
@@ -303,7 +314,8 @@ controls:
       status: automated
 
     - id: UBTU-22-232085
-      title: Ubuntu 22.04 LTS must configure the directories used by the system journal to be group-owned
+      title:
+          Ubuntu 22.04 LTS must configure the directories used by the system journal to be group-owned
           by "systemd-journal".
       levels:
           - medium
@@ -320,7 +332,8 @@ controls:
       status: automated
 
     - id: UBTU-22-232095
-      title: Ubuntu 22.04 LTS must configure the files used by the system journal to be group-owned by
+      title:
+          Ubuntu 22.04 LTS must configure the files used by the system journal to be group-owned by
           "systemd-journal".
       levels:
           - medium
@@ -349,7 +362,7 @@ controls:
       levels:
           - medium
       rules:
-          - file_ownership_audit_binaries
+          - file_ownership_audit_binaries_stig
       status: automated
 
     - id: UBTU-22-232120
@@ -385,7 +398,8 @@ controls:
       status: automated
 
     - id: UBTU-22-232140
-      title: Ubuntu 22.04 LTS must be configured so that the "journalctl" command is not accessible by
+      title:
+          Ubuntu 22.04 LTS must be configured so that the "journalctl" command is not accessible by
           unauthorized users.
       levels:
           - medium
@@ -394,7 +408,8 @@ controls:
       status: automated
 
     - id: UBTU-22-232145
-      title: Ubuntu 22.04 LTS must set a sticky bit on all public directories to prevent unauthorized
+      title:
+          Ubuntu 22.04 LTS must set a sticky bit on all public directories to prevent unauthorized
           and unintended information transferred via shared system resources.
       levels:
           - medium
@@ -403,7 +418,8 @@ controls:
       status: automated
 
     - id: UBTU-22-251010
-      title: Ubuntu 22.04 LTS must have an application firewall installed in order to control remote
+      title:
+          Ubuntu 22.04 LTS must have an application firewall installed in order to control remote
           access methods.
       levels:
           - medium
@@ -428,7 +444,8 @@ controls:
       status: automated
 
     - id: UBTU-22-251025
-      title: Ubuntu 22.04 LTS must configure the Uncomplicated Firewall (ufw) to rate-limit impacted
+      title:
+          Ubuntu 22.04 LTS must configure the Uncomplicated Firewall (ufw) to rate-limit impacted
           network interfaces.
       levels:
           - medium
@@ -437,7 +454,8 @@ controls:
       status: automated
 
     - id: UBTU-22-251030
-      title: Ubuntu 22.04 LTS must be configured to prohibit or restrict the use of functions, ports,
+      title:
+          Ubuntu 22.04 LTS must be configured to prohibit or restrict the use of functions, ports,
           protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments.
       levels:
           - medium
@@ -446,7 +464,8 @@ controls:
       status: automated
 
     - id: UBTU-22-252010
-      title: Ubuntu 22.04 LTS must, for networked systems, compare internal information system clocks
+      title:
+          Ubuntu 22.04 LTS must, for networked systems, compare internal information system clocks
           at least every 24 hours with a server synchronized to one of the redundant United States Naval
           Observatory (USNO) time servers, or a time server designated for the appropriate DOD network
           (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).
@@ -458,7 +477,8 @@ controls:
       status: automated
 
     - id: UBTU-22-252015
-      title: Ubuntu 22.04 LTS must synchronize internal information system clocks to the authoritative
+      title:
+          Ubuntu 22.04 LTS must synchronize internal information system clocks to the authoritative
           time source when the time difference is greater than one second.
       levels:
           - low
@@ -467,7 +487,8 @@ controls:
       status: automated
 
     - id: UBTU-22-252020
-      title: Ubuntu 22.04 LTS must record time stamps for audit records that can be mapped to Coordinated
+      title:
+          Ubuntu 22.04 LTS must record time stamps for audit records that can be mapped to Coordinated
           Universal Time (UTC).
       levels:
           - low
@@ -492,7 +513,8 @@ controls:
       status: automated
 
     - id: UBTU-22-255015
-      title: Ubuntu 22.04 LTS must use SSH to protect the confidentiality and integrity of transmitted
+      title:
+          Ubuntu 22.04 LTS must use SSH to protect the confidentiality and integrity of transmitted
           information.
       levels:
           - high
@@ -501,7 +523,8 @@ controls:
       status: automated
 
     - id: UBTU-22-255020
-      title: Ubuntu 22.04 LTS must display the Standard Mandatory DOD Notice and Consent Banner before
+      title:
+          Ubuntu 22.04 LTS must display the Standard Mandatory DOD Notice and Consent Banner before
           granting any local or remote connection to the system.
       levels:
           - medium
@@ -521,7 +544,8 @@ controls:
       status: automated
 
     - id: UBTU-22-255030
-      title: Ubuntu 22.04 LTS must be configured so that all network connections associated with SSH
+      title:
+          Ubuntu 22.04 LTS must be configured so that all network connections associated with SSH
           traffic terminate after becoming unresponsive.
       levels:
           - medium
@@ -531,7 +555,8 @@ controls:
       status: automated
 
     - id: UBTU-22-255035
-      title: Ubuntu 22.04 LTS must be configured so that all network connections associated with SSH
+      title:
+          Ubuntu 22.04 LTS must be configured so that all network connections associated with SSH
           traffic are terminated after 10 minutes of becoming unresponsive.
       levels:
           - medium
@@ -541,7 +566,8 @@ controls:
       status: automated
 
     - id: UBTU-22-255040
-      title: Ubuntu 22.04 LTS must be configured so that remote X connections are disabled, unless to
+      title:
+          Ubuntu 22.04 LTS must be configured so that remote X connections are disabled, unless to
           fulfill documented and validated mission requirements.
       levels:
           - high
@@ -558,7 +584,8 @@ controls:
       status: automated
 
     - id: UBTU-22-255050
-      title: Ubuntu 22.04 LTS must configure the SSH daemon to use FIPS 140-3-approved ciphers to prevent
+      title:
+          Ubuntu 22.04 LTS must configure the SSH daemon to use FIPS 140-3-approved ciphers to prevent
           the unauthorized disclosure of information and/or detect changes to information during transmission.
       levels:
           - medium
@@ -567,7 +594,8 @@ controls:
       status: automated
 
     - id: UBTU-22-255055
-      title: Ubuntu 22.04 LTS must configure the SSH daemon to use Message Authentication Codes (MACs)
+      title:
+          Ubuntu 22.04 LTS must configure the SSH daemon to use Message Authentication Codes (MACs)
           employing FIPS 140-3-approved cryptographic hashes to prevent the unauthorized disclosure of
           information and/or detect changes to information during transmission.
       levels:
@@ -585,7 +613,8 @@ controls:
       status: automated
 
     - id: UBTU-22-255065
-      title: Ubuntu 22.04 LTS must use strong authenticators in establishing nonlocal maintenance and
+      title:
+          Ubuntu 22.04 LTS must use strong authenticators in establishing nonlocal maintenance and
           diagnostic sessions.
       levels:
           - medium
@@ -594,7 +623,8 @@ controls:
       status: automated
 
     - id: UBTU-22-271010
-      title: Ubuntu 22.04 LTS must enable the graphical user logon banner to display the Standard Mandatory
+      title:
+          Ubuntu 22.04 LTS must enable the graphical user logon banner to display the Standard Mandatory
           DOD Notice and Consent Banner before granting local access to the system via a graphical user
           logon.
       levels:
@@ -604,7 +634,8 @@ controls:
       status: automated
 
     - id: UBTU-22-271015
-      title: Ubuntu 22.04 LTS must display the Standard Mandatory DOD Notice and Consent Banner before
+      title:
+          Ubuntu 22.04 LTS must display the Standard Mandatory DOD Notice and Consent Banner before
           granting local access to the system via a graphical user logon.
       levels:
           - medium
@@ -614,7 +645,8 @@ controls:
       status: automated
 
     - id: UBTU-22-271020
-      title: Ubuntu 22.04 LTS must retain a user's session lock until that user reestablishes access
+      title:
+          Ubuntu 22.04 LTS must retain a user's session lock until that user reestablishes access
           using established identification and authentication procedures.
       levels:
           - medium
@@ -634,7 +666,8 @@ controls:
       status: automated
 
     - id: UBTU-22-271030
-      title: Ubuntu 22.04 LTS must disable the x86 Ctrl-Alt-Delete key sequence if a graphical user interface
+      title:
+          Ubuntu 22.04 LTS must disable the x86 Ctrl-Alt-Delete key sequence if a graphical user interface
           is installed.
       levels:
           - high
@@ -643,7 +676,8 @@ controls:
       status: automated
 
     - id: UBTU-22-291010
-      title: Ubuntu 22.04 LTS must disable automatic mounting of Universal Serial Bus (USB) mass storage
+      title:
+          Ubuntu 22.04 LTS must disable automatic mounting of Universal Serial Bus (USB) mass storage
           driver.
       levels:
           - medium
@@ -676,7 +710,8 @@ controls:
       status: automated
 
     - id: UBTU-22-411025
-      title: Ubuntu 22.04 LTS must enforce 24 hours/one day as the minimum password lifetime. Passwords
+      title:
+          Ubuntu 22.04 LTS must enforce 24 hours/one day as the minimum password lifetime. Passwords
           for new users must have a 24 hours/one day minimum password lifetime restriction.
       levels:
           - medium
@@ -686,7 +721,8 @@ controls:
       status: automated
 
     - id: UBTU-22-411030
-      title: Ubuntu 22.04 LTS must enforce a 60-day maximum password lifetime restriction. Passwords
+      title:
+          Ubuntu 22.04 LTS must enforce a 60-day maximum password lifetime restriction. Passwords
           for new users must have a 60-day maximum password lifetime restriction.
       levels:
           - medium
@@ -696,7 +732,8 @@ controls:
       status: automated
 
     - id: UBTU-22-411035
-      title: Ubuntu 22.04 LTS must disable account identifiers (individuals, groups, roles, and devices)
+      title:
+          Ubuntu 22.04 LTS must disable account identifiers (individuals, groups, roles, and devices)
           after 35 days of inactivity.
       levels:
           - medium
@@ -713,7 +750,8 @@ controls:
       status: automated
 
     - id: UBTU-22-411045
-      title: Ubuntu 22.04 LTS must automatically lock an account until the locked account is released
+      title:
+          Ubuntu 22.04 LTS must automatically lock an account until the locked account is released
           by an administrator when three unsuccessful logon attempts have been made.
       levels:
           - low
@@ -729,7 +767,8 @@ controls:
       status: automated
 
     - id: UBTU-22-412010
-      title: Ubuntu 22.04 LTS must enforce a delay of at least four seconds between logon prompts following
+      title:
+          Ubuntu 22.04 LTS must enforce a delay of at least four seconds between logon prompts following
           a failed logon attempt.
       levels:
           - low
@@ -739,7 +778,8 @@ controls:
       status: automated
 
     - id: UBTU-22-412020
-      title: Ubuntu 22.04 LTS must limit the number of concurrent sessions to ten for all accounts and/or
+      title:
+          Ubuntu 22.04 LTS must limit the number of concurrent sessions to ten for all accounts and/or
           account types.
       levels:
           - low
@@ -749,7 +789,8 @@ controls:
       status: automated
 
     - id: UBTU-22-412025
-      title: Ubuntu 22.04 LTS must allow users to directly initiate a session lock for all connection
+      title:
+          Ubuntu 22.04 LTS must allow users to directly initiate a session lock for all connection
           types.
       levels:
           - medium
@@ -758,7 +799,8 @@ controls:
       status: automated
 
     - id: UBTU-22-412030
-      title: Ubuntu 22.04 LTS must automatically exit interactive command shell user sessions after 15
+      title:
+          Ubuntu 22.04 LTS must automatically exit interactive command shell user sessions after 15
           minutes of inactivity.
       levels:
           - medium
@@ -768,7 +810,8 @@ controls:
       status: automated
 
     - id: UBTU-22-412035
-      title: Ubuntu 22.04 LTS default filesystem permissions must be defined in such a way that all authenticated
+      title:
+          Ubuntu 22.04 LTS default filesystem permissions must be defined in such a way that all authenticated
           users can read and modify only their own files.
       levels:
           - medium
@@ -794,7 +837,8 @@ controls:
       status: automated
 
     - id: UBTU-22-432010
-      title: Ubuntu 22.04 LTS must require users to reauthenticate for privilege escalation or when changing
+      title:
+          Ubuntu 22.04 LTS must require users to reauthenticate for privilege escalation or when changing
           roles.
       levels:
           - medium
@@ -803,7 +847,8 @@ controls:
       status: automated
 
     - id: UBTU-22-432015
-      title: Ubuntu 22.04 LTS must ensure only users who need access to security functions are part of
+      title:
+          Ubuntu 22.04 LTS must ensure only users who need access to security functions are part of
           sudo group.
       levels:
           - high
@@ -812,7 +857,8 @@ controls:
       status: automated
 
     - id: UBTU-22-611010
-      title: Ubuntu 22.04 LTS must enforce password complexity by requiring at least one uppercase character
+      title:
+          Ubuntu 22.04 LTS must enforce password complexity by requiring at least one uppercase character
           be used.
       levels:
           - medium
@@ -822,7 +868,8 @@ controls:
       status: automated
 
     - id: UBTU-22-611015
-      title: Ubuntu 22.04 LTS must enforce password complexity by requiring at least one lowercase character
+      title:
+          Ubuntu 22.04 LTS must enforce password complexity by requiring at least one lowercase character
           be used.
       levels:
           - medium
@@ -832,7 +879,8 @@ controls:
       status: automated
 
     - id: UBTU-22-611020
-      title: Ubuntu 22.04 LTS must enforce password complexity by requiring that at least one numeric
+      title:
+          Ubuntu 22.04 LTS must enforce password complexity by requiring that at least one numeric
           character be used.
       levels:
           - medium
@@ -842,7 +890,8 @@ controls:
       status: automated
 
     - id: UBTU-22-611025
-      title: Ubuntu 22.04 LTS must enforce password complexity by requiring that at least one special
+      title:
+          Ubuntu 22.04 LTS must enforce password complexity by requiring that at least one special
           character be used.
       levels:
           - medium
@@ -870,7 +919,8 @@ controls:
       status: automated
 
     - id: UBTU-22-611040
-      title: Ubuntu 22.04 LTS must require the change of at least eight characters when passwords are
+      title:
+          Ubuntu 22.04 LTS must require the change of at least eight characters when passwords are
           changed.
       levels:
           - medium
@@ -880,7 +930,8 @@ controls:
       status: automated
 
     - id: UBTU-22-611045
-      title: Ubuntu 22.04 LTS must be configured so that when passwords are changed or new passwords
+      title:
+          Ubuntu 22.04 LTS must be configured so that when passwords are changed or new passwords
           are established, pwquality must be used.
       levels:
           - medium
@@ -917,7 +968,8 @@ controls:
       status: automated
 
     - id: UBTU-22-611070
-      title: Ubuntu 22.04 LTS must encrypt all stored passwords with a FIPS 140-3-approved cryptographic
+      title:
+          Ubuntu 22.04 LTS must encrypt all stored passwords with a FIPS 140-3-approved cryptographic
           hashing algorithm.
       levels:
           - medium
@@ -926,7 +978,8 @@ controls:
       status: automated
 
     - id: UBTU-22-612010
-      title: Ubuntu 22.04 LTS must implement multifactor authentication for remote access to privileged
+      title:
+          Ubuntu 22.04 LTS must implement multifactor authentication for remote access to privileged
           accounts in such a way that one of the factors is provided by a device separate from the system
           gaining access.
       levels:
@@ -944,7 +997,8 @@ controls:
       status: automated
 
     - id: UBTU-22-612020
-      title: Ubuntu 22.04 LTS must implement smart card logins for multifactor authentication for local
+      title:
+          Ubuntu 22.04 LTS must implement smart card logins for multifactor authentication for local
           and network access to privileged and nonprivileged accounts.
       levels:
           - medium
@@ -962,7 +1016,8 @@ controls:
       status: automated
 
     - id: UBTU-22-612030
-      title: Ubuntu 22.04 LTS, for PKI-based authentication, must validate certificates by constructing
+      title:
+          Ubuntu 22.04 LTS, for PKI-based authentication, must validate certificates by constructing
           a certification path (which includes status information) to an accepted trust anchor.
       levels:
           - medium
@@ -971,7 +1026,8 @@ controls:
       status: automated
 
     - id: UBTU-22-612035
-      title: Ubuntu 22.04 LTS for PKI-based authentication, must implement a local cache of revocation
+      title:
+          Ubuntu 22.04 LTS for PKI-based authentication, must implement a local cache of revocation
           data in case of the inability to access revocation information via the network.
       levels:
           - medium
@@ -980,7 +1036,8 @@ controls:
       status: automated
 
     - id: UBTU-22-612040
-      title: Ubuntu 22.04 LTS must map the authenticated identity to the user or group account for PKI-based
+      title:
+          Ubuntu 22.04 LTS must map the authenticated identity to the user or group account for PKI-based
           authentication.
       levels:
           - high
@@ -989,7 +1046,8 @@ controls:
       status: automated
 
     - id: UBTU-22-631010
-      title: Ubuntu 22.04 LTS must use DOD PKI-established certificate authorities for verification of
+      title:
+          Ubuntu 22.04 LTS must use DOD PKI-established certificate authorities for verification of
           the establishment of protected sessions.
       levels:
           - medium
@@ -998,7 +1056,8 @@ controls:
       status: automated
 
     - id: UBTU-22-631015
-      title: Ubuntu 22.04 LTS must be configured such that Pluggable Authentication Module (PAM) prohibits
+      title:
+          Ubuntu 22.04 LTS must be configured such that Pluggable Authentication Module (PAM) prohibits
           the use of cached authentications after one day.
       levels:
           - low
@@ -1007,7 +1066,8 @@ controls:
       status: automated
 
     - id: UBTU-22-651010
-      title: Ubuntu 22.04 LTS must use a file integrity tool to verify correct operation of all security
+      title:
+          Ubuntu 22.04 LTS must use a file integrity tool to verify correct operation of all security
           functions.
       levels:
           - medium
@@ -1024,7 +1084,8 @@ controls:
       status: automated
 
     - id: UBTU-22-651020
-      title: Ubuntu 22.04 LTS must notify designated personnel if baseline configurations are changed
+      title:
+          Ubuntu 22.04 LTS must notify designated personnel if baseline configurations are changed
           in an unauthorized manner. The file integrity tool must notify the system administrator when
           changes to the baseline configuration or anomalies in the operation of any security functions
           are discovered.
@@ -1035,7 +1096,8 @@ controls:
       status: automated
 
     - id: UBTU-22-651025
-      title: Ubuntu 22.04 LTS must be configured so that the script that runs each 30 days or less to
+      title:
+          Ubuntu 22.04 LTS must be configured so that the script that runs each 30 days or less to
           check file integrity is the default.
       levels:
           - medium
@@ -1052,7 +1114,8 @@ controls:
       status: automated
 
     - id: UBTU-22-651035
-      title: Ubuntu 22.04 LTS must have a crontab script running weekly to offload audit events of standalone
+      title:
+          Ubuntu 22.04 LTS must have a crontab script running weekly to offload audit events of standalone
           systems.
       levels:
           - low
@@ -1085,7 +1148,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653015
-      title: Ubuntu 22.04 LTS must produce audit records and reports containing information to establish
+      title:
+          Ubuntu 22.04 LTS must produce audit records and reports containing information to establish
           when, where, what type, the source, and the outcome for all DOD-defined auditable events and
           actions in near real time.
       levels:
@@ -1095,7 +1159,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653020
-      title: Ubuntu 22.04 LTS audit event multiplexor must be configured to offload audit logs onto a
+      title:
+          Ubuntu 22.04 LTS audit event multiplexor must be configured to offload audit logs onto a
           different system from the system being audited.
       levels:
           - low
@@ -1105,7 +1170,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653025
-      title: Ubuntu 22.04 LTS must alert the information system security officer (ISSO) and system administrator
+      title:
+          Ubuntu 22.04 LTS must alert the information system security officer (ISSO) and system administrator
           (SA) in the event of an audit processing failure.
       levels:
           - low
@@ -1124,7 +1190,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653035
-      title: Ubuntu 22.04 LTS must allocate audit record storage capacity to store at least one weeks'
+      title:
+          Ubuntu 22.04 LTS must allocate audit record storage capacity to store at least one weeks'
           worth of audit records, when audit records are not immediately sent to a central audit record
           storage facility.
       levels:
@@ -1134,7 +1201,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653040
-      title: Ubuntu 22.04 LTS must immediately notify the system administrator (SA) and information system
+      title:
+          Ubuntu 22.04 LTS must immediately notify the system administrator (SA) and information system
           security officer (ISSO) when the audit record storage volume reaches 25 percent remaining of
           the allocated capacity.
       levels:
@@ -1147,7 +1215,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653045
-      title: Ubuntu 22.04 LTS must be configured so that audit log files are not read- or write-accessible
+      title:
+          Ubuntu 22.04 LTS must be configured so that audit log files are not read- or write-accessible
           by unauthorized users.
       levels:
           - medium
@@ -1156,7 +1225,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653050
-      title: Ubuntu 22.04 LTS must be configured to permit only authorized users ownership of the audit
+      title:
+          Ubuntu 22.04 LTS must be configured to permit only authorized users ownership of the audit
           log files.
       levels:
           - medium
@@ -1173,7 +1243,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653060
-      title: Ubuntu 22.04 LTS must be configured so that the audit log directory is not write-accessible
+      title:
+          Ubuntu 22.04 LTS must be configured so that the audit log directory is not write-accessible
           by unauthorized users.
       levels:
           - medium
@@ -1182,7 +1253,8 @@ controls:
       status: automated
 
     - id: UBTU-22-653065
-      title: Ubuntu 22.04 LTS must be configured so that audit configuration files are not write-accessible
+      title:
+          Ubuntu 22.04 LTS must be configured so that audit configuration files are not write-accessible
           by unauthorized users.
       levels:
           - medium
@@ -1209,7 +1281,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654010
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the apparmor_parser
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the apparmor_parser
           command.
       levels:
           - medium
@@ -1218,7 +1291,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654015
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chacl
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chacl
           command.
       levels:
           - medium
@@ -1227,7 +1301,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654020
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chage
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chage
           command.
       levels:
           - medium
@@ -1236,7 +1311,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654025
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chcon
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chcon
           command.
       levels:
           - medium
@@ -1245,7 +1321,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654030
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chfn
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chfn
           command.
       levels:
           - medium
@@ -1254,7 +1331,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654035
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chsh
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chsh
           command.
       levels:
           - medium
@@ -1263,7 +1341,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654040
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the crontab
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the crontab
           command.
       levels:
           - medium
@@ -1281,7 +1360,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654045
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful attempts to use
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful attempts to use
           the fdisk command.
       levels:
           - medium
@@ -1290,7 +1370,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654050
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the gpasswd
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the gpasswd
           command.
       levels:
           - medium
@@ -1299,7 +1380,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654055
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful attempts to use
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful attempts to use
           the kmod command.
       levels:
           - medium
@@ -1308,7 +1390,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654060
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful attempts to use
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful attempts to use
           modprobe command.
       levels:
           - medium
@@ -1317,7 +1400,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654065
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the mount
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the mount
           command.
       levels:
           - medium
@@ -1326,7 +1410,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654070
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the newgrp
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the newgrp
           command.
       levels:
           - medium
@@ -1335,7 +1420,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654075
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the pam_timestamp_check
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the pam_timestamp_check
           command.
       levels:
           - medium
@@ -1344,7 +1430,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654080
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the passwd
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the passwd
           command.
       levels:
           - medium
@@ -1353,7 +1440,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654085
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the setfacl
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the setfacl
           command.
       levels:
           - medium
@@ -1362,7 +1450,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654090
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the ssh-agent
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the ssh-agent
           command.
       levels:
           - medium
@@ -1371,7 +1460,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654095
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the ssh-keysign
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the ssh-keysign
           command.
       levels:
           - medium
@@ -1380,7 +1470,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654100
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the su
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the su
           command.
       levels:
           - medium
@@ -1389,7 +1480,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654105
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the sudo
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the sudo
           command.
       levels:
           - medium
@@ -1398,7 +1490,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654110
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the sudoedit
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the sudoedit
           command.
       levels:
           - medium
@@ -1407,7 +1500,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654115
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the umount
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the umount
           command.
       levels:
           - medium
@@ -1416,7 +1510,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654120
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the unix_update
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the unix_update
           command.
       levels:
           - medium
@@ -1425,7 +1520,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654125
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the usermod
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the usermod
           command.
       levels:
           - medium
@@ -1434,7 +1530,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654130
-      title: Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
           and termination events that affect /etc/group.
       levels:
           - medium
@@ -1443,7 +1540,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654135
-      title: Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
           and termination events that affect /etc/gshadow.
       levels:
           - medium
@@ -1452,7 +1550,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654140
-      title: Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
           and termination events that affect /etc/opasswd.
       levels:
           - medium
@@ -1461,7 +1560,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654145
-      title: Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
           and termination events that affect /etc/passwd.
       levels:
           - medium
@@ -1470,7 +1570,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654150
-      title: Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for all account creations, modifications, disabling,
           and termination events that affect /etc/shadow.
       levels:
           - medium
@@ -1479,7 +1580,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654155
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chmod,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chmod,
           fchmod, and fchmodat system calls.
       levels:
           - medium
@@ -1490,7 +1592,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654160
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chown,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the chown,
           fchown, fchownat, and lchown system calls.
       levels:
           - medium
@@ -1502,7 +1605,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654165
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the creat,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the creat,
           open, openat, open_by_handle_at, truncate, and ftruncate system calls.
       levels:
           - medium
@@ -1516,7 +1620,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654170
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the delete_module
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the delete_module
           system call.
       levels:
           - medium
@@ -1525,7 +1630,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654175
-      title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the init_module
+      title:
+          Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful uses of the init_module
           and finit_module system calls.
       levels:
           - medium
@@ -1535,7 +1641,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654180
-      title: Ubuntu 22.04 LTS must generate audit records for any use of the setxattr, fsetxattr, lsetxattr,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for any use of the setxattr, fsetxattr, lsetxattr,
           removexattr, fremovexattr, and lremovexattr system calls.
       levels:
           - medium
@@ -1549,7 +1656,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654185
-      title: Ubuntu 22.04 LTS must generate audit records for any successful/unsuccessful use of unlink,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for any successful/unsuccessful use of unlink,
           unlinkat, rename, renameat, and rmdir system calls.
       levels:
           - medium
@@ -1562,7 +1670,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654190
-      title: Ubuntu 22.04 LTS must generate audit records for all events that affect the systemd journal
+      title:
+          Ubuntu 22.04 LTS must generate audit records for all events that affect the systemd journal
           files.
       levels:
           - medium
@@ -1603,7 +1712,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654215
-      title: Ubuntu 22.04 LTS must generate audit records for the use and modification of the lastlog
+      title:
+          Ubuntu 22.04 LTS must generate audit records for the use and modification of the lastlog
           file.
       levels:
           - medium
@@ -1612,7 +1722,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654220
-      title: Ubuntu 22.04 LTS must generate audit records when successful/unsuccessful attempts to modify
+      title:
+          Ubuntu 22.04 LTS must generate audit records when successful/unsuccessful attempts to modify
           the /etc/sudoers file occur.
       levels:
           - medium
@@ -1621,7 +1732,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654225
-      title: Ubuntu 22.04 LTS must generate audit records when successful/unsuccessful attempts to modify
+      title:
+          Ubuntu 22.04 LTS must generate audit records when successful/unsuccessful attempts to modify
           the /etc/sudoers.d directory occur.
       levels:
           - medium
@@ -1630,7 +1742,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654230
-      title: Ubuntu 22.04 LTS must prevent all software from executing at higher privilege levels than
+      title:
+          Ubuntu 22.04 LTS must prevent all software from executing at higher privilege levels than
           users executing the software and the audit system must be configured to audit the execution
           of privileged functions.
       levels:
@@ -1640,7 +1753,8 @@ controls:
       status: automated
 
     - id: UBTU-22-654235
-      title: Ubuntu 22.04 LTS must generate audit records for privileged activities, nonlocal maintenance,
+      title:
+          Ubuntu 22.04 LTS must generate audit records for privileged activities, nonlocal maintenance,
           diagnostic sessions and other system-level access.
       levels:
           - medium
@@ -1649,11 +1763,12 @@ controls:
       status: automated
 
     - id: UBTU-22-671010
-      title: 'Ubuntu 22.04 LTS must implement NIST FIPS-validated cryptography to protect classified
+      title:
+          "Ubuntu 22.04 LTS must implement NIST FIPS-validated cryptography to protect classified
           information and for the following: To provision digital signatures, to generate cryptographic
           hashes, and to protect unclassified information requiring confidentiality and cryptographic
           protection in accordance with applicable federal laws, Executive Orders, directives, policies,
-          regulations, and standards.'
+          regulations, and standards."
       levels:
           - high
       rules:
