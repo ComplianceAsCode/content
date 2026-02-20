@@ -534,6 +534,7 @@ class PodmanTestEnv(ContainerTestEnv):
                       "--cap-add=cap_sys_chroot",
                     #   "--privileged",
                       "--network", "slirp4netns:mtu=1500",
+                      "--cap-add=cap_net_admin",
                       "--publish", "{}".format(self.internal_ssh_port), "--detach", image_name,
                       "/usr/sbin/sshd", "-p", "{}".format(self.internal_ssh_port), "-D"]
         try:
