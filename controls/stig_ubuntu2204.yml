@@ -143,6 +143,15 @@ controls:
           - package_telnetd_removed
       status: automated
 
+    - id: UBTU-22-215040
+      title: Ubuntu 22.04 LTS must not have the "nfs-kernel-server" package installed.
+      levels:
+          - medium
+      rules:
+          - package_nfs-common_removed
+          - package_nfs-kernel-server_removed
+      status: automated
+
     - id: UBTU-22-231010
       title: Ubuntu 22.04 LTS must implement cryptographic mechanisms to prevent unauthorized disclosure
           and modification of all information that requires protection at rest.
