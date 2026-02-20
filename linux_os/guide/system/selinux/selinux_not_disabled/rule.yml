@@ -9,7 +9,8 @@ description: |-
     <pre>SELINUX=enforcing</pre>
     OR
     <pre>SELINUX=permissive</pre>
-    Ensure that all files have correct SELinux labels by running:
+    If SELinux is currently disabled or not configured, ensure that all files have correct SELinux
+    labels by running:
     <pre>fixfiles onboot</pre>
     Then reboot the system.
 
@@ -40,7 +41,11 @@ ocil: |-
 fixtext: |-
     Configure {{{ full_name }}} to enable SELinux.
 
-    Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:
+    If SELinux is currently set to "enforcing" or "permissive" in /etc/selinux/config,
+    the system is compliant and no changes are needed.
+
+    If SELinux is disabled or not configured, edit the file <tt>/etc/selinux/config</tt>
+    and add or modify the following line:
     <pre>SELINUX=enforcing</pre>
     OR
     <pre>SELINUX=permissive</pre>
@@ -49,7 +54,9 @@ fixtext: |-
 
 warnings:
     - general: |-
-        In case the SELinux is "disabled", the automated remediation will adopt a more
-        conservative approach and set it to "permissive" in order to avoid any system disruption
-        and give the administrator the opportunity to assess the impact and necessary efforts
-        before setting it to "enforcing", which is strongly recommended.
+        The automated remediation checks the SELinux configuration in /etc/selinux/config.
+        If SELinux is already set to "enforcing" or "permissive", the current state is preserved
+        and no changes are made. If SELinux is "disabled" or not configured, the remediation will
+        adopt a conservative approach and set it to "permissive" in order to avoid any system
+        disruption and give the administrator the opportunity to assess the impact and necessary
+        efforts before setting it to "enforcing", which is strongly recommended.
