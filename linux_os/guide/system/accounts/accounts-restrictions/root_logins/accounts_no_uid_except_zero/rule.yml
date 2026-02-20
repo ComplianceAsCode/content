@@ -4,8 +4,8 @@ title: 'Verify Only Root Has UID 0'
 
 description: |-
     If any account other than root has a UID of 0, this misconfiguration should
-    be investigated and the accounts other than root should be removed or have
-    their UID changed.
+    be investigated and the accounts other than root should be removed, locked
+    or have their UID changed.
     <br />
     If the account is associated with system commands or applications the UID
     should be changed to one greater than "0" but less than "{{{ uid_min }}}."
@@ -60,12 +60,14 @@ ocil: |-
     following command:
     <pre>$ awk -F: '$3 == 0 {print $1}' /etc/passwd</pre>
     <pre>root</pre>
+    Also make sure that if non-root account with UID "0" exist, it is locked:
+    <pre>$ grep -E '^[^:]+:[!*][^:]*:.*$' /etc/shadow</pre>
 
 fixtext: |-
     Change the UID of any account on the system, other than root, that has a UID of "0".
     If the account is associated with system commands or applications, the UID
     should be changed to one greater than "0" but less than "{{{ uid_min }}}". Otherwise,
-    assign a UID of greater than "{{{ uid_min }}}" that has not already been assigned.
+    assign a UID of greater than "{{{ uid_min }}}" that has not already been assigned or locked.
 
 srg_requirement: 'The root account must be the only account having unrestricted access to the {{{ full_name }}} system.'
 

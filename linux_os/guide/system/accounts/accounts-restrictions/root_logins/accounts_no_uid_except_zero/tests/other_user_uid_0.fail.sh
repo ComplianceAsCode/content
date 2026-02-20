@@ -1,7 +1,7 @@
 #!/bin/bash
+# platform = multi_platform_all
 #
-# Remediation doesn't fix the rule, only locks passwords
-# of non-root accounts with uid 0.
-# remediation = none
 
 useradd --non-unique --uid 0 root2
+# configure password, otherwise user is locked
+echo "root2:password" | chpasswd
