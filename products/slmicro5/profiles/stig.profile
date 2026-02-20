@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R2
+    version: V1R3
     SMEs:
         - svet-se
         - rumch-se
@@ -13,7 +13,7 @@ title: 'DISA STIG for SUSE Linux Enterprise Micro (SLEM) 5'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise Micro (SLEM) 5 V1R2.
+    DISA STIG for SUSE Linux Enterprise Micro (SLEM) 5 V1R3.
 
 selections:
     - stig_slmicro5:all
