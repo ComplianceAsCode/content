@@ -2,6 +2,9 @@ product: al2023
 full_name: Amazon Linux 2023
 type: platform
 
+families:
+  - amzn
+
 benchmark_id: AL-2023
 benchmark_root: "../../linux_os/guide"
 components_root: "../../components"
@@ -19,6 +22,7 @@ groups:
 sshd_distributed_config: "true"
 
 faillock_path: "/var/log/faillock"
+aide_conf_path: "/etc/aide.conf"
 
 release_key_fingerprint: "B21C50FA44A99720EAA72F7FE951904AD832C631"
 
@@ -35,4 +39,4 @@ platform_package_overrides:
 reference_uris:
   cis: 'https://www.cisecurity.org/benchmark/amazon_linux/'
 
-journald_conf_dir_path: /etc/systemd/journald.conf.d
+journald_conf_dir_path: /etc/systemd/journald.conf

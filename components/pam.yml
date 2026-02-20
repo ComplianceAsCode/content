@@ -7,6 +7,7 @@ groups:
 - password_quality_pamcracklib
 name: pam
 packages:
+- authselect
 - pam
 - pam_apparmor
 - libnss-sss
@@ -149,6 +150,7 @@ rules:
 - package_nss_sss_installed
 - package_pam_installed
 - package_pam_apparmor_installed
+- package_authselect_installed
 - package_pam_modules_installed
 - package_pam_pwquality_installed
 - package_pam_runtime_installed

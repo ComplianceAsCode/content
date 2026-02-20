@@ -22,6 +22,8 @@ bash_conditional: "rpm --quiet -q kernel-default || rpm --quiet -q kernel-defaul
 bash_conditional: "rpm --quiet -q kernel || rpm --quiet -q kernel-uek"
 {{% elif product == "fedora" or "rhel" in product %}}
 bash_conditional: "rpm --quiet -q kernel-core"
+{{% elif "amazon" in product or product == "al2023" %}}
+bash_conditional: "rpm --quiet -q kernel || rpm --quiet -q kernel-modules"
 {{% else %}}
 bash_conditional: "rpm --quiet -q kernel"
 {{% endif %}}
@@ -40,6 +42,8 @@ ansible_conditional: '("kernel-default" in ansible_facts.packages or "kernel-def
 ansible_conditional: '("kernel" in ansible_facts.packages or "kernel-uek" in ansible_facts.packages)'
 {{% elif product == "fedora" or "rhel" in product %}}
 ansible_conditional: '"kernel-core" in ansible_facts.packages'
+{{% elif "amazon" in product or product == "al2023" %}}
+ansible_conditional: '("kernel" in ansible_facts.packages or "kernel-modules" in ansible_facts.packages)'
 {{% else %}}
 ansible_conditional: '"kernel" in ansible_facts.packages'
 {{% endif %}}

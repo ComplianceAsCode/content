@@ -12,6 +12,9 @@ overrides:
   grub2_uefi_boot_path: "/boot/efi/EFI/redhat"
 {{% endif %}}
 {{% endif %}}
+{{% if "amzn" in families %}}
+  grub2_uefi_boot_path: "/boot/efi/EFI/amzn"
+{{% endif %}}
 {{% if "suse" in families %}}
   grub_helper_executable: "grub2-mkconfig"
 {{% if major_version_ordinal <= 12 %}}
