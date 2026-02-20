@@ -37,9 +37,24 @@ ocil: |-
     Run the following command to check if the line is present:
     <pre>grep pam_wheel /etc/pam.d/su</pre>
     The output should contain the following line:
-    <pre>auth required pam_wheel.so use_uid group={{{ xccdf_value("var_pam_wheel_group_for_su") }}}</pre>
+    <pre>auth required pam_wheel.so use_uid group={{{ xccdf_value("var_pam_wheel_group_for_su.var") }}}</pre>
 
 warnings:
     - general: |-
         Note that <tt>ensure_pam_wheel_group_empty</tt> rule complements this requirement by
         ensuring the referenced group exists and has no members.
+
+template:
+  name: pam_options
+  vars:
+    path: /etc/pam.d/su
+    type: auth
+    control_flag: required
+    module: pam_wheel.so
+    arguments:
+      - variable: group
+        variable_name: var_pam_wheel_group_for_su
+        operation: equals
+        datatype: string
+      - argument: use_uid
+        new_argument: use_uid
