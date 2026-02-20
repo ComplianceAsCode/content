@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R3
+    version: V3R4
     SMEs:
         - svet-se
         - rumch-se
@@ -13,7 +13,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 12'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 12 V3R3.
+    DISA STIG for SUSE Linux Enterprise 12 V3R4.
 
 selections:
     - sshd_approved_macs=stig
@@ -176,7 +176,6 @@ selections:
     - dir_system_commands_root_owned
     - disable_ctrlaltdel_reboot
     - disallow_bypass_password_sudo
-    - display_login_attempts
     - enable_dconf_user_profile
     - encrypt_partitions
     - ensure_gpgcheck_globally_activated
