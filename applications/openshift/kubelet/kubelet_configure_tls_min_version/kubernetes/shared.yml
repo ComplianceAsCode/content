@@ -1,7 +1,10 @@
 ---
 # platform = multi_platform_ocp
+# this remediation is the same as kubelet_configure_tls_cipher_suites
+# if you change one, you should change the other
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 spec:
   kubeletConfig:
+    tlsCipherSuites: [{{.var_kubelet_tls_cipher_suites}}]
     tlsMinVersion: "{{.var_kubelet_tls_min_version}}"
