@@ -50,7 +50,7 @@ metadata:
   name: cluster-logging
   namespace: openshift-logging
 spec:
-  channel: stable
+  channel: ${CLO_CHANNEL}
   name: cluster-logging
   source: redhat-operators
   sourceNamespace: openshift-marketplace
