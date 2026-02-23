@@ -21,6 +21,8 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_SSHD_CONFIG_DIR,
                         DEFAULT_SSHD_HARDENING_CONFIG_BASENAME,
                         DEFAULT_SSHD_SYSCONFIG_FILE,
+                        DEFAULT_SSH_CLIENT_MAIN_CONFIG_FILE,
+                        DEFAULT_SSH_CLIENT_CONFIG_DIR,
                         DEFAULT_CHRONY_CONF_PATH,
                         DEFAULT_CHRONY_D_PATH,
                         DEFAULT_AUDISP_CONF_PATH,
@@ -129,6 +131,12 @@ def _get_implied_properties(existing_properties):
 
     if "sshd_sysconfig_file" not in existing_properties:
         result["sshd_sysconfig_file"] = DEFAULT_SSHD_SYSCONFIG_FILE
+
+    if "ssh_client_main_config_file" not in existing_properties:
+        result["ssh_client_main_config_file"] = DEFAULT_SSH_CLIENT_MAIN_CONFIG_FILE
+
+    if "ssh_client_config_dir" not in existing_properties:
+        result["ssh_client_config_dir"] = DEFAULT_SSH_CLIENT_CONFIG_DIR
 
     if "product" not in existing_properties:
         result["product"] = DEFAULT_PRODUCT
