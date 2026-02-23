@@ -1,6 +1,4 @@
 documentation_complete: true
-{{% set openssh_client_policy_file = openssh_client_crypto_policy_config_file %}}
-{{% set openssh_server_policy_file = openssh_server_crypto_policy_config_file %}}
 
 title: 'System Wide Crypto Policy Files Must Point to FIPS Policy'
 
@@ -17,8 +15,8 @@ description: |-
     '/etc/crypto-policies/back-ends/libreswan.config' -> '/usr/share/crypto-policies/FIPS/libreswan.txt'
     '/etc/crypto-policies/back-ends/libssh.config' -> '/usr/share/crypto-policies/FIPS/libssh.txt'
     '/etc/crypto-policies/back-ends/nss.config'
-    '{{{ openssh_client_policy_file }}}' -> '/usr/share/crypto-policies/FIPS/openssh.txt'
-    '{{{ openssh_server_policy_file }}}' -> '/usr/share/crypto-policies/FIPS/opensshserver.txt'
+    '/etc/crypto-policies/back-ends/openssh.config' -> '/usr/share/crypto-policies/FIPS/openssh.txt'
+    '/etc/crypto-policies/back-ends/opensshserver.config' -> '/usr/share/crypto-policies/FIPS/opensshserver.txt'
     '/etc/crypto-policies/back-ends/opensslcnf.config' -> '/usr/share/crypto-policies/FIPS/opensslcnf.txt'
     '/etc/crypto-policies/back-ends/openssl.config' -> '/usr/share/crypto-policies/FIPS/openssl.txt'
     '/etc/crypto-policies/back-ends/openssl_fips.config' -> '/usr/share/crypto-policies/FIPS/openssl_fips.txt'
@@ -50,8 +48,8 @@ ocil: |-
     '/etc/crypto-policies/back-ends/libreswan.config' -> '/usr/share/crypto-policies/FIPS/libreswan.txt'
     '/etc/crypto-policies/back-ends/libssh.config' -> '/usr/share/crypto-policies/FIPS/libssh.txt'
     '/etc/crypto-policies/back-ends/nss.config'
-    '{{{ openssh_client_policy_file }}}' -> '/usr/share/crypto-policies/FIPS/openssh.txt'
-    '{{{ openssh_server_policy_file }}}' -> '/usr/share/crypto-policies/FIPS/opensshserver.txt'
+    '/etc/crypto-policies/back-ends/openssh.config' -> '/usr/share/crypto-policies/FIPS/openssh.txt'
+    '/etc/crypto-policies/back-ends/opensshserver.config' -> '/usr/share/crypto-policies/FIPS/opensshserver.txt'
     '/etc/crypto-policies/back-ends/opensslcnf.config' -> '/usr/share/crypto-policies/FIPS/opensslcnf.txt'
     '/etc/crypto-policies/back-ends/openssl.config' -> '/usr/share/crypto-policies/FIPS/openssl.txt'
     '/etc/crypto-policies/back-ends/openssl_fips.config' -> '/usr/share/crypto-policies/FIPS/openssl_fips.txt'
