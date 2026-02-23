@@ -1,3 +1,5 @@
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 <def-group>
   <definition class="compliance" id="{{{rule_id}}}" version="1">
     {{{ oval_metadata("The SSH number of max sessions should be set to an
@@ -44,7 +46,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_sshd_max_sessions" version="2">
-    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)MaxSessions[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -59,7 +61,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_sshd_set_max_sessions_config_dir" version="1">
-    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[ \t]*(?i)MaxSessions(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>

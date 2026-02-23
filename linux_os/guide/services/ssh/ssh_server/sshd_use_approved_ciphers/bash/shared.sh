@@ -2,4 +2,8 @@
 
 {{{ bash_instantiate_variables("sshd_approved_ciphers") }}}
 
-{{{ bash_replace_or_append('/etc/ssh/sshd_config', '^Ciphers', "$sshd_approved_ciphers", '%s %s', cce_identifiers=cce_identifiers) }}}
+{{{ bash_sshd_remediation(
+    parameter="Ciphers",
+    value="$sshd_approved_ciphers",
+    config_is_distributed=sshd_distributed_config,
+    rule_id=rule_id) }}}

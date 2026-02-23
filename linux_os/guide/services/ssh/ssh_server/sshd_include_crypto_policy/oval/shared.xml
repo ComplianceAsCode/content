@@ -1,3 +1,9 @@
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set sshd_drop_in_include_regex = (sshd_drop_in_dir | replace(".", "\\.")) ~ "/\\*\\.conf" -%}}
+{{%- set sshd_main_config_regex = sshd_main_config | replace(".", "\\.") -%}}
+{{%- set sshd_drop_in_dir_regex = sshd_drop_in_dir | replace(".", "\\.") -%}}
+{{%- set sshd_config_locations_regex = "^(" ~ sshd_main_config_regex ~ "|" ~ sshd_drop_in_dir_regex ~ "/.*\\.conf)$" -%}}
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
         {{{ oval_metadata("Ensure SSHD to include the system crypto policy", rule_title=rule_title) }}}
@@ -13,8 +19,8 @@
     </ind:textfilecontent54_test>
 
     <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_include_sshd_drop_in" version="1">
-        <ind:filepath operation="pattern match">/etc/ssh/sshd_config</ind:filepath>
-        <ind:pattern operation="pattern match">^[ \t]*(?i)Include(?-i)[ \t]+/etc/ssh/sshd_config\.d/\*.conf$</ind:pattern>
+        <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
+        <ind:pattern operation="pattern match">^[ \t]*(?i)Include(?-i)[ \t]+{{{ sshd_drop_in_include_regex }}}$</ind:pattern>
         <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
@@ -25,7 +31,7 @@
     </ind:textfilecontent54_test>
 
     <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_include_sshd_include_system_crypto" version="1">
-        <ind:filepath operation="pattern match">/etc/ssh/(sshd_config|sshd_config\.d/.*\.conf)</ind:filepath>
+        <ind:filepath operation="pattern match">{{{ sshd_config_locations_regex }}}</ind:filepath>
         <ind:pattern operation="pattern match">^[ \t]*(?i)Include(?-i)[ \t]+/etc/crypto-policies/back-ends/opensshserver\.config$</ind:pattern>
         <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>

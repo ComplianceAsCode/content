@@ -1,9 +1,9 @@
 {{%- set parameter = "RekeyLimit" %}}
-{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
-{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
-{{%- set description = "Ensure " ~ parameter ~ " is configured with the appropriate value in " ~ sshd_config_path %}}
+{{%- set sshd_main_config = sshd_main_config_file %}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set description = "Ensure " ~ parameter ~ " is configured with the appropriate value in " ~ sshd_main_config %}}
 {{%- if sshd_distributed_config == "true" %}}
-{{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
+{{%- set description = description  ~ " or in " ~ sshd_drop_in_dir -%}}
 {{%- endif %}}
 
 <def-group>
@@ -14,15 +14,15 @@
     {{{- application_required_or_requirement_unset() }}}
       <criteria comment="sshd is configured correctly" operator="OR">
         {{%- if sshd_distributed_config == "true" %}}
-        {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, rule_id=rule_id) | indent(8) }}}
+        {{{- oval_line_in_directory_criterion(sshd_drop_in_dir, parameter, rule_id=rule_id) | indent(8) }}}
         <!-- Configuration in directory has precedence -->
         <criteria comment="sshd is configured correctly in main file">
-          {{{- oval_line_in_file_criterion(sshd_config_path, parameter, rule_id=rule_id) }}}
+          {{{- oval_line_in_file_criterion(sshd_main_config, parameter, rule_id=rule_id) }}}
           <criterion test_ref="test_sshd_rekey_limit_config_dir_absent"
             comment="{{{ parameter }}} is not defined in the directory" />
         </criteria>
         {{%- else %}}
-        {{{- oval_line_in_file_criterion(sshd_config_path, parameter, rule_id=rule_id) }}}
+        {{{- oval_line_in_file_criterion(sshd_main_config, parameter, rule_id=rule_id) }}}
         {{%- endif %}}
       </criteria>
     </criteria><!-- macro application_required_or_requirement_unset() leaves an open criteria element-->
@@ -35,7 +35,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_sshd_rekey_limit" version="1">
-     <ind:filepath>{{{ sshd_config_path }}}</ind:filepath>
+     <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
      <ind:pattern operation="pattern match">^[\s]*{{{ parameter }}}[\s]+(.*)$</ind:pattern>
      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -54,7 +54,7 @@
 
 
   <ind:textfilecontent54_object id="obj_sshd_rekey_limit_config_dir" version="1">
-     <ind:path>{{{ sshd_config_dir}}}</ind:path>
+     <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
      <ind:filename operation="pattern match">.*\.conf$</ind:filename>
      <ind:pattern operation="pattern match">^[\s]*{{{ parameter }}}[\s]+(.*)$</ind:pattern>
      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
