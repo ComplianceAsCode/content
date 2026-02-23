@@ -7,6 +7,18 @@
 # see https://workbench.cisecurity.org/benchmarks/18959/tickets/23964
 # regarding sssd and gdm exclusions
 
+declare -A valid_shells
+while read -r line; do
+    [[ "$line" == /* ]] && valid_shells["$line"]=1
+done < /etc/shells
+
+declare -A users_with_valid_shells
+while IFS=: read -r user _ _ _ _ _ shell; do
+    if [[ ${valid_shells["$shell"]} == 1 ]]; then
+        users_with_valid_shells["$user"]=1
+    fi
+done < /etc/passwd
+
 find -P /var/log/ -type f -regextype posix-extended \
     ! -user root ! -user syslog  \
     ! -name 'gdm' ! -name 'gdm3' \
@@ -26,4 +38,11 @@ find -P /var/log/ -type f -regextype posix-extended \
     ! -regex '.*/localmessages(.*)' \
     ! -regex '.*/secure(.*)' \
     ! -regex '.*/waagent.log(.*)' \
-    -regex '.*' -exec chown --no-dereference root {} \;
+    -print0 | while IFS= read -r -d '' log_file
+    do
+        # Set to root if owned by a user with a valid shell
+        user=$(stat -c "%U" "$log_file")
+        if [[ "${users_with_valid_shells["$user"]}" == "1" ]]; then
+            chown --no-dereference root "$log_file"
+        fi
+    done
