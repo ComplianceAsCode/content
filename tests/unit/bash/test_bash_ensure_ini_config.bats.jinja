@@ -46,7 +46,7 @@ teardown() {
 
 @test "bash_ensure_ini_config - Basic value remediation" {
     printf "[pam]\npam_cert_auth = false\n" > sssd_test/sssd.conf
-    expected_output="[pam]\npam_cert_auth=true\n"
+    expected_output="[pam]\npam_cert_auth = true\n"
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 
@@ -57,7 +57,7 @@ teardown() {
 @test "bash_ensure_ini_config - Value remediation in multiple files" {
     printf "[pam]\npam_cert_auth = false\n" > sssd_test/sssd.conf
     printf "[pam]\npam_cert_auth = false\n" > pam_cert_auth.conf
-    expected_output="[pam]\npam_cert_auth=true\n"
+    expected_output="[pam]\npam_cert_auth = true\n"
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf pam_cert_auth.conf" "pam" "pam_cert_auth" "true"
 
@@ -70,7 +70,7 @@ teardown() {
 
 @test "bash_ensure_ini_config - No remediation happened" {
     printf "[pam]\npam_cert_auth = true\n" > sssd_test/sssd.conf
-    expected_output="[pam]\npam_cert_auth=true\n"
+    expected_output="[pam]\npam_cert_auth = true\n"
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 

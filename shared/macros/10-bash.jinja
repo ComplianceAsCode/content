@@ -2253,23 +2253,23 @@ for f in $(echo -n "{{{ files }}}"); do
     fi
 
     # find key in section and change value
-    if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
-        if ! grep -qPz "{{{ key }}}={{{ value }}}" "$f"; then
+    if grep -qzosP "(?m)^[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
+        if ! grep -qzosP "(?m)^[[:space:]]*{{{ key }}}[[:space:]]*=[[:space:]]*{{{ value }}}" "$f"; then
 {{% if no_quotes %}}
-            sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value | replace("/", "\/") }}}/" "$f"
+            sed -i "/^[[:space:]]*{{{ key }}}/s/\([[:blank:]]*=[[:blank:]]*\).*/\1{{{ value | replace("/", "\/") }}}/" "$f"
 {{% else %}}
-            sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value | replace("/", "\/") }}}"/' "$f"
+            sed -i '/^[[:space:]]*{{{ key }}}/s/\([[:blank:]]*=[[:blank:]]*\).*/\1"{{{ value | replace("/", "\/") }}}"/' "$f"
 {{% endif %}}
         fi
 
         found=true
 
     # find section and add key = value to it
-    elif grep -qs "[[:space:]]*\[{{{ section }}}\]" "$f"; then
+    elif grep -qs "^[[:space:]]*\[{{{ section }}}\]" "$f"; then
 {{% if no_quotes %}}
-            sed -i "/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}={{{ value | replace("/", "\/") }}}" "$f"
+            sed -i "/^[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}={{{ value | replace("/", "\/") }}}" "$f"
 {{% else %}}
-            sed -i '/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}="{{{ value | replace ("/", "\/") }}}"' "$f"
+            sed -i '/^[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}="{{{ value | replace ("/", "\/") }}}"' "$f"
 {{% endif %}}
             found=true
     fi
