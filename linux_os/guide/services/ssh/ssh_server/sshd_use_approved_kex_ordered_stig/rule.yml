@@ -1,5 +1,5 @@
 {{% if product in ['ol8', 'rhel8'] %}}
-{{% set path='/etc/crypto-policies/back-ends/opensshserver.config' %}}
+{{% set path=openssh_server_crypto_policy_config_file %}}
 {{% set conf="CRYPTO_POLICY='-oKexAlgorithms=ecdh-sha2-nistp256,ecdh-sha2-nistp384" ~
              ",ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256" ~
              ",diffie-hellman-group14-sha256,diffie-hellman-group16-sha512" ~

@@ -1,4 +1,5 @@
 documentation_complete: true
+{{% set opensshserver_policy_file = openssh_server_crypto_policy_config_file %}}
 
 title: 'SSHD Must Include System Crypto Policy Config File'
 
@@ -6,7 +7,7 @@ description: |-
     SSHD should follow the system cryptographic policy.
     In order to accomplish this the SSHD configuration should include the configuration file provided by the system crypto policy.
     The following line should be present in <tt>/etc/ssh/sshd_config</tt> or in a file included by this file (a file within the <tt>/etc/ssh/sshd_config.d</tt> directory):
-    <pre>Include /etc/crypto-policies/back-ends/opensshserver.config</pre>
+    <pre>Include {{{ opensshserver_policy_file }}}</pre>
 
 
 rationale: |-
@@ -28,8 +29,8 @@ checktext: |-
     <pre>sudo grep -R "Include /etc/ssh/sshd_config"  /etc/ssh/sshd_config.d/
 
     /etc/ssh/sshd_config:Include /etc/ssh/sshd_config.d/*.conf
-    /etc/ssh/sshd_config.d/50-redhat.conf:Include /etc/crypto-policies/back-ends/opensshserver.config</pre>
-    If "Include /etc/ssh/sshd_config.d/*.conf" or "Include /etc/crypto-policies/back-ends/opensshserver.config" are not included in the system sshd config or if the file "/etc/ssh/sshd_config.d/50-redhat.conf" is missing, this is a finding.
+    /etc/ssh/sshd_config.d/50-redhat.conf:Include {{{ opensshserver_policy_file }}}</pre>
+    If "Include /etc/ssh/sshd_config.d/*.conf" or "Include {{{ opensshserver_policy_file }}}" are not included in the system sshd config or if the file "/etc/ssh/sshd_config.d/50-redhat.conf" is missing, this is a finding.
 
 fixtext: |-
     Configure the {{{ full_name }}} SSH daemon to use systemwide crypto policies.

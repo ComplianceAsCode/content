@@ -4,10 +4,11 @@
 # complexity = low
 # disruption = low
 {{{ ansible_instantiate_variables("sshd_approved_ciphers") }}}
+{{%- set openssh_server_policy_file = openssh_server_crypto_policy_config_file -%}}
 
 -   name: "{{{ rule_title }}}: Set relevant paths and correct value"
     ansible.builtin.set_fact:
-        opensshserver_path: /etc/crypto-policies/back-ends/opensshserver.config
+        opensshserver_path: "{{{ openssh_server_policy_file }}}"
         local_path: /etc/crypto-policies/local.d/opensshserver-ssg.config
         correct_value: "-oCiphers={{ sshd_approved_ciphers }}"
 

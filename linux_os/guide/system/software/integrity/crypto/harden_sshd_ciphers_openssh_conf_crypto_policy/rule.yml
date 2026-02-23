@@ -1,4 +1,5 @@
 documentation_complete: true
+{{% set openssh_client_policy_file = openssh_client_crypto_policy_config_file %}}
 
 
 title: 'Configure SSH Client to Use FIPS 140 Validated Ciphers: openssh.config'
@@ -9,7 +10,7 @@ description: |-
     set up incorrectly.
 
     To check that Crypto Policies settings for ciphers are configured correctly, ensure that
-    <tt>/etc/crypto-policies/back-ends/openssh.config</tt> contains the following
+    <tt>{{{ openssh_client_policy_file }}}</tt> contains the following
     line and is not commented out:
     <pre>Ciphers {{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
 
@@ -35,7 +36,7 @@ ocil_clause: 'Crypto Policy for OpenSSH client is not configured correctly'
 
 ocil: |-
     To verify if the OpenSSH client uses defined Cipher suite in the Crypto Policy, run:
-    <pre>$ grep -i ciphers /etc/crypto-policies/back-ends/openssh.config</pre>
+    <pre>$ grep -i ciphers {{{ openssh_client_policy_file }}}</pre>
     and verify that the line matches:
     <pre>Ciphers {{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
 
