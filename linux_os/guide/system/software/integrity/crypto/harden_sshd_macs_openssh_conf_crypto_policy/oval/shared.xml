@@ -1,4 +1,4 @@
-{{%- set PATH = "/etc/crypto-policies/back-ends/openssh.config" -%}}
+{{%- set PATH = openssh_client_crypto_policy_config_file -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.", rule_title=rule_title) }}}

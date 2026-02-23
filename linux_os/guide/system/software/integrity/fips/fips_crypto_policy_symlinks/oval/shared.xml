@@ -1,5 +1,9 @@
 {{% set expected_symlinks_src_dir = "/etc/crypto-policies/back-ends/" %}}
 {{% set expected_symlinks_dest_dir = "/usr/share/crypto-policies/FIPS/" %}}
+{{% set openssh_client_policy_file = openssh_client_crypto_policy_config_file %}}
+{{% set openssh_server_policy_file = openssh_server_crypto_policy_config_file %}}
+{{% set openssh_client_policy_target = expected_symlinks_dest_dir ~ "openssh.txt" %}}
+{{% set openssh_server_policy_target = expected_symlinks_dest_dir ~ "opensshserver.txt" %}}
 {{% set expected_symlinks_src_files = [ "bind",
                                         "gnutls",
                                         "java",
@@ -7,8 +11,6 @@
                                         "krb5",
                                         "libreswan",
                                         "libssh",
-                                        "openssh",
-                                        "opensshserver",
                                         "opensslcnf",
                                         "openssl",
                                         "openssl_fips"
@@ -25,6 +27,10 @@
             <criterion comment="Symlink from {{{ expected_symlinks_src_dir ~ symlink }}}"
                 test_ref="test_symlink_from_{{{ symlink | escape_id }}}" />
             {{% endfor %}}
+            <criterion comment="Symlink from {{{ openssh_client_policy_file }}}"
+                test_ref="test_symlink_from_openssh_client_policy" />
+            <criterion comment="Symlink from {{{ openssh_server_policy_file }}}"
+                test_ref="test_symlink_from_openssh_server_policy" />
         </criteria>
     </definition>
 
@@ -45,4 +51,34 @@
             ~ symlink ~ symlinks_dest_ext }}}</unix:canonical_path>
     </unix:symlink_state>
     {{% endfor %}}
+
+    <unix:symlink_test check="all" check_existence="all_exist"
+            comment="{{{ openssh_client_policy_file }}} points to fips" version="1"
+            id="test_symlink_from_openssh_client_policy">
+        <unix:object object_ref="object_symlink_from_openssh_client_policy" />
+        <unix:state state_ref="state_symlink_from_openssh_client_policy" />
+    </unix:symlink_test>
+    <unix:symlink_object comment="{{{ openssh_client_policy_file }}}" version="1"
+            id="object_symlink_from_openssh_client_policy">
+        <unix:filepath>{{{ openssh_client_policy_file }}}</unix:filepath>
+    </unix:symlink_object>
+    <unix:symlink_state comment="{{{ openssh_client_policy_file }}} points to fips" version="1"
+            id="state_symlink_from_openssh_client_policy">
+        <unix:canonical_path operation="equals">{{{ openssh_client_policy_target }}}</unix:canonical_path>
+    </unix:symlink_state>
+
+    <unix:symlink_test check="all" check_existence="all_exist"
+            comment="{{{ openssh_server_policy_file }}} points to fips" version="1"
+            id="test_symlink_from_openssh_server_policy">
+        <unix:object object_ref="object_symlink_from_openssh_server_policy" />
+        <unix:state state_ref="state_symlink_from_openssh_server_policy" />
+    </unix:symlink_test>
+    <unix:symlink_object comment="{{{ openssh_server_policy_file }}}" version="1"
+            id="object_symlink_from_openssh_server_policy">
+        <unix:filepath>{{{ openssh_server_policy_file }}}</unix:filepath>
+    </unix:symlink_object>
+    <unix:symlink_state comment="{{{ openssh_server_policy_file }}} points to fips" version="1"
+            id="state_symlink_from_openssh_server_policy">
+        <unix:canonical_path operation="equals">{{{ openssh_server_policy_target }}}</unix:canonical_path>
+    </unix:symlink_state>
 </def-group>
