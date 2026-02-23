@@ -1,10 +1,12 @@
 documentation_complete: true
+{{% set sshc_main_config = ssh_client_main_config_file %}}
+{{% set sshc_config_dir = ssh_client_config_dir %}}
 
 title: 'Use Only FIPS 140-3 Validated MACs'
 
 description: |-
     Limit the MACs to those hash algorithms which are FIPS-approved.
-    The following line in <tt>/etc/ssh/ssh_config</tt>
+    The following line in <tt>{{{ sshc_main_config }}}</tt>
     demonstrates use of FIPS-approved MACs:
 
     <pre>MACs {{{ ssh_approved_macs }}}</pre>
@@ -22,11 +24,10 @@ ocil_clause: 'MACs option is commented out or not using FIPS-approved hash algor
 ocil: |-
     Only FIPS-approved MACs should be used. To verify that only FIPS-approved
     MACs are in use, run the following command:
-    <pre>$ sudo grep -ir macs /etc/ssh/ssh_config*</pre>
+    <pre>$ sudo grep -ir macs {{{ sshc_main_config }}} {{{ sshc_config_dir }}}</pre>
     The output should contain only following MACs:
     <pre>MACs {{{ xccdf_value("ssh_approved_macs") }}}</pre>
 
 warnings:
     - general: |-
         The system needs to be rebooted for these changes to take effect.
-
