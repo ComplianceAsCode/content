@@ -1,3 +1,4 @@
+{{%- set sshd_sysconfig = sshd_sysconfig_file -%}}
 <def-group>
   <definition class="compliance" id="configure_ssh_crypto_policy" version="1">
     {{{ oval_metadata("SSH should be configured to use the system-wide crypto policy setting.", rule_title=rule_title) }}}
@@ -14,7 +15,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_configure_ssh_crypto_policy" version="1">
-    <ind:filepath>/etc/sysconfig/sshd</ind:filepath>
+    <ind:filepath>{{{ sshd_sysconfig }}}</ind:filepath>
     <ind:pattern operation="pattern match">^\s*(?i)CRYPTO_POLICY\s*=.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
