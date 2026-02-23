@@ -17,6 +17,8 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_RSYSLOG_CAFILE,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         DEFAULT_SSH_RUNTIME_CHECK,
+                        DEFAULT_SSH_CLIENT_MAIN_CONFIG_FILE,
+                        DEFAULT_SSH_CLIENT_CONFIG_DIR,
                         DEFAULT_CHRONY_CONF_PATH,
                         DEFAULT_CHRONY_D_PATH,
                         DEFAULT_AUDISP_CONF_PATH,
@@ -110,6 +112,12 @@ def _get_implied_properties(existing_properties):
 
     if "sshd_runtime_check" not in existing_properties:
         result["sshd_runtime_check"] = DEFAULT_SSH_RUNTIME_CHECK
+
+    if "ssh_client_main_config_file" not in existing_properties:
+        result["ssh_client_main_config_file"] = DEFAULT_SSH_CLIENT_MAIN_CONFIG_FILE
+
+    if "ssh_client_config_dir" not in existing_properties:
+        result["ssh_client_config_dir"] = DEFAULT_SSH_CLIENT_CONFIG_DIR
 
     if "product" not in existing_properties:
         result["product"] = DEFAULT_PRODUCT
