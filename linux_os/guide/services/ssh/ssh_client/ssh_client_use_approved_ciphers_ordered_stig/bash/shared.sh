@@ -1,7 +1,7 @@
 # platform = multi_platform_ubuntu
 
 ssh_approved_ciphers="aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr"
-{{%- set sshc_cipher_list_config = ssh_client_config_dir ~ "/00-cipher-list.conf" -%}}
+{{% set sshc_cipher_list_config = ssh_client_config_dir ~ "/00-cipher-list.conf" %}}
 
 main_config="{{{ ssh_client_main_config_file }}}"
 include_directory="{{{ ssh_client_config_dir }}}"
