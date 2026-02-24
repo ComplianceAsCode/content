@@ -574,7 +574,7 @@ class PodmanTestEnv(ContainerTestEnv):
     def extract_port_map(self, podman_network_data):
         if not podman_network_data:
             raise ValueError("Port data is empty or None")
-        
+
         if 'containerPort' in podman_network_data:
             container_port = podman_network_data['containerPort']
             host_port = podman_network_data['hostPort']
