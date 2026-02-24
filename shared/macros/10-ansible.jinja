@@ -198,7 +198,7 @@ value: :code:`Setting={{ varname1 }}`
   (but case-sensitive values). We also specify the validation program here;
   -t specifies test and -f allows Ansible to pass a file at a different path.
 
-  Set set a parameter in /etc/sshd_config or /etc/ssh/sshd_config.d/
+  Set a parameter in ``sshd_main_config_file`` or ``sshd_config_dir``.
 
 :parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
 :type msg: str
@@ -206,7 +206,7 @@ value: :code:`Setting={{ varname1 }}`
 :type parameter: str
 :parameter value: The value to set
 :type value: str
-:parameter config_is_distributed: If true, will ok look in /etc/ssh/sshd_config.d
+:parameter config_is_distributed: If true, use ``sshd_config_dir`` for configuration
 :type config_is_distributed: str
 :parameter config_basename: Filename of configuration file when using distributed configuration
 :type config_basename: str
