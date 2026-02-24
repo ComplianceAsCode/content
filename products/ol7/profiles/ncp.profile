@@ -324,6 +324,7 @@ selections:
     - dconf_gnome_disable_wifi_notification
     - dconf_gnome_enable_smartcard_auth
     - dconf_gnome_login_banner_text
+    - dconf_login_banner_text=usgcb_default
     - dconf_login_banner_contents=usgcb_default
     - dconf_gnome_login_retries
     - dconf_gnome_remote_access_credential_prompt

@@ -67,6 +67,7 @@ dconf_gnome_login_banner_text
 dconf_gnome_screensaver_idle_delay
 dconf_gnome_screensaver_lock_delay
 dconf_login_banner_contents=cis_default
+dconf_login_banner_text=cis_banners
 directory_permissions_var_log_audit
 enable_authselect
 encrypt_partitions

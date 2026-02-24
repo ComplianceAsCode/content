@@ -47,6 +47,7 @@ dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_login_banner_text
 dconf_login_banner_contents=cis_default
+dconf_login_banner_text=cis_banners
 enable_authselect
 file_groupowner_grub2_cfg
 file_groupowner_user_cfg

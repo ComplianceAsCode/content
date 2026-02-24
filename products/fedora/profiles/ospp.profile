@@ -109,6 +109,7 @@ selections:
     - sshd_rekey_limit
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
+    - dconf_login_banner_text=usgcb_default
     - dconf_login_banner_contents=usgcb_default
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
