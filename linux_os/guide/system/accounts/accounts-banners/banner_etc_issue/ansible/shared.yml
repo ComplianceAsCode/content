@@ -19,7 +19,7 @@
 - name: "{{{ rule_title }}} - Ensure Correct Banner"
   ansible.builtin.copy:
     dest: /etc/issue.d/99-oscap-setting
-    content: "{{ login_banner_contents }}\n"
+    content: "{{ login_banner_contents | replace('\\n', '\n') }}\n"
 
 - name: "{{{ rule_title }}} - Restart issue-generator Service on Issue Configuration Change"
   ansible.builtin.systemd:
