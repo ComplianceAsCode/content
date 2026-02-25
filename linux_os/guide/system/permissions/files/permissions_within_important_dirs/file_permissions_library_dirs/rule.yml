@@ -64,7 +64,7 @@ template:
             - /usr/lib/
             - /usr/lib64/
         recursive: 'true'
-{{% if 'ol' in families or 'rhel' in product %}}
+{{% if 'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
         file_regex: ^.*\.so.*$
 {{% else %}}
         file_regex: ^.*$
@@ -72,9 +72,15 @@ template:
         filemode: '7755'
 
 fixtext: |-
+{{%- if 'ubuntu' in product %}}
+    Configure the systemwide shared library files contained in the directories "/lib", "/lib64", "/usr/lib", and "/usr/lib64" to have mode 0755 or less permissive with the following command:
+
+    <pre>$ sudo find /lib /lib64 /usr/lib /usr/lib64 -type f -name '*.so*' -perm /022 -exec chmod go-w {} +</pre>
+{{%- else %}}
     Configure the library files to be protected from unauthorized access. Run the following command, replacing "[FILE]" with any library file with a mode more permissive than 755.
 
     $ sudo chmod 755 [FILE]
+{{%- endif %}}
 
 srg_requirement:
     {{{ full_name }}} library directories must have mode 755 or less permissive.
