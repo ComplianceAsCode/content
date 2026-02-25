@@ -11,8 +11,12 @@ default:
     - /sbin/audispd
     {{% endif %}}
     - /sbin/augenrules
-    {{% if 'rhel' in product or product == 'sle16' %}}
+    {{% if 'rhel' in product or product == 'sle16' or product == "ubuntu2204" %}}
     - /sbin/audisp-syslog
+    {{% endif %}}
+    {{% if product == "ubuntu2204" %}}
+    - /sbin/audisp-remote
+    - /sbin/audispd-zos-remote
     {{% endif %}}
 overrides:
 {{% if product == 'sle15' %}}
