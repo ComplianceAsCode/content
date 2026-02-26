@@ -1,5 +1,6 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_fedora
+# remediation = bash
 # variables = sshd_approved_macs=hmac-sha2-512,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
 
 sshd_approved_macs=hmac-sha2-512,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
