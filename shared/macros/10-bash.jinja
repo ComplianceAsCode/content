@@ -2748,3 +2748,53 @@ This macro creates a Bash conditional which checks the system architecture in /p
 {{%- macro bash_arch_conditional(arch) -%}}
 ( grep -sqE "^.*\.{{{ arch }}}$" /proc/sys/kernel/osrelease || grep -sqE "^{{{ arch }}}$" /proc/sys/kernel/arch; )
 {{%- endmacro -%}}
+
+
+{{#
+    Set a sshd configuration parameter to a value for system with default configuration in /usr subdir 
+
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+:param copy_defaults: If true default sshd configuration in /usr/etc/ssh/sshd_config will be
+copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
+:type copy_defaults: bool
+:parameter config_basename: drop-in filename of sshd configuration file
+:type config_basename: str
+
+#}}
+{{% macro bash_sshd_remediation_usr(parameter, value, copy_defaults="true", config_basename="00-complianceascode-hardening.conf", rule_id=None) -%}}
+{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
+{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set sshd_usr_config_path = "/usr/etc/ssh/sshd_config" %}}
+{{%- set sshd_usr_config_dir = "/usr/etc/ssh/sshd_config.d" -%}}
+{{%- set prefix_regex = "^\s*" -%}}
+{{%- set separator_regex = "\s\+" -%}}
+{{%- set hardening_config_basename = config_basename %}}
+{{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
+
+if ! [ -e "{{{ sshd_config_path }}}" ] ; then
+    cp "{{{ sshd_usr_config_path }}}" "{{{ sshd_config_path }}}"
+fi
+
+mkdir -p {{{ sshd_config_dir }}}
+touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
+chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
+{{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
+{{{ lineinfile_absent_in_directory(sshd_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
+{{{ lineinfile_absent(sshd_usr_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
+{{{ lineinfile_absent_in_directory(sshd_usr_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
+{{{ set_config_file(
+        path=sshd_config_dir ~ "/" ~ hardening_config_basename,
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="BOF",
+        insensitive=true,
+        separator=" ",
+        separator_regex=separator_regex,
+        prefix_regex=prefix_regex, rule_id=rule_id)
+    }}}
+{{%- endmacro %}}

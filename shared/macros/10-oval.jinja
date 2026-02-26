@@ -1878,3 +1878,150 @@ Macro generates an OVAL test definition to verify that a specified audit tool is
   </ind:textfilecontent54_object>
 
 {{%- endmacro -%}}
+
+
+{{#
+    Create a full OVAL check for an sshd parameter and value in /etc/ssh/sshd_config or /usr/etc/ssh/sshd_config.
+    Including /etc/ssh/sshd_config.d/*.conf and /usr/etc/ssh/sshd_config.d/*.conf (default on SUSE Linux Enterprise Server 16)
+
+:param parameter: Parameter to check
+:type parameter: str
+:param value: Value to check
+:type value: str
+:param missing_parameter_pass: If true, the check will pass if the parameter missing.
+:type missing_parameter_pass: bool
+:param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
+:type xccdf_variable: str
+:param datatype: a data type of the value
+:type datatype: str
+
+#}}
+{{%- macro sshd_oval_check_usr(parameter, value, missing_parameter_pass, xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
+{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
+{{%- set sshd_usr_config_path = "/usr/etc/ssh/sshd_config" -%}}
+{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set sshd_usr_config_dir = "/usr/etc/ssh/sshd_config.d" -%}}
+{{%- if xccdf_variable -%}}
+{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value configured in " ~ xccdf_variable ~ " variable in " ~ sshd_config_path %}}
+{{%- else -%}}
+{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_config_path -%}}
+{{%- endif -%}}
+{{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
+{{%- set description = description  ~ " or in " ~ sshd_usr_config_path -%}}
+{{%- set description = description  ~ " or in " ~ sshd_usr_config_dir -%}}
+{{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+   {{{ oval_metadata(description, rule_title=rule_title) }}}
+   <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+     <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset" definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed" definition_ref="package_openssh-server_removed" />
+     </criteria>
+     <criteria comment="sshd is installed and configured using /etc/ssh/sshd_config" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset" definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed" definition_ref="package_openssh-server_installed" />
+        <criterion comment="test if configuration file {{{ sshd_config_path }}} exists for {{{ rule_id }}}" test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+        <criteria comment="sshd is configured correctly" operator="AND">
+          <criteria comment="static configuration is correct" operator="AND">
+            <criteria comment="the configuration is correct if it exists" operator="AND">
+              {{{ oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
+              {{{ oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12) }}}
+              {{{ oval_line_in_file_criterion(sshd_usr_config_dir, parameter, id_stem=rule_id ~ "_sshd_usr_config_dir") | indent(12) }}}
+            </criteria>
+            {{%- if not missing_parameter_pass -%}}
+            <criterion comment="the configuration exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}_etc_ssh_sshd_config" />
+            {{%- endif -%}}
+          </criteria>
+        </criteria>
+      </criteria>
+      <criteria comment="sshd is installed and configured using /usr/etc/ssh/sshd_config" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset" definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed" definition_ref="package_openssh-server_installed" />
+        <criterion comment="test if configuration file {{{ sshd_config_path }}} does not exists for {{{ rule_id }}}" test_ref="test_{{{ rule_id }}}_config_file_exists" negate="true"/>
+        <criteria comment="sshd is configured correctly" operator="AND">
+          <criteria comment="static configuration is correct" operator="AND">
+            <criteria comment="the configuration is correct if it exists" operator="AND">
+              {{{ oval_line_in_file_criterion(sshd_usr_config_path, parameter, avoid_conflicting=true, id_stem=rule_id ~ "_sshd_usr_config_path") | indent(12)}}}
+              {{{ oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12) }}}
+              {{{ oval_line_in_file_criterion(sshd_usr_config_dir, parameter, id_stem=rule_id ~ "_sshd_usr_config_dir") | indent(12) }}}
+            </criteria>
+            {{%- if not missing_parameter_pass -%}}
+            <criterion comment="the configuration exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}_usr_etc_ssh_sshd_config" />
+            {{%- endif -%}}
+          </criteria>
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  {{{ oval_config_file_exists_test(sshd_config_path, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(sshd_config_path, rule_id=rule_id) }}}
+
+  {{{ oval_line_in_file_test(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
+
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs) | indent (2) }}}
+  {{%- if xccdf_variable -%}}
+  {{{ oval_line_in_file_define_variable(xccdf_variable, datatype) }}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype=datatype, rule_id=rule_id) }}}
+  {{{ oval_line_in_directory_state_xccdf_variable(xccdf_variable, datatype, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_file_state_xccdf_variable(var_name=xccdf_variable, datatype=datatype, id_stem=rule_id ~ "_sshd_usr_config_path") | indent (2) }}}
+  {{{ oval_line_in_file_state_xccdf_variable(var_name=xccdf_variable, datatype=datatype, id_stem=rule_id ~ "_sshd_usr_config_dir") | indent (2) }}}
+  {{%- else -%}}
+  {{{ oval_line_in_file_state(value, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_directory_state(value, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_file_state(value, id_stem=rule_id ~ "_sshd_usr_config_path") | indent (2) }}}
+  {{{ oval_line_in_file_state(value, id_stem=rule_id ~ "_sshd_usr_config_dir") | indent (2) }}}
+  {{%- endif -%}}
+
+  {{{ oval_line_in_file_test(sshd_usr_config_path, parameter, avoid_conflicting=true, id_stem=rule_id ~ "_sshd_usr_config_path") | indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_usr_config_path, parameter=parameter, id_stem=rule_id ~ "_sshd_usr_config_path", ** case_insensitivity_kwargs)| indent (2) }}}
+  {{{ oval_line_in_file_test(sshd_usr_config_dir, parameter, avoid_conflicting=true, id_stem=rule_id ~ "_sshd_usr_config_dir") | indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_usr_config_dir, parameter=parameter, filename_regex=".*\.conf$", id_stem=rule_id ~ "_sshd_usr_config_dir", ** case_insensitivity_kwargs) | indent (2) }}}
+
+  {{%- if not missing_parameter_pass -%}}
+  <ind:textfilecontent54_object comment="All confs collection when using /etc/ssh/sshd_config"
+                                id="obj_collection_obj_{{{ rule_id }}}_etc_ssh_sshd_config"
+                                version="1">
+    <set set_operator="UNION">
+      <set set_operator="UNION">
+        <object_reference>obj_{{{ rule_id }}}</object_reference>
+        <object_reference>obj_{{{ rule_id }}}_config_dir</object_reference>
+      </set>
+      <set set_operator="UNION">
+        <object_reference>obj_{{{ rule_id }}}_sshd_usr_config_dir</object_reference>
+      </set>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_{{{ parameter }}}_present_{{{ rule_id }}}_etc_ssh_sshd_config" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Verify that the value of {{{ parameter }}} is present">
+    <ind:object object_ref="obj_collection_obj_{{{ rule_id }}}_etc_ssh_sshd_config" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="All confs collection when using /usr/etc/ssh/sshd_config"
+                                id="obj_collection_obj_{{{ rule_id }}}_usr_etc_ssh_sshd_config"
+                                version="1">
+    <set set_operator="UNION">
+      <set set_operator="UNION">
+        <object_reference>obj_{{{ rule_id }}}_config_dir</object_reference>
+      </set>
+      <set set_operator="UNION">
+        <object_reference>obj_{{{ rule_id }}}_sshd_usr_config_path</object_reference>
+        <object_reference>obj_{{{ rule_id }}}_sshd_usr_config_dir</object_reference>
+      </set>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_{{{ parameter }}}_present_{{{ rule_id }}}_usr_etc_ssh_sshd_config" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Verify that the value of {{{ parameter }}} is present">
+    <ind:object object_ref="obj_collection_obj_{{{ rule_id }}}_usr_etc_ssh_sshd_config" />
+  </ind:textfilecontent54_test>
+  {{%- endif -%}}
+</def-group>
+{{%- endmacro -%}}
