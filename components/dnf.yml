@@ -2,6 +2,7 @@ name: dnf
 packages:
 - dnf
 - dnf-automatic
+- python3-dnf
 - dnf-plugin-subscription-manager
 - libdnf-plugin-subscription-manager
 rules:
@@ -14,3 +15,4 @@ rules:
 - package_dnf-automatic_installed
 - package_dnf-plugin-subscription-manager_installed
 - package_libdnf-plugin-subscription-manager_installed
+- package_python3-dnf_removed
