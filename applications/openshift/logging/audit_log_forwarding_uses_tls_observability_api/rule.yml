@@ -37,23 +37,26 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting() | indent(4) }}}
+    {{{ openshift_cluster_setting(
+            "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders"
+        ) | indent(4) }}}
     {{{ openshift_filtered_cluster_setting_suppressed({
             "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": 'try [.items[].spec.outputs[][]|objects|(select(.url != null).url] catch []',
         }) | indent(4) }}}
 
-template:
-  name: yamlfile_value
-  vars:
-    ocp_data: "true"
-    # A list of clusterlogforwarders is available at https://docs.openshift.com/container-platform/4.16/observability/logging/logging-6.0/log6x-clf.html#outputs
-    # The log forwarder outputs consist of an object and two strings (name and type).
-    # The url is part of the object and its name will vary depending on its type.
-    # By using the objects filter we ensure we are getting the object to query for its url.
-    filepath: "{{{ openshift_filtered_path('/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders', 'try [.items[].spec.outputs[][]|objects|select(.url != null).url] catch []') }}}"
-    yamlpath: "[:]"
-    entity_check: "all"
-    values:
-    - value: "^(https|tls)://.*$"
-      entity_check: "all"
-      operation: "pattern match"
+# template:
+#   name: yamlfile_value
+#   vars:
+#     ocp_data: "true"
+#     # A list of clusterlogforwarders is available at https://docs.openshift.com/container-platform/4.16/observability/logging/logging-6.0/log6x-clf.html#outputs
+#     # The log forwarder outputs consist of an object and two strings (name and type).
+#     # The url is part of the object and its name will vary depending on its type.
+#     # By using the objects filter we ensure we are getting the object to query for its url.
+#     filepath: "{{{ openshift_filtered_path('/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders', 'try [.items[].spec.outputs[][]|objects|select(.url != null).url] catch []') }}}"
+#     yamlpath: "[:]"
+#     check_existence: any_exist
+#     entity_check: "all"
+#     values:
+#     - value: "^(https|tls)://.*$"
+#       entity_check: "all"
+#       operation: "pattern match"
