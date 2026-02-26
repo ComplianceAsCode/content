@@ -50,6 +50,9 @@ template:
     vars:
         filepath:
             - /etc/ssh/sshd_config
+            {{% if product == 'sle16' %}}
+            - /usr/etc/ssh/sshd_config
+            {{% endif %}}
         filemode: '0600'
 
 platform: system_with_kernel
