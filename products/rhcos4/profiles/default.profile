@@ -290,3 +290,4 @@ selections:
     - audit_rules_networkconfig_modification_network_scripts
     - audit_rules_mac_modification_etc_selinux
     - audit_rules_login_events_faillog
+    - package_at_removed

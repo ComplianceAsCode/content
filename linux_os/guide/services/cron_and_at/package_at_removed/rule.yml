@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Uninstall at Package'
+
+description: |-
+    The <tt>at</tt> package provides the ability to schedule one-time tasks
+    for future execution, which is not required and can introduce unnecessary risk.
+    {{{ describe_package_remove(package="at") }}}
+
+rationale: |-
+    The <tt>at</tt> package is not installed by default. If found, it should be
+    uninstalled to reduce the risk of unauthorized or unaccountable task execution.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-86466-0
+
+references:
+    nist: CM-7(a),CM-7(b),CM-6(a)
+
+{{{ complete_ocil_entry_package(package="at") }}}
+
+fixtext: '{{{ fixtext_package_removed(package="at") }}}'
+
+srg_requirement: |-
+    The at package must not be installed unless mission essential on {{{ full_name }}}.
+
+template:
+    name: package_removed
+    vars:
+        pkgname: at
