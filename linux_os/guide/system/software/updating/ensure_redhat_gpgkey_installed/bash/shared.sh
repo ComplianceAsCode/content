@@ -2,7 +2,7 @@
 # The two fingerprints below are retrieved from https://access.redhat.com/security/team/key
 readonly REDHAT_RELEASE_FINGERPRINT="{{{ release_key_fingerprint }}}"
 readonly REDHAT_AUXILIARY_FINGERPRINT="{{{ auxiliary_key_fingerprint }}}"
-{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
+{{% if "rhel" in families  and major_version_ordinal >= 9 %}}
 readonly REDHAT_PQC_FINGERPRINT="{{{ pqc_key_fingerprint }}}"
 {{% endif %}}
 
@@ -26,8 +26,13 @@ then
   if [ "${GPG_RESULT}" -eq "0" ]
   then
   # If $REDHAT_RELEASE_KEY file doesn't contain any keys with unknown fingerprint, import it
-{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
-    if {{{ bash_os_linux_conditional("rhel", expected_ver="10.1", op=">=") | trim }}}
+{{% if "rhel" in families  and major_version_ordinal >= 9 %}}
+{{% if major_version_ordinal >= 10 %}}
+{{% set pqc_min_version = "10.1" %}}
+{{% else %}}
+{{% set pqc_min_version = "9.7" %}}
+{{% endif %}}
+    if {{{ bash_os_linux_conditional("rhel", expected_ver=pqc_min_version, op=">=") | trim }}}
     then
       echo "${GPG_OUT[*]}" | grep -vE "${REDHAT_RELEASE_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}|${REDHAT_PQC_FINGERPRINT}" || rpm --import "${REDHAT_RELEASE_KEY}"
     else

@@ -12,11 +12,16 @@
         test_ref="test_redhat_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
           <criterion comment="package gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}} is installed"
           test_ref="test_redhat_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" />
-{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
-          <criteria comment="If RHEL is 10.1 or newer then PQC key must be installed" operator="OR">
-            <criterion comment="RHEL is older than 10.1" test_ref="test_{{{ rule_id }}}_rhel_is_10_1_or_newer" negate="true" />
-            <criteria comment="RHEL is 10.1 or newer AND PQC is installed" operator="AND">
-              <criterion comment="RHEL is 10.1 or newer" test_ref="test_{{{ rule_id }}}_rhel_is_10_1_or_newer" />
+{{% if "rhel" in families  and major_version_ordinal >= 9 %}}
+{{% if major_version_ordinal >= 10 %}}
+{{% set pqc_min_version = "10.1" %}}
+{{% else %}}
+{{% set pqc_min_version = "9.7" %}}
+{{% endif %}}
+          <criteria comment="If RHEL is {{{ pqc_min_version }}} or newer then PQC key must be installed" operator="OR">
+            <criterion comment="RHEL is older than {{{ pqc_min_version }}}" test_ref="test_{{{ rule_id }}}_rhel_pqc_version_check" negate="true" />
+            <criteria comment="RHEL is {{{ pqc_min_version }}} or newer AND PQC is installed" operator="AND">
+              <criterion comment="RHEL is {{{ pqc_min_version }}} or newer" test_ref="test_{{{ rule_id }}}_rhel_pqc_version_check" />
               <criterion comment="package gpg-pubkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}} is installed" test_ref="test_redhat_package_gpgkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}}_installed" />
             </criteria>
           </criteria>
@@ -64,7 +69,7 @@
     <linux:version>{{{ aux_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
 
-{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
+{{% if "rhel" in families  and major_version_ordinal >= 9 %}}
   <!-- Test for Red Hat post quantum cryptography key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
   id="test_redhat_package_gpgkey-{{{ pqc_pkg_version }}}-{{{ pqc_pkg_release }}}_installed" version="1"
@@ -93,20 +98,25 @@
   </linux:rpminfo_state>
   {{%- endif %}}
 
-{{% if "rhel" in families and major_version_ordinal >= 10 %}}
-  <ind:textfilecontent54_test check="all" comment="VERSION_ID in os-release is greater than or equal 10.1" id="test_{{{ rule_id }}}_rhel_is_10_1_or_newer" version="1">
-    <ind:object object_ref="obj_{{{ rule_id }}}_rhel_is_10_1_or_newer" />
-    <ind:state state_ref="state_{{{ rule_id }}}_rhel_is_10_1_or_newer" />
+{{% if "rhel" in families and major_version_ordinal >= 9 %}}
+{{% if major_version_ordinal >= 10 %}}
+{{% set pqc_min_version = "10.1" %}}
+{{% else %}}
+{{% set pqc_min_version = "9.7" %}}
+{{% endif %}}
+  <ind:textfilecontent54_test check="all" comment="VERSION_ID in os-release is greater than or equal {{{ pqc_min_version }}}" id="test_{{{ rule_id }}}_rhel_pqc_version_check" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_rhel_pqc_version_check" />
+    <ind:state state_ref="state_{{{ rule_id }}}_rhel_pqc_version_check" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_rhel_is_10_1_or_newer" version="1">
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_rhel_pqc_version_check" version="1">
     <ind:filepath>/etc/os-release</ind:filepath>
     <ind:pattern operation="pattern match">^VERSION_ID=[&quot;&apos;]?([\w.]+)[&quot;&apos;]?$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_rhel_is_10_1_or_newer" version="1">
-    <ind:subexpression operation="greater than or equal" datatype="version">10.1</ind:subexpression>
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_rhel_pqc_version_check" version="1">
+    <ind:subexpression operation="greater than or equal" datatype="version">{{{ pqc_min_version }}}</ind:subexpression>
   </ind:textfilecontent54_state>
 {{% endif %}}
 

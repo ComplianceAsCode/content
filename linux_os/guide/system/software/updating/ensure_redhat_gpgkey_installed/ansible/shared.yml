@@ -40,13 +40,18 @@
 
 {{% endif %}}
 
-{{% if "rhel" in families and major_version_ordinal >= 10 %}}
+{{% if "rhel" in families and major_version_ordinal >= 9 %}}
+{{% if major_version_ordinal >= 10 %}}
+{{% set pqc_min_version = "10.1" %}}
+{{% else %}}
+{{% set pqc_min_version = "9.7" %}}
+{{% endif %}}
 - name: "{{{ rule_title }}}: Set Fact - Valid fingerprints (without PQC)"
   ansible.builtin.set_fact:
     gpg_valid_fingerprints:
     - "{{{ release_key_fingerprint }}}"
     - "{{{ auxiliary_key_fingerprint }}}"
-  when: ansible_distribution_version is version('10.1', '<')
+  when: ansible_distribution_version is version('{{{ pqc_min_version }}}', '<')
 
 - name: "{{{ rule_title }}}: Set Fact - Valid fingerprints (with PQC)"
   ansible.builtin.set_fact:
@@ -54,7 +59,7 @@
     - "{{{ release_key_fingerprint }}}"
     - "{{{ auxiliary_key_fingerprint }}}"
     - "{{{ pqc_key_fingerprint }}}"
-  when: ansible_distribution_version is version('10.1', '>=')
+  when: ansible_distribution_version is version('{{{ pqc_min_version }}}', '>=')
 {{% else %}}
 - name: "{{{ rule_title }}}: Set Fact - Valid fingerprints"
   ansible.builtin.set_fact:
