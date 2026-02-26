@@ -6,11 +6,11 @@
 {{{ ansible_instantiate_variables("sshd_approved_macs") }}}
 {{%- set openssh_client_policy_file = openssh_client_crypto_policy_config_file -%}}
 
-{{{ ansible_set_config_file(
+{{{ ansible_only_lineinfile(
         msg='Configure SSH Daemon to Use FIPS 140-2 Validated MACs: openssh.config',
-        file=openssh_client_policy_file,
-        parameter='MACs',
-        value="{{ sshd_approved_macs }}",
+        path=openssh_client_policy_file,
+        line_regex='^.*MACs\\s+',
+        new_line='MACs {{ sshd_approved_macs }}',
         create='yes',
-        prefix_regex='^.*', rule_title=rule_title)
+        rule_title=rule_title)
 }}}
