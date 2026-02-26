@@ -25,13 +25,16 @@ then
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]
   then
+  # If $REDHAT_RELEASE_KEY file doesn't contain any keys with unknown fingerprint, import it
 {{% if "rhel" in families  and major_version_ordinal >= 10 %}}
-    echo "${GPG_OUT[*]}" | grep -vE "${REDHAT_RELEASE_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}|${REDHAT_PQC_FINGERPRINT}" || {
+    if {{{ bash_os_linux_conditional("rhel", expected_ver="10.1", op=">=") | trim }}}
+    then
+      echo "${GPG_OUT[*]}" | grep -vE "${REDHAT_RELEASE_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}|${REDHAT_PQC_FINGERPRINT}" || rpm --import "${REDHAT_RELEASE_KEY}"
+    else
+      echo "${GPG_OUT[*]}" | grep -vE "${REDHAT_RELEASE_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}" || rpm --import "${REDHAT_RELEASE_KEY}"
+    fi
 {{% else %}}
-    echo "${GPG_OUT[*]}" | grep -vE "${REDHAT_RELEASE_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}" || {
+    echo "${GPG_OUT[*]}" | grep -vE "${REDHAT_RELEASE_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}" || rpm --import "${REDHAT_RELEASE_KEY}"
 {{% endif %}}
-      # If $REDHAT_RELEASE_KEY file doesn't contain any keys with unknown fingerprint, import it
-      rpm --import "${REDHAT_RELEASE_KEY}"
-    }
   fi
 fi
