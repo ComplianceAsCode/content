@@ -1,10 +1,12 @@
 documentation_complete: true
+{{% set sshc_config_dir = ssh_client_config_dir %}}
+{{% set sshc_crypto_policy_config = ssh_client_config_dir ~ "/02-ospp.conf" %}}
 
 title: 'Harden SSH client Crypto Policy'
 
 description: |-
     Crypto Policies are means of enforcing certain cryptographic settings for selected applications including OpenSSH client.
-    To override the system wide crypto policy for Openssh client, place a file in the <tt>/etc/ssh/ssh_config.d/</tt> so that it is loaded before the <tt>05-redhat.conf</tt>. In this case it is file named <tt>02-ospp.conf</tt> containing parameters which need to be changed with respect to the crypto policy.
+    To override the system wide crypto policy for Openssh client, place a file in the <tt>{{{ sshc_config_dir }}}</tt> directory so that it is loaded before the <tt>05-redhat.conf</tt>. In this case it is the <tt>{{{ sshc_crypto_policy_config }}}</tt> file containing parameters which need to be changed with respect to the crypto policy.
     This rule checks if the file exists and if it contains required parameters and values which modify the Crypto Policy.
     During the parsing process, as soon as Openssh client parses some configuration option and its value, it remembers it and ignores any subsequent overrides. The customization mechanism provided by crypto policies appends eventual customizations at the end of the system wide crypto policy. Therefore, if the crypto policy customization overrides some parameter which is already configured in the system wide crypto policy, the SSH client will not honor that customized parameter.
 
@@ -28,7 +30,7 @@ ocil_clause: 'Crypto Policy for OpenSSH Client is not configured according to CC
 
 ocil: |-
     To verify if the OpenSSH Client uses defined Crypto Policy, run:
-    <pre>$ cat /etc/ssh/ssh_config.d/02-ospp.conf</pre>
+    <pre>$ cat {{{ sshc_crypto_policy_config }}}</pre>
     and verify that the line matches
     <pre>Match final all</pre>
     <pre>RekeyLimit 512M 1h</pre>
