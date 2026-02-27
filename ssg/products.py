@@ -17,6 +17,8 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_RSYSLOG_CAFILE,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         DEFAULT_SSH_RUNTIME_CHECK,
+                        DEFAULT_OPENSSH_CLIENT_CRYPTO_POLICY_CONFIG_FILE,
+                        DEFAULT_OPENSSH_SERVER_CRYPTO_POLICY_CONFIG_FILE,
                         DEFAULT_CHRONY_CONF_PATH,
                         DEFAULT_CHRONY_D_PATH,
                         DEFAULT_AUDISP_CONF_PATH,
@@ -110,6 +112,12 @@ def _get_implied_properties(existing_properties):
 
     if "sshd_runtime_check" not in existing_properties:
         result["sshd_runtime_check"] = DEFAULT_SSH_RUNTIME_CHECK
+
+    if "openssh_client_crypto_policy_config_file" not in existing_properties:
+        result["openssh_client_crypto_policy_config_file"] = DEFAULT_OPENSSH_CLIENT_CRYPTO_POLICY_CONFIG_FILE
+
+    if "openssh_server_crypto_policy_config_file" not in existing_properties:
+        result["openssh_server_crypto_policy_config_file"] = DEFAULT_OPENSSH_SERVER_CRYPTO_POLICY_CONFIG_FILE
 
     if "product" not in existing_properties:
         result["product"] = DEFAULT_PRODUCT

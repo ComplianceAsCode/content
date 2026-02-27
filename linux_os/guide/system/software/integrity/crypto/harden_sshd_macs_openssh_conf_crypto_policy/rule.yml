@@ -1,4 +1,5 @@
 documentation_complete: true
+{{% set openssh_client_policy_file = openssh_client_crypto_policy_config_file %}}
 
 
 title: 'Configure SSH Client to Use FIPS 140-2 Validated MACs: openssh.config'
@@ -9,7 +10,7 @@ description: |-
     set up incorrectly.
 
     To check that Crypto Policies settings are configured correctly, ensure that
-    <tt>/etc/crypto-policies/back-ends/openssh.config</tt> contains the following
+    <tt>{{{ openssh_client_policy_file }}}</tt> contains the following
     line and is not commented out:
     <tt>MACs {{{ xccdf_value("sshd_approved_macs") }}}</tt>
 
@@ -33,7 +34,7 @@ ocil_clause: 'Crypto Policy for OpenSSH client is not configured correctly'
 
 ocil: |-
     To verify if the OpenSSH client uses defined MACs in the Crypto Policy, run:
-    <pre>$ grep -i macs /etc/crypto-policies/back-ends/openssh.config</pre>
+    <pre>$ grep -i macs {{{ openssh_client_policy_file }}}</pre>
     and verify that the line matches:
     <pre>MACs {{{ xccdf_value("sshd_approved_macs") }}}</pre>
 
