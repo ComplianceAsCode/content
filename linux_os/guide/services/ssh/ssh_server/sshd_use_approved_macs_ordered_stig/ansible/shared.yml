@@ -8,11 +8,5 @@
 {{{ ansible_instantiate_variables('sshd_approved_macs') }}}
 {{{ ansible_sshd_set(parameter="Macs", value="{{ sshd_approved_macs }}", config_is_distributed=sshd_distributed_config, rule_title=rule_title) }}}
 {{%- else %}}
-- name: "Configure sshd to use approved MACs"
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    line: 'MACs hmac-sha2-512,hmac-sha2-256'
-    state: present
-    regexp: '^[\s]*MACs[\s]+(hmac-sha2-512(?=[\w,-@]+|$),?)?(hmac-sha2-256(?=[\w,-@]+|$),?)?[\s]*(?:#.*)?$'
-    create: True
+{{{ ansible_sshd_set(parameter="MACs", value="hmac-sha2-512,hmac-sha2-256", config_is_distributed=sshd_distributed_config, rule_title=rule_title) }}}
 {{%- endif %}}

@@ -1,9 +1,10 @@
+{{% set sshd_redhat_drop_in_file = sshd_config_dir ~ "/50-redhat.conf" %}}
 documentation_complete: true
 
-title: 'The File /etc/ssh/sshd_config.d/50-redhat.conf Must Exist'
+title: 'The File {{{ sshd_redhat_drop_in_file }}} Must Exist'
 
 description: |-
-    The <tt>/etc/ssh/sshd_config.d/50-redhat.conf</tt> file must exist as it contains important
+    The <tt>{{{ sshd_redhat_drop_in_file }}}</tt> file must exist as it contains important
     settings to secure SSH.
 
 
@@ -29,7 +30,7 @@ warnings:
 template:
     name: 'file_existence'
     vars:
-        filepath: '/etc/ssh/sshd_config.d/50-redhat.conf'
+        filepath: '{{{ sshd_redhat_drop_in_file }}}'
         exists: true
     backends:
         ansible: off

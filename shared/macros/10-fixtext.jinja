@@ -233,10 +233,12 @@ The audit daemon must be restarted for the changes to take effect.
 
 #}}
 {{%- macro fixtext_sshd_lineinfile(parameter, value, config_is_distributed) -%}}
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_hardening_config = sshd_config_dir ~ "/" ~ sshd_hardening_config_basename -%}}
 {{%- if config_is_distributed -%}}
-{{%- set path = "/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf" -%}}
+{{%- set path = sshd_hardening_config -%}}
 {{%- else -%}}
-{{%- set path = "/etc/ssh/sshd_config" -%}}
+{{%- set path = sshd_main_config -%}}
 {{%- endif -%}}
     To configure the system add or modify the following line in "{{{ path }}}".
 
