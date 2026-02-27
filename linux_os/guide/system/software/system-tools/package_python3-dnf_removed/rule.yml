@@ -1,0 +1,34 @@
+documentation_complete: true
+
+
+title: 'Uninstall python3-dnf Package'
+
+description: |-
+    The <tt>python3-dnf</tt> package provides Python bindings for installing, updating,
+    and removing software on Linux systems.
+    {{{ describe_package_remove(package="python3-dnf") }}}
+
+rationale: |-
+    Retaining the <tt>python3-dnf</tt> package can introduce risks by allowing direct
+    package installation, which may compromise system integrity and increase the attack
+    surface.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-86468-6
+
+references:
+    nist: CM-7(a),CM-7(b),CM-6(a)
+
+{{{ complete_ocil_entry_package(package="python3-dnf") }}}
+
+fixtext: '{{{ fixtext_package_removed(package="python3-dnf") }}}'
+
+srg_requirement: |-
+    The python3-dnf package must not be installed unless mission essential on {{{ full_name }}}.
+
+template:
+    name: package_removed
+    vars:
+        pkgname: python3-dnf

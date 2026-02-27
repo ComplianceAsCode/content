@@ -281,3 +281,14 @@ selections:
     - enable_dracut_fips_module
     - audit_delete_success
     - mount_option_var_log_nodev
+    - accounts_authorized_local_users
+    - service_vsftpd_disabled
+    - package_vsftpd_removed
+    - service_named_disabled
+    - service_atd_disabled
+    - service_cups_disabled
+    - audit_rules_networkconfig_modification_network_scripts
+    - audit_rules_mac_modification_etc_selinux
+    - audit_rules_login_events_faillog
+    - package_at_removed
+    - package_python3-dnf_removed
