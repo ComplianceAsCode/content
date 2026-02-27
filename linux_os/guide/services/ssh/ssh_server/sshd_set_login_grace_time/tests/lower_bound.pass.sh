@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_cis
+# profiles = xccdf_org.ssgproject.content_profile_cis,xccdf_org.ssgproject.content_profile_pci-dss-4
 # platform = multi_platform_all
 
 SSHD_CONFIG="/etc/ssh/sshd_config"
