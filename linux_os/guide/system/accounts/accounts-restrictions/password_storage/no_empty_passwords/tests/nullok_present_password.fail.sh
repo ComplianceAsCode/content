@@ -1,8 +1,7 @@
 #!/bin/bash
-# platform = Oracle Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ubuntu
+# platform = multi_platform_ubuntu
 # packages = pam
 
-{{% if 'ubuntu' in product %}}
 config_file=/usr/share/pam-configs/tmp_unix
 
 cat << EOF > "$config_file"
@@ -27,16 +26,10 @@ Session-Initial:
 	required	pam_unix.so
 Password-Type: Primary
 Password:
-	[success=end default=ignore]	pam_unix.so obscure use_authtok try_first_pass yescrypt
+	[success=end default=ignore]	pam_unix.so obscure use_authtok try_first_pass yescrypt nullok
 Password-Initial:
-	[success=end default=ignore]	pam_unix.so obscure yescrypt
+	[success=end default=ignore]	pam_unix.so obscure use_authtok try_first_pass yescrypt nullok
 EOF
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update --enable tmp_unix
-
+DEBIAN_FRONTEND=noninteractive pam-auth-update
 rm "$config_file"
-
-{{% else %}}
-sed -i --follow-symlinks '/nullok/d' /etc/pam.d/system-auth
-sed -i --follow-symlinks '/nullok/d' /etc/pam.d/password-auth
-{{% endif %}}

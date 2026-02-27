@@ -12,9 +12,9 @@ Priority: 257
 Conflicts: unix
 Auth-Type: Primary
 Auth:
-	[success=end default=ignore]	pam_unix.so nullok try_first_pass
+	[success=end default=ignore]	pam_unix.so try_first_pass # nullok
 Auth-Initial:
-	[success=end default=ignore]	pam_unix.so nullok
+	[success=end default=ignore]	pam_unix.so # nullok
 Account-Type: Primary
 Account:
 	[success=end new_authtok_reqd=done default=ignore]	pam_unix.so
