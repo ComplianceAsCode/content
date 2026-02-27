@@ -10,11 +10,11 @@ metadata:
         - rhmdnd
         - Vincent056
         - yuumasato
-    version: 1.7.0
+    version: 1.9.0
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
-    Red Hat OpenShift Container Platform 4 Benchmark™, V1.7.
+    Red Hat OpenShift Container Platform 4 Benchmark™, V1.9.0.
 
     This profile includes Center for Internet Security®
     Red Hat OpenShift Container Platform 4 CIS Benchmarks™ content.
@@ -24,4 +24,4 @@ description: |-
 
     This profile is applicable to OpenShift versions 4.12 and greater.
 
-extends: cis-1-7
+extends: cis-1-9
