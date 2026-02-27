@@ -61,3 +61,14 @@ vuldiscussion: |-
     When operating systems provide the capability to escalate a functional capability, it is critical the user re-authenticate.
 
 platform: package[pam]
+
+template:
+  name: pam_options
+  vars:
+    path: /etc/pam.d/su
+    type: auth
+    control_flag: required
+    module: pam_wheel.so
+    arguments:
+      - argument: use_uid
+        new_argument: use_uid
