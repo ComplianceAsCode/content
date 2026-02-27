@@ -17,6 +17,7 @@ description: |-
 selections:
     - installed_OS_is_FIPS_certified
     - login_banner_text=dod_banners
+    - login_banner_contents=dod_default
     - inactivity_timeout_value=15_minutes
     - var_password_pam_minlen=15
     - accounts_password_pam_minlen

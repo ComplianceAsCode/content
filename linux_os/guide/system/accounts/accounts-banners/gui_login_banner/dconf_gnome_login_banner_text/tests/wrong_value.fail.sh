@@ -7,8 +7,8 @@ source $SHARED/dconf_test_functions.sh
 
 install_dconf_and_gdm_if_needed
 
-login_banner_text="Wrong Banner Text"
-expanded=$(echo "$login_banner_text" | sed 's/(\\\\\x27)\*/\\\x27/g;s/(\\\x27)\*//g;s/(\\\\\x27)/tamere/g;s/(\^\(.*\)\$|.*$/\1/g;s/\[\\s\\n\][+*]/ /g;s/\\//g;s/(n)\*/\\n/g;s/\x27/\\\x27/g;')
+login_banner_contents="Wrong Banner Text"
+expanded=$(echo "$login_banner_contents" | sed 's/(\\\\\x27)\*/\\\x27/g;s/(\\\x27)\*//g;s/(\\\\\x27)/tamere/g;s/(\^\(.*\)\$|.*$/\1/g;s/\[\\s\\n\][+*]/ /g;s/\\//g;s/(n)\*/\\n/g;s/\x27/\\\x27/g;')
 
 clean_dconf_settings
 add_dconf_setting "org/gnome/login-screen" "banner-message-text" "'${expanded}'" "{{{ dconf_gdm_dir }}}" "00-security-settings"

@@ -468,6 +468,7 @@ controls:
       rules:
           - banner_etc_motd
           - motd_banner_text=cis_banners
+          - motd_banner_contents=cis_default
 
     - id: 1.7.2
       title: Ensure local login warning banner is configured properly (Automated)
@@ -477,6 +478,7 @@ controls:
       rules:
           - banner_etc_issue
           - login_banner_text=cis_banners
+          - login_banner_contents=cis_default
 
     - id: 1.7.3
       title: Ensure remote login warning banner is configured properly (Automated)
@@ -486,6 +488,7 @@ controls:
       rules:
           - banner_etc_issue_net
           - remote_login_banner_text=cis_banners
+          - remote_login_banner_contents=cis_default
 
     - id: 1.7.4
       title: Ensure permissions on /etc/motd are configured (Automated)

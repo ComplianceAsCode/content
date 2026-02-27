@@ -130,6 +130,8 @@ dconf_gnome_screensaver_idle_delay
 dconf_gnome_screensaver_lock_delay
 dconf_gnome_screensaver_user_locks
 dconf_gnome_session_idle_user_locks
+dconf_login_banner_contents=cis_default
+dconf_login_banner_text=cis_banners
 dir_perms_world_writable_sticky_bits
 directory_permissions_var_log_audit
 disable_host_auth
@@ -283,7 +285,6 @@ kernel_module_squashfs_disabled
 kernel_module_tipc_disabled
 kernel_module_udf_disabled
 kernel_module_usb-storage_disabled
-login_banner_text=cis_banners
 mount_option_dev_shm_nodev
 mount_option_dev_shm_noexec
 mount_option_dev_shm_nosuid

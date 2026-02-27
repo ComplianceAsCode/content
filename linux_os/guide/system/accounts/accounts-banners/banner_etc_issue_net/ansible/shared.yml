@@ -3,9 +3,9 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-{{{ ansible_instantiate_variables("remote_login_banner_text") }}}
+{{{ ansible_instantiate_variables("remote_login_banner_contents") }}}
 
 - name: "{{{ rule_title }}} - ensure correct banner"
   ansible.builtin.copy:
     dest: /etc/issue.net
-    content: '{{{ ansible_deregexify_banner_etc_issue("remote_login_banner_text") }}}'
+    content: "{{ remote_login_banner_contents | replace('\\n', '\n') }}\n"
