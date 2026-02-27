@@ -40,13 +40,27 @@
 
 {{% endif %}}
 
+{{% if "rhel" in families and major_version_ordinal >= 10 %}}
+- name: "{{{ rule_title }}}: Set Fact - Valid fingerprints (without PQC)"
+  ansible.builtin.set_fact:
+    gpg_valid_fingerprints:
+    - "{{{ release_key_fingerprint }}}"
+    - "{{{ auxiliary_key_fingerprint }}}"
+  when: ansible_distribution_version is version('10.1', '<')
+
+- name: "{{{ rule_title }}}: Set Fact - Valid fingerprints (with PQC)"
+  ansible.builtin.set_fact:
+    gpg_valid_fingerprints:
+    - "{{{ release_key_fingerprint }}}"
+    - "{{{ auxiliary_key_fingerprint }}}"
+    - "{{{ pqc_key_fingerprint }}}"
+  when: ansible_distribution_version is version('10.1', '>=')
+{{% else %}}
 - name: "{{{ rule_title }}}: Set Fact - Valid fingerprints"
   ansible.builtin.set_fact:
     gpg_valid_fingerprints:
     - "{{{ release_key_fingerprint }}}"
     - "{{{ auxiliary_key_fingerprint }}}"
-{{% if "rhel" in families  and major_version_ordinal >= 10 %}}
-    - "{{{ pqc_key_fingerprint }}}"
 {{% endif %}}
 
 - name: "{{{ rule_title }}}: Import RedHat GPG key"
