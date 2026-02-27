@@ -1,7 +1,7 @@
 {{%- if product == 'ubuntu2404' %}}
 {{%- set ssh_approved_ciphers = "aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr" %}}
 {{%- endif %}}
-{{% set sshc_main_config = ssh_client_main_config_file %}}
+{{%- set sshc_main_config = ssh_client_main_config_file -%}}
 documentation_complete: true
 
 title: 'Use Only FIPS 140-3 Validated Ciphers in SSH Client Configuration'
