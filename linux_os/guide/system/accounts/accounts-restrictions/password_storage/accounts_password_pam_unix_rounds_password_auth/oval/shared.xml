@@ -1,4 +1,4 @@
-{{% if product in ["sle12", "sle15", "debian12", "debian13", 'ubuntu2204', 'ubuntu2404'] %}}
+{{% if product in ["debian12", "debian13", "sle12", "sle15", "sle16", "ubuntu2204", "ubuntu2404"] %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}

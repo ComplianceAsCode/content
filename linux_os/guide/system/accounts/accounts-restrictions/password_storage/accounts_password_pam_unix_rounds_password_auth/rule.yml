@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: 'Set number of Password Hashing Rounds - password-auth'
 
-{{% if product in ["sle12", "sle15", "debian12", "debian13", 'ubuntu2204', 'ubuntu2404'] %}}
+{{% if product in ["debian12", "debian13", "sle12", "sle15", "sle16", "ubuntu2204", "ubuntu2404"] %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}
@@ -19,7 +19,7 @@ description: |-
     <pre>password [success=1 default=ignore] pam_unix.so <i>...existing_options...</i> rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
     {{% else %}}
     <pre>password sufficient pam_unix.so <i>...existing_options...</i> rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
-    
+
     The system's default number of rounds is 5000.
     {{% endif %}}
 
@@ -67,5 +67,5 @@ fixtext: |-
     {{% else %}}
     password sufficient pam_unix.so sha512 rounds=5000
     {{% endif %}}
-    
+
 srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds in {{{ pam_passwd_file_path }}}.'
