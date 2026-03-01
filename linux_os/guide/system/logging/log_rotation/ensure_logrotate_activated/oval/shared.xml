@@ -25,7 +25,11 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_logrotate_conf_daily_setting" version="2">
+{{% if product == 'sle16' %}}
+    <ind:filepath>/usr/etc/logrotate.conf</ind:filepath>
+{{% else %}}
     <ind:filepath>/etc/logrotate.conf</ind:filepath>
+{{% endif %}}
     <ind:pattern operation="pattern match">^\s*daily[\s#]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -37,7 +41,11 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_logrotate_conf_no_other_keyword" version="2">
+{{% if product == 'sle16' %}}
+    <ind:filepath>/usr/etc/logrotate.conf</ind:filepath>
+{{% else %}}
     <ind:filepath>/etc/logrotate.conf</ind:filepath>
+{{% endif %}}
     <ind:pattern operation="pattern match">^\s*(weekly|monthly|yearly)[\s#]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
