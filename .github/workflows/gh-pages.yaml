@@ -63,7 +63,7 @@ jobs:
           git-config-name: openscap-ci
           git-config-email: openscap-ci@gmail.com
       - name: Upload artifact if the event is pull request
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v4
         if: ${{ github.event_name == 'pull_request' }}
         with:
           name: built-content

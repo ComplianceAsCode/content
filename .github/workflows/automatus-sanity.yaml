@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
       - name: Build product
         run: ./build_product fedora --debug
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v4
         with:
           name: ${{ env.DATASTREAM }}
           path: build/${{ env.DATASTREAM }}
