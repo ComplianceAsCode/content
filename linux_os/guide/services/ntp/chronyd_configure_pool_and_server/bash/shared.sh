@@ -5,6 +5,8 @@
 
 config_file="{{{ chrony_conf_path }}}"
 
+sed -i -e '$a\' "$config_file"
+
 # Check and configigure servers in {{{ chrony_conf_path }}}
 IFS="," read -a SERVERS <<< $var_multiple_time_servers
 for srv in "${SERVERS[@]}"
