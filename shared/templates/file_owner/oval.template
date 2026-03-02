@@ -22,7 +22,7 @@
   {{%- else %}}
   {{%- for own in OWNERS %}}
   <unix:password_object id="object_file_owner{{{ FILEID }}}_{{{ own }}}_uid" version="1">
-    <unix:username operation="pattern match">{{{ own }}}</unix:username>
+    <unix:username operation="equals">{{{ own }}}</unix:username>
   </unix:password_object>
   <local_variable id="var_file_owner{{{ FILEID }}}_{{{ own }}}_uid" comment="Retrieve the uid of {{{ own }}}" datatype="int" version="1">
     <object_component item_field="user_id" object_ref="object_file_owner{{{ FILEID }}}_{{{ own }}}_uid" />

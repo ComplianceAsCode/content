@@ -2,7 +2,10 @@
 {{%- if NO_REMEDIATION %}}
 # remediation = none
 {{%- endif %}}
+
 useradd testuser_123
+
+{{% set OWNERS=UID_OR_NAME.split("|") %}}
 {{%- for own in OWNERS %}}
 id "{{{ own }}}" &>/dev/null || useradd {{{ own }}}
 {{%- endfor %}}
