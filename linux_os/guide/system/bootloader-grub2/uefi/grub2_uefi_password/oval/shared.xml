@@ -4,9 +4,16 @@
 
     <criteria operator="OR">
       <criterion comment="make sure a password is defined in {{{ grub2_uefi_boot_path }}}/user.cfg" test_ref="test_grub2_uefi_password_usercfg" />
+{{% if product in ["rhel8"] %}}
+<!-- In RHEL 8 cloud images (eg. AWS) the /boot/efi/EFI/redhat/grub.cfg contains a stub pointing to /boot/grub2/grub.cfg -->
+      <criteria operator="AND" comment="check if {{{ grub2_uefi_boot_path }}}/grub.cfg is a stub pointing to {{{ grub2_boot_path }}}/grub.cfg">
+        <criterion comment="check if {{{ grub2_uefi_boot_path }}}/grub.cfg contains a configfile directive" test_ref="test_grub2_uefi_password_stub" />
+        <criterion comment="make sure a password is defined in {{{ grub2_boot_path }}}/user.cfg" test_ref="test_grub2_uefi_password_boot_usercfg" />
+      </criteria>
+{{% endif %}}
     </criteria>
   </definition>
-  
+
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="make sure a password is defined in {{{ grub2_uefi_boot_path }}}/user.cfg" id="test_grub2_uefi_password_usercfg" version="1">
     <ind:object object_ref="object_grub2_uefi_password_usercfg" />
   </ind:textfilecontent54_test>
@@ -15,5 +22,25 @@
     <ind:pattern operation="pattern match">^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+{{% if product in ["rhel8"] %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check if {{{ grub2_uefi_boot_path }}}/grub.cfg contains a configfile directive" id="test_grub2_uefi_password_stub" version="1">
+    <ind:object object_ref="object_grub2_uefi_password_stub" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_grub2_uefi_password_stub" version="1">
+    <ind:filepath>{{{ grub2_uefi_boot_path }}}/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*configfile\b.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="make sure a password is defined in {{{ grub2_boot_path }}}/user.cfg" id="test_grub2_uefi_password_boot_usercfg" version="1">
+    <ind:object object_ref="object_grub2_uefi_password_boot_usercfg" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_grub2_uefi_password_boot_usercfg" version="1">
+    <ind:filepath>{{{ grub2_boot_path }}}/user.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 
 </def-group>
