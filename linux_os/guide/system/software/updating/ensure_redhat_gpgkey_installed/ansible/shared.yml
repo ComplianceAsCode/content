@@ -64,9 +64,7 @@
 {{% endif %}}
 
 - name: "{{{ rule_title }}}: Import RedHat GPG key"
-  ansible.builtin.rpm_key:
-    state: present
-    key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+  ansible.builtin.command: rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
   when:
    - gpg_key_directory_permission.stat.mode <= '0755'
    - (gpg_installed_fingerprints | difference(gpg_valid_fingerprints)) | length == 0
