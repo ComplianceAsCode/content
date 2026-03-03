@@ -6,7 +6,22 @@
 
 {{{ ansible_instantiate_variables("var_logind_session_timeout") }}}
 
+- name: Remove StopIdleSessionSec from main config
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: '^\s*StopIdleSessionSec\s*='
+    state: absent
+
 {{% if product in ["ol9", "ol10", "rhel9", "rhel10", "sle15", "sle16"] %}}
+
+- name: Remove StopIdleSessionSec from drop-in files
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    regexp: '^\s*StopIdleSessionSec\s*='
+    state: absent
+  with_fileglob:
+    - /etc/systemd/logind.conf.d/*.conf
+
 # create drop-in in the /etc/systemd/logind.conf.d/ directory
 {{% set logind_conf_file = "/etc/systemd/logind.conf.d/oscap-idle-sessions.conf" %}}
 {{% else %}}
