@@ -32,6 +32,9 @@ selections:
     - var_password_pam_ucredit=1
     - var_accounts_maximum_age_login_defs=60
     - login_banner_text=dod_banners
+    - login_banner_contents=dod_default
+    - dconf_login_banner_text=dod_banners
+    - dconf_login_banner_contents=dod_default
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled

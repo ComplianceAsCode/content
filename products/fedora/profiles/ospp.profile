@@ -103,11 +103,14 @@ selections:
     - rsyslog_remote_loghost
     - auditd_audispd_encrypt_sent_records
     - login_banner_text=usgcb_default
+    - login_banner_contents=usgcb_default
     - sshd_enable_warning_banner
     - banner_etc_issue
     - sshd_rekey_limit
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
+    - dconf_login_banner_text=usgcb_default
+    - dconf_login_banner_contents=usgcb_default
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
     - audit_rules_login_events_tallylog

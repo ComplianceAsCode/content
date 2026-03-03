@@ -53,6 +53,7 @@ controls:
       rules:
           - banner_etc_issue
           - login_banner_text=dod_default
+          - login_banner_contents=dod_default
       status: automated
 
     - id: OL09-00-000020
@@ -1972,7 +1973,8 @@ controls:
           or remote access to the system via a graphical user logon.
       rules:
           - dconf_gnome_login_banner_text
-          - login_banner_text=dod_default
+          - dconf_login_banner_text=dod_default
+          - dconf_login_banner_contents=dod_default
 
     - id: OL09-00-002122
       levels:

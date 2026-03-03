@@ -154,6 +154,8 @@ dconf_gnome_screensaver_lock_enabled
 dconf_gnome_screensaver_lock_locked
 dconf_gnome_screensaver_user_locks
 dconf_gnome_session_idle_user_locks
+dconf_login_banner_contents=dod_default
+dconf_login_banner_text=dod_banners
 dir_group_ownership_library_dirs
 dir_ownership_library_dirs
 dir_permissions_library_dirs
@@ -225,6 +227,7 @@ kernel_module_sctp_disabled
 kernel_module_tipc_disabled
 kernel_module_usb-storage_disabled
 kernel_module_uvcvideo_disabled
+login_banner_contents=dod_default
 login_banner_text=dod_banners
 logind_session_timeout
 mount_option_boot_efi_nosuid

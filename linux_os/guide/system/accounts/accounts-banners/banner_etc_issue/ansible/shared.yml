@@ -1,15 +1,15 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
+# platform = multi_platform_all
 # reboot = false
 # strategy = unknown
 # complexity = low
 # disruption = medium
-{{{ ansible_instantiate_variables("login_banner_text") }}}
+{{{ ansible_instantiate_variables("login_banner_contents") }}}
 
 {{%- if product not in ['sle15', 'slmicro5', 'slmicro6'] -%}}
 - name: "{{{ rule_title }}} - Ensure Correct Banner"
   ansible.builtin.copy:
     dest: /etc/issue
-    content: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
+    content: "{{ login_banner_contents | replace('\\n', '\n') }}\n"
 {{%- else -%}}
 - name: {{{ rule_title }}} Ensure issue-generator is Installed
   ansible.builtin.package:
@@ -19,7 +19,7 @@
 - name: "{{{ rule_title }}} - Ensure Correct Banner"
   ansible.builtin.copy:
     dest: /etc/issue.d/99-oscap-setting
-    content: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
+    content: "{{ login_banner_contents | replace('\\n', '\n') }}\n"
 
 - name: "{{{ rule_title }}} - Restart issue-generator Service on Issue Configuration Change"
   ansible.builtin.systemd:

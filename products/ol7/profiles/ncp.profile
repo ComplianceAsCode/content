@@ -36,6 +36,7 @@ extends: ospp
 selections:
     - installed_OS_is_vendor_supported
     - login_banner_text=usgcb_default
+    - login_banner_contents=usgcb_default
     - inactivity_timeout_value=15_minutes
     - var_password_pam_minlen=15
     - accounts_password_all_shadowed
@@ -323,6 +324,8 @@ selections:
     - dconf_gnome_disable_wifi_notification
     - dconf_gnome_enable_smartcard_auth
     - dconf_gnome_login_banner_text
+    - dconf_login_banner_text=usgcb_default
+    - dconf_login_banner_contents=usgcb_default
     - dconf_gnome_login_retries
     - dconf_gnome_remote_access_credential_prompt
     - dconf_gnome_remote_access_encryption

@@ -55,6 +55,8 @@ dconf_gnome_disable_user_list
 dconf_gnome_login_banner_text
 dconf_gnome_screensaver_idle_delay
 dconf_gnome_screensaver_lock_delay
+dconf_login_banner_contents=cis_default
+dconf_login_banner_text=cis_banners
 directory_permissions_var_log_audit
 enable_authselect
 ensure_root_password_configured
@@ -78,7 +80,10 @@ inactivity_timeout_value=5_minutes
 kernel_module_squashfs_disabled
 kernel_module_udf_disabled
 kernel_module_usb-storage_disabled
+login_banner_contents=cis_default
 login_banner_text=cis_banners
+motd_banner_contents=cis_default
+motd_banner_text=cis_banners
 mount_option_boot_efi_nosuid
 mount_option_boot_nodev
 mount_option_boot_noexec
@@ -98,6 +103,7 @@ package_telnet-server_removed
 package_tftp-server_removed
 package_usbguard_installed
 package_vsftpd_removed
+remote_login_banner_contents=cis_default
 remote_login_banner_text=cis_banners
 selinux_policytype
 selinux_state
