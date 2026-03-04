@@ -323,7 +323,6 @@ package_chrony_installed
 package_cron_installed
 package_cyrus-imapd_removed
 package_dhcp_removed
-package_dnsmasq_removed
 package_dovecot_removed
 package_firewalld_installed
 package_ftp_removed
@@ -376,6 +375,7 @@ service_bluetooth_disabled
 service_cockpit_disabled
 service_crond_enabled
 service_cups_disabled
+service_dnsmasq_disabled
 service_firewalld_enabled
 service_nfs_disabled
 service_rpcbind_disabled
