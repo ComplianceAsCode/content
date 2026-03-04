@@ -45,3 +45,4 @@ selections:
     - file_etc_security_opasswd
     - sshd_use_strong_macs
     - configure_ssh_crypto_policy
+    - package_dnsmasq_removed

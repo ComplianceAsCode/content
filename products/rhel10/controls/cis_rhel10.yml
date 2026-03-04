@@ -818,6 +818,8 @@ controls:
           - l1_workstation
       status: automated
       rules:
+          - service_dnsmasq_disabled
+      related_rules:
           - package_dnsmasq_removed
 
     - id: 2.1.7
