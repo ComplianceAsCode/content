@@ -25,6 +25,18 @@ sed -i -E '/^Password-Initial:/,/^[^[:space:]]/ {
     }
 }' "$config_file"
 
+sed -i -E '/^Auth:/,/^[^[:space:]]/ {
+    /pam_unix\.so/ {
+        s/\s*nullok//g
+    }
+}' "$config_file"
+
+sed -i -E '/^Auth-Initial:/,/^[^[:space:]]/ {
+    /pam_unix\.so/ {
+        s/\s*nullok//g
+    }
+}' "$config_file"
+
 DEBIAN_FRONTEND=noninteractive pam-auth-update
 {{% else %}}
 if [ -f /usr/bin/authselect ]; then
