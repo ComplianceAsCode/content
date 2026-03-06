@@ -13,9 +13,9 @@ CUSTOM_PROFILE_DIR="/etc/authselect/custom/testingProfile"
 
 authselect select --force custom/testingProfile
 
-truncate -s 0 /etc/security/faillock.conf
+truncate -s 0 "{{{ pam_faillock_conf_path }}}"
 
-echo "$PRM_NAME = $TEST_VALUE" > /etc/security/faillock.conf
+echo "$PRM_NAME = $TEST_VALUE" > "{{{ pam_faillock_conf_path }}}"
 
 {{{ bash_pam_faillock_enable() }}}
 

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R5
+    version: V2R6
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V2R5.
+    DISA STIG for Oracle Linux 8 V2R6.
 
 selections:
     ### Variables
@@ -65,6 +65,7 @@ selections:
     - var_multiple_time_servers=stig
 
     ### Enable / Configure FIPS
+    # OL08-00-010293, OL08-00-010020
     - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
@@ -72,6 +73,7 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
+    - sysctl_crypto_fips_enabled
 
     # Other needed rules
     - enable_authselect
@@ -85,9 +87,6 @@ selections:
 
     # OL08-00-010019
     - ensure_oracle_gpgkey_installed
-
-    # OL08-00-010020
-    - sysctl_crypto_fips_enabled
 
     # OL08-00-010030
     - encrypt_partitions
@@ -202,9 +201,6 @@ selections:
 
     # OL08-00-010292
     - sshd_use_strong_rng
-
-    # OL08-00-010293
-    - configure_openssl_crypto_policy
 
     # OL08-00-010294
     - configure_openssl_tls_crypto_policy
@@ -468,6 +464,7 @@ selections:
 
     # OL08-00-010770
     - file_permission_user_init_files_root
+    - rootfiles_configured
 
     # OL08-00-010780
     - no_files_unowned_by_user
@@ -965,7 +962,7 @@ selections:
     - grub2_pti_argument
 
     # OL08-00-040010
-    - package_rsh-server_removed
+    - ensure_epel_repos_disabled
 
     # OL08-00-040020
     - kernel_module_uvcvideo_disabled
@@ -1162,7 +1159,7 @@ selections:
     - sysctl_kernel_kptr_restrict
 
     # OL08-00-040284
-    - sysctl_user_max_user_namespaces
+    - sysctl_user_max_user_namespaces_no_remediation
 
     # OL08-00-040285
     - sysctl_net_ipv4_conf_all_rp_filter

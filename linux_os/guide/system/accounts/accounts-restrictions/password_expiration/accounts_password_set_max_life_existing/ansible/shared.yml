@@ -16,7 +16,7 @@
 {{% if product in ["ol7"] %}}
   ansible.builtin.command:
     cmd: chage -M {{ var_accounts_maximum_age_login_defs }} {{ item }}
-{{% elif product in ["sle12","sle15","slmicro6"] %}}
+{{% elif 'sle' in product or 'slmicro' in product %}}
   ansible.builtin.command:
     cmd:  passwd -q -x {{ var_accounts_maximum_age_login_defs }} {{ item }}
 {{% else %}}

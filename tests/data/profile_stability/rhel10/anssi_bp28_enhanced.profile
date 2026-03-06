@@ -212,6 +212,7 @@ package_dnf-automatic_installed
 package_kea_removed
 package_logrotate_installed
 package_rsyslog-gnutls_installed
+package_sequoia-sq_installed
 package_sssd_installed
 package_sudo_installed
 package_telnet-server_removed

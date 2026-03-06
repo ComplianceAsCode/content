@@ -64,3 +64,4 @@ selections:
   - '!ensure_gpgcheck_never_disabled'
   - '!ensure_oracle_gpgkey_installed'
   - '!ensure_almalinux_gpgkey_installed'
+  - '!package_sequoia-sq_installed'

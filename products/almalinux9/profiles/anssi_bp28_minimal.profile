@@ -32,4 +32,5 @@ selections:
   - '!accounts_passwords_pam_tally2_unlock_time'
   - '!ensure_oracle_gpgkey_installed'
   - '!ensure_redhat_gpgkey_installed'
+  - '!package_sequoia-sq_installed'
   - '!package_kea_removed'

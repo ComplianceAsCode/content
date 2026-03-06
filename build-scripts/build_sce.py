@@ -26,7 +26,6 @@ Note that every SCE script must begin with a shebang, otherwise OpenSCAP
 will fail to interpret (thinking it is XML)!
 """
 
-from __future__ import print_function
 
 import argparse
 

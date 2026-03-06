@@ -1,19 +1,11 @@
 #!/usr/bin/python3
-from __future__ import print_function
 
 import logging
 import socket
-import sys
 import time
 import xml.etree.ElementTree as ET
 
 import libvirt
-
-# Needed for compatibility as there is no TimeoutError in python2.
-if sys.version_info[0] < 3:
-    TimeoutException = socket.timeout
-else:
-    TimeoutException = TimeoutError
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -152,7 +144,7 @@ def determine_ip(domain):
                             0)
 
     # get IPv4 address of the guest
-    for (name, val) in ifaces.items():
+    for (_, val) in ifaces.items():
         if val['hwaddr'] == domain_mac and val['addrs']:
             for ipaddr in val['addrs']:
                 if ipaddr['type'] == libvirt.VIR_IP_ADDR_TYPE_IPV4:
@@ -202,7 +194,7 @@ def reboot_domain(domain, domain_ip, ssh_port):
                 str_err = ("Timeout reached: '{0}' ({1}:{2}) domain does not "
                            "accept connections.".format(domain.name(), domain_ip, ssh_port))
                 logging.debug(str_err)
-                raise TimeoutException(str_err)
+                raise TimeoutError(str_err) from None
         else:
             ssh_socket.close()
             break

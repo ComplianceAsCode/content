@@ -30,6 +30,7 @@ excluded_fstypes=(
     lustre
     davfs
     fuse.sshfs
+    vfat
 )
 
 for partition_record in "${partitions_records[@]}"; do
@@ -37,6 +38,11 @@ for partition_record in "${partitions_records[@]}"; do
     mount_point="$(echo "${partition_record}" | cut -d " " -f1)"
     device="$(echo "${partition_record}" | cut -d " " -f2)"
     device_type="$(echo "${partition_record}" | cut -d " " -f3)"
+
+    # Skip /boot and /efi partitions
+    if [[ "$mount_point" =~ ^/(boot|efi) ]]; then
+        continue
+    fi
 
     # Skip polyinstantiated directories
     if printf '%s\0' "${polyinstantiated_dirs[@]}" | grep -qxzF "$mount_point"; then
@@ -59,5 +65,5 @@ for partition_record in "${partitions_records[@]}"; do
     {{{ bash_ensure_partition_is_mounted("$mount_point")     | indent(4) }}}
 done
 
-# Remediate unmounted /etc/fstab entries
-sed -i -E '/nodev/! s;^\s*(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(\S+)(.*)$;\1 \2 \3 \4,nodev \5;' /etc/fstab
+# Remediate unmounted /etc/fstab entries, excluding /boot, /efi, and vfat partitions
+sed -i -E '/nodev/! { /^\s*(\/dev\/\S+|UUID=\S+)\s+\/(boot|efi)/! { /^\s*(\/dev\/\S+|UUID=\S+)\s+\/\w\S*\s+vfat\s/! s;^\s*(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(\S+)(.*)$;\1 \2 \3 \4,nodev \5; } }' /etc/fstab

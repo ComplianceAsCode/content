@@ -10,7 +10,7 @@
 
 - name: {{{ rule_title }}} - Set fact for sysctl paths
   ansible.builtin.set_fact:
-{{% if product in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
     sysctl_paths:
       - "/run/sysctl.d/"
       - "/etc/sysctl.d/"
@@ -22,7 +22,7 @@
       - "/run/sysctl.d/"
       - "/usr/local/lib/sysctl.d/"
 {{% endif %}}
-{{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
+{{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "sle16", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
       - "/usr/lib/sysctl.d/"
 {{% endif %}}
 
@@ -65,9 +65,11 @@
 {{% if sysctl_remediate_drop_in_file == "true" %}}
 - name: {{{ rule_title }}} - Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
   ansible.builtin.replace:
-    path: "/etc/sysctl.conf"
+    path: "{{ item }}"
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'
     replace: '#{{{ SYSCTLVAR }}}'
+  with_fileglob:
+    - "/etc/sysctl.conf"
 {{% endif %}}
 
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
@@ -88,4 +90,3 @@
 {{% endif %}}
     state: present
     reload: yes
-

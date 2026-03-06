@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="grub2_uefi_password" version="1">
+    {{{ oval_metadata("The UEFI grub2 boot loader should have password protection enabled.") }}}
+
+    <criteria operator="AND">
+      <criterion comment="make sure a password is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg" test_ref="test_grub2_uefi_password_grubcfg" />
+      <criterion comment="make sure a superuser is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg" test_ref="test_bootloader_uefi_superuser"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg" id="test_bootloader_uefi_superuser" version="2">
+    <ind:object object_ref="object_bootloader_uefi_superuser" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_bootloader_uefi_superuser" version="2">
+    <ind:filepath>{{{ grub2_uefi_boot_path }}}/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=("?)[a-zA-Z_]+\1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="make sure a password is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg" id="test_grub2_uefi_password_grubcfg" version="1">
+    <ind:object object_ref="object_grub2_uefi_password_grubcfg" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_grub2_uefi_password_grubcfg" version="1">
+    <ind:filepath>{{{ grub2_uefi_boot_path }}}/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*password_pbkdf2[\s]+.*[\s]+grub\.pbkdf2\.sha512.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

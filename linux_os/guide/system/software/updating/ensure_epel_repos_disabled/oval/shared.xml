@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="ensure_epel_repos_disabled" version="1">
+    {{{ oval_metadata("The EPEL repository should be disabled or not present on the system.",
+        rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criterion comment="Check if EPEL repository sections don't exist" test_ref="test_no_epel_sections" />
+      <criterion comment="Check if EPEL repositories are disabled" test_ref="test_epel_repos_disabled" />
+    </criteria>
+  </definition>
+
+  <!-- Test to check if EPEL sections don't exist at all -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+      comment="Ensure no EPEL repository sections exist"
+      id="test_no_epel_sections" version="1">
+    <ind:object object_ref="object_epel_section_headers" />
+  </ind:textfilecontent54_test>
+
+  <!-- Object to find EPEL section headers in repository files -->
+  <ind:textfilecontent54_object id="object_epel_section_headers" version="1">
+    <ind:filepath operation="pattern match">^/etc/yum\.repos\.d/.*\.repo$</ind:filepath>
+    <ind:pattern operation="pattern match">(?i)^\s*\[[^\]]*epel[^\]]*\]</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test to check if EPEL repositories are disabled (enabled=0) -->
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="Ensure all EPEL repositories have enabled=0"
+      id="test_epel_repos_disabled" version="1">
+    <ind:object object_ref="object_epel_repos_check_disabled" />
+    <ind:state state_ref="state_epel_disabled" />
+  </ind:textfilecontent54_test>
+
+  <!-- Object to find enabled settings after EPEL sections -->
+  <ind:textfilecontent54_object id="object_epel_repos_check_disabled" version="1">
+    <ind:filepath operation="pattern match">^/etc/yum\.repos\.d/.*\.repo$</ind:filepath>
+    <!-- Match enabled line that comes after an EPEL section header -->
+    <ind:pattern operation="pattern match">(?i)(?:^\s*\[[^\]]*epel[^\]]*\][\s\S]*?)^\s*enabled\s*=\s*(\S+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- State to check that enabled is set to 0, false, or no -->
+  <ind:textfilecontent54_state id="state_epel_disabled" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(0|[Ff]alse|[Nn]o)$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

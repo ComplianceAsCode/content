@@ -4,12 +4,22 @@
 # complexity = low
 # disruption = low
 
-{{% for sub_policy in SUB_POLICIES %}}
-{{{ bash_file_contents("/etc/crypto-policies/policies/modules/" ~ sub_policy.module_name ~ ".pmod", sub_policy.key ~ " = " ~ sub_policy.value) }}}
-{{% endfor %}}
+expected_crypto_policy="{{{ BASE_POLICY }}}"
+
+{{% for sub_policy in SUB_POLICIES -%}}
+{{% if "scope" in sub_policy %}}
+# this module is applicable only if {{{ sub_policy.scope }}} scope is available in crypto-policies
+if [[ -f /etc/crypto-policies/back-ends/{{{ sub_policy.scope }}}.config ]] ; then
+{{%- endif %}}
+expected_crypto_policy="${expected_crypto_policy}:{{{ sub_policy.module_name }}}"
+{{{ bash_file_contents("/etc/crypto-policies/policies/modules/" ~ sub_policy.module_name ~ ".pmod", sub_policy.key ~ " = " ~ sub_policy.value) | trim }}}
+{{% if "scope" in sub_policy -%}}
+fi
+{{% endif %}}
+{{%- endfor %}}
 
 current_crypto_policy=$(update-crypto-policies --show)
-expected_crypto_policy="{{{ BASE_POLICY }}}:{{{ CONFIGURE_CRYPTO_POLICY_MODULES }}}"
+
 if [[ "$current_crypto_policy" != "$expected_crypto_policy" ]] ; then
     update-crypto-policies --set "$expected_crypto_policy"
 fi

@@ -4,10 +4,10 @@ on:
     workflows: ["Compare DS Build"]
     types:
       - completed
-    branches: [master, 'stabilization*']
 permissions:
     pull-requests: write
     contents: read
+    actions: read
 jobs:
   build-content:
     name: Generate Diff
@@ -19,8 +19,27 @@ jobs:
         run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 git python3-deepdiff python3-requests jq python3-pip python3-setuptools
       - name: Install deps python
         run: pip install gitpython xmldiff
+      - name: Download PR info
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          name: pr-info
+          path: pr-info/
+      - name: Get PR info
+        id: pr_info
+        run: |
+          PR_NUMBER=$(cat pr-info/pr-number.txt)
+          BASE_BRANCH=$(cat pr-info/base-branch.txt)
+          FORK_POINT=$(cat pr-info/fork-point.txt)
+          echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
+          echo "base_branch=${BASE_BRANCH}" >> $GITHUB_OUTPUT
+          echo "fork_point=${FORK_POINT}" >> $GITHUB_OUTPUT
+          echo "PR Number: ${PR_NUMBER}"
+          echo "Base Branch: ${BASE_BRANCH}"
+          echo "Fork Point: ${FORK_POINT}"
       - name: Checkout master
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
         with:
           repo: ComplianceAsCode/content
           ref: master
@@ -28,18 +47,16 @@ jobs:
       # https://github.com/actions/checkout/issues/766
       - name: Set git safe directory
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-      - name: Find forking point
-        env:
-          BASE_BRANCH: ${{ github.base_ref }}
-        run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
-        id: fork_point
       - name: Checkout (CTF)
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
       - name: Detect content changes in the PR
-        run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json ${{ github.event.pull_request.number }} > output.json
+        env:
+            PR_NUMBER: ${{ steps.pr_info.outputs.pr_number }}
+            FORK_POINT: ${{ steps.pr_info.outputs.fork_point }}
+        run: python3 ./ctf/content_test_filtering.py pr --base "$FORK_POINT" --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json "$PR_NUMBER" > output.json
       - name: Test if there are no content changes
         run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
@@ -53,21 +70,23 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'product'
-      - name: Download built product ${{ github.base_ref }} (${{ steps.fork_point.outputs.FORK_POINT }})
+      - name: Download built product ${{ steps.pr_info.outputs.base_branch }} (${{ steps.pr_info.outputs.fork_point }})
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
             name: pr-artifacts-${{ github.event.workflow_run.head_sha }}
             path: pr_artifacts
+            run-id: ${{ github.event.workflow_run.id }}
       - name: Unpack built artifacts
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tar -xvzf pr_artifacts/artifacts.tar.gz -C pr_artifacts/unpacked_artifacts
+        run: tar -xvzf pr_artifacts/artifacts.tar.gz -C pr_artifacts
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
       - name: Compare datastreams
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: utils/compare_ds.py pr_artifacts/unpacked_artifacts/ssg-${{steps.product.outputs.prop}}-ds.xml build/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
+        run: utils/compare_ds.py build/ssg-${{steps.product.outputs.prop}}-ds.xml pr_artifacts/artifacts/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Test if there are datastream changes
@@ -90,7 +109,7 @@ jobs:
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
         id: fc
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.pr_info.outputs.pr_number }}
           comment-author: 'github-actions[bot]'
           body-includes: This datastream diff is auto generated by the check
       - name: Create or update comment
@@ -98,7 +117,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v4
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.pr_info.outputs.pr_number }}
           body: |
             This datastream diff is auto generated by the check `Compare DS/Generate Diff`
             <details>
@@ -115,7 +134,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v4
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.pr_info.outputs.pr_number }}
           body: |
             This datastream diff is auto generated by the check `Compare DS/Generate Diff`.
             Due to the excessive size of the diff, it has been trimmed to fit the 65535-character limit.
@@ -150,14 +169,14 @@ jobs:
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
         id: shell_diff
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.pr_info.outputs.pr_number }}
           comment-author: 'github-actions[bot]'
           body-includes: Change in Ansible 'shell' module found.
       - name: Create comment
         if: ${{ steps.ansible_shell_diff.outputs.SHELL_DIFF_OUTPUT_SIZE != '0' && steps.shell_diff.outputs.comment-id == 0 }}
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v4
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.pr_info.outputs.pr_number }}
           body: |
             Change in Ansible `shell` module found.
 

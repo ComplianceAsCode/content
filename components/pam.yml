@@ -39,6 +39,7 @@ rules:
 - accounts_password_all_shadowed_sha512
 - accounts_password_last_change_is_in_past
 - accounts_password_minlen_login_defs
+- accounts_password_pam_modules_in_authselect_profile
 - accounts_password_pam_pwhistory_enabled
 - accounts_password_pam_pwhistory_enforce_root
 - accounts_password_pam_pwhistory_enforce_for_root
@@ -68,6 +69,7 @@ rules:
 - accounts_passwords_pam_faillock_silent
 - accounts_passwords_pam_faillock_root_unlock_time
 - accounts_passwords_pam_faillock_unlock_time
+- accounts_passwords_pam_faillock_unlock_time_with_zero
 - accounts_passwords_pam_faillock_enabled
 - accounts_passwords_pam_tally2
 - accounts_passwords_pam_tally2_deny_root
@@ -145,6 +147,7 @@ rules:
 - no_root_webbrowsing
 - no_shelllogin_for_systemaccounts
 - package_nss_sss_installed
+- package_pam_installed
 - package_pam_apparmor_installed
 - package_pam_modules_installed
 - package_pam_pwquality_installed

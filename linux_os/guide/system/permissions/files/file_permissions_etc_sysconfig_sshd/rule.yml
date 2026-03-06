@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /etc/sysconfig/sshd File'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/sysconfig/sshd", perms="0640") }}}
+
+rationale: |-
+    The <tt>/etc/sysconfig/sshd</tt> file contains configuration options for the SSH daemon.
+    Protection of this file is important for system security. The file should have mode 0640
+    or more restrictive to prevent unauthorized access and modifications.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89270-3
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/sysconfig/sshd", perms="-rw-r-----") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/sysconfig/sshd", perms="-rw-r-----") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/sysconfig/sshd", mode="0640") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/sysconfig/sshd", mode="0640") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/sysconfig/sshd
+        filemode: '0640'
+        allow_stricter_permissions: "true"
+
+platform: system_with_kernel

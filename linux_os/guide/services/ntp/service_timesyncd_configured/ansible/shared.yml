@@ -5,36 +5,15 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
 
+{{% set timesyncd_conf_file = "/etc/systemd/timesyncd.conf.d/oscap-remedy.conf" %}}
+
 - name: {{{ rule_title }}} - Set Primary NTP Servers
   ansible.builtin.set_fact:
-    preferred_ntp_servers: '{{ var_multiple_time_servers.split(",") | slice(2)| first |
-    join(",") }}'
+    preferred_ntp_servers: '{{ var_multiple_time_servers.split(",") | slice(2)| first | join(" ") }}'
 
 - name: {{{ rule_title }}} - Set Fallback NTP Servers
   ansible.builtin.set_fact:
-    fallback_ntp_servers: '{{ var_multiple_time_servers.split(",") | slice(2)| list | last |
-    join(",") }}'
+    fallback_ntp_servers: '{{ var_multiple_time_servers.split(",") | slice(2)| list | last | join(" ") }}'
 
-- name: {{{ rule_title }}} - Add missing / update wrong records for NTP servers
-  ansible.builtin.lineinfile:
-    {{% if "ubuntu" in product %}}
-    path: /etc/systemd/timesyncd.conf.d/oscap-remedy.conf
-    {{% else %}}
-    path: /etc/systemd/timesyncd.d/oscap-remedy.conf
-    {{% endif %}}
-    regexp: '^\s*NTP\s*='
-    state: present
-    line: 'NTP={{ preferred_ntp_servers }}'
-    create: true
-
-- name: {{{ rule_title }}} - Add missing / update wrong records for fallback servers
-  ansible.builtin.lineinfile:
-    {{% if "ubuntu" in product %}}
-    path: /etc/systemd/timesyncd.conf.d/oscap-remedy.conf
-    {{% else %}}
-    path: /etc/systemd/timesyncd.d/oscap-remedy.conf
-    {{% endif %}}
-    regexp: '^\s*FallbackNTP\s*='
-    state: present
-    line: 'FallbackNTP={{ fallback_ntp_servers }}'
-    create: true
+{{{ ansible_ini_file_set(timesyncd_conf_file, "Time", "NTP", "{{ preferred_ntp_servers }}") }}}
+{{{ ansible_ini_file_set(timesyncd_conf_file, "Time", "FallbackNTP", "{{ fallback_ntp_servers }}") }}}

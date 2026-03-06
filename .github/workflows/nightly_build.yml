@@ -13,7 +13,7 @@ jobs:
             -   name: Install Dependencies
                 run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible-lint libxslt ansible python3-setuptools
             -   name: Checkout
-                uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
             -   name: Install python deps
                 run: pip install -r requirements-base.txt -r test-requirements.txt
             -   name: Configure
@@ -32,7 +32,7 @@ jobs:
                 run: ninja -j2 package_source
                 working-directory: ./build
             -   name: 'Upload Artifact'
-                uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v4
+                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
                 with:
                   name: Nightly Build
                   path: |

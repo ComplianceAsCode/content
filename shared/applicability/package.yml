@@ -35,7 +35,11 @@ args:
   chrony:
     pkgname: chrony
   dnf:
+    {{% if product == "fedora" %}}
+    pkgname: dnf5
+    {{% else %}}
     pkgname: dnf
+    {{% endif %}}
   firewalld:
     pkgname: firewalld
   gdm:
@@ -47,13 +51,13 @@ args:
   iptables:
     pkgname: iptables
   libpwquality:
-    {{% if 'ubuntu' in product or 'debian' in product %}}
+    {{% if 'debian' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
     pkgname: libpwquality1
     {{% else %}}
     pkgname: libpwquality
     {{% endif %}}
   libreswan:
-    {{% if product == "sle15" %}}
+    {{% if product in  ["sle15", "sle16"] %}}
     pkgname: strongswan-ipsec
     {{% else %}}
     pkgname: libreswan
@@ -69,7 +73,11 @@ args:
       pkgname: snmp
     {{% endif %}}
   networkmanager:
+    {{% if product in ["ubuntu2204", "ubuntu2404"] %}}
+    pkgname: network-manager
+    {{% else %}}
     pkgname: NetworkManager
+    {{% endif %}}
   nftables:
       pkgname: nftables
   nss-pam-ldapd:
@@ -87,6 +95,8 @@ args:
     title: NTP daemon and utilities
   openssh:
     pkgname: openssh
+  openssh-server:
+    pkgname: openssh-server
   pam:
     {{% if pkg_system == "rpm" %}}
       pkgname: pam
@@ -103,7 +113,7 @@ args:
     pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
-    {{% if product in ["kylinserver10", "openeuler2203", "sle12", "sle15", "slmicro5", "slmicro6"] %}}
+    {{% if 'sle' in product or 'slmicro' in product or product in ["kylinserver10", "openeuler2203"] %}}
       pkgname: shadow
     {{% else %}}
       pkgname: shadow-utils
@@ -123,7 +133,7 @@ args:
   squid:
     pkgname: squid
   sssd:
-    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+    {{% if 'sle' in product or 'ubuntu' in product %}}
       pkgname: sssd
     {{% else %}}
       pkgname: sssd-common

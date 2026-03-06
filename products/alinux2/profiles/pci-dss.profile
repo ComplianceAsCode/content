@@ -25,6 +25,7 @@ selections:
     - '!set_loopback_traffic'
     - '!timer_logrotate_enabled'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     # Following rules once had a prodtype incompatible with the alinux2 product
     - '!auditd_data_retention_space_left'
     - '!grub2_audit_backlog_limit_argument'

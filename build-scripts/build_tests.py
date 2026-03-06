@@ -49,7 +49,7 @@ def _create_arg_parser() -> argparse.ArgumentParser:
 
 def _write_path(file_contents: str, output_path: os.PathLike) -> None:
     with open(output_path, "w") as file:
-        file.write(file_contents)
+        file.write(file_contents.replace('&amp;', '&'))
         file.write("\n")
 
 

@@ -205,4 +205,5 @@ selections:
     - '!audit_access_failed_aarch64'
     - '!zipl_systemd_debug-shell_argument_absent'
     - '!audit_modify_failed_ppc64le'
+    - '!package_sequoia-sq_installed'
 

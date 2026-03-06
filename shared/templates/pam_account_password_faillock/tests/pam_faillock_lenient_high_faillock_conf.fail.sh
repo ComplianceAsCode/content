@@ -6,6 +6,6 @@
 
 authselect select sssd --force
 authselect enable-feature with-faillock
-> /etc/security/faillock.conf
-echo "$PRM_NAME = $TEST_VALUE" >> /etc/security/faillock.conf
-echo "silent" >> /etc/security/faillock.conf
+> "{{{ pam_faillock_conf_path }}}"
+echo "$PRM_NAME = $TEST_VALUE" >> "{{{ pam_faillock_conf_path }}}"
+echo "silent" >> "{{{ pam_faillock_conf_path }}}"

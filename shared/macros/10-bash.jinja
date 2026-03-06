@@ -460,7 +460,7 @@ if ! rpm -q --quiet "{{{ package }}}" ; then
     {{{ pkg_manager }}} install -y "{{{ package }}}"
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
-DEBIAN_FRONTEND=noninteractive apt-get install -y "{{{ package }}}"
+DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 install -y "{{{ package }}}"
 {{%- elif pkg_manager == "zypper" -%}}
 zypper install -y "{{{ package }}}"
 {{%- else -%}}
@@ -498,7 +498,7 @@ if rpm -q --quiet "{{{ package }}}" ; then
 {{% endif %}}
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
-DEBIAN_FRONTEND=noninteractive apt-get remove -y "{{{ package }}}"
+DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y "{{{ package }}}"
 {{%- elif pkg_manager == "zypper" -%}}
 zypper remove -y "{{{ package }}}"
 {{%- else -%}}
@@ -802,10 +802,10 @@ authselect enable-feature {{{ feature }}}
 
 #}}
 {{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
-{{% if 'debian' in product or 'sle15' in product %}}
+{{% if 'debian' in product or product in ['sle15', 'sle16'] %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
-    {{% if  'sle15' in product %}}
+    {{% if  product in ['sle15', 'sle16'] %}}
     # insert before pam_unix.so
     sed -i --follow-symlinks '/^auth.*required.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
     {{% else %}}
@@ -837,7 +837,12 @@ fi
 
 pam_file="/etc/pam.d/common-account"
 if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
+    {{% if  product in ['sle15', 'sle16'] %}}
+    # insert before pam_unix.so(so only consecutive authentication failures are lock)
+    sed -i --follow-symlinks '/^account.*required.*pam_unix\.so.*/i account   required     pam_faillock.so' "$pam_file"
+    {{% else %}}
     echo 'account   required     pam_faillock.so' >> "$pam_file"
+    {{% endif %}}
 fi
 {{% elif 'ubuntu' in product %}}
 conf_name=cac_faillock
@@ -851,7 +856,6 @@ Priority: 0
 Auth-Type: Primary
 Auth:
     [default=die]                   pam_faillock.so authfail
-    sufficient                      pam_faillock.so authsucc
 EOF
 fi
 
@@ -1093,7 +1097,7 @@ fi
 
 #}}
 {{%- macro bash_pam_pwhistory_parameter_value(pam_file, option, value='') -%}}
-PWHISTORY_CONF="/etc/security/pwhistory.conf"
+PWHISTORY_CONF="{{{ pwhistory_path }}}"
 if [ -f $PWHISTORY_CONF ]; then
     {{%- if value == '' %}}
     regex="^\s*{{{ option }}}"
@@ -1128,7 +1132,7 @@ fi
 
 {{#
     Sets PAM faillock module options and values. In case the file
-    /etc/security/faillock.conf is present in the system, the option is removed from pam files
+    "{{{ pam_faillock_conf_path }}}" is present in the system, the option is removed from pam files
     since it is not needed there in that case.
     It also adds pam_faillock.so as required module for account.
 
@@ -1141,14 +1145,14 @@ fi
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
-{{% if 'ubuntu' in product or 'debian' in product or 'sle15' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product or product in ['sle15', 'sle16'] %}}
 AUTH_FILES=("/etc/pam.d/common-auth")
 SKIP_FAILLOCK_CHECK=true
 {{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 SKIP_FAILLOCK_CHECK=false
 {{% endif %}}
-FAILLOCK_CONF="/etc/security/faillock.conf"
+FAILLOCK_CONF="{{{ pam_faillock_conf_path }}}"
 if [ -f $FAILLOCK_CONF ] || [ "$SKIP_FAILLOCK_CHECK" = "true" ]; then
     {{%- if value == '' %}}
     regex="^\s*{{{ option }}}"
@@ -2249,23 +2253,23 @@ for f in $(echo -n "{{{ files }}}"); do
     fi
 
     # find key in section and change value
-    if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
-        if ! grep -qPz "{{{ key }}}={{{ value }}}" "$f"; then
+    if grep -qzosP "(?m)^[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
+        if ! grep -qzosP "(?m)^[[:space:]]*{{{ key }}}[[:space:]]*=[[:space:]]*{{{ value }}}" "$f"; then
 {{% if no_quotes %}}
-            sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value | replace("/", "\/") }}}/" "$f"
+            sed -i "/^[[:space:]]*{{{ key }}}/s/\([[:blank:]]*=[[:blank:]]*\).*/\1{{{ value | replace("/", "\/") }}}/" "$f"
 {{% else %}}
-            sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value | replace("/", "\/") }}}"/' "$f"
+            sed -i '/^[[:space:]]*{{{ key }}}/s/\([[:blank:]]*=[[:blank:]]*\).*/\1"{{{ value | replace("/", "\/") }}}"/' "$f"
 {{% endif %}}
         fi
 
         found=true
 
     # find section and add key = value to it
-    elif grep -qs "[[:space:]]*\[{{{ section }}}\]" "$f"; then
+    elif grep -qs "^[[:space:]]*\[{{{ section }}}\]" "$f"; then
 {{% if no_quotes %}}
-            sed -i "/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}={{{ value | replace("/", "\/") }}}" "$f"
+            sed -i "/^[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}={{{ value | replace("/", "\/") }}}" "$f"
 {{% else %}}
-            sed -i '/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}="{{{ value | replace ("/", "\/") }}}"' "$f"
+            sed -i '/^[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}="{{{ value | replace ("/", "\/") }}}"' "$f"
 {{% endif %}}
             found=true
     fi
@@ -2283,6 +2287,31 @@ if ! $found ; then
 fi
 {{%- endmacro %}}
 
+
+{{#
+    Ensure pam_unix.so module is enabled in specified PAM files and sections.
+    Iterates through the provided PAM files and sections, ensuring that
+    the pam_unix.so module is properly configured with the appropriate control flag.
+    For auth and password sections, it uses "sufficient" control, while for other
+    sections (account, session) it uses "required" control.
+
+:param pam_files: List of PAM configuration file names (without /etc/pam.d/ prefix)
+:type pam_files: list
+:param pam_sections: List of PAM management groups to configure (auth, account, password, session)
+:type pam_sections: list
+
+#}}
+{{%- macro bash_ensure_pam_module_line_unix_enable(pam_files, pam_sections) -%}}
+{{% for pam_file in pam_files %}}
+    {{% for pam_section in pam_sections %}}
+        {{% if pam_section in ["auth", "password"] %}}
+            {{{ bash_ensure_pam_module_line("/etc/pam.d/" + pam_file, pam_section, "sufficient", "pam_unix.so") }}}
+        {{% else %}}
+            {{{ bash_ensure_pam_module_line("/etc/pam.d/" + pam_file, pam_section, "required", "pam_unix.so") }}}
+        {{% endif %}}
+    {{% endfor %}}
+{{% endfor %}}
+{{%- endmacro -%}}
 
 {{#
     Make sure that a line with a specific PAM module is present with the correct control.
@@ -2420,6 +2449,17 @@ It is not recommended to manually edit the PAM files when authselect tool is ava
 In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
 exit 1
 fi
+{{%- endmacro %}}
+
+
+{{#
+    Macro used to force re-select the current authselect profile, overwriting any manual modifications.
+    This can fix integrity check failures caused by manual PAM file edits.
+    The --force flag will overwrite modified files without prompting.
+
+#}}
+{{% macro bash_authselect_force_reselect() -%}}
+authselect select "$(authselect current --raw)" --force
 {{%- endmacro %}}
 
 

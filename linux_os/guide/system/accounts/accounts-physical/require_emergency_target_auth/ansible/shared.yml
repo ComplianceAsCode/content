@@ -11,6 +11,7 @@
       dest: /etc/systemd/system/emergency.service.d/10-oscap.conf
       block: |
         [Service]
+        ExecStart=
         ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
 {{% else %}}
 - name: Require emergency mode password

@@ -47,7 +47,7 @@ parser.add_argument(
     '-np', '--no-upstream-prefix',
     help=(
         'The prefix for bundle names. The default is "upstream" if not specified. '
-        'To disable prefix, use --no-upstream-prefix.',
+        'To disable prefix, use --no-upstream-prefix. '
         'This option is ignored when building content in the cluster using '
         '--build-in-cluster.'),
     action='store_true',

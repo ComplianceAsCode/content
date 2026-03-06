@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-from __future__ import print_function
 
 from tempfile import mkdtemp
 import io
@@ -21,9 +20,9 @@ PLAYBOOK_ROOT = os.path.join(SSG_ROOT, "build", "ansible")
 try:
     from github import Github, InputGitAuthor, UnknownObjectException
 except ImportError:
-    print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+    print("Please install PyGithub, you need a specific version of pygithub, install it through $ pip install \"PyGithub>=1.58.2,<2.0\"",
           file=sys.stderr)
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 
 try:
@@ -31,8 +30,8 @@ try:
     import ssg.yaml
     from ssg.utils import mkdir_p
 except ImportError:
-    print("Unable to find the ssg module. Please run 'source .pyenv'", file=sys.stderr)
-    raise SystemExit(1)
+    print("Unable to find the ssg module. Please run 'source .pyenv.sh'", file=sys.stderr)
+    raise SystemExit(1) from None
 
 
 def memoize(f):
@@ -68,28 +67,7 @@ PRODUCT_ALLOWLIST = set([
     "rhel10",
 ])
 
-PROFILE_ALLOWLIST = set([
-    "anssi_nt28_enhanced",
-    "anssi_nt28_high",
-    "anssi_nt28_intermediary",
-    "anssi_nt28_minimal",
-    "anssi_bp28_enhanced",
-    "anssi_bp28_high",
-    "anssi_bp28_intermediary",
-    "anssi_bp28_minimal",
-    "C2S",
-    "cis",
-    "cjis",
-    "hipaa",
-    "cui",
-    "ospp",
-    "pci-dss",
-    "rht-ccp",
-    "stig",
-    "rhvh-stig",
-    "rhvh-vpp",
-    "e8",
-    "ism",
+PROFILE_DENYLIST = set([
 ])
 
 
@@ -120,11 +98,14 @@ def create_empty_repositories(github_new_repos, github_org):
 
 
 def clone_and_init_repository(parent_dir, organization, repo):
-    os.system(
-        "git clone git@github.com:%s/%s" % (organization, repo))
-    os.system("ansible-galaxy init " + repo + " --force")
+    # 1. Initialize the Ansible role first (creates the directory)
+    os.system(f"ansible-galaxy init {repo}")
+
+    # 2. Change directory and initialize git
     os.chdir(repo)
     try:
+        os.system("git init --initial-branch=main")
+        os.system(f"git remote add origin git@github.com:{organization}/{repo}")
         os.system('git add .')
         os.system('git commit -a -m "Initial commit" --author "%s <%s>"'
                   % (GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL))
@@ -216,7 +197,7 @@ class PlaybookToRoleConverter():
         variables = set()
         for task in self.tasks_data:
             if "tags" not in task:
-                next
+                continue
             if "when" not in task:
                 task["when"] = []
             elif isinstance(task["when"], str):
@@ -299,7 +280,7 @@ class PlaybookToRoleConverter():
                 break
             else:
                 desc += (line + "\n")
-        return desc.strip("\n\n")
+        return desc.strip("\n")
 
     @property
     def _update_galaxy_tags(self):
@@ -451,12 +432,7 @@ class RoleGithubUpdater(object):
     def _remote_content(self, filepath):
         # We want the raw string to compare against _local_content
 
-        # New repos use main instead of master
-        branch = 'master'
-        if "rhel9" in self.remote_repo.full_name:
-            branch = 'main'
-
-        content, sha = self._get_contents(filepath, branch)
+        content, sha = self._get_contents(filepath, 'main')
         return content, sha
 
     def _update_content_if_needed(self, filepath):
@@ -507,8 +483,8 @@ def parse_args():
              "Defaults to {}.".format(ORGANIZATION_NAME))
     parser.add_argument(
         "--profile", "-p", default=[], action="append",
-        metavar="PROFILE", choices=PROFILE_ALLOWLIST,
-        help="What profiles to upload, if not specified, upload all that are applicable.")
+        metavar="PROFILE", choices=PROFILE_DENYLIST,
+        help="What profiles to prevent uploading, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--product", "-r", default=[], action="append",
         metavar="PRODUCT", choices=PRODUCT_ALLOWLIST,
@@ -534,7 +510,7 @@ def locally_clone_and_init_repositories(organization, repo_list):
         shutil.rmtree(temp_dir)
 
 
-def select_roles_to_upload(product_allowlist, profile_allowlist,
+def select_roles_to_upload(product_allowlist, profile_denylist,
                            build_playbooks_dir):
     selected_roles = dict()
     for filename in sorted(os.listdir(build_playbooks_dir)):
@@ -542,7 +518,7 @@ def select_roles_to_upload(product_allowlist, profile_allowlist,
         if ext == ".yml":
             # the format is product-playbook-profile.yml
             product, _, profile = root.split("-", 2)
-            if product in product_allowlist and profile in profile_allowlist:
+            if product in product_allowlist and profile not in profile_denylist:
                 role_name = "ansible-role-%s-%s" % (product, profile)
                 selected_roles[role_name] = (product, profile)
     return selected_roles
@@ -552,20 +528,15 @@ def main():
     args = parse_args()
 
     product_allowlist = set(PRODUCT_ALLOWLIST)
-    profile_allowlist = set(PROFILE_ALLOWLIST)
-
-    potential_roles = {
-        ("ansible-role-%s-%s" % (product, profile))
-        for product in product_allowlist for profile in profile_allowlist
-    }
+    profile_denylist = set(PROFILE_DENYLIST)
 
     if args.product:
         product_allowlist &= set(args.product)
     if args.profile:
-        profile_allowlist &= set(args.profile)
+        profile_denylist &= set(args.profile)
 
     selected_roles = select_roles_to_upload(
-        product_allowlist, profile_allowlist, args.build_playbooks_dir
+        product_allowlist, profile_denylist, args.build_playbooks_dir
     )
 
     if args.dry_run:
@@ -579,11 +550,10 @@ def main():
             print("Input your GitHub credentials:")
             username = input("username or token: ")
             password = getpass.getpass("password (or empty for token): ")
+            github = Github(username, password)
         else:
-            username = args.token
-            password = ""
+            github = Github(args.token)
 
-        github = Github(username, password)
         github_org = github.get_organization(args.organization)
         github_repositories = [repo.name for repo in github_org.get_repos()]
 
@@ -593,17 +563,16 @@ def main():
             create_empty_repositories(github_new_repos, github_org)
 
             locally_clone_and_init_repositories(args.organization, github_new_repos)
-
         # Update repositories
         for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
-            if repo.name in selected_roles:
+            if repo.name in selected_roles.keys():
                 playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
                 playbook_full_path = os.path.join(
                     args.build_playbooks_dir, playbook_filename)
                 RoleGithubUpdater(repo, playbook_full_path).update_repository()
                 if args.tag_release:
                     update_repo_release(github, repo)
-            elif repo.name not in potential_roles:
+            elif "ansible-role-rhel" in repo.name:
                 print("Repo '%s' is not managed by this script. "
                       "It may need to be deleted, please verify and do that "
                       "manually!" % repo.name, file=sys.stderr)

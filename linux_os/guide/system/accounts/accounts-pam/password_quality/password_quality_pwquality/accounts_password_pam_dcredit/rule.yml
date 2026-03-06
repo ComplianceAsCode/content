@@ -8,7 +8,7 @@ description: |-
     usage of digits in a password. When set to a negative number, any password will be required to
     contain that many digits. When set to a positive number, pam_pwquality will grant +1 additional
     length credit for each digit. Modify the <tt>dcredit</tt> setting in
-    <tt>/etc/security/pwquality.conf</tt> to require the use of a digit in passwords.
+    <tt>{{{ pwquality_path }}}</tt> to require the use of a digit in passwords.
 
 rationale: |-
     Use of a complex password helps to increase the time and resources required
@@ -52,14 +52,14 @@ ocil: |-
 
     Check the value for "dcredit" with the following command:
 
-    <pre>$ sudo grep dcredit /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+    <pre>$ sudo grep dcredit {{{ pwquality_path }}} /etc/security/pwquality.conf.d/*.conf
 
-    /etc/security/pwquality.conf:dcredit = {{{ xccdf_value('var_password_pam_dcredit') }}}</pre>
+    {{{ pwquality_path }}}:dcredit = {{{ xccdf_value('var_password_pam_dcredit') }}}</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity by requiring that at least one numeric character be used by setting the "dcredit" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     dcredit = {{{ xccdf_value('var_password_pam_dcredit') }}}
 

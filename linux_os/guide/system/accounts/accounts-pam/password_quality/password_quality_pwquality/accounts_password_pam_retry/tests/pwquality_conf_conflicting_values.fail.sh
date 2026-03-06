@@ -5,7 +5,7 @@
 
 source common.sh
 
-CONF_FILE="/etc/security/pwquality.conf"
+CONF_FILE="{{{ pwquality_path }}}"
 retry_cnt=3
 
 truncate -s 0 $CONF_FILE

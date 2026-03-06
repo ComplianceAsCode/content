@@ -18,12 +18,12 @@ jobs:
             -   name: Install deps python
                 run: pip install gitpython xmldiff
             -   name: Checkout
-                uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
                 with:
                     ref: ${{ github.event.pull_request.head.sha }}
                     fetch-depth: 0
             -   name: Checkout (CTF)
-                uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
                 with:
                     repository: ComplianceAsCode/content-test-filtering
                     path: ctf
@@ -61,8 +61,21 @@ jobs:
                     tar -czvf artifacts.tar.gz artifacts
             -   name: Upload artifacts
                 if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-                uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v4
+                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
                 with:
                     name: pr-artifacts-${{ github.event.pull_request.head.sha }}
                     retention-days: 1
                     path: artifacts.tar.gz
+            -   name: Save PR info
+                run: |
+                    mkdir -p pr-info
+                    echo "${{ github.event.pull_request.number }}" > pr-info/pr-number.txt
+                    echo "${{ github.event.pull_request.head.sha }}" > pr-info/pr-sha.txt
+                    echo "${{ github.base_ref }}" > pr-info/base-branch.txt
+                    echo "${{ steps.fork_point.outputs.FORK_POINT }}" > pr-info/fork-point.txt
+            -   name: Upload PR info
+                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+                with:
+                    name: pr-info
+                    retention-days: 1
+                    path: pr-info/

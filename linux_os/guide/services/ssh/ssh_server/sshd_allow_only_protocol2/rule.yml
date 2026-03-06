@@ -22,6 +22,7 @@ identifiers:
     cce@rhel9: CCE-90812-9
     cce@rhel10: CCE-90571-1
     cce@sle15: CCE-91440-8
+    cce@sle16: CCE-96585-5
 
 references:
     cis-csc: 1,12,15,16,5,8
@@ -58,6 +59,8 @@ warnings:
         As of <tt>openssh-server</tt> version <tt>7.4</tt> and above, the only protocol
         supported is version 2, and line <pre>Protocol 2</pre> in
         <tt>/etc/ssh/sshd_config</tt> is not necessary.
+
+platform: package[openssh-server]<7.0
 
 template:
     name: sshd_lineinfile

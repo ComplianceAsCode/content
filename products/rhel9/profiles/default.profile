@@ -13,6 +13,8 @@ description: |-
     is to keep a rule in the product's XCCDF Benchmark.
 
 selections:
+    - configure_kerberos_crypto_policy
+    - sshd_use_strong_kex
     - sebool_nfsd_anon_write
     - sebool_squid_connect_any
     - sebool_polipo_connect_all_unreserved
@@ -585,3 +587,9 @@ selections:
     - package_quagga_removed
     - package_rsh-server_removed
     - sshd_use_strong_macs
+    - audit_rules_etc_cron_d
+    - audit_rules_var_spool_cron
+    - audit_rules_login_events_tallylog
+    - configure_ssh_crypto_policy
+    - accounts_user_dot_no_world_writable_programs
+    - package_dnsmasq_removed

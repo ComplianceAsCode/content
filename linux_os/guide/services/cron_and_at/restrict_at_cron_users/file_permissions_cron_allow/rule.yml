@@ -3,13 +3,8 @@ documentation_complete: true
 
 title: 'Verify Permissions on /etc/cron.allow file'
 
-{{%  if 'rhel' not in product %}}
-    {{% set target_perms_octal="0640" %}}
-    {{% set target_perms="-rw-r-----" %}}
-{{% else %}}
-    {{% set target_perms_octal="0600" %}}
-    {{% set target_perms="-rw-------" %}}
-{{% endif %}}
+{{% set target_perms_octal="0640" %}}
+{{% set target_perms="-rw-r-----" %}}
 
 description: |-
     If <tt>/etc/cron.allow</tt> exists, it must have permissions <tt>{{{ target_perms_octal }}}</tt>
@@ -29,6 +24,7 @@ identifiers:
     cce@rhel10: CCE-89121-8
     cce@sle12: CCE-91690-8
     cce@sle15: CCE-91320-2
+    cce@sle16: CCE-96522-8
 
 references:
     cis@sle12: 5.1.8

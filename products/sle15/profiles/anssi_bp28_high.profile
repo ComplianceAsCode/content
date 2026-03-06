@@ -40,6 +40,7 @@ selections:
     - '!kernel_config_hardened_usercopy_fallback'
     - '!accounts_passwords_pam_faillock_deny'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!accounts_passwords_pam_faillock_unlock_time'
     - '!accounts_passwords_pam_faillock_interval'
     - '!kernel_config_gcc_plugin_latent_entropy'
@@ -98,7 +99,6 @@ selections:
     - accounts_password_pam_pwhistory_remember
 
     # The following rules are not applicable to SLE 15
-    - '!logind_session_timeout'
     - '!ldap_client_start_tls'
     - '!ldap_client_tls_cacertpath'
     - '!service_chronyd_enabled'

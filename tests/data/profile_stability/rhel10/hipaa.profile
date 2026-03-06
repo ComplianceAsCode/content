@@ -91,7 +91,6 @@ auditd_data_retention_max_log_file_action
 auditd_data_retention_max_log_file_action_stig
 auditd_data_retention_space_left_action
 configure_crypto_policy
-configure_ssh_crypto_policy
 dconf_db_up_to_date
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
@@ -120,6 +119,7 @@ no_empty_passwords
 package_audit_installed
 package_cron_installed
 package_rsyslog_installed
+package_sequoia-sq_installed
 package_telnet-server_removed
 package_telnet_removed
 partition_for_var_log_audit

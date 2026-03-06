@@ -1,8 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import argparse
 import collections
 import json
 import os
+from typing import Dict, Optional, List, Set
+
 import yaml
 
 # NOTE: This is not to be confused with the https://pypi.org/project/ssg/
@@ -36,14 +38,14 @@ HINT: $ source .pyenv.sh
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
-def print_options(opts):
+def print_options(opts) -> None:
     if len(opts) > 0:
         print("Available options are:\n - " + "\n - ".join(opts))
     else:
         print("The controls file is not written appropriately.")
 
 
-def validate_args(ctrlmgr, args):
+def validate_args(ctrlmgr: controls.ControlsManager, args: argparse.Namespace) -> None:
     """ Validates that the appropriate args were given
         and that they're valid entries in the control manager."""
 
@@ -63,7 +65,7 @@ def validate_args(ctrlmgr, args):
         exit(1)
 
 
-def get_available_products():
+def get_available_products() -> List[str]:
     products_dir = os.path.join(SSG_ROOT, "products")
     try:
         return os.listdir(products_dir)
@@ -72,7 +74,7 @@ def get_available_products():
         exit(1)
 
 
-def validate_product(product):
+def validate_product(product: str) -> None:
     products = get_available_products()
     if product not in products:
         print(f"Error: Product '{product}' is not valid.")
@@ -80,7 +82,7 @@ def validate_product(product):
         exit(1)
 
 
-def get_parameter_from_yaml(yaml_file: str, section: str) -> list:
+def get_parameter_from_yaml(yaml_file: str, section: str) -> Optional[List]:
     with open(yaml_file, 'r') as file:
         try:
             yaml_content = yaml.safe_load(file)
@@ -89,30 +91,32 @@ def get_parameter_from_yaml(yaml_file: str, section: str) -> list:
             print(e)
 
 
-def get_controls_from_profiles(controls: list, profiles_files: list, used_controls: set) -> set:
+def get_controls_from_profiles(controls: List[controls.Control], profiles_files: List[str],
+                               used_controls: Set) -> Set[str]:
     for file in profiles_files:
         selections = get_parameter_from_yaml(file, 'selections')
-        for selection in selections:
-            if any(selection.startswith(control) for control in controls):
-                used_controls.add(selection.split(':')[0])
+        if selections:
+            for selection in selections:
+                if any(selection.startswith(control) for control in controls):
+                    used_controls.add(selection.split(':')[0])
     return used_controls
 
 
-def get_controls_used_by_products(ctrls_mgr: controls.ControlsManager, products: list) -> list:
-    used_controls = set()
-    controls = ctrls_mgr.policies.keys()
+def get_policies_used_by_products(ctrls_mgr: controls.ControlsManager, products: List[str]) -> Set[str]:
+    used_policies = set()
+    policies = ctrls_mgr.policies.keys()
     for product in products:
         profiles_files = get_product_profiles_files(product)
-        used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
-    return used_controls
+        used_policies = get_controls_from_profiles(policies, profiles_files, used_policies)
+    return used_policies
 
 
-def get_policy_levels(ctrls_mgr: object, control_id: str) -> list:
+def get_policy_levels(ctrls_mgr: controls.ControlsManager, control_id: str) -> List[str]:
     policy = ctrls_mgr._get_policy(control_id)
     return policy.levels_by_id.keys()
 
 
-def get_product_dir(product):
+def get_product_dir(product) -> str:
     validate_product(product)
     return os.path.join(SSG_ROOT, "products", product)
 
@@ -122,7 +126,7 @@ def get_product_profiles_files(product: str) -> list:
     return ssg.products.get_profile_files_from_root(product_yaml, product_yaml)
 
 
-def get_product_yaml(product):
+def get_product_yaml(product) -> str:
     product_dir = get_product_dir(product)
     product_yml = os.path.join(product_dir, "product.yml")
     if os.path.exists(product_yml):
@@ -131,12 +135,12 @@ def get_product_yaml(product):
     exit(1)
 
 
-def load_product_yaml(product: str) -> yaml:
+def load_product_yaml(product: str) -> ssg.products.Product:
     product_yaml = get_product_yaml(product)
     return ssg.products.load_product_yaml(product_yaml)
 
 
-def load_controls_manager(controls_dir: str, product: str) -> object:
+def load_controls_manager(controls_dir: str, product: str) -> controls.ControlsManager:
     product_yaml = load_product_yaml(product)
     product_controls_dir = os.path.join(product_yaml['product_dir'], 'controls')
     ctrls_mgr = controls.ControlsManager([controls_dir, product_controls_dir],
@@ -145,13 +149,13 @@ def load_controls_manager(controls_dir: str, product: str) -> object:
     return ctrls_mgr
 
 
-def get_formatted_name(text_name):
+def get_formatted_name(text_name: str) -> str:
     for special_char in '-. ':
         text_name = text_name.replace(special_char, '_')
     return text_name
 
 
-def count_implicit_status(ctrls, status_count):
+def count_implicit_status(ctrls: List[controls.Control], status_count: Dict[str, int]) -> Dict[str, int]:
     automated = status_count[controls.Status.AUTOMATED]
     documentation = status_count[controls.Status.DOCUMENTATION]
     inherently_met = status_count[controls.Status.INHERENTLY_MET]

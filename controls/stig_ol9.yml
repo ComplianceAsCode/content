@@ -342,7 +342,7 @@ controls:
           - medium
       title: OL 9 must disable the use of user namespaces.
       rules:
-          - sysctl_user_max_user_namespaces
+          - sysctl_user_max_user_namespaces_no_remediation
       status: automated
 
     - id: OL09-00-002385
@@ -421,9 +421,9 @@ controls:
     - id: OL09-00-000105
       levels:
           - medium
-      title: OL 9 must not have the rsh-server package installed.
+      title: OL 9 must not install packages from the Extra Packages for Enterprise Linux (EPEL) repository.
       rules:
-          - package_rsh-server_removed
+          - ensure_epel_repos_disabled
       status: automated
 
     - id: OL09-00-000110
@@ -472,7 +472,7 @@ controls:
       title: OL 9 must not have the quagga package installed.
       rules:
           - package_quagga_removed
-      status: automated
+      status: not applicable  # The quagga package is not available in OL 9
 
     - id: OL09-00-000145
       levels:
@@ -914,6 +914,7 @@ controls:
           - medium
       title: OL 9 cron configuration directories must have a mode of 0700 or less permissive.
       rules:
+          - package_cron_installed
           - file_permissions_cron_d
           - file_permissions_cron_daily
           - file_permissions_cron_hourly
@@ -921,12 +922,23 @@ controls:
           - file_permissions_cron_weekly
       status: automated
 
+    - id: OL09-00-002584
+      levels:
+          - medium
+      title: |-
+        Added control to audit any script or executable called by cron as root or by any
+        privileged user.
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
+
     - id: OL09-00-002513
       levels:
           - medium
       title: OL 9 local initialization files must have mode 0740 or less permissive.
       rules:
-          - file_permission_user_init_files
+          - file_permission_user_init_files_root
+          - rootfiles_configured
       status: automated
 
     - id: OL09-00-002515
@@ -1847,6 +1859,8 @@ controls:
       title: OL 9 SSH server configuration file must be group-owned by root.
       rules:
           - file_groupowner_sshd_config
+          - directory_groupowner_sshd_config_d
+          - file_groupowner_sshd_drop_in_config
       status: automated
 
     - id: OL09-00-002508
@@ -1855,6 +1869,8 @@ controls:
       title: OL 9 SSH server configuration file must be owned by root.
       rules:
           - file_owner_sshd_config
+          - directory_owner_sshd_config_d
+          - file_owner_sshd_drop_in_config
       status: automated
 
     - id: OL09-00-002509
@@ -1863,6 +1879,8 @@ controls:
       title: OL 9 SSH server configuration file must have mode 0600 or less permissive.
       rules:
           - file_permissions_sshd_config
+          - directory_permissions_sshd_config_d
+          - file_permissions_sshd_drop_in_config
       status: automated
 
     - id: OL09-00-002502
@@ -2176,14 +2194,6 @@ controls:
       title: OL 9 must block unauthorized peripherals before establishing a connection.
       rules:
           - usbguard_generate_policy
-      status: automated
-
-    - id: OL09-00-002332
-      levels:
-          - medium
-      title: OL 9 must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.
-      rules:
-          - kernel_module_usb-storage_disabled
       status: automated
 
     - id: OL09-00-000046
@@ -2929,6 +2939,7 @@ controls:
       title: OL 9 must have the AIDE package installed.
       rules:
           - package_aide_installed
+          - aide_build_database
       status: automated
 
     - id: OL09-00-000301
@@ -2937,7 +2948,6 @@ controls:
       title: OL 9 must routinely check the baseline configuration for unauthorized changes and notify
           the system administrator when anomalies in the operation of any security functions are discovered.
       rules:
-          - aide_periodic_cron_checking
           - aide_scan_notification
       status: automated
 
@@ -3254,7 +3264,7 @@ controls:
       title: OL 9 must allow only the information system security manager (ISSM) (or individuals or roles
           appointed by the ISSM) to select which auditable events are to be audited.
       rules:
-          - file_permissions_etc_audit_rulesd
+          - file_permissions_audit_configuration
       status: automated
 
     - id: OL09-00-000810

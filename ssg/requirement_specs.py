@@ -1,21 +1,64 @@
 """
 Common functions for processing Requirements Specs in SSG
 """
-
-import pkg_resources
 import re
+from typing import Tuple, List
 
 from ssg import utils
 
-# Monkey-patch pkg_resources.safe_name function to keep underscores intact
-# Setuptools recognize the issue: https://github.com/pypa/setuptools/issues/2522
-pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
-# Monkey-patch pkg_resources.safe_extras function to keep dashes intact
-# Setuptools recognize the issue: https://github.com/pypa/setuptools/pull/732
-pkg_resources.safe_extra = lambda extra: re.sub('[^A-Za-z0-9.-]+', '_', extra).lower()
+
+class RequirementParser:
+    """
+    A simple parser for package requirements with version specifiers.
+    Handles formats like: package[extra]>=1.0,<2.0
+    """
+
+    def __init__(self, target_v: str):
+        self.target = target_v
+        # First, extract package name and extras
+        base_match = re.match(
+            r'^(?P<name>[a-zA-Z0-9\-_.]+)(?:\[(?P<extra>[a-zA-Z0-9\-_]+)])?(?P<specs>.*)$',
+            target_v
+        )
+
+        if not base_match:
+            raise ValueError(f"Invalid requirement format: {target_v}")
+
+        self.name = base_match.group('name')
+        self.extra = base_match.group('extra')
+        specs_str = base_match.group('specs')
+
+        # Parse comma-separated version specifiers
+        self.specs_list = []
+        if specs_str and specs_str.strip():
+            for spec in specs_str.split(','):
+                spec = spec.strip()
+                if spec:
+                    spec_match = re.match(r'^(?P<op>[><!~=]+)\s*(?P<ver>.+)$', spec)
+                    if spec_match:
+                        self.specs_list.append((spec_match.group('op'), spec_match.group('ver')))
+                    else:
+                        raise ValueError(f"Invalid version specifier: {spec}")
+
+    def __str__(self):
+        return self.target
+
+    @property
+    def specs(self) -> List[Tuple[str, str]]:
+        return self.specs_list
+
+    @property
+    def project_name(self) -> str:
+        return self.name
+
+    @property
+    def extras(self) -> List[str]:
+        if self.extra:
+            return [self.extra.lower()]
+        return []
 
 
-def _parse_version_into_evr(version):
+def parse_version_into_evr(version):
     """
     Parses a version string into its epoch, version, and release components.
 
@@ -53,7 +96,7 @@ def _spec_to_version_specifier(spec):
         VersionSpecifier: An object representing the version specifier.
     """
     op, ver = spec
-    evr = _parse_version_into_evr(ver)
+    evr = parse_version_into_evr(ver)
     return utils.VersionSpecifier(op, evr)
 
 
@@ -62,17 +105,20 @@ class Requirement:
     A class to represent a package requirement with version specifications.
 
     Attributes:
-        _req (pkg_resources.Requirement): The parsed requirement object.
+        _req (RequirementParser): The parsed requirement object.
         _specs (utils.VersionSpecifierSet): The set of version specifiers for the requirement.
     """
-    def __init__(self, obj):
-        self._req = pkg_resources.Requirement.parse(obj)
+    def __init__(self, obj: str):
+        self._req = RequirementParser(obj)
         self._specs = utils.VersionSpecifierSet(
             [_spec_to_version_specifier(spec) for spec in self._req.specs]
         )
 
     def __contains__(self, item):
-        return item in self._req
+        """Check if a version string satisfies the requirement specs."""
+        if not self.has_version_specs():
+            return False
+        return item in self._specs
 
     def __str__(self):
         return str(self._req)
@@ -131,7 +177,7 @@ class Requirement:
             bool: True if the package requirement is parametrized (includes extras),
                   False otherwise.
         """
-        return bool(pkg_resources.Requirement.parse(name).extras)
+        return bool(RequirementParser(name).extras)
 
     @staticmethod
     def get_base_for_parametrized(name):
@@ -144,4 +190,4 @@ class Requirement:
         Returns:
             str: The base project name of the package.
         """
-        return pkg_resources.Requirement.parse(name).project_name
+        return RequirementParser(name).project_name

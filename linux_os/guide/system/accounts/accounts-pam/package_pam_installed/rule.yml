@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Install pam Package'
+
+description: |-
+    {{{ describe_package_install(package="pam") }}}
+
+rationale: |-
+    The <tt>pam</tt> package provides Pluggable Authentication Modules (PAM) which
+    is a system for authenticating users. PAM provides a flexible and centralized
+    way to manage authentication methods for applications and services. Ensuring
+    the latest version of pam is installed helps maintain system security by
+    providing the latest security fixes and features.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89184-6
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="pam") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: pam

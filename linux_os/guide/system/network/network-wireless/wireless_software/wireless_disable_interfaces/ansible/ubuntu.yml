@@ -1,0 +1,49 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}} - Find wireless marker directories"
+  ansible.builtin.find:
+    paths: "/sys/class/net"
+    file_type: directory
+    patterns: "wireless"
+    recurse: yes
+  register: wireless_paths
+
+- name: "{{{ rule_title }}} - Extract interface names from directory paths"
+  ansible.builtin.set_fact:
+    wireless_interfaces: >-
+      {{ wireless_paths.files | map('dirname') | map('basename') | list }}
+
+- name: "{{{ rule_title }}} - Bring wireless interfaces down"
+  ansible.builtin.command:
+    cmd: "ip link set dev {{ item }} down"
+  with_items: "{{ wireless_interfaces }}"
+  when: wireless_interfaces | length > 0
+
+- name: "{{{ rule_title }}} - Get driver name for each interface"
+  ansible.builtin.command:
+    cmd: "basename $(readlink -f /sys/class/net/{{ item }}/device/driver)"
+  register: wireless_drivers
+  with_items: "{{ wireless_interfaces }}"
+  changed_when: false
+  check_mode: false
+  when: wireless_interfaces | length > 0
+
+- name: "{{{ rule_title }}} - Create disable wireless driver modprobe config"
+  ansible.builtin.blockinfile:
+    path: /etc/modprobe.d/disable_wireless.conf
+    create: yes
+    block: |
+      {% for r in wireless_drivers.results %}
+      install {{ r.stdout }} /bin/false
+      {% endfor %}
+  when: wireless_interfaces | length > 0
+
+- name: "{{{ rule_title }}} - Unload wireless kernel modules"
+  ansible.builtin.command:
+    cmd: "modprobe -r {{ item.stdout }}"
+  with_items: "{{ wireless_drivers.results }}"
+  when: wireless_interfaces | length > 0

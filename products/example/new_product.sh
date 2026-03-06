@@ -10,8 +10,7 @@ export CAPITAL_NAME="CUSTOM"
 mkdir $NEW_PRODUCT \
         $NEW_PRODUCT/cpe \
         $NEW_PRODUCT/overlays \
-        $NEW_PRODUCT/profiles \
-        $NEW_PRODUCT/transforms
+        $NEW_PRODUCT/profiles
 
 cat << EOF >> $NEW_PRODUCT/CMakeLists.txt
 # Sometimes our users will try to do: "cd $NEW_PRODUCT; cmake ." That needs to error in a nice way.
@@ -64,68 +63,6 @@ description: |-
 
 selections:
     - accounts_password_minlen_login_defs
-EOF
-
-cat << EOF >> $NEW_PRODUCT/transforms/constants.xslt
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:include href="../../../shared/transforms/shared_constants.xslt"/>
-
-<xsl:variable name="product_long_name">$FULL_NAME</xsl:variable>
-<xsl:variable name="product_short_name">$FULL_SHORT_NAME</xsl:variable>
-<xsl:variable name="product_stig_id_name">${CAPITAL_NAME}_STIG</xsl:variable>
-<xsl:variable name="prod_type">$NEW_PRODUCT</xsl:variable>
-
-<!-- Define URI of official Center for Internet Security Benchmark for $FULL_NAME -->
-<xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_${CAMEL_CASE_NAME}_Benchmark_v1.0.pdf</xsl:variable>
-
-<!-- Define URI for custom policy reference which can be used for linking to corporate policy -->
-<!--xsl:variable name="custom-ref-uri">https://www.example.org</xsl:variable-->
-
-</xsl:stylesheet>
-EOF
-
-cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:import href="../../../shared/transforms/shared_table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
-<?xml version="1.0"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://checklists.nist.gov/xccdf/1.1" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
-
-<xsl:include href="../../../shared/transforms/shared_xccdf-apply-overlay-stig.xslt"/>
-<xsl:include href="constants.xslt"/>
-<xsl:variable name="overlays" select="document($overlay)/xccdf:overlays" />
-
-</xsl:stylesheet>
-EOF
-
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cce="http://cce.mitre.org" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="../../../shared/transforms/shared_xccdf2table-cce.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
-EOF
-
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="https://www.cyber.mil/stigs/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
-
-<xsl:import href="../../../shared/transforms/shared_xccdf2table-profileccirefs.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-</xsl:stylesheet>
 EOF
 
 cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml

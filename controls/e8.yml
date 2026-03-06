@@ -25,6 +25,8 @@ controls:
           - package_squid_removed
           - service_squid_disabled
           - ensure_redhat_gpgkey_installed
+          # the rule ensure_redhat_gpgkey_installed needs a special package on RHEL 10 which is not installed by default
+          - package_sequoia-sq_installed
           - ensure_gpgcheck_never_disabled
           - ensure_gpgcheck_local_packages
           - ensure_gpgcheck_globally_activated

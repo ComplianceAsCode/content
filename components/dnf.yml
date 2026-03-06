@@ -6,6 +6,7 @@ packages:
 - libdnf-plugin-subscription-manager
 rules:
 - clean_components_post_updating
+- disable_weak_deps
 - enable_gpgcheck_for_all_repositories
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages

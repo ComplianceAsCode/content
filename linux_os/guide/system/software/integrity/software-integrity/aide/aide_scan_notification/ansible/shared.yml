@@ -5,7 +5,7 @@
 # disruption = low
 - (xccdf-var var_aide_scan_notification_email)
 
-- name: "Ensure AIDE is installed"
+- name: "{{{ rule_title }}} - Ensure AIDE is installed"
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
@@ -13,7 +13,7 @@
     - aide
 
 {{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
-- name: "{{{ rule_title }}} check service"
+- name: "{{{ rule_title }}} - Check Service"
   ansible.builtin.blockinfile:
       create: yes
       dest: /etc/systemd/system/aidecheck.service
@@ -31,7 +31,7 @@
         [Install]
         WantedBy=multi-user.target
 
-- name: "{{{ rule_title }}} notify service"
+- name: "{{{ rule_title }}} - Notify Service"
   ansible.builtin.blockinfile:
       create: yes
       dest: /etc/systemd/system/aidecheck-notify.service
@@ -47,7 +47,7 @@
         ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  {{ var_aide_scan_notification_email }}'
 
 {{% else %}}
-- name: "{{{ rule_title }}}"
+- name: "{{{ rule_title }}} - Setup Cron Tab"
   ansible.builtin.cron:
     name: "run AIDE check"
     minute: 05

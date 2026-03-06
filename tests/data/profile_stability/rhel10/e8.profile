@@ -30,7 +30,6 @@ auditd_log_format
 auditd_name_format
 auditd_write_logs
 configure_crypto_policy
-configure_ssh_crypto_policy
 dir_perms_world_writable_sticky_bits
 dnf-automatic_security_updates_only
 ensure_gpgcheck_globally_activated
@@ -52,6 +51,7 @@ no_empty_passwords
 package_fapolicyd_installed
 package_firewalld_installed
 package_rsyslog_installed
+package_sequoia-sq_installed
 package_squid_removed
 package_telnet-server_removed
 package_telnet_removed

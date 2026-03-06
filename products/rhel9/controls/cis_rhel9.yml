@@ -560,9 +560,11 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: automated
-      rules:
-          - configure_ssh_crypto_policy
+      status: not applicable
+      notes: |-
+          The variable CRYPTO_POLICY required by this CIS requirement is no longer honored by sshd on any RHEL 9 system.
+          This requirement will be removed from CIS Benchmark in future releases,
+          see https://workbench.cisecurity.org/tickets/26215.
 
     - id: 1.6.3
       title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
@@ -817,6 +819,8 @@ controls:
           - l1_workstation
       status: automated
       rules:
+          - service_dnsmasq_disabled
+      related_rules:
           - package_dnsmasq_removed
 
     - id: 2.1.6
@@ -1517,13 +1521,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
-          The status was automated but we need to double check the approach used in this rule.
-          Therefore I moved it to pending until deeper investigation.
+          We don't select rule sshd_use_strong_kex because the CIS Benchmark
+          recommends using system-wide crypto policies to disable the weak
+          SHA1 key exchange algorithms instead of configuring KexAlgorithms
+          in sshd configuration.
       rules:
-          - sshd_use_strong_kex
-          - sshd_strong_kex=cis_rhel9
+          - configure_custom_crypto_policy_cis
 
     - id: 5.1.6
       title: Ensure sshd MACs are configured (Automated)
@@ -1735,7 +1740,7 @@ controls:
           - l2_workstation
       status: automated
       rules:
-          - sudo_require_authentication
+          - sudo_remove_nopasswd
 
     - id: 5.2.5
       title: Ensure re-authentication for privilege escalation is not disabled globally (Automated)
@@ -1744,7 +1749,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - sudo_require_reauthentication
+          - sudo_remove_no_authenticate
 
     - id: 5.2.6
       title: Ensure sudo authentication timeout is configured correctly (Automated)
@@ -1754,6 +1759,7 @@ controls:
       status: automated
       rules:
           - sudo_require_reauthentication
+          - var_sudo_timestamp_timeout=15_minutes
 
     - id: 5.2.7
       title: Ensure access to the su command is restricted (Automated)
@@ -1805,15 +1811,24 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: partial
+      status: automated
       notes: |-
-          This requirement is hard to be automated without any specific requirement. The policy even
-          states that provided commands are examples, other custom settings might be in place and the
-          settings might be different depending on site policies. The other rules will already make
-          sure there is a correct autheselect profile regardless of the existing settings. It is
-          necessary to better discuss with CIS Community.
+          This rule verifies that the active authselect profile includes the required PAM modules:
+          pam_pwquality.so, pam_pwhistory.so, pam_faillock.so, and pam_unix.so in both system-auth
+          and password-auth files. The rule checks the authselect profile source files directly,
+          not the symlinked files in /etc/pam.d/. Other rules ensure these modules are properly
+          configured with correct options.
+      rules:
+          - accounts_password_pam_modules_in_authselect_profile
       related_rules:
-          - no_empty_passwords
+          - enable_authselect
+          - account_password_pam_faillock_password_auth
+          - account_password_pam_faillock_system_auth
+          - accounts_password_pam_pwquality_password_auth
+          - accounts_password_pam_pwquality_system_auth
+          - accounts_password_pam_pwhistory_remember_password_auth
+          - accounts_password_pam_pwhistory_remember_system_auth
+          - accounts_password_pam_unix_enabled
 
     - id: 5.3.2.2
       title: Ensure pam_faillock module is enabled (Automated)
@@ -2000,10 +2015,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: planned
-      notes: |-
-          A new rule needs to be created to check and remediate the enforce_for_root option in
-          /etc/security/pwhistory.conf. accounts_password_pam_enforce_root can be used as reference.
+      status: automated
+      rules:
+          - accounts_password_pam_pwhistory_enforce_for_root
 
     - id: 5.3.3.3.3
       title: Ensure pam_pwhistory includes use_authtok (Automated)
@@ -2035,13 +2049,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      status: automated
       notes: |-
           Usage of pam_unix.so module together with "remember" option is deprecated and is not
-          recommened by this policy. Instead, it should be used remember option of pam_pwhistory
+          recommended by this policy. Instead, it should be used remember option of pam_pwhistory
           module, as required in 5.3.3.3.1. See here for more details about pam_unix.so:
           https://bugzilla.redhat.com/show_bug.cgi?id=1778929
-          A new rule needs to be created to remove the remember option from pam_unix module.
+      rules:
+          - accounts_password_pam_unix_no_remember
 
     - id: 5.3.3.4.3
       title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
@@ -2211,10 +2226,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          Introduced in CIS RHEL9 v2.0.0.
-          New rule is necessary.
+      status: automated
+      rules:
+          - no_invalid_shell_accounts_unlocked
 
     - id: 5.4.3.1
       title: Ensure nologin is not listed in /etc/shells (Automated)
@@ -3102,7 +3116,6 @@ controls:
       rules:
           - accounts_user_dot_group_ownership
           - accounts_user_dot_user_ownership
-          - accounts_user_dot_no_world_writable_programs
           - file_permission_user_init_files
           - var_user_initialization_files_regex=all_dotfiles
           - no_forward_files

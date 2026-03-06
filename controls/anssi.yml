@@ -1255,6 +1255,8 @@ controls:
           - ensure_gpgcheck_globally_activated
           - ensure_gpgcheck_local_packages
           - ensure_redhat_gpgkey_installed
+          # this is relevant for RHEL only
+          - package_sequoia-sq_installed
           - ensure_oracle_gpgkey_installed
           - ensure_almalinux_gpgkey_installed
 

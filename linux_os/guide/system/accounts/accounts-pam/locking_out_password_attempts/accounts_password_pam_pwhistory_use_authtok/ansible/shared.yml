@@ -4,5 +4,91 @@
 # complexity = low
 # disruption = medium
 {{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
-{{{ ansible_ensure_pam_module_option("/etc/pam.d/system-auth", "password", "required", "pam_pwhistory.so", "use_authtok", rule_id=rule_id, rule_title=rule_title) }}}
-{{{ ansible_ensure_pam_module_option("/etc/pam.d/password-auth", "password", "required", "pam_pwhistory.so", "use_authtok", rule_id=rule_id, rule_title=rule_title) }}}
+
+- name: '{{{ rule_title }}} - Ensure authselect custom profile is used if authselect is present'
+  block:
+    {{{ ansible_check_authselect_integrity(rule_title=rule_title) | indent(4) }}}
+
+    {{{ ansible_ensure_authselect_custom_profile(rule_title=rule_title) | indent(4) }}}
+  when:
+    - result_authselect_present.stat.exists
+
+- name: '{{{ rule_title }}} - Get authselect current profile'
+  ansible.builtin.shell:
+    cmd: authselect current -r | awk '{ print $1 }'
+  register: result_authselect_profile
+  changed_when: false
+  when:
+    - result_authselect_check_cmd is success
+
+- name: '{{{ rule_title }}} - Define the PAM profile path based on the authselect profile'
+  ansible.builtin.set_fact:
+    pam_profile_path: >-
+      {%- if result_authselect_profile.stdout is match("^custom/") -%}
+      /etc/authselect/{{ result_authselect_profile.stdout }}
+      {%- else -%}
+      /usr/share/authselect/default/{{ result_authselect_profile.stdout }}
+      {%- endif -%}
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+
+- name: '{{{ rule_title }}} - Check if "use_authtok" option is present in pam_pwhistory.so in {{{ pam_profile_path }}}/password-auth'
+  ansible.builtin.lineinfile:
+    path: "{{ pam_profile_path }}/password-auth"
+    regexp: '^\s*password\s+([^#\n\r]+)\s+pam_pwhistory\.so\s+([^#\n\r]+\s+)?use_authtok\b'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: result_pam_pwhistory_password_auth_option_present
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+    - pam_profile_path is defined
+
+- name: '{{{ rule_title }}} - Ensure "use_authtok" option is added to pam_pwhistory.so in {{{ pam_profile_path }}}/password-auth'
+  ansible.builtin.replace:
+    path: "{{ pam_profile_path }}/password-auth"
+    regexp: '(^\s*password\s+(requisite|required|sufficient)\s+pam_pwhistory\.so\s+.*)$'
+    replace: '\1 use_authtok'
+  register: result_pam_pwhistory_password_auth_add
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+    - pam_profile_path is defined
+    - result_pam_pwhistory_password_auth_option_present.found is defined
+    - result_pam_pwhistory_password_auth_option_present.found == 0
+
+- name: '{{{ rule_title }}} - Check if "use_authtok" option is present in pam_pwhistory.so in {{{ pam_profile_path }}}/system-auth'
+  ansible.builtin.lineinfile:
+    path: "{{ pam_profile_path }}/system-auth"
+    regexp: '^\s*password\s+([^#\n\r]+)\s+pam_pwhistory\.so\s+([^#\n\r]+\s+)?use_authtok\b'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: result_pam_pwhistory_system_auth_option_present
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+    - pam_profile_path is defined
+
+- name: '{{{ rule_title }}} - Ensure "use_authtok" option is added to pam_pwhistory.so in {{{ pam_profile_path }}}/system-auth'
+  ansible.builtin.replace:
+    path: "{{ pam_profile_path }}/system-auth"
+    regexp: '(^\s*password\s+(requisite|required|sufficient)\s+pam_pwhistory\.so\s+.*)$'
+    replace: '\1 use_authtok'
+  register: result_pam_pwhistory_system_auth_add
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+    - pam_profile_path is defined
+    - result_pam_pwhistory_system_auth_option_present.found is defined
+    - result_pam_pwhistory_system_auth_option_present.found == 0
+
+{{{ ansible_apply_authselect_changes(rule_title=rule_title) }}}
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+    - >-
+      (result_pam_pwhistory_password_auth_add is defined and result_pam_pwhistory_password_auth_add.changed)
+       or (result_pam_pwhistory_system_auth_add is defined and result_pam_pwhistory_system_auth_add.changed)

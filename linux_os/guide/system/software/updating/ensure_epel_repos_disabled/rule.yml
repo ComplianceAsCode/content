@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Ensure EPEL Repository is Disabled'
+
+description: |-
+    The system must not have the EPEL (Extra Packages for Enterprise Linux) repository enabled.
+    EPEL provides additional packages that are not part of the official RHEL distribution and
+    may not meet enterprise security requirements.
+
+    Check if any repository files in <tt>/etc/yum.repos.d/</tt> contain enabled EPEL repositories
+    by running:
+    <pre>$ grep -r "^\[.*epel.*\]" /etc/yum.repos.d/</pre>
+
+    If EPEL repositories are found, ensure they are disabled by setting <tt>enabled=0</tt> in
+    the repository configuration file.
+
+rationale: |-
+    The EPEL repository is not officially supported by Red Hat and may contain packages that have
+    not been vetted for security in an enterprise environment. Using unsupported repositories can
+    introduce vulnerabilities, compatibility issues, or packages that do not meet DoD security
+    requirements. Only packages from authorized repositories should be installed to maintain
+    system integrity and security.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86548-5
+    cce@rhel9: CCE-86845-5
+
+references:
+    srg: SRG-OS-000095-GPOS-00049
+
+ocil_clause: 'EPEL repository is enabled'
+
+ocil: |-
+    To verify that EPEL repository is not enabled, run the following commands:
+    <pre>$ grep -r "^\[.*epel.*\]" /etc/yum.repos.d/</pre>
+    For each EPEL repository found, check if it is enabled:
+    <pre>$ grep -A 5 "^\[.*epel.*\]" /etc/yum.repos.d/*.repo | grep "enabled"</pre>
+    The output should show <tt>enabled=0</tt> for all EPEL repositories, or no EPEL repositories
+    should be present.

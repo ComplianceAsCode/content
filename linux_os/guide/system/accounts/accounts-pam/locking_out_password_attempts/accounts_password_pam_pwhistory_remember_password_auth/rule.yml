@@ -21,7 +21,7 @@ description: |-
 
     Otherwise, it should be enabled using an authselect custom profile.
     <br/><br/>
-    Newer systems also have the <tt>/etc/security/pwhistory.conf</tt> file for setting
+    Newer systems also have the <tt>{{{ pwhistory_path }}}</tt> file for setting
     <tt>pam_pwhistory</tt> module options. This file should be used whenever available.
     Otherwise, the <tt>pam_pwhistory</tt> module options can be set in PAM files.
     <br/><br/>
@@ -56,7 +56,7 @@ references:
 
 ocil_clause: |-
     the pam_pwhistory.so module is not used, the "remember" module option is not set in
-    /etc/pam.d/password-auth or in /etc/security/pwhistory.conf, or is set in both files, or is set
+    /etc/pam.d/password-auth or in {{{ pwhistory_path }}}, or is set in both files, or is set
     with a value less than "{{{ xccdf_value("var_password_pam_remember") }}}"
 
 ocil: |-
@@ -70,9 +70,9 @@ ocil: |-
     password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}}</pre>
 
     {{% if product not in ["ol7"] %}}
-    Verify the "/etc/security/pwhistory.conf" file using the following command:
+    Verify the "{{{ pwhistory_path }}}" file using the following command:
 
-    <pre>$ grep remember /etc/security/pwhistory.conf
+    <pre>$ grep remember {{{ pwhistory_path }}}
     remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>
 
     The pam_pwhistory.so "remember" option must be configured only in one file.
@@ -89,7 +89,7 @@ fixtext: |-
     First ensure the pam_pwhistory.so module is enabled in the password section of "/etc/pam.d/password-auth":
     <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok</pre>
 
-    If the "/etc/security/pwhistory.conf" is present in the system, use it to set the "remember" option:
+    If the "{{{ pwhistory_path }}}" is present in the system, use it to set the "remember" option:
     <pre>remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>
 
     Otherwise, include the "remember" option in "/etc/pam.d/password-auth" file:

@@ -15,8 +15,11 @@ accounts_password_pam_maxrepeat
 accounts_password_pam_maxsequence
 accounts_password_pam_minclass
 accounts_password_pam_minlen
+accounts_password_pam_modules_in_authselect_profile
+accounts_password_pam_pwhistory_enforce_for_root
 accounts_password_pam_pwhistory_remember_password_auth
 accounts_password_pam_pwhistory_remember_system_auth
+accounts_password_pam_unix_no_remember
 accounts_password_set_max_life_existing
 accounts_password_set_min_life_existing
 accounts_password_set_warn_age_existing
@@ -32,7 +35,6 @@ accounts_umask_etc_bashrc
 accounts_umask_etc_login_defs
 accounts_umask_etc_profile
 accounts_user_dot_group_ownership
-accounts_user_dot_no_world_writable_programs
 accounts_user_dot_user_ownership
 accounts_user_interactive_home_directory_exists
 aide_build_database
@@ -113,7 +115,6 @@ chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 cis_banner_text=cis
 configure_custom_crypto_policy_cis
-configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
 dconf_db_up_to_date
@@ -278,6 +279,7 @@ no_empty_passwords
 no_empty_passwords_etc_shadow
 no_files_unowned_by_user
 no_forward_files
+no_invalid_shell_accounts_unlocked
 no_netrc_files
 no_password_auth_for_systemaccounts
 no_rsh_trust_files
@@ -290,7 +292,6 @@ package_chrony_installed
 package_cron_installed
 package_cyrus-imapd_removed
 package_dhcp_removed
-package_dnsmasq_removed
 package_dovecot_removed
 package_firewalld_installed
 package_ftp_removed
@@ -337,6 +338,7 @@ service_avahi-daemon_disabled
 service_bluetooth_disabled
 service_crond_enabled
 service_cups_disabled
+service_dnsmasq_disabled
 service_firewalld_enabled
 service_nfs_disabled
 service_nftables_disabled
@@ -365,11 +367,10 @@ sshd_set_loglevel_verbose
 sshd_set_max_auth_tries
 sshd_set_max_sessions
 sshd_set_maxstartups
-sshd_strong_kex=cis_rhel9
-sshd_use_strong_kex
 sudo_add_use_pty
 sudo_custom_logfile
-sudo_require_authentication
+sudo_remove_no_authenticate
+sudo_remove_nopasswd
 sudo_require_reauthentication
 sysctl_kernel_randomize_va_space
 sysctl_kernel_yama_ptrace_scope
@@ -455,6 +456,7 @@ var_sshd_max_sessions=10
 var_sshd_set_keepalive=1
 var_sshd_set_login_grace_time=60
 var_sshd_set_maxstartups=10:30:60
+var_sudo_timestamp_timeout=15_minutes
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces
 xwindows_runlevel_target

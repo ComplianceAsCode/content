@@ -14,7 +14,7 @@
         test_ref="test_require_rescue_service_override" />
       </criteria>
       {{%- if 'ol' not in families  and 'rhel' not in product and "fedora" != product-%}}
-        {{%- if product in ["sle15", "slmicro6"]  -%}}
+        {{%- if product in ["sle15", "sle16", "slmicro6"]  -%}}
             <criteria operator="OR">
                 <criterion test_ref="test_require_rescue_service_runlevel1" />
                 <criterion test_ref="test_require_rescue_service_rescue_target" />
@@ -30,7 +30,7 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
-    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
+    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "sle16", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     /usr/lib/systemd/systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
@@ -51,7 +51,7 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
-    {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
+    {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "sle16", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     /usr/lib/systemd/systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
@@ -73,7 +73,7 @@
 
 
   <ind:textfilecontent54_state id="state_require_rescue_service" version="1">
-    {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
+    {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "sle16", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     <ind:subexpression datatype="string" operation="pattern match">.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:subexpression>
     {{%- else -%}}
     <ind:subexpression datatype="string" operation="pattern match">/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:subexpression>
@@ -131,7 +131,7 @@
   id="object_no_custom_runlevel1_target" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="all" />
     <unix:path operation="equals">/etc/systemd/system</unix:path>
-    {{%- if product in [ "sle15", "slmicro6" ] -%}}
+    {{%- if product in [ "sle15", "sle16", "slmicro6" ] -%}}
         <unix:filename operation="pattern match">^(runlevel1|rescue).target$</unix:filename>
     {{%- else -%}}
         <unix:filename operation="pattern match">^runlevel1.target$</unix:filename>

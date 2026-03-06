@@ -18,7 +18,7 @@ checktext: |-
 
     Check the value for "ucredit" with the following command:
 
-    $ sudo grep ucredit /etc/security/pwquality.conf /etc/security/pwquality.conf/*.conf
+    $ sudo grep ucredit {{{ pwquality_path }}} /etc/security/pwquality.conf/*.conf
 
     ucredit = -1
 
@@ -27,6 +27,6 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity by requiring that at least one upper-case character be used by setting the "ucredit" option.
 
-    Add the following line to /etc/security/pwquality.conf (or modify the line to have the required value):
+    Add the following line to {{{ pwquality_path }}} (or modify the line to have the required value):
 
     ucredit = -1

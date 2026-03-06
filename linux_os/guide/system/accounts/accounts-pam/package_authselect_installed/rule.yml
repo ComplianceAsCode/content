@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Install authselect Package'
+
+description: |-
+    {{{ describe_package_install(package="authselect") }}}
+
+rationale: |-
+    The <tt>authselect</tt> package provides a tool to select system authentication and
+    identity sources from a list of supported profiles instead of letting the administrator
+    manually build the PAM stack. Authselect is a successor to authconfig and helps avoid
+    potential breakage of configuration by shipping several tested profiles that are well
+    tested and supported. Ensuring the latest version of authselect is installed helps
+    maintain system security by providing the latest security fixes and features.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89186-1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="authselect") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: authselect

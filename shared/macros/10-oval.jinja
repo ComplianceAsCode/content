@@ -1033,9 +1033,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type datatype: str
 
 #}}
-{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
+{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, runtime_check="false", xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set sshd_runtime_path = "/tmp/runtime/sshd_effective_config" -%}}
 {{%- if xccdf_variable -%}}
 {{%- set description = "Ensure '" ~ parameter ~ "' is configured with value configured in " ~ xccdf_variable ~ " variable in " ~ sshd_config_path %}}
 {{%- else -%}}
@@ -1072,18 +1073,28 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
           definition_ref="package_openssh-server_installed" />
         {{% endif %}}
         <criteria comment="sshd is configured correctly" operator="AND">
-          <criteria comment="the configuration is correct if it exists" operator="AND">
-            {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(10)}}}
-            {{%- if config_is_distributed == "true" %}}
-            {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(10) }}}
-            {{%- endif %}}
-            {{% if product in ["ol8", "ol9"] %}}
-            {{{- oval_line_in_file_criterion("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true, rule_id=rule_id) | indent(10)}}}
+          {{%- if runtime_check == "true" %}}
+          <criteria comment="runtime configuration exists and is correct" operator="AND">
+            <criterion comment="runtime config file exists" test_ref="test_runtime_config_present_{{{ rule_id }}}" />
+            <criterion comment="runtime config matches expected value" test_ref="test_runtime_{{{ parameter }}}_{{{ rule_id }}}" />
+          </criteria>
+          {{%- endif %}}
+          {{%- if runtime_check != "true" %}}
+          <criteria comment="static configuration is correct" operator="AND">
+            <criteria comment="the configuration is correct if it exists" operator="AND">
+              {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
+              {{%- if config_is_distributed == "true" %}}
+              {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12) }}}
+              {{%- endif %}}
+              {{% if product in ["ol8", "ol9"] %}}
+              {{{- oval_line_in_file_criterion("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
+              {{% endif %}}
+            </criteria>
+            {{%- if not missing_parameter_pass %}}
+            <criterion comment="the configuration exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}" />
             {{% endif %}}
           </criteria>
-          {{%- if not missing_parameter_pass %}}
-          <criterion comment="the configuration exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}" />
-          {{% endif %}}
+          {{%- endif %}}
         </criteria>
       </criteria>
     </criteria>
@@ -1162,6 +1173,49 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_test>
 
   {{% endif %}}
+
+  {{%- if runtime_check == "true" %}}
+  <!-- Runtime configuration checks -->
+  <ind:textfilecontent54_test id="test_runtime_config_present_{{{ rule_id }}}" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Check if runtime config file exists">
+    <ind:object object_ref="obj_runtime_config_file_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_runtime_config_file_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ sshd_runtime_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">.*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_runtime_{{{ parameter }}}_{{{ rule_id }}}" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Check runtime {{{ parameter }}} value">
+    <ind:object object_ref="obj_runtime_{{{ parameter }}}_{{{ rule_id }}}" />
+    {{%- if xccdf_variable -%}}
+    <ind:state state_ref="state_runtime_{{{ parameter }}}_{{{ rule_id }}}_xccdf" />
+    {{%- else -%}}
+    <ind:state state_ref="state_runtime_{{{ parameter }}}_{{{ rule_id }}}" />
+    {{%- endif -%}}
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_runtime_{{{ parameter }}}_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ sshd_runtime_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*{{{ parameter | lower }}}[\s]+(.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  {{%- if xccdf_variable -%}}
+  <ind:textfilecontent54_state id="state_runtime_{{{ parameter }}}_{{{ rule_id }}}_xccdf" version="1">
+    <ind:subexpression operation="equals" datatype="{{{ datatype }}}" var_ref="{{{ xccdf_variable }}}" />
+  </ind:textfilecontent54_state>
+  {{%- else -%}}
+  <ind:textfilecontent54_state id="state_runtime_{{{ parameter }}}_{{{ rule_id }}}" version="1">
+    <ind:subexpression operation="{{{ 'pattern match' if datatype == 'string' else 'equals' }}}" datatype="{{{ datatype }}}">{{{ value | lower if datatype == 'string' else value }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{%- endif -%}}
+  {{%- endif %}}
+
 </def-group>
 {{%- endmacro %}}
 

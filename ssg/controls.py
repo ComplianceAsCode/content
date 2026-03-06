@@ -211,7 +211,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 raise ValueError("Key %s is not allowed in a control file." % key)
 
     @classmethod
-    def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
+    def from_control_dict(cls, control_dict, env_yaml=None, default_level=None):
         """
         Create a control instance from a dictionary of control attributes.
 
@@ -227,6 +227,8 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         Raises:
             ValueError: If the 'automated' key has an invalid value or if 'levels' is not a list.
         """
+        if default_level is None:
+            default_level = ["default"]
         cls._check_keys(control_dict)
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
@@ -254,7 +256,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 % (control.automated,  control.id, control.title))
             raise ValueError(msg)
         control.levels = control_dict.get("levels", default_level)
-        if type(control.levels) is not list:
+        if not isinstance(control.levels, list):
             msg = "Levels for %s must be an array" % control.id
             raise ValueError(msg)
         control.notes = control_dict.get("notes", "")
@@ -307,7 +309,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                     "Please remove any duplicate listing of rule '%s' in "
                     "control '%s'." % (
                         rule.id_, self.id))
-                raise ValueError(msg)
+                raise ValueError(msg) from None
 
 
 class Level(ssg.entities.common.XCCDFEntity):
@@ -317,9 +319,6 @@ class Level(ssg.entities.common.XCCDFEntity):
     Attributes:
         id (str): The unique identifier for the level.
         inherits_from (str or None): The identifier of the level from which this level inherits, if any.
-
-    Args:
-        level_dict (dict): A dictionary containing the level data.
 
     Returns:
         Level: An instance of the Level class.
@@ -502,7 +501,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = (
                 "Unable to parse controls from {filename}: {error}"
                 .format(filename=self.filepath, error=str(exc)))
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
         return control
 
     def _extract_and_record_subcontrols(self, current_control, controls_tree):
@@ -686,7 +685,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = "%s not found in policy %s" % (
                 control_id, self.id
             )
-            raise ValueError(msg)
+            raise ValueError(msg) from None
 
     def get_level(self, level_id):
         """
@@ -708,7 +707,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             msg = "Level %s not found in policy %s" % (
                 level_id, self.id
             )
-            raise ValueError(msg)
+            raise ValueError(msg) from None
 
     def get_level_with_ancestors_sequence(self, level_id):
         """
@@ -805,7 +804,7 @@ class ControlsManager:
         Initializes the Controls class.
 
         Args:
-            controls_dir (str): The directory where control files are located.
+            controls_dirs (List[str]): The directory where control files are located.
             env_yaml (str, optional): Path to the environment YAML file. Defaults to None.
             existing_rules (dict, optional): Dictionary of existing rules. Defaults to None.
         """
@@ -972,7 +971,7 @@ class ControlsManager:
         policy = self._get_policy(policy_id)
         return policy.controls_by_id
 
-    def _get_policy(self, policy_id):
+    def _get_policy(self, policy_id) -> Policy:
         """
         Retrieve a policy by its ID.
 
@@ -987,12 +986,12 @@ class ControlsManager:
         """
         try:
             policy = self.policies[policy_id]
-        except KeyError:
-            msg = "policy '%s' doesn't exist" % (policy_id)
-            raise ValueError(msg)
+        except KeyError as e:
+            msg = f"policy '{policy_id}' doesn't exist"
+            raise ValueError(msg) from e
         return policy
 
-    def get_all_controls_of_level(self, policy_id, level_id):
+    def get_all_controls_of_level(self, policy_id: str, level_id: str) -> List[Control]:
         """
         Retrieve all controls associated with a specific policy and level, including inherited levels.
 
@@ -1001,8 +1000,8 @@ class ControlsManager:
         variables defined in lower levels.
 
         Args:
-            policy_id (int): The unique identifier of the policy.
-            level_id (int): The unique identifier of the level within the policy.
+            policy_id (str): The unique identifier of the policy.
+            level_id (str): The unique identifier of the level within the policy.
 
         Returns:
             list: A list of controls that are eligible for the specified level, with variables
@@ -1012,7 +1011,7 @@ class ControlsManager:
         levels = policy.get_level_with_ancestors_sequence(level_id)
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
-        already_defined_variables = set()
+        already_defined_variables: Set[str] = set()
         # we will go level by level, from top to bottom
         # this is done to enable overriding of variables by higher levels
         for lv in levels:
@@ -1036,7 +1035,7 @@ class ControlsManager:
         Remove specified variables from a control object.
 
         Args:
-            variables_to_remove (list): A list of variable names to be removed from the control.
+            variables_to_remove (set): A set of variable names to be removed from the control.
             control (object): The control object from which variables will be removed.
 
         Returns:

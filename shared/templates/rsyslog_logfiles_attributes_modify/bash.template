@@ -77,11 +77,12 @@ done
 # extract possibly multiline action omfile expressions
 # extract File="logfile" expression
 # match only "logfile" expression
+# exclude /dev/* paths (e.g., /dev/console)
 for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
 	ACTION_OMFILE_LINES=$(grep -iozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}")
 	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
-	LOG_FILE_PATHS+=("$(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\"")")
+	LOG_FILE_PATHS+=("$(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\"" | grep -v "^/dev/")")
 done
 
 # Ensure the correct attribute if file exists

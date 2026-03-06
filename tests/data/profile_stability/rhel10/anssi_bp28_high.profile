@@ -275,6 +275,7 @@ package_dnf-automatic_installed
 package_kea_removed
 package_logrotate_installed
 package_rsyslog-gnutls_installed
+package_sequoia-sq_installed
 package_setroubleshoot-plugins_removed
 package_setroubleshoot-server_removed
 package_setroubleshoot_removed

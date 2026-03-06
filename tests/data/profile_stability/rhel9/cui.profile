@@ -62,7 +62,6 @@ auditd_name_format
 chronyd_client_only
 configure_crypto_policy
 configure_openssl_crypto_policy
-configure_ssh_crypto_policy
 configure_usbguard_auditbackend
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot

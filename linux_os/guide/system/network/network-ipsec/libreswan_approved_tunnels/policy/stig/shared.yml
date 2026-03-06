@@ -9,14 +9,21 @@ checktext: |-
 
     Determine if the "IPsec" service is active with the following command:
 
+    {{% if product in ['sle15', 'sle16'] %}}
     $ systemctl is-active ipsec
+    {{% else %}}
+    $ systemctl is-active strongswan
+    {{% endif %}}
 
     Inactive
 
     If the "IPsec" service is active, check for configured IPsec connections ("conn"), with the following command:
 
     $ sudo grep -rni conn /etc/ipsec.conf /etc/ipsec.d/
-
+    {{% if product in ['sle15', 'sle16'] %}}
+    Also:
+    $ sudo grep -rni conn /etc/swanctl/swanctl.conf /etc/swanctl/conf.d/
+    {{% endif %}}
     Verify any returned results are documented with the ISSO.
 
     If the IPsec tunnels are active and not approved, this is a finding.

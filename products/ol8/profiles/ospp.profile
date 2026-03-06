@@ -200,9 +200,11 @@ selections:
 
     # Following rules are not applicable to OL
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!package_dnf-plugin-subscription-manager_installed'
     - '!package_subscription-manager_installed'
     - '!zipl_audit_argument'
     - '!zipl_audit_backlog_limit_argument'
     - '!zipl_bls_entries_only'
     - '!zipl_bootmap_is_up_to_date'
+    - '!package_libreport-plugin-rhtsupport_removed'

@@ -3,7 +3,6 @@ Common functions for processing Templates in SSG
 """
 
 from __future__ import absolute_import
-from __future__ import print_function
 
 import os
 import glob
@@ -60,7 +59,7 @@ def load_module(module_name: str, module_path: str):
         ValueError: If the module cannot be loaded due to an invalid spec or loader.
     """
     # https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
-    import importlib
+    import importlib.util
     spec = importlib.util.spec_from_file_location(module_name, module_path) # type: ignore
     if not spec:
         raise ValueError("Error loading '%s' module" % module_path)
@@ -383,7 +382,7 @@ class Builder(object):
                                                    language, local_env_yaml)
         except Exception as e:
             raise RuntimeError("Unable to generate {0} template language for Templatable {1}: {2}"
-                               .format(language.name, templatable, e))
+                               .format(language.name, templatable, e)) from e
 
     def write_lang_contents_for_templatable(self, filled_template, lang, templatable):
         """

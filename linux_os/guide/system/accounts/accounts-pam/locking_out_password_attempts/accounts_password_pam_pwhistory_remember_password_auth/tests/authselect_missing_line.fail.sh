@@ -14,4 +14,4 @@ else
     sed -i --follow-symlinks '/.*pam_pwhistory\.so/d' $CUSTOM_PASSWORD_AUTH
 fi
 authselect apply-changes -b
-> /etc/security/pwhistory.conf
+> {{{ pwhistory_path }}}

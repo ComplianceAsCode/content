@@ -69,6 +69,7 @@ selections:
     # Add oracle gpg key rule
     - 'ensure_oracle_gpgkey_installed'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
 
     # OL 10 uses a different rule for auditing changes to selinux configuration
     - '!audit_rules_mac_modification'

@@ -38,3 +38,4 @@ selections:
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
     - '!security_patches_up_to_date'
+    - '!configure_ssh_crypto_policy'

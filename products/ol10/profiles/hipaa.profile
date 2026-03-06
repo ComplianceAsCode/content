@@ -20,6 +20,7 @@ selections:
     - hipaa:all
 
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - ensure_oracle_gpgkey_installed
 
     # Conflicts with sshd_set_keepalive

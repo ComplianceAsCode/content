@@ -32,7 +32,7 @@
     reload: yes
   when: kexec_arch == "b32"
 
-{{% if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15', 'sle16'] %}}
 - name: Check noexec argument exists
   ansible.builtin.command: grep '^GRUB_CMDLINE_LINUX=.*noexec=.*"' /etc/default/grub
   failed_when: False
@@ -51,7 +51,7 @@
 
 {{% endif -%}}
 
-{{% if product in ['sle12', 'sle15'] %}}
+{{% if product in ['sle12', 'sle15', 'sle16'] %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
   when: kexec_arch == "b64"

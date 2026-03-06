@@ -7,11 +7,7 @@
 {{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'rhel10'] %}}
 {{{ bash_package_install("python3-libsemanage") }}}
 {{% elif product in [ "sle15", "sle16" ] %}}
-{{{ bash_package_install("policycoreutils") }}}
-{{{ bash_package_install("policycoreutils-python-utils") }}}
-{{{ bash_package_install("selinux-tools") }}}
-{{{ bash_package_install("python3-selinux") }}}
-{{{ bash_package_install("python3-semanage") }}}
+{{{ bash_package_install("libsemanage2") }}}
 {{% else %}}
 {{{ bash_package_install("libsemanage-python") }}}
 {{% endif %}}

@@ -26,6 +26,7 @@ identifiers:
     cce@rhel10: CCE-88732-3
     cce@sle12: CCE-92210-4
     cce@sle15: CCE-85746-6
+    cce@sle16: CCE-95954-4
     cce@slmicro5: CCE-93937-1
 
 references:
@@ -61,6 +62,11 @@ warnings:
         the value will not be configured correctly.
 
 platform: package[systemd]
+
+{{% if product in ["rhel8", "rhel9"] %}}
+conflicts:
+    - sysctl_kernel_core_pattern
+{{% endif %}}
 
 template:
     name: systemd_dropin_configuration

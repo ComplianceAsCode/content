@@ -9,6 +9,8 @@ vuldiscussion: |-
 checktext: |-
     Note: For systems that use BIOS, this requirement is Not Applicable.
 
+    Note: If the /boot/efi partition is mounted with a vfat filesystem, this requirement is Not Applicable.
+
     Verify the /boot/efi directory is mounted with the "nosuid" option with the following command:
 
     $ mount | grep '\s/boot/efi\s'

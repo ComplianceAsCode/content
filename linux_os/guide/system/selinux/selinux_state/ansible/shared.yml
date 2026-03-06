@@ -8,7 +8,7 @@
 - name: "{{{ rule_title }}} - Check current SELinux state"
   ansible.builtin.command:
     cmd: getenforce
-  register: selinux_state
+  register: current_selinux_state
   check_mode: false
   changed_when: false
 
@@ -20,4 +20,4 @@
     state: touch
     access_time: preserve
     modification_time: preserve
-  when: selinux_state.stdout | lower != var_selinux_state
+  when: current_selinux_state.stdout | lower != var_selinux_state

@@ -1,14 +1,14 @@
 
-title: Ensure that all Routes has IP whitelist annotation 
+title: Ensure that all Routes has IP whitelist annotation
 
 description: |-
   OpenShift has an option to set the IP whitelist for Routes [1] when
-  creating new Routes. All routes outside the openshift namespaces and 
+  creating new Routes. All routes outside the openshift namespaces and
   the kube namespaces should use the IP whitelist annotations. Requests
   from IP addresses that are not in the whitelist are dropped.
 
-  [1] https://docs.openshift.com/container-platform/latest/networking/routes/route-configuration.html#nw-route-specific-annotations_route-configuration
-  
+  [1] https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/ingress_and_load_balancing/configuring-routes#nw-route-specific-annotations_route-configuration
+
 rationale: |-
   The usage of IP whitelist for Routes provides basic protection against unwanted access.
 

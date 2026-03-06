@@ -1,0 +1,7 @@
+name: platform_sles_test
+original_expression: os_linux[sles]>=15
+xml_content: <ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="platform_sles_test"><ns0:logical-test operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:platform_sles_test" /></ns0:logical-test></ns0:platform>
+bash_conditional: 'grep -qP "^ID=[\"'']?sles[\"'']?$" "/etc/os-release" && { real="$(grep -P "^VERSION_ID=[\"'']?[\w.]+[\"'']?$" /etc/os-release | sed "s/^VERSION_ID=[\"'']\?\([^\"'']\+\)[\"'']\?$/\1/")"; expected="15"; printf "%s\n%s" "$expected" "$real" | sort -VC; }'
+ansible_conditional: 'ansible_distribution == "SLES" and ansible_distribution_version >= "15"'
+title: 'Test SLES Platform >=15'
+documentation_complete: true

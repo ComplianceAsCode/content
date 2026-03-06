@@ -26,7 +26,10 @@ selections:
     - '!package_rsh_removed'
     - package_rear_installed
     - package_audit_installed
+    # this package is not available in RHEL 9
+    - '!package_sequoia-sq_installed'
 
     # Following rules are not applicable to RHEL
     - '!package_talk_removed'
     - '!package_talk-server_removed'
+    - '!configure_ssh_crypto_policy'

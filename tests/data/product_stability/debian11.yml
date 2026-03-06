@@ -43,6 +43,7 @@ login_defs_path: /etc/login.defs
 major_version_ordinal: 11
 nobody_gid: 65534
 nobody_uid: 65534
+pam_faillock_conf_path: /etc/security/faillock.conf
 pkg_manager: apt_get
 pkg_system: dpkg
 platform_package_overrides:
@@ -66,6 +67,8 @@ platform_package_overrides:
   zipl: s390utils-base
 product: debian11
 profiles_root: ./profiles
+pwhistory_path: /etc/security/pwhistory.conf
+pwquality_path: /etc/security/pwquality.conf
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
   app-srg: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
@@ -94,6 +97,7 @@ reference_uris:
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_distributed_config: 'false'
+sshd_runtime_check: 'false'
 sysctl_remediate_drop_in_file: 'false'
 target_oval_version:
 - 5

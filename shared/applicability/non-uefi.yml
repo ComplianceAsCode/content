@@ -2,4 +2,4 @@ name: cpe:/a:non-uefi
 title: System boot mode is non-UEFI
 check_id: system_boot_mode_is_non_uefi
 bash_conditional: '[ ! -d /sys/firmware/efi ]'
-ansible_conditional: '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
+ansible_conditional: not ('/sys/firmware/efi' is directory)

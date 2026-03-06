@@ -74,7 +74,6 @@ chronyd_run_as_chrony_user
 chronyd_specify_remote_server
 configure_crypto_policy
 configure_firewalld_ports
-configure_ssh_crypto_policy
 coredump_disable_backtraces
 coredump_disable_storage
 dconf_db_up_to_date
@@ -190,6 +189,7 @@ package_libselinux_installed
 package_logrotate_installed
 package_net-snmp_removed
 package_nftables_installed
+package_sequoia-sq_installed
 package_sudo_installed
 package_telnet-server_removed
 package_telnet_removed

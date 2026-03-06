@@ -39,9 +39,13 @@
 {{{ ansible_pam_pwquality_enable('/usr/share/pam-configs/cac_pwquality', rule_title=rule_title) }}}
 {{% endif %}}
 
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/common-password', 'password', 'requisite', 'pam_pwquality.so', '', '', 'BOF', rule_id=rule_id, rule_title=rule_title) }}}
+{{% endif %}}
+
 - name: {{{ rule_title }}} - Ensure PAM variable {{{ VARIABLE }}} is set accordingly
   ansible.builtin.lineinfile:
     create: yes
-    dest: "/etc/security/pwquality.conf"
+    dest: "{{{ pwquality_path }}}"
     regexp: '^#?\s*{{{ VARIABLE }}}'
     line: "{{{ VARIABLE }}} = {{ var_password_pam_{{{ VARIABLE }}} }}"

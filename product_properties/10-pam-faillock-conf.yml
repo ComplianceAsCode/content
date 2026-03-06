@@ -1,0 +1,7 @@
+default:
+  pam_faillock_conf_path: "/etc/security/faillock.conf"
+
+overrides:
+{{% if product == 'sle16' %}}
+  pam_faillock_conf_path: "/usr/etc/security/faillock.conf"
+{{% endif %}}

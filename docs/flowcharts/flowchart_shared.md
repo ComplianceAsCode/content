@@ -26,11 +26,6 @@ flowchart TD
             39[template_name] --> |may have| 43(processing scripts)
                 43(processing scripts) --> |written at| 44[template.py]
             39[template_name] --> |may have| 45[tests]
-    30[shared] --> |contains| 46[transforms]
-        46[transforms] --> |instructed using| 47([XSLT])
-            47([XSLT]) --> |written at| 48[name.xslt]
-        46[transforms] --> |contains| 49(scripts)
-            49(scripts) --> |uses| 50(python or bash)
     30[shared] --> |contains| 51[references]
         51[references] --> |contains| 52(Available CCEs)
         51[references] --> |contains| 53(Misc References)

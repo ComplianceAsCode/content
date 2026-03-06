@@ -64,7 +64,6 @@ configure_crypto_policy
 configure_firewalld_ports
 configure_kerberos_crypto_policy
 configure_opensc_card_drivers
-configure_ssh_crypto_policy
 dir_perms_world_writable_sticky_bits
 disable_host_auth
 dnf-automatic_apply_updates
@@ -102,6 +101,7 @@ package_opensc_installed
 package_pcsc-lite-ccid_installed
 package_pcsc-lite_installed
 package_rsyslog_installed
+package_sequoia-sq_installed
 package_squid_removed
 package_subscription-manager_installed
 package_sudo_installed

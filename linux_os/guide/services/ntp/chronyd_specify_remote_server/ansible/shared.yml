@@ -5,18 +5,120 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
 
-- name: "Detect if chrony is already configured with pools or servers"
-  ansible.builtin.find:
-    path: /etc
-    patterns: chrony.conf
-    contains: '^[\s]*(?:server|pool)[\s]+[\w]+'
-  register: chrony_servers
+- name: "Check if chrony main config has active server/pool entries"
+  ansible.builtin.command:
+    cmd: grep -q '^[[:space:]]*\(server\|pool\)[[:space:]]\+[[:graph:]]\+' {{{ chrony_conf_path }}}
+  register: chrony_conf_has_servers
+  changed_when: false
+  failed_when: false
 
-- name: "Configure remote time servers"
+- name: "Extract sourcedir paths from chrony configuration"
+  ansible.builtin.shell:
+    cmd: grep '^[[:space:]]*sourcedir[[:space:]]\+' {{{ chrony_conf_path }}} | awk '{print $2}'
+  register: chrony_sourcedir_paths
+  changed_when: false
+  failed_when: false
+  when: chrony_conf_has_servers.rc != 0
+
+- name: "Check for server/pool entries in sourcedir .sources files"
+  ansible.builtin.shell:
+    cmd: |
+      for dir in {{ chrony_sourcedir_paths.stdout_lines | join(' ') }}; do
+        if [ -d "$dir" ]; then
+          grep -q '^[[:space:]]*\(server\|pool\)[[:space:]]\+[[:graph:]]\+' "$dir"/*.sources 2>/dev/null && exit 0
+        fi
+      done
+      exit 1
+  register: chrony_sourcedir_has_servers
+  changed_when: false
+  failed_when: false
+  when:
+    - chrony_conf_has_servers.rc != 0
+    - chrony_sourcedir_paths.stdout_lines | length > 0
+
+- name: "Extract confdir paths from chrony configuration"
+  ansible.builtin.shell:
+    cmd: grep '^[[:space:]]*confdir[[:space:]]\+' {{{ chrony_conf_path }}} | awk '{print $2}'
+  register: chrony_confdir_paths
+  changed_when: false
+  failed_when: false
+  when:
+    - chrony_conf_has_servers.rc != 0
+    - (chrony_sourcedir_paths.stdout_lines | default([]) | length == 0 or chrony_sourcedir_has_servers.rc != 0)
+
+- name: "Check for server/pool entries in confdir .conf files"
+  ansible.builtin.shell:
+    cmd: |
+      for dir in {{ chrony_confdir_paths.stdout_lines | join(' ') }}; do
+        if [ -d "$dir" ]; then
+          grep -q '^[[:space:]]*\(server\|pool\)[[:space:]]\+[[:graph:]]\+' "$dir"/*.conf 2>/dev/null && exit 0
+        fi
+      done
+      exit 1
+  register: chrony_confdir_has_servers
+  changed_when: false
+  failed_when: false
+  when:
+    - chrony_conf_has_servers.rc != 0
+    - chrony_confdir_paths.stdout_lines | default([]) | length > 0
+    - (chrony_sourcedir_paths.stdout_lines | default([]) | length == 0 or chrony_sourcedir_has_servers.rc != 0)
+
+- name: "Create sourcedir directory if needed"
+  ansible.builtin.file:
+    path: "{{ chrony_sourcedir_paths.stdout_lines[0] }}"
+    state: directory
+    mode: '0755'
+  when:
+    - chrony_conf_has_servers.rc != 0
+    - chrony_sourcedir_paths.stdout_lines | default([]) | length > 0
+    - chrony_sourcedir_has_servers.rc != 0
+
+- name: "Add remote time servers to sourcedir .sources file"
+  ansible.builtin.lineinfile:
+    path: "{{ chrony_sourcedir_paths.stdout_lines[0] }}/ntp-servers.sources"
+    line: 'server {{ item }}'
+    state: present
+    create: true
+    mode: '0644'
+  loop: '{{ var_multiple_time_servers.split(",") }}'
+  when:
+    - chrony_conf_has_servers.rc != 0
+    - chrony_sourcedir_paths.stdout_lines | default([]) | length > 0
+    - chrony_sourcedir_has_servers.rc != 0
+
+- name: "Create confdir directory if needed"
+  ansible.builtin.file:
+    path: "{{ chrony_confdir_paths.stdout_lines[0] }}"
+    state: directory
+    mode: '0755'
+  when:
+    - chrony_conf_has_servers.rc != 0
+    - (chrony_sourcedir_paths.stdout_lines | default([]) | length == 0 or chrony_sourcedir_has_servers.rc != 0)
+    - chrony_confdir_paths.stdout_lines | default([]) | length > 0
+    - chrony_confdir_has_servers.rc != 0
+
+- name: "Add remote time servers to confdir .conf file"
+  ansible.builtin.lineinfile:
+    path: "{{ chrony_confdir_paths.stdout_lines[0] }}/ntp-servers.conf"
+    line: 'server {{ item }}'
+    state: present
+    create: true
+    mode: '0644'
+  loop: '{{ var_multiple_time_servers.split(",") }}'
+  when:
+    - chrony_conf_has_servers.rc != 0
+    - (chrony_sourcedir_paths.stdout_lines | default([]) | length == 0 or chrony_sourcedir_has_servers.rc != 0)
+    - chrony_confdir_paths.stdout_lines | default([]) | length > 0
+    - chrony_confdir_has_servers.rc != 0
+
+- name: "Add remote time servers to main chrony configuration"
   ansible.builtin.lineinfile:
     path: {{{ chrony_conf_path }}}
     line: 'server {{ item }}'
     state: present
-    create: True
+    create: true
   loop: '{{ var_multiple_time_servers.split(",") }}'
-  when: chrony_servers.matched == 0
+  when:
+    - chrony_conf_has_servers.rc != 0
+    - (chrony_sourcedir_paths.stdout_lines | default([]) | length == 0 or chrony_sourcedir_has_servers.rc != 0)
+    - (chrony_confdir_paths.stdout_lines | default([]) | length == 0 or chrony_confdir_has_servers.rc != 0)

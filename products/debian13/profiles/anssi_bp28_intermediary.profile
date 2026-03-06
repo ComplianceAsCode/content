@@ -34,6 +34,7 @@ selections:
   # Following rules aren't compatible with Debian 13
   - '!accounts_passwords_pam_tally2_deny_root'
   - '!ensure_redhat_gpgkey_installed'
+  - '!package_sequoia-sq_installed'
   - '!set_password_hashing_algorithm_systemauth'
   - '!package_dnf-automatic_installed'
   - '!dnf-automatic_security_updates_only'

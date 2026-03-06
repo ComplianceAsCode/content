@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-from __future__ import print_function
 import sys
 import os
 from typing import Optional
@@ -180,7 +179,7 @@ class OVALFileLinker(FileLinker):
             # (either CCE-XXXX-X, or CCE-XXXXX-X). Drop from XCCDF those who don't follow it
             verify_correct_form_of_referenced_cce_identifiers(self.xccdftree)
         except SSGError as exc:
-            raise SSGError("Error processing {0}: {1}".format(self.fname, str(exc)))
+            raise SSGError("Error processing {0}: {1}".format(self.fname, str(exc))) from exc
 
         self.oval_document = self.translator.translate_oval_document(
             self.oval_document, store_defname=True

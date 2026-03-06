@@ -62,7 +62,6 @@ auditd_name_format
 chronyd_client_only
 configure_crypto_policy
 configure_openssl_crypto_policy
-configure_ssh_crypto_policy
 configure_usbguard_auditbackend
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
@@ -100,6 +99,7 @@ package_gnutls-utils_installed
 package_openscap-scanner_installed
 package_openssh-clients_installed
 package_openssh-server_installed
+package_sequoia-sq_installed
 package_subscription-manager_installed
 package_sudo_installed
 package_usbguard_installed

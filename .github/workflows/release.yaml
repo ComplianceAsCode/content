@@ -12,7 +12,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible ansible-lint libxslt
       - name: Checkout
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
       - name: Install python deps
         run: pip install -r requirements-base.txt -r test-requirements.txt
       - name: Configure
@@ -39,13 +39,13 @@ jobs:
           GITHUB_REF: ${{ github.ref }}
       - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@439f79b5b5428107c7688c1d2b0e8bacc9b8792c # v4
+        uses: mikepenz/release-changelog-builder-action@6faf020194b7c8853f9e55c4fd92e40b02122a04 # v4
         with:
           configuration: .github/workflows/release-changelog.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
-        uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe # v2.4.2
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
           draft: True
           name: Content ${{ steps.set_version.outputs.ver }}

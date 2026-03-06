@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-from __future__ import print_function
 
 """
 Takes given XCCDF or data stream and adds RHEL derivative operating system(s) CPE name next

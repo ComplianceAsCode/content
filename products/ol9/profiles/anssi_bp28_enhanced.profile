@@ -23,6 +23,7 @@ selections:
     - '!install_PAE_kernel_on_x86-32'
     - '!partition_for_boot'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!sudo_add_ignore_dot'
     - '!audit_rules_privileged_commands_rmmod'

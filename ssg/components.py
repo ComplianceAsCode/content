@@ -2,7 +2,6 @@
 Common functions for processing Components in SSG
 """
 
-from __future__ import print_function
 
 from collections import defaultdict
 import os

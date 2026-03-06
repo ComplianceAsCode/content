@@ -16,6 +16,7 @@ identifiers:
     cce@rhel10: CCE-90244-5
     cce@sle12: CCE-91635-3
     cce@sle15: CCE-91289-9
+    cce@sle16: CCE-96631-7
     cce@slmicro5: CCE-94033-8
 
 references:
@@ -23,16 +24,16 @@ references:
     cis@sle15: 5.4.3
     pcidss: Req-8.1.1
 
-ocil_clause: 'root has a primary gid not equal to zero'
+ocil_clause: 'root has a primary gid not equal to zero or other non-system accounts has a primary gid equal to zero'
 
 ocil: |-
     To verify that root's primary group is zero run the following command:
     <pre>
-        grep '^root:' /etc/passwd | cut -d : -f 4
+        awk -F: '($1 !~ /^(sync|shutdown|halt|operator)/ &amp;&amp; $4=="0") {print $1":"$4}' /etc/passwd
     </pre>
     The command should return:
     <pre>
-    0
+        root:0
     </pre>
 
 platform: system_with_kernel

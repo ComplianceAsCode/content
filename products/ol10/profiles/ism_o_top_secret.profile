@@ -84,3 +84,5 @@ selections:
     - '!package_rear_installed'
     - '!package_ypbind_removed'
     - '!package_xinetd_removed'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'

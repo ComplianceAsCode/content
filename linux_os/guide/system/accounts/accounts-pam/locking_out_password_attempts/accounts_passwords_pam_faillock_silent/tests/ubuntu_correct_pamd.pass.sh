@@ -8,7 +8,6 @@ Priority: 0
 Auth-Type: Primary
 Auth:
     [default=die]                   pam_faillock.so authfail silent
-    sufficient                      pam_faillock.so authsucc silent
 EOF
 
 cat << EOF > /usr/share/pam-configs/tmp_faillock_notify

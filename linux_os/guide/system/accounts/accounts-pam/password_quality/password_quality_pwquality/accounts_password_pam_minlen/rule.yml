@@ -50,14 +50,14 @@ ocil_clause: 'the command does not return a "minlen" value of "{{{ xccdf_value("
 ocil: |-
     Verify that {{{ full_name }}} enforces a minimum {{{ xccdf_value("var_password_pam_minlen") }}}-character password length with the following command:
 
-    <pre>$ grep minlen /etc/security/pwquality.conf
+    <pre>$ grep minlen {{{ pwquality_path }}}
 
     minlen = {{{ xccdf_value("var_password_pam_minlen") }}}</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce a minimum {{{ xccdf_value("var_password_pam_minlen") }}}-character password length.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     minlen = {{{ xccdf_value("var_password_pam_minlen") }}}
 

@@ -46,6 +46,7 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!ensure_oracle_gpgkey_installed'
     - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
     - '!package_kea_removed'
     - '!file_groupowner_efi_grub2_cfg'
     - '!file_owner_efi_grub2_cfg'

@@ -38,6 +38,7 @@ selections:
     - '!package_kea_removed'
     - '!package_rsh-server_removed'
     - '!package_rsh_removed'
+    - '!package_sequoia-sq_installed'
 
     # Rules that only for higher levels
     - '!audit_rules_mac_modification_etc_selinux'

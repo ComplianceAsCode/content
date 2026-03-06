@@ -20,7 +20,9 @@ description: |-
     {{% elif product == "ol8" %}}
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/network/network-ConfiguringNetworkTime.html#ol-nettime") }}}
     {{% elif product in ["sle12", "sle15"] %}}
-        {{{ weblink(link="https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-ntp.html") }}}
+        {{{ weblink(link="https://documentation.suse.com/sles/15-SP7/html/SLES-all/cha-ntp.html") }}}
+    {{% elif product in ["sle16"] %}}
+        {{{ weblink(link="https://documentation.suse.com/sles/16.0/html/SLES-ntp-time-synchronization/index.html") }}}
     {{% elif "rhel" in product %}}
         {{{ weblink(link="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html-single/configuring_basic_system_settings/index#proc_migrating-to-chrony_configuring-time-synchronization") }}}
     {{% endif %}}
@@ -47,6 +49,7 @@ identifiers:
     cce@rhel10: CCE-89185-3
     cce@sle12: CCE-91629-6
     cce@sle15: CCE-85835-7
+    cce@sle16: CCE-96451-0
 
 references:
     cis-csc: 1,14,15,16,3,5,6

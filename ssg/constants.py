@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-from __future__ import print_function
 
 import os.path
 import os
@@ -246,9 +245,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Not Applicable": "example",
 }
 
-
-# see xccdf-addremediations.xslt <- shared_constants.xslt
-# if you want to know how the map was constructed
 REF_PREFIX_MAP = {
     "nist": "NIST-800-53",
     "cui": "NIST-800-171",
@@ -462,6 +458,7 @@ DEFAULT_AUDIT_WATCHES_STYLE = 'legacy'
 DEFAULT_RSYSLOG_CAFILE = '/etc/pki/tls/cert.pem'
 DEFAULT_FAILLOCK_PATH = '/var/run/faillock'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
+DEFAULT_SSH_RUNTIME_CHECK = 'false'
 DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
 DEFAULT_CHRONY_D_PATH = '/etc/chrony.d/'

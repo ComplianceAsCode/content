@@ -24,7 +24,7 @@
 }}}
 {{% endif %}}
 
-truncate -s 0 /etc/security/pwquality.conf
+truncate -s 0 "{{{ pwquality_path }}}"
 
 config_dir="/etc/security/pwquality.conf.d"
 mkdir -p $config_dir

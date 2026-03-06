@@ -108,3 +108,4 @@ selections:
   - '!ldap_client_tls_cacertpath'
   - '!ldap_client_start_tls'
   - '!no_nis_in_nsswitch'
+  - '!package_sequoia-sq_installed'

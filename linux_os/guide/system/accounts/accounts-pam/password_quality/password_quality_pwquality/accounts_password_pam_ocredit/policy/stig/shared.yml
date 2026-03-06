@@ -6,12 +6,12 @@ vuldiscussion: |-
 
     Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.
 
-    {{{ full_name }}} utilizes "pwquality" as a mechanism to enforce password complexity. Note that to require special characters without degrading the "minlen" value, the credit value must be expressed as a negative number in "/etc/security/pwquality.conf".
+    {{{ full_name }}} utilizes "pwquality" as a mechanism to enforce password complexity. Note that to require special characters without degrading the "minlen" value, the credit value must be expressed as a negative number in "{{{ pwquality_path }}}".
 
 checktext: |-
     Verify that {{{ full_name }}} enforces password complexity by requiring that at least one special character with the following command:
 
-    $ sudo grep ocredit /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+    $ sudo grep ocredit {{{ pwquality_path }}} /etc/security/pwquality.conf.d/*.conf
 
     ocredit = -1
 
@@ -20,6 +20,6 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity by requiring that at least one special character be used by setting the "ocredit" option.
 
-    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+    Add the following line to "{{{ pwquality_path }}}" (or modify the line to have the required value):
 
     ocredit = -1
