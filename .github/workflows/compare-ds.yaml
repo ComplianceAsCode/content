@@ -8,8 +8,9 @@ permissions:
     pull-requests: write
     contents: read
     actions: read
+    checks: write
 jobs:
-  build-content:
+  compare_ds_job:
     name: Generate Diff
     runs-on: ubuntu-latest
     container:
@@ -30,19 +31,32 @@ jobs:
         id: pr_info
         run: |
           PR_NUMBER=$(cat pr-info/pr-number.txt)
+          PR_SHA=$(cat pr-info/pr-sha.txt)
           BASE_BRANCH=$(cat pr-info/base-branch.txt)
           FORK_POINT=$(cat pr-info/fork-point.txt)
           echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
+          echo "pr_sha=${PR_SHA}" >> $GITHUB_OUTPUT
           echo "base_branch=${BASE_BRANCH}" >> $GITHUB_OUTPUT
           echo "fork_point=${FORK_POINT}" >> $GITHUB_OUTPUT
           echo "PR Number: ${PR_NUMBER}"
+          echo "PR SHA: ${PR_SHA}"
           echo "Base Branch: ${BASE_BRANCH}"
           echo "Fork Point: ${FORK_POINT}"
-      - name: Checkout master
+      - name: Create GitHub check run
+        uses: LouisBrunner/checks-action@6b626ffbad7cc56fd58627f774b9067e6118af23 # v2.0.0
+        id: create_check
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Compare DS
+          status: in_progress
+          sha: ${{ steps.pr_info.outputs.pr_sha }}
+          output: |
+            {"summary":"Compare DS started. Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}."}
+      - name: Checkout forking point ($FORK_POINT)
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
         with:
           repo: ComplianceAsCode/content
-          ref: master
+          ref: ${{ steps.pr_info.outputs.fork_point }}
           fetch-depth: 0
       # https://github.com/actions/checkout/issues/766
       - name: Set git safe directory
@@ -75,7 +89,7 @@ jobs:
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
-            name: pr-artifacts-${{ github.event.workflow_run.head_sha }}
+            name: pr-artifacts
             path: pr_artifacts
             run-id: ${{ github.event.workflow_run.id }}
       - name: Unpack built artifacts
@@ -158,7 +172,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Compare Ansible playbook shell commands
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: utils/ansible_shell_diff.py ssg-${{steps.product.outputs.prop}}-ds.xml build/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
+        run: utils/ansible_shell_diff.py build/ssg-${{steps.product.outputs.prop}}-ds.xml pr_artifacts/artifacts/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Test if there are Ansible shell module changes
@@ -188,3 +202,13 @@ jobs:
           type: delete
           comment_id: ${{ steps.shell_diff.outputs.comment-id }}
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compare DS
+        if: always()
+        uses: LouisBrunner/checks-action@6b626ffbad7cc56fd58627f774b9067e6118af23 # v2.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          conclusion: ${{ job.status }}
+          check_id: ${{ steps.create_check.outputs.check_id }}
+          sha: ${{ steps.pr_info.outputs.pr_sha }}
+          output: |
+            {"summary":"Compare DS completed. Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}."}
