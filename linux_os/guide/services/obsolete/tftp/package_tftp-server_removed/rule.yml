@@ -2,6 +2,8 @@ documentation_complete: true
 
 {{% if 'ubuntu' in product %}}
 {{% set package_name = "tftpd-hpa" %}}
+{{% elif 'sle' in product %}}
+{{% set package_name = "tftp" %}}
 {{% else %}}
 {{% set package_name = "tftp-server" %}}
 {{% endif %}}
