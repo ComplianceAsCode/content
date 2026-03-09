@@ -2464,7 +2464,7 @@ copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
             insensitive='false',
             create='no',
             state='absent')|indent }}}
-    - name: "Check if the parameter {{{ parameter }}} is present in {{{ sshd_config_dir }}} and in {{{ sshd_usr_config_dir }}}"
+    - name: "{{{ rule_title }}} - Check if the parameter {{{ parameter }}} is present in {{{ sshd_config_dir }}} and in {{{ sshd_usr_config_dir }}}"
       ansible.builtin.find:
         paths: {{{ ssh_paths }}}
         recurse: 'yes'
