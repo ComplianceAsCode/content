@@ -49,7 +49,7 @@ jobs:
                 with:
                     path: 'output.json'
                     prop_path: 'product'
-            -   name: Build product ${{ github.event.pull_request.head.sha }}
+            -   name: Build product PR ${{ github.event.pull_request.head.sha }}
                 if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
                 run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
             -   name: Create Artifact
