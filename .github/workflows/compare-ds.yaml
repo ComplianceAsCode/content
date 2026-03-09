@@ -52,7 +52,7 @@ jobs:
           sha: ${{ steps.pr_info.outputs.pr_sha }}
           output: |
             {"summary":"Compare DS started. Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}."}
-      - name: Checkout forking point ($FORK_POINT)
+      - name: Checkout forking point (${{ steps.pr_info.outputs.fork_point }})
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
         with:
           repo: ComplianceAsCode/content
