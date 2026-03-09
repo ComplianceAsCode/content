@@ -2418,7 +2418,7 @@ copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
 {{%- set dir_parameter = "sshd_config_d_has_parameter" -%}}
 {{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
 
-- name: Copy default {{{ sshd_usr_config_path }}} to {{{ sshd_config_path }}}
+- name: {{{ rule_title }}} - Copy default {{{ sshd_usr_config_path }}} to {{{ sshd_config_path }}}
   ansible.builtin.copy:
     src: {{{ sshd_usr_config_path }}}
     dest: {{{ sshd_config_path }}}
