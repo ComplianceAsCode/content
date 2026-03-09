@@ -1034,16 +1034,17 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 #}}
 {{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, runtime_check="false", xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
-{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
-{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set sshd_main_config = sshd_main_config_file %}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set sshd_base_dir = sshd_config_base_dir -%}}
 {{%- set sshd_runtime_path = "/tmp/runtime/sshd_effective_config" -%}}
 {{%- if xccdf_variable -%}}
-{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value configured in " ~ xccdf_variable ~ " variable in " ~ sshd_config_path %}}
+{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value configured in " ~ xccdf_variable ~ " variable in " ~ sshd_main_config %}}
 {{%- else -%}}
-{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_config_path %}}
+{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_main_config %}}
 {{%- endif -%}}
 {{%- if config_is_distributed == "true" %}}
-{{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
+{{%- set description = description  ~ " or in " ~ sshd_drop_in_dir -%}}
 {{%- endif %}}
 {{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
 
@@ -1081,10 +1082,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
           {{%- endif %}}
           {{%- if runtime_check != "true" %}}
           <criteria comment="static configuration is correct" operator="AND">
-            <criteria comment="the configuration is correct if it exists" operator="AND">
-              {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
+              <criteria comment="the configuration is correct if it exists" operator="AND">
+              {{{- oval_line_in_file_criterion(sshd_main_config, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
               {{%- if config_is_distributed == "true" %}}
-              {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12) }}}
+              {{{- oval_line_in_directory_criterion(sshd_drop_in_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent(12) }}}
               {{%- endif %}}
               {{% if product in ["ol8", "ol9"] %}}
               {{{- oval_line_in_file_criterion("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true, rule_id=rule_id) | indent(12)}}}
@@ -1105,11 +1106,11 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{% endif %}}
 
   {{% if product in ["ol8", "ol9"] %}}
-  {{{ oval_line_in_file_object(sshd_config_path, parameter="include", id_stem="sshd_include_value_" ~ rule_id, rule_id=rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_main_config, parameter="include", id_stem="sshd_include_value_" ~ rule_id, rule_id=rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
   <local_variable id="var_sshd_config_included_files_{{{ rule_id }}}" datatype="string" version="1"
   comment="Include value converted to regex">
     <concat>
-      <literal_component>^(/etc/ssh/(?!/))?</literal_component>
+      <literal_component>^({{{ sshd_base_dir }}}/(?!/))?</literal_component>
       <substring substring_start="2" substring_length="-1">
         <unique>
           <glob_to_regex>
@@ -1136,8 +1137,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
   {{% endif %}}
 
-  {{{ oval_line_in_file_test(sshd_config_path, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
-  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
+  {{{ oval_line_in_file_test(sshd_main_config, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_main_config, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
   {{%- if xccdf_variable -%}}
   {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype=datatype, rule_id=rule_id) }}}
   {{%- else -%}}
@@ -1145,8 +1146,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{%- endif -%}}
 
   {{%- if config_is_distributed == "true" %}}
-  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
-  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs) | indent (2) }}}
+  {{{ oval_line_in_directory_test(sshd_drop_in_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
+  {{{ oval_line_in_directory_object(sshd_drop_in_dir, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs) | indent (2) }}}
   {{%- if xccdf_variable -%}}
   {{{ oval_line_in_directory_state_xccdf_variable(xccdf_variable, datatype, rule_id=rule_id) | indent (2) }}}
   {{%- else -%}}

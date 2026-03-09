@@ -1,3 +1,4 @@
+{{%- set sshd_main_config = sshd_main_config_file -%}}
 <def-group>
   <definition class="compliance" id="sshd_use_approved_macs" version="1">
     {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.", rule_title=rule_title) }}}
@@ -46,7 +47,7 @@
   </ind:variable_state>
 
   <ind:textfilecontent54_object id="obj_sshd_config_macs" version="1">
-    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

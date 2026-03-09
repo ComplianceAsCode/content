@@ -5,6 +5,8 @@
 {{%- else %}}
 {{%- set sshd_approved_macs = "hmac-sha2-512,hmac-sha2-256" %}}
 {{%- endif %}}
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.", rule_title=rule_title) }}}
@@ -43,7 +45,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
-    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[ \t]*(?i)MACs(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -56,7 +58,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_config_dir" version="1">
-    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[ \t]*(?i)MACs(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>

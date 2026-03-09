@@ -67,7 +67,12 @@ reference_uris: {anssi: 'https://cyber.gouv.fr/sites/default/files/document/linu
   stigref: 'https://www.cyber.mil/stigs/srg-stig-tools/'}
 release_key_fingerprint: 76FD3DB13AB67410B89DB10E82562EA9AD986DA3
 rsyslog_cafile: /etc/pki/tls/cert.pem
+sshd_config_base_dir: /etc/ssh
+sshd_config_dir: /etc/ssh/sshd_config.d
 sshd_distributed_config: 'false'
+sshd_hardening_config_basename: 00-complianceascode-hardening.conf
+sshd_main_config_file: /etc/ssh/sshd_config
+sshd_sysconfig_file: /etc/sysconfig/sshd
 sshd_runtime_check: 'false'
 sysctl_remediate_drop_in_file: 'true'
 target_oval_version: [5, 11]

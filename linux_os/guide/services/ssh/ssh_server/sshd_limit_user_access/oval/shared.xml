@@ -1,3 +1,8 @@
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set sshd_main_config_regex = sshd_main_config | replace(".", "\\.") -%}}
+{{%- set sshd_drop_in_dir_regex = sshd_drop_in_dir | replace(".", "\\.") -%}}
+{{%- set sshd_any_config_regex = "^(" ~ sshd_main_config_regex ~ "|" ~ sshd_drop_in_dir_regex ~ "/.*\\.conf)$" -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("One of the following parameters of the sshd configuration file is set:  AllowUsers, DenyUsers, AllowGroups, DenyGroups.", rule_title=rule_title) }}}
@@ -27,22 +32,22 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_allow_user" version="1">
-    <ind:filepath operation="pattern match">^\/etc\/ssh\/sshd_config.*$</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ sshd_any_config_regex }}}</ind:filepath>
     <ind:pattern operation="pattern match" datatype="string">(?i)^[ ]*AllowUsers[ ]+((?:[^ \n]+[ ]*)+)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="obj_allow_group" version="1">
-    <ind:filepath operation="pattern match">^/etc/ssh/sshd_config.*$</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ sshd_any_config_regex }}}</ind:filepath>
     <ind:pattern operation="pattern match" datatype="string">(?i)^[ ]*AllowGroups[ ]+((?:[^ \n]+[ ]*)+)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="obj_deny_user" version="1">
-    <ind:filepath operation="pattern match">^/etc/ssh/sshd_config.*$</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ sshd_any_config_regex }}}</ind:filepath>
     <ind:pattern operation="pattern match" datatype="string">(?i)^[ ]*DenyUsers[ ]+((?:[^ \n]+[ ]*)+)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="obj_deny_group" version="1">
-    <ind:filepath operation="pattern match">^/etc/ssh/sshd_config.*$</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ sshd_any_config_regex }}}</ind:filepath>
     <ind:pattern operation="pattern match" datatype="string">(?i)^[ ]*DenyGroups[ ]+((?:[^ \n]+[ ]*)+)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

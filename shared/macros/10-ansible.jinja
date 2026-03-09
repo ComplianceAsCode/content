@@ -198,7 +198,7 @@ value: :code:`Setting={{ varname1 }}`
   (but case-sensitive values). We also specify the validation program here;
   -t specifies test and -f allows Ansible to pass a file at a different path.
 
-  Set set a parameter in /etc/sshd_config or /etc/ssh/sshd_config.d/
+  Set a parameter in ``sshd_main_config_file`` or ``sshd_config_dir``.
 
 :parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
 :type msg: str
@@ -206,17 +206,20 @@ value: :code:`Setting={{ varname1 }}`
 :type parameter: str
 :parameter value: The value to set
 :type value: str
-:parameter config_is_distributed: If true, will ok look in /etc/ssh/sshd_config.d
+:parameter config_is_distributed: If true, use ``sshd_config_dir`` for configuration
 :type config_is_distributed: str
 :parameter config_basename: Filename of configuration file when using distributed configuration
 :type config_basename: str
 
 #}}
-{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_title=None) %}}
+{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="", rule_title=None) %}}
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set sshd_base_dir = sshd_config_base_dir -%}}
 {{% if product in ["ol8", "ol9"] %}}
 - name: "Find sshd_config included files"
   ansible.builtin.shell: |-
-    included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
+    included_files=$(grep -oP "^\s*(?i)include.*" {{{ sshd_main_config }}} | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|{{{ sshd_base_dir }}}/&|')
     [[ -n $included_files ]] && ls $included_files || true
   register: sshd_config_included_files
 
@@ -229,9 +232,10 @@ value: :code:`Setting={{ varname1 }}`
 
 {{% endif %}}
 {{%- if config_is_distributed == "true" %}}
-{{% set config_dir = "/etc/ssh/sshd_config.d" %}}
-{{% set config_file = "/etc/ssh/sshd_config.d" ~ "/" ~ config_basename %}}
-{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir=config_dir, set_file=config_file, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="BOF", rule_title=rule_title) }}}
+{{% set hardening_config_basename = config_basename or sshd_hardening_config_basename %}}
+{{% set config_dir = sshd_drop_in_dir %}}
+{{% set config_file = sshd_drop_in_dir ~ "/" ~ hardening_config_basename %}}
+{{{ ansible_set_config_file_dir(msg, config_file=sshd_main_config, config_dir=config_dir, set_file=config_file, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="BOF", rule_title=rule_title) }}}
 - name: {{{ rule_title }}} - set file mode for {{{ config_file }}}
   ansible.builtin.file:
     path: {{{ config_file }}}
@@ -240,7 +244,7 @@ value: :code:`Setting={{ varname1 }}`
     modification_time: preserve
     access_time: preserve
 {{%- else %}}
-{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
+{{{ ansible_set_config_file(msg, sshd_main_config, parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 

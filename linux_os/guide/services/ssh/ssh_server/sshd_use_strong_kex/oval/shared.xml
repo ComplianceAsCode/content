@@ -1,3 +1,5 @@
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 <def-group>
   <definition class="compliance" id="sshd_use_strong_kex" version="1">
     {{{ oval_metadata("Limit the Key Exchange Algorithms to those which are FIPS-approved.", rule_title=rule_title) }}}
@@ -52,7 +54,7 @@
   </ind:variable_state>
 
   <ind:textfilecontent54_object id="obj_sshd_config_kex" version="1">
-    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)KexAlgorithms(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -80,7 +82,7 @@
   </ind:variable_state>
 
   <ind:textfilecontent54_object id="obj_sshd_config_kex_config_dir" version="1">
-    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*(?i)KexAlgorithms(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>

@@ -1,4 +1,5 @@
 documentation_complete: true
+{{% set sshd_sysconfig = sshd_sysconfig_file %}}
 
 
 title: 'Configure SSH to use System Crypto Policy'
@@ -9,7 +10,7 @@ description: |-
     set up to ignore it.
     To check that Crypto Policies settings are configured correctly, ensure that
     the <tt>CRYPTO_POLICY</tt> variable is either commented or not set at all
-    in the <tt>/etc/sysconfig/sshd</tt>.
+    in the <tt>{{{ sshd_sysconfig }}}</tt>.
 
 rationale: |-
     Overriding the system crypto policy makes the behavior of the SSH service violate expectations,
@@ -34,23 +35,23 @@ references:
     srg: SRG-OS-000250-GPOS-00093
     stigid@ol8: OL08-00-010287
 
-ocil_clause: 'the CRYPTO_POLICY variable is set or is not commented out in the /etc/sysconfig/sshd'
+ocil_clause: 'the CRYPTO_POLICY variable is set or is not commented out in {{{ sshd_sysconfig }}}'
 
 ocil: |-
     Verify that sshd isn't configured to ignore the system wide cryptographic policy.
 
     Check that the <tt>CRYPTO_POLICY</tt> variable is not set or is commented out in the
-    <tt>/etc/sysconfig/sshd</tt>.
+    <tt>{{{ sshd_sysconfig }}}</tt>.
 
     Run the following command:
 
-    $ sudo grep CRYPTO_POLICY /etc/sysconfig/sshd
+    $ sudo grep CRYPTO_POLICY {{{ sshd_sysconfig }}}
 
 fixtext: |-
     Configure OpenSSH to not ignore the system wide cryptographic policy.
     Run the following command:
 
-    $ sudo sed -i "/^\s*CRYPTO_POLICY.*$/Id" /etc/sysconfig/sshd
+    $ sudo sed -i "/^\s*CRYPTO_POLICY.*$/Id" {{{ sshd_sysconfig }}}
 
 srg_requirement: |-
     {{{ full_name }}} must implement approved encryption in the OpenSSH package.

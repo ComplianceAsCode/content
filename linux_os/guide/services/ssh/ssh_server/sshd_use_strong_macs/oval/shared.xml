@@ -1,4 +1,5 @@
-{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 {{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
 <def-group>
   <definition class="compliance" id="sshd_use_strong_macs" version="1">
@@ -56,7 +57,7 @@
   </ind:variable_state>
 
   <ind:textfilecontent54_object id="obj_sshd_config_strong_macs" version="1">
-    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -78,7 +79,7 @@
   </ind:variable_state>
 
   <ind:textfilecontent54_object id="obj_sshd_config_macs_config_dir" version="1">
-    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>

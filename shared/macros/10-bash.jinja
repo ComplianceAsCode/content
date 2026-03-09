@@ -173,8 +173,9 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 
 #}}
 {{%- macro bash_sshd_config_set(parameter, value, rule_id=None) -%}}
+{{%- set sshd_config_path = sshd_main_config_file -%}}
 {{{ set_config_file(
-        path="/etc/ssh/sshd_config",
+        path=sshd_config_path,
         parameter=parameter,
         value=value,
         create=true,
@@ -201,14 +202,15 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 :type config_basename: str
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_id=None) -%}}
-{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
-{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="", rule_id=None) -%}}
+{{%- set sshd_config_path = sshd_main_config_file %}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set sshd_base_dir = sshd_config_base_dir -%}}
 
 {{% if product in ["ol8", "ol9"] %}}
 # Find the include keyword, extract from the line the glob expression representing included files.
-# And if it is a relative path prepend '/etc/ssh/'
-included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
+# And if it is a relative path prepend '{{{ sshd_base_dir }}}/'
+included_files=$(grep -oP "^\s*(?i)include.*" {{{ sshd_config_path }}} | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|{{{ sshd_base_dir }}}/&|')
 for included_file in ${included_files} ; do
     {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true, rule_id=rule_id) | indent(4) }}}
 done
@@ -216,15 +218,15 @@ done
 {{%- if config_is_distributed == "true" %}}
 {{%- set prefix_regex = "^\s*" -%}}
 {{%- set separator_regex = "\s\+" -%}}
-{{%- set hardening_config_basename = config_basename %}}
+{{%- set hardening_config_basename = config_basename or sshd_hardening_config_basename %}}
 {{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
-mkdir -p {{{ sshd_config_dir }}}
-touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
-chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
+mkdir -p {{{ sshd_drop_in_dir }}}
+touch {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
+chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
 {{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
-{{{ lineinfile_absent_in_directory(sshd_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
+{{{ lineinfile_absent_in_directory(sshd_drop_in_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
 {{{ set_config_file(
-        path=sshd_config_dir ~ "/" ~ hardening_config_basename,
+        path=sshd_drop_in_dir ~ "/" ~ hardening_config_basename,
         parameter=parameter,
         value=value,
         create=true,

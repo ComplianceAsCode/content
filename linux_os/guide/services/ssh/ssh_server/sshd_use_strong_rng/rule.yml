@@ -1,4 +1,5 @@
 documentation_complete: true
+{{% set sshd_sysconfig = sshd_sysconfig_file %}}
 
 # TODO: The plan is not to need this for RHEL>=8.4
 # TODO: Compliant setting is SSH_USE_STRONG_RNG set to 32 or more
@@ -6,7 +7,7 @@ documentation_complete: true
 title: 'SSH server uses strong entropy to seed'
 
 description: |-
-    To set up SSH server to use entropy from a high-quality source, edit the <tt>/etc/sysconfig/sshd</tt> file.
+    To set up SSH server to use entropy from a high-quality source, edit the <tt>{{{ sshd_sysconfig }}}</tt> file.
     The <tt>SSH_USE_STRONG_RNG</tt> configuration value determines how many bytes of entropy to use, so
     make sure that the file contains line
     <pre>SSH_USE_STRONG_RNG=32</pre>
@@ -31,17 +32,17 @@ references:
 
 ocil: |-
     To determine whether the SSH service is configured to use strong entropy seed,
-    run <pre>$ sudo grep SSH_USE_STRONG_RNG /etc/sysconfig/sshd</pre>
+    run <pre>$ sudo grep SSH_USE_STRONG_RNG {{{ sshd_sysconfig }}}</pre>
     If a line indicating that SSH_USE_STRONG_RNG is set to 32 is returned,
     then the option is set correctly.
 
 ocil_clause: |-
-    the SSH_USE_STRONG_RNG is not set to 32 in /etc/sysconfig/sshd
+    the SSH_USE_STRONG_RNG is not set to 32 in {{{ sshd_sysconfig }}}
 
 fixtext: |-
     Configure the {{{ full_name }}} SSH server to use strong entropy.
 
-    Add or modify the following line in the "/etc/sysconfig/sshd" file.
+    Add or modify the following line in the "{{{ sshd_sysconfig }}}" file.
 
     SSH_USE_STRONG_RNG=32
 
@@ -55,7 +56,7 @@ warnings:
 template:
     name: shell_lineinfile
     vars:
-        path: '/etc/sysconfig/sshd'
+        path: '{{{ sshd_sysconfig }}}'
         parameter: 'SSH_USE_STRONG_RNG'
         value: '32'
         datatype: int
