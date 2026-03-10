@@ -363,6 +363,15 @@ controls:
           - account_disable_post_pw_expiration
       status: automated
 
+    - id: UBTU-24-200270
+      title: Ubuntu 24.04 LTS must audit any script or executable called by cron as root or by any privileged user.
+      levels:
+          - medium
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
+      status: automated
+
     - id: UBTU-24-200280
       title: Ubuntu 24.04 LTS must generate audit records for all account creations, modifications, disabling,
           and termination events that affect /etc/passwd.
