@@ -1,6 +1,5 @@
 # Welcome!
 
-[![Docs](https://img.shields.io/readthedocs/complianceascode)](https://complianceascode.readthedocs.io/en/latest/)
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
 [![Nightly ZIP Status](https://github.com/ComplianceAsCode/content/actions/workflows/nightly_build.yml/badge.svg)](https://nightly.link/ComplianceAsCode/content/workflows/nightly_build/master/Nightly%20Build.zip)
 [![Stats, Guides, Tables](https://github.com/ComplianceAsCode/content/actions/workflows/gh-pages.yaml/badge.svg)](https://complianceascode.github.io/content-pages/)
