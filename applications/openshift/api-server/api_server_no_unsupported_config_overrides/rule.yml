@@ -19,9 +19,6 @@ severity: medium
 identifiers:
   cce@ocp4: CCE-89950-0
 
-references:
-  cis@ocp4: 1.2.31
-
 {{% set jqfilter = '[.items[] | select(.spec.unsupportedConfigOverrides != null and .spec.unsupportedConfigOverrides != {}) | .metadata.name]' %}}
 
 ocil_clause: 'Unsupported OpenShift API server configuration overrides are detected'
