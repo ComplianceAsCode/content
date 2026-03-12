@@ -249,8 +249,7 @@ selections:
     - aide_scan_notification
 
     # OL08-00-010370
-    - ensure_gpgcheck_globally_activated
-    - ensure_gpgcheck_never_disabled
+    - enable_gpgcheck_for_all_repositories
 
     # OL08-00-010371
     - ensure_gpgcheck_local_packages
