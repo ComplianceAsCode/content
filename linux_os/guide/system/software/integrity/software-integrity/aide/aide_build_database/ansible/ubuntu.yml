@@ -9,14 +9,14 @@
     name: aide
     state: present
 
-- name: "{{{ rule_title }}} - Check if DB Path in /etc/aide/aide.conf Is Already Set"
+- name: "{{{ rule_title }}} - Check if DB In Path in /etc/aide/aide.conf Is Already Set"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
-    regexp: ^#?(\s*)(database=)(.*)$
+    regexp: ^#?(\s*)(database_in=)(.*)$
     state: absent
   check_mode: true
   changed_when: false
-  register: database_replace
+  register: database_in_replace
 
 - name: "{{{ rule_title }}} - Check if DB Out Path in /etc/aide/aide.conf Is Already Set"
   ansible.builtin.lineinfile:
@@ -27,13 +27,13 @@
   changed_when: false
   register: database_out_replace
 
-- name: "{{{ rule_title }}} - Fix DB Path in Config File if Necessary"
+- name: "{{{ rule_title }}} - Fix DB In Path in Config File if Necessary"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
-    regexp: ^#?(\s*)(database)(\s*)=(\s*)(.*)$
+    regexp: ^#?(\s*)(database_in)(\s*)=(\s*)(.*)$
     line: \2\3=\4file:/var/lib/aide/aide.db
     backrefs: true
-  when: database_replace.found > 0
+  when: database_in_replace.found > 0
 
 - name: "{{{ rule_title }}} - Fix DB Out Path in Config File if Necessary"
   ansible.builtin.lineinfile:
@@ -43,14 +43,14 @@
     backrefs: true
   when: database_out_replace.found > 0
 
-- name: "{{{ rule_title }}} - Ensure the Default DB Path is Added"
+- name: "{{{ rule_title }}} - Ensure the Default DB In Path is Added"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
-    line: database=file:/var/lib/aide/aide.db
+    line: database_in=file:/var/lib/aide/aide.db
     create: true
-  when: database_replace.found == 0
+  when: database_in_replace.found == 0
 
-- name: "{{{ rule_title }}} - Ensure the Default Out Path is Added"
+- name: "{{{ rule_title }}} - Ensure the Default DB Out Path is Added"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
     line: database_out=file:/var/lib/aide/aide.db.new
