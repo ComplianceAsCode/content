@@ -33,3 +33,4 @@ selections:
     # authselect is enabled by default
     - '!enable_authselect'
     - var_authselect_profile=local
+    - '!configure_ssh_crypto_policy'

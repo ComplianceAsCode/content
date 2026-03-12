@@ -77,3 +77,4 @@ selections:
     #  Irrelevant for ol10
     - '!enable_dconf_user_profile'
     - var_authselect_profile=local
+    - '!configure_ssh_crypto_policy'

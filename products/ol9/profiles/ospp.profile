@@ -135,7 +135,6 @@ selections:
     - enable_fips_mode
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
-    - configure_ssh_crypto_policy
     - configure_openssl_crypto_policy
     - enable_dracut_fips_module
 
