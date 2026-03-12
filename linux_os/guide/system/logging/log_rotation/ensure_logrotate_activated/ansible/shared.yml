@@ -4,19 +4,25 @@
 # complexity = low
 # disruption = low
 
-- name: Configure daily log rotation in /etc/logrotate.conf
+{{% if product == 'sle16' %}}
+{{% set LOGROTATE_CONF_FILE="/usr/etc/logrotate.conf" %}}
+{{% else %}}
+{{% set LOGROTATE_CONF_FILE="/etc/logrotate.conf" %}}
+{{% endif %}}
+
+- name: "Configure daily log rotation in {{{ LOGROTATE_CONF_FILE }}}"
   ansible.builtin.lineinfile:
     create: yes
-    dest: "/etc/logrotate.conf"
+    dest: {{{ LOGROTATE_CONF_FILE }}}
     regexp: '^\s*(weekly|monthly|yearly)$'
     line: "daily"
     state: present
     insertbefore: BOF
 
-- name: Make sure daily log rotation setting is not overridden in /etc/logrotate.conf
+- name: "Make sure daily log rotation setting is not overridden in {{{ LOGROTATE_CONF_FILE }}}"
   ansible.builtin.lineinfile:
     create: no
-    dest: "/etc/logrotate.conf"
+    dest: {{{ LOGROTATE_CONF_FILE }}}
     regexp: '^[\s]*(weekly|monthly|yearly)$'
     state: absent
 
@@ -39,7 +45,7 @@
     - name: Add logrotate call
       ansible.builtin.lineinfile:
         path: "/etc/cron.daily/logrotate"
-        line: '/usr/sbin/logrotate /etc/logrotate.conf'
-        regexp: '^[\s]*/usr/sbin/logrotate[\s\S]*/etc/logrotate.conf$'
+        line: '/usr/sbin/logrotate {{{ LOGROTATE_CONF_FILE }}}'
+        regexp: '^[\s]*/usr/sbin/logrotate[\s\S]*{{{ LOGROTATE_CONF_FILE }}}$'
         create: yes
 {{% endif %}}
