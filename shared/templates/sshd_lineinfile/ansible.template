@@ -6,19 +6,44 @@
 
 {{% if XCCDF_VARIABLE %}}
 {{{ ansible_instantiate_variables(XCCDF_VARIABLE) }}}
-{{{
-    ansible_sshd_set(
-        parameter=PARAMETER,
-        value="{{ "+XCCDF_VARIABLE+" }}",
-        config_is_distributed=sshd_distributed_config,
-        config_basename=CONFIG_BASENAME, rule_title=rule_title)
-}}}
+    {{%- if product == 'sle16' -%}}
+        {{{
+            ansible_sshd_set_usr(
+                parameter=PARAMETER,
+                value="{{ "+XCCDF_VARIABLE+" }}",
+                copy_defaults='true',
+                config_basename=CONFIG_BASENAME,
+                rule_title=rule_title
+            )
+        }}}
+    {{%- else -%}}
+        {{{
+            ansible_sshd_set(
+                parameter=PARAMETER,
+                value="{{ "+XCCDF_VARIABLE+" }}",
+                config_is_distributed=sshd_distributed_config,
+                config_basename=CONFIG_BASENAME, rule_title=rule_title)
+        }}}
+    {{%- endif -%}}
 {{% else %}}
-{{{
-    ansible_sshd_set(
-        parameter=PARAMETER,
-        value=VALUE,
-        config_is_distributed=sshd_distributed_config,
-        config_basename=CONFIG_BASENAME, rule_title=rule_title)
-}}}
+    {{%- if product == 'sle16' -%}}
+        {{{
+            ansible_sshd_set_usr(
+                parameter=PARAMETER,
+                value=VALUE,
+                copy_defaults='true',
+                config_basename=CONFIG_BASENAME,
+                rule_title=rule_title
+            )
+        }}}
+    {{%- else -%}}
+        {{{
+            ansible_sshd_set(
+                parameter=PARAMETER,
+                value=VALUE,
+                config_is_distributed=sshd_distributed_config,
+                config_basename=CONFIG_BASENAME, rule_title=rule_title)
+        }}}
+    {{%- endif -%}}
+
  {{% endif %}}
