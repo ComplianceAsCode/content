@@ -582,6 +582,22 @@ controls:
           - accounts_passwords_pam_faildelay_delay
       status: automated
 
+    - id: UBTU-24-300019
+      title: Ubuntu 24.04 LTS must restrict privilege elevation to authorized personnel.
+      levels:
+          - medium
+      rules:
+          - sudo_restrict_privilege_elevation_to_authorized
+      status: automated
+
+    - id: UBTU-24-300020
+      title: Ubuntu 24.04 LTS must require users to provide a password for privilege escalation.
+      levels:
+          - medium
+      rules:
+          - sudo_remove_nopasswd
+      status: automated
+
     - id: UBTU-24-300021
       title: Ubuntu 24.04 LTS must require users to reauthenticate for privilege escalation or when changing
           roles.
