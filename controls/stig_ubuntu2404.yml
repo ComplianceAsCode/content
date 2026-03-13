@@ -46,6 +46,15 @@ controls:
           - package_rsh-server_removed
       status: automated
 
+    - id: UBTU-24-100050
+      title: Ubuntu 24.04 LTS must not have the nfs-kernel-server package installed.
+      levels:
+          - high
+      rules:
+          - package_nfs-kernel-server_removed
+          - service_nfs_disabled
+      status: automated
+
     - id: UBTU-24-100100
       title: Ubuntu 24.04 LTS must use a file integrity tool to verify correct operation of all security
           functions.
