@@ -107,6 +107,7 @@ service_avahi-daemon_disabled
 service_chronyd_enabled
 service_fapolicyd_enabled
 service_firewalld_enabled
+service_kdump_disabled
 service_rsyslog_enabled
 service_snmpd_disabled
 service_squid_disabled
