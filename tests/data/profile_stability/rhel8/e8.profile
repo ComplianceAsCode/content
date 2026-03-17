@@ -69,6 +69,7 @@ service_auditd_enabled
 service_avahi-daemon_disabled
 service_fapolicyd_enabled
 service_firewalld_enabled
+service_kdump_disabled
 service_rsyslog_enabled
 service_squid_disabled
 service_telnet_disabled
