@@ -42,6 +42,7 @@ selections:
     - '!accounts_passwords_pam_faillock_interval'
     - '!accounts_password_pam_ucredit'
     - '!accounts_password_pam_minlen'
+    - '!audit_rules_immutable'
     - '!ensure_oracle_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!enable_authselect'

@@ -70,7 +70,7 @@ selections:
     - service_auditd_enabled
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_su
-    - audit_rules_immutable
+    - '!audit_rules_immutable'
     - kernel_module_usb-storage_disabled
     - service_autofs_disabled
     - auditd_audispd_syslog_plugin_activated

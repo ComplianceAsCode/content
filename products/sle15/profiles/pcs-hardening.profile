@@ -155,7 +155,7 @@ selections:
     - audit_rules_file_deletion_events_renameat
     - audit_rules_file_deletion_events_unlink
     - audit_rules_file_deletion_events_unlinkat
-    - audit_rules_immutable
+    - '!audit_rules_immutable'
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
