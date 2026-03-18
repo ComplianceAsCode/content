@@ -547,8 +547,7 @@ controls:
           - l1_workstation
       status: automated
       rules:
-          - configure_crypto_policy
-          - var_system_crypto_policy=default_nosha1
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.2
       title: Ensure system wide crypto policy is not set in sshd configuration (Automated)
@@ -568,31 +567,25 @@ controls:
       notes: |-
           This requirement is already satisfied by 1.6.1.
       related_rules:
-          - configure_crypto_policy
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.4
       title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling weak MACs in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.5
       title: Ensure system wide crypto policy disables cbc for ssh (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          It is necessary a new rule to ensure a module disabling CBC in
-          /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
-      related_rules:
-          - configure_crypto_policy
+      status: automated
+      rules:
+          - configure_custom_crypto_policy_cis
 
     - id: 1.6.6
       title: Ensure system wide crypto policy disables chacha20-poly1305 for ssh (Automated)
