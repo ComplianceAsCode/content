@@ -21,7 +21,7 @@ class SSGError(RuntimeError):
     pass
 
 
-PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
+PRODUCT_NAME_PARSER = re.compile(r"(.+?)([0-9]+)$")
 
 
 class VersionSpecifierSet(set):
