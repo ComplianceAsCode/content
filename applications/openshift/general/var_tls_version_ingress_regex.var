@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Configure Ingress to use secure TLS version'
+
+description: |
+  TLS versions available for configuring Ingress, excluding insecure versions.
+  Do not forget to also configure the non regex value.
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+  default: "^(?!TLSv1.0|TLSv1.1)"
+  TLS13: "^(?!TLSv1.0|TLSv1.1|TLS1.2)"
