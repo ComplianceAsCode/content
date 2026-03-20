@@ -4,12 +4,13 @@ Utils functions consumed by SSG
 
 from __future__ import absolute_import
 
+import ast
 import multiprocessing
 import os
 import re
 from collections import namedtuple
 import hashlib
-from typing import Dict
+from typing import Any, Dict, Mapping
 
 from .constants import (FULL_NAME_TO_PRODUCT_MAPPING,
                         MAKEFILE_ID_TO_PRODUCT_MAP,
@@ -22,6 +23,72 @@ class SSGError(RuntimeError):
 
 
 PRODUCT_NAME_PARSER = re.compile(r"(.+?)([0-9]+)$")
+
+
+def _safe_eval_filter_node(node: ast.AST, variables: Mapping[str, Any]) -> Any:
+    if isinstance(node, ast.Expression):
+        return _safe_eval_filter_node(node.body, variables)
+
+    if isinstance(node, ast.BoolOp):
+        values = [_safe_eval_filter_node(value, variables) for value in node.values]
+        if isinstance(node.op, ast.And):
+            return all(values)
+        if isinstance(node.op, ast.Or):
+            return any(values)
+        raise ValueError(f"Unsupported boolean operator in filter expression: {ast.dump(node.op)}")
+
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.Not):
+        return not bool(_safe_eval_filter_node(node.operand, variables))
+
+    if isinstance(node, ast.Compare):
+        left = _safe_eval_filter_node(node.left, variables)
+        for op, comparator in zip(node.ops, node.comparators):
+            right = _safe_eval_filter_node(comparator, variables)
+            if isinstance(op, ast.In):
+                result = left in right
+            elif isinstance(op, ast.NotIn):
+                result = left not in right
+            elif isinstance(op, ast.Eq):
+                result = left == right
+            elif isinstance(op, ast.NotEq):
+                result = left != right
+            else:
+                raise ValueError(
+                    f"Unsupported comparison operator in filter expression: {ast.dump(op)}"
+                )
+            if not result:
+                return False
+            left = right
+        return True
+
+    if isinstance(node, ast.Name):
+        if node.id not in variables:
+            raise ValueError(f"Unknown variable '{node.id}' in filter expression")
+        return variables[node.id]
+
+    if isinstance(node, ast.Constant):
+        return node.value
+
+    if isinstance(node, ast.List):
+        return [_safe_eval_filter_node(element, variables) for element in node.elts]
+
+    if isinstance(node, ast.Tuple):
+        return tuple(_safe_eval_filter_node(element, variables) for element in node.elts)
+
+    if isinstance(node, ast.Set):
+        return {_safe_eval_filter_node(element, variables) for element in node.elts}
+
+    raise ValueError(
+        "Unsupported construct in filter expression: {node}".format(node=ast.dump(node))
+    )
+
+
+def safe_evaluate_boolean_filter(filterdef: str, variables: Mapping[str, Any]) -> bool:
+    try:
+        expression = ast.parse(filterdef, mode="eval")
+    except SyntaxError as exc:
+        raise ValueError(f"Invalid filter expression: {filterdef}") from exc
+    return bool(_safe_eval_filter_node(expression, variables))
 
 
 class VersionSpecifierSet(set):
