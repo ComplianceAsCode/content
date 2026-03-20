@@ -50,6 +50,8 @@ args:
     {{% endif %}}
   iptables:
     pkgname: iptables
+  krb5-libs:
+    pkgname: krb5-libs
   libpwquality:
     {{% if 'debian' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
     pkgname: libpwquality1
@@ -95,8 +97,12 @@ args:
     title: NTP daemon and utilities
   openssh:
     pkgname: openssh
+  openssh-clients:
+    pkgname: openssh-clients
   openssh-server:
     pkgname: openssh-server
+  openssl:
+    pkgname: openssl
   pam:
     {{% if pkg_system == "rpm" %}}
       pkgname: pam
