@@ -88,6 +88,19 @@ RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" = "aarch64" ] || [ "$(una
         else ./build_product ocp4 --datastream-only; \
         fi
 
+# Bundle CEL rules and profiles into a single content YAML.
+# The cel-rules/ and cel-profiles/ directories are expected in the build/
+# directory at build time. If they are absent, create an empty placeholder
+# so the COPY in the final stage always succeeds.
+RUN if [ -d build/cel-rules ] && [ -d build/cel-profiles ]; then \
+        python3 utils/cel_bundler.py \
+            --rules build/cel-rules \
+            --profiles build/cel-profiles \
+            --output build/cel-content.yaml; \
+    else \
+        touch build/cel-content.yaml; \
+    fi
+
 FROM registry.redhat.io/ubi9/ubi-minimal:latest
 
 LABEL \
@@ -110,3 +123,4 @@ LABEL \
 WORKDIR /
 COPY --from=builder /go/src/github.com/ComplianceAsCode/content/LICENSE /licenses/LICENSE
 COPY --from=builder /go/src/github.com/ComplianceAsCode/content/build/ssg-*-ds.xml .
+COPY --from=builder /go/src/github.com/ComplianceAsCode/content/build/cel-content.yaml .
