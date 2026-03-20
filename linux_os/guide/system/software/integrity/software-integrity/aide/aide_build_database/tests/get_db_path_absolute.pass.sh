@@ -16,8 +16,10 @@ DB_CONF=/etc/aide.conf
 
 cp "$DB_PATH/$DB_NAME_NEW" "$DB_PATH/$DB_NAME"
 
-{{% if product in [ 'ol10', 'rhel10', 'fedora' ] %}}
-sed -i "s#^database_in=file:.*#database_in=file:$DB_PATH/$DB_NAME#" $DB_CONF
-{{% else %}}
-sed -i "s#^database=file:.*#database=file:$DB_PATH/$DB_NAME#" $DB_CONF
-{{% endif %}}
+AIDE_VERSION=$(aide -v | grep -oP 'aide \K[0-9]+\.[0-9]+')
+if [ "$(echo "$AIDE_VERSION >= 0.17" | bc -l)" -eq 1 ]; then
+    AIDE_DB__KEY="database_in"
+else
+    AIDE_DB_IN_KEY="database"
+fi
+sed -i "s#^$AIDE_DB_IN_KEY}=file:.*#${AIDE_DB_IN_KEY}=file:$DB_PATH/$DB_NAME#" $DB_CONF
