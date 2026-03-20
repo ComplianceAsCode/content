@@ -21,11 +21,13 @@ Follow these steps:
    - Search for keywords in titles, descriptions, template vars, and reference fields
    - If reference IDs were provided, search for those exact IDs in rule.yml files
 
-4. **Check control files** in `controls/` and `products/*/controls/` for matching control IDs or titles that already map to this requirement.
+4. **Check for sibling and variant rules.** For each matching rule found, list the other rule directories under the same parent directory and check for rules with similar names, overlapping titles, or shared reference IDs (e.g., the same CIS section or SRG). These sibling rules often cover the same requirement for different platforms, deployment topologies, or configurations and should be included together.
 
-5. **Note product applicability** for each matched rule. Check the `identifiers` section of each rule.yml for `cce@<product>` entries (e.g., `cce@ocp4`, `cce@rhel9`). The product IDs after `@` correspond to subdirectory names under `products/`. This tells the user which products the rule applies to.
+5. **Check control files** in `controls/` and `products/*/controls/` for matching control IDs or titles that already map to this requirement.
 
-6. **Present results** organized by match strength. For every rule, include a **Rationale** — a concise (1-2 sentence) explanation of why this rule satisfies or partially satisfies the requirement. Write the rationale so that a maintainer unfamiliar with the rule can understand the connection without reading the full rule.yml. Focus on *what the rule checks* and *how that maps to the requirement*.
+6. **Note product applicability** for each matched rule. Check the `identifiers` section of each rule.yml for `cce@<product>` entries (e.g., `cce@ocp4`, `cce@rhel9`). The product IDs after `@` correspond to subdirectory names under `products/`. This tells the user which products the rule applies to.
+
+7. **Present results** organized by match strength. For every rule, include a **Rationale** — a concise (1-2 sentence) explanation of why this rule satisfies or partially satisfies the requirement. Write the rationale so that a maintainer unfamiliar with the rule can understand the connection without reading the full rule.yml. Focus on *what the rule checks* and *how that maps to the requirement*.
 
    **Strong matches** (title or template directly addresses the requirement):
    - Rule ID, file path, title, severity
@@ -43,9 +45,9 @@ Follow these steps:
    - Rule ID, file path, title
    - **Rationale:** Why it was included despite being tangential
 
-7. **Include a summary table** at the end mapping requirement aspects to rule IDs, so the user can quickly see coverage.
+8. **Include a summary table** at the end mapping requirement aspects to rule IDs, so the user can quickly see coverage.
 
-8. **Always suggest a control structure** with a `notes` field that includes a concise rationale for each rule, explaining why it was included for this control. This helps maintainers understand the reasoning without needing to read every rule.yml. When no strong automated matches exist, say so clearly and use `status: partial` or `status: manual` as appropriate. Example:
+9. **Always suggest a control structure** with a `notes` field that includes a concise rationale for each rule, explaining why it was included for this control. This helps maintainers understand the reasoning without needing to read every rule.yml. When no strong automated matches exist, say so clearly and use `status: partial` or `status: manual` as appropriate. Example:
 
    ```yaml
    - id: X.Y.Z
@@ -74,4 +76,4 @@ Follow these steps:
 
    When suggesting rules for partial/manual controls, only include rules that provide automated value. Omit rules that are themselves manual-only (no template, no automated check) unless they are the only matches available.
 
-9. **Rules can appear in multiple controls.** The build system handles this correctly. Each control should list the complete set of rules needed to satisfy it, even if some rules also appear in other controls. This ensures each control is self-contained and readers don't need to cross-reference other controls to understand coverage.
+10. **Rules can appear in multiple controls.** The build system handles this correctly. Each control should list the complete set of rules needed to satisfy it, even if some rules also appear in other controls. This ensures each control is self-contained and readers don't need to cross-reference other controls to understand coverage.
