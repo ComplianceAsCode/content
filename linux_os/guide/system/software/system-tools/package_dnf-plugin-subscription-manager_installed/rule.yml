@@ -21,9 +21,7 @@ references:
     ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
     srg: SRG-OS-000366-GPOS-00153
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="dnf-plugin-subscription-manager") }}}'
+{{{ complete_ocil_entry_package_installed("dnf-plugin-subscription-manager") }}}
 
 template:
     name: package_installed

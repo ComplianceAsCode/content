@@ -1,11 +1,14 @@
 documentation_complete: true
 
 {{% if 'ubuntu' in product %}}
-{{% set service_name = "tftpd-hpa" %}}
-{{% set package_name = "tftpd-hpa" %}}
+  {{%- set service_name = "tftpd-hpa" %}}
+  {{%- set package = "tftpd-hpa" %}}
+{{% elif 'sle' in product or product == "slmicro5" %}}
+  {{%- set service_name = "tftp" %}}
+  {{%- set package = "tftp" %}}
 {{% else %}}
-{{% set service_name = "tftp" %}}
-{{% set package_name = "tftp-server" %}}
+  {{%- set service_name = "tftp" %}}
+  {{%- set package = "tftp-server" %}}
 {{% endif %}}
 
 title: 'Disable {{{ service_name }}} Service'
@@ -46,4 +49,4 @@ template:
     name: service_disabled
     vars:
         servicename: {{{ service_name }}}
-        packagename: {{{ package_name }}}
+        packagename: {{{ package }}}

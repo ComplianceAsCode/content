@@ -17,9 +17,7 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-82965-5
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="tar") }}}'
+{{{ complete_ocil_entry_package_installed("tar") }}}
 
 template:
     name: package_installed

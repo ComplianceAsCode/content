@@ -16,9 +16,7 @@ severity: medium
 identifiers:
     cce@rhcos4: CCE-86709-3
 
-ocil_clause: 'the package is installed'
-
-ocil: '{{{ ocil_package(package="openssh-server") }}}'
+{{{ complete_ocil_entry_package_removed("openssh-server") }}}
 
 template:
     name: package_removed

@@ -1,3 +1,8 @@
+{{% if product == "debian13" %}}
+ {{%- set package = "ntpsec" %}}
+{{% else %}}
+ {{%- set package = "ntp" %}}
+{{% endif %}}
 documentation_complete: true
 
 title: 'Install the ntp service'
@@ -22,15 +27,8 @@ references:
     nist-csf: PR.PT-1
     pcidss: Req-10.4
 
-ocil_clause: 'the package is not installed'
+{{{ complete_ocil_entry_package_installed(package=package) }}}
 
-ocil: |-
-  {{% if product == "debian13" %}}
-  {{{ ocil_package(package="ntpsec") }}}
-  {{% else %}}
-  {{{ ocil_package(package="ntp") }}}
-  {{% endif %}}
-  
 template:
     name: package_installed
     vars:

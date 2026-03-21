@@ -167,105 +167,63 @@ ocil: |
 {{%- endmacro %}}
 
 
-{{# Package macros #}}
+{{# Package macros -#}}
 
 {{#
-    Describe how to check if a package is installed with rpm.
+  OCIL entry with instructions how to check if a package is installed
 
-:param package: The package to check
-:type package: str
-
+  :param package: Package name
+  :type package: str
 #}}
-{{%- macro rpm_ocil_package(package) -%}}
-    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
-    <pre>$ rpm -q {{{ package }}}</pre>
-{{%- endmacro -%}}
-
-
-{{#
-    Describe how to check if a package is installed with dpkg.
-
-:param package: The package to check
-:type package: str
-
-#}}
-{{%- macro dpkg_ocil_package(package) %}}
-    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
-    <pre>$ dpkg -l  {{{ package }}}</pre>
-{{%- endmacro %}}
-
-
-{{#
-    Insert general ocil clause to check if a package is installed, substituting the
-    correct package management software.
-
-:param package: Name of package
-:type package: str
-
-#}}
-{{% macro ocil_package(package) -%}}
-  {{% if pkg_system is defined %}}
-    {{%- if pkg_system == "rpm" -%}}
-        {{{ rpm_ocil_package(package) }}}
-    {{%- elif pkg_system == "dpkg" -%}}
-        {{{ dpkg_ocil_package(package) }}}
-    {{%- else -%}}
-JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
-    {{%- endif -%}}
+{{%- macro ocil_package_installed_how_to_check(package) -%}}
+ocil: |-
+  {{% if pkg_system is undefined or pkg_system not in ["rpm", "dpkg"] -%}}
+    JINJA MACRO ERROR - Unknown package system '{{{ pkg_system | default("undefined") }}}'. Has to be either 'rpm' or 'dpkg'.
+  {{%- else -%}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed: <pre>$ {{% if pkg_system == "rpm" %}}rpm -q {{% elif pkg_system == "dpkg" %}}dpkg -l {{% endif %}}{{{ package }}}</pre>
   {{%- endif -%}}
-{{%- endmacro %}}
+{{% endmacro -%}}
 
 
 {{#
-    OCIL and OCIL clause how to check if a package is installed with rpm.
+  Set ocil_clause - a finding: when the rule expects the package to be:
+  - absent, a finding is an installed package.
+  - present, a finding is an absent package.
 
-:param package: The package to check
-:type package: str
-
+  :param package: Package name
+  :type package: str
+  :param clause_predicate: "not installed" if the rule requires the package to be installed
+                           and "installed" if it must be absent.
+  :type clause_predicate: str
 #}}
-{{%- macro rpm_complete_ocil_entry_package(package) %}}
-ocil: |-
-    {{{ rpm_ocil_package(package) }}}
-
-ocil_clause: "the package is installed"
-{{%- endmacro %}}
+{{%- macro ocil_clause_package(package, clause_predicate) -%}}
+ocil_clause: "the {{{ package }}} package is {{{ clause_predicate }}}"
+{{% endmacro -%}}
 
 
 {{#
-    OCIL and OCIL clause how to check if a package is installed with dpkg.
+  OCIL complete entries (ocil_clause: followed by ocil:) for package install/remove rules.
 
-:param package: The package to check
-:type package: str
+  complete_ocil_entry_package_installed(package)
+      Use when the rule requires the package to be installed. The finding is
+      that the package is not installed.
 
+  complete_ocil_entry_package_removed(package)
+      Use when the rule requires the package to be absent. The finding is
+      that the package is still installed.
+
+  :param package: Package name
+  :type package: str
 #}}
-{{%- macro dpkg_complete_ocil_entry_package(package) %}}
-ocil: |-
-    {{{ dpkg_ocil_package(package) }}}
+{{%- macro complete_ocil_entry_package_installed(package) %}}
+{{{ ocil_clause_package(package, "not installed") }}}
+{{{ ocil_package_installed_how_to_check(package) }}}
+{{% endmacro -%}}
 
-ocil_clause: "the package is installed"
-{{%- endmacro %}}
-
-
-{{#
-    Insert a complete OCIL block for a case when a package should be removed,
-    substituting the correct package management software.
-
-:param package: Name of package
-:type package: str
-
-#}}
-{{% macro complete_ocil_entry_package(package) -%}}
-  {{% if pkg_system is defined %}}
-    {{%- if pkg_system == "rpm" %}}
-        {{{ rpm_complete_ocil_entry_package(package) }}}
-    {{%- elif pkg_system == "dpkg" %}}
-        {{{ dpkg_complete_ocil_entry_package(package) }}}
-    {{%- else -%}}
-ocil: |-
-    JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
-    {{%- endif -%}}
-  {{%- endif -%}}
-{{%- endmacro %}}
+{{%- macro complete_ocil_entry_package_removed(package) %}}
+{{{ ocil_clause_package(package, "installed") }}}
+{{{ ocil_package_installed_how_to_check(package) }}}
+{{% endmacro -%}}
 
 
 {{# Service Enabled macros #}}

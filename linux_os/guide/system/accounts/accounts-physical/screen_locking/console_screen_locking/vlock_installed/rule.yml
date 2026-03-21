@@ -1,3 +1,9 @@
+{{% if 'ubuntu' in product %}}
+  {{%- set package = "vlock" %}}
+{{% else %}}
+  {{%- set package = "kbd" %}}
+{{% endif %}}
+
 documentation_complete: true
 
 
@@ -6,11 +12,7 @@ title: 'Check that vlock is installed to allow session locking'
 description: |-
     The {{{ full_name }}} operating system must have vlock installed to allow for session locking.
 
-    {{% if 'ubuntu' in product %}}
-    {{{ describe_package_install(package="vlock") }}}
-    {{% else %}}
-    {{{ describe_package_install(package="kbd") }}}
-    {{% endif %}}
+    {{{ describe_package_install(package=package) }}}
 
 rationale: |-
     A session lock is a temporary action taken when a user stops work and
@@ -41,14 +43,7 @@ references:
     stigid@sle12: SLES-12-010070
     stigid@sle15: SLES-15-010110
 
-ocil_clause: 'the package is not installed'
-
-ocil: |-
-    {{% if 'ubuntu' in product %}}
-    {{{ ocil_package(package="vlock") }}}
-    {{% else %}}
-    {{{ ocil_package(package="kbd") }}}
-    {{% endif %}}
+{{{ complete_ocil_entry_package_installed(package) }}}
 
 template:
     name: package_installed

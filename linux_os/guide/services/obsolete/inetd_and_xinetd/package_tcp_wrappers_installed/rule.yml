@@ -26,9 +26,7 @@ references:
     nist-csf: PR.IP-1
     srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="tcp_wrappers") }}}'
+{{{ complete_ocil_entry_package_installed("tcp_wrappers") }}}
 
 template:
     name: package_installed
