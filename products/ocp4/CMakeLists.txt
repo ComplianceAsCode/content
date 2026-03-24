@@ -5,5 +5,6 @@ endif()
 
 set(PRODUCT "ocp4")
 set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
+set(PRODUCT_CEL_ENABLED TRUE)
 
 ssg_build_product(${PRODUCT})
