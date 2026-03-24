@@ -158,6 +158,109 @@ template:
         pkgname@ubuntu2204: avahi-daemon    # Platform-specific overrides
 ```
 
+## CEL Rules (Kubernetes/OpenShift)
+
+CEL (Common Expression Language) rules provide native Kubernetes resource evaluation without requiring shell access or OVAL checks. CEL rules are used by the compliance-operator for Kubernetes and OpenShift compliance scanning.
+
+**Important:** CEL rules are **excluded** from XCCDF/OVAL DataStreams and are generated as a separate `${PRODUCT}-cel-content.yaml` file.
+
+### Required Fields for CEL Rules
+
+```yaml
+documentation_complete: true
+
+title: 'Rule Title'
+
+description: |-
+    Description of what the rule checks.
+
+rationale: |-
+    Why this rule matters.
+
+severity: medium
+
+scannerType: CEL           # REQUIRED: Marks this as a CEL rule
+
+checkType: Platform        # Usually Platform for K8s checks
+
+expression: |-             # REQUIRED: CEL expression (must evaluate to boolean)
+    resource.spec.enabled == true
+
+inputs:                    # REQUIRED: Kubernetes resources to evaluate
+  - name: resource
+    kubernetesInputSpec:
+      apiVersion: v1
+      resource: pods
+      resourceName: my-pod          # Optional: specific resource
+      resourceNamespace: default    # Optional: specific namespace
+
+ocil: |-                   # Optional: Manual check instructions
+    Run the following command:
+    <pre>$ oc get pods</pre>
+
+failureReason: |-          # Optional: Custom failure message
+    The resource is not properly configured.
+
+references:                # Optional: Same as regular rules
+    cis@ocp4: 1.2.3
+    nist: CM-6
+```
+
+### CEL Expression Examples
+
+Simple boolean check:
+```yaml
+expression: resource.spec.enabled == true
+```
+
+Check for field absence:
+```yaml
+expression: !has(resource.spec.insecureField)
+```
+
+Multiple conditions:
+```yaml
+expression: |-
+    resource.spec.replicas >= 3 &&
+    has(resource.spec.securityContext) &&
+    resource.spec.securityContext.runAsNonRoot == true
+```
+
+### CEL Profile Format
+
+Profiles that use CEL rules must have `scannerType: CEL`:
+
+```yaml
+documentation_complete: true
+
+title: 'CIS VM Extension Benchmark'
+
+description: |-
+    Profile description.
+
+scannerType: CEL    # REQUIRED: Marks this as a CEL profile
+
+selections:
+    - kubevirt-nonroot-feature-gate-is-enabled
+    - kubevirt-no-permitted-host-devices
+```
+
+**Note:** CEL profiles can only select CEL rules and are excluded from XCCDF generation.
+
+**Important:** Use hyphens rule IDs (Kubernetes naming convention), not underscores.
+
+### Enabling CEL Content for a Product
+
+In `products/${PRODUCT}/CMakeLists.txt`:
+
+```cmake
+set(PRODUCT "ocp4")
+set(PRODUCT_CEL_ENABLED TRUE)  # Enable CEL content generation
+ssg_build_product(${PRODUCT})
+```
+
+See `docs/manual/developer/12_cel_content.md` for complete CEL documentation.
+
 ## Common Jinja2 Macros
 
 Used in rule descriptions, OCIL, fixtext, and warnings fields:
