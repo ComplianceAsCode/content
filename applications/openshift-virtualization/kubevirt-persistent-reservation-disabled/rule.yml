@@ -1,0 +1,58 @@
+documentation_complete: true
+
+title: 'KubeVirt Persistent Reservation Feature Gate Must Be Disabled'
+
+description: |-
+    The persistent reservation feature gate in KubeVirt allows virtual machines
+    to use SCSI persistent reservations, which provide exclusive access to shared
+    storage. This feature should be disabled unless explicitly required for
+    workload operation, as it can introduce security risks by allowing VMs to
+    claim exclusive access to storage resources, potentially impacting availability
+    and enabling resource manipulation outside normal access controls.
+
+rationale: |-
+    The <tt>.spec.featureGates.persistentReservation</tt> field in the
+    <tt>kubevirt-hyperconverged</tt> resource controls whether virtual machines can
+    use SCSI persistent reservations. When enabled, this feature allows VMs to claim
+    exclusive access to shared storage resources, which can be exploited to cause
+    denial of service conditions or manipulate storage access in ways that bypass
+    normal Kubernetes access controls. Unless this capability is explicitly required
+    for specific workload requirements, it should remain disabled to minimize the
+    attack surface.
+
+failureReason: |-
+    The '.spec.featureGates.persistentReservation' field is missing, not set,
+    or not set to 'false' in the 'kubevirt-hyperconverged' resource.
+
+severity: medium
+
+ocil_clause: 'persistentReservation feature gate is not explicitly set to false'
+
+ocil: |-
+    Run the following command to check the feature gate configuration:
+    <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.featureGates.persistentReservation}'</pre>
+    The output should be <tt>false</tt>.
+
+checkType: Platform
+
+scannerType: CEL
+
+inputs:
+  - name: hcoList
+    kubernetesInputSpec:
+      apiVersion: hco.kubevirt.io/v1beta1
+      resource: hyperconvergeds
+
+expression: |
+  hcoList.items.filter(h,
+      h.metadata.name == 'kubevirt-hyperconverged' &&
+      h.metadata.namespace == 'openshift-cnv'
+  ).size() == 1 &&
+  hcoList.items.filter(h,
+      h.metadata.name == 'kubevirt-hyperconverged' &&
+      h.metadata.namespace == 'openshift-cnv'
+  ).all(h,
+      has(h.spec.featureGates) &&
+      has(h.spec.featureGates.persistentReservation) &&
+      h.spec.featureGates.persistentReservation == false
+  )

@@ -1,0 +1,48 @@
+documentation_complete: true
+
+title: 'Only Trusted Registries Using TLS Can Be Used'
+
+description: |-
+    By only pulling container images from trusted registries using TLS, organizations
+    can reduce the risk of introducing unknown vulnerabilities or malicious
+    software into their systems. This helps ensure that their applications and systems
+    remain secure and stable. All container image registries used by KubeVirt should
+    require TLS connections to protect the integrity and authenticity of images.
+
+rationale: |-
+    When the <tt>.spec.storageImport.insecureRegistries</tt> field contains entries in
+    the <tt>kubevirt-hyperconverged</tt> resource, KubeVirt is configured to allow
+    connections to container registries that do not use TLS encryption. This creates
+    a significant security risk as images could be intercepted or tampered with during
+    transit. Man-in-the-middle attacks could result in malicious images being pulled
+    and executed within virtual machines. To maintain security, only registries using
+    TLS should be permitted, and the insecureRegistries list should be empty.
+
+failureReason: |-
+    There are registries not using TLS in '.spec.storageImport.insecureRegistries' in
+    the 'kubevirt-hyperconverged' resource.
+
+severity: medium
+
+ocil_clause: 'insecure registries are configured'
+
+ocil: |-
+    Run the following command to check for insecure registries:
+    <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.storageImport.insecureRegistries}'</pre>
+    The output should be empty or the field should not exist.
+
+checkType: Platform
+
+scannerType: CEL
+
+inputs:
+  - name: hco
+    kubernetesInputSpec:
+      apiVersion: hco.kubevirt.io/v1beta1
+      resource: hyperconvergeds
+      resourceName: kubevirt-hyperconverged
+      resourceNamespace: openshift-cnv
+
+expression: |-
+  !has(hco.spec.storageImport) ||
+  hco.spec.storageImport.insecureRegistries.size() == 0
