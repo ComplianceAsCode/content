@@ -31,6 +31,7 @@ spec:
       WORKDIR /
       COPY --from=builder /content/build/ssg-ocp4-ds.xml .
       COPY --from=builder /content/build/ssg-rhcos4-ds.xml .
+      COPY --from=builder /content/build/ocp4-cel-content.yaml .
   strategy: 
     dockerStrategy:
       noCache: true
