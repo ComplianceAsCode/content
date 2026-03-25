@@ -20,6 +20,7 @@ RUN if [ "$(uname -m)" == "x86_64" ] || [ "$(uname -m)" == "aarch64" ]; then \
         products/ocp4/profiles/pci-dss-node.profile \
         products/ocp4/profiles/pci-dss.profile \
         products/ocp4/profiles/cis-node.profile \
+        products/ocp4/profiles/cis-vm-extension.profile \
         products/ocp4/profiles/cis.profile \
         products/ocp4/profiles/moderate-node.profile \
         products/ocp4/profiles/moderate.profile \
@@ -51,3 +52,4 @@ FROM registry.access.redhat.com/ubi8/ubi-micro:latest
 
 WORKDIR /
 COPY --from=builder /content/build/ssg-*-ds.xml .
+COPY --from=builder /content/build/*-cel-content.yaml .

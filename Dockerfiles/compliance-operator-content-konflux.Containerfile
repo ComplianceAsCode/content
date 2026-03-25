@@ -110,3 +110,4 @@ LABEL \
 WORKDIR /
 COPY --from=builder /go/src/github.com/ComplianceAsCode/content/LICENSE /licenses/LICENSE
 COPY --from=builder /go/src/github.com/ComplianceAsCode/content/build/ssg-*-ds.xml .
+COPY --from=builder /go/src/github.com/ComplianceAsCode/content/build/*-cel-content.yaml .
