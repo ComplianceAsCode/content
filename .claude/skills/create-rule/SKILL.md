@@ -534,7 +534,11 @@ ls tests/data/profile_stability/
 ## Important Notes
 
 - **Do NOT make test files executable** - the test framework handles this
-- **Use proper Jinja2 syntax** for macros in description, rationale, etc.
+- **Use the project's custom Jinja2 delimiters** — this project does NOT use standard Jinja2 syntax. The custom delimiters (defined in `ssg/jinja.py`) avoid conflicts with YAML/XML curly braces:
+  - **Variables/expressions**: `{{{ expr }}}` (triple braces), NOT `{{ expr }}`
+  - **Statements** (if/for/set): `{{% stmt %}}`, NOT `{% stmt %}`
+  - **Comments**: `{{# comment #}}`, NOT `{# comment #}`
+  - Examples: `{{{ full_name }}}`, `{{{ describe_service_enable(service="auditd") }}}`, `{{% if product in ["rhel9"] %}}`, `{{% set var="value" %}}`
 - **Check existing similar rules** for reference on structure and content
 - **Templated rules are preferred** when a suitable template exists
 - **Every rule must belong to a component** - add to existing component or create new one
