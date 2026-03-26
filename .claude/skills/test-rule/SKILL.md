@@ -110,7 +110,7 @@ Store the mapping of product → VM name for Phase 5.
    - Ask user: "Datastream for <product> is missing/outdated. Build it now?"
 
    ```bash
-   ./build_product --datastream-only <product>
+   ./build_product --rule-id $ARGUMENTS <product>
    ```
 
 4. **Verify VMs are available and running** (CRITICAL — Automatus requires the VM to be running):
@@ -308,7 +308,7 @@ Based on results:
    ```
    Error: build/ssg-<product>-ds.xml not found
    ```
-   - Build with: `./build_product --datastream-only <product>`
+   - Build with: `./build_product --rule-id $ARGUMENTS <product>`
 
 3. **Permission denied**:
    - If using `qemu:///system`, may need sudo
