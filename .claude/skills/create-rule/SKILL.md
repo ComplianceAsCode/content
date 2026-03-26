@@ -70,7 +70,7 @@ Collect the following information using AskUserQuestion or prompts:
 
 3. **Rationale**: Why this rule is important for security
 
-4. **Severity**: One of `low`, `medium`, `high`, `unknown`
+4. **Severity**: One of `low`, `medium`, `high`, `unknown`. Default value would be `medium`.
 
 ### Identifiers
 
