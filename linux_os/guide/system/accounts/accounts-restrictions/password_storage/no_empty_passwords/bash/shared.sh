@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu,multi_platform_almalinux
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu,multi_platform_almalinux,multi_platform_rhcos
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -38,6 +38,17 @@ sed -i -E '/^Auth-Initial:/,/^[^[:space:]]/ {
 }' "$config_file"
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
+{{% elif 'rhcos' in product %}}
+# RHCOS uses static PAM files not managed by authselect.
+# Although /usr/bin/authselect exists on RHCOS 9, using it rewrites
+# the PAM stack with RHEL 8 era templates (pam_fprintd.so, etc.)
+# that don't match the actual RHCOS 9 PAM configuration, causing
+# the compliance scan to still report FAIL after remediation.
+# Use direct sed to surgically remove nullok instead.
+{{{ bash_remove_pam_module_option('/etc/pam.d/system-auth', 'auth', 'sufficient', 'pam_unix.so', 'nullok') }}}
+{{{ bash_remove_pam_module_option('/etc/pam.d/system-auth', 'password', 'sufficient', 'pam_unix.so', 'nullok') }}}
+{{{ bash_remove_pam_module_option('/etc/pam.d/password-auth', 'auth', 'sufficient', 'pam_unix.so', 'nullok') }}}
+{{{ bash_remove_pam_module_option('/etc/pam.d/password-auth', 'password', 'sufficient', 'pam_unix.so', 'nullok') }}}
 {{% else %}}
 if [ -f /usr/bin/authselect ]; then
     {{{ bash_enable_authselect_feature('without-nullok') }}}
