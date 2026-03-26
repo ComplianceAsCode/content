@@ -37,9 +37,10 @@ Examples:
      - Options: top 4 relevant products + Other
    - **Fallback**: Check if `products/<product_id>/product.yml` exists. List products with `ls products/`.
 
-4. **If no `--product` specified**, ask the user via `AskUserQuestion`:
+4. **If no `--product` specified**, discover available products and ask the user via `AskUserQuestion`:
+   - Run `ls products/` (or call `mcp__content-mcp__list_products`) to get the list of available products
    - "Which product is this control file for? (optional — leave blank for product-agnostic)"
-   - Options: "rhel9", "rhel10", "fedora", "Product-agnostic (global controls/)" + Other
+   - Options: present the most common products from the discovered list + "Product-agnostic (global controls/)" + Other
 
 5. **Check for existing control**: If `--id` was provided, call `mcp__content-mcp__get_control_stats` with `control_id` to check whether a control file with this ID already exists.
    **Fallback**: Check if `controls/<policy_id>.yml` or `products/<product>/controls/<policy_id>.yml` exists.
@@ -108,12 +109,9 @@ Examples:
        - Other
 
 2. **Ask for additional metadata** via `AskUserQuestion`:
+   - Check existing control files for common level patterns: `grep -h 'id:' controls/*.yml products/*/controls/*.yml | grep -A5 'levels:' | head -20` or call `mcp__content-mcp__list_controls` to see level schemes used in other frameworks
    - "Does this policy define compliance levels (e.g., high/medium/low, Level 1/Level 2)?"
-   - Options:
-     - "high, medium, low"
-     - "Level 1, Level 2"
-     - "enhanced, intermediate, minimal"
-     - "No levels"
+   - Options: present common level schemes discovered from existing control files + "No levels" + Other
 
 3. **Ask for version** if not obvious from the document:
    - "What version string should this control use? (e.g., 'v1r1', '1.0', leave blank to skip)"

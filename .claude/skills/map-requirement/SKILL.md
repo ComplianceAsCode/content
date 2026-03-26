@@ -25,9 +25,10 @@ Examples:
 
 1. **Parse arguments**: Extract `control_id`, `requirement_id`, `--product` flag, and optional `--policy` flag from `$ARGUMENTS`.
 
-2. **If no `--product` specified**, ask the user via `AskUserQuestion`:
+2. **If no `--product` specified**, discover available products and ask the user via `AskUserQuestion`:
+   - Run `ls products/` (or call `mcp__content-mcp__list_products`) to get the list of available products
    - "Which product are you mapping rules for?"
-   - Options: "rhel9", "rhel10", "rhel8", "fedora" + Other
+   - Options: present the most common products from the discovered list + Other
 
 3. **Check build artifacts**: Call `mcp__content-mcp__list_built_products`.
    - If the target product is NOT in the built list, ask the user via `AskUserQuestion`:

@@ -45,24 +45,7 @@ If user chose templated rule:
 1. **List available templates** using `mcp__content-mcp__list_templates` to get all available templates with their descriptions.
    **Fallback**: Run `ls shared/templates/` to list available template directories.
 
-2. **Common templates for quick reference**:
-   | Template | Use Case | Key Parameters |
-   |----------|----------|----------------|
-   | `sshd_lineinfile` | SSH server configuration | `parameter`, `value` |
-   | `package_installed` | Package installation | `pkgname` |
-   | `package_removed` | Package removal | `pkgname` |
-   | `service_enabled` | Service enablement | `servicename` |
-   | `service_disabled` | Service disablement | `servicename` |
-   | `file_permissions` | File permission checks | `filepath`, `filemode` |
-   | `file_owner` | File ownership | `filepath`, `uid_or_name` |
-   | `file_groupowner` | File group ownership | `filepath`, `gid_or_name` |
-   | `sysctl` | Sysctl settings | `sysctlvar`, `sysctlval` |
-   | `grub2_bootloader_argument` | Kernel boot args | `arg_name`, `arg_value` |
-   | `kernel_module_disabled` | Disable kernel modules | `kernmodule` |
-   | `mount_option` | Mount options | `mountpoint`, `mountoption` |
-   | `shell_lineinfile` | Shell variable settings | `path`, `parameter`, `value` |
-   | `auditd_lineinfile` | Auditd configuration | `parameter`, `value` |
-   | `lineinfile` | Generic line in file | `path`, `text` |
+2. **Present available templates** from the list obtained in step 1 and help the user select the right one based on their use case.
 
 3. **Ask for template selection** using AskUserQuestion
 
@@ -245,20 +228,11 @@ Based on the rule's purpose and location, suggest likely components:
 ls components/*.yml | sed 's|components/||;s|\.yml||' | sort
 ```
 
-**Common component mappings**:
-| Rule Prefix | Likely Component |
-|-------------|------------------|
-| `sshd_*` | `openssh` |
-| `audit_*`, `auditd_*` | `audit` |
-| `sudo_*` | `sudo` |
-| `firewalld_*` | `firewalld` |
-| `selinux_*` | `selinux` |
-| `package_*_installed/removed` | Component for that package |
-| `service_*_enabled/disabled` | Component for that service |
-| `sysctl_*` | `kernel` or specific subsystem |
-| `mount_option_*` | `systemd` |
-| `grub2_*` | `grub2` |
-| `file_permissions_*`, `file_owner_*` | Component for the file's package |
+**Finding the right component**: Search existing component files for rules with a similar prefix to identify the likely component:
+```bash
+# Find which component contains rules with a similar prefix
+grep -l '<rule_prefix>' components/*.yml
+```
 
 ### Step 2: Verify Component Exists
 
@@ -485,11 +459,10 @@ rule_id_3
 
 Rules are listed one per line, sorted alphabetically, with no duplicates.
 
-**Products with stability tests**:
-- `rhel8`
-- `rhel9`
-- `rhel10`
-- `fedora`
+**Discover products with stability tests**:
+```bash
+ls tests/data/profile_stability/
+```
 
 ## Phase 8: Verify and Report
 
