@@ -29,9 +29,22 @@ This skill uses `mcp__content-mcp__*` tools when available (preferred — determ
 
 ## Phase 2: Build Product
 
-Build all artifacts (SCAP, guides, playbooks, tables):
+**Always use the `build_product` script.** Do not use CMake, make, or ninja directly.
+
+Parse user arguments for optional flags:
+- `--datastream-only` — skip guides, tables, playbooks (faster)
+- `--rule-id <rule_id>` — build only a specific rule (fastest, for testing)
+
+Build command:
 ```bash
-./build_product $ARGUMENTS
+./build_product [flags] $PRODUCT
+```
+
+Examples:
+```bash
+./build_product rhel9                                          # Full build
+./build_product --datastream-only rhel9                        # Data stream only
+./build_product --datastream-only --rule-id sshd_set_idle_timeout rhel9  # Single rule
 ```
 
 ### Build Output
@@ -48,9 +61,9 @@ Expected artifacts in `build/`:
 - `ssg-$ARGUMENTS-ds-1.2.xml` - SCAP 1.2 data stream
 - `ssg-$ARGUMENTS-xccdf.xml` - XCCDF document
 - `ssg-$ARGUMENTS-oval.xml` - OVAL definitions
-- `guides/` - HTML guides
-- `ansible/` - Ansible playbooks
-- `bash/` - Bash scripts
+- `guides/` - HTML guides (skipped with `--datastream-only`)
+- `ansible/` - Ansible playbooks (skipped with `--datastream-only`)
+- `bash/` - Bash scripts (skipped with `--datastream-only`)
 
 ## Phase 3: Verify Build Success
 
@@ -123,34 +136,24 @@ Debugging Steps:
 
 ### Common Build Errors
 
-1. **CMake configuration failed**:
+1. **Python import errors**:
    ```bash
-   # Ensure CMake is installed
-   cmake --version
-
-   # Try with explicit generator
-   cd build && cmake -G "Unix Makefiles" ..
-   ```
-
-2. **Python import errors**:
-   ```bash
-   # Install requirements
    pip3 install -r requirements.txt
    pip3 install -r test-requirements.txt
    ```
 
-3. **Missing dependencies**:
+2. **Missing dependencies**:
    ```bash
    # RHEL/Fedora
    dnf install cmake make openscap-utils python3-pyyaml python3-jinja2
    ```
 
-4. **Jinja2 errors**:
+3. **Jinja2 errors**:
    - Check for undefined macros
    - Verify macro imports in the file
    - Check for syntax errors in `{{{ }}}` blocks
 
-5. **OVAL validation errors**:
+4. **OVAL validation errors**:
    - Check template parameters match expected types
    - Verify referenced variables exist
    - Check platform applicability
@@ -160,13 +163,4 @@ Debugging Steps:
 For more detailed output:
 ```bash
 ./build_product $ARGUMENTS 2>&1 | tee build.log
-```
-
-### Ninja Build (Faster)
-
-If ninja is available:
-```bash
-cd build
-cmake -G Ninja ..
-ninja $ARGUMENTS
 ```
