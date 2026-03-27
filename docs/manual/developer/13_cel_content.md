@@ -304,14 +304,22 @@ rules:
 ### Build Targets
 
 ```bash
-# Build all content including CEL
+# Build all content including CEL content (for products with PRODUCT_CEL_ENABLED)
 ./build_product ocp4
 
-# Build data stream only (faster, includes CEL)
+# Build data stream only (faster, excludes CEL content)
 ./build_product ocp4 --datastream-only
 
-# CEL content is generated as part of the build
-# Output: build/ocp4-cel-content.yaml
+# Build data stream and CEL content
+./build_product ocp4 --datastream-only --cel-content=ocp4
+
+# Build only CEL content (no data stream)
+./build_product --cel-content=ocp4
+
+# Build CEL content for multiple products
+./build_product --cel-content=ocp4,rhel9
+
+# CEL content is generated as build/ocp4-cel-content.yaml
 ```
 
 ## Validation
