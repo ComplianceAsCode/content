@@ -26,6 +26,15 @@
   with_items:
     - aide
 
+- name: "{{{ rule_title }}} - Gather AIDE Package Facts"
+  ansible.builtin.package_facts:
+    manager: auto
+    filter: aide
+
+- name: "{{{ rule_title }}} - Set AIDE DB Key"
+  ansible.builtin.set_fact:
+    aide_db_in_key: "{{ 'database_in' if (ansible_facts.packages['aide'][0].version is version('0.17', '>=')) else 'database' }}"
+
 - name: "{{{ rule_title }}} - Check Whether the Stock AIDE Database Exists"
   ansible.builtin.stat:
      path: {{{ aide_stage_src }}}
