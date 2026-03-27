@@ -1321,7 +1321,12 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     <filter action="exclude">state_{{{ object_id }}}_users_ignored</filter>
   </ind:textfilecontent54_object>
 
+  {{%- if product == "hummingbird" -%}}
+  {{# Hummingbird contains special "default" user named 65532 which has the home directory set to /tmp because distroless images ship no /home directory. #}}
+  {{%- set ignored_users_list="(nobody|nfsnobody|65532)" %}}
+  {{%- else -%}}
   {{%- set ignored_users_list="(nobody|nfsnobody)" %}}
+  {{%- endif -%}}
   <ind:textfilecontent54_state id="state_{{{ object_id }}}_users_ignored" version="1">
     <ind:subexpression operation="pattern match">^{{{ ignored_users_list }}}$</ind:subexpression>
   </ind:textfilecontent54_state>

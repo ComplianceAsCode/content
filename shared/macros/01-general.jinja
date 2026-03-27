@@ -774,8 +774,12 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_package_install(package) -%}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ package }}}</code> package needs to be present in the container or container image.
+{{%- else -%}}
     The <code>{{{ package }}}</code> package can be installed with the following command:
     <pre>{{{ package_install(package) }}}</pre>
+{{%- endif %}}
 {{%- endmacro %}}
 
 
@@ -810,8 +814,13 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_package_remove(package) -%}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ package }}}</code> package should not be present in the container or container image.
+    Remove the <code>{{{ package }}}</code> package from <code>Containerfile</code> and rebuild the container image.
+{{%- else -%}}
     The <code>{{{ package }}}</code> package can be removed with the following command:
     <pre>{{{ package_remove(package) }}}</pre>
+{{%- endif %}}
 {{%- endmacro %}}
 
 
@@ -825,8 +834,12 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_file_permissions(file, perms) %}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ file }}}</code> shall have the <code>{{{ perms }}}</code> permission mode.
+{{%- else -%}}
     To properly set the permissions of <code>{{{ file }}}</code>, run the command:
     <pre>$ sudo chmod {{{ perms }}} {{{ file }}}</pre>
+{{%- endif %}}
 {{%- endmacro %}}
 
 
@@ -840,11 +853,17 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_file_owner(file, owner) %}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ file }}}</code> should be owned by the
+    {{%- for own in owner.split("|") %}} <code>{{{ own }}}</code> {{% if not loop.last %}} or {{% endif %}}{{% endfor -%}}
+    user.
+{{%- else -%}}
     To properly set the owner of <code>{{{ file }}}</code>, run the command:
     {{% for own in owner.split("|") %}}
       <pre>$ sudo chown {{{ own }}} {{{ file }}} </pre>
       {{% if not loop.last %}} or {{% endif %}}
     {{% endfor %}}
+{{%- endif -%}}
 {{%- endmacro %}}
 
 {{#
@@ -889,11 +908,17 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_file_group_owner(file, group) %}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ file }}}</code> should be group-owned by the
+    {{%- for grp in group.split("|") %}} <code>{{{ grp }}}</code> {{% if not loop.last %}} or {{% endif %}}{{% endfor -%}}
+    group.
+{{%- else -%}}
     To properly set the group owner of <code>{{{ file }}}</code>, run the command:
     {{% for grp in group.split("|") %}}
       <pre>$ sudo chgrp {{{ grp }}} {{{ file }}}</pre>
       {{% if not loop.last %}} or {{% endif %}}
     {{% endfor %}}
+{{%- endif %}}
 {{%- endmacro %}}
 
 {{#
