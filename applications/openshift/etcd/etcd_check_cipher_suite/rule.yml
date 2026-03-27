@@ -23,8 +23,8 @@ ocil_clause: 'ETCD cipher suite does not meet requirements'
 
 ocil: |-
     Run the following command to check the cipher suites for ETCD:
-    <pre>$  oc get configmaps etcd-pod -n openshift-etcd -o yaml | grep -oE 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256|TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256'</pre>
-    Make sure that the result has at least one cipher.
+    <pre>$ oc get configmaps etcd-pod -n openshift-etcd -o json | jq -r '.data["pod.yaml"]' |  grep -P "{{ .var_etcd_tls_cipher_suites_regex }}" </pre>
+    Make sure that the result prints the configured cipher suites. If the result is empty, the cipher suites are not configured properly.
 
 severity: medium
 
@@ -37,6 +37,5 @@ template:
     ocp_data: "true"
     filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
     yamlpath: ".data['pod.yaml']"
-    values:
-    - value: 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256|TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256'
-      operation: 'pattern match'
+    xccdf_variable: var_etcd_tls_cipher_suites_regex
+    regex_data: true
