@@ -20,10 +20,7 @@ platform: package[iptables]
 identifiers:
     cce@rhel8: CCE-86679-8
 
-
-ocil_clause: 'the iptables-services package is installed'
-
-ocil: '{{{ ocil_package(package="iptables-services") }}}'
+{{{ complete_ocil_entry_package_removed("iptables-services") }}}
 
 template:
     name: package_removed

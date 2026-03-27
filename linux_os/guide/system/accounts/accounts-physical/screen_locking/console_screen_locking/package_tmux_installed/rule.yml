@@ -42,9 +42,7 @@ references:
     ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
     srg: SRG-OS-000030-GPOS-00011,SRG-OS-000028-GPOS-00009
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="tmux") }}}'
+{{{ complete_ocil_entry_package_installed("tmux") }}}
 
 fixtext: '{{{ describe_package_install(package="tmux") }}}'
 

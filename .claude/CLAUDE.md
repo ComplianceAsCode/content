@@ -173,7 +173,8 @@ Used in rule descriptions, OCIL, fixtext, and warnings fields:
 - `{{{ describe_file_permissions(file="/path", perms="0700") }}}` - File permission description
 - `{{{ describe_sysctl_option_value(sysctl="key", value="val") }}}` - Sysctl description
 - `{{{ complete_ocil_entry_sysctl_option_value(sysctl="key", value="val") }}}` - Full OCIL for sysctl
-- `{{{ complete_ocil_entry_package(package="name") }}}` - Full OCIL for package check
+- `{{{ complete_ocil_entry_package_installed("name") }}}` - OCIL when the package must be installed
+- `{{{ complete_ocil_entry_package_removed("name") }}}` - OCIL when the package must be absent
 - `{{{ fixtext_package_removed("name") }}}` - Fixtext for package removal
 - `{{{ fixtext_sysctl("key", "value") }}}` - Fixtext for sysctl setting
 - `{{{ fixtext_directory_permissions(file="/path", mode="0600") }}}` - Fixtext for dir permissions

@@ -1,7 +1,7 @@
-{{% if product in [ "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "sle16"] %}}
-{{% set package_name = "cronie" %}}
+{{% if 'rhel' in product or product in ["ol9", "ol10", "sle12", "sle15", "sle16"] %}}
+  {{%- set package = "cronie" %}}
 {{% else %}}
-{{% set package_name = "cron" %}}
+  {{%- set package = "cron" %}}
 {{% endif %}}
 
 documentation_complete: true
@@ -35,12 +35,9 @@ references:
     nist-csf: PR.IP-1,PR.PT-3
     srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: 'the package is installed'
-
-ocil: |-
-    {{{ ocil_package(package_name) }}}
+{{{ complete_ocil_entry_package_installed(package=package) }}}
 
 template:
     name: package_installed
     vars:
-        pkgname: {{{ package_name }}}
+        pkgname: {{{ package }}}

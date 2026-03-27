@@ -26,9 +26,7 @@ identifiers:
 references:
     srg: SRG-OS-000479-GPOS-00224
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="systemd-journal-remote") }}}'
+{{{ complete_ocil_entry_package_installed("systemd-journal-remote") }}}
 
 template:
     name: package_installed

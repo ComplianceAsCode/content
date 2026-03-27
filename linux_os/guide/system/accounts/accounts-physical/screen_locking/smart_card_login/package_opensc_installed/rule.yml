@@ -1,14 +1,15 @@
+{{% if 'ubuntu' not in product %}}
+  {{%- set package = "opensc" %}}
+{{% else %}}
+  {{%- set package = "opensc-pkcs11" %}}
+{{% endif %}}
 documentation_complete: true
 
 
-title: 'Install the opensc Package For Multifactor Authentication'
+title: 'Install the {{{ package }}} Package For Multifactor Authentication'
 
 description: |-
-    {{% if 'ubuntu' not in product %}}
-    {{{ describe_package_install(package="opensc") }}}
-    {{% else %}}
-    {{{ describe_package_install(package="opensc-pkcs11") }}}
-    {{% endif %}}
+    {{{ describe_package_install(package=package) }}}
 
 rationale: |-
     Using an authentication device, such as a CAC or token that is separate from
@@ -33,13 +34,7 @@ references:
     srg: SRG-OS-000375-GPOS-00160,SRG-OS-000376-GPOS-00161
     stigid@ol8: OL08-00-010410
 
-ocil_clause: 'the package is not installed'
-
-{{% if 'ubuntu' not in product %}}
-ocil: '{{{ ocil_package(package="opensc") }}}'
-{{% else %}}
-ocil: '{{{ ocil_package(package="opensc-pkcs11") }}}'
-{{% endif %}}
+{{{ complete_ocil_entry_package_installed(package) }}}
 
 template:
     name: package_installed
@@ -48,15 +43,7 @@ template:
         pkgname@ubuntu2204: opensc-pkcs11
 
 fixtext: |-
-    {{% if 'ubuntu' not in product %}}
-    {{{ describe_package_install(package="opensc") }}}
-    {{% else %}}
-    {{{ describe_package_install(package="opensc-pkcs11") }}}
-    {{% endif %}}
+    {{{ describe_package_install(package=package) }}}
 
 srg_requirement: |-
-    {{% if 'ubuntu' not in product %}}
-    {{{ srg_requirement_package_installed(package="opensc") | indent(4) }}}
-    {{% else %}}
-    {{{ srg_requirement_package_installed(package="opensc-pkcs11") | indent(4) }}}
-    {{% endif %}}
+    {{{ srg_requirement_package_installed(package=package) | indent(4) }}}

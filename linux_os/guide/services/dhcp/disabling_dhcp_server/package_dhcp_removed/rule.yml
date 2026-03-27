@@ -1,17 +1,19 @@
+{{% if 'ubuntu' in product %}}
+ {{%- set package = "isc-dhcp-server" %}}
+{{% elif product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'sle12', 'sle15'] %}}
+ {{%- set package = "dhcp-server" %}}
+{{% else %}}
+ {{%- set package = "dhcp" %}}
+{{% endif %}}
+
 documentation_complete: true
 
 title: 'Uninstall DHCP Server Package'
 
 description: |-
     If the system does not need to act as a DHCP server,
-    the dhcp package can be uninstalled.
-    {{% if 'ubuntu' in product %}}
-    {{{ describe_package_remove(package="isc-dhcp-server") }}}
-    {{% elif product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'sle12', 'sle15'] %}}
-    {{{ describe_package_remove(package="dhcp-server") }}}
-    {{% else %}}
-    {{{ describe_package_remove(package="dhcp") }}}
-    {{% endif %}}
+    the {{{ package }}} package can be uninstalled.
+    {{{ describe_package_remove(package=package) }}}
 
 rationale: |-
     Removing the DHCP server ensures that it cannot be easily or
@@ -39,13 +41,8 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
-{{% if 'ubuntu' in product %}}
-{{{ complete_ocil_entry_package(package="isc-dhcp-server") }}}
-{{% elif product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'sle12', 'sle15'] %}}
-{{{ complete_ocil_entry_package(package="dhcp-server") }}}
-{{% else %}}
-{{{ complete_ocil_entry_package(package="dhcp") }}}
-{{% endif %}}
+
+{{{ complete_ocil_entry_package_removed(package=package) }}}
 
 template:
     name: package_removed

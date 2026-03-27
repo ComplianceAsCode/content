@@ -61,9 +61,13 @@ ocil_clause: 'smartcard software is not installed'
 
 ocil: |-
     Check that {{{ full_name }}} has the packages for smart card support installed.
+    {{% if pkg_system is undefined or pkg_system not in ["rpm", "dpkg"] %}}
+    JINJA MACRO ERROR - Unknown package system '{{{ pkg_system | default("undefined") }}}'. Has to be either 'rpm' or 'dpkg'.
+    {{% else %}}
     {{% for pkg in smartcard_packages %}}
-    {{{ ocil_package(package=pkg) }}}
+    Run the following command to determine if the <code>{{{ pkg }}}</code> package is installed: <pre>$ {{% if pkg_system == "rpm" %}}rpm -q {{% elif pkg_system == "dpkg" %}}dpkg -l {{% endif %}}{{{ pkg }}}</pre>
     {{% endfor %}}
+    {{% endif %}}
 
 {{% if product not in ["sle12", "sle15", "slmicro5", "slmicro6"] %}}
 template:

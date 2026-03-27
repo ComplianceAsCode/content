@@ -1,19 +1,19 @@
-documentation_complete: true
-
 {{% if 'ubuntu' in product %}}
-{{% set package_name = "tftpd-hpa" %}}
+  {{%- set package = "tftpd-hpa" %}}
 {{% elif 'sle' in product %}}
-{{% set package_name = "tftp" %}}
+  {{%- set package = "tftp" %}}
 {{% else %}}
-{{% set package_name = "tftp-server" %}}
+  {{%- set package = "tftp-server" %}}
 {{% endif %}}
 
-title: 'Uninstall {{{ package_name }}} Package'
+documentation_complete: true
 
-description: '{{{ describe_package_remove(package=package_name) }}}'
+title: 'Uninstall {{{ package }}} Package'
+
+description: '{{{ describe_package_remove(package=package) }}}'
 
 rationale: |-
-    Removing the <tt>{{{ package_name }}}</tt> package decreases the risk of the accidental
+    Removing the <tt>{{{ package }}}</tt> package decreases the risk of the accidental
     (or intentional) activation of tftp services.
     <br /><br />
     If TFTP is required for operational support (such as transmission of router
@@ -43,13 +43,13 @@ references:
     stigid@ol7: OL07-00-040700
     stigid@ol8: OL08-00-040190
 
-{{{ complete_ocil_entry_package(package=package_name) }}}
+{{{ complete_ocil_entry_package_removed(package=package) }}}
 
-fixtext: '{{{ fixtext_package_removed(package_name) }}}'
+fixtext: '{{{ fixtext_package_removed(package=package) }}}'
 
 srg_requirement: 'The Trivial File Transfer Protocol (TFTP) server package must not be installed if not required for {{{ full_name }}} operational support.'
 
 template:
     name: package_removed
     vars:
-        pkgname: {{{ package_name }}}
+        pkgname: {{{ package }}}

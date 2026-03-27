@@ -1,3 +1,4 @@
+{{%- set minimum_version = "0:2.17-55.0.4.el7_0.3" %}}
 documentation_complete: true
 
 
@@ -17,12 +18,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: 'the minimum required <tt>glibc</tt> version is not installed'
+ocil_clause: '<tt>glibc</tt> is missing or installed at a version lower than {{{ minimum_version }}}'
 
-ocil: '{{{ ocil_package(package="glibc") }}}'
+{{{ ocil_package_installed_how_to_check(package="glibc") }}}
 
 template:
     name: package_installed
     vars:
         pkgname: glibc
-        evr: 0:2.17-55.0.4.el7_0.3
+        evr: {{{ minimum_version }}}

@@ -11,9 +11,7 @@ rationale: 'If the samba-common package is not installed, samba cannot be config
 
 severity: medium
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="samba-common") }}}'
+{{{ complete_ocil_entry_package_installed("samba-common") }}}
 
 template:
     name: package_installed

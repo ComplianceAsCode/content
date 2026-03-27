@@ -16,9 +16,7 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-82989-5
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="binutils") }}}'
+{{{ complete_ocil_entry_package_installed("binutils") }}}
 
 template:
     name: package_installed

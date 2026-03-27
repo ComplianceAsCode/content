@@ -1,18 +1,20 @@
+{{% if 'sle' not in product %}}
+  {{%- set package = "rsyslog-gnutls" %}}
+{{% else %}}
+  {{%- set package = "rsyslog-module-gtls" %}}
+{{% endif %}}
+
 documentation_complete: true
 
-title: 'Ensure rsyslog-gnutls is installed'
+title: 'Ensure {{{ package }}} is installed'
 
 description: |-
     TLS protocol support for rsyslog is installed.
-    {{% if 'sle' not in product %}}
-    {{{ describe_package_install(package="rsyslog-gnutls") }}}
-    {{% else %}}
-    {{{ describe_package_install(package="rsyslog-module-gtls") }}}
-    {{% endif %}}
+    {{{ describe_package_install(package=package) }}}
 
 
 rationale: |-
-    The rsyslog-gnutls package provides Transport Layer Security (TLS) support
+    The {{{ package }}} package provides Transport Layer Security (TLS) support
     for the rsyslog daemon, which enables secure remote logging.
 
 severity: medium
@@ -29,13 +31,7 @@ references:
     srg: SRG-OS-000480-GPOS-00227,SRG-OS-000120-GPOS-00061
     stigid@ol8: OL08-00-030680
 
-ocil_clause: 'the package is not installed'
-
-{{% if 'sle' not in product %}}
-{{{ complete_ocil_entry_package(package="rsyslog-gnutls") }}}
-{{% else %}}
-{{{ complete_ocil_entry_package(package="rsyslog-module-gtls") }}}
-{{% endif %}}
+{{{ complete_ocil_entry_package_installed(package) }}}
 
 template:
     name: package_installed
@@ -46,11 +42,6 @@ template:
         pkgname@sle16: rsyslog-module-gtls
 
 fixtext: |-
-    {{% if 'sle' not in product %}}
-    {{{ describe_package_install(package="rsyslog-gnutls") }}}
-    {{% else %}}
-    {{{ describe_package_install(package="rsyslog-module-gtls") }}}
-    {{% endif %}}
-
+    {{{ describe_package_install(package=package) }}}
 srg_requirement:
   {{{ full_name }}} must have the packages required for encrypting offloaded audit logs installed.

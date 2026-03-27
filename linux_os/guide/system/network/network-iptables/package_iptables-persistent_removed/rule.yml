@@ -13,9 +13,7 @@ severity: medium
 
 platform: package[ufw]
 
-ocil_clause: 'the package is installed'
-
-ocil: '{{{ ocil_package(package="iptables-persistent") }}}'
+{{{ complete_ocil_entry_package_removed("iptables-persistent") }}}
 
 template:
     name: package_removed

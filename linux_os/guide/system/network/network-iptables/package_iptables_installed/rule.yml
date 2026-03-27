@@ -29,9 +29,7 @@ references:
     pcidss: Req-1.4.1
     srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="iptables") }}}'
+{{{ complete_ocil_entry_package_installed("iptables") }}}
 
 {{%- if product in [ "sle12", "sle15" ] or 'ubuntu' in product %}}
 template:

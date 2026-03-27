@@ -19,9 +19,7 @@ identifiers:
 references:
     srg: SRG-OS-000046-GPOS-00022
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="postfix") }}}'
+{{{ complete_ocil_entry_package_installed("postfix") }}}
 
 fixtext: '{{{ fixtext_package_installed(package="postfix") }}}'
 
