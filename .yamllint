@@ -1,5 +1,10 @@
 ---
 extends: default
+locale: en_US.UTF-8
+yaml-files:
+  - "*.yaml"
+  - "*.yml"
+  - "*.fmf"
 
 # https://yamllint.readthedocs.io/en/stable/rules.html
 rules:
@@ -10,4 +15,5 @@ rules:
     level: warning
   indentation:
     spaces: consistent
-  line-length: disable
+  line-length:
+    max: 99
