@@ -6,8 +6,6 @@ description: |-
 rationale: |-
   The Scheduler API service which runs on port 10251/TCP by default is used for health and metrics information and is available without authentication or encryption. As such it should only be bound to a localhost interface, to minimize the cluster's attack surface
 severity: medium
-references:
-  cis@ocp4: 1.4.1
 ocil: |-
   In OpenShift 4, The Kubernetes Scheduler operator manages and updates the Kubernetes Scheduler deployed on top of OpenShift. By default, the operator exposes metrics via metrics service. The metrics are collected from the Kubernetes Scheduler operator. Profiling data is sent to `healthzPort`, the port of the localhost `healthz` endpoint. Changing this value may disrupt components that monitor the kubelet health. The default `healthz` `port` value is `10251`, and the `healthz` `bindAddress` is `127.0.0.1`
 
