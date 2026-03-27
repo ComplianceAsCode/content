@@ -42,10 +42,10 @@ RUN if [ "$(uname -m)" == "x86_64" ] || [ "$(uname -m)" == "aarch64" ]; then \
 # OpenShift content for ppc64le and s390x architectures since we're not
 # including any RHCOS profiles on those architectures right now anyway.
 RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" == "aarch64" ]; then \
-        ./build_product ocp4 rhcos4 eks --datastream-only; \
+        ./build_product ocp4 rhcos4 eks --datastream-only --cel-content=ocp4; \
         elif [ "$(uname -m)" = "ppc64le" ]; then \
-        ./build_product ocp4 rhcos4 --datastream-only; \
-        else ./build_product ocp4 --datastream-only; \
+        ./build_product ocp4 rhcos4 --datastream-only --cel-content=ocp4; \
+        else ./build_product ocp4 --datastream-only --cel-content=ocp4; \
         fi
 
 FROM registry.access.redhat.com/ubi8/ubi-micro:latest

@@ -381,11 +381,20 @@ Common selection patterns:
 ## Build Instructions
 
 ```bash
-# Build a single product (full build)
+# Build a single product (full build, includes CEL content if PRODUCT_CEL_ENABLED)
 ./build_product ocp4
 
-# Build data stream only (faster, skips guides and tables)
+# Build data stream only (faster, skips guides, tables, and CEL content)
 ./build_product ocp4 --datastream-only
+
+# Build data stream and CEL content
+./build_product ocp4 --datastream-only --cel-content=ocp4
+
+# Build only CEL content (no data stream)
+./build_product --cel-content=ocp4
+
+# Build CEL content for multiple products
+./build_product --cel-content=ocp4,rhel9
 
 # Build with only specific rules (fastest, for testing individual rules)
 ./build_product ocp4 --datastream-only --rule-id api_server_tls_security_profile
@@ -393,6 +402,9 @@ Common selection patterns:
 
 Build output goes to `build/`. The data stream file is at:
 `build/ssg-<product>-ds.xml`
+
+For products with CEL content enabled, the CEL content file is at:
+`build/<product>-cel-content.yaml`
 
 ## Guidelines for Claude
 
