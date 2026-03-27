@@ -11,10 +11,11 @@ rules:
   truthy: disable # do not check for strict true / false boolean values
   comments: disable # disable syntax checking of comments
   comments-indentation: disable # disable indentation checks for comments
-  document-start: disable # do not require the document start marker 
+  document-start: disable # do not require the document start marker
   empty-lines:
     level: warning # only warn about empty lines
   indentation:
-    spaces: consistent # pass lint if spaces are used for indentation and multiple of spaces is consistent through a file
+    # pass if spaces are used for indentation and number of spaces is consistent through a file
+    spaces: consistent
   line-length:
     max: 99 # allow lines up to 99 chars
