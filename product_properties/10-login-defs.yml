@@ -3,5 +3,5 @@ default:
 
 overrides:
 {{% if product in [ 'slmicro6', 'sle16' ] %}}
-  login_defs_path: "/usr/etc/login.defs"
+  login_defs_path: "/etc/login.defs.d/oscap.login.defs"
 {{% endif %}}
