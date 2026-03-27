@@ -313,6 +313,36 @@ The thin Datastream is stored under the normal Datastream name (for example, `ss
     ./build_product fedora --rule-id enable_fips_mode
 ```
 
+### Building CEL Content
+
+CEL (Common Expression Language) content is available for Kubernetes and OpenShift products.
+When building products with `PRODUCT_CEL_ENABLED` set in their CMakeLists.txt, CEL content is generated automatically during a full build.
+
+```bash
+    # Build all content including CEL (for products with CEL enabled)
+    ./build_product ocp4
+
+    # Build data stream only (excludes CEL content)
+    ./build_product ocp4 --datastream
+    # Short form (only builds datastream):
+    ./build_product ocp4 -d
+    # Legacy form (still supported):
+    ./build_product ocp4 --datastream-only
+
+    # Build data stream and CEL content
+    ./build_product ocp4 --datastream --cel-content=ocp4
+
+    # Build only CEL content (no data stream)
+    ./build_product --cel-content=ocp4
+
+    # Build CEL content for multiple products
+    ./build_product --cel-content=ocp4,rhel9
+```
+
+CEL content files are generated as `build/<product>-cel-content.yaml`.
+
+For more information about CEL content, see [CEL Content Documentation](12_cel_content.md).
+
 ### Configuring CMake options using GUI
 
 Configure options before building using a GUI tool:

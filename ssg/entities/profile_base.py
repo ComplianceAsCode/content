@@ -54,6 +54,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         filter_rules=lambda: "",
         policies=lambda: list(),
         single_rule_profile=lambda: False,
+        scannerType=lambda: None,
         ** XCCDFEntity.KEYS
     )
 

@@ -528,6 +528,20 @@ macro(ssg_build_sds PRODUCT)
     endif()
 endmacro()
 
+# Build CEL content YAML for products that support CEL scanning
+macro(ssg_build_cel_content PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}-cel-content.yaml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_cel_content.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --profiles-dir "${CMAKE_CURRENT_BINARY_DIR}/profiles" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --output "${CMAKE_BINARY_DIR}/${PRODUCT}-cel-content.yaml"
+        DEPENDS ${PRODUCT}-compile-all "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
+        COMMENT "[${PRODUCT}-content] generating CEL content YAML"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-cel-content.yaml
+        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}-cel-content.yaml"
+    )
+endmacro()
+
 # Build per-product HTML guides to see the status of various profiles and
 # rules in the generated XCCDF guides.
 macro(ssg_build_html_guides PRODUCT)
@@ -740,6 +754,11 @@ macro(ssg_build_product PRODUCT)
     ssg_build_xml_final(${PRODUCT} ocil)
     ssg_build_sds(${PRODUCT})
 
+    # Build CEL content if enabled for this product
+    if(PRODUCT_CEL_ENABLED)
+        ssg_build_cel_content(${PRODUCT})
+    endif()
+
     define_validate_product("${PRODUCT}")
     if("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
         add_test(
@@ -763,6 +782,15 @@ macro(ssg_build_product PRODUCT)
     )
 
     add_dependencies(zipfile generate-ssg-${PRODUCT}-ds.xml)
+
+    # Add CEL content to dependencies if enabled
+    if(PRODUCT_CEL_ENABLED)
+        add_dependencies(
+            ${PRODUCT}-content
+            generate-${PRODUCT}-cel-content.yaml
+        )
+        add_dependencies(zipfile generate-${PRODUCT}-cel-content.yaml)
+    endif()
 
     if("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
         ssg_build_profile_playbooks(${PRODUCT})

@@ -1,0 +1,52 @@
+documentation_complete: true
+
+title: 'VMs Must Not Overcommit Guest Memory'
+
+description: |-
+    The <tt>overcommitGuestOverhead</tt> configuration option enables the request for
+    additional virtual machine management memory inside the virt-launcher pod.
+    The overcommit feature is used to increase virtual machine density on the
+    node, as long as the virtual machine doesn't request all the memory that it
+    would need if fully loaded. However, if the VM were to use all of the
+    memory it could, this would lead to the OpenShift Scheduler killing the
+    workload.
+
+rationale: |-
+    When the <tt>.spec.template.spec.domain.resources.overcommitGuestOverhead</tt> field is
+    set to <tt>true</tt> in the <tt>VirtualMachine</tt> resource, VMs are allowed to
+    overcommit KubeVirt's memory which may lead to guests crashing and
+    interrupting workloads causing malfunctions. To prevent memory-related failures
+    and ensure workload stability, this setting should not be enabled.
+
+failureReason: |-
+    The '.spec.template.spec.domain.resources.overcommitGuestOverhead' field exists and is
+    set to "true" in the 'VirtualMachine' resource, allowing VMs to
+    overcommit KubeVirt's memory which may lead to guests crashing and
+    interrupting workloads causing malfunctions.
+
+severity: medium
+
+ocil_clause: 'VMs have overcommitGuestOverhead set to true'
+
+ocil: |-
+    Run the following command to check VirtualMachine configurations:
+    <pre>$ oc get virtualmachines -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.metadata.name}{": "}{.spec.template.spec.domain.resources.overcommitGuestOverhead}{"\n"}{end}'</pre>
+    Make sure no VirtualMachine has <tt>overcommitGuestOverhead</tt> set to <tt>true</tt>.
+
+checkType: Platform
+
+scannerType: CEL
+
+inputs:
+  - name: vms
+    kubernetesInputSpec:
+      apiVersion: kubevirt.io/v1
+      resource: VirtualMachine
+
+expression: |
+  vms.all(h,
+      !has(h.spec.template.spec.domain.resources) ||
+      !has(h.spec.template.spec.domain.resources.overcommitGuestOverhead) ||
+      (has(h.spec.template.spec.domain.resources.overcommitGuestOverhead) &&
+       h.spec.template.spec.domain.resources.overcommitGuestOverhead == false)
+  )
