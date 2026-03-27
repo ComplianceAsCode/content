@@ -18,7 +18,12 @@
   changed_when: false
   failed_when: False
   check_mode: no
-  register: gpg_fingerprints
+  register: sq_fingerprints
+  when: ansible_distribution_version is version('10.1', '>=')
+
+- name: "{{{ rule_title }}}: Set Fact - Installed GPG Fingerprints (sq format)"
+  ansible.builtin.set_fact:
+    gpg_installed_fingerprints: "{{ sq_fingerprints.stdout | regex_findall('Fingerprint:\\s*([0-9A-Fa-f]+)', '\\1') | list }}"
   when: ansible_distribution_version is version('10.1', '>=')
 
 - name: "{{{ rule_title }}}: Read signatures in GPG key"
@@ -30,9 +35,10 @@
   check_mode: no
   when: ansible_distribution_version is version('10.1', '<')
 
-- name: "{{{ rule_title }}}: Set Fact - Installed GPG Fingerprints (sq format)"
+- name: "{{{ rule_title }}}: Set Fact - Installed GPG Fingerprints (gpg format)"
   ansible.builtin.set_fact:
-    gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('Fingerprint:\\s*([0-9A-Fa-f]+)', '\\1') | list }}"
+    gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('^pub.*\\n(?:^fpr[:]*)([0-9A-Fa-f]*)', '\\1') | list }}"
+  when: ansible_distribution_version is version('10.1', '<')
 {{% else %}}
 # RHEL 8, 9 and other versions: Use gpg command
 
