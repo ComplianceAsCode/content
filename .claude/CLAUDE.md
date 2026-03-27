@@ -386,10 +386,14 @@ Common selection patterns:
 ./build_product ocp4
 
 # Build data stream only (faster, skips guides, tables, and CEL content)
+./build_product ocp4 --datastream
+# Short form (only builds datastream):
+./build_product ocp4 -d
+# Legacy form (still supported):
 ./build_product ocp4 --datastream-only
 
 # Build data stream and CEL content
-./build_product ocp4 --datastream-only --cel-content=ocp4
+./build_product ocp4 --datastream --cel-content=ocp4
 
 # Build only CEL content (no data stream)
 ./build_product --cel-content=ocp4
@@ -398,7 +402,7 @@ Common selection patterns:
 ./build_product --cel-content=ocp4,rhel9
 
 # Build with only specific rules (fastest, for testing individual rules)
-./build_product ocp4 --datastream-only --rule-id api_server_tls_security_profile
+./build_product ocp4 --datastream --rule-id api_server_tls_security_profile
 ```
 
 Build output goes to `build/`. The data stream file is at:

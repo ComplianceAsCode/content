@@ -58,7 +58,7 @@ jobs:
 
       - name: Build product OCP and RHCOS content
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}
-        run: ./build_product -d ocp4 rhcos4 --cel-content=ocp4
+        run: ./build_product --datastream ocp4 rhcos4 --cel-content=ocp4
 
       - name: Process list of rules into a list of product-profiles to test
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}
