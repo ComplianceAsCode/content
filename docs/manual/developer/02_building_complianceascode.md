@@ -323,10 +323,14 @@ When building products with `PRODUCT_CEL_ENABLED` set in their CMakeLists.txt, C
     ./build_product ocp4
 
     # Build data stream only (excludes CEL content)
+    ./build_product ocp4 --datastream
+    # Short form (only builds datastream):
+    ./build_product ocp4 -d
+    # Legacy form (still supported):
     ./build_product ocp4 --datastream-only
 
     # Build data stream and CEL content
-    ./build_product ocp4 --datastream-only --cel-content=ocp4
+    ./build_product ocp4 --datastream --cel-content=ocp4
 
     # Build only CEL content (no data stream)
     ./build_product --cel-content=ocp4
