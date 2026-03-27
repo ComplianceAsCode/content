@@ -3,10 +3,10 @@ on:
   pull_request:
     branches: [master, 'stabilization*']
 permissions:
-    contents: read
+  contents: read
 jobs:
   yamllint:
-    name: Yaml Lint on Changed Controls and Profiles Files
+    name: Yaml Lint on Changed yaml files
     runs-on: ubuntu-latest
     steps:
       - name: Install Git
@@ -27,18 +27,6 @@ jobs:
           url="repos/$repo/pulls/$pr_number/files"
           response=$(gh api "$url" --paginate)
           echo "$response" | jq -r '.[].filename' > filenames.txt
-          cat filenames.txt
-
-          if grep -q "controls/" filenames.txt; then
-            echo "CONTROLS_CHANGES=true" >> $GITHUB_ENV
-          else
-            echo "CONTROLS_CHANGES=false" >> $GITHUB_ENV
-          fi
-          if grep -q "\.profile" filenames.txt; then
-            echo "PROFILES_CHANGES=true" >> $GITHUB_ENV
-          else
-            echo "PROFILES_CHANGES=false" >> $GITHUB_ENV
-          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -46,18 +34,9 @@ jobs:
         if: ${{ env.CONTROLS_CHANGES == 'true' || env.PROFILES_CHANGES == 'true' }}
         run: pip install yamllint
 
-      - name: Run yamllint in Control Files Modified by PR
-        if: ${{ env.CONTROLS_CHANGES == 'true' }}
+      - name: Run yamllint on files modified by the PR
         run: |
-          for control_file in $(cat filenames.txt | grep "controls/"); do
-            echo "Running yamllint on $control_file..."
-            yamllint "$control_file"
-          done
-
-      - name: Run yamllint in Profile Files Modified by PR
-        if: ${{ env.PROFILES_CHANGES == 'true' }}
-        run: |
-          for profile_file in $(cat filenames.txt | grep "\.profile"); do
-            echo "Running yamllint on $profile_file..."
-            yamllint "$profile_file"
+          for file in $(cat filenames.txt); do
+            echo "Running yamllint on $file..."
+            yamllint -c .yamllint "$file"
           done

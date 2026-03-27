@@ -1,13 +1,21 @@
 ---
 extends: default
+locale: en_US.UTF-8
+yaml-files:
+  - "*.yaml"
+  - "*.yml"
+  - "*.fmf"
 
 # https://yamllint.readthedocs.io/en/stable/rules.html
 rules:
-  comments: disable
-  comments-indentation: disable
-  document-start: disable
+  truthy: disable # do not check for strict true / false boolean values
+  comments: disable # disable syntax checking of comments
+  comments-indentation: disable # disable indentation checks for comments
+  document-start: disable # do not require the document start marker
   empty-lines:
-    level: warning
+    level: warning # only warn about empty lines
   indentation:
+    # pass if spaces are used for indentation and number of spaces is consistent through a file
     spaces: consistent
-  line-length: disable
+  line-length:
+    max: 99 # allow lines up to 99 chars
