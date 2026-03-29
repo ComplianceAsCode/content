@@ -854,7 +854,7 @@ fi
     bash_ensure_pam_module_configuration(
     '/etc/pam.d/common-auth',
     'auth',
-    '\[success=1 default=ignore\]',
+    'sufficient',
     'pam_unix.so',
     '',
     '',
@@ -2766,7 +2766,7 @@ This macro creates a Bash conditional which checks the system architecture in /p
 
 
 {{#
-    Set a sshd configuration parameter to a value for system with default configuration in /usr subdir 
+    Set a sshd configuration parameter to a value for system with default configuration in /usr subdir
 
 :parameter parameter: Parameter to set
 :type parameter: str
