@@ -16,4 +16,4 @@ description: |-
     Debian 13 Benchmark™ content.
 
 selections:
-    - cis_debian12:all:l2_server
+    - cis_debian13:all:l2_server

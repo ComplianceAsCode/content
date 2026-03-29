@@ -16,4 +16,4 @@ description: |-
     Debian 13 Benchmark™ content.
 
 selections:
-    - cis_debian12:all:l1_workstation
+    - cis_debian13:all:l1_workstation
