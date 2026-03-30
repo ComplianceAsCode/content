@@ -776,6 +776,14 @@ controls:
           - gnome_gdm_disable_xdmcp
       status: automated
 
+    - id: 1.7.11
+      title: Ensure Xwayland is configured (Automated)
+      levels:
+          - l1_workstation
+      rules:
+          - xwayland_disabled
+      status: automated
+
     - id: 2.1.1
       title: Ensure autofs services are not in use (Automated)
       levels:
