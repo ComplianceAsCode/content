@@ -5,13 +5,13 @@ import collections
 import os
 import re
 import xml.etree.ElementTree as ET
-import yaml
 
 import ssg.ansible
 import ssg.yaml
 from ssg.constants import (
     ansible_system,
     bash_system,
+    hummingbird_system,
     datastream_namespace,
     OSCAP_PROFILE,
     OSCAP_RULE,
@@ -21,9 +21,9 @@ from ssg.constants import (
 
 DEFAULT_SELECTOR = "__DEFAULT"
 HASH_ROW = "#" * 79
-LANGUAGE_TO_SYSTEM = {"ansible": ansible_system, "bash": bash_system}
-LANGUAGE_TO_TARGET = {"ansible": "playbook", "bash": "script"}
-LANGUAGE_TO_EXTENSION = {"ansible": "yml", "bash": "sh"}
+LANGUAGE_TO_SYSTEM = {"ansible": ansible_system, "bash": bash_system, "hummingbird": hummingbird_system}
+LANGUAGE_TO_TARGET = {"ansible": "playbook", "bash": "script", "hummingbird": "script"}
+LANGUAGE_TO_EXTENSION = {"ansible": "yml", "bash": "sh", "hummingbird": "sh"}
 ANSIBLE_VAR_PATTERN = re.compile(
     "- name: XCCDF Value [^ ]+ # promote to variable\n  set_fact:\n"
     "    ([^:]+): !!str (.+)\n  tags:\n    - always\n")
@@ -44,8 +44,8 @@ def parse_args():
         help="Product ID, eg. 'rhel9'"
     )
     parser.add_argument(
-        "--language", required=True, choices=["bash", "ansible"],
-        help="Remediation language, either 'bash' or 'ansible'"
+        "--language", required=True, choices=["bash", "ansible", "hummingbird"],
+        help="Remediation language, either 'bash' or 'ansible' or 'hummingbird'"
     )
     args = parser.parse_args()
     return args
@@ -206,7 +206,7 @@ class ScriptGenerator:
     def generate_profile_remediation_script(self, profile_el):
         if self.language == "ansible":
             output = self.create_output_ansible(profile_el)
-        elif self.language == "bash":
+        elif self.language == "bash" or self.language == "hummingbird":
             output = self.create_output_bash(profile_el)
         file_path = self.get_output_file_path(profile_el)
         with open(file_path, "wb") as f:
@@ -286,6 +286,10 @@ class ScriptGenerator:
             shebang_with_newline = "#!/usr/bin/env bash\n"
             remediation_type = "Bash Remediation Script"
             how_to_apply = "# $ sudo ./remediation-script.sh\n"
+        elif self.language == "hummingbird":
+            shebang_with_newline = "#!/usr/bin/env bash\n"
+            remediation_type = "Bash Remediation Script for building Project Hummingbird container images"
+            how_to_apply = "# $ ./remediation-script.sh\n"
         profile_title = profile.find("./{%s}title" % XCCDF12_NS).text
         description = profile.find("./{%s}description" % XCCDF12_NS).text
         commented_profile_description = comment(description)

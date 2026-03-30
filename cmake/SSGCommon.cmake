@@ -575,6 +575,20 @@ macro(ssg_build_profile_bash_scripts PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/bash/all-profile-bash-scripts-${PRODUCT}"
     )
 endmacro()
+macro(ssg_build_profile_hummingbird_scripts PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/hummingbird_scripts/all-profile-hummingbird-scripts-${PRODUCT}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/hummingbird_scripts"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_profile_remediations.py" --language hummingbird --data-stream "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output-dir "${CMAKE_BINARY_DIR}/hummingbird_scripts" --product "${PRODUCT}"
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/hummingbird_scripts/all-profile-hummingbird-scripts-${PRODUCT}"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        COMMENT "[${PRODUCT}-hummingbird-scripts] generating hummingbird remediation scripts for all profiles in ssg-${PRODUCT}-ds.xml"
+    )
+    add_custom_target(
+        generate-all-profile-hummingbird-scripts-${PRODUCT}
+        DEPENDS "${CMAKE_BINARY_DIR}/hummingbird_scripts/all-profile-hummingbird-scripts-${PRODUCT}"
+    )
+endmacro()
 
 # Build per-profile Ansible remediation scripts that can be used independently
 # of OpenSCAP execution.
@@ -782,6 +796,16 @@ macro(ssg_build_product PRODUCT)
         )
         add_dependencies(${PRODUCT} ${PRODUCT}-profile-bash-scripts)
         add_dependencies(zipfile ${PRODUCT}-profile-bash-scripts)
+    endif()
+
+    if("${PRODUCT_HUMMINGBIRD_REMEDIATION_ENABLED}")
+        ssg_build_profile_hummingbird_scripts(${PRODUCT})
+        add_custom_target(
+            ${PRODUCT}-profile-hummingbird-scripts
+            DEPENDS generate-all-profile-hummingbird-scripts-${PRODUCT} "${CMAKE_BINARY_DIR}/hummingbird_scripts/all-profile-hummingbird-scripts-${PRODUCT}"
+        )
+        add_dependencies(${PRODUCT} ${PRODUCT}-profile-hummingbird-scripts)
+        add_dependencies(zipfile ${PRODUCT}-profile-hummingbird-scripts)
     endif()
 
     ssg_build_html_guides(${PRODUCT})
