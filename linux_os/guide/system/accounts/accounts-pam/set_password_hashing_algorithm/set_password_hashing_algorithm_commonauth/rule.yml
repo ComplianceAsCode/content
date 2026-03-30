@@ -56,7 +56,11 @@ template:
     vars:
       path: /etc/pam.d/common-auth
       type: auth
+      {{% if 'sle' in product %}}
+      control_flag: sufficient
+      {{% else %}}
       control_flag: required
+      {{% endif %}}
       module: pam_unix.so
       arguments:
         - argument: sha512
