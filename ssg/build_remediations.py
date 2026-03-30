@@ -26,7 +26,8 @@ REMEDIATION_TO_EXT_MAP = {
     'kubernetes': '.yml',
     'blueprint': '.toml',
     'kickstart': '.cfg',
-    'bootc': '.bo'
+    'bootc': '.bo',
+    'hummingbird': '.sh',
 }
 
 
@@ -515,6 +516,15 @@ class BootcRemediation(Remediation):
             file_path, "bootc")
 
 
+class HummingbirdRemediation(Remediation):
+    """
+    This provides class for Hummingbird remediations
+    """
+    def __init__(self, file_path):
+        super(HummingbirdRemediation, self).__init__(
+            file_path, "hummingbird")
+
+
 REMEDIATION_TO_CLASS = {
     'anaconda': AnacondaRemediation,
     'ansible': AnsibleRemediation,
@@ -525,6 +535,7 @@ REMEDIATION_TO_CLASS = {
     'blueprint': BlueprintRemediation,
     'kickstart': KickstartRemediation,
     'bootc': BootcRemediation,
+    'hummingbird': HummingbirdRemediation,
 }
 
 
@@ -666,6 +677,8 @@ def expand_xccdf_subs(fix, remediation_type):
         pattern = r'\(kickstart-populate\s*(\S+)\)'
     elif remediation_type == "bootc":
         pattern = r'\(bootc-populate\s*(\S+)\)'
+    elif remediation_type == "hummingbird":
+        pattern = r'\(hummingbird-populate\s*(\S+)\)'
     else:
         sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
         sys.exit(1)

@@ -518,6 +518,8 @@ then contain the following subdirectories:
 
 - `bootc` - for remediation content used in the `oscap-im` tool internally, ending in `.bo`
 
+- `hummingbird` - for remediation content using during the build of Project Hummingbird container images, ending in `.sh`
+
 In each of these subdirectories, a file named `shared.ext` will apply to
 all products and be included in all builds, but `{{{ product }}}.ext`
 will only get included in the build for `{{{ product }}}` (e.g.,
