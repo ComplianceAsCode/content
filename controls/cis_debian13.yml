@@ -1144,19 +1144,18 @@ controls:
       status: automated
 
     - id: 2.4.1.2
-      title: Ensure permissions on /etc/crontab are configured (Automated)
+      title: Ensure access to /etc/crontab are configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
-          - file_cron_allow_exists
           - file_groupowner_crontab
           - file_owner_crontab
           - file_permissions_crontab
       status: automated
 
     - id: 2.4.1.3
-      title: Ensure permissions on /etc/cron.hourly are configured (Automated)
+      title: Ensure access to /etc/cron.hourly are configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1167,7 +1166,7 @@ controls:
       status: automated
 
     - id: 2.4.1.4
-      title: Ensure permissions on /etc/cron.daily are configured (Automated)
+      title: Ensure access ton /etc/cron.daily are configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1178,7 +1177,7 @@ controls:
       status: automated
 
     - id: 2.4.1.5
-      title: Ensure permissions on /etc/cron.weekly are configured (Automated)
+      title: Ensure access to /etc/cron.weekly are configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1189,7 +1188,7 @@ controls:
       status: automated
 
     - id: 2.4.1.6
-      title: Ensure permissions on /etc/cron.monthly are configured (Automated)
+      title: Ensure access to /etc/cron.monthly are configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1198,9 +1197,19 @@ controls:
           - file_owner_cron_monthly
           - file_permissions_cron_monthly
       status: automated
-
     - id: 2.4.1.7
-      title: Ensure permissions on /etc/cron.d are configured (Automated)
+      title: Ensure access to /etc/cron.yearly is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - file_groupowner_cron_yearly
+          - file_owner_cron_yearly
+          - file_permissions_cron_yearly
+      status: automated
+
+    - id: 2.4.1.8
+      title: Ensure access to /etc/cron.d are configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1210,12 +1219,13 @@ controls:
           - file_permissions_cron_d
       status: automated
 
-    - id: 2.4.1.8
-      title: Ensure crontab is restricted to authorized users (Automated)
+    - id: 2.4.1.9
+      title: Ensure access to crontab is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
+          - file_cron_allow_exists
           - file_cron_deny_not_exist
           - file_groupowner_cron_allow
           - file_owner_cron_allow
