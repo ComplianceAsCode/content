@@ -1257,7 +1257,7 @@ controls:
       status: manual
 
     - id: 3.1.2
-      title: Ensure wireless interfaces are disabled (Automated)
+      title: Ensure wireless interfaces are not available (Automated)
       levels:
           - l1_server
       rules:
@@ -1273,64 +1273,98 @@ controls:
           - service_bluetooth_disabled
       status: automated
 
-    - id: 3.2.1
-      title: Ensure dccp kernel module is not available (Automated)
-      levels:
-          - l2_server
-          - l2_workstation
-      rules:
-          - kernel_module_dccp_disabled
-      status: automated
-
-    - id: 3.2.2
-      title: Ensure tipc kernel module is not available (Automated)
-      levels:
-          - l2_server
-          - l2_workstation
-      rules:
-          - kernel_module_tipc_disabled
-      status: automated
-
-    - id: 3.2.3
-      title: Ensure rds kernel module is not available (Automated)
-      levels:
-          - l2_server
-          - l2_workstation
-      rules:
-          - kernel_module_rds_disabled
-      status: automated
-
-    - id: 3.2.4
-      title: Ensure sctp kernel module is not available (Automated)
-      levels:
-          - l2_server
-          - l2_workstation
-      rules:
-          - kernel_module_sctp_disabled
-      status: automated
-
-    - id: 3.3.1
-      title: Ensure ip forwarding is disabled (Automated)
+        - id: 3.2.1
+      title: Ensure atm kernel module is not available (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
-          - sysctl_net_ipv6_conf_all_forwarding
+          - kernel_module_atm_disabled
+      status: automated
+
+    - id: 3.2.2
+      title: Ensure dccp kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_dccp_disabled
+      status: automated
+
+    - id: 3.2.3
+      title: Ensure tipc kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_tipc_disabled
+      status: automated
+
+    - id: 3.2.4
+      title: Ensure rds kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_rds_disabled
+      status: automated
+
+    - id: 3.2.5
+      title: Ensure sctp kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_sctp_disabled
+      status: automated
+
+    - id: 3.3.1.1
+      title: Ensure net.ipv4.ip_forward is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
           - sysctl_net_ipv4_ip_forward
       status: automated
 
-    - id: 3.3.2
-      title: Ensure packet redirect sending is disabled (Automated)
+    - id: 3.3.1.2
+      title: Ensure net.ipv4.conf.all.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_net_ipv4_conf_all_forwarding
+      status: automated
+
+    - id: 3.3.1.3
+      title: Ensure net.ipv4.conf.default.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_net_ipv4_conf_default_forwarding
+      status: automated
+
+    - id: 3.3.1.4
+      title: Ensure net.ipv4.conf.all.send_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_all_send_redirects
+      status: automated
+
+    - id: 3.3.1.5
+      title: Ensure net.ipv4.conf.default.send_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
           - sysctl_net_ipv4_conf_default_send_redirects
       status: automated
 
-    - id: 3.3.3
-      title: Ensure bogus icmp responses are ignored (Automated)
+    - id: 3.3.1.6
+      title: Ensure net.ipv4.icmp_ignore_bogus_error_responses is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1338,8 +1372,8 @@ controls:
           - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
       status: automated
 
-    - id: 3.3.4
-      title: Ensure broadcast icmp requests are ignored (Automated)
+    - id: 3.3.1.7
+      title: Ensure net.ipv4.icmp_echo_ignore_broadcasts is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1347,62 +1381,98 @@ controls:
           - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
       status: automated
 
-    - id: 3.3.5
-      title: Ensure icmp redirects are not accepted (Automated)
+    - id: 3.3.1.8
+      title: Ensure net.ipv4.conf.all.accept_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
-          - sysctl_net_ipv6_conf_all_accept_redirects
-          - sysctl_net_ipv6_conf_default_accept_redirects
           - sysctl_net_ipv4_conf_all_accept_redirects
+      status: automated
+
+    - id: 3.3.1.9
+      title: Ensure net.ipv4.conf.default.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
           - sysctl_net_ipv4_conf_default_accept_redirects
       status: automated
 
-    - id: 3.3.6
-      title: Ensure secure icmp redirects are not accepted (Automated)
+    - id: 3.3.1.10
+      title: Ensure net.ipv4.conf.all.secure_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_all_secure_redirects
+      status: automated
+
+    - id: 3.3.1.11
+      title: Ensure net.ipv4.conf.default.secure_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
           - sysctl_net_ipv4_conf_default_secure_redirects
       status: automated
 
-    - id: 3.3.7
-      title: Ensure reverse path filtering is enabled (Automated)
+    - id: 3.3.1.12
+      title: Ensure net.ipv4.conf.all.rp_filter is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_all_rp_filter
-          - sysctl_net_ipv4_conf_default_rp_filter
       status: automated
 
-    - id: 3.3.8
-      title: Ensure source routed packets are not accepted (Automated)
+    - id: 3.3.1.13
+      title: Ensure net.ipv4.conf.default.rp_filter is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
-          - sysctl_net_ipv6_conf_all_accept_source_route
-          - sysctl_net_ipv6_conf_default_accept_source_route
+          - sysctl_net_ipv4_conf_default_rp_filter
+      status: automated
+
+    - id: 3.3.1.14
+      title: Ensure net.ipv4.conf.all.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
           - sysctl_net_ipv4_conf_all_accept_source_route
+      status: automated
+
+    - id: 3.3.1.15
+      title: Ensure net.ipv4.conf.default.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
           - sysctl_net_ipv4_conf_default_accept_source_route
       status: automated
 
-    - id: 3.3.9
-      title: Ensure suspicious packets are logged (Automated)
+    - id: 3.3.1.16
+      title: Ensure net.ipv4.conf.all.log_martians is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_all_log_martians
+      status: automated
+
+    - id: 3.3.1.17
+      title: Ensure net.ipv4.conf.default.log_martians is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
           - sysctl_net_ipv4_conf_default_log_martians
       status: automated
 
-    - id: 3.3.10
-      title: Ensure tcp syn cookies is enabled (Automated)
+    - id: 3.3.1.18
+      title: Ensure net.ipv4.tcp_syncookies is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1410,13 +1480,75 @@ controls:
           - sysctl_net_ipv4_tcp_syncookies
       status: automated
 
-    - id: 3.3.11
-      title: Ensure ipv6 router advertisements are not accepted (Automated)
+        - id: 3.3.2.1
+      title: Ensure net.ipv6.conf.all.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_net_ipv6_conf_all_forwarding
+      status: automated
+
+    - id: 3.3.2.2
+      title: Ensure net.ipv6.conf.default.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_net_ipv6_conf_default_forwarding
+      status: automated
+
+    - id: 3.3.2.3
+      title: Ensure net.ipv6.conf.all.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_redirects
+      status: automated
+
+    - id: 3.3.2.4
+      title: Ensure net.ipv6.conf.default.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_redirects
+      status: automated
+
+    - id: 3.3.2.5
+      title: Ensure net.ipv6.conf.all.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_source_route
+      status: automated
+
+    - id: 3.3.2.6
+      title: Ensure net.ipv6.conf.default.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_source_route
+      status: automated
+
+    - id: 3.3.2.7
+      title: Ensure net.ipv6.conf.all.accept_ra is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
           - sysctl_net_ipv6_conf_all_accept_ra
+      status: automated
+
+    - id: 3.3.2.8
+      title: Ensure net.ipv6.conf.default.accept_ra is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
           - sysctl_net_ipv6_conf_default_accept_ra
       status: automated
 
