@@ -380,6 +380,7 @@ package_pcsc-lite-ccid_installed
 package_pcsc-lite_installed
 package_policycoreutils-python-utils_installed
 package_policycoreutils_installed
+package_postfix_installed
 package_rsyslog-gnutls_installed
 package_rsyslog_installed
 package_s-nail_installed

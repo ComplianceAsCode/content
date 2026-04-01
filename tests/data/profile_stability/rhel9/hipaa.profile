@@ -93,6 +93,7 @@ no_direct_root_logins
 no_empty_passwords
 no_rsh_trust_files
 package_cron_installed
+package_postfix_installed
 package_telnet-server_removed
 package_telnet_removed
 require_singleuser_auth

@@ -118,6 +118,7 @@ no_direct_root_logins
 no_empty_passwords
 package_audit_installed
 package_cron_installed
+package_postfix_installed
 package_rsyslog_installed
 package_sequoia-sq_installed
 package_telnet-server_removed

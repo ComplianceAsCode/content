@@ -94,6 +94,7 @@ libreswan_approved_tunnels
 no_direct_root_logins
 no_empty_passwords
 no_rsh_trust_files
+package_postfix_installed
 package_telnet-server_removed
 package_telnet_removed
 package_xinetd_removed
