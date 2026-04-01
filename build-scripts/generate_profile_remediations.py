@@ -4,6 +4,7 @@ import argparse
 import collections
 import os
 import re
+import textwrap
 import xml.etree.ElementTree as ET
 
 import ssg.ansible
@@ -206,8 +207,10 @@ class ScriptGenerator:
     def generate_profile_remediation_script(self, profile_el):
         if self.language == "ansible":
             output = self.create_output_ansible(profile_el)
-        else:
+        elif self.language in ("bash", "hummingbird"):
             output = self.create_output_linear(profile_el)
+        else:
+            raise ValueError("Unknown language %s" % self.language)
         file_path = self.get_output_file_path(profile_el)
         with open(file_path, "wb") as f:
             f.write(output.encode("utf-8"))
@@ -261,6 +264,18 @@ class ScriptGenerator:
         header = self.create_header(profile)
         output.append(header)
         total = len(selected_rules)
+        if self.language == "hummingbird":
+            newroot_assign = textwrap.dedent(
+                """
+                # The first argument is the root directory of the system
+                NEWROOT="$1"
+                if [[ -z "$NEWROOT" ]] ; then
+                    echo "Missing required NEWROOT argument" >&2
+                    exit 1
+                fi
+                """
+            )
+            output.append(newroot_assign)
         current = 1
         for rule_id in self.remediations:
             if rule_id not in selected_rules:
@@ -272,6 +287,8 @@ class ScriptGenerator:
             elif self.language == "hummingbird":
                 rule_remediation = self.generate_hummingbird_rule_remediation(
                     rule_id, refinements)
+            else:
+                raise ValueError("Unknown language %s" % self.language)
             output.append(rule_remediation)
             current += 1
         return "".join(output)
@@ -293,7 +310,7 @@ class ScriptGenerator:
         elif self.language == "hummingbird":
             shebang_with_newline = "#!/usr/bin/env bash\n"
             remediation_type = "Bash Remediation Script for building Project Hummingbird container images"
-            how_to_apply = "# $ ./remediation-script.sh\n"
+            how_to_apply = "# RUN remediation-script.sh ${NEWROOT}\n"
         profile_title = profile.find("./{%s}title" % XCCDF12_NS).text
         description = profile.find("./{%s}description" % XCCDF12_NS).text
         commented_profile_description = comment(description)
