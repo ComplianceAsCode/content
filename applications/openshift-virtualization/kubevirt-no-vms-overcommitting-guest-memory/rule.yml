@@ -18,7 +18,7 @@ rationale: |-
     interrupting workloads causing malfunctions. To prevent memory-related failures
     and ensure workload stability, this setting should not be enabled.
 
-failureReason: |-
+failure_reason: |-
     The '.spec.template.spec.domain.resources.overcommitGuestOverhead' field exists and is
     set to "true" in the 'VirtualMachine' resource, allowing VMs to
     overcommit KubeVirt's memory which may lead to guests crashing and
@@ -33,14 +33,14 @@ ocil: |-
     <pre>$ oc get virtualmachines -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.metadata.name}{": "}{.spec.template.spec.domain.resources.overcommitGuestOverhead}{"\n"}{end}'</pre>
     Make sure no VirtualMachine has <tt>overcommitGuestOverhead</tt> set to <tt>true</tt>.
 
-checkType: Platform
+check_type: Platform
 
-scannerType: CEL
+scanner_type: CEL
 
 inputs:
   - name: vms
-    kubernetesInputSpec:
-      apiVersion: kubevirt.io/v1
+    kubernetes_input_spec:
+      api_version: kubevirt.io/v1
       resource: VirtualMachine
 
 expression: |

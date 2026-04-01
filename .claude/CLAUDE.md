@@ -179,26 +179,26 @@ rationale: |-
 
 severity: medium
 
-scannerType: CEL           # REQUIRED: Marks this as a CEL rule
+scanner_type: CEL           # REQUIRED: Marks this as a CEL rule
 
-checkType: Platform        # Usually Platform for K8s checks
+check_type: Platform        # Usually Platform for K8s checks
 
 expression: |-             # REQUIRED: CEL expression (must evaluate to boolean)
     resource.spec.enabled == true
 
 inputs:                    # REQUIRED: Kubernetes resources to evaluate
   - name: resource
-    kubernetesInputSpec:
-      apiVersion: v1
+    kubernetes_input_spec:
+      api_version: v1
       resource: pods
-      resourceName: my-pod          # Optional: specific resource
-      resourceNamespace: default    # Optional: specific namespace
+      resource_name: my-pod          # Optional: specific resource
+      resource_namespace: default    # Optional: specific namespace
 
 ocil: |-                   # Optional: Manual check instructions
     Run the following command:
     <pre>$ oc get pods</pre>
 
-failureReason: |-          # Optional: Custom failure message
+failure_reason: |-          # Optional: Custom failure message
     The resource is not properly configured.
 
 references:                # Optional: Same as regular rules
@@ -238,7 +238,7 @@ title: 'CIS VM Extension Benchmark'
 description: |-
     Profile description.
 
-scannerType: CEL    # REQUIRED: Marks this as a CEL profile
+scanner_type: CEL    # REQUIRED: Marks this as a CEL profile
 
 selections:
     - kubevirt-nonroot-feature-gate-is-enabled

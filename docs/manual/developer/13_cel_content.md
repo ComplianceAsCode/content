@@ -39,9 +39,9 @@ rationale: |-
 
 severity: medium  # low, medium, high
 
-scannerType: CEL  # REQUIRED: Marks this as a CEL rule
+scanner_type: CEL  # REQUIRED: Marks this as a CEL rule
 
-checkType: Platform  # Type of check (usually Platform for K8s checks)
+check_type: Platform  # Type of check (usually Platform for K8s checks)
 
 expression: |-
     # REQUIRED: CEL expression that evaluates to boolean
@@ -49,11 +49,11 @@ expression: |-
 
 inputs:  # REQUIRED: List of Kubernetes resources to evaluate
   - name: resource
-    kubernetesInputSpec:
-      apiVersion: v1
+    kubernetes_input_spec:
+      api_version: v1
       resource: pods
-      resourceName: my-pod  # Optional: specific resource name
-      resourceNamespace: default  # Optional: specific namespace
+      resource_name: my-pod  # Optional: specific resource name
+      resource_namespace: default  # Optional: specific namespace
 ```
 
 ### Optional Fields
@@ -63,7 +63,7 @@ ocil: |-
     Manual verification instructions.
     This becomes the "instructions" field in CEL content output.
 
-failureReason: |-
+failure_reason: |-
     Custom message displayed when the check fails.
 
 references:
@@ -109,11 +109,11 @@ The `inputs` field lists Kubernetes resources that the CEL expression can refere
 ```yaml
 inputs:
   - name: deployment  # Name used in the expression
-    kubernetesInputSpec:
-      apiVersion: apps/v1  # Kubernetes API version
+    kubernetes_input_spec:
+      api_version: apps/v1  # Kubernetes API version
       resource: deployments  # Resource type (plural form)
-      resourceName: my-app  # Optional: specific resource name
-      resourceNamespace: kube-system  # Optional: specific namespace
+      resource_name: my-app  # Optional: specific resource name
+      resource_namespace: kube-system  # Optional: specific namespace
 ```
 
 If `resourceName` is omitted, the check applies to all resources of that type.
@@ -131,7 +131,7 @@ title: 'CIS Red Hat OpenShift Virtual Machine Extension Benchmark'
 description: |-
     Profile description text.
 
-scannerType: CEL  # REQUIRED: Marks this as a CEL profile
+scanner_type: CEL  # REQUIRED: Marks this as a CEL profile
 
 selections:
     - kubevirt-nonroot-feature-gate-is-enabled
@@ -192,20 +192,20 @@ rationale: |-
 
 severity: medium
 
-scannerType: CEL
+scanner_type: CEL
 
-checkType: Platform
+check_type: Platform
 
 expression: |-
     hco.spec.featureGates.nonRoot == true
 
 inputs:
   - name: hco
-    kubernetesInputSpec:
-      apiVersion: hco.kubevirt.io/v1beta1
+    kubernetes_input_spec:
+      api_version: hco.kubevirt.io/v1beta1
       resource: hyperconvergeds
-      resourceName: kubevirt-hyperconverged
-      resourceNamespace: openshift-cnv
+      resource_name: kubevirt-hyperconverged
+      resource_namespace: openshift-cnv
 
 ocil: |-
     Run the following command to verify the NonRoot feature gate:
@@ -235,8 +235,8 @@ ssg_build_product(${PRODUCT})
 When `PRODUCT_CEL_ENABLED` is set to `TRUE`, the build system:
 
 1. **Compiles all rules** (including CEL rules) using `compile_all.py`
-2. **Filters CEL rules** - Rules with `scannerType: CEL` are identified
-3. **Filters CEL profiles** - Profiles with `scannerType: CEL` are identified
+2. **Filters CEL rules** - Rules with `scanner_type: CEL` are identified
+3. **Filters CEL profiles** - Profiles with `scanner_type: CEL` are identified
 4. **Validates CEL content**:
    - CEL rules must have `expression` field (non-empty)
    - CEL rules must have `inputs` field (non-empty list)
@@ -255,9 +255,9 @@ The `build_cel_content.py` script is located in `build-scripts/` and performs th
 - Product YAML: `build/${PRODUCT}/product.yml`
 
 #### Processing
-1. Loads all rules with `scannerType: CEL`
+1. Loads all rules with `scanner_type: CEL`
 2. Validates required CEL fields (`expression`, `inputs`)
-3. Loads all profiles with `scannerType: CEL`
+3. Loads all profiles with `scanner_type: CEL`
 4. Validates profile rules are non-empty
 5. Converts rule IDs (underscores) to rule names (hyphens)
 6. Maps `ocil` field to `instructions` in output
@@ -375,11 +375,11 @@ cel-spec '{"resource": {"spec": {"enabled": true}}}' 'resource.spec.enabled == t
    ```yaml
    inputs:
      - name: config
-       kubernetesInputSpec:
-         apiVersion: v1
+       kubernetes_input_spec:
+         api_version: v1
          resource: configmaps
-         resourceName: cluster-config  # Specific resource
-         resourceNamespace: openshift-config
+         resource_name: cluster-config  # Specific resource
+         resource_namespace: openshift-config
    ```
 
 2. **Check for field existence before accessing**
@@ -427,14 +427,14 @@ cel-spec '{"resource": {"spec": {"enabled": true}}}' 'resource.spec.enabled == t
 - Add rules to the `selections` field in the profile
 
 **Error: `profile 'profile-name' references unknown rule 'rule-name'`**
-- Verify the rule exists and has `scannerType: CEL`
+- Verify the rule exists and has `scanner_type: CEL`
 - Check the rule ID matches the profile selection
 
 ### CEL Content Not Generated
 
 1. Verify `PRODUCT_CEL_ENABLED TRUE` is set in `products/${PRODUCT}/CMakeLists.txt`
-2. Check that rules have `scannerType: CEL`
-3. Check that profiles have `scannerType: CEL`
+2. Check that rules have `scanner_type: CEL`
+3. Check that profiles have `scanner_type: CEL`
 4. Review build logs for validation errors
 
 ## References

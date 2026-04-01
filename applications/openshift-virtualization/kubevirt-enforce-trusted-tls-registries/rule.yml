@@ -18,7 +18,7 @@ rationale: |-
     and executed within virtual machines. To maintain security, only registries using
     TLS should be permitted, and the insecureRegistries list should be empty.
 
-failureReason: |-
+failure_reason: |-
     There are registries not using TLS in '.spec.storageImport.insecureRegistries' in
     the 'kubevirt-hyperconverged' resource.
 
@@ -31,17 +31,17 @@ ocil: |-
     <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.storageImport.insecureRegistries}'</pre>
     The output should be empty or the field should not exist.
 
-checkType: Platform
+check_type: Platform
 
-scannerType: CEL
+scanner_type: CEL
 
 inputs:
   - name: hco
-    kubernetesInputSpec:
-      apiVersion: hco.kubevirt.io/v1beta1
+    kubernetes_input_spec:
+      api_version: hco.kubevirt.io/v1beta1
       resource: hyperconvergeds
-      resourceName: kubevirt-hyperconverged
-      resourceNamespace: openshift-cnv
+      resource_name: kubevirt-hyperconverged
+      resource_namespace: openshift-cnv
 
 expression: |-
   !has(hco.spec.storageImport) ||

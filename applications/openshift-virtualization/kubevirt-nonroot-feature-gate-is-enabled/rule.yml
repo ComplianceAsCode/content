@@ -18,7 +18,7 @@ rationale: |-
     execution for virtual machine workloads, significantly reducing the attack
     surface and limiting the potential impact of security vulnerabilities.
 
-failureReason: |-
+failure_reason: |-
     The '.spec.featureGates.nonRoot' field is missing or not set to 'true' in
     the 'kubevirt-hyperconverged' resource.
 
@@ -31,14 +31,14 @@ ocil: |-
     <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.featureGates.nonRoot}'</pre>
     The output should be <tt>true</tt>.
 
-checkType: Platform
+check_type: Platform
 
-scannerType: CEL
+scanner_type: CEL
 
 inputs:
   - name: hcoList
-    kubernetesInputSpec:
-      apiVersion: hco.kubevirt.io/v1beta1
+    kubernetes_input_spec:
+      api_version: hco.kubevirt.io/v1beta1
       resource: hyperconvergeds
 
 expression: |

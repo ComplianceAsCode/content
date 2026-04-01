@@ -21,7 +21,7 @@ rationale: |-
     escalation opportunities, and potential compromise of the host system. Unless
     explicitly required, no host devices should be permitted.
 
-failureReason: |-
+failure_reason: |-
     The '.spec.permittedHostDevices' field is set in the 'kubevirt-hyperconverged'
     resource, allowing host devices to be used by virtualization workloads.
 
@@ -34,14 +34,14 @@ ocil: |-
     <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.permittedHostDevices}'</pre>
     The output should be empty or show empty lists for both <tt>pciHostDevices</tt> and <tt>mediatedDevices</tt>.
 
-checkType: Platform
+check_type: Platform
 
-scannerType: CEL
+scanner_type: CEL
 
 inputs:
   - name: hcoList
-    kubernetesInputSpec:
-      apiVersion: hco.kubevirt.io/v1beta1
+    kubernetes_input_spec:
+      api_version: hco.kubevirt.io/v1beta1
       resource: hyperconvergeds
 
 expression: |

@@ -20,7 +20,7 @@ description: |-
     Note that this part of the profile is meant to run on the Platform that
     Red Hat OpenShift Container Platform runs on top of.
 
-scannerType: CEL
+scanner_type: CEL
 
 selections:
     - kubevirt-nonroot-feature-gate-is-enabled

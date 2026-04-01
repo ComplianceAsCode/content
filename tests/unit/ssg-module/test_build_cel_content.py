@@ -24,18 +24,18 @@ def cel_rule_data():
         'description': 'The NonRoot feature gate restricts containers from running as root.',
         'rationale': 'Running containers as non-root reduces security risks.',
         'severity': 'medium',
-        'scannerType': 'CEL',
-        'checkType': 'Platform',
+        'scanner_type': 'CEL',
+        'check_type': 'Platform',
         'ocil': 'Verify that the NonRoot feature gate is enabled.',
         'expression': 'hco.spec.featureGates.nonRoot == true',
         'inputs': [
             {
                 'name': 'hco',
-                'kubernetesInputSpec': {
-                    'apiVersion': 'hco.kubevirt.io/v1beta1',
+                'kubernetes_input_spec': {
+                    'api_version': 'hco.kubevirt.io/v1beta1',
                     'resource': 'hyperconvergeds',
-                    'resourceName': 'kubevirt-hyperconverged',
-                    'resourceNamespace': 'openshift-cnv'
+                    'resource_name': 'kubevirt-hyperconverged',
+                    'resource_namespace': 'openshift-cnv'
                 }
             }
         ],
@@ -72,7 +72,7 @@ def cel_profile_data():
         'documentation_complete': True,
         'title': 'CIS Virtual Machine Extension Benchmark',
         'description': 'Profile for virtual machine security.',
-        'scannerType': 'CEL',
+        'scanner_type': 'CEL',
         'selections': [
             'kubevirt_nonroot_feature_gate_is_enabled',
             'kubevirt_no_permitted_host_devices'
@@ -158,6 +158,58 @@ def test_rule_id_to_name():
     assert build_cel_content.rule_id_to_name('already-hyphens') == 'already-hyphens'
 
 
+def test_convert_inputs_to_camelcase():
+    """Test conversion of inputs from snake_case to camelCase for CRD compatibility."""
+    # Test with full kubernetes_input_spec
+    inputs_snake = [
+        {
+            'name': 'hco',
+            'kubernetes_input_spec': {
+                'api_version': 'hco.kubevirt.io/v1beta1',
+                'resource': 'hyperconvergeds',
+                'resource_name': 'kubevirt-hyperconverged',
+                'resource_namespace': 'openshift-cnv'
+            }
+        }
+    ]
+
+    converted = build_cel_content.convert_inputs_to_camelcase(inputs_snake)
+
+    assert len(converted) == 1
+    assert converted[0]['name'] == 'hco'
+    assert 'kubernetesInputSpec' in converted[0]
+    assert 'kubernetes_input_spec' not in converted[0]
+
+    spec = converted[0]['kubernetesInputSpec']
+    assert spec['apiVersion'] == 'hco.kubevirt.io/v1beta1'
+    assert spec['resource'] == 'hyperconvergeds'
+    assert spec['resourceName'] == 'kubevirt-hyperconverged'
+    assert spec['resourceNamespace'] == 'openshift-cnv'
+
+    # Verify snake_case keys are not in output
+    assert 'api_version' not in spec
+    assert 'resource_name' not in spec
+    assert 'resource_namespace' not in spec
+
+    # Test with minimal spec (no optional fields)
+    inputs_minimal = [
+        {
+            'name': 'pods',
+            'kubernetes_input_spec': {
+                'api_version': 'v1',
+                'resource': 'pods'
+            }
+        }
+    ]
+
+    converted_minimal = build_cel_content.convert_inputs_to_camelcase(inputs_minimal)
+    spec_minimal = converted_minimal[0]['kubernetesInputSpec']
+    assert spec_minimal['apiVersion'] == 'v1'
+    assert spec_minimal['resource'] == 'pods'
+    assert 'resourceName' not in spec_minimal
+    assert 'resourceNamespace' not in spec_minimal
+
+
 def test_extract_controls_from_references():
     """Test extraction of controls from references dictionary."""
     # Test with list values
@@ -197,7 +249,7 @@ def test_load_cel_rules(temp_rules_dir):
     assert 'kubevirt_nonroot_feature_gate_is_enabled' in cel_rules
 
     rule = cel_rules['kubevirt_nonroot_feature_gate_is_enabled']
-    assert rule.scannerType == 'CEL'
+    assert rule.scanner_type == 'CEL'
     assert rule.title == 'Ensure NonRoot Feature Gate is Enabled'
 
 
@@ -214,7 +266,7 @@ def test_load_profiles(temp_profiles_dir):
 
     # Should load only the CEL profile
     assert len(profiles) == 1
-    assert profiles[0].scannerType == 'CEL'
+    assert profiles[0].scanner_type == 'CEL'
     assert profiles[0].title == 'CIS Virtual Machine Extension Benchmark'
 
 
@@ -239,12 +291,17 @@ def test_rule_to_cel_dict(cel_rule_data):
     assert cel_dict['description'] == 'The NonRoot feature gate restricts containers from running as root.'
     assert cel_dict['rationale'] == 'Running containers as non-root reduces security risks.'
     assert cel_dict['severity'] == 'medium'
-    assert cel_dict['checkType'] == 'Platform'
+    assert cel_dict['checkType'] == 'Platform'  # camelCase for output
     assert cel_dict['instructions'] == 'Verify that the NonRoot feature gate is enabled.'
     assert cel_dict['expression'] == 'hco.spec.featureGates.nonRoot == true'
     assert 'inputs' in cel_dict
     assert len(cel_dict['inputs']) == 1
     assert cel_dict['inputs'][0]['name'] == 'hco'
+    # Check that inputs were converted to camelCase
+    assert 'kubernetesInputSpec' in cel_dict['inputs'][0]
+    assert cel_dict['inputs'][0]['kubernetesInputSpec']['apiVersion'] == 'hco.kubevirt.io/v1beta1'
+    assert cel_dict['inputs'][0]['kubernetesInputSpec']['resourceName'] == 'kubevirt-hyperconverged'
+    assert cel_dict['inputs'][0]['kubernetesInputSpec']['resourceNamespace'] == 'openshift-cnv'
     assert 'controls' in cel_dict
     assert cel_dict['controls']['cis@ocp4'] == ['1.2.3']
     assert cel_dict['controls']['nist'] == ['AC-6', 'CM-6']
@@ -258,7 +315,7 @@ def test_rule_to_cel_dict_minimal():
     rule.description = 'Description'
     rule.rationale = 'Rationale'
     rule.severity = 'low'
-    rule.scannerType = 'CEL'
+    rule.scanner_type = 'CEL'
     rule.expression = 'true'
     rule.references = {}
 
@@ -266,10 +323,31 @@ def test_rule_to_cel_dict_minimal():
 
     assert cel_dict['id'] == 'minimal_rule'
     assert cel_dict['name'] == 'minimal-rule'
-    assert cel_dict['checkType'] == 'Platform'  # default
+    assert cel_dict['checkType'] == 'Platform'  # default, camelCase for output
     assert 'instructions' not in cel_dict  # ocil not provided
-    assert 'failureReason' not in cel_dict  # not provided
+    assert 'failureReason' not in cel_dict  # not provided, camelCase for output
     assert 'controls' not in cel_dict  # no references
+
+
+def test_rule_to_cel_dict_with_failure_reason():
+    """Test conversion with failure_reason field (snake_case input, camelCase output)."""
+    rule = ssg.build_yaml.Rule('test_rule')
+    rule.id_ = 'test_rule'
+    rule.title = 'Test Rule'
+    rule.description = 'Description'
+    rule.rationale = 'Rationale'
+    rule.severity = 'medium'
+    rule.scanner_type = 'CEL'
+    rule.check_type = 'Platform'
+    rule.expression = 'true'
+    rule.failure_reason = 'The configuration is not compliant'  # snake_case input
+    rule.references = {}
+
+    cel_dict = build_cel_content.rule_to_cel_dict(rule)
+
+    assert cel_dict['id'] == 'test_rule'
+    assert cel_dict['checkType'] == 'Platform'  # camelCase output
+    assert cel_dict['failureReason'] == 'The configuration is not compliant'  # camelCase output
 
 
 def test_profile_to_cel_dict(cel_profile_data):
@@ -317,7 +395,7 @@ def test_generate_cel_content():
     rule1.description = 'Description 1'
     rule1.rationale = 'Rationale 1'
     rule1.severity = 'high'
-    rule1.scannerType = 'CEL'
+    rule1.scanner_type = 'CEL'
     rule1.expression = 'true'
     rule1.references = {}
 
@@ -327,7 +405,7 @@ def test_generate_cel_content():
     rule2.description = 'Description 2'
     rule2.rationale = 'Rationale 2'
     rule2.severity = 'medium'
-    rule2.scannerType = 'CEL'
+    rule2.scanner_type = 'CEL'
     rule2.expression = 'false'
     rule2.references = {}
 
@@ -378,7 +456,7 @@ def test_load_cel_rules_missing_expression():
             'description': 'Test',
             'rationale': 'Test',
             'severity': 'medium',
-            'scannerType': 'CEL',
+            'scanner_type': 'CEL',
             'inputs': [{'name': 'test'}],
             'platforms': [],
             'platform': None,
@@ -403,7 +481,7 @@ def test_load_cel_rules_missing_inputs():
             'description': 'Test',
             'rationale': 'Test',
             'severity': 'medium',
-            'scannerType': 'CEL',
+            'scanner_type': 'CEL',
             'expression': 'true',
             'platforms': [],
             'platform': None,
@@ -426,7 +504,7 @@ def test_load_profiles_no_rules():
             'documentation_complete': True,
             'title': 'Test Profile',
             'description': 'Test',
-            'scannerType': 'CEL',
+            'scanner_type': 'CEL',
             'selections': [],
             'selected': [],
             'platforms': [],
@@ -450,7 +528,7 @@ def test_generate_cel_content_duplicate_rule_names():
     rule1.description = 'Description 1'
     rule1.rationale = 'Rationale 1'
     rule1.severity = 'high'
-    rule1.scannerType = 'CEL'
+    rule1.scanner_type = 'CEL'
     rule1.expression = 'true'
     rule1.inputs = [{'name': 'test'}]
     rule1.references = {}
@@ -462,7 +540,7 @@ def test_generate_cel_content_duplicate_rule_names():
     rule2.description = 'Description 2'
     rule2.rationale = 'Rationale 2'
     rule2.severity = 'medium'
-    rule2.scannerType = 'CEL'
+    rule2.scanner_type = 'CEL'
     rule2.expression = 'false'
     rule2.inputs = [{'name': 'test2'}]
     rule2.references = {}
@@ -487,7 +565,7 @@ def test_generate_cel_content_unknown_rule_reference():
     rule1.description = 'Description'
     rule1.rationale = 'Rationale'
     rule1.severity = 'high'
-    rule1.scannerType = 'CEL'
+    rule1.scanner_type = 'CEL'
     rule1.expression = 'true'
     rule1.inputs = [{'name': 'test'}]
     rule1.references = {}
@@ -519,7 +597,7 @@ def test_validation_empty_expression():
             'description': 'Test',
             'rationale': 'Test',
             'severity': 'medium',
-            'scannerType': 'CEL',
+            'scanner_type': 'CEL',
             'expression': '',  # Empty string
             'inputs': [{'name': 'test'}],
             'platforms': [],
@@ -545,7 +623,7 @@ def test_validation_empty_inputs():
             'description': 'Test',
             'rationale': 'Test',
             'severity': 'medium',
-            'scannerType': 'CEL',
+            'scanner_type': 'CEL',
             'expression': 'true',
             'inputs': [],  # Empty list
             'platforms': [],
@@ -570,7 +648,7 @@ def test_validation_profile_with_empty_selections():
             'documentation_complete': True,
             'title': 'Test Profile',
             'description': 'Test',
-            'scannerType': 'CEL',
+            'scanner_type': 'CEL',
             'selections': [],  # Empty selections
             'selected': [],  # This gets populated from selections
             'platforms': [],
@@ -593,7 +671,7 @@ def test_validation_mixed_oval_and_cel_in_profile():
     cel_rule.description = 'Description'
     cel_rule.rationale = 'Rationale'
     cel_rule.severity = 'high'
-    cel_rule.scannerType = 'CEL'
+    cel_rule.scanner_type = 'CEL'
     cel_rule.expression = 'true'
     cel_rule.inputs = [{'name': 'test'}]
     cel_rule.references = {}
@@ -627,9 +705,9 @@ def test_validation_integration_full_flow():
             'description': 'This is a valid CEL rule',
             'rationale': 'Security is important',
             'severity': 'high',
-            'scannerType': 'CEL',
+            'scanner_type': 'CEL',
             'expression': 'resource.spec.enabled == true',
-            'inputs': [{'name': 'resource', 'kubernetesInputSpec': {'resource': 'pods'}}],
+            'inputs': [{'name': 'resource', 'kubernetes_input_spec': {'resource': 'pods'}}],
             'platforms': [],
             'platform': None,
             'inherited_platforms': [],
@@ -645,7 +723,7 @@ def test_validation_integration_full_flow():
             'documentation_complete': True,
             'title': 'Valid CEL Profile',
             'description': 'This is a valid CEL profile',
-            'scannerType': 'CEL',
+            'scanner_type': 'CEL',
             'selections': ['valid_cel_rule'],
             'selected': ['valid_cel_rule'],
             'platforms': [],

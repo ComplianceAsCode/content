@@ -891,7 +891,7 @@ class Benchmark(XCCDFEntity):
             if rule.id_ in rules_to_not_include:
                 continue
             # Skip CEL rules - they are not included in XCCDF/OVAL
-            if hasattr(rule, 'scannerType') and rule.scannerType == 'CEL':
+            if hasattr(rule, 'scanner_type') and rule.scanner_type == 'CEL':
                 continue
             root.append(rule.to_xml_element(env_yaml))
 
@@ -1287,7 +1287,7 @@ class Group(XCCDFEntity):
             rule = self.rules.get(rule_id)
             if rule is not None:
                 # Skip CEL rules - they are not included in XCCDF/OVAL
-                if hasattr(rule, 'scannerType') and rule.scannerType == 'CEL':
+                if hasattr(rule, 'scanner_type') and rule.scanner_type == 'CEL':
                     continue
                 group.append(rule.to_xml_element(env_yaml))
 
@@ -1671,11 +1671,11 @@ class Rule(XCCDFEntity, Templatable):
         bash_conditional=lambda: None,
         fixes=lambda: dict(),
         # CEL scanner fields
-        scannerType=lambda: None,
-        checkType=lambda: None,
+        scanner_type=lambda: None,
+        check_type=lambda: None,
         inputs=lambda: list(),
         expression=lambda: None,
-        failureReason=lambda: None,
+        failure_reason=lambda: None,
         **XCCDFEntity.KEYS
     )
     KEYS.update(**Templatable.KEYS)
@@ -3201,7 +3201,7 @@ class LinearLoader(object):
 
         for profile in self.benchmark.profiles:
             # Skip CEL profiles - they are not included in XCCDF/OVAL
-            if hasattr(profile, 'scannerType') and profile.scannerType == 'CEL':
+            if hasattr(profile, 'scanner_type') and profile.scanner_type == 'CEL':
                 continue
             if profile.single_rule_profile:
                 profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
@@ -3275,7 +3275,7 @@ class LinearLoader(object):
             profiles = [p for p in profiles if not p.single_rule_profile]
 
         # Filter out CEL profiles - they are not included in XCCDF/OVAL
-        profiles = [p for p in profiles if not (hasattr(p, 'scannerType') and p.scannerType == 'CEL')]
+        profiles = [p for p in profiles if not (hasattr(p, 'scanner_type') and p.scanner_type == 'CEL')]
 
         _, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
             self.env_yaml, profiles, rule_and_variables_dict

@@ -85,7 +85,7 @@ def load_cel_rules(rules_dir):
             rule = ssg.build_yaml.Rule.from_compiled_json(rule_path)
 
             # Check if this is a CEL rule
-            if hasattr(rule, 'scannerType') and rule.scannerType == 'CEL':
+            if hasattr(rule, 'scanner_type') and rule.scanner_type == 'CEL':
                 # Validate required CEL fields
                 rule_name = rule_id_to_name(rule.id_)
 
@@ -137,8 +137,8 @@ def load_profiles(profiles_dir, cel_rule_ids):
         try:
             profile = ssg.build_yaml.Profile.from_compiled_json(profile_path)
 
-            # Only load profiles with scannerType: CEL
-            if hasattr(profile, 'scannerType') and profile.scannerType == 'CEL':
+            # Only load profiles with scanner_type: CEL
+            if hasattr(profile, 'scanner_type') and profile.scanner_type == 'CEL':
                 # Validate required CEL profile fields
                 profile_name = rule_id_to_name(profile.id_)
 
@@ -187,6 +187,45 @@ def extract_controls_from_references(references):
     return controls
 
 
+def convert_inputs_to_camelcase(inputs):
+    """
+    Convert kubernetes_input_spec fields from snake_case to camelCase for CRD compatibility.
+
+    Args:
+        inputs: List of input dictionaries
+
+    Returns:
+        list: Inputs with camelCase field names
+    """
+    if not inputs:
+        return inputs
+
+    converted_inputs = []
+    for input_item in inputs:
+        converted_item = dict(input_item)
+        if 'kubernetes_input_spec' in converted_item:
+            spec = converted_item['kubernetes_input_spec']
+            camel_spec = {}
+
+            # Convert snake_case keys to camelCase
+            key_mapping = {
+                'api_version': 'apiVersion',
+                'resource_name': 'resourceName',
+                'resource_namespace': 'resourceNamespace',
+            }
+
+            for key, value in spec.items():
+                camel_key = key_mapping.get(key, key)
+                camel_spec[camel_key] = value
+
+            converted_item['kubernetesInputSpec'] = camel_spec
+            del converted_item['kubernetes_input_spec']
+
+        converted_inputs.append(converted_item)
+
+    return converted_inputs
+
+
 def rule_to_cel_dict(rule):
     """
     Convert a Rule object to CEL content dictionary format.
@@ -204,7 +243,7 @@ def rule_to_cel_dict(rule):
         'description': rule.description,
         'rationale': rule.rationale,
         'severity': rule.severity,
-        'checkType': rule.checkType if hasattr(rule, 'checkType') and rule.checkType else 'Platform',
+        'checkType': rule.check_type if hasattr(rule, 'check_type') and rule.check_type else 'Platform',
     }
 
     # Add instructions from ocil field
@@ -212,16 +251,16 @@ def rule_to_cel_dict(rule):
         cel_rule['instructions'] = rule.ocil
 
     # Add failureReason if present
-    if hasattr(rule, 'failureReason') and rule.failureReason:
-        cel_rule['failureReason'] = rule.failureReason
+    if hasattr(rule, 'failure_reason') and rule.failure_reason:
+        cel_rule['failureReason'] = rule.failure_reason
 
     # Add CEL expression
     if hasattr(rule, 'expression') and rule.expression:
         cel_rule['expression'] = rule.expression
 
-    # Add inputs
+    # Add inputs (convert to camelCase for CRD compatibility)
     if hasattr(rule, 'inputs') and rule.inputs:
-        cel_rule['inputs'] = rule.inputs
+        cel_rule['inputs'] = convert_inputs_to_camelcase(rule.inputs)
 
     # Add controls from references
     controls = extract_controls_from_references(rule.references)

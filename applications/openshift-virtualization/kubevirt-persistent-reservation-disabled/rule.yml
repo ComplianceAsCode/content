@@ -20,7 +20,7 @@ rationale: |-
     for specific workload requirements, it should remain disabled to minimize the
     attack surface.
 
-failureReason: |-
+failure_reason: |-
     The '.spec.featureGates.persistentReservation' field is missing, not set,
     or not set to 'false' in the 'kubevirt-hyperconverged' resource.
 
@@ -33,14 +33,14 @@ ocil: |-
     <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.featureGates.persistentReservation}'</pre>
     The output should be <tt>false</tt>.
 
-checkType: Platform
+check_type: Platform
 
-scannerType: CEL
+scanner_type: CEL
 
 inputs:
   - name: hcoList
-    kubernetesInputSpec:
-      apiVersion: hco.kubevirt.io/v1beta1
+    kubernetes_input_spec:
+      api_version: hco.kubevirt.io/v1beta1
       resource: hyperconvergeds
 
 expression: |
