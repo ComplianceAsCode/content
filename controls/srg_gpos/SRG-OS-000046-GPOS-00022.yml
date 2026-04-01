@@ -5,6 +5,7 @@ controls:
         title: {{{ full_name }}} must alert the ISSO and SA (at a minimum) in the event
             of an audit processing failure.
         rules:
+            - package_postfix_installed
             - postfix_client_configure_mail_alias
             - postfix_client_configure_mail_alias_postmaster
             - var_postfix_root_mail_alias=mil_sysadmin
