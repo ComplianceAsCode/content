@@ -670,12 +670,19 @@ Tips:
 
 ### Checks
 
-Checks are used to evaluate a Rule. There are two types of check content
-supported by ComplianceAsCode: OVAL and SCE. Note that OVAL is standardized
-by NIST and has better cross-scanner support than SCE does. However, because
-SCE can use any language on the target system (Bash, Python, ...) it is much
-more flexible and general-purpose than OVAL. This project generally encourages
-OVAL unless it lacks support for certain features.
+Checks are used to evaluate a Rule. There are three types of check content
+supported by ComplianceAsCode: OVAL, CEL, and SCE.
+
+* **OVAL** (Open Vulnerability and Assessment Language) - Standardized by NIST with better cross-scanner support. Used for traditional operating system compliance checks (file system, processes, packages). Generally the preferred choice for OS-level checks.
+
+* **CEL** (Common Expression Language) - Used for Kubernetes and OpenShift platform compliance checks. CEL rules evaluate Kubernetes API resources without requiring shell access to nodes. See [CEL Content](12_cel_content.md) for complete documentation on creating CEL rules.
+
+* **SCE** (Script Check Engine) - Can use any language on the target system (Bash, Python, ...) making it more flexible and general-purpose than OVAL, but with less cross-scanner support.
+
+This project generally encourages using:
+- OVAL for Linux/OS checks
+- CEL for Kubernetes/OpenShift platform checks
+- SCE only when OVAL lacks support for certain features
 
 #### OVAL Check Content
 
@@ -947,6 +954,70 @@ means:
 </tr>
 </tbody>
 </table>
+
+### CEL Check Content
+
+[CEL](https://github.com/google/cel-spec) (Common Expression Language) is a mechanism
+for evaluating Kubernetes and OpenShift API resources for compliance checking. CEL checks
+are used by the [compliance-operator](https://github.com/ComplianceAsCode/compliance-operator)
+to perform platform-level compliance checks without requiring shell access to nodes.
+
+CEL rules are defined directly in the `rule.yml` file using specialized fields:
+
+* `scanner_type: CEL` - Marks the rule as a CEL rule
+* `check_type: Platform` - Indicates this is a platform-level check
+* `expression` - The CEL expression that evaluates to boolean (true=pass, false=fail)
+* `inputs` - List of Kubernetes resources to evaluate
+* `failure_reason` - Optional custom failure message
+
+Within a rule's `inputs` section, each input specifies a Kubernetes resource using `kubernetes_input_spec`:
+
+* `api_version` - Kubernetes API version (e.g., `v1`, `apps/v1`)
+* `resource` - Resource type in plural form (e.g., `pods`, `deployments`)
+* `resource_name` - Optional: specific resource name to query
+* `resource_namespace` - Optional: specific namespace to query
+
+**Important notes:**
+
+* CEL rules are **excluded** from XCCDF/OVAL DataStreams
+* CEL rules generate a separate `${PRODUCT}-cel-content.yaml` file
+* CEL profiles can only select CEL rules
+* Rule directory names should use hyphens (Kubernetes naming convention)
+
+For complete documentation on creating CEL rules, see [CEL Content](12_cel_content.md).
+
+Example CEL rule:
+
+```yaml
+scanner_type: CEL
+check_type: Platform
+
+expression: |-
+    resource.spec.replicas >= 3 &&
+    has(resource.spec.template.spec.securityContext) &&
+    resource.spec.template.spec.securityContext.runAsNonRoot == true
+
+inputs:
+  - name: resource
+    kubernetes_input_spec:
+      api_version: apps/v1
+      resource: deployments
+      resource_name: my-app
+      resource_namespace: default
+```
+
+To build CEL content for a product, enable it in the product's `CMakeLists.txt`:
+
+```cmake
+set(PRODUCT "ocp4")
+set(PRODUCT_CEL_ENABLED TRUE)
+ssg_build_product(${PRODUCT})
+```
+
+## Remediations
+
+The following sections describe remediation content. Note that CEL rules do **not** support
+remediation content - they are check-only.
 
 ### Ansible
 

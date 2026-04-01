@@ -26,7 +26,7 @@ build files/configuration, etc.
 </tr>
 <tr class="odd">
 <td><p><code>applications</code></p></td>
-<td><p>Contains security content for applications such as OpenShift or OpenStack. Contains rules, OVAL checks, Ansible tasks, Bash remediations, etc.</p></td>
+<td><p>Contains security content for applications such as OpenShift or OpenStack. Contains rules, OVAL checks, CEL checks, Ansible tasks, Bash remediations, etc. For Kubernetes/OpenShift CEL rules, see <a href="12_cel_content.md">CEL Content</a>.</p></td>
 </tr>
 <tr class="even">
 <td><p><code>shared</code></p></td>

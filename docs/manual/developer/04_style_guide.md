@@ -274,6 +274,90 @@ Rules sections must be in the following order, if they are present.
     * Must be a valid rule id
 * `template`
 
+#### CEL Rule Sections
+
+CEL (Common Expression Language) rules are used for Kubernetes/OpenShift compliance checks.
+CEL rules use different fields than traditional OVAL-based rules.
+
+CEL rule sections must be in the following order, if present:
+
+* `documentation_complete`
+* `title`
+* `description` (HTML Like)
+* `rationale` (HTML Like)
+* `severity`
+* `identifiers` (Optional)
+    * Keys must be in alphabetical order
+* `references` (Optional)
+    * Keys must be in alphabetical order
+* `ocil_clause` (Optional)
+* `ocil` (HTML Like, Optional)
+* `failure_reason` (Optional)
+    * Must be a block
+    * Must describe the condition when the check fails
+* `check_type`
+    * Must be `Platform` for Kubernetes/OpenShift checks
+* `scanner_type`
+    * Must be `CEL` for CEL rules
+* `inputs`
+    * Must be a list of at least one input
+    * Each input must have:
+        * `name` - Variable name used in the CEL expression
+        * `kubernetes_input_spec` - Kubernetes resource specification
+            * `api_version` - Kubernetes API version (e.g., `v1`, `apps/v1`)
+            * `resource` - Resource type in plural form (e.g., `pods`, `deployments`)
+            * `resource_name` (Optional) - Specific resource name to query
+            * `resource_namespace` (Optional) - Specific namespace to query
+* `expression`
+    * Must be a valid CEL expression that evaluates to boolean
+    * Must use variables defined in `inputs`
+    * Should use `has()` to check for field existence before accessing
+    * Should be formatted for readability using multi-line block syntax for complex expressions
+
+CEL rules must NOT include:
+* `template` field (CEL rules don't use templates)
+* `platform` field (implied by `scanner_type: CEL`)
+
+Example CEL rule structure:
+
+```yaml
+documentation_complete: true
+
+title: 'Rule Title in Title Case'
+
+description: |-
+    Description of what the rule checks.
+
+rationale: |-
+    Why this rule matters for security/compliance.
+
+severity: medium
+
+scanner_type: CEL
+
+check_type: Platform
+
+expression: |-
+    resource.spec.enabled == true &&
+    has(resource.spec.field) &&
+    resource.spec.field == "expected_value"
+
+inputs:
+  - name: resource
+    kubernetes_input_spec:
+      api_version: v1
+      resource: configmaps
+      resource_name: my-config
+      resource_namespace: default
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap my-config -n default</pre>
+
+failure_reason: |-
+    The resource is not properly configured.
+```
+
 ### Group
 
 This section describes the style guide around the `group.yml` files.
@@ -354,21 +438,27 @@ Control sections must be in the following order, if they are present.
 
 #### Profile Sections
 
-Control sections must be in the following order, all sections are required unless otherwise noted.
+Profile sections must be in the following order, all sections are required unless otherwise noted.
 
 * `documentation_complete`
-* `id`
-* `metadata`
+* `metadata` (Optional)
     * `reference`
     * `version`
     * `SMEs`
 * `title`
     * Shall be short and descriptive
 * `description` (HTML-Like)
+* `platform` (Optional)
+    * Must be a valid platform identifier (e.g., `ocp4`, `rhel9`)
+* `scanner_type` (Optional)
+    * Must be `CEL` for CEL profiles
+    * CEL profiles can only select CEL rules
+    * CEL profiles are excluded from XCCDF/OVAL generation
 * `extends` (Optional)
     * Must be valid id of another profile id
 * `selections`
     * Must be valid rule ids
+    * For CEL profiles, must only contain CEL rule ids (using hyphens, not underscores)
 
 ## Remediation
 
