@@ -1,0 +1,15 @@
+check_type: Platform
+
+inputs:
+  - name: vms
+    kubernetes_input_spec:
+      api_version: kubevirt.io/v1
+      resource: VirtualMachine
+
+expression: |
+  vms.all(h,
+      !has(h.spec.template.spec.domain.resources) ||
+      !has(h.spec.template.spec.domain.resources.overcommitGuestOverhead) ||
+      (has(h.spec.template.spec.domain.resources.overcommitGuestOverhead) &&
+       h.spec.template.spec.domain.resources.overcommitGuestOverhead == false)
+  )

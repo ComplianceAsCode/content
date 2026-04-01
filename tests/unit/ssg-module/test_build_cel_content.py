@@ -17,14 +17,13 @@ DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 
 @pytest.fixture
 def cel_rule_data():
-    """Sample CEL rule data matching rule.yml format."""
+    """Sample rule data with CEL checks matching rule.yml + cel/shared.yml format."""
     return {
         'documentation_complete': True,
         'title': 'Ensure NonRoot Feature Gate is Enabled',
         'description': 'The NonRoot feature gate restricts containers from running as root.',
         'rationale': 'Running containers as non-root reduces security risks.',
         'severity': 'medium',
-        'scanner_type': 'CEL',
         'check_type': 'Platform',
         'ocil': 'Verify that the NonRoot feature gate is enabled.',
         'expression': 'hco.spec.featureGates.nonRoot == true',
@@ -98,7 +97,7 @@ def oval_profile_data():
 def temp_rules_dir(cel_rule_data, oval_rule_data):
     """Create temporary directory with test rules."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        # Write CEL rule - create dict with required structure
+        # Write rule with CEL checks - create dict with required structure
         cel_rule_dict = dict(cel_rule_data)
         cel_rule_dict['platforms'] = []
         cel_rule_dict['platform'] = None
@@ -241,20 +240,22 @@ def test_extract_controls_from_references():
 
 
 def test_load_cel_rules(temp_rules_dir):
-    """Test loading CEL rules from directory."""
+    """Test loading rules with CEL checks from directory."""
     cel_rules = build_cel_content.load_cel_rules(temp_rules_dir)
 
-    # Should load only the CEL rule
+    # Should load only the rule with CEL checks (identified by presence of expression + inputs)
     assert len(cel_rules) == 1
     assert 'kubevirt_nonroot_feature_gate_is_enabled' in cel_rules
 
     rule = cel_rules['kubevirt_nonroot_feature_gate_is_enabled']
-    assert rule.scanner_type == 'CEL'
+    # Rules with CEL checks are identified by presence of expression and inputs
+    assert hasattr(rule, 'expression') and rule.expression
+    assert hasattr(rule, 'inputs') and rule.inputs
     assert rule.title == 'Ensure NonRoot Feature Gate is Enabled'
 
 
 def test_load_cel_rules_nonexistent_dir():
-    """Test loading CEL rules from nonexistent directory."""
+    """Test loading rules with CEL checks from nonexistent directory."""
     cel_rules = build_cel_content.load_cel_rules('/nonexistent/path')
     assert cel_rules == {}
 
@@ -315,8 +316,8 @@ def test_rule_to_cel_dict_minimal():
     rule.description = 'Description'
     rule.rationale = 'Rationale'
     rule.severity = 'low'
-    rule.scanner_type = 'CEL'
     rule.expression = 'true'
+    rule.inputs = [{'name': 'test'}]  # Required for rules with CEL checks
     rule.references = {}
 
     cel_dict = build_cel_content.rule_to_cel_dict(rule)
@@ -337,9 +338,9 @@ def test_rule_to_cel_dict_with_failure_reason():
     rule.description = 'Description'
     rule.rationale = 'Rationale'
     rule.severity = 'medium'
-    rule.scanner_type = 'CEL'
     rule.check_type = 'Platform'
     rule.expression = 'true'
+    rule.inputs = [{'name': 'test'}]  # Required for rules with CEL checks
     rule.failure_reason = 'The configuration is not compliant'  # snake_case input
     rule.references = {}
 
@@ -373,17 +374,17 @@ def test_profile_to_cel_dict(cel_profile_data):
 
 
 def test_profile_to_cel_dict_no_cel_rules():
-    """Test profile conversion when no CEL rules are selected."""
+    """Test profile conversion when no rules with CEL checks are selected."""
     profile = ssg.build_yaml.Profile('test_profile')
     profile.id_ = 'test_profile'
     profile.title = 'Test Profile'
     profile.description = 'Test'
     profile.selected = ['oval_rule_1', 'oval_rule_2']
 
-    cel_rule_ids = set()  # No CEL rules
+    cel_rule_ids = set()  # No rules with CEL checks
     cel_dict = build_cel_content.profile_to_cel_dict(profile, cel_rule_ids)
 
-    assert cel_dict is None  # Should return None when no CEL rules
+    assert cel_dict is None  # Should return None when no rules with CEL checks
 
 
 def test_generate_cel_content():
@@ -395,8 +396,8 @@ def test_generate_cel_content():
     rule1.description = 'Description 1'
     rule1.rationale = 'Rationale 1'
     rule1.severity = 'high'
-    rule1.scanner_type = 'CEL'
     rule1.expression = 'true'
+    rule1.inputs = [{'name': 'test1'}]
     rule1.references = {}
 
     rule2 = ssg.build_yaml.Rule('rule_two')
@@ -405,8 +406,8 @@ def test_generate_cel_content():
     rule2.description = 'Description 2'
     rule2.rationale = 'Rationale 2'
     rule2.severity = 'medium'
-    rule2.scanner_type = 'CEL'
     rule2.expression = 'false'
+    rule2.inputs = [{'name': 'test2'}]
     rule2.references = {}
 
     cel_rules = {
@@ -440,24 +441,23 @@ def test_generate_cel_content():
 
 
 def test_generate_cel_content_empty():
-    """Test generation with no CEL rules or profiles."""
+    """Test generation with no rules with CEL checks or profiles."""
     content = build_cel_content.generate_cel_content({}, [])
 
     assert content == {'profiles': [], 'rules': []}
 
 
 def test_load_cel_rules_missing_expression():
-    """Test that loading CEL rule without expression raises error."""
+    """Test that rule without expression is skipped."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        # Create rule without expression
+        # Create rule without expression (but with inputs - incomplete for CEL checks)
         rule_dict = {
             'documentation_complete': True,
             'title': 'Test Rule',
             'description': 'Test',
             'rationale': 'Test',
             'severity': 'medium',
-            'scanner_type': 'CEL',
-            'inputs': [{'name': 'test'}],
+            'inputs': [{'name': 'test'}],  # Has inputs but no expression
             'platforms': [],
             'platform': None,
             'inherited_platforms': [],
@@ -467,22 +467,23 @@ def test_load_cel_rules_missing_expression():
         with open(rule_path, 'w') as f:
             json.dump(rule_dict, f)
 
-        with pytest.raises(ValueError, match="has no expression"):
-            build_cel_content.load_cel_rules(tmpdir)
+        # Should not raise error - rule is not identified as CEL without both expression and inputs
+        # This rule will be skipped since it doesn't have both fields
+        cel_rules = build_cel_content.load_cel_rules(tmpdir)
+        assert len(cel_rules) == 0  # Rule should be skipped
 
 
 def test_load_cel_rules_missing_inputs():
-    """Test that loading CEL rule without inputs raises error."""
+    """Test that rule without inputs is skipped."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        # Create rule without inputs
+        # Create rule without inputs (but with expression - incomplete for CEL checks)
         rule_dict = {
             'documentation_complete': True,
             'title': 'Test Rule',
             'description': 'Test',
             'rationale': 'Test',
             'severity': 'medium',
-            'scanner_type': 'CEL',
-            'expression': 'true',
+            'expression': 'true',  # Has expression but no inputs
             'platforms': [],
             'platform': None,
             'inherited_platforms': [],
@@ -492,8 +493,10 @@ def test_load_cel_rules_missing_inputs():
         with open(rule_path, 'w') as f:
             json.dump(rule_dict, f)
 
-        with pytest.raises(ValueError, match="has no inputs"):
-            build_cel_content.load_cel_rules(tmpdir)
+        # Should not raise error - rule is not identified as CEL without both expression and inputs
+        # This rule will be skipped since it doesn't have both fields
+        cel_rules = build_cel_content.load_cel_rules(tmpdir)
+        assert len(cel_rules) == 0  # Rule should be skipped
 
 
 def test_load_profiles_no_rules():
@@ -528,7 +531,6 @@ def test_generate_cel_content_duplicate_rule_names():
     rule1.description = 'Description 1'
     rule1.rationale = 'Rationale 1'
     rule1.severity = 'high'
-    rule1.scanner_type = 'CEL'
     rule1.expression = 'true'
     rule1.inputs = [{'name': 'test'}]
     rule1.references = {}
@@ -540,7 +542,6 @@ def test_generate_cel_content_duplicate_rule_names():
     rule2.description = 'Description 2'
     rule2.rationale = 'Rationale 2'
     rule2.severity = 'medium'
-    rule2.scanner_type = 'CEL'
     rule2.expression = 'false'
     rule2.inputs = [{'name': 'test2'}]
     rule2.references = {}
@@ -565,7 +566,6 @@ def test_generate_cel_content_unknown_rule_reference():
     rule1.description = 'Description'
     rule1.rationale = 'Rationale'
     rule1.severity = 'high'
-    rule1.scanner_type = 'CEL'
     rule1.expression = 'true'
     rule1.inputs = [{'name': 'test'}]
     rule1.references = {}
@@ -588,7 +588,7 @@ def test_generate_cel_content_unknown_rule_reference():
 
 
 def test_validation_empty_expression():
-    """Test that empty expression is caught."""
+    """Test that rule with empty expression is skipped."""
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create rule with empty expression
         rule_dict = {
@@ -597,8 +597,7 @@ def test_validation_empty_expression():
             'description': 'Test',
             'rationale': 'Test',
             'severity': 'medium',
-            'scanner_type': 'CEL',
-            'expression': '',  # Empty string
+            'expression': '',  # Empty string is falsy, won't be identified as CEL
             'inputs': [{'name': 'test'}],
             'platforms': [],
             'platform': None,
@@ -609,12 +608,13 @@ def test_validation_empty_expression():
         with open(rule_path, 'w') as f:
             json.dump(rule_dict, f)
 
-        with pytest.raises(ValueError, match="has no expression"):
-            build_cel_content.load_cel_rules(tmpdir)
+        # Empty expression means rule is not identified as CEL and is skipped
+        cel_rules = build_cel_content.load_cel_rules(tmpdir)
+        assert len(cel_rules) == 0
 
 
 def test_validation_empty_inputs():
-    """Test that empty inputs list is caught."""
+    """Test that rule with empty inputs list is skipped."""
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create rule with empty inputs
         rule_dict = {
@@ -623,9 +623,8 @@ def test_validation_empty_inputs():
             'description': 'Test',
             'rationale': 'Test',
             'severity': 'medium',
-            'scanner_type': 'CEL',
             'expression': 'true',
-            'inputs': [],  # Empty list
+            'inputs': [],  # Empty list is falsy, won't be identified as CEL
             'platforms': [],
             'platform': None,
             'inherited_platforms': [],
@@ -635,8 +634,9 @@ def test_validation_empty_inputs():
         with open(rule_path, 'w') as f:
             json.dump(rule_dict, f)
 
-        with pytest.raises(ValueError, match="has no inputs"):
-            build_cel_content.load_cel_rules(tmpdir)
+        # Empty inputs means rule is not identified as CEL and is skipped
+        cel_rules = build_cel_content.load_cel_rules(tmpdir)
+        assert len(cel_rules) == 0
 
 
 def test_validation_profile_with_empty_selections():
@@ -663,15 +663,14 @@ def test_validation_profile_with_empty_selections():
 
 
 def test_validation_mixed_oval_and_cel_in_profile():
-    """Test that profile with both OVAL and CEL rules only includes CEL rules."""
-    # Create CEL rule
+    """Test that profile with both OVAL and CEL checks only includes rules with CEL checks."""
+    # Create rule with CEL checks
     cel_rule = ssg.build_yaml.Rule('cel_rule')
     cel_rule.id_ = 'cel_rule'
     cel_rule.title = 'CEL Rule'
     cel_rule.description = 'Description'
     cel_rule.rationale = 'Rationale'
     cel_rule.severity = 'high'
-    cel_rule.scanner_type = 'CEL'
     cel_rule.expression = 'true'
     cel_rule.inputs = [{'name': 'test'}]
     cel_rule.references = {}
@@ -686,11 +685,11 @@ def test_validation_mixed_oval_and_cel_in_profile():
     profile.id_ = 'mixed_profile'
     profile.title = 'Mixed Profile'
     profile.description = 'Test'
-    profile.selected = ['cel_rule', 'oval_rule']  # oval_rule doesn't exist in CEL rules
+    profile.selected = ['cel_rule', 'oval_rule']  # oval_rule doesn't have CEL checks
 
     profiles = [profile]
 
-    # This should fail because oval_rule is not in cel_rules
+    # This should fail because oval_rule doesn't have CEL checks
     with pytest.raises(ValueError, match="references unknown rule 'oval-rule'"):
         build_cel_content.generate_cel_content(cel_rules, profiles)
 
@@ -698,14 +697,13 @@ def test_validation_mixed_oval_and_cel_in_profile():
 def test_validation_integration_full_flow():
     """Integration test: validate full flow from directories to content generation."""
     with tempfile.TemporaryDirectory() as rules_dir, tempfile.TemporaryDirectory() as profiles_dir:
-        # Create valid CEL rule
+        # Create valid rule with CEL checks
         rule_dict = {
             'documentation_complete': True,
-            'title': 'Valid CEL Rule',
-            'description': 'This is a valid CEL rule',
+            'title': 'Valid Rule with CEL Checks',
+            'description': 'This is a valid rule using the CEL checking engine',
             'rationale': 'Security is important',
             'severity': 'high',
-            'scanner_type': 'CEL',
             'expression': 'resource.spec.enabled == true',
             'inputs': [{'name': 'resource', 'kubernetes_input_spec': {'resource': 'pods'}}],
             'platforms': [],
@@ -718,11 +716,11 @@ def test_validation_integration_full_flow():
         with open(rule_path, 'w') as f:
             json.dump(rule_dict, f)
 
-        # Create valid CEL profile
+        # Create valid profile targeting CEL
         profile_dict = {
             'documentation_complete': True,
-            'title': 'Valid CEL Profile',
-            'description': 'This is a valid CEL profile',
+            'title': 'Valid Profile Targeting CEL',
+            'description': 'This is a valid profile targeting the CEL checking engine',
             'scanner_type': 'CEL',
             'selections': ['valid_cel_rule'],
             'selected': ['valid_cel_rule'],

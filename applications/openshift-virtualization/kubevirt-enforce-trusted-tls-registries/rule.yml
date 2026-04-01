@@ -30,19 +30,3 @@ ocil: |-
     Run the following command to check for insecure registries:
     <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.storageImport.insecureRegistries}'</pre>
     The output should be empty or the field should not exist.
-
-check_type: Platform
-
-scanner_type: CEL
-
-inputs:
-  - name: hco
-    kubernetes_input_spec:
-      api_version: hco.kubevirt.io/v1beta1
-      resource: hyperconvergeds
-      resource_name: kubevirt-hyperconverged
-      resource_namespace: openshift-cnv
-
-expression: |-
-  !has(hco.spec.storageImport) ||
-  hco.spec.storageImport.insecureRegistries.size() == 0

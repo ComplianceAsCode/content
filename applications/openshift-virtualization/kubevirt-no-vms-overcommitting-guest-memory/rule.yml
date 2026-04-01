@@ -32,21 +32,3 @@ ocil: |-
     Run the following command to check VirtualMachine configurations:
     <pre>$ oc get virtualmachines -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.metadata.name}{": "}{.spec.template.spec.domain.resources.overcommitGuestOverhead}{"\n"}{end}'</pre>
     Make sure no VirtualMachine has <tt>overcommitGuestOverhead</tt> set to <tt>true</tt>.
-
-check_type: Platform
-
-scanner_type: CEL
-
-inputs:
-  - name: vms
-    kubernetes_input_spec:
-      api_version: kubevirt.io/v1
-      resource: VirtualMachine
-
-expression: |
-  vms.all(h,
-      !has(h.spec.template.spec.domain.resources) ||
-      !has(h.spec.template.spec.domain.resources.overcommitGuestOverhead) ||
-      (has(h.spec.template.spec.domain.resources.overcommitGuestOverhead) &&
-       h.spec.template.spec.domain.resources.overcommitGuestOverhead == false)
-  )

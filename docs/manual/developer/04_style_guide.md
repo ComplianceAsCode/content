@@ -277,9 +277,16 @@ Rules sections must be in the following order, if they are present.
 #### CEL Rule Sections
 
 CEL (Common Expression Language) rules are used for Kubernetes/OpenShift compliance checks.
-CEL rules use different fields than traditional OVAL-based rules.
+Rules with CEL checks use a split-file structure:
 
-CEL rule sections must be in the following order, if present:
+* **`rule.yml`** - Contains metadata (same as any rule)
+* **`cel/shared.yml`** - Contains CEL-specific fields (check_type, inputs, expression)
+
+This allows rules to support both CEL and OVAL checks during migration.
+
+##### rule.yml Sections
+
+Rule sections must be in the following order, if present:
 
 * `documentation_complete`
 * `title`
@@ -295,10 +302,18 @@ CEL rule sections must be in the following order, if present:
 * `failure_reason` (Optional)
     * Must be a block
     * Must describe the condition when the check fails
+
+##### cel/shared.yml Sections
+
+CEL-specific sections must be in the following order:
+
 * `check_type`
     * Must be `Platform` for Kubernetes/OpenShift checks
-* `scanner_type`
-    * Must be `CEL` for CEL rules
+* `expression`
+    * Must be a valid CEL expression that evaluates to boolean
+    * Must use variables defined in `inputs`
+    * Should use `has()` to check for field existence before accessing
+    * Should be formatted for readability using multi-line block syntax for complex expressions
 * `inputs`
     * Must be a list of at least one input
     * Each input must have:
@@ -308,18 +323,10 @@ CEL rule sections must be in the following order, if present:
             * `resource` - Resource type in plural form (e.g., `pods`, `deployments`)
             * `resource_name` (Optional) - Specific resource name to query
             * `resource_namespace` (Optional) - Specific namespace to query
-* `expression`
-    * Must be a valid CEL expression that evaluates to boolean
-    * Must use variables defined in `inputs`
-    * Should use `has()` to check for field existence before accessing
-    * Should be formatted for readability using multi-line block syntax for complex expressions
 
-CEL rules must NOT include:
-* `template` field (CEL rules don't use templates)
-* `platform` field (implied by `scanner_type: CEL`)
+Example rule with CEL checks:
 
-Example CEL rule structure:
-
+**rule.yml:**
 ```yaml
 documentation_complete: true
 
@@ -333,8 +340,16 @@ rationale: |-
 
 severity: medium
 
-scanner_type: CEL
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap my-config -n default</pre>
 
+failure_reason: |-
+    The resource is not properly configured.
+```
+
+**cel/shared.yml:**
+```yaml
 check_type: Platform
 
 expression: |-
@@ -349,13 +364,6 @@ inputs:
       resource: configmaps
       resource_name: my-config
       resource_namespace: default
-
-ocil: |-
-    Run the following command:
-    <pre>$ oc get configmap my-config -n default</pre>
-
-failure_reason: |-
-    The resource is not properly configured.
 ```
 
 ### Group
@@ -451,14 +459,14 @@ Profile sections must be in the following order, all sections are required unles
 * `platform` (Optional)
     * Must be a valid platform identifier (e.g., `ocp4`, `rhel9`)
 * `scanner_type` (Optional)
-    * Must be `CEL` for CEL profiles
-    * CEL profiles can only select CEL rules
-    * CEL profiles are excluded from XCCDF/OVAL generation
+    * Must be `CEL` for profiles targeting the CEL checking engine
+    * Profiles with `scanner_type: CEL` can only select rules that have CEL checks (cel/ directory)
+    * Profiles with `scanner_type: CEL` are excluded from XCCDF/OVAL generation
 * `extends` (Optional)
     * Must be valid id of another profile id
 * `selections`
     * Must be valid rule ids
-    * For CEL profiles, must only contain CEL rule ids (using hyphens, not underscores)
+    * For profiles with `scanner_type: CEL`, must only contain rule ids with CEL checks (using hyphens, not underscores)
 
 ## Remediation
 

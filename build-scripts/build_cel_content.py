@@ -63,16 +63,16 @@ def setup_logging(log_level_str):
 
 def load_cel_rules(rules_dir):
     """
-    Load all rules that use CEL scanner.
+    Load all rules that use the CEL checking engine.
 
     Args:
         rules_dir: Directory containing resolved rule JSON files
 
     Returns:
-        dict: Dictionary of rule_id -> rule object for CEL rules
+        dict: Dictionary of rule_id -> rule object for rules with CEL checks
 
     Raises:
-        ValueError: If a CEL rule is missing required fields
+        ValueError: If a rule with CEL checks is missing required fields
     """
     cel_rules = {}
 
@@ -84,20 +84,21 @@ def load_cel_rules(rules_dir):
         try:
             rule = ssg.build_yaml.Rule.from_compiled_json(rule_path)
 
-            # Check if this is a CEL rule
-            if hasattr(rule, 'scanner_type') and rule.scanner_type == 'CEL':
+            # Check if this rule has CEL checks by looking for CEL-specific fields
+            # A rule uses CEL if it has both expression and inputs
+            # (loaded from cel/shared.yml during rule compilation)
+            has_expression = hasattr(rule, 'expression') and rule.expression
+            has_inputs = hasattr(rule, 'inputs') and rule.inputs
+
+            if has_expression and has_inputs:
                 # Validate required CEL fields
                 rule_name = rule_id_to_name(rule.id_)
 
-                if not hasattr(rule, 'expression') or not rule.expression:
-                    raise ValueError(
-                        f"CEL rule '{rule_name}' in {rule_file} has no expression"
+                if not hasattr(rule, 'check_type') or not rule.check_type:
+                    logging.warning(
+                        f"Rule '{rule_name}' with CEL checks in {rule_file} has no check_type, defaulting to 'Platform'"
                     )
-
-                if not hasattr(rule, 'inputs') or not rule.inputs:
-                    raise ValueError(
-                        f"CEL rule '{rule_name}' in {rule_file} has no inputs"
-                    )
+                    rule.check_type = 'Platform'
 
                 cel_rules[rule.id_] = rule
         except ssg.build_yaml.DocumentationNotComplete:
@@ -115,17 +116,17 @@ def load_cel_rules(rules_dir):
 
 def load_profiles(profiles_dir, cel_rule_ids):
     """
-    Load profiles that have scannerType: CEL.
+    Load profiles that target the CEL checking engine (scanner_type: CEL).
 
     Args:
         profiles_dir: Directory containing profile YAML files
-        cel_rule_ids: Set of CEL rule IDs
+        cel_rule_ids: Set of rule IDs that have CEL checks
 
     Returns:
-        list: List of CEL profile objects
+        list: List of profile objects targeting CEL
 
     Raises:
-        ValueError: If a CEL profile is missing required fields
+        ValueError: If a profile targeting CEL is missing required fields
     """
     profiles = []
 
@@ -137,14 +138,14 @@ def load_profiles(profiles_dir, cel_rule_ids):
         try:
             profile = ssg.build_yaml.Profile.from_compiled_json(profile_path)
 
-            # Only load profiles with scanner_type: CEL
+            # Only load profiles targeting the CEL checking engine
             if hasattr(profile, 'scanner_type') and profile.scanner_type == 'CEL':
-                # Validate required CEL profile fields
+                # Validate required profile fields
                 profile_name = rule_id_to_name(profile.id_)
 
                 if not hasattr(profile, 'selected') or not profile.selected:
                     raise ValueError(
-                        f"CEL profile '{profile_name}' in {profile_file} has no rules"
+                        f"Profile '{profile_name}' targeting CEL in {profile_file} has no rules"
                     )
 
                 profiles.append(profile)
@@ -276,12 +277,12 @@ def profile_to_cel_dict(profile, cel_rule_ids):
 
     Args:
         profile: Profile object
-        cel_rule_ids: Set of CEL rule IDs to include
+        cel_rule_ids: Set of rule IDs that have CEL checks
 
     Returns:
         dict: Profile in CEL content format
     """
-    # Filter selected rules to only include CEL rules
+    # Filter selected rules to only include rules with CEL checks
     profile_cel_rules = [rule_id_to_name(rid) for rid in profile.selected if rid in cel_rule_ids]
 
     if not profile_cel_rules:
@@ -304,8 +305,8 @@ def generate_cel_content(cel_rules, profiles):
     Generate the complete CEL content structure.
 
     Args:
-        cel_rules: Dictionary of CEL rules
-        profiles: List of profiles containing CEL rules
+        cel_rules: Dictionary of rules with CEL checks
+        profiles: List of profiles targeting the CEL checking engine
 
     Returns:
         dict: Complete CEL content structure
@@ -333,7 +334,7 @@ def generate_cel_content(cel_rules, profiles):
     # Generate profiles section and validate rule references
     cel_profiles = []
     for profile in profiles:
-        # First validate that all selected rules exist in CEL rules
+        # Validate that all selected rules have CEL checks
         profile_name = rule_id_to_name(profile.id_)
         for rule_id in profile.selected:
             if rule_id not in cel_rule_ids:
@@ -359,7 +360,7 @@ def main():
     args = parse_args()
     setup_logging(args.log)
 
-    # Load CEL rules
+    # Load rules with CEL checks
     cel_rules = load_cel_rules(args.resolved_rules_dir)
 
     if not cel_rules:

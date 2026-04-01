@@ -33,28 +33,3 @@ ocil: |-
     Run the following command to check the HyperConverged configuration:
     <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.permittedHostDevices}'</pre>
     The output should be empty or show empty lists for both <tt>pciHostDevices</tt> and <tt>mediatedDevices</tt>.
-
-check_type: Platform
-
-scanner_type: CEL
-
-inputs:
-  - name: hcoList
-    kubernetes_input_spec:
-      api_version: hco.kubevirt.io/v1beta1
-      resource: hyperconvergeds
-
-expression: |
-  hcoList.items.filter(h,
-      h.metadata.name == 'kubevirt-hyperconverged' &&
-      h.metadata.namespace == 'openshift-cnv'
-  ).size() == 1 &&
-  hcoList.items.filter(h,
-      h.metadata.name == 'kubevirt-hyperconverged' &&
-      h.metadata.namespace == 'openshift-cnv'
-  ).all(h,
-      !has(h.spec.permittedHostDevices) ||
-      h.spec.permittedHostDevices == null ||
-      (has(h.spec.permittedHostDevices.pciHostDevices) && size(h.spec.permittedHostDevices.pciHostDevices) == 0) &&
-      (has(h.spec.permittedHostDevices.mediatedDevices) && size(h.spec.permittedHostDevices.mediatedDevices) == 0)
-  )

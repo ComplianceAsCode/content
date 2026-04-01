@@ -158,14 +158,22 @@ template:
         pkgname@ubuntu2204: avahi-daemon    # Platform-specific overrides
 ```
 
-## CEL Rules (Kubernetes/OpenShift)
+## CEL Checking Engine (Kubernetes/OpenShift)
 
-CEL (Common Expression Language) rules provide native Kubernetes resource evaluation without requiring shell access or OVAL checks. CEL rules are used by the compliance-operator for Kubernetes and OpenShift compliance scanning.
+CEL (Common Expression Language) provides native Kubernetes resource evaluation without requiring shell access or OVAL checks. Rules using the CEL checking engine are used by the compliance-operator for Kubernetes and OpenShift compliance scanning.
 
-**Important:** Rules with CEL checks are **excluded** from XCCDF/OVAL data streams and are generated as a separate `${PRODUCT}-cel-content.yaml` file.
+**Important:** Rules with CEL checks are **excluded** from SCAP data streams and are generated as a separate `${PRODUCT}-cel-content.yaml` file.
 
-### Required Fields for CEL Rules
+### Rule Structure for CEL Checks
 
+Rules using CEL checks use a **split-file structure** to separate metadata from CEL-specific content:
+
+- **`rule.yml`** - Contains metadata (title, description, rationale, severity, references, etc.)
+- **`cel/shared.yml`** - Contains CEL-specific fields (check_type, inputs, expression)
+
+This allows rules to support **both CEL and OVAL** checks during migration from OVAL to CEL.
+
+**Example rule.yml:**
 ```yaml
 documentation_complete: true
 
@@ -179,8 +187,20 @@ rationale: |-
 
 severity: medium
 
-scanner_type: CEL           # REQUIRED: Marks this as a CEL rule
+ocil: |-                   # Optional: Manual check instructions
+    Run the following command:
+    <pre>$ oc get pods</pre>
 
+failure_reason: |-          # Optional: Custom failure message
+    The resource is not properly configured.
+
+references:                # Optional: Same as regular rules
+    cis@ocp4: 1.2.3
+    nist: CM-6
+```
+
+**Example cel/shared.yml:**
+```yaml
 check_type: Platform        # Usually Platform for K8s checks
 
 expression: |-             # REQUIRED: CEL expression (must evaluate to boolean)
@@ -193,18 +213,9 @@ inputs:                    # REQUIRED: Kubernetes resources to evaluate
       resource: pods
       resource_name: my-pod          # Optional: specific resource
       resource_namespace: default    # Optional: specific namespace
-
-ocil: |-                   # Optional: Manual check instructions
-    Run the following command:
-    <pre>$ oc get pods</pre>
-
-failure_reason: |-          # Optional: Custom failure message
-    The resource is not properly configured.
-
-references:                # Optional: Same as regular rules
-    cis@ocp4: 1.2.3
-    nist: CM-6
 ```
+
+**Note:** The build system automatically detects rules with CEL checks by the presence of the `cel/` directory.
 
 ### CEL Expression Examples
 
@@ -228,7 +239,7 @@ expression: |-
 
 ### CEL Profile Format
 
-Profiles that use CEL rules must have `scannerType: CEL`:
+Profiles that select rules using CEL checks must have `scanner_type: CEL`:
 
 ```yaml
 documentation_complete: true
@@ -238,14 +249,16 @@ title: 'CIS VM Extension Benchmark'
 description: |-
     Profile description.
 
-scanner_type: CEL    # REQUIRED: Marks this as a CEL profile
+scanner_type: CEL    # REQUIRED: Marks this as a CEL profile (excluded from XCCDF)
 
 selections:
     - kubevirt-nonroot-feature-gate-is-enabled
     - kubevirt-no-permitted-host-devices
 ```
 
-**Note:** CEL profiles can only select CEL rules and are excluded from XCCDF generation.
+**Note:** 
+- Profiles use `scanner_type: CEL` to indicate they target the CEL checking engine and should be excluded from XCCDF/datastream builds.
+- A rule can have both `cel/` (for CEL checks) and `template:` (for OVAL checks) to support both checking engines during migration.
 
 **Important:** Use hyphens rule IDs (Kubernetes naming convention), not underscores.
 
