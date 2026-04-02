@@ -147,7 +147,6 @@ auditd_overflow_action
 auditd_write_logs
 banner_etc_issue
 bios_enable_execution_restrictions
-chrony_set_nts
 chronyd_client_only
 chronyd_no_chronyc_network
 chronyd_or_ntpd_set_maxpoll
