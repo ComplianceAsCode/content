@@ -12,12 +12,16 @@ description: |-
     /usr/lib
     /usr/lib64
     </pre>
+    {{% if product != "hummingbird" %}}
     Kernel modules, which can be added to the kernel during runtime, are
-    stored in <tt>/lib/modules</tt>. All sub-directories in these directories
-    should not be group-writable or world-writable. If any file in these
-    directories is found to be group-writable or world-writable, correct
+    stored in <tt>/lib/modules</tt>.
+    {{% endif %}}
+    All sub-directories in these directories should not be group-writable or world-writable.
+    {{% if product != "hummingbird" %}}
+    If any file in these directories is found to be group-writable or world-writable, correct
     its permission with the following command:
     <pre>$ sudo chmod go-w <i>DIR</i></pre>
+    {{% endif %}}
 
 rationale: |-
     If the operating system were to allow any user to make changes to software libraries,

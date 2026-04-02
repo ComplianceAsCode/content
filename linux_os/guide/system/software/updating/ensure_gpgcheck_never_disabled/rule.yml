@@ -75,3 +75,7 @@ checktext: |-
     gpgcheck = 1
 
     If "gpgcheck" is not set to "1" for all returned lines, this is a finding.
+
+{{% if product == "hummingbird" %}}
+platform: package[dnf]
+{{% endif %}}

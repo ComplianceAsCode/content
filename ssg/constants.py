@@ -220,6 +220,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
     "Firefox": "firefox",
+    "Hummingbird": "hummingbird",
     "Kylin Server 10": "kylinserver10",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
@@ -289,7 +290,7 @@ REFERENCES = dict(
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
-                       "openeuler", "kylinserver",
+                       "openeuler", "kylinserver", "hummingbird",
                        "opensuse", "sle", "tencentos", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro", "almalinux"]
@@ -302,6 +303,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
+    "multi_platform_hummingbird": ["hummingbird"],
     "multi_platform_kylinserver": ["kylinserver10"],
     "multi_platform_openeuler": ["openeuler2203"],
     "multi_platform_opensuse": ["opensuse"],
@@ -426,6 +428,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'anolis': 'Anolis OS',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
+    'hummingbird': 'Hummingbird',
     'kylinserver': 'Kylin Server',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',

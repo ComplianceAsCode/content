@@ -60,7 +60,7 @@ ocil_clause: 'the installed operating system is not supported'
 ocil: |-
     To verify that the installed operating system is supported, run
     the following command:
-{{% if product.startswith("rhel") %}}
+{{% if product.startswith("rhel") or product == "hummingbird" %}}
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
 {{% elif 'ol' in families %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>

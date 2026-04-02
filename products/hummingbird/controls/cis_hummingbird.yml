@@ -1,0 +1,2442 @@
+policy: CIS Benchmark for Red Hat Hummingbird
+title: CIS Benchmark for Red Hat Hummingbird
+id: cis_hummingbird
+version: vendor
+source: https://www.cisecurity.org/cis-benchmarks/#red_hat_linux
+
+levels:
+    - id: l1_server
+    - id: l2_server
+      inherits_from:
+          - l1_server
+    - id: l1_workstation
+    - id: l2_workstation
+      inherits_from:
+          - l1_workstation
+
+reference_type: cis
+product: hummingbird
+
+controls:
+    - id: 1.1.1.1
+      title: Ensure cramfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.1.2
+      title: Ensure freevxfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.1.3
+      title: Ensure hfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.1.4
+      title: Ensure hfsplus kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.1.5
+      title: Ensure jffs2 kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.1.6
+      title: Ensure overlay kernel module is not available (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.1.7
+      title: Ensure squashfs kernel module is not available (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.1.8
+      title: Ensure udf kernel module is not available (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.1.9
+      title: Ensure firewire-core kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.1.10
+      title: Ensure usb-storage kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.1.11
+      title: Ensure unused filesystems kernel modules are not available (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.1.1
+      title: Ensure /tmp is tmpfs or a separate partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.1.2
+      title: Ensure nodev option set on /tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.1.3
+      title: Ensure nosuid option set on /tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.1.4
+      title: Ensure noexec option set on /tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.2.1
+      title: Ensure /dev/shm is tmpfs or a separate partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.2.2
+      title: Ensure nodev option set on /dev/shm partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.2.3
+      title: Ensure nosuid option set on /dev/shm partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.2.4
+      title: Ensure noexec option set on /dev/shm partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.3.1
+      title: Ensure separate partition exists for /home (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.2.3.2
+      title: Ensure nodev option set on /home partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.3.3
+      title: Ensure nosuid option set on /home partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.4.1
+      title: Ensure separate partition exists for /var (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.2.4.2
+      title: Ensure nodev option set on /var partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.4.3
+      title: Ensure nosuid option set on /var partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.5.1
+      title: Ensure separate partition exists for /var/tmp (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.2.5.2
+      title: Ensure nodev option set on /var/tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.5.3
+      title: Ensure nosuid option set on /var/tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.5.4
+      title: Ensure noexec option set on /var/tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.6.1
+      title: Ensure separate partition exists for /var/log (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.2.6.2
+      title: Ensure nodev option set on /var/log partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.6.3
+      title: Ensure nosuid option set on /var/log partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.6.4
+      title: Ensure noexec option set on /var/log partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.7.1
+      title: Ensure separate partition exists for /var/log/audit (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.1.2.7.2
+      title: Ensure nodev option set on /var/log/audit partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.7.3
+      title: Ensure nosuid option set on /var/log/audit partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.1.2.7.4
+      title: Ensure noexec option set on /var/log/audit partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.2.1.1
+      title: Ensure GPG keys are configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: partial
+      rules:
+          - ensure_redhat_gpgkey_installed
+      notes: >
+          In CIS Benchmark, the requirement is manual, because of GPG keys for 3rd party repositories.
+          However, for official images, we assume that the official images will contain only RPM packages
+          signed by Red Hat which allows us to check the requirement automatically by adding the rule
+          ensure_redhat_gpgkey_installed to the profile.
+
+    - id: 1.2.1.2
+      title: Ensure gpgcheck is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.2.1.3
+      title: Ensure repo_gpgcheck is globally activated (Manual)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.2.1.4
+      title: Ensure package manager repositories are configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.2.1.5
+      title: Ensure weak dependencies are configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.2.2.1
+      title: Ensure updates, patches, and additional security software are installed (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: manual
+
+    - id: 1.3.1.1
+      title: Ensure SELinux is installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.3.1.2
+      title: Ensure SELinux is not disabled in bootloader configuration (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.3.1.3
+      title: Ensure SELinux policy is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.3.1.4
+      title: Ensure the SELinux mode is not disabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.3.1.5
+      title: Ensure the SELinux mode is enforcing (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.3.1.6
+      title: Ensure no unconfined services exist (Manual)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: manual
+
+    - id: 1.3.1.7
+      title: Ensure the MCS Translation Service (mcstrans) is not installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.3.1.8
+      title: Ensure SETroubleshoot is not installed (Automated)
+      levels:
+          - l1_server
+      status: not applicable
+
+    - id: 1.4.1
+      title: Ensure bootloader password is set (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.4.2
+      title: Ensure access to bootloader config is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.5.1
+      title: Ensure core file size is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.5.2
+      title: Ensure fs.protected_hardlinks is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.5.3
+      title: Ensure fs.protected_symlinks is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.5.4
+      title: Ensure fs.suid_dumpable is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.5.5
+      title: Ensure kernel.dmesg_restrict is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.5.6
+      title: Ensure kernel.kptr_restrict is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.5.7
+      title: Ensure kernel.yama.ptrace_scope is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.5.8
+      title: Ensure kernel.randomize_va_space is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+      notes: |-
+          Address Space Layout Randomization (ASLR)
+
+    - id: 1.5.9
+      title: Ensure systemd-coredump ProcessSizeMax is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.5.10
+      title: Ensure systemd-coredump Storage is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.6.1
+      title: Ensure system wide crypto policy is not set to legacy (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - configure_crypto_policy
+          - var_system_crypto_policy=default_policy
+
+    - id: 1.6.2
+      title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - configure_crypto_policy
+          - var_system_crypto_policy=default_policy
+
+    - id: 1.6.3
+      title: Ensure system wide crypto policy macs are configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - configure_crypto_policy
+          - var_system_crypto_policy=default_policy
+
+    - id: 1.6.4
+      title: Ensure system wide crypto policy disables cbc for ssh (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.7.1
+      title: Ensure /etc/motd is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.7.2
+      title: Ensure /etc/issue is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.7.3
+      title: Ensure /etc/issue.net is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.7.4
+      title: Ensure access to /etc/motd is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_etc_motd
+          - file_owner_etc_motd
+          - file_permissions_etc_motd
+
+    - id: 1.7.5
+      title: Ensure access to /etc/issue is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_etc_issue
+          - file_owner_etc_issue
+          - file_permissions_etc_issue
+
+    - id: 1.7.6
+      title: Ensure access to /etc/issue.net is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_etc_issue_net
+          - file_owner_etc_issue_net
+          - file_permissions_etc_issue_net
+
+    - id: 1.8.1
+      title: Ensure GDM login banner is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.8.2
+      title: Ensure GDM disable-user-list is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.8.3
+      title: Ensure GDM screen lock is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.8.4
+      title: Ensure GDM automount is configured (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 1.8.5
+      title: Ensure GDM autorun-never is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 1.8.6
+      title: Ensure Xwayland is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 2.1.1
+      title: Ensure autofs services are not in use (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 2.1.2
+      title: Ensure avahi daemon services are not in use (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 2.1.3
+      title: Ensure cockpit web services are not in use (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 2.1.4
+      title: Ensure dhcp server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_kea_removed
+
+    - id: 2.1.5
+      title: Ensure dns server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_bind_removed
+
+    - id: 2.1.6
+      title: Ensure dnsmasq services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.1.7
+      title: Ensure ftp server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_vsftpd_removed
+
+    - id: 2.1.8
+      title: Ensure message access server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_dovecot_removed
+          - package_cyrus-imapd_removed
+
+    - id: 2.1.9
+      title: Ensure network file system services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.1.10
+      title: Ensure print server services are not in use (Automated)
+      levels:
+          - l1_server
+      status: not applicable
+
+    - id: 2.1.11
+      title: Ensure rpcbind services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.1.12
+      title: Ensure rsync services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_rsync_removed
+
+    - id: 2.1.13
+      title: Ensure samba file server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_samba_removed
+
+    - id: 2.1.14
+      title: Ensure snmp services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_net-snmp_removed
+
+    - id: 2.1.15
+      title: Ensure telnet server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_telnet-server_removed
+
+    - id: 2.1.16
+      title: Ensure tftp server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_tftp-server_removed
+
+    - id: 2.1.17
+      title: Ensure web proxy server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_squid_removed
+
+    - id: 2.1.18
+      title: Ensure web server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_httpd_removed
+          - package_nginx_removed
+
+    - id: 2.1.19
+      title: Ensure GNOME Display Manager is removed (Automated)
+      levels:
+          - l2_server
+      status: not applicable
+
+    - id: 2.1.20
+      title: Ensure X window server services are not in use (Automated)
+      levels:
+          - l2_server
+      status: automated
+      rules:
+          - package_xorg-x11-server-Xwayland_removed
+
+    - id: 2.1.21
+      title: Ensure mail transfer agents are configured for local-only mode (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.1.22
+      title: Ensure only approved services are listening on a network interface (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: manual
+
+    - id: 2.2.1
+      title: Ensure ftp client is not installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_ftp_removed
+
+    - id: 2.2.2
+      title: Ensure ldap client is not installed (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: automated
+      rules:
+          - package_openldap-clients_removed
+
+    - id: 2.2.3
+      title: Ensure telnet client is not installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_telnet_removed
+
+    - id: 2.2.4
+      title: Ensure tftp client is not installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - package_tftp_removed
+
+    - id: 2.3.1
+      title: Ensure time synchronization is in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.3.2
+      title: Ensure chrony is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.3.3
+      title: Ensure chrony is not run as the root user (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.1
+      title: Ensure cron daemon is enabled and active (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.2
+      title: Ensure access to /etc/crontab is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.3
+      title: Ensure access to /etc/cron.hourly is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.4
+      title: Ensure access to /etc/cron.daily is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.5
+      title: Ensure access to /etc/cron.weekly is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.6
+      title: Ensure access to /etc/cron.monthly is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.7
+      title: Ensure access to /etc/cron.yearly is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.8
+      title: Ensure access to /etc/cron.d is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.1.9
+      title: Ensure access to crontab is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 2.4.2.1
+      title: Ensure access to at is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.1.1
+      title: Ensure IPv6 status is identified (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: manual
+
+    - id: 3.1.2
+      title: Ensure wireless interfaces are not available (Automated)
+      levels:
+          - l1_server
+      status: not applicable
+
+    - id: 3.1.3
+      title: Ensure bluetooth services are not in use (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 3.2.1
+      title: Ensure atm kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.2.2
+      title: Ensure can kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.2.3
+      title: Ensure dccp kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.2.4
+      title: Ensure tipc kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.2.5
+      title: Ensure rds kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.2.6
+      title: Ensure sctp kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.1
+      title: Ensure net.ipv4.ip_forward is configured (Automated)
+      levels:
+          - l1_workstation
+          - l2_server
+      status: not applicable
+
+    - id: 3.3.1.2
+      title: Ensure net.ipv4.conf.all.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.3
+      title: Ensure net.ipv4.conf.default.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.4
+      title: Ensure net.ipv4.conf.all.send_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.5
+      title: Ensure net.ipv4.conf.default.send_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.6
+      title: Ensure net.ipv4.icmp_ignore_bogus_error_responses is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.7
+      title: Ensure net.ipv4.icmp_echo_ignore_broadcasts is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.8
+      title: Ensure net.ipv4.conf.all.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.9
+      title: Ensure net.ipv4.conf.default.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.10
+      title: Ensure net.ipv4.conf.all.secure_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.11
+      title: Ensure net.ipv4.conf.default.secure_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.12
+      title: Ensure net.ipv4.conf.all.rp_filter is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.13
+      title: Ensure net.ipv4.conf.default.rp_filter is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.14
+      title: Ensure net.ipv4.conf.all.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.15
+      title: Ensure net.ipv4.conf.default.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.16
+      title: Ensure net.ipv4.conf.all.log_martians is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.17
+      title: Ensure net.ipv4.conf.default.log_martians is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.1.18
+      title: Ensure net.ipv4.tcp_syncookies is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.2.1
+      title: Ensure  net.ipv6.conf.all.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.2.2
+      title: Ensure  net.ipv6.conf.default.forwarding is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.2.3
+      title: Ensure net.ipv6.conf.all.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.2.4
+      title: Ensure net.ipv6.conf.default.accept_redirects is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.2.5
+      title: Ensure net.ipv6.conf.all.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.2.6
+      title: Ensure net.ipv6.conf.default.accept_source_route is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.2.7
+      title: Ensure net.ipv6.conf.all.accept_ra is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 3.3.2.8
+      title: Ensure net.ipv6.conf.default.accept_ra is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 4.1.1
+      title: Ensure firewalld is installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 4.1.2
+      title: Ensure firewalld backend is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 4.1.3
+      title: Ensure firewalld.service is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 4.1.4
+      title: Ensure firewalld active zone target is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 4.1.5
+      title: Ensure firewalld loopback traffic is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 4.1.6
+      title: Ensure firewalld loopback source address traffic is configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 4.1.7
+      title: Ensure firewalld services and ports are configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.1
+      title: Ensure access to /etc/ssh/sshd_config is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.2
+      title: Ensure access to SSH private host key files is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.3
+      title: Ensure access to SSH public host key files is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.4
+      title: Ensure sshd access is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.5
+      title: Ensure sshd Banner is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.6
+      title: Ensure sshd Ciphers are configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.7
+      title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.8
+      title: Ensure sshd DisableForwarding is enabled (Automated)
+      levels:
+          - l1_workstation
+          - l2_server
+      status: not applicable
+
+    - id: 5.1.9
+      title: Ensure sshd GSSAPIAuthentication is disabled (Automated)
+      levels:
+          - l1_workstation
+          - l2_server
+      status: not applicable
+
+    - id: 5.1.10
+      title: Ensure sshd HostbasedAuthentication is disabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.11
+      title: Ensure sshd IgnoreRhosts is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.12
+      title: Ensure sshd KexAlgorithms is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.13
+      title: Ensure sshd LoginGraceTime is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.14
+      title: Ensure sshd LogLevel is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.15
+      title: Ensure sshd MACs are configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.16
+      title: Ensure sshd MaxAuthTries is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.17
+      title: Ensure sshd MaxStartups is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.18
+      title: Ensure sshd MaxSessions is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.19
+      title: Ensure sshd PermitEmptyPasswords is disabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.20
+      title: Ensure sshd PermitRootLogin is disabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.21
+      title: Ensure sshd PermitUserEnvironment is disabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.1.22
+      title: Ensure sshd UsePAM is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.2.1
+      title: Ensure sudo is installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.2.2
+      title: Ensure sudo commands use pty (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.2.3
+      title: Ensure sudo log file exists (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.2.4
+      title: Ensure users must provide password for escalation (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 5.2.5
+      title: Ensure re-authentication for privilege escalation is not disabled globally (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.2.6
+      title: Ensure sudo timestamp_timeout is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.2.7
+      title: Ensure access to the su command is restricted (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.1.1
+      title: Ensure active authselect profile includes pam modules (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.1.2
+      title: Ensure pam_faillock module is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.1.3
+      title: Ensure pam_pwquality module is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.1.4
+      title: Ensure pam_pwhistory module is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.1.5
+      title: Ensure pam_unix module is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.1.1
+      title: Ensure password failed attempts lockout is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.1.2
+      title: Ensure password unlock time is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.1.3
+      title: Ensure password failed attempts lockout includes root account (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 5.3.2.2.1
+      title: Ensure password number of changed characters is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.2.2
+      title: Ensure password length is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.2.3
+      title: Ensure password complexity is configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.2.4
+      title: Ensure password same consecutive characters is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.2.5
+      title: Ensure password maximum sequential characters is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.2.6
+      title: Ensure password dictionary check is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.2.7
+      title: Ensure password quality is enforced for the root user (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.3.1
+      title: Ensure password history remember is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.3.2
+      title: Ensure password history is enforced for the root user (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.3.3
+      title: Ensure pam_pwhistory includes use_authtok (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.4.1
+      title: Ensure pam_unix does not include nullok (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.4.2
+      title: Ensure pam_unix does not include remember (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.4.3
+      title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.3.2.4.4
+      title: Ensure pam_unix includes use_authtok (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.1.1
+      title: Ensure password expiration is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.1.2
+      title: Ensure minimum password days is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 5.4.1.3
+      title: Ensure password expiration warning days is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.1.4
+      title: Ensure strong password hashing algorithm is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.1.5
+      title: Ensure inactive password lock is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.1.6
+      title: Ensure all users last password change date is in the past (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.2.1
+      title: Ensure root is the only UID 0 account (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.2.2
+      title: Ensure root is the only GID 0 account (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      notes: |-
+          There is assessment but no automated remediation for this rule and this sounds reasonable.
+      rules:
+          - accounts_root_gid_zero
+
+    - id: 5.4.2.3
+      title: Ensure group root is the only GID 0 group (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      notes: |-
+          There is assessment but no automated remediation for this rule and this sounds reasonable.
+      rules:
+          - groups_no_zero_gid_except_root
+
+    - id: 5.4.2.4
+      title: Ensure root account access is controlled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.2.5
+      title: Ensure root path integrity (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - accounts_root_path_dirs_no_write
+          - root_path_no_dot
+
+    - id: 5.4.2.6
+      title: Ensure root user umask is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.2.7
+      title: Ensure system accounts do not have a valid login shell (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.2.8
+      title: Ensure accounts without a valid login shell are locked (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.3.1
+      title: Ensure nologin is not listed in /etc/shells (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 5.4.3.2
+      title: Ensure default user shell timeout is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 5.4.3.3
+      title: Ensure default user umask is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.1.1
+      title: Ensure AIDE is installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.1.2
+      title: Ensure filesystem integrity is regularly checked (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.1.3
+      title: Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.1.1
+      title: Ensure journald service is active (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.1.2
+      title: Ensure journald log file access is configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.1.3
+      title: Ensure journald log file rotation is configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.1.4
+      title: Ensure only one logging system is in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.2.1.1
+      title: Ensure systemd-journal-remote is installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.2.1.2
+      title: Ensure systemd-journal-upload authentication is configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: manual
+
+    - id: 6.2.2.1.3
+      title: Ensure systemd-journal-upload is enabled and active (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.2.1.4
+      title: Ensure systemd-journal-remote service is not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.2.2
+      title: Ensure journald ForwardToSyslog is disabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.2.3
+      title: Ensure journald Compress is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.2.4
+      title: Ensure journald Storage is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.3.1
+      title: Ensure rsyslog is installed (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.3.2
+      title: Ensure rsyslog service is enabled and active (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.3.3
+      title: Ensure journald is configured to send logs to rsyslog (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.3.4
+      title: Ensure rsyslog log file creation mode is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.3.5
+      title: Ensure rsyslog logging is configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.3.6
+      title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.3.7
+      title: Ensure rsyslog is not configured to receive logs from a remote client (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.3.8
+      title: Ensure rsyslog logrotate is configured (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.2.4.1
+      title: Ensure access to all logfiles has been configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 6.3.1.1
+      title: Ensure auditd packages are installed (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.1.2
+      title: Ensure auditing for processes that start prior to auditd is enabled (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.1.3
+      title: Ensure audit_backlog_limit is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.1.4
+      title: Ensure auditd service is enabled and active (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.2.1
+      title: Ensure audit log storage size is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.2.2
+      title: Ensure audit logs are not automatically deleted (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.2.3
+      title: Ensure system is disabled when audit logs are full (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.2.4
+      title: Ensure system warns when audit logs are low on space (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.1
+      title: Ensure modification of the /etc/sudoers file is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.2
+      title: Ensure actions as another user are always logged (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.3
+      title: Ensure events that modify the sudo log file are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.4
+      title: Ensure events that modify date and time information are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.5
+      title: Ensure events that modify sethostname and setdomainname are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.6
+      title: Ensure events that modify /etc/issue and /etc/issue.net are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.7
+      title: Ensure events that modify /etc/hosts and /etc/hostname are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.8
+      title: Ensure events that modify /etc/sysconfig/network and /etc/NetworkManager/system-connections/ are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.9
+      title: Ensure events that modify /etc/NetworkManager directory are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.10
+      title: Ensure use of privileged commands are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.11
+      title: Ensure unsuccessful file access attempts are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.12
+      title: Ensure events that modify /etc/group information are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.13
+      title: Ensure events that modify /etc/passwd information are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.14
+      title: Ensure events that modify /etc/shadow and /etc/gshadow are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.15
+      title: Ensure events that modify /etc/security/opasswd are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.16
+      title: Ensure events that modify /etc/nsswitch.conf file are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.17
+      title: Ensure events that modify /etc/pam.conf and /etc/pam.d/ information are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.18
+      title: Ensure discretionary access control permission modification events chmod,fchmod,fchmodat,fchmodat2 are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.19
+      title: Ensure discretionary access control permission modification events chown,fchown,lchown,fchownat are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.20
+      title: Ensure discretionary access control permission modification events setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.21
+      title: Ensure successful file system mounts are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.22
+      title: Ensure session initiation information is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.23
+      title: Ensure login and logout events are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.24
+      title: Ensure unlink file deletion events by users are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.25
+      title: Ensure rename file deletion events by users are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.26
+      title: Ensure events that modify the system's Mandatory Access Controls are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.27
+      title: Ensure successful and unsuccessful attempts to use the chcon command are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.28
+      title: Ensure successful and unsuccessful attempts to use the setfacl command are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.29
+      title: Ensure successful and unsuccessful attempts to use the chacl command are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.30
+      title: Ensure successful and unsuccessful attempts to use the usermod command are collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.31
+      title: Ensure kernel module loading unloading and modification is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.32
+      title: Ensure kernel "init_module" and "finit_module" loading unloading and modification is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.33
+      title: Ensure kernel "delete_module" loading unloading and modification is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.34
+      title: Ensure kernel "query_module" loading unloading and modification is collected (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.35
+      title: Ensure the audit configuration is loaded regardless of errors (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.36
+      title: Ensure the audit configuration is immutable (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.3.37
+      title: Ensure the running and on disk configuration is the same (Manual)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: manual
+
+    - id: 6.3.4.1
+      title: Ensure the audit log file directory mode is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.2
+      title: Ensure audit log files mode is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.3
+      title: Ensure audit log files owner is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.4
+      title: Ensure audit log files group owner is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.5
+      title: Ensure audit configuration files mode is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.6
+      title: Ensure audit configuration files owner is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.7
+      title: Ensure audit configuration files group owner is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.8
+      title: Ensure audit tools mode is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.9
+      title: Ensure audit tools owner is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 6.3.4.10
+      title: Ensure audit tools group owner is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: not applicable
+
+    - id: 7.1.1
+      title: Ensure access to /etc/passwd is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_etc_passwd
+          - file_owner_etc_passwd
+          - file_permissions_etc_passwd
+
+    - id: 7.1.2
+      title: Ensure access to /etc/passwd- is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_backup_etc_passwd
+          - file_owner_backup_etc_passwd
+          - file_permissions_backup_etc_passwd
+
+    - id: 7.1.3
+      title: Ensure access to /etc/group is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_etc_group
+          - file_owner_etc_group
+          - file_permissions_etc_group
+
+    - id: 7.1.4
+      title: Ensure access to /etc/group- is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_backup_etc_group
+          - file_owner_backup_etc_group
+          - file_permissions_backup_etc_group
+
+    - id: 7.1.5
+      title: Ensure access to /etc/shadow is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_owner_etc_shadow
+          - file_groupowner_etc_shadow
+          - file_permissions_etc_shadow
+
+    - id: 7.1.6
+      title: Ensure access to /etc/shadow- is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_backup_etc_shadow
+          - file_owner_backup_etc_shadow
+          - file_permissions_backup_etc_shadow
+
+    - id: 7.1.7
+      title: Ensure access to /etc/gshadow is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_etc_gshadow
+          - file_owner_etc_gshadow
+          - file_permissions_etc_gshadow
+
+    - id: 7.1.8
+      title: Ensure access to /etc/gshadow- is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_backup_etc_gshadow
+          - file_owner_backup_etc_gshadow
+          - file_permissions_backup_etc_gshadow
+
+    - id: 7.1.9
+      title: Ensure access to /etc/shells is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_etc_shells
+          - file_owner_etc_shells
+          - file_permissions_etc_shells
+
+    - id: 7.1.10
+      title: Ensure access to /etc/security/opasswd is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_groupowner_etc_security_opasswd
+          - file_owner_etc_security_opasswd
+          - file_permissions_etc_security_opasswd
+          - file_groupowner_etc_security_opasswd_old
+          - file_owner_etc_security_opasswd_old
+          - file_permissions_etc_security_opasswd_old
+
+    - id: 7.1.11
+      title: Ensure world writable files and directories are secured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_permissions_unauthorized_world_writable
+          - dir_perms_world_writable_sticky_bits
+
+    - id: 7.1.12
+      title: Ensure no files or directories without an owner and a group exist (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - no_files_or_dirs_ungroupowned
+
+    - id: 7.1.13
+      title: Ensure SUID and SGID files are reviewed (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: manual
+
+    - id: 7.2.1
+      title: Ensure accounts in /etc/passwd use shadowed passwords (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 7.2.2
+      title: Ensure /etc/shadow password fields are not empty (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 7.2.3
+      title: Ensure all groups in /etc/passwd exist in /etc/group (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - gid_passwd_group_same
+
+    - id: 7.2.4
+      title: Ensure no duplicate UIDs exist (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 7.2.5
+      title: Ensure no duplicate GIDs exist (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 7.2.6
+      title: Ensure no duplicate user names exist (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 7.2.7
+      title: Ensure no duplicate group names exist (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: not applicable
+
+    - id: 7.2.8
+      title: Ensure local interactive user home directories are configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_ownership_home_directories
+          - file_permissions_home_directories
+
+    - id: 7.2.9
+      title: Ensure local interactive user dot files access is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - file_permission_user_init_files
+          - var_user_initialization_files_regex=all_dotfiles
+          - file_permission_user_bash_history
