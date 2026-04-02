@@ -18,16 +18,6 @@ reference_type: cis
 product: hummingbird
 
 controls:
-
-    - id: reload_dconf_db
-      title: Reload Dconf database
-      levels:
-          - l1_server
-          - l1_workstation
-      notes: |-
-          This is a helper rule to reload Dconf database correctly.
-      status: not applicable
-
     - id: 1.1.1.1
       title: Ensure cramfs kernel module is not available (Automated)
       levels:
@@ -103,7 +93,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 1.1.2.1.1
       title: Ensure /tmp is tmpfs or a separate partition (Automated)
@@ -313,14 +303,14 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: manual
+      status: not applicable
 
     - id: 1.2.1.4
       title: Ensure package manager repositories are configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 1.2.1.5
       title: Ensure weak dependencies are configured (Automated)
@@ -397,9 +387,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          There is no automated remediation for this rule and this is intentional.
-          More details in the rule description.
 
     - id: 1.4.2
       title: Ensure access to bootloader config is configured (Automated)
@@ -407,7 +394,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: This requirement demands a deeper review of the rules.
 
     - id: 1.5.1
       title: Ensure core file size is configured (Automated)
@@ -685,9 +671,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          Many of the libvirt packages used by Enterprise Linux virtualization are dependent on the
-          nfs-utils package.
 
     - id: 2.1.10
       title: Ensure print server services are not in use (Automated)
@@ -701,9 +684,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          Many of the libvirt packages used by Enterprise Linux virtualization, and the nfs-utils
-          package used for The Network File System (NFS), are dependent on the rpcbind package.
 
     - id: 2.1.12
       title: Ensure rsync services are not in use (Automated)
@@ -1194,10 +1174,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-        There is not an easy way to do this for only active zones using OVAL.
-        For now, there are are no rules for this control.
+      status: not applicable
 
     - id: 4.1.5
       title: Ensure firewalld loopback traffic is configured (Automated)
@@ -1205,22 +1182,20 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-            Firewalld in Red Hat Enterprise Linux 10 accepts loopback traffic by default.
 
     - id: 4.1.6
       title: Ensure firewalld loopback source address traffic is configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 4.1.7
       title: Ensure firewalld services and ports are configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 5.1.1
       title: Ensure access to /etc/ssh/sshd_config is configured (Automated)
@@ -1270,9 +1245,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          The requirement gives an example of 45 seconds, but is flexible about the values. It is only
-          necessary to ensure there is a timeout configured in alignment to the site policy.
 
     - id: 5.1.8
       title: Ensure sshd DisableForwarding is enabled (Automated)
@@ -1308,10 +1280,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          This CIS requirement shall be notapplicable on RHEL 10. The CIS
-          Benchmark requires disabling the weak SHA1 key exchange algorithms,
-          but RHEL 10 doesn't provide these algorithms.
 
     - id: 5.1.13
       title: Ensure sshd LoginGraceTime is configured (Automated)
@@ -1326,10 +1294,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          The CIS benchmark is not opinionated about which loglevel is selected here. Here, this
-          profile uses VERBOSE by default, as it allows for the capture of login and logout activity
-          as well as key fingerprints.
 
     - id: 5.1.15
       title: Ensure sshd MACs are configured (Automated)
@@ -1435,11 +1399,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          Members of "wheel" or GID 0 groups are checked by default if the group option is not set for
-          pam_wheel.so module. The recommendation states the group should be empty to reinforce the
-          use of "sudo" for privileged access. Therefore, members of these groups should be manually
-          checked or a different group should be informed.
 
     - id: 5.3.1.1
       title: Ensure active authselect profile includes pam modules (Automated)
@@ -1447,12 +1406,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          This rule verifies that the active authselect profile includes the required PAM modules:
-          pam_pwquality.so, pam_pwhistory.so, pam_faillock.so, and pam_unix.so in both system-auth
-          and password-auth files. The rule checks the authselect profile source files directly,
-          not the symlinked files in /etc/pam.d/. Other rules ensure these modules are properly
-          configured with correct options.
 
     - id: 5.3.1.2
       title: Ensure pam_faillock module is enabled (Automated)
@@ -1460,7 +1413,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: This requirement is also indirectly satisfied by the requirement 5.3.2.1.
 
     - id: 5.3.1.3
       title: Ensure pam_pwquality module is enabled (Automated)
@@ -1468,7 +1420,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: This requirement is also indirectly satisfied by the requirement 5.3.2.2.
 
     - id: 5.3.1.4
       title: Ensure pam_pwhistory module is enabled (Automated)
@@ -1476,9 +1427,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          The module is properly enabled by the rules mentioned in related_rules.
-          Requirements in 5.3.2.3 use these rules.
 
     - id: 5.3.1.5
       title: Ensure pam_unix module is enabled (Automated)
@@ -1500,10 +1448,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          The policy also accepts value 0, which means the locked accounts should be manually unlocked
-          by an administrator. However, it also mentions that using value 0 can facilitate a DoS
-          attack to legitimate users.
 
     - id: 5.3.2.1.3
       title: Ensure password failed attempts lockout includes root account (Automated)
@@ -1532,12 +1476,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          This requirement is expected to be manual. However, in previous versions of the policy
-          it was already automated the configuration of "minclass" option. This posture was kept for
-          RHEL 10 in this new version. Rules related to other options are informed in related_rules.
-          In short, minclass=4 alone can achieve the same result achieved by the combination of the
-          other 4 options mentioned in the policy.
 
     - id: 5.3.2.2.4
       title: Ensure password same consecutive characters is configured (Automated)
@@ -1573,10 +1511,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          Although mentioned in the section 5.3.3.3, there is no explicit requirement to configure
-          retry option of pam_pwhistory. If come in the future, the rule accounts_password_pam_retry
-          can be used.
 
     - id: 5.3.2.3.2
       title: Ensure password history is enforced for the root user (Automated)
@@ -1591,10 +1525,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          In RHEL 10 pam_pwhistory is enabled via authselect feature, as required in 5.3.1.4. The
-          feature automatically set "use_authok" option. In any case, we don't have a rule to check
-          this option specifically.
 
     - id: 5.3.2.4.1
       title: Ensure pam_unix does not include nullok (Automated)
@@ -1602,7 +1532,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: The rule more specifically used in this requirement also satify the requirement 5.3.1.5.
 
     - id: 5.3.2.4.2
       title: Ensure pam_unix does not include remember (Automated)
@@ -1610,11 +1539,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          Usage of pam_unix.so module together with "remember" option is deprecated and is not
-          recommended by this policy. Instead, it should be used remember option of pam_pwhistory
-          module, as required in 5.3.2.3.1. See here for more details about pam_unix.so:
-          https://bugzilla.redhat.com/show_bug.cgi?id=1778929
 
     - id: 5.3.2.4.3
       title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
@@ -1622,7 +1546,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: Changes in logindefs mentioned in this requirement are more specifically covered by 5.4.1.4
 
     - id: 5.3.2.4.4
       title: Ensure pam_unix includes use_authtok (Automated)
@@ -1630,10 +1553,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: |-
-          In RHEL 10 pam_unix is enabled by default in all authselect profiles already with the
-          use_authtok option set. In any case, we don't have a rule to check this option specifically,
-          like in 5.3.2.3.3.
 
     - id: 5.4.1.1
       title: Ensure password expiration is configured (Automated)
@@ -1689,9 +1608,11 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: partial
+      status: automated
       notes: |-
           There is assessment but no automated remediation for this rule and this sounds reasonable.
+      rules:
+          - accounts_root_gid_zero
 
     - id: 5.4.2.3
       title: Ensure group root is the only GID 0 group (Automated)
@@ -1796,14 +1717,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 6.2.1.3
       title: Ensure journald log file rotation is configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 6.2.1.4
       title: Ensure only one logging system is in use (Automated)
@@ -1866,56 +1787,56 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: not applicable
 
     - id: 6.2.3.2
       title: Ensure rsyslog service is enabled and active (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: not applicable
 
     - id: 6.2.3.3
       title: Ensure journald is configured to send logs to rsyslog (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: not applicable
 
     - id: 6.2.3.4
       title: Ensure rsyslog log file creation mode is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: not applicable
 
     - id: 6.2.3.5
       title: Ensure rsyslog logging is configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 6.2.3.6
       title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 6.2.3.7
       title: Ensure rsyslog is not configured to receive logs from a remote client (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: supported
+      status: not applicable
 
     - id: 6.2.3.8
       title: Ensure rsyslog logrotate is configured (Manual)
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: not applicable
 
     - id: 6.2.4.1
       title: Ensure access to all logfiles has been configured (Automated)
@@ -1923,7 +1844,6 @@ controls:
           - l1_server
           - l1_workstation
       status: not applicable
-      notes: It is not harmful to run these rules even if rsyslog is not installed or active.
 
     - id: 6.3.1.1
       title: Ensure auditd packages are installed (Automated)
