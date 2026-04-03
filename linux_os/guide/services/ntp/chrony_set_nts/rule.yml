@@ -25,3 +25,10 @@ severity: medium
 
 platforms:
     - package[chrony]
+
+warnings:
+    - general: |-
+        Network Time Security (NTS) is not compatible with systems running in FIPS mode.
+        Enabling NTS on a system in FIPS mode causes chronyd service to abort with a fatal
+        error. This is because NTS uses algorithms (specifically SIV cipher) that are not
+        approved by NIST and are not compliant with FIPS.
