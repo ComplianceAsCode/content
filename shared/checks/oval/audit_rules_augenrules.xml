@@ -18,18 +18,19 @@
     <ind:object object_ref="object_audit_rules_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rules_augenrules" version="1">
-  {{% if product in ['fedora', 'rhel10', 'ol10']  %}}
+  {{% if product in ['rhel10', 'ol10']  %}}
     <ind:filepath>/usr/lib/systemd/system/audit-rules.service</ind:filepath>
     <ind:pattern operation="pattern match">^ExecStart=(\/usr|)?\/sbin\/augenrules.*$</ind:pattern>
+  {{% elif product in ['fedora'] %}}
+    <ind:filepath>/usr/lib/systemd/system/audit-rules.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStart=\/usr\/bin\/augenrules.*$</ind:pattern>
+  {{% elif product in ['debian13'] %}}
+    <ind:filepath>/usr/lib/systemd/system/audit-rules.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStart=\/usr\/sbin\/augenrules.*$</ind:pattern>
   {{% else %}}
-    {{% if product in ['debian13'] %}}
-      <ind:filepath>/usr/lib/systemd/system/audit-rules.service</ind:filepath>
-      <ind:pattern operation="pattern match">^ExecStart=\/usr\/sbin\/augenrules.*$</ind:pattern>
-    {{% else %}}
-      <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-      <ind:pattern operation="pattern match">^(ExecStartPost=\-\/sbin\/augenrules.*$|Requires=augenrules.service)</ind:pattern>
-    {{% endif %}}
-{{% endif %}}
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^(ExecStartPost=\-\/sbin\/augenrules.*$|Requires=augenrules.service)</ind:pattern>
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
