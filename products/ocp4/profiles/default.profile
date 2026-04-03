@@ -55,3 +55,4 @@ selections:
     - kubelet_read_only_port_secured
     - scheduler_port_is_zero
     - project_template_resource_quota
+    - sysctl_net_ipv6_conf_all_disable_ipv6
