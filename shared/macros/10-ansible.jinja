@@ -1462,7 +1462,6 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth','auth','','pam_faillock.so',parameter, rule_title=rule_title) | indent(4) }}}
   when:
     - result_faillock_conf_check.stat.exists
-{{%- endif %}}
 
 - name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter in PAM files
   block:
@@ -1542,6 +1541,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{%- endif %}}
   when:
     - not result_faillock_conf_check.stat.exists
+{{%- endif %}}
 {{%- endmacro -%}}
 
 {{#
@@ -2395,7 +2395,7 @@ lines will be inserted at the beginning of the profile.
 
 {{#
 
-    Set a sshd configuration parameter to a value for system with /usr - located default config 
+    Set a sshd configuration parameter to a value for system with /usr - located default config
 
 :parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
 :type msg: str
