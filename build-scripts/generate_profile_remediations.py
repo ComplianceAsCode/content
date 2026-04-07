@@ -388,6 +388,10 @@ class ScriptGenerator:
             return ""
         expanded_remediation = expand_variables(
             fix_el, refinements, self.variables)
+        # For Hummingbird we intentionally don't add any warning if the
+        # rule Hummingbird remediation is missing because we expect that
+        # it will be normal that most of rules won't have any Hummingbird
+        # remediation
         if expanded_remediation is None:
             return ""
         output = []
