@@ -22,7 +22,10 @@ from ssg.constants import (
 
 DEFAULT_SELECTOR = "__DEFAULT"
 HASH_ROW = "#" * 79
-LANGUAGE_TO_SYSTEM = {"ansible": ansible_system, "bash": bash_system, "hummingbird": hummingbird_system}
+LANGUAGE_TO_SYSTEM = {
+    "ansible": ansible_system,
+    "bash": bash_system,
+    "hummingbird": hummingbird_system}
 LANGUAGE_TO_TARGET = {"ansible": "playbook", "bash": "script", "hummingbird": "script"}
 LANGUAGE_TO_EXTENSION = {"ansible": "yml", "bash": "sh", "hummingbird": "sh"}
 ANSIBLE_VAR_PATTERN = re.compile(
@@ -309,7 +312,9 @@ class ScriptGenerator:
             how_to_apply = "# $ sudo ./remediation-script.sh\n"
         elif self.language == "hummingbird":
             shebang_with_newline = "#!/usr/bin/env bash\n"
-            remediation_type = "Bash Remediation Script for building Project Hummingbird container images"
+            remediation_type = (
+                "Bash Remediation Script for building Project Hummingbird "
+                "container images")
             how_to_apply = "# RUN remediation-script.sh ${NEWROOT}\n"
         profile_title = profile.find("./{%s}title" % XCCDF12_NS).text
         description = profile.find("./{%s}description" % XCCDF12_NS).text
@@ -381,7 +386,6 @@ class ScriptGenerator:
         output.append(end_msg)
         return "".join(output)
 
-
     def generate_hummingbird_rule_remediation(self, rule_id, refinements):
         fix_el = self.remediations[rule_id]
         if fix_el is None:
@@ -404,7 +408,6 @@ class ScriptGenerator:
         end_msg = "\n# END fix for '%s'\n\n" % (rule_id)
         output.append(end_msg)
         return "".join(output)
-
 
     def generate_ansible_rule_remediation(self, fix_el, refinements):
         rule_vars = {}
