@@ -114,7 +114,7 @@ refer to their help text for more information and usage:
   framework) to expand Jinja in test scripts.
 - `generate_guides.py` -- Generate HTML guides and HTML index for every profile in the built SCAP source data stream.
 - `generate_man_page.py` -- generates the ComplianceAsCode man page.
-- `generate_profile_remediations.py` -- Generate profile oriented Bash remediation scripts or profile oriented Ansible Playbooks from the built SCAP source data stream. The output is similar to the output of the `oscap xccdf generate fix` command, but the tool `generate_profile_remediations.py` generates the scripts or Playbooks for all profiles in the given SCAP source data stream at once.
+- `generate_profile_remediations.py` -- Generate profile oriented Bash remediations (Bash scripts or Ansible Playbooks or Bash scripts for Hummingbird) from the built SCAP source data stream. The output is similar to the output of the `oscap xccdf generate fix` command, but the tool `generate_profile_remediations.py` generates the output for all profiles in the given SCAP source data stream at once.
 - `profile_tool.py` -- utility script to generate statistics about profiles
   in a specific XCCDF/data stream file.
 - `verify_references.py` -- used by the test system to verify cross-linkage
