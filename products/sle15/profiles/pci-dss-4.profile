@@ -20,6 +20,7 @@ selections:
     - var_multiple_time_servers=suse
     - var_multiple_time_pools=suse
     - audit_rules_enable_syscall_auditing
+    - '!package_postfix_installed'
 # Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only
 # rules related to chrony
     - '!ntpd_specify_multiple_servers'
