@@ -43,12 +43,12 @@ grub2_uefi_boot_path: /boot/grub2
 grub_helper_executable: grub2-mkconfig
 init_system: systemd
 journald_conf_dir_path: /etc/systemd/journal.d
+login_defs_defaults_path: /usr/etc/login.defs
+login_defs_drop_in_path: /etc/login.defs.d/oscap.login.defs
 login_defs_path: /etc/login.defs
 major_version_ordinal: 15
 nobody_gid: 65534
 nobody_uid: 65534
-ssh_client_config_dir: /etc/ssh/ssh_config.d
-ssh_client_main_config_file: /etc/ssh/ssh_config
 openssh_client_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh.config
 openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/opensshserver.config
 oval_feed_url: >-
@@ -111,6 +111,8 @@ reference_uris:
   suse-general: not_publicly_available
 release_key_fingerprint: FEAB502539D846DB2C0961CA70AF9E8139DB7C82
 rsyslog_cafile: /etc/pki/tls/cert.pem
+ssh_client_config_dir: /etc/ssh/ssh_config.d
+ssh_client_main_config_file: /etc/ssh/ssh_config
 sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
 sshd_distributed_config: "true"

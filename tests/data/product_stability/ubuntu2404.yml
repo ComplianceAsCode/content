@@ -24,18 +24,18 @@ chrony_conf_path: /etc/chrony/chrony.conf
 chrony_d_path: /etc/chrony/conf.d/
 components_root: ../../components
 cpes:
-- ubuntu2404:
-    check_id: installed_OS_is_ubuntu2404
-    name: cpe:/o:canonical:ubuntu_linux:24.04::~~lts~~~
-    title: Ubuntu release 24.04 (Noble Numbat)
+  - ubuntu2404:
+      check_id: installed_OS_is_ubuntu2404
+      name: cpe:/o:canonical:ubuntu_linux:24.04::~~lts~~~
+      title: Ubuntu release 24.04 (Noble Numbat)
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/run/faillock
 families:
-- debian-like
-- ubuntu
+  - debian-like
+  - ubuntu
 full_name: Ubuntu 24.04
 gid_min: 1000
 groups: {}
@@ -44,12 +44,12 @@ grub2_uefi_boot_path: /boot/grub
 grub_helper_executable: update-grub
 init_system: systemd
 journald_conf_dir_path: /etc/systemd/journald.conf.d
+login_defs_defaults_path: /usr/etc/login.defs
+login_defs_drop_in_path: /etc/login.defs.d/oscap.login.defs
 login_defs_path: /etc/login.defs
 major_version_ordinal: 2404
 nobody_gid: 65534
 nobody_uid: 65534
-ssh_client_config_dir: /etc/ssh/ssh_config.d
-ssh_client_main_config_file: /etc/ssh/ssh_config
 openssh_client_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh.config
 openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/opensshserver.config
 oval_feed_url: https://security-metadata.canonical.com/oval/com.ubuntu.noble.usn.oval.xml.bz2
@@ -114,23 +114,25 @@ reference_uris:
   stigid: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
 rsyslog_cafile: /etc/pki/tls/cert.pem
+ssh_client_config_dir: /etc/ssh/ssh_config.d
+ssh_client_main_config_file: /etc/ssh/ssh_config
 sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
 sshd_distributed_config: 'true'
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
 sshd_main_config_file: /etc/ssh/sshd_config
-sshd_sysconfig_file: /etc/sysconfig/sshd
 sshd_runtime_check: 'false'
+sshd_sysconfig_file: /etc/sysconfig/sshd
 sysctl_remediate_drop_in_file: 'false'
 target_oval_version:
-- 5
-- 11
-- 2
+  - 5
+  - 11
+  - 2
 target_oval_version_str: 5.11.2
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland
