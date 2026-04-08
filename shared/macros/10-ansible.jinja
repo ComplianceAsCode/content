@@ -1599,49 +1599,58 @@ Part of the grub2_bootloader_argument template.
 #}}
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value, arg_variable) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'sle16', 'slmicro5'] %}}
-- name: Check {{{ arg_name }}} argument exists
-  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
+
+{{%- if 'ubuntu' in product %}}
+{{%- set grub_vars = ['GRUB_CMDLINE_LINUX', 'GRUB_CMDLINE_LINUX_DEFAULT'] -%}}
+{{%- else %}}
+{{%- set grub_vars = ['GRUB_CMDLINE_LINUX'] -%}}
+{{%- endif %}}
+
+{{%- for grub_var in grub_vars %}}
+- name: Check {{{ arg_name }}} argument exists in {{{ grub_var }}}
+  ansible.builtin.command: grep '^\s*{{{ grub_var }}}=.*{{{ arg_name }}}=' /etc/default/grub
   check_mode: False
   failed_when: False
   changed_when: False
-  register: argcheck
+  register: argcheck_{{{ grub_var }}}
 
-- name: Check {{{ arg_name }}} argument exists
-  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
+- name: Check {{{ grub_var }}} line exists
+  ansible.builtin.command: grep '^\s*{{{ grub_var }}}=' /etc/default/grub
   check_mode: False
   failed_when: False
   changed_when: False
-  register: linecheck
+  register: linecheck_{{{ grub_var }}}
 
-- name: Add {{{ arg_name }}} argument
+- name: Add {{{ arg_name }}} argument to {{{ grub_var }}}
   ansible.builtin.lineinfile:
-    line: 'GRUB_CMDLINE_LINUX="{{{ arg_name_value }}} "'
+    line: '{{{ grub_var }}}="{{{ arg_name_value }}} "'
     state: present
     dest: /etc/default/grub
     create: yes
     mode: '0644'
-  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc != 0
+  when: argcheck_{{{ grub_var }}} is not skipped and linecheck_{{{ grub_var }}} is not skipped and argcheck_{{{ grub_var }}}.rc != 0 and linecheck_{{{ grub_var }}}.rc != 0
 
-- name: Replace existing {{{ arg_name }}} argument
+- name: Replace existing {{{ arg_name }}} argument in {{{ grub_var }}}
   ansible.builtin.replace:
       path: /etc/default/grub
-      regexp: '{{{ arg_name }}}=[a-zA-Z0-9,]+'
-      replace: '{{{ arg_name_value }}}'
-  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc == 0 and linecheck.rc == 0
+      regexp: '(^\s*{{{ grub_var }}}=.*){{{ arg_name }}}=[a-zA-Z0-9,]+(.*)'
+      replace: '\1{{{ arg_name_value }}}\2'
+  when: argcheck_{{{ grub_var }}} is not skipped and linecheck_{{{ grub_var }}} is not skipped and argcheck_{{{ grub_var }}}.rc == 0 and linecheck_{{{ grub_var }}}.rc == 0
 
-- name: Add {{{ arg_name }}} argument
+- name: Add {{{ arg_name }}} argument to {{{ grub_var }}}
   ansible.builtin.replace:
       path: /etc/default/grub
-      regexp: '(^\s*GRUB_CMDLINE_LINUX=.*)"'
+      regexp: '(^\s*{{{ grub_var }}}=.*)"'
       replace: '\1 {{{ arg_name_value }}}"'
-  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc == 0
+  when: argcheck_{{{ grub_var }}} is not skipped and linecheck_{{{ grub_var }}} is not skipped and argcheck_{{{ grub_var }}}.rc != 0 and linecheck_{{{ grub_var }}}.rc == 0
+{{%- endfor %}}
 
 {{% endif -%}}
 
 {{% if product in ['sle12', 'sle15', 'sle16', 'slmicro5'] %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
-{{% elif 'debian' in product %}}
+{{% elif 'debian' in product or 'ubuntu' in product %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/update-grub
 {{% else %}}
@@ -2395,7 +2404,7 @@ lines will be inserted at the beginning of the profile.
 
 {{#
 
-    Set a sshd configuration parameter to a value for system with /usr - located default config 
+    Set a sshd configuration parameter to a value for system with /usr - located default config
 
 :parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
 :type msg: str
