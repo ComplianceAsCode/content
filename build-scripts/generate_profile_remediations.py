@@ -316,6 +316,8 @@ class ScriptGenerator:
                 "Bash Remediation Script for building Project Hummingbird "
                 "container images")
             how_to_apply = "# RUN remediation-script.sh ${NEWROOT}\n"
+        else:
+            raise ValueError("Unknown language %s" % self.language)
         profile_title = profile.find("./{%s}title" % XCCDF12_NS).text
         description = profile.find("./{%s}description" % XCCDF12_NS).text
         commented_profile_description = comment(description)
