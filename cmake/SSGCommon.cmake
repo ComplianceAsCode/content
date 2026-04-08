@@ -258,7 +258,7 @@ macro(ssg_build_ansible_playbooks PRODUCT)
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
-    message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition, kubernetes and blueprint)...")
+    message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (${PRODUCT_REMEDIATION_LANGUAGES})...")
 
     ssg_collect_remediations(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
 
