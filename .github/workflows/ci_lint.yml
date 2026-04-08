@@ -36,7 +36,7 @@ jobs:
       - name: Run yamllint on files modified by the PR
         run: |
           exit_code=0
-          for file in $(cat filenames.txt); do
+          for file in $(grep -E '\.(yml|yaml|fmf|profile)$' filenames.txt); do
             if [[ ! -f "$file" ]]; then
               continue
             fi
