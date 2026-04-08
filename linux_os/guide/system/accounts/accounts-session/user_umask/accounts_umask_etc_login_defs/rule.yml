@@ -50,7 +50,7 @@ ocil: |-
 
     UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
-platform: package[shadow-utils]
+platform: package[shadow-utils] and system_with_kernel
 
 checktext: |-
     Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
