@@ -678,7 +678,7 @@ def expand_xccdf_subs(fix, remediation_type):
     elif remediation_type == "bootc":
         pattern = r'\(bootc-populate\s*(\S+)\)'
     elif remediation_type == "hummingbird":
-        pattern = r'\(hummingbird-populate\s*(\S+)\)'
+        pattern = r'\(bash-populate\s*(\S+)\)'
     else:
         sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
         sys.exit(1)
