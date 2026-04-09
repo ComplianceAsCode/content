@@ -240,6 +240,7 @@ package_nginx_removed
 package_pam_pwquality_installed
 package_rsync_removed
 package_samba_removed
+package_sequoia-sq_installed
 package_setroubleshoot_removed
 package_squid_removed
 package_sudo_installed
