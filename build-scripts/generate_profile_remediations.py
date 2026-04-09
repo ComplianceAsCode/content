@@ -4,14 +4,15 @@ import argparse
 import collections
 import os
 import re
+import textwrap
 import xml.etree.ElementTree as ET
-import yaml
 
 import ssg.ansible
 import ssg.yaml
 from ssg.constants import (
     ansible_system,
     bash_system,
+    hummingbird_system,
     datastream_namespace,
     OSCAP_PROFILE,
     OSCAP_RULE,
@@ -21,9 +22,12 @@ from ssg.constants import (
 
 DEFAULT_SELECTOR = "__DEFAULT"
 HASH_ROW = "#" * 79
-LANGUAGE_TO_SYSTEM = {"ansible": ansible_system, "bash": bash_system}
-LANGUAGE_TO_TARGET = {"ansible": "playbook", "bash": "script"}
-LANGUAGE_TO_EXTENSION = {"ansible": "yml", "bash": "sh"}
+LANGUAGE_TO_SYSTEM = {
+    "ansible": ansible_system,
+    "bash": bash_system,
+    "hummingbird": hummingbird_system}
+LANGUAGE_TO_TARGET = {"ansible": "playbook", "bash": "script", "hummingbird": "script"}
+LANGUAGE_TO_EXTENSION = {"ansible": "yml", "bash": "sh", "hummingbird": "sh"}
 ANSIBLE_VAR_PATTERN = re.compile(
     "- name: XCCDF Value [^ ]+ # promote to variable\n  set_fact:\n"
     "    ([^:]+): !!str (.+)\n  tags:\n    - always\n")
@@ -44,8 +48,8 @@ def parse_args():
         help="Product ID, eg. 'rhel9'"
     )
     parser.add_argument(
-        "--language", required=True, choices=["bash", "ansible"],
-        help="Remediation language, either 'bash' or 'ansible'"
+        "--language", required=True, choices=["bash", "ansible", "hummingbird"],
+        help="Remediation language, either 'bash' or 'ansible' or 'hummingbird'"
     )
     args = parser.parse_args()
     return args
@@ -125,7 +129,7 @@ def get_variable_values(variable):
         if selector is None:
             selector = DEFAULT_SELECTOR
         if value.text is None:
-            values["selector"] = ""
+            values[selector] = ""
         else:
             values[selector] = value.text
     return values
@@ -206,8 +210,10 @@ class ScriptGenerator:
     def generate_profile_remediation_script(self, profile_el):
         if self.language == "ansible":
             output = self.create_output_ansible(profile_el)
-        elif self.language == "bash":
-            output = self.create_output_bash(profile_el)
+        elif self.language in ("bash", "hummingbird"):
+            output = self.create_output_linear(profile_el)
+        else:
+            raise ValueError("Unknown language %s" % self.language)
         file_path = self.get_output_file_path(profile_el)
         with open(file_path, "wb") as f:
             f.write(output.encode("utf-8"))
@@ -254,20 +260,38 @@ class ScriptGenerator:
             all_tasks.extend(rule_tasks)
         return (all_vars, all_tasks)
 
-    def create_output_bash(self, profile):
+    def create_output_linear(self, profile):
         output = []
         selected_rules = get_selected_rules(profile)
         refinements = get_value_refinenements(profile)
         header = self.create_header(profile)
         output.append(header)
         total = len(selected_rules)
+        if self.language == "hummingbird":
+            newroot_assign = textwrap.dedent(
+                """
+                # The first argument is the root directory of the system
+                NEWROOT="$1"
+                if [[ -z "$NEWROOT" ]] ; then
+                    echo "Missing required NEWROOT argument" >&2
+                    exit 1
+                fi
+                """
+            )
+            output.append(newroot_assign)
         current = 1
         for rule_id in self.remediations:
             if rule_id not in selected_rules:
                 continue
             status = (current, total)
-            rule_remediation = self.generate_bash_rule_remediation(
-                rule_id, status, refinements)
+            if self.language == "bash":
+                rule_remediation = self.generate_bash_rule_remediation(
+                    rule_id, status, refinements)
+            elif self.language == "hummingbird":
+                rule_remediation = self.generate_hummingbird_rule_remediation(
+                    rule_id, refinements)
+            else:
+                raise ValueError("Unknown language %s" % self.language)
             output.append(rule_remediation)
             current += 1
         return "".join(output)
@@ -286,11 +310,26 @@ class ScriptGenerator:
             shebang_with_newline = "#!/usr/bin/env bash\n"
             remediation_type = "Bash Remediation Script"
             how_to_apply = "# $ sudo ./remediation-script.sh\n"
+        elif self.language == "hummingbird":
+            shebang_with_newline = "#!/usr/bin/env bash\n"
+            remediation_type = (
+                "Bash Remediation Script for building Project Hummingbird "
+                "container images")
+            how_to_apply = "# RUN remediation-script.sh ${NEWROOT}\n"
+        else:
+            raise ValueError("Unknown language %s" % self.language)
         profile_title = profile.find("./{%s}title" % XCCDF12_NS).text
         description = profile.find("./{%s}description" % XCCDF12_NS).text
         commented_profile_description = comment(description)
         xccdf_version_name = "1.2"
         profile_id = profile.get("id")
+        if self.language == "bash":
+            generation_text = (
+                "# This file can be generated by OpenSCAP using:\n"
+                "# $ oscap xccdf generate fix --profile %s --fix-type %s %s\n"
+                "#\n" % (profile_id, self.language, self.ds_file_name))
+        else:
+            generation_text = ""
         fix_header = (
             "%s"
             "%s\n"
@@ -305,9 +344,7 @@ class ScriptGenerator:
             "# Benchmark Version:  %s\n"
             "# XCCDF Version:  %s\n"
             "#\n"
-            "# This file can be generated by OpenSCAP using:\n"
-            "# $ oscap xccdf generate fix --profile %s --fix-type %s %s\n"
-            "#\n"
+            "%s"
             "# This %s is generated from an XCCDF profile without"
             " preliminary evaluation.\n"
             "# It attempts to fix every selected rule, even if the system is"
@@ -320,7 +357,7 @@ class ScriptGenerator:
                 shebang_with_newline, HASH_ROW, remediation_type,
                 profile_title, commented_profile_description, profile_id,
                 self.benchmark_id, self.benchmark_version, xccdf_version_name,
-                profile_id, self.language, self.ds_file_name,
+                generation_text,
                 remediation_type, remediation_type, how_to_apply, HASH_ROW))
         return fix_header
 
@@ -347,6 +384,29 @@ class ScriptGenerator:
                 "(>&2 echo \"FIX FOR THIS RULE '%s' IS MISSING!\")\n" %
                 (rule_id))
             output.append(warning)
+        end_msg = "\n# END fix for '%s'\n\n" % (rule_id)
+        output.append(end_msg)
+        return "".join(output)
+
+    def generate_hummingbird_rule_remediation(self, rule_id, refinements):
+        fix_el = self.remediations[rule_id]
+        if fix_el is None:
+            return ""
+        expanded_remediation = expand_variables(
+            fix_el, refinements, self.variables)
+        # For Hummingbird we intentionally don't add any warning if the
+        # rule Hummingbird remediation is missing because we expect that
+        # it will be normal that most of rules won't have any Hummingbird
+        # remediation
+        if expanded_remediation is None:
+            return ""
+        output = []
+        header = (
+            "%s\n"
+            "# BEGIN fix for '%s'\n"
+            "%s\n" % (HASH_ROW, rule_id, HASH_ROW))
+        output.append(header)
+        output.append(expanded_remediation)
         end_msg = "\n# END fix for '%s'\n\n" % (rule_id)
         output.append(end_msg)
         return "".join(output)
