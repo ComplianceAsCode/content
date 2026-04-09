@@ -3,10 +3,10 @@ on:
   pull_request:
     branches: [master, 'stabilization*']
 permissions:
-    contents: read
+  contents: read
 jobs:
   yamllint:
-    name: Yaml Lint on Changed Controls and Profiles Files
+    name: Yaml Lint on Changed yaml files
     runs-on: ubuntu-latest
     steps:
       - name: Install Git
@@ -27,37 +27,41 @@ jobs:
           url="repos/$repo/pulls/$pr_number/files"
           response=$(gh api "$url" --paginate)
           echo "$response" | jq -r '.[].filename' > filenames.txt
-          cat filenames.txt
-
-          if grep -q "controls/" filenames.txt; then
-            echo "CONTROLS_CHANGES=true" >> $GITHUB_ENV
-          else
-            echo "CONTROLS_CHANGES=false" >> $GITHUB_ENV
-          fi
-          if grep -q "\.profile" filenames.txt; then
-            echo "PROFILES_CHANGES=true" >> $GITHUB_ENV
-          else
-            echo "PROFILES_CHANGES=false" >> $GITHUB_ENV
-          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install yamllint
-        if: ${{ env.CONTROLS_CHANGES == 'true' || env.PROFILES_CHANGES == 'true' }}
         run: pip install yamllint
 
-      - name: Run yamllint in Control Files Modified by PR
-        if: ${{ env.CONTROLS_CHANGES == 'true' }}
+      - name: Run yamllint on files modified by the PR
         run: |
-          for control_file in $(cat filenames.txt | grep "controls/"); do
-            echo "Running yamllint on $control_file..."
-            yamllint "$control_file"
+          exit_code=0
+          for file in $(grep -E '\.(yml|yaml|fmf|profile)$' filenames.txt); do
+            if [[ ! -f "$file" ]]; then
+              continue
+            fi
+            echo "Running yamllint on $file..."
+            if grep -qP '\{\{[%{#]' "$file"; then
+              # File contains Jinja2 constructs — strip them before linting.
+              # yamllint -s exits: 0 = clean, 1 = errors, 2 = warnings only.
+              output=$(python3 utils/strip_jinja_for_yamllint.py "$file" \
+                       | yamllint -s -c .yamllint - 2>&1)
+              rc=$?
+              # Show all output (warnings and errors), replacing "stdin"
+              # with the actual filename since yamllint reads from a pipe.
+              if [ -n "$output" ]; then
+                echo "$output" | sed "s|^stdin|$file|"
+              fi
+              # Fail only on errors (exit code 1), not warnings (exit code 2).
+              if [ "$rc" -eq 1 ]; then
+                exit_code=1
+              fi
+            else
+              yamllint -s -c .yamllint "$file"
+              rc=$?
+              if [ "$rc" -eq 1 ]; then
+                exit_code=1
+              fi
+            fi
           done
-
-      - name: Run yamllint in Profile Files Modified by PR
-        if: ${{ env.PROFILES_CHANGES == 'true' }}
-        run: |
-          for profile_file in $(cat filenames.txt | grep "\.profile"); do
-            echo "Running yamllint on $profile_file..."
-            yamllint "$profile_file"
-          done
+          exit $exit_code
