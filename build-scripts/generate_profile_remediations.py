@@ -129,7 +129,7 @@ def get_variable_values(variable):
         if selector is None:
             selector = DEFAULT_SELECTOR
         if value.text is None:
-            values["selector"] = ""
+            values[selector] = ""
         else:
             values[selector] = value.text
     return values

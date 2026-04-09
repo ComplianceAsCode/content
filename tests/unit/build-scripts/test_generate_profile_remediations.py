@@ -256,8 +256,9 @@ def test_get_variable_values_empty_text():
     )
     variable = ET.fromstring(xml)
     result = gpr.get_variable_values(variable)
-    # When value.text is None, the code sets values["selector"] = ""
-    assert "selector" in result
+    # When value.text is None, the code sets values[selector] = ""
+    assert "empty" in result
+    assert result["empty"] == ""
 
 
 # ---------------------------------------------------------------------------
