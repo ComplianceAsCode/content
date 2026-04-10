@@ -39,10 +39,12 @@ ocil: |-
     The runtime status of the <code>kernel.kptr_restrict</code> kernel parameter can be queried
     by running the following command:
     <pre>$ sysctl kernel.kptr_restrict</pre>
-    The output of the command should indicate either:
+    The output of the command should indicate:
     <code>kernel.kptr_restrict = 1</code>
+    {{% if product != 'rhel8' %}}
     or:
     <code>kernel.kptr_restrict = 2</code>
+    {{% endif %}}
     The output of the command should not indicate:
     <code>kernel.kptr_restrict = 0</code>
 
@@ -55,12 +57,14 @@ ocil: |-
     <pre>$ grep -r '^\s*kernel.kptr_restrict\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
     The command should not find any assignments other than:
     kernel.kptr_restrict = 1
+    {{% if product != 'rhel8' %}}
     or:
     kernel.kptr_restrict = 2
+    {{% endif %}}
 
     Conflicting assignments are not allowed.
 
-ocil_clause: "the kernel.kptr_restrict is not set to 1 or 2 or is configured to be 0"
+ocil_clause: "the kernel.kptr_restrict is not set to 1{{% if product != 'rhel8' %}} or 2{{% endif %}} or is configured to be 0"
 
 srg_requirement: '{{{ full_name }}} must restrict exposed kernel pointer addresses access.'
 
@@ -70,7 +74,10 @@ template:
     name: sysctl
     vars:
         sysctlvar: kernel.kptr_restrict
-        {{% if 'ol' in families or 'rhel' in product %}}
+        {{% if product == 'rhel8' %}}
+        sysctlval: '1'
+        wrong_sysctlval_for_testing: "0"
+        {{% elif 'ol' in families or 'rhel' in product %}}
         sysctlval:
         - '1'
         - '2'
