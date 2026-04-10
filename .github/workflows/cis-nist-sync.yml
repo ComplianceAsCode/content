@@ -1,0 +1,594 @@
+name: Sincro - NIST 800-53 Sync
+
+on:
+  pull_request:
+    branches:
+      - master
+  schedule:
+    # Run every Sunday at 2:00 PM UTC
+    - cron: '0 14 * * 0'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  generate-and-validate:
+    name: Sincro - Generate NIST Control Files
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          dnf install -y \
+            cmake \
+            make \
+            ninja-build \
+            openscap-utils \
+            python3-pyyaml \
+            python3-jinja2 \
+            python3-pip \
+            git \
+            gcc \
+            gcc-c++ \
+            python3-devel \
+            libxml2-devel \
+            libxslt-devel \
+            python3-setuptools \
+            libxml2 \
+            expat \
+            gh
+
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install ruamel.yaml PyPDF2
+
+      - name: Download OSCAL catalog
+        run: |
+          cd utils/nist_sync
+          python3 download_oscal.py
+
+      - name: Run CIS-NIST workflow
+        id: workflow
+        run: |
+          cd utils/nist_sync
+
+          echo "Running workflow for products: rhel8 rhel9 rhel10"
+          # Use committed cis_nist_mappings.json (fast, no PDF parsing)
+          ./generate_cis_nist_workflow.sh --products "rhel8 rhel9 rhel10"
+
+      - name: Verify control files
+        run: |
+          echo "✓ Reference files (for comparison):"
+          echo "  - Metadata: shared/references/controls/nist_800_53_cis_reference.yml"
+          FAMILY_COUNT=$(ls -1 shared/references/controls/nist_800_53_cis_reference/*.yml 2>/dev/null | wc -l || echo "0")
+          echo "  - Families: shared/references/controls/nist_800_53_cis_reference/*.yml ($FAMILY_COUNT files)"
+          echo ""
+          echo "✓ Real files (used in builds):"
+          echo "  - Metadata: controls/nist_800_53.yml"
+          REAL_COUNT=$(ls -1 controls/nist_800_53/*.yml 2>/dev/null | wc -l || echo "0")
+          echo "  - Families: controls/nist_800_53/*.yml ($REAL_COUNT files)"
+          echo ""
+          echo "Profiles use: nist_800_53:all (real control files)"
+
+      - name: Render policies and generate HTML tables
+        run: |
+          cd build
+
+          # Render policies for all products
+          ninja render-policies
+
+          cd ..
+          mkdir -p artifacts/tables
+          mkdir -p artifacts/rendered-policies
+
+          # Copy rendered NIST 800-53 policies
+          for product in rhel8 rhel9 rhel10; do
+            if [ -f "build/$product/rendered-policies/nist_800_53.html" ]; then
+              cp "build/$product/rendered-policies/nist_800_53.html" "artifacts/rendered-policies/nist_800_53-$product.html"
+            fi
+          done
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p artifacts/controls
+          mkdir -p artifacts/profiles
+          mkdir -p artifacts/data
+          mkdir -p artifacts/datastreams
+
+          # Copy reference file (what was used for building)
+          cp shared/references/controls/nist_800_53_cis_reference.yml artifacts/controls/nist_800_53_cis_reference.yml
+
+          # Copy mapping cache
+          cp utils/nist_sync/data/cis_nist_mappings.json artifacts/data/
+
+          # Copy profiles
+          for product in rhel8 rhel9 rhel10; do
+            if [ -f "products/$product/profiles/cis_nist.profile" ]; then
+              mkdir -p "artifacts/profiles/$product"
+              cp "products/$product/profiles/cis_nist.profile" "artifacts/profiles/$product/"
+            fi
+          done
+
+          # Copy datastreams
+          for product in rhel8 rhel9 rhel10; do
+            if [ -f "build/ssg-$product-ds.xml" ]; then
+              cp "build/ssg-$product-ds.xml" "artifacts/datastreams/"
+            fi
+          done
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cis-nist-artifacts-${{ github.run_number }}
+          path: artifacts/
+          retention-days: 90
+
+      - name: Cleanup temporary files
+        run: |
+          # Remove temporary CIS reference file from controls/
+          rm -f controls/nist_800_53_cis_reference.yml
+          echo "Temporary CIS reference file removed"
+
+      - name: Generate summary report
+        run: |
+          {
+            echo "# CIS-NIST Sync Report"
+            echo ""
+            echo "## Generated Artifacts"
+            echo ""
+            echo "### CIS Reference File (With Guards, Used for Building)"
+            echo "- \`shared/references/controls/nist_800_53_cis_reference.yml\`"
+
+            # Count controls from reference file
+            CONTROL_COUNT=$(grep -E '^  - id:' shared/references/controls/nist_800_53_cis_reference.yml | wc -l)
+            GUARD_COUNT=$(grep -c '{{% if' shared/references/controls/nist_800_53_cis_reference.yml || echo "0")
+
+            echo "  - Total controls: $CONTROL_COUNT"
+            echo "  - Product guards: $GUARD_COUNT"
+            echo "  - Source: Auto-generated from CIS mappings + OSCAL"
+            echo "  - Profiles inherit from: \`nist_800_53_cis_reference:all\`"
+
+            echo ""
+            echo "### Profiles"
+            for product in rhel8 rhel9 rhel10; do
+              if [ -f "products/$product/profiles/cis_nist.profile" ]; then
+                echo "- \`products/$product/profiles/cis_nist.profile\`"
+              fi
+            done
+
+            echo ""
+            echo "### Profile Validation"
+            echo ""
+            echo "| Product | CIS Rules | CIS-NIST Rules | Match |"
+            echo "|---------|-----------|----------------|-------|"
+
+            echo ""
+            echo "## Mapping Statistics"
+            echo ""
+
+            # Parse mapping cache
+            python3 << 'PYEOF'
+          import json
+          with open('utils/nist_sync/data/cis_nist_mappings.json', 'r') as f:
+              data = json.load(f)
+
+          print(f"- Rules mapped to NIST: {len(data['rules'])}")
+          print(f"- Variables mapped to NIST: {len(data['variables'])}")
+
+          # Count unique NIST controls referenced
+          nist_controls = set()
+          for nist_list in data['rules'].values():
+              nist_controls.update(nist_list)
+          for nist_list in data['variables'].values():
+              nist_controls.update(nist_list)
+
+          print(f"- Unique NIST controls referenced: {len(nist_controls)}")
+          PYEOF
+
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Check for changes in CIS reference
+        id: changes
+        run: |
+          cd "$GITHUB_WORKSPACE"
+
+          # Check for changes in both top-level file and family directory
+          HAS_CHANGES=false
+
+          echo "Checking for changes in CIS reference files..."
+
+          # Check top-level metadata file
+          if [ -f shared/references/controls/nist_800_53_cis_reference.yml ]; then
+            if git ls-files --error-unmatch shared/references/controls/nist_800_53_cis_reference.yml >/dev/null 2>&1; then
+              if ! git diff --quiet HEAD -- shared/references/controls/nist_800_53_cis_reference.yml; then
+                echo "✓ Changes detected in metadata file"
+                HAS_CHANGES=true
+              else
+                echo "  Metadata file unchanged"
+              fi
+            else
+              echo "✓ Metadata file is new (not tracked in git)"
+              HAS_CHANGES=true
+            fi
+          else
+            echo "⚠️  Metadata file not found"
+          fi
+
+          # Check family directory
+          if [ -d shared/references/controls/nist_800_53_cis_reference/ ]; then
+            if git ls-files --error-unmatch shared/references/controls/nist_800_53_cis_reference/ >/dev/null 2>&1; then
+              if ! git diff --quiet HEAD -- shared/references/controls/nist_800_53_cis_reference/; then
+                echo "✓ Changes detected in family files"
+                CHANGED_COUNT=$(git diff --name-only HEAD -- shared/references/controls/nist_800_53_cis_reference/ | wc -l)
+                echo "  Changed files: $CHANGED_COUNT"
+                HAS_CHANGES=true
+              else
+                echo "  Family files unchanged"
+              fi
+            else
+              echo "✓ Family directory is new (not tracked in git)"
+              HAS_CHANGES=true
+            fi
+          else
+            echo "⚠️  Family directory not found"
+          fi
+
+          if [ "$HAS_CHANGES" = "true" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo ""
+            echo "✅ Changes detected - will create PR"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo ""
+            echo "ℹ️  No changes detected - skipping PR creation"
+          fi
+
+      - name: Show diff summary
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          cd "$GITHUB_WORKSPACE"
+
+          echo "## ℹ️ Changes Detected (PR Creation Pending)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Changes were detected in generated files. A PR will be created if:" >> $GITHUB_STEP_SUMMARY
+          echo "- The changes can be staged (files differ from current branch)" >> $GITHUB_STEP_SUMMARY
+          echo "- The commits differ from origin/master (not already merged)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Changes Detected in CIS Reference" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The CIS→NIST mapping reference files have changed." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Show file stats for all changes
+          echo "### File Statistics" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          git diff --stat HEAD -- shared/references/controls/nist_800_53_cis_reference.yml shared/references/controls/nist_800_53_cis_reference/ >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Show metadata file diff
+          echo "### Metadata File Changes" >> $GITHUB_STEP_SUMMARY
+          echo '```diff' >> $GITHUB_STEP_SUMMARY
+          git diff HEAD -- shared/references/controls/nist_800_53_cis_reference.yml | head -100 >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Show changed family files summary
+          echo "### Changed Family Files" >> $GITHUB_STEP_SUMMARY
+          CHANGED_FAMILIES=$(git diff --name-only HEAD -- shared/references/controls/nist_800_53_cis_reference/ | xargs -n 1 basename 2>/dev/null || true)
+          if [ -n "$CHANGED_FAMILIES" ]; then
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$CHANGED_FAMILIES" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No family files changed" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### What This Means" >> $GITHUB_STEP_SUMMARY
+          echo "- The CIS reference files show what CIS benchmark mappings say" >> $GITHUB_STEP_SUMMARY
+          echo "- Review the full diff in the PR to see all changes" >> $GITHUB_STEP_SUMMARY
+          echo "- Manually apply relevant changes to \`controls/nist_800_53/\*.yml\`" >> $GITHUB_STEP_SUMMARY
+          echo "- The real control files may have additional human edits" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create Pull Request for scheduled runs
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.changes.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd "$GITHUB_WORKSPACE"
+
+          # Create a new branch for the update
+          BRANCH_NAME="auto-update-nist-800-53-$(date +%Y%m%d-%H%M%S)"
+          echo "Creating branch: $BRANCH_NAME"
+          git checkout -b "$BRANCH_NAME"
+
+          # Stage and commit the CIS reference files (monolithic + split by family)
+          echo "Staging files..."
+          git add shared/references/controls/nist_800_53_cis_reference.yml
+          git add shared/references/controls/nist_800_53_cis_reference/
+
+          # Check if there are actually staged changes
+          echo "Checking for staged changes..."
+          if git diff --cached --quiet; then
+            echo "⚠️  No staged changes detected" | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "**Reason:** The generated files are identical to what's already in master." | tee -a $GITHUB_STEP_SUMMARY
+            echo "This usually means:" | tee -a $GITHUB_STEP_SUMMARY
+            echo "- The CIS mappings haven't changed since last sync" | tee -a $GITHUB_STEP_SUMMARY
+            echo "- The OSCAL catalog is the same version" | tee -a $GITHUB_STEP_SUMMARY
+            echo "- The reference files are already up to date" | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "✓ No action needed - everything is in sync!" | tee -a $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+          echo "✓ Found staged changes, proceeding with commit..."
+          git diff --cached --stat
+
+          # Get change statistics
+          ADDED=$(git diff --cached --numstat | awk '{sum+=$1} END {print sum}')
+          REMOVED=$(git diff --cached --numstat | awk '{sum+=$2} END {print sum}')
+          CHANGES_SUMMARY="+${ADDED:-0}/-${REMOVED:-0}"
+
+          git commit -m "$(cat <<EOF
+          Update NIST 800-53 CIS reference from latest mappings
+
+          This automated update regenerates the CIS→NIST reference file from
+          the latest OSCAL catalog and CIS benchmark mappings.
+
+          Changes: ${CHANGES_SUMMARY} lines in shared/references/controls/nist_800_53_cis_reference.yml
+
+          ⚠️  MANUAL ACTION REQUIRED:
+          Review the diff and manually update controls/nist_800_53.yml as needed.
+          The real control file may have additional human edits and guards.
+
+          Synchronized by: Sincro - NIST 800-53 Automation
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+          EOF
+          )"
+
+          # Push the branch
+          git push origin "$BRANCH_NAME"
+
+          # Verify there are actual commits different from origin/master
+          echo "Verifying commits differ from origin/master..."
+          COMMITS_AHEAD=$(git rev-list --count origin/master.."$BRANCH_NAME" 2>/dev/null || echo "0")
+          if [ "$COMMITS_AHEAD" = "0" ]; then
+            echo "⚠️  No commits ahead of origin/master" | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "**Branch:** $BRANCH_NAME" | tee -a $GITHUB_STEP_SUMMARY
+            echo "**Commits ahead:** $COMMITS_AHEAD" | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "This means the files committed are identical to origin/master." | tee -a $GITHUB_STEP_SUMMARY
+            echo "The commit was created locally but has no diff from remote." | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "Skipping PR creation (would fail with 'no commits' error)." | tee -a $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+          echo "✓ Found $COMMITS_AHEAD commit(s) to create PR for" | tee -a $GITHUB_STEP_SUMMARY
+
+          # Check if there's already an open PR for NIST 800-53 updates
+          echo "Checking for existing open PRs..."
+          EXISTING_PR=$(gh pr list --base master --state open --search "NIST 800-53 CIS Reference Update in:title" --json number --jq '.[0].number' 2>/dev/null || echo "")
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "⚠️  Found existing open PR #$EXISTING_PR" | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+
+            EXISTING_PR_TITLE=$(gh pr view "$EXISTING_PR" --json title --jq '.title')
+            EXISTING_PR_URL=$(gh pr view "$EXISTING_PR" --json url --jq '.url')
+            EXISTING_PR_BRANCH=$(gh pr view "$EXISTING_PR" --json headRefName --jq '.headRefName')
+
+            echo "**Existing PR Details:**" | tee -a $GITHUB_STEP_SUMMARY
+            echo "- **PR:** [#$EXISTING_PR]($EXISTING_PR_URL) - $EXISTING_PR_TITLE" | tee -a $GITHUB_STEP_SUMMARY
+            echo "- **Branch:** \`$EXISTING_PR_BRANCH\`" | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "**Action:** Skipping new PR creation to avoid duplicates." | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "Adding a comment to the existing PR with updated timestamp..." | tee -a $GITHUB_STEP_SUMMARY
+
+            # Add a comment to the existing PR
+            TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S UTC')
+            RERUN_COMMENT=$(cat <<EOF
+          🔄 **Workflow Re-run Update**
+
+          The CIS-NIST sync workflow ran again at **$TIMESTAMP**.
+
+          The reference files are still up to date with the same changes as this PR.
+
+          **Status:** This PR is still current and ready for review.
+
+          _Automated comment from [workflow run ${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})_
+          EOF
+            )
+
+            gh pr comment "$EXISTING_PR" --body "$RERUN_COMMENT"
+
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "✅ Updated existing PR #$EXISTING_PR with re-run timestamp" | tee -a $GITHUB_STEP_SUMMARY
+            echo "" | tee -a $GITHUB_STEP_SUMMARY
+            echo "**Next Steps:** Review and merge PR #$EXISTING_PR at $EXISTING_PR_URL" | tee -a $GITHUB_STEP_SUMMARY
+
+            # Clean up the branch we created (won't be used)
+            echo "Cleaning up unused branch: $BRANCH_NAME"
+            git push origin --delete "$BRANCH_NAME" 2>/dev/null || echo "Branch already deleted or doesn't exist on remote"
+
+            exit 0
+          fi
+
+          echo "No existing open PR found, proceeding with PR creation..."
+
+          # Create pull request using gh CLI and capture PR number
+          PR_URL=$(gh pr create \
+            --title "🔄 NIST 800-53 CIS Reference Update ($(date +%Y-%m-%d))" \
+            --body "$(cat <<EOF
+          ## Summary
+          This automated PR updates the **CIS reference file** showing the latest CIS→NIST mappings.
+
+          ## ⚠️  MANUAL ACTION REQUIRED
+
+          **This PR only updates the reference file for comparison.**
+
+          You must manually review the changes and update \`controls/nist_800_53.yml\` accordingly:
+
+          1. **Review the diff** in this PR to see what changed in CIS mappings
+          2. **Manually apply** relevant changes to \`controls/nist_800_53/*.yml\` (split by family)
+          3. **Preserve** any human-added rules, guards, or notes in the real files
+          4. **Commit** your manual updates to the real control files in this PR
+
+          ## Changes
+          - ${CHANGES_SUMMARY} lines modified in CIS reference files
+          - Metadata file: \`shared/references/controls/nist_800_53_cis_reference.yml\`
+          - Family files: \`shared/references/controls/nist_800_53_cis_reference/*.yml\` (21 families)
+
+          ## File Roles
+
+          | File | Purpose | Maintained By |
+          |------|---------|---------------|
+          | \`shared/references/controls/nist_800_53_cis_reference.yml\` | Reference metadata file | 🤖 Automation |
+          | \`shared/references/controls/nist_800_53_cis_reference/*.yml\` | Reference family files (for comparison) | 🤖 Automation |
+          | \`controls/nist_800_53.yml\` | Real metadata file | 👤 Humans |
+          | \`controls/nist_800_53/*.yml\` | Real family files (source of truth) | 👤 Humans |
+
+          ## How Profiles Work
+          - CIS-NIST profiles inherit from: \`nist_800_53:all\` (real control files)
+          - Reference files contain Jinja2 guards for product-specific rules
+          - Reference files used for weekly comparison to detect CIS mapping changes
+
+          ## Details
+          - **Triggered by**: $(if [ "${{ github.event_name }}" == "schedule" ]; then echo "Weekly scheduled workflow"; else echo "Manual workflow dispatch"; fi)
+          - **Date**: $(date '+%Y-%m-%d %H:%M:%S UTC')
+          - **OSCAL Source**: [NIST SP 800-53 Rev 5](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)
+
+          ## Review Checklist
+          - [ ] Review CIS mapping changes (additions/removals)
+          - [ ] Identify which changes apply to the real control files
+          - [ ] Manually update \`controls/nist_800_53/*.yml\` with relevant changes
+          - [ ] Preserve existing human edits and Jinja2 guards
+          - [ ] Commit manual updates to this PR
+          - [ ] Run validation tests
+
+          ## How to Apply Changes
+
+          \`\`\`bash
+          # 1. Check out this PR branch
+          gh pr checkout $BRANCH_NAME
+
+          # 2. Review the diff in the reference files (by family)
+          git diff origin/master...HEAD -- shared/references/controls/nist_800_53_cis_reference/
+
+          # 3. For each changed family, review and apply to real files
+          # Example: if ac.yml changed:
+          git diff origin/master...HEAD -- shared/references/controls/nist_800_53_cis_reference/ac.yml
+          vim controls/nist_800_53/ac.yml  # Manually apply relevant changes
+
+          # 4. Commit your changes
+          git add controls/nist_800_53/
+          git commit -m "Manually apply CIS mapping updates to nist_800_53 family files"
+          git push
+          \`\`\`
+
+          🔄 Synchronized by **Sincro** | [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          EOF
+          )" \
+            --base master \
+            --head "$BRANCH_NAME")
+
+          echo "✅ Pull request created successfully" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Branch: \`$BRANCH_NAME\`" >> $GITHUB_STEP_SUMMARY
+          echo "PR URL: $PR_URL" >> $GITHUB_STEP_SUMMARY
+
+          # Add diff as a comment to the PR
+          METADATA_DIFF=$(mktemp)
+          FAMILIES_DIFF=$(mktemp)
+
+          git diff origin/master...HEAD -- shared/references/controls/nist_800_53_cis_reference.yml > "$METADATA_DIFF"
+          git diff origin/master...HEAD -- shared/references/controls/nist_800_53_cis_reference/ > "$FAMILIES_DIFF"
+
+          # Get list of changed family files
+          CHANGED_FAMILIES=$(git diff --name-only origin/master...HEAD -- shared/references/controls/nist_800_53_cis_reference/ | xargs -n 1 basename | sort || echo "None")
+
+          # Create comment body with diff
+          COMMENT_BODY=$(cat <<EOF
+          ## Detailed Changes in CIS Reference Files
+
+          ### Changed Family Files
+          \`\`\`
+          $CHANGED_FAMILIES
+          \`\`\`
+
+          <details>
+          <summary>📄 Metadata file diff (nist_800_53_cis_reference.yml)</summary>
+
+          \`\`\`diff
+          $(cat "$METADATA_DIFF")
+          \`\`\`
+
+          </details>
+
+          <details>
+          <summary>📁 Family files diff (all changed families)</summary>
+
+          \`\`\`diff
+          $(cat "$FAMILIES_DIFF" | head -1000)
+          \`\`\`
+
+          $(if [ $(wc -l < "$FAMILIES_DIFF") -gt 1000 ]; then echo "_Diff truncated to first 1000 lines. View full diff in the Files Changed tab._"; fi)
+
+          </details>
+
+          ---
+
+          **Next Steps:**
+          1. Review the changes above (metadata + family-specific files)
+          2. Identify which rules/controls were added, removed, or modified
+          3. Manually update \`controls/nist_800_53/*.yml\` to apply relevant changes
+          4. Preserve any human-added rules, guards, or notes in the real files
+
+          **Tip:** Family-specific files (ac.yml, au.yml, cm.yml, etc.) make it easier to review changes by control area.
+          EOF
+          )
+
+          gh pr comment "$PR_URL" --body "$COMMENT_BODY"
+          rm -f "$METADATA_DIFF" "$FAMILIES_DIFF"
+
+          echo "✅ Diff posted as PR comment (includes family files)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Workflow Summary
+        if: always()
+        run: |
+          echo "## 📊 CIS-NIST Sync Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Event:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Run ID:** ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              echo "**Outcome:** Changes detected, attempted PR creation" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "Check the 'Create Pull Request' step above to see if a PR was created or why it was skipped." >> $GITHUB_STEP_SUMMARY
+            else
+              echo "**Outcome:** Changes detected (PR creation only runs on schedule/manual trigger)" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "**Outcome:** ✅ No changes - reference files are up to date" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The CIS mappings and OSCAL catalog have not changed since the last sync." >> $GITHUB_STEP_SUMMARY
+          fi
