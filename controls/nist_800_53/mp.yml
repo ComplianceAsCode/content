@@ -1,0 +1,506 @@
+# NIST 800-53 MP Family: Media Protection
+controls:
+  - id: mp-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, mp-1_prm_1 ]]:\n    1. [[ insert: param, mp-01_odp.03 ]] media protection policy that:\n    2. Procedures to facilitate the implementation of the media protection policy and the associated media protection controls;\n  b. Designate an [[ insert: param, mp-01_odp.04 ]] to manage the development, documentation, and dissemination of the media protection policy and procedures; and\n  c. Review and update the current media protection:\n    1. Policy [[ insert: param, mp-01_odp.05 ]] and following [[ insert: param, mp-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, mp-01_odp.07 ]] and following [[ insert: param, mp-01_odp.08 ]]."
+    parameters:
+      - id: mp-1_prm_1
+        label: organization-defined personnel or roles
+      - id: mp-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the media protection policy is to be disseminated is/are defined;
+      - id: mp-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the media protection procedures are to be disseminated is/are defined;
+      - id: mp-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: mp-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the media protection policy and procedures is defined;
+      - id: mp-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency with which the current media protection policy is reviewed and updated is defined;
+      - id: mp-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current media protection policy to be reviewed and updated are defined;
+      - id: mp-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency with which the current media protection procedures are reviewed and updated is defined;
+      - id: mp-01_odp.08
+        label: events
+        guidelines:
+          - events that would require media protection procedures to be reviewed and updated are defined;
+    guidance: Media protection policy and procedures address the controls in the MP family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of media protection policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to media protection policy and procedures include assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: mp-2
+    title: Media Access
+    description: 'Restrict access to [[ insert: param, mp-2_prm_1 ]] to [[ insert: param, mp-2_prm_2 ]].'
+    parameters:
+      - id: mp-2_prm_1
+        label: organization-defined types of digital and/or non-digital media
+      - id: mp-2_prm_2
+        label: organization-defined personnel or roles
+      - id: mp-02_odp.01
+        label: types of digital media
+        guidelines:
+          - types of digital media to which access is restricted are defined;
+      - id: mp-02_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles authorized to access digital media is/are defined;
+      - id: mp-02_odp.03
+        label: types of non-digital media
+        guidelines:
+          - types of non-digital media to which access is restricted are defined;
+      - id: mp-02_odp.04
+        label: personnel or roles
+        guidelines:
+          - personnel or roles authorized to access non-digital media is/are defined;
+    guidance: System media includes digital and non-digital media. Digital media includes flash drives, diskettes, magnetic tapes, external or removable hard disk drives (e.g., solid state, magnetic), compact discs, and digital versatile discs. Non-digital media includes paper and microfilm. Denying access to patient medical records in a community hospital unless the individuals seeking access to such records are authorized healthcare providers is an example of restricting access to non-digital media. Limiting access to the design specifications stored on compact discs in the media library to individuals on the system development team is an example of restricting access to digital media.
+    related_controls:
+      - ac-19
+      - au-9
+      - cp-2
+      - cp-9
+      - cp-10
+      - ma-5
+      - mp-4
+      - mp-6
+      - pe-2
+      - pe-3
+      - sc-12
+      - sc-13
+      - sc-34
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: mp-2.1
+    title: Automated Restricted Access
+    rules: []
+    status: pending
+  - id: mp-2.2
+    title: Cryptographic Protection
+    rules: []
+    status: pending
+  - id: mp-3
+    title: Media Marking
+    description: "  a. Mark system media indicating the distribution limitations, handling caveats, and applicable security markings (if any) of the information; and\n  b. Exempt [[ insert: param, mp-03_odp.01 ]] from marking if the media remain within [[ insert: param, mp-03_odp.02 ]]."
+    parameters:
+      - id: mp-03_odp.01
+        label: types of media exempted from marking
+        guidelines:
+          - types of system media exempt from marking when remaining in controlled areas are defined;
+      - id: mp-03_odp.02
+        label: controlled areas
+        guidelines:
+          - controlled areas where media is exempt from marking are defined;
+    guidance: Security marking refers to the application or use of human-readable security attributes. Digital media includes diskettes, magnetic tapes, external or removable hard disk drives (e.g., solid state, magnetic), flash drives, compact discs, and digital versatile discs. Non-digital media includes paper and microfilm. Controlled unclassified information is defined by the National Archives and Records Administration along with the appropriate safeguarding and dissemination requirements for such information and is codified in [32 CFR 2002](#91f992fb-f668-4c91-a50f-0f05b95ccee3) . Security markings are generally not required for media that contains information determined by organizations to be in the public domain or to be publicly releasable. Some organizations may require markings for public information indicating that the information is publicly releasable. System media marking reflects applicable laws, executive orders, directives, policies, regulations, standards, and guidelines.
+    related_controls:
+      - ac-16
+      - cp-9
+      - mp-5
+      - pe-22
+      - si-12
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: mp-4
+    title: Media Storage
+    description: "  a. Physically control and securely store [[ insert: param, mp-4_prm_1 ]] within [[ insert: param, mp-4_prm_2 ]] ; and\n  b. Protect system media types defined in MP-4a until the media are destroyed or sanitized using approved equipment, techniques, and procedures."
+    parameters:
+      - id: mp-4_prm_1
+        label: organization-defined types of digital and/or non-digital media
+      - id: mp-4_prm_2
+        label: organization-defined controlled areas
+      - id: mp-04_odp.01
+        label: types of digital media
+        guidelines:
+          - types of digital media to be physically controlled are defined (if selected);
+      - id: mp-04_odp.02
+        label: types of non-digital media
+        guidelines:
+          - types of non-digital media to be physically controlled are defined (if selected);
+      - id: mp-04_odp.03
+        label: types of digital media
+        guidelines:
+          - types of digital media to be securely stored are defined (if selected);
+      - id: mp-04_odp.04
+        label: types of non-digital media
+        guidelines:
+          - types of non-digital media to be securely stored are defined (if selected);
+      - id: mp-04_odp.05
+        label: controlled areas
+        guidelines:
+          - controlled areas within which to securely store digital media are defined;
+      - id: mp-04_odp.06
+        label: controlled areas
+        guidelines:
+          - controlled areas within which to securely store non-digital media are defined;
+    guidance: System media includes digital and non-digital media. Digital media includes flash drives, diskettes, magnetic tapes, external or removable hard disk drives (e.g., solid state, magnetic), compact discs, and digital versatile discs. Non-digital media includes paper and microfilm. Physically controlling stored media includes conducting inventories, ensuring procedures are in place to allow individuals to check out and return media to the library, and maintaining accountability for stored media. Secure storage includes a locked drawer, desk, or cabinet or a controlled media library. The type of media storage is commensurate with the security category or classification of the information on the media. Controlled areas are spaces that provide physical and procedural controls to meet the requirements established for protecting information and systems. Fewer controls may be needed for media that contains information determined to be in the public domain, publicly releasable, or have limited adverse impacts on organizations, operations, or individuals if accessed by other than authorized personnel. In these situations, physical access controls provide adequate protection.
+    related_controls:
+      - ac-19
+      - cp-2
+      - cp-6
+      - cp-9
+      - cp-10
+      - mp-2
+      - mp-7
+      - pe-3
+      - pl-2
+      - sc-12
+      - sc-13
+      - sc-28
+      - sc-34
+      - si-12
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: mp-4.1
+    title: Cryptographic Protection
+    rules: []
+    status: pending
+  - id: mp-4.2
+    title: Automated Restricted Access
+    description: 'Restrict access to media storage areas and log access attempts and access granted using [[ insert: param, mp-4.2_prm_1 ]].'
+    parameters:
+      - id: mp-4.2_prm_1
+        label: organization-defined automated mechanisms
+      - id: mp-04.02_odp.01
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to restrict access to media storage areas are defined;
+      - id: mp-04.02_odp.02
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to log access attempts to media storage areas are defined;
+      - id: mp-04.02_odp.03
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to log access granted to media storage areas are defined;
+    guidance: Automated mechanisms include keypads, biometric readers, or card readers on the external entries to media storage areas.
+    related_controls:
+      - ac-3
+      - au-2
+      - au-6
+      - au-9
+      - au-12
+      - pe-3
+    rules: []
+    status: pending
+  - id: mp-5
+    title: Media Transport
+    description: "  a. Protect and control [[ insert: param, mp-05_odp.01 ]] during transport outside of controlled areas using [[ insert: param, mp-5_prm_2 ]];\n  b. Maintain accountability for system media during transport outside of controlled areas;\n  c. Document activities associated with the transport of system media; and\n  d. Restrict the activities associated with the transport of system media to authorized personnel."
+    parameters:
+      - id: mp-5_prm_2
+        label: organization-defined controls
+      - id: mp-05_odp.01
+        label: types of system media
+        guidelines:
+          - types of system media to protect and control during transport outside of controlled areas are defined;
+      - id: mp-05_odp.02
+        label: controls
+        guidelines:
+          - controls used to protect system media outside of controlled areas are defined;
+      - id: mp-05_odp.03
+        label: controls
+        guidelines:
+          - controls used to control system media outside of controlled areas are defined;
+    guidance: System media includes digital and non-digital media. Digital media includes flash drives, diskettes, magnetic tapes, external or removable hard disk drives (e.g., solid state and magnetic), compact discs, and digital versatile discs. Non-digital media includes microfilm and paper. Controlled areas are spaces for which organizations provide physical or procedural controls to meet requirements established for protecting information and systems. Controls to protect media during transport include cryptography and locked containers. Cryptographic mechanisms can provide confidentiality and integrity protections depending on the mechanisms implemented. Activities associated with media transport include releasing media for transport, ensuring that media enters the appropriate transport processes, and the actual transport. Authorized transport and courier personnel may include individuals external to the organization. Maintaining accountability of media during transport includes restricting transport activities to authorized personnel and tracking and/or obtaining records of transport activities as the media moves through the transportation system to prevent and detect loss, destruction, or tampering. Organizations establish documentation requirements for activities associated with the transport of system media in accordance with organizational assessments of risk. Organizations maintain the flexibility to define record-keeping methods for the different types of media transport as part of a system of transport-related records.
+    related_controls:
+      - ac-7
+      - ac-19
+      - cp-2
+      - cp-9
+      - mp-3
+      - mp-4
+      - pe-16
+      - pl-2
+      - sc-12
+      - sc-13
+      - sc-28
+      - sc-34
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: mp-5.1
+    title: Protection Outside of Controlled Areas
+    rules: []
+    status: pending
+  - id: mp-5.2
+    title: Documentation of Activities
+    rules: []
+    status: pending
+  - id: mp-5.3
+    title: Custodians
+    description: Employ an identified custodian during transport of system media outside of controlled areas.
+    guidance: Identified custodians provide organizations with specific points of contact during the media transport process and facilitate individual accountability. Custodial responsibilities can be transferred from one individual to another if an unambiguous custodian is identified.
+    rules: []
+    status: pending
+  - id: mp-5.4
+    title: Cryptographic Protection
+    rules: []
+    status: pending
+  - id: mp-6
+    title: Media Sanitization
+    description: "  a. Sanitize [[ insert: param, mp-6_prm_1 ]] prior to disposal, release out of organizational control, or release for reuse using [[ insert: param, mp-6_prm_2 ]] ; and\n  b. Employ sanitization mechanisms with the strength and integrity commensurate with the security category or classification of the information."
+    parameters:
+      - id: mp-6_prm_1
+        label: organization-defined system media
+      - id: mp-6_prm_2
+        label: organization-defined sanitization techniques and procedures
+      - id: mp-06_odp.01
+        label: system media
+        guidelines:
+          - system media to be sanitized prior to disposal is defined;
+      - id: mp-06_odp.02
+        label: system media
+        guidelines:
+          - system media to be sanitized prior to release from organizational control is defined;
+      - id: mp-06_odp.03
+        label: system media
+        guidelines:
+          - system media to be sanitized prior to release for reuse is defined;
+      - id: mp-06_odp.04
+        label: sanitization techniques and procedures
+        guidelines:
+          - sanitization techniques and procedures to be used for sanitization prior to disposal are defined;
+      - id: mp-06_odp.05
+        label: sanitization techniques and procedures
+        guidelines:
+          - sanitization techniques and procedures to be used for sanitization prior to release from organizational control are defined;
+      - id: mp-06_odp.06
+        label: sanitization techniques and procedures
+        guidelines:
+          - sanitization techniques and procedures to be used for sanitization prior to release for reuse are defined;
+    guidance: Media sanitization applies to all digital and non-digital system media subject to disposal or reuse, whether or not the media is considered removable. Examples include digital media in scanners, copiers, printers, notebook computers, workstations, network components, mobile devices, and non-digital media (e.g., paper and microfilm). The sanitization process removes information from system media such that the information cannot be retrieved or reconstructed. Sanitization techniques—including clearing, purging, cryptographic erase, de-identification of personally identifiable information, and destruction—prevent the disclosure of information to unauthorized individuals when such media is reused or released for disposal. Organizations determine the appropriate sanitization methods, recognizing that destruction is sometimes necessary when other methods cannot be applied to media requiring sanitization. Organizations use discretion on the employment of approved sanitization techniques and procedures for media that contains information deemed to be in the public domain or publicly releasable or information deemed to have no adverse impact on organizations or individuals if released for reuse or disposal. Sanitization of non-digital media includes destruction, removing a classified appendix from an otherwise unclassified document, or redacting selected sections or words from a document by obscuring the redacted sections or words in a manner equivalent in effectiveness to removing them from the document. NSA standards and policies control the sanitization process for media that contains classified information. NARA policies control the sanitization process for controlled unclassified information.
+    related_controls:
+      - ac-3
+      - ac-7
+      - au-11
+      - ma-2
+      - ma-3
+      - ma-4
+      - ma-5
+      - pm-22
+      - si-12
+      - si-18
+      - si-19
+      - sr-11
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: mp-6.1
+    title: Review, Approve, Track, Document, and Verify
+    description: Review, approve, track, document, and verify media sanitization and disposal actions.
+    guidance: Organizations review and approve media to be sanitized to ensure compliance with records retention policies. Tracking and documenting actions include listing personnel who reviewed and approved sanitization and disposal actions, types of media sanitized, files stored on the media, sanitization methods used, date and time of the sanitization actions, personnel who performed the sanitization, verification actions taken and personnel who performed the verification, and the disposal actions taken. Organizations verify that the sanitization of the media was effective prior to disposal.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: mp-6.2
+    title: Equipment Testing
+    description: 'Test sanitization equipment and procedures [[ insert: param, mp-6.2_prm_1 ]] to ensure that the intended sanitization is being achieved.'
+    parameters:
+      - id: mp-6.2_prm_1
+        label: organization-defined frequency
+      - id: mp-06.02_odp.01
+        label: frequency
+        guidelines:
+          - frequency with which to test sanitization equipment is defined;
+      - id: mp-06.02_odp.02
+        label: frequency
+        guidelines:
+          - frequency with which to test sanitization procedures is defined;
+    guidance: Testing of sanitization equipment and procedures may be conducted by qualified and authorized external entities, including federal agencies or external service providers.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: mp-6.3
+    title: Nondestructive Techniques
+    description: 'Apply nondestructive sanitization techniques to portable storage devices prior to connecting such devices to the system under the following circumstances: [[ insert: param, mp-06.03_odp ]].'
+    parameters:
+      - id: mp-06.03_odp
+        label: circumstances
+        guidelines:
+          - circumstances requiring sanitization of portable storage devices are defined;
+    guidance: Portable storage devices include external or removable hard disk drives (e.g., solid state, magnetic), optical discs, magnetic or optical tapes, flash memory devices, flash memory cards, and other external or removable disks. Portable storage devices can be obtained from untrustworthy sources and contain malicious code that can be inserted into or transferred to organizational systems through USB ports or other entry portals. While scanning storage devices is recommended, sanitization provides additional assurance that such devices are free of malicious code. Organizations consider nondestructive sanitization of portable storage devices when the devices are purchased from manufacturers or vendors prior to initial use or when organizations cannot maintain a positive chain of custody for the devices.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: mp-6.4
+    title: Controlled Unclassified Information
+    rules: []
+    status: pending
+  - id: mp-6.5
+    title: Classified Information
+    rules: []
+    status: pending
+  - id: mp-6.6
+    title: Media Destruction
+    rules: []
+    status: pending
+  - id: mp-6.7
+    title: Dual Authorization
+    description: 'Enforce dual authorization for the sanitization of [[ insert: param, mp-06.07_odp ]].'
+    parameters:
+      - id: mp-06.07_odp
+        label: system media
+        guidelines:
+          - system media to be sanitized using dual authorization is defined;
+    guidance: Organizations employ dual authorization to help ensure that system media sanitization cannot occur unless two technically qualified individuals conduct the designated task. Individuals who sanitize system media possess sufficient skills and expertise to determine if the proposed sanitization reflects applicable federal and organizational standards, policies, and procedures. Dual authorization also helps to ensure that sanitization occurs as intended, protecting against errors and false claims of having performed the sanitization actions. Dual authorization may also be known as two-person control. To reduce the risk of collusion, organizations consider rotating dual authorization duties to other individuals.
+    related_controls:
+      - ac-3
+      - mp-2
+    rules: []
+    status: pending
+  - id: mp-6.8
+    title: Remote Purging or Wiping of Information
+    description: 'Provide the capability to purge or wipe information from [[ insert: param, mp-06.08_odp.01 ]] [[ insert: param, mp-06.08_odp.02 ]].'
+    parameters:
+      - id: mp-06.08_odp.01
+        label: systems or system components
+        guidelines:
+          - systems or system components to purge or wipe information either remotely or under specific conditions are defined;
+      - id: mp-06.08_odp.02
+        label: ''
+        choices:
+          - remotely
+          - 'under [[ insert: param, mp-06.08_odp.03 ]] '
+      - id: mp-06.08_odp.03
+        label: conditions
+        guidelines:
+          - conditions under which information is to be purged or wiped are defined (if selected);
+    guidance: Remote purging or wiping of information protects information on organizational systems and system components if systems or components are obtained by unauthorized individuals. Remote purge or wipe commands require strong authentication to help mitigate the risk of unauthorized individuals purging or wiping the system, component, or device. The purge or wipe function can be implemented in a variety of ways, including by overwriting data or information multiple times or by destroying the key necessary to decrypt encrypted data.
+    rules: []
+    status: pending
+  - id: mp-7
+    title: Media Use
+    description: "  a. [[ insert: param, mp-07_odp.02 ]] the use of [[ insert: param, mp-07_odp.01 ]] on [[ insert: param, mp-07_odp.03 ]] using [[ insert: param, mp-07_odp.04 ]] ; and\n  b. Prohibit the use of portable storage devices in organizational systems when such devices have no identifiable owner."
+    parameters:
+      - id: mp-07_odp.01
+        label: types of system media
+        guidelines:
+          - types of system media to be restricted or prohibited from use on systems or system components are defined;
+      - id: mp-07_odp.02
+        label: ''
+        choices:
+          - restrict
+          - prohibit
+      - id: mp-07_odp.03
+        label: systems or system components
+        guidelines:
+          - systems or system components on which the use of specific types of system media to be restricted or prohibited are defined;
+      - id: mp-07_odp.04
+        label: controls
+        guidelines:
+          - controls to restrict or prohibit the use of specific types of system media on systems or system components are defined;
+    guidance: System media includes both digital and non-digital media. Digital media includes diskettes, magnetic tapes, flash drives, compact discs, digital versatile discs, and removable hard disk drives. Non-digital media includes paper and microfilm. Media use protections also apply to mobile devices with information storage capabilities. In contrast to [MP-2](#mp-2) , which restricts user access to media, MP-7 restricts the use of certain types of media on systems, for example, restricting or prohibiting the use of flash drives or external hard disk drives. Organizations use technical and nontechnical controls to restrict the use of system media. Organizations may restrict the use of portable storage devices, for example, by using physical cages on workstations to prohibit access to certain external ports or disabling or removing the ability to insert, read, or write to such devices. Organizations may also limit the use of portable storage devices to only approved devices, including devices provided by the organization, devices provided by other approved organizations, and devices that are not personally owned. Finally, organizations may restrict the use of portable storage devices based on the type of device, such as by prohibiting the use of writeable, portable storage devices and implementing this restriction by disabling or removing the capability to write to such devices. Requiring identifiable owners for storage devices reduces the risk of using such devices by allowing organizations to assign responsibility for addressing known vulnerabilities in the devices.
+    related_controls:
+      - ac-19
+      - ac-20
+      - pl-4
+      - pm-12
+      - sc-34
+      - sc-41
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: mp-7.1
+    title: Prohibit Use Without Owner
+    rules: []
+    status: pending
+  - id: mp-7.2
+    title: Prohibit Use of Sanitization-resistant Media
+    description: Prohibit the use of sanitization-resistant media in organizational systems.
+    guidance: Sanitization resistance refers to how resistant media are to non-destructive sanitization techniques with respect to the capability to purge information from media. Certain types of media do not support sanitization commands, or if supported, the interfaces are not supported in a standardized way across these devices. Sanitization-resistant media includes compact flash, embedded flash on boards and devices, solid state drives, and USB removable media.
+    related_controls:
+      - mp-6
+    rules: []
+    status: pending
+  - id: mp-8
+    title: Media Downgrading
+    description: "  a. Establish [[ insert: param, mp-08_odp.01 ]] that includes employing downgrading mechanisms with strength and integrity commensurate with the security category or classification of the information;\n  b. Verify that the system media downgrading process is commensurate with the security category and/or classification level of the information to be removed and the access authorizations of the potential recipients of the downgraded information;\n  c. Identify [[ insert: param, mp-08_odp.02 ]] ; and\n  d. Downgrade the identified system media using the established process."
+    parameters:
+      - id: mp-08_odp.01
+        label: system media downgrading process
+        guidelines:
+          - a system media downgrading process is defined;
+      - id: mp-08_odp.02
+        label: system media requiring downgrading
+        guidelines:
+          - system media requiring downgrading is defined;
+    guidance: Media downgrading applies to digital and non-digital media subject to release outside of the organization, whether the media is considered removable or not. When applied to system media, the downgrading process removes information from the media, typically by security category or classification level, such that the information cannot be retrieved or reconstructed. Downgrading of media includes redacting information to enable wider release and distribution. Downgrading ensures that empty space on the media is devoid of information.
+    rules: []
+    status: pending
+  - id: mp-8.1
+    title: Documentation of Process
+    description: Document system media downgrading actions.
+    guidance: Organizations can document the media downgrading process by providing information, such as the downgrading technique employed, the identification number of the downgraded media, and the identity of the individual that authorized and/or performed the downgrading action.
+    rules: []
+    status: pending
+  - id: mp-8.2
+    title: Equipment Testing
+    description: 'Test downgrading equipment and procedures [[ insert: param, mp-8.2_prm_1 ]] to ensure that downgrading actions are being achieved.'
+    parameters:
+      - id: mp-8.2_prm_1
+        label: organization-defined frequency
+      - id: mp-08.02_odp.01
+        label: frequency
+        guidelines:
+          - the frequency with which to test downgrading equipment is defined;
+      - id: mp-08.02_odp.02
+        label: frequency
+        guidelines:
+          - the frequency with which to test downgrading procedures is defined;
+    guidance: None.
+    rules: []
+    status: pending
+  - id: mp-8.3
+    title: Controlled Unclassified Information
+    description: Downgrade system media containing controlled unclassified information prior to public release.
+    guidance: The downgrading of controlled unclassified information uses approved sanitization tools, techniques, and procedures.
+    rules: []
+    status: pending
+  - id: mp-8.4
+    title: Classified Information
+    description: Downgrade system media containing classified information prior to release to individuals without required access authorizations.
+    guidance: Downgrading of classified information uses approved sanitization tools, techniques, and procedures to transfer information confirmed to be unclassified from classified systems to unclassified media.
+    rules: []
+    status: pending

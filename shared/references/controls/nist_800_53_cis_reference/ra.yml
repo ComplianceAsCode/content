@@ -1,0 +1,488 @@
+# NIST 800-53 RA Family: Risk Assessment
+controls:
+  - id: ra-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, ra-1_prm_1 ]]:\n    1. [[ insert: param, ra-01_odp.03 ]] risk assessment policy that:\n    2. Procedures to facilitate the implementation of the risk assessment policy and the associated risk assessment controls;\n  b. Designate an [[ insert: param, ra-01_odp.04 ]] to manage the development, documentation, and dissemination of the risk assessment policy and procedures; and\n  c. Review and update the current risk assessment:\n    1. Policy [[ insert: param, ra-01_odp.05 ]] and following [[ insert: param, ra-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, ra-01_odp.07 ]] and following [[ insert: param, ra-01_odp.08 ]]."
+    parameters:
+      - id: ra-1_prm_1
+        label: organization-defined personnel or roles
+      - id: ra-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the risk assessment policy is to be disseminated is/are defined;
+      - id: ra-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the risk assessment procedures are to be disseminated is/are defined;
+      - id: ra-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: ra-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the risk assessment policy and procedures is defined;
+      - id: ra-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current risk assessment policy is reviewed and updated is defined;
+      - id: ra-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current risk assessment policy to be reviewed and updated are defined;
+      - id: ra-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current risk assessment procedures are reviewed and updated is defined;
+      - id: ra-01_odp.08
+        label: events
+        guidelines:
+          - events that would require risk assessment procedures to be reviewed and updated are defined;
+    guidance: Risk assessment policy and procedures address the controls in the RA family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of risk assessment policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies reflecting the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to risk assessment policy and procedures include assessment or audit findings, security incidents or breaches, or changes in laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-2
+    title: Security Categorization
+    description: "  a. Categorize the system and information it processes, stores, and transmits;\n  b. Document the security categorization results, including supporting rationale, in the security plan for the system; and\n  c. Verify that the authorizing official or authorizing official designated representative reviews and approves the security categorization decision."
+    guidance: "Security categories describe the potential adverse impacts or negative consequences to organizational operations, organizational assets, and individuals if organizational information and systems are compromised through a loss of confidentiality, integrity, or availability. Security categorization is also a type of asset loss characterization in systems security engineering processes that is carried out throughout the system development life cycle. Organizations can use privacy risk assessments or privacy impact assessments to better understand the potential adverse effects on individuals. [CNSSI 1253](#4e4fbc93-333d-45e6-a875-de36b878b6b9) provides additional guidance on categorization for national security systems.\n\nOrganizations conduct the security categorization process as an organization-wide activity with the direct involvement of chief information officers, senior agency information security officers, senior agency officials for privacy, system owners, mission and business owners, and information owners or stewards. Organizations consider the potential adverse impacts to other organizations and, in accordance with [USA PATRIOT](#13f0c39d-eaf7-417a-baef-69a041878bb5) and Homeland Security Presidential Directives, potential national-level adverse impacts.\n\nSecurity categorization processes facilitate the development of inventories of information assets and, along with [CM-8](#cm-8) , mappings to specific system components where information is processed, stored, or transmitted. The security categorization process is revisited throughout the system development life cycle to ensure that the security categories remain accurate and relevant."
+    related_controls:
+      - cm-8
+      - mp-4
+      - pl-2
+      - pl-10
+      - pl-11
+      - pm-7
+      - ra-3
+      - ra-5
+      - ra-7
+      - ra-8
+      - sa-8
+      - sc-7
+      - sc-38
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-2.1
+    title: Impact-level Prioritization
+    description: Conduct an impact-level prioritization of organizational systems to obtain additional granularity on system impact levels.
+    guidance: 'Organizations apply the "high-water mark" concept to each system categorized in accordance with [FIPS 199](#628d22a1-6a11-4784-bc59-5cd9497b5445) , resulting in systems designated as low impact, moderate impact, or high impact. Organizations that desire additional granularity in the system impact designations for risk-based decision-making, can further partition the systems into sub-categories of the initial system categorization. For example, an impact-level prioritization on a moderate-impact system can produce three new sub-categories: low-moderate systems, moderate-moderate systems, and high-moderate systems. Impact-level prioritization and the resulting sub-categories of the system give organizations an opportunity to focus their investments related to security control selection and the tailoring of control baselines in responding to identified risks. Impact-level prioritization can also be used to determine those systems that may be of heightened interest or value to adversaries or represent a critical loss to the federal enterprise, sometimes described as high value assets. For such high value assets, organizations may be more focused on complexity, aggregation, and information exchanges. Systems with high value assets can be prioritized by partitioning high-impact systems into low-high systems, moderate-high systems, and high-high systems. Alternatively, organizations can apply the guidance in [CNSSI 1253](#4e4fbc93-333d-45e6-a875-de36b878b6b9) for security objective-related categorization.'
+    rules: []
+    status: pending
+  - id: ra-3
+    title: Risk Assessment
+    description: "  a. Conduct a risk assessment, including:\n    1. Identifying threats to and vulnerabilities in the system;\n    2. Determining the likelihood and magnitude of harm from unauthorized access, use, disclosure, disruption, modification, or destruction of the system, the information it processes, stores, or transmits, and any related information; and\n    3. Determining the likelihood and impact of adverse effects on individuals arising from the processing of personally identifiable information;\n  b. Integrate risk assessment results and risk management decisions from the organization and mission or business process perspectives with system-level risk assessments;\n  c. Document risk assessment results in [[ insert: param, ra-03_odp.01 ]];\n  d. Review risk assessment results [[ insert: param, ra-03_odp.03 ]];\n  e. Disseminate risk assessment results to [[ insert: param, ra-03_odp.04 ]] ; and\n  f. Update the risk assessment [[ insert: param, ra-03_odp.05 ]] or when there are significant changes to the system, its environment of operation, or other conditions that may impact the security or privacy state of the system."
+    parameters:
+      - id: ra-03_odp.01
+        label: ''
+        choices:
+          - security and privacy plans
+          - risk assessment report
+          - '[[ insert: param, ra-03_odp.02 ]] '
+      - id: ra-03_odp.02
+        label: document
+        guidelines:
+          - a document in which risk assessment results are to be documented (if not documented in the security and privacy plans or risk assessment report) is defined (if selected);
+      - id: ra-03_odp.03
+        label: frequency
+        guidelines:
+          - the frequency to review risk assessment results is defined;
+      - id: ra-03_odp.04
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom risk assessment results are to be disseminated is/are defined;
+      - id: ra-03_odp.05
+        label: frequency
+        guidelines:
+          - the frequency to update the risk assessment is defined;
+    guidance: "Risk assessments consider threats, vulnerabilities, likelihood, and impact to organizational operations and assets, individuals, other organizations, and the Nation. Risk assessments also consider risk from external parties, including contractors who operate systems on behalf of the organization, individuals who access organizational systems, service providers, and outsourcing entities.\n\nOrganizations can conduct risk assessments at all three levels in the risk management hierarchy (i.e., organization level, mission/business process level, or information system level) and at any stage in the system development life cycle. Risk assessments can also be conducted at various steps in the Risk Management Framework, including preparation, categorization, control selection, control implementation, control assessment, authorization, and control monitoring. Risk assessment is an ongoing activity carried out throughout the system development life cycle.\n\nRisk assessments can also address information related to the system, including system design, the intended use of the system, testing results, and supply chain-related information or artifacts. Risk assessments can play an important role in control selection processes, particularly during the application of tailoring guidance and in the earliest phases of capability determination."
+    related_controls:
+      - ca-3
+      - ca-6
+      - cm-4
+      - cm-13
+      - cp-6
+      - cp-7
+      - ia-8
+      - ma-5
+      - pe-3
+      - pe-8
+      - pe-18
+      - pl-2
+      - pl-10
+      - pl-11
+      - pm-8
+      - pm-9
+      - pm-28
+      - pt-2
+      - pt-7
+      - ra-2
+      - ra-5
+      - ra-7
+      - sa-8
+      - sa-9
+      - sc-38
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-3.1
+    title: Supply Chain Risk Assessment
+    description: "  a. Assess supply chain risks associated with [[ insert: param, ra-03.01_odp.01 ]] ; and\n  b. Update the supply chain risk assessment [[ insert: param, ra-03.01_odp.02 ]] , when there are significant changes to the relevant supply chain, or when changes to the system, environments of operation, or other conditions may necessitate a change in the supply chain."
+    parameters:
+      - id: ra-03.01_odp.01
+        label: systems, system components, and system services
+        guidelines:
+          - systems, system components, and system services to assess supply chain risks are defined;
+      - id: ra-03.01_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to update the supply chain risk assessment is defined;
+    guidance: Supply chain-related events include disruption, use of defective components, insertion of counterfeits, theft, malicious development practices, improper delivery practices, and insertion of malicious code. These events can have a significant impact on the confidentiality, integrity, or availability of a system and its information and, therefore, can also adversely impact organizational operations (including mission, functions, image, or reputation), organizational assets, individuals, other organizations, and the Nation. The supply chain-related events may be unintentional or malicious and can occur at any point during the system life cycle. An analysis of supply chain risk can help an organization identify systems or components for which additional supply chain risk mitigations are required.
+    related_controls:
+      - ra-2
+      - ra-9
+      - pm-17
+      - pm-30
+      - sr-2
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-3.2
+    title: Use of All-source Intelligence
+    description: Use all-source intelligence to assist in the analysis of risk.
+    guidance: Organizations employ all-source intelligence to inform engineering, acquisition, and risk management decisions. All-source intelligence consists of information derived from all available sources, including publicly available or open-source information, measurement and signature intelligence, human intelligence, signals intelligence, and imagery intelligence. All-source intelligence is used to analyze the risk of vulnerabilities (both intentional and unintentional) from development, manufacturing, and delivery processes, people, and the environment. The risk analysis may be performed on suppliers at multiple tiers in the supply chain sufficient to manage risks. Organizations may develop agreements to share all-source intelligence information or resulting decisions with other organizations, as appropriate.
+    rules: []
+    status: pending
+  - id: ra-3.3
+    title: Dynamic Threat Awareness
+    description: 'Determine the current cyber threat environment on an ongoing basis using [[ insert: param, ra-03.03_odp ]].'
+    parameters:
+      - id: ra-03.03_odp
+        label: means
+        guidelines:
+          - means to determine the current cyber threat environment on an ongoing basis;
+    guidance: The threat awareness information that is gathered feeds into the organization’s information security operations to ensure that procedures are updated in response to the changing threat environment. For example, at higher threat levels, organizations may change the privilege or authentication thresholds required to perform certain operations.
+    related_controls:
+      - at-2
+    rules: []
+    status: pending
+  - id: ra-3.4
+    title: Predictive Cyber Analytics
+    description: 'Employ the following advanced automation and analytics capabilities to predict and identify risks to [[ insert: param, ra-03.04_odp.02 ]]: [[ insert: param, ra-3.4_prm_2 ]].'
+    parameters:
+      - id: ra-3.4_prm_2
+        label: organization-defined advanced automation and analytics capabilities
+      - id: ra-03.04_odp.01
+        label: advanced automation capabilities
+        guidelines:
+          - advanced automation capabilities to predict and identify risks are defined;
+      - id: ra-03.04_odp.02
+        label: systems or system components
+        guidelines:
+          - systems or system components where advanced automation and analytics capabilities are to be employed are defined;
+      - id: ra-03.04_odp.03
+        label: advanced analytics capabilities
+        guidelines:
+          - advanced analytics capabilities to predict and identify risks are defined;
+    guidance: A properly resourced Security Operations Center (SOC) or Computer Incident Response Team (CIRT) may be overwhelmed by the volume of information generated by the proliferation of security tools and appliances unless it employs advanced automation and analytics to analyze the data. Advanced automation and analytics capabilities are typically supported by artificial intelligence concepts, including machine learning. Examples include Automated Threat Discovery and Response (which includes broad-based collection, context-based analysis, and adaptive response capabilities), automated workflow operations, and machine assisted decision tools. Note, however, that sophisticated adversaries may be able to extract information related to analytic parameters and retrain the machine learning to classify malicious activity as benign. Accordingly, machine learning is augmented by human monitoring to ensure that sophisticated adversaries are not able to conceal their activities.
+    rules: []
+    status: pending
+  - id: ra-4
+    title: Risk Assessment Update
+    rules: []
+    status: pending
+  - id: ra-5
+    title: Vulnerability Monitoring and Scanning
+    description: "  a. Monitor and scan for vulnerabilities in the system and hosted applications [[ insert: param, ra-5_prm_1 ]] and when new vulnerabilities potentially affecting the system are identified and reported;\n  b. Employ vulnerability monitoring tools and techniques that facilitate interoperability among tools and automate parts of the vulnerability management process by using standards for:\n    1. Enumerating platforms, software flaws, and improper configurations;\n    2. Formatting checklists and test procedures; and\n    3. Measuring vulnerability impact;\n  c. Analyze vulnerability scan reports and results from vulnerability monitoring;\n  d. Remediate legitimate vulnerabilities [[ insert: param, ra-05_odp.03 ]] in accordance with an organizational assessment of risk;\n  e. Share information obtained from the vulnerability monitoring process and control assessments with [[ insert: param, ra-05_odp.04 ]] to help eliminate similar vulnerabilities in other systems; and\n  f. Employ vulnerability monitoring tools that include the capability to readily update the vulnerabilities to be scanned."
+    parameters:
+      - id: ra-5_prm_1
+        label: organization-defined frequency and/or randomly in accordance with organization-defined process
+      - id: ra-05_odp.01
+        label: frequency and/or randomly in accordance with organization-defined process
+        guidelines:
+          - frequency for monitoring systems and hosted applications for vulnerabilities is defined;
+      - id: ra-05_odp.02
+        label: frequency and/or randomly in accordance with organization-defined process
+        guidelines:
+          - frequency for scanning systems and hosted applications for vulnerabilities is defined;
+      - id: ra-05_odp.03
+        label: response times
+        guidelines:
+          - response times to remediate legitimate vulnerabilities in accordance with an organizational assessment of risk are defined;
+      - id: ra-05_odp.04
+        label: personnel or roles
+        guidelines:
+          - personnel or roles with whom information obtained from the vulnerability scanning process and control assessments is to be shared;
+    guidance: "Security categorization of information and systems guides the frequency and comprehensiveness of vulnerability monitoring (including scans). Organizations determine the required vulnerability monitoring for system components, ensuring that the potential sources of vulnerabilities—such as infrastructure components (e.g., switches, routers, guards, sensors), networked printers, scanners, and copiers—are not overlooked. The capability to readily update vulnerability monitoring tools as new vulnerabilities are discovered and announced and as new scanning methods are developed helps to ensure that new vulnerabilities are not missed by employed vulnerability monitoring tools. The vulnerability monitoring tool update process helps to ensure that potential vulnerabilities in the system are identified and addressed as quickly as possible. Vulnerability monitoring and analyses for custom software may require additional approaches, such as static analysis, dynamic analysis, binary analysis, or a hybrid of the three approaches. Organizations can use these analysis approaches in source code reviews and in a variety of tools, including web-based application scanners, static analysis tools, and binary analyzers.\n\nVulnerability monitoring includes scanning for patch levels; scanning for functions, ports, protocols, and services that should not be accessible to users or devices; and scanning for flow control mechanisms that are improperly configured or operating incorrectly. Vulnerability monitoring may also include continuous vulnerability monitoring tools that use instrumentation to continuously analyze components. Instrumentation-based tools may improve accuracy and may be run throughout an organization without scanning. Vulnerability monitoring tools that facilitate interoperability include tools that are Security Content Automated Protocol (SCAP)-validated. Thus, organizations consider using scanning tools that express vulnerabilities in the Common Vulnerabilities and Exposures (CVE) naming convention and that employ the Open Vulnerability Assessment Language (OVAL) to determine the presence of vulnerabilities. Sources for vulnerability information include the Common Weakness Enumeration (CWE) listing and the National Vulnerability Database (NVD). Control assessments, such as red team exercises, provide additional sources of potential vulnerabilities for which to scan. Organizations also consider using scanning tools that express vulnerability impact by the Common Vulnerability Scoring System (CVSS).\n\nVulnerability monitoring includes a channel and process for receiving reports of security vulnerabilities from the public at-large. Vulnerability disclosure programs can be as simple as publishing a monitored email address or web form that can receive reports, including notification authorizing good-faith research and disclosure of security vulnerabilities. Organizations generally expect that such research is happening with or without their authorization and can use public vulnerability disclosure channels to increase the likelihood that discovered vulnerabilities are reported directly to the organization for remediation.\n\nOrganizations may also employ the use of financial incentives (also known as \"bug bounties\" ) to further encourage external security researchers to report discovered vulnerabilities. Bug bounty programs can be tailored to the organization’s needs. Bounties can be operated indefinitely or over a defined period of time and can be offered to the general public or to a curated group. Organizations may run public and private bounties simultaneously and could choose to offer partially credentialed access to certain participants in order to evaluate security vulnerabilities from privileged vantage points."
+    related_controls:
+      - ca-2
+      - ca-7
+      - ca-8
+      - cm-2
+      - cm-4
+      - cm-6
+      - cm-8
+      - ra-2
+      - ra-3
+      - sa-11
+      - sa-15
+      - sc-38
+      - si-2
+      - si-3
+      - si-4
+      - si-7
+      - sr-11
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-5.1
+    title: Update Tool Capability
+    rules: []
+    status: pending
+  - id: ra-5.2
+    title: Update Vulnerabilities to Be Scanned
+    description: 'Update the system vulnerabilities to be scanned [[ insert: param, ra-05.02_odp.01 ]].'
+    parameters:
+      - id: ra-05.02_odp.01
+        label: ''
+        choices:
+          - '[[ insert: param, ra-05.02_odp.02 ]] '
+          - prior to a new scan
+          - when new vulnerabilities are identified and reported
+      - id: ra-05.02_odp.02
+        label: frequency
+        guidelines:
+          - the frequency for updating the system vulnerabilities to be scanned is defined (if selected);
+    guidance: Due to the complexity of modern software, systems, and other factors, new vulnerabilities are discovered on a regular basis. It is important that newly discovered vulnerabilities are added to the list of vulnerabilities to be scanned to ensure that the organization can take steps to mitigate those vulnerabilities in a timely manner.
+    related_controls:
+      - si-5
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-5.3
+    title: Breadth and Depth of Coverage
+    description: Define the breadth and depth of vulnerability scanning coverage.
+    guidance: The breadth of vulnerability scanning coverage can be expressed as a percentage of components within the system, by the particular types of systems, by the criticality of systems, or by the number of vulnerabilities to be checked. Conversely, the depth of vulnerability scanning coverage can be expressed as the level of the system design that the organization intends to monitor (e.g., component, module, subsystem, element). Organizations can determine the sufficiency of vulnerability scanning coverage with regard to its risk tolerance and other factors. Scanning tools and how the tools are configured may affect the depth and coverage. Multiple scanning tools may be needed to achieve the desired depth and coverage. [SP 800-53A](#a21aef46-7330-48a0-b2e1-c5bb8b2dd11d) provides additional information on the breadth and depth of coverage.
+    rules: []
+    status: pending
+  - id: ra-5.4
+    title: Discoverable Information
+    description: 'Determine information about the system that is discoverable and take [[ insert: param, ra-05.04_odp ]].'
+    parameters:
+      - id: ra-05.04_odp
+        label: corrective actions
+        guidelines:
+          - corrective actions to be taken if information about the system is discoverable are defined;
+    guidance: Discoverable information includes information that adversaries could obtain without compromising or breaching the system, such as by collecting information that the system is exposing or by conducting extensive web searches. Corrective actions include notifying appropriate organizational personnel, removing designated information, or changing the system to make the designated information less relevant or attractive to adversaries. This enhancement excludes intentionally discoverable information that may be part of a decoy capability (e.g., honeypots, honeynets, or deception nets) deployed by the organization.
+    related_controls:
+      - au-13
+      - sc-26
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: ra-5.5
+    title: Privileged Access
+    description: 'Implement privileged access authorization to [[ insert: param, ra-05.05_odp.01 ]] for [[ insert: param, ra-05.05_odp.02 ]].'
+    parameters:
+      - id: ra-05.05_odp.01
+        label: system components
+        guidelines:
+          - system components to which privileged access is authorized for selected vulnerability scanning activities are defined;
+      - id: ra-05.05_odp.02
+        label: vulnerability scanning activities
+        guidelines:
+          - vulnerability scanning activities selected for privileged access authorization to system components are defined;
+    guidance: In certain situations, the nature of the vulnerability scanning may be more intrusive, or the system component that is the subject of the scanning may contain classified or controlled unclassified information, such as personally identifiable information. Privileged access authorization to selected system components facilitates more thorough vulnerability scanning and protects the sensitive nature of such scanning.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-5.6
+    title: Automated Trend Analyses
+    description: 'Compare the results of multiple vulnerability scans using [[ insert: param, ra-05.06_odp ]].'
+    parameters:
+      - id: ra-05.06_odp
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to compare the results of multiple vulnerability scans are defined;
+    guidance: Using automated mechanisms to analyze multiple vulnerability scans over time can help determine trends in system vulnerabilities and identify patterns of attack.
+    rules: []
+    status: pending
+  - id: ra-5.7
+    title: Automated Detection and Notification of Unauthorized Components
+    rules: []
+    status: pending
+  - id: ra-5.8
+    title: Review Historic Audit Logs
+    description: 'Review historic audit logs to determine if a vulnerability identified in a [[ insert: param, ra-05.08_odp.01 ]] has been previously exploited within an [[ insert: param, ra-05.08_odp.02 ]].'
+    parameters:
+      - id: ra-05.08_odp.01
+        label: system
+        guidelines:
+          - a system whose historic audit logs are to be reviewed is defined;
+      - id: ra-05.08_odp.02
+        label: time period
+        guidelines:
+          - a time period for a potential previous exploit of a system is defined;
+    guidance: Reviewing historic audit logs to determine if a recently detected vulnerability in a system has been previously exploited by an adversary can provide important information for forensic analyses. Such analyses can help identify, for example, the extent of a previous intrusion, the trade craft employed during the attack, organizational information exfiltrated or modified, mission or business capabilities affected, and the duration of the attack.
+    related_controls:
+      - au-6
+      - au-11
+    rules: []
+    status: pending
+  - id: ra-5.9
+    title: Penetration Testing and Analyses
+    rules: []
+    status: pending
+  - id: ra-5.10
+    title: Correlate Scanning Information
+    description: Correlate the output from vulnerability scanning tools to determine the presence of multi-vulnerability and multi-hop attack vectors.
+    guidance: An attack vector is a path or means by which an adversary can gain access to a system in order to deliver malicious code or exfiltrate information. Organizations can use attack trees to show how hostile activities by adversaries interact and combine to produce adverse impacts or negative consequences to systems and organizations. Such information, together with correlated data from vulnerability scanning tools, can provide greater clarity regarding multi-vulnerability and multi-hop attack vectors. The correlation of vulnerability scanning information is especially important when organizations are transitioning from older technologies to newer technologies (e.g., transitioning from IPv4 to IPv6 network protocols). During such transitions, some system components may inadvertently be unmanaged and create opportunities for adversary exploitation.
+    rules: []
+    status: pending
+  - id: ra-5.11
+    title: Public Disclosure Program
+    description: Establish a public reporting channel for receiving reports of vulnerabilities in organizational systems and system components.
+    guidance: The reporting channel is publicly discoverable and contains clear language authorizing good-faith research and the disclosure of vulnerabilities to the organization. The organization does not condition its authorization on an expectation of indefinite non-disclosure to the public by the reporting entity but may request a specific time period to properly remediate the vulnerability.
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-6
+    title: Technical Surveillance Countermeasures Survey
+    description: 'Employ a technical surveillance countermeasures survey at [[ insert: param, ra-06_odp.01 ]] [[ insert: param, ra-06_odp.02 ]].'
+    parameters:
+      - id: ra-06_odp.01
+        label: locations
+        guidelines:
+          - locations to employ technical surveillance countermeasure surveys are defined;
+      - id: ra-06_odp.02
+        label: ''
+        choices:
+          - '[[ insert: param, ra-06_odp.03 ]] '
+          - 'when [[ insert: param, ra-06_odp.04 ]] '
+      - id: ra-06_odp.03
+        label: frequency
+        guidelines:
+          - the frequency at which to employ technical surveillance countermeasure surveys is defined (if selected);
+      - id: ra-06_odp.04
+        label: events or indicators
+        guidelines:
+          - events or indicators which, if they occur, trigger a technical surveillance countermeasures survey are defined (if selected);
+    guidance: A technical surveillance countermeasures survey is a service provided by qualified personnel to detect the presence of technical surveillance devices and hazards and to identify technical security weaknesses that could be used in the conduct of a technical penetration of the surveyed facility. Technical surveillance countermeasures surveys also provide evaluations of the technical security posture of organizations and facilities and include visual, electronic, and physical examinations of surveyed facilities, internally and externally. The surveys also provide useful input for risk assessments and information regarding organizational exposure to potential adversaries.
+    rules: []
+    status: pending
+  - id: ra-7
+    title: Risk Response
+    description: Respond to findings from security and privacy assessments, monitoring, and audits in accordance with organizational risk tolerance.
+    guidance: Organizations have many options for responding to risk including mitigating risk by implementing new controls or strengthening existing controls, accepting risk with appropriate justification or rationale, sharing or transferring risk, or avoiding risk. The risk tolerance of the organization influences risk response decisions and actions. Risk response addresses the need to determine an appropriate response to risk before generating a plan of action and milestones entry. For example, the response may be to accept risk or reject risk, or it may be possible to mitigate the risk immediately so that a plan of action and milestones entry is not needed. However, if the risk response is to mitigate the risk, and the mitigation cannot be completed immediately, a plan of action and milestones entry is generated.
+    related_controls:
+      - ca-5
+      - ir-9
+      - pm-4
+      - pm-28
+      - ra-2
+      - ra-3
+      - sr-2
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-8
+    title: Privacy Impact Assessments
+    description: "Conduct privacy impact assessments for systems, programs, or other activities before:\n  a. Developing or procuring information technology that processes personally identifiable information; and\n  b. Initiating a new collection of personally identifiable information that:\n    1. Will be processed using information technology; and\n    2. Includes personally identifiable information permitting the physical or virtual (online) contacting of a specific individual, if identical questions have been posed to, or identical reporting requirements imposed on, ten or more individuals, other than agencies, instrumentalities, or employees of the federal government."
+    guidance: "A privacy impact assessment is an analysis of how personally identifiable information is handled to ensure that handling conforms to applicable privacy requirements, determine the privacy risks associated with an information system or activity, and evaluate ways to mitigate privacy risks. A privacy impact assessment is both an analysis and a formal document that details the process and the outcome of the analysis.\n\nOrganizations conduct and develop a privacy impact assessment with sufficient clarity and specificity to demonstrate that the organization fully considered privacy and incorporated appropriate privacy protections from the earliest stages of the organization’s activity and throughout the information life cycle. In order to conduct a meaningful privacy impact assessment, the organization’s senior agency official for privacy works closely with program managers, system owners, information technology experts, security officials, counsel, and other relevant organization personnel. Moreover, a privacy impact assessment is not a time-restricted activity that is limited to a particular milestone or stage of the information system or personally identifiable information life cycles. Rather, the privacy analysis continues throughout the system and personally identifiable information life cycles. Accordingly, a privacy impact assessment is a living document that organizations update whenever changes to the information technology, changes to the organization’s practices, or other factors alter the privacy risks associated with the use of such information technology.\n\nTo conduct the privacy impact assessment, organizations can use security and privacy risk assessments. Organizations may also use other related processes that may have different names, including privacy threshold analyses. A privacy impact assessment can also serve as notice to the public regarding the organization’s practices with respect to privacy. Although conducting and publishing privacy impact assessments may be required by law, organizations may develop such policies in the absence of applicable laws. For federal agencies, privacy impact assessments may be required by [EGOV](#7b0b9634-741a-4335-b6fa-161228c3a76e) ; agencies should consult with their senior agency official for privacy and legal counsel on this requirement and be aware of the statutory exceptions and OMB guidance relating to the provision."
+    related_controls:
+      - cm-4
+      - cm-9
+      - cm-13
+      - pt-2
+      - pt-3
+      - pt-5
+      - ra-1
+      - ra-2
+      - ra-3
+      - ra-7
+    rules: []
+    status: pending
+  - id: ra-9
+    title: Criticality Analysis
+    description: 'Identify critical system components and functions by performing a criticality analysis for [[ insert: param, ra-09_odp.01 ]] at [[ insert: param, ra-09_odp.02 ]].'
+    parameters:
+      - id: ra-09_odp.01
+        label: systems, system components, or system services
+        guidelines:
+          - systems, system components, or system services to be analyzed for criticality are defined;
+      - id: ra-09_odp.02
+        label: decision points in the system development life cycle
+        guidelines:
+          - decision points in the system development life cycle when a criticality analysis is to be performed are defined;
+    guidance: "Not all system components, functions, or services necessarily require significant protections. For example, criticality analysis is a key tenet of supply chain risk management and informs the prioritization of protection activities. The identification of critical system components and functions considers applicable laws, executive orders, regulations, directives, policies, standards, system functionality requirements, system and component interfaces, and system and component dependencies. Systems engineers conduct a functional decomposition of a system to identify mission-critical functions and components. The functional decomposition includes the identification of organizational missions supported by the system, decomposition into the specific functions to perform those missions, and traceability to the hardware, software, and firmware components that implement those functions, including when the functions are shared by many components within and external to the system.\n\nThe operational environment of a system or a system component may impact the criticality, including the connections to and dependencies on cyber-physical systems, devices, system-of-systems, and outsourced IT services. System components that allow unmediated access to critical system components or functions are considered critical due to the inherent vulnerabilities that such components create. Component and function criticality are assessed in terms of the impact of a component or function failure on the organizational missions that are supported by the system that contains the components and functions.\n\nCriticality analysis is performed when an architecture or design is being developed, modified, or upgraded. If such analysis is performed early in the system development life cycle, organizations may be able to modify the system design to reduce the critical nature of these components and functions, such as by adding redundancy or alternate paths into the system design. Criticality analysis can also influence the protection measures required by development contractors. In addition to criticality analysis for systems, system components, and system services, criticality analysis of information is an important consideration. Such analysis is conducted as part of security categorization in [RA-2](#ra-2)."
+    related_controls:
+      - cp-2
+      - pl-2
+      - pl-8
+      - pl-11
+      - pm-1
+      - pm-11
+      - ra-2
+      - sa-8
+      - sa-15
+      - sa-20
+      - sr-5
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ra-10
+    title: Threat Hunting
+    description: "  a. Establish and maintain a cyber threat hunting capability to:\n    1. Search for indicators of compromise in organizational systems; and\n    2. Detect, track, and disrupt threats that evade existing controls; and\n  b. Employ the threat hunting capability [[ insert: param, ra-10_odp ]]."
+    parameters:
+      - id: ra-10_odp
+        label: frequency
+        guidelines:
+          - the frequency at which to employ the threat hunting capability is defined;
+    guidance: Threat hunting is an active means of cyber defense in contrast to traditional protection measures, such as firewalls, intrusion detection and prevention systems, quarantining malicious code in sandboxes, and Security Information and Event Management technologies and systems. Cyber threat hunting involves proactively searching organizational systems, networks, and infrastructure for advanced threats. The objective is to track and disrupt cyber adversaries as early as possible in the attack sequence and to measurably improve the speed and accuracy of organizational responses. Indications of compromise include unusual network traffic, unusual file changes, and the presence of malicious code. Threat hunting teams leverage existing threat intelligence and may create new threat intelligence, which is shared with peer organizations, Information Sharing and Analysis Organizations (ISAO), Information Sharing and Analysis Centers (ISAC), and relevant government departments and agencies.
+    related_controls:
+      - ca-2
+      - ca-7
+      - ca-8
+      - ra-3
+      - ra-5
+      - ra-6
+      - si-4
+    rules: []
+    status: pending

@@ -1,0 +1,338 @@
+# NIST 800-53 AT Family: Awareness and Training
+controls:
+  - id: at-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, at-1_prm_1 ]]:\n    1. [[ insert: param, at-01_odp.03 ]] awareness and training policy that:\n    2. Procedures to facilitate the implementation of the awareness and training policy and the associated awareness and training controls;\n  b. Designate an [[ insert: param, at-01_odp.04 ]] to manage the development, documentation, and dissemination of the awareness and training policy and procedures; and\n  c. Review and update the current awareness and training:\n    1. Policy [[ insert: param, at-01_odp.05 ]] and following [[ insert: param, at-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, at-01_odp.07 ]] and following [[ insert: param, at-01_odp.08 ]]."
+    parameters:
+      - id: at-1_prm_1
+        label: organization-defined personnel or roles
+      - id: at-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the awareness and training policy is to be disseminated is/are defined;
+      - id: at-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the awareness and training procedures are to be disseminated is/are defined;
+      - id: at-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: at-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the awareness and training policy and procedures is defined;
+      - id: at-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current awareness and training policy is reviewed and updated is defined;
+      - id: at-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current awareness and training policy to be reviewed and updated are defined;
+      - id: at-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current awareness and training procedures are reviewed and updated is defined;
+      - id: at-01_odp.08
+        label: events
+        guidelines:
+          - events that would require procedures to be reviewed and updated are defined;
+    guidance: Awareness and training policy and procedures address the controls in the AT family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of awareness and training policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to awareness and training policy and procedures include assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: at-2
+    title: Literacy Training and Awareness
+    description: "  a. Provide security and privacy literacy training to system users (including managers, senior executives, and contractors):\n    1. As part of initial training for new users and [[ insert: param, at-2_prm_1 ]] thereafter; and\n    2. When required by system changes or following [[ insert: param, at-2_prm_2 ]];\n  b. Employ the following techniques to increase the security and privacy awareness of system users [[ insert: param, at-02_odp.05 ]];\n  c. Update literacy training and awareness content [[ insert: param, at-02_odp.06 ]] and following [[ insert: param, at-02_odp.07 ]] ; and\n  d. Incorporate lessons learned from internal or external security incidents or breaches into literacy training and awareness techniques."
+    parameters:
+      - id: at-2_prm_1
+        label: organization-defined frequency
+      - id: at-2_prm_2
+        label: organization-defined events
+      - id: at-02_odp.01
+        label: frequency
+        guidelines:
+          - the frequency at which to provide security literacy training to system users (including managers, senior executives, and contractors) after initial training is defined;
+      - id: at-02_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to provide privacy literacy training to system users (including managers, senior executives, and contractors) after initial training is defined;
+      - id: at-02_odp.03
+        label: events
+        guidelines:
+          - events that require security literacy training for system users are defined;
+      - id: at-02_odp.04
+        label: events
+        guidelines:
+          - events that require privacy literacy training for system users are defined;
+      - id: at-02_odp.05
+        label: awareness techniques
+        guidelines:
+          - techniques to be employed to increase the security and privacy awareness of system users are defined;
+      - id: at-02_odp.06
+        label: frequency
+        guidelines:
+          - the frequency at which to update literacy training and awareness content is defined;
+      - id: at-02_odp.07
+        label: events
+        guidelines:
+          - events that would require literacy training and awareness content to be updated are defined;
+    guidance: "Organizations provide basic and advanced levels of literacy training to system users, including measures to test the knowledge level of users. Organizations determine the content of literacy training and awareness based on specific organizational requirements, the systems to which personnel have authorized access, and work environments (e.g., telework). The content includes an understanding of the need for security and privacy as well as actions by users to maintain security and personal privacy and to respond to suspected incidents. The content addresses the need for operations security and the handling of personally identifiable information.\n\nAwareness techniques include displaying posters, offering supplies inscribed with security and privacy reminders, displaying logon screen messages, generating email advisories or notices from organizational officials, and conducting awareness events. Literacy training after the initial training described in [AT-2a.1](#at-2_smt.a.1) is conducted at a minimum frequency consistent with applicable laws, directives, regulations, and policies. Subsequent literacy training may be satisfied by one or more short ad hoc sessions and include topical information on recent attack schemes, changes to organizational security and privacy policies, revised security and privacy expectations, or a subset of topics from the initial training. Updating literacy training and awareness content on a regular basis helps to ensure that the content remains relevant. Events that may precipitate an update to literacy training and awareness content include, but are not limited to, assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines."
+    related_controls:
+      - ac-3
+      - ac-17
+      - ac-22
+      - at-3
+      - at-4
+      - cp-3
+      - ia-4
+      - ir-2
+      - ir-7
+      - ir-9
+      - pl-4
+      - pm-13
+      - pm-21
+      - ps-7
+      - pt-2
+      - sa-8
+      - sa-16
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: at-2.1
+    title: Practical Exercises
+    description: Provide practical exercises in literacy training that simulate events and incidents.
+    guidance: Practical exercises include no-notice social engineering attempts to collect information, gain unauthorized access, or simulate the adverse impact of opening malicious email attachments or invoking, via spear phishing attacks, malicious web links.
+    related_controls:
+      - ca-2
+      - ca-7
+      - cp-4
+      - ir-3
+    rules: []
+    status: pending
+  - id: at-2.2
+    title: Insider Threat
+    description: Provide literacy training on recognizing and reporting potential indicators of insider threat.
+    guidance: Potential indicators and possible precursors of insider threat can include behaviors such as inordinate, long-term job dissatisfaction; attempts to gain access to information not required for job performance; unexplained access to financial resources; bullying or harassment of fellow employees; workplace violence; and other serious violations of policies, procedures, directives, regulations, rules, or practices. Literacy training includes how to communicate the concerns of employees and management regarding potential indicators of insider threat through channels established by the organization and in accordance with established policies and procedures. Organizations may consider tailoring insider threat awareness topics to the role. For example, training for managers may be focused on changes in the behavior of team members, while training for employees may be focused on more general observations.
+    related_controls:
+      - pm-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: at-2.3
+    title: Social Engineering and Mining
+    description: Provide literacy training on recognizing and reporting potential and actual instances of social engineering and social mining.
+    guidance: Social engineering is an attempt to trick an individual into revealing information or taking an action that can be used to breach, compromise, or otherwise adversely impact a system. Social engineering includes phishing, pretexting, impersonation, baiting, quid pro quo, thread-jacking, social media exploitation, and tailgating. Social mining is an attempt to gather information about the organization that may be used to support future attacks. Literacy training includes information on how to communicate the concerns of employees and management regarding potential and actual instances of social engineering and data mining through organizational channels based on established policies and procedures.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: at-2.4
+    title: Suspicious Communications and Anomalous System Behavior
+    description: 'Provide literacy training on recognizing suspicious communications and anomalous behavior in organizational systems using [[ insert: param, at-02.04_odp ]].'
+    parameters:
+      - id: at-02.04_odp
+        label: indicators of malicious code
+        guidelines:
+          - indicators of malicious code are defined;
+    guidance: A well-trained workforce provides another organizational control that can be employed as part of a defense-in-depth strategy to protect against malicious code coming into organizations via email or the web applications. Personnel are trained to look for indications of potentially suspicious email (e.g., receiving an unexpected email, receiving an email containing strange or poor grammar, or receiving an email from an unfamiliar sender that appears to be from a known sponsor or contractor). Personnel are also trained on how to respond to suspicious email or web communications. For this process to work effectively, personnel are trained and made aware of what constitutes suspicious communications. Training personnel on how to recognize anomalous behaviors in systems can provide organizations with early warning for the presence of malicious code. Recognition of anomalous behavior by organizational personnel can supplement malicious code detection and protection tools and systems employed by organizations.
+    rules: []
+    status: pending
+  - id: at-2.5
+    title: Advanced Persistent Threat
+    description: Provide literacy training on the advanced persistent threat.
+    guidance: An effective way to detect advanced persistent threats (APT) and to preclude successful attacks is to provide specific literacy training for individuals. Threat literacy training includes educating individuals on the various ways that APTs can infiltrate the organization (e.g., through websites, emails, advertisement pop-ups, articles, and social engineering). Effective training includes techniques for recognizing suspicious emails, use of removable systems in non-secure settings, and the potential targeting of individuals at home.
+    rules: []
+    status: pending
+  - id: at-2.6
+    title: Cyber Threat Environment
+    description: "  a. Provide literacy training on the cyber threat environment; and\n  b. Reflect current cyber threat information in system operations."
+    guidance: Since threats continue to change over time, threat literacy training by the organization is dynamic. Moreover, threat literacy training is not performed in isolation from the system operations that support organizational mission and business functions.
+    related_controls:
+      - ra-3
+    rules: []
+    status: pending
+  - id: at-3
+    title: Role-based Training
+    description: "  a. Provide role-based security and privacy training to personnel with the following roles and responsibilities: [[ insert: param, at-3_prm_1 ]]:\n    1. Before authorizing access to the system, information, or performing assigned duties, and [[ insert: param, at-03_odp.03 ]] thereafter; and\n    2. When required by system changes;\n  b. Update role-based training content [[ insert: param, at-03_odp.04 ]] and following [[ insert: param, at-03_odp.05 ]] ; and\n  c. Incorporate lessons learned from internal or external security incidents or breaches into role-based training."
+    parameters:
+      - id: at-3_prm_1
+        label: organization-defined roles and responsibilities
+      - id: at-03_odp.01
+        label: roles and responsibilities
+        guidelines:
+          - roles and responsibilities for role-based security training are defined;
+      - id: at-03_odp.02
+        label: roles and responsibilities
+        guidelines:
+          - roles and responsibilities for role-based privacy training are defined;
+      - id: at-03_odp.03
+        label: frequency
+        guidelines:
+          - the frequency at which to provide role-based security and privacy training to assigned personnel after initial training is defined;
+      - id: at-03_odp.04
+        label: frequency
+        guidelines:
+          - the frequency at which to update role-based training content is defined;
+      - id: at-03_odp.05
+        label: events
+        guidelines:
+          - events that require role-based training content to be updated are defined;
+    guidance: "Organizations determine the content of training based on the assigned roles and responsibilities of individuals as well as the security and privacy requirements of organizations and the systems to which personnel have authorized access, including technical training specifically tailored for assigned duties. Roles that may require role-based training include senior leaders or management officials (e.g., head of agency/chief executive officer, chief information officer, senior accountable official for risk management, senior agency information security officer, senior agency official for privacy), system owners; authorizing officials; system security officers; privacy officers; acquisition and procurement officials; enterprise architects; systems engineers; software developers; systems security engineers; privacy engineers; system, network, and database administrators; auditors; personnel conducting configuration management activities; personnel performing verification and validation activities; personnel with access to system-level software; control assessors; personnel with contingency planning and incident response duties; personnel with privacy management responsibilities; and personnel with access to personally identifiable information.\n\nComprehensive role-based training addresses management, operational, and technical roles and responsibilities covering physical, personnel, and technical controls. Role-based training also includes policies, procedures, tools, methods, and artifacts for the security and privacy roles defined. Organizations provide the training necessary for individuals to fulfill their responsibilities related to operations and supply chain risk management within the context of organizational security and privacy programs. Role-based training also applies to contractors who provide services to federal agencies. Types of training include web-based and computer-based training, classroom-style training, and hands-on training (including micro-training). Updating role-based training on a regular basis helps to ensure that the content remains relevant and effective. Events that may precipitate an update to role-based training content include, but are not limited to, assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines."
+    related_controls:
+      - ac-3
+      - ac-17
+      - ac-22
+      - at-2
+      - at-4
+      - cp-3
+      - ir-2
+      - ir-4
+      - ir-7
+      - ir-9
+      - pl-4
+      - pm-13
+      - pm-23
+      - ps-7
+      - ps-9
+      - sa-3
+      - sa-8
+      - sa-11
+      - sa-16
+      - sr-5
+      - sr-6
+      - sr-11
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: at-3.1
+    title: Environmental Controls
+    description: 'Provide [[ insert: param, at-03.01_odp.01 ]] with initial and [[ insert: param, at-03.01_odp.02 ]] training in the employment and operation of environmental controls.'
+    parameters:
+      - id: at-03.01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be provided with initial and refresher training in the employment and operation of environmental controls are defined;
+      - id: at-03.01_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to provide refresher training in the employment and operation of environmental controls is defined;
+    guidance: Environmental controls include fire suppression and detection devices or systems, sprinkler systems, handheld fire extinguishers, fixed fire hoses, smoke detectors, temperature or humidity, heating, ventilation, air conditioning, and power within the facility.
+    related_controls:
+      - pe-1
+      - pe-11
+      - pe-13
+      - pe-14
+      - pe-15
+    rules: []
+    status: pending
+  - id: at-3.2
+    title: Physical Security Controls
+    description: 'Provide [[ insert: param, at-03.02_odp.01 ]] with initial and [[ insert: param, at-03.02_odp.02 ]] training in the employment and operation of physical security controls.'
+    parameters:
+      - id: at-03.02_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be provided with initial and refresher training in the employment and operation of physical security controls is/are defined;
+      - id: at-03.02_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to provide refresher training in the employment and operation of physical security controls is defined;
+    guidance: Physical security controls include physical access control devices, physical intrusion and detection alarms, operating procedures for facility security guards, and monitoring or surveillance equipment.
+    related_controls:
+      - pe-2
+      - pe-3
+      - pe-4
+    rules: []
+    status: pending
+  - id: at-3.3
+    title: Practical Exercises
+    description: Provide practical exercises in security and privacy training that reinforce training objectives.
+    guidance: Practical exercises for security include training for software developers that addresses simulated attacks that exploit common software vulnerabilities or spear or whale phishing attacks targeted at senior leaders or executives. Practical exercises for privacy include modules with quizzes on identifying and processing personally identifiable information in various scenarios or scenarios on conducting privacy impact assessments.
+    rules: []
+    status: pending
+  - id: at-3.4
+    title: Suspicious Communications and Anomalous System Behavior
+    rules: []
+    status: pending
+  - id: at-3.5
+    title: Processing Personally Identifiable Information
+    description: 'Provide [[ insert: param, at-03.05_odp.01 ]] with initial and [[ insert: param, at-03.05_odp.02 ]] training in the employment and operation of personally identifiable information processing and transparency controls.'
+    parameters:
+      - id: at-03.05_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be provided with initial and refresher training in the employment and operation of personally identifiable information processing and transparency controls is/are defined;
+      - id: at-03.05_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to provide refresher training in the employment and operation of personally identifiable information processing and transparency controls is defined;
+    guidance: Personally identifiable information processing and transparency controls include the organization’s authority to process personally identifiable information and personally identifiable information processing purposes. Role-based training for federal agencies addresses the types of information that may constitute personally identifiable information and the risks, considerations, and obligations associated with its processing. Such training also considers the authority to process personally identifiable information documented in privacy policies and notices, system of records notices, computer matching agreements and notices, privacy impact assessments, [PRIVACT](#18e71fec-c6fd-475a-925a-5d8495cf8455) statements, contracts, information sharing agreements, memoranda of understanding, and/or other documentation.
+    related_controls:
+      - pt-2
+      - pt-3
+      - pt-5
+      - pt-6
+    rules: []
+    status: pending
+  - id: at-4
+    title: Training Records
+    description: "  a. Document and monitor information security and privacy training activities, including security and privacy awareness training and specific role-based security and privacy training; and\n  b. Retain individual training records for [[ insert: param, at-04_odp ]]."
+    parameters:
+      - id: at-04_odp
+        label: time period
+        guidelines:
+          - time period for retaining individual training records is defined;
+    guidance: Documentation for specialized training may be maintained by individual supervisors at the discretion of the organization. The National Archives and Records Administration provides guidance on records retention for federal agencies.
+    related_controls:
+      - at-2
+      - at-3
+      - cp-3
+      - ir-2
+      - pm-14
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: at-5
+    title: Contacts with Security Groups and Associations
+    rules: []
+    status: pending
+  - id: at-6
+    title: Training Feedback
+    description: 'Provide feedback on organizational training results to the following personnel [[ insert: param, at-06_odp.01 ]]: [[ insert: param, at-06_odp.02 ]].'
+    parameters:
+      - id: at-06_odp.01
+        label: frequency
+        guidelines:
+          - frequency at which to provide feedback on organizational training results is defined;
+      - id: at-06_odp.02
+        label: personnel
+        guidelines:
+          - personnel to whom feedback on organizational training results will be provided is/are assigned;
+    guidance: Training feedback includes awareness training results and role-based training results. Training results, especially failures of personnel in critical roles, can be indicative of a potentially serious problem. Therefore, it is important that senior managers are made aware of such situations so that they can take appropriate response actions. Training feedback supports the evaluation and update of organizational training described in [AT-2b](#at-2_smt.b) and [AT-3b](#at-3_smt.b).
+    rules: []
+    status: pending

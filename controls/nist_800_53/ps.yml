@@ -1,0 +1,356 @@
+# NIST 800-53 PS Family: Personnel Security
+controls:
+  - id: ps-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, ps-1_prm_1 ]]:\n    1. [[ insert: param, ps-01_odp.03 ]] personnel security policy that:\n    2. Procedures to facilitate the implementation of the personnel security policy and the associated personnel security controls;\n  b. Designate an [[ insert: param, ps-01_odp.04 ]] to manage the development, documentation, and dissemination of the personnel security policy and procedures; and\n  c. Review and update the current personnel security:\n    1. Policy [[ insert: param, ps-01_odp.05 ]] and following [[ insert: param, ps-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, ps-01_odp.07 ]] and following [[ insert: param, ps-01_odp.08 ]]."
+    parameters:
+      - id: ps-1_prm_1
+        label: organization-defined personnel or roles
+      - id: ps-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the personnel security policy is to be disseminated is/are defined;
+      - id: ps-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the personnel security procedures are to be disseminated is/are defined;
+      - id: ps-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: ps-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the personnel security policy and procedures is defined;
+      - id: ps-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current personnel security policy is reviewed and updated is defined;
+      - id: ps-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current personnel security policy to be reviewed and updated are defined;
+      - id: ps-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current personnel security procedures are reviewed and updated is defined;
+      - id: ps-01_odp.08
+        label: events
+        guidelines:
+          - events that would require the personnel security procedures to be reviewed and updated are defined;
+    guidance: Personnel security policy and procedures for the controls in the PS family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on their development. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission level or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies reflecting the complex nature of organizations. Procedures can be established for security and privacy programs, for mission/business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to personnel security policy and procedures include, but are not limited to, assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ps-2
+    title: Position Risk Designation
+    description: "  a. Assign a risk designation to all organizational positions;\n  b. Establish screening criteria for individuals filling those positions; and\n  c. Review and update position risk designations [[ insert: param, ps-02_odp ]]."
+    parameters:
+      - id: ps-02_odp
+        label: frequency
+        guidelines:
+          - the frequency at which to review and update position risk designations is defined;
+    guidance: Position risk designations reflect Office of Personnel Management (OPM) policy and guidance. Proper position designation is the foundation of an effective and consistent suitability and personnel security program. The Position Designation System (PDS) assesses the duties and responsibilities of a position to determine the degree of potential damage to the efficiency or integrity of the service due to misconduct of an incumbent of a position and establishes the risk level of that position. The PDS assessment also determines if the duties and responsibilities of the position present the potential for position incumbents to bring about a material adverse effect on national security and the degree of that potential effect, which establishes the sensitivity level of a position. The results of the assessment determine what level of investigation is conducted for a position. Risk designations can guide and inform the types of authorizations that individuals receive when accessing organizational information and information systems. Position screening criteria include explicit information security role appointment requirements. Parts 1400 and 731 of Title 5, Code of Federal Regulations, establish the requirements for organizations to evaluate relevant covered positions for a position sensitivity and position risk designation commensurate with the duties and responsibilities of those positions.
+    related_controls:
+      - ac-5
+      - at-3
+      - pe-2
+      - pe-3
+      - pl-2
+      - ps-3
+      - ps-6
+      - sa-5
+      - sa-21
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ps-3
+    title: Personnel Screening
+    description: "  a. Screen individuals prior to authorizing access to the system; and\n  b. Rescreen individuals in accordance with [[ insert: param, ps-3_prm_1 ]]."
+    parameters:
+      - id: ps-3_prm_1
+        label: organization-defined conditions requiring rescreening and, where rescreening is so indicated, the frequency of rescreening
+      - id: ps-03_odp.01
+        label: conditions requiring rescreening
+        guidelines:
+          - conditions requiring rescreening of individuals are defined;
+      - id: ps-03_odp.02
+        label: frequency
+        guidelines:
+          - the frequency of rescreening individuals where it is so indicated is defined;
+    guidance: Personnel screening and rescreening activities reflect applicable laws, executive orders, directives, regulations, policies, standards, guidelines, and specific criteria established for the risk designations of assigned positions. Examples of personnel screening include background investigations and agency checks. Organizations may define different rescreening conditions and frequencies for personnel accessing systems based on types of information processed, stored, or transmitted by the systems.
+    related_controls:
+      - ac-2
+      - ia-4
+      - ma-5
+      - pe-2
+      - pm-12
+      - ps-2
+      - ps-6
+      - ps-7
+      - sa-21
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ps-3.1
+    title: Classified Information
+    description: Verify that individuals accessing a system processing, storing, or transmitting classified information are cleared and indoctrinated to the highest classification level of the information to which they have access on the system.
+    guidance: Classified information is the most sensitive information that the Federal Government processes, stores, or transmits. It is imperative that individuals have the requisite security clearances and system access authorizations prior to gaining access to such information. Access authorizations are enforced by system access controls (see [AC-3](#ac-3) ) and flow controls (see [AC-4](#ac-4)).
+    related_controls:
+      - ac-3
+      - ac-4
+    rules: []
+    status: pending
+  - id: ps-3.2
+    title: Formal Indoctrination
+    description: Verify that individuals accessing a system processing, storing, or transmitting types of classified information that require formal indoctrination, are formally indoctrinated for all the relevant types of information to which they have access on the system.
+    guidance: Types of classified information that require formal indoctrination include Special Access Program (SAP), Restricted Data (RD), and Sensitive Compartmented Information (SCI).
+    related_controls:
+      - ac-3
+      - ac-4
+    rules: []
+    status: pending
+  - id: ps-3.3
+    title: Information Requiring Special Protective Measures
+    description: "Verify that individuals accessing a system processing, storing, or transmitting information requiring special protection:\n  a. Have valid access authorizations that are demonstrated by assigned official government duties; and\n  b. Satisfy [[ insert: param, ps-03.03_odp ]]."
+    parameters:
+      - id: ps-03.03_odp
+        label: additional personnel screening criteria
+        guidelines:
+          - additional personnel screening criteria to be satisfied for individuals accessing a system processing, storing, or transmitting information requiring special protection are defined;
+    guidance: Organizational information that requires special protection includes controlled unclassified information. Personnel security criteria include position sensitivity background screening requirements.
+    rules: []
+    status: pending
+  - id: ps-3.4
+    title: Citizenship Requirements
+    description: 'Verify that individuals accessing a system processing, storing, or transmitting [[ insert: param, ps-03.04_odp.01 ]] meet [[ insert: param, ps-03.04_odp.02 ]].'
+    parameters:
+      - id: ps-03.04_odp.01
+        label: information types
+        guidelines:
+          - 'information types that are processed, stored, or transmitted by a system that require individuals accessing the system to meet [[ insert: param, ps-03.04_odp.02 ]] are defined;'
+      - id: ps-03.04_odp.02
+        label: citizenship requirements
+        guidelines:
+          - citizenship requirements to be met by individuals to access a system processing, storing, or transmitting information are defined;
+    guidance: None.
+    rules: []
+    status: pending
+  - id: ps-4
+    title: Personnel Termination
+    description: "Upon termination of individual employment:\n  a. Disable system access within [[ insert: param, ps-04_odp.01 ]];\n  b. Terminate or revoke any authenticators and credentials associated with the individual;\n  c. Conduct exit interviews that include a discussion of [[ insert: param, ps-04_odp.02 ]];\n  d. Retrieve all security-related organizational system-related property; and\n  e. Retain access to organizational information and systems formerly controlled by terminated individual."
+    parameters:
+      - id: ps-04_odp.01
+        label: time period
+        guidelines:
+          - a time period within which to disable system access is defined;
+      - id: ps-04_odp.02
+        label: information security topics
+        guidelines:
+          - information security topics to be discussed when conducting exit interviews are defined;
+    guidance: System property includes hardware authentication tokens, system administration technical manuals, keys, identification cards, and building passes. Exit interviews ensure that terminated individuals understand the security constraints imposed by being former employees and that proper accountability is achieved for system-related property. Security topics at exit interviews include reminding individuals of nondisclosure agreements and potential limitations on future employment. Exit interviews may not always be possible for some individuals, including in cases related to the unavailability of supervisors, illnesses, or job abandonment. Exit interviews are important for individuals with security clearances. The timely execution of termination actions is essential for individuals who have been terminated for cause. In certain situations, organizations consider disabling the system accounts of individuals who are being terminated prior to the individuals being notified.
+    related_controls:
+      - ac-2
+      - ia-4
+      - pe-2
+      - pm-12
+      - ps-6
+      - ps-7
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ps-4.1
+    title: Post-employment Requirements
+    description: "  a. Notify terminated individuals of applicable, legally binding post-employment requirements for the protection of organizational information; and\n  b. Require terminated individuals to sign an acknowledgment of post-employment requirements as part of the organizational termination process."
+    guidance: Organizations consult with the Office of the General Counsel regarding matters of post-employment requirements on terminated individuals.
+    rules: []
+    status: pending
+  - id: ps-4.2
+    title: Automated Actions
+    description: 'Use [[ insert: param, ps-04.02_odp.01 ]] to [[ insert: param, ps-04.02_odp.02 ]].'
+    parameters:
+      - id: ps-04.02_odp.01
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to notify personnel or roles of individual termination actions and/or to disable access to system resources are defined;
+      - id: ps-04.02_odp.02
+        label: ''
+        choices:
+          - 'notify [[ insert: param, ps-04.02_odp.03 ]] of individual termination actions'
+          - disable access to system resources
+      - id: ps-04.02_odp.03
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified upon termination of an individual is/are defined (if selected);
+    guidance: In organizations with many employees, not all personnel who need to know about termination actions receive the appropriate notifications, or if such notifications are received, they may not occur in a timely manner. Automated mechanisms can be used to send automatic alerts or notifications to organizational personnel or roles when individuals are terminated. Such automatic alerts or notifications can be conveyed in a variety of ways, including via telephone, electronic mail, text message, or websites. Automated mechanisms can also be employed to quickly and thoroughly disable access to system resources after an employee is terminated.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: ps-5
+    title: Personnel Transfer
+    description: "  a. Review and confirm ongoing operational need for current logical and physical access authorizations to systems and facilities when individuals are reassigned or transferred to other positions within the organization;\n  b. Initiate [[ insert: param, ps-05_odp.01 ]] within [[ insert: param, ps-05_odp.02 ]];\n  c. Modify access authorization as needed to correspond with any changes in operational need due to reassignment or transfer; and\n  d. Notify [[ insert: param, ps-05_odp.03 ]] within [[ insert: param, ps-05_odp.04 ]]."
+    parameters:
+      - id: ps-05_odp.01
+        label: transfer or reassignment actions
+        guidelines:
+          - transfer or reassignment actions to be initiated following transfer or reassignment are defined;
+      - id: ps-05_odp.02
+        label: time period following the formal transfer action
+        guidelines:
+          - the time period within which transfer or reassignment actions must occur following transfer or reassignment is defined;
+      - id: ps-05_odp.03
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified when individuals are reassigned or transferred to other positions within the organization is/are defined;
+      - id: ps-05_odp.04
+        label: time period
+        guidelines:
+          - time period within which to notify organization-defined personnel or roles when individuals are reassigned or transferred to other positions within the organization is defined;
+    guidance: Personnel transfer applies when reassignments or transfers of individuals are permanent or of such extended duration as to make the actions warranted. Organizations define actions appropriate for the types of reassignments or transfers, whether permanent or extended. Actions that may be required for personnel transfers or reassignments to other positions within organizations include returning old and issuing new keys, identification cards, and building passes; closing system accounts and establishing new accounts; changing system access authorizations (i.e., privileges); and providing for access to official records to which individuals had access at previous work locations and in previous system accounts.
+    related_controls:
+      - ac-2
+      - ia-4
+      - pe-2
+      - pm-12
+      - ps-4
+      - ps-7
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ps-6
+    title: Access Agreements
+    description: "  a. Develop and document access agreements for organizational systems;\n  b. Review and update the access agreements [[ insert: param, ps-06_odp.01 ]] ; and\n  c. Verify that individuals requiring access to organizational information and systems:\n    1. Sign appropriate access agreements prior to being granted access; and\n    2. Re-sign access agreements to maintain access to organizational systems when access agreements have been updated or [[ insert: param, ps-06_odp.02 ]]."
+    parameters:
+      - id: ps-06_odp.01
+        label: frequency
+        guidelines:
+          - the frequency at which to review and update access agreements is defined;
+      - id: ps-06_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to re-sign access agreements to maintain access to organizational information is defined;
+    guidance: Access agreements include nondisclosure agreements, acceptable use agreements, rules of behavior, and conflict-of-interest agreements. Signed access agreements include an acknowledgement that individuals have read, understand, and agree to abide by the constraints associated with organizational systems to which access is authorized. Organizations can use electronic signatures to acknowledge access agreements unless specifically prohibited by organizational policy.
+    related_controls:
+      - ac-17
+      - pe-2
+      - pl-4
+      - ps-2
+      - ps-3
+      - ps-6
+      - ps-7
+      - ps-8
+      - sa-21
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ps-6.1
+    title: Information Requiring Special Protection
+    rules: []
+    status: pending
+  - id: ps-6.2
+    title: Classified Information Requiring Special Protection
+    description: "Verify that access to classified information requiring special protection is granted only to individuals who:\n  a. Have a valid access authorization that is demonstrated by assigned official government duties;\n  b. Satisfy associated personnel security criteria; and\n  c. Have read, understood, and signed a nondisclosure agreement."
+    guidance: Classified information that requires special protection includes collateral information, Special Access Program (SAP) information, and Sensitive Compartmented Information (SCI). Personnel security criteria reflect applicable laws, executive orders, directives, regulations, policies, standards, and guidelines.
+    rules: []
+    status: pending
+  - id: ps-6.3
+    title: Post-employment Requirements
+    description: "  a. Notify individuals of applicable, legally binding post-employment requirements for protection of organizational information; and\n  b. Require individuals to sign an acknowledgment of these requirements, if applicable, as part of granting initial access to covered information."
+    guidance: Organizations consult with the Office of the General Counsel regarding matters of post-employment requirements on terminated individuals.
+    related_controls:
+      - ps-4
+    rules: []
+    status: pending
+  - id: ps-7
+    title: External Personnel Security
+    description: "  a. Establish personnel security requirements, including security roles and responsibilities for external providers;\n  b. Require external providers to comply with personnel security policies and procedures established by the organization;\n  c. Document personnel security requirements;\n  d. Require external providers to notify [[ insert: param, ps-07_odp.01 ]] of any personnel transfers or terminations of external personnel who possess organizational credentials and/or badges, or who have system privileges within [[ insert: param, ps-07_odp.02 ]] ; and\n  e. Monitor provider compliance with personnel security requirements."
+    parameters:
+      - id: ps-07_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified of any personnel transfers or terminations of external personnel who possess organizational credentials and/or badges or who have system privileges is/are defined;
+      - id: ps-07_odp.02
+        label: time period
+        guidelines:
+          - time period within which third-party providers are required to notify organization-defined personnel or roles of any personnel transfers or terminations of external personnel who possess organizational credentials and/or badges or who have system privileges is defined;
+    guidance: External provider refers to organizations other than the organization operating or acquiring the system. External providers include service bureaus, contractors, and other organizations that provide system development, information technology services, testing or assessment services, outsourced applications, and network/security management. Organizations explicitly include personnel security requirements in acquisition-related documents. External providers may have personnel working at organizational facilities with credentials, badges, or system privileges issued by organizations. Notifications of external personnel changes ensure the appropriate termination of privileges and credentials. Organizations define the transfers and terminations deemed reportable by security-related characteristics that include functions, roles, and the nature of credentials or privileges associated with transferred or terminated individuals.
+    related_controls:
+      - at-2
+      - at-3
+      - ma-5
+      - pe-3
+      - ps-2
+      - ps-3
+      - ps-4
+      - ps-5
+      - ps-6
+      - sa-5
+      - sa-9
+      - sa-21
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ps-8
+    title: Personnel Sanctions
+    description: "  a. Employ a formal sanctions process for individuals failing to comply with established information security and privacy policies and procedures; and\n  b. Notify [[ insert: param, ps-08_odp.01 ]] within [[ insert: param, ps-08_odp.02 ]] when a formal employee sanctions process is initiated, identifying the individual sanctioned and the reason for the sanction."
+    parameters:
+      - id: ps-08_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified when a formal employee sanctions process is initiated is/are defined;
+      - id: ps-08_odp.02
+        label: time period
+        guidelines:
+          - the time period within which organization-defined personnel or roles must be notified when a formal employee sanctions process is initiated is defined;
+    guidance: Organizational sanctions reflect applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Sanctions processes are described in access agreements and can be included as part of general personnel policies for organizations and/or specified in security and privacy policies. Organizations consult with the Office of the General Counsel regarding matters of employee sanctions.
+    related_controls:
+      - pl-4
+      - pm-12
+      - ps-6
+      - pt-1
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: ps-9
+    title: Position Descriptions
+    description: Incorporate security and privacy roles and responsibilities into organizational position descriptions.
+    guidance: Specification of security and privacy roles in individual organizational position descriptions facilitates clarity in understanding the security or privacy responsibilities associated with the roles and the role-based security and privacy training requirements for the roles.
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending

@@ -1,0 +1,883 @@
+# NIST 800-53 CP Family: Contingency Planning
+controls:
+  - id: cp-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, cp-1_prm_1 ]]:\n    1. [[ insert: param, cp-01_odp.03 ]] contingency planning policy that:\n    2. Procedures to facilitate the implementation of the contingency planning policy and the associated contingency planning controls;\n  b. Designate an [[ insert: param, cp-01_odp.04 ]] to manage the development, documentation, and dissemination of the contingency planning policy and procedures; and\n  c. Review and update the current contingency planning:\n    1. Policy [[ insert: param, cp-01_odp.05 ]] and following [[ insert: param, cp-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, cp-01_odp.07 ]] and following [[ insert: param, cp-01_odp.08 ]]."
+    parameters:
+      - id: cp-1_prm_1
+        label: organization-defined personnel or roles
+      - id: cp-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the contingency planning policy is to be disseminated is/are defined;
+      - id: cp-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the contingency planning procedures are to be disseminated is/are defined;
+      - id: cp-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: cp-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the contingency planning policy and procedures is defined;
+      - id: cp-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current contingency planning policy is reviewed and updated is defined;
+      - id: cp-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current contingency planning policy to be reviewed and updated are defined;
+      - id: cp-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current contingency planning procedures are reviewed and updated is defined;
+      - id: cp-01_odp.08
+        label: events
+        guidelines:
+          - events that would require procedures to be reviewed and updated are defined;
+    guidance: Contingency planning policy and procedures address the controls in the CP family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of contingency planning policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to contingency planning policy and procedures include assessment or audit findings, security incidents or breaches, or changes in laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-2
+    title: Contingency Plan
+    description: "  a. Develop a contingency plan for the system that:\n    1. Identifies essential mission and business functions and associated contingency requirements;\n    2. Provides recovery objectives, restoration priorities, and metrics;\n    3. Addresses contingency roles, responsibilities, assigned individuals with contact information;\n    4. Addresses maintaining essential mission and business functions despite a system disruption, compromise, or failure;\n    5. Addresses eventual, full system restoration without deterioration of the controls originally planned and implemented;\n    6. Addresses the sharing of contingency information; and\n    7. Is reviewed and approved by [[ insert: param, cp-2_prm_1 ]];\n  b. Distribute copies of the contingency plan to [[ insert: param, cp-2_prm_2 ]];\n  c. Coordinate contingency planning activities with incident handling activities;\n  d. Review the contingency plan for the system [[ insert: param, cp-02_odp.05 ]];\n  e. Update the contingency plan to address changes to the organization, system, or environment of operation and problems encountered during contingency plan implementation, execution, or testing;\n  f. Communicate contingency plan changes to [[ insert: param, cp-2_prm_4 ]];\n  g. Incorporate lessons learned from contingency plan testing, training, or actual contingency activities into contingency testing and training; and\n  h. Protect the contingency plan from unauthorized disclosure and modification."
+    parameters:
+      - id: cp-2_prm_1
+        label: organization-defined personnel or roles
+      - id: cp-2_prm_2
+        label: organization-defined key contingency personnel (identified by name and/or by role) and organizational elements
+      - id: cp-2_prm_4
+        label: organization-defined key contingency personnel (identified by name and/or by role) and organizational elements
+      - id: cp-02_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to review a contingency plan is/are defined;
+      - id: cp-02_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to approve a contingency plan is/are defined;
+      - id: cp-02_odp.03
+        label: key contingency personnel
+        guidelines:
+          - key contingency personnel (identified by name and/or by role) to whom copies of the contingency plan are distributed are defined;
+      - id: cp-02_odp.04
+        label: organizational elements
+        guidelines:
+          - key contingency organizational elements to which copies of the contingency plan are distributed are defined;
+      - id: cp-02_odp.05
+        label: frequency
+        guidelines:
+          - frequency of contingency plan review is defined;
+      - id: cp-02_odp.06
+        label: key contingency personnel
+        guidelines:
+          - key contingency personnel (identified by name and/or by role) to communicate changes to are defined;
+      - id: cp-02_odp.07
+        label: organizational elements
+        guidelines:
+          - key contingency organizational elements to communicate changes to are defined;
+    guidance: "Contingency planning for systems is part of an overall program for achieving continuity of operations for organizational mission and business functions. Contingency planning addresses system restoration and implementation of alternative mission or business processes when systems are compromised or breached. Contingency planning is considered throughout the system development life cycle and is a fundamental part of the system design. Systems can be designed for redundancy, to provide backup capabilities, and for resilience. Contingency plans reflect the degree of restoration required for organizational systems since not all systems need to fully recover to achieve the level of continuity of operations desired. System recovery objectives reflect applicable laws, executive orders, directives, regulations, policies, standards, guidelines, organizational risk tolerance, and system impact level.\n\nActions addressed in contingency plans include orderly system degradation, system shutdown, fallback to a manual mode, alternate information flows, and operating in modes reserved for when systems are under attack. By coordinating contingency planning with incident handling activities, organizations ensure that the necessary planning activities are in place and activated in the event of an incident. Organizations consider whether continuity of operations during an incident conflicts with the capability to automatically disable the system, as specified in [IR-4(5)](#ir-4.5) . Incident response planning is part of contingency planning for organizations and is addressed in the [IR](#ir) (Incident Response) family."
+    related_controls:
+      - cp-3
+      - cp-4
+      - cp-6
+      - cp-7
+      - cp-8
+      - cp-9
+      - cp-10
+      - cp-11
+      - cp-13
+      - ir-4
+      - ir-6
+      - ir-8
+      - ir-9
+      - ma-6
+      - mp-2
+      - mp-4
+      - mp-5
+      - pl-2
+      - pm-8
+      - pm-11
+      - sa-15
+      - sa-20
+      - sc-7
+      - sc-23
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-2.1
+    title: Coordinate with Related Plans
+    description: Coordinate contingency plan development with organizational elements responsible for related plans.
+    guidance: Plans that are related to contingency plans include Business Continuity Plans, Disaster Recovery Plans, Critical Infrastructure Plans, Continuity of Operations Plans, Crisis Communications Plans, Insider Threat Implementation Plans, Data Breach Response Plans, Cyber Incident Response Plans, Breach Response Plans, and Occupant Emergency Plans.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-2.2
+    title: Capacity Planning
+    description: Conduct capacity planning so that necessary capacity for information processing, telecommunications, and environmental support exists during contingency operations.
+    guidance: Capacity planning is needed because different threats can result in a reduction of the available processing, telecommunications, and support services intended to support essential mission and business functions. Organizations anticipate degraded operations during contingency operations and factor the degradation into capacity planning. For capacity planning, environmental support refers to any environmental factor for which the organization determines that it needs to provide support in a contingency situation, even if in a degraded state. Such determinations are based on an organizational assessment of risk, system categorization (impact level), and organizational risk tolerance.
+    related_controls:
+      - pe-11
+      - pe-12
+      - pe-13
+      - pe-14
+      - pe-18
+      - sc-5
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-2.3
+    title: Resume Mission and Business Functions
+    description: 'Plan for the resumption of [[ insert: param, cp-02.03_odp.01 ]] mission and business functions within [[ insert: param, cp-02.03_odp.02 ]] of contingency plan activation.'
+    parameters:
+      - id: cp-02.03_odp.01
+        label: ''
+        choices:
+          - all
+          - essential
+      - id: cp-02.03_odp.02
+        label: time period
+        guidelines:
+          - the contingency plan activation time period within which to resume mission and business functions is defined;
+    guidance: Organizations may choose to conduct contingency planning activities to resume mission and business functions as part of business continuity planning or as part of business impact analyses. Organizations prioritize the resumption of mission and business functions. The time period for resuming mission and business functions may be dependent on the severity and extent of the disruptions to the system and its supporting infrastructure.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-2.4
+    title: Resume All Mission and Business Functions
+    rules: []
+    status: pending
+  - id: cp-2.5
+    title: Continue Mission and Business Functions
+    description: 'Plan for the continuance of [[ insert: param, cp-02.05_odp ]] mission and business functions with minimal or no loss of operational continuity and sustains that continuity until full system restoration at primary processing and/or storage sites.'
+    parameters:
+      - id: cp-02.05_odp
+        label: ''
+        choices:
+          - all
+          - essential
+    guidance: Organizations may choose to conduct the contingency planning activities to continue mission and business functions as part of business continuity planning or business impact analyses. Primary processing and/or storage sites defined by organizations as part of contingency planning may change depending on the circumstances associated with the contingency.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-2.6
+    title: Alternate Processing and Storage Sites
+    description: 'Plan for the transfer of [[ insert: param, cp-02.06_odp ]] mission and business functions to alternate processing and/or storage sites with minimal or no loss of operational continuity and sustain that continuity through system restoration to primary processing and/or storage sites.'
+    parameters:
+      - id: cp-02.06_odp
+        label: ''
+        choices:
+          - all
+          - essential
+    guidance: Organizations may choose to conduct contingency planning activities for alternate processing and storage sites as part of business continuity planning or business impact analyses. Primary processing and/or storage sites defined by organizations as part of contingency planning may change depending on the circumstances associated with the contingency.
+    rules: []
+    status: pending
+  - id: cp-2.7
+    title: Coordinate with External Service Providers
+    description: Coordinate the contingency plan with the contingency plans of external service providers to ensure that contingency requirements can be satisfied.
+    guidance: When the capability of an organization to carry out its mission and business functions is dependent on external service providers, developing a comprehensive and timely contingency plan may become more challenging. When mission and business functions are dependent on external service providers, organizations coordinate contingency planning activities with the external entities to ensure that the individual plans reflect the overall contingency needs of the organization.
+    related_controls:
+      - sa-9
+    rules: []
+    status: pending
+  - id: cp-2.8
+    title: Identify Critical Assets
+    description: 'Identify critical system assets supporting [[ insert: param, cp-02.08_odp ]] mission and business functions.'
+    parameters:
+      - id: cp-02.08_odp
+        label: ''
+        choices:
+          - all
+          - essential
+    guidance: Organizations may choose to identify critical assets as part of criticality analysis, business continuity planning, or business impact analyses. Organizations identify critical system assets so that additional controls can be employed (beyond the controls routinely implemented) to help ensure that organizational mission and business functions can continue to be conducted during contingency operations. The identification of critical information assets also facilitates the prioritization of organizational resources. Critical system assets include technical and operational aspects. Technical aspects include system components, information technology services, information technology products, and mechanisms. Operational aspects include procedures (i.e., manually executed operations) and personnel (i.e., individuals operating technical controls and/or executing manual procedures). Organizational program protection plans can assist in identifying critical assets. If critical assets are resident within or supported by external service providers, organizations consider implementing [CP-2(7)](#cp-2.7) as a control enhancement.
+    related_controls:
+      - cm-8
+      - ra-9
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-3
+    title: Contingency Training
+    description: "  a. Provide contingency training to system users consistent with assigned roles and responsibilities:\n    1. Within [[ insert: param, cp-03_odp.01 ]] of assuming a contingency role or responsibility;\n    2. When required by system changes; and\n    3. [[ insert: param, cp-03_odp.02 ]] thereafter; and\n  b. Review and update contingency training content [[ insert: param, cp-03_odp.03 ]] and following [[ insert: param, cp-03_odp.04 ]]."
+    parameters:
+      - id: cp-03_odp.01
+        label: time period
+        guidelines:
+          - the time period within which to provide contingency training after assuming a contingency role or responsibility is defined;
+      - id: cp-03_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to provide training to system users with a contingency role or responsibility is defined;
+      - id: cp-03_odp.03
+        label: frequency
+        guidelines:
+          - frequency at which to review and update contingency training content is defined;
+      - id: cp-03_odp.04
+        label: events
+        guidelines:
+          - events necessitating review and update of contingency training are defined;
+    guidance: Contingency training provided by organizations is linked to the assigned roles and responsibilities of organizational personnel to ensure that the appropriate content and level of detail is included in such training. For example, some individuals may only need to know when and where to report for duty during contingency operations and if normal duties are affected; system administrators may require additional training on how to establish systems at alternate processing and storage sites; and organizational officials may receive more specific training on how to conduct mission-essential functions in designated off-site locations and how to establish communications with other governmental entities for purposes of coordination on contingency-related activities. Training for contingency roles or responsibilities reflects the specific continuity requirements in the contingency plan. Events that may precipitate an update to contingency training content include, but are not limited to, contingency plan testing or an actual contingency (lessons learned), assessment or audit findings, security incidents or breaches, or changes in laws, executive orders, directives, regulations, policies, standards, and guidelines. At the discretion of the organization, participation in a contingency plan test or exercise, including lessons learned sessions subsequent to the test or exercise, may satisfy contingency plan training requirements.
+    related_controls:
+      - at-2
+      - at-3
+      - at-4
+      - cp-2
+      - cp-4
+      - cp-8
+      - ir-2
+      - ir-4
+      - ir-9
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-3.1
+    title: Simulated Events
+    description: Incorporate simulated events into contingency training to facilitate effective response by personnel in crisis situations.
+    guidance: The use of simulated events creates an environment for personnel to experience actual threat events, including cyber-attacks that disable websites, ransomware attacks that encrypt organizational data on servers, hurricanes that damage or destroy organizational facilities, or hardware or software failures.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-3.2
+    title: Mechanisms Used in Training Environments
+    description: Employ mechanisms used in operations to provide a more thorough and realistic contingency training environment.
+    guidance: Operational mechanisms refer to processes that have been established to accomplish an organizational goal or a system that supports a particular organizational mission or business objective. Actual mission and business processes, systems, and/or facilities may be used to generate simulated events and enhance the realism of simulated events during contingency training.
+    rules: []
+    status: pending
+  - id: cp-4
+    title: Contingency Plan Testing
+    description: "  a. Test the contingency plan for the system [[ insert: param, cp-04_odp.01 ]] using the following tests to determine the effectiveness of the plan and the readiness to execute the plan: [[ insert: param, cp-4_prm_2 ]].\n  b. Review the contingency plan test results; and\n  c. Initiate corrective actions, if needed."
+    parameters:
+      - id: cp-4_prm_2
+        label: organization-defined tests
+      - id: cp-04_odp.01
+        label: frequency
+        guidelines:
+          - frequency of testing the contingency plan for the system is defined;
+      - id: cp-04_odp.02
+        label: tests
+        guidelines:
+          - tests for determining the effectiveness of the contingency plan are defined;
+      - id: cp-04_odp.03
+        label: tests
+        guidelines:
+          - tests for determining readiness to execute the contingency plan are defined;
+    guidance: Methods for testing contingency plans to determine the effectiveness of the plans and identify potential weaknesses include checklists, walk-through and tabletop exercises, simulations (parallel or full interrupt), and comprehensive exercises. Organizations conduct testing based on the requirements in contingency plans and include a determination of the effects on organizational operations, assets, and individuals due to contingency operations. Organizations have flexibility and discretion in the breadth, depth, and timelines of corrective actions.
+    related_controls:
+      - at-3
+      - cp-2
+      - cp-3
+      - cp-8
+      - cp-9
+      - ir-3
+      - ir-4
+      - pl-2
+      - pm-14
+      - sr-2
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-4.1
+    title: Coordinate with Related Plans
+    description: Coordinate contingency plan testing with organizational elements responsible for related plans.
+    guidance: Plans related to contingency planning for organizational systems include Business Continuity Plans, Disaster Recovery Plans, Continuity of Operations Plans, Crisis Communications Plans, Critical Infrastructure Plans, Cyber Incident Response Plans, and Occupant Emergency Plans. Coordination of contingency plan testing does not require organizations to create organizational elements to handle related plans or to align such elements with specific plans. However, it does require that if such organizational elements are responsible for related plans, organizations coordinate with those elements.
+    related_controls:
+      - ir-8
+      - pm-8
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-4.2
+    title: Alternate Processing Site
+    description: "Test the contingency plan at the alternate processing site:\n  a. To familiarize contingency personnel with the facility and available resources; and\n  b. To evaluate the capabilities of the alternate processing site to support contingency operations."
+    guidance: Conditions at the alternate processing site may be significantly different than the conditions at the primary site. Having the opportunity to visit the alternate site and experience the actual capabilities available at the site can provide valuable information on potential vulnerabilities that could affect essential organizational mission and business functions. The on-site visit can also provide an opportunity to refine the contingency plan to address the vulnerabilities discovered during testing.
+    related_controls:
+      - cp-7
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-4.3
+    title: Automated Testing
+    description: 'Test the contingency plan using [[ insert: param, cp-04.03_odp ]].'
+    parameters:
+      - id: cp-04.03_odp
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms for contingency plan testing are defined;
+    guidance: Automated mechanisms facilitate thorough and effective testing of contingency plans by providing more complete coverage of contingency issues, selecting more realistic test scenarios and environments, and effectively stressing the system and supported mission and business functions.
+    rules: []
+    status: pending
+  - id: cp-4.4
+    title: Full Recovery and Reconstitution
+    description: Include a full recovery and reconstitution of the system to a known state as part of contingency plan testing.
+    guidance: Recovery is executing contingency plan activities to restore organizational mission and business functions. Reconstitution takes place following recovery and includes activities for returning systems to fully operational states. Organizations establish a known state for systems that includes system state information for hardware, software programs, and data. Preserving system state information facilitates system restart and return to the operational mode of organizations with less disruption of mission and business processes.
+    related_controls:
+      - cp-10
+      - sc-24
+    rules: []
+    status: pending
+  - id: cp-4.5
+    title: Self-challenge
+    description: 'Employ [[ insert: param, cp-04.05_odp.01 ]] to [[ insert: param, cp-04.05_odp.02 ]] to disrupt and adversely affect the system or system component.'
+    parameters:
+      - id: cp-04.05_odp.01
+        label: mechanisms
+        guidelines:
+          - mechanisms employed to disrupt and adversely affect the system or system component are defined;
+      - id: cp-04.05_odp.02
+        label: system or system component
+        guidelines:
+          - system or system component on which to apply disruption mechanisms are defined;
+    guidance: Often, the best method of assessing system resilience is to disrupt the system in some manner. The mechanisms used by the organization could disrupt system functions or system services in many ways, including terminating or disabling critical system components, changing the configuration of system components, degrading critical functionality (e.g., restricting network bandwidth), or altering privileges. Automated, on-going, and simulated cyber-attacks and service disruptions can reveal unexpected functional dependencies and help the organization determine its ability to ensure resilience in the face of an actual cyber-attack.
+    rules: []
+    status: pending
+  - id: cp-5
+    title: Contingency Plan Update
+    rules: []
+    status: pending
+  - id: cp-6
+    title: Alternate Storage Site
+    description: "  a. Establish an alternate storage site, including necessary agreements to permit the storage and retrieval of system backup information; and\n  b. Ensure that the alternate storage site provides controls equivalent to that of the primary site."
+    guidance: Alternate storage sites are geographically distinct from primary storage sites and maintain duplicate copies of information and data if the primary storage site is not available. Similarly, alternate processing sites provide processing capability if the primary processing site is not available. Geographically distributed architectures that support contingency requirements may be considered alternate storage sites. Items covered by alternate storage site agreements include environmental conditions at the alternate sites, access rules for systems and facilities, physical and environmental protection requirements, and coordination of delivery and retrieval of backup media. Alternate storage sites reflect the requirements in contingency plans so that organizations can maintain essential mission and business functions despite compromise, failure, or disruption in organizational systems.
+    related_controls:
+      - cp-2
+      - cp-7
+      - cp-8
+      - cp-9
+      - cp-10
+      - mp-4
+      - mp-5
+      - pe-3
+      - sc-36
+      - si-13
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-6.1
+    title: Separation from Primary Site
+    description: Identify an alternate storage site that is sufficiently separated from the primary storage site to reduce susceptibility to the same threats.
+    guidance: Threats that affect alternate storage sites are defined in organizational risk assessments and include natural disasters, structural failures, hostile attacks, and errors of omission or commission. Organizations determine what is considered a sufficient degree of separation between primary and alternate storage sites based on the types of threats that are of concern. For threats such as hostile attacks, the degree of separation between sites is less relevant.
+    related_controls:
+      - ra-3
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-6.2
+    title: Recovery Time and Recovery Point Objectives
+    description: Configure the alternate storage site to facilitate recovery operations in accordance with recovery time and recovery point objectives.
+    guidance: Organizations establish recovery time and recovery point objectives as part of contingency planning. Configuration of the alternate storage site includes physical facilities and the systems supporting recovery operations that ensure accessibility and correct execution.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-6.3
+    title: Accessibility
+    description: Identify potential accessibility problems to the alternate storage site in the event of an area-wide disruption or disaster and outline explicit mitigation actions.
+    guidance: Area-wide disruptions refer to those types of disruptions that are broad in geographic scope with such determinations made by organizations based on organizational assessments of risk. Explicit mitigation actions include duplicating backup information at other alternate storage sites if access problems occur at originally designated alternate sites or planning for physical access to retrieve backup information if electronic accessibility to the alternate site is disrupted.
+    related_controls:
+      - ra-3
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-7
+    title: Alternate Processing Site
+    description: "  a. Establish an alternate processing site, including necessary agreements to permit the transfer and resumption of [[ insert: param, cp-07_odp.01 ]] for essential mission and business functions within [[ insert: param, cp-07_odp.02 ]] when the primary processing capabilities are unavailable;\n  b. Make available at the alternate processing site, the equipment and supplies required to transfer and resume operations or put contracts in place to support delivery to the site within the organization-defined time period for transfer and resumption; and\n  c. Provide controls at the alternate processing site that are equivalent to those at the primary site."
+    parameters:
+      - id: cp-07_odp.01
+        label: system operations
+        guidelines:
+          - system operations for essential mission and business functions are defined;
+      - id: cp-07_odp.02
+        label: time period
+        guidelines:
+          - time period consistent with recovery time and recovery point objectives is defined;
+    guidance: Alternate processing sites are geographically distinct from primary processing sites and provide processing capability if the primary processing site is not available. The alternate processing capability may be addressed using a physical processing site or other alternatives, such as failover to a cloud-based service provider or other internally or externally provided processing service. Geographically distributed architectures that support contingency requirements may also be considered alternate processing sites. Controls that are covered by alternate processing site agreements include the environmental conditions at alternate sites, access rules, physical and environmental protection requirements, and the coordination for the transfer and assignment of personnel. Requirements are allocated to alternate processing sites that reflect the requirements in contingency plans to maintain essential mission and business functions despite disruption, compromise, or failure in organizational systems.
+    related_controls:
+      - cp-2
+      - cp-6
+      - cp-8
+      - cp-9
+      - cp-10
+      - ma-6
+      - pe-3
+      - pe-11
+      - pe-12
+      - pe-17
+      - sc-36
+      - si-13
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-7.1
+    title: Separation from Primary Site
+    description: Identify an alternate processing site that is sufficiently separated from the primary processing site to reduce susceptibility to the same threats.
+    guidance: Threats that affect alternate processing sites are defined in organizational assessments of risk and include natural disasters, structural failures, hostile attacks, and errors of omission or commission. Organizations determine what is considered a sufficient degree of separation between primary and alternate processing sites based on the types of threats that are of concern. For threats such as hostile attacks, the degree of separation between sites is less relevant.
+    related_controls:
+      - ra-3
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-7.2
+    title: Accessibility
+    description: Identify potential accessibility problems to alternate processing sites in the event of an area-wide disruption or disaster and outlines explicit mitigation actions.
+    guidance: Area-wide disruptions refer to those types of disruptions that are broad in geographic scope with such determinations made by organizations based on organizational assessments of risk.
+    related_controls:
+      - ra-3
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-7.3
+    title: Priority of Service
+    description: Develop alternate processing site agreements that contain priority-of-service provisions in accordance with availability requirements (including recovery time objectives).
+    guidance: Priority of service agreements refer to negotiated agreements with service providers that ensure that organizations receive priority treatment consistent with their availability requirements and the availability of information resources for logical alternate processing and/or at the physical alternate processing site. Organizations establish recovery time objectives as part of contingency planning.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-7.4
+    title: Preparation for Use
+    description: Prepare the alternate processing site so that the site can serve as the operational site supporting essential mission and business functions.
+    guidance: Site preparation includes establishing configuration settings for systems at the alternate processing site consistent with the requirements for such settings at the primary site and ensuring that essential supplies and logistical considerations are in place.
+    related_controls:
+      - cm-2
+      - cm-6
+      - cp-4
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-7.5
+    title: Equivalent Information Security Safeguards
+    rules: []
+    status: pending
+  - id: cp-7.6
+    title: Inability to Return to Primary Site
+    description: Plan and prepare for circumstances that preclude returning to the primary processing site.
+    guidance: There may be situations that preclude an organization from returning to the primary processing site such as if a natural disaster (e.g., flood or a hurricane) damaged or destroyed a facility and it was determined that rebuilding in the same location was not prudent.
+    rules: []
+    status: pending
+  - id: cp-8
+    title: Telecommunications Services
+    description: 'Establish alternate telecommunications services, including necessary agreements to permit the resumption of [[ insert: param, cp-08_odp.01 ]] for essential mission and business functions within [[ insert: param, cp-08_odp.02 ]] when the primary telecommunications capabilities are unavailable at either the primary or alternate processing or storage sites.'
+    parameters:
+      - id: cp-08_odp.01
+        label: system operations
+        guidelines:
+          - system operations to be resumed for essential mission and business functions are defined;
+      - id: cp-08_odp.02
+        label: time period
+        guidelines:
+          - time period within which to resume essential mission and business functions when the primary telecommunications capabilities are unavailable is defined;
+    guidance: Telecommunications services (for data and voice) for primary and alternate processing and storage sites are in scope for [CP-8](#cp-8) . Alternate telecommunications services reflect the continuity requirements in contingency plans to maintain essential mission and business functions despite the loss of primary telecommunications services. Organizations may specify different time periods for primary or alternate sites. Alternate telecommunications services include additional organizational or commercial ground-based circuits or lines, network-based approaches to telecommunications, or the use of satellites. Organizations consider factors such as availability, quality of service, and access when entering into alternate telecommunications agreements.
+    related_controls:
+      - cp-2
+      - cp-6
+      - cp-7
+      - cp-11
+      - sc-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-8.1
+    title: Priority of Service Provisions
+    description: "  a. Develop primary and alternate telecommunications service agreements that contain priority-of-service provisions in accordance with availability requirements (including recovery time objectives); and\n  b. Request Telecommunications Service Priority for all telecommunications services used for national security emergency preparedness if the primary and/or alternate telecommunications services are provided by a common carrier."
+    guidance: Organizations consider the potential mission or business impact in situations where telecommunications service providers are servicing other organizations with similar priority of service provisions. Telecommunications Service Priority (TSP) is a Federal Communications Commission (FCC) program that directs telecommunications service providers (e.g., wireline and wireless phone companies) to give preferential treatment to users enrolled in the program when they need to add new lines or have their lines restored following a disruption of service, regardless of the cause. The FCC sets the rules and policies for the TSP program, and the Department of Homeland Security manages the TSP program. The TSP program is always in effect and not contingent on a major disaster or attack taking place. Federal sponsorship is required to enroll in the TSP program.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-8.2
+    title: Single Points of Failure
+    description: Obtain alternate telecommunications services to reduce the likelihood of sharing a single point of failure with primary telecommunications services.
+    guidance: In certain circumstances, telecommunications service providers or services may share the same physical lines, which increases the vulnerability of a single failure point. It is important to have provider transparency for the actual physical transmission capability for telecommunication services.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-8.3
+    title: Separation of Primary and Alternate Providers
+    description: Obtain alternate telecommunications services from providers that are separated from primary service providers to reduce susceptibility to the same threats.
+    guidance: Threats that affect telecommunications services are defined in organizational assessments of risk and include natural disasters, structural failures, cyber or physical attacks, and errors of omission or commission. Organizations can reduce common susceptibilities by minimizing shared infrastructure among telecommunications service providers and achieving sufficient geographic separation between services. Organizations may consider using a single service provider in situations where the service provider can provide alternate telecommunications services that meet the separation needs addressed in the risk assessment.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-8.4
+    title: Provider Contingency Plan
+    description: "  a. Require primary and alternate telecommunications service providers to have contingency plans;\n  b. Review provider contingency plans to ensure that the plans meet organizational contingency requirements; and\n  c. Obtain evidence of contingency testing and training by providers [[ insert: param, cp-8.4_prm_1 ]]."
+    parameters:
+      - id: cp-8.4_prm_1
+        label: organization-defined frequency
+      - id: cp-08.04_odp.01
+        label: frequency
+        guidelines:
+          - frequency at which to obtain evidence of contingency testing by providers is defined;
+      - id: cp-08.04_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to obtain evidence of contingency training by providers is defined;
+    guidance: Reviews of provider contingency plans consider the proprietary nature of such plans. In some situations, a summary of provider contingency plans may be sufficient evidence for organizations to satisfy the review requirement. Telecommunications service providers may also participate in ongoing disaster recovery exercises in coordination with the Department of Homeland Security and state and local governments. Organizations may use these types of activities to satisfy evidentiary requirements related to service provider contingency plan reviews, testing, and training.
+    related_controls:
+      - cp-3
+      - cp-4
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-8.5
+    title: Alternate Telecommunication Service Testing
+    description: 'Test alternate telecommunication services [[ insert: param, cp-08.05_odp ]].'
+    parameters:
+      - id: cp-08.05_odp
+        label: frequency
+        guidelines:
+          - frequency at which alternate telecommunications services are tested is defined;
+    guidance: Alternate telecommunications services testing is arranged through contractual agreements with service providers. The testing may occur in parallel with normal operations to ensure that there is no degradation in organizational missions or functions.
+    related_controls:
+      - cp-3
+    rules: []
+    status: pending
+  - id: cp-9
+    title: System Backup
+    description: "  a. Conduct backups of user-level information contained in [[ insert: param, cp-09_odp.01 ]] [[ insert: param, cp-09_odp.02 ]];\n  b. Conduct backups of system-level information contained in the system [[ insert: param, cp-09_odp.03 ]];\n  c. Conduct backups of system documentation, including security- and privacy-related documentation [[ insert: param, cp-09_odp.04 ]] ; and\n  d. Protect the confidentiality, integrity, and availability of backup information."
+    parameters:
+      - id: cp-09_odp.01
+        label: system components
+        guidelines:
+          - system components for which to conduct backups of user-level information is defined;
+      - id: cp-09_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to conduct backups of user-level information consistent with recovery time and recovery point objectives is defined;
+      - id: cp-09_odp.03
+        label: frequency
+        guidelines:
+          - frequency at which to conduct backups of system-level information consistent with recovery time and recovery point objectives is defined;
+      - id: cp-09_odp.04
+        label: frequency
+        guidelines:
+          - frequency at which to conduct backups of system documentation consistent with recovery time and recovery point objectives is defined;
+    guidance: System-level information includes system state information, operating system software, middleware, application software, and licenses. User-level information includes information other than system-level information. Mechanisms employed to protect the integrity of system backups include digital signatures and cryptographic hashes. Protection of system backup information while in transit is addressed by [MP-5](#mp-5) and [SC-8](#sc-8) . System backups reflect the requirements in contingency plans as well as other organizational requirements for backing up information. Organizations may be subject to laws, executive orders, directives, regulations, or policies with requirements regarding specific categories of information (e.g., personal health information). Organizational personnel consult with the senior agency official for privacy and legal counsel regarding such requirements.
+    related_controls:
+      - cp-2
+      - cp-6
+      - cp-10
+      - mp-4
+      - mp-5
+      - sc-8
+      - sc-12
+      - sc-13
+      - si-4
+      - si-13
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-9.1
+    title: Testing for Reliability and Integrity
+    description: 'Test backup information [[ insert: param, cp-9.1_prm_1 ]] to verify media reliability and information integrity.'
+    parameters:
+      - id: cp-9.1_prm_1
+        label: organization-defined frequency
+      - id: cp-09.01_odp.01
+        label: frequency
+        guidelines:
+          - frequency at which to test backup information for media reliability is defined;
+      - id: cp-09.01_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to test backup information for information integrity is defined;
+    guidance: Organizations need assurance that backup information can be reliably retrieved. Reliability pertains to the systems and system components where the backup information is stored, the operations used to retrieve the information, and the integrity of the information being retrieved. Independent and specialized tests can be used for each of the aspects of reliability. For example, decrypting and transporting (or transmitting) a random sample of backup files from the alternate storage or backup site and comparing the information to the same information at the primary processing site can provide such assurance.
+    related_controls:
+      - cp-4
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-9.2
+    title: Test Restoration Using Sampling
+    description: Use a sample of backup information in the restoration of selected system functions as part of contingency plan testing.
+    guidance: Organizations need assurance that system functions can be restored correctly and can support established organizational missions. To ensure that the selected system functions are thoroughly exercised during contingency plan testing, a sample of backup information is retrieved to determine whether the functions are operating as intended. Organizations can determine the sample size for the functions and backup information based on the level of assurance needed.
+    related_controls:
+      - cp-4
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-9.3
+    title: Separate Storage for Critical Information
+    description: 'Store backup copies of [[ insert: param, cp-09.03_odp ]] in a separate facility or in a fire rated container that is not collocated with the operational system.'
+    parameters:
+      - id: cp-09.03_odp
+        label: critical system software and other security-related information
+        guidelines:
+          - critical system software and other security-related information backups to be stored in a separate facility are defined;
+    guidance: Separate storage for critical information applies to all critical information regardless of the type of backup storage media. Critical system software includes operating systems, middleware, cryptographic key management systems, and intrusion detection systems. Security-related information includes inventories of system hardware, software, and firmware components. Alternate storage sites, including geographically distributed architectures, serve as separate storage facilities for organizations. Organizations may provide separate storage by implementing automated backup processes at alternative storage sites (e.g., data centers). The General Services Administration (GSA) establishes standards and specifications for security and fire rated containers.
+    related_controls:
+      - cm-2
+      - cm-6
+      - cm-8
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-9.4
+    title: Protection from Unauthorized Modification
+    rules: []
+    status: pending
+  - id: cp-9.5
+    title: Transfer to Alternate Storage Site
+    description: 'Transfer system backup information to the alternate storage site [[ insert: param, cp-9.5_prm_1 ]].'
+    parameters:
+      - id: cp-9.5_prm_1
+        label: organization-defined time period and transfer rate consistent with the recovery time and recovery point objectives
+      - id: cp-09.05_odp.01
+        label: time period
+        guidelines:
+          - time period consistent with recovery time and recovery point objectives is defined;
+      - id: cp-09.05_odp.02
+        label: transfer rate
+        guidelines:
+          - transfer rate consistent with recovery time and recovery point objectives is defined;
+    guidance: System backup information can be transferred to alternate storage sites either electronically or by the physical shipment of storage media.
+    related_controls:
+      - cp-7
+      - mp-3
+      - mp-4
+      - mp-5
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-9.6
+    title: Redundant Secondary System
+    description: Conduct system backup by maintaining a redundant secondary system that is not collocated with the primary system and that can be activated without loss of information or disruption to operations.
+    guidance: The effect of system backup can be achieved by maintaining a redundant secondary system that mirrors the primary system, including the replication of information. If this type of redundancy is in place and there is sufficient geographic separation between the two systems, the secondary system can also serve as the alternate processing site.
+    related_controls:
+      - cp-7
+    rules: []
+    status: pending
+  - id: cp-9.7
+    title: Dual Authorization for Deletion or Destruction
+    description: 'Enforce dual authorization for the deletion or destruction of [[ insert: param, cp-09.07_odp ]].'
+    parameters:
+      - id: cp-09.07_odp
+        label: backup information
+        guidelines:
+          - backup information for which to enforce dual authorization in order to delete or destroy is defined;
+    guidance: Dual authorization ensures that deletion or destruction of backup information cannot occur unless two qualified individuals carry out the task. Individuals deleting or destroying backup information possess the skills or expertise to determine if the proposed deletion or destruction of information reflects organizational policies and procedures. Dual authorization may also be known as two-person control. To reduce the risk of collusion, organizations consider rotating dual authorization duties to other individuals.
+    related_controls:
+      - ac-3
+      - ac-5
+      - mp-2
+    rules: []
+    status: pending
+  - id: cp-9.8
+    title: Cryptographic Protection
+    description: 'Implement cryptographic mechanisms to prevent unauthorized disclosure and modification of [[ insert: param, cp-09.08_odp ]].'
+    parameters:
+      - id: cp-09.08_odp
+        label: backup information
+        guidelines:
+          - backup information to protect against unauthorized disclosure and modification is defined;
+    guidance: The selection of cryptographic mechanisms is based on the need to protect the confidentiality and integrity of backup information. The strength of mechanisms selected is commensurate with the security category or classification of the information. Cryptographic protection applies to system backup information in storage at both primary and alternate locations. Organizations that implement cryptographic mechanisms to protect information at rest also consider cryptographic key management solutions.
+    related_controls:
+      - sc-12
+      - sc-13
+      - sc-28
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-10
+    title: System Recovery and Reconstitution
+    description: 'Provide for the recovery and reconstitution of the system to a known state within [[ insert: param, cp-10_prm_1 ]] after a disruption, compromise, or failure.'
+    parameters:
+      - id: cp-10_prm_1
+        label: organization-defined time period consistent with recovery time and recovery point objectives
+      - id: cp-10_odp.01
+        label: time period
+        guidelines:
+          - time period consistent with recovery time and recovery point objectives for the recovery of the system is determined;
+      - id: cp-10_odp.02
+        label: time period
+        guidelines:
+          - time period consistent with recovery time and recovery point objectives for the reconstitution of the system is determined;
+    guidance: Recovery is executing contingency plan activities to restore organizational mission and business functions. Reconstitution takes place following recovery and includes activities for returning systems to fully operational states. Recovery and reconstitution operations reflect mission and business priorities; recovery point, recovery time, and reconstitution objectives; and organizational metrics consistent with contingency plan requirements. Reconstitution includes the deactivation of interim system capabilities that may have been needed during recovery operations. Reconstitution also includes assessments of fully restored system capabilities, reestablishment of continuous monitoring activities, system reauthorization (if required), and activities to prepare the system and organization for future disruptions, breaches, compromises, or failures. Recovery and reconstitution capabilities can include automated mechanisms and manual procedures. Organizations establish recovery time and recovery point objectives as part of contingency planning.
+    related_controls:
+      - cp-2
+      - cp-4
+      - cp-6
+      - cp-7
+      - cp-9
+      - ir-4
+      - sa-8
+      - sc-24
+      - si-13
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-10.1
+    title: Contingency Plan Testing
+    rules: []
+    status: pending
+  - id: cp-10.2
+    title: Transaction Recovery
+    description: Implement transaction recovery for systems that are transaction-based.
+    guidance: Transaction-based systems include database management systems and transaction processing systems. Mechanisms supporting transaction recovery include transaction rollback and transaction journaling.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cp-10.3
+    title: Compensating Security Controls
+    description: Addressed through tailoring.
+    rules: []
+    status: pending
+  - id: cp-10.4
+    title: Restore Within Time Period
+    description: 'Provide the capability to restore system components within [[ insert: param, cp-10.04_odp ]] from configuration-controlled and integrity-protected information representing a known, operational state for the components.'
+    parameters:
+      - id: cp-10.04_odp
+        label: restoration time periods
+        guidelines:
+          - restoration time period within which to restore system components to a known, operational state is defined;
+    guidance: Restoration of system components includes reimaging, which restores the components to known, operational states.
+    related_controls:
+      - cm-2
+      - cm-6
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cp-10.5
+    title: Failover Capability
+    rules: []
+    status: pending
+  - id: cp-10.6
+    title: Component Protection
+    description: Protect system components used for recovery and reconstitution.
+    guidance: Protection of system recovery and reconstitution components (i.e., hardware, firmware, and software) includes physical and technical controls. Backup and restoration components used for recovery and reconstitution include router tables, compilers, and other system software.
+    related_controls:
+      - ac-3
+      - ac-6
+      - mp-2
+      - mp-4
+      - pe-3
+      - pe-6
+    rules: []
+    status: pending
+  - id: cp-11
+    title: Alternate Communications Protocols
+    description: 'Provide the capability to employ [[ insert: param, cp-11_odp ]] in support of maintaining continuity of operations.'
+    parameters:
+      - id: cp-11_odp
+        label: alternative communications protocols
+        guidelines:
+          - alternative communications protocols in support of maintaining continuity of operations are defined;
+    guidance: Contingency plans and the contingency training or testing associated with those plans incorporate an alternate communications protocol capability as part of establishing resilience in organizational systems. Switching communications protocols may affect software applications and operational aspects of systems. Organizations assess the potential side effects of introducing alternate communications protocols prior to implementation.
+    related_controls:
+      - cp-2
+      - cp-8
+      - cp-13
+    rules: []
+    status: pending
+  - id: cp-12
+    title: Safe Mode
+    description: 'When [[ insert: param, cp-12_odp.02 ]] are detected, enter a safe mode of operation with [[ insert: param, cp-12_odp.01 ]].'
+    parameters:
+      - id: cp-12_odp.01
+        label: restrictions
+        guidelines:
+          - restrictions for safe mode of operation are defined;
+      - id: cp-12_odp.02
+        label: conditions
+        guidelines:
+          - conditions detected to enter a safe mode of operation are defined;
+    guidance: For systems that support critical mission and business functions—including military operations, civilian space operations, nuclear power plant operations, and air traffic control operations (especially real-time operational environments)—organizations can identify certain conditions under which those systems revert to a predefined safe mode of operation. The safe mode of operation, which can be activated either automatically or manually, restricts the operations that systems can execute when those conditions are encountered. Restriction includes allowing only selected functions to execute that can be carried out under limited power or with reduced communications bandwidth.
+    related_controls:
+      - cm-2
+      - sa-8
+      - sc-24
+      - si-13
+      - si-17
+    rules: []
+    status: pending
+  - id: cp-13
+    title: Alternative Security Mechanisms
+    description: 'Employ [[ insert: param, cp-13_odp.01 ]] for satisfying [[ insert: param, cp-13_odp.02 ]] when the primary means of implementing the security function is unavailable or compromised.'
+    parameters:
+      - id: cp-13_odp.01
+        label: alternative or supplemental security mechanisms
+        guidelines:
+          - alternative or supplemental security mechanisms are defined;
+      - id: cp-13_odp.02
+        label: security functions
+        guidelines:
+          - security functions are defined;
+    guidance: Use of alternative security mechanisms supports system resiliency, contingency planning, and continuity of operations. To ensure mission and business continuity, organizations can implement alternative or supplemental security mechanisms. The mechanisms may be less effective than the primary mechanisms. However, having the capability to readily employ alternative or supplemental mechanisms enhances mission and business continuity that might otherwise be adversely impacted if operations had to be curtailed until the primary means of implementing the functions was restored. Given the cost and level of effort required to provide such alternative capabilities, the alternative or supplemental mechanisms are only applied to critical security capabilities provided by systems, system components, or system services. For example, an organization may issue one-time pads to senior executives, officials, and system administrators if multi-factor tokens—the standard means for achieving secure authentication— are compromised.
+    related_controls:
+      - cp-2
+      - cp-11
+      - si-13
+    rules: []
+    status: pending

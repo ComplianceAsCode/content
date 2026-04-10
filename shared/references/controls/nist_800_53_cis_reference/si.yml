@@ -1,0 +1,1913 @@
+# NIST 800-53 SI Family: System and Information Integrity
+controls:
+  - id: si-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, si-1_prm_1 ]]:\n    1. [[ insert: param, si-01_odp.03 ]] system and information integrity policy that:\n    2. Procedures to facilitate the implementation of the system and information integrity policy and the associated system and information integrity controls;\n  b. Designate an [[ insert: param, si-01_odp.04 ]] to manage the development, documentation, and dissemination of the system and information integrity policy and procedures; and\n  c. Review and update the current system and information integrity:\n    1. Policy [[ insert: param, si-01_odp.05 ]] and following [[ insert: param, si-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, si-01_odp.07 ]] and following [[ insert: param, si-01_odp.08 ]]."
+    parameters:
+      - id: si-1_prm_1
+        label: organization-defined personnel or roles
+      - id: si-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the system and information integrity policy is to be disseminated is/are defined;
+      - id: si-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the system and information integrity procedures are to be disseminated is/are defined;
+      - id: si-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: si-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the system and information integrity policy and procedures is defined;
+      - id: si-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current system and information integrity policy is reviewed and updated is defined;
+      - id: si-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current system and information integrity policy to be reviewed and updated are defined;
+      - id: si-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current system and information integrity procedures are reviewed and updated is defined;
+      - id: si-01_odp.08
+        label: events
+        guidelines:
+          - events that would require the system and information integrity procedures to be reviewed and updated are defined;
+    guidance: System and information integrity policy and procedures address the controls in the SI family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of system and information integrity policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to system and information integrity policy and procedures include assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - sa-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-2
+    title: Flaw Remediation
+    description: "  a. Identify, report, and correct system flaws;\n  b. Test software and firmware updates related to flaw remediation for effectiveness and potential side effects before installation;\n  c. Install security-relevant software and firmware updates within [[ insert: param, si-02_odp ]] of the release of the updates; and\n  d. Incorporate flaw remediation into the organizational configuration management process."
+    parameters:
+      - id: si-02_odp
+        label: time period
+        guidelines:
+          - time period within which to install security-relevant software updates after the release of the updates is defined;
+    guidance: "The need to remediate system flaws applies to all types of software and firmware. Organizations identify systems affected by software flaws, including potential vulnerabilities resulting from those flaws, and report this information to designated organizational personnel with information security and privacy responsibilities. Organizations consider establishing a controlled patching environment for mission-critical systems. Security-relevant updates include patches, service packs, and malicious code signatures. Organizations also address flaws discovered during assessments, continuous monitoring, incident response activities, and system error handling. By incorporating flaw remediation into configuration management processes, required remediation actions can be tracked and verified.\n\nOrganization-defined time periods for updating security-relevant software and firmware may vary based on a variety of risk factors, including the security category of the system, the criticality of the update (i.e., severity of the vulnerability related to the discovered flaw), the organizational risk tolerance, the mission supported by the system, or the threat environment. Some types of flaw remediation may require more testing than other types. Organizations determine the type of testing needed for the specific type of flaw remediation activity under consideration and the types of changes that are to be configuration-managed. Flaw remediation testing addresses both effectiveness of addressing security issues and for potential side effects on functionality, system and system component performance and operations. When implementing remediation activities, organizations consider the order and timing of updates to validate correct execution within the system environment, and to support system and component availability needs (i.e., implementing a staggered deployment strategy). In some situations, organizations may determine that the testing of software or firmware updates is not necessary or practical, such as when implementing simple malicious code signature updates. In testing decisions, organizations consider whether security-relevant software or firmware updates are obtained from authorized sources with appropriate digital signatures.\n\nWhen implementing remediation activities, organizations consider the order and timing of updates to validate correct execution within the system environment, and to support system and component availability needs (i.e., implementing a staggered deployment strategy). Organizations verify that software and firmware updates come from authorized sources prior to downloading."
+    related_controls:
+      - ca-5
+      - cm-3
+      - cm-4
+      - cm-5
+      - cm-6
+      - cm-8
+      - ma-2
+      - ra-5
+      - sa-8
+      - sa-10
+      - sa-11
+      - si-3
+      - si-5
+      - si-7
+      - si-11
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - ensure_gpgcheck_globally_activated
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - ensure_gpgcheck_never_disabled
+      {{% endif %}}
+      - ensure_redhat_gpgkey_installed
+    status: automated
+  - id: si-2.1
+    title: Central Management
+    rules: []
+    status: pending
+  - id: si-2.2
+    title: Automated Flaw Remediation Status
+    description: 'Determine if system components have applicable security-relevant software and firmware updates installed using [[ insert: param, si-02.02_odp.01 ]] [[ insert: param, si-02.02_odp.02 ]].'
+    parameters:
+      - id: si-02.02_odp.01
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to determine if applicable security-relevant software and firmware updates are installed on system components are defined;
+      - id: si-02.02_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to determine if applicable security-relevant software and firmware updates are installed on system components is defined;
+    guidance: Automated mechanisms can track and determine the status of known flaws for system components.
+    related_controls:
+      - ca-7
+      - si-4
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-2.3
+    title: Time to Remediate Flaws and Benchmarks for Corrective Actions
+    description: "  a. Measure the time between flaw identification and flaw remediation; and\n  b. Establish the following benchmarks for taking corrective actions: [[ insert: param, si-02.03_odp ]]."
+    parameters:
+      - id: si-02.03_odp
+        label: benchmarks
+        guidelines:
+          - the benchmarks for taking corrective actions are defined;
+    guidance: Organizations determine the time it takes on average to correct system flaws after such flaws have been identified and subsequently establish organizational benchmarks (i.e., time frames) for taking corrective actions. Benchmarks can be established by the type of flaw or the severity of the potential vulnerability if the flaw can be exploited.
+    rules: []
+    status: pending
+  - id: si-2.4
+    title: Automated Patch Management Tools
+    description: 'Employ automated patch management tools to facilitate flaw remediation to the following system components: [[ insert: param, si-02.04_odp ]].'
+    parameters:
+      - id: si-02.04_odp
+        label: components
+        guidelines:
+          - the system components requiring automated patch management tools to facilitate flaw remediation are defined;
+    guidance: Using automated tools to support patch management helps to ensure the timeliness and completeness of system patching operations.
+    rules: []
+    status: pending
+  - id: si-2.5
+    title: Automatic Software and Firmware Updates
+    description: 'Install [[ insert: param, si-02.05_odp.01 ]] automatically to [[ insert: param, si-02.05_odp.02 ]].'
+    parameters:
+      - id: si-02.05_odp.01
+        label: security-relevant software and firmware updates
+        guidelines:
+          - security-relevant software and firmware updates to be automatically installed to system components are defined;
+      - id: si-02.05_odp.02
+        label: system components
+        guidelines:
+          - system components requiring security-relevant software updates to be automatically installed are defined;
+    guidance: Due to system integrity and availability concerns, organizations consider the methodology used to carry out automatic updates. Organizations balance the need to ensure that the updates are installed as soon as possible with the need to maintain configuration management and control with any mission or operational impacts that automatic updates might impose (i.e., implementing a staggered deployment strategy).
+    rules: []
+    status: pending
+  - id: si-2.6
+    title: Removal of Previous Versions of Software and Firmware
+    description: 'Remove previous versions of [[ insert: param, si-02.06_odp ]] after updated versions have been installed.'
+    parameters:
+      - id: si-02.06_odp
+        label: software and firmware components
+        guidelines:
+          - software and firmware components to be removed after updated versions have been installed are defined;
+    guidance: Previous versions of software or firmware components that are not removed from the system after updates have been installed may be exploited by adversaries. Some products may automatically remove previous versions of software and firmware from the system.
+    rules: []
+    status: pending
+  - id: si-2.7
+    title: Root Cause Analysis
+    description: "  a. Conduct root cause analysis to identify underlying causes of issues or failures.\n  b. Develop actions to address the root cause of the issue or failure.\n  c. Implement the actions and monitor the implementation for effectiveness."
+    guidance: Root cause analysis includes a wide range of approaches, tools, and techniques to systematically identify the underlying cause of issues or failures to systems and systems components (hardware, software, and firmware). Organizations consider the severity of the incident to determine what root cause analysis method is used and how quickly implementation of the remediation actions. The root cause analysis includes a timeline, missed warning signs, key decisions, gaps, mitigations, and verification of effectiveness. The actions identified to address the source of the issue are implemented and integrated into applicable organizational policy, procedures, and control implementation.
+    related_controls:
+      - ac-1
+      - at-1
+      - au-1
+      - ca-1
+      - cm-1
+      - cp-1
+      - ia-1
+      - ir-1
+      - ma-1
+      - mp-1
+      - pe-1
+      - pl-1
+      - pm-1
+      - ps-1
+      - pt-1
+      - ra-1
+      - sa-1
+      - sc-1
+      - si-1
+      - sr-1
+      - au-2
+      - ca-7
+      - ir-6
+      - ir-8
+      - ma-3
+      - ra-5
+      - sa-11
+      - sa-15
+      - sr-8
+    rules: []
+    status: pending
+  - id: si-3
+    title: Malicious Code Protection
+    description: "  a. Implement [[ insert: param, si-03_odp.01 ]] malicious code protection mechanisms at system entry and exit points to detect and eradicate malicious code;\n  b. Automatically update malicious code protection mechanisms as new releases are available in accordance with organizational configuration management policy and procedures;\n  c. Configure malicious code protection mechanisms to:\n    1. Perform periodic scans of the system [[ insert: param, si-03_odp.02 ]] and real-time scans of files from external sources at [[ insert: param, si-03_odp.03 ]] as the files are downloaded, opened, or executed in accordance with organizational policy; and\n    2. [[ insert: param, si-03_odp.04 ]] ; and send alert to [[ insert: param, si-03_odp.06 ]] in response to malicious code detection; and\n  d. Address the receipt of false positives during malicious code detection and eradication and the resulting potential impact on the availability of the system."
+    parameters:
+      - id: si-03_odp.01
+        label: ''
+        choices:
+          - signature-based
+          - non-signature-based
+      - id: si-03_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which malicious code protection mechanisms perform scans is defined;
+      - id: si-03_odp.03
+        label: ''
+        choices:
+          - endpoint
+          - network entry and exit points
+      - id: si-03_odp.04
+        label: ''
+        choices:
+          - block malicious code
+          - quarantine malicious code
+          - 'take [[ insert: param, si-03_odp.05 ]] '
+      - id: si-03_odp.05
+        label: action
+        guidelines:
+          - action to be taken in response to malicious code detection are defined (if selected);
+      - id: si-03_odp.06
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be alerted when malicious code is detected is/are defined;
+    guidance: "System entry and exit points include firewalls, remote access servers, workstations, electronic mail servers, web servers, proxy servers, notebook computers, and mobile devices. Malicious code includes viruses, worms, Trojan horses, and spyware. Malicious code can also be encoded in various formats contained within compressed or hidden files or hidden in files using techniques such as steganography. Malicious code can be inserted into systems in a variety of ways, including by electronic mail, the world-wide web, and portable storage devices. Malicious code insertions occur through the exploitation of system vulnerabilities. A variety of technologies and methods exist to limit or eliminate the effects of malicious code.\n\nMalicious code protection mechanisms include both signature- and nonsignature-based technologies. Nonsignature-based detection mechanisms include artificial intelligence techniques that use heuristics to detect, analyze, and describe the characteristics or behavior of malicious code and to provide controls against such code for which signatures do not yet exist or for which existing signatures may not be effective. Malicious code for which active signatures do not yet exist or may be ineffective includes polymorphic malicious code (i.e., code that changes signatures when it replicates). Nonsignature-based mechanisms also include reputation-based technologies. In addition to the above technologies, pervasive configuration management, comprehensive software integrity controls, and anti-exploitation software may be effective in preventing the execution of unauthorized code. Malicious code may be present in commercial off-the-shelf software as well as custom-built software and could include logic bombs, backdoors, and other types of attacks that could affect organizational mission and business functions.\n\nIn situations where malicious code cannot be detected by detection methods or technologies, organizations rely on other types of controls, including secure coding practices, configuration management and control, trusted procurement processes, and monitoring practices to ensure that software does not perform functions other than the functions intended. Organizations may determine that, in response to the detection of malicious code, different actions may be warranted. For example, organizations can define actions in response to malicious code detection during periodic scans, the detection of malicious downloads, or the detection of maliciousness when attempting to open or execute files."
+    related_controls:
+      - ac-4
+      - ac-19
+      - cm-3
+      - cm-8
+      - ir-4
+      - ma-3
+      - ma-4
+      - pl-9
+      - ra-5
+      - sc-7
+      - sc-23
+      - sc-26
+      - sc-28
+      - sc-44
+      - si-2
+      - si-4
+      - si-7
+      - si-8
+      - si-15
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - kernel_module_usb-storage_disabled
+      - service_autofs_disabled
+    status: automated
+  - id: si-3.1
+    title: Central Management
+    rules: []
+    status: pending
+  - id: si-3.2
+    title: Automatic Updates
+    rules: []
+    status: pending
+  - id: si-3.3
+    title: Non-privileged Users
+    rules: []
+    status: pending
+  - id: si-3.4
+    title: Updates Only by Privileged Users
+    description: Update malicious code protection mechanisms only when directed by a privileged user.
+    guidance: Protection mechanisms for malicious code are typically categorized as security-related software and, as such, are only updated by organizational personnel with appropriate access privileges.
+    related_controls:
+      - cm-5
+    rules: []
+    status: pending
+  - id: si-3.5
+    title: Portable Storage Devices
+    rules: []
+    status: pending
+  - id: si-3.6
+    title: Testing and Verification
+    description: "  a. Test malicious code protection mechanisms [[ insert: param, si-03.06_odp ]] by introducing known benign code into the system; and\n  b. Verify that the detection of the code and the associated incident reporting occur."
+    parameters:
+      - id: si-03.06_odp
+        label: frequency
+        guidelines:
+          - the frequency at which to test malicious code protection mechanisms is defined;
+    guidance: None.
+    related_controls:
+      - ca-2
+      - ca-7
+      - ra-5
+    rules: []
+    status: pending
+  - id: si-3.7
+    title: Nonsignature-based Detection
+    rules: []
+    status: pending
+  - id: si-3.8
+    title: Detect Unauthorized Commands
+    description: "  a. Detect the following unauthorized operating system commands through the kernel application programming interface on [[ insert: param, si-03.08_odp.02 ]]: [[ insert: param, si-03.08_odp.01 ]] ; and\n  b. [[ insert: param, si-03.08_odp.03 ]]."
+    parameters:
+      - id: si-03.08_odp.01
+        label: unauthorized operating system commands
+        guidelines:
+          - system hardware components for which unauthorized operating system commands are to be detected through the kernel application programming interface are defined;
+      - id: si-03.08_odp.02
+        label: system hardware components
+        guidelines:
+          - unauthorized operating system commands to be detected are defined;
+      - id: si-03.08_odp.03
+        label: ''
+        choices:
+          - issue a warning
+          - audit the command execution
+          - prevent the execution of the command
+    guidance: Detecting unauthorized commands can be applied to critical interfaces other than kernel-based interfaces, including interfaces with virtual machines and privileged applications. Unauthorized operating system commands include commands for kernel functions from system processes that are not trusted to initiate such commands as well as commands for kernel functions that are suspicious even though commands of that type are reasonable for processes to initiate. Organizations can define the malicious commands to be detected by a combination of command types, command classes, or specific instances of commands. Organizations can also define hardware components by component type, component, component location in the network, or a combination thereof. Organizations may select different actions for different types, classes, or instances of malicious commands.
+    related_controls:
+      - au-2
+      - au-6
+      - au-12
+    rules: []
+    status: pending
+  - id: si-3.9
+    title: Authenticate Remote Commands
+    rules: []
+    status: pending
+  - id: si-3.10
+    title: Malicious Code Analysis
+    description: "  a. Employ the following tools and techniques to analyze the characteristics and behavior of malicious code: [[ insert: param, si-03.10_odp ]] ; and\n  b. Incorporate the results from malicious code analysis into organizational incident response and flaw remediation processes."
+    parameters:
+      - id: si-03.10_odp
+        label: tools and techniques
+        guidelines:
+          - tools and techniques to be employed to analyze the characteristics and behavior of malicious code are defined;
+    guidance: The use of malicious code analysis tools provides organizations with a more in-depth understanding of adversary tradecraft (i.e., tactics, techniques, and procedures) and the functionality and purpose of specific instances of malicious code. Understanding the characteristics of malicious code facilitates effective organizational responses to current and future threats. Organizations can conduct malicious code analyses by employing reverse engineering techniques or by monitoring the behavior of executing code.
+    rules: []
+    status: pending
+  - id: si-4
+    title: System Monitoring
+    description: "  a. Monitor the system to detect:\n    1. Attacks and indicators of potential attacks in accordance with the following monitoring objectives: [[ insert: param, si-04_odp.01 ]] ; and\n    2. Unauthorized local, network, and remote connections;\n  b. Identify unauthorized use of the system through the following techniques and methods: [[ insert: param, si-04_odp.02 ]];\n  c. Invoke internal monitoring capabilities or deploy monitoring devices:\n    1. Strategically within the system to collect organization-determined essential information; and\n    2. At ad hoc locations within the system to track specific types of transactions of interest to the organization;\n  d. Analyze detected events and anomalies;\n  e. Adjust the level of system monitoring activity when there is a change in risk to organizational operations and assets, individuals, other organizations, or the Nation;\n  f. Obtain legal opinion regarding system monitoring activities; and\n  g. Provide [[ insert: param, si-04_odp.03 ]] to [[ insert: param, si-04_odp.04 ]] [[ insert: param, si-04_odp.05 ]]."
+    parameters:
+      - id: si-04_odp.01
+        label: monitoring objectives
+        guidelines:
+          - monitoring objectives to detect attacks and indicators of potential attacks on the system are defined;
+      - id: si-04_odp.02
+        label: techniques and methods
+        guidelines:
+          - techniques and methods used to identify unauthorized use of the system are defined;
+      - id: si-04_odp.03
+        label: system monitoring information
+        guidelines:
+          - system monitoring information to be provided to personnel or roles is defined;
+      - id: si-04_odp.04
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom system monitoring information is to be provided is/are defined;
+      - id: si-04_odp.05
+        label: ''
+        choices:
+          - as needed
+          - '[[ insert: param, si-04_odp.06 ]] '
+      - id: si-04_odp.06
+        label: frequency
+        guidelines:
+          - a frequency for providing system monitoring to personnel or roles is defined (if selected);
+    guidance: "System monitoring includes external and internal monitoring. External monitoring includes the observation of events occurring at external interfaces to the system. Internal monitoring includes the observation of events occurring within the system. Organizations monitor systems by observing audit activities in real time or by observing other system aspects such as access patterns, characteristics of access, and other actions. The monitoring objectives guide and inform the determination of the events. System monitoring capabilities are achieved through a variety of tools and techniques, including intrusion detection and prevention systems, malicious code protection software, scanning tools, audit record monitoring software, and network monitoring software.\n\nDepending on the security architecture, the distribution and configuration of monitoring devices may impact throughput at key internal and external boundaries as well as at other locations across a network due to the introduction of network throughput latency. If throughput management is needed, such devices are strategically located and deployed as part of an established organization-wide security architecture. Strategic locations for monitoring devices include selected perimeter locations and near key servers and server farms that support critical applications. Monitoring devices are typically employed at the managed interfaces associated with controls [SC-7](#sc-7) and [AC-17](#ac-17) . The information collected is a function of the organizational monitoring objectives and the capability of systems to support such objectives. Specific types of transactions of interest include Hypertext Transfer Protocol (HTTP) traffic that bypasses HTTP proxies. System monitoring is an integral part of organizational continuous monitoring and incident response programs, and output from system monitoring serves as input to those programs. System monitoring requirements, including the need for specific types of system monitoring, may be referenced in other controls (e.g., [AC-2g](#ac-2_smt.g), [AC-2(7)](#ac-2.7), [AC-2(12)(a)](#ac-2.12_smt.a), [AC-17(1)](#ac-17.1), [AU-13](#au-13), [AU-13(1)](#au-13.1), [AU-13(2)](#au-13.2), [CM-3f](#cm-3_smt.f), [CM-6d](#cm-6_smt.d), [MA-3a](#ma-3_smt.a), [MA-4a](#ma-4_smt.a), [SC-5(3)(b)](#sc-5.3_smt.b), [SC-7a](#sc-7_smt.a), [SC-7(24)(b)](#sc-7.24_smt.b), [SC-18b](#sc-18_smt.b), [SC-43b](#sc-43_smt.b) ). Adjustments to levels of system monitoring are based on law enforcement information, intelligence information, or other sources of information. The legality of system monitoring activities is based on applicable laws, executive orders, directives, regulations, policies, standards, and guidelines."
+    related_controls:
+      - ac-2
+      - ac-3
+      - ac-4
+      - ac-8
+      - ac-17
+      - au-2
+      - au-6
+      - au-7
+      - au-9
+      - au-12
+      - au-13
+      - au-14
+      - ca-7
+      - cm-3
+      - cm-6
+      - cm-8
+      - cm-11
+      - ia-10
+      - ir-4
+      - ma-3
+      - ma-4
+      - pl-9
+      - pm-12
+      - ra-5
+      - ra-10
+      - sc-5
+      - sc-7
+      - sc-18
+      - sc-26
+      - sc-31
+      - sc-35
+      - sc-36
+      - sc-37
+      - sc-43
+      - si-3
+      - si-6
+      - si-7
+      - sr-9
+      - sr-10
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - kernel_module_dccp_disabled
+      - kernel_module_rds_disabled
+      - kernel_module_sctp_disabled
+      - kernel_module_tipc_disabled
+      - service_avahi-daemon_disabled
+    status: automated
+  - id: si-4.1
+    title: System-wide Intrusion Detection System
+    description: Connect and configure individual intrusion detection tools into a system-wide intrusion detection system.
+    guidance: Linking individual intrusion detection tools into a system-wide intrusion detection system provides additional coverage and effective detection capabilities. The information contained in one intrusion detection tool can be shared widely across the organization, making the system-wide detection capability more robust and powerful.
+    rules: []
+    status: pending
+  - id: si-4.2
+    title: Automated Tools and Mechanisms for Real-time Analysis
+    description: Employ automated tools and mechanisms to support near real-time analysis of events.
+    guidance: Automated tools and mechanisms include host-based, network-based, transport-based, or storage-based event monitoring tools and mechanisms or security information and event management (SIEM) technologies that provide real-time analysis of alerts and notifications generated by organizational systems. Automated monitoring techniques can create unintended privacy risks because automated controls may connect to external or otherwise unrelated systems. The matching of records between these systems may create linkages with unintended consequences. Organizations assess and document these risks in their privacy impact assessment and make determinations that are in alignment with their privacy program plan.
+    related_controls:
+      - pm-23
+      - pm-25
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-4.3
+    title: Automated Tool and Mechanism Integration
+    description: Employ automated tools and mechanisms to integrate intrusion detection tools and mechanisms into access control and flow control mechanisms.
+    guidance: Using automated tools and mechanisms to integrate intrusion detection tools and mechanisms into access and flow control mechanisms facilitates a rapid response to attacks by enabling the reconfiguration of mechanisms in support of attack isolation and elimination.
+    related_controls:
+      - pm-23
+      - pm-25
+    rules: []
+    status: pending
+  - id: si-4.4
+    title: Inbound and Outbound Communications Traffic
+    description: "  a. Determine criteria for unusual or unauthorized activities or conditions for inbound and outbound communications traffic;\n  b. Monitor inbound and outbound communications traffic [[ insert: param, si-4.4_prm_1 ]] for [[ insert: param, si-4.4_prm_2 ]]."
+    parameters:
+      - id: si-4.4_prm_1
+        label: organization-defined frequency
+      - id: si-4.4_prm_2
+        label: organization-defined unusual or unauthorized activities or conditions
+      - id: si-04.04_odp.01
+        label: frequency
+        guidelines:
+          - the frequency at which to monitor inbound communications traffic for unusual or unauthorized activities or conditions is defined;
+      - id: si-04.04_odp.02
+        label: unusual or unauthorized activities or conditions
+        guidelines:
+          - unusual or unauthorized activities or conditions that are to be monitored in inbound communications traffic are defined;
+      - id: si-04.04_odp.03
+        label: frequency
+        guidelines:
+          - the frequency at which to monitor outbound communications traffic for unusual or unauthorized activities or conditions is defined;
+      - id: si-04.04_odp.04
+        label: unusual or unauthorized activities or conditions
+        guidelines:
+          - unusual or unauthorized activities or conditions that are to be monitored in outbound communications traffic are defined;
+    guidance: Unusual or unauthorized activities or conditions related to system inbound and outbound communications traffic includes internal traffic that indicates the presence of malicious code or unauthorized use of legitimate code or credentials within organizational systems or propagating among system components, signaling to external systems, and the unauthorized exporting of information. Evidence of malicious code or unauthorized use of legitimate code or credentials is used to identify potentially compromised systems or system components.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-4.5
+    title: System-generated Alerts
+    description: 'Alert [[ insert: param, si-04.05_odp.01 ]] when the following system-generated indications of compromise or potential compromise occur: [[ insert: param, si-04.05_odp.02 ]].'
+    parameters:
+      - id: si-04.05_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be alerted when indications of compromise or potential compromise occur is/are defined;
+      - id: si-04.05_odp.02
+        label: compromise indicators
+        guidelines:
+          - compromise indicators are defined;
+    guidance: Alerts may be generated from a variety of sources, including audit records or inputs from malicious code protection mechanisms, intrusion detection or prevention mechanisms, or boundary protection devices such as firewalls, gateways, and routers. Alerts can be automated and may be transmitted telephonically, by electronic mail messages, or by text messaging. Organizational personnel on the alert notification list can include system administrators, mission or business owners, system owners, information owners/stewards, senior agency information security officers, senior agency officials for privacy, system security officers, or privacy officers. In contrast to alerts generated by the system, alerts generated by organizations in [SI-4(12)](#si-4.12) focus on information sources external to the system, such as suspicious activity reports and reports on potential insider threats.
+    related_controls:
+      - au-4
+      - au-5
+      - pe-6
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-4.6
+    title: Restrict Non-privileged Users
+    rules: []
+    status: pending
+  - id: si-4.7
+    title: Automated Response to Suspicious Events
+    description: "  a. Notify [[ insert: param, si-04.07_odp.01 ]] of detected suspicious events; and\n  b. Take the following actions upon detection: [[ insert: param, si-04.07_odp.02 ]]."
+    parameters:
+      - id: si-04.07_odp.01
+        label: incident response personnel
+        guidelines:
+          - incident response personnel (identified by name and/or by role) to be notified of detected suspicious events is/are defined;
+      - id: si-04.07_odp.02
+        label: least-disruptive actions
+        guidelines:
+          - least-disruptive actions to terminate suspicious events are defined;
+    guidance: Least-disruptive actions include initiating requests for human responses.
+    rules: []
+    status: pending
+  - id: si-4.8
+    title: Protection of Monitoring Information
+    rules: []
+    status: pending
+  - id: si-4.9
+    title: Testing of Monitoring Tools and Mechanisms
+    description: 'Test intrusion-monitoring tools and mechanisms [[ insert: param, si-04.09_odp ]].'
+    parameters:
+      - id: si-04.09_odp
+        label: frequency
+        guidelines:
+          - a frequency at which to test intrusion-monitoring tools and mechanisms is defined;
+    guidance: Testing intrusion-monitoring tools and mechanisms is necessary to ensure that the tools and mechanisms are operating correctly and continue to satisfy the monitoring objectives of organizations. The frequency and depth of testing depends on the types of tools and mechanisms used by organizations and the methods of deployment.
+    rules: []
+    status: pending
+  - id: si-4.10
+    title: Visibility of Encrypted Communications
+    description: 'Make provisions so that [[ insert: param, si-04.10_odp.01 ]] is visible to [[ insert: param, si-04.10_odp.02 ]].'
+    parameters:
+      - id: si-04.10_odp.01
+        label: encrypted communications traffic
+        guidelines:
+          - encrypted communications traffic to be made visible to system monitoring tools and mechanisms is defined;
+      - id: si-04.10_odp.02
+        label: system monitoring tools and mechanisms
+        guidelines:
+          - system monitoring tools and mechanisms to be provided access to encrypted communications traffic are defined;
+    guidance: Organizations balance the need to encrypt communications traffic to protect data confidentiality with the need to maintain visibility into such traffic from a monitoring perspective. Organizations determine whether the visibility requirement applies to internal encrypted traffic, encrypted traffic intended for external destinations, or a subset of the traffic types.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.11
+    title: Analyze Communications Traffic Anomalies
+    description: 'Analyze outbound communications traffic at the external interfaces to the system and selected [[ insert: param, si-04.11_odp ]] to discover anomalies.'
+    parameters:
+      - id: si-04.11_odp
+        label: interior points
+        guidelines:
+          - interior points within the system where communications traffic is to be analyzed are defined;
+    guidance: Organization-defined interior points include subnetworks and subsystems. Anomalies within organizational systems include large file transfers, long-time persistent connections, attempts to access information from unexpected locations, the use of unusual protocols and ports, the use of unmonitored network protocols (e.g., IPv6 usage during IPv4 transition), and attempted communications with suspected malicious external addresses.
+    rules: []
+    status: pending
+  - id: si-4.12
+    title: Automated Organization-generated Alerts
+    description: 'Alert [[ insert: param, si-04.12_odp.01 ]] using [[ insert: param, si-04.12_odp.02 ]] when the following indications of inappropriate or unusual activities with security or privacy implications occur: [[ insert: param, si-04.12_odp.03 ]].'
+    parameters:
+      - id: si-04.12_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be alerted when indications of inappropriate or unusual activity with security or privacy implications occur is/are defined;
+      - id: si-04.12_odp.02
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to alert personnel or roles are defined;
+      - id: si-04.12_odp.03
+        label: activities that trigger alerts
+        guidelines:
+          - activities that trigger alerts to personnel or are defined;
+    guidance: Organizational personnel on the system alert notification list include system administrators, mission or business owners, system owners, senior agency information security officer, senior agency official for privacy, system security officers, or privacy officers. Automated organization-generated alerts are the security alerts generated by organizations and transmitted using automated means. The sources for organization-generated alerts are focused on other entities such as suspicious activity reports and reports on potential insider threats. In contrast to alerts generated by the organization, alerts generated by the system in [SI-4(5)](#si-4.5) focus on information sources that are internal to the systems, such as audit records.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.13
+    title: Analyze Traffic and Event Patterns
+    description: "  a. Analyze communications traffic and event patterns for the system;\n  b. Develop profiles representing common traffic and event patterns; and\n  c. Use the traffic and event profiles in tuning system-monitoring devices."
+    guidance: Identifying and understanding common communications traffic and event patterns help organizations provide useful information to system monitoring devices to more effectively identify suspicious or anomalous traffic and events when they occur. Such information can help reduce the number of false positives and false negatives during system monitoring.
+    rules: []
+    status: pending
+  - id: si-4.14
+    title: Wireless Intrusion Detection
+    description: Employ a wireless intrusion detection system to identify rogue wireless devices and to detect attack attempts and potential compromises or breaches to the system.
+    guidance: Wireless signals may radiate beyond organizational facilities. Organizations proactively search for unauthorized wireless connections, including the conduct of thorough scans for unauthorized wireless access points. Wireless scans are not limited to those areas within facilities containing systems but also include areas outside of facilities to verify that unauthorized wireless access points are not connected to organizational systems.
+    related_controls:
+      - ac-18
+      - ia-3
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.15
+    title: Wireless to Wireline Communications
+    description: Employ an intrusion detection system to monitor wireless communications traffic as the traffic passes from wireless to wireline networks.
+    guidance: Wireless networks are inherently less secure than wired networks. For example, wireless networks are more susceptible to eavesdroppers or traffic analysis than wireline networks. When wireless to wireline communications exist, the wireless network could become a port of entry into the wired network. Given the greater facility of unauthorized network access via wireless access points compared to unauthorized wired network access from within the physical boundaries of the system, additional monitoring of transitioning traffic between wireless and wired networks may be necessary to detect malicious activities. Employing intrusion detection systems to monitor wireless communications traffic helps to ensure that the traffic does not contain malicious code prior to transitioning to the wireline network.
+    related_controls:
+      - ac-18
+    rules: []
+    status: pending
+  - id: si-4.16
+    title: Correlate Monitoring Information
+    description: Correlate information from monitoring tools and mechanisms employed throughout the system.
+    guidance: Correlating information from different system monitoring tools and mechanisms can provide a more comprehensive view of system activity. Correlating system monitoring tools and mechanisms that typically work in isolation—including malicious code protection software, host monitoring, and network monitoring—can provide an organization-wide monitoring view and may reveal otherwise unseen attack patterns. Understanding the capabilities and limitations of diverse monitoring tools and mechanisms and how to maximize the use of information generated by those tools and mechanisms can help organizations develop, operate, and maintain effective monitoring programs. The correlation of monitoring information is especially important during the transition from older to newer technologies (e.g., transitioning from IPv4 to IPv6 network protocols).
+    related_controls:
+      - au-6
+    rules: []
+    status: pending
+  - id: si-4.17
+    title: Integrated Situational Awareness
+    description: Correlate information from monitoring physical, cyber, and supply chain activities to achieve integrated, organization-wide situational awareness.
+    guidance: Correlating monitoring information from a more diverse set of information sources helps to achieve integrated situational awareness. Integrated situational awareness from a combination of physical, cyber, and supply chain monitoring activities enhances the capability of organizations to more quickly detect sophisticated attacks and investigate the methods and techniques employed to carry out such attacks. In contrast to [SI-4(16)](#si-4.16) , which correlates the various cyber monitoring information, integrated situational awareness is intended to correlate monitoring beyond the cyber domain. Correlation of monitoring information from multiple activities may help reveal attacks on organizations that are operating across multiple attack vectors.
+    related_controls:
+      - au-16
+      - pe-6
+      - sr-2
+      - sr-4
+      - sr-6
+    rules: []
+    status: pending
+  - id: si-4.18
+    title: Analyze Traffic and Covert Exfiltration
+    description: 'Analyze outbound communications traffic at external interfaces to the system and at the following interior points to detect covert exfiltration of information: [[ insert: param, si-04.18_odp ]].'
+    parameters:
+      - id: si-04.18_odp
+        label: interior points
+        guidelines:
+          - interior points within the system where communications traffic is to be analyzed are defined;
+    guidance: Organization-defined interior points include subnetworks and subsystems. Covert means that can be used to exfiltrate information include steganography.
+    rules: []
+    status: pending
+  - id: si-4.19
+    title: Risk for Individuals
+    description: 'Implement [[ insert: param, si-04.19_odp.01 ]] of individuals who have been identified by [[ insert: param, si-04.19_odp.02 ]] as posing an increased level of risk.'
+    parameters:
+      - id: si-04.19_odp.01
+        label: additional monitoring
+        guidelines:
+          - additional monitoring of individuals who have been identified as posing an increased level of risk is defined;
+      - id: si-04.19_odp.02
+        label: sources
+        guidelines:
+          - sources that identify individuals who pose an increased level of risk are defined;
+    guidance: Indications of increased risk from individuals can be obtained from different sources, including personnel records, intelligence agencies, law enforcement organizations, and other sources. The monitoring of individuals is coordinated with the management, legal, security, privacy, and human resource officials who conduct such monitoring. Monitoring is conducted in accordance with applicable laws, executive orders, directives, regulations, policies, standards, and guidelines.
+    rules: []
+    status: pending
+  - id: si-4.20
+    title: Privileged Users
+    description: 'Implement the following additional monitoring of privileged users: [[ insert: param, si-04.20_odp ]].'
+    parameters:
+      - id: si-04.20_odp
+        label: additional monitoring
+        guidelines:
+          - additional monitoring of privileged users is defined;
+    guidance: Privileged users have access to more sensitive information, including security-related information, than the general user population. Access to such information means that privileged users can potentially do greater damage to systems and organizations than non-privileged users. Therefore, implementing additional monitoring on privileged users helps to ensure that organizations can identify malicious activity at the earliest possible time and take appropriate actions.
+    related_controls:
+      - ac-18
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.21
+    title: Probationary Periods
+    description: 'Implement the following additional monitoring of individuals during [[ insert: param, si-04.21_odp.02 ]]: [[ insert: param, si-04.21_odp.01 ]].'
+    parameters:
+      - id: si-04.21_odp.01
+        label: additional monitoring
+        guidelines:
+          - additional monitoring to be implemented on individuals during probationary periods is defined;
+      - id: si-04.21_odp.02
+        label: probationary period
+        guidelines:
+          - the probationary period of individuals is defined;
+    guidance: During probationary periods, employees do not have permanent employment status within organizations. Without such status or access to information that is resident on the system, additional monitoring can help identify any potentially malicious activity or inappropriate behavior.
+    related_controls:
+      - ac-18
+    rules: []
+    status: pending
+  - id: si-4.22
+    title: Unauthorized Network Services
+    description: "  a. Detect network services that have not been authorized or approved by [[ insert: param, si-04.22_odp.01 ]] ; and\n  b. [[ insert: param, si-04.22_odp.02 ]] when detected."
+    parameters:
+      - id: si-04.22_odp.01
+        label: authorization or approval processes
+        guidelines:
+          - authorization or approval processes for network services are defined;
+      - id: si-04.22_odp.02
+        label: ''
+        choices:
+          - audit
+          - 'alert [[ insert: param, si-04.22_odp.03 ]] '
+      - id: si-04.22_odp.03
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be alerted upon the detection of network services that have not been authorized or approved by authorization or approval processes is/are defined (if selected);
+    guidance: Unauthorized or unapproved network services include services in service-oriented architectures that lack organizational verification or validation and may therefore be unreliable or serve as malicious rogues for valid services.
+    related_controls:
+      - cm-7
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.23
+    title: Host-based Devices
+    description: 'Implement the following host-based monitoring mechanisms at [[ insert: param, si-04.23_odp.02 ]]: [[ insert: param, si-04.23_odp.01 ]].'
+    parameters:
+      - id: si-04.23_odp.01
+        label: host-based monitoring mechanisms
+        guidelines:
+          - host-based monitoring mechanisms to be implemented on system components are defined;
+      - id: si-04.23_odp.02
+        label: system components
+        guidelines:
+          - system components where host-based monitoring is to be implemented are defined;
+    guidance: Host-based monitoring collects information about the host (or system in which it resides). System components in which host-based monitoring can be implemented include servers, notebook computers, and mobile devices. Organizations may consider employing host-based monitoring mechanisms from multiple product developers or vendors.
+    related_controls:
+      - ac-18
+      - ac-19
+    rules: []
+    status: pending
+  - id: si-4.24
+    title: Indicators of Compromise
+    description: 'Discover, collect, and distribute to [[ insert: param, si-04.24_odp.02 ]] , indicators of compromise provided by [[ insert: param, si-04.24_odp.01 ]].'
+    parameters:
+      - id: si-04.24_odp.01
+        label: sources
+        guidelines:
+          - sources that provide indicators of compromise are defined;
+      - id: si-04.24_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom indicators of compromise are to be distributed is/are defined;
+    guidance: Indicators of compromise (IOC) are forensic artifacts from intrusions that are identified on organizational systems at the host or network level. IOCs provide valuable information on systems that have been compromised. IOCs can include the creation of registry key values. IOCs for network traffic include Universal Resource Locator or protocol elements that indicate malicious code command and control servers. The rapid distribution and adoption of IOCs can improve information security by reducing the time that systems and organizations are vulnerable to the same exploit or attack. Threat indicators, signatures, tactics, techniques, procedures, and other indicators of compromise may be available via government and non-government cooperatives, including the Forum of Incident Response and Security Teams, the United States Computer Emergency Readiness Team, the Defense Industrial Base Cybersecurity Information Sharing Program, and the CERT Coordination Center.
+    related_controls:
+      - ac-18
+    rules: []
+    status: pending
+  - id: si-4.25
+    title: Optimize Network Traffic Analysis
+    description: Provide visibility into network traffic at external and key internal system interfaces to optimize the effectiveness of monitoring devices.
+    guidance: Encrypted traffic, asymmetric routing architectures, capacity and latency limitations, and transitioning from older to newer technologies (e.g., IPv4 to IPv6 network protocol transition) may result in blind spots for organizations when analyzing network traffic. Collecting, decrypting, pre-processing, and distributing only relevant traffic to monitoring devices can streamline the efficiency and use of devices and optimize traffic analysis.
+    rules: []
+    status: pending
+  - id: si-5
+    title: Security Alerts, Advisories, and Directives
+    description: "  a. Receive system security alerts, advisories, and directives from [[ insert: param, si-05_odp.01 ]] on an ongoing basis;\n  b. Generate internal security alerts, advisories, and directives as deemed necessary;\n  c. Disseminate security alerts, advisories, and directives to: [[ insert: param, si-05_odp.02 ]] ; and\n  d. Implement security directives in accordance with established time frames, or notify the issuing organization of the degree of noncompliance."
+    parameters:
+      - id: si-05_odp.01
+        label: external organizations
+        guidelines:
+          - external organizations from whom system security alerts, advisories, and directives are to be received on an ongoing basis are defined;
+      - id: si-05_odp.02
+        label: ''
+        choices:
+          - '[[ insert: param, si-05_odp.03 ]] '
+          - '[[ insert: param, si-05_odp.04 ]] '
+          - '[[ insert: param, si-05_odp.05 ]] '
+      - id: si-05_odp.03
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom security alerts, advisories, and directives are to be disseminated is/are defined (if selected);
+      - id: si-05_odp.04
+        label: elements
+        guidelines:
+          - elements within the organization to whom security alerts, advisories, and directives are to be disseminated are defined (if selected);
+      - id: si-05_odp.05
+        label: external organizations
+        guidelines:
+          - external organizations to whom security alerts, advisories, and directives are to be disseminated are defined (if selected);
+    guidance: The Cybersecurity and Infrastructure Security Agency (CISA) generates security alerts and advisories to maintain situational awareness throughout the Federal Government. Security directives are issued by OMB or other designated organizations with the responsibility and authority to issue such directives. Compliance with security directives is essential due to the critical nature of many of these directives and the potential (immediate) adverse effects on organizational operations and assets, individuals, other organizations, and the Nation should the directives not be implemented in a timely manner. External organizations include supply chain partners, external mission or business partners, external service providers, and other peer or supporting organizations.
+    related_controls:
+      - pm-15
+      - ra-5
+      - si-2
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-5.1
+    title: Automated Alerts and Advisories
+    description: 'Broadcast security alert and advisory information throughout the organization using [[ insert: param, si-05.01_odp ]].'
+    parameters:
+      - id: si-05.01_odp
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to broadcast security alert and advisory information throughout the organization are defined;
+    guidance: The significant number of changes to organizational systems and environments of operation requires the dissemination of security-related information to a variety of organizational entities that have a direct interest in the success of organizational mission and business functions. Based on information provided by security alerts and advisories, changes may be required at one or more of the three levels related to the management of risk, including the governance level, mission and business process level, and the information system level.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-6
+    title: Security and Privacy Function Verification
+    description: "  a. Verify the correct operation of [[ insert: param, si-6_prm_1 ]];\n  b. Perform the verification of the functions specified in SI-6a [[ insert: param, si-06_odp.03 ]];\n  c. Alert [[ insert: param, si-06_odp.06 ]] to failed security and privacy verification tests; and\n  d. [[ insert: param, si-06_odp.07 ]] when anomalies are discovered."
+    parameters:
+      - id: si-6_prm_1
+        label: organization-defined security and privacy functions
+      - id: si-06_odp.01
+        label: security functions
+        guidelines:
+          - security functions to be verified for correct operation are defined;
+      - id: si-06_odp.02
+        label: privacy functions
+        guidelines:
+          - privacy functions to be verified for correct operation are defined;
+      - id: si-06_odp.03
+        label: ''
+        choices:
+          - '[[ insert: param, si-06_odp.04 ]] '
+          - upon command by user with appropriate privilege
+          - '[[ insert: param, si-06_odp.05 ]] '
+      - id: si-06_odp.04
+        label: system transitional states
+        guidelines:
+          - system transitional states requiring the verification of security and privacy functions are defined; (if selected)
+      - id: si-06_odp.05
+        label: frequency
+        guidelines:
+          - frequency at which to verify the correct operation of security and privacy functions is defined; (if selected)
+      - id: si-06_odp.06
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be alerted of failed security and privacy verification tests is/are defined;
+      - id: si-06_odp.07
+        label: ''
+        choices:
+          - shut the system down
+          - restart the system
+          - '[[ insert: param, si-06_odp.08 ]] '
+      - id: si-06_odp.08
+        label: alternative action(s)
+        guidelines:
+          - alternative action(s) to be performed when anomalies are discovered are defined (if selected);
+    guidance: Transitional states for systems include system startup, restart, shutdown, and abort. System notifications include hardware indicator lights, electronic alerts to system administrators, and messages to local computer consoles. In contrast to security function verification, privacy function verification ensures that privacy functions operate as expected and are approved by the senior agency official for privacy or that privacy attributes are applied or used as expected.
+    related_controls:
+      - ca-7
+      - cm-4
+      - cm-6
+      - si-7
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-6.1
+    title: Notification of Failed Security Tests
+    rules: []
+    status: pending
+  - id: si-6.2
+    title: Automation Support for Distributed Testing
+    description: Implement automated mechanisms to support the management of distributed security and privacy function testing.
+    guidance: The use of automated mechanisms to support the management of distributed function testing helps to ensure the integrity, timeliness, completeness, and efficacy of such testing.
+    related_controls:
+      - si-2
+    rules: []
+    status: pending
+  - id: si-6.3
+    title: Report Verification Results
+    description: 'Report the results of security and privacy function verification to [[ insert: param, si-06.03_odp ]].'
+    parameters:
+      - id: si-06.03_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles designated to receive the results of security and privacy function verification is/are defined;
+    guidance: Organizational personnel with potential interest in the results of the verification of security and privacy functions include systems security officers, senior agency information security officers, and senior agency officials for privacy.
+    related_controls:
+      - si-4
+      - sr-4
+      - sr-5
+    rules: []
+    status: pending
+  - id: si-7
+    title: Software, Firmware, and Information Integrity
+    description: "  a. Employ integrity verification tools to detect unauthorized changes to the following software, firmware, and information: [[ insert: param, si-7_prm_1 ]] ; and\n  b. Take the following actions when unauthorized changes to the software, firmware, and information are detected: [[ insert: param, si-7_prm_2 ]]."
+    parameters:
+      - id: si-7_prm_1
+        label: organization-defined software, firmware, and information
+      - id: si-7_prm_2
+        label: organization-defined actions
+      - id: si-07_odp.01
+        label: software
+        guidelines:
+          - software requiring integrity verification tools to be employed to detect unauthorized changes is defined;
+      - id: si-07_odp.02
+        label: firmware
+        guidelines:
+          - firmware requiring integrity verification tools to be employed to detect unauthorized changes is defined;
+      - id: si-07_odp.03
+        label: information
+        guidelines:
+          - information requiring integrity verification tools to be employed to detect unauthorized changes is defined;
+      - id: si-07_odp.04
+        label: actions
+        guidelines:
+          - actions to be taken when unauthorized changes to software are detected are defined;
+      - id: si-07_odp.05
+        label: actions
+        guidelines:
+          - actions to be taken when unauthorized changes to firmware are detected are defined;
+      - id: si-07_odp.06
+        label: actions
+        guidelines:
+          - actions to be taken when unauthorized changes to information are detected are defined;
+    guidance: Unauthorized changes to software, firmware, and information can occur due to errors or malicious activity. Software includes operating systems (with key internal components, such as kernels or drivers), middleware, and applications. Firmware interfaces include Unified Extensible Firmware Interface (UEFI) and Basic Input/Output System (BIOS). Information includes personally identifiable information and metadata that contains security and privacy attributes associated with information. Integrity-checking mechanisms—including parity checks, cyclical redundancy checks, cryptographic hashes, and associated tools—can automatically monitor the integrity of systems and hosted applications.
+    related_controls:
+      - ac-4
+      - cm-3
+      - cm-7
+      - cm-8
+      - ma-3
+      - ma-4
+      - ra-5
+      - sa-8
+      - sa-9
+      - sa-10
+      - sc-8
+      - sc-12
+      - sc-13
+      - sc-28
+      - sc-37
+      - si-3
+      - sr-3
+      - sr-4
+      - sr-5
+      - sr-6
+      - sr-9
+      - sr-10
+      - sr-11
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-7.1
+    title: Integrity Checks
+    description: 'Perform an integrity check of [[ insert: param, si-7.1_prm_1 ]] [[ insert: param, si-7.1_prm_2 ]].'
+    parameters:
+      - id: si-7.1_prm_1
+        label: organization-defined software, firmware, and information
+      - id: si-7.1_prm_2
+        label: ''
+        choices:
+          - at startup
+          - 'at [[ insert: param, si-7.1_prm_3 ]] '
+          - '[[ insert: param, si-7.1_prm_4 ]] '
+      - id: si-7.1_prm_3
+        label: organization-defined transitional states or security-relevant events
+      - id: si-7.1_prm_4
+        label: organization-defined frequency
+      - id: si-07.01_odp.01
+        label: software
+        guidelines:
+          - software on which an integrity check is to be performed is defined;
+      - id: si-07.01_odp.02
+        label: ''
+        choices:
+          - at startup
+          - 'at [[ insert: param, si-07.01_odp.03 ]] '
+          - '[[ insert: param, si-07.01_odp.04 ]] '
+      - id: si-07.01_odp.03
+        label: transitional states or security-relevant events
+        guidelines:
+          - transitional states or security-relevant events requiring integrity checks (on software) are defined (if selected);
+      - id: si-07.01_odp.04
+        label: frequency
+        guidelines:
+          - frequency with which to perform an integrity check (on software) is defined (if selected);
+      - id: si-07.01_odp.05
+        label: firmware
+        guidelines:
+          - firmware on which an integrity check is to be performed is defined;
+      - id: si-07.01_odp.06
+        label: ''
+        choices:
+          - at startup
+          - 'at [[ insert: param, si-07.01_odp.07 ]] '
+          - '[[ insert: param, si-07.01_odp.08 ]] '
+      - id: si-07.01_odp.07
+        label: transitional states or security-relevant events
+        guidelines:
+          - transitional states or security-relevant events requiring integrity checks (on firmware) are defined (if selected);
+      - id: si-07.01_odp.08
+        label: frequency
+        guidelines:
+          - frequency with which to perform an integrity check (on firmware) is defined (if selected);
+      - id: si-07.01_odp.09
+        label: information
+        guidelines:
+          - information on which an integrity check is to be performed is defined;
+      - id: si-07.01_odp.10
+        label: ''
+        choices:
+          - at startup
+          - 'at [[ insert: param, si-07.01_odp.11 ]] '
+          - '[[ insert: param, si-07.01_odp.12 ]] '
+      - id: si-07.01_odp.11
+        label: transitional states or security-relevant events
+        guidelines:
+          - transitional states or security-relevant events requiring integrity checks (of information) are defined (if selected);
+      - id: si-07.01_odp.12
+        label: frequency
+        guidelines:
+          - frequency with which to perform an integrity check (of information) is defined (if selected);
+    guidance: Security-relevant events include the identification of new threats to which organizational systems are susceptible and the installation of new hardware, software, or firmware. Transitional states include system startup, restart, shutdown, and abort.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-7.2
+    title: Automated Notifications of Integrity Violations
+    description: 'Employ automated tools that provide notification to [[ insert: param, si-07.02_odp ]] upon discovering discrepancies during integrity verification.'
+    parameters:
+      - id: si-07.02_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom notification is to be provided upon discovering discrepancies during integrity verification is/are defined;
+    guidance: The employment of automated tools to report system and information integrity violations and to notify organizational personnel in a timely matter is essential to effective risk response. Personnel with an interest in system and information integrity violations include mission and business owners, system owners, senior agency information security official, senior agency official for privacy, system administrators, software developers, systems integrators, information security officers, and privacy officers.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-7.3
+    title: Centrally Managed Integrity Tools
+    description: Employ centrally managed integrity verification tools.
+    guidance: Centrally managed integrity verification tools provides greater consistency in the application of such tools and can facilitate more comprehensive coverage of integrity verification actions.
+    related_controls:
+      - au-3
+      - si-2
+      - si-8
+    rules: []
+    status: pending
+  - id: si-7.4
+    title: Tamper-evident Packaging
+    rules: []
+    status: pending
+  - id: si-7.5
+    title: Automated Response to Integrity Violations
+    description: 'Automatically [[ insert: param, si-07.05_odp.01 ]] when integrity violations are discovered.'
+    parameters:
+      - id: si-07.05_odp.01
+        label: ''
+        choices:
+          - shut down the system
+          - restart the system
+          - 'implement [[ insert: param, si-07.05_odp.02 ]] '
+      - id: si-07.05_odp.02
+        label: controls
+        guidelines:
+          - controls to be implemented automatically when integrity violations are discovered are defined (if selected);
+    guidance: Organizations may define different integrity-checking responses by type of information, specific information, or a combination of both. Types of information include firmware, software, and user data. Specific information includes boot firmware for certain types of machines. The automatic implementation of controls within organizational systems includes reversing the changes, halting the system, or triggering audit alerts when unauthorized modifications to critical security files occur.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-7.6
+    title: Cryptographic Protection
+    description: Implement cryptographic mechanisms to detect unauthorized changes to software, firmware, and information.
+    guidance: Cryptographic mechanisms used to protect integrity include digital signatures and the computation and application of signed hashes using asymmetric cryptography, protecting the confidentiality of the key used to generate the hash, and using the public key to verify the hash information. Organizations that employ cryptographic mechanisms also consider cryptographic key management solutions.
+    related_controls:
+      - sc-12
+      - sc-13
+    rules: []
+    status: pending
+  - id: si-7.7
+    title: Integration of Detection and Response
+    description: 'Incorporate the detection of the following unauthorized changes into the organizational incident response capability: [[ insert: param, si-07.07_odp ]].'
+    parameters:
+      - id: si-07.07_odp
+        label: changes
+        guidelines:
+          - security-relevant changes to the system are defined;
+    guidance: Integrating detection and response helps to ensure that detected events are tracked, monitored, corrected, and available for historical purposes. Maintaining historical records is important for being able to identify and discern adversary actions over an extended time period and for possible legal actions. Security-relevant changes include unauthorized changes to established configuration settings or the unauthorized elevation of system privileges.
+    related_controls:
+      - au-2
+      - au-6
+      - ir-4
+      - ir-5
+      - si-4
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-7.8
+    title: Auditing Capability for Significant Events
+    description: 'Upon detection of a potential integrity violation, provide the capability to audit the event and initiate the following actions: [[ insert: param, si-07.08_odp.01 ]].'
+    parameters:
+      - id: si-07.08_odp.01
+        label: ''
+        choices:
+          - generate an audit record
+          - alert current user
+          - 'alert [[ insert: param, si-07.08_odp.02 ]] '
+          - '[[ insert: param, si-07.08_odp.03 ]] '
+      - id: si-07.08_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be alerted upon the detection of a potential integrity violation is/are defined (if selected);
+      - id: si-07.08_odp.03
+        label: other actions
+        guidelines:
+          - other actions to be taken upon the detection of a potential integrity violation are defined (if selected);
+    guidance: Organizations select response actions based on types of software, specific software, or information for which there are potential integrity violations.
+    related_controls:
+      - au-2
+      - au-6
+      - au-12
+    rules: []
+    status: pending
+  - id: si-7.9
+    title: Verify Boot Process
+    description: 'Verify the integrity of the boot process of the following system components: [[ insert: param, si-07.09_odp ]].'
+    parameters:
+      - id: si-07.09_odp
+        label: system components
+        guidelines:
+          - system components requiring integrity verification of the boot process are defined;
+    guidance: Ensuring the integrity of boot processes is critical to starting system components in known, trustworthy states. Integrity verification mechanisms provide a level of assurance that only trusted code is executed during boot processes.
+    related_controls:
+      - si-6
+    rules: []
+    status: pending
+  - id: si-7.10
+    title: Protection of Boot Firmware
+    description: 'Implement the following mechanisms to protect the integrity of boot firmware in [[ insert: param, si-07.10_odp.02 ]]: [[ insert: param, si-07.10_odp.01 ]].'
+    parameters:
+      - id: si-07.10_odp.01
+        label: mechanisms
+        guidelines:
+          - mechanisms to be implemented to protect the integrity of boot firmware in system components are defined;
+      - id: si-07.10_odp.02
+        label: system components
+        guidelines:
+          - system components requiring mechanisms to protect the integrity of boot firmware are defined;
+    guidance: Unauthorized modifications to boot firmware may indicate a sophisticated, targeted attack. These types of targeted attacks can result in a permanent denial of service or a persistent malicious code presence. These situations can occur if the firmware is corrupted or if the malicious code is embedded within the firmware. System components can protect the integrity of boot firmware in organizational systems by verifying the integrity and authenticity of all updates to the firmware prior to applying changes to the system component and preventing unauthorized processes from modifying the boot firmware.
+    related_controls:
+      - si-6
+    rules: []
+    status: pending
+  - id: si-7.11
+    title: Confined Environments with Limited Privileges
+    rules: []
+    status: pending
+  - id: si-7.12
+    title: Integrity Verification
+    description: 'Require that the integrity of the following user-installed software be verified prior to execution: [[ insert: param, si-07.12_odp ]].'
+    parameters:
+      - id: si-07.12_odp
+        label: user-installed software
+        guidelines:
+          - user-installed software requiring integrity verification prior to execution is defined;
+    guidance: Organizations verify the integrity of user-installed software prior to execution to reduce the likelihood of executing malicious code or programs that contains errors from unauthorized modifications. Organizations consider the source of the software, ensuring the software and updates come from authorized sources and/or sites, and the practicality of approaches to verifying software integrity, including the availability of trustworthy checksums from software developers and vendors.
+    related_controls:
+      - si-2
+      - cm-11
+    rules: []
+    status: pending
+  - id: si-7.13
+    title: Code Execution in Protected Environments
+    rules: []
+    status: pending
+  - id: si-7.14
+    title: Binary or Machine Executable Code
+    rules: []
+    status: pending
+  - id: si-7.15
+    title: Code Authentication
+    description: 'Implement cryptographic mechanisms to authenticate the following software or firmware components prior to installation: [[ insert: param, si-07.15_odp ]].'
+    parameters:
+      - id: si-07.15_odp
+        label: software or firmware components
+        guidelines:
+          - software or firmware components to be authenticated by cryptographic mechanisms prior to installation are defined;
+    guidance: Cryptographic authentication includes verifying that software or firmware components have been digitally signed using certificates recognized and approved by organizations. Code signing is an effective method to protect against malicious code. Organizations that employ cryptographic mechanisms also consider cryptographic key management solutions.
+    related_controls:
+      - cm-5
+      - sc-12
+      - sc-13
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-7.16
+    title: Time Limit on Process Execution Without Supervision
+    description: 'Prohibit processes from executing without supervision for more than [[ insert: param, si-07.16_odp ]].'
+    parameters:
+      - id: si-07.16_odp
+        label: time period
+        guidelines:
+          - the maximum time period permitted for processes to execute without supervision is defined;
+    guidance: Placing a time limit on process execution without supervision is intended to apply to processes for which typical or normal execution periods can be determined and situations in which organizations exceed such periods. Supervision includes timers on operating systems, automated responses, and manual oversight and response when system process anomalies occur.
+    rules: []
+    status: pending
+  - id: si-7.17
+    title: Runtime Application Self-protection
+    description: 'Implement [[ insert: param, si-07.17_odp ]] for application self-protection at runtime.'
+    parameters:
+      - id: si-07.17_odp
+        label: controls
+        guidelines:
+          - controls to be implemented for application self-protection at runtime are defined;
+    guidance: Runtime application self-protection employs runtime instrumentation to detect and block the exploitation of software vulnerabilities by taking advantage of information from the software in execution. Runtime exploit prevention differs from traditional perimeter-based protections such as guards and firewalls which can only detect and block attacks by using network information without contextual awareness. Runtime application self-protection technology can reduce the susceptibility of software to attacks by monitoring its inputs and blocking those inputs that could allow attacks. It can also help protect the runtime environment from unwanted changes and tampering. When a threat is detected, runtime application self-protection technology can prevent exploitation and take other actions (e.g., sending a warning message to the user, terminating the user's session, terminating the application, or sending an alert to organizational personnel). Runtime application self-protection solutions can be deployed in either a monitor or protection mode.
+    related_controls:
+      - si-16
+    rules: []
+    status: pending
+  - id: si-8
+    title: Spam Protection
+    description: "  a. Employ spam protection mechanisms at system entry and exit points to detect and act on unsolicited messages; and\n  b. Update spam protection mechanisms when new releases are available in accordance with organizational configuration management policy and procedures."
+    guidance: System entry and exit points include firewalls, remote-access servers, electronic mail servers, web servers, proxy servers, workstations, notebook computers, and mobile devices. Spam can be transported by different means, including email, email attachments, and web accesses. Spam protection mechanisms include signature definitions.
+    related_controls:
+      - pl-9
+      - sc-5
+      - sc-7
+      - sc-38
+      - si-3
+      - si-4
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-8.1
+    title: Central Management
+    rules: []
+    status: pending
+  - id: si-8.2
+    title: Automatic Updates
+    description: 'Automatically update spam protection mechanisms [[ insert: param, si-08.02_odp ]].'
+    parameters:
+      - id: si-08.02_odp
+        label: frequency
+        guidelines:
+          - the frequency at which to automatically update spam protection mechanisms is defined;
+    guidance: Using automated mechanisms to update spam protection mechanisms helps to ensure that updates occur on a regular basis and provide the latest content and protection capabilities.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-8.3
+    title: Continuous Learning Capability
+    description: Implement spam protection mechanisms with a learning capability to more effectively identify legitimate communications traffic.
+    guidance: Learning mechanisms include Bayesian filters that respond to user inputs that identify specific traffic as spam or legitimate by updating algorithm parameters and thereby more accurately separating types of traffic.
+    rules: []
+    status: pending
+  - id: si-9
+    title: Information Input Restrictions
+    rules: []
+    status: pending
+  - id: si-10
+    title: Information Input Validation
+    description: 'Check the validity of the following information inputs: [[ insert: param, si-10_odp ]].'
+    parameters:
+      - id: si-10_odp
+        label: information inputs
+        guidelines:
+          - information inputs to the system requiring validity checks are defined;
+    guidance: Checking the valid syntax and semantics of system inputs—including character set, length, numerical range, and acceptable values—verifies that inputs match specified definitions for format and content. For example, if the organization specifies that numerical values between 1-100 are the only acceptable inputs for a field in a given application, inputs of "387," "abc," or "%K%" are invalid inputs and are not accepted as input to the system. Valid inputs are likely to vary from field to field within a software application. Applications typically follow well-defined protocols that use structured messages (i.e., commands or queries) to communicate between software modules or system components. Structured messages can contain raw or unstructured data interspersed with metadata or control information. If software applications use attacker-supplied inputs to construct structured messages without properly encoding such messages, then the attacker could insert malicious commands or special characters that can cause the data to be interpreted as control information or metadata. Consequently, the module or component that receives the corrupted output will perform the wrong operations or otherwise interpret the data incorrectly. Prescreening inputs prior to passing them to interpreters prevents the content from being unintentionally interpreted as commands. Input validation ensures accurate and correct inputs and prevents attacks such as cross-site scripting and a variety of injection attacks.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-10.1
+    title: Manual Override Capability
+    description: "  a. Provide a manual override capability for input validation of the following information inputs: [[ insert: param, si-10_odp ]];\n  b. Restrict the use of the manual override capability to only [[ insert: param, si-10.01_odp ]] ; and\n  c. Audit the use of the manual override capability."
+    parameters:
+      - id: si-10.01_odp
+        label: authorized individuals
+        guidelines:
+          - authorized individuals who can use the manual override capability are defined;
+    guidance: In certain situations, such as during events that are defined in contingency plans, a manual override capability for input validation may be needed. Manual overrides are used only in limited circumstances and with the inputs defined by the organization.
+    related_controls:
+      - ac-3
+      - au-2
+      - au-12
+    rules: []
+    status: pending
+  - id: si-10.2
+    title: Review and Resolve Errors
+    description: 'Review and resolve input validation errors within [[ insert: param, si-10.2_prm_1 ]].'
+    parameters:
+      - id: si-10.2_prm_1
+        label: organization-defined time period
+      - id: si-10.02_odp.01
+        label: time period
+        guidelines:
+          - the time period within which input validation errors are to be reviewed is defined;
+      - id: si-10.02_odp.02
+        label: time period
+        guidelines:
+          - the time period within which input validation errors are to be resolved is defined;
+    guidance: Resolution of input validation errors includes correcting systemic causes of errors and resubmitting transactions with corrected input. Input validation errors are those related to the information inputs defined by the organization in the base control ( [SI-10](#si-10)).
+    rules: []
+    status: pending
+  - id: si-10.3
+    title: Predictable Behavior
+    description: Verify that the system behaves in a predictable and documented manner when invalid inputs are received.
+    guidance: A common vulnerability in organizational systems is unpredictable behavior when invalid inputs are received. Verification of system predictability helps ensure that the system behaves as expected when invalid inputs are received. This occurs by specifying system responses that allow the system to transition to known states without adverse, unintended side effects. The invalid inputs are those related to the information inputs defined by the organization in the base control ( [SI-10](#si-10)).
+    rules: []
+    status: pending
+  - id: si-10.4
+    title: Timing Interactions
+    description: Account for timing interactions among system components in determining appropriate responses for invalid inputs.
+    guidance: In addressing invalid system inputs received across protocol interfaces, timing interactions become relevant, where one protocol needs to consider the impact of the error response on other protocols in the protocol stack. For example, 802.11 standard wireless network protocols do not interact well with Transmission Control Protocols (TCP) when packets are dropped (which could be due to invalid packet input). TCP assumes packet losses are due to congestion, while packets lost over 802.11 links are typically dropped due to noise or collisions on the link. If TCP makes a congestion response, it takes the wrong action in response to a collision event. Adversaries may be able to use what appear to be acceptable individual behaviors of the protocols in concert to achieve adverse effects through suitable construction of invalid input. The invalid inputs are those related to the information inputs defined by the organization in the base control ( [SI-10](#si-10)).
+    rules: []
+    status: pending
+  - id: si-10.5
+    title: Restrict Inputs to Trusted Sources and Approved Formats
+    description: 'Restrict the use of information inputs to [[ insert: param, si-10.05_odp.01 ]] and/or [[ insert: param, si-10.05_odp.02 ]].'
+    parameters:
+      - id: si-10.05_odp.01
+        label: trusted sources
+        guidelines:
+          - trusted sources to which the use of information inputs is to be restricted are defined;
+      - id: si-10.05_odp.02
+        label: formats
+        guidelines:
+          - formats to which the use of information inputs is to be restricted are defined;
+    guidance: Restricting the use of inputs to trusted sources and in trusted formats applies the concept of authorized or permitted software to information inputs. Specifying known trusted sources for information inputs and acceptable formats for such inputs can reduce the probability of malicious activity. The information inputs are those defined by the organization in the base control ( [SI-10](#si-10)).
+    related_controls:
+      - ac-3
+      - ac-6
+    rules: []
+    status: pending
+  - id: si-10.6
+    title: Injection Prevention
+    description: Prevent untrusted data injections.
+    guidance: Untrusted data injections may be prevented using a parameterized interface or output escaping (output encoding). Parameterized interfaces separate data from code so that injections of malicious or unintended data cannot change the semantics of commands being sent. Output escaping uses specified characters to inform the interpreter’s parser whether data is trusted. Prevention of untrusted data injections are with respect to the information inputs defined by the organization in the base control ( [SI-10](#si-10)).
+    related_controls:
+      - ac-3
+      - ac-6
+    rules: []
+    status: pending
+  - id: si-11
+    title: Error Handling
+    description: "  a. Generate error messages that provide information necessary for corrective actions without revealing information that could be exploited; and\n  b. Reveal error messages only to [[ insert: param, si-11_odp ]]."
+    parameters:
+      - id: si-11_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom error messages are to be revealed is/are defined;
+    guidance: Organizations consider the structure and content of error messages. The extent to which systems can handle error conditions is guided and informed by organizational policy and operational requirements. Exploitable information includes stack traces and implementation details; erroneous logon attempts with passwords mistakenly entered as the username; mission or business information that can be derived from, if not stated explicitly by, the information recorded; and personally identifiable information, such as account numbers, social security numbers, and credit card numbers. Error messages may also provide a covert channel for transmitting information.
+    related_controls:
+      - au-2
+      - au-3
+      - sc-31
+      - si-2
+      - si-15
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-12
+    title: Information Management and Retention
+    description: Manage and retain information within the system and information output from the system in accordance with applicable laws, executive orders, directives, regulations, policies, standards, guidelines and operational requirements.
+    guidance: 'Information management and retention requirements cover the full life cycle of information, in some cases extending beyond system disposal. Information to be retained may also include policies, procedures, plans, reports, data output from control implementation, and other types of administrative information. The National Archives and Records Administration (NARA) provides federal policy and guidance on records retention and schedules. If organizations have a records management office, consider coordinating with records management personnel. Records produced from the output of implemented controls that may require management and retention include, but are not limited to: All XX-1, [AC-6(9)](#ac-6.9), [AT-4](#at-4), [AU-12](#au-12), [CA-2](#ca-2), [CA-3](#ca-3), [CA-5](#ca-5), [CA-6](#ca-6), [CA-7](#ca-7), [CA-8](#ca-8), [CA-9](#ca-9), [CM-2](#cm-2), [CM-3](#cm-3), [CM-4](#cm-4), [CM-6](#cm-6), [CM-8](#cm-8), [CM-9](#cm-9), [CM-12](#cm-12), [CM-13](#cm-13), [CP-2](#cp-2), [IR-6](#ir-6), [IR-8](#ir-8), [MA-2](#ma-2), [MA-4](#ma-4), [PE-2](#pe-2), [PE-8](#pe-8), [PE-16](#pe-16), [PE-17](#pe-17), [PL-2](#pl-2), [PL-4](#pl-4), [PL-7](#pl-7), [PL-8](#pl-8), [PM-5](#pm-5), [PM-8](#pm-8), [PM-9](#pm-9), [PM-18](#pm-18), [PM-21](#pm-21), [PM-27](#pm-27), [PM-28](#pm-28), [PM-30](#pm-30), [PM-31](#pm-31), [PS-2](#ps-2), [PS-6](#ps-6), [PS-7](#ps-7), [PT-2](#pt-2), [PT-3](#pt-3), [PT-7](#pt-7), [RA-2](#ra-2), [RA-3](#ra-3), [RA-5](#ra-5), [RA-8](#ra-8), [SA-4](#sa-4), [SA-5](#sa-5), [SA-8](#sa-8), [SA-10](#sa-10), [SI-4](#si-4), [SR-2](#sr-2), [SR-4](#sr-4), [SR-8](#sr-8).'
+    related_controls:
+      - ac-16
+      - au-5
+      - au-11
+      - ca-2
+      - ca-3
+      - ca-5
+      - ca-6
+      - ca-7
+      - ca-9
+      - cm-5
+      - cm-9
+      - cp-2
+      - ir-8
+      - mp-2
+      - mp-3
+      - mp-4
+      - mp-6
+      - pl-2
+      - pl-4
+      - pm-4
+      - pm-8
+      - pm-9
+      - ps-2
+      - ps-6
+      - pt-2
+      - pt-3
+      - ra-2
+      - ra-3
+      - sa-5
+      - sa-8
+      - sr-2
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: si-12.1
+    title: Limit Personally Identifiable Information Elements
+    description: 'Limit personally identifiable information being processed in the information life cycle to the following elements of personally identifiable information: [[ insert: param, si-12.01_odp ]].'
+    parameters:
+      - id: si-12.01_odp
+        label: elements of personally identifiable information
+        guidelines:
+          - elements of personally identifiable information being processed in the information life cycle are defined;
+    guidance: Limiting the use of personally identifiable information throughout the information life cycle when the information is not needed for operational purposes helps to reduce the level of privacy risk created by a system. The information life cycle includes information creation, collection, use, processing, storage, maintenance, dissemination, disclosure, and disposition. Risk assessments as well as applicable laws, regulations, and policies can provide useful inputs to determining which elements of personally identifiable information may create risk.
+    related_controls:
+      - pm-25
+    rules: []
+    status: pending
+  - id: si-12.2
+    title: Minimize Personally Identifiable Information in Testing, Training, and Research
+    description: 'Use the following techniques to minimize the use of personally identifiable information for research, testing, or training: [[ insert: param, si-12.2_prm_1 ]].'
+    parameters:
+      - id: si-12.2_prm_1
+        label: organization-defined techniques
+      - id: si-12.02_odp.01
+        label: techniques
+        guidelines:
+          - techniques used to minimize the use of personally identifiable information for research are defined;
+      - id: si-12.02_odp.02
+        label: techniques
+        guidelines:
+          - techniques used to minimize the use of personally identifiable information for testing are defined;
+      - id: si-12.02_odp.03
+        label: techniques
+        guidelines:
+          - techniques used to minimize the use of personally identifiable information for training are defined;
+    guidance: Organizations can minimize the risk to an individual’s privacy by employing techniques such as de-identification or synthetic data. Limiting the use of personally identifiable information throughout the information life cycle when the information is not needed for research, testing, or training helps reduce the level of privacy risk created by a system. Risk assessments as well as applicable laws, regulations, and policies can provide useful inputs to determining the techniques to use and when to use them.
+    related_controls:
+      - pm-22
+      - pm-25
+      - si-19
+    rules: []
+    status: pending
+  - id: si-12.3
+    title: Information Disposal
+    description: 'Use the following techniques to dispose of, destroy, or erase information following the retention period: [[ insert: param, si-12.3_prm_1 ]].'
+    parameters:
+      - id: si-12.3_prm_1
+        label: organization-defined techniques
+      - id: si-12.03_odp.01
+        label: techniques
+        guidelines:
+          - techniques used to dispose of information following the retention period are defined;
+      - id: si-12.03_odp.02
+        label: techniques
+        guidelines:
+          - techniques used to destroy information following the retention period are defined;
+      - id: si-12.03_odp.03
+        label: techniques
+        guidelines:
+          - techniques used to erase information following the retention period are defined;
+    guidance: Organizations can minimize both security and privacy risks by disposing of information when it is no longer needed. The disposal or destruction of information applies to originals as well as copies and archived records, including system logs that may contain personally identifiable information.
+    rules: []
+    status: pending
+  - id: si-13
+    title: Predictable Failure Prevention
+    description: "  a. Determine mean time to failure (MTTF) for the following system components in specific environments of operation: [[ insert: param, si-13_odp.01 ]] ; and\n  b. Provide substitute system components and a means to exchange active and standby components in accordance with the following criteria: [[ insert: param, si-13_odp.02 ]]."
+    parameters:
+      - id: si-13_odp.01
+        label: system components
+        guidelines:
+          - system components for which mean time to failure (MTTF) should be determined are defined;
+      - id: si-13_odp.02
+        label: mean time to failure (MTTF) substitution criteria
+        guidelines:
+          - mean time to failure (MTTF) substitution criteria to be used as a means to exchange active and standby components are defined;
+    guidance: While MTTF is primarily a reliability issue, predictable failure prevention is intended to address potential failures of system components that provide security capabilities. Failure rates reflect installation-specific consideration rather than the industry-average. Organizations define the criteria for the substitution of system components based on the MTTF value with consideration for the potential harm from component failures. The transfer of responsibilities between active and standby components does not compromise safety, operational readiness, or security capabilities. The preservation of system state variables is also critical to help ensure a successful transfer process. Standby components remain available at all times except for maintenance issues or recovery failures in progress.
+    related_controls:
+      - cp-2
+      - cp-10
+      - cp-13
+      - ma-2
+      - ma-6
+      - sa-8
+      - sc-6
+    rules: []
+    status: pending
+  - id: si-13.1
+    title: Transferring Component Responsibilities
+    description: 'Take system components out of service by transferring component responsibilities to substitute components no later than [[ insert: param, si-13.01_odp ]] of mean time to failure.'
+    parameters:
+      - id: si-13.01_odp
+        label: fraction or percentage
+        guidelines:
+          - the fraction or percentage of mean time to failure within which to transfer the responsibilities of a system component to a substitute component is defined;
+    guidance: Transferring primary system component responsibilities to other substitute components prior to primary component failure is important to reduce the risk of degraded or debilitated mission or business functions. Making such transfers based on a percentage of mean time to failure allows organizations to be proactive based on their risk tolerance. However, the premature replacement of system components can result in the increased cost of system operations.
+    rules: []
+    status: pending
+  - id: si-13.2
+    title: Time Limit on Process Execution Without Supervision
+    rules: []
+    status: pending
+  - id: si-13.3
+    title: Manual Transfer Between Components
+    description: 'Manually initiate transfers between active and standby system components when the use of the active component reaches [[ insert: param, si-13.03_odp ]] of the mean time to failure.'
+    parameters:
+      - id: si-13.03_odp
+        label: percentage
+        guidelines:
+          - the percentage of the mean time to failure for transfers to be manually initiated is defined;
+    guidance: For example, if the MTTF for a system component is 100 days and the MTTF percentage defined by the organization is 90 percent, the manual transfer would occur after 90 days.
+    rules: []
+    status: pending
+  - id: si-13.4
+    title: Standby Component Installation and Notification
+    description: "If system component failures are detected:\n  a. Ensure that the standby components are successfully and transparently installed within [[ insert: param, si-13.04_odp.01 ]] ; and\n  b. [[ insert: param, si-13.04_odp.02 ]]."
+    parameters:
+      - id: si-13.04_odp.01
+        label: time period
+        guidelines:
+          - time period for standby components to be installed is defined;
+      - id: si-13.04_odp.02
+        label: ''
+        choices:
+          - 'activate [[ insert: param, si-13.04_odp.03 ]] '
+          - automatically shut down the system
+          - '[[ insert: param, si-13.04_odp.04 ]] '
+      - id: si-13.04_odp.03
+        label: alarm
+        guidelines:
+          - alarm to be activated when system component failures are detected is defined (if selected);
+      - id: si-13.04_odp.04
+        label: action
+        guidelines:
+          - action to be taken when system component failures are detected is defined (if selected);
+    guidance: Automatic or manual transfer of components from standby to active mode can occur upon the detection of component failures.
+    rules: []
+    status: pending
+  - id: si-13.5
+    title: Failover Capability
+    description: 'Provide [[ insert: param, si-13.05_odp.01 ]] [[ insert: param, si-13.05_odp.02 ]] for the system.'
+    parameters:
+      - id: si-13.05_odp.01
+        label: ''
+        choices:
+          - real-time
+          - near real-time
+      - id: si-13.05_odp.02
+        label: failover capability
+        guidelines:
+          - a failover capability for the system has been defined;
+    guidance: Failover refers to the automatic switchover to an alternate system upon the failure of the primary system. Failover capability includes incorporating mirrored system operations at alternate processing sites or periodic data mirroring at regular intervals defined by the recovery time periods of organizations.
+    related_controls:
+      - cp-6
+      - cp-7
+      - cp-9
+    rules: []
+    status: pending
+  - id: si-14
+    title: Non-persistence
+    description: 'Implement non-persistent [[ insert: param, si-14_odp.01 ]] that are initiated in a known state and terminated [[ insert: param, si-14_odp.02 ]].'
+    parameters:
+      - id: si-14_odp.01
+        label: system components and services
+        guidelines:
+          - non-persistent system components and services to be implemented are defined;
+      - id: si-14_odp.02
+        label: ''
+        choices:
+          - upon end of session of use
+          - '[[ insert: param, si-14_odp.03 ]] '
+      - id: si-14_odp.03
+        label: frequency
+        guidelines:
+          - the frequency at which to terminate non-persistent components and services that are initiated in a known state is defined (if selected);
+    guidance: "Implementation of non-persistent components and services mitigates risk from advanced persistent threats (APTs) by reducing the targeting capability of adversaries (i.e., window of opportunity and available attack surface) to initiate and complete attacks. By implementing the concept of non-persistence for selected system components, organizations can provide a trusted, known state computing resource for a specific time period that does not give adversaries sufficient time to exploit vulnerabilities in organizational systems or operating environments. Since the APT is a high-end, sophisticated threat with regard to capability, intent, and targeting, organizations assume that over an extended period, a percentage of attacks will be successful. Non-persistent system components and services are activated as required using protected information and terminated periodically or at the end of sessions. Non-persistence increases the work factor of adversaries attempting to compromise or breach organizational systems.\n\nNon-persistence can be achieved by refreshing system components, periodically reimaging components, or using a variety of common virtualization techniques. Non-persistent services can be implemented by using virtualization techniques as part of virtual machines or as new instances of processes on physical machines (either persistent or non-persistent). The benefit of periodic refreshes of system components and services is that it does not require organizations to first determine whether compromises of components or services have occurred (something that may often be difficult to determine). The refresh of selected system components and services occurs with sufficient frequency to prevent the spread or intended impact of attacks, but not with such frequency that it makes the system unstable. Refreshes of critical components and services may be done periodically to hinder the ability of adversaries to exploit optimum windows of vulnerabilities."
+    related_controls:
+      - sc-30
+      - sc-34
+      - si-21
+    rules: []
+    status: pending
+  - id: si-14.1
+    title: Refresh from Trusted Sources
+    description: 'Obtain software and data employed during system component and service refreshes from the following trusted sources: [[ insert: param, si-14.01_odp ]].'
+    parameters:
+      - id: si-14.01_odp
+        label: trusted sources
+        guidelines:
+          - trusted sources to obtain software and data for system component and service refreshes are defined;
+    guidance: Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities.
+    rules: []
+    status: pending
+  - id: si-14.2
+    title: Non-persistent Information
+    description: "  a. [[ insert: param, si-14.02_odp.01 ]] ; and\n  b. Delete information when no longer needed."
+    parameters:
+      - id: si-14.02_odp.01
+        label: ''
+        choices:
+          - 'refresh [[ insert: param, si-14.02_odp.02 ]] [[ insert: param, si-14.02_odp.03 ]] '
+          - 'generate [[ insert: param, si-14.02_odp.04 ]] on demand'
+      - id: si-14.02_odp.02
+        label: information
+        guidelines:
+          - the information to be refreshed is defined (if selected);
+      - id: si-14.02_odp.03
+        label: frequency
+        guidelines:
+          - the frequency at which to refresh information is defined (if selected);
+      - id: si-14.02_odp.04
+        label: information
+        guidelines:
+          - the information to be generated is defined (if selected);
+    guidance: Retaining information longer than is needed makes the information a potential target for advanced adversaries searching for high value assets to compromise through unauthorized disclosure, unauthorized modification, or exfiltration. For system-related information, unnecessary retention provides advanced adversaries information that can assist in their reconnaissance and lateral movement through the system.
+    rules: []
+    status: pending
+  - id: si-14.3
+    title: Non-persistent Connectivity
+    description: 'Establish connections to the system on demand and terminate connections after [[ insert: param, si-14.03_odp ]].'
+    parameters:
+      - id: si-14.03_odp
+        label: ''
+        choices:
+          - completion of a request
+          - a period of non-use
+    guidance: Persistent connections to systems can provide advanced adversaries with paths to move laterally through systems and potentially position themselves closer to high value assets. Limiting the availability of such connections impedes the adversary’s ability to move freely through organizational systems.
+    related_controls:
+      - sc-10
+    rules: []
+    status: pending
+  - id: si-15
+    title: Information Output Filtering
+    description: 'Validate information output from the following software programs and/or applications to ensure that the information is consistent with the expected content: [[ insert: param, si-15_odp ]].'
+    parameters:
+      - id: si-15_odp
+        label: software programs and/or applications
+        guidelines:
+          - software programs and/or applications whose information output requires validation are defined;
+    guidance: Certain types of attacks, including SQL injections, produce output results that are unexpected or inconsistent with the output results that would be expected from software programs or applications. Information output filtering focuses on detecting extraneous content, preventing such extraneous content from being displayed, and then alerting monitoring tools that anomalous behavior has been discovered.
+    related_controls:
+      - si-3
+      - si-4
+      - si-11
+    rules: []
+    status: pending
+  - id: si-16
+    title: Memory Protection
+    description: 'Implement the following controls to protect the system memory from unauthorized code execution: [[ insert: param, si-16_odp ]].'
+    parameters:
+      - id: si-16_odp
+        label: controls
+        guidelines:
+          - controls to be implemented to protect the system memory from unauthorized code execution are defined;
+    guidance: Some adversaries launch attacks with the intent of executing code in non-executable regions of memory or in memory locations that are prohibited. Controls employed to protect memory include data execution prevention and address space layout randomization. Data execution prevention controls can either be hardware-enforced or software-enforced with hardware enforcement providing the greater strength of mechanism.
+    related_controls:
+      - ac-25
+      - sc-3
+      - si-7
+    levels:
+      - moderate
+      - high
+    rules:
+      - sysctl_kernel_randomize_va_space
+    status: automated
+  - id: si-17
+    title: Fail-safe Procedures
+    description: 'Implement the indicated fail-safe procedures when the indicated failures occur: [[ insert: param, si-17_prm_1 ]].'
+    parameters:
+      - id: si-17_prm_1
+        label: organization-defined list of failure conditions and associated fail-safe procedures
+      - id: si-17_odp.01
+        label: fail-safe procedures
+        guidelines:
+          - fail-safe procedures associated with failure conditions are defined;
+      - id: si-17_odp.02
+        label: list of failure conditions
+        guidelines:
+          - a list of failure conditions requiring fail-safe procedures is defined;
+    guidance: Failure conditions include the loss of communications among critical system components or between system components and operational facilities. Fail-safe procedures include alerting operator personnel and providing specific instructions on subsequent steps to take. Subsequent steps may include doing nothing, reestablishing system settings, shutting down processes, restarting the system, or contacting designated organizational personnel.
+    related_controls:
+      - cp-12
+      - cp-13
+      - sc-24
+      - si-13
+    rules: []
+    status: pending
+  - id: si-18
+    title: Personally Identifiable Information Quality Operations
+    description: "  a. Check the accuracy, relevance, timeliness, and completeness of personally identifiable information across the information life cycle [[ insert: param, si-18_prm_1 ]] ; and\n  b. Correct or delete inaccurate or outdated personally identifiable information."
+    parameters:
+      - id: si-18_prm_1
+        label: organization-defined frequency
+      - id: si-18_odp.01
+        label: frequency
+        guidelines:
+          - the frequency at which to check the accuracy of personally identifiable information across the information life cycle is defined;
+      - id: si-18_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to check the relevance of personally identifiable information across the information life cycle is defined;
+      - id: si-18_odp.03
+        label: frequency
+        guidelines:
+          - the frequency at which to check the timeliness of personally identifiable information across the information life cycle is defined;
+      - id: si-18_odp.04
+        label: frequency
+        guidelines:
+          - the frequency at which to check the completeness of personally identifiable information across the information life cycle is defined;
+    guidance: Personally identifiable information quality operations include the steps that organizations take to confirm the accuracy and relevance of personally identifiable information throughout the information life cycle. The information life cycle includes the creation, collection, use, processing, storage, maintenance, dissemination, disclosure, and disposal of personally identifiable information. Personally identifiable information quality operations include editing and validating addresses as they are collected or entered into systems using automated address verification look-up application programming interfaces. Checking personally identifiable information quality includes the tracking of updates or changes to data over time, which enables organizations to know how and what personally identifiable information was changed should erroneous information be identified. The measures taken to protect personally identifiable information quality are based on the nature and context of the personally identifiable information, how it is to be used, how it was obtained, and the potential de-identification methods employed. The measures taken to validate the accuracy of personally identifiable information used to make determinations about the rights, benefits, or privileges of individuals covered under federal programs may be more comprehensive than the measures used to validate personally identifiable information used for less sensitive purposes.
+    related_controls:
+      - pm-22
+      - pm-24
+      - pt-2
+      - si-4
+    rules: []
+    status: pending
+  - id: si-18.1
+    title: Automation Support
+    description: 'Correct or delete personally identifiable information that is inaccurate or outdated, incorrectly determined regarding impact, or incorrectly de-identified using [[ insert: param, si-18.01_odp ]].'
+    parameters:
+      - id: si-18.01_odp
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to correct or delete personally identifiable information that is inaccurate, outdated, incorrectly determined regarding impact, or incorrectly de-identified are defined;
+    guidance: "The use of automated mechanisms to improve data quality may inadvertently create privacy risks. Automated tools may connect to external or otherwise unrelated systems, and the matching of records between these systems may create linkages with unintended consequences. Organizations assess and document these risks in their privacy impact assessments and make determinations that are in alignment with their privacy program plans.\n\nAs data is obtained and used across the information life cycle, it is important to confirm the accuracy and relevance of personally identifiable information. Automated mechanisms can augment existing data quality processes and procedures and enable an organization to better identify and manage personally identifiable information in large-scale systems. For example, automated tools can greatly improve efforts to consistently normalize data or identify malformed data. Automated tools can also be used to improve the auditing of data and detect errors that may incorrectly alter personally identifiable information or incorrectly associate such information with the wrong individual. Automated capabilities backstop processes and procedures at-scale and enable more fine-grained detection and correction of data quality errors."
+    related_controls:
+      - pm-18
+      - ra-8
+    rules: []
+    status: pending
+  - id: si-18.2
+    title: Data Tags
+    description: Employ data tags to automate the correction or deletion of personally identifiable information across the information life cycle within organizational systems.
+    guidance: Data tagging personally identifiable information includes tags that note processing permissions, authority to process, de-identification, impact level, information life cycle stage, and retention or last updated dates. Employing data tags for personally identifiable information can support the use of automation tools to correct or delete relevant personally identifiable information.
+    related_controls:
+      - ac-3
+      - ac-16
+      - sc-16
+    rules: []
+    status: pending
+  - id: si-18.3
+    title: Collection
+    description: Collect personally identifiable information directly from the individual.
+    guidance: Individuals or their designated representatives can be sources of correct personally identifiable information. Organizations consider contextual factors that may incentivize individuals to provide correct data versus false data. Additional steps may be necessary to validate collected information based on the nature and context of the personally identifiable information, how it is to be used, and how it was obtained. The measures taken to validate the accuracy of personally identifiable information used to make determinations about the rights, benefits, or privileges of individuals under federal programs may be more comprehensive than the measures taken to validate less sensitive personally identifiable information.
+    rules: []
+    status: pending
+  - id: si-18.4
+    title: Individual Requests
+    description: Correct or delete personally identifiable information upon request by individuals or their designated representatives.
+    guidance: Inaccurate personally identifiable information maintained by organizations may cause problems for individuals, especially in those business functions where inaccurate information may result in inappropriate decisions or the denial of benefits and services to individuals. Even correct information, in certain circumstances, can cause problems for individuals that outweigh the benefits of an organization maintaining the information. Organizations use discretion when determining if personally identifiable information is to be corrected or deleted based on the scope of requests, the changes sought, the impact of the changes, and laws, regulations, and policies. Organizational personnel consult with the senior agency official for privacy and legal counsel regarding appropriate instances of correction or deletion.
+    rules: []
+    status: pending
+  - id: si-18.5
+    title: Notice of Correction or Deletion
+    description: 'Notify [[ insert: param, si-18.05_odp ]] and individuals that the personally identifiable information has been corrected or deleted.'
+    parameters:
+      - id: si-18.05_odp
+        label: recipients
+        guidelines:
+          - recipients of personally identifiable information to be notified when the personally identifiable information has been corrected or deleted are defined;
+    guidance: When personally identifiable information is corrected or deleted, organizations take steps to ensure that all authorized recipients of such information, and the individual with whom the information is associated or their designated representatives, are informed of the corrected or deleted information.
+    rules: []
+    status: pending
+  - id: si-19
+    title: De-identification
+    description: "  a. Remove the following elements of personally identifiable information from datasets: [[ insert: param, si-19_odp.01 ]] ; and\n  b. Evaluate [[ insert: param, si-19_odp.02 ]] for effectiveness of de-identification."
+    parameters:
+      - id: si-19_odp.01
+        label: elements
+        guidelines:
+          - elements of personally identifiable information to be removed from datasets are defined;
+      - id: si-19_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to evaluate the effectiveness of de-identification is defined;
+    guidance: De-identification is the general term for the process of removing the association between a set of identifying data and the data subject. Many datasets contain information about individuals that can be used to distinguish or trace an individual’s identity, such as name, social security number, date and place of birth, mother’s maiden name, or biometric records. Datasets may also contain other information that is linked or linkable to an individual, such as medical, educational, financial, and employment information. Personally identifiable information is removed from datasets by trained individuals when such information is not (or no longer) necessary to satisfy the requirements envisioned for the data. For example, if the dataset is only used to produce aggregate statistics, the identifiers that are not needed for producing those statistics are removed. Removing identifiers improves privacy protection since information that is removed cannot be inadvertently disclosed or improperly used. Organizations may be subject to specific de-identification definitions or methods under applicable laws, regulations, or policies. Re-identification is a residual risk with de-identified data. Re-identification attacks can vary, including combining new datasets or other improvements in data analytics. Maintaining awareness of potential attacks and evaluating for the effectiveness of the de-identification over time support the management of this residual risk.
+    related_controls:
+      - mp-6
+      - pm-22
+      - pm-23
+      - pm-24
+      - ra-2
+      - si-12
+    rules: []
+    status: pending
+  - id: si-19.1
+    title: Collection
+    description: De-identify the dataset upon collection by not collecting personally identifiable information.
+    guidance: If a data source contains personally identifiable information but the information will not be used, the dataset can be de-identified when it is created by not collecting the data elements that contain the personally identifiable information. For example, if an organization does not intend to use the social security number of an applicant, then application forms do not ask for a social security number.
+    rules: []
+    status: pending
+  - id: si-19.2
+    title: Archiving
+    description: Prohibit archiving of personally identifiable information elements if those elements in a dataset will not be needed after the dataset is archived.
+    guidance: Datasets can be archived for many reasons. The envisioned purposes for the archived dataset are specified, and if personally identifiable information elements are not required, the elements are not archived. For example, social security numbers may have been collected for record linkage, but the archived dataset may include the required elements from the linked records. In this case, it is not necessary to archive the social security numbers.
+    rules: []
+    status: pending
+  - id: si-19.3
+    title: Release
+    description: Remove personally identifiable information elements from a dataset prior to its release if those elements in the dataset do not need to be part of the data release.
+    guidance: Prior to releasing a dataset, a data custodian considers the intended uses of the dataset and determines if it is necessary to release personally identifiable information. If the personally identifiable information is not necessary, the information can be removed using de-identification techniques.
+    rules: []
+    status: pending
+  - id: si-19.4
+    title: Removal, Masking, Encryption, Hashing, or Replacement of Direct Identifiers
+    description: Remove, mask, encrypt, hash, or replace direct identifiers in a dataset.
+    guidance: 'There are many possible processes for removing direct identifiers from a dataset. Columns in a dataset that contain a direct identifier can be removed. In masking, the direct identifier is transformed into a repeating character, such as XXXXXX or 999999. Identifiers can be encrypted or hashed so that the linked records remain linked. In the case of encryption or hashing, algorithms are employed that require the use of a key, including the Advanced Encryption Standard or a Hash-based Message Authentication Code. Implementations may use the same key for all identifiers or use a different key for each identifier. Using a different key for each identifier provides a higher degree of security and privacy. Identifiers can alternatively be replaced with a keyword, including transforming "George Washington" to "PATIENT" or replacing it with a surrogate value, such as transforming "George Washington" to "Abraham Polk." '
+    related_controls:
+      - sc-12
+      - sc-13
+    rules: []
+    status: pending
+  - id: si-19.5
+    title: Statistical Disclosure Control
+    description: Manipulate numerical data, contingency tables, and statistical findings so that no individual or organization is identifiable in the results of the analysis.
+    guidance: Many types of statistical analyses can result in the disclosure of information about individuals even if only summary information is provided. For example, if a school that publishes a monthly table with the number of minority students enrolled, reports that it has 10-19 such students in January, and subsequently reports that it has 20-29 such students in March, then it can be inferred that the student who enrolled in February was a minority.
+    rules: []
+    status: pending
+  - id: si-19.6
+    title: Differential Privacy
+    description: Prevent disclosure of personally identifiable information by adding non-deterministic noise to the results of mathematical operations before the results are reported.
+    guidance: The mathematical definition for differential privacy holds that the result of a dataset analysis should be approximately the same before and after the addition or removal of a single data record (which is assumed to be the data from a single individual). In its most basic form, differential privacy applies only to online query systems. However, it can also be used to produce machine-learning statistical classifiers and synthetic data. Differential privacy comes at the cost of decreased accuracy of results, forcing organizations to quantify the trade-off between privacy protection and the overall accuracy, usefulness, and utility of the de-identified dataset. Non-deterministic noise can include adding small, random values to the results of mathematical operations in dataset analysis.
+    related_controls:
+      - sc-12
+      - sc-13
+    rules: []
+    status: pending
+  - id: si-19.7
+    title: Validated Algorithms and Software
+    description: Perform de-identification using validated algorithms and software that is validated to implement the algorithms.
+    guidance: Algorithms that appear to remove personally identifiable information from a dataset may in fact leave information that is personally identifiable or data that is re-identifiable. Software that is claimed to implement a validated algorithm may contain bugs or implement a different algorithm. Software may de-identify one type of data, such as integers, but not de-identify another type of data, such as floating point numbers. For these reasons, de-identification is performed using algorithms and software that are validated.
+    rules: []
+    status: pending
+  - id: si-19.8
+    title: Motivated Intruder
+    description: Perform a motivated intruder test on the de-identified dataset to determine if the identified data remains or if the de-identified data can be re-identified.
+    guidance: A motivated intruder test is a test in which an individual or group takes a data release and specified resources and attempts to re-identify one or more individuals in the de-identified dataset. Such tests specify the amount of inside knowledge, computational resources, financial resources, data, and skills that intruders possess to conduct the tests. A motivated intruder test can determine if the de-identification is insufficient. It can also be a useful diagnostic tool to assess if de-identification is likely to be sufficient. However, the test alone cannot prove that de-identification is sufficient.
+    rules: []
+    status: pending
+  - id: si-20
+    title: Tainting
+    description: 'Embed data or capabilities in the following systems or system components to determine if organizational data has been exfiltrated or improperly removed from the organization: [[ insert: param, si-20_odp ]].'
+    parameters:
+      - id: si-20_odp
+        label: systems or system components
+        guidelines:
+          - the systems or system components with data or capabilities to be embedded are defined;
+    guidance: Many cyber-attacks target organizational information, or information that the organization holds on behalf of other entities (e.g., personally identifiable information), and exfiltrate that data. In addition, insider attacks and erroneous user procedures can remove information from the system that is in violation of the organizational policies. Tainting approaches can range from passive to active. A passive tainting approach can be as simple as adding false email names and addresses to an internal database. If the organization receives email at one of the false email addresses, it knows that the database has been compromised. Moreover, the organization knows that the email was sent by an unauthorized entity, so any packets it includes potentially contain malicious code, and that the unauthorized entity may have potentially obtained a copy of the database. Another tainting approach can include embedding false data or steganographic data in files to enable the data to be found via open-source analysis. Finally, an active tainting approach can include embedding software in the data that is able to "call home," thereby alerting the organization to its "capture," and possibly its location, and the path by which it was exfiltrated or removed.
+    related_controls:
+      - au-13
+    rules: []
+    status: pending
+  - id: si-21
+    title: Information Refresh
+    description: 'Refresh [[ insert: param, si-21_odp.01 ]] at [[ insert: param, si-21_odp.02 ]] or generate the information on demand and delete the information when no longer needed.'
+    parameters:
+      - id: si-21_odp.01
+        label: information
+        guidelines:
+          - the information to be refreshed is defined;
+      - id: si-21_odp.02
+        label: frequencies
+        guidelines:
+          - the frequencies at which to refresh information are defined;
+    guidance: Retaining information for longer than it is needed makes it an increasingly valuable and enticing target for adversaries. Keeping information available for the minimum period of time needed to support organizational missions or business functions reduces the opportunity for adversaries to compromise, capture, and exfiltrate that information.
+    related_controls:
+      - si-14
+    rules: []
+    status: pending
+  - id: si-22
+    title: Information Diversity
+    description: "  a. Identify the following alternative sources of information for [[ insert: param, si-22_odp.02 ]]: [[ insert: param, si-22_odp.01 ]] ; and\n  b. Use an alternative information source for the execution of essential functions or services on [[ insert: param, si-22_odp.03 ]] when the primary source of information is corrupted or unavailable."
+    parameters:
+      - id: si-22_odp.01
+        label: alternative information sources
+        guidelines:
+          - alternative information sources for essential functions and services are defined;
+      - id: si-22_odp.02
+        label: essential functions and services
+        guidelines:
+          - essential functions and services that require alternative sources of information are defined;
+      - id: si-22_odp.03
+        label: systems or system components
+        guidelines:
+          - systems or system components that require an alternative information source for the execution of essential functions or services are defined;
+    guidance: Actions taken by a system service or a function are often driven by the information it receives. Corruption, fabrication, modification, or deletion of that information could impact the ability of the service function to properly carry out its intended actions. By having multiple sources of input, the service or function can continue operation if one source is corrupted or no longer available. It is possible that the alternative sources of information may be less precise or less accurate than the primary source of information. But having such sub-optimal information sources may still provide a sufficient level of quality that the essential service or function can be carried out, even in a degraded or debilitated manner.
+    rules: []
+    status: pending
+  - id: si-23
+    title: Information Fragmentation
+    description: "Based on [[ insert: param, si-23_odp.01 ]]:\n  a. Fragment the following information: [[ insert: param, si-23_odp.02 ]] ; and\n  b. Distribute the fragmented information across the following systems or system components: [[ insert: param, si-23_odp.03 ]]."
+    parameters:
+      - id: si-23_odp.01
+        label: circumstances
+        guidelines:
+          - circumstances that require information fragmentation are defined;
+      - id: si-23_odp.02
+        label: information
+        guidelines:
+          - the information to be fragmented is defined;
+      - id: si-23_odp.03
+        label: systems or system components
+        guidelines:
+          - systems or system components across which the fragmented information is to be distributed are defined;
+    guidance: One objective of the advanced persistent threat is to exfiltrate valuable information. Once exfiltrated, there is generally no way for the organization to recover the lost information. Therefore, organizations may consider dividing the information into disparate elements and distributing those elements across multiple systems or system components and locations. Such actions will increase the adversary’s work factor to capture and exfiltrate the desired information and, in so doing, increase the probability of detection. The fragmentation of information impacts the organization’s ability to access the information in a timely manner. The extent of the fragmentation is dictated by the impact or classification level (and value) of the information, threat intelligence information received, and whether data tainting is used (i.e., data tainting-derived information about the exfiltration of some information could result in the fragmentation of the remaining information).
+    rules: []
+    status: pending

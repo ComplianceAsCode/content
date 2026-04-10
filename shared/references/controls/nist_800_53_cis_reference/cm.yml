@@ -1,0 +1,1548 @@
+# NIST 800-53 CM Family: Configuration Management
+controls:
+  - id: cm-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, cm-1_prm_1 ]]:\n    1. [[ insert: param, cm-01_odp.03 ]] configuration management policy that:\n    2. Procedures to facilitate the implementation of the configuration management policy and the associated configuration management controls;\n  b. Designate an [[ insert: param, cm-01_odp.04 ]] to manage the development, documentation, and dissemination of the configuration management policy and procedures; and\n  c. Review and update the current configuration management:\n    1. Policy [[ insert: param, cm-01_odp.05 ]] and following [[ insert: param, cm-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, cm-01_odp.07 ]] and following [[ insert: param, cm-01_odp.08 ]]."
+    parameters:
+      - id: cm-1_prm_1
+        label: organization-defined personnel or roles
+      - id: cm-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the configuration management policy is to be disseminated is/are defined;
+      - id: cm-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the configuration management procedures are to be disseminated is/are defined;
+      - id: cm-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: cm-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the configuration management policy and procedures is defined;
+      - id: cm-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current configuration management policy is reviewed and updated is defined;
+      - id: cm-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current configuration management policy to be reviewed and updated are defined;
+      - id: cm-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current configuration management procedures are reviewed and updated is defined;
+      - id: cm-01_odp.08
+        label: events
+        guidelines:
+          - events that would require configuration management procedures to be reviewed and updated are defined;
+    guidance: Configuration management policy and procedures address the controls in the CM family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of configuration management policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission/business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to configuration management policy and procedures include, but are not limited to, assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - sa-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - sshd_idle_timeout_value=5_minutes
+      - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+      - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
+      - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+      - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
+      - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+      - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
+      - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+      - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
+      - sysctl_net_ipv4_tcp_syncookies_value=enabled
+      - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
+      - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
+      - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
+      - sysctl_net_ipv6_conf_all_forwarding_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
+      - var_accounts_maximum_age_login_defs=365
+      - var_sshd_max_sessions=10
+      - var_sshd_set_keepalive=1
+      - var_sshd_set_maxstartups=10:30:60
+      - var_user_initialization_files_regex=all_dotfiles
+      - account_password_pam_faillock_password_auth
+      - account_password_pam_faillock_system_auth
+      - account_unique_id
+      - account_unique_name
+      - accounts_maximum_age_login_defs
+      - accounts_no_uid_except_zero
+      - accounts_password_set_max_life_existing
+      - accounts_root_gid_zero
+      - accounts_root_path_dirs_no_write
+      - accounts_user_dot_group_ownership
+      - accounts_user_dot_user_ownership
+      - configure_custom_crypto_policy_cis
+      - disable_host_auth
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - file_permission_user_bash_history
+      {{% endif %}}
+      - file_permission_user_init_files
+      - gid_passwd_group_same
+      - group_unique_id
+      - group_unique_name
+      - groups_no_zero_gid_except_root
+      {{% if product == "rhel9" %}}
+      - no_dirs_unowned_by_root
+      {{% endif %}}
+      - no_forward_files
+      - no_netrc_files
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - no_nologin_in_shells
+      - no_rhost_files
+      {{% endif %}}
+      {{% if product == "rhel9" %}}
+      - no_rsh_trust_files
+      {{% endif %}}
+      - package_cron_installed
+      {{% if product == "rhel9" %}}
+      - root_path_all_dirs
+      {{% endif %}}
+      - root_path_no_dot
+      - service_crond_enabled
+      - sshd_disable_empty_passwords
+      - sshd_disable_gssapi_auth
+      - sshd_disable_rhosts
+      - sshd_do_not_permit_user_env
+      - sshd_enable_pam
+      - sshd_enable_warning_banner_net
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive
+      - sshd_set_max_sessions
+      - sshd_set_maxstartups
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_rp_filter
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_send_redirects
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv4_tcp_syncookies
+      - sysctl_net_ipv6_conf_all_accept_ra
+      - sysctl_net_ipv6_conf_all_accept_redirects
+      - sysctl_net_ipv6_conf_all_accept_source_route
+      - sysctl_net_ipv6_conf_all_forwarding
+      - sysctl_net_ipv6_conf_default_accept_ra
+      - sysctl_net_ipv6_conf_default_accept_redirects
+      - sysctl_net_ipv6_conf_default_accept_source_route
+    status: automated
+  - id: cm-2
+    title: Baseline Configuration
+    description: "  a. Develop, document, and maintain under configuration control, a current baseline configuration of the system; and\n  b. Review and update the baseline configuration of the system:\n    1. [[ insert: param, cm-02_odp.01 ]];\n    2. When required due to [[ insert: param, cm-02_odp.02 ]] ; and\n    3. When system components are installed or upgraded."
+    parameters:
+      - id: cm-02_odp.01
+        label: frequency
+        guidelines:
+          - the frequency of baseline configuration review and update is defined;
+      - id: cm-02_odp.02
+        label: circumstances
+        guidelines:
+          - the circumstances requiring baseline configuration review and update are defined;
+    guidance: Baseline configurations for systems and system components include connectivity, operational, and communications aspects of systems. Baseline configurations are documented, formally reviewed, and agreed-upon specifications for systems or configuration items within those systems. Baseline configurations serve as a basis for future builds, releases, or changes to systems and include security and privacy control implementations, operational procedures, information about system components, network topology, and logical placement of components in the system architecture. Maintaining baseline configurations requires creating new baselines as organizational systems change over time. Baseline configurations of systems reflect the current enterprise architecture.
+    related_controls:
+      - ac-19
+      - au-6
+      - ca-9
+      - cm-1
+      - cm-3
+      - cm-5
+      - cm-6
+      - cm-8
+      - cm-9
+      - cp-9
+      - cp-10
+      - cp-12
+      - ma-2
+      - pl-8
+      - pm-5
+      - sa-8
+      - sa-10
+      - sa-15
+      - sc-18
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-2.1
+    title: Reviews and Updates
+    rules: []
+    status: pending
+  - id: cm-2.2
+    title: Automation Support for Accuracy and Currency
+    description: 'Maintain the currency, completeness, accuracy, and availability of the baseline configuration of the system using [[ insert: param, cm-02.02_odp ]].'
+    parameters:
+      - id: cm-02.02_odp
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms for maintaining baseline configuration of the system are defined;
+    guidance: Automated mechanisms that help organizations maintain consistent baseline configurations for systems include configuration management tools, hardware, software, firmware inventory tools, and network management tools. Automated tools can be used at the organization level, mission and business process level, or system level on workstations, servers, notebook computers, network components, or mobile devices. Tools can be used to track version numbers on operating systems, applications, types of software installed, and current patch levels. Automation support for accuracy and currency can be satisfied by the implementation of [CM-8(2)](#cm-8.2) for organizations that combine system component inventory and baseline configuration activities.
+    related_controls:
+      - cm-7
+      - ia-3
+      - ra-5
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-2.3
+    title: Retention of Previous Configurations
+    description: 'Retain [[ insert: param, cm-02.03_odp ]] of previous versions of baseline configurations of the system to support rollback.'
+    parameters:
+      - id: cm-02.03_odp
+        label: number
+        guidelines:
+          - the number of previous baseline configuration versions to be retained is defined;
+    guidance: Retaining previous versions of baseline configurations to support rollback include hardware, software, firmware, configuration files, configuration records, and associated documentation.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-2.4
+    title: Unauthorized Software
+    rules: []
+    status: pending
+  - id: cm-2.5
+    title: Authorized Software
+    rules: []
+    status: pending
+  - id: cm-2.6
+    title: Development and Test Environments
+    description: Maintain a baseline configuration for system development and test environments that is managed separately from the operational baseline configuration.
+    guidance: Establishing separate baseline configurations for development, testing, and operational environments protects systems from unplanned or unexpected events related to development and testing activities. Separate baseline configurations allow organizations to apply the configuration management that is most appropriate for each type of configuration. For example, the management of operational configurations typically emphasizes the need for stability, while the management of development or test configurations requires greater flexibility. Configurations in the test environment mirror configurations in the operational environment to the extent practicable so that the results of the testing are representative of the proposed changes to the operational systems. Separate baseline configurations do not necessarily require separate physical environments.
+    related_controls:
+      - cm-4
+      - sc-3
+      - sc-7
+    rules: []
+    status: pending
+  - id: cm-2.7
+    title: Configure Systems and Components for High-risk Areas
+    description: "  a. Issue [[ insert: param, cm-02.07_odp.01 ]] with [[ insert: param, cm-02.07_odp.02 ]] to individuals traveling to locations that the organization deems to be of significant risk; and\n  b. Apply the following controls to the systems or components when the individuals return from travel: [[ insert: param, cm-02.07_odp.03 ]]."
+    parameters:
+      - id: cm-02.07_odp.01
+        label: systems or system components
+        guidelines:
+          - the systems or system components to be issued when individuals travel to high-risk areas are defined;
+      - id: cm-02.07_odp.02
+        label: configurations
+        guidelines:
+          - configurations for systems or system components to be issued when individuals travel to high-risk areas are defined;
+      - id: cm-02.07_odp.03
+        label: controls
+        guidelines:
+          - the controls to be applied when the individuals return from travel are defined;
+    guidance: When it is known that systems or system components will be in high-risk areas external to the organization, additional controls may be implemented to counter the increased threat in such areas. For example, organizations can take actions for notebook computers used by individuals departing on and returning from travel. Actions include determining the locations that are of concern, defining the required configurations for the components, ensuring that components are configured as intended before travel is initiated, and applying controls to the components after travel is completed. Specially configured notebook computers include computers with sanitized hard drives, limited applications, and more stringent configuration settings. Controls applied to mobile devices upon return from travel include examining the mobile device for signs of physical tampering and purging and reimaging disk drives. Protecting information that resides on mobile devices is addressed in the [MP](#mp) (Media Protection) family.
+    related_controls:
+      - mp-4
+      - mp-5
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-3
+    title: Configuration Change Control
+    description: "  a. Determine and document the types of changes to the system that are configuration-controlled;\n  b. Review proposed configuration-controlled changes to the system and approve or disapprove such changes with explicit consideration for security and privacy impact analyses;\n  c. Document configuration change decisions associated with the system;\n  d. Implement approved configuration-controlled changes to the system;\n  e. Retain records of configuration-controlled changes to the system for [[ insert: param, cm-03_odp.01 ]];\n  f. Monitor and review activities associated with configuration-controlled changes to the system; and\n  g. Coordinate and provide oversight for configuration change control activities through [[ insert: param, cm-03_odp.02 ]] that convenes [[ insert: param, cm-03_odp.03 ]]."
+    parameters:
+      - id: cm-03_odp.01
+        label: time period
+        guidelines:
+          - the time period to retain records of configuration-controlled changes is defined;
+      - id: cm-03_odp.02
+        label: configuration change control element
+        guidelines:
+          - the configuration change control element responsible for coordinating and overseeing change control activities is defined;
+      - id: cm-03_odp.03
+        label: ''
+        choices:
+          - '[[ insert: param, cm-03_odp.04 ]] '
+          - 'when [[ insert: param, cm-03_odp.05 ]] '
+      - id: cm-03_odp.04
+        label: frequency
+        guidelines:
+          - the frequency at which the configuration control element convenes is defined (if selected);
+      - id: cm-03_odp.05
+        label: configuration change conditions
+        guidelines:
+          - configuration change conditions that prompt the configuration control element to convene are defined (if selected);
+    guidance: Configuration change control for organizational systems involves the systematic proposal, justification, implementation, testing, review, and disposition of system changes, including system upgrades and modifications. Configuration change control includes changes to baseline configurations, configuration items of systems, operational procedures, configuration settings for system components, remediate vulnerabilities, and unscheduled or unauthorized changes. Processes for managing configuration changes to systems include Configuration Control Boards or Change Advisory Boards that review and approve proposed changes. For changes that impact privacy risk, the senior agency official for privacy updates privacy impact assessments and system of records notices. For new systems or major upgrades, organizations consider including representatives from the development organizations on the Configuration Control Boards or Change Advisory Boards. Auditing of changes includes activities before and after changes are made to systems and the auditing activities required to implement such changes. See also [SA-10](#sa-10).
+    related_controls:
+      - ca-7
+      - cm-2
+      - cm-4
+      - cm-5
+      - cm-6
+      - cm-9
+      - cm-11
+      - ia-3
+      - ma-2
+      - pe-16
+      - pt-6
+      - ra-8
+      - sa-8
+      - sa-10
+      - sc-28
+      - sc-34
+      - sc-37
+      - si-2
+      - si-3
+      - si-4
+      - si-7
+      - si-10
+      - sr-11
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-3.1
+    title: Automated Documentation, Notification, and Prohibition of Changes
+    description: "Use [[ insert: param, cm-03.01_odp.01 ]] to:\n  a. Document proposed changes to the system;\n  b. Notify [[ insert: param, cm-03.01_odp.02 ]] of proposed changes to the system and request change approval;\n  c. Highlight proposed changes to the system that have not been approved or disapproved within [[ insert: param, cm-03.01_odp.03 ]];\n  d. Prohibit changes to the system until designated approvals are received;\n  e. Document all changes to the system; and\n  f. Notify [[ insert: param, cm-03.01_odp.04 ]] when approved changes to the system are completed."
+    parameters:
+      - id: cm-03.01_odp.01
+        label: automated mechanisms
+        guidelines:
+          - mechanisms used to automate configuration change control are defined;
+      - id: cm-03.01_odp.02
+        label: approval authorities
+        guidelines:
+          - approval authorities to be notified of and request approval for proposed changes to the system are defined;
+      - id: cm-03.01_odp.03
+        label: time period
+        guidelines:
+          - the time period after which to highlight changes that have not been approved or disapproved is defined;
+      - id: cm-03.01_odp.04
+        label: personnel
+        guidelines:
+          - personnel to be notified when approved changes are complete is/are defined;
+    guidance: None.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cm-3.2
+    title: Testing, Validation, and Documentation of Changes
+    description: Test, validate, and document changes to the system before finalizing the implementation of the changes.
+    guidance: Changes to systems include modifications to hardware, software, or firmware components and configuration settings defined in [CM-6](#cm-6) . Organizations ensure that testing does not interfere with system operations that support organizational mission and business functions. Individuals or groups conducting tests understand security and privacy policies and procedures, system security and privacy policies and procedures, and the health, safety, and environmental risks associated with specific facilities or processes. Operational systems may need to be taken offline, or replicated to the extent feasible, before testing can be conducted. If systems must be taken offline for testing, the tests are scheduled to occur during planned system outages whenever possible. If the testing cannot be conducted on operational systems, organizations employ compensating controls.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-3.3
+    title: Automated Change Implementation
+    description: 'Implement changes to the current system baseline and deploy the updated baseline across the installed base using [[ insert: param, cm-03.03_odp ]].'
+    parameters:
+      - id: cm-03.03_odp
+        label: automated mechanisms
+        guidelines:
+          - mechanisms used to automate the implementation of changes and deployment of the updated baseline across the installed base are defined;
+    guidance: Automated tools can improve the accuracy, consistency, and availability of configuration baseline information. Automation can also provide data aggregation and data correlation capabilities, alerting mechanisms, and dashboards to support risk-based decision-making within the organization.
+    rules: []
+    status: pending
+  - id: cm-3.4
+    title: Security and Privacy Representatives
+    description: 'Require [[ insert: param, cm-3.4_prm_1 ]] to be members of the [[ insert: param, cm-03.04_odp.03 ]].'
+    parameters:
+      - id: cm-3.4_prm_1
+        label: organization-defined security and privacy representatives
+      - id: cm-03.04_odp.01
+        label: security representatives
+        guidelines:
+          - security representatives required to be members of the change control element are defined;
+      - id: cm-03.04_odp.02
+        label: privacy representatives
+        guidelines:
+          - privacy representatives required to be members of the change control element are defined;
+      - id: cm-03.04_odp.03
+        label: configuration change control element
+        guidelines:
+          - the configuration change control element of which the security and privacy representatives are to be members is defined;
+    guidance: Information security and privacy representatives include system security officers, senior agency information security officers, senior agency officials for privacy, or system privacy officers. Representation by personnel with information security and privacy expertise is important because changes to system configurations can have unintended side effects, some of which may be security- or privacy-relevant. Detecting such changes early in the process can help avoid unintended, negative consequences that could ultimately affect the security and privacy posture of systems. The configuration change control element referred to in the second organization-defined parameter reflects the change control elements defined by organizations in [CM-3g](#cm-3_smt.g).
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-3.5
+    title: Automated Security Response
+    description: 'Implement the following security responses automatically if baseline configurations are changed in an unauthorized manner: [[ insert: param, cm-03.05_odp ]].'
+    parameters:
+      - id: cm-03.05_odp
+        label: security responses
+        guidelines:
+          - security responses to be automatically implemented are defined;
+    guidance: Automated security responses include halting selected system functions, halting system processing, and issuing alerts or notifications to organizational personnel when there is an unauthorized modification of a configuration item.
+    rules: []
+    status: pending
+  - id: cm-3.6
+    title: Cryptography Management
+    description: 'Ensure that cryptographic mechanisms used to provide the following controls are under configuration management: [[ insert: param, cm-03.06_odp ]].'
+    parameters:
+      - id: cm-03.06_odp
+        label: controls
+        guidelines:
+          - controls provided by cryptographic mechanisms that are to be under configuration management are defined;
+    guidance: The controls referenced in the control enhancement refer to security and privacy controls from the control catalog. Regardless of the cryptographic mechanisms employed, processes and procedures are in place to manage those mechanisms. For example, if system components use certificates for identification and authentication, a process is implemented to address the expiration of those certificates.
+    related_controls:
+      - sc-12
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cm-3.7
+    title: Review System Changes
+    description: 'Review changes to the system [[ insert: param, cm-03.07_odp.01 ]] or when [[ insert: param, cm-03.07_odp.02 ]] to determine whether unauthorized changes have occurred.'
+    parameters:
+      - id: cm-03.07_odp.01
+        label: frequency
+        guidelines:
+          - the frequency at which changes are to be reviewed is defined;
+      - id: cm-03.07_odp.02
+        label: circumstances
+        guidelines:
+          - the circumstances under which changes are to be reviewed are defined;
+    guidance: Indications that warrant a review of changes to the system and the specific circumstances justifying such reviews may be obtained from activities carried out by organizations during the configuration change process or continuous monitoring process.
+    related_controls:
+      - au-6
+      - au-7
+      - cm-3
+    rules: []
+    status: pending
+  - id: cm-3.8
+    title: Prevent or Restrict Configuration Changes
+    description: 'Prevent or restrict changes to the configuration of the system under the following circumstances: [[ insert: param, cm-03.08_odp ]].'
+    parameters:
+      - id: cm-03.08_odp
+        label: circumstances
+        guidelines:
+          - the circumstances under which changes are to be prevented or restricted are defined;
+    guidance: System configuration changes can adversely affect critical system security and privacy functionality. Change restrictions can be enforced through automated mechanisms.
+    rules: []
+    status: pending
+  - id: cm-4
+    title: Impact Analyses
+    description: Analyze changes to the system to determine potential security and privacy impacts prior to change implementation.
+    guidance: Organizational personnel with security or privacy responsibilities conduct impact analyses. Individuals conducting impact analyses possess the necessary skills and technical expertise to analyze the changes to systems as well as the security or privacy ramifications. Impact analyses include reviewing security and privacy plans, policies, and procedures to understand control requirements; reviewing system design documentation and operational procedures to understand control implementation and how specific system changes might affect the controls; reviewing the impact of changes on organizational supply chain partners with stakeholders; and determining how potential changes to a system create new risks to the privacy of individuals and the ability of implemented controls to mitigate those risks. Impact analyses also include risk assessments to understand the impact of the changes and determine if additional controls are required.
+    related_controls:
+      - ca-7
+      - cm-3
+      - cm-8
+      - cm-9
+      - ma-2
+      - ra-3
+      - ra-5
+      - ra-8
+      - sa-5
+      - sa-8
+      - sa-10
+      - si-2
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-4.1
+    title: Separate Test Environments
+    description: Analyze changes to the system in a separate test environment before implementation in an operational environment, looking for security and privacy impacts due to flaws, weaknesses, incompatibility, or intentional malice.
+    guidance: A separate test environment requires an environment that is physically or logically separate and distinct from the operational environment. The separation is sufficient to ensure that activities in the test environment do not impact activities in the operational environment and that information in the operational environment is not inadvertently transmitted to the test environment. Separate environments can be achieved by physical or logical means. If physically separate test environments are not implemented, organizations determine the strength of mechanism required when implementing logical separation.
+    related_controls:
+      - sa-11
+      - sc-7
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cm-4.2
+    title: Verification of Controls
+    description: After system changes, verify that the impacted controls are implemented correctly, operating as intended, and producing the desired outcome with regard to meeting the security and privacy requirements for the system.
+    guidance: Implementation in this context refers to installing changed code in the operational system that may have an impact on security or privacy controls.
+    related_controls:
+      - sa-11
+      - sc-3
+      - si-6
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-5
+    title: Access Restrictions for Change
+    description: Define, document, approve, and enforce physical and logical access restrictions associated with changes to the system.
+    guidance: Changes to the hardware, software, or firmware components of systems or the operational procedures related to the system can potentially have significant effects on the security of the systems or individuals’ privacy. Therefore, organizations permit only qualified and authorized individuals to access systems for purposes of initiating changes. Access restrictions include physical and logical access controls (see [AC-3](#ac-3) and [PE-3](#pe-3) ), software libraries, workflow automation, media libraries, abstract layers (i.e., changes implemented into external interfaces rather than directly into systems), and change windows (i.e., changes occur only during specified times).
+    related_controls:
+      - ac-3
+      - ac-5
+      - ac-6
+      - cm-9
+      - pe-3
+      - sc-28
+      - sc-34
+      - sc-37
+      - si-2
+      - si-10
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-5.1
+    title: Automated Access Enforcement and Audit Records
+    description: "  a. Enforce access restrictions using [[ insert: param, cm-05.01_odp ]] ; and\n  b. Automatically generate audit records of the enforcement actions."
+    parameters:
+      - id: cm-05.01_odp
+        label: automated mechanisms
+        guidelines:
+          - mechanisms used to automate the enforcement of access restrictions are defined;
+    guidance: Organizations log system accesses associated with applying configuration changes to ensure that configuration change control is implemented and to support after-the-fact actions should organizations discover any unauthorized changes.
+    related_controls:
+      - au-2
+      - au-6
+      - au-7
+      - au-12
+      - cm-6
+      - cm-11
+      - si-12
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cm-5.2
+    title: Review System Changes
+    rules: []
+    status: pending
+  - id: cm-5.3
+    title: Signed Components
+    rules: []
+    status: pending
+  - id: cm-5.4
+    title: Dual Authorization
+    description: 'Enforce dual authorization for implementing changes to [[ insert: param, cm-5.4_prm_1 ]].'
+    parameters:
+      - id: cm-5.4_prm_1
+        label: organization-defined system components and system-level information
+      - id: cm-05.04_odp.01
+        label: system components
+        guidelines:
+          - system components requiring dual authorization for changes are defined;
+      - id: cm-05.04_odp.02
+        label: system-level information
+        guidelines:
+          - system-level information requiring dual authorization for changes is defined;
+    guidance: Organizations employ dual authorization to help ensure that any changes to selected system components and information cannot occur unless two qualified individuals approve and implement such changes. The two individuals possess the skills and expertise to determine if the proposed changes are correct implementations of approved changes. The individuals are also accountable for the changes. Dual authorization may also be known as two-person control. To reduce the risk of collusion, organizations consider rotating dual authorization duties to other individuals. System-level information includes operational procedures.
+    related_controls:
+      - ac-2
+      - ac-5
+      - cm-3
+    rules: []
+    status: pending
+  - id: cm-5.5
+    title: Privilege Limitation for Production and Operation
+    description: "  a. Limit privileges to change system components and system-related information within a production or operational environment; and\n  b. Review and reevaluate privileges [[ insert: param, cm-5.5_prm_1 ]]."
+    parameters:
+      - id: cm-5.5_prm_1
+        label: organization-defined frequency
+      - id: cm-05.05_odp.01
+        label: frequency
+        guidelines:
+          - frequency at which to review privileges is defined;
+      - id: cm-05.05_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to reevaluate privileges is defined;
+    guidance: In many organizations, systems support multiple mission and business functions. Limiting privileges to change system components with respect to operational systems is necessary because changes to a system component may have far-reaching effects on mission and business processes supported by the system. The relationships between systems and mission/business processes are, in some cases, unknown to developers. System-related information includes operational procedures.
+    related_controls:
+      - ac-2
+    rules: []
+    status: pending
+  - id: cm-5.6
+    title: Limit Library Privileges
+    description: Limit privileges to change software resident within software libraries.
+    guidance: Software libraries include privileged programs.
+    related_controls:
+      - ac-2
+    rules: []
+    status: pending
+  - id: cm-5.7
+    title: Automatic Implementation of Security Safeguards
+    rules: []
+    status: pending
+  - id: cm-6
+    title: Configuration Settings
+    description: "  a. Establish and document configuration settings for components employed within the system that reflect the most restrictive mode consistent with operational requirements using [[ insert: param, cm-06_odp.01 ]];\n  b. Implement the configuration settings;\n  c. Identify, document, and approve any deviations from established configuration settings for [[ insert: param, cm-06_odp.02 ]] based on [[ insert: param, cm-06_odp.03 ]] ; and\n  d. Monitor and control changes to the configuration settings in accordance with organizational policies and procedures."
+    parameters:
+      - id: cm-06_odp.01
+        label: common secure configurations
+        guidelines:
+          - common secure configurations to establish and document configuration settings for components employed within the system are defined;
+      - id: cm-06_odp.02
+        label: system components
+        guidelines:
+          - system components for which approval of deviations is needed are defined;
+      - id: cm-06_odp.03
+        label: operational requirements
+        guidelines:
+          - operational requirements necessitating approval of deviations are defined;
+    guidance: "Configuration settings are the parameters that can be changed in the hardware, software, or firmware components of the system that affect the security and privacy posture or functionality of the system. Information technology products for which configuration settings can be defined include mainframe computers, servers, workstations, operating systems, mobile devices, input/output devices, protocols, and applications. Parameters that impact the security posture of systems include registry settings; account, file, or directory permission settings; and settings for functions, protocols, ports, services, and remote connections. Privacy parameters are parameters impacting the privacy posture of systems, including the parameters required to satisfy other privacy controls. Privacy parameters include settings for access controls, data processing preferences, and processing and retention permissions. Organizations establish organization-wide configuration settings and subsequently derive specific configuration settings for systems. The established settings become part of the configuration baseline for the system.\n\nCommon secure configurations (also known as security configuration checklists, lockdown and hardening guides, and security reference guides) provide recognized, standardized, and established benchmarks that stipulate secure configuration settings for information technology products and platforms as well as instructions for configuring those products or platforms to meet operational requirements. Common secure configurations can be developed by a variety of organizations, including information technology product developers, manufacturers, vendors, federal agencies, consortia, academia, industry, and other organizations in the public and private sectors.\n\nImplementation of a common secure configuration may be mandated at the organization level, mission and business process level, system level, or at a higher level, including by a regulatory agency. Common secure configurations include the United States Government Configuration Baseline [USGCB](#98498928-3ca3-44b3-8b1e-f48685373087) and security technical implementation guides (STIGs), which affect the implementation of [CM-6](#cm-6) and other controls such as [AC-19](#ac-19) and [CM-7](#cm-7) . The Security Content Automation Protocol (SCAP) and the defined standards within the protocol provide an effective method to uniquely identify, track, and control configuration settings."
+    related_controls:
+      - ac-3
+      - ac-19
+      - au-2
+      - au-6
+      - ca-9
+      - cm-2
+      - cm-3
+      - cm-5
+      - cm-7
+      - cm-11
+      - cp-7
+      - cp-9
+      - cp-10
+      - ia-3
+      - ia-5
+      - pl-8
+      - pl-9
+      - ra-5
+      - sa-4
+      - sa-5
+      - sa-8
+      - sa-9
+      - sc-18
+      - sc-28
+      - sc-43
+      - si-2
+      - si-4
+      - si-6
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - cis_banner_text=cis
+      - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+      - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
+      - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+      - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+      - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
+      - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+      - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - sysctl_net_ipv4_conf_default_forwarding_value=disabled
+      {{% endif %}}
+      - sysctl_net_ipv4_conf_default_log_martians_value=enabled
+      - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+      - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
+      - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
+      - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
+      - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
+      - sysctl_net_ipv6_conf_all_forwarding_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - sysctl_net_ipv6_conf_default_forwarding_value=disabled
+      {{% endif %}}
+      - var_accounts_user_umask=027
+      - var_sshd_set_login_grace_time=60
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - accounts_password_pam_pwquality_password_auth
+      - accounts_password_pam_pwquality_system_auth
+      {{% endif %}}
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
+      - accounts_umask_etc_profile
+      - accounts_user_interactive_home_directory_exists
+      - audit_rules_media_export
+      - banner_etc_issue_cis
+      - banner_etc_issue_net_cis
+      - banner_etc_motd_cis
+      - coredump_disable_backtraces
+      - coredump_disable_storage
+      - dconf_gnome_disable_user_list
+      - disable_host_auth
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - disable_users_coredumps
+      {{% endif %}}
+      {{% if product == "rhel10" %}}
+      - file_groupowner_boot_grub2
+      {{% endif %}}
+      {{% if product == "rhel8" %}}
+      - file_groupowner_efi_grub2_cfg
+      - file_groupowner_efi_user_cfg
+      {{% endif %}}
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - file_groupowner_grub2_cfg
+      - file_groupowner_user_cfg
+      {{% endif %}}
+      - file_groupownership_sshd_private_key
+      - file_groupownership_sshd_pub_key
+      {{% if product == "rhel10" %}}
+      - file_owner_boot_grub2
+      {{% endif %}}
+      {{% if product == "rhel8" %}}
+      - file_owner_efi_grub2_cfg
+      - file_owner_efi_user_cfg
+      {{% endif %}}
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - file_owner_grub2_cfg
+      - file_owner_user_cfg
+      {{% endif %}}
+      - file_ownership_home_directories
+      - file_ownership_sshd_private_key
+      - file_ownership_sshd_pub_key
+      {{% if product == "rhel10" %}}
+      - file_permissions_boot_grub2
+      {{% endif %}}
+      {{% if product == "rhel8" %}}
+      - file_permissions_efi_grub2_cfg
+      - file_permissions_efi_user_cfg
+      {{% endif %}}
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - file_permissions_grub2_cfg
+      {{% endif %}}
+      - file_permissions_home_directories
+      - file_permissions_sshd_private_key
+      - file_permissions_sshd_pub_key
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - file_permissions_user_cfg
+      {{% endif %}}
+      - no_empty_passwords
+      - no_empty_passwords_etc_shadow
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - no_files_or_dirs_ungroupowned
+      - no_files_or_dirs_unowned_by_user
+      {{% endif %}}
+      - package_pam_pwquality_installed
+      - package_rsync_removed
+      {{% if product == "rhel8" %}}
+      - package_rsyslog_installed
+      {{% endif %}}
+      - package_samba_removed
+      - package_squid_removed
+      - partition_for_tmp
+      - partition_for_var_log
+      - service_nfs_disabled
+      - service_rpcbind_disabled
+      - sshd_disable_gssapi_auth
+      - sshd_set_login_grace_time
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - sysctl_kernel_kptr_restrict
+      {{% endif %}}
+      - sysctl_kernel_randomize_va_space
+      - sysctl_kernel_yama_ptrace_scope
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - sysctl_net_ipv4_conf_all_forwarding
+      {{% endif %}}
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - sysctl_net_ipv4_conf_default_forwarding
+      {{% endif %}}
+      - sysctl_net_ipv4_conf_default_log_martians
+      - sysctl_net_ipv4_conf_default_rp_filter
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_send_redirects
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv6_conf_all_accept_ra
+      - sysctl_net_ipv6_conf_all_accept_redirects
+      - sysctl_net_ipv6_conf_all_accept_source_route
+      - sysctl_net_ipv6_conf_all_forwarding
+      - sysctl_net_ipv6_conf_default_accept_ra
+      - sysctl_net_ipv6_conf_default_accept_redirects
+      - sysctl_net_ipv6_conf_default_accept_source_route
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - sysctl_net_ipv6_conf_default_forwarding
+      {{% endif %}}
+    status: automated
+  - id: cm-6.1
+    title: Automated Management, Application, and Verification
+    description: 'Manage, apply, and verify configuration settings for [[ insert: param, cm-06.01_odp.01 ]] using [[ insert: param, cm-6.1_prm_2 ]].'
+    parameters:
+      - id: cm-6.1_prm_2
+        label: organization-defined automated mechanisms
+      - id: cm-06.01_odp.01
+        label: system components
+        guidelines:
+          - system components for which to manage, apply, and verify configuration settings are defined;
+      - id: cm-06.01_odp.02
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to manage configuration settings are defined;
+      - id: cm-06.01_odp.03
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to apply configuration settings are defined;
+      - id: cm-06.01_odp.04
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms to verify configuration settings are defined;
+    guidance: Automated tools (e.g., hardening tools, baseline configuration tools) can improve the accuracy, consistency, and availability of configuration settings information. Automation can also provide data aggregation and data correlation capabilities, alerting mechanisms, and dashboards to support risk-based decision-making within the organization.
+    related_controls:
+      - ca-7
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cm-6.2
+    title: Respond to Unauthorized Changes
+    description: 'Take the following actions in response to unauthorized changes to [[ insert: param, cm-06.02_odp.02 ]]: [[ insert: param, cm-06.02_odp.01 ]].'
+    parameters:
+      - id: cm-06.02_odp.01
+        label: actions
+        guidelines:
+          - actions to be taken upon an unauthorized change are defined;
+      - id: cm-06.02_odp.02
+        label: configuration settings
+        guidelines:
+          - configuration settings requiring action upon an unauthorized change are defined;
+    guidance: Responses to unauthorized changes to configuration settings include alerting designated organizational personnel, restoring established configuration settings, or—in extreme cases—halting affected system processing.
+    related_controls:
+      - ir-4
+      - ir-6
+      - si-7
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cm-6.3
+    title: Unauthorized Change Detection
+    rules: []
+    status: pending
+  - id: cm-6.4
+    title: Conformance Demonstration
+    rules: []
+    status: pending
+  - id: cm-7
+    title: Least Functionality
+    description: "  a. Configure the system to provide only [[ insert: param, cm-07_odp.01 ]] ; and\n  b. Prohibit or restrict the use of the following functions, ports, protocols, software, and/or services: [[ insert: param, cm-7_prm_2 ]]."
+    parameters:
+      - id: cm-7_prm_2
+        label: organization-defined prohibited or restricted functions, system ports, protocols, software, and/or services
+      - id: cm-07_odp.01
+        label: mission-essential capabilities
+        guidelines:
+          - mission-essential capabilities for the system are defined;
+      - id: cm-07_odp.02
+        label: functions
+        guidelines:
+          - functions to be prohibited or restricted are defined;
+      - id: cm-07_odp.03
+        label: ports
+        guidelines:
+          - ports to be prohibited or restricted are defined;
+      - id: cm-07_odp.04
+        label: protocols
+        guidelines:
+          - protocols to be prohibited or restricted are defined;
+      - id: cm-07_odp.05
+        label: software
+        guidelines:
+          - software to be prohibited or restricted is defined;
+      - id: cm-07_odp.06
+        label: services
+        guidelines:
+          - services to be prohibited or restricted are defined;
+    guidance: Systems provide a wide variety of functions and services. Some of the functions and services routinely provided by default may not be necessary to support essential organizational missions, functions, or operations. Additionally, it is sometimes convenient to provide multiple services from a single system component, but doing so increases risk over limiting the services provided by that single component. Where feasible, organizations limit component functionality to a single function per component. Organizations consider removing unused or unnecessary software and disabling unused or unnecessary physical and logical ports and protocols to prevent unauthorized connection of components, transfer of information, and tunneling. Organizations employ network scanning tools, intrusion detection and prevention systems, and end-point protection technologies, such as firewalls and host-based intrusion detection systems, to identify and prevent the use of prohibited functions, protocols, ports, and services. Least functionality can also be achieved as part of the fundamental design and development of the system (see [SA-8](#sa-8), [SC-2](#sc-2) , and [SC-3](#sc-3)).
+    related_controls:
+      - ac-3
+      - ac-4
+      - cm-2
+      - cm-5
+      - cm-6
+      - cm-11
+      - ra-5
+      - sa-4
+      - sa-5
+      - sa-8
+      - sa-9
+      - sa-15
+      - sc-2
+      - sc-3
+      - sc-7
+      - sc-37
+      - si-4
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - var_postfix_inet_interfaces=loopback-only
+      - dconf_gnome_disable_autorun
+      - file_ownership_var_log_audit_stig
+      - has_nonlocal_mta
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - kernel_module_atm_disabled
+      - kernel_module_can_disabled
+      {{% endif %}}
+      - kernel_module_cramfs_disabled
+      - kernel_module_dccp_disabled
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - kernel_module_firewire-core_disabled
+      {{% endif %}}
+      - kernel_module_freevxfs_disabled
+      - kernel_module_hfs_disabled
+      - kernel_module_hfsplus_disabled
+      - kernel_module_jffs2_disabled
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - kernel_module_overlayfs_disabled
+      {{% endif %}}
+      - kernel_module_rds_disabled
+      - kernel_module_sctp_disabled
+      - kernel_module_squashfs_disabled
+      - kernel_module_tipc_disabled
+      - kernel_module_udf_disabled
+      - mount_option_dev_shm_nodev
+      - mount_option_dev_shm_noexec
+      - mount_option_dev_shm_nosuid
+      - mount_option_tmp_nodev
+      - mount_option_tmp_noexec
+      - mount_option_tmp_nosuid
+      - package_bind_removed
+      - package_cyrus-imapd_removed
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - package_dhcp_removed
+      {{% endif %}}
+      - package_dovecot_removed
+      - package_ftp_removed
+      - package_httpd_removed
+      {{% if product == "rhel10" %}}
+      - package_kea_removed
+      {{% endif %}}
+      - package_net-snmp_removed
+      - package_nginx_removed
+      - package_openldap-clients_removed
+      - package_telnet-server_removed
+      - package_telnet_removed
+      - package_tftp-server_removed
+      - package_tftp_removed
+      - package_vsftpd_removed
+      {{% if product == "rhel8" %}}
+      - package_xinetd_removed
+      - package_ypbind_removed
+      - package_ypserv_removed
+      {{% endif %}}
+      - partition_for_dev_shm
+      - partition_for_home
+      - partition_for_tmp
+      - partition_for_var
+      - partition_for_var_log
+      - partition_for_var_log_audit
+      - partition_for_var_tmp
+      - postfix_network_listening_disabled
+      - service_bluetooth_disabled
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - service_cockpit_disabled
+      {{% endif %}}
+      - service_cups_disabled
+      - service_dnsmasq_disabled
+      - sshd_disable_forwarding
+      - wireless_disable_interfaces
+    status: automated
+  - id: cm-7.1
+    title: Periodic Review
+    description: "  a. Review the system [[ insert: param, cm-07.01_odp.01 ]] to identify unnecessary and/or nonsecure functions, ports, protocols, software, and services; and\n  b. Disable or remove [[ insert: param, cm-7.1_prm_2 ]]."
+    parameters:
+      - id: cm-7.1_prm_2
+        label: organization-defined functions, ports, protocols, software, and services within the system deemed to be unnecessary and/or nonsecure
+      - id: cm-07.01_odp.01
+        label: frequency
+        guidelines:
+          - the frequency at which to review the system to identify unnecessary and/or non-secure functions, ports, protocols, software, and/or services is defined;
+      - id: cm-07.01_odp.02
+        label: functions
+        guidelines:
+          - functions to be disabled or removed when deemed unnecessary or non-secure are defined;
+      - id: cm-07.01_odp.03
+        label: ports
+        guidelines:
+          - ports to be disabled or removed when deemed unnecessary or non-secure are defined;
+      - id: cm-07.01_odp.04
+        label: protocols
+        guidelines:
+          - protocols to be disabled or removed when deemed unnecessary or non-secure are defined;
+      - id: cm-07.01_odp.05
+        label: software
+        guidelines:
+          - software to be disabled or removed when deemed unnecessary or non-secure is defined;
+      - id: cm-07.01_odp.06
+        label: services
+        guidelines:
+          - services to be disabled or removed when deemed unnecessary or non-secure are defined;
+    guidance: Organizations review functions, ports, protocols, and services provided by systems or system components to determine the functions and services that are candidates for elimination. Such reviews are especially important during transition periods from older technologies to newer technologies (e.g., transition from IPv4 to IPv6). These technology transitions may require implementing the older and newer technologies simultaneously during the transition period and returning to minimum essential functions, ports, protocols, and services at the earliest opportunity. Organizations can either decide the relative security of the function, port, protocol, and/or service or base the security decision on the assessment of other entities. Unsecure protocols include Bluetooth, FTP, and peer-to-peer networking.
+    related_controls:
+      - ac-18
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-7.2
+    title: Prevent Program Execution
+    description: 'Prevent program execution in accordance with [[ insert: param, cm-07.02_odp.01 ]].'
+    parameters:
+      - id: cm-07.02_odp.01
+        label: ''
+        choices:
+          - '[[ insert: param, cm-07.02_odp.02 ]] '
+          - rules authorizing the terms and conditions of software program usage
+      - id: cm-07.02_odp.02
+        label: policies, rules of behavior, and/or access agreements regarding software program usage and restrictions
+        guidelines:
+          - policies, rules of behavior, and/or access agreements regarding software program usage and restrictions are defined (if selected);
+    guidance: Prevention of program execution addresses organizational policies, rules of behavior, and/or access agreements that restrict software usage and the terms and conditions imposed by the developer or manufacturer, including software licensing and copyrights. Restrictions include prohibiting auto-execute features, restricting roles allowed to approve program execution, permitting or prohibiting specific software programs, or restricting the number of program instances executed at the same time.
+    related_controls:
+      - cm-8
+      - pl-4
+      - pl-9
+      - pm-5
+      - ps-6
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-7.3
+    title: Registration Compliance
+    description: 'Ensure compliance with [[ insert: param, cm-07.03_odp ]].'
+    parameters:
+      - id: cm-07.03_odp
+        label: registration requirements
+        guidelines:
+          - registration requirements for functions, ports, protocols, and services are defined;
+    guidance: Organizations use the registration process to manage, track, and provide oversight for systems and implemented functions, ports, protocols, and services.
+    rules: []
+    status: pending
+  - id: cm-7.4
+    title: Unauthorized Software — Deny-by-exception
+    description: "  a. Identify [[ insert: param, cm-07.04_odp.01 ]];\n  b. Employ an allow-all, deny-by-exception policy to prohibit the execution of unauthorized software programs on the system; and\n  c. Review and update the list of unauthorized software programs [[ insert: param, cm-07.04_odp.02 ]]."
+    parameters:
+      - id: cm-07.04_odp.01
+        label: software programs
+        guidelines:
+          - software programs not authorized to execute on the system are defined;
+      - id: cm-07.04_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to review and update the list of unauthorized software programs is defined;
+    guidance: Unauthorized software programs can be limited to specific versions or from a specific source. The concept of prohibiting the execution of unauthorized software may also be applied to user actions, system ports and protocols, IP addresses/ranges, websites, and MAC addresses.
+    related_controls:
+      - cm-6
+      - cm-8
+      - cm-10
+      - pl-9
+      - pm-5
+    rules: []
+    status: pending
+  - id: cm-7.5
+    title: Authorized Software — Allow-by-exception
+    description: "  a. Identify [[ insert: param, cm-07.05_odp.01 ]];\n  b. Employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs on the system; and\n  c. Review and update the list of authorized software programs [[ insert: param, cm-07.05_odp.02 ]]."
+    parameters:
+      - id: cm-07.05_odp.01
+        label: software programs
+        guidelines:
+          - software programs authorized to execute on the system are defined;
+      - id: cm-07.05_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to review and update the list of authorized software programs is defined;
+    guidance: Authorized software programs can be limited to specific versions or from a specific source. To facilitate a comprehensive authorized software process and increase the strength of protection for attacks that bypass application level authorized software, software programs may be decomposed into and monitored at different levels of detail. These levels include applications, application programming interfaces, application modules, scripts, system processes, system services, kernel functions, registries, drivers, and dynamic link libraries. The concept of permitting the execution of authorized software may also be applied to user actions, system ports and protocols, IP addresses/ranges, websites, and MAC addresses. Organizations consider verifying the integrity of authorized software programs using digital signatures, cryptographic checksums, or hash functions. Verification of authorized software can occur either prior to execution or at system startup. The identification of authorized URLs for websites is addressed in [CA-3(5)](#ca-3.5) and [SC-7](#sc-7).
+    related_controls:
+      - cm-2
+      - cm-6
+      - cm-8
+      - cm-10
+      - pl-9
+      - pm-5
+      - sa-10
+      - sc-34
+      - si-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-7.6
+    title: Confined Environments with Limited Privileges
+    description: 'Require that the following user-installed software execute in a confined physical or virtual machine environment with limited privileges: [[ insert: param, cm-07.06_odp ]].'
+    parameters:
+      - id: cm-07.06_odp
+        label: user-installed software
+        guidelines:
+          - user-installed software required to be executed in a confined environment is defined;
+    guidance: Organizations identify software that may be of concern regarding its origin or potential for containing malicious code. For this type of software, user installations occur in confined environments of operation to limit or contain damage from malicious code that may be executed.
+    related_controls:
+      - cm-11
+      - sc-44
+    rules: []
+    status: pending
+  - id: cm-7.7
+    title: Code Execution in Protected Environments
+    description: "Allow execution of binary or machine-executable code only in confined physical or virtual machine environments and with the explicit approval of [[ insert: param, cm-07.07_odp ]] when such code is:\n  a. Obtained from sources with limited or no warranty; and/or\n  b. Without the provision of source code."
+    parameters:
+      - id: cm-07.07_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to explicitly approve execution of binary or machine-executable code is/are defined;
+    guidance: Code execution in protected environments applies to all sources of binary or machine-executable code, including commercial software and firmware and open-source software.
+    related_controls:
+      - cm-10
+      - sc-44
+    rules: []
+    status: pending
+  - id: cm-7.8
+    title: Binary or Machine Executable Code
+    description: "  a. Prohibit the use of binary or machine-executable code from sources with limited or no warranty or without the provision of source code; and\n  b. Allow exceptions only for compelling mission or operational requirements and with the approval of the authorizing official."
+    guidance: Binary or machine executable code applies to all sources of binary or machine-executable code, including commercial software and firmware and open-source software. Organizations assess software products without accompanying source code or from sources with limited or no warranty for potential security impacts. The assessments address the fact that software products without the provision of source code may be difficult to review, repair, or extend. In addition, there may be no owners to make such repairs on behalf of organizations. If open-source software is used, the assessments address the fact that there is no warranty, the open-source software could contain back doors or malware, and there may be no support available.
+    related_controls:
+      - sa-5
+      - sa-22
+    rules: []
+    status: pending
+  - id: cm-7.9
+    title: Prohibiting The Use of Unauthorized Hardware
+    description: "  a. Identify [[ insert: param, cm-07.09_odp.01 ]];\n  b. Prohibit the use or connection of unauthorized hardware components;\n  c. Review and update the list of authorized hardware components [[ insert: param, cm-07.09_odp.02 ]]."
+    parameters:
+      - id: cm-07.09_odp.01
+        label: hardware components
+        guidelines:
+          - hardware components authorized for system use are defined;
+      - id: cm-07.09_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to review and update the list of authorized hardware components is defined;
+    guidance: Hardware components provide the foundation for organizational systems and the platform for the execution of authorized software programs. Managing the inventory of hardware components and controlling which hardware components are permitted to be installed or connected to organizational systems is essential in order to provide adequate security.
+    rules: []
+    status: pending
+  - id: cm-8
+    title: System Component Inventory
+    description: "  a. Develop and document an inventory of system components that:\n    1. Accurately reflects the system;\n    2. Includes all components within the system;\n    3. Does not include duplicate accounting of components or components assigned to any other system;\n    4. Is at the level of granularity deemed necessary for tracking and reporting; and\n    5. Includes the following information to achieve system component accountability: [[ insert: param, cm-08_odp.01 ]] ; and\n  b. Review and update the system component inventory [[ insert: param, cm-08_odp.02 ]]."
+    parameters:
+      - id: cm-08_odp.01
+        label: information
+        guidelines:
+          - information deemed necessary to achieve effective system component accountability is defined;
+      - id: cm-08_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to review and update the system component inventory is defined;
+    guidance: "System components are discrete, identifiable information technology assets that include hardware, software, and firmware. Organizations may choose to implement centralized system component inventories that include components from all organizational systems. In such situations, organizations ensure that the inventories include system-specific information required for component accountability. The information necessary for effective accountability of system components includes the system name, software owners, software version numbers, hardware inventory specifications, software license information, and for networked components, the machine names and network addresses across all implemented protocols (e.g., IPv4, IPv6). Inventory specifications include date of receipt, cost, model, serial number, manufacturer, supplier information, component type, and physical location.\n\nPreventing duplicate accounting of system components addresses the lack of accountability that occurs when component ownership and system association is not known, especially in large or complex connected systems. Effective prevention of duplicate accounting of system components necessitates use of a unique identifier for each component. For software inventory, centrally managed software that is accessed via other systems is addressed as a component of the system on which it is installed and managed. Software installed on multiple organizational systems and managed at the system level is addressed for each individual system and may appear more than once in a centralized component inventory, necessitating a system association for each software instance in the centralized inventory to avoid duplicate accounting of components. Scanning systems implementing multiple network protocols (e.g., IPv4 and IPv6) can result in duplicate components being identified in different address spaces. The implementation of [CM-8(7)](#cm-8.7) can help to eliminate duplicate accounting of components."
+    related_controls:
+      - cm-2
+      - cm-7
+      - cm-9
+      - cm-10
+      - cm-11
+      - cm-13
+      - cp-2
+      - cp-9
+      - ma-2
+      - ma-6
+      - pe-20
+      - pl-9
+      - pm-5
+      - sa-4
+      - sa-5
+      - si-2
+      - sr-4
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-8.1
+    title: Updates During Installation and Removal
+    description: Update the inventory of system components as part of component installations, removals, and system updates.
+    guidance: Organizations can improve the accuracy, completeness, and consistency of system component inventories if the inventories are updated as part of component installations or removals or during general system updates. If inventories are not updated at these key times, there is a greater likelihood that the information will not be appropriately captured and documented. System updates include hardware, software, and firmware components.
+    related_controls:
+      - pm-16
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-8.2
+    title: Automated Maintenance
+    description: 'Maintain the currency, completeness, accuracy, and availability of the inventory of system components using [[ insert: param, cm-8.2_prm_1 ]].'
+    parameters:
+      - id: cm-8.2_prm_1
+        label: organization-defined automated mechanisms
+      - id: cm-08.02_odp.01
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to maintain the currency of the system component inventory are defined;
+      - id: cm-08.02_odp.02
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to maintain the completeness of the system component inventory are defined;
+      - id: cm-08.02_odp.03
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to maintain the accuracy of the system component inventory are defined;
+      - id: cm-08.02_odp.04
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to maintain the availability of the system component inventory are defined;
+    guidance: Organizations maintain system inventories to the extent feasible. For example, virtual machines can be difficult to monitor because such machines are not visible to the network when not in use. In such cases, organizations maintain as up-to-date, complete, and accurate an inventory as is deemed reasonable. Automated maintenance can be achieved by the implementation of [CM-2(2)](#cm-2.2) for organizations that combine system component inventory and baseline configuration activities.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cm-8.3
+    title: Automated Unauthorized Component Detection
+    description: "  a. Detect the presence of unauthorized hardware, software, and firmware components within the system using [[ insert: param, cm-8.3_prm_1 ]] [[ insert: param, cm-08.03_odp.04 ]] ; and\n  b. Take the following actions when unauthorized components are detected: [[ insert: param, cm-08.03_odp.05 ]]."
+    parameters:
+      - id: cm-8.3_prm_1
+        label: organization-defined automated mechanisms
+      - id: cm-08.03_odp.01
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to detect the presence of unauthorized hardware within the system are defined;
+      - id: cm-08.03_odp.02
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to detect the presence of unauthorized software within the system are defined;
+      - id: cm-08.03_odp.03
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to detect the presence of unauthorized firmware within the system are defined;
+      - id: cm-08.03_odp.04
+        label: frequency
+        guidelines:
+          - frequency at which automated mechanisms are used to detect the presence of unauthorized system components within the system is defined;
+      - id: cm-08.03_odp.05
+        label: ''
+        choices:
+          - disable network access by unauthorized components
+          - isolate unauthorized components
+          - 'notify [[ insert: param, cm-08.03_odp.06 ]] '
+      - id: cm-08.03_odp.06
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified when unauthorized components are detected is/are defined (if selected);
+    guidance: 'Automated unauthorized component detection is applied in addition to the monitoring for unauthorized remote connections and mobile devices. Monitoring for unauthorized system components may be accomplished on an ongoing basis or by the periodic scanning of systems for that purpose. Automated mechanisms may also be used to prevent the connection of unauthorized components (see [CM-7(9)](#cm-7.9) ). Automated mechanisms can be implemented in systems or in separate system components. When acquiring and implementing automated mechanisms, organizations consider whether such mechanisms depend on the ability of the system component to support an agent or supplicant in order to be detected since some types of components do not have or cannot support agents (e.g., IoT devices, sensors). Isolation can be achieved , for example, by placing unauthorized system components in separate domains or subnets or quarantining such components. This type of component isolation is commonly referred to as "sandboxing." '
+    related_controls:
+      - ac-19
+      - ca-7
+      - ra-5
+      - sc-3
+      - sc-39
+      - sc-44
+      - si-3
+      - si-4
+      - si-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-8.4
+    title: Accountability Information
+    description: 'Include in the system component inventory information, a means for identifying by [[ insert: param, cm-08.04_odp ]] , individuals responsible and accountable for administering those components.'
+    parameters:
+      - id: cm-08.04_odp
+        label: ''
+        choices:
+          - name
+          - position
+          - role
+    guidance: Identifying individuals who are responsible and accountable for administering system components ensures that the assigned components are properly administered and that organizations can contact those individuals if some action is required (e.g., when the component is determined to be the source of a breach, needs to be recalled or replaced, or needs to be relocated).
+    related_controls:
+      - ac-3
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: cm-8.5
+    title: No Duplicate Accounting of Components
+    rules: []
+    status: pending
+  - id: cm-8.6
+    title: Assessed Configurations and Approved Deviations
+    description: Include assessed component configurations and any approved deviations to current deployed configurations in the system component inventory.
+    guidance: Assessed configurations and approved deviations focus on configuration settings established by organizations for system components, the specific components that have been assessed to determine compliance with the required configuration settings, and any approved deviations from established configuration settings.
+    rules: []
+    status: pending
+  - id: cm-8.7
+    title: Centralized Repository
+    description: Provide a centralized repository for the inventory of system components.
+    guidance: Organizations may implement centralized system component inventories that include components from all organizational systems. Centralized repositories of component inventories provide opportunities for efficiencies in accounting for organizational hardware, software, and firmware assets. Such repositories may also help organizations rapidly identify the location and responsible individuals of components that have been compromised, breached, or are otherwise in need of mitigation actions. Organizations ensure that the resulting centralized inventories include system-specific information required for proper component accountability.
+    rules: []
+    status: pending
+  - id: cm-8.8
+    title: Automated Location Tracking
+    description: 'Support the tracking of system components by geographic location using [[ insert: param, cm-08.08_odp ]].'
+    parameters:
+      - id: cm-08.08_odp
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms for tracking components are defined;
+    guidance: The use of automated mechanisms to track the location of system components can increase the accuracy of component inventories. Such capability may help organizations rapidly identify the location and responsible individuals of system components that have been compromised, breached, or are otherwise in need of mitigation actions. The use of tracking mechanisms can be coordinated with senior agency officials for privacy if there are implications that affect individual privacy.
+    rules: []
+    status: pending
+  - id: cm-8.9
+    title: Assignment of Components to Systems
+    description: "  a. Assign system components to a system; and\n  b. Receive an acknowledgement from [[ insert: param, cm-08.09_odp ]] of this assignment."
+    parameters:
+      - id: cm-08.09_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles from which to receive an acknowledgement is/are defined;
+    guidance: System components that are not assigned to a system may be unmanaged, lack the required protection, and become an organizational vulnerability.
+    rules: []
+    status: pending
+  - id: cm-9
+    title: Configuration Management Plan
+    description: "Develop, document, and implement a configuration management plan for the system that:\n  a. Addresses roles, responsibilities, and configuration management processes and procedures;\n  b. Establishes a process for identifying configuration items throughout the system development life cycle and for managing the configuration of the configuration items;\n  c. Defines the configuration items for the system and places the configuration items under configuration management;\n  d. Is reviewed and approved by [[ insert: param, cm-09_odp ]] ; and\n  e. Protects the configuration management plan from unauthorized disclosure and modification."
+    parameters:
+      - id: cm-09_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to review and approve the configuration management plan is/are defined;
+    guidance: "Configuration management activities occur throughout the system development life cycle. As such, there are developmental configuration management activities (e.g., the control of code and software libraries) and operational configuration management activities (e.g., control of installed components and how the components are configured). Configuration management plans satisfy the requirements in configuration management policies while being tailored to individual systems. Configuration management plans define processes and procedures for how configuration management is used to support system development life cycle activities.\n\nConfiguration management plans are generated during the development and acquisition stage of the system development life cycle. The plans describe how to advance changes through change management processes; update configuration settings and baselines; maintain component inventories; control development, test, and operational environments; and develop, release, and update key documents.\n\nOrganizations can employ templates to help ensure the consistent and timely development and implementation of configuration management plans. Templates can represent a configuration management plan for the organization with subsets of the plan implemented on a system by system basis. Configuration management approval processes include the designation of key stakeholders responsible for reviewing and approving proposed changes to systems, and personnel who conduct security and privacy impact analyses prior to the implementation of changes to the systems. Configuration items are the system components, such as the hardware, software, firmware, and documentation to be configuration-managed. As systems continue through the system development life cycle, new configuration items may be identified, and some existing configuration items may no longer need to be under configuration control."
+    related_controls:
+      - cm-2
+      - cm-3
+      - cm-4
+      - cm-5
+      - cm-8
+      - pl-2
+      - ra-8
+      - sa-10
+      - si-12
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-9.1
+    title: Assignment of Responsibility
+    description: Assign responsibility for developing the configuration management process to organizational personnel that are not directly involved in system development.
+    guidance: In the absence of dedicated configuration management teams assigned within organizations, system developers may be tasked with developing configuration management processes using personnel who are not directly involved in system development or system integration. This separation of duties ensures that organizations establish and maintain a sufficient degree of independence between the system development and integration processes and configuration management processes to facilitate quality control and more effective oversight.
+    rules: []
+    status: pending
+  - id: cm-10
+    title: Software Usage Restrictions
+    description: "  a. Use software and associated documentation in accordance with contract agreements and copyright laws;\n  b. Track the use of software and associated documentation protected by quantity licenses to control copying and distribution; and\n  c. Control and document the use of peer-to-peer file sharing technology to ensure that this capability is not used for the unauthorized distribution, display, performance, or reproduction of copyrighted work."
+    guidance: Software license tracking can be accomplished by manual or automated methods, depending on organizational needs. Examples of contract agreements include software license agreements and non-disclosure agreements.
+    related_controls:
+      - ac-17
+      - au-6
+      - cm-7
+      - cm-8
+      - pm-30
+      - sc-7
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-10.1
+    title: Open-source Software
+    description: 'Establish the following restrictions on the use of open-source software: [[ insert: param, cm-10.01_odp ]].'
+    parameters:
+      - id: cm-10.01_odp
+        label: restrictions
+        guidelines:
+          - restrictions on the use of open-source software are defined;
+    guidance: Open-source software refers to software that is available in source code form. Certain software rights normally reserved for copyright holders are routinely provided under software license agreements that permit individuals to study, change, and improve the software. From a security perspective, the major advantage of open-source software is that it provides organizations with the ability to examine the source code. In some cases, there is an online community associated with the software that inspects, tests, updates, and reports on issues found in software on an ongoing basis. However, remediating vulnerabilities in open-source software may be problematic. There may also be licensing issues associated with open-source software, including the constraints on derivative use of such software. Open-source software that is available only in binary form may increase the level of risk in using such software.
+    related_controls:
+      - si-7
+    rules: []
+    status: pending
+  - id: cm-11
+    title: User-installed Software
+    description: "  a. Establish [[ insert: param, cm-11_odp.01 ]] governing the installation of software by users;\n  b. Enforce software installation policies through the following methods: [[ insert: param, cm-11_odp.02 ]] ; and\n  c. Monitor policy compliance [[ insert: param, cm-11_odp.03 ]]."
+    parameters:
+      - id: cm-11_odp.01
+        label: policies
+        guidelines:
+          - policies governing the installation of software by users are defined;
+      - id: cm-11_odp.02
+        label: methods
+        guidelines:
+          - methods used to enforce software installation policies are defined;
+      - id: cm-11_odp.03
+        label: frequency
+        guidelines:
+          - frequency with which to monitor compliance is defined;
+    guidance: If provided the necessary privileges, users can install software in organizational systems. To maintain control over the software installed, organizations identify permitted and prohibited actions regarding software installation. Permitted software installations include updates and security patches to existing software and downloading new applications from organization-approved "app stores." Prohibited software installations include software with unknown or suspect pedigrees or software that organizations consider potentially malicious. Policies selected for governing user-installed software are organization-developed or provided by some external entity. Policy enforcement methods can include procedural methods and automated methods.
+    related_controls:
+      - ac-3
+      - au-6
+      - cm-2
+      - cm-3
+      - cm-5
+      - cm-6
+      - cm-7
+      - cm-8
+      - pl-4
+      - si-4
+      - si-7
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - package_xorg-x11-server-Xwayland_removed
+      {{% endif %}}
+      {{% if product == "rhel9" %}}
+      - package_xorg-x11-server-common_removed
+      - xwindows_runlevel_target
+      {{% endif %}}
+    status: automated
+  - id: cm-11.1
+    title: Alerts for Unauthorized Installations
+    rules: []
+    status: pending
+  - id: cm-11.2
+    title: Software Installation with Privileged Status
+    description: Allow user installation of software only with explicit privileged status.
+    guidance: Privileged status can be obtained, for example, by serving in the role of system administrator.
+    related_controls:
+      - ac-5
+      - ac-6
+    rules: []
+    status: pending
+  - id: cm-11.3
+    title: Automated Enforcement and Monitoring
+    description: 'Enforce and monitor compliance with software installation policies using [[ insert: param, cm-11.3_prm_1 ]].'
+    parameters:
+      - id: cm-11.3_prm_1
+        label: organization-defined automated mechanisms
+      - id: cm-11.03_odp.01
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to enforce compliance are defined;
+      - id: cm-11.03_odp.02
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to monitor compliance are defined;
+    guidance: Organizations enforce and monitor compliance with software installation policies using automated mechanisms to more quickly detect and respond to unauthorized software installation which can be an indicator of an internal or external hostile attack.
+    rules: []
+    status: pending
+  - id: cm-12
+    title: Information Location
+    description: "  a. Identify and document the location of [[ insert: param, cm-12_odp ]] and the specific system components on which the information is processed and stored;\n  b. Identify and document the users who have access to the system and system components where the information is processed and stored; and\n  c. Document changes to the location (i.e., system or system components) where the information is processed and stored."
+    parameters:
+      - id: cm-12_odp
+        label: information
+        guidelines:
+          - information for which the location is to be identified and documented is defined;
+    guidance: Information location addresses the need to understand where information is being processed and stored. Information location includes identifying where specific information types and information reside in system components and how information is being processed so that information flow can be understood and adequate protection and policy management provided for such information and system components. The security category of the information is also a factor in determining the controls necessary to protect the information and the system component where the information resides (see [FIPS 199](#628d22a1-6a11-4784-bc59-5cd9497b5445) ). The location of the information and system components is also a factor in the architecture and design of the system (see [SA-4](#sa-4), [SA-8](#sa-8), [SA-17](#sa-17)).
+    related_controls:
+      - ac-2
+      - ac-3
+      - ac-4
+      - ac-6
+      - ac-23
+      - cm-8
+      - pm-5
+      - ra-2
+      - sa-4
+      - sa-8
+      - sa-17
+      - sc-4
+      - sc-16
+      - sc-28
+      - si-4
+      - si-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-12.1
+    title: Automated Tools to Support Information Location
+    description: 'Use automated tools to identify [[ insert: param, cm-12.01_odp.01 ]] on [[ insert: param, cm-12.01_odp.02 ]] to ensure controls are in place to protect organizational information and individual privacy.'
+    parameters:
+      - id: cm-12.01_odp.01
+        label: information by information type
+        guidelines:
+          - information to be protected is defined by information type;
+      - id: cm-12.01_odp.02
+        label: system components
+        guidelines:
+          - system components where the information is located are defined;
+    guidance: The use of automated tools helps to increase the effectiveness and efficiency of the information location capability implemented within the system. Automation also helps organizations manage the data produced during information location activities and share such information across the organization. The output of automated information location tools can be used to guide and inform system architecture and design decisions.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: cm-13
+    title: Data Action Mapping
+    description: Develop and document a map of system data actions.
+    guidance: Data actions are system operations that process personally identifiable information. The processing of such information encompasses the full information life cycle, which includes collection, generation, transformation, use, disclosure, retention, and disposal. A map of system data actions includes discrete data actions, elements of personally identifiable information being processed in the data actions, system components involved in the data actions, and the owners or operators of the system components. Understanding what personally identifiable information is being processed (e.g., the sensitivity of the personally identifiable information), how personally identifiable information is being processed (e.g., if the data action is visible to the individual or is processed in another part of the system), and by whom (e.g., individuals may have different privacy perceptions based on the entity that is processing the personally identifiable information) provides a number of contextual factors that are important to assessing the degree of privacy risk created by the system. Data maps can be illustrated in different ways, and the level of detail may vary based on the mission and business needs of the organization. The data map may be an overlay of any system design artifact that the organization is using. The development of this map may necessitate coordination between the privacy and security programs regarding the covered data actions and the components that are identified as part of the system.
+    related_controls:
+      - ac-3
+      - cm-4
+      - cm-12
+      - pm-5
+      - pm-27
+      - pt-2
+      - pt-3
+      - ra-3
+      - ra-8
+    rules: []
+    status: pending
+  - id: cm-14
+    title: Signed Components
+    description: 'Prevent the installation of [[ insert: param, cm-14_prm_1 ]] without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.'
+    parameters:
+      - id: cm-14_prm_1
+        label: organization-defined software and firmware components
+      - id: cm-14_odp.01
+        label: software components
+        guidelines:
+          - software components requiring verification of a digitally signed certificate before installation are defined;
+      - id: cm-14_odp.02
+        label: firmware components
+        guidelines:
+          - firmware components requiring verification of a digitally signed certificate before installation are defined;
+    guidance: Software and firmware components prevented from installation unless signed with recognized and approved certificates include software and firmware version updates, patches, service packs, device drivers, and basic input/output system updates. Organizations can identify applicable software and firmware components by type, by specific items, or a combination of both. Digital signatures and organizational verification of such signatures is a method of code authentication.
+    related_controls:
+      - cm-7
+      - sc-12
+      - sc-13
+      - si-7
+    rules: []
+    status: pending

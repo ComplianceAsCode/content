@@ -1,0 +1,1973 @@
+# NIST 800-53 SA Family: System and Services Acquisition
+controls:
+  - id: sa-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, sa-1_prm_1 ]]:\n    1. [[ insert: param, sa-01_odp.03 ]] system and services acquisition policy that:\n    2. Procedures to facilitate the implementation of the system and services acquisition policy and the associated system and services acquisition controls;\n  b. Designate an [[ insert: param, sa-01_odp.04 ]] to manage the development, documentation, and dissemination of the system and services acquisition policy and procedures; and\n  c. Review and update the current system and services acquisition:\n    1. Policy [[ insert: param, sa-01_odp.05 ]] and following [[ insert: param, sa-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, sa-01_odp.07 ]] and following [[ insert: param, sa-01_odp.08 ]]."
+    parameters:
+      - id: sa-1_prm_1
+        label: organization-defined personnel or roles
+      - id: sa-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the system and services acquisition policy is to be disseminated is/are defined;
+      - id: sa-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the system and services acquisition procedures are to be disseminated is/are defined;
+      - id: sa-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: sa-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the system and services acquisition policy and procedures is defined;
+      - id: sa-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current system and services acquisition policy is reviewed and updated is defined;
+      - id: sa-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current system and services acquisition policy to be reviewed and updated are defined;
+      - id: sa-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current system and services acquisition procedures are reviewed and updated is defined;
+      - id: sa-01_odp.08
+        label: events
+        guidelines:
+          - events that would require the system and services acquisition procedures to be reviewed and updated are defined;
+    guidance: System and services acquisition policy and procedures address the controls in the SA family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of system and services acquisition policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to system and services acquisition policy and procedures include assessment or audit findings, security incidents or breaches, or changes in laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - sa-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-2
+    title: Allocation of Resources
+    description: "  a. Determine the high-level information security and privacy requirements for the system or system service in mission and business process planning;\n  b. Determine, document, and allocate the resources required to protect the system or system service as part of the organizational capital planning and investment control process; and\n  c. Establish a discrete line item for information security and privacy in organizational programming and budgeting documentation."
+    guidance: Resource allocation for information security and privacy includes funding for system and services acquisition, sustainment, and supply chain-related risks throughout the system development life cycle.
+    related_controls:
+      - pl-7
+      - pm-3
+      - pm-11
+      - sa-9
+      - sr-3
+      - sr-5
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-3
+    title: System Development Life Cycle
+    description: "  a. Acquire, develop, and manage the system using [[ insert: param, sa-03_odp ]] that incorporates information security and privacy considerations;\n  b. Define and document information security and privacy roles and responsibilities throughout the system development life cycle;\n  c. Identify individuals having information security and privacy roles and responsibilities; and\n  d. Integrate the organizational information security and privacy risk management process into system development life cycle activities."
+    parameters:
+      - id: sa-03_odp
+        label: system-development life cycle
+        guidelines:
+          - system development life cycle is defined;
+    guidance: "A system development life cycle process provides the foundation for the successful development, implementation, and operation of organizational systems. The integration of security and privacy considerations early in the system development life cycle is a foundational principle of systems security engineering and privacy engineering. To apply the required controls within the system development life cycle requires a basic understanding of information security and privacy, threats, vulnerabilities, adverse impacts, and risk to critical mission and business functions. The security engineering principles in [SA-8](#sa-8) help individuals properly design, code, and test systems and system components. Organizations include qualified personnel (e.g., senior agency information security officers, senior agency officials for privacy, security and privacy architects, and security and privacy engineers) in system development life cycle processes to ensure that established security and privacy requirements are incorporated into organizational systems. Role-based security and privacy training programs can ensure that individuals with key security and privacy roles and responsibilities have the experience, skills, and expertise to conduct assigned system development life cycle activities.\n\nThe effective integration of security and privacy requirements into enterprise architecture also helps to ensure that important security and privacy considerations are addressed throughout the system life cycle and that those considerations are directly related to organizational mission and business processes. This process also facilitates the integration of the information security and privacy architectures into the enterprise architecture, consistent with the risk management strategy of the organization. Because the system development life cycle involves multiple organizations, (e.g., external suppliers, developers, integrators, service providers), acquisition and supply chain risk management functions and controls play significant roles in the effective management of the system during the life cycle."
+    related_controls:
+      - at-3
+      - pl-8
+      - pm-7
+      - sa-4
+      - sa-5
+      - sa-8
+      - sa-11
+      - sa-15
+      - sa-17
+      - sa-22
+      - sr-3
+      - sr-4
+      - sr-5
+      - sr-9
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-3.1
+    title: Manage Preproduction Environment
+    description: Protect system preproduction environments commensurate with risk throughout the system development life cycle for the system, system component, or system service.
+    guidance: The preproduction environment includes development, test, and integration environments. The program protection planning processes established by the Department of Defense are examples of managing the preproduction environment for defense contractors. Criticality analysis and the application of controls on developers also contribute to a more secure system development environment.
+    related_controls:
+      - cm-2
+      - cm-4
+      - ra-3
+      - ra-9
+      - sa-4
+    rules: []
+    status: pending
+  - id: sa-3.2
+    title: Use of Live or Operational Data
+    description: "  a. Approve, document, and control the use of live data in preproduction environments for the system, system component, or system service; and\n  b. Protect preproduction environments for the system, system component, or system service at the same impact or classification level as any live data in use within the preproduction environments."
+    guidance: Live data is also referred to as operational data. The use of live or operational data in preproduction (i.e., development, test, and integration) environments can result in significant risks to organizations. In addition, the use of personally identifiable information in testing, research, and training increases the risk of unauthorized disclosure or misuse of such information. Therefore, it is important for the organization to manage any additional risks that may result from the use of live or operational data. Organizations can minimize such risks by using test or dummy data during the design, development, and testing of systems, system components, and system services. Risk assessment techniques may be used to determine if the risk of using live or operational data is acceptable.
+    related_controls:
+      - pm-25
+      - ra-3
+    rules: []
+    status: pending
+  - id: sa-3.3
+    title: Technology Refresh
+    description: Plan for and implement a technology refresh schedule for the system throughout the system development life cycle.
+    guidance: Technology refresh planning may encompass hardware, software, firmware, processes, personnel skill sets, suppliers, service providers, and facilities. The use of obsolete or nearing obsolete technology may increase the security and privacy risks associated with unsupported components, counterfeit or repurposed components, components unable to implement security or privacy requirements, slow or inoperable components, components from untrusted sources, inadvertent personnel error, or increased complexity. Technology refreshes typically occur during the operations and maintenance stage of the system development life cycle.
+    related_controls:
+      - ma-6
+    rules: []
+    status: pending
+  - id: sa-4
+    title: Acquisition Process
+    description: "Include the following requirements, descriptions, and criteria, explicitly or by reference, using [[ insert: param, sa-04_odp.01 ]] in the acquisition contract for the system, system component, or system service:\n  a. Security and privacy functional requirements;\n  b. Strength of mechanism requirements;\n  c. Security and privacy assurance requirements;\n  d. Controls needed to satisfy the security and privacy requirements.\n  e. Security and privacy documentation requirements;\n  f. Requirements for protecting security and privacy documentation;\n  g. Description of the system development environment and environment in which the system is intended to operate;\n  h. Allocation of responsibility or identification of parties responsible for information security, privacy, and supply chain risk management; and\n  i. Acceptance criteria."
+    parameters:
+      - id: sa-04_odp.01
+        label: ''
+        choices:
+          - standardized contract language
+          - '[[ insert: param, sa-04_odp.02 ]] '
+      - id: sa-04_odp.02
+        label: contract language
+        guidelines:
+          - contract language is defined (if selected);
+    guidance: "Security and privacy functional requirements are typically derived from the high-level security and privacy requirements described in [SA-2](#sa-2) . The derived requirements include security and privacy capabilities, functions, and mechanisms. Strength requirements associated with such capabilities, functions, and mechanisms include degree of correctness, completeness, resistance to tampering or bypass, and resistance to direct attack. Assurance requirements include development processes, procedures, and methodologies as well as the evidence from development and assessment activities that provide grounds for confidence that the required functionality is implemented and possesses the required strength of mechanism. [SP 800-160-1](#e3cc0520-a366-4fc9-abc2-5272db7e3564) describes the process of requirements engineering as part of the system development life cycle.\n\nControls can be viewed as descriptions of the safeguards and protection capabilities appropriate for achieving the particular security and privacy objectives of the organization and for reflecting the security and privacy requirements of stakeholders. Controls are selected and implemented in order to satisfy system requirements and include developer and organizational responsibilities. Controls can include technical, administrative, and physical aspects. In some cases, the selection and implementation of a control may necessitate additional specification by the organization in the form of derived requirements or instantiated control parameter values. The derived requirements and control parameter values may be necessary to provide the appropriate level of implementation detail for controls within the system development life cycle.\n\nSecurity and privacy documentation requirements address all stages of the system development life cycle. Documentation provides user and administrator guidance for the implementation and operation of controls. The level of detail required in such documentation is based on the security categorization or classification level of the system and the degree to which organizations depend on the capabilities, functions, or mechanisms to meet risk response expectations. Requirements can include mandated configuration settings that specify allowed functions, ports, protocols, and services. Acceptance criteria for systems, system components, and system services are defined in the same manner as the criteria for any organizational acquisition or procurement.\n\nOrganizations can determine other requirements that support security and operations, to include responsibilities for the organization and developer, and notification and timing requirements for support, maintenance and updates."
+    related_controls:
+      - cm-6
+      - cm-8
+      - ps-7
+      - sa-3
+      - sa-5
+      - sa-8
+      - sa-11
+      - sa-15
+      - sa-16
+      - sa-17
+      - sa-21
+      - sr-3
+      - sr-5
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-4.1
+    title: Functional Properties of Controls
+    description: Require the developer of the system, system component, or system service to provide a description of the functional properties of the controls to be implemented.
+    guidance: Functional properties of security and privacy controls describe the functionality (i.e., security or privacy capability, functions, or mechanisms) visible at the interfaces of the controls and specifically exclude functionality and data structures internal to the operation of the controls.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-4.2
+    title: Design and Implementation Information for Controls
+    description: 'Require the developer of the system, system component, or system service to provide design and implementation information for the controls that includes: [[ insert: param, sa-04.02_odp.01 ]] at [[ insert: param, sa-04.02_odp.03 ]].'
+    parameters:
+      - id: sa-04.02_odp.01
+        label: ''
+        choices:
+          - security-relevant external system interfaces
+          - high-level design
+          - low-level design
+          - source code or hardware schematics
+          - '[[ insert: param, sa-04.02_odp.02 ]] '
+      - id: sa-04.02_odp.02
+        label: design and implementation information
+        guidelines:
+          - design and implementation information is defined (if selected);
+      - id: sa-04.02_odp.03
+        label: level of detail
+        guidelines:
+          - level of detail is defined;
+    guidance: Organizations may require different levels of detail in the documentation for the design and implementation of controls in organizational systems, system components, or system services based on mission and business requirements, requirements for resiliency and trustworthiness, and requirements for analysis and testing. Systems can be partitioned into multiple subsystems. Each subsystem within the system can contain one or more modules. The high-level design for the system is expressed in terms of subsystems and the interfaces between subsystems providing security-relevant functionality. The low-level design for the system is expressed in terms of modules and the interfaces between modules providing security-relevant functionality. Design and implementation documentation can include manufacturer, version, serial number, verification hash signature, software libraries used, date of purchase or download, and the vendor or download source. Source code and hardware schematics are referred to as the implementation representation of the system.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-4.3
+    title: Development Methods, Techniques, and Practices
+    description: "Require the developer of the system, system component, or system service to demonstrate the use of a system development life cycle process that includes:\n  a. [[ insert: param, sa-04.03_odp.01 ]];\n  b. [[ insert: param, sa-04.03_odp.02 ]] ; and\n  c. [[ insert: param, sa-04.03_odp.05 ]]."
+    parameters:
+      - id: sa-04.03_odp.01
+        label: systems engineering methods
+        guidelines:
+          - systems engineering methods are defined;
+      - id: sa-04.03_odp.02
+        label: ''
+        choices:
+          - '[[ insert: param, sa-04.03_odp.03 ]] '
+          - '[[ insert: param, sa-04.03_odp.04 ]] '
+      - id: sa-04.03_odp.03
+        label: system security engineering methods
+        guidelines:
+          - system security engineering methods are defined (if selected);
+      - id: sa-04.03_odp.04
+        label: privacy engineering methods
+        guidelines:
+          - privacy engineering methods are defined (if selected);
+      - id: sa-04.03_odp.05
+        label: ''
+        choices:
+          - '[[ insert: param, sa-04.03_odp.06 ]] '
+          - '[[ insert: param, sa-04.03_odp.07 ]] '
+          - '[[ insert: param, sa-04.03_odp.08 ]] '
+      - id: sa-04.03_odp.06
+        label: software development methods
+        guidelines:
+          - software development methods are defined (if selected);
+      - id: sa-04.03_odp.07
+        label: testing, evaluation, assessment, verification, and validation methods
+        guidelines:
+          - testing, evaluation, assessment, verification, and validation methods are defined (if selected);
+      - id: sa-04.03_odp.08
+        label: quality control processes
+        guidelines:
+          - quality control processes are defined (if selected);
+    guidance: Following a system development life cycle that includes state-of-the-practice software development methods, systems engineering methods, systems security and privacy engineering methods, and quality control processes helps to reduce the number and severity of latent errors within systems, system components, and system services. Reducing the number and severity of such errors reduces the number of vulnerabilities in those systems, components, and services. Transparency in the methods and techniques that developers select and implement for systems engineering, systems security and privacy engineering, software development, component and system assessments, and quality control processes provides an increased level of assurance in the trustworthiness of the system, system component, or system service being acquired.
+    rules: []
+    status: pending
+  - id: sa-4.4
+    title: Assignment of Components to Systems
+    rules: []
+    status: pending
+  - id: sa-4.5
+    title: System, Component, and Service Configurations
+    description: "Require the developer of the system, system component, or system service to:\n  a. Deliver the system, component, or service with [[ insert: param, sa-04.05_odp ]] implemented; and\n  b. Use the configurations as the default for any subsequent system, component, or service reinstallation or upgrade."
+    parameters:
+      - id: sa-04.05_odp
+        label: security configurations
+        guidelines:
+          - security configurations for the system, component, or service are defined;
+    guidance: Examples of security configurations include the U.S. Government Configuration Baseline (USGCB), Security Technical Implementation Guides (STIGs), and any limitations on functions, ports, protocols, and services. Security characteristics can include requiring that default passwords have been changed.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sa-4.6
+    title: Use of Information Assurance Products
+    description: "  a. Employ only government off-the-shelf or commercial off-the-shelf information assurance and information assurance-enabled information technology products that compose an NSA-approved solution to protect classified information when the networks used to transmit the information are at a lower classification level than the information being transmitted; and\n  b. Ensure that these products have been evaluated and/or validated by NSA or in accordance with NSA-approved procedures."
+    guidance: Commercial off-the-shelf IA or IA-enabled information technology products used to protect classified information by cryptographic means may be required to use NSA-approved key management. See [NSA CSFC](#3d575737-98cb-459d-b41c-d7e82b73ad78).
+    related_controls:
+      - sc-8
+      - sc-12
+      - sc-13
+    rules: []
+    status: pending
+  - id: sa-4.7
+    title: 'NIAP-approved Protection Profiles '
+    description: "  a. Limit the use of commercially provided information assurance and information assurance-enabled information technology products to those products that have been successfully evaluated against a National Information Assurance partnership (NIAP)-approved Protection Profile for a specific technology type, if such a profile exists; and\n  b. Require, if no NIAP-approved Protection Profile exists for a specific technology type but a commercially provided information technology product relies on cryptographic functionality to enforce its security policy, that the cryptographic module is FIPS-validated or NSA-approved."
+    guidance: See [NIAP CCEVS](#795aff72-3e6c-4b6b-a80a-b14d84b7f544) for additional information on NIAP. See [NIST CMVP](#1acdc775-aafb-4d11-9341-dc6a822e9d38) for additional information on FIPS-validated cryptographic modules.
+    related_controls:
+      - ia-7
+      - sc-12
+      - sc-13
+    rules: []
+    status: pending
+  - id: sa-4.8
+    title: Continuous Monitoring Plan for Controls
+    description: Require the developer of the system, system component, or system service to produce a plan for continuous monitoring of control effectiveness that is consistent with the continuous monitoring program of the organization.
+    guidance: The objective of continuous monitoring plans is to determine if the planned, required, and deployed controls within the system, system component, or system service continue to be effective over time based on the inevitable changes that occur. Developer continuous monitoring plans include a sufficient level of detail such that the information can be incorporated into continuous monitoring programs implemented by organizations. Continuous monitoring plans can include the types of control assessment and monitoring activities planned, frequency of control monitoring, and actions to be taken when controls fail or become ineffective.
+    related_controls:
+      - ca-7
+    rules: []
+    status: pending
+  - id: sa-4.9
+    title: Functions, Ports, Protocols, and Services in Use
+    description: Require the developer of the system, system component, or system service to identify the functions, ports, protocols, and services intended for organizational use.
+    guidance: The identification of functions, ports, protocols, and services early in the system development life cycle (e.g., during the initial requirements definition and design stages) allows organizations to influence the design of the system, system component, or system service. This early involvement in the system development life cycle helps organizations avoid or minimize the use of functions, ports, protocols, or services that pose unnecessarily high risks and understand the trade-offs involved in blocking specific ports, protocols, or services or requiring system service providers to do so. Early identification of functions, ports, protocols, and services avoids costly retrofitting of controls after the system, component, or system service has been implemented. [SA-9](#sa-9) describes the requirements for external system services. Organizations identify which functions, ports, protocols, and services are provided from external sources.
+    related_controls:
+      - cm-7
+      - sa-9
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-4.10
+    title: Use of Approved PIV Products
+    description: Employ only information technology products on the FIPS 201-approved products list for Personal Identity Verification (PIV) capability implemented within organizational systems.
+    guidance: Products on the FIPS 201-approved products list meet NIST requirements for Personal Identity Verification (PIV) of Federal Employees and Contractors. PIV cards are used for multi-factor authentication in systems and organizations.
+    related_controls:
+      - ia-2
+      - ia-8
+      - pm-9
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-4.11
+    title: System of Records
+    description: 'Include [[ insert: param, sa-04.11_odp ]] in the acquisition contract for the operation of a system of records on behalf of an organization to accomplish an organizational mission or function.'
+    parameters:
+      - id: sa-04.11_odp
+        label: Privacy Act requirements
+        guidelines:
+          - Privacy Act requirements for the operation of a system of records are defined;
+    guidance: When, by contract, an organization provides for the operation of a system of records to accomplish an organizational mission or function, the organization, consistent with its authority, causes the requirements of the [PRIVACT](#18e71fec-c6fd-475a-925a-5d8495cf8455) to be applied to the system of records.
+    related_controls:
+      - pt-6
+    rules: []
+    status: pending
+  - id: sa-4.12
+    title: Data Ownership
+    description: "  a. Include organizational data ownership requirements in the acquisition contract; and\n  b. Require all data to be removed from the contractor’s system and returned to the organization within [[ insert: param, sa-04.12_odp ]]."
+    parameters:
+      - id: sa-04.12_odp
+        label: time frame
+        guidelines:
+          - time frame to remove data from a contractor system and return it to the organization is defined;
+    guidance: Contractors who operate a system that contains data owned by an organization initiating the contract have policies and procedures in place to remove the data from their systems and/or return the data in a time frame defined by the contract.
+    rules: []
+    status: pending
+  - id: sa-5
+    title: System Documentation
+    description: "  a. Obtain or develop administrator documentation for the system, system component, or system service that describes:\n    1. Secure configuration, installation, and operation of the system, component, or service;\n    2. Effective use and maintenance of security and privacy functions and mechanisms; and\n    3. Known vulnerabilities regarding configuration and use of administrative or privileged functions;\n  b. Obtain or develop user documentation for the system, system component, or system service that describes:\n    1. User-accessible security and privacy functions and mechanisms and how to effectively use those functions and mechanisms;\n    2. Methods for user interaction, which enables individuals to use the system, component, or service in a more secure manner and protect individual privacy; and\n    3. User responsibilities in maintaining the security of the system, component, or service and privacy of individuals;\n  c. Document attempts to obtain system, system component, or system service documentation when such documentation is either unavailable or nonexistent and take [[ insert: param, sa-05_odp.01 ]] in response; and\n  d. Distribute documentation to [[ insert: param, sa-05_odp.02 ]]."
+    parameters:
+      - id: sa-05_odp.01
+        label: actions
+        guidelines:
+          - actions to take when system, system component, or system service documentation is either unavailable or nonexistent are defined;
+      - id: sa-05_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to distribute system documentation to is/are defined;
+    guidance: System artifacts and documentation created by the developer helps organizational personnel understand the implementation and operation of controls. Organizations consider establishing specific measures to determine the quality and completeness of the content provided. System documentation may be used to delineate roles, responsibilities and expectations of the developer and organization, support the management of supply chain risk, incident response, flaw remediation, and other functions. Personnel or roles that require documentation include system owners, system security officers, and system administrators. Attempts to obtain documentation include contacting manufacturers or suppliers and conducting web-based searches. The inability to obtain documentation may occur due to the age of the system or component or the lack of support from developers and contractors. When documentation cannot be obtained, organizations may need to recreate the documentation if it is essential to the implementation or operation of the controls. The protection provided for the documentation is commensurate with the security category or classification of the system. Documentation that addresses system vulnerabilities may require an increased level of protection. Secure operation of the system includes initially starting the system and resuming secure system operation after a lapse in system operation. An example of least privilege in software development is minimizing the functions that operate with elevated privileges (e.g., limiting the tools and functionality that operate in kernel mode)
+    related_controls:
+      - cm-4
+      - cm-6
+      - cm-7
+      - cm-8
+      - pl-2
+      - pl-4
+      - pl-8
+      - ps-2
+      - sa-3
+      - sa-4
+      - sa-8
+      - sa-9
+      - sa-10
+      - sa-11
+      - sa-15
+      - sa-16
+      - sa-17
+      - si-12
+      - sr-3
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-5.1
+    title: Functional Properties of Security Controls
+    rules: []
+    status: pending
+  - id: sa-5.2
+    title: Security-relevant External System Interfaces
+    rules: []
+    status: pending
+  - id: sa-5.3
+    title: High-level Design
+    rules: []
+    status: pending
+  - id: sa-5.4
+    title: Low-level Design
+    rules: []
+    status: pending
+  - id: sa-5.5
+    title: Source Code
+    rules: []
+    status: pending
+  - id: sa-6
+    title: Software Usage Restrictions
+    rules: []
+    status: pending
+  - id: sa-7
+    title: User-installed Software
+    rules: []
+    status: pending
+  - id: sa-8
+    title: Security and Privacy Engineering Principles
+    description: 'Apply the following systems security and privacy engineering principles in the specification, design, development, implementation, and modification of the system and system components: [[ insert: param, sa-8_prm_1 ]].'
+    parameters:
+      - id: sa-8_prm_1
+        label: organization-defined systems security and privacy engineering principles
+      - id: sa-08_odp.01
+        label: systems security engineering principles
+        guidelines:
+          - systems security engineering principles are defined;
+      - id: sa-08_odp.02
+        label: privacy engineering principles
+        guidelines:
+          - privacy engineering principles are defined;
+    guidance: "Systems security and privacy engineering principles are closely related to and implemented throughout the system development life cycle (see [SA-3](#sa-3) ). Organizations can apply systems security and privacy engineering principles to new systems under development or to systems undergoing upgrades. For existing systems, organizations apply systems security and privacy engineering principles to system upgrades and modifications to the extent feasible, given the current state of hardware, software, and firmware components within those systems.\n\nThe application of systems security and privacy engineering principles helps organizations develop trustworthy, secure, and resilient systems and reduces the susceptibility to disruptions, hazards, threats, and the creation of privacy problems for individuals. Examples of system security engineering principles include: developing layered protections; establishing security and privacy policies, architecture, and controls as the foundation for design and development; incorporating security and privacy requirements into the system development life cycle; delineating physical and logical security boundaries; ensuring that developers are trained on how to build secure software; tailoring controls to meet organizational needs; and performing threat modeling to identify use cases, threat agents, attack vectors and patterns, design patterns, and compensating controls needed to mitigate risk.\n\nOrganizations that apply systems security and privacy engineering concepts and principles can facilitate the development of trustworthy, secure systems, system components, and system services; reduce risk to acceptable levels; and make informed risk management decisions. System security engineering principles can also be used to protect against certain supply chain risks, including incorporating tamper-resistant hardware into a design."
+    related_controls:
+      - pl-8
+      - pm-7
+      - ra-2
+      - ra-3
+      - ra-9
+      - sa-3
+      - sa-4
+      - sa-15
+      - sa-17
+      - sa-20
+      - sc-2
+      - sc-3
+      - sc-32
+      - sc-39
+      - sr-2
+      - sr-3
+      - sr-4
+      - sr-5
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-8.1
+    title: Clear Abstractions
+    description: Implement the security design principle of clear abstractions.
+    guidance: The principle of clear abstractions states that a system has simple, well-defined interfaces and functions that provide a consistent and intuitive view of the data and how the data is managed. The clarity, simplicity, necessity, and sufficiency of the system interfaces— combined with a precise definition of their functional behavior—promotes ease of analysis, inspection, and testing as well as the correct and secure use of the system. The clarity of an abstraction is subjective. Examples that reflect the application of this principle include avoidance of redundant, unused interfaces; information hiding; and avoidance of semantic overloading of interfaces or their parameters. Information hiding (i.e., representation-independent programming), is a design discipline used to ensure that the internal representation of information in one system component is not visible to another system component invoking or calling the first component, such that the published abstraction is not influenced by how the data may be managed internally.
+    rules: []
+    status: pending
+  - id: sa-8.2
+    title: Least Common Mechanism
+    description: 'Implement the security design principle of least common mechanism in [[ insert: param, sa-08.02_odp ]].'
+    parameters:
+      - id: sa-08.02_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of least common mechanism are defined;
+    guidance: The principle of least common mechanism states that the amount of mechanism common to more than one user and depended on by all users is minimized [POPEK74](#79453f84-26a4-4995-8257-d32d37aefea3) . Mechanism minimization implies that different components of a system refrain from using the same mechanism to access a system resource. Every shared mechanism (especially a mechanism involving shared variables) represents a potential information path between users and is designed with care to ensure that it does not unintentionally compromise security [SALTZER75](#c9495d6e-ef64-4090-8509-e58c3b9009ff) . Implementing the principle of least common mechanism helps to reduce the adverse consequences of sharing the system state among different programs. A single program that corrupts a shared state (including shared variables) has the potential to corrupt other programs that are dependent on the state. The principle of least common mechanism also supports the principle of simplicity of design and addresses the issue of covert storage channels [LAMPSON73](#d1cdab13-4218-400d-91a9-c3818dfa5ec8).
+    rules: []
+    status: pending
+  - id: sa-8.3
+    title: Modularity and Layering
+    description: 'Implement the security design principles of modularity and layering in [[ insert: param, sa-8.3_prm_1 ]].'
+    parameters:
+      - id: sa-8.3_prm_1
+        label: organization-defined systems or system components
+      - id: sa-08.03_odp.01
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of modularity are defined;
+      - id: sa-08.03_odp.02
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of layering are defined;
+    guidance: The principles of modularity and layering are fundamental across system engineering disciplines. Modularity and layering derived from functional decomposition are effective in managing system complexity by making it possible to comprehend the structure of the system. Modular decomposition, or refinement in system design, is challenging and resists general statements of principle. Modularity serves to isolate functions and related data structures into well-defined logical units. Layering allows the relationships of these units to be better understood so that dependencies are clear and undesired complexity can be avoided. The security design principle of modularity extends functional modularity to include considerations based on trust, trustworthiness, privilege, and security policy. Security-informed modular decomposition includes the allocation of policies to systems in a network, separation of system applications into processes with distinct address spaces, allocation of system policies to layers, and separation of processes into subjects with distinct privileges based on hardware-supported privilege domains.
+    related_controls:
+      - sc-2
+      - sc-3
+    rules: []
+    status: pending
+  - id: sa-8.4
+    title: Partially Ordered Dependencies
+    description: 'Implement the security design principle of partially ordered dependencies in [[ insert: param, sa-08.04_odp ]].'
+    parameters:
+      - id: sa-08.04_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of partially ordered dependencies are defined;
+    guidance: The principle of partially ordered dependencies states that the synchronization, calling, and other dependencies in the system are partially ordered. A fundamental concept in system design is layering, whereby the system is organized into well-defined, functionally related modules or components. The layers are linearly ordered with respect to inter-layer dependencies, such that higher layers are dependent on lower layers. While providing functionality to higher layers, some layers can be self-contained and not dependent on lower layers. While a partial ordering of all functions in a given system may not be possible, if circular dependencies are constrained to occur within layers, the inherent problems of circularity can be more easily managed. Partially ordered dependencies and system layering contribute significantly to the simplicity and coherency of the system design. Partially ordered dependencies also facilitate system testing and analysis.
+    rules: []
+    status: pending
+  - id: sa-8.5
+    title: Efficiently Mediated Access
+    description: 'Implement the security design principle of efficiently mediated access in [[ insert: param, sa-08.05_odp ]].'
+    parameters:
+      - id: sa-08.05_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of efficiently mediated access are defined;
+    guidance: The principle of efficiently mediated access states that policy enforcement mechanisms utilize the least common mechanism available while satisfying stakeholder requirements within expressed constraints. The mediation of access to system resources (i.e., CPU, memory, devices, communication ports, services, infrastructure, data, and information) is often the predominant security function of secure systems. It also enables the realization of protections for the capability provided to stakeholders by the system. Mediation of resource access can result in performance bottlenecks if the system is not designed correctly. For example, by using hardware mechanisms, efficiently mediated access can be achieved. Once access to a low-level resource such as memory has been obtained, hardware protection mechanisms can ensure that out-of-bounds access does not occur.
+    related_controls:
+      - ac-25
+    rules: []
+    status: pending
+  - id: sa-8.6
+    title: Minimized Sharing
+    description: 'Implement the security design principle of minimized sharing in [[ insert: param, sa-08.06_odp ]].'
+    parameters:
+      - id: sa-08.06_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of minimized sharing are defined;
+    guidance: The principle of minimized sharing states that no computer resource is shared between system components (e.g., subjects, processes, functions) unless it is absolutely necessary to do so. Minimized sharing helps to simplify system design and implementation. In order to protect user-domain resources from arbitrary active entities, no resource is shared unless that sharing has been explicitly requested and granted. The need for resource sharing can be motivated by the design principle of least common mechanism in the case of internal entities or driven by stakeholder requirements. However, internal sharing is carefully designed to avoid performance and covert storage and timing channel problems. Sharing via common mechanism can increase the susceptibility of data and information to unauthorized access, disclosure, use, or modification and can adversely affect the inherent capability provided by the system. To minimize sharing induced by common mechanisms, such mechanisms can be designed to be reentrant or virtualized to preserve separation. Moreover, the use of global data to share information is carefully scrutinized. The lack of encapsulation may obfuscate relationships among the sharing entities.
+    related_controls:
+      - sc-31
+    rules: []
+    status: pending
+  - id: sa-8.7
+    title: Reduced Complexity
+    description: 'Implement the security design principle of reduced complexity in [[ insert: param, sa-08.07_odp ]].'
+    parameters:
+      - id: sa-08.07_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of reduced complexity are defined;
+    guidance: The principle of reduced complexity states that the system design is as simple and small as possible. A small and simple design is more understandable, more analyzable, and less prone to error. The reduced complexity principle applies to any aspect of a system, but it has particular importance for security due to the various analyses performed to obtain evidence about the emergent security property of the system. For such analyses to be successful, a small and simple design is essential. Application of the principle of reduced complexity contributes to the ability of system developers to understand the correctness and completeness of system security functions. It also facilitates the identification of potential vulnerabilities. The corollary of reduced complexity states that the simplicity of the system is directly related to the number of vulnerabilities it will contain; that is, simpler systems contain fewer vulnerabilities. An benefit of reduced complexity is that it is easier to understand whether the intended security policy has been captured in the system design and that fewer vulnerabilities are likely to be introduced during engineering development. An additional benefit is that any such conclusion about correctness, completeness, and the existence of vulnerabilities can be reached with a higher degree of assurance in contrast to conclusions reached in situations where the system design is inherently more complex. Transitioning from older technologies to newer technologies (e.g., transitioning from IPv4 to IPv6) may require implementing the older and newer technologies simultaneously during the transition period. This may result in a temporary increase in system complexity during the transition.
+    rules: []
+    status: pending
+  - id: sa-8.8
+    title: Secure Evolvability
+    description: 'Implement the security design principle of secure evolvability in [[ insert: param, sa-08.08_odp ]].'
+    parameters:
+      - id: sa-08.08_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of secure evolvability are defined;
+    guidance: The principle of secure evolvability states that a system is developed to facilitate the maintenance of its security properties when there are changes to the system’s structure, interfaces, interconnections (i.e., system architecture), functionality, or configuration (i.e., security policy enforcement). Changes include a new, enhanced, or upgraded system capability; maintenance and sustainment activities; and reconfiguration. Although it is not possible to plan for every aspect of system evolution, system upgrades and changes can be anticipated by analyses of mission or business strategic direction, anticipated changes in the threat environment, and anticipated maintenance and sustainment needs. It is unrealistic to expect that complex systems remain secure in contexts not envisioned during development, whether such contexts are related to the operational environment or to usage. A system may be secure in some new contexts, but there is no guarantee that its emergent behavior will always be secure. It is easier to build trustworthiness into a system from the outset, and it follows that the sustainment of system trustworthiness requires planning for change as opposed to adapting in an ad hoc or non-methodical manner. The benefits of this principle include reduced vendor life cycle costs, reduced cost of ownership, improved system security, more effective management of security risk, and less risk uncertainty.
+    related_controls:
+      - cm-3
+    rules: []
+    status: pending
+  - id: sa-8.9
+    title: Trusted Components
+    description: 'Implement the security design principle of trusted components in [[ insert: param, sa-08.09_odp ]].'
+    parameters:
+      - id: sa-08.09_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of trusted components are defined;
+    guidance: "The principle of trusted components states that a component is trustworthy to at least a level commensurate with the security dependencies it supports (i.e., how much it is trusted to perform its security functions by other components). This principle enables the composition of components such that trustworthiness is not inadvertently diminished and the trust is not consequently misplaced. Ultimately, this principle demands some metric by which the trust in a component and the trustworthiness of a component can be measured on the same abstract scale. The principle of trusted components is particularly relevant when considering systems and components in which there are complex chains of trust dependencies. A trust dependency is also referred to as a trust relationship and there may be chains of trust relationships.\n\nThe principle of trusted components also applies to a compound component that consists of subcomponents (e.g., a subsystem), which may have varying levels of trustworthiness. The conservative assumption is that the trustworthiness of a compound component is that of its least trustworthy subcomponent. It may be possible to provide a security engineering rationale that the trustworthiness of a particular compound component is greater than the conservative assumption. However, any such rationale reflects logical reasoning based on a clear statement of the trustworthiness objectives as well as relevant and credible evidence. The trustworthiness of a compound component is not the same as increased application of defense-in-depth layering within the component or a replication of components. Defense-in-depth techniques do not increase the trustworthiness of the whole above that of the least trustworthy component."
+    rules: []
+    status: pending
+  - id: sa-8.10
+    title: Hierarchical Trust
+    description: 'Implement the security design principle of hierarchical trust in [[ insert: param, sa-08.10_odp ]].'
+    parameters:
+      - id: sa-08.10_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of hierarchical trust are defined;
+    guidance: The principle of hierarchical trust for components builds on the principle of trusted components and states that the security dependencies in a system will form a partial ordering if they preserve the principle of trusted components. The partial ordering provides the basis for trustworthiness reasoning or an assurance case (assurance argument) when composing a secure system from heterogeneously trustworthy components. To analyze a system composed of heterogeneously trustworthy components for its trustworthiness, it is essential to eliminate circular dependencies with regard to the trustworthiness. If a more trustworthy component located in a lower layer of the system were to depend on a less trustworthy component in a higher layer, this would, in effect, put the components in the same "less trustworthy" equivalence class per the principle of trusted components. Trust relationships, or chains of trust, can have various manifestations. For example, the root certificate of a certificate hierarchy is the most trusted node in the hierarchy, whereas the leaves in the hierarchy may be the least trustworthy nodes. Another example occurs in a layered high-assurance system where the security kernel (including the hardware base), which is located at the lowest layer of the system, is the most trustworthy component. The principle of hierarchical trust, however, does not prohibit the use of overly trustworthy components. There may be cases in a system of low trustworthiness where it is reasonable to employ a highly trustworthy component rather than one that is less trustworthy (e.g., due to availability or other cost-benefit driver). For such a case, any dependency of the highly trustworthy component upon a less trustworthy component does not degrade the trustworthiness of the resulting low-trust system.
+    rules: []
+    status: pending
+  - id: sa-8.11
+    title: Inverse Modification Threshold
+    description: 'Implement the security design principle of inverse modification threshold in [[ insert: param, sa-08.11_odp ]].'
+    parameters:
+      - id: sa-08.11_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of inverse modification threshold are defined;
+    guidance: The principle of inverse modification threshold builds on the principle of trusted components and the principle of hierarchical trust and states that the degree of protection provided to a component is commensurate with its trustworthiness. As the trust placed in a component increases, the protection against unauthorized modification of the component also increases to the same degree. Protection from unauthorized modification can come in the form of the component’s own self-protection and innate trustworthiness, or it can come from the protections afforded to the component from other elements or attributes of the security architecture (to include protections in the environment of operation).
+    rules: []
+    status: pending
+  - id: sa-8.12
+    title: Hierarchical Protection
+    description: 'Implement the security design principle of hierarchical protection in [[ insert: param, sa-08.12_odp ]].'
+    parameters:
+      - id: sa-08.12_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of hierarchical protection are defined;
+    guidance: The principle of hierarchical protection states that a component need not be protected from more trustworthy components. In the degenerate case of the most trusted component, it protects itself from all other components. For example, if an operating system kernel is deemed the most trustworthy component in a system, then it protects itself from all untrusted applications it supports, but the applications, conversely, do not need to protect themselves from the kernel. The trustworthiness of users is a consideration for applying the principle of hierarchical protection. A trusted system need not protect itself from an equally trustworthy user, reflecting use of untrusted systems in "system high" environments where users are highly trustworthy and where other protections are put in place to bound and protect the "system high" execution environment.
+    rules: []
+    status: pending
+  - id: sa-8.13
+    title: Minimized Security Elements
+    description: 'Implement the security design principle of minimized security elements in [[ insert: param, sa-08.13_odp ]].'
+    parameters:
+      - id: sa-08.13_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of minimized security elements are defined;
+    guidance: 'The principle of minimized security elements states that the system does not have extraneous trusted components. The principle of minimized security elements has two aspects: the overall cost of security analysis and the complexity of security analysis. Trusted components are generally costlier to construct and implement, owing to the increased rigor of development processes. Trusted components require greater security analysis to qualify their trustworthiness. Thus, to reduce the cost and decrease the complexity of the security analysis, a system contains as few trustworthy components as possible. The analysis of the interaction of trusted components with other components of the system is one of the most important aspects of system security verification. If the interactions between components are unnecessarily complex, the security of the system will also be more difficult to ascertain than one whose internal trust relationships are simple and elegantly constructed. In general, fewer trusted components result in fewer internal trust relationships and a simpler system.'
+    rules: []
+    status: pending
+  - id: sa-8.14
+    title: Least Privilege
+    description: 'Implement the security design principle of least privilege in [[ insert: param, sa-08.14_odp ]].'
+    parameters:
+      - id: sa-08.14_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of least privilege are defined;
+    guidance: "The principle of least privilege states that each system component is allocated sufficient privileges to accomplish its specified functions but no more. Applying the principle of least privilege limits the scope of the component’s actions, which has two desirable effects: the security impact of a failure, corruption, or misuse of the component will have a minimized security impact, and the security analysis of the component will be simplified. Least privilege is a pervasive principle that is reflected in all aspects of the secure system design. Interfaces used to invoke component capability are available to only certain subsets of the user population, and component design supports a sufficiently fine granularity of privilege decomposition. For example, in the case of an audit mechanism, there may be an interface for the audit manager, who configures the audit settings; an interface for the audit operator, who ensures that audit data is safely collected and stored; and, finally, yet another interface for the audit reviewer, who only has need to view the audit data that has been collected but no need to perform operations on that data.\n\nIn addition to its manifestations at the system interface, least privilege can be used as a guiding principle for the internal structure of the system itself. One aspect of internal least privilege is to construct modules so that only the elements encapsulated by the module are directly operated on by the functions within the module. Elements external to a module that may be affected by the module’s operation are indirectly accessed through interaction (e.g., via a function call) with the module that contains those elements. Another aspect of internal least privilege is that the scope of a given module or component includes only those system elements that are necessary for its functionality and that the access modes for the elements (e.g., read, write) are minimal."
+    related_controls:
+      - ac-6
+      - cm-7
+    rules: []
+    status: pending
+  - id: sa-8.15
+    title: Predicate Permission
+    description: 'Implement the security design principle of predicate permission in [[ insert: param, sa-08.15_odp ]].'
+    parameters:
+      - id: sa-08.15_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of predicate permission are defined;
+    guidance: The principle of predicate permission states that system designers consider requiring multiple authorized entities to provide consent before a highly critical operation or access to highly sensitive data, information, or resources is allowed to proceed. [SALTZER75](#c9495d6e-ef64-4090-8509-e58c3b9009ff) originally named predicate permission the separation of privilege. It is also equivalent to separation of duty. The division of privilege among multiple parties decreases the likelihood of abuse and provides the safeguard that no single accident, deception, or breach of trust is sufficient to enable an unrecoverable action that can lead to significantly damaging effects. The design options for such a mechanism may require simultaneous action (e.g., the firing of a nuclear weapon requires two different authorized individuals to give the correct command within a small time window) or a sequence of operations where each successive action is enabled by some prior action, but no single individual is able to enable more than one action.
+    related_controls:
+      - ac-5
+    rules: []
+    status: pending
+  - id: sa-8.16
+    title: Self-reliant Trustworthiness
+    description: 'Implement the security design principle of self-reliant trustworthiness in [[ insert: param, sa-08.16_odp ]].'
+    parameters:
+      - id: sa-08.16_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of self-reliant trustworthiness are defined;
+    guidance: The principle of self-reliant trustworthiness states that systems minimize their reliance on other systems for their own trustworthiness. A system is trustworthy by default, and any connection to an external entity is used to supplement its function. If a system were required to maintain a connection with another external entity in order to maintain its trustworthiness, then that system would be vulnerable to malicious and non-malicious threats that could result in the loss or degradation of that connection. The benefit of the principle of self-reliant trustworthiness is that the isolation of a system will make it less vulnerable to attack. A corollary to this principle relates to the ability of the system (or system component) to operate in isolation and then resynchronize with other components when it is rejoined with them.
+    rules: []
+    status: pending
+  - id: sa-8.17
+    title: Secure Distributed Composition
+    description: 'Implement the security design principle of secure distributed composition in [[ insert: param, sa-08.17_odp ]].'
+    parameters:
+      - id: sa-08.17_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of secure distributed composition are defined;
+    guidance: The principle of secure distributed composition states that the composition of distributed components that enforce the same system security policy result in a system that enforces that policy at least as well as the individual components do. Many of the design principles for secure systems deal with how components can or should interact. The need to create or enable a capability from the composition of distributed components can magnify the relevancy of these principles. In particular, the translation of security policy from a stand-alone to a distributed system or a system-of-systems can have unexpected or emergent results. Communication protocols and distributed data consistency mechanisms help to ensure consistent policy enforcement across a distributed system. To ensure a system-wide level of assurance of correct policy enforcement, the security architecture of a distributed composite system is thoroughly analyzed.
+    rules: []
+    status: pending
+  - id: sa-8.18
+    title: Trusted Communications Channels
+    description: 'Implement the security design principle of trusted communications channels in [[ insert: param, sa-08.18_odp ]].'
+    parameters:
+      - id: sa-08.18_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of trusted communications channels are defined;
+    guidance: The principle of trusted communication channels states that when composing a system where there is a potential threat to communications between components (i.e., the interconnections between components), each communication channel is trustworthy to a level commensurate with the security dependencies it supports (i.e., how much it is trusted by other components to perform its security functions). Trusted communication channels are achieved by a combination of restricting access to the communication channel (to ensure an acceptable match in the trustworthiness of the endpoints involved in the communication) and employing end-to-end protections for the data transmitted over the communication channel (to protect against interception and modification and to further increase the assurance of proper end-to-end communication).
+    related_controls:
+      - sc-8
+      - sc-12
+      - sc-13
+    rules: []
+    status: pending
+  - id: sa-8.19
+    title: Continuous Protection
+    description: 'Implement the security design principle of continuous protection in [[ insert: param, sa-08.19_odp ]].'
+    parameters:
+      - id: sa-08.19_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of continuous protection are defined;
+    guidance: "The principle of continuous protection states that components and data used to enforce the security policy have uninterrupted protection that is consistent with the security policy and the security architecture assumptions. No assurances that the system can provide the confidentiality, integrity, availability, and privacy protections for its design capability can be made if there are gaps in the protection. Any assurances about the ability to secure a delivered capability require that data and information are continuously protected. That is, there are no periods during which data and information are left unprotected while under control of the system (i.e., during the creation, storage, processing, or communication of the data and information, as well as during system initialization, execution, failure, interruption, and shutdown). Continuous protection requires adherence to the precepts of the reference monitor concept (i.e., every request is validated by the reference monitor; the reference monitor is able to protect itself from tampering; and sufficient assurance of the correctness and completeness of the mechanism can be ascertained from analysis and testing) and the principle of secure failure and recovery (i.e., preservation of a secure state during error, fault, failure, and successful attack; preservation of a secure state during recovery to normal, degraded, or alternative operational modes).\n\nContinuous protection also applies to systems designed to operate in varying configurations, including those that deliver full operational capability and degraded-mode configurations that deliver partial operational capability. The continuous protection principle requires that changes to the system security policies be traceable to the operational need that drives the configuration and be verifiable (i.e., it is possible to verify that the proposed changes will not put the system into an insecure state). Insufficient traceability and verification may lead to inconsistent states or protection discontinuities due to the complex or undecidable nature of the problem. The use of pre-verified configuration definitions that reflect the new security policy enables analysis to determine that a transition from old to new policies is essentially atomic and that any residual effects from the old policy are guaranteed to not conflict with the new policy. The ability to demonstrate continuous protection is rooted in the clear articulation of life cycle protection needs as stakeholder security requirements."
+    related_controls:
+      - ac-25
+    rules: []
+    status: pending
+  - id: sa-8.20
+    title: Secure Metadata Management
+    description: 'Implement the security design principle of secure metadata management in [[ insert: param, sa-08.20_odp ]].'
+    parameters:
+      - id: sa-08.20_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of secure metadata management are defined;
+    guidance: "The principle of secure metadata management states that metadata are \"first class\" objects with respect to security policy when the policy requires either complete protection of information or that the security subsystem be self-protecting. The principle of secure metadata management is driven by the recognition that a system, subsystem, or component cannot achieve self-protection unless it protects the data it relies on for correct execution. Data is generally not interpreted by the system that stores it. It may have semantic value (i.e., it comprises information) to users and programs that process the data. In contrast, metadata is information about data, such as a file name or the date when the file was created. Metadata is bound to the target data that it describes in a way that the system can interpret, but it need not be stored inside of or proximate to its target data. There may be metadata whose target is itself metadata (e.g., the classification level or impact level of a file name), including self-referential metadata.\n\nThe apparent secondary nature of metadata can lead to neglect of its legitimate need for protection, resulting in a violation of the security policy that includes the exfiltration of information. A particular concern associated with insufficient protections for metadata is associated with multilevel secure (MLS) systems. MLS systems mediate access by a subject to an object based on relative sensitivity levels. It follows that all subjects and objects in the scope of control of the MLS system are either directly labeled or indirectly attributed with sensitivity levels. The corollary of labeled metadata for MLS systems states that objects containing metadata are labeled. As with protection needs assessments for data, attention is given to ensure that the confidentiality and integrity protections are individually assessed, specified, and allocated to metadata, as would be done for mission, business, and system data."
+    rules: []
+    status: pending
+  - id: sa-8.21
+    title: Self-analysis
+    description: 'Implement the security design principle of self-analysis in [[ insert: param, sa-08.21_odp ]].'
+    parameters:
+      - id: sa-08.21_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of self-analysis are defined;
+    guidance: The principle of self-analysis states that a system component is able to assess its internal state and functionality to a limited extent at various stages of execution, and that this self-analysis capability is commensurate with the level of trustworthiness invested in the system. At the system level, self-analysis can be achieved through hierarchical assessments of trustworthiness established in a bottom-up fashion. In this approach, the lower-level components check for data integrity and correct functionality (to a limited extent) of higher-level components. For example, trusted boot sequences involve a trusted lower-level component that attests to the trustworthiness of the next higher-level components so that a transitive chain of trust can be established. At the root, a component attests to itself, which usually involves an axiomatic or environmentally enforced assumption about its integrity. Results of the self-analyses can be used to guard against externally induced errors, internal malfunction, or transient errors. By following this principle, some simple malfunctions or errors can be detected without allowing the effects of the error or malfunction to propagate outside of the component. Further, the self-test can be used to attest to the configuration of the component, detecting any potential conflicts in configuration with respect to the expected configuration.
+    related_controls:
+      - ca-7
+    rules: []
+    status: pending
+  - id: sa-8.22
+    title: Accountability and Traceability
+    description: 'Implement the security design principle of accountability and traceability in [[ insert: param, sa-8.22_prm_1 ]].'
+    parameters:
+      - id: sa-8.22_prm_1
+        label: organization-defined systems or system components
+      - id: sa-08.22_odp.01
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of accountability are defined;
+      - id: sa-08.22_odp.02
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of traceability are defined;
+    guidance: The principle of accountability and traceability states that it is possible to trace security-relevant actions (i.e., subject-object interactions) to the entity on whose behalf the action is being taken. The principle of accountability and traceability requires a trustworthy infrastructure that can record details about actions that affect system security (e.g., an audit subsystem). To record the details about actions, the system is able to uniquely identify the entity on whose behalf the action is being carried out and also record the relevant sequence of actions that are carried out. The accountability policy also requires that audit trail itself be protected from unauthorized access and modification. The principle of least privilege assists in tracing the actions to particular entities, as it increases the granularity of accountability. Associating specific actions with system entities, and ultimately with users, and making the audit trail secure against unauthorized access and modifications provide non-repudiation because once an action is recorded, it is not possible to change the audit trail. Another important function that accountability and traceability serves is in the routine and forensic analysis of events associated with the violation of security policy. Analysis of audit logs may provide additional information that may be helpful in determining the path or component that allowed the violation of the security policy and the actions of individuals associated with the violation of the security policy.
+    related_controls:
+      - ac-6
+      - au-2
+      - au-3
+      - au-6
+      - au-9
+      - au-10
+      - au-12
+      - ia-2
+      - ir-4
+    rules: []
+    status: pending
+  - id: sa-8.23
+    title: Secure Defaults
+    description: 'Implement the security design principle of secure defaults in [[ insert: param, sa-08.23_odp ]].'
+    parameters:
+      - id: sa-08.23_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of secure defaults are defined;
+    guidance: "The principle of secure defaults states that the default configuration of a system (including its constituent subsystems, components, and mechanisms) reflects a restrictive and conservative enforcement of security policy. The principle of secure defaults applies to the initial (i.e., default) configuration of a system as well as to the security engineering and design of access control and other security functions that follow a \"deny unless explicitly authorized\" strategy. The initial configuration aspect of this principle requires that any \"as shipped\" configuration of a system, subsystem, or system component does not aid in the violation of the security policy and can prevent the system from operating in the default configuration for those cases where the security policy itself requires configuration by the operational user.\n\nRestrictive defaults mean that the system will operate \"as-shipped\" with adequate self-protection and be able to prevent security breaches before the intended security policy and system configuration is established. In cases where the protection provided by the \"as-shipped\" product is inadequate, stakeholders assess the risk of using it prior to establishing a secure initial state. Adherence to the principle of secure defaults guarantees that a system is established in a secure state upon successfully completing initialization. In situations where the system fails to complete initialization, either it will perform a requested operation using secure defaults or it will not perform the operation. Refer to the principles of continuous protection and secure failure and recovery that parallel this principle to provide the ability to detect and recover from failure.\n\nThe security engineering approach to this principle states that security mechanisms deny requests unless the request is found to be well-formed and consistent with the security policy. The insecure alternative is to allow a request unless it is shown to be inconsistent with the policy. In a large system, the conditions that are satisfied to grant a request that is denied by default are often far more compact and complete than those that would need to be checked in order to deny a request that is granted by default."
+    related_controls:
+      - cm-2
+      - cm-6
+      - sa-4
+    rules: []
+    status: pending
+  - id: sa-8.24
+    title: Secure Failure and Recovery
+    description: 'Implement the security design principle of secure failure and recovery in [[ insert: param, sa-8.24_prm_1 ]].'
+    parameters:
+      - id: sa-8.24_prm_1
+        label: organization-defined systems or system components
+      - id: sa-08.24_odp.01
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of secure failure are defined;
+      - id: sa-08.24_odp.02
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of secure recovery are defined;
+    guidance: "The principle of secure failure and recovery states that neither a failure in a system function or mechanism nor any recovery action in response to failure leads to a violation of security policy. The principle of secure failure and recovery parallels the principle of continuous protection to ensure that a system is capable of detecting (within limits) actual and impending failure at any stage of its operation (i.e., initialization, normal operation, shutdown, and maintenance) and to take appropriate steps to ensure that security policies are not violated. In addition, when specified, the system is capable of recovering from impending or actual failure to resume normal, degraded, or alternative secure operations while ensuring that a secure state is maintained such that security policies are not violated.\n\nFailure is a condition in which the behavior of a component deviates from its specified or expected behavior for an explicitly documented input. Once a failed security function is detected, the system may reconfigure itself to circumvent the failed component while maintaining security and provide all or part of the functionality of the original system, or it may completely shut itself down to prevent any further violation of security policies. For this to occur, the reconfiguration functions of the system are designed to ensure continuous enforcement of security policy during the various phases of reconfiguration.\n\nAnother technique that can be used to recover from failures is to perform a rollback to a secure state (which may be the initial state) and then either shutdown or replace the service or component that failed such that secure operations may resume. Failure of a component may or may not be detectable to the components using it. The principle of secure failure indicates that components fail in a state that denies rather than grants access. For example, a nominally \"atomic\" operation interrupted before completion does not violate security policy and is designed to handle interruption events by employing higher-level atomicity and rollback mechanisms (e.g., transactions). If a service is being used, its atomicity properties are well-documented and characterized so that the component availing itself of that service can detect and handle interruption events appropriately. For example, a system is designed to gracefully respond to disconnection and support resynchronization and data consistency after disconnection.\n\nFailure protection strategies that employ replication of policy enforcement mechanisms, sometimes called defense in depth, can allow the system to continue in a secure state even when one mechanism has failed to protect the system. If the mechanisms are similar, however, the additional protection may be illusory, as the adversary can simply attack in series. Similarly, in a networked system, breaking the security on one system or service may enable an attacker to do the same on other similar replicated systems and services. By employing multiple protection mechanisms whose features are significantly different, the possibility of attack replication or repetition can be reduced. Analyses are conducted to weigh the costs and benefits of such redundancy techniques against increased resource usage and adverse effects on the overall system performance. Additional analyses are conducted as the complexity of these mechanisms increases, as could be the case for dynamic behaviors. Increased complexity generally reduces trustworthiness. When a resource cannot be continuously protected, it is critical to detect and repair any security breaches before the resource is once again used in a secure context."
+    related_controls:
+      - cp-10
+      - cp-12
+      - sc-7
+      - sc-8
+      - sc-24
+      - si-13
+    rules: []
+    status: pending
+  - id: sa-8.25
+    title: Economic Security
+    description: 'Implement the security design principle of economic security in [[ insert: param, sa-08.25_odp ]].'
+    parameters:
+      - id: sa-08.25_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of economic security are defined;
+    guidance: The principle of economic security states that security mechanisms are not costlier than the potential damage that could occur from a security breach. This is the security-relevant form of the cost-benefit analyses used in risk management. The cost assumptions of cost-benefit analysis prevent the system designer from incorporating security mechanisms of greater strength than necessary, where strength of mechanism is proportional to cost. The principle of economic security also requires analysis of the benefits of assurance relative to the cost of that assurance in terms of the effort expended to obtain relevant and credible evidence as well as the necessary analyses to assess and draw trustworthiness and risk conclusions from the evidence.
+    related_controls:
+      - ra-3
+    rules: []
+    status: pending
+  - id: sa-8.26
+    title: Performance Security
+    description: 'Implement the security design principle of performance security in [[ insert: param, sa-08.26_odp ]].'
+    parameters:
+      - id: sa-08.26_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of performance security are defined;
+    guidance: "The principle of performance security states that security mechanisms are constructed so that they do not degrade system performance unnecessarily. Stakeholder and system design requirements for performance and security are precisely articulated and prioritized. For the system implementation to meet its design requirements and be found acceptable to stakeholders (i.e., validation against stakeholder requirements), the designers adhere to the specified constraints that capability performance needs place on protection needs. The overall impact of computationally intensive security services (e.g., cryptography) are assessed and demonstrated to pose no significant impact to higher-priority performance considerations or are deemed to provide an acceptable trade-off of performance for trustworthy protection. The trade-off considerations include less computationally intensive security services unless they are unavailable or insufficient. The insufficiency of a security service is determined by functional capability and strength of mechanism. The strength of mechanism is selected with respect to security requirements, performance-critical overhead issues (e.g., cryptographic key management), and an assessment of the capability of the threat.\n\nThe principle of performance security leads to the incorporation of features that help in the enforcement of security policy but incur minimum overhead, such as low-level hardware mechanisms upon which higher-level services can be built. Such low-level mechanisms are usually very specific, have very limited functionality, and are optimized for performance. For example, once access rights to a portion of memory is granted, many systems use hardware mechanisms to ensure that all further accesses involve the correct memory address and access mode. Application of this principle reinforces the need to design security into the system from the ground up and to incorporate simple mechanisms at the lower layers that can be used as building blocks for higher-level mechanisms."
+    related_controls:
+      - sc-12
+      - sc-13
+      - si-2
+      - si-7
+    rules: []
+    status: pending
+  - id: sa-8.27
+    title: Human Factored Security
+    description: 'Implement the security design principle of human factored security in [[ insert: param, sa-08.27_odp ]].'
+    parameters:
+      - id: sa-08.27_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of human factored security are defined;
+    guidance: The principle of human factored security states that the user interface for security functions and supporting services is intuitive, user-friendly, and provides feedback for user actions that affect such policy and its enforcement. The mechanisms that enforce security policy are not intrusive to the user and are designed not to degrade user efficiency. Security policy enforcement mechanisms also provide the user with meaningful, clear, and relevant feedback and warnings when insecure choices are being made. Particular attention is given to interfaces through which personnel responsible for system administration and operation configure and set up the security policies. Ideally, these personnel are able to understand the impact of their choices. Personnel with system administrative and operational responsibilities are able to configure systems before start-up and administer them during runtime with confidence that their intent is correctly mapped to the system’s mechanisms. Security services, functions, and mechanisms do not impede or unnecessarily complicate the intended use of the system. There is a trade-off between system usability and the strictness necessary for security policy enforcement. If security mechanisms are frustrating or difficult to use, then users may disable them, avoid them, or use them in ways inconsistent with the security requirements and protection needs that the mechanisms were designed to satisfy.
+    rules: []
+    status: pending
+  - id: sa-8.28
+    title: Acceptable Security
+    description: 'Implement the security design principle of acceptable security in [[ insert: param, sa-08.28_odp ]].'
+    parameters:
+      - id: sa-08.28_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of acceptable security are defined;
+    guidance: The principle of acceptable security requires that the level of privacy and performance that the system provides is consistent with the users’ expectations. The perception of personal privacy may affect user behavior, morale, and effectiveness. Based on the organizational privacy policy and the system design, users should be able to restrict their actions to protect their privacy. When systems fail to provide intuitive interfaces or meet privacy and performance expectations, users may either choose to completely avoid the system or use it in ways that may be inefficient or even insecure.
+    rules: []
+    status: pending
+  - id: sa-8.29
+    title: Repeatable and Documented Procedures
+    description: 'Implement the security design principle of repeatable and documented procedures in [[ insert: param, sa-08.29_odp ]].'
+    parameters:
+      - id: sa-08.29_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of repeatable and documented procedures are defined;
+    guidance: The principle of repeatable and documented procedures states that the techniques and methods employed to construct a system component permit the same component to be completely and correctly reconstructed at a later time. Repeatable and documented procedures support the development of a component that is identical to the component created earlier, which may be in widespread use. In the case of other system artifacts (e.g., documentation and testing results), repeatability supports consistency and the ability to inspect the artifacts. Repeatable and documented procedures can be introduced at various stages within the system development life cycle and contribute to the ability to evaluate assurance claims for the system. Examples include systematic procedures for code development and review, procedures for the configuration management of development tools and system artifacts, and procedures for system delivery.
+    related_controls:
+      - cm-1
+      - sa-1
+      - sa-10
+      - sa-11
+      - sa-15
+      - sa-17
+      - sc-1
+      - si-1
+    rules: []
+    status: pending
+  - id: sa-8.30
+    title: Procedural Rigor
+    description: 'Implement the security design principle of procedural rigor in [[ insert: param, sa-08.30_odp ]].'
+    parameters:
+      - id: sa-08.30_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of procedural rigor are defined;
+    guidance: "The principle of procedural rigor states that the rigor of a system life cycle process is commensurate with its intended trustworthiness. Procedural rigor defines the scope, depth, and detail of the system life cycle procedures. Rigorous system life cycle procedures contribute to the assurance that the system is correct and free of unintended functionality in several ways. First, the procedures impose checks and balances on the life cycle process such that the introduction of unspecified functionality is prevented.\n\nSecond, rigorous procedures applied to systems security engineering activities that produce specifications and other system design documents contribute to the ability to understand the system as it has been built rather than trusting that the component, as implemented, is the authoritative (and potentially misleading) specification.\n\nFinally, modifications to an existing system component are easier when there are detailed specifications that describe its current design instead of studying source code or schematics to try to understand how it works. Procedural rigor helps ensure that security functional and assurance requirements have been satisfied, and it contributes to a better-informed basis for the determination of trustworthiness and risk posture. Procedural rigor is commensurate with the degree of assurance desired for the system. If the required trustworthiness of the system is low, a high level of procedural rigor may add unnecessary cost, whereas when high trustworthiness is critical, the cost of high procedural rigor is merited."
+    rules: []
+    status: pending
+  - id: sa-8.31
+    title: Secure System Modification
+    description: 'Implement the security design principle of secure system modification in [[ insert: param, sa-08.31_odp ]].'
+    parameters:
+      - id: sa-08.31_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of secure system modification are defined;
+    guidance: The principle of secure system modification states that system modification maintains system security with respect to the security requirements and risk tolerance of stakeholders. Upgrades or modifications to systems can transform secure systems into systems that are not secure. The procedures for system modification ensure that if the system is to maintain its trustworthiness, the same rigor that was applied to its initial development is applied to any system changes. Because modifications can affect the ability of the system to maintain its secure state, a careful security analysis of the modification is needed prior to its implementation and deployment. This principle parallels the principle of secure evolvability.
+    related_controls:
+      - cm-3
+      - cm-4
+    rules: []
+    status: pending
+  - id: sa-8.32
+    title: Sufficient Documentation
+    description: 'Implement the security design principle of sufficient documentation in [[ insert: param, sa-08.32_odp ]].'
+    parameters:
+      - id: sa-08.32_odp
+        label: systems or system components
+        guidelines:
+          - systems or system components that implement the security design principle of sufficient documentation are defined;
+    guidance: The principle of sufficient documentation states that organizational personnel with responsibilities to interact with the system are provided with adequate documentation and other information such that the personnel contribute to rather than detract from system security. Despite attempts to comply with principles such as human factored security and acceptable security, systems are inherently complex, and the design intent for the use of security mechanisms and the ramifications of the misuse or misconfiguration of security mechanisms are not always intuitively obvious. Uninformed and insufficiently trained users can introduce vulnerabilities due to errors of omission and commission. The availability of documentation and training can help to ensure a knowledgeable cadre of personnel, all of whom have a critical role in the achievement of principles such as continuous protection. Documentation is written clearly and supported by training that provides security awareness and understanding of security-relevant responsibilities.
+    related_controls:
+      - at-2
+      - at-3
+      - sa-5
+    rules: []
+    status: pending
+  - id: sa-8.33
+    title: Minimization
+    description: 'Implement the privacy principle of minimization using [[ insert: param, sa-08.33_odp ]].'
+    parameters:
+      - id: sa-08.33_odp
+        label: processes
+        guidelines:
+          - processes that implement the privacy principle of minimization are defined;
+    guidance: The principle of minimization states that organizations should only process personally identifiable information that is directly relevant and necessary to accomplish an authorized purpose and should only maintain personally identifiable information for as long as is necessary to accomplish the purpose. Organizations have processes in place, consistent with applicable laws and policies, to implement the principle of minimization.
+    related_controls:
+      - pe-8
+      - pm-25
+      - sc-42
+      - si-12
+    rules: []
+    status: pending
+  - id: sa-9
+    title: External System Services
+    description: "  a. Require that providers of external system services comply with organizational security and privacy requirements and employ the following controls: [[ insert: param, sa-09_odp.01 ]];\n  b. Define and document organizational oversight and user roles and responsibilities with regard to external system services; and\n  c. Employ the following processes, methods, and techniques to monitor control compliance by external service providers on an ongoing basis: [[ insert: param, sa-09_odp.02 ]]."
+    parameters:
+      - id: sa-09_odp.01
+        label: controls
+        guidelines:
+          - controls to be employed by external system service providers are defined;
+      - id: sa-09_odp.02
+        label: processes, methods, and techniques
+        guidelines:
+          - processes, methods, and techniques employed to monitor control compliance by external service providers are defined;
+    guidance: External system services are provided by an external provider, and the organization has no direct control over the implementation of the required controls or the assessment of control effectiveness. Organizations establish relationships with external service providers in a variety of ways, including through business partnerships, contracts, interagency agreements, lines of business arrangements, licensing agreements, joint ventures, and supply chain exchanges. The responsibility for managing risks from the use of external system services remains with authorizing officials. For services external to organizations, a chain of trust requires that organizations establish and retain a certain level of confidence that each provider in the consumer-provider relationship provides adequate protection for the services rendered. The extent and nature of this chain of trust vary based on relationships between organizations and the external providers. Organizations document the basis for the trust relationships so that the relationships can be monitored. External system services documentation includes government, service providers, end user security roles and responsibilities, and service-level agreements. Service-level agreements define the expectations of performance for implemented controls, describe measurable outcomes, and identify remedies and response requirements for identified instances of noncompliance.
+    related_controls:
+      - ac-20
+      - ca-3
+      - cp-2
+      - ir-4
+      - ir-7
+      - pl-10
+      - pl-11
+      - ps-7
+      - sa-2
+      - sa-4
+      - sr-3
+      - sr-5
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-9.1
+    title: Risk Assessments and Organizational Approvals
+    description: "  a. Conduct an organizational assessment of risk prior to the acquisition or outsourcing of information security services; and\n  b. Verify that the acquisition or outsourcing of dedicated information security services is approved by [[ insert: param, sa-09.01_odp ]]."
+    parameters:
+      - id: sa-09.01_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles that approve the acquisition or outsourcing of dedicated information security services is/are defined;
+    guidance: Information security services include the operation of security devices, such as firewalls or key management services as well as incident monitoring, analysis, and response. Risks assessed can include system, mission or business, security, privacy, or supply chain risks.
+    related_controls:
+      - ca-6
+      - ra-3
+      - ra-8
+    rules: []
+    status: pending
+  - id: sa-9.2
+    title: Identification of Functions, Ports, Protocols, and Services
+    description: 'Require providers of the following external system services to identify the functions, ports, protocols, and other services required for the use of such services: [[ insert: param, sa-09.02_odp ]].'
+    parameters:
+      - id: sa-09.02_odp
+        label: external system services
+        guidelines:
+          - external system services that require the identification of functions, ports, protocols, and other services are defined;
+    guidance: Information from external service providers regarding the specific functions, ports, protocols, and services used in the provision of such services can be useful when the need arises to understand the trade-offs involved in restricting certain functions and services or blocking certain ports and protocols.
+    related_controls:
+      - cm-6
+      - cm-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-9.3
+    title: Establish and Maintain Trust Relationship with Providers
+    description: 'Establish, document, and maintain trust relationships with external service providers based on the following requirements, properties, factors, or conditions: [[ insert: param, sa-9.3_prm_1 ]].'
+    parameters:
+      - id: sa-9.3_prm_1
+        label: organization-defined security and privacy requirements, properties, factors, or conditions defining acceptable trust relationships
+      - id: sa-09.03_odp.01
+        label: security requirements, properties, factors, or conditions
+        guidelines:
+          - security requirements, properties, factors, or conditions defining acceptable trust relationships on which a trust relationship is maintained are defined;
+      - id: sa-09.03_odp.02
+        label: privacy requirements, properties, factors, or conditions
+        guidelines:
+          - privacy requirements, properties, factors, or conditions defining acceptable trust relationships on which a trust relationship is maintained are defined;
+    guidance: Trust relationships between organizations and external service providers reflect the degree of confidence that the risk from using external services is at an acceptable level. Trust relationships can help organizations gain increased levels of confidence that service providers are providing adequate protection for the services rendered and can also be useful when conducting incident response or when planning for upgrades or obsolescence. Trust relationships can be complicated due to the potentially large number of entities participating in the consumer-provider interactions, subordinate relationships and levels of trust, and types of interactions between the parties. In some cases, the degree of trust is based on the level of control that organizations can exert on external service providers regarding the controls necessary for the protection of the service, information, or individual privacy and the evidence brought forth as to the effectiveness of the implemented controls. The level of control is established by the terms and conditions of the contracts or service-level agreements.
+    related_controls:
+      - sr-2
+    rules: []
+    status: pending
+  - id: sa-9.4
+    title: Consistent Interests of Consumers and Providers
+    description: 'Take the following actions to verify that the interests of [[ insert: param, sa-09.04_odp.01 ]] are consistent with and reflect organizational interests: [[ insert: param, sa-09.04_odp.02 ]].'
+    parameters:
+      - id: sa-09.04_odp.01
+        label: external service providers
+        guidelines:
+          - external service providers are defined;
+      - id: sa-09.04_odp.02
+        label: actions
+        guidelines:
+          - actions to be taken to verify that the interests of external service providers are consistent with and reflect organizational interests are defined;
+    guidance: As organizations increasingly use external service providers, it is possible that the interests of the service providers may diverge from organizational interests. In such situations, simply having the required technical, management, or operational controls in place may not be sufficient if the providers that implement and manage those controls are not operating in a manner consistent with the interests of the consuming organizations. Actions that organizations take to address such concerns include requiring background checks for selected service provider personnel; examining ownership records; employing only trustworthy service providers, such as providers with which organizations have had successful trust relationships; and conducting routine, periodic, unscheduled visits to service provider facilities.
+    rules: []
+    status: pending
+  - id: sa-9.5
+    title: Processing, Storage, and Service Location
+    description: 'Restrict the location of [[ insert: param, sa-09.05_odp.01 ]] to [[ insert: param, sa-09.05_odp.02 ]] based on [[ insert: param, sa-09.05_odp.03 ]].'
+    parameters:
+      - id: sa-09.05_odp.01
+        label: ''
+        choices:
+          - information processing
+          - information or data
+          - system services
+      - id: sa-09.05_odp.02
+        label: locations
+        guidelines:
+          - 'locations where [[ insert: param, sa-09.05_odp.01 ]] is/are to be restricted are defined;'
+      - id: sa-09.05_odp.03
+        label: requirements
+        guidelines:
+          - 'requirements or conditions for restricting the location of [[ insert: param, sa-09.05_odp.01 ]] are defined;'
+    guidance: The location of information processing, information and data storage, or system services can have a direct impact on the ability of organizations to successfully execute their mission and business functions. The impact occurs when external providers control the location of processing, storage, or services. The criteria that external providers use for the selection of processing, storage, or service locations may be different from the criteria that organizations use. For example, organizations may desire that data or information storage locations be restricted to certain locations to help facilitate incident response activities in case of information security incidents or breaches. Incident response activities, including forensic analyses and after-the-fact investigations, may be adversely affected by the governing laws, policies, or protocols in the locations where processing and storage occur and/or the locations from which system services emanate.
+    related_controls:
+      - sa-5
+      - sr-4
+    rules: []
+    status: pending
+  - id: sa-9.6
+    title: Organization-controlled Cryptographic Keys
+    description: Maintain exclusive control of cryptographic keys for encrypted material stored or transmitted through an external system.
+    guidance: Maintaining exclusive control of cryptographic keys in an external system prevents decryption of organizational data by external system staff. Organizational control of cryptographic keys can be implemented by encrypting and decrypting data inside the organization as data is sent to and received from the external system or by employing a component that permits encryption and decryption functions to be local to the external system but allows exclusive organizational access to the encryption keys.
+    related_controls:
+      - sc-12
+      - sc-13
+      - si-4
+    rules: []
+    status: pending
+  - id: sa-9.7
+    title: Organization-controlled Integrity Checking
+    description: Provide the capability to check the integrity of information while it resides in the external system.
+    guidance: Storage of organizational information in an external system could limit visibility into the security status of its data. The ability of the organization to verify and validate the integrity of its stored data without transferring it out of the external system provides such visibility.
+    related_controls:
+      - si-7
+    rules: []
+    status: pending
+  - id: sa-9.8
+    title: Processing and Storage Location — U.S. Jurisdiction
+    description: Restrict the geographic location of information processing and data storage to facilities located within in the legal jurisdictional boundary of the United States.
+    guidance: The geographic location of information processing and data storage can have a direct impact on the ability of organizations to successfully execute their mission and business functions. A compromise or breach of high impact information and systems can have severe or catastrophic adverse impacts on organizational assets and operations, individuals, other organizations, and the Nation. Restricting the processing and storage of high-impact information to facilities within the legal jurisdictional boundary of the United States provides greater control over such processing and storage.
+    related_controls:
+      - sa-5
+      - sr-4
+    rules: []
+    status: pending
+  - id: sa-10
+    title: Developer Configuration Management
+    description: "Require the developer of the system, system component, or system service to:\n  a. Perform configuration management during system, component, or service [[ insert: param, sa-10_odp.01 ]];\n  b. Document, manage, and control the integrity of changes to [[ insert: param, sa-10_odp.02 ]];\n  c. Implement only organization-approved changes to the system, component, or service;\n  d. Document approved changes to the system, component, or service and the potential security and privacy impacts of such changes; and\n  e. Track security flaws and flaw resolution within the system, component, or service and report findings to [[ insert: param, sa-10_odp.03 ]]."
+    parameters:
+      - id: sa-10_odp.01
+        label: ''
+        choices:
+          - design
+          - development
+          - implementation
+          - operation
+          - disposal
+      - id: sa-10_odp.02
+        label: configuration items
+        guidelines:
+          - configuration items under configuration management are defined;
+      - id: sa-10_odp.03
+        label: personnel
+        guidelines:
+          - personnel to whom security flaws and flaw resolutions within the system, component, or service are reported is/are defined;
+    guidance: "Organizations consider the quality and completeness of configuration management activities conducted by developers as direct evidence of applying effective security controls. Controls include protecting the master copies of material used to generate security-relevant portions of the system hardware, software, and firmware from unauthorized modification or destruction. Maintaining the integrity of changes to the system, system component, or system service requires strict configuration control throughout the system development life cycle to track authorized changes and prevent unauthorized changes.\n\nThe configuration items that are placed under configuration management include the formal model; the functional, high-level, and low-level design specifications; other design data; implementation documentation; source code and hardware schematics; the current running version of the object code; tools for comparing new versions of security-relevant hardware descriptions and source code with previous versions; and test fixtures and documentation. Depending on the mission and business needs of organizations and the nature of the contractual relationships in place, developers may provide configuration management support during the operations and maintenance stage of the system development life cycle."
+    related_controls:
+      - cm-2
+      - cm-3
+      - cm-4
+      - cm-7
+      - cm-9
+      - sa-4
+      - sa-5
+      - sa-8
+      - sa-15
+      - si-2
+      - sr-3
+      - sr-4
+      - sr-5
+      - sr-6
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-10.1
+    title: Software and Firmware Integrity Verification
+    description: Require the developer of the system, system component, or system service to enable integrity verification of software and firmware components.
+    guidance: Software and firmware integrity verification allows organizations to detect unauthorized changes to software and firmware components using developer-provided tools, techniques, and mechanisms. The integrity checking mechanisms can also address counterfeiting of software and firmware components. Organizations verify the integrity of software and firmware components, for example, through secure one-way hashes provided by developers. Delivered software and firmware components also include any updates to such components.
+    related_controls:
+      - si-7
+      - sr-11
+    rules: []
+    status: pending
+  - id: sa-10.2
+    title: Alternative Configuration Management Processes
+    description: Provide an alternate configuration management process using organizational personnel in the absence of a dedicated developer configuration management team.
+    guidance: Alternate configuration management processes may be required when organizations use commercial off-the-shelf information technology products. Alternate configuration management processes include organizational personnel who review and approve proposed changes to systems, system components, and system services and conduct security and privacy impact analyses prior to the implementation of changes to systems, components, or services.
+    rules: []
+    status: pending
+  - id: sa-10.3
+    title: Hardware Integrity Verification
+    description: Require the developer of the system, system component, or system service to enable integrity verification of hardware components.
+    guidance: Hardware integrity verification allows organizations to detect unauthorized changes to hardware components using developer-provided tools, techniques, methods, and mechanisms. Organizations may verify the integrity of hardware components with hard-to-copy labels, verifiable serial numbers provided by developers, and by requiring the use of anti-tamper technologies. Delivered hardware components also include hardware and firmware updates to such components.
+    related_controls:
+      - si-7
+    rules: []
+    status: pending
+  - id: sa-10.4
+    title: Trusted Generation
+    description: Require the developer of the system, system component, or system service to employ tools for comparing newly generated versions of security-relevant hardware descriptions, source code, and object code with previous versions.
+    guidance: The trusted generation of descriptions, source code, and object code addresses authorized changes to hardware, software, and firmware components between versions during development. The focus is on the efficacy of the configuration management process by the developer to ensure that newly generated versions of security-relevant hardware descriptions, source code, and object code continue to enforce the security policy for the system, system component, or system service. In contrast, [SA-10(1)](#sa-10.1) and [SA-10(3)](#sa-10.3) allow organizations to detect unauthorized changes to hardware, software, and firmware components using tools, techniques, or mechanisms provided by developers.
+    rules: []
+    status: pending
+  - id: sa-10.5
+    title: Mapping Integrity for Version Control
+    description: Require the developer of the system, system component, or system service to maintain the integrity of the mapping between the master build data describing the current version of security-relevant hardware, software, and firmware and the on-site master copy of the data for the current version.
+    guidance: Mapping integrity for version control addresses changes to hardware, software, and firmware components during both initial development and system development life cycle updates. Maintaining the integrity between the master copies of security-relevant hardware, software, and firmware (including designs, hardware drawings, source code) and the equivalent data in master copies in operational environments is essential to ensuring the availability of organizational systems that support critical mission and business functions.
+    rules: []
+    status: pending
+  - id: sa-10.6
+    title: Trusted Distribution
+    description: Require the developer of the system, system component, or system service to execute procedures for ensuring that security-relevant hardware, software, and firmware updates distributed to the organization are exactly as specified by the master copies.
+    guidance: The trusted distribution of security-relevant hardware, software, and firmware updates help to ensure that the updates are correct representations of the master copies maintained by the developer and have not been tampered with during distribution.
+    rules: []
+    status: pending
+  - id: sa-10.7
+    title: Security and Privacy Representatives
+    description: 'Require [[ insert: param, sa-10.7_prm_1 ]] to be included in the [[ insert: param, sa-10.7_prm_2 ]].'
+    parameters:
+      - id: sa-10.7_prm_1
+        label: organization-defined security and privacy representatives
+      - id: sa-10.7_prm_2
+        label: organization-defined configuration change management and control process
+      - id: sa-10.07_odp.01
+        label: security representatives
+        guidelines:
+          - security representatives to be included in the configuration change management and control process are defined;
+      - id: sa-10.07_odp.02
+        label: privacy representatives
+        guidelines:
+          - privacy representatives to be included in the configuration change management and control process are defined;
+      - id: sa-10.07_odp.03
+        label: configuration change management and control processes
+        guidelines:
+          - configuration change management and control processes in which security representatives are required to be included are defined;
+      - id: sa-10.07_odp.04
+        label: configuration change management and control processes
+        guidelines:
+          - configuration change management and control processes in which privacy representatives are required to be included are defined;
+    guidance: Information security and privacy representatives can include system security officers, senior agency information security officers, senior agency officials for privacy, and system privacy officers. Representation by personnel with information security and privacy expertise is important because changes to system configurations can have unintended side effects, some of which may be security- or privacy-relevant. Detecting such changes early in the process can help avoid unintended, negative consequences that could ultimately affect the security and privacy posture of systems. The configuration change management and control process in this control enhancement refers to the change management and control process defined by organizations in [SA-10b](#sa-10_smt.b).
+    rules: []
+    status: pending
+  - id: sa-11
+    title: Developer Testing and Evaluation
+    description: "Require the developer of the system, system component, or system service, at all post-design stages of the system development life cycle, to:\n  a. Develop and implement a plan for ongoing security and privacy control assessments;\n  b. Perform [[ insert: param, sa-11_odp.01 ]] testing/evaluation [[ insert: param, sa-11_odp.02 ]] at [[ insert: param, sa-11_odp.03 ]];\n  c. Produce evidence of the execution of the assessment plan and the results of the testing and evaluation;\n  d. Implement a verifiable flaw remediation process; and\n  e. Correct flaws identified during testing and evaluation."
+    parameters:
+      - id: sa-11_odp.01
+        label: ''
+        choices:
+          - unit
+          - integration
+          - system
+          - regression
+      - id: sa-11_odp.02
+        label: frequency to conduct
+        guidelines:
+          - 'frequency at which to conduct [[ insert: param, sa-11_odp.01 ]] testing/evaluation is defined;'
+      - id: sa-11_odp.03
+        label: depth and coverage
+        guidelines:
+          - 'depth and coverage of [[ insert: param, sa-11_odp.01 ]] testing/evaluation is defined;'
+    guidance: "Developmental testing and evaluation confirms that the required controls are implemented correctly, operating as intended, enforcing the desired security and privacy policies, and meeting established security and privacy requirements. Security properties of systems and the privacy of individuals may be affected by the interconnection of system components or changes to those components. The interconnections or changes—including upgrading or replacing applications, operating systems, and firmware—may adversely affect previously implemented controls. Ongoing assessment during development allows for additional types of testing and evaluation that developers can conduct to reduce or eliminate potential flaws. Testing custom software applications may require approaches such as manual code review, security architecture review, and penetration testing, as well as and static analysis, dynamic analysis, binary analysis, or a hybrid of the three analysis approaches.\n\nDevelopers can use the analysis approaches, along with security instrumentation and fuzzing, in a variety of tools and in source code reviews. The security and privacy assessment plans include the specific activities that developers plan to carry out, including the types of analyses, testing, evaluation, and reviews of software and firmware components; the degree of rigor to be applied; the frequency of the ongoing testing and evaluation; and the types of artifacts produced during those processes. The depth of testing and evaluation refers to the rigor and level of detail associated with the assessment process. The coverage of testing and evaluation refers to the scope (i.e., number and type) of the artifacts included in the assessment process. Contracts specify the acceptance criteria for security and privacy assessment plans, flaw remediation processes, and the evidence that the plans and processes have been diligently applied. Methods for reviewing and protecting assessment plans, evidence, and documentation are commensurate with the security category or classification level of the system. Contracts may specify protection requirements for documentation."
+    related_controls:
+      - ca-2
+      - ca-7
+      - cm-4
+      - sa-3
+      - sa-4
+      - sa-5
+      - sa-8
+      - sa-15
+      - sa-17
+      - si-2
+      - sr-5
+      - sr-6
+      - sr-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-11.1
+    title: Static Code Analysis
+    description: Require the developer of the system, system component, or system service to employ static code analysis tools to identify common flaws and document the results of the analysis.
+    guidance: Static code analysis provides a technology and methodology for security reviews and includes checking for weaknesses in the code as well as for the incorporation of libraries or other included code with known vulnerabilities or that are out-of-date and not supported. Static code analysis can be used to identify vulnerabilities and enforce secure coding practices. It is most effective when used early in the development process, when each code change can automatically be scanned for potential weaknesses. Static code analysis can provide clear remediation guidance and identify defects for developers to fix. Evidence of the correct implementation of static analysis can include aggregate defect density for critical defect types, evidence that defects were inspected by developers or security professionals, and evidence that defects were remediated. A high density of ignored findings, commonly referred to as false positives, indicates a potential problem with the analysis process or the analysis tool. In such cases, organizations weigh the validity of the evidence against evidence from other sources.
+    rules: []
+    status: pending
+  - id: sa-11.2
+    title: Threat Modeling and Vulnerability Analyses
+    description: "Require the developer of the system, system component, or system service to perform threat modeling and vulnerability analyses during development and the subsequent testing and evaluation of the system, component, or service that:\n  a. Uses the following contextual information: [[ insert: param, sa-11.02_odp.01 ]];\n  b. Employs the following tools and methods: [[ insert: param, sa-11.02_odp.02 ]];\n  c. Conducts the modeling and analyses at the following level of rigor: [[ insert: param, sa-11.2_prm_3 ]] ; and\n  d. Produces evidence that meets the following acceptance criteria: [[ insert: param, sa-11.2_prm_4 ]]."
+    parameters:
+      - id: sa-11.2_prm_3
+        label: organization-defined breadth and depth of modeling and analyses
+      - id: sa-11.2_prm_4
+        label: organization-defined acceptance criteria
+      - id: sa-11.02_odp.01
+        label: information
+        guidelines:
+          - information concerning impact, environment of operations, known or assumed threats, and acceptable risk levels to be used as contextual information for threat modeling and vulnerability analyses is defined;
+      - id: sa-11.02_odp.02
+        label: tools and methods
+        guidelines:
+          - the tools and methods to be employed for threat modeling and vulnerability analyses are defined;
+      - id: sa-11.02_odp.03
+        label: breadth and depth
+        guidelines:
+          - the breadth and depth of threat modeling to be conducted is defined;
+      - id: sa-11.02_odp.04
+        label: breadth and depth
+        guidelines:
+          - the breadth and depth of vulnerability analyses to be conducted is defined;
+      - id: sa-11.02_odp.05
+        label: acceptance criteria
+        guidelines:
+          - acceptance criteria to be met by produced evidence for threat modeling are defined;
+      - id: sa-11.02_odp.06
+        label: acceptance criteria
+        guidelines:
+          - acceptance criteria to be met by produced evidence for vulnerability analyses are defined;
+    guidance: Systems, system components, and system services may deviate significantly from the functional and design specifications created during the requirements and design stages of the system development life cycle. Therefore, updates to threat modeling and vulnerability analyses of those systems, system components, and system services during development and prior to delivery are critical to the effective operation of those systems, components, and services. Threat modeling and vulnerability analyses at this stage of the system development life cycle ensure that design and implementation changes have been accounted for and that vulnerabilities created because of those changes have been reviewed and mitigated.
+    related_controls:
+      - pm-15
+      - ra-3
+      - ra-5
+    rules: []
+    status: pending
+  - id: sa-11.3
+    title: Independent Verification of Assessment Plans and Evidence
+    description: "  a. Require an independent agent satisfying [[ insert: param, sa-11.03_odp ]] to verify the correct implementation of the developer security and privacy assessment plans and the evidence produced during testing and evaluation; and\n  b. Verify that the independent agent is provided with sufficient information to complete the verification process or granted the authority to obtain such information."
+    parameters:
+      - id: sa-11.03_odp
+        label: independence criteria
+        guidelines:
+          - independence criteria to be satisfied by an independent agent are defined;
+    guidance: Independent agents have the qualifications—including the expertise, skills, training, certifications, and experience—to verify the correct implementation of developer security and privacy assessment plans.
+    related_controls:
+      - at-3
+      - ra-5
+    rules: []
+    status: pending
+  - id: sa-11.4
+    title: Manual Code Reviews
+    description: 'Require the developer of the system, system component, or system service to perform a manual code review of [[ insert: param, sa-11.04_odp.01 ]] using the following processes, procedures, and/or techniques: [[ insert: param, sa-11.04_odp.02 ]].'
+    parameters:
+      - id: sa-11.04_odp.01
+        label: specific code
+        guidelines:
+          - specific code requiring manual code review is defined;
+      - id: sa-11.04_odp.02
+        label: processes, procedures, and/or techniques
+        guidelines:
+          - processes, procedures, and/or techniques used for manual code reviews are defined;
+    guidance: Manual code reviews are usually reserved for the critical software and firmware components of systems. Manual code reviews are effective at identifying weaknesses that require knowledge of the application’s requirements or context that, in most cases, is unavailable to automated analytic tools and techniques, such as static and dynamic analysis. The benefits of manual code review include the ability to verify access control matrices against application controls and review detailed aspects of cryptographic implementations and controls.
+    rules: []
+    status: pending
+  - id: sa-11.5
+    title: Penetration Testing
+    description: "Require the developer of the system, system component, or system service to perform penetration testing:\n  a. At the following level of rigor: [[ insert: param, sa-11.5_prm_1 ]] ; and\n  b. Under the following constraints: [[ insert: param, sa-11.05_odp.03 ]]."
+    parameters:
+      - id: sa-11.5_prm_1
+        label: organization-defined breadth and depth of testing
+      - id: sa-11.05_odp.01
+        label: breadth
+        guidelines:
+          - the breadth of penetration testing is defined;
+      - id: sa-11.05_odp.02
+        label: depth
+        guidelines:
+          - the depth of penetration testing is defined;
+      - id: sa-11.05_odp.03
+        label: constraints
+        guidelines:
+          - constraints of penetration testing are defined;
+    guidance: Penetration testing is an assessment methodology in which assessors, using all available information technology product or system documentation and working under specific constraints, attempt to circumvent the implemented security and privacy features of information technology products and systems. Useful information for assessors who conduct penetration testing includes product and system design specifications, source code, and administrator and operator manuals. Penetration testing can include white-box, gray-box, or black-box testing with analyses performed by skilled professionals who simulate adversary actions. The objective of penetration testing is to discover vulnerabilities in systems, system components, and services that result from implementation errors, configuration faults, or other operational weaknesses or deficiencies. Penetration tests can be performed in conjunction with automated and manual code reviews to provide a greater level of analysis than would ordinarily be possible. When user session information and other personally identifiable information is captured or recorded during penetration testing, such information is handled appropriately to protect privacy.
+    related_controls:
+      - ca-8
+      - pm-14
+      - pm-25
+      - pt-2
+      - sa-3
+      - si-2
+      - si-6
+    rules: []
+    status: pending
+  - id: sa-11.6
+    title: Attack Surface Reviews
+    description: Require the developer of the system, system component, or system service to perform attack surface reviews.
+    guidance: Attack surfaces of systems and system components are exposed areas that make those systems more vulnerable to attacks. Attack surfaces include any accessible areas where weaknesses or deficiencies in the hardware, software, and firmware components provide opportunities for adversaries to exploit vulnerabilities. Attack surface reviews ensure that developers analyze the design and implementation changes to systems and mitigate attack vectors generated as a result of the changes. The correction of identified flaws includes deprecation of unsafe functions.
+    related_controls:
+      - sa-15
+    rules: []
+    status: pending
+  - id: sa-11.7
+    title: Verify Scope of Testing and Evaluation
+    description: 'Require the developer of the system, system component, or system service to verify that the scope of testing and evaluation provides complete coverage of the required controls at the following level of rigor: [[ insert: param, sa-11.7_prm_1 ]].'
+    parameters:
+      - id: sa-11.7_prm_1
+        label: organization-defined breadth and depth of testing and evaluation
+      - id: sa-11.07_odp.01
+        label: breadth
+        guidelines:
+          - the breadth of testing and evaluation of required controls is defined;
+      - id: sa-11.07_odp.02
+        label: depth
+        guidelines:
+          - the depth of testing and evaluation of required controls is defined;
+    guidance: Verifying that testing and evaluation provides complete coverage of required controls can be accomplished by a variety of analytic techniques ranging from informal to formal. Each of these techniques provides an increasing level of assurance that corresponds to the degree of formality of the analysis. Rigorously demonstrating control coverage at the highest levels of assurance can be achieved using formal modeling and analysis techniques, including correlation between control implementation and corresponding test cases.
+    related_controls:
+      - sa-15
+    rules: []
+    status: pending
+  - id: sa-11.8
+    title: Dynamic Code Analysis
+    description: Require the developer of the system, system component, or system service to employ dynamic code analysis tools to identify common flaws and document the results of the analysis.
+    guidance: Dynamic code analysis provides runtime verification of software programs using tools capable of monitoring programs for memory corruption, user privilege issues, and other potential security problems. Dynamic code analysis employs runtime tools to ensure that security functionality performs in the way it was designed. A type of dynamic analysis, known as fuzz testing, induces program failures by deliberately introducing malformed or random data into software programs. Fuzz testing strategies are derived from the intended use of applications and the functional and design specifications for the applications. To understand the scope of dynamic code analysis and the assurance provided, organizations may also consider conducting code coverage analysis (i.e., checking the degree to which the code has been tested using metrics such as percent of subroutines tested or percent of program statements called during execution of the test suite) and/or concordance analysis (i.e., checking for words that are out of place in software code, such as non-English language words or derogatory terms).
+    rules: []
+    status: pending
+  - id: sa-11.9
+    title: Interactive Application Security Testing
+    description: Require the developer of the system, system component, or system service to employ interactive application security testing tools to identify flaws and document the results.
+    guidance: Interactive (also known as instrumentation-based) application security testing is a method of detecting vulnerabilities by observing applications as they run during testing. The use of instrumentation relies on direct measurements of the actual running applications and uses access to the code, user interaction, libraries, frameworks, backend connections, and configurations to directly measure control effectiveness. When combined with analysis techniques, interactive application security testing can identify a broad range of potential vulnerabilities and confirm control effectiveness. Instrumentation-based testing works in real time and can be used continuously throughout the system development life cycle.
+    rules: []
+    status: pending
+  - id: sa-12
+    title: Supply Chain Protection
+    rules: []
+    status: pending
+  - id: sa-12.1
+    title: Acquisition Strategies / Tools / Methods
+    rules: []
+    status: pending
+  - id: sa-12.2
+    title: Supplier Reviews
+    rules: []
+    status: pending
+  - id: sa-12.3
+    title: Trusted Shipping and Warehousing
+    rules: []
+    status: pending
+  - id: sa-12.4
+    title: Diversity of Suppliers
+    rules: []
+    status: pending
+  - id: sa-12.5
+    title: Limitation of Harm
+    rules: []
+    status: pending
+  - id: sa-12.6
+    title: Minimizing Procurement Time
+    rules: []
+    status: pending
+  - id: sa-12.7
+    title: Assessments Prior to Selection / Acceptance / Update
+    rules: []
+    status: pending
+  - id: sa-12.8
+    title: Use of All-source Intelligence
+    rules: []
+    status: pending
+  - id: sa-12.9
+    title: Operations Security
+    rules: []
+    status: pending
+  - id: sa-12.10
+    title: Validate as Genuine and Not Altered
+    rules: []
+    status: pending
+  - id: sa-12.11
+    title: Penetration Testing / Analysis of Elements, Processes, and Actors
+    rules: []
+    status: pending
+  - id: sa-12.12
+    title: Inter-organizational Agreements
+    rules: []
+    status: pending
+  - id: sa-12.13
+    title: Critical Information System Components
+    rules: []
+    status: pending
+  - id: sa-12.14
+    title: Identity and Traceability
+    rules: []
+    status: pending
+  - id: sa-12.15
+    title: Processes to Address Weaknesses or Deficiencies
+    rules: []
+    status: pending
+  - id: sa-13
+    title: Trustworthiness
+    rules: []
+    status: pending
+  - id: sa-14
+    title: Criticality Analysis
+    rules: []
+    status: pending
+  - id: sa-14.1
+    title: Critical Components with No Viable Alternative Sourcing
+    rules: []
+    status: pending
+  - id: sa-15
+    title: Development Process, Standards, and Tools
+    description: "  a. Require the developer of the system, system component, or system service to follow a documented development process that:\n    1. Explicitly addresses security and privacy requirements;\n    2. Identifies the standards and tools used in the development process;\n    3. Documents the specific tool options and tool configurations used in the development process; and\n    4. Documents, manages, and ensures the integrity of changes to the process and/or tools used in development; and\n  b. Review the development process, standards, tools, tool options, and tool configurations [[ insert: param, sa-15_odp.01 ]] to determine if the process, standards, tools, tool options and tool configurations selected and employed can satisfy the following security and privacy requirements: [[ insert: param, sa-15_prm_2 ]]."
+    parameters:
+      - id: sa-15_prm_2
+        label: organization-defined security and privacy requirements
+      - id: sa-15_odp.01
+        label: frequency
+        guidelines:
+          - frequency at which to review the development process, standards, tools, tool options, and tool configurations is defined;
+      - id: sa-15_odp.02
+        label: security requirements
+        guidelines:
+          - security requirements to be satisfied by the process, standards, tools, tool options, and tool configurations are defined;
+      - id: sa-15_odp.03
+        label: privacy requirements
+        guidelines:
+          - privacy requirements to be satisfied by the process, standards, tools, tool options, and tool configurations are defined;
+    guidance: Development tools include programming languages and computer-aided design systems. Reviews of development processes include the use of maturity models to determine the potential effectiveness of such processes. Maintaining the integrity of changes to tools and processes facilitates effective supply chain risk assessment and mitigation. Such integrity requires configuration control throughout the system development life cycle to track authorized changes and prevent unauthorized changes.
+    related_controls:
+      - ma-6
+      - sa-3
+      - sa-4
+      - sa-8
+      - sa-10
+      - sa-11
+      - sr-3
+      - sr-4
+      - sr-5
+      - sr-6
+      - sr-9
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-15.1
+    title: Quality Metrics
+    description: "Require the developer of the system, system component, or system service to:\n  a. Define quality metrics at the beginning of the development process; and\n  b. Provide evidence of meeting the quality metrics [[ insert: param, sa-15.01_odp.01 ]]."
+    parameters:
+      - id: sa-15.01_odp.01
+        label: ''
+        choices:
+          - '[[ insert: param, sa-15.01_odp.02 ]] '
+          - '[[ insert: param, sa-15.01_odp.03 ]] '
+          - upon delivery
+      - id: sa-15.01_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to provide evidence of meeting the quality metrics is defined (if selected);
+      - id: sa-15.01_odp.03
+        label: program review
+        guidelines:
+          - program review milestones are defined (if selected);
+    guidance: Organizations use quality metrics to establish acceptable levels of system quality. Metrics can include quality gates, which are collections of completion criteria or sufficiency standards that represent the satisfactory execution of specific phases of the system development project. For example, a quality gate may require the elimination of all compiler warnings or a determination that such warnings have no impact on the effectiveness of required security or privacy capabilities. During the execution phases of development projects, quality gates provide clear, unambiguous indications of progress. Other metrics apply to the entire development project. Metrics can include defining the severity thresholds of vulnerabilities in accordance with organizational risk tolerance, such as requiring no known vulnerabilities in the delivered system with a Common Vulnerability Scoring System (CVSS) severity of medium or high.
+    rules: []
+    status: pending
+  - id: sa-15.2
+    title: Security and Privacy Tracking Tools
+    description: Require the developer of the system, system component, or system service to select and employ security and privacy tracking tools for use during the development process.
+    guidance: System development teams select and deploy security and privacy tracking tools, including vulnerability or work item tracking systems that facilitate assignment, sorting, filtering, and tracking of completed work items or tasks associated with development processes.
+    related_controls:
+      - sa-11
+    rules: []
+    status: pending
+  - id: sa-15.3
+    title: Criticality Analysis
+    description: "Require the developer of the system, system component, or system service to perform a criticality analysis:\n  a. At the following decision points in the system development life cycle: [[ insert: param, sa-15.03_odp.01 ]] ; and\n  b. At the following level of rigor: [[ insert: param, sa-15.3_prm_2 ]]."
+    parameters:
+      - id: sa-15.3_prm_2
+        label: organization-defined breadth and depth of criticality analysis
+      - id: sa-15.03_odp.01
+        label: decision points
+        guidelines:
+          - decision points in the system development life cycle are defined;
+      - id: sa-15.03_odp.02
+        label: breadth
+        guidelines:
+          - the breadth of criticality analysis is defined;
+      - id: sa-15.03_odp.03
+        label: depth
+        guidelines:
+          - the depth of criticality analysis is defined;
+    guidance: Criticality analysis performed by the developer provides input to the criticality analysis performed by organizations. Developer input is essential to organizational criticality analysis because organizations may not have access to detailed design documentation for system components that are developed as commercial off-the-shelf products. Such design documentation includes functional specifications, high-level designs, low-level designs, source code, and hardware schematics. Criticality analysis is important for organizational systems that are designated as high value assets. High value assets can be moderate- or high-impact systems due to heightened adversarial interest or potential adverse effects on the federal enterprise. Developer input is especially important when organizations conduct supply chain criticality analyses.
+    related_controls:
+      - ra-9
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-15.4
+    title: Threat Modeling and Vulnerability Analysis
+    rules: []
+    status: pending
+  - id: sa-15.5
+    title: Attack Surface Reduction
+    description: 'Require the developer of the system, system component, or system service to reduce attack surfaces to [[ insert: param, sa-15.05_odp ]].'
+    parameters:
+      - id: sa-15.05_odp
+        label: thresholds
+        guidelines:
+          - thresholds to which attack surfaces are to be reduced are defined;
+    guidance: Attack surface reduction is closely aligned with threat and vulnerability analyses and system architecture and design. Attack surface reduction is a means of reducing risk to organizations by giving attackers less opportunity to exploit weaknesses or deficiencies (i.e., potential vulnerabilities) within systems, system components, and system services. Attack surface reduction includes implementing the concept of layered defenses, applying the principles of least privilege and least functionality, applying secure software development practices, deprecating unsafe functions, reducing entry points available to unauthorized users, reducing the amount of code that executes, and eliminating application programming interfaces (APIs) that are vulnerable to attacks.
+    related_controls:
+      - ac-6
+      - cm-7
+      - ra-3
+      - sa-11
+    rules: []
+    status: pending
+  - id: sa-15.6
+    title: Continuous Improvement
+    description: Require the developer of the system, system component, or system service to implement an explicit process to continuously improve the development process.
+    guidance: Developers of systems, system components, and system services consider the effectiveness and efficiency of their development processes for meeting quality objectives and addressing the security and privacy capabilities in current threat environments.
+    rules: []
+    status: pending
+  - id: sa-15.7
+    title: Automated Vulnerability Analysis
+    description: "Require the developer of the system, system component, or system service [[ insert: param, sa-15.07_odp.01 ]] to:\n  a. Perform an automated vulnerability analysis using [[ insert: param, sa-15.07_odp.02 ]];\n  b. Determine the exploitation potential for discovered vulnerabilities;\n  c. Determine potential risk mitigations for delivered vulnerabilities; and\n  d. Deliver the outputs of the tools and results of the analysis to [[ insert: param, sa-15.07_odp.03 ]]."
+    parameters:
+      - id: sa-15.07_odp.01
+        label: frequency
+        guidelines:
+          - frequency at which to conduct vulnerability analysis is defined;
+      - id: sa-15.07_odp.02
+        label: tools
+        guidelines:
+          - tools used to perform automated vulnerability analysis are defined;
+      - id: sa-15.07_odp.03
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the outputs of tools and results of the analysis are to be delivered is/are defined;
+    guidance: Automated tools can be more effective at analyzing exploitable weaknesses or deficiencies in large and complex systems, prioritizing vulnerabilities by severity, and providing recommendations for risk mitigations.
+    related_controls:
+      - ra-5
+      - sa-11
+    rules: []
+    status: pending
+  - id: sa-15.8
+    title: Reuse of Threat and Vulnerability Information
+    description: Require the developer of the system, system component, or system service to use threat modeling and vulnerability analyses from similar systems, components, or services to inform the current development process.
+    guidance: Analysis of vulnerabilities found in similar software applications can inform potential design and implementation issues for systems under development. Similar systems or system components may exist within developer organizations. Vulnerability information is available from a variety of public and private sector sources, including the NIST National Vulnerability Database.
+    rules: []
+    status: pending
+  - id: sa-15.9
+    title: Use of Live Data
+    rules: []
+    status: pending
+  - id: sa-15.10
+    title: Incident Response Plan
+    description: Require the developer of the system, system component, or system service to provide, implement, and test an incident response plan.
+    guidance: The incident response plan provided by developers may provide information not readily available to organizations and be incorporated into organizational incident response plans. Developer information may also be extremely helpful, such as when organizations respond to vulnerabilities in commercial off-the-shelf products.
+    related_controls:
+      - ir-8
+    rules: []
+    status: pending
+  - id: sa-15.11
+    title: Archive System or Component
+    description: Require the developer of the system or system component to archive the system or component to be released or delivered together with the corresponding evidence supporting the final security and privacy review.
+    guidance: Archiving system or system components requires the developer to retain key development artifacts, including hardware specifications, source code, object code, and relevant documentation from the development process that can provide a readily available configuration baseline for system and component upgrades or modifications.
+    related_controls:
+      - cm-2
+    rules: []
+    status: pending
+  - id: sa-15.12
+    title: Minimize Personally Identifiable Information
+    description: Require the developer of the system or system component to minimize the use of personally identifiable information in development and test environments.
+    guidance: Organizations can minimize the risk to an individual’s privacy by using techniques such as de-identification or synthetic data. Limiting the use of personally identifiable information in development and test environments helps reduce the level of privacy risk created by a system.
+    related_controls:
+      - pm-25
+      - sa-3
+      - sa-8
+    rules: []
+    status: pending
+  - id: sa-15.13
+    title: Logging Syntax
+    description: Require the developer of the system or system component to minimize the use of personally identifiable information in development and test environments.
+    parameters:
+      - id: sa-15.13_odp.01
+        label: secure logging format(s)
+        guidelines:
+          - secure logging format(s) are defined;
+      - id: sa-15.13_odp.02
+        label: events types to log
+        guidelines:
+          - events types to log are defined;
+      - id: sa-15.13_odp.03
+        label: level of detail to log
+        guidelines:
+          - level of detail to log is defined;
+    guidance: In support of better incident response and the ability to more quickly reconstruct security-related actions, identifying specific requirements for secure logging facilitates the ability to connect application-produced audit event logs with operational data. Event types are consistent with the event types defined in [AU-02](#au-2).
+    related_controls:
+      - au-2
+      - au-3
+      - ir-4
+      - ir-8
+      - sa-5
+    rules: []
+    status: pending
+  - id: sa-16
+    title: Developer-provided Training
+    description: 'Require the developer of the system, system component, or system service to provide the following training on the correct use and operation of the implemented security and privacy functions, controls, and/or mechanisms: [[ insert: param, sa-16_odp ]].'
+    parameters:
+      - id: sa-16_odp
+        label: training
+        guidelines:
+          - training on the correct use and operation of the implemented security and privacy functions, controls, and/or mechanisms provided by the developer of the system, system component, or system service is defined;
+    guidance: Developer-provided training applies to external and internal (in-house) developers. Training personnel is essential to ensuring the effectiveness of the controls implemented within organizational systems. Types of training include web-based and computer-based training, classroom-style training, and hands-on training (including micro-training). Organizations can also request training materials from developers to conduct in-house training or offer self-training to organizational personnel. Organizations determine the type of training necessary and may require different types of training for different security and privacy functions, controls, and mechanisms.
+    related_controls:
+      - at-2
+      - at-3
+      - pe-3
+      - sa-4
+      - sa-5
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sa-17
+    title: Developer Security and Privacy Architecture and Design
+    description: "Require the developer of the system, system component, or system service to produce a design specification and security and privacy architecture that:\n  a. Is consistent with the organization’s security and privacy architecture that is an integral part the organization’s enterprise architecture;\n  b. Accurately and completely describes the required security and privacy functionality, and the allocation of controls among physical and logical components; and\n  c. Expresses how individual security and privacy functions, mechanisms, and services work together to provide required security and privacy capabilities and a unified approach to protection."
+    guidance: Developer security and privacy architecture and design are directed at external developers, although they could also be applied to internal (in-house) development. In contrast, [PL-8](#pl-8) is directed at internal developers to ensure that organizations develop a security and privacy architecture that is integrated with the enterprise architecture. The distinction between SA-17 and [PL-8](#pl-8) is especially important when organizations outsource the development of systems, system components, or system services and when there is a requirement to demonstrate consistency with the enterprise architecture and security and privacy architecture of the organization. [ISO 15408-2](#87087451-2af5-43d4-88c1-d66ad850f614), [ISO 15408-3](#4452efc0-e79e-47b8-aa30-b54f3ef61c2f) , and [SP 800-160-1](#e3cc0520-a366-4fc9-abc2-5272db7e3564) provide information on security architecture and design, including formal policy models, security-relevant components, formal and informal correspondence, conceptually simple design, and structuring for least privilege and testing.
+    related_controls:
+      - pl-2
+      - pl-8
+      - pm-7
+      - sa-3
+      - sa-4
+      - sa-8
+      - sc-7
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sa-17.1
+    title: Formal Policy Model
+    description: "Require the developer of the system, system component, or system service to:\n  a. Produce, as an integral part of the development process, a formal policy model describing the [[ insert: param, sa-17.1_prm_1 ]] to be enforced; and\n  b. Prove that the formal policy model is internally consistent and sufficient to enforce the defined elements of the organizational security and privacy policy when implemented."
+    parameters:
+      - id: sa-17.1_prm_1
+        label: organization-defined elements of organizational security and privacy policy
+      - id: sa-17.01_odp.01
+        label: organizational security policy
+        guidelines:
+          - organizational security policy to be enforced is defined;
+      - id: sa-17.01_odp.02
+        label: organizational privacy policy
+        guidelines:
+          - organizational privacy policy to be enforced is defined;
+    guidance: Formal models describe specific behaviors or security and privacy policies using formal languages, thus enabling the correctness of those behaviors and policies to be formally proven. Not all components of systems can be modeled. Generally, formal specifications are scoped to the behaviors or policies of interest, such as nondiscretionary access control policies. Organizations choose the formal modeling language and approach based on the nature of the behaviors and policies to be described and the available tools.
+    related_controls:
+      - ac-3
+      - ac-4
+      - ac-25
+    rules: []
+    status: pending
+  - id: sa-17.2
+    title: Security-relevant Components
+    description: "Require the developer of the system, system component, or system service to:\n  a. Define security-relevant hardware, software, and firmware; and\n  b. Provide a rationale that the definition for security-relevant hardware, software, and firmware is complete."
+    guidance: The security-relevant hardware, software, and firmware represent the portion of the system, component, or service that is trusted to perform correctly to maintain required security properties.
+    related_controls:
+      - ac-25
+      - sa-5
+    rules: []
+    status: pending
+  - id: sa-17.3
+    title: Formal Correspondence
+    description: "Require the developer of the system, system component, or system service to:\n  a. Produce, as an integral part of the development process, a formal top-level specification that specifies the interfaces to security-relevant hardware, software, and firmware in terms of exceptions, error messages, and effects;\n  b. Show via proof to the extent feasible with additional informal demonstration as necessary, that the formal top-level specification is consistent with the formal policy model;\n  c. Show via informal demonstration, that the formal top-level specification completely covers the interfaces to security-relevant hardware, software, and firmware;\n  d. Show that the formal top-level specification is an accurate description of the implemented security-relevant hardware, software, and firmware; and\n  e. Describe the security-relevant hardware, software, and firmware mechanisms not addressed in the formal top-level specification but strictly internal to the security-relevant hardware, software, and firmware."
+    guidance: Correspondence is an important part of the assurance gained through modeling. It demonstrates that the implementation is an accurate transformation of the model, and that any additional code or implementation details that are present have no impact on the behaviors or policies being modeled. Formal methods can be used to show that the high-level security properties are satisfied by the formal system description, and that the formal system description is correctly implemented by a description of some lower level, including a hardware description. Consistency between the formal top-level specification and the formal policy models is generally not amenable to being fully proven. Therefore, a combination of formal and informal methods may be needed to demonstrate such consistency. Consistency between the formal top-level specification and the actual implementation may require the use of an informal demonstration due to limitations on the applicability of formal methods to prove that the specification accurately reflects the implementation. Hardware, software, and firmware mechanisms internal to security-relevant components include mapping registers and direct memory input and output.
+    related_controls:
+      - ac-3
+      - ac-4
+      - ac-25
+      - sa-4
+      - sa-5
+    rules: []
+    status: pending
+  - id: sa-17.4
+    title: Informal Correspondence
+    description: "Require the developer of the system, system component, or system service to:\n  a. Produce, as an integral part of the development process, an informal descriptive top-level specification that specifies the interfaces to security-relevant hardware, software, and firmware in terms of exceptions, error messages, and effects;\n  b. Show via [[ insert: param, sa-17.04_odp ]] that the descriptive top-level specification is consistent with the formal policy model;\n  c. Show via informal demonstration, that the descriptive top-level specification completely covers the interfaces to security-relevant hardware, software, and firmware;\n  d. Show that the descriptive top-level specification is an accurate description of the interfaces to security-relevant hardware, software, and firmware; and\n  e. Describe the security-relevant hardware, software, and firmware mechanisms not addressed in the descriptive top-level specification but strictly internal to the security-relevant hardware, software, and firmware."
+    parameters:
+      - id: sa-17.04_odp
+        label: ''
+        choices:
+          - informal demonstration, convincing argument with formal methods as feasible
+    guidance: Correspondence is an important part of the assurance gained through modeling. It demonstrates that the implementation is an accurate transformation of the model, and that additional code or implementation detail has no impact on the behaviors or policies being modeled. Consistency between the descriptive top-level specification (i.e., high-level/low-level design) and the formal policy model is generally not amenable to being fully proven. Therefore, a combination of formal and informal methods may be needed to show such consistency. Hardware, software, and firmware mechanisms strictly internal to security-relevant hardware, software, and firmware include mapping registers and direct memory input and output.
+    related_controls:
+      - ac-3
+      - ac-4
+      - ac-25
+      - sa-4
+      - sa-5
+    rules: []
+    status: pending
+  - id: sa-17.5
+    title: Conceptually Simple Design
+    description: "Require the developer of the system, system component, or system service to:\n  a. Design and structure the security-relevant hardware, software, and firmware to use a complete, conceptually simple protection mechanism with precisely defined semantics; and\n  b. Internally structure the security-relevant hardware, software, and firmware with specific regard for this mechanism."
+    guidance: The principle of reduced complexity states that the system design is as simple and small as possible (see [SA-8(7)](#sa-8.7) ). A small and simple design is easier to understand and analyze and is also less prone to error (see [AC-25](#ac-25), [SA-8(13)](#sa-8.13) ). The principle of reduced complexity applies to any aspect of a system, but it has particular importance for security due to the various analyses performed to obtain evidence about the emergent security property of the system. For such analyses to be successful, a small and simple design is essential. Application of the principle of reduced complexity contributes to the ability of system developers to understand the correctness and completeness of system security functions and facilitates the identification of potential vulnerabilities. The corollary of reduced complexity states that the simplicity of the system is directly related to the number of vulnerabilities it will contain. That is, simpler systems contain fewer vulnerabilities. An important benefit of reduced complexity is that it is easier to understand whether the security policy has been captured in the system design and that fewer vulnerabilities are likely to be introduced during engineering development. An additional benefit is that any such conclusion about correctness, completeness, and existence of vulnerabilities can be reached with a higher degree of assurance in contrast to conclusions reached in situations where the system design is inherently more complex.
+    related_controls:
+      - ac-25
+      - sa-8
+      - sc-3
+    rules: []
+    status: pending
+  - id: sa-17.6
+    title: Structure for Testing
+    description: Require the developer of the system, system component, or system service to structure security-relevant hardware, software, and firmware to facilitate testing.
+    guidance: Applying the security design principles in [SP 800-160-1](#e3cc0520-a366-4fc9-abc2-5272db7e3564) promotes complete, consistent, and comprehensive testing and evaluation of systems, system components, and services. The thoroughness of such testing contributes to the evidence produced to generate an effective assurance case or argument as to the trustworthiness of the system, system component, or service.
+    related_controls:
+      - sa-5
+      - sa-11
+    rules: []
+    status: pending
+  - id: sa-17.7
+    title: Structure for Least Privilege
+    description: Require the developer of the system, system component, or system service to structure security-relevant hardware, software, and firmware to facilitate controlling access with least privilege.
+    guidance: "The principle of least privilege states that each component is allocated sufficient privileges to accomplish its specified functions but no more (see [SA-8(14)](#sa-8.14) ). Applying the principle of least privilege limits the scope of the component’s actions, which has two desirable effects. First, the security impact of a failure, corruption, or misuse of the system component results in a minimized security impact. Second, the security analysis of the component is simplified. Least privilege is a pervasive principle that is reflected in all aspects of the secure system design. Interfaces used to invoke component capability are available to only certain subsets of the user population, and component design supports a sufficiently fine granularity of privilege decomposition. For example, in the case of an audit mechanism, there may be an interface for the audit manager, who configures the audit settings; an interface for the audit operator, who ensures that audit data is safely collected and stored; and, finally, yet another interface for the audit reviewer, who only has a need to view the audit data that has been collected but no need to perform operations on that data.\n\nIn addition to its manifestations at the system interface, least privilege can be used as a guiding principle for the internal structure of the system itself. One aspect of internal least privilege is to construct modules so that only the elements encapsulated by the module are directly operated upon by the functions within the module. Elements external to a module that may be affected by the module’s operation are indirectly accessed through interaction (e.g., via a function call) with the module that contains those elements. Another aspect of internal least privilege is that the scope of a given module or component includes only those system elements that are necessary for its functionality, and the access modes to the elements (e.g., read, write) are minimal."
+    related_controls:
+      - ac-5
+      - ac-6
+      - sa-8
+    rules: []
+    status: pending
+  - id: sa-17.8
+    title: Orchestration
+    description: 'Design [[ insert: param, sa-17.08_odp.01 ]] with coordinated behavior to implement the following capabilities: [[ insert: param, sa-17.08_odp.02 ]].'
+    parameters:
+      - id: sa-17.08_odp.01
+        label: critical systems
+        guidelines:
+          - critical systems or system components are defined;
+      - id: sa-17.08_odp.02
+        label: capabilities
+        guidelines:
+          - capabilities to be implemented by systems or components are defined;
+    guidance: Security resources that are distributed, located at different layers or in different system elements, or are implemented to support different aspects of trustworthiness can interact in unforeseen or incorrect ways. Adverse consequences can include cascading failures, interference, or coverage gaps. Coordination of the behavior of security resources (e.g., by ensuring that one patch is installed across all resources before making a configuration change that assumes that the patch is propagated) can avert such negative interactions.
+    rules: []
+    status: pending
+  - id: sa-17.9
+    title: Design Diversity
+    description: 'Use different designs for [[ insert: param, sa-17.09_odp ]] to satisfy a common set of requirements or to provide equivalent functionality.'
+    parameters:
+      - id: sa-17.09_odp
+        label: critical systems
+        guidelines:
+          - critical systems or system components to be designed differently are defined;
+    guidance: Design diversity is achieved by supplying the same requirements specification to multiple developers, each of whom is responsible for developing a variant of the system or system component that meets the requirements. Variants can be in software design, in hardware design, or in both hardware and a software design. Differences in the designs of the variants can result from developer experience (e.g., prior use of a design pattern), design style (e.g., when decomposing a required function into smaller tasks, determining what constitutes a separate task and how far to decompose tasks into sub-tasks), selection of libraries to incorporate into the variant, and the development environment (e.g., different design tools make some design patterns easier to visualize). Hardware design diversity includes making different decisions about what information to keep in analog form and what information to convert to digital form, transmitting the same information at different times, and introducing delays in sampling (temporal diversity). Design diversity is commonly used to support fault tolerance.
+    rules: []
+    status: pending
+  - id: sa-18
+    title: Tamper Resistance and Detection
+    rules: []
+    status: pending
+  - id: sa-18.1
+    title: Multiple Phases of System Development Life Cycle
+    rules: []
+    status: pending
+  - id: sa-18.2
+    title: Inspection of Systems or Components
+    rules: []
+    status: pending
+  - id: sa-19
+    title: Component Authenticity
+    rules: []
+    status: pending
+  - id: sa-19.1
+    title: Anti-counterfeit Training
+    rules: []
+    status: pending
+  - id: sa-19.2
+    title: Configuration Control for Component Service and Repair
+    rules: []
+    status: pending
+  - id: sa-19.3
+    title: Component Disposal
+    rules: []
+    status: pending
+  - id: sa-19.4
+    title: Anti-counterfeit Scanning
+    rules: []
+    status: pending
+  - id: sa-20
+    title: Customized Development of Critical Components
+    description: 'Reimplement or custom develop the following critical system components: [[ insert: param, sa-20_odp ]].'
+    parameters:
+      - id: sa-20_odp
+        label: critical system
+        guidelines:
+          - critical system components to be reimplemented or custom-developed are defined;
+    guidance: Organizations determine that certain system components likely cannot be trusted due to specific threats to and vulnerabilities in those components for which there are no viable security controls to adequately mitigate risk. Reimplementation or custom development of such components may satisfy requirements for higher assurance and is carried out by initiating changes to system components (including hardware, software, and firmware) such that the standard attacks by adversaries are less likely to succeed. In situations where no alternative sourcing is available and organizations choose not to reimplement or custom develop critical system components, additional controls can be employed. Controls include enhanced auditing, restrictions on source code and system utility access, and protection from deletion of system and application files.
+    related_controls:
+      - cp-2
+      - ra-9
+      - sa-8
+    rules: []
+    status: pending
+  - id: sa-21
+    title: Developer Screening
+    description: "Require that the developer of [[ insert: param, sa-21_odp.01 ]]:\n  a. Has appropriate access authorizations as determined by assigned [[ insert: param, sa-21_odp.02 ]] ; and\n  b. Satisfies the following additional personnel screening criteria: [[ insert: param, sa-21_odp.03 ]]."
+    parameters:
+      - id: sa-21_odp.01
+        label: system, systems component, or system service
+        guidelines:
+          - the system, systems component, or system service that the developer has access to is/are defined;
+      - id: sa-21_odp.02
+        label: official government duties
+        guidelines:
+          - official government duties assigned to the developer are defined;
+      - id: sa-21_odp.03
+        label: additional personnel screening criteria
+        guidelines:
+          - additional personnel screening criteria for the developer are defined;
+    guidance: Developer screening is directed at external developers. Internal developer screening is addressed by [PS-3](#ps-3) . Because the system, system component, or system service may be used in critical activities essential to the national or economic security interests of the United States, organizations have a strong interest in ensuring that developers are trustworthy. The degree of trust required of developers may need to be consistent with that of the individuals who access the systems, system components, or system services once deployed. Authorization and personnel screening criteria include clearances, background checks, citizenship, and nationality. Developer trustworthiness may also include a review and analysis of company ownership and relationships that the company has with entities that may potentially affect the quality and reliability of the systems, components, or services being developed. Satisfying the required access authorizations and personnel screening criteria includes providing a list of all individuals who are authorized to perform development activities on the selected system, system component, or system service so that organizations can validate that the developer has satisfied the authorization and screening requirements.
+    related_controls:
+      - ps-2
+      - ps-3
+      - ps-6
+      - ps-7
+      - sa-4
+      - sr-6
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sa-21.1
+    title: Validation of Screening
+    rules: []
+    status: pending
+  - id: sa-22
+    title: Unsupported System Components
+    description: "  a. Replace system components when support for the components is no longer available from the developer, vendor, or manufacturer; or\n  b. Provide the following options for alternative sources for continued support for unsupported components [[ insert: param, sa-22_odp.01 ]]."
+    parameters:
+      - id: sa-22_odp.01
+        label: ''
+        choices:
+          - in-house support
+          - '[[ insert: param, sa-22_odp.02 ]] '
+      - id: sa-22_odp.02
+        label: support from external providers
+        guidelines:
+          - support from external providers is defined (if selected);
+    guidance: "Support for system components includes software patches, firmware updates, replacement parts, and maintenance contracts. An example of unsupported components includes when vendors no longer provide critical software patches or product updates, which can result in an opportunity for adversaries to exploit weaknesses in the installed components. Exceptions to replacing unsupported system components include systems that provide critical mission or business capabilities where newer technologies are not available or where the systems are so isolated that installing replacement components is not an option.\n\nAlternative sources for support address the need to provide continued support for system components that are no longer supported by the original manufacturers, developers, or vendors when such components remain essential to organizational mission and business functions. If necessary, organizations can establish in-house support by developing customized patches for critical software components or, alternatively, obtain the services of external providers who provide ongoing support for the designated unsupported components through contractual relationships. Such contractual relationships can include open-source software value-added vendors. The increased risk of using unsupported system components can be mitigated, for example, by prohibiting the connection of such components to public or uncontrolled networks, or implementing other forms of isolation."
+    related_controls:
+      - pl-2
+      - sa-3
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: sa-22.1
+    title: Alternative Sources for Continued Support
+    rules: []
+    status: pending
+  - id: sa-23
+    title: Specialization
+    description: 'Employ [[ insert: param, sa-23_odp.01 ]] on [[ insert: param, sa-23_odp.02 ]] supporting mission essential services or functions to increase the trustworthiness in those systems or components.'
+    parameters:
+      - id: sa-23_odp.01
+        label: ''
+        choices:
+          - design modification
+          - augmentation
+          - reconfiguration
+      - id: sa-23_odp.02
+        label: systems or system components
+        guidelines:
+          - systems or system components supporting mission-essential services or functions are defined;
+    guidance: It is often necessary for a system or system component that supports mission-essential services or functions to be enhanced to maximize the trustworthiness of the resource. Sometimes this enhancement is done at the design level. In other instances, it is done post-design, either through modifications of the system in question or by augmenting the system with additional components. For example, supplemental authentication or non-repudiation functions may be added to the system to enhance the identity of critical resources to other resources that depend on the organization-defined resources.
+    related_controls:
+      - ra-9
+      - sa-8
+    rules: []
+    status: pending
+  - id: sa-24
+    title: Design For Cyber Resiliency
+    description: "  a. Design organizational systems, system components, or system services to achieve cyber resiliency by:\n    1. Defining the following cyber resiliency goals: [[ insert: param, sa-24_odp.01 ]].\n    2. Defining the following cyber resiliency objectives: [[ insert: param, sa-24_odp.02 ]].\n    3. Defining the following cyber resiliency techniques: [[ insert: param, sa-24_odp.03 ]].\n    4. Defining the following cyber resiliency implementation approaches: [[ insert: param, sa-24_odp.04 ]].\n    5. Defining the following cyber resiliency design principles: [[ insert: param, sa-24_odp.05 ]].\n  b. Implement the selected cyber resiliency goals, objectives, techniques, implementation approaches, and design principles as part of an organizational risk management process or systems security engineering process."
+    parameters:
+      - id: sa-24_odp.01
+        label: cyber resiliency goals
+        guidelines:
+          - cyber resiliency goals are defined;
+      - id: sa-24_odp.02
+        label: cyber resiliency objectives
+        guidelines:
+          - cyber resiliency objectives are defined;
+      - id: sa-24_odp.03
+        label: cyber resiliency techniques
+        guidelines:
+          - cyber resiliency techniques are defined;
+      - id: sa-24_odp.04
+        label: cyber resiliency implementation approaches
+        guidelines:
+          - cyber resiliency implementation approaches are defined;
+      - id: sa-24_odp.05
+        label: cyber resiliency design principles
+        guidelines:
+          - cyber resiliency design principles are defined;
+    guidance: "Cyber resiliency is critical to ensuring the survivability of mission critical systems and high value assets. Cyber resiliency focuses on limiting the damage from adversity or the conditions that can cause a loss of assets. Damage can affect: (1) organizations (e.g., loss of reputation, increased existential risk); (2) missions or business functions (e.g., decreased capability to complete current missions and to accomplish future missions); (3) security (e.g., decreased capability to achieve security objectives or to prevent, detect, and respond to cyber incidents); (4) systems (e.g., unauthorized use of system resources or decreased capability to meet system requirements); or (5) specific system elements (e.g., physical destruction; corruption, modification, or fabrication of information).\n\nCyber resiliency goals are intended to help organizations maintain a state of informed preparedness for adversity, continue essential mission or business functions despite adversity, restore mission or business functions during and after adversity, and modify mission or business functions and their supporting capabilities in response to predicted changes in technical, operational, or threat environments.\n\nNIST SP 800-160, Volume 2 provides additional information on the Cyber Resiliency Engineering Framework to include detailed descriptions of cyber resiliency goals, objectives, techniques, implementation approaches, and design principles. NIST SP 800-160, Vol 1 provides additional information on achieving cyber resiliency as an emergent property of an engineered system."
+    related_controls:
+      - ca-7
+      - cp-2
+      - cp-4
+      - cp-9
+      - cp-10
+      - cp-11
+      - cp-12
+      - cp-13
+      - ia-10
+      - ir-4
+      - ir-5
+      - pe-11
+      - pe-17
+      - pl-8
+      - pm-7
+      - pm-16
+      - pm-30
+      - pm-31
+      - ra-3
+      - ra-5
+      - ra-9
+      - ra-10
+      - sa-3
+      - sa-8
+      - sa-9
+      - sa-17
+      - sc-3
+      - sc-5
+      - sc-7
+      - sc-10
+      - sc-11
+      - sc-29
+      - sc-30
+      - sc-34
+      - sc-35
+      - sc-36
+      - sc-37
+      - sc-39
+      - sc-44
+      - sc-47
+      - sc-48
+      - sc-49
+      - sc-50
+      - sc-51
+      - si-3
+      - si-4
+      - si-6
+      - si-7
+      - si-10
+      - si-14
+      - si-15
+      - si-16
+      - si-19
+      - si-20
+      - si-21
+      - si-22
+      - si-23
+      - sr-3
+      - sr-4
+      - sr-5
+      - sr-6
+      - sr-7
+      - sr-9
+      - sr-10
+      - sr-11
+    rules: []
+    status: pending

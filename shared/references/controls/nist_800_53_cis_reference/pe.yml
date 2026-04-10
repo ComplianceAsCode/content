@@ -1,0 +1,967 @@
+# NIST 800-53 PE Family: Physical and Environmental Protection
+controls:
+  - id: pe-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, pe-1_prm_1 ]]:\n    1. [[ insert: param, pe-01_odp.03 ]] physical and environmental protection policy that:\n    2. Procedures to facilitate the implementation of the physical and environmental protection policy and the associated physical and environmental protection controls;\n  b. Designate an [[ insert: param, pe-01_odp.04 ]] to manage the development, documentation, and dissemination of the physical and environmental protection policy and procedures; and\n  c. Review and update the current physical and environmental protection:\n    1. Policy [[ insert: param, pe-01_odp.05 ]] and following [[ insert: param, pe-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, pe-01_odp.07 ]] and following [[ insert: param, pe-01_odp.08 ]]."
+    parameters:
+      - id: pe-1_prm_1
+        label: organization-defined personnel or roles
+      - id: pe-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the physical and environmental protection policy is to be disseminated is/are defined;
+      - id: pe-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the physical and environmental protection procedures are to be disseminated is/are defined;
+      - id: pe-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: pe-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the physical and environmental protection policy and procedures is defined;
+      - id: pe-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current physical and environmental protection policy is reviewed and updated is defined;
+      - id: pe-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current physical and environmental protection policy to be reviewed and updated are defined;
+      - id: pe-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current physical and environmental protection procedures are reviewed and updated is defined;
+      - id: pe-01_odp.08
+        label: events
+        guidelines:
+          - events that would require the physical and environmental protection procedures to be reviewed and updated are defined;
+    guidance: Physical and environmental protection policy and procedures address the controls in the PE family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of physical and environmental protection policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to physical and environmental protection policy and procedures include assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - at-3
+      - pm-9
+      - ps-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-2
+    title: Physical Access Authorizations
+    description: "  a. Develop, approve, and maintain a list of individuals with authorized access to the facility where the system resides;\n  b. Issue authorization credentials for facility access;\n  c. Review the access list detailing authorized facility access by individuals [[ insert: param, pe-02_odp ]] ; and\n  d. Remove individuals from the facility access list when access is no longer required."
+    parameters:
+      - id: pe-02_odp
+        label: frequency
+        guidelines:
+          - frequency at which to review the access list detailing authorized facility access by individuals is defined;
+    guidance: Physical access authorizations apply to employees and visitors. Individuals with permanent physical access authorization credentials are not considered visitors. Authorization credentials include ID badges, identification cards, and smart cards. Organizations determine the strength of authorization credentials needed consistent with applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Physical access authorizations may not be necessary to access certain areas within facilities that are designated as publicly accessible.
+    related_controls:
+      - at-3
+      - au-9
+      - ia-4
+      - ma-5
+      - mp-2
+      - pe-3
+      - pe-4
+      - pe-5
+      - pe-8
+      - pm-12
+      - ps-3
+      - ps-4
+      - ps-5
+      - ps-6
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-2.1
+    title: Access by Position or Role
+    description: Authorize physical access to the facility where the system resides based on position or role.
+    guidance: Role-based facility access includes access by authorized permanent and regular/routine maintenance personnel, duty officers, and emergency medical staff.
+    related_controls:
+      - ac-2
+      - ac-3
+      - ac-6
+    rules: []
+    status: pending
+  - id: pe-2.2
+    title: Two Forms of Identification
+    description: 'Require two forms of identification from the following forms of identification for visitor access to the facility where the system resides: [[ insert: param, pe-02.02_odp ]].'
+    parameters:
+      - id: pe-02.02_odp
+        label: list of acceptable forms of identification
+        guidelines:
+          - a list of acceptable forms of identification for visitor access to the facility where the system resides is defined;
+    guidance: Acceptable forms of identification include passports, REAL ID-compliant drivers’ licenses, and Personal Identity Verification (PIV) cards. For gaining access to facilities using automated mechanisms, organizations may use PIV cards, key cards, PINs, and biometrics.
+    related_controls:
+      - ia-2
+      - ia-4
+      - ia-5
+    rules: []
+    status: pending
+  - id: pe-2.3
+    title: Restrict Unescorted Access
+    description: 'Restrict unescorted access to the facility where the system resides to personnel with [[ insert: param, pe-02.03_odp.01 ]].'
+    parameters:
+      - id: pe-02.03_odp.01
+        label: ''
+        choices:
+          - security clearances for all information contained within the system
+          - formal access authorizations for all information contained within the system
+          - need for access to all information contained within the system
+          - '[[ insert: param, pe-02.03_odp.02 ]] '
+      - id: pe-02.03_odp.02
+        label: physical access authorizations
+        guidelines:
+          - physical access authorizations for unescorted access to the facility where the system resides are defined (if selected);
+    guidance: Individuals without required security clearances, access approvals, or need to know are escorted by individuals with appropriate physical access authorizations to ensure that information is not exposed or otherwise compromised.
+    related_controls:
+      - ps-2
+      - ps-6
+    rules: []
+    status: pending
+  - id: pe-3
+    title: Physical Access Control
+    description: "  a. Enforce physical access authorizations at [[ insert: param, pe-03_odp.01 ]] by:\n    1. Verifying individual access authorizations before granting access to the facility; and\n    2. Controlling ingress and egress to the facility using [[ insert: param, pe-03_odp.02 ]];\n  b. Maintain physical access audit logs for [[ insert: param, pe-03_odp.04 ]];\n  c. Control access to areas within the facility designated as publicly accessible by implementing the following controls: [[ insert: param, pe-03_odp.05 ]];\n  d. Escort visitors and control visitor activity [[ insert: param, pe-03_odp.06 ]];\n  e. Secure keys, combinations, and other physical access devices;\n  f. Inventory [[ insert: param, pe-03_odp.07 ]] every [[ insert: param, pe-03_odp.08 ]] ; and\n  g. Change combinations and keys [[ insert: param, pe-3_prm_9 ]] and/or when keys are lost, combinations are compromised, or when individuals possessing the keys or combinations are transferred or terminated."
+    parameters:
+      - id: pe-3_prm_9
+        label: organization-defined frequency
+      - id: pe-03_odp.01
+        label: entry and exit points
+        guidelines:
+          - entry and exit points to the facility in which the system resides are defined;
+      - id: pe-03_odp.02
+        label: ''
+        choices:
+          - '[[ insert: param, pe-03_odp.03 ]] '
+          - guards
+      - id: pe-03_odp.03
+        label: systems or devices
+        guidelines:
+          - physical access control systems or devices used to control ingress and egress to the facility are defined (if selected);
+      - id: pe-03_odp.04
+        label: entry or exit points
+        guidelines:
+          - entry or exit points for which physical access logs are maintained are defined;
+      - id: pe-03_odp.05
+        label: physical access controls
+        guidelines:
+          - physical access controls to control access to areas within the facility designated as publicly accessible are defined;
+      - id: pe-03_odp.06
+        label: circumstances
+        guidelines:
+          - circumstances requiring visitor escorts and control of visitor activity are defined;
+      - id: pe-03_odp.07
+        label: physical access devices
+        guidelines:
+          - physical access devices to be inventoried are defined;
+      - id: pe-03_odp.08
+        label: frequency
+        guidelines:
+          - frequency at which to inventory physical access devices is defined;
+      - id: pe-03_odp.09
+        label: frequency
+        guidelines:
+          - frequency at which to change combinations is defined;
+      - id: pe-03_odp.10
+        label: frequency
+        guidelines:
+          - frequency at which to change keys is defined;
+    guidance: Physical access control applies to employees and visitors. Individuals with permanent physical access authorizations are not considered visitors. Physical access controls for publicly accessible areas may include physical access control logs/records, guards, or physical access devices and barriers to prevent movement from publicly accessible areas to non-public areas. Organizations determine the types of guards needed, including professional security staff, system users, or administrative staff. Physical access devices include keys, locks, combinations, biometric readers, and card readers. Physical access control systems comply with applicable laws, executive orders, directives, policies, regulations, standards, and guidelines. Organizations have flexibility in the types of audit logs employed. Audit logs can be procedural, automated, or some combination thereof. Physical access points can include facility access points, interior access points to systems that require supplemental access controls, or both. Components of systems may be in areas designated as publicly accessible with organizations controlling access to the components.
+    related_controls:
+      - at-3
+      - au-2
+      - au-6
+      - au-9
+      - au-13
+      - cp-10
+      - ia-3
+      - ia-8
+      - ma-5
+      - mp-2
+      - mp-4
+      - pe-2
+      - pe-4
+      - pe-5
+      - pe-8
+      - ps-2
+      - ps-3
+      - ps-6
+      - ps-7
+      - ra-3
+      - sc-28
+      - si-4
+      - sr-3
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-3.1
+    title: System Access
+    description: 'Enforce physical access authorizations to the system in addition to the physical access controls for the facility at [[ insert: param, pe-03.01_odp ]].'
+    parameters:
+      - id: pe-03.01_odp
+        label: physical spaces
+        guidelines:
+          - physical spaces containing one or more components of the system are defined;
+    guidance: Control of physical access to the system provides additional physical security for those areas within facilities where there is a concentration of system components.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: pe-3.2
+    title: Facility and Systems
+    description: 'Perform security checks [[ insert: param, pe-03.02_odp ]] at the physical perimeter of the facility or system for exfiltration of information or removal of system components.'
+    parameters:
+      - id: pe-03.02_odp
+        label: frequency
+        guidelines:
+          - the frequency at which to perform security checks at the physical perimeter of the facility or system for exfiltration of information or removal of system components is defined;
+    guidance: Organizations determine the extent, frequency, and/or randomness of security checks to adequately mitigate risk associated with exfiltration.
+    related_controls:
+      - ac-4
+      - sc-7
+    rules: []
+    status: pending
+  - id: pe-3.3
+    title: Continuous Guards
+    description: 'Employ guards to control [[ insert: param, pe-03.03_odp ]] to the facility where the system resides 24 hours per day, 7 days per week.'
+    parameters:
+      - id: pe-03.03_odp
+        label: physical access points
+        guidelines:
+          - physical access points to the facility where the system resides are defined;
+    guidance: Employing guards at selected physical access points to the facility provides a more rapid response capability for organizations. Guards also provide the opportunity for human surveillance in areas of the facility not covered by video surveillance.
+    related_controls:
+      - cp-6
+      - cp-7
+      - pe-6
+    rules: []
+    status: pending
+  - id: pe-3.4
+    title: Lockable Casings
+    description: 'Use lockable physical casings to protect [[ insert: param, pe-03.04_odp ]] from unauthorized physical access.'
+    parameters:
+      - id: pe-03.04_odp
+        label: system components
+        guidelines:
+          - system components to be protected from unauthorized physical access are defined;
+    guidance: The greatest risk from the use of portable devices—such as smart phones, tablets, and notebook computers—is theft. Organizations can employ lockable, physical casings to reduce or eliminate the risk of equipment theft. Such casings come in a variety of sizes, from units that protect a single notebook computer to full cabinets that can protect multiple servers, computers, and peripherals. Lockable physical casings can be used in conjunction with cable locks or lockdown plates to prevent the theft of the locked casing containing the computer equipment.
+    rules: []
+    status: pending
+  - id: pe-3.5
+    title: Tamper Protection
+    description: 'Employ [[ insert: param, pe-03.05_odp.01 ]] to [[ insert: param, pe-03.05_odp.02 ]] physical tampering or alteration of [[ insert: param, pe-03.05_odp.03 ]] within the system.'
+    parameters:
+      - id: pe-03.05_odp.01
+        label: anti-tamper technologies
+        guidelines:
+          - anti-tamper technologies to be employed are defined;
+      - id: pe-03.05_odp.02
+        label: ''
+        choices:
+          - detect
+          - prevent
+      - id: pe-03.05_odp.03
+        label: hardware components
+        guidelines:
+          - hardware components to be protected from physical tampering or alteration are defined;
+    guidance: Organizations can implement tamper detection and prevention at selected hardware components or implement tamper detection at some components and tamper prevention at other components. Detection and prevention activities can employ many types of anti-tamper technologies, including tamper-detection seals and anti-tamper coatings. Anti-tamper programs help to detect hardware alterations through counterfeiting and other supply chain-related risks.
+    related_controls:
+      - sa-16
+      - sr-9
+      - sr-11
+    rules: []
+    status: pending
+  - id: pe-3.6
+    title: Facility Penetration Testing
+    rules: []
+    status: pending
+  - id: pe-3.7
+    title: Physical Barriers
+    description: Limit access using physical barriers.
+    guidance: Physical barriers include bollards, concrete slabs, jersey walls, and hydraulic active vehicle barriers.
+    rules: []
+    status: pending
+  - id: pe-3.8
+    title: Access Control Vestibules
+    description: 'Employ access control vestibules at [[ insert: param, pe-03.08_odp ]].'
+    parameters:
+      - id: pe-03.08_odp
+        label: locations
+        guidelines:
+          - locations within the facility where access control vestibules are to be employed are defined;
+    guidance: An access control vestibule is part of a physical access control system that typically provides a space between two sets of interlocking doors. Vestibules are designed to prevent unauthorized individuals from following authorized individuals into facilities with controlled access. This activity, also known as piggybacking or tailgating, results in unauthorized access to the facility. Interlocking door controllers can be used to limit the number of individuals who enter controlled access points and to provide containment areas while authorization for physical access is verified. Interlocking door controllers can be fully automated (i.e., controlling the opening and closing of the doors) or partially automated (i.e., using security guards to control the number of individuals entering the containment area).
+    rules: []
+    status: pending
+  - id: pe-4
+    title: Access Control for Transmission
+    description: 'Control physical access to [[ insert: param, pe-04_odp.01 ]] within organizational facilities using [[ insert: param, pe-04_odp.02 ]].'
+    parameters:
+      - id: pe-04_odp.01
+        label: system distribution and transmission lines
+        guidelines:
+          - system distribution and transmission lines requiring physical access controls are defined;
+      - id: pe-04_odp.02
+        label: security controls
+        guidelines:
+          - security controls to be implemented to control physical access to system distribution and transmission lines within the organizational facility are defined;
+    guidance: Security controls applied to system distribution and transmission lines prevent accidental damage, disruption, and physical tampering. Such controls may also be necessary to prevent eavesdropping or modification of unencrypted transmissions. Security controls used to control physical access to system distribution and transmission lines include disconnected or locked spare jacks, locked wiring closets, protection of cabling by conduit or cable trays, and wiretapping sensors.
+    related_controls:
+      - at-3
+      - ia-4
+      - mp-2
+      - mp-4
+      - pe-2
+      - pe-3
+      - pe-5
+      - pe-9
+      - sc-7
+      - sc-8
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-5
+    title: Access Control for Output Devices
+    description: 'Control physical access to output from [[ insert: param, pe-05_odp ]] to prevent unauthorized individuals from obtaining the output.'
+    parameters:
+      - id: pe-05_odp
+        label: output devices
+        guidelines:
+          - output devices that require physical access control to output are defined;
+    guidance: Controlling physical access to output devices includes placing output devices in locked rooms or other secured areas with keypad or card reader access controls and allowing access to authorized individuals only, placing output devices in locations that can be monitored by personnel, installing monitor or screen filters, and using headphones. Examples of output devices include monitors, printers, scanners, audio devices, facsimile machines, and copiers.
+    related_controls:
+      - pe-2
+      - pe-3
+      - pe-4
+      - pe-18
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-5.1
+    title: Access to Output by Authorized Individuals
+    rules: []
+    status: pending
+  - id: pe-5.2
+    title: Link to Individual Identity
+    description: Link individual identity to receipt of output from output devices.
+    guidance: Methods for linking individual identity to the receipt of output from output devices include installing security functionality on facsimile machines, copiers, and printers. Such functionality allows organizations to implement authentication on output devices prior to the release of output to individuals.
+    rules: []
+    status: pending
+  - id: pe-5.3
+    title: Marking Output Devices
+    rules: []
+    status: pending
+  - id: pe-6
+    title: Monitoring Physical Access
+    description: "  a. Monitor physical access to the facility where the system resides to detect and respond to physical security incidents;\n  b. Review physical access logs [[ insert: param, pe-06_odp.01 ]] and upon occurrence of [[ insert: param, pe-06_odp.02 ]] ; and\n  c. Coordinate results of reviews and investigations with the organizational incident response capability."
+    parameters:
+      - id: pe-06_odp.01
+        label: frequency
+        guidelines:
+          - the frequency at which to review physical access logs is defined;
+      - id: pe-06_odp.02
+        label: events
+        guidelines:
+          - events or potential indication of events requiring physical access logs to be reviewed are defined;
+    guidance: Physical access monitoring includes publicly accessible areas within organizational facilities. Examples of physical access monitoring include the employment of guards, video surveillance equipment (i.e., cameras), and sensor devices. Reviewing physical access logs can help identify suspicious activity, anomalous events, or potential threats. The reviews can be supported by audit logging controls, such as [AU-2](#au-2) , if the access logs are part of an automated system. Organizational incident response capabilities include investigations of physical security incidents and responses to the incidents. Incidents include security violations or suspicious physical access activities. Suspicious physical access activities include accesses outside of normal work hours, repeated accesses to areas not normally accessed, accesses for unusual lengths of time, and out-of-sequence accesses.
+    related_controls:
+      - au-2
+      - au-6
+      - au-9
+      - au-12
+      - ca-7
+      - cp-10
+      - ir-4
+      - ir-8
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-6.1
+    title: Intrusion Alarms and Surveillance Equipment
+    description: Monitor physical access to the facility where the system resides using physical intrusion alarms and surveillance equipment.
+    guidance: Physical intrusion alarms can be employed to alert security personnel when unauthorized access to the facility is attempted. Alarm systems work in conjunction with physical barriers, physical access control systems, and security guards by triggering a response when these other forms of security have been compromised or breached. Physical intrusion alarms can include different types of sensor devices, such as motion sensors, contact sensors, and broken glass sensors. Surveillance equipment includes video cameras installed at strategic locations throughout the facility.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-6.2
+    title: Automated Intrusion Recognition and Responses
+    description: 'Recognize [[ insert: param, pe-06.02_odp.01 ]] and initiate [[ insert: param, pe-06.02_odp.02 ]] using [[ insert: param, pe-06.02_odp.03 ]].'
+    parameters:
+      - id: pe-06.02_odp.01
+        label: classes or types of intrusions
+        guidelines:
+          - classes or types of intrusions to be recognized by automated mechanisms are defined;
+      - id: pe-06.02_odp.02
+        label: response actions
+        guidelines:
+          - response actions to be initiated by automated mechanisms when organization-defined classes or types of intrusions are recognized are defined;
+      - id: pe-06.02_odp.03
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to recognize classes or types of intrusions and initiate response actions (defined in [PE-06(02)_ODP](#pe-06.02_odp.02)) are defined;
+    guidance: Response actions can include notifying selected organizational personnel or law enforcement personnel. Automated mechanisms implemented to initiate response actions include system alert notifications, email and text messages, and activating door locking mechanisms. Physical access monitoring can be coordinated with intrusion detection systems and system monitoring capabilities to provide integrated threat coverage for the organization.
+    related_controls:
+      - si-4
+    rules: []
+    status: pending
+  - id: pe-6.3
+    title: Video Surveillance
+    description: "  a. Employ video surveillance of [[ insert: param, pe-06.03_odp.01 ]];\n  b. Review video recordings [[ insert: param, pe-06.03_odp.02 ]] ; and\n  c. Retain video recordings for [[ insert: param, pe-06.03_odp.03 ]]."
+    parameters:
+      - id: pe-06.03_odp.01
+        label: operational areas
+        guidelines:
+          - operational areas where video surveillance is to be employed are defined;
+      - id: pe-06.03_odp.02
+        label: frequency
+        guidelines:
+          - frequency at which to review video recordings is defined;
+      - id: pe-06.03_odp.03
+        label: time period
+        guidelines:
+          - time period for which to retain video recordings is defined;
+    guidance: Video surveillance focuses on recording activity in specified areas for the purposes of subsequent review, if circumstances so warrant. Video recordings are typically reviewed to detect anomalous events or incidents. Monitoring the surveillance video is not required, although organizations may choose to do so. There may be legal considerations when performing and retaining video surveillance, especially if such surveillance is in a public location.
+    rules: []
+    status: pending
+  - id: pe-6.4
+    title: Monitoring Physical Access to Systems
+    description: 'Monitor physical access to the system in addition to the physical access monitoring of the facility at [[ insert: param, pe-06.04_odp ]].'
+    parameters:
+      - id: pe-06.04_odp
+        label: physical spaces
+        guidelines:
+          - physical spaces containing one or more components of the system are defined;
+    guidance: Monitoring physical access to systems provides additional monitoring for those areas within facilities where there is a concentration of system components, including server rooms, media storage areas, and communications centers. Physical access monitoring can be coordinated with intrusion detection systems and system monitoring capabilities to provide comprehensive and integrated threat coverage for the organization.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: pe-7
+    title: Visitor Control
+    rules: []
+    status: pending
+  - id: pe-8
+    title: Visitor Access Records
+    description: "  a. Maintain visitor access records to the facility where the system resides for [[ insert: param, pe-08_odp.01 ]];\n  b. Review visitor access records [[ insert: param, pe-08_odp.02 ]] ; and\n  c. Report anomalies in visitor access records to [[ insert: param, pe-08_odp.03 ]]."
+    parameters:
+      - id: pe-08_odp.01
+        label: time period
+        guidelines:
+          - time period for which to maintain visitor access records for the facility where the system resides is defined;
+      - id: pe-08_odp.02
+        label: frequency
+        guidelines:
+          - the frequency at which to review visitor access records is defined;
+      - id: pe-08_odp.03
+        label: personnel
+        guidelines:
+          - personnel to whom visitor access records anomalies are reported to is/are defined;
+    guidance: Visitor access records include the names and organizations of individuals visiting, visitor signatures, forms of identification, dates of access, entry and departure times, purpose of visits, and the names and organizations of individuals visited. Access record reviews determine if access authorizations are current and are still required to support organizational mission and business functions. Access records are not required for publicly accessible areas.
+    related_controls:
+      - pe-2
+      - pe-3
+      - pe-6
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-8.1
+    title: Automated Records Maintenance and Review
+    description: 'Maintain and review visitor access records using [[ insert: param, pe-8.1_prm_1 ]].'
+    parameters:
+      - id: pe-8.1_prm_1
+        label: organization-defined automated mechanisms
+      - id: pe-08.01_odp.01
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to maintain visitor access records are defined;
+      - id: pe-08.01_odp.02
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to review visitor access records are defined;
+    guidance: Visitor access records may be stored and maintained in a database management system that is accessible by organizational personnel. Automated access to such records facilitates record reviews on a regular basis to determine if access authorizations are current and still required to support organizational mission and business functions.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: pe-8.2
+    title: Physical Access Records
+    rules: []
+    status: pending
+  - id: pe-8.3
+    title: Limit Personally Identifiable Information Elements
+    description: 'Limit personally identifiable information contained in visitor access records to the following elements identified in the privacy risk assessment: [[ insert: param, pe-08.03_odp ]].'
+    parameters:
+      - id: pe-08.03_odp
+        label: elements
+        guidelines:
+          - elements identified in the privacy risk assessment to limit personally identifiable information contained in visitor access logs are defined;
+    guidance: Organizations may have requirements that specify the contents of visitor access records. Limiting personally identifiable information in visitor access records when such information is not needed for operational purposes helps reduce the level of privacy risk created by a system.
+    related_controls:
+      - ra-3
+      - sa-8
+    rules: []
+    status: pending
+  - id: pe-9
+    title: Power Equipment and Cabling
+    description: Protect power equipment and power cabling for the system from damage and destruction.
+    guidance: Organizations determine the types of protection necessary for the power equipment and cabling employed at different locations that are both internal and external to organizational facilities and environments of operation. Types of power equipment and cabling include internal cabling and uninterruptable power sources in offices or data centers, generators and power cabling outside of buildings, and power sources for self-contained components such as satellites, vehicles, and other deployable systems.
+    related_controls:
+      - pe-4
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-9.1
+    title: Redundant Cabling
+    description: 'Employ redundant power cabling paths that are physically separated by [[ insert: param, pe-09.01_odp ]].'
+    parameters:
+      - id: pe-09.01_odp
+        label: distance
+        guidelines:
+          - distance by which redundant power cabling paths are to be physically separated is defined;
+    guidance: Physically separate and redundant power cables ensure that power continues to flow in the event that one of the cables is cut or otherwise damaged.
+    rules: []
+    status: pending
+  - id: pe-9.2
+    title: Automatic Voltage Controls
+    description: 'Employ automatic voltage controls for [[ insert: param, pe-09.02_odp ]].'
+    parameters:
+      - id: pe-09.02_odp
+        label: critical system components
+        guidelines:
+          - the critical system components that require automatic voltage controls are defined;
+    guidance: Automatic voltage controls can monitor and control voltage. Such controls include voltage regulators, voltage conditioners, and voltage stabilizers.
+    rules: []
+    status: pending
+  - id: pe-10
+    title: Emergency Shutoff
+    description: "  a. Provide the capability of shutting off power to [[ insert: param, pe-10_odp.01 ]] in emergency situations;\n  b. Place emergency shutoff switches or devices in [[ insert: param, pe-10_odp.02 ]] to facilitate access for authorized personnel; and\n  c. Protect emergency power shutoff capability from unauthorized activation."
+    parameters:
+      - id: pe-10_odp.01
+        label: system or individual system components
+        guidelines:
+          - system or individual system components that require the capability to shut off power in emergency situations is/are defined;
+      - id: pe-10_odp.02
+        label: location
+        guidelines:
+          - location of emergency shutoff switches or devices by system or system component is defined;
+    guidance: Emergency power shutoff primarily applies to organizational facilities that contain concentrations of system resources, including data centers, mainframe computer rooms, server rooms, and areas with computer-controlled machinery.
+    related_controls:
+      - pe-15
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-10.1
+    title: Accidental and Unauthorized Activation
+    rules: []
+    status: pending
+  - id: pe-11
+    title: Emergency Power
+    description: 'Provide an uninterruptible power supply to facilitate [[ insert: param, pe-11_odp ]] in the event of a primary power source loss.'
+    parameters:
+      - id: pe-11_odp
+        label: ''
+        choices:
+          - an orderly shutdown of the system
+          - transition of the system to long-term alternate power
+    guidance: An uninterruptible power supply (UPS) is an electrical system or mechanism that provides emergency power when there is a failure of the main power source. A UPS is typically used to protect computers, data centers, telecommunication equipment, or other electrical equipment where an unexpected power disruption could cause injuries, fatalities, serious mission or business disruption, or loss of data or information. A UPS differs from an emergency power system or backup generator in that the UPS provides near-instantaneous protection from unanticipated power interruptions from the main power source by providing energy stored in batteries, supercapacitors, or flywheels. The battery duration of a UPS is relatively short but provides sufficient time to start a standby power source, such as a backup generator, or properly shut down the system.
+    related_controls:
+      - at-3
+      - cp-2
+      - cp-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-11.1
+    title: Alternate Power Supply — Minimal Operational Capability
+    description: 'Provide an alternate power supply for the system that is activated [[ insert: param, pe-11.01_odp ]] and that can maintain minimally required operational capability in the event of an extended loss of the primary power source.'
+    parameters:
+      - id: pe-11.01_odp
+        label: ''
+        choices:
+          - manually
+          - automatically
+    guidance: Provision of an alternate power supply with minimal operating capability can be satisfied by accessing a secondary commercial power supply or other external power supply.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: pe-11.2
+    title: Alternate Power Supply — Self-contained
+    description: "Provide an alternate power supply for the system that is activated [[ insert: param, pe-11.02_odp.01 ]] and that is:\n  a. Self-contained;\n  b. Not reliant on external power generation; and\n  c. Capable of maintaining [[ insert: param, pe-11.02_odp.02 ]] in the event of an extended loss of the primary power source."
+    parameters:
+      - id: pe-11.02_odp.01
+        label: ''
+        choices:
+          - manually
+          - automatically
+      - id: pe-11.02_odp.02
+        label: ''
+        choices:
+          - minimally required operational capability
+          - full operational capability
+    guidance: The provision of a long-term, self-contained power supply can be satisfied by using one or more generators with sufficient capacity to meet the needs of the organization.
+    rules: []
+    status: pending
+  - id: pe-12
+    title: Emergency Lighting
+    description: Employ and maintain automatic emergency lighting for the system that activates in the event of a power outage or disruption and that covers emergency exits and evacuation routes within the facility.
+    guidance: The provision of emergency lighting applies primarily to organizational facilities that contain concentrations of system resources, including data centers, server rooms, and mainframe computer rooms. Emergency lighting provisions for the system are described in the contingency plan for the organization. If emergency lighting for the system fails or cannot be provided, organizations consider alternate processing sites for power-related contingencies.
+    related_controls:
+      - cp-2
+      - cp-7
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-12.1
+    title: Essential Mission and Business Functions
+    description: Provide emergency lighting for all areas within the facility supporting essential mission and business functions.
+    guidance: Organizations define their essential missions and functions.
+    rules: []
+    status: pending
+  - id: pe-13
+    title: Fire Protection
+    description: Employ and maintain fire detection and suppression systems that are supported by an independent energy source.
+    guidance: The provision of fire detection and suppression systems applies primarily to organizational facilities that contain concentrations of system resources, including data centers, server rooms, and mainframe computer rooms. Fire detection and suppression systems that may require an independent energy source include sprinkler systems and smoke detectors. An independent energy source is an energy source, such as a microgrid, that is separate, or can be separated, from the energy sources providing power for the other parts of the facility.
+    related_controls:
+      - at-3
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-13.1
+    title: Detection Systems — Automatic Activation and Notification
+    description: 'Employ fire detection systems that activate automatically and notify [[ insert: param, pe-13.01_odp.01 ]] and [[ insert: param, pe-13.01_odp.02 ]] in the event of a fire.'
+    parameters:
+      - id: pe-13.01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified in the event of a fire is/are defined;
+      - id: pe-13.01_odp.02
+        label: emergency responders
+        guidelines:
+          - emergency responders to be notified in the event of a fire are defined;
+    guidance: Organizations can identify personnel, roles, and emergency responders if individuals on the notification list need to have access authorizations or clearances (e.g., to enter to facilities where access is restricted due to the classification or impact level of information within the facility). Notification mechanisms may require independent energy sources to ensure that the notification capability is not adversely affected by the fire.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-13.2
+    title: Suppression Systems — Automatic Activation and Notification
+    description: "  a. Employ fire suppression systems that activate automatically and notify [[ insert: param, pe-13.02_odp.01 ]] and [[ insert: param, pe-13.02_odp.02 ]] ; and\n  b. Employ an automatic fire suppression capability when the facility is not staffed on a continuous basis."
+    parameters:
+      - id: pe-13.02_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified in the event of a fire is/are defined;
+      - id: pe-13.02_odp.02
+        label: emergency responders
+        guidelines:
+          - emergency responders to be notified in the event of a fire are defined;
+    guidance: Organizations can identify specific personnel, roles, and emergency responders if individuals on the notification list need to have appropriate access authorizations and/or clearances (e.g., to enter to facilities where access is restricted due to the impact level or classification of information within the facility). Notification mechanisms may require independent energy sources to ensure that the notification capability is not adversely affected by the fire.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: pe-13.3
+    title: Automatic Fire Suppression
+    rules: []
+    status: pending
+  - id: pe-13.4
+    title: Inspections
+    description: 'Ensure that the facility undergoes [[ insert: param, pe-13.04_odp.01 ]] fire protection inspections by authorized and qualified inspectors and identified deficiencies are resolved within [[ insert: param, pe-13.04_odp.02 ]].'
+    parameters:
+      - id: pe-13.04_odp.01
+        label: frequency
+        guidelines:
+          - the frequency for conducting fire protection inspections on the facility is defined;
+      - id: pe-13.04_odp.02
+        label: time period
+        guidelines:
+          - a time period for resolving deficiencies identified by fire protection inspections is defined;
+    guidance: Authorized and qualified personnel within the jurisdiction of the organization include state, county, and city fire inspectors and fire marshals. Organizations provide escorts during inspections in situations where the systems that reside within the facilities contain sensitive information.
+    rules: []
+    status: pending
+  - id: pe-14
+    title: Environmental Controls
+    description: "  a. Maintain [[ insert: param, pe-14_odp.01 ]] levels within the facility where the system resides at [[ insert: param, pe-14_odp.03 ]] ; and\n  b. Monitor environmental control levels [[ insert: param, pe-14_odp.04 ]]."
+    parameters:
+      - id: pe-14_odp.01
+        label: ''
+        choices:
+          - temperature
+          - humidity
+          - pressure
+          - radiation
+          - '[[ insert: param, pe-14_odp.02 ]] '
+      - id: pe-14_odp.02
+        label: environmental control
+        guidelines:
+          - environmental control(s) for which to maintain a specified level in the facility where the system resides are defined (if selected);
+      - id: pe-14_odp.03
+        label: acceptable levels
+        guidelines:
+          - acceptable levels for environmental controls are defined;
+      - id: pe-14_odp.04
+        label: frequency
+        guidelines:
+          - frequency at which to monitor environmental control levels is defined;
+    guidance: The provision of environmental controls applies primarily to organizational facilities that contain concentrations of system resources (e.g., data centers, mainframe computer rooms, and server rooms). Insufficient environmental controls, especially in very harsh environments, can have a significant adverse impact on the availability of systems and system components that are needed to support organizational mission and business functions.
+    related_controls:
+      - at-3
+      - cp-2
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-14.1
+    title: Automatic Controls
+    description: 'Employ the following automatic environmental controls in the facility to prevent fluctuations potentially harmful to the system: [[ insert: param, pe-14.01_odp ]].'
+    parameters:
+      - id: pe-14.01_odp
+        label: automatic environmental controls
+        guidelines:
+          - automatic environmental controls to prevent fluctuations that are potentially harmful to the system are defined;
+    guidance: The implementation of automatic environmental controls provides an immediate response to environmental conditions that can damage, degrade, or destroy organizational systems or systems components.
+    rules: []
+    status: pending
+  - id: pe-14.2
+    title: Monitoring with Alarms and Notifications
+    description: 'Employ environmental control monitoring that provides an alarm or notification of changes potentially harmful to personnel or equipment to [[ insert: param, pe-14.02_odp ]].'
+    parameters:
+      - id: pe-14.02_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified by environmental control monitoring when environmental changes are potentially harmful to personnel or equipment is/are defined;
+    guidance: The alarm or notification may be an audible alarm or a visual message in real time to personnel or roles defined by the organization. Such alarms and notifications can help minimize harm to individuals and damage to organizational assets by facilitating a timely incident response.
+    rules: []
+    status: pending
+  - id: pe-15
+    title: Water Damage Protection
+    description: Protect the system from damage resulting from water leakage by providing master shutoff or isolation valves that are accessible, working properly, and known to key personnel.
+    guidance: The provision of water damage protection primarily applies to organizational facilities that contain concentrations of system resources, including data centers, server rooms, and mainframe computer rooms. Isolation valves can be employed in addition to or in lieu of master shutoff valves to shut off water supplies in specific areas of concern without affecting entire organizations.
+    related_controls:
+      - at-3
+      - pe-10
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-15.1
+    title: Automation Support
+    description: 'Detect the presence of water near the system and alert [[ insert: param, pe-15.01_odp.01 ]] using [[ insert: param, pe-15.01_odp.02 ]].'
+    parameters:
+      - id: pe-15.01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be alerted when the presence of water is detected near the system is/are defined;
+      - id: pe-15.01_odp.02
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used to detect the presence of water near the system are defined;
+    guidance: Automated mechanisms include notification systems, water detection sensors, and alarms.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: pe-16
+    title: Delivery and Removal
+    description: "  a. Authorize and control [[ insert: param, pe-16_prm_1 ]] entering and exiting the facility; and\n  b. Maintain records of the system components."
+    parameters:
+      - id: pe-16_prm_1
+        label: organization-defined types of system components
+      - id: pe-16_odp.01
+        label: types of system components
+        guidelines:
+          - types of system components to be authorized and controlled when entering the facility are defined;
+      - id: pe-16_odp.02
+        label: types of system components
+        guidelines:
+          - types of system components to be authorized and controlled when exiting the facility are defined;
+    guidance: Enforcing authorizations for entry and exit of system components may require restricting access to delivery areas and isolating the areas from the system and media libraries.
+    related_controls:
+      - cm-3
+      - cm-8
+      - ma-2
+      - ma-3
+      - mp-5
+      - pe-20
+      - sr-2
+      - sr-3
+      - sr-4
+      - sr-6
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-17
+    title: Alternate Work Site
+    description: "  a. Determine and document the [[ insert: param, pe-17_odp.01 ]] allowed for use by employees;\n  b. Employ the following controls at alternate work sites: [[ insert: param, pe-17_odp.02 ]];\n  c. Assess the effectiveness of controls at alternate work sites; and\n  d. Provide a means for employees to communicate with information security and privacy personnel in case of incidents."
+    parameters:
+      - id: pe-17_odp.01
+        label: alternate work sites
+        guidelines:
+          - alternate work sites allowed for use by employees are defined;
+      - id: pe-17_odp.02
+        label: controls
+        guidelines:
+          - controls to be employed at alternate work sites are defined;
+    guidance: Alternate work sites include government facilities or the private residences of employees. While distinct from alternative processing sites, alternate work sites can provide readily available alternate locations during contingency operations. Organizations can define different sets of controls for specific alternate work sites or types of sites depending on the work-related activities conducted at the sites. Implementing and assessing the effectiveness of organization-defined controls and providing a means to communicate incidents at alternate work sites supports the contingency planning activities of organizations.
+    related_controls:
+      - ac-17
+      - ac-18
+      - cp-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pe-18
+    title: Location of System Components
+    description: 'Position system components within the facility to minimize potential damage from [[ insert: param, pe-18_odp ]] and to minimize the opportunity for unauthorized access.'
+    parameters:
+      - id: pe-18_odp
+        label: physical and environmental hazards
+        guidelines:
+          - physical and environmental hazards that could result in potential damage to system components within the facility are defined;
+    guidance: Physical and environmental hazards include floods, fires, tornadoes, earthquakes, hurricanes, terrorism, vandalism, an electromagnetic pulse, electrical interference, and other forms of incoming electromagnetic radiation. Organizations consider the location of entry points where unauthorized individuals, while not being granted access, might nonetheless be near systems. Such proximity can increase the risk of unauthorized access to organizational communications using wireless packet sniffers or microphones, or unauthorized disclosure of information.
+    related_controls:
+      - cp-2
+      - pe-5
+      - pe-19
+      - pe-20
+      - ra-3
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: pe-18.1
+    title: Facility Site
+    rules: []
+    status: pending
+  - id: pe-19
+    title: Information Leakage
+    description: Protect the system from information leakage due to electromagnetic signals emanations.
+    guidance: Information leakage is the intentional or unintentional release of data or information to an untrusted environment from electromagnetic signals emanations. The security categories or classifications of systems (with respect to confidentiality), organizational security policies, and risk tolerance guide the selection of controls employed to protect systems against information leakage due to electromagnetic signals emanations.
+    related_controls:
+      - ac-18
+      - pe-18
+      - pe-20
+    rules: []
+    status: pending
+  - id: pe-19.1
+    title: National Emissions Policies and Procedures
+    description: Protect system components, associated data communications, and networks in accordance with national Emissions Security policies and procedures based on the security category or classification of the information.
+    guidance: Emissions Security (EMSEC) policies include the former TEMPEST policies.
+    rules: []
+    status: pending
+  - id: pe-20
+    title: Asset Monitoring and Tracking
+    description: 'Employ [[ insert: param, pe-20_odp.01 ]] to track and monitor the location and movement of [[ insert: param, pe-20_odp.02 ]] within [[ insert: param, pe-20_odp.03 ]].'
+    parameters:
+      - id: pe-20_odp.01
+        label: asset location technologies
+        guidelines:
+          - asset location technologies to be employed to track and monitor the location and movement of assets is defined;
+      - id: pe-20_odp.02
+        label: assets
+        guidelines:
+          - assets whose location and movement are to be tracked and monitored are defined;
+      - id: pe-20_odp.03
+        label: controlled areas
+        guidelines:
+          - controlled areas within which asset location and movement are to be tracked and monitored are defined;
+    guidance: Asset location technologies can help ensure that critical assets—including vehicles, equipment, and system components—remain in authorized locations. Organizations consult with the Office of the General Counsel and senior agency official for privacy regarding the deployment and use of asset location technologies to address potential privacy concerns.
+    related_controls:
+      - cm-8
+      - pe-16
+      - pm-8
+    rules: []
+    status: pending
+  - id: pe-21
+    title: Electromagnetic Pulse Protection
+    description: 'Employ [[ insert: param, pe-21_odp.01 ]] against electromagnetic pulse damage for [[ insert: param, pe-21_odp.02 ]].'
+    parameters:
+      - id: pe-21_odp.01
+        label: protective measures
+        guidelines:
+          - protective measures to be employed against electromagnetic pulse damage are defined;
+      - id: pe-21_odp.02
+        label: system and system components
+        guidelines:
+          - system and system components requiring protection against electromagnetic pulse damage are defined;
+    guidance: An electromagnetic pulse (EMP) is a short burst of electromagnetic energy that is spread over a range of frequencies. Such energy bursts may be natural or man-made. EMP interference may be disruptive or damaging to electronic equipment. Protective measures used to mitigate EMP risk include shielding, surge suppressors, ferro-resonant transformers, and earth grounding. EMP protection may be especially significant for systems and applications that are part of the U.S. critical infrastructure.
+    related_controls:
+      - pe-18
+      - pe-19
+    rules: []
+    status: pending
+  - id: pe-22
+    title: Component Marking
+    description: 'Mark [[ insert: param, pe-22_odp ]] indicating the impact level or classification level of the information permitted to be processed, stored, or transmitted by the hardware component.'
+    parameters:
+      - id: pe-22_odp
+        label: system hardware components
+        guidelines:
+          - system hardware components to be marked indicating the impact level or classification level of the information permitted to be processed, stored, or transmitted by the hardware component are defined;
+    guidance: Hardware components that may require marking include input and output devices. Input devices include desktop and notebook computers, keyboards, tablets, and smart phones. Output devices include printers, monitors/video displays, facsimile machines, scanners, copiers, and audio devices. Permissions controlling output to the output devices are addressed in [AC-3](#ac-3) or [AC-4](#ac-4) . Components are marked to indicate the impact level or classification level of the system to which the devices are connected, or the impact level or classification level of the information permitted to be output. Security marking refers to the use of human-readable security attributes. Security labeling refers to the use of security attributes for internal system data structures. Security marking is generally not required for hardware components that process, store, or transmit information determined by organizations to be in the public domain or to be publicly releasable. However, organizations may require markings for hardware components that process, store, or transmit public information in order to indicate that such information is publicly releasable. Marking of system hardware components reflects applicable laws, executive orders, directives, policies, regulations, and standards.
+    related_controls:
+      - ac-3
+      - ac-4
+      - ac-16
+      - mp-3
+    rules: []
+    status: pending
+  - id: pe-23
+    title: Facility Location
+    description: "  a. Plan the location or site of the facility where the system resides considering physical and environmental hazards; and\n  b. For existing facilities, consider the physical and environmental hazards in the organizational risk management strategy."
+    guidance: Physical and environmental hazards include floods, fires, tornadoes, earthquakes, hurricanes, terrorism, vandalism, an electromagnetic pulse, electrical interference, and other forms of incoming electromagnetic radiation. The location of system components within the facility is addressed in [PE-18](#pe-18).
+    related_controls:
+      - cp-2
+      - pe-18
+      - pe-19
+      - pm-8
+      - pm-9
+      - ra-3
+    rules: []
+    status: pending

@@ -1,0 +1,1314 @@
+# NIST 800-53 AU Family: Audit and Accountability
+controls:
+  - id: au-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, au-1_prm_1 ]]:\n    1. [[ insert: param, au-01_odp.03 ]] audit and accountability policy that:\n    2. Procedures to facilitate the implementation of the audit and accountability policy and the associated audit and accountability controls;\n  b. Designate an [[ insert: param, au-01_odp.04 ]] to manage the development, documentation, and dissemination of the audit and accountability policy and procedures; and\n  c. Review and update the current audit and accountability:\n    1. Policy [[ insert: param, au-01_odp.05 ]] and following [[ insert: param, au-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, au-01_odp.07 ]] and following [[ insert: param, au-01_odp.08 ]]."
+    parameters:
+      - id: au-1_prm_1
+        label: organization-defined personnel or roles
+      - id: au-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the audit and accountability policy is to be disseminated is/are defined;
+      - id: au-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the audit and accountability procedures are to be disseminated is/are defined;
+      - id: au-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: au-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the audit and accountability policy and procedures is defined;
+      - id: au-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency at which the current audit and accountability policy is reviewed and updated is defined;
+      - id: au-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current audit and accountability policy to be reviewed and updated are defined;
+      - id: au-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency at which the current audit and accountability procedures are reviewed and updated is defined;
+      - id: au-01_odp.08
+        label: events
+        guidelines:
+          - events that would require audit and accountability procedures to be reviewed and updated are defined;
+    guidance: Audit and accountability policy and procedures address the controls in the AU family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of audit and accountability policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to audit and accountability policy and procedures include assessment or audit findings, security incidents or breaches, or changes in applicable laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-2
+    title: Event Logging
+    description: "  a. Identify the types of events that the system is capable of logging in support of the audit function: [[ insert: param, au-02_odp.01 ]];\n  b. Coordinate the event logging function with other organizational entities requiring audit-related information to guide and inform the selection criteria for events to be logged;\n  c. Specify the following event types for logging within the system: [[ insert: param, au-2_prm_2 ]];\n  d. Provide a rationale for why the event types selected for logging are deemed to be adequate to support after-the-fact investigations of incidents; and\n  e. Review and update the event types selected for logging [[ insert: param, au-02_odp.04 ]]."
+    parameters:
+      - id: au-2_prm_2
+        label: organization-defined event types (subset of the event types defined in [AU-2a.](#au-2_smt.a)) along with the frequency of (or situation requiring) logging for each identified event type
+      - id: au-02_odp.01
+        label: event types
+        guidelines:
+          - the event types that the system is capable of logging in support of the audit function are defined;
+      - id: au-02_odp.02
+        label: event types (subset of AU-02_ODP[01])
+        guidelines:
+          - the event types (subset of AU-02_ODP[01]) for logging within the system are defined;
+      - id: au-02_odp.03
+        label: frequency or situation
+        guidelines:
+          - the frequency or situation requiring logging for each specified event type is defined;
+      - id: au-02_odp.04
+        label: frequency
+        guidelines:
+          - the frequency of event types selected for logging are reviewed and updated;
+    guidance: "An event is an observable occurrence in a system. The types of events that require logging are those events that are significant and relevant to the security of systems and the privacy of individuals. Event logging also supports specific monitoring and auditing needs. Event types include password changes, failed logons or failed accesses related to systems, security or privacy attribute changes, administrative privilege usage, PIV credential usage, data action changes, query parameters, or external credential usage. In determining the set of event types that require logging, organizations consider the monitoring and auditing appropriate for each of the controls to be implemented. For completeness, event logging includes all protocols that are operational and supported by the system.\n\nTo balance monitoring and auditing requirements with other system needs, event logging requires identifying the subset of event types that are logged at a given point in time. For example, organizations may determine that systems need the capability to log every file access successful and unsuccessful, but not activate that capability except for specific circumstances due to the potential burden on system performance. The types of events that organizations desire to be logged may change. Reviewing and updating the set of logged events is necessary to help ensure that the events remain relevant and continue to support the needs of the organization. Organizations consider how the types of logging events can reveal information about individuals that may give rise to privacy risk and how best to mitigate such risks. For example, there is the potential to reveal personally identifiable information in the audit trail, especially if the logging event is based on patterns or time of usage.\n\nEvent logging requirements, including the need to log specific event types, may be referenced in other controls and control enhancements. These include [AC-2(4)](#ac-2.4), [AC-3(10)](#ac-3.10), [AC-6(9)](#ac-6.9), [AC-17(1)](#ac-17.1), [CM-3f](#cm-3_smt.f), [CM-5(1)](#cm-5.1), [IA-3(3)(b)](#ia-3.3_smt.b), [MA-4(1)](#ma-4.1), [MP-4(2)](#mp-4.2), [PE-3](#pe-3), [PM-21](#pm-21), [PT-7](#pt-7), [RA-8](#ra-8), [SC-7(9)](#sc-7.9), [SC-7(15)](#sc-7.15), [SI-3(8)](#si-3.8), [SI-4(22)](#si-4.22), [SI-7(8)](#si-7.8) , and [SI-10(1)](#si-10.1) . Organizations include event types that are required by applicable laws, executive orders, directives, policies, regulations, standards, and guidelines. Audit records can be generated at various levels, including at the packet level as information traverses the network. Selecting the appropriate level of event logging is an important part of a monitoring and auditing capability and can identify the root causes of problems. When defining event types, organizations consider the logging necessary to cover related event types, such as the steps in distributed, transaction-based processes and the actions that occur in service-oriented architectures."
+    related_controls:
+      - ac-2
+      - ac-3
+      - ac-6
+      - ac-7
+      - ac-8
+      - ac-16
+      - ac-17
+      - au-3
+      - au-4
+      - au-5
+      - au-6
+      - au-7
+      - au-11
+      - au-12
+      - cm-3
+      - cm-5
+      - cm-6
+      - cm-13
+      - ia-3
+      - ma-4
+      - mp-4
+      - pe-3
+      - pm-21
+      - pt-2
+      - pt-7
+      - ra-8
+      - sa-8
+      - sc-7
+      - sc-18
+      - si-3
+      - si-4
+      - si-7
+      - si-10
+      - si-11
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - var_audit_backlog_limit=8192
+      {{% if product == "rhel9" %}}
+      - var_auditd_action_mail_acct=root
+      {{% endif %}}
+      {{% if product == "rhel10" %}}
+      - var_auditd_admin_space_left_action=cis_rhel10
+      {{% elif product == "rhel8" %}}
+      - var_auditd_admin_space_left_action=cis_rhel8
+      {{% elif product == "rhel9" %}}
+      - var_auditd_admin_space_left_action=cis_rhel9
+      {{% endif %}}
+      {{% if product == "rhel9" %}}
+      - var_auditd_disk_error_action=cis_rhel9
+      - var_auditd_disk_full_action=cis_rhel9
+      {{% endif %}}
+      {{% if product == "rhel10" %}}
+      - var_auditd_space_left_action=cis_rhel10
+      {{% elif product == "rhel8" %}}
+      - var_auditd_space_left_action=cis_rhel8
+      {{% elif product == "rhel9" %}}
+      - var_auditd_space_left_action=cis_rhel9
+      {{% endif %}}
+      - aide_build_database
+      - aide_periodic_cron_checking
+      - audit_rules_execution_chacl
+      - audit_rules_execution_chcon
+      - audit_rules_execution_setfacl
+      - audit_rules_privileged_commands_usermod
+      - auditd_data_disk_error_action
+      - auditd_data_disk_full_action
+      {{% if product == "rhel9" %}}
+      - auditd_data_retention_action_mail_acct
+      {{% endif %}}
+      - auditd_data_retention_admin_space_left_action
+      - auditd_data_retention_space_left_action
+      - grub2_audit_backlog_limit_argument
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - journald_disable_forward_to_syslog
+      {{% endif %}}
+      - package_aide_installed
+      - package_audit-libs_installed
+      - package_audit_installed
+      - package_systemd-journal-remote_installed
+      {{% if product == "rhel8" %}}
+      - rsyslog_nolisten
+      {{% endif %}}
+      - service_auditd_enabled
+      {{% if product == "rhel8" %}}
+      - service_rsyslog_enabled
+      {{% endif %}}
+      {{% if product in ["rhel10", "rhel8"] %}}
+      - service_systemd-journal-upload_enabled
+      {{% endif %}}
+      - service_systemd-journald_enabled
+      - socket_systemd-journal-remote_disabled
+    status: automated
+  - id: au-2.1
+    title: Compilation of Audit Records from Multiple Sources
+    rules: []
+    status: pending
+  - id: au-2.2
+    title: Selection of Audit Events by Component
+    rules: []
+    status: pending
+  - id: au-2.3
+    title: Reviews and Updates
+    rules: []
+    status: pending
+  - id: au-2.4
+    title: Privileged Functions
+    rules: []
+    status: pending
+  - id: au-3
+    title: Content of Audit Records
+    description: "Ensure that audit records contain information that establishes the following:\n  a. What type of event occurred;\n  b. When the event occurred;\n  c. Where the event occurred;\n  d. Source of the event;\n  e. Outcome of the event; and\n  f. Identity of any individuals, subjects, or objects/entities associated with the event."
+    guidance: Audit record content that may be necessary to support the auditing function includes event descriptions (item a), time stamps (item b), source and destination addresses (item c), user or process identifiers (items d and f), success or fail indications (item e), and filenames involved (items a, c, e, and f) . Event outcomes include indicators of event success or failure and event-specific results, such as the system security and privacy posture after the event occurred. Organizations consider how audit records can reveal information about individuals that may give rise to privacy risks and how best to mitigate such risks. For example, there is the potential to reveal personally identifiable information in the audit trail, especially if the trail records inputs or is based on patterns or time of usage.
+    related_controls:
+      - au-2
+      - au-8
+      - au-12
+      - au-14
+      - ma-4
+      - pl-9
+      - sa-8
+      - si-7
+      - si-11
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - sshd_max_auth_tries_value=4
+      - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+      - sysctl_net_ipv4_conf_default_log_martians_value=enabled
+      - var_accounts_passwords_pam_faillock_dir=run
+      - var_multiple_time_servers=rhel
+      - audit_rules_dac_modification_chmod
+      - audit_rules_dac_modification_chown
+      - audit_rules_dac_modification_fchmod
+      - audit_rules_dac_modification_fchmodat
+      - audit_rules_dac_modification_fchown
+      - audit_rules_dac_modification_fchownat
+      - audit_rules_dac_modification_fremovexattr
+      - audit_rules_dac_modification_fsetxattr
+      - audit_rules_dac_modification_lchown
+      - audit_rules_dac_modification_lremovexattr
+      - audit_rules_dac_modification_lsetxattr
+      - audit_rules_dac_modification_removexattr
+      - audit_rules_dac_modification_setxattr
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - audit_rules_kernel_module_loading_create
+      {{% endif %}}
+      - audit_rules_kernel_module_loading_delete
+      - audit_rules_kernel_module_loading_finit
+      - audit_rules_kernel_module_loading_init
+      - audit_rules_kernel_module_loading_query
+      - audit_rules_login_events_faillock
+      - audit_rules_login_events_lastlog
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - audit_rules_mac_modification
+      {{% endif %}}
+      {{% if product == "rhel10" %}}
+      - audit_rules_mac_modification_etc_selinux
+      {{% endif %}}
+      - audit_rules_mac_modification_usr_share
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - audit_rules_networkconfig_modification
+      {{% endif %}}
+      {{% if product == "rhel10" %}}
+      - audit_rules_networkconfig_modification_etc_hosts
+      - audit_rules_networkconfig_modification_etc_issue
+      - audit_rules_networkconfig_modification_etc_issue_net
+      - audit_rules_networkconfig_modification_etc_networkmanager_system_connections
+      - audit_rules_networkconfig_modification_etc_sysconfig_network
+      {{% endif %}}
+      {{% if product in ["rhel10", "rhel9"] %}}
+      - audit_rules_networkconfig_modification_hostname_file
+      {{% endif %}}
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - audit_rules_networkconfig_modification_network_scripts
+      {{% endif %}}
+      {{% if product in ["rhel10", "rhel9"] %}}
+      - audit_rules_networkconfig_modification_networkmanager
+      {{% endif %}}
+      {{% if product == "rhel10" %}}
+      - audit_rules_networkconfig_modification_setdomainname
+      - audit_rules_networkconfig_modification_sethostname
+      {{% endif %}}
+      - audit_rules_privileged_commands
+      - audit_rules_privileged_commands_kmod
+      - audit_rules_session_events_btmp
+      - audit_rules_session_events_utmp
+      - audit_rules_session_events_wtmp
+      - audit_rules_suid_auid_privilege_function
+      - audit_rules_sysadmin_actions
+      - audit_rules_time_adjtimex
+      - audit_rules_time_clock_settime
+      - audit_rules_time_settimeofday
+      - audit_rules_time_watch_localtime
+      - audit_rules_unsuccessful_file_modification_creat
+      - audit_rules_unsuccessful_file_modification_ftruncate
+      - audit_rules_unsuccessful_file_modification_open
+      - audit_rules_unsuccessful_file_modification_openat
+      - audit_rules_unsuccessful_file_modification_truncate
+      - audit_rules_usergroup_modification_group
+      - audit_rules_usergroup_modification_gshadow
+      - audit_rules_usergroup_modification_nsswitch_conf
+      - audit_rules_usergroup_modification_opasswd
+      - audit_rules_usergroup_modification_pam_conf
+      - audit_rules_usergroup_modification_pamd
+      - audit_rules_usergroup_modification_passwd
+      - audit_rules_usergroup_modification_shadow
+      - chronyd_specify_remote_server
+      - directory_permissions_var_log_audit
+      - file_groupownership_audit_binaries
+      - file_ownership_var_log_audit_stig
+      - file_permissions_audit_binaries
+      - journald_storage
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - package_chrony_installed
+      {{% endif %}}
+      - sshd_set_loglevel_verbose
+      - sshd_set_max_auth_tries
+      - sudo_custom_logfile
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_default_log_martians
+    status: automated
+  - id: au-3.1
+    title: Additional Audit Information
+    description: 'Generate audit records containing the following additional information: [[ insert: param, au-03.01_odp ]].'
+    parameters:
+      - id: au-03.01_odp
+        label: additional information
+        guidelines:
+          - additional information to be included in audit records is defined;
+    guidance: The ability to add information generated in audit records is dependent on system functionality to configure the audit record content. Organizations may consider additional information in audit records including, but not limited to, access control or flow control rules invoked and individual identities of group account users. Organizations may also consider limiting additional audit record information to only information that is explicitly needed for audit requirements. This facilitates the use of audit trails and audit logs by not including information in audit records that could potentially be misleading, make it more difficult to locate information of interest, or increase the risk to individuals' privacy.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-3.2
+    title: Centralized Management of Planned Audit Record Content
+    rules: []
+    status: pending
+  - id: au-3.3
+    title: Limit Personally Identifiable Information Elements
+    description: 'Limit personally identifiable information contained in audit records to the following elements identified in the privacy risk assessment: [[ insert: param, au-03.03_odp ]].'
+    parameters:
+      - id: au-03.03_odp
+        label: elements
+        guidelines:
+          - elements identified in the privacy risk assessment are defined;
+    guidance: Limiting personally identifiable information in audit records when such information is not needed for operational purposes helps reduce the level of privacy risk created by a system.
+    related_controls:
+      - ra-3
+    rules: []
+    status: pending
+  - id: au-4
+    title: Audit Log Storage Capacity
+    description: 'Allocate audit log storage capacity to accommodate [[ insert: param, au-04_odp ]].'
+    parameters:
+      - id: au-04_odp
+        label: audit log retention requirements
+        guidelines:
+          - audit log retention requirements are defined;
+    guidance: Organizations consider the types of audit logging to be performed and the audit log processing requirements when allocating audit log storage capacity. Allocating sufficient audit log storage capacity reduces the likelihood of such capacity being exceeded and resulting in the potential loss or reduction of audit logging capability.
+    related_controls:
+      - au-2
+      - au-5
+      - au-6
+      - au-7
+      - au-9
+      - au-11
+      - au-12
+      - au-14
+      - si-4
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - journald_compress
+    status: automated
+  - id: au-4.1
+    title: Transfer to Alternate Storage
+    description: 'Transfer audit logs [[ insert: param, au-04.01_odp ]] to a different system, system component, or media other than the system or system component conducting the logging.'
+    parameters:
+      - id: au-04.01_odp
+        label: frequency
+        guidelines:
+          - the frequency of audit logs transferred to a different system, system component, or media other than the system or system component conducting the logging is defined;
+    guidance: Audit log transfer, also known as off-loading, is a common process in systems with limited audit log storage capacity and thus supports availability of the audit logs. The initial audit log storage is only used in a transitory fashion until the system can communicate with the secondary or alternate system allocated to audit log storage, at which point the audit logs are transferred. Transferring audit logs to alternate storage is similar to [AU-9(2)](#au-9.2) in that audit logs are transferred to a different entity. However, the purpose of selecting [AU-9(2)](#au-9.2) is to protect the confidentiality and integrity of audit records. Organizations can select either control enhancement to obtain the benefit of increased audit log storage capacity and preserving the confidentiality, integrity, and availability of audit records and logs.
+    rules: []
+    status: pending
+  - id: au-5
+    title: Response to Audit Logging Process Failures
+    description: "  a. Alert [[ insert: param, au-05_odp.01 ]] within [[ insert: param, au-05_odp.02 ]] in the event of an audit logging process failure; and\n  b. Take the following additional actions: [[ insert: param, au-05_odp.03 ]]."
+    parameters:
+      - id: au-05_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles receiving audit logging process failure alerts are defined;
+      - id: au-05_odp.02
+        label: time period
+        guidelines:
+          - time period for personnel or roles receiving audit logging process failure alerts is defined;
+      - id: au-05_odp.03
+        label: additional actions
+        guidelines:
+          - additional actions to be taken in the event of an audit logging process failure are defined;
+    guidance: Audit logging process failures include software and hardware errors, failures in audit log capturing mechanisms, and reaching or exceeding audit log storage capacity. Organization-defined actions include overwriting oldest audit records, shutting down the system, and stopping the generation of audit records. Organizations may choose to define additional actions for audit logging process failures based on the type of failure, the location of the failure, the severity of the failure, or a combination of such factors. When the audit logging process failure is related to storage, the response is carried out for the audit log storage repository (i.e., the distinct system component where the audit logs are stored), the system on which the audit logs reside, the total audit log storage capacity of the organization (i.e., all audit log storage repositories combined), or all three. Organizations may decide to take no additional actions after alerting designated roles or personnel.
+    related_controls:
+      - au-2
+      - au-4
+      - au-7
+      - au-9
+      - au-11
+      - au-12
+      - au-14
+      - si-4
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      {{% if product == "rhel10" %}}
+      - var_auditd_disk_error_action=cis_rhel10
+      {{% elif product == "rhel8" %}}
+      - var_auditd_disk_error_action=cis_rhel8
+      {{% endif %}}
+      {{% if product == "rhel10" %}}
+      - var_auditd_disk_full_action=cis_rhel10
+      {{% elif product == "rhel8" %}}
+      - var_auditd_disk_full_action=cis_rhel8
+      {{% endif %}}
+      - auditd_data_disk_error_action
+      - auditd_data_disk_full_action
+    status: automated
+  - id: au-5.1
+    title: Storage Capacity Warning
+    description: 'Provide a warning to [[ insert: param, au-05.01_odp.01 ]] within [[ insert: param, au-05.01_odp.02 ]] when allocated audit log storage volume reaches [[ insert: param, au-05.01_odp.03 ]] of repository maximum audit log storage capacity.'
+    parameters:
+      - id: au-05.01_odp.01
+        label: personnel, roles, and/or locations
+        guidelines:
+          - personnel, roles, and/or locations to be warned when allocated audit log storage volume reaches a percentage of repository maximum audit log storage capacity.
+      - id: au-05.01_odp.02
+        label: time period
+        guidelines:
+          - time period for defined personnel, roles, and/or locations to be warned when allocated audit log storage volume reaches a percentage of repository maximum audit log storage capacity is defined;
+      - id: au-05.01_odp.03
+        label: percentage
+        guidelines:
+          - percentage of repository maximum audit log storage capacity is defined;
+    guidance: Organizations may have multiple audit log storage repositories distributed across multiple system components with each repository having different storage volume capacities.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-5.2
+    title: Real-time Alerts
+    description: 'Provide an alert within [[ insert: param, au-05.02_odp.01 ]] to [[ insert: param, au-05.02_odp.02 ]] when the following audit failure events occur: [[ insert: param, au-05.02_odp.03 ]].'
+    parameters:
+      - id: au-05.02_odp.01
+        label: real-time period
+        guidelines:
+          - real-time period requiring alerts when audit failure events (defined in AU-05(02)_ODP[03]) occur is defined;
+      - id: au-05.02_odp.02
+        label: personnel, roles, and/or locations
+        guidelines:
+          - personnel, roles, and/or locations to be alerted in real time when audit failure events (defined in AU-05(02)_ODP[03]) occur is/are defined;
+      - id: au-05.02_odp.03
+        label: audit logging failure events requiring real-time alerts
+        guidelines:
+          - audit logging failure events requiring real-time alerts are defined;
+    guidance: Alerts provide organizations with urgent messages. Real-time alerts provide these messages at information technology speed (i.e., the time from event detection to alert occurs in seconds or less).
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-5.3
+    title: Configurable Traffic Volume Thresholds
+    description: 'Enforce configurable network communications traffic volume thresholds reflecting limits on audit log storage capacity and [[ insert: param, au-05.03_odp ]] network traffic above those thresholds.'
+    parameters:
+      - id: au-05.03_odp
+        label: ''
+        choices:
+          - reject
+          - delay
+    guidance: Organizations have the capability to reject or delay the processing of network communications traffic if audit logging information about such traffic is determined to exceed the storage capacity of the system audit logging function. The rejection or delay response is triggered by the established organizational traffic volume thresholds that can be adjusted based on changes to audit log storage capacity.
+    rules: []
+    status: pending
+  - id: au-5.4
+    title: Shutdown on Failure
+    description: 'Invoke a [[ insert: param, au-05.04_odp.01 ]] in the event of [[ insert: param, au-05.04_odp.02 ]] , unless an alternate audit logging capability exists.'
+    parameters:
+      - id: au-05.04_odp.01
+        label: ''
+        choices:
+          - full system shutdown
+          - partial system shutdown
+          - degraded operational mode with limited mission or business functionality available
+      - id: au-05.04_odp.02
+        label: audit logging failures
+        guidelines:
+          - audit logging failures that trigger a change in operational mode are defined;
+    guidance: Organizations determine the types of audit logging failures that can trigger automatic system shutdowns or degraded operations. Because of the importance of ensuring mission and business continuity, organizations may determine that the nature of the audit logging failure is not so severe that it warrants a complete shutdown of the system supporting the core organizational mission and business functions. In those instances, partial system shutdowns or operating in a degraded mode with reduced capability may be viable alternatives.
+    related_controls:
+      - au-15
+    rules: []
+    status: pending
+  - id: au-5.5
+    title: Alternate Audit Logging Capability
+    description: 'Provide an alternate audit logging capability in the event of a failure in primary audit logging capability that implements [[ insert: param, au-05.05_odp ]].'
+    parameters:
+      - id: au-05.05_odp
+        label: alternate audit logging functionality
+        guidelines:
+          - an alternate audit logging functionality in the event of a failure in primary audit logging capability is defined;
+    guidance: Since an alternate audit logging capability may be a short-term protection solution employed until the failure in the primary audit logging capability is corrected, organizations may determine that the alternate audit logging capability need only provide a subset of the primary audit logging functionality that is impacted by the failure.
+    related_controls:
+      - au-9
+    rules: []
+    status: pending
+  - id: au-6
+    title: Audit Record Review, Analysis, and Reporting
+    description: "  a. Review and analyze system audit records [[ insert: param, au-06_odp.01 ]] for indications of [[ insert: param, au-06_odp.02 ]] and the potential impact of the inappropriate or unusual activity;\n  b. Report findings to [[ insert: param, au-06_odp.03 ]] ; and\n  c. Adjust the level of audit record review, analysis, and reporting within the system when there is a change in risk based on law enforcement information, intelligence information, or other credible sources of information."
+    parameters:
+      - id: au-06_odp.01
+        label: frequency
+        guidelines:
+          - frequency at which system audit records are reviewed and analyzed is defined;
+      - id: au-06_odp.02
+        label: inappropriate or unusual activity
+        guidelines:
+          - inappropriate or unusual activity is defined;
+      - id: au-06_odp.03
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to receive findings from reviews and analyses of system records is/are defined;
+    guidance: Audit record review, analysis, and reporting covers information security- and privacy-related logging performed by organizations, including logging that results from the monitoring of account usage, remote access, wireless connectivity, mobile device connection, configuration settings, system component inventory, use of maintenance tools and non-local maintenance, physical access, temperature and humidity, equipment delivery and removal, communications at system interfaces, and use of mobile code or Voice over Internet Protocol (VoIP). Findings can be reported to organizational entities that include the incident response team, help desk, and security or privacy offices. If organizations are prohibited from reviewing and analyzing audit records or unable to conduct such activities, the review or analysis may be carried out by other organizations granted such authority. The frequency, scope, and/or depth of the audit record review, analysis, and reporting may be adjusted to meet organizational needs based on new information received.
+    related_controls:
+      - ac-2
+      - ac-3
+      - ac-5
+      - ac-6
+      - ac-7
+      - ac-17
+      - au-7
+      - au-16
+      - ca-2
+      - ca-7
+      - cm-2
+      - cm-5
+      - cm-6
+      - cm-10
+      - cm-11
+      - ia-2
+      - ia-3
+      - ia-5
+      - ia-8
+      - ir-5
+      - ma-4
+      - mp-4
+      - pe-3
+      - pe-6
+      - ra-5
+      - sa-8
+      - sc-7
+      - si-3
+      - si-4
+      - si-7
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-6.1
+    title: Automated Process Integration
+    description: 'Integrate audit record review, analysis, and reporting processes using [[ insert: param, au-06.01_odp ]].'
+    parameters:
+      - id: au-06.01_odp
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms used for integrating audit record review, analysis, and reporting processes are defined;
+    guidance: Organizational processes that benefit from integrated audit record review, analysis, and reporting include incident response, continuous monitoring, contingency planning, investigation and response to suspicious activities, and Inspector General audits.
+    related_controls:
+      - pm-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-6.2
+    title: Automated Security Alerts
+    rules: []
+    status: pending
+  - id: au-6.3
+    title: Correlate Audit Record Repositories
+    description: Analyze and correlate audit records across different repositories to gain organization-wide situational awareness.
+    guidance: Organization-wide situational awareness includes awareness across all three levels of risk management (i.e., organizational level, mission/business process level, and information system level) and supports cross-organization awareness.
+    related_controls:
+      - au-12
+      - ir-4
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-6.4
+    title: Central Review and Analysis
+    description: Provide and implement the capability to centrally review and analyze audit records from multiple components within the system.
+    guidance: Automated mechanisms for centralized reviews and analyses include Security Information and Event Management products.
+    related_controls:
+      - au-2
+      - au-12
+    rules: []
+    status: pending
+  - id: au-6.5
+    title: Integrated Analysis of Audit Records
+    description: 'Integrate analysis of audit records with analysis of [[ insert: param, au-06.05_odp.01 ]] to further enhance the ability to identify inappropriate or unusual activity.'
+    parameters:
+      - id: au-06.05_odp.01
+        label: ''
+        choices:
+          - vulnerability scanning information
+          - performance data
+          - system monitoring information
+          - '[[ insert: param, au-06.05_odp.02 ]] '
+      - id: au-06.05_odp.02
+        label: data/information collected from other sources
+        guidelines:
+          - data/information collected from other sources to be analyzed is defined (if selected);
+    guidance: Integrated analysis of audit records does not require vulnerability scanning, the generation of performance data, or system monitoring. Rather, integrated analysis requires that the analysis of information generated by scanning, monitoring, or other data collection activities is integrated with the analysis of audit record information. Security Information and Event Management tools can facilitate audit record aggregation or consolidation from multiple system components as well as audit record correlation and analysis. The use of standardized audit record analysis scripts developed by organizations (with localized script adjustments, as necessary) provides more cost-effective approaches for analyzing audit record information collected. The correlation of audit record information with vulnerability scanning information is important in determining the veracity of vulnerability scans of the system and in correlating attack detection events with scanning results. Correlation with performance data can uncover denial-of-service attacks or other types of attacks that result in the unauthorized use of resources. Correlation with system monitoring information can assist in uncovering attacks and in better relating audit information to operational situations.
+    related_controls:
+      - au-12
+      - ir-4
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-6.6
+    title: Correlation with Physical Monitoring
+    description: Correlate information from audit records with information obtained from monitoring physical access to further enhance the ability to identify suspicious, inappropriate, unusual, or malevolent activity.
+    guidance: The correlation of physical audit record information and the audit records from systems may assist organizations in identifying suspicious behavior or supporting evidence of such behavior. For example, the correlation of an individual’s identity for logical access to certain systems with the additional physical security information that the individual was present at the facility when the logical access occurred may be useful in investigations.
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-6.7
+    title: Permitted Actions
+    description: 'Specify the permitted actions for each [[ insert: param, au-06.07_odp ]] associated with the review, analysis, and reporting of audit record information.'
+    parameters:
+      - id: au-06.07_odp
+        label: ''
+        choices:
+          - system process
+          - role
+          - user
+    guidance: Organizations specify permitted actions for system processes, roles, and users associated with the review, analysis, and reporting of audit records through system account management activities. Specifying permitted actions on audit record information is a way to enforce the principle of least privilege. Permitted actions are enforced by the system and include read, write, execute, append, and delete.
+    rules: []
+    status: pending
+  - id: au-6.8
+    title: Full Text Analysis of Privileged Commands
+    description: Perform a full text analysis of logged privileged commands in a physically distinct component or subsystem of the system, or other system that is dedicated to that analysis.
+    guidance: Full text analysis of privileged commands requires a distinct environment for the analysis of audit record information related to privileged users without compromising such information on the system where the users have elevated privileges, including the capability to execute privileged commands. Full text analysis refers to analysis that considers the full text of privileged commands (i.e., commands and parameters) as opposed to analysis that considers only the name of the command. Full text analysis includes the use of pattern matching and heuristics.
+    related_controls:
+      - au-3
+      - au-9
+      - au-11
+      - au-12
+    rules: []
+    status: pending
+  - id: au-6.9
+    title: Correlation with Information from Nontechnical Sources
+    description: Correlate information from nontechnical sources with audit record information to enhance organization-wide situational awareness.
+    guidance: Nontechnical sources include records that document organizational policy violations related to harassment incidents and the improper use of information assets. Such information can lead to a directed analytical effort to detect potential malicious insider activity. Organizations limit access to information that is available from nontechnical sources due to its sensitive nature. Limited access minimizes the potential for inadvertent release of privacy-related information to individuals who do not have a need to know. The correlation of information from nontechnical sources with audit record information generally occurs only when individuals are suspected of being involved in an incident. Organizations obtain legal advice prior to initiating such actions.
+    related_controls:
+      - pm-12
+    rules: []
+    status: pending
+  - id: au-6.10
+    title: Audit Level Adjustment
+    rules: []
+    status: pending
+  - id: au-7
+    title: Audit Record Reduction and Report Generation
+    description: "Provide and implement an audit record reduction and report generation capability that:\n  a. Supports on-demand audit record review, analysis, and reporting requirements and after-the-fact investigations of incidents; and\n  b. Does not alter the original content or time ordering of audit records."
+    guidance: Audit record reduction is a process that manipulates collected audit log information and organizes it into a summary format that is more meaningful to analysts. Audit record reduction and report generation capabilities do not always emanate from the same system or from the same organizational entities that conduct audit logging activities. The audit record reduction capability includes modern data mining techniques with advanced data filters to identify anomalous behavior in audit records. The report generation capability provided by the system can generate customizable reports. Time ordering of audit records can be an issue if the granularity of the timestamp in the record is insufficient.
+    related_controls:
+      - ac-2
+      - au-2
+      - au-3
+      - au-4
+      - au-5
+      - au-6
+      - au-12
+      - au-16
+      - cm-5
+      - ia-5
+      - ir-4
+      - pm-12
+      - si-4
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-7.1
+    title: Automatic Processing
+    description: 'Provide and implement the capability to process, sort, and search audit records for events of interest based on the following content: [[ insert: param, au-07.01_odp ]].'
+    parameters:
+      - id: au-07.01_odp
+        label: fields within audit records
+        guidelines:
+          - fields within audit records that can be processed, sorted, or searched are defined;
+    guidance: Events of interest can be identified by the content of audit records, including system resources involved, information objects accessed, identities of individuals, event types, event locations, event dates and times, Internet Protocol addresses involved, or event success or failure. Organizations may define event criteria to any degree of granularity required, such as locations selectable by a general networking location or by specific system component.
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-7.2
+    title: Automatic Sort and Search
+    rules: []
+    status: pending
+  - id: au-8
+    title: Time Stamps
+    description: "  a. Use internal system clocks to generate time stamps for audit records; and\n  b. Record time stamps for audit records that meet [[ insert: param, au-08_odp ]] and that use Coordinated Universal Time, have a fixed local time offset from Coordinated Universal Time, or that include the local time offset as part of the time stamp."
+    parameters:
+      - id: au-08_odp
+        label: granularity of time measurement
+        guidelines:
+          - granularity of time measurement for audit record timestamps is defined;
+    guidance: Time stamps generated by the system include date and time. Time is commonly expressed in Coordinated Universal Time (UTC), a modern continuation of Greenwich Mean Time (GMT), or local time with an offset from UTC. Granularity of time measurements refers to the degree of synchronization between system clocks and reference clocks (e.g., clocks synchronizing within hundreds of milliseconds or tens of milliseconds). Organizations may define different time granularities for different system components. Time service can be critical to other security capabilities such as access control and identification and authentication, depending on the nature of the mechanisms used to support those capabilities.
+    related_controls:
+      - au-3
+      - au-12
+      - au-14
+      - sc-45
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      {{% if product == "rhel9" %}}
+      - var_auditd_max_log_file=6
+      {{% elif product in ["rhel10", "rhel8"] %}}
+      - var_auditd_max_log_file=8
+      {{% endif %}}
+      - var_auditd_max_log_file_action=keep_logs
+      - auditd_data_retention_max_log_file
+      - auditd_data_retention_max_log_file_action
+    status: automated
+  - id: au-8.1
+    title: Synchronization with Authoritative Time Source
+    rules: []
+    status: pending
+  - id: au-8.2
+    title: Secondary Authoritative Time Source
+    rules: []
+    status: pending
+  - id: au-9
+    title: Protection of Audit Information
+    description: "  a. Protect audit information and audit logging tools from unauthorized access, modification, and deletion; and\n  b. Alert [[ insert: param, au-09_odp ]] upon detection of unauthorized access, modification, or deletion of audit information."
+    parameters:
+      - id: au-09_odp
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information is/are defined;
+    guidance: Audit information includes all information needed to successfully audit system activity, such as audit records, audit log settings, audit reports, and personally identifiable information. Audit logging tools are those programs and devices used to conduct system audit and logging activities. Protection of audit information focuses on technical protection and limits the ability to access and execute audit logging tools to authorized individuals. Physical protection of audit information is addressed by both media protection controls and physical and environmental protection controls.
+    related_controls:
+      - ac-3
+      - ac-6
+      - au-6
+      - au-11
+      - au-14
+      - au-15
+      - mp-2
+      - mp-4
+      - pe-2
+      - pe-3
+      - pe-6
+      - sa-8
+      - sc-8
+      - si-4
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - audit_rules_immutable
+    status: automated
+  - id: au-9.1
+    title: Hardware Write-once Media
+    description: Write audit trails to hardware-enforced, write-once media.
+    guidance: Writing audit trails to hardware-enforced, write-once media applies to the initial generation of audit trails (i.e., the collection of audit records that represents the information to be used for detection, analysis, and reporting purposes) and to the backup of those audit trails. Writing audit trails to hardware-enforced, write-once media does not apply to the initial generation of audit records prior to being written to an audit trail. Write-once, read-many (WORM) media includes Compact Disc-Recordable (CD-R), Blu-Ray Disc Recordable (BD-R), and Digital Versatile Disc-Recordable (DVD-R). In contrast, the use of switchable write-protection media, such as tape cartridges, Universal Serial Bus (USB) drives, Compact Disc Re-Writeable (CD-RW), and Digital Versatile Disc-Read Write (DVD-RW) results in write-protected but not write-once media.
+    related_controls:
+      - au-4
+      - au-5
+    rules: []
+    status: pending
+  - id: au-9.2
+    title: Store on Separate Physical Systems or Components
+    description: 'Store audit records [[ insert: param, au-09.02_odp ]] in a repository that is part of a physically different system or system component than the system or component being audited.'
+    parameters:
+      - id: au-09.02_odp
+        label: frequency
+        guidelines:
+          - the frequency of storing audit records in a repository is defined;
+    guidance: Storing audit records in a repository separate from the audited system or system component helps to ensure that a compromise of the system being audited does not also result in a compromise of the audit records. Storing audit records on separate physical systems or components also preserves the confidentiality and integrity of audit records and facilitates the management of audit records as an organization-wide activity. Storing audit records on separate systems or components applies to initial generation as well as backup or long-term storage of audit records.
+    related_controls:
+      - au-4
+      - au-5
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-9.3
+    title: Cryptographic Protection
+    description: Implement cryptographic mechanisms to protect the integrity of audit information and audit tools.
+    guidance: Cryptographic mechanisms used for protecting the integrity of audit information include signed hash functions using asymmetric cryptography. This enables the distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
+    related_controls:
+      - au-10
+      - sc-12
+      - sc-13
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-9.4
+    title: Access by Subset of Privileged Users
+    description: 'Authorize access to management of audit logging functionality to only [[ insert: param, au-09.04_odp ]].'
+    parameters:
+      - id: au-09.04_odp
+        label: subset of privileged users or roles
+        guidelines:
+          - a subset of privileged users or roles authorized to access management of audit logging functionality is defined;
+    guidance: Individuals or roles with privileged access to a system and who are also the subject of an audit by that system may affect the reliability of the audit information by inhibiting audit activities or modifying audit records. Requiring privileged access to be further defined between audit-related privileges and other privileges limits the number of users or roles with audit-related privileges.
+    related_controls:
+      - ac-5
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-9.5
+    title: Dual Authorization
+    description: 'Enforce dual authorization for [[ insert: param, au-09.05_odp.01 ]] of [[ insert: param, au-09.05_odp.02 ]].'
+    parameters:
+      - id: au-09.05_odp.01
+        label: ''
+        choices:
+          - movement
+          - deletion
+      - id: au-09.05_odp.02
+        label: audit information
+        guidelines:
+          - audit information for which dual authorization is to be enforced is defined;
+    guidance: Organizations may choose different selection options for different types of audit information. Dual authorization mechanisms (also known as two-person control) require the approval of two authorized individuals to execute audit functions. To reduce the risk of collusion, organizations consider rotating dual authorization duties to other individuals. Organizations do not require dual authorization mechanisms when immediate responses are necessary to ensure public and environmental safety.
+    related_controls:
+      - ac-3
+    rules: []
+    status: pending
+  - id: au-9.6
+    title: Read-only Access
+    description: 'Authorize read-only access to audit information to [[ insert: param, au-09.06_odp ]].'
+    parameters:
+      - id: au-09.06_odp
+        label: subset of privileged users or roles
+        guidelines:
+          - a subset of privileged users or roles with authorized read-only access to audit information is defined;
+    guidance: Restricting privileged user or role authorizations to read-only helps to limit the potential damage to organizations that could be initiated by such users or roles, such as deleting audit records to cover up malicious activity.
+    rules: []
+    status: pending
+  - id: au-9.7
+    title: Store on Component with Different Operating System
+    description: Store audit information on a component running a different operating system than the system or component being audited.
+    guidance: Storing auditing information on a system component running a different operating system reduces the risk of a vulnerability specific to the system, resulting in a compromise of the audit records.
+    related_controls:
+      - au-4
+      - au-5
+      - au-11
+      - sc-29
+    rules: []
+    status: pending
+  - id: au-10
+    title: Non-repudiation
+    description: 'Provide irrefutable evidence that an individual (or process acting on behalf of an individual) has performed [[ insert: param, au-10_odp ]].'
+    parameters:
+      - id: au-10_odp
+        label: actions
+        guidelines:
+          - actions to be covered by non-repudiation are defined;
+    guidance: Types of individual actions covered by non-repudiation include creating information, sending and receiving messages, and approving information. Non-repudiation protects against claims by authors of not having authored certain documents, senders of not having transmitted messages, receivers of not having received messages, and signatories of not having signed documents. Non-repudiation services can be used to determine if information originated from an individual or if an individual took specific actions (e.g., sending an email, signing a contract, approving a procurement request, or receiving specific information). Organizations obtain non-repudiation services by employing various techniques or mechanisms, including digital signatures and digital message receipts.
+    related_controls:
+      - au-9
+      - pm-12
+      - sa-8
+      - sc-8
+      - sc-12
+      - sc-13
+      - sc-16
+      - sc-17
+      - sc-23
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-10.1
+    title: Association of Identities
+    description: "  a. Bind the identity of the information producer with the information to [[ insert: param, au-10.01_odp ]] ; and\n  b. Provide the means for authorized individuals to determine the identity of the producer of the information."
+    parameters:
+      - id: au-10.01_odp
+        label: strength of binding
+        guidelines:
+          - the strength of binding between the identity of the information producer and the information is defined;
+    guidance: Binding identities to the information supports audit requirements that provide organizational personnel with the means to identify who produced specific information in the event of an information transfer. Organizations determine and approve the strength of attribute binding between the information producer and the information based on the security category of the information and other relevant risk factors.
+    related_controls:
+      - ac-4
+      - ac-16
+    rules: []
+    status: pending
+  - id: au-10.2
+    title: Validate Binding of Information Producer Identity
+    description: "  a. Validate the binding of the information producer identity to the information at [[ insert: param, au-10.02_odp.01 ]] ; and\n  b. Perform [[ insert: param, au-10.02_odp.02 ]] in the event of a validation error."
+    parameters:
+      - id: au-10.02_odp.01
+        label: frequency
+        guidelines:
+          - the frequency at which to validate the binding of the information producer identity to the information is defined;
+      - id: au-10.02_odp.02
+        label: actions
+        guidelines:
+          - the actions to be performed in the event of a validation error are defined;
+    guidance: Validating the binding of the information producer identity to the information prevents the modification of information between production and review. The validation of bindings can be achieved by, for example, using cryptographic checksums. Organizations determine if validations are in response to user requests or generated automatically.
+    related_controls:
+      - ac-3
+      - ac-4
+      - ac-16
+    rules: []
+    status: pending
+  - id: au-10.3
+    title: Chain of Custody
+    description: Maintain reviewer or releaser credentials within the established chain of custody for information reviewed or released.
+    guidance: Chain of custody is a process that tracks the movement of evidence through its collection, safeguarding, and analysis life cycle by documenting each individual who handled the evidence, the date and time the evidence was collected or transferred, and the purpose for the transfer. If the reviewer is a human or if the review function is automated but separate from the release or transfer function, the system associates the identity of the reviewer of the information to be released with the information and the information label. In the case of human reviews, maintaining the credentials of reviewers or releasers provides the organization with the means to identify who reviewed and released the information. In the case of automated reviews, it ensures that only approved review functions are used.
+    related_controls:
+      - ac-4
+      - ac-16
+    rules: []
+    status: pending
+  - id: au-10.4
+    title: Validate Binding of Information Reviewer Identity
+    description: "  a. Validate the binding of the information reviewer identity to the information at the transfer or release points prior to release or transfer between [[ insert: param, au-10.04_odp.01 ]] ; and\n  b. Perform [[ insert: param, au-10.04_odp.02 ]] in the event of a validation error."
+    parameters:
+      - id: au-10.04_odp.01
+        label: security domains
+        guidelines:
+          - security domains for which the binding of the information reviewer identity to the information is to be validated at transfer or release are defined;
+      - id: au-10.04_odp.02
+        label: actions
+        guidelines:
+          - actions to be performed in the event of a validation error are defined;
+    guidance: Validating the binding of the information reviewer identity to the information at transfer or release points prevents the unauthorized modification of information between review and the transfer or release. The validation of bindings can be achieved by using cryptographic checksums. Organizations determine if validations are in response to user requests or generated automatically.
+    related_controls:
+      - ac-4
+      - ac-16
+    rules: []
+    status: pending
+  - id: au-10.5
+    title: Digital Signatures
+    rules: []
+    status: pending
+  - id: au-11
+    title: Audit Record Retention
+    description: 'Retain audit records for [[ insert: param, au-11_odp ]] to provide support for after-the-fact investigations of incidents and to meet regulatory and organizational information retention requirements.'
+    parameters:
+      - id: au-11_odp
+        label: time period
+        guidelines:
+          - a time period to retain audit records that is consistent with the records retention policy is defined;
+    guidance: Organizations retain audit records until it is determined that the records are no longer needed for administrative, legal, audit, or other operational purposes. This includes the retention and availability of audit records relative to Freedom of Information Act (FOIA) requests, subpoenas, and law enforcement actions. Organizations develop standard categories of audit records relative to such types of actions and standard response processes for each type of action. The National Archives and Records Administration (NARA) General Records Schedules provide federal policy on records retention.
+    related_controls:
+      - au-2
+      - au-4
+      - au-5
+      - au-6
+      - au-9
+      - au-14
+      - mp-6
+      - ra-5
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: au-11.1
+    title: Long-term Retrieval Capability
+    description: 'Employ [[ insert: param, au-11.01_odp ]] to ensure that long-term audit records generated by the system can be retrieved.'
+    parameters:
+      - id: au-11.01_odp
+        label: measures
+        guidelines:
+          - measures to be employed to ensure that long-term audit records generated by the system can be retrieved are defined;
+    guidance: Organizations need to access and read audit records requiring long-term storage (on the order of years). Measures employed to help facilitate the retrieval of audit records include converting records to newer formats, retaining equipment capable of reading the records, and retaining the necessary documentation to help personnel understand how to interpret the records.
+    rules: []
+    status: pending
+  - id: au-12
+    title: Audit Record Generation
+    description: "  a. Provide audit record generation capability for the event types the system is capable of auditing as defined in [AU-2a](#au-2_smt.a) on [[ insert: param, au-12_odp.01 ]];\n  b. Allow [[ insert: param, au-12_odp.02 ]] to select the event types that are to be logged by specific components of the system; and\n  c. Generate audit records for the event types defined in [AU-2c](#au-2_smt.c) that include the audit record content defined in [AU-3](#au-3)."
+    parameters:
+      - id: au-12_odp.01
+        label: system components
+        guidelines:
+          - system components that provide an audit record generation capability for the events types (defined in AU-02_ODP[02]) are defined;
+      - id: au-12_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles allowed to select the event types that are to be logged by specific components of the system is/are defined;
+    guidance: Audit records can be generated from many different system components. The event types specified in [AU-2d](#au-2_smt.d) are the event types for which audit logs are to be generated and are a subset of all event types for which the system can generate audit records.
+    related_controls:
+      - ac-6
+      - ac-17
+      - au-2
+      - au-3
+      - au-4
+      - au-5
+      - au-6
+      - au-7
+      - au-14
+      - cm-5
+      - ma-4
+      - mp-4
+      - pm-12
+      - sa-8
+      - sc-18
+      - si-3
+      - si-4
+      - si-7
+      - si-10
+    levels:
+      - low
+      - moderate
+      - high
+    rules:
+      - var_accounts_passwords_pam_faillock_dir=run
+      - audit_rules_dac_modification_chmod
+      - audit_rules_dac_modification_chown
+      - audit_rules_dac_modification_fchmod
+      - audit_rules_dac_modification_fchmodat
+      {{% if product == "rhel10" %}}
+      - audit_rules_dac_modification_fchmodat2
+      {{% endif %}}
+      - audit_rules_dac_modification_fchown
+      - audit_rules_dac_modification_fchownat
+      - audit_rules_dac_modification_fremovexattr
+      - audit_rules_dac_modification_fsetxattr
+      - audit_rules_dac_modification_lchown
+      - audit_rules_dac_modification_lremovexattr
+      - audit_rules_dac_modification_lsetxattr
+      - audit_rules_dac_modification_removexattr
+      - audit_rules_dac_modification_setxattr
+      - audit_rules_execution_chcon
+      - audit_rules_file_deletion_events_rename
+      - audit_rules_file_deletion_events_renameat
+      {{% if product == "rhel10" %}}
+      - audit_rules_file_deletion_events_renameat2
+      {{% endif %}}
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_file_deletion_events_unlinkat
+      {{% if product in ["rhel8", "rhel9"] %}}
+      - audit_rules_kernel_module_loading_create
+      {{% endif %}}
+      - audit_rules_kernel_module_loading_delete
+      - audit_rules_kernel_module_loading_finit
+      - audit_rules_kernel_module_loading_init
+      - audit_rules_kernel_module_loading_query
+      - audit_rules_login_events_faillock
+      - audit_rules_login_events_lastlog
+      - audit_rules_media_export
+      - audit_rules_privileged_commands_kmod
+      - audit_rules_privileged_commands_usermod
+      - audit_rules_sysadmin_actions
+      - audit_rules_unsuccessful_file_modification_creat
+      - audit_rules_unsuccessful_file_modification_ftruncate
+      - audit_rules_unsuccessful_file_modification_open
+      - audit_rules_unsuccessful_file_modification_openat
+      - audit_rules_unsuccessful_file_modification_truncate
+      - audit_rules_usergroup_modification_group
+      - audit_rules_usergroup_modification_gshadow
+      - audit_rules_usergroup_modification_nsswitch_conf
+      - audit_rules_usergroup_modification_opasswd
+      - audit_rules_usergroup_modification_pam_conf
+      - audit_rules_usergroup_modification_pamd
+      - audit_rules_usergroup_modification_passwd
+      - audit_rules_usergroup_modification_shadow
+      - file_permissions_audit_configuration
+      - grub2_audit_argument
+      - service_auditd_enabled
+    status: automated
+  - id: au-12.1
+    title: System-wide and Time-correlated Audit Trail
+    description: 'Compile audit records from [[ insert: param, au-12.01_odp.01 ]] into a system-wide (logical or physical) audit trail that is time-correlated to within [[ insert: param, au-12.01_odp.02 ]].'
+    parameters:
+      - id: au-12.01_odp.01
+        label: system components
+        guidelines:
+          - system components from which audit records are to be compiled into a system-wide (logical or physical) audit trail are defined;
+      - id: au-12.01_odp.02
+        label: level of tolerance
+        guidelines:
+          - level of tolerance for the relationship between timestamps of individual records in the audit trail is defined;
+    guidance: Audit trails are time-correlated if the time stamps in the individual audit records can be reliably related to the time stamps in other audit records to achieve a time ordering of the records within organizational tolerances.
+    related_controls:
+      - au-8
+      - sc-45
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-12.2
+    title: Standardized Formats
+    description: Produce a system-wide (logical or physical) audit trail composed of audit records in a standardized format.
+    guidance: Audit records that follow common standards promote interoperability and information exchange between devices and systems. Promoting interoperability and information exchange facilitates the production of event information that can be readily analyzed and correlated. If logging mechanisms do not conform to standardized formats, systems may convert individual audit records into standardized formats when compiling system-wide audit trails.
+    rules: []
+    status: pending
+  - id: au-12.3
+    title: Changes by Authorized Individuals
+    description: 'Provide and implement the capability for [[ insert: param, au-12.03_odp.01 ]] to change the logging to be performed on [[ insert: param, au-12.03_odp.02 ]] based on [[ insert: param, au-12.03_odp.03 ]] within [[ insert: param, au-12.03_odp.04 ]].'
+    parameters:
+      - id: au-12.03_odp.01
+        label: individuals or roles
+        guidelines:
+          - individuals or roles authorized to change the logging on system components are defined;
+      - id: au-12.03_odp.02
+        label: system components
+        guidelines:
+          - system components on which logging is to be performed are defined;
+      - id: au-12.03_odp.03
+        label: selectable event criteria
+        guidelines:
+          - selectable event criteria with which change logging is to be performed are defined;
+      - id: au-12.03_odp.04
+        label: time thresholds
+        guidelines:
+          - time thresholds in which logging actions are to change is defined;
+    guidance: Permitting authorized individuals to make changes to system logging enables organizations to extend or limit logging as necessary to meet organizational requirements. Logging that is limited to conserve system resources may be extended (either temporarily or permanently) to address certain threat situations. In addition, logging may be limited to a specific set of event types to facilitate audit reduction, analysis, and reporting. Organizations can establish time thresholds in which logging actions are changed (e.g., near real-time, within minutes, or within hours).
+    related_controls:
+      - ac-3
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-12.4
+    title: Query Parameter Audits of Personally Identifiable Information
+    description: Provide and implement the capability for auditing the parameters of user query events for data sets containing personally identifiable information.
+    guidance: Query parameters are explicit criteria that an individual or automated system submits to a system to retrieve data. Auditing of query parameters for datasets that contain personally identifiable information augments the capability of an organization to track and understand the access, usage, or sharing of personally identifiable information by authorized personnel.
+    rules: []
+    status: pending
+  - id: au-13
+    title: Monitoring for Information Disclosure
+    description: "  a. Monitor [[ insert: param, au-13_odp.01 ]] [[ insert: param, au-13_odp.02 ]] for evidence of unauthorized disclosure of organizational information; and\n  b. If an information disclosure is discovered:\n    1. Notify [[ insert: param, au-13_odp.03 ]] ; and\n    2. Take the following additional actions: [[ insert: param, au-13_odp.04 ]]."
+    parameters:
+      - id: au-13_odp.01
+        label: open-source information and/or information sites
+        guidelines:
+          - open-source information and/or information sites to be monitored for evidence of unauthorized disclosure of organizational information is/are defined;
+      - id: au-13_odp.02
+        label: frequency
+        guidelines:
+          - the frequency with which open-source information and/or information sites are monitored for evidence of unauthorized disclosure of organizational information is defined;
+      - id: au-13_odp.03
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to be notified if an information disclosure is discovered is/are defined;
+      - id: au-13_odp.04
+        label: additional actions
+        guidelines:
+          - additional actions to be taken if an information disclosure is discovered are defined;
+    guidance: Unauthorized disclosure of information is a form of data leakage. Open-source information includes social networking sites and code-sharing platforms and repositories. Examples of organizational information include personally identifiable information retained by the organization or proprietary information generated by the organization.
+    related_controls:
+      - ac-22
+      - pe-3
+      - pm-12
+      - ra-5
+      - sc-7
+      - si-20
+    rules: []
+    status: pending
+  - id: au-13.1
+    title: Use of Automated Tools
+    description: 'Monitor open-source information and information sites using [[ insert: param, au-13.01_odp ]].'
+    parameters:
+      - id: au-13.01_odp
+        label: automated mechanisms
+        guidelines:
+          - automated mechanisms for monitoring open-source information and information sites are defined;
+    guidance: Automated mechanisms include commercial services that provide notifications and alerts to organizations and automated scripts to monitor new posts on websites.
+    rules: []
+    status: pending
+  - id: au-13.2
+    title: Review of Monitored Sites
+    description: 'Review the list of open-source information sites being monitored [[ insert: param, au-13.02_odp ]].'
+    parameters:
+      - id: au-13.02_odp
+        label: frequency
+        guidelines:
+          - the frequency at which to review the open-source information sites being monitored is defined;
+    guidance: Reviewing the current list of open-source information sites being monitored on a regular basis helps to ensure that the selected sites remain relevant. The review also provides the opportunity to add new open-source information sites with the potential to provide evidence of unauthorized disclosure of organizational information. The list of sites monitored can be guided and informed by threat intelligence of other credible sources of information.
+    rules: []
+    status: pending
+  - id: au-13.3
+    title: Unauthorized Replication of Information
+    description: Employ discovery techniques, processes, and tools to determine if external entities are replicating organizational information in an unauthorized manner.
+    guidance: The unauthorized use or replication of organizational information by external entities can cause adverse impacts on organizational operations and assets, including damage to reputation. Such activity can include the replication of an organizational website by an adversary or hostile threat actor who attempts to impersonate the web-hosting organization. Discovery tools, techniques, and processes used to determine if external entities are replicating organizational information in an unauthorized manner include scanning external websites, monitoring social media, and training staff to recognize the unauthorized use of organizational information.
+    rules: []
+    status: pending
+  - id: au-14
+    title: Session Audit
+    description: "  a. Provide and implement the capability for [[ insert: param, au-14_odp.01 ]] to [[ insert: param, au-14_odp.02 ]] the content of a user session under [[ insert: param, au-14_odp.03 ]] ; and\n  b. Develop, integrate, and use session auditing activities in consultation with legal counsel and in accordance with applicable laws, executive orders, directives, regulations, policies, standards, and guidelines."
+    parameters:
+      - id: au-14_odp.01
+        label: users or roles
+        guidelines:
+          - users or roles who can audit the content of a user session are defined;
+      - id: au-14_odp.02
+        label: ''
+        choices:
+          - record
+          - view
+          - hear
+          - log
+      - id: au-14_odp.03
+        label: circumstances
+        guidelines:
+          - circumstances under which the content of a user session can be audited are defined;
+    guidance: Session audits can include monitoring keystrokes, tracking websites visited, and recording information and/or file transfers. Session audit capability is implemented in addition to event logging and may involve implementation of specialized session capture technology. Organizations consider how session auditing can reveal information about individuals that may give rise to privacy risk as well as how to mitigate those risks. Because session auditing can impact system and network performance, organizations activate the capability under well-defined situations (e.g., the organization is suspicious of a specific individual). Organizations consult with legal counsel, civil liberties officials, and privacy officials to ensure that any legal, privacy, civil rights, or civil liberties issues, including the use of personally identifiable information, are appropriately addressed.
+    related_controls:
+      - ac-3
+      - ac-8
+      - au-2
+      - au-3
+      - au-4
+      - au-5
+      - au-8
+      - au-9
+      - au-11
+      - au-12
+    rules: []
+    status: pending
+  - id: au-14.1
+    title: System Start-up
+    description: Initiate session audits automatically at system start-up.
+    guidance: The automatic initiation of session audits at startup helps to ensure that the information being captured on selected individuals is complete and not subject to compromise through tampering by malicious threat actors.
+    rules: []
+    status: pending
+  - id: au-14.2
+    title: Capture and Record Content
+    rules: []
+    status: pending
+  - id: au-14.3
+    title: Remote Viewing and Listening
+    description: Provide and implement the capability for authorized users to remotely view and hear content related to an established user session in real time.
+    guidance: None.
+    related_controls:
+      - ac-17
+    rules: []
+    status: pending
+  - id: au-15
+    title: Alternate Audit Logging Capability
+    rules: []
+    status: pending
+  - id: au-16
+    title: Cross-organizational Audit Logging
+    description: 'Employ [[ insert: param, au-16_odp.01 ]] for coordinating [[ insert: param, au-16_odp.02 ]] among external organizations when audit information is transmitted across organizational boundaries.'
+    parameters:
+      - id: au-16_odp.01
+        label: methods
+        guidelines:
+          - methods for coordinating audit information among external organizations when audit information is transmitted across organizational boundaries are defined;
+      - id: au-16_odp.02
+        label: audit information
+        guidelines:
+          - audit information to be coordinated among external organizations when audit information is transmitted across organizational boundaries is defined;
+    guidance: When organizations use systems or services of external organizations, the audit logging capability necessitates a coordinated, cross-organization approach. For example, maintaining the identity of individuals who request specific services across organizational boundaries may often be difficult, and doing so may prove to have significant performance and privacy ramifications. Therefore, it is often the case that cross-organizational audit logging simply captures the identity of individuals who issue requests at the initial system, and subsequent systems record that the requests originated from authorized individuals. Organizations consider including processes for coordinating audit information requirements and protection of audit information in information exchange agreements.
+    related_controls:
+      - au-3
+      - au-6
+      - au-7
+      - ca-3
+      - pt-7
+    rules: []
+    status: pending
+  - id: au-16.1
+    title: Identity Preservation
+    description: Preserve the identity of individuals in cross-organizational audit trails.
+    guidance: Identity preservation is applied when there is a need to be able to trace actions that are performed across organizational boundaries to a specific individual.
+    related_controls:
+      - ia-2
+      - ia-4
+      - ia-5
+      - ia-8
+    rules: []
+    status: pending
+  - id: au-16.2
+    title: Sharing of Audit Information
+    description: 'Provide cross-organizational audit information to [[ insert: param, au-16.02_odp.01 ]] based on [[ insert: param, au-16.02_odp.02 ]].'
+    parameters:
+      - id: au-16.02_odp.01
+        label: organizations
+        guidelines:
+          - organizations with which cross-organizational audit information is to be shared are defined;
+      - id: au-16.02_odp.02
+        label: cross-organizational sharing agreements
+        guidelines:
+          - cross-organizational sharing agreements to be used when providing cross-organizational audit information to organizations are defined;
+    guidance: Due to the distributed nature of the audit information, cross-organization sharing of audit information may be essential for effective analysis of the auditing being performed. For example, the audit records of one organization may not provide sufficient information to determine the appropriate or inappropriate use of organizational information resources by individuals in other organizations. In some instances, only individuals’ home organizations have the appropriate knowledge to make such determinations, thus requiring the sharing of audit information among organizations.
+    related_controls:
+      - ir-4
+      - si-4
+    rules: []
+    status: pending
+  - id: au-16.3
+    title: Disassociability
+    description: 'Implement [[ insert: param, au-16.03_odp ]] to disassociate individuals from audit information transmitted across organizational boundaries.'
+    parameters:
+      - id: au-16.03_odp
+        label: measures
+        guidelines:
+          - measures to disassociate individuals from audit information transmitted across organizational boundaries are defined;
+    guidance: Preserving identities in audit trails could have privacy ramifications, such as enabling the tracking and profiling of individuals, but may not be operationally necessary. These risks could be further amplified when transmitting information across organizational boundaries. Implementing privacy-enhancing cryptographic techniques can disassociate individuals from audit information and reduce privacy risk while maintaining accountability.
+    rules: []
+    status: pending

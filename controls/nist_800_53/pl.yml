@@ -1,0 +1,322 @@
+# NIST 800-53 PL Family: Planning
+controls:
+  - id: pl-1
+    title: Policy and Procedures
+    description: "  a. Develop, document, and disseminate to [[ insert: param, pl-1_prm_1 ]]:\n    1. [[ insert: param, pl-01_odp.03 ]] planning policy that:\n    2. Procedures to facilitate the implementation of the planning policy and the associated planning controls;\n  b. Designate an [[ insert: param, pl-01_odp.04 ]] to manage the development, documentation, and dissemination of the planning policy and procedures; and\n  c. Review and update the current planning:\n    1. Policy [[ insert: param, pl-01_odp.05 ]] and following [[ insert: param, pl-01_odp.06 ]] ; and\n    2. Procedures [[ insert: param, pl-01_odp.07 ]] and following [[ insert: param, pl-01_odp.08 ]]."
+    parameters:
+      - id: pl-1_prm_1
+        label: organization-defined personnel or roles
+      - id: pl-01_odp.01
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the planning policy is to be disseminated is/are defined;
+      - id: pl-01_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to whom the planning procedures are to be disseminated is/are defined;
+      - id: pl-01_odp.03
+        label: ''
+        choices:
+          - organization-level
+          - mission/business process-level
+          - system-level
+      - id: pl-01_odp.04
+        label: official
+        guidelines:
+          - an official to manage the planning policy and procedures is defined;
+      - id: pl-01_odp.05
+        label: frequency
+        guidelines:
+          - the frequency with which the current planning policy is reviewed and updated is defined;
+      - id: pl-01_odp.06
+        label: events
+        guidelines:
+          - events that would require the current planning policy to be reviewed and updated are defined;
+      - id: pl-01_odp.07
+        label: frequency
+        guidelines:
+          - the frequency with which the current planning procedures are reviewed and updated is defined;
+      - id: pl-01_odp.08
+        label: events
+        guidelines:
+          - events that would require procedures to be reviewed and updated are defined;
+    guidance: Planning policy and procedures for the controls in the PL family implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on their development. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission level or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies that reflect the complex nature of organizations. Procedures can be established for security and privacy programs, for mission/business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to planning policy and procedures include, but are not limited to, assessment or audit findings, security incidents or breaches, or changes in laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.
+    related_controls:
+      - pm-9
+      - ps-8
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pl-2
+    title: System Security and Privacy Plans
+    description: "  a. Develop security and privacy plans for the system that:\n    1. Are consistent with the organization’s enterprise architecture;\n    2. Explicitly define the constituent system components;\n    3. Describe the operational context of the system in terms of mission and business processes;\n    4. Identify the individuals that fulfill system roles and responsibilities;\n    5. Identify the information types processed, stored, and transmitted by the system;\n    6. Provide the security categorization of the system, including supporting rationale;\n    7. Describe any specific threats to the system that are of concern to the organization;\n    8. Provide the results of a privacy risk assessment for systems processing personally identifiable information;\n    9. Describe the operational environment for the system and any dependencies on or connections to other systems or system components;\n    10. Provide an overview of the security and privacy requirements for the system;\n    11. Identify any relevant control baselines or overlays, if applicable;\n    12. Describe the controls in place or planned for meeting the security and privacy requirements, including a rationale for any tailoring decisions;\n    13. Include risk determinations for security and privacy architecture and design decisions;\n    14. Include security- and privacy-related activities affecting the system that require planning and coordination with [[ insert: param, pl-02_odp.01 ]] ; and\n    15. Are reviewed and approved by the authorizing official or designated representative prior to plan implementation.\n  b. Distribute copies of the plans and communicate subsequent changes to the plans to [[ insert: param, pl-02_odp.02 ]];\n  c. Review the plans [[ insert: param, pl-02_odp.03 ]];\n  d. Update the plans to address changes to the system and environment of operation or problems identified during plan implementation or control assessments; and\n  e. Protect the plans from unauthorized disclosure and modification."
+    parameters:
+      - id: pl-02_odp.01
+        label: individuals or groups
+        guidelines:
+          - individuals or groups with whom security and privacy-related activities affecting the system that require planning and coordination is/are assigned;
+      - id: pl-02_odp.02
+        label: personnel or roles
+        guidelines:
+          - personnel or roles to receive distributed copies of the system security and privacy plans is/are assigned;
+      - id: pl-02_odp.03
+        label: frequency
+        guidelines:
+          - frequency to review system security and privacy plans is defined;
+    guidance: "System security and privacy plans are scoped to the system and system components within the defined authorization boundary and contain an overview of the security and privacy requirements for the system and the controls selected to satisfy the requirements. The plans describe the intended application of each selected control in the context of the system with a sufficient level of detail to correctly implement the control and to subsequently assess the effectiveness of the control. The control documentation describes how system-specific and hybrid controls are implemented and the plans and expectations regarding the functionality of the system. System security and privacy plans can also be used in the design and development of systems in support of life cycle-based security and privacy engineering processes. System security and privacy plans are living documents that are updated and adapted throughout the system development life cycle (e.g., during capability determination, analysis of alternatives, requests for proposal, and design reviews). [Section 2.1](#c3397cc9-83c6-4459-adb2-836739dc1b94) describes the different types of requirements that are relevant to organizations during the system development life cycle and the relationship between requirements and controls.\n\nOrganizations may develop a single, integrated security and privacy plan or maintain separate plans. Security and privacy plans relate security and privacy requirements to a set of controls and control enhancements. The plans describe how the controls and control enhancements meet the security and privacy requirements but do not provide detailed, technical descriptions of the design or implementation of the controls and control enhancements. Security and privacy plans contain sufficient information (including specifications of control parameter values for selection and assignment operations explicitly or by reference) to enable a design and implementation that is unambiguously compliant with the intent of the plans and subsequent determinations of risk to organizational operations and assets, individuals, other organizations, and the Nation if the plan is implemented.\n\nSecurity and privacy plans need not be single documents. The plans can be a collection of various documents, including documents that already exist. Effective security and privacy plans make extensive use of references to policies, procedures, and additional documents, including design and implementation specifications where more detailed information can be obtained. The use of references helps reduce the documentation associated with security and privacy programs and maintains the security- and privacy-related information in other established management and operational areas, including enterprise architecture, system development life cycle, systems engineering, and acquisition. Security and privacy plans need not contain detailed contingency plan or incident response plan information but can instead provide—explicitly or by reference—sufficient information to define what needs to be accomplished by those plans.\n\nSecurity- and privacy-related activities that may require coordination and planning with other individuals or groups within the organization include assessments, audits, inspections, hardware and software maintenance, acquisition and supply chain risk management, patch management, and contingency plan testing. Planning and coordination include emergency and nonemergency (i.e., planned or non-urgent unplanned) situations. The process defined by organizations to plan and coordinate security- and privacy-related activities can also be included in other documents, as appropriate."
+    related_controls:
+      - ac-2
+      - ac-6
+      - ac-14
+      - ac-17
+      - ac-20
+      - ca-2
+      - ca-3
+      - ca-7
+      - cm-9
+      - cm-13
+      - cp-2
+      - cp-4
+      - ir-4
+      - ir-8
+      - ma-4
+      - ma-5
+      - mp-4
+      - mp-5
+      - pl-7
+      - pl-8
+      - pl-10
+      - pl-11
+      - pm-1
+      - pm-7
+      - pm-8
+      - pm-9
+      - pm-10
+      - pm-11
+      - ra-3
+      - ra-8
+      - ra-9
+      - sa-5
+      - sa-17
+      - sa-22
+      - si-12
+      - sr-2
+      - sr-4
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pl-2.1
+    title: Concept of Operations
+    rules: []
+    status: pending
+  - id: pl-2.2
+    title: Functional Architecture
+    rules: []
+    status: pending
+  - id: pl-2.3
+    title: Plan and Coordinate with Other Organizational Entities
+    rules: []
+    status: pending
+  - id: pl-3
+    title: System Security Plan Update
+    rules: []
+    status: pending
+  - id: pl-4
+    title: Rules of Behavior
+    description: "  a. Establish and provide to individuals requiring access to the system, the rules that describe their responsibilities and expected behavior for information and system usage, security, and privacy;\n  b. Receive a documented acknowledgment from such individuals, indicating that they have read, understand, and agree to abide by the rules of behavior, before authorizing access to information and the system;\n  c. Review and update the rules of behavior [[ insert: param, pl-04_odp.01 ]] ; and\n  d. Require individuals who have acknowledged a previous version of the rules of behavior to read and re-acknowledge [[ insert: param, pl-04_odp.02 ]]."
+    parameters:
+      - id: pl-04_odp.01
+        label: frequency
+        guidelines:
+          - frequency for reviewing and updating the rules of behavior is defined;
+      - id: pl-04_odp.02
+        label: ''
+        choices:
+          - '[[ insert: param, pl-04_odp.03 ]] '
+          - when the rules are revised or updated
+      - id: pl-04_odp.03
+        label: frequency
+        guidelines:
+          - frequency for individuals to read and re-acknowledge the rules of behavior is defined (if selected);
+    guidance: Rules of behavior represent a type of access agreement for organizational users. Other types of access agreements include nondisclosure agreements, conflict-of-interest agreements, and acceptable use agreements (see [PS-6](#ps-6) ). Organizations consider rules of behavior based on individual user roles and responsibilities and differentiate between rules that apply to privileged users and rules that apply to general users. Establishing rules of behavior for some types of non-organizational users, including individuals who receive information from federal systems, is often not feasible given the large number of such users and the limited nature of their interactions with the systems. Rules of behavior for organizational and non-organizational users can also be established in [AC-8](#ac-8) . The related controls section provides a list of controls that are relevant to organizational rules of behavior. [PL-4b](#pl-4_smt.b) , the documented acknowledgment portion of the control, may be satisfied by the literacy training and awareness and role-based training programs conducted by organizations if such training includes rules of behavior. Documented acknowledgements for rules of behavior include electronic or physical signatures and electronic agreement check boxes or radio buttons.
+    related_controls:
+      - ac-2
+      - ac-6
+      - ac-8
+      - ac-9
+      - ac-17
+      - ac-18
+      - ac-19
+      - ac-20
+      - at-2
+      - at-3
+      - cm-11
+      - ia-2
+      - ia-4
+      - ia-5
+      - mp-7
+      - ps-6
+      - ps-8
+      - sa-5
+      - si-12
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pl-4.1
+    title: Social Media and External Site/Application Usage Restrictions
+    description: "Include in the rules of behavior, restrictions on:\n  a. Use of social media, social networking sites, and external sites/applications;\n  b. Posting organizational information on public websites; and\n  c. Use of organization-provided identifiers (e.g., email addresses) and authentication secrets (e.g., passwords) for creating accounts on external sites/applications."
+    guidance: Social media, social networking, and external site/application usage restrictions address rules of behavior related to the use of social media, social networking, and external sites when organizational personnel are using such sites for official duties or in the conduct of official business, when organizational information is involved in social media and social networking transactions, and when personnel access social media and networking sites from organizational systems. Organizations also address specific rules that prevent unauthorized entities from obtaining non-public organizational information from social media and networking sites either directly or through inference. Non-public information includes personally identifiable information and system account information.
+    related_controls:
+      - ac-22
+      - au-13
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pl-5
+    title: Privacy Impact Assessment
+    rules: []
+    status: pending
+  - id: pl-6
+    title: Security-related Activity Planning
+    rules: []
+    status: pending
+  - id: pl-7
+    title: Concept of Operations
+    description: "  a. Develop a Concept of Operations (CONOPS) for the system describing how the organization intends to operate the system from the perspective of information security and privacy; and\n  b. Review and update the CONOPS [[ insert: param, pl-07_odp ]]."
+    parameters:
+      - id: pl-07_odp
+        label: frequency
+        guidelines:
+          - frequency for review and update of the Concept of Operations (CONOPS) is defined;
+    guidance: The CONOPS may be included in the security or privacy plans for the system or in other system development life cycle documents. The CONOPS is a living document that requires updating throughout the system development life cycle. For example, during system design reviews, the concept of operations is checked to ensure that it remains consistent with the design for controls, the system architecture, and the operational procedures. Changes to the CONOPS are reflected in ongoing updates to the security and privacy plans, security and privacy architectures, and other organizational documents, such as procurement specifications, system development life cycle documents, and systems engineering documents.
+    related_controls:
+      - pl-2
+      - sa-2
+      - si-12
+    rules: []
+    status: pending
+  - id: pl-8
+    title: Security and Privacy Architectures
+    description: "  a. Develop security and privacy architectures for the system that:\n    1. Describe the requirements and approach to be taken for protecting the confidentiality, integrity, and availability of organizational information;\n    2. Describe the requirements and approach to be taken for processing personally identifiable information to minimize privacy risk to individuals;\n    3. Describe how the architectures are integrated into and support the enterprise architecture; and\n    4. Describe any assumptions about, and dependencies on, external systems and services;\n  b. Review and update the architectures [[ insert: param, pl-08_odp ]] to reflect changes in the enterprise architecture; and\n  c. Reflect planned architecture changes in security and privacy plans, Concept of Operations (CONOPS), criticality analysis, organizational procedures, and procurements and acquisitions."
+    parameters:
+      - id: pl-08_odp
+        label: frequency
+        guidelines:
+          - frequency for review and update to reflect changes in the enterprise architecture;
+    guidance: "The security and privacy architectures at the system level are consistent with the organization-wide security and privacy architectures described in [PM-7](#pm-7) , which are integral to and developed as part of the enterprise architecture. The architectures include an architectural description, the allocation of security and privacy functionality (including controls), security- and privacy-related information for external interfaces, information being exchanged across the interfaces, and the protection mechanisms associated with each interface. The architectures can also include other information, such as user roles and the access privileges assigned to each role; security and privacy requirements; types of information processed, stored, and transmitted by the system; supply chain risk management requirements; restoration priorities of information and system services; and other protection needs.\n\n[SP 800-160-1](#e3cc0520-a366-4fc9-abc2-5272db7e3564) provides guidance on the use of security architectures as part of the system development life cycle process. [OMB M-19-03](#c5e11048-1d38-4af3-b00b-0d88dc26860c) requires the use of the systems security engineering concepts described in [SP 800-160-1](#e3cc0520-a366-4fc9-abc2-5272db7e3564) for high value assets. Security and privacy architectures are reviewed and updated throughout the system development life cycle, from analysis of alternatives through review of the proposed architecture in the RFP responses to the design reviews before and during implementation (e.g., during preliminary design reviews and critical design reviews).\n\nIn today’s modern computing architectures, it is becoming less common for organizations to control all information resources. There may be key dependencies on external information services and service providers. Describing such dependencies in the security and privacy architectures is necessary for developing a comprehensive mission and business protection strategy. Establishing, developing, documenting, and maintaining under configuration control a baseline configuration for organizational systems is critical to implementing and maintaining effective architectures. The development of the architectures is coordinated with the senior agency information security officer and the senior agency official for privacy to ensure that the controls needed to support security and privacy requirements are identified and effectively implemented. In many circumstances, there may be no distinction between the security and privacy architecture for a system. In other circumstances, security objectives may be adequately satisfied, but privacy objectives may only be partially satisfied by the security requirements. In these cases, consideration of the privacy requirements needed to achieve satisfaction will result in a distinct privacy architecture. The documentation, however, may simply reflect the combined architectures.\n\n[PL-8](#pl-8) is primarily directed at organizations to ensure that architectures are developed for the system and, moreover, that the architectures are integrated with or tightly coupled to the enterprise architecture. In contrast, [SA-17](#sa-17) is primarily directed at the external information technology product and system developers and integrators. [SA-17](#sa-17) , which is complementary to [PL-8](#pl-8) , is selected when organizations outsource the development of systems or components to external entities and when there is a need to demonstrate consistency with the organization’s enterprise architecture and security and privacy architectures."
+    related_controls:
+      - cm-2
+      - cm-6
+      - pl-2
+      - pl-7
+      - pl-9
+      - pm-5
+      - pm-7
+      - ra-9
+      - sa-3
+      - sa-5
+      - sa-8
+      - sa-17
+      - sc-7
+    levels:
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pl-8.1
+    title: Defense in Depth
+    description: "Design the security and privacy architectures for the system using a defense-in-depth approach that:\n  a. Allocates [[ insert: param, pl-08.01_odp.01 ]] to [[ insert: param, pl-08.01_odp.02 ]] ; and\n  b. Ensures that the allocated controls operate in a coordinated and mutually reinforcing manner."
+    parameters:
+      - id: pl-08.01_odp.01
+        label: controls
+        guidelines:
+          - controls to be allocated are defined;
+      - id: pl-08.01_odp.02
+        label: locations and architectural layers
+        guidelines:
+          - locations and architectural layers are defined;
+    guidance: Organizations strategically allocate security and privacy controls in the security and privacy architectures so that adversaries must overcome multiple controls to achieve their objective. Requiring adversaries to defeat multiple controls makes it more difficult to attack information resources by increasing the work factor of the adversary; it also increases the likelihood of detection. The coordination of allocated controls is essential to ensure that an attack that involves one control does not create adverse, unintended consequences by interfering with other controls. Unintended consequences can include system lockout and cascading alarms. The placement of controls in systems and organizations is an important activity that requires thoughtful analysis. The value of organizational assets is an important consideration in providing additional layering. Defense-in-depth architectural approaches include modularity and layering (see [SA-8(3)](#sa-8.3) ), separation of system and user functionality (see [SC-2](#sc-2) ), and security function isolation (see [SC-3](#sc-3)).
+    related_controls:
+      - sc-2
+      - sc-3
+      - sc-29
+      - sc-36
+    rules: []
+    status: pending
+  - id: pl-8.2
+    title: Supplier Diversity
+    description: 'Require that [[ insert: param, pl-08.02_odp.01 ]] allocated to [[ insert: param, pl-08.02_odp.02 ]] are obtained from different suppliers.'
+    parameters:
+      - id: pl-08.02_odp.01
+        label: controls
+        guidelines:
+          - controls to be allocated are defined;
+      - id: pl-08.02_odp.02
+        label: locations and architectural layers
+        guidelines:
+          - locations and architectural layers are defined;
+    guidance: Information technology products have different strengths and weaknesses. Providing a broad spectrum of products complements the individual offerings. For example, vendors offering malicious code protection typically update their products at different times, often developing solutions for known viruses, Trojans, or worms based on their priorities and development schedules. By deploying different products at different locations, there is an increased likelihood that at least one of the products will detect the malicious code. With respect to privacy, vendors may offer products that track personally identifiable information in systems. Products may use different tracking methods. Using multiple products may result in more assurance that personally identifiable information is inventoried.
+    related_controls:
+      - sc-29
+      - sr-3
+    rules: []
+    status: pending
+  - id: pl-9
+    title: Central Management
+    description: 'Centrally manage [[ insert: param, pl-09_odp ]].'
+    parameters:
+      - id: pl-09_odp
+        label: controls and related processes
+        guidelines:
+          - security and privacy controls and related processes to be centrally managed are defined;
+    guidance: "Central management refers to organization-wide management and implementation of selected controls and processes. This includes planning, implementing, assessing, authorizing, and monitoring the organization-defined, centrally managed controls and processes. As the central management of controls is generally associated with the concept of common (inherited) controls, such management promotes and facilitates standardization of control implementations and management and the judicious use of organizational resources. Centrally managed controls and processes may also meet independence requirements for assessments in support of initial and ongoing authorizations to operate and as part of organizational continuous monitoring.\n\nAutomated tools (e.g., security information and event management tools or enterprise security monitoring and management tools) can improve the accuracy, consistency, and availability of information associated with centrally managed controls and processes. Automation can also provide data aggregation and data correlation capabilities; alerting mechanisms; and dashboards to support risk-based decision-making within the organization.\n\nAs part of the control selection processes, organizations determine the controls that may be suitable for central management based on resources and capabilities. It is not always possible to centrally manage every aspect of a control. In such cases, the control can be treated as a hybrid control with the control managed and implemented centrally or at the system level. The controls and control enhancements that are candidates for full or partial central management include but are not limited to: [AC-2(1)](#ac-2.1), [AC-2(2)](#ac-2.2), [AC-2(3)](#ac-2.3), [AC-2(4)](#ac-2.4), [AC-4(all)](#ac-4), [AC-17(1)](#ac-17.1), [AC-17(2)](#ac-17.2), [AC-17(3)](#ac-17.3), [AC-17(9)](#ac-17.9), [AC-18(1)](#ac-18.1), [AC-18(3)](#ac-18.3), [AC-18(4)](#ac-18.4), [AC-18(5)](#ac-18.5), [AC-19(4)](#ac-19.4), [AC-22](#ac-22), [AC-23](#ac-23), [AT-2(1)](#at-2.1), [AT-2(2)](#at-2.2), [AT-3(1)](#at-3.1), [AT-3(2)](#at-3.2), [AT-3(3)](#at-3.3), [AT-4](#at-4), [AU-3](#au-3), [AU-6(1)](#au-6.1), [AU-6(3)](#au-6.3), [AU-6(5)](#au-6.5), [AU-6(6)](#au-6.6), [AU-6(9)](#au-6.9), [AU-7(1)](#au-7.1), [AU-7(2)](#au-7.2), [AU-11](#au-11), [AU-13](#au-13), [AU-16](#au-16), [CA-2(1)](#ca-2.1), [CA-2(2)](#ca-2.2), [CA-2(3)](#ca-2.3), [CA-3(1)](#ca-3.1), [CA-3(2)](#ca-3.2), [CA-3(3)](#ca-3.3), [CA-7(1)](#ca-7.1), [CA-9](#ca-9), [CM-2(2)](#cm-2.2), [CM-3(1)](#cm-3.1), [CM-3(4)](#cm-3.4), [CM-4](#cm-4), [CM-6](#cm-6), [CM-6(1)](#cm-6.1), [CM-7(2)](#cm-7.2), [CM-7(4)](#cm-7.4), [CM-7(5)](#cm-7.5), [CM-8(all)](#cm-8), [CM-9(1)](#cm-9.1), [CM-10](#cm-10), [CM-11](#cm-11), [CP-7(all)](#cp-7), [CP-8(all)](#cp-8), [SC-43](#sc-43), [SI-2](#si-2), [SI-3](#si-3), [SI-4(all)](#si-4), [SI-7](#si-7), [SI-8](#si-8)."
+    related_controls:
+      - pl-8
+      - pm-9
+    rules: []
+    status: pending
+  - id: pl-10
+    title: Baseline Selection
+    description: Select a control baseline for the system.
+    guidance: Control baselines are predefined sets of controls specifically assembled to address the protection needs of a group, organization, or community of interest. Controls are chosen for baselines to either satisfy mandates imposed by laws, executive orders, directives, regulations, policies, standards, and guidelines or address threats common to all users of the baseline under the assumptions specific to the baseline. Baselines represent a starting point for the protection of individuals’ privacy, information, and information systems with subsequent tailoring actions to manage risk in accordance with mission, business, or other constraints (see [PL-11](#pl-11) ). Federal control baselines are provided in [SP 800-53B](#46d9e201-840e-440e-987c-2c773333c752) . The selection of a control baseline is determined by the needs of stakeholders. Stakeholder needs consider mission and business requirements as well as mandates imposed by applicable laws, executive orders, directives, policies, regulations, standards, and guidelines. For example, the control baselines in [SP 800-53B](#46d9e201-840e-440e-987c-2c773333c752) are based on the requirements from [FISMA](#0c67b2a9-bede-43d2-b86d-5f35b8be36e9) and [PRIVACT](#18e71fec-c6fd-475a-925a-5d8495cf8455) . The requirements, along with the NIST standards and guidelines implementing the legislation, direct organizations to select one of the control baselines after the reviewing the information types and the information that is processed, stored, and transmitted on the system; analyzing the potential adverse impact of the loss or compromise of the information or system on the organization’s operations and assets, individuals, other organizations, or the Nation; and considering the results from system and organizational risk assessments. [CNSSI 1253](#4e4fbc93-333d-45e6-a875-de36b878b6b9) provides guidance on control baselines for national security systems.
+    related_controls:
+      - pl-2
+      - pl-11
+      - ra-2
+      - ra-3
+      - sa-8
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
+  - id: pl-11
+    title: Baseline Tailoring
+    description: Tailor the selected control baseline by applying specified tailoring actions.
+    guidance: The concept of tailoring allows organizations to specialize or customize a set of baseline controls by applying a defined set of tailoring actions. Tailoring actions facilitate such specialization and customization by allowing organizations to develop security and privacy plans that reflect their specific mission and business functions, the environments where their systems operate, the threats and vulnerabilities that can affect their systems, and any other conditions or situations that can impact their mission or business success. Tailoring guidance is provided in [SP 800-53B](#46d9e201-840e-440e-987c-2c773333c752) . Tailoring a control baseline is accomplished by identifying and designating common controls, applying scoping considerations, selecting compensating controls, assigning values to control parameters, supplementing the control baseline with additional controls as needed, and providing information for control implementation. The general tailoring actions in [SP 800-53B](#46d9e201-840e-440e-987c-2c773333c752) can be supplemented with additional actions based on the needs of organizations. Tailoring actions can be applied to the baselines in [SP 800-53B](#46d9e201-840e-440e-987c-2c773333c752) in accordance with the security and privacy requirements from [FISMA](#0c67b2a9-bede-43d2-b86d-5f35b8be36e9), [PRIVACT](#18e71fec-c6fd-475a-925a-5d8495cf8455) , and [OMB A-130](#27847491-5ce1-4f6a-a1e4-9e483782f0ef) . Alternatively, other communities of interest adopting different control baselines can apply the tailoring actions in [SP 800-53B](#46d9e201-840e-440e-987c-2c773333c752) to specialize or customize the controls that represent the specific needs and concerns of those entities.
+    related_controls:
+      - pl-10
+      - ra-2
+      - ra-3
+      - ra-9
+      - sa-8
+    levels:
+      - low
+      - moderate
+      - high
+    rules: []
+    status: pending
