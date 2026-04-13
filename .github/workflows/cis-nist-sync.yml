@@ -1,0 +1,124 @@
+name: CIS-NIST Control File Sync
+
+on:
+  pull_request:
+    branches:
+      - master
+  schedule:
+    # Run every Sunday at 2:00 PM UTC
+    - cron: '0 14 * * 0'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  generate-and-validate:
+    name: Generate CIS-NIST Control File and Profiles
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          dnf install -y \
+            cmake \
+            make \
+            ninja-build \
+            openscap-utils \
+            python3-pyyaml \
+            python3-jinja2 \
+            python3-pip \
+            git \
+            gcc \
+            gcc-c++ \
+            python3-devel \
+            libxml2-devel \
+            libxslt-devel \
+            python3-setuptools \
+            libxml2 \
+            expat \
+            gh
+
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install ruamel.yaml PyPDF2
+
+      - name: Download OSCAL catalog
+        run: |
+          cd utils/nist_sync
+          python3 download_oscal.py
+
+      - name: Run CIS-NIST workflow
+        id: workflow
+        run: |
+          cd utils/nist_sync
+          echo "Running workflow for products: rhel8 rhel9 rhel10"
+          ./generate_cis_nist_workflow.sh --products "rhel8 rhel9 rhel10"
+
+      - name: Verify control files
+        run: ./utils/nist_sync/ci_sync.sh verify
+
+      - name: Render policies and generate HTML tables
+        run: |
+          cd build
+          ninja render-policies
+          cd ..
+          mkdir -p artifacts/tables artifacts/rendered-policies
+          for product in rhel8 rhel9 rhel10; do
+            SRC="build/$product/rendered-policies/nist_800_53.html"
+            DEST="artifacts/rendered-policies/nist_800_53-$product.html"
+            [ -f "$SRC" ] && cp "$SRC" "$DEST"
+          done
+
+      - name: Collect artifacts
+        run: ./utils/nist_sync/ci_sync.sh collect-artifacts
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v4
+        with:
+          name: cis-nist-artifacts-${{ github.run_number }}
+          path: artifacts/
+          retention-days: 90
+
+      - name: Generate summary report
+        run: ./utils/nist_sync/ci_sync.sh summarize
+
+      - name: Check for changes in CIS reference
+        id: changes
+        run: ./utils/nist_sync/ci_sync.sh check-changes
+
+      - name: Show diff summary
+        if: steps.changes.outputs.has_changes == 'true'
+        run: ./utils/nist_sync/ci_sync.sh show-diff
+
+      - name: Create Pull Request for scheduled runs
+        if: >-
+          (github.event_name == 'schedule' ||
+          github.event_name == 'workflow_dispatch') &&
+          steps.changes.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHA_EVENT_NAME: ${{ github.event_name }}
+          GHA_RUN_ID: ${{ github.run_id }}
+          GHA_REPOSITORY: ${{ github.repository }}
+        run: ./utils/nist_sync/ci_sync.sh create-pr
+
+      - name: Workflow Summary
+        if: always()
+        env:
+          GHA_EVENT_NAME: ${{ github.event_name }}
+          GHA_RUN_ID: ${{ github.run_id }}
+          HAS_CHANGES: ${{ steps.changes.outputs.has_changes }}
+        run: ./utils/nist_sync/ci_sync.sh workflow-summary
