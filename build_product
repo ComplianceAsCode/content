@@ -8,7 +8,7 @@
 # ARG_OPTIONAL_BOOLEAN([derivatives],[],[Also build derivatives of products if applicable],[off])
 # ARG_OPTIONAL_BOOLEAN([ansible-playbooks],[],[Build Ansible Playbooks for every profile],[on])
 # ARG_OPTIONAL_BOOLEAN([bash-scripts],[],[Build Bash remediation scripts for every profile],[on])
-# ARG_OPTIONAL_BOOLEAN([datastream-only],[d],[Build the data stream only. Do not build any of the guides, tables, etc],[off])
+# ARG_OPTIONAL_BOOLEAN([datastream-only],[d],[Build the data stream only. Do not build any of the guides, tables, etc. (deprecated, use --datastream option)],[off])
 # ARG_OPTIONAL_ACTION([datastream],[],[Build the data stream. Do not build any of the guides, tables, etc])
 # ARG_OPTIONAL_SINGLE([cel-content],[],[Product(s) to build CEL content for (comma-separated)],[off])
 # ARG_OPTIONAL_BOOLEAN([profiling],[p],[Use ninja and call the build_profiler.sh util],[off])
@@ -87,7 +87,7 @@ print_help()
 	printf '\t%s\n' "--bash-scripts, --no-bash-scripts: Build Bash remediation scripts for every profile (on by default)"
 	printf '\t%s\n' "-t, --thin, --no-thin: Build thin data streams for each rule. Do not build any of the guides, tables, etc (off by default)"
 	printf '\t%s\n' "-r, --rule-id: Rule ID: Build a thin data stream with the specified rule. Do not build any of the guides, tables, etc (off by default)"
-	printf '\t%s\n' "-d, --datastream-only, --no-datastream-only: Build the data stream only. Do not build any of the guides, tables, etc (off by default)"
+    printf '\t%s\n' "-d, --datastream-only, --no-datastream-only: Build the data stream only. Do not build any of the guides, tables, etc (deprecated, use --datastream option)(off by default)"
 	printf '\t%s\n' "--datastream: Build the data stream. Do not build any of the guides, tables, etc"
 	printf '\t%s\n' "--cel-content: Product(s) to build CEL content for (comma-separated) (default: 'off')"
 	printf '\t%s\n' "--render-test-scenarios: render Automatus test scenarios for specified product and put them into the build directory (off by default)"
