@@ -142,6 +142,7 @@ auditd_overflow_action
 auditd_write_logs
 banner_etc_issue
 chronyd_client_only
+chronyd_configure_local_socket
 chronyd_no_chronyc_network
 chronyd_or_ntpd_set_maxpoll
 chronyd_server_directive

@@ -142,6 +142,7 @@ selections:
     - package_abrt-addon-kerneloops_removed
     - ssh_client_use_strong_rng_csh
     - chronyd_no_chronyc_network
+    - chronyd_configure_local_socket
     - mount_option_var_log_noexec
     - sysctl_kernel_core_pattern
     - mount_option_dev_shm_nodev

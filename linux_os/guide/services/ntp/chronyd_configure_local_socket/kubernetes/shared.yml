@@ -1,0 +1,19 @@
+---
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_rhcos
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - contents:
+          source: data:,%5BUnit%5D%0ADescription%3DWait%20for%20chrony%20to%20synchronize%20system%20clock%20%28KCS%207064388%29%0ADocumentation%3Dman%3Achronyc%281%29%0AAfter%3Dchronyd.service%0ARequires%3Dchronyd.service%0ABefore%3Dtime-sync.target%0AWants%3Dtime-sync.target%0A%0A%5BService%5D%0AType%3Doneshot%0AExecStart%3D%2Fusr%2Fbin%2Fchronyc%20waitsync%200%200.1%200.0%201%0ATimeoutStartSec%3D180%0ARemainAfterExit%3Dyes%0AStandardOutput%3Dnull%0A%0ACapabilityBoundingSet%3D~CAP_AUDIT_CONTROL%20CAP_AUDIT_READ%20CAP_AUDIT_WRITE%0ACapabilityBoundingSet%3D~CAP_BLOCK_SUSPEND%20CAP_KILL%20CAP_LEASE%20CAP_LINUX_IMMUTABLE%0ACapabilityBoundingSet%3D~CAP_MAC_ADMIN%20CAP_MAC_OVERRIDE%20CAP_MKNOD%20CAP_SYS_ADMIN%0ACapabilityBoundingSet%3D~CAP_SYS_BOOT%20CAP_SYS_CHROOT%20CAP_SYS_MODULE%20CAP_SYS_PACCT%0ACapabilityBoundingSet%3D~CAP_SYS_PTRACE%20CAP_SYS_RAWIO%20CAP_SYS_TTY_CONFIG%20CAP_WAKE_ALARM%0ADevicePolicy%3Dclosed%0AIPAddressAllow%3Dlocalhost%0AIPAddressDeny%3Dany%0ALockPersonality%3Dyes%0AMemoryDenyWriteExecute%3Dyes%0APrivateDevices%3Dyes%0AProcSubset%3Dpid%0AProtectClock%3Dyes%0AProtectControlGroups%3Dyes%0AProtectHome%3Dyes%0AProtectHostname%3Dyes%0AProtectKernelLogs%3Dyes%0AProtectKernelModules%3Dyes%0AProtectKernelTunables%3Dyes%0AProtectProc%3Dinvisible%0AProtectSystem%3Dstrict%0ARestrictAddressFamilies%3DAF_UNIX%0ARestrictNamespaces%3Dyes%0ARestrictRealtime%3Dyes%0ASystemCallArchitectures%3Dnative%0ASystemCallFilter%3D%40system-service%0ASystemCallFilter%3D~%40privileged%20%40resources%0AUMask%3D0777%0A%0A%5BInstall%5D%0AWantedBy%3Dmulti-user.target%0A
+        mode: 420
+        overwrite: true
+        path: /etc/systemd/system/chrony-wait.service

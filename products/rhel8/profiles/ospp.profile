@@ -149,6 +149,7 @@ selections:
     - package_abrt-addon-kerneloops_removed
     - ssh_client_use_strong_rng_csh
     - chronyd_no_chronyc_network
+    - chronyd_configure_local_socket
     - mount_option_var_log_noexec
     - sysctl_kernel_core_pattern
     - var_sshd_set_keepalive=1
@@ -206,4 +207,3 @@ selections:
     - '!zipl_systemd_debug-shell_argument_absent'
     - '!audit_modify_failed_ppc64le'
     - '!package_sequoia-sq_installed'
-

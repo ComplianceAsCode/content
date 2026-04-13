@@ -946,6 +946,7 @@ selections:
 
     # OL08-00-030742
     - chronyd_no_chronyc_network
+    - chronyd_configure_local_socket
 
     # OL08-00-040000
     - package_telnet-server_removed

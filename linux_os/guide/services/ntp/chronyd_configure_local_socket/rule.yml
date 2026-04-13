@@ -1,0 +1,44 @@
+documentation_complete: true
+
+
+title: 'Configure chrony-wait.service to use Unix socket'
+
+description: |-
+    The default <tt>chrony-wait.service</tt> attempts to connect via network (127.0.0.1, ::1)
+    which fails when <tt>cmdport</tt> is set to <tt>0</tt>. The service unit must be replaced
+    to use chronyc without network address specification, allowing it to use the Unix socket
+    for local communication with chronyd.
+
+rationale: |-
+    When network access to the chrony daemon command port is disabled for security hardening,
+    the chrony-wait.service must be configured to use the Unix domain socket instead of
+    network addresses. This ensures the service can still check chrony synchronization status
+    without requiring network command access.
+
+severity: low
+
+platform: package[chrony]
+
+identifiers:
+    cce@rhel8: CCE-86482-7
+    cce@rhel9: CCE-86468-6
+
+references:
+    nist: CM-7(1)
+    srg: SRG-OS-000096-GPOS-00050,SRG-OS-000095-GPOS-00049
+
+ocil_clause: 'chrony-wait.service uses network addresses'
+
+ocil: |-
+    Verify {{{ full_name }}} configures chrony-wait.service to use Unix socket with the following command:
+    <pre>$ systemctl cat chrony-wait.service | grep ExecStart</pre>
+    <pre>ExecStart=/usr/bin/chronyc waitsync 0 0.1 0.0 1</pre>
+
+    The ExecStart line should not contain <tt>-h 127.0.0.1,::1</tt> or similar network address specifications.
+
+fixtext: |-
+    Configure {{{ full_name }}} chrony-wait.service to use Unix socket by creating /etc/systemd/system/chrony-wait.service
+    without network address specifications in the ExecStart command.
+
+srg_requirement:
+  {{{ full_name }}} chrony-wait.service must use Unix socket for local access when network command access is disabled.

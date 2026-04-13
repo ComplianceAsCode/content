@@ -37,6 +37,7 @@ auditd_log_format
 auditd_name_format
 auditd_write_logs
 chronyd_client_only
+chronyd_configure_local_socket
 chronyd_no_chronyc_network
 configure_bashrc_exec_tmux
 configure_bind_crypto_policy
