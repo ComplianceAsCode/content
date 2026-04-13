@@ -44,9 +44,11 @@ jobs:
             if grep -qP '\{\{[%{#]' "$file"; then
               # File contains Jinja2 constructs — strip them before linting.
               # yamllint -s exits: 0 = clean, 1 = errors, 2 = warnings only.
+              # Use "|| rc=$?" to prevent set -e from killing the script before
+              # we can capture the exit code and print the diagnostic output.
+              rc=0
               output=$(python3 utils/strip_jinja_for_yamllint.py "$file" \
-                       | yamllint -s -c .yamllint - 2>&1)
-              rc=$?
+                       | yamllint -s -c .yamllint - 2>&1) || rc=$?
               # Show all output (warnings and errors), replacing "stdin"
               # with the actual filename since yamllint reads from a pipe.
               if [ -n "$output" ]; then
@@ -57,8 +59,8 @@ jobs:
                 exit_code=1
               fi
             else
-              yamllint -s -c .yamllint "$file"
-              rc=$?
+              rc=0
+              yamllint -s -c .yamllint "$file" || rc=$?
               if [ "$rc" -eq 1 ]; then
                 exit_code=1
               fi
