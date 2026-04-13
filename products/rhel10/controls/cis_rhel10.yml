@@ -369,6 +369,7 @@ controls:
       status: partial
       rules:
           - ensure_redhat_gpgkey_installed
+          - package_sequoia-sq_installed
       notes: >
         In CIS Benchmark, the requirement is manual, because of GPG keys for 3rd party repositories.
         But, add the rule ensure_redhat_gpgkey_installed to the profile because the requirement 1.2.1.2
