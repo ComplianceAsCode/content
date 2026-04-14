@@ -1,3 +1,4 @@
+# NIST 800-53 CM Family: Configuration Management
 controls:
   - id: cm-1
     title: Policy and Procedures
@@ -265,6 +266,11 @@ controls:
       - accounts_passwords_pam_faillock_interval
       - accounts_passwords_pam_faillock_unlock_time
       - accounts_passwords_pam_tally2_deny_root
+      - file_groupowner_boot_grub2
+      - file_owner_boot_grub2
+      - file_permissions_boot_grub2
+      - grub2_password
+      - grub2_uefi_password
     status: automated
   - id: cm-6.1
     title: Automated Management, Application, and Verification
@@ -319,9 +325,11 @@ controls:
       - package_httpd_removed
       - package_net-snmp_removed
       - package_nginx_removed
+      - package_nis_removed
       - package_openldap-clients_removed
       - package_telnet-server_removed
       - package_telnet_removed
+      - package_telnetd_removed
       - package_tftp-server_removed
       - package_tftp_removed
       - package_vsftpd_removed
@@ -333,9 +341,14 @@ controls:
       - partition_for_var_log_audit
       - partition_for_var_tmp
       - postfix_network_listening_disabled
+      - service_apport_disabled
       - service_bluetooth_disabled
+      - service_cockpit_disabled
       - service_cups_disabled
+      - service_dhcpd_disabled
       - service_dnsmasq_disabled
+      - service_oddjobd_disabled
+      - service_quota_nld_disabled
       - sshd_disable_forwarding
       - wireless_disable_interfaces
     status: automated
