@@ -1,3 +1,4 @@
+# NIST 800-53 AU Family: Audit and Accountability
 controls:
   - id: au-1
     title: Policy and Procedures
@@ -62,6 +63,7 @@ controls:
     levels:
       - low
     rules:
+      - audit_rules_login_events_faillog
       - audit_rules_privileged_commands_chfn
       - auditd_log_format
       - auditd_name_format
@@ -72,6 +74,11 @@ controls:
     levels:
       - moderate
     rules:
+      - audit_rules_etc_cron_d
+      - audit_rules_networkconfig_modification_etc_hosts
+      - audit_rules_networkconfig_modification_etc_issue
+      - audit_rules_networkconfig_modification_etc_issue_net
+      - audit_rules_networkconfig_modification_etc_networkmanager_system_connections
       - audit_rules_privileged_commands_insmod
       - audit_rules_privileged_commands_kmod
       - audit_rules_privileged_commands_modprobe
@@ -111,6 +118,8 @@ controls:
     levels:
       - low
     rules:
+      - audit_rules_continue_loading
+      - audit_rules_enable_syscall_auditing
       - audit_rules_system_shutdown
       - postfix_client_configure_mail_alias_postmaster
     status: automated
@@ -292,6 +301,9 @@ controls:
     levels:
       - low
     rules:
+      - audit_rules_immutable_login_uids
+      - audit_rules_mac_modification_etc_apparmor
+      - audit_rules_mac_modification_etc_apparmor_d
       - directory_permissions_var_log_audit
       - file_audit_tools_group_ownership
       - file_audit_tools_ownership
@@ -408,9 +420,16 @@ controls:
       - audit_rules_dac_modification_lsetxattr
       - audit_rules_dac_modification_removexattr
       - audit_rules_dac_modification_setxattr
+      - audit_rules_dac_modification_umount
+      - audit_rules_dac_modification_umount2
+      - audit_rules_execution_chacl
       - audit_rules_execution_chcon
+      - audit_rules_execution_chmod
+      - audit_rules_execution_rm
+      - audit_rules_execution_setfacl
       - audit_rules_file_deletion_events_rename
       - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_renameat2
       - audit_rules_file_deletion_events_unlink
       - audit_rules_file_deletion_events_unlinkat
       - audit_rules_kernel_module_loading_create

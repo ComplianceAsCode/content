@@ -204,8 +204,11 @@ controls:
     title: System Backup
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - configure_user_data_backups
+      - file_groupowner_backup_etc_shadow
+      - httpd_remove_backups
+    status: automated
   - id: cp-9.1
     title: Testing for Reliability and Integrity
     levels:

@@ -1,3 +1,4 @@
+# NIST 800-53 SC Family: System and Communications Protection
 controls:
   - id: sc-1
     title: Policy and Procedures
@@ -115,6 +116,28 @@ controls:
     levels:
       - low
     rules:
+      - ensure_firewall_rules_for_open_ports
+      - firewall_single_service_active
+      - firewalld_loopback_traffic_restricted
+      - firewalld_loopback_traffic_trusted
+      - firewalld_sshd_disabled
+      - ftp_configure_firewall
+      - httpd_configure_firewall
+      - ip6tables_rules_for_open_ports
+      - iptables_rules_for_open_ports
+      - iptables_sshd_disabled
+      - nftables_ensure_default_deny_policy
+      - package_SuSEfirewall2_installed
+      - package_firewalld_removed
+      - service_SuSEfirewall2_enabled
+      - service_firewalld_disabled
+      - set_firewalld_appropriate_zone
+      - set_iptables_outbound_n_established
+      - set_nftables_new_connections
+      - set_nftables_table
+      - set_ufw_default_rule
+      - susefirewall2_ddos_protection
+      - susefirewall2_only_required_services
       - sysctl_net_ipv4_conf_all_accept_redirects
       - sysctl_net_ipv4_conf_all_accept_source_route
       - sysctl_net_ipv4_conf_all_rp_filter
@@ -126,6 +149,9 @@ controls:
       - sysctl_net_ipv4_conf_default_secure_redirects
       - sysctl_net_ipv4_conf_default_send_redirects
       - sysctl_net_ipv4_ip_forward
+      - ufw_only_required_services
+      - ufw_rate_limit
+      - ufw_rules_for_open_ports
     status: automated
   - id: sc-7.1
     title: Physically Separated Subnetworks
