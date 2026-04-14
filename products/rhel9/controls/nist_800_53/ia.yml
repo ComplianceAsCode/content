@@ -1,4 +1,3 @@
-# NIST 800-53 IA Family: Identification and Authentication
 controls:
   - id: ia-1
     title: Policy and Procedures
@@ -11,60 +10,113 @@ controls:
     levels:
       - low
     rules:
-      - account_unique_id
+      - accounts_no_uid_except_zero
+      - gid_passwd_group_same
+      - gnome_gdm_disable_guest_login
+      - no_direct_root_logins
+      - require_emergency_target_auth
+      - require_singleuser_auth
     status: automated
   - id: ia-2.1
     title: Multi-factor Authentication to Privileged Accounts
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - configure_opensc_card_drivers
+      - configure_opensc_nss_db
+      - force_opensc_card_drivers
+      - service_pcscd_enabled
+      - smartcard_auth
+      - sssd_enable_pam_services
+    status: automated
   - id: ia-2.2
     title: Multi-factor Authentication to Non-privileged Accounts
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - configure_opensc_card_drivers
+      - configure_opensc_nss_db
+      - force_opensc_card_drivers
+      - service_pcscd_enabled
+      - smartcard_auth
+    status: automated
   - id: ia-2.3
     title: Local Access to Privileged Accounts
-    rules: []
-    status: pending
+    rules:
+      - configure_opensc_card_drivers
+      - configure_opensc_nss_db
+      - dconf_gnome_enable_smartcard_auth
+      - force_opensc_card_drivers
+      - service_pcscd_enabled
+      - smartcard_auth
+    status: automated
   - id: ia-2.4
     title: Local Access to Non-privileged Accounts
-    rules: []
-    status: pending
+    rules:
+      - configure_opensc_card_drivers
+      - configure_opensc_nss_db
+      - dconf_gnome_enable_smartcard_auth
+      - force_opensc_card_drivers
+      - service_pcscd_enabled
+      - service_sshd_disabled
+      - smartcard_auth
+    status: automated
   - id: ia-2.5
     title: Individual Authentication with Group Authentication
     levels:
       - high
-    rules: []
-    status: pending
+    rules:
+      - sshd_disable_root_login
+    status: automated
   - id: ia-2.6
     title: Access to Accounts —separate Device
-    rules: []
-    status: pending
+    rules:
+      - configure_opensc_card_drivers
+      - configure_opensc_nss_db
+      - force_opensc_card_drivers
+      - service_pcscd_enabled
+      - smartcard_auth
+    status: automated
   - id: ia-2.7
     title: Network Access to Non-privileged Accounts — Separate Device
-    rules: []
-    status: pending
+    rules:
+      - configure_opensc_card_drivers
+      - configure_opensc_nss_db
+      - force_opensc_card_drivers
+      - service_pcscd_enabled
+      - smartcard_auth
+    status: automated
   - id: ia-2.8
     title: Access to Accounts — Replay Resistant
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - dconf_gnome_enable_smartcard_auth
+      - mount_option_krb_sec_remote_filesystems
+      - use_kerberos_security_all_exports
+    status: automated
   - id: ia-2.9
     title: Network Access to Non-privileged Accounts — Replay Resistant
-    rules: []
-    status: pending
+    rules:
+      - dconf_gnome_enable_smartcard_auth
+      - mount_option_krb_sec_remote_filesystems
+      - use_kerberos_security_all_exports
+    status: automated
   - id: ia-2.10
     title: Single Sign-on
     rules: []
     status: pending
   - id: ia-2.11
     title: Remote Access — Separate Device
-    rules: []
-    status: pending
+    rules:
+      - configure_opensc_card_drivers
+      - configure_opensc_nss_db
+      - dconf_gnome_enable_smartcard_auth
+      - force_opensc_card_drivers
+      - service_pcscd_enabled
+      - smartcard_auth
+      - sssd_certificate_verification
+    status: automated
   - id: ia-2.12
     title: Acceptance of PIV Credentials
     levels:
@@ -80,9 +132,11 @@ controls:
     levels:
       - moderate
     rules:
-      - dconf_gnome_disable_automount
-      - dconf_gnome_disable_automount_open
-      - kernel_module_usb-storage_disabled
+      - configure_usbguard_auditbackend
+      - package_usbguard_installed
+      - service_usbguard_enabled
+      - usbguard_allow_hid_and_hub
+      - usbguard_generate_policy
     status: automated
   - id: ia-3.1
     title: Cryptographic Bidirectional Authentication
@@ -104,8 +158,13 @@ controls:
     title: Identifier Management
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - account_disable_inactivity_password_auth
+      - account_disable_inactivity_system_auth
+      - account_disable_post_pw_expiration
+      - accounts_no_uid_except_zero
+      - accounts_set_post_pw_existing
+    status: automated
   - id: ia-4.1
     title: Prohibit Account Identifiers as Public Identifiers
     rules: []
@@ -149,45 +208,86 @@ controls:
     levels:
       - low
     rules:
-      - accounts_minimum_age_login_defs
       - accounts_password_all_shadowed
-      - accounts_password_pam_dictcheck
-      - accounts_password_pam_difok
-      - accounts_password_pam_enforce_root
-      - accounts_password_pam_maxrepeat
-      - accounts_password_pam_maxsequence
-      - accounts_password_pam_minclass
-      - accounts_password_pam_minlen
-      - accounts_password_pam_pwhistory_enforce_for_root
-      - accounts_password_set_min_life_existing
-      - no_empty_passwords_etc_shadow
-      - set_password_hashing_algorithm_libuserconf
-      - set_password_hashing_algorithm_logindefs
-      - set_password_hashing_algorithm_passwordauth
-      - set_password_hashing_algorithm_systemauth
+      - accounts_passwords_pam_faillock_deny_root
+      - accounts_passwords_pam_tally2_deny_root
+      - accounts_passwords_pam_tally2_unlock_time
+      - cracklib_accounts_password_pam_ocredit
+      - snmpd_not_default_password
     status: automated
   - id: ia-5.1
     title: Password-based Authentication
     levels:
       - low
     rules:
+      - accounts_maximum_age_login_defs
+      - accounts_minimum_age_login_defs
+      - accounts_password_all_shadowed_sha512
+      - accounts_password_minlen_login_defs
+      - accounts_password_pam_dcredit
+      - accounts_password_pam_dictcheck
+      - accounts_password_pam_difok
+      - accounts_password_pam_enforce_root
+      - accounts_password_pam_lcredit
+      - accounts_password_pam_maxclassrepeat
+      - accounts_password_pam_minclass
+      - accounts_password_pam_minlen
+      - accounts_password_pam_ocredit
       - accounts_password_pam_pwhistory_remember_password_auth
       - accounts_password_pam_pwhistory_remember_system_auth
+      - accounts_password_pam_ucredit
+      - accounts_password_pam_unix_remember
+      - accounts_password_set_max_life_existing
+      - accounts_password_set_min_life_existing
+      - accounts_password_set_warn_age_existing
+      - accounts_password_warn_age_login_defs
+      - auditd_data_retention_action_mail_acct
+      - no_empty_passwords
+      - no_netrc_files
+      - package_rsh-server_removed
+      - package_vsftpd_removed
+      - package_ypserv_removed
+      - passwd_system-auth_substack
+      - service_rexec_disabled
+      - service_rlogin_disabled
+      - service_rsh_disabled
+      - service_telnet_disabled
+      - service_ypbind_disabled
+      - set_password_hashing_algorithm_libuserconf
+      - set_password_hashing_algorithm_logindefs
+      - set_password_hashing_algorithm_passwordauth
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_yescrypt_cost_factor_logindefs
+      - sshd_allow_only_protocol2
+      - sshd_use_approved_ciphers
     status: automated
   - id: ia-5.2
     title: Public Key-based Authentication
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - ssh_private_keys_have_passcode
+    status: automated
   - id: ia-5.3
     title: In-person or Trusted External Party Registration
     rules: []
     status: pending
   - id: ia-5.4
     title: Automated Support for Password Strength Determination
-    rules: []
-    status: pending
+    rules:
+      - accounts_password_pam_dcredit
+      - accounts_password_pam_dictcheck
+      - accounts_password_pam_difok
+      - accounts_password_pam_enforce_root
+      - accounts_password_pam_lcredit
+      - accounts_password_pam_maxclassrepeat
+      - accounts_password_pam_maxrepeat
+      - accounts_password_pam_minclass
+      - accounts_password_pam_minlen
+      - accounts_password_pam_ocredit
+      - accounts_password_pam_retry
+      - accounts_password_pam_ucredit
+    status: automated
   - id: ia-5.5
     title: Change Authenticators Prior to Delivery
     rules: []
@@ -200,8 +300,9 @@ controls:
     status: pending
   - id: ia-5.7
     title: No Embedded Unencrypted Static Authenticators
-    rules: []
-    status: pending
+    rules:
+      - no_netrc_files
+    status: automated
   - id: ia-5.8
     title: Multiple System Accounts
     rules: []
@@ -212,8 +313,9 @@ controls:
     status: pending
   - id: ia-5.10
     title: Dynamic Credential Binding
-    rules: []
-    status: pending
+    rules:
+      - service_sssd_enabled
+    status: automated
   - id: ia-5.11
     title: Hardware Token-based Authentication
     rules: []
@@ -224,8 +326,11 @@ controls:
     status: pending
   - id: ia-5.13
     title: Expiration of Cached Authenticators
-    rules: []
-    status: pending
+    rules:
+      - sssd_memcache_timeout
+      - sssd_offline_cred_expiration
+      - sssd_ssh_known_hosts_timeout
+    status: automated
   - id: ia-5.14
     title: Managing Content of PKI Trust Stores
     rules: []
@@ -256,8 +361,17 @@ controls:
     title: Cryptographic Module Authentication
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - enable_dracut_fips_module
+      - enable_fips_mode
+      - etc_system_fips_exists
+      - grub2_enable_fips_mode
+      - installed_OS_is_FIPS_certified
+      - package_dracut-fips-aesni_installed
+      - package_dracut-fips_installed
+      - sebool_fips_mode
+      - sysctl_crypto_fips_enabled
+    status: automated
   - id: ia-8
     title: Identification and Authentication (Non-organizational Users)
     levels:
@@ -315,6 +429,10 @@ controls:
     levels:
       - low
     rules:
+      - disallow_bypass_password_sudo
+      - sudo_remove_no_authenticate
+      - sudo_remove_nopasswd
+      - sudo_require_authentication
       - sudo_require_reauthentication
     status: automated
   - id: ia-12
