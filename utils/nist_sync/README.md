@@ -1,6 +1,6 @@
 # NIST 800-53 / CIS Synchronization Toolkit
 
-Automated tooling to generate and maintain product-specific NIST 800-53 control files with CIS benchmark mappings.
+Automated tooling to generate and maintain NIST 800-53 control files from CIS benchmark mappings for ComplianceAsCode products.
 
 ## Quick Start
 
@@ -12,9 +12,11 @@ Automated tooling to generate and maintain product-specific NIST 800-53 control 
 ./test_workflow_local.sh
 ```
 
-## Architecture
+## Architecture Overview
 
-The toolkit generates **product-specific split-by-family** control files:
+### Directory Structure
+
+The toolkit generates **product-specific split-by-family** reference control files:
 
 ```
 shared/references/controls/              # Reference files (auto-generated)
@@ -123,10 +125,8 @@ utils/nist_sync/
 Every Sunday at 2 PM UTC:
 1. Downloads latest NIST OSCAL catalog
 2. Generates product-specific reference family files for rhel8, rhel9, rhel10
-3. Compares with previous version
+3. Compares with previous week's version
 4. Creates PR if changes detected
-
-**Reference files updated automatically. Product control files require manual review.**
 
 ### Local Development
 
@@ -151,30 +151,21 @@ python3 compare_profile_rules.py \
 
 ### Manual Sync
 
-To regenerate reference files manually:
+When you need to manually sync changes:
 
 ```bash
 cd utils/nist_sync
 
-# Step 1: Download OSCAL catalog (if not cached)
-python3 download_oscal.py
-
-# Step 2: Generate product-specific family files
-python3 sync_nist_split.py --product rhel8
+# Step 1: Regenerate reference files
+python3 download_oscal.py  # Update OSCAL catalog if needed
 python3 sync_nist_split.py --product rhel9
-python3 sync_nist_split.py --product rhel10
 
-# Step 3: Review differences
-diff -ur shared/references/controls/nist_800_53_cis_reference_rhel9/ \
-         products/rhel9/controls/nist_800_53/
+# Step 2: Review and copy to product files if needed
+# Compare reference vs product files to see differences
+diff -ur ../../shared/references/controls/nist_800_53_cis_reference_rhel9/ \
+         ../../products/rhel9/controls/nist_800_53/
 
-# Step 4: Copy to product directories if approved
-cp shared/references/controls/nist_800_53_cis_reference_rhel9.yml \
-   ../../products/rhel9/controls/nist_800_53.yml
-cp -r shared/references/controls/nist_800_53_cis_reference_rhel9/* \
-   ../../products/rhel9/controls/nist_800_53/
-
-# Step 5: Test build
+# Step 3: Test build
 cd ../..
 ./build_product rhel9 --datastream-only
 ```
