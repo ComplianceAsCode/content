@@ -228,11 +228,7 @@ def generate_html_viewer(output_dir: Path, templates_dir: Path, viewer_data: Dic
 
     # Read shared components
     shared_styles = (templates_dir / '_shared_styles.html').read_text()
-    shared_header = (templates_dir / '_shared_header.html').read_text()
-
-    # Embed the JSON data
-    json_data = json.dumps(viewer_data, indent=2)
-    embedded_data_script = f'const EMBEDDED_DATA = {json_data};'
+    shared_header_template = (templates_dir / '_shared_header.html').read_text()
 
     # List of page templates to generate
     pages = [
@@ -244,29 +240,82 @@ def generate_html_viewer(output_dir: Path, templates_dir: Path, viewer_data: Dic
         'family.html'
     ]
 
-    # Generate each page
-    for page in pages:
-        template_file = templates_dir / page
+    # Generate pages for each product in separate subdirectories
+    for product in viewer_data['products'].keys():
+        product_dir = output_dir / product
+        product_dir.mkdir(parents=True, exist_ok=True)
 
-        if not template_file.exists():
-            print(f"Warning: Template not found: {template_file}")
-            continue
+        # Create product-specific data (only this product's data)
+        product_data = {
+            'products': {product: viewer_data['products'][product]},
+            'statistics': {product: viewer_data['statistics'][product]},
+            'families': viewer_data['families']
+        }
 
-        # Read template
-        html_content = template_file.read_text()
+        # Embed the JSON data for this product
+        json_data = json.dumps(product_data, indent=2)
+        embedded_data_script = f'const EMBEDDED_DATA = {json_data};\nconst CURRENT_PRODUCT = "{product}";'
 
-        # Replace placeholders
-        html_content = html_content.replace('<!-- SHARED_STYLES_PLACEHOLDER -->', f'<style>{shared_styles}</style>')
-        html_content = html_content.replace('<!-- SHARED_HEADER_PLACEHOLDER -->', shared_header)
-        html_content = html_content.replace('/* DATA_PLACEHOLDER */', embedded_data_script)
+        # Create product selector links for header
+        all_products = list(viewer_data['products'].keys())
+        product_links = []
+        for prod in all_products:
+            if prod == product:
+                product_links.append(f'<strong>{prod.upper()}</strong>')
+            else:
+                product_links.append(f'<a href="../{prod}/index.html" style="color: #0366d6; text-decoration: none;">{prod.upper()}</a>')
 
-        # Write output file
-        output_file = output_dir / page
-        output_file.write_text(html_content)
-        print(f"Generated: {output_file}")
+        product_selector_html = ' | '.join(product_links)
+
+        # Update shared header with product selector
+        shared_header = shared_header_template.replace(
+            '<!-- PRODUCT_SELECTOR_PLACEHOLDER -->',
+            f'<div style="margin-left: auto; font-size: 14px;">Product: {product_selector_html}</div>'
+        )
+
+        # Generate each page for this product
+        for page in pages:
+            template_file = templates_dir / page
+
+            if not template_file.exists():
+                print(f"Warning: Template not found: {template_file}")
+                continue
+
+            # Read template
+            html_content = template_file.read_text()
+
+            # Replace placeholders
+            html_content = html_content.replace('<!-- SHARED_STYLES_PLACEHOLDER -->', f'<style>{shared_styles}</style>')
+            html_content = html_content.replace('<!-- SHARED_HEADER_PLACEHOLDER -->', shared_header)
+            html_content = html_content.replace('/* DATA_PLACEHOLDER */', embedded_data_script)
+
+            # Write output file
+            output_file = product_dir / page
+            output_file.write_text(html_content)
+            print(f"Generated: {output_file}")
+
+    # Create an index.html that redirects to rhel9 by default
+    default_product = 'rhel9' if 'rhel9' in viewer_data['products'] else list(viewer_data['products'].keys())[0]
+    redirect_html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=./{default_product}/index.html">
+    <title>NIST 800-53 Control Viewer</title>
+</head>
+<body>
+    <p>Redirecting to <a href="./{default_product}/index.html">{default_product.upper()} viewer</a>...</p>
+</body>
+</html>'''
+
+    (output_dir / 'index.html').write_text(redirect_html)
+    print(f"Generated redirect: {output_dir / 'index.html'}")
 
     print(f"\nMulti-page viewer generated in: {output_dir}")
-    print(f"Open {output_dir / 'index.html'} in a web browser to view.")
+    print("Product-specific viewers:")
+    for product in viewer_data['products'].keys():
+        print(f"  - {product.upper()}: {output_dir / product / 'index.html'}")
+    print(f"\nOpen {output_dir / 'index.html'} in a web browser (redirects to {default_product.upper()}).")
 
 
 def main():

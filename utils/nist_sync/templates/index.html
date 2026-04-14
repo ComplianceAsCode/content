@@ -101,18 +101,14 @@
     <script>
         /* DATA_PLACEHOLDER */
 
-        function getCurrentProduct() {
-            return localStorage.getItem('selected-product') || 'rhel9';
-        }
-
         function renderDashboard() {
-            if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
+            if (!EMBEDDED_DATA || !EMBEDDED_DATA.products || !CURRENT_PRODUCT) {
                 document.querySelector('.container').innerHTML =
                     '<div class="empty-state"><h3>Error loading data</h3></div>';
                 return;
             }
 
-            const product = getCurrentProduct();
+            const product = CURRENT_PRODUCT;
             const stats = EMBEDDED_DATA.statistics[product];
             const controls = EMBEDDED_DATA.products[product]?.controls || [];
 

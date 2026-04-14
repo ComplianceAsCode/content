@@ -179,9 +179,6 @@
             return urlParams.get(param);
         }
 
-        function getCurrentProduct() {
-            return localStorage.getItem('selected-product') || 'rhel9';
-        }
 
         function initializeFamilyPage() {
             if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
@@ -200,7 +197,7 @@
         }
 
         function renderFamilyList() {
-            const product = getCurrentProduct();
+            const product = CURRENT_PRODUCT;
             const controls = EMBEDDED_DATA.products[product]?.controls || [];
 
             // Calculate stats for each family
@@ -290,7 +287,7 @@
         }
 
         function renderFamilyDetail(familyId) {
-            const product = getCurrentProduct();
+            const product = CURRENT_PRODUCT;
             const controls = EMBEDDED_DATA.products[product]?.controls || [];
             const family = EMBEDDED_DATA.families.find(f => f.id === familyId);
 

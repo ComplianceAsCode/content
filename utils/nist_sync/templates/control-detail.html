@@ -203,9 +203,6 @@
             return urlParams.get(param);
         }
 
-        function getCurrentProduct() {
-            return localStorage.getItem('selected-product') || 'rhel9';
-        }
 
         function getTodos(controlId) {
             const todos = localStorage.getItem(`todos-${controlId}`);
@@ -230,7 +227,7 @@
                 return;
             }
 
-            const product = getCurrentProduct();
+            const product = CURRENT_PRODUCT;
             const controls = EMBEDDED_DATA.products[product]?.controls || [];
             const control = controls.find(c => c.id === controlId.toLowerCase());
 

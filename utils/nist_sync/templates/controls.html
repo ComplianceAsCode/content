@@ -202,9 +202,6 @@
         let allControls = [];
         let filteredControls = [];
 
-        function getCurrentProduct() {
-            return localStorage.getItem('selected-product') || 'rhel9';
-        }
 
         function initializeControls() {
             if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
@@ -213,7 +210,7 @@
                 return;
             }
 
-            const product = getCurrentProduct();
+            const product = CURRENT_PRODUCT;
             allControls = EMBEDDED_DATA.products[product]?.controls || [];
 
             renderFamilyFilters();

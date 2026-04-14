@@ -184,9 +184,6 @@
     <script>
         /* DATA_PLACEHOLDER */
 
-        function getCurrentProduct() {
-            return localStorage.getItem('selected-product') || 'rhel9';
-        }
 
         function renderGapAnalysis() {
             if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
@@ -195,7 +192,7 @@
                 return;
             }
 
-            const product = getCurrentProduct();
+            const product = CURRENT_PRODUCT;
             const controls = EMBEDDED_DATA.products[product]?.controls || [];
             const gaps = controls.filter(c => !c.has_rules);
 
