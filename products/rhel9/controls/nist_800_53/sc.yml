@@ -70,7 +70,12 @@ controls:
     levels:
       - low
     rules:
+      - accounts_passwords_pam_faillock_root_unlock_time
       - firewalld-backend
+      - kernel_config_binfmt_misc
+      - kernel_config_modify_ldt_syscall
+      - sshd_set_max_sessions
+      - sshd_set_maxstartups
       - sysctl_net_ipv4_conf_all_accept_source_route
       - sysctl_net_ipv4_conf_all_send_redirects
       - sysctl_net_ipv4_conf_default_accept_source_route
@@ -306,6 +311,10 @@ controls:
     levels:
       - moderate
     rules:
+      - dovecot_configure_ssl_cert
+      - dovecot_configure_ssl_key
+      - dovecot_enable_ssl
+      - httpd_configure_tls
       - libreswan_approved_tunnels
     status: automated
   - id: sc-8.1
@@ -462,6 +471,8 @@ controls:
       - harden_openssl_crypto_policy
       - harden_ssh_client_crypto_policy
       - harden_sshd_crypto_policy
+      - httpd_digest_authentication
+      - httpd_require_client_certs
       - installed_OS_is_FIPS_certified
       - is_fips_mode_enabled
       - package_dracut-fips-aesni_installed
@@ -572,6 +583,9 @@ controls:
     levels:
       - low
     rules:
+      - avahi_check_ttl
+      - avahi_ip_only
+      - avahi_restrict_published_information
       - network_configure_name_resolution
     status: automated
   - id: sc-20.1
