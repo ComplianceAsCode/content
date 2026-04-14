@@ -52,8 +52,11 @@ controls:
     title: Incident Handling
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - auditd_audispd_configure_remote_server
+      - auditd_offload_logs
+      - service_postfix_enabled
+    status: automated
   - id: ir-4.1
     title: Automated Incident Handling Processes
     levels:
@@ -124,8 +127,14 @@ controls:
     title: Incident Monitoring
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - audit_rules_file_deletion_events
+      - audit_rules_file_deletion_events_rename
+      - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_rmdir
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_file_deletion_events_unlinkat
+    status: automated
   - id: ir-5.1
     title: Automated Tracking, Data Collection, and Analysis
     levels:

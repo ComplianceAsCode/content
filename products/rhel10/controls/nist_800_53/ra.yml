@@ -48,8 +48,17 @@ controls:
     title: Vulnerability Monitoring and Scanning
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - kernel_module_cramfs_disabled
+      - kernel_module_dccp_disabled
+      - kernel_module_freevxfs_disabled
+      - kernel_module_hfs_disabled
+      - kernel_module_hfsplus_disabled
+      - kernel_module_jffs2_disabled
+      - kernel_module_rds_disabled
+      - kernel_module_sctp_disabled
+      - kernel_module_tipc_disabled
+    status: automated
   - id: ra-5.1
     title: Update Tool Capability
     rules: []
