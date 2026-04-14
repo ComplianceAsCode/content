@@ -2,7 +2,6 @@
 # packages = chrony
 # variables = var_time_service_set_maxpoll=16
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
-# remediation = bash,ansible
 
 {{{ bash_package_remove("ntp") }}}
 
