@@ -85,13 +85,21 @@ ninja nist-viewer
 
 # The viewer will be generated at:
 # build/nist-controls-viewer/
-#   ├── index.html           (Dashboard - start here)
-#   ├── controls.html        (Controls browser)
-#   ├── control-detail.html  (Individual control details)
-#   ├── gaps.html            (Gap analysis)
-#   ├── statistics.html      (Detailed statistics)
-#   ├── family.html          (Control families)
-#   └── nist-controls-data.json  (Reference data file)
+#   ├── index.html                   (Redirects to rhel9/)
+#   ├── nist-controls-data.json      (Reference data file)
+#   ├── rhel8/
+#   │   ├── index.html               (RHEL8 Dashboard)
+#   │   ├── controls.html            (Controls browser)
+#   │   ├── control-detail.html      (Control details)
+#   │   ├── gaps.html                (Gap analysis)
+#   │   ├── statistics.html          (Statistics)
+#   │   └── family.html              (Families)
+#   ├── rhel9/
+#   │   ├── index.html               (RHEL9 Dashboard)
+#   │   └── ... (same structure)
+#   └── rhel10/
+#       ├── index.html               (RHEL10 Dashboard)
+#       └── ... (same structure)
 ```
 
 ### Manual Generation
@@ -105,8 +113,11 @@ python3 generate_nist_viewer.py \
   --output-dir ../../build/nist-controls-viewer \
   --repo-root ../..
 
-# Open the viewer (starts at dashboard)
+# Open the viewer (redirects to rhel9 by default)
 open ../../build/nist-controls-viewer/index.html
+
+# Or open a specific product directly:
+open ../../build/nist-controls-viewer/rhel9/index.html
 ```
 
 ## Published Version
@@ -119,9 +130,14 @@ The published version updates automatically when changes are pushed to the maste
 
 ## Data Structure
 
-The viewer embeds all control data directly in each HTML file (as `EMBEDDED_DATA` JavaScript constant). This allows the viewer to work when opened directly as local files without CORS issues or requiring a web server.
+The viewer generates product-specific pages in separate subdirectories (rhel8/, rhel9/, rhel10/). Each product's pages embed only that product's data (as `EMBEDDED_DATA` JavaScript constant), significantly reducing file sizes and improving performance.
 
-Data is embedded in all pages identically, allowing each page to function independently. Pages communicate via URL parameters (e.g., `control-detail.html?id=ac-2`) and localStorage (for product selection and TODOs).
+Product-specific data structure:
+- Each product subdirectory contains a complete set of viewer pages
+- Each page embeds only that product's control data (~2.5MB vs ~7.5MB for all products)
+- Pages communicate via URL parameters (e.g., `control-detail.html?id=ac-2`)
+- TODOs are stored in localStorage per-control
+- Product switching is done via links in the header (not localStorage)
 
 A separate `nist-controls-data.json` file is also generated for reference and debugging purposes.
 
