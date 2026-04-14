@@ -1,11 +1,11 @@
 name: Github Pages
 on:
   push:
-    branches: [ 'master' ]
+    branches: ['master']
   pull_request:
-    branches: [ 'master',  'oscal-update-*' ]
+    branches: ['master', 'oscal-update-*']
   merge_group:
-    branches: [ 'master' ]
+    branches: ['master']
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
@@ -19,13 +19,17 @@ jobs:
       PAGES_DIR: __pages
     steps:
       - name: Install Deps
-        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt python3-pip rsync python3-lxml python3-setuptools
+        run: |
+          dnf install -y \
+            cmake git ninja-build openscap-utils python3-pyyaml \
+            python3-jinja2 python3-pytest ansible-lint libxslt \
+            python3-pip rsync python3-lxml python3-setuptools
       - name: Install deps python
         run: pip3 install json2html prometheus_client
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-            persist-credentials: false
+          persist-credentials: false
       - name: Build
         run: cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
         working-directory: ./build
@@ -38,8 +42,14 @@ jobs:
       - name: Render Policies (Using control files)
         run: ninja render-policies -j$(nproc)
         working-directory: ./build
+      - name: Generate NIST 800-53 Control Viewer
+        run: ninja nist-viewer
+        working-directory: ./build
       - name: Generate Prometheus Metrics
-        run: utils/controleval_metrics.py prometheus -p fedora ocp4 rhcos4 rhel10 rhel9 rhel8 sle12 sle15 -f ./build/policies_metrics
+        run: |
+          utils/controleval_metrics.py prometheus \
+            -p fedora ocp4 rhcos4 rhel10 rhel9 rhel8 sle12 sle15 \
+            -f ./build/policies_metrics
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML pages
@@ -51,8 +61,11 @@ jobs:
         run:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
-        if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' && github.ref == 'refs/heads/master'  }}
-        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
+        if: >-
+          ${{ github.event_name == 'push' &&
+          github.repository == 'ComplianceAsCode/content' &&
+          github.ref == 'refs/heads/master' }}
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.

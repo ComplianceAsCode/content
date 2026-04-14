@@ -379,6 +379,9 @@ add_custom_target(html-profile-stats)
 
 add_custom_target(render-policies)
 
+# NIST 800-53 Control Viewer with Gap Analysis
+ssg_generate_nist_viewer()
+
 ssg_build_man_page()
 
 if(SSG_PRODUCT_AL2023)

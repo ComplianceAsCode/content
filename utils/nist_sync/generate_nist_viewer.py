@@ -1,0 +1,285 @@
+#!/usr/bin/env python3
+"""
+Generate NIST 800-53 Control Viewer HTML page with gap analysis and backlog management.
+
+This script:
+1. Loads NIST 800-53 control files for each product
+2. Loads OSCAL catalog data for NIST 800-53 Rev 5
+3. Merges control data with OSCAL metadata
+4. Generates interactive HTML viewer with gap analysis
+"""
+
+import json
+import yaml
+import argparse
+from pathlib import Path
+from typing import Dict, List, Any
+import sys
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
+try:
+    from ruamel.yaml import YAML
+    yaml_loader = YAML()
+    yaml_loader.preserve_quotes = True
+    yaml_loader.default_flow_style = False
+except ImportError:
+    yaml_loader = None
+
+
+def load_yaml(filepath: Path) -> Dict[str, Any]:
+    """Load YAML file."""
+    with open(filepath, 'r') as f:
+        if yaml_loader:
+            return yaml_loader.load(f)
+        else:
+            return yaml.safe_load(f)
+
+
+def load_oscal_catalog(data_dir: Path) -> Dict[str, Any]:
+    """Load NIST OSCAL catalog."""
+    catalog_file = data_dir / 'nist_800_53_rev5_catalog.json'
+
+    if not catalog_file.exists():
+        print(f"Warning: OSCAL catalog not found at {catalog_file}")
+        print("Run: cd utils/nist_sync && python3 download_oscal.py")
+        return {}
+
+    with open(catalog_file, 'r') as f:
+        catalog = json.load(f)
+
+    # Build control ID -> control data mapping
+    controls_map = {}
+
+    def extract_controls(controls_list, parent_id=None):
+        """Recursively extract controls from OSCAL catalog."""
+        for control in controls_list:
+            ctrl_id = control.get('id', '').lower()
+
+            controls_map[ctrl_id] = {
+                'id': ctrl_id,
+                'title': control.get('title', ''),
+                'class': control.get('class', ''),
+                'parts': control.get('parts', []),
+                'properties': control.get('props', []),
+                'parameters': control.get('params', []),
+                'parent': parent_id
+            }
+
+            # Process sub-controls
+            if 'controls' in control:
+                extract_controls(control['controls'], parent_id=ctrl_id)
+
+    # Extract controls from catalog
+    if 'catalog' in catalog:
+        for group in catalog['catalog'].get('groups', []):
+            if 'controls' in group:
+                extract_controls(group['controls'])
+
+    return controls_map
+
+
+def load_product_controls(product: str, repo_root: Path) -> Dict[str, Any]:
+    """Load control files for a product."""
+    controls_dir = repo_root / 'products' / product / 'controls' / 'nist_800_53'
+    metadata_file = repo_root / 'products' / product / 'controls' / 'nist_800_53.yml'
+
+    if not controls_dir.exists():
+        print(f"Warning: Control directory not found for {product}: {controls_dir}")
+        return {}
+
+    # Load metadata
+    metadata = {}
+    if metadata_file.exists():
+        metadata = load_yaml(metadata_file)
+
+    # Load all family files
+    controls = []
+    for family_file in sorted(controls_dir.glob('*.yml')):
+        family_data = load_yaml(family_file)
+        if 'controls' in family_data:
+            controls.extend(family_data['controls'])
+
+    return {
+        'product': product,
+        'metadata': metadata,
+        'controls': controls
+    }
+
+
+def merge_control_data(product_controls: Dict[str, Any], oscal_controls: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Merge product control data with OSCAL metadata."""
+    merged = []
+
+    for control in product_controls.get('controls', []):
+        ctrl_id = control.get('id', '').lower()
+
+        # Get OSCAL metadata
+        oscal_data = oscal_controls.get(ctrl_id, {})
+
+        # Extract description from OSCAL parts
+        description = ""
+        guidance = ""
+        if oscal_data.get('parts'):
+            for part in oscal_data['parts']:
+                if part.get('name') == 'statement':
+                    description = part.get('prose', '')
+                elif part.get('name') == 'guidance':
+                    guidance = part.get('prose', '')
+
+        # Extract related controls from OSCAL
+        related_controls = []
+        for prop in oscal_data.get('properties', []):
+            if prop.get('name') == 'related':
+                related_controls.append(prop.get('value', ''))
+
+        merged_control = {
+            'id': ctrl_id,
+            'title': control.get('title', oscal_data.get('title', '')),
+            'levels': control.get('levels', []),
+            'rules': control.get('rules', []),
+            'status': control.get('status', 'pending'),
+            'notes': control.get('notes', ''),
+            # OSCAL metadata
+            'description': description,
+            'guidance': guidance,
+            'parameters': oscal_data.get('parameters', []),
+            'related_controls': related_controls,
+            'class': oscal_data.get('class', ''),
+            'parent': oscal_data.get('parent', ''),
+            # Gap analysis
+            'has_rules': len(control.get('rules', [])) > 0,
+            'is_automated': control.get('status') == 'automated',
+            'is_manual': control.get('status') == 'manual',
+            'is_pending': control.get('status') == 'pending',
+        }
+
+        merged.append(merged_control)
+
+    return merged
+
+
+def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]:
+    """Generate complete data structure for the viewer."""
+    data_dir = repo_root / 'utils' / 'nist_sync' / 'data'
+
+    # Load OSCAL catalog
+    print("Loading OSCAL catalog...")
+    oscal_controls = load_oscal_catalog(data_dir)
+
+    # Load controls for each product
+    products_data = {}
+    for product in products:
+        print(f"Loading controls for {product}...")
+        product_controls = load_product_controls(product, repo_root)
+
+        if product_controls:
+            merged = merge_control_data(product_controls, oscal_controls)
+            products_data[product] = {
+                'metadata': product_controls.get('metadata', {}),
+                'controls': merged
+            }
+
+    # Calculate statistics
+    stats = {}
+    for product, data in products_data.items():
+        controls = data['controls']
+        stats[product] = {
+            'total': len(controls),
+            'automated': sum(1 for c in controls if c['is_automated']),
+            'manual': sum(1 for c in controls if c['is_manual']),
+            'pending': sum(1 for c in controls if c['is_pending']),
+            'with_rules': sum(1 for c in controls if c['has_rules']),
+            'without_rules': sum(1 for c in controls if not c['has_rules']),
+        }
+
+    return {
+        'products': products_data,
+        'statistics': stats,
+        'families': [
+            {'id': 'ac', 'name': 'Access Control'},
+            {'id': 'at', 'name': 'Awareness and Training'},
+            {'id': 'au', 'name': 'Audit and Accountability'},
+            {'id': 'ca', 'name': 'Assessment, Authorization, and Monitoring'},
+            {'id': 'cm', 'name': 'Configuration Management'},
+            {'id': 'cp', 'name': 'Contingency Planning'},
+            {'id': 'ia', 'name': 'Identification and Authentication'},
+            {'id': 'ir', 'name': 'Incident Response'},
+            {'id': 'ma', 'name': 'Maintenance'},
+            {'id': 'mp', 'name': 'Media Protection'},
+            {'id': 'pe', 'name': 'Physical and Environmental Protection'},
+            {'id': 'pl', 'name': 'Planning'},
+            {'id': 'pm', 'name': 'Program Management'},
+            {'id': 'ps', 'name': 'Personnel Security'},
+            {'id': 'pt', 'name': 'PII Processing and Transparency'},
+            {'id': 'ra', 'name': 'Risk Assessment'},
+            {'id': 'sa', 'name': 'System and Services Acquisition'},
+            {'id': 'sc', 'name': 'System and Communications Protection'},
+            {'id': 'si', 'name': 'System and Information Integrity'},
+            {'id': 'sr', 'name': 'Supply Chain Risk Management'},
+            {'id': 'other', 'name': 'Other (Unmapped CIS Items)'},
+        ]
+    }
+
+
+def generate_html_viewer(output_file: Path, template_file: Path, viewer_data: Dict[str, Any]):
+    """Generate HTML viewer from template with embedded data."""
+    with open(template_file, 'r') as f:
+        html_content = f.read()
+
+    # Embed the JSON data directly in the HTML
+    json_data = json.dumps(viewer_data, indent=2)
+
+    # Replace the placeholder with embedded data
+    html_content = html_content.replace(
+        '/* DATA_PLACEHOLDER */',
+        f'const EMBEDDED_DATA = {json_data};'
+    )
+
+    with open(output_file, 'w') as f:
+        f.write(html_content)
+
+    print(f"Generated HTML viewer: {output_file}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Generate NIST 800-53 Control Viewer')
+    parser.add_argument('--products', nargs='+', default=['rhel8', 'rhel9', 'rhel10'],
+                        help='Products to include (default: rhel8 rhel9 rhel10)')
+    parser.add_argument('--output-dir', type=Path, required=True,
+                        help='Output directory for generated files')
+    parser.add_argument('--repo-root', type=Path, default=Path.cwd(),
+                        help='Repository root directory')
+
+    args = parser.parse_args()
+
+    # Ensure output directory exists
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Generate viewer data
+    print("Generating viewer data...")
+    viewer_data = generate_viewer_data(args.products, args.repo_root)
+
+    # Write data file (for reference/debugging)
+    data_file = args.output_dir / 'nist-controls-data.json'
+    with open(data_file, 'w') as f:
+        json.dump(viewer_data, f, indent=2)
+    print(f"Generated data file: {data_file}")
+
+    # Generate HTML with embedded data
+    template_file = Path(__file__).parent / 'nist_viewer_template.html'
+    output_html = args.output_dir / 'nist-controls-viewer.html'
+
+    if template_file.exists():
+        generate_html_viewer(output_html, template_file, viewer_data)
+    else:
+        print(f"Warning: Template file not found: {template_file}")
+        print("HTML viewer not generated. Run the template creation step first.")
+
+    print("\nViewer generation complete!")
+    print(f"Open {output_html} in a web browser to view.")
+
+
+if __name__ == '__main__':
+    main()
