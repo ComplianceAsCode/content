@@ -61,7 +61,4 @@ warnings:
         device nodes. The <tt>/boot</tt> and <tt>/efi</tt> partitions are
         excluded because they are special partitions usually handled by a
         systemd mount unit, and enforcing <tt>nodev</tt> on them during
-        operating system installation causes issues. Partitions with the
-        <tt>vfat</tt> file system type are excluded because vfat does not
-        support Unix device special files, so <tt>nodev</tt> enforcement on
-        them is not meaningful.
+        operating system installation causes issues.
