@@ -1,3 +1,4 @@
+# NIST 800-53 SI Family: System and Information Integrity
 controls:
   - id: si-1
     title: Policy and Procedures
@@ -11,7 +12,10 @@ controls:
       - low
     rules:
       - ensure_gpgcheck_globally_activated
+      - ensure_gpgcheck_local_packages
+      - ensure_gpgcheck_never_disabled
       - ensure_redhat_gpgkey_installed
+      - package_abrt_removed
     status: automated
   - id: si-2.1
     title: Central Management
@@ -55,7 +59,13 @@ controls:
     levels:
       - low
     rules:
+      - dconf_gnome_disable_automount
+      - dconf_gnome_disable_automount_open
+      - dconf_gnome_disable_autorun
       - install_mcafee_antivirus
+      - sebool_antivirus_can_scan_system
+      - sebool_antivirus_use_jit
+      - secure_boot_enabled
       - service_nails_enabled
     status: automated
   - id: si-3.1
@@ -104,10 +114,16 @@ controls:
     levels:
       - low
     rules:
+      - journald_compress
+      - journald_forward_to_syslog
+      - journald_storage
       - kernel_module_dccp_disabled
       - kernel_module_rds_disabled
       - kernel_module_sctp_disabled
       - kernel_module_tipc_disabled
+      - package_systemd-journal-remote_installed
+      - rsyslog_cron_logging
+      - rsyslog_logging_configured
       - service_avahi-daemon_disabled
     status: automated
   - id: si-4.1
@@ -391,8 +407,13 @@ controls:
     title: Information Input Validation
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - kernel_config_fortify_source
+      - kernel_config_randomize_base
+      - kernel_config_stackprotector
+      - sebool_selinuxuser_execheap
+      - sebool_selinuxuser_execstack
+    status: automated
   - id: si-10.1
     title: Manual Override Capability
     rules: []
