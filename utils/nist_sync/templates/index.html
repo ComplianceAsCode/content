@@ -219,7 +219,7 @@
                 const barHtml = `
                     <div style="margin-bottom: 20px;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <strong>${family.name}</strong>
+                            <strong><a href="family.html?family=${family.id}" style="text-decoration: none; color: #0366d6;">${family.name} (${family.id.toUpperCase()})</a></strong>
                             <span style="color: #586069;">${counts.total} controls</span>
                         </div>
                         <div style="display: flex; height: 24px; background: #e1e4e8; border-radius: 4px; overflow: hidden;">
