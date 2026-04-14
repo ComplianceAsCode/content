@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer - Control Families</title>
+    <!-- SHARED_STYLES_PLACEHOLDER -->
+    <style>
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .family-card {
+            background: white;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .family-card:hover {
+            border-color: #0366d6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .family-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .family-id {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0366d6;
+            text-transform: uppercase;
+        }
+
+        .family-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #24292e;
+            margin: 5px 0;
+        }
+
+        .family-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .family-stat {
+            background: #f6f8fa;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .family-stat-value {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .family-stat-label {
+            font-size: 11px;
+            color: #586069;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .family-progress {
+            margin-top: 15px;
+        }
+
+        .family-progress-label {
+            font-size: 12px;
+            color: #586069;
+            margin-bottom: 5px;
+        }
+
+        .family-detail-view {
+            margin-top: 30px;
+        }
+
+        .controls-in-family {
+            margin-top: 20px;
+        }
+
+        .control-item-mini {
+            background: #f6f8fa;
+            border-left: 3px solid #0366d6;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .control-item-mini:hover {
+            background: #e1e4e8;
+        }
+
+        .control-item-mini.gap {
+            border-left-color: #d73a49;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #586069;
+        }
+
+        .breadcrumb a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- SHARED_HEADER_PLACEHOLDER -->
+
+    <div class="container">
+        <div id="family-list-view">
+            <div class="page-header">
+                <h2>Control Families</h2>
+                <p>Browse controls organized by NIST 800-53 families</p>
+            </div>
+
+            <div class="family-grid" id="family-grid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <div id="family-detail-view" class="family-detail-view" style="display: none;">
+            <div class="breadcrumb">
+                <a href="index.html">Dashboard</a> /
+                <a href="family.html">Families</a> /
+                <span id="breadcrumb-family">Loading...</span>
+            </div>
+
+            <div class="page-header">
+                <h2 id="detail-family-name">Loading...</h2>
+                <p id="detail-family-desc"></p>
+            </div>
+
+            <div class="grid grid-4" id="detail-stats">
+                <!-- Populated by JavaScript -->
+            </div>
+
+            <div class="card">
+                <h3>Coverage Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="detail-progress" style="width: 0%;">0%</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Controls in this Family</h3>
+                <div class="controls-in-family" id="controls-in-family">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function getCurrentProduct() {
+            return localStorage.getItem('selected-product') || 'rhel9';
+        }
+
+        function initializeFamilyPage() {
+            if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
+                document.querySelector('.container').innerHTML =
+                    '<div class="empty-state"><h3>Error loading data</h3></div>';
+                return;
+            }
+
+            const familyId = getQueryParam('family');
+
+            if (familyId) {
+                renderFamilyDetail(familyId);
+            } else {
+                renderFamilyList();
+            }
+        }
+
+        function renderFamilyList() {
+            const product = getCurrentProduct();
+            const controls = EMBEDDED_DATA.products[product]?.controls || [];
+
+            // Calculate stats for each family
+            const familyStats = {};
+
+            EMBEDDED_DATA.families.forEach(family => {
+                familyStats[family.id] = {
+                    name: family.name,
+                    total: 0,
+                    automated: 0,
+                    manual: 0,
+                    pending: 0,
+                    gaps: 0
+                };
+            });
+
+            controls.forEach(control => {
+                const familyId = control.id.split('-')[0];
+                const stats = familyStats[familyId] || familyStats['other'];
+
+                stats.total++;
+                if (control.is_automated) stats.automated++;
+                else if (control.is_manual) stats.manual++;
+                else stats.pending++;
+                if (!control.has_rules) stats.gaps++;
+            });
+
+            // Render family cards
+            const grid = document.getElementById('family-grid');
+            grid.innerHTML = '';
+
+            EMBEDDED_DATA.families
+                .filter(family => familyStats[family.id].total > 0)
+                .forEach(family => {
+                    const stats = familyStats[family.id];
+                    const coverage = stats.total > 0 ? Math.round(((stats.total - stats.gaps) / stats.total) * 100) : 0;
+
+                    const card = document.createElement('div');
+                    card.className = 'family-card';
+                    card.innerHTML = `
+                        <div class="family-header">
+                            <div>
+                                <div class="family-id">${family.id}</div>
+                                <div class="family-name">${family.name}</div>
+                            </div>
+                            <span class="badge badge-${stats.gaps > 0 ? 'pending' : 'automated'}">
+                                ${stats.total} controls
+                            </span>
+                        </div>
+
+                        <div class="family-stats">
+                            <div class="family-stat">
+                                <div class="family-stat-value" style="color: #28a745;">${stats.automated}</div>
+                                <div class="family-stat-label">Automated</div>
+                            </div>
+                            <div class="family-stat">
+                                <div class="family-stat-value" style="color: #0366d6;">${stats.manual}</div>
+                                <div class="family-stat-label">Manual</div>
+                            </div>
+                            <div class="family-stat">
+                                <div class="family-stat-value" style="color: #ffd33d;">${stats.pending}</div>
+                                <div class="family-stat-label">Pending</div>
+                            </div>
+                            <div class="family-stat">
+                                <div class="family-stat-value" style="color: #d73a49;">${stats.gaps}</div>
+                                <div class="family-stat-label">Gaps</div>
+                            </div>
+                        </div>
+
+                        <div class="family-progress">
+                            <div class="family-progress-label">Coverage: ${coverage}%</div>
+                            <div class="progress-bar" style="height: 8px;">
+                                <div class="progress-fill" style="width: ${coverage}%; height: 8px;"></div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 15px;"
+                                onclick="window.location.href='family.html?family=${family.id}'">
+                            View Controls
+                        </button>
+                    `;
+                    grid.appendChild(card);
+                });
+
+            document.getElementById('family-list-view').style.display = 'block';
+            document.getElementById('family-detail-view').style.display = 'none';
+        }
+
+        function renderFamilyDetail(familyId) {
+            const product = getCurrentProduct();
+            const controls = EMBEDDED_DATA.products[product]?.controls || [];
+            const family = EMBEDDED_DATA.families.find(f => f.id === familyId);
+
+            if (!family) {
+                document.querySelector('.container').innerHTML =
+                    '<div class="empty-state"><h3>Family not found</h3></div>';
+                return;
+            }
+
+            // Filter controls for this family
+            const familyControls = controls.filter(c => c.id.startsWith(familyId + '-'));
+
+            // Calculate stats
+            const stats = {
+                total: familyControls.length,
+                automated: familyControls.filter(c => c.is_automated).length,
+                manual: familyControls.filter(c => c.is_manual).length,
+                pending: familyControls.filter(c => c.is_pending).length,
+                gaps: familyControls.filter(c => !c.has_rules).length
+            };
+
+            const coverage = stats.total > 0 ? Math.round(((stats.total - stats.gaps) / stats.total) * 100) : 0;
+
+            // Update page title and breadcrumb
+            document.getElementById('breadcrumb-family').textContent = family.id.toUpperCase();
+            document.getElementById('detail-family-name').textContent = family.name;
+            document.getElementById('detail-family-desc').textContent =
+                `${stats.total} controls in the ${family.id.toUpperCase()} family`;
+            document.title = `${family.id.toUpperCase()} - NIST 800-53 Control Viewer`;
+
+            // Render stats
+            document.getElementById('detail-stats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${stats.total}</div>
+                    <div class="stat-label">Total Controls</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #28a745;">${stats.automated}</div>
+                    <div class="stat-label">Automated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #0366d6;">${stats.manual}</div>
+                    <div class="stat-label">Manual</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #d73a49;">${stats.gaps}</div>
+                    <div class="stat-label">Gaps</div>
+                </div>
+            `;
+
+            // Update progress
+            const progressBar = document.getElementById('detail-progress');
+            progressBar.style.width = coverage + '%';
+            progressBar.textContent = coverage + '%';
+
+            // Render controls
+            const controlsContainer = document.getElementById('controls-in-family');
+            controlsContainer.innerHTML = '';
+
+            familyControls.sort((a, b) => a.id.localeCompare(b.id)).forEach(control => {
+                const statusClass = control.is_automated ? 'automated' :
+                                  control.is_manual ? 'manual' : 'pending';
+                const gapClass = control.has_rules ? '' : 'gap';
+
+                const item = document.createElement('div');
+                item.className = `control-item-mini ${gapClass}`;
+                item.onclick = () => window.location.href = `control-detail.html?id=${control.id}`;
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: #0366d6;">${control.id.toUpperCase()}</strong>
+                            <div style="font-size: 13px; color: #586069; margin-top: 3px;">${control.title}</div>
+                        </div>
+                        <span class="badge badge-${statusClass}">${statusClass.toUpperCase()}</span>
+                    </div>
+                `;
+                controlsContainer.appendChild(item);
+            });
+
+            document.getElementById('family-list-view').style.display = 'none';
+            document.getElementById('family-detail-view').style.display = 'block';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeFamilyPage);
+    </script>
+</body>
+</html>

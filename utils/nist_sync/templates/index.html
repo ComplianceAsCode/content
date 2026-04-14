@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer - Dashboard</title>
+    <!-- SHARED_STYLES_PLACEHOLDER -->
+</head>
+<body>
+    <!-- SHARED_HEADER_PLACEHOLDER -->
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Dashboard</h2>
+            <p>Overview of NIST 800-53 control coverage and compliance status</p>
+        </div>
+
+        <!-- Overall Statistics -->
+        <div class="grid grid-4" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">Total Controls</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-automated" style="color: #28a745;">0</div>
+                <div class="stat-label">Automated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-manual" style="color: #0366d6;">0</div>
+                <div class="stat-label">Manual</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-pending" style="color: #d73a49;">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
+
+        <!-- Coverage Progress -->
+        <div class="card">
+            <h3>Overall Coverage</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="coverage-progress" style="width: 0%;">0%</div>
+            </div>
+            <p style="margin-top: 10px; color: #586069;">
+                <span id="coverage-text">0 of 0 controls have rules</span>
+            </p>
+        </div>
+
+        <!-- Product Comparison -->
+        <div class="card">
+            <h3>Product Comparison</h3>
+            <table id="product-comparison-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Total</th>
+                        <th>Automated</th>
+                        <th>Manual</th>
+                        <th>Pending</th>
+                        <th>Coverage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Gap Analysis Summary -->
+        <div class="card">
+            <h3>Gap Analysis - Controls Without Rules</h3>
+            <p style="margin-bottom: 15px;">
+                <span id="gap-count" style="font-size: 24px; font-weight: 600; color: #d73a49;">0</span>
+                controls need rule implementation
+                <a href="gaps.html" class="btn btn-primary" style="float: right;">View All Gaps</a>
+            </p>
+            <table id="top-gaps-table">
+                <thead>
+                    <tr>
+                        <th>Control ID</th>
+                        <th>Title</th>
+                        <th>Baselines</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Family Coverage Chart -->
+        <div class="card">
+            <h3>Coverage by Control Family</h3>
+            <a href="family.html" class="btn" style="float: right; margin-top: -35px;">Detailed View</a>
+            <div id="family-chart" style="margin-top: 20px;">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+        function getCurrentProduct() {
+            return localStorage.getItem('selected-product') || 'rhel9';
+        }
+
+        function renderDashboard() {
+            if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
+                document.querySelector('.container').innerHTML =
+                    '<div class="empty-state"><h3>Error loading data</h3></div>';
+                return;
+            }
+
+            const product = getCurrentProduct();
+            const stats = EMBEDDED_DATA.statistics[product];
+            const controls = EMBEDDED_DATA.products[product]?.controls || [];
+
+            // Update overall statistics
+            document.getElementById('stat-total').textContent = stats.total;
+            document.getElementById('stat-automated').textContent = stats.automated;
+            document.getElementById('stat-manual').textContent = stats.manual;
+            document.getElementById('stat-pending').textContent = stats.pending;
+
+            // Update coverage progress
+            const coveragePercent = stats.total > 0 ? Math.round((stats.with_rules / stats.total) * 100) : 0;
+            const progressBar = document.getElementById('coverage-progress');
+            progressBar.style.width = coveragePercent + '%';
+            progressBar.textContent = coveragePercent + '%';
+            document.getElementById('coverage-text').textContent =
+                `${stats.with_rules} of ${stats.total} controls have rules`;
+
+            // Update gap count
+            document.getElementById('gap-count').textContent = stats.without_rules;
+
+            // Render product comparison
+            renderProductComparison();
+
+            // Render top gaps
+            renderTopGaps(controls);
+
+            // Render family chart
+            renderFamilyChart(controls);
+        }
+
+        function renderProductComparison() {
+            const tbody = document.getElementById('product-comparison-table').querySelector('tbody');
+            tbody.innerHTML = '';
+
+            Object.keys(EMBEDDED_DATA.products).forEach(product => {
+                const stats = EMBEDDED_DATA.statistics[product];
+                const coverage = stats.total > 0 ? Math.round((stats.with_rules / stats.total) * 100) : 0;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${product.toUpperCase()}</strong></td>
+                    <td>${stats.total}</td>
+                    <td><span class="badge badge-automated">${stats.automated}</span></td>
+                    <td><span class="badge badge-manual">${stats.manual}</span></td>
+                    <td><span class="badge badge-pending">${stats.pending}</span></td>
+                    <td>${coverage}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderTopGaps(controls) {
+            const gaps = controls.filter(c => !c.has_rules).slice(0, 10);
+            const tbody = document.getElementById('top-gaps-table').querySelector('tbody');
+            tbody.innerHTML = '';
+
+            if (gaps.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #586069;">No gaps found</td></tr>';
+                return;
+            }
+
+            gaps.forEach(control => {
+                const row = document.createElement('tr');
+                const levels = control.levels || [];
+                const levelsText = levels.join(', ').toUpperCase();
+
+                row.innerHTML = `
+                    <td><a href="control-detail.html?id=${control.id}">${control.id.toUpperCase()}</a></td>
+                    <td>${control.title}</td>
+                    <td>${levelsText}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderFamilyChart(controls) {
+            const familyCounts = {};
+
+            EMBEDDED_DATA.families.forEach(family => {
+                familyCounts[family.id] = { total: 0, automated: 0, manual: 0, pending: 0 };
+            });
+
+            controls.forEach(control => {
+                const familyId = control.id.split('-')[0];
+                const family = familyCounts[familyId] || familyCounts['other'];
+
+                family.total++;
+                if (control.is_automated) family.automated++;
+                else if (control.is_manual) family.manual++;
+                else if (control.is_pending) family.pending++;
+            });
+
+            const chartDiv = document.getElementById('family-chart');
+            chartDiv.innerHTML = '';
+
+            EMBEDDED_DATA.families.forEach(family => {
+                const counts = familyCounts[family.id];
+                if (counts.total === 0) return;
+
+                const automatedPercent = (counts.automated / counts.total) * 100;
+                const manualPercent = (counts.manual / counts.total) * 100;
+                const pendingPercent = (counts.pending / counts.total) * 100;
+
+                const barHtml = `
+                    <div style="margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <strong>${family.name}</strong>
+                            <span style="color: #586069;">${counts.total} controls</span>
+                        </div>
+                        <div style="display: flex; height: 24px; background: #e1e4e8; border-radius: 4px; overflow: hidden;">
+                            <div style="width: ${automatedPercent}%; background: #28a745;" title="Automated: ${counts.automated}"></div>
+                            <div style="width: ${manualPercent}%; background: #0366d6;" title="Manual: ${counts.manual}"></div>
+                            <div style="width: ${pendingPercent}%; background: #d73a49;" title="Pending: ${counts.pending}"></div>
+                        </div>
+                    </div>
+                `;
+                chartDiv.innerHTML += barHtml;
+            });
+        }
+
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', renderDashboard);
+    </script>
+</body>
+</html>

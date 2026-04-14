@@ -45,7 +45,7 @@
 
         .product-selector {
             display: flex;
-            gap: 10px;
+            gap: 20px;
             align-items: center;
         }
 
@@ -55,6 +55,40 @@
             background: #fff;
             border-radius: 4px;
             font-size: 14px;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0;
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .view-toggle-btn {
+            padding: 6px 16px;
+            border: none;
+            background: #fff;
+            color: #586069;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-right: 1px solid #e1e4e8;
+        }
+
+        .view-toggle-btn:last-child {
+            border-right: none;
+        }
+
+        .view-toggle-btn:hover {
+            background: #f6f8fa;
+        }
+
+        .view-toggle-btn.active {
+            background: #0366d6;
+            color: white;
         }
 
         .sidebar {
@@ -560,10 +594,20 @@
         <header>
             <h1>NIST 800-53 Control Viewer & Gap Analysis</h1>
             <div class="product-selector">
-                <label for="view-toggle" style="margin-right: 20px;">
-                    <input type="radio" name="view" value="dashboard" id="view-toggle" checked> Dashboard
-                    <input type="radio" name="view" value="controls" style="margin-left: 10px;"> Controls
-                </label>
+                <div class="view-toggle">
+                    <button class="view-toggle-btn active" data-view="dashboard">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: text-bottom; margin-right: 4px;">
+                            <path d="M1.75 0h12.5C15.216 0 16 .784 16 1.75v3.585a2.746 2.746 0 0 1-1.5 2.449v.001a2.75 2.75 0 0 1-2.75 2.75h-.5a2.75 2.75 0 0 1-2.75-2.75v-.001a2.746 2.746 0 0 1-1.5-2.449V1.75C7 .784 7.784 0 8.75 0h5.5ZM1.75 1.5a.25.25 0 0 0-.25.25v3.585c0 .71.42 1.319 1.024 1.603A2.75 2.75 0 0 1 5.25 4.75V1.75a.25.25 0 0 0-.25-.25h-3.25ZM7 7v5.585A1.254 1.254 0 0 0 5.75 14a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5 1.254 1.254 0 0 0-1.25-1.415V7h-2Z"/>
+                        </svg>
+                        Dashboard
+                    </button>
+                    <button class="view-toggle-btn" data-view="controls">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: text-bottom; margin-right: 4px;">
+                            <path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25V1.75zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25H1.75zM3.5 3.75a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75zm.75 3.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7zm0 3.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7z"/>
+                        </svg>
+                        Controls
+                    </button>
+                </div>
                 <label for="product-select">Product:</label>
                 <select id="product-select">
                     <option value="rhel8">RHEL 8</option>
@@ -1188,10 +1232,17 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // View toggle
-            document.querySelectorAll('input[name="view"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    if (e.target.value === 'dashboard') {
+            // View toggle buttons
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const view = e.currentTarget.dataset.view;
+
+                    // Update button states
+                    document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+
+                    // Toggle views
+                    if (view === 'dashboard') {
                         showDashboard();
                     } else {
                         showControls();

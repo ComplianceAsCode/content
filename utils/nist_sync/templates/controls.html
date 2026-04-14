@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer - Controls</title>
+    <!-- SHARED_STYLES_PLACEHOLDER -->
+    <style>
+        .controls-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .filters-panel {
+            position: sticky;
+            top: 20px;
+        }
+
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #24292e;
+        }
+
+        .filter-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-checkboxes label {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .filter-checkboxes input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .select-all-checkbox {
+            font-weight: 600;
+            color: #0366d6;
+            border-top: 1px solid #e1e4e8;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .controls-list {
+            min-height: 400px;
+        }
+
+        .control-item {
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .control-item:hover {
+            border-color: #0366d6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .control-id {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0366d6;
+        }
+
+        .control-title {
+            font-size: 14px;
+            color: #24292e;
+            margin: 5px 0;
+        }
+
+        .control-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: #586069;
+        }
+
+        .results-count {
+            padding: 10px 0;
+            color: #586069;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- SHARED_HEADER_PLACEHOLDER -->
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Controls</h2>
+            <p>Browse and filter NIST 800-53 controls</p>
+        </div>
+
+        <div class="controls-container">
+            <!-- Filters Panel -->
+            <aside class="filters-panel card">
+                <h3>Filters</h3>
+
+                <!-- Search -->
+                <div class="filter-section">
+                    <h4>Search</h4>
+                    <input type="text" id="search-input" class="search-box" placeholder="Search controls...">
+                </div>
+
+                <!-- Families -->
+                <div class="filter-section">
+                    <h4>Control Families</h4>
+                    <div class="filter-checkboxes" id="family-filters">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Baseline Levels -->
+                <div class="filter-section">
+                    <h4>Baseline Levels</h4>
+                    <div class="filter-checkboxes" id="level-filters">
+                        <label><input type="checkbox" value="low" checked> Low</label>
+                        <label><input type="checkbox" value="moderate" checked> Moderate</label>
+                        <label><input type="checkbox" value="high" checked> High</label>
+                        <label class="select-all-checkbox">
+                            <input type="checkbox" id="select-all-levels" checked> Select All
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="filter-section">
+                    <h4>Implementation Status</h4>
+                    <div class="filter-checkboxes" id="status-filters">
+                        <label><input type="checkbox" value="automated" checked> Automated</label>
+                        <label><input type="checkbox" value="manual" checked> Manual</label>
+                        <label><input type="checkbox" value="pending" checked> Pending</label>
+                        <label class="select-all-checkbox">
+                            <input type="checkbox" id="select-all-status" checked> Select All
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Gap Status -->
+                <div class="filter-section">
+                    <h4>Gap Status</h4>
+                    <div class="filter-checkboxes" id="gap-filters">
+                        <label><input type="checkbox" value="with-rules" checked> With Rules</label>
+                        <label><input type="checkbox" value="without-rules" checked> Without Rules</label>
+                        <label class="select-all-checkbox">
+                            <input type="checkbox" id="select-all-gap" checked> Select All
+                        </label>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="resetFilters()">
+                    Reset All Filters
+                </button>
+            </aside>
+
+            <!-- Controls List -->
+            <main class="controls-list">
+                <div class="results-count" id="results-count">Loading...</div>
+                <div id="controls-container">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+        let allControls = [];
+        let filteredControls = [];
+
+        function getCurrentProduct() {
+            return localStorage.getItem('selected-product') || 'rhel9';
+        }
+
+        function initializeControls() {
+            if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
+                document.getElementById('controls-container').innerHTML =
+                    '<div class="empty-state"><h3>Error loading data</h3></div>';
+                return;
+            }
+
+            const product = getCurrentProduct();
+            allControls = EMBEDDED_DATA.products[product]?.controls || [];
+
+            renderFamilyFilters();
+            setupFilterListeners();
+            applyFilters();
+        }
+
+        function renderFamilyFilters() {
+            const familyFilters = document.getElementById('family-filters');
+            const familiesInUse = new Set(allControls.map(c => c.id.split('-')[0]));
+
+            const familyCheckboxes = EMBEDDED_DATA.families
+                .filter(f => familiesInUse.has(f.id))
+                .map(family => `
+                    <label>
+                        <input type="checkbox" value="${family.id}" checked>
+                        ${family.name}
+                    </label>
+                `).join('');
+
+            familyFilters.innerHTML = familyCheckboxes + `
+                <label class="select-all-checkbox">
+                    <input type="checkbox" id="select-all-families" checked> Select All
+                </label>
+            `;
+        }
+
+        function setupFilterListeners() {
+            // Search input
+            document.getElementById('search-input').addEventListener('input', applyFilters);
+
+            // All filter checkboxes
+            document.querySelectorAll('.filter-checkboxes input[type="checkbox"]').forEach(cb => {
+                if (!cb.id.startsWith('select-all-')) {
+                    cb.addEventListener('change', applyFilters);
+                }
+            });
+
+            // Select All checkboxes
+            setupSelectAll('select-all-families', 'family-filters');
+            setupSelectAll('select-all-levels', 'level-filters');
+            setupSelectAll('select-all-status', 'status-filters');
+            setupSelectAll('select-all-gap', 'gap-filters');
+        }
+
+        function setupSelectAll(selectAllId, containerId) {
+            const selectAllCb = document.getElementById(selectAllId);
+            const container = document.getElementById(containerId);
+            const checkboxes = Array.from(container.querySelectorAll('input[type="checkbox"]'))
+                .filter(cb => cb.id !== selectAllId);
+
+            selectAllCb.addEventListener('change', function() {
+                checkboxes.forEach(cb => cb.checked = this.checked);
+                applyFilters();
+            });
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    selectAllCb.checked = checkboxes.every(c => c.checked);
+                });
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+            const selectedFamilies = Array.from(document.querySelectorAll('#family-filters input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+
+            const selectedLevels = Array.from(document.querySelectorAll('#level-filters input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+
+            const selectedStatuses = Array.from(document.querySelectorAll('#status-filters input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+
+            const selectedGapStatus = Array.from(document.querySelectorAll('#gap-filters input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+
+            filteredControls = allControls.filter(control => {
+                // Search filter
+                if (searchTerm) {
+                    const matchesSearch = control.id.toLowerCase().includes(searchTerm) ||
+                                        control.title.toLowerCase().includes(searchTerm) ||
+                                        (control.description || '').toLowerCase().includes(searchTerm);
+                    if (!matchesSearch) return false;
+                }
+
+                // Family filter
+                const familyId = control.id.split('-')[0];
+                if (!selectedFamilies.includes(familyId) && !selectedFamilies.includes('other')) {
+                    return false;
+                }
+
+                // Level filter
+                if (control.levels && control.levels.length > 0) {
+                    const hasSelectedLevel = control.levels.some(level => selectedLevels.includes(level));
+                    if (!hasSelectedLevel) return false;
+                }
+
+                // Status filter
+                const status = control.is_automated ? 'automated' :
+                             control.is_manual ? 'manual' : 'pending';
+                if (!selectedStatuses.includes(status)) return false;
+
+                // Gap filter
+                const gapStatus = control.has_rules ? 'with-rules' : 'without-rules';
+                if (!selectedGapStatus.includes(gapStatus)) return false;
+
+                return true;
+            });
+
+            renderControls();
+        }
+
+        function renderControls() {
+            const container = document.getElementById('controls-container');
+            const resultsCount = document.getElementById('results-count');
+
+            resultsCount.textContent = `Showing ${filteredControls.length} of ${allControls.length} controls`;
+
+            if (filteredControls.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No controls match your filters</h3></div>';
+                return;
+            }
+
+            container.innerHTML = filteredControls.map(control => {
+                const statusClass = control.is_automated ? 'automated' :
+                                  control.is_manual ? 'manual' : 'pending';
+                const gapIndicator = control.has_rules ? '' :
+                    '<span class="gap-indicator gap-full"></span>';
+
+                const levels = (control.levels || []).join(', ').toUpperCase();
+                const ruleCount = (control.rules || []).length;
+
+                return `
+                    <div class="control-item" onclick="window.location.href='control-detail.html?id=${control.id}'">
+                        <div class="control-header">
+                            <div>
+                                <div class="control-id">
+                                    ${gapIndicator}${control.id.toUpperCase()}
+                                </div>
+                                <div class="control-title">${control.title}</div>
+                            </div>
+                            <span class="badge badge-${statusClass}">${statusClass.toUpperCase()}</span>
+                        </div>
+                        <div class="control-meta">
+                            ${levels ? `<span>📊 Baselines: ${levels}</span>` : ''}
+                            <span>📋 Rules: ${ruleCount}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.querySelectorAll('.filter-checkboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = true;
+            });
+            applyFilters();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeControls);
+    </script>
+</body>
+</html>

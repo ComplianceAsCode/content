@@ -223,24 +223,50 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
     }
 
 
-def generate_html_viewer(output_file: Path, template_file: Path, viewer_data: Dict[str, Any]):
-    """Generate HTML viewer from template with embedded data."""
-    with open(template_file, 'r') as f:
-        html_content = f.read()
+def generate_html_viewer(output_dir: Path, templates_dir: Path, viewer_data: Dict[str, Any]):
+    """Generate multi-page HTML viewer from templates with embedded data."""
 
-    # Embed the JSON data directly in the HTML
+    # Read shared components
+    shared_styles = (templates_dir / '_shared_styles.html').read_text()
+    shared_header = (templates_dir / '_shared_header.html').read_text()
+
+    # Embed the JSON data
     json_data = json.dumps(viewer_data, indent=2)
+    embedded_data_script = f'const EMBEDDED_DATA = {json_data};'
 
-    # Replace the placeholder with embedded data
-    html_content = html_content.replace(
-        '/* DATA_PLACEHOLDER */',
-        f'const EMBEDDED_DATA = {json_data};'
-    )
+    # List of page templates to generate
+    pages = [
+        'index.html',
+        'controls.html',
+        'control-detail.html',
+        'gaps.html',
+        'statistics.html',
+        'family.html'
+    ]
 
-    with open(output_file, 'w') as f:
-        f.write(html_content)
+    # Generate each page
+    for page in pages:
+        template_file = templates_dir / page
 
-    print(f"Generated HTML viewer: {output_file}")
+        if not template_file.exists():
+            print(f"Warning: Template not found: {template_file}")
+            continue
+
+        # Read template
+        html_content = template_file.read_text()
+
+        # Replace placeholders
+        html_content = html_content.replace('<!-- SHARED_STYLES_PLACEHOLDER -->', f'<style>{shared_styles}</style>')
+        html_content = html_content.replace('<!-- SHARED_HEADER_PLACEHOLDER -->', shared_header)
+        html_content = html_content.replace('/* DATA_PLACEHOLDER */', embedded_data_script)
+
+        # Write output file
+        output_file = output_dir / page
+        output_file.write_text(html_content)
+        print(f"Generated: {output_file}")
+
+    print(f"\nMulti-page viewer generated in: {output_dir}")
+    print(f"Open {output_dir / 'index.html'} in a web browser to view.")
 
 
 def main():
@@ -267,18 +293,16 @@ def main():
         json.dump(viewer_data, f, indent=2)
     print(f"Generated data file: {data_file}")
 
-    # Generate HTML with embedded data
-    template_file = Path(__file__).parent / 'nist_viewer_template.html'
-    output_html = args.output_dir / 'nist-controls-viewer.html'
+    # Generate multi-page HTML viewer
+    templates_dir = Path(__file__).parent / 'templates'
 
-    if template_file.exists():
-        generate_html_viewer(output_html, template_file, viewer_data)
+    if templates_dir.exists():
+        generate_html_viewer(args.output_dir, templates_dir, viewer_data)
     else:
-        print(f"Warning: Template file not found: {template_file}")
-        print("HTML viewer not generated. Run the template creation step first.")
+        print(f"Warning: Templates directory not found: {templates_dir}")
+        print("HTML viewer not generated. Ensure templates directory exists.")
 
     print("\nViewer generation complete!")
-    print(f"Open {output_html} in a web browser to view.")
 
 
 if __name__ == '__main__':

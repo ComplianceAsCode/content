@@ -1,37 +1,77 @@
 # NIST 800-53 Control Viewer & Gap Analysis
 
-Interactive web-based viewer for NIST 800-53 control files with comprehensive gap analysis and backlog management features.
+Interactive multi-page web-based viewer for NIST 800-53 control files with comprehensive gap analysis and backlog management features.
+
+## Architecture
+
+The viewer is a multi-page web application with the following pages:
+
+- **index.html** - Dashboard with overview statistics and charts
+- **controls.html** - Controls list with advanced filtering
+- **control-detail.html** - Individual control details with OSCAL metadata and TODO management
+- **gaps.html** - Gap analysis showing controls without rules
+- **statistics.html** - Detailed statistics and metrics
+- **family.html** - Control family breakdown and family-specific views
+
+All pages share:
+- Common navigation header for seamless page transitions
+- Shared CSS styling for consistent look and feel
+- Embedded JSON data for offline access (no external API calls)
+- Product selector that persists across pages via localStorage
 
 ## Features
 
-### Dashboard View
+### Dashboard (index.html)
 - **Overall Coverage Statistics**: Total controls, automated, manual, and pending counts with percentages
-- **Gap Analysis**: Visual representation of controls without rules
-- **Product Comparison**: Side-by-side comparison of rhel8, rhel9, and rhel10 coverage
+- **Gap Analysis Summary**: Total controls without rules
+- **Product Comparison Table**: Side-by-side comparison of rhel8, rhel9, and rhel10 coverage
 - **Family Coverage Chart**: Bar chart showing automation coverage by control family
-- **Baseline Level Breakdown**: Distribution across LOW, MODERATE, and HIGH baselines
-- **Top Gaps List**: Quick view of controls that need rule implementation
+- **Top Gaps List**: Quick view of controls that need rule implementation (links to detailed gap analysis)
 
-### Controls View
+### Controls Browser (controls.html)
 - **Advanced Filtering**:
   - Filter by control family (AC, AU, CM, IA, SC, SI, etc.)
   - Filter by baseline level (Low, Moderate, High)
   - Filter by status (Automated, Manual, Pending)
   - Filter by gap status (With Rules, Without Rules)
   - Full-text search across control IDs, titles, and descriptions
+  - Select All / Deselect All checkboxes for each filter category
 
-- **Control Details**:
-  - OSCAL metadata (description, guidance, parameters)
-  - Implementation status
-  - Rule listings
-  - Related controls with clickable links
-  - Baseline level applicability
+- **Controls List**:
+  - Clickable control cards showing ID, title, status, and metadata
+  - Visual gap indicators (red dots for controls without rules)
+  - Rule count and baseline level badges
+
+### Control Details (control-detail.html)
+- **OSCAL Metadata**: Full description, supplemental guidance, and parameters (ODPs)
+- **Implementation Status**: Automated, manual, or pending
+- **Rule Listings**: All rules mapped to this control
+- **Related Controls**: Clickable links to related controls
+- **Baseline Level Applicability**: Which baselines (low, moderate, high) include this control
 
 - **Backlog Management**:
   - Add TODO items per control
   - Mark items as complete
   - Delete completed items
-  - Persistent storage in browser localStorage
+  - Persistent storage in browser localStorage (per-control)
+
+### Gap Analysis (gaps.html)
+- **Gap Summary**: Total gaps broken down by baseline level (high, moderate, low)
+- **Priority Sections**: Gaps organized by baseline priority
+- **Family Breakdown**: Which control families have the most gaps
+- **Quick Navigation**: Click any gap to view control details
+
+### Statistics (statistics.html)
+- **Product Overview**: Comprehensive metrics for current product
+- **Baseline Breakdown**: Coverage statistics for each baseline level (low, moderate, high)
+- **Cross-Product Comparison**: Table comparing all products side-by-side
+- **Family Statistics**: Detailed metrics for each control family
+
+### Control Families (family.html)
+- **Family Grid View**: All control families with coverage stats
+- **Family Detail View**: Click any family to see all controls in that family
+- **Family-Specific Stats**: Automated, manual, pending, and gap counts per family
+- **Quick Control Access**: Jump to any control within a family
 
 ## Building the Viewer
 
@@ -44,7 +84,14 @@ cmake .. -G Ninja
 ninja nist-viewer
 
 # The viewer will be generated at:
-# build/nist-controls-viewer/nist-controls-viewer.html
+# build/nist-controls-viewer/
+#   ├── index.html           (Dashboard - start here)
+#   ├── controls.html        (Controls browser)
+#   ├── control-detail.html  (Individual control details)
+#   ├── gaps.html            (Gap analysis)
+#   ├── statistics.html      (Detailed statistics)
+#   ├── family.html          (Control families)
+#   └── nist-controls-data.json  (Reference data file)
 ```
 
 ### Manual Generation
@@ -58,21 +105,23 @@ python3 generate_nist_viewer.py \
   --output-dir ../../build/nist-controls-viewer \
   --repo-root ../..
 
-# Open the viewer
-open ../../build/nist-controls-viewer/nist-controls-viewer.html
+# Open the viewer (starts at dashboard)
+open ../../build/nist-controls-viewer/index.html
 ```
 
 ## Published Version
 
 The viewer is automatically published to GitHub Pages via the `gh-pages` workflow:
 
-**URL**: https://complianceascode.github.io/content-pages/nist-viewer/nist-controls-viewer.html
+**URL**: https://complianceascode.github.io/content-pages/nist-viewer/
 
-The published version updates automatically when changes are pushed to the master branch.
+The published version updates automatically when changes are pushed to the master branch. Navigate to the dashboard (index.html) to start browsing.
 
 ## Data Structure
 
-The viewer has all control data embedded directly in the HTML file (as `EMBEDDED_DATA` JavaScript constant). This allows the viewer to work when opened directly as a local file without CORS issues.
+The viewer embeds all control data directly in each HTML file (as `EMBEDDED_DATA` JavaScript constant). This allows the viewer to work when opened directly as local files without CORS issues or requiring a web server.
+
+Data is embedded in all pages identically, allowing each page to function independently. Pages communicate via URL parameters (e.g., `control-detail.html?id=ac-2`) and localStorage (for product selection and TODOs).
 
 A separate `nist-controls-data.json` file is also generated for reference and debugging purposes.
 
@@ -150,11 +199,18 @@ TODOs are stored in browser localStorage, so they persist across sessions but ar
 
 ## Customization
 
-### Modifying the Template
-Edit `utils/nist_sync/nist_viewer_template.html` to customize:
-- Styling (CSS in `<style>` section)
-- Layout (HTML structure)
-- Behavior (JavaScript functions)
+### Modifying the Templates
+Edit files in `utils/nist_sync/templates/` to customize:
+- **_shared_styles.html** - Common CSS used across all pages
+- **_shared_header.html** - Navigation header and product selector
+- **index.html** - Dashboard page
+- **controls.html** - Controls browser page
+- **control-detail.html** - Individual control detail page
+- **gaps.html** - Gap analysis page
+- **statistics.html** - Statistics page
+- **family.html** - Control families page
+
+Each template can have its own page-specific styles and JavaScript in addition to the shared components.
 
 ### Adding New Statistics
 Modify `generate_nist_viewer.py`:
@@ -192,33 +248,62 @@ No external dependencies - all functionality is self-contained in a single HTML 
 ## Troubleshooting
 
 ### "Error loading data"
-- The data should be embedded in the HTML file - regenerate the viewer with `ninja nist-viewer`
-- If you modified the template, ensure the `/* DATA_PLACEHOLDER */` comment exists in the script section
+- The data should be embedded in each HTML file - regenerate the viewer with `ninja nist-viewer`
+- If you modified a template, ensure the `/* DATA_PLACEHOLDER */` comment exists in the script section
 - Check browser console for specific error messages
-- The HTML file should be around 7MB - if it's much smaller, the data wasn't embedded properly
+- Each HTML file should be several MB in size - if much smaller, the data wasn't embedded properly
 
 ### Controls not showing
-- Check filter settings - try resetting all filters
-- Verify the data file contains controls for the selected product
+- Check filter settings on controls.html - try resetting all filters
+- Verify the data is embedded (open browser console and check for `EMBEDDED_DATA`)
+- Try switching products using the product selector
 
 ### TODOs not persisting
 - localStorage must be enabled in your browser
 - Check browser privacy settings
-- TODOs are per-browser and per-domain
+- TODOs are per-browser, per-domain, and per-control
+- Clearing browser data will erase TODOs
 
-### Dashboard not rendering
+### Dashboard not rendering / Page not loading
 - Check browser console for JavaScript errors
-- Ensure the JSON data loaded successfully
+- Ensure the EMBEDDED_DATA constant is defined
 - Try refreshing the page
+- Verify you're using a modern browser (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+
+### Navigation not working
+- Ensure all 6 HTML files are in the same directory
+- Check that file paths are relative (not absolute)
+- If hosting on a web server, verify all files are accessible
+
+### Product selection not persisting
+- Check that localStorage is enabled
+- The product selection is stored in localStorage key `selected-product`
+- Clearing browser data will reset to default (rhel9)
 
 ## Development
 
 To develop new features:
 
-1. Edit `nist_viewer_template.html`
-2. Test locally by opening the generated HTML file
-3. Regenerate after changes: `ninja nist-viewer`
-4. Commit both the template and updated CMake files
+1. Edit templates in `utils/nist_sync/templates/`:
+   - For styling changes: edit `_shared_styles.html`
+   - For navigation changes: edit `_shared_header.html`
+   - For page-specific changes: edit the corresponding page template
+2. Test locally by opening the generated HTML files in a browser
+3. Regenerate after changes: `ninja nist-viewer` (from build directory)
+4. Commit template changes
+
+### Adding a New Page
+
+1. Create a new template file in `utils/nist_sync/templates/` (e.g., `new-page.html`)
+2. Include placeholders for shared components:
+   ```html
+   <!-- SHARED_STYLES_PLACEHOLDER -->
+   <!-- SHARED_HEADER_PLACEHOLDER -->
+   /* DATA_PLACEHOLDER */
+   ```
+3. Add the page to the `pages` list in `generate_nist_viewer.py`
+4. Add navigation link to `_shared_header.html`
+5. Regenerate and test
 
 ## License
 

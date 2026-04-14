@@ -1,0 +1,61 @@
+<header>
+    <h1><a href="index.html">NIST 800-53 Control Viewer</a></h1>
+    <div class="header-controls">
+        <div class="product-selector">
+            <label for="product-select">Product:</label>
+            <select id="product-select">
+                <!-- Populated by JavaScript -->
+            </select>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="index.html" id="nav-dashboard">Dashboard</a></li>
+        <li><a href="controls.html" id="nav-controls">Controls</a></li>
+        <li><a href="gaps.html" id="nav-gaps">Gaps</a></li>
+        <li><a href="statistics.html" id="nav-statistics">Statistics</a></li>
+        <li><a href="family.html" id="nav-families">Families</a></li>
+    </ul>
+</nav>
+
+<script>
+// Initialize product selector and navigation state
+document.addEventListener('DOMContentLoaded', function() {
+    const productSelect = document.getElementById('product-select');
+    const currentProduct = localStorage.getItem('selected-product') || 'rhel9';
+
+    if (typeof EMBEDDED_DATA !== 'undefined' && EMBEDDED_DATA.products) {
+        Object.keys(EMBEDDED_DATA.products).forEach(product => {
+            const option = document.createElement('option');
+            option.value = product;
+            option.textContent = product.toUpperCase();
+            if (product === currentProduct) {
+                option.selected = true;
+            }
+            productSelect.appendChild(option);
+        });
+
+        productSelect.addEventListener('change', function() {
+            localStorage.setItem('selected-product', this.value);
+            location.reload();
+        });
+    }
+
+    // Highlight current page in navigation
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = {
+        'index.html': 'nav-dashboard',
+        'controls.html': 'nav-controls',
+        'gaps.html': 'nav-gaps',
+        'statistics.html': 'nav-statistics',
+        'family.html': 'nav-families'
+    };
+
+    const activeNav = document.getElementById(navLinks[currentPage]);
+    if (activeNav) {
+        activeNav.classList.add('active');
+    }
+});
+</script>
