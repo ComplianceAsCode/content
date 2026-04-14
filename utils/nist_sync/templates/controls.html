@@ -338,7 +338,10 @@
 
             container.innerHTML = filteredControls.map(control => {
                 const statusClass = control.is_automated ? 'automated' :
-                                  control.is_manual ? 'manual' : 'pending';
+                                  control.is_manual ? 'manual' :
+                              control.is_inherently_met ? 'inherently_met' :
+                              control.is_does_not_meet ? 'does_not_meet' :
+                              control.is_not_applicable ? 'not_applicable' : 'pending';
                 const gapIndicator = control.has_rules ? '' :
                     '<span class="gap-indicator gap-full"></span>';
 

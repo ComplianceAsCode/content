@@ -153,6 +153,9 @@ def merge_control_data(product_controls: Dict[str, Any], oscal_controls: Dict[st
             'is_automated': control.get('status') == 'automated',
             'is_manual': control.get('status') == 'manual',
             'is_pending': control.get('status') == 'pending',
+            'is_inherently_met': control.get('status') == 'inherently met',
+            'is_does_not_meet': control.get('status') == 'does not meet',
+            'is_not_applicable': control.get('status') == 'not applicable',
         }
 
         merged.append(merged_control)
@@ -190,6 +193,9 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
             'automated': sum(1 for c in controls if c['is_automated']),
             'manual': sum(1 for c in controls if c['is_manual']),
             'pending': sum(1 for c in controls if c['is_pending']),
+            'inherently_met': sum(1 for c in controls if c['is_inherently_met']),
+            'does_not_meet': sum(1 for c in controls if c['is_does_not_meet']),
+            'not_applicable': sum(1 for c in controls if c['is_not_applicable']),
             'with_rules': sum(1 for c in controls if c['has_rules']),
             'without_rules': sum(1 for c in controls if not c['has_rules']),
         }

@@ -349,7 +349,10 @@
 
             familyControls.sort((a, b) => a.id.localeCompare(b.id)).forEach(control => {
                 const statusClass = control.is_automated ? 'automated' :
-                                  control.is_manual ? 'manual' : 'pending';
+                                  control.is_manual ? 'manual' :
+                              control.is_inherently_met ? 'inherently_met' :
+                              control.is_does_not_meet ? 'does_not_meet' :
+                              control.is_not_applicable ? 'not_applicable' : 'pending';
                 const gapClass = control.has_rules ? '' : 'gap';
 
                 const item = document.createElement('div');
