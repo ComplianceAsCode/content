@@ -1,4 +1,3 @@
-# NIST 800-53 SI Family: System and Information Integrity
 controls:
   - id: si-1
     title: Policy and Procedures
@@ -22,8 +21,10 @@ controls:
     title: Automated Flaw Remediation Status
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - agent_mfetpd_running
+      - package_mcafeetp_installed
+    status: automated
   - id: si-2.3
     title: Time to Remediate Flaws and Benchmarks for Corrective Actions
     rules: []
@@ -34,12 +35,17 @@ controls:
     status: pending
   - id: si-2.5
     title: Automatic Software and Firmware Updates
-    rules: []
-    status: pending
+    rules:
+      - dnf-automatic_apply_updates
+      - dnf-automatic_security_updates_only
+      - security_patches_up_to_date
+      - timer_dnf-automatic_enabled
+    status: automated
   - id: si-2.6
     title: Removal of Previous Versions of Software and Firmware
-    rules: []
-    status: pending
+    rules:
+      - clean_components_post_updating
+    status: automated
   - id: si-2.7
     title: Root Cause Analysis
     rules: []
@@ -49,8 +55,8 @@ controls:
     levels:
       - low
     rules:
-      - kernel_module_usb-storage_disabled
-      - service_autofs_disabled
+      - install_mcafee_antivirus
+      - service_nails_enabled
     status: automated
   - id: si-3.1
     title: Central Management
@@ -58,8 +64,9 @@ controls:
     status: pending
   - id: si-3.2
     title: Automatic Updates
-    rules: []
-    status: pending
+    rules:
+      - mcafee_antivirus_definitions_updated
+    status: automated
   - id: si-3.3
     title: Non-privileged Users
     rules: []
@@ -205,12 +212,15 @@ controls:
     title: Unauthorized Network Services
     levels:
       - high
-    rules: []
-    status: pending
+    rules:
+      - package_fapolicyd_installed
+      - service_fapolicyd_enabled
+    status: automated
   - id: si-4.23
     title: Host-based Devices
-    rules: []
-    status: pending
+    rules:
+      - service_auditd_enabled
+    status: automated
   - id: si-4.24
     title: Indicators of Compromise
     rules: []
@@ -253,14 +263,31 @@ controls:
     title: Software, Firmware, and Information Integrity
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - ensure_almalinux_gpgkey_installed
+      - ensure_amazon_gpgkey_installed
+      - ensure_fedora_gpgkey_installed
+      - ensure_gpgcheck_globally_activated
+      - ensure_gpgcheck_never_disabled
+      - ensure_gpgcheck_repo_metadata
+      - ensure_oracle_gpgkey_installed
+      - ensure_redhat_gpgkey_installed
+      - ensure_suse_gpgkey_installed
+    status: automated
   - id: si-7.1
     title: Integrity Checks
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - aide_periodic_checking_systemd_timer
+      - aide_periodic_cron_checking
+      - aide_use_fips_hashes
+      - aide_verify_acls
+      - aide_verify_ext_attributes
+      - rpm_verify_hashes
+      - rpm_verify_ownership
+      - rpm_verify_permissions
+    status: automated
   - id: si-7.2
     title: Automated Notifications of Integrity Violations
     levels:
@@ -283,8 +310,11 @@ controls:
     status: pending
   - id: si-7.6
     title: Cryptographic Protection
-    rules: []
-    status: pending
+    rules:
+      - rpm_verify_hashes
+      - rpm_verify_ownership
+      - rpm_verify_permissions
+    status: automated
   - id: si-7.7
     title: Integration of Detection and Response
     levels:
@@ -391,8 +421,14 @@ controls:
     title: Error Handling
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - file_groupownership_lastlog
+      - file_ownership_lastlog
+      - file_permissions_lastlog
+      - permissions_local_var_log
+      - sysctl_fs_suid_dumpable
+      - sysctl_kernel_dmesg_restrict
+    status: automated
   - id: si-12
     title: Information Management and Retention
     levels:
@@ -460,7 +496,8 @@ controls:
     levels:
       - moderate
     rules:
-      - sysctl_kernel_randomize_va_space
+      - coreos_pti_kernel_argument
+      - grub2_pti_argument
     status: automated
   - id: si-17
     title: Fail-safe Procedures
