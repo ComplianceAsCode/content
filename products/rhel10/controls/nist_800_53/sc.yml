@@ -1,4 +1,3 @@
-# NIST 800-53 SC Family: System and Communications Protection
 controls:
   - id: sc-1
     title: Policy and Procedures
@@ -15,8 +14,10 @@ controls:
     status: automated
   - id: sc-2.1
     title: Interfaces for Non-privileged Users
-    rules: []
-    status: pending
+    rules:
+      - coreos_disable_interactive_boot
+      - grub2_disable_interactive_boot
+    status: automated
   - id: sc-2.2
     title: Disassociability
     rules: []
@@ -26,8 +27,7 @@ controls:
     levels:
       - high
     rules:
-      - selinux_not_disabled
-      - selinux_state
+      - grub2_init_on_free
     status: automated
   - id: sc-3.1
     title: Hardware Separation
@@ -70,20 +70,42 @@ controls:
     levels:
       - low
     rules:
-      - sysctl_net_ipv4_tcp_syncookies
+      - firewalld-backend
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_send_redirects
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv4_tcp_invalid_ratelimit
     status: automated
   - id: sc-5.1
     title: Restrict Ability to Attack Other Systems
-    rules: []
-    status: pending
+    rules:
+      - configure_firewalld_rate_limiting
+      - sysctl_net_ipv4_tcp_syncookies
+    status: automated
   - id: sc-5.2
     title: Capacity, Bandwidth, and Redundancy
-    rules: []
-    status: pending
+    rules:
+      - configure_firewalld_rate_limiting
+      - partition_for_home
+      - partition_for_tmp
+      - partition_for_var
+      - partition_for_var_log
+      - partition_for_var_log_audit
+      - sysctl_net_ipv4_tcp_syncookies
+    status: automated
   - id: sc-5.3
     title: Detection and Monitoring
-    rules: []
-    status: pending
+    rules:
+      - configure_firewalld_rate_limiting
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_default_log_martians
+      - sysctl_net_ipv4_tcp_syncookies
+    status: automated
   - id: sc-6
     title: Resource Availability
     rules: []
@@ -92,8 +114,19 @@ controls:
     title: Boundary Protection
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_rp_filter
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_send_redirects
+      - sysctl_net_ipv4_ip_forward
+    status: automated
   - id: sc-7.1
     title: Physically Separated Subnetworks
     rules: []
@@ -142,8 +175,15 @@ controls:
     status: pending
   - id: sc-7.10
     title: Prevent Exfiltration
-    rules: []
-    status: pending
+    rules:
+      - disable_users_coredumps
+      - service_systemd-coredump_disabled
+      - sysctl_kernel_core_pattern
+      - sysctl_kernel_unprivileged_bpf_disabled
+      - sysctl_kernel_unprivileged_bpf_disabled_accept_default
+      - sysctl_kernel_yama_ptrace_scope
+      - sysctl_net_core_bpf_jit_harden
+    status: automated
   - id: sc-7.11
     title: Restrict Incoming Communications Traffic
     rules: []
@@ -190,16 +230,28 @@ controls:
     title: Isolation of System Components
     levels:
       - high
-    rules: []
-    status: pending
+    rules:
+      - apparmor_configured
+      - configure_firewalld_ports
+      - package_pam_apparmor_installed
+      - selinux_policytype
+      - selinux_state
+      - service_firewalld_enabled
+      - service_ip6tables_enabled
+      - service_iptables_enabled
+      - set_ip6tables_default_rule
+    status: automated
   - id: sc-7.22
     title: Separate Subnets for Connecting to Different Security Domains
     rules: []
     status: pending
   - id: sc-7.23
     title: Disable Sender Feedback on Protocol Validation Failure
-    rules: []
-    status: pending
+    rules:
+      - set_firewalld_default_zone
+      - set_iptables_default_rule
+      - set_iptables_default_rule_forward
+    status: automated
   - id: sc-7.24
     title: Personally Identifiable Information
     rules: []
@@ -229,26 +281,31 @@ controls:
     levels:
       - moderate
     rules:
-      - configure_custom_crypto_policy_cis
+      - libreswan_approved_tunnels
     status: automated
   - id: sc-8.1
     title: Cryptographic Protection
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - harden_openssl_crypto_policy
+      - service_sshd_enabled
+    status: automated
   - id: sc-8.2
     title: Pre- and Post-transmission Handling
-    rules: []
-    status: pending
+    rules:
+      - service_sshd_enabled
+    status: automated
   - id: sc-8.3
     title: Cryptographic Protection for Message Externals
-    rules: []
-    status: pending
+    rules:
+      - service_sshd_enabled
+    status: automated
   - id: sc-8.4
     title: Conceal or Randomize Communications
-    rules: []
-    status: pending
+    rules:
+      - service_sshd_enabled
+    status: automated
   - id: sc-8.5
     title: Protected Distribution System
     rules: []
@@ -261,8 +318,13 @@ controls:
     title: Network Disconnect
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - accounts_tmout
+      - logind_session_timeout
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive
+      - sshd_set_keepalive_0
+    status: automated
   - id: sc-11
     title: Trusted Path
     rules: []
@@ -275,8 +337,9 @@ controls:
     title: Cryptographic Key Establishment and Management
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - ldap_client_start_tls
+    status: automated
   - id: sc-12.1
     title: Availability
     levels:
@@ -285,12 +348,62 @@ controls:
     status: pending
   - id: sc-12.2
     title: Symmetric Keys
-    rules: []
-    status: pending
+    rules:
+      - configure_bind_crypto_policy
+      - configure_crypto_policy
+      - configure_kerberos_crypto_policy
+      - configure_libreswan_crypto_policy
+      - configure_openssl_crypto_policy
+      - enable_dracut_fips_module
+      - enable_fips_mode
+      - etc_system_fips_exists
+      - grub2_enable_fips_mode
+      - harden_sshd_crypto_policy
+      - installed_OS_is_FIPS_certified
+      - is_fips_mode_enabled
+      - package_dracut-fips-aesni_installed
+      - package_dracut-fips_installed
+      - sebool_fips_mode
+      - sshd_use_approved_ciphers
+      - sshd_use_approved_macs
+      - sysctl_crypto_fips_enabled
+      - system_booted_in_fips_mode
+    status: automated
   - id: sc-12.3
     title: Asymmetric Keys
-    rules: []
-    status: pending
+    rules:
+      - configure_bind_crypto_policy
+      - configure_crypto_policy
+      - configure_kerberos_crypto_policy
+      - configure_libreswan_crypto_policy
+      - configure_openssl_crypto_policy
+      - enable_dracut_fips_module
+      - enable_fips_mode
+      - ensure_almalinux_gpgkey_installed
+      - ensure_amazon_gpgkey_installed
+      - ensure_fedora_gpgkey_installed
+      - ensure_gpgcheck_globally_activated
+      - ensure_gpgcheck_never_disabled
+      - ensure_gpgcheck_repo_metadata
+      - ensure_oracle_gpgkey_installed
+      - ensure_redhat_gpgkey_installed
+      - ensure_suse_gpgkey_installed
+      - etc_system_fips_exists
+      - grub2_enable_fips_mode
+      - harden_sshd_crypto_policy
+      - installed_OS_is_FIPS_certified
+      - is_fips_mode_enabled
+      - package_dracut-fips-aesni_installed
+      - package_dracut-fips_installed
+      - sebool_fips_mode
+      - sshd_use_approved_ciphers
+      - sshd_use_approved_macs
+      - sssd_ldap_configure_tls_ca
+      - sssd_ldap_configure_tls_ca_dir
+      - sssd_ldap_configure_tls_reqcert
+      - sysctl_crypto_fips_enabled
+      - system_booted_in_fips_mode
+    status: automated
   - id: sc-12.4
     title: PKI Certificates
     rules: []
@@ -307,8 +420,34 @@ controls:
     title: Cryptographic Protection
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - configure_bind_crypto_policy
+      - configure_crypto_policy
+      - configure_kerberos_crypto_policy
+      - configure_libreswan_crypto_policy
+      - configure_openssl_crypto_policy
+      - configure_ssh_crypto_policy
+      - disable_prelink
+      - enable_dracut_fips_module
+      - enable_fips_mode
+      - encrypt_partitions
+      - etc_system_fips_exists
+      - fips_crypto_policy_symlinks
+      - grub2_enable_fips_mode
+      - harden_openssl_crypto_policy
+      - harden_ssh_client_crypto_policy
+      - harden_sshd_crypto_policy
+      - installed_OS_is_FIPS_certified
+      - is_fips_mode_enabled
+      - package_dracut-fips-aesni_installed
+      - package_dracut-fips_installed
+      - sebool_fips_mode
+      - sshd_allow_only_protocol2
+      - sshd_use_approved_ciphers
+      - sshd_use_approved_macs
+      - sysctl_crypto_fips_enabled
+      - system_booted_in_fips_mode
+    status: automated
   - id: sc-13.1
     title: FIPS-validated Cryptography
     rules: []
@@ -407,8 +546,9 @@ controls:
     title: Secure Name/Address Resolution Service (Authoritative Source)
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - network_configure_name_resolution
+    status: automated
   - id: sc-20.1
     title: Child Subspaces
     rules: []
@@ -464,6 +604,7 @@ controls:
     levels:
       - high
     rules:
+      - audit_rules_system_shutdown
       - service_systemd-journald_enabled
     status: automated
   - id: sc-25
@@ -486,14 +627,18 @@ controls:
     title: Protection of Information at Rest
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - install_mcafee_antivirus
+      - mcafee_antivirus_definitions_updated
+      - service_nails_enabled
+    status: automated
   - id: sc-28.1
     title: Cryptographic Protection
     levels:
       - moderate
-    rules: []
-    status: pending
+    rules:
+      - encrypt_partitions
+    status: automated
   - id: sc-28.2
     title: Offline Storage
     rules: []
@@ -520,8 +665,10 @@ controls:
     status: pending
   - id: sc-30.2
     title: Randomness
-    rules: []
-    status: pending
+    rules:
+      - sysctl_kernel_kptr_restrict
+      - sysctl_kernel_randomize_va_space
+    status: automated
   - id: sc-30.3
     title: Change Processing and Storage Locations
     rules: []
@@ -532,8 +679,9 @@ controls:
     status: pending
   - id: sc-30.5
     title: Concealment of System Components
-    rules: []
-    status: pending
+    rules:
+      - sysctl_kernel_kptr_restrict
+    status: automated
   - id: sc-31
     title: Covert Channel Analysis
     rules: []
@@ -610,8 +758,11 @@ controls:
     title: Process Isolation
     levels:
       - low
-    rules: []
-    status: pending
+    rules:
+      - bios_enable_execution_restrictions
+      - sysctl_kernel_exec_shield
+      - sysctl_user_max_user_namespaces
+    status: automated
   - id: sc-39.1
     title: Hardware Separation
     rules: []
