@@ -11,6 +11,7 @@
     dest: {{{ pam_faillock_conf_path }}}
     force: no
     mode: '0644'
+    remote_src: yes
 {{% endif %}}
 
 {{{ ansible_pam_faillock_enable(rule_title=rule_title) }}}
