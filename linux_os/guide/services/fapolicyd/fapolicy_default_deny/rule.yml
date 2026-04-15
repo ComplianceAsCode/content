@@ -52,6 +52,9 @@ ocil: |-
     deny_audit perm=any pattern=ld_so : all
     deny perm=any all : all
 
+    Note: The "deny_log" and "deny_audit" actions also meet the security requirements as they deny
+    execution while additionally providing logging.
+
 fixtext: |-
     Configure {{{ full_name }}} to employ a deny-all, permit-by-exception application whitelisting policy with "fapolicyd".
 
@@ -65,7 +68,7 @@ fixtext: |-
 
     For {{{ product_short_name }}} 8.6 systems and newer:
     {{%- endif %}}
-    Build the whitelist in a file within the "/etc/fapolicyd/rules.d" directory ensuring the last rule is "deny perm=any all : all".
+    Build the whitelist in a file within the "/etc/fapolicyd/rules.d" directory ensuring the last rule implements a deny-all policy, such as "deny perm=any all : all".
 
     Once it is determined the whitelist is built correctly, set the fapolicyd to enforcing mode by editing the "permissive" line in the /etc/fapolicyd/fapolicyd.conf file.
 
