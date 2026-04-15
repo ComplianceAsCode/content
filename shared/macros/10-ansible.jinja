@@ -163,23 +163,37 @@ value: :code:`Setting={{ varname1 }}`
 {{%- set dir_parameter = var_dir + "_has_parameter" -%}}
 {{%- set line_regex = prefix_regex + "{{ \"" + parameter + "\"| regex_escape }}" + separator_regex -%}}
 {{%- set find_when = dir_exists + ".stat.isdir is defined and " + dir_exists + ".stat.isdir" -%}}
-{{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
+{{%- set lineinfile_items = "{{ " + dir_parameter + ".files | default([]) }}" -%}}
 {{%- set lineinfile_when = dir_parameter + ".matched > 0" -%}}
 {{%- set new_line = parameter + separator + value -%}}
-- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured in {{{ config_file }}}
+  ansible.builtin.lineinfile:
+    path: {{{ config_file }}}
+    regexp: {{{ line_regex }}}
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: _config_file_has_parameter
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured in {{{ config_dir }}}
   ansible.builtin.find:
     paths:
-    - {{{ config_file }}}
     - {{{ config_dir }}}
     contains: {{{ line_regex }}}
-  register: _sshd_config_has_parameter
-- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly
+  register: _config_dir_has_parameter
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in {{{ config_file }}}
+  ansible.builtin.lineinfile:
+    path: {{{ config_file }}}
+    regexp: {{{ line_regex ~ value ~ "$" }}}
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: _config_file_correctly
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in {{{ config_dir }}}
   ansible.builtin.find:
     paths:
-    - {{{ config_file }}}
     - {{{ config_dir }}}
     contains: {{{ line_regex ~ value ~ "$" }}}
-  register: _sshd_config_correctly
+  register: _config_dir_correctly
 - name: '{{{ msg or rule_title }}}'
   block:
     {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, insensitive=insensitive, create='no', state='absent')|indent }}}
@@ -187,7 +201,7 @@ value: :code:`Setting={{ varname1 }}`
     {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
     {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, insensitive=insensitive, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
     {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
-  when: _sshd_config_correctly.matched == 0 or _sshd_config_has_parameter.matched != 1
+  when: (_config_file_correctly.found == 0 and _config_dir_correctly.matched == 0) or ((_config_file_has_parameter.found | int) + (_config_dir_has_parameter.matched | int)) != 1
 {{%- endmacro %}}
 
 
