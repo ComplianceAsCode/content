@@ -1,10 +1,76 @@
 {{#-
-  We set defaults to "off", and products should enable relevant ones depending on how the product configures grub.
-   - /boot/loader/entries/* may not exist.
-   - If they exist, they can reference variables defined in grubenv, or they can contain literal args
-   - The grub cfg may either use those loader entries, or it can contain literal values as well
-   - Kernel opts can be stored in /etc/default/grub so they are persistent between kernel upgrades
+  OVAL check for a GRUB bootloader kernel argument.
+
+  Verifies ARG_NAME (and optionally ARG_VALUE / ARG_VARIABLE) is present
+  across every GRUB config location the product uses.  Supports two modes
+  controlled by the OPERATION template parameter:
+
+    "pattern match" (default)
+        Object captures the full value line; state matches via regex.
+        Works for any string argument (e.g. audit=1, nosmt).
+
+    "greater than or equal" (numeric)
+        Object captures only the digits after ARG_NAME=; state compares
+        the integer against ARG_VARIABLE or ARG_VALUE.
+        Use when a minimum threshold is required (e.g. audit_backlog_limit).
+
+  Why numeric_comparison branches appear throughout the template:
+
+    OVAL has no "extract then compare" — the object's regex capture group IS
+    the value the state receives.  A state with datatype="int" needs a pure
+    integer, so every object must switch its regex between wide capture (.*)
+    and narrow capture (\d+).  This is an OVAL spec limitation and cannot be
+    consolidated into a single guard.
+
+    Three consequences:
+      - Every object has a {%% if numeric_comparison %%} regex branch.
+      - RHEL8 (ol8/rhel8) needs a separate test+criterion (entries_numeric)
+        because the same path also needs the wide-capture object for
+        $kernelopts detection — two objects, two tests, criteria branch.
+        This goes away when RHEL8 reaches EOL.
+      - bootc duplicates the state logic (section 6) because TOML wraps
+        values in quotes ("arg=value") vs space-delimited kernel cmdline,
+        so the regex patterns are structurally different.
+
+  Variables from rule.yml template vars:
+    ARG_NAME          – kernel argument name (e.g. "audit_backlog_limit")
+    ARG_VALUE         – literal expected value; mutually exclusive with ARG_VARIABLE
+    ARG_VARIABLE      – XCCDF variable name supplying the value at scan time
+    OPERATION         – OVAL comparison operation (default: "pattern match")
+    IS_SUBSTRING      – "true" if ARG_VALUE may appear as a substring
+
+  Variables computed by template.py (preprocess):
+    ARG_NAME_VALUE        – "name=value" string used in metadata and remediations
+    ESCAPED_ARG_NAME      – ARG_NAME with dots escaped for regex (OVAL only)
+    ESCAPED_ARG_NAME_VALUE – ARG_NAME_VALUE with dots escaped (OVAL only)
+    SANITIZED_ARG_NAME    – ARG_NAME with special chars replaced; used in OVAL IDs
+
+  Variables from the build system (product properties):
+    product                         – product ID (e.g. "rhel9", "fedora")
+    grub2_boot_path                 – BIOS GRUB dir (e.g. /boot/grub2)
+    grub2_uefi_boot_path            – UEFI GRUB dir (e.g. /boot/efi/EFI/redhat)
+    bootable_containers_supported   – "true" if product supports bootc Image Mode
+
+  Template structure:
+    1. Product flags   – which GRUB config locations to check
+    2. Comparison mode – numeric_comparison flag
+    3. Criteria tree   – AND/OR across locations + bootc Image Mode
+    4. Tests, objects & helper states — per config location:
+       4a. RHEL8 entries-or-grubenv  (+ rescue filter state)
+       4b. /etc/default/grub
+       4c. /etc/default/grub.d/*.cfg  (Ubuntu drop-ins)
+       4d. grubenv
+       4e. BLS entries  (+ rescue filter state)
+       4f. grub.cfg
+       4g. $kernelopts detection state  (RHEL8 only)
+    5. Shared state & variables — state_grub2_{SANITIZED_ARG_NAME}_argument;
+       branched by (numeric_comparison, ARG_VARIABLE):
+         5a. numeric — state with datatype="int", optional external_variable
+         5b. pattern match, literal — state with regex
+         5c. pattern match, variable — state + local_variable + external_variable
+    6. bootc Image Mode — self-contained test, object & state
 -#}}
+{{#- 1. Product flags: each product enables the GRUB locations it uses -#}}
 {{% set system_with_expanded_kernel_options_in_loader_entries = false -%}}
 {{% set system_with_kernel_options_in_grubenv = false -%}}
 {{% set system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv = false -%}}
@@ -33,6 +99,10 @@
 {{% set system_with_bios_and_uefi_support = true %}}
 {{%- endif -%}}
 
+{{#- 2. Comparison mode switch: numeric_comparison drives pattern and state branches -#}}
+{{% set numeric_comparison = (OPERATION != "pattern match") -%}}
+
+{{#- 3. Criteria tree: AND/OR across all checked locations -#}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.", rule_title=rule_title) }}}
@@ -42,8 +112,13 @@
         <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" negate="true" />
       {{% endif %}}
       {{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
+      {{% if numeric_comparison %}}
+      <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_numeric"
+      comment="Check {{{ ARG_NAME }}} value in /boot/loader/entries meets {{{ OPERATION }}}" />
+      {{% else %}}
       <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced"
       comment="Check /boot/loader/entries/*.conf files if they contain direct reference to {{{ ARG_NAME_VALUE }}} or if they contain $kernelopts" />
+      {{% endif %}}
       <criteria operator="OR"
       comment="Expressing implication">
         <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_at_least_one_entry_referenced" negate="true"
@@ -53,7 +128,7 @@
         {{%- endif %}}
         <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env"
         comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_boot_path }}}/grubenv" />
-      {{% if system_with_bios_and_uefi_support -%}}
+        {{% if system_with_bios_and_uefi_support -%}}
         <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env_uefi"
         comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_uefi_boot_path }}}/grubenv" />
         </criteria>
@@ -72,20 +147,20 @@
       </criteria>
       {{%- endif %}}
       {{% elif system_with_expanded_kernel_options_in_loader_entries -%}}
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
-                     comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/loader/entries/*.conf" />
+        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/loader/entries/*.conf" />
       {{%- endif %}}
       {{% if system_with_expanded_kernel_options_in_grub_cfg -%}}
-          {{% if system_with_bios_and_uefi_support -%}}
-          <criteria operator="OR">
-          {{%- endif %}}
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
-          comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
-          {{% if system_with_bios_and_uefi_support -%}}
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg_uefi"
-          comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_uefi_boot_path }}}/grub.cfg for all kernels" />
-          </criteria>
-          {{%- endif %}}
+        {{% if system_with_bios_and_uefi_support -%}}
+        <criteria operator="OR">
+        {{%- endif %}}
+        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
+        {{% if system_with_bios_and_uefi_support -%}}
+        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg_uefi"
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_uefi_boot_path }}}/grub.cfg for all kernels" />
+        </criteria>
+        {{%- endif %}}
       {{%- endif %}}
       {{% if system_with_kernel_options_in_etc_default_grub -%}}
         <criteria operator="OR">
@@ -121,7 +196,22 @@
     </criteria>
   </definition>
 
+{{#- 4. Tests, objects & helper states — per config location -#}}
+
+{{#- 4a. RHEL8 entries-or-grubenv (ol8, rhel8)
+     BLS entries may contain args expanded inline OR reference $kernelopts from grubenv.
+     Three tests handle this:
+       entries_expanded_or_referenced — every non-rescue entry has the arg OR $kernelopts
+       at_least_one_entry_referenced  — helper: does any entry use $kernelopts?
+       entries_numeric (numeric only) — integer value in expanded entries meets threshold -#}}
 {{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
+  {{#- Test "entries_expanded_or_referenced": each non-rescue *.conf must satisfy at least
+       one of two states (state_operator="OR"):
+         state_argument       — the arg is present in the captured options line
+         state_is_kernelopts  — the line contains $kernelopts (value lives in grubenv)
+       Not referenced in criteria in numeric mode — the narrow (\d+) capture can't do the
+       OR trick, so entries_numeric is used instead.  This test and its object are still
+       generated because at_least_one_entry_referenced reuses the object. -#}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced"
   comment="check all /boot/loader/entries/*.conf for expanded entries of  {{{ ARG_NAME_VALUE }}}. Leave out rescue boot entries. Accept also references to $kernelopts."
   state_operator="OR" check="all" check_existence="all_exist" version="1">
@@ -130,6 +220,9 @@
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts" />
   </ind:textfilecontent54_test>
 
+  {{#- Object "obj_entries_expanded_or_referenced": scans /boot/loader/entries/*.conf.
+       Regex: ^options (.*)$  →  group 1 = entire kernel command line after "options ".
+       Filter excludes *rescue.conf via the rescue state below. -#}}
   <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced" version="1">
     <ind:path>/boot/loader/entries/</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
@@ -138,20 +231,56 @@
     <filter action="exclude">state_grub2_rescue_entry_for_{{{ _RULE_ID }}}</filter>
   </ind:textfilecontent54_object>
 
+  {{#- Filter state: matches filenames ending in "rescue.conf".
+       Used by <filter action="exclude"> to skip rescue boot entries. -#}}
   <ind:textfilecontent54_state id="state_grub2_rescue_entry_for_{{{ _RULE_ID }}}" version="1">
     <ind:filename operation="pattern match">.*rescue\.conf$</ind:filename>
   </ind:textfilecontent54_state>
 
+  {{#- Test "at_least_one_entry_referenced": checks if at least one non-rescue entry
+       contains $kernelopts.  Used with negate="true" in the criteria tree to build
+       the implication: "IF entries reference $kernelopts THEN grubenv must have the arg."
+       Reuses the same object as entries_expanded_or_referenced. -#}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_at_least_one_entry_referenced"
   comment="check all /boot/loader/entries/*.conf files if there is at least one entry referencing $kernelopts. Leave out rescue entries."
   check="all" check_existence="at_least_one_exists" version="1">
     <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced" />
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts" />
   </ind:textfilecontent54_test>
+
+  {{% if numeric_comparison %}}
+  {{#- Test "entries_numeric" (numeric mode only): for entries that have ARG_NAME=<digits>,
+       compare the captured integer against the threshold.
+       check_existence="any_exist" — entries using $kernelopts produce no match and
+       that's OK; the grubenv check covers those. -#}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_numeric"
+  comment="check {{{ ARG_NAME }}} value meets {{{ OPERATION }}} in /boot/loader/entries"
+  check="all" check_existence="any_exist" version="1">
+    <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_numeric" />
+    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
+  </ind:textfilecontent54_test>
+
+  {{#- Object "obj_entries_numeric": narrow capture — only the digits after ARG_NAME=.
+       Regex: ^options .*ESCAPED_ARG_NAME=(\d+)  →  group 1 = integer value.
+       Entries without the arg or using $kernelopts produce no item (invisible). -#}}
+  <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_numeric"
+  version="1">
+    <ind:path>/boot/loader/entries/</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^options .*{{{ ESCAPED_ARG_NAME }}}=(\d+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_grub2_rescue_entry_for_{{{ _RULE_ID }}}</filter>
+  </ind:textfilecontent54_object>
+  {{%- endif %}}
 {{% endif %}}
 
 
+{{#- 4b. /etc/default/grub (all products)
+     Two GRUB variables to check: GRUB_CMDLINE_LINUX and GRUB_CMDLINE_LINUX_DEFAULT.
+     Pattern match regex: ^\s*GRUB_CMDLINE_LINUX="(.*)"$     →  group 1 = full quoted value
+     Numeric regex:       ^\s*GRUB_CMDLINE_LINUX=".*ARG=(\d+).*"$  →  group 1 = digits only -#}}
 {{%- if system_with_kernel_options_in_etc_default_grub %}}
+  {{#- Test "argument": GRUB_CMDLINE_LINUX in /etc/default/grub. -#}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX"
   check="all" check_existence="all_exist" version="1">
@@ -159,12 +288,21 @@
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
 
+  {{#- Object "argument": captures from GRUB_CMDLINE_LINUX in /etc/default/grub.
+       Pattern match: ^\s*GRUB_CMDLINE_LINUX="(.*)"$  →  group 1 = everything inside quotes.
+       Numeric:       ^\s*GRUB_CMDLINE_LINUX=".*ESCAPED_ARG_NAME=(\d+).*"$  →  digits only. -#}}
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" version="1">
     <ind:filepath>/etc/default/grub</ind:filepath>
+  {{% if numeric_comparison %}}
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX=".*{{{ ESCAPED_ARG_NAME }}}=(\d+).*"$</ind:pattern>
+  {{% else %}}
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  {{#- Test "argument_default": GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub.
+       Used with GRUB_DISABLE_RECOVERY=true (criteria tree requires both). -#}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
   comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT"
   check="all" check_existence="all_exist" version="1">
@@ -172,15 +310,26 @@
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
 
+  {{#- Object "argument_default": same patterns as above but for GRUB_CMDLINE_LINUX_DEFAULT. -#}}
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
   version="1">
     <ind:filepath>/etc/default/grub</ind:filepath>
+  {{% if numeric_comparison %}}
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT=".*{{{ ESCAPED_ARG_NAME }}}=(\d+).*"$</ind:pattern>
+  {{% else %}}
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{%- endif %}}
+{{% endif %}}
 
+{{#- 4c. /etc/default/grub.d/*.cfg drop-in configs (Ubuntu only)
+     Filepath regex: /etc/default/grub.d/[^/]+\.cfg  ([^/]+ prevents crossing directories)
+     Same GRUB_CMDLINE_LINUX / _DEFAULT patterns as 4b.
+     Pattern match: captures everything inside the quotes.
+     Numeric:       captures only the digits after ARG_NAME=. -#}}
 {{% if system_with_kernel_options_in_etc_default_grub_d -%}}
+  {{#- Test "argument_configdir": GRUB_CMDLINE_LINUX in drop-in .cfg files. -#}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir"
   comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub.d/*cfg via GRUB_CMDLINE_LINUX"
   check="at least one" check_existence="all_exist" version="1">
@@ -188,6 +337,7 @@
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
 
+  {{#- Test "argument_default_configdir": GRUB_CMDLINE_LINUX_DEFAULT in drop-in .cfg files. -#}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir"
   comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT"
   check="all" check_existence="all_exist" version="1">
@@ -195,22 +345,39 @@
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
 
+  {{#- Object "argument_configdir": reads GRUB_CMDLINE_LINUX from drop-in .cfg files.
+       Pattern match: group 1 = everything inside the quotes.
+       Numeric:       group 1 = digits after ARG_NAME=, so the state can compare as int. -#}}
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir" version="1">
     <ind:filepath operation="pattern match">/etc/default/grub.d/[^/]+\.cfg</ind:filepath>
+  {{% if numeric_comparison %}}
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX=".*{{{ ESCAPED_ARG_NAME }}}=(\d+).*"$</ind:pattern>
+  {{% else %}}
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  {{#- Object "argument_default_configdir": same as above but for GRUB_CMDLINE_LINUX_DEFAULT. -#}}
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir"
   version="1">
     <ind:filepath>/etc/default/grub.d/*.cfg</ind:filepath>
+  {{% if numeric_comparison %}}
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT=".*{{{ ESCAPED_ARG_NAME }}}=(\d+).*"$</ind:pattern>
+  {{% else %}}
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{%- endif %}}
+{{% endif %}}
 
-{{%- if system_with_kernel_options_in_grubenv or system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
-{{%- macro test_and_object_for_kernel_options_grub_env(base_name, path) %}}
+{{#- 4d. grubenv — GRUB environment block (rhel8, ol8)
+     Macro generates a test+object pair; called once for BIOS, optionally again for UEFI.
+     Pattern match: ^kernelopts=(.*)$             →  group 1 = full kernelopts value.
+     Numeric:       ^kernelopts=.*ARG_NAME=(\d+)  →  group 1 = digits only, no $ anchor. -#}}
+{{% if system_with_kernel_options_in_grubenv or system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
+  {{%- macro test_and_object_for_kernel_options_grub_env(base_name, path) %}}
+  {{#- Test: check kernelopts line in grubenv at the given path. -#}}
   <ind:textfilecontent54_test id="test_{{{ base_name }}}"
   comment="check for kernel command line parameters {{{ ARG_NAME_VALUE }}} in {{{ path }}} for all kernels"
   check="all" check_existence="all_exist" version="1">
@@ -218,43 +385,72 @@
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
 
+  {{#- Object: reads grubenv's "kernelopts=" line.
+       Pattern match: ^kernelopts=(.*)$             →  captures everything after "kernelopts=".
+       Numeric:       ^kernelopts=.*ARG_NAME=(\d+)  →  captures digits only; no $ anchor
+                      because the arg may appear mid-line. -#}}
   <ind:textfilecontent54_object id="object_{{{ base_name }}}"
   version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
+  {{% if numeric_comparison %}}
+    <ind:pattern operation="pattern match">^kernelopts=.*{{{ ESCAPED_ARG_NAME }}}=(\d+)</ind:pattern>
+  {{% else %}}
     <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{%- endmacro %}}
+  {{%- endmacro %}}
 
-{{{ test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_grub_env", grub2_boot_path ~ "/grubenv") }}}
-{{% if system_with_bios_and_uefi_support -%}}
-{{{ test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_grub_env_uefi", grub2_uefi_boot_path ~ "/grubenv") }}}
-{{%- endif %}}
-{{%- endif %}}
+  {{{- test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_grub_env", grub2_boot_path ~ "/grubenv") }}}
+  {{%- if system_with_bios_and_uefi_support -%}}
+  {{{- test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_grub_env_uefi", grub2_uefi_boot_path ~ "/grubenv") }}}
+  {{%- endif %}}
+{{% endif %}}
 
-{{%- if system_with_expanded_kernel_options_in_loader_entries %}}
-    <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
-                                comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
-                                check="all" check_existence="all_exist" version="1">
-      <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" />
-      <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-    </ind:textfilecontent54_test>
+{{#- 4e. BLS entries — /boot/loader/entries/*.conf (rhel9, rhel10, fedora, ol9)
+     Modern BLS layout: each *.conf has an "options ..." line with kernel args.
+     check="all" + check_existence="all_exist" — every non-rescue entry must match.
+     Pattern match: ^options (.*)$             →  group 1 = entire kernel command line.
+     Numeric:       ^options .*ARG_NAME=(\d+)  →  group 1 = digits only. -#}}
+{{% if system_with_expanded_kernel_options_in_loader_entries %}}
+  {{#- Test "entries": every non-rescue BLS entry must pass the state check. -#}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
+  comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" />
+    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
+  </ind:textfilecontent54_test>
 
+  {{#- Object "obj_entries": scans every *.conf in /boot/loader/entries/.
+       Pattern match: ^options (.*)$  →  wide capture; state checks for the arg token.
+       Numeric:       ^options .*ESCAPED_ARG_NAME=(\d+)  →  narrow capture; entries without
+                      the arg produce no item and are invisible to the test. -#}}
   <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" version="1">
     <ind:path>/boot/loader/entries/</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+  {{% if numeric_comparison %}}
+    <ind:pattern operation="pattern match">^options .*{{{ ESCAPED_ARG_NAME }}}=(\d+)</ind:pattern>
+  {{% else %}}
     <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_grub2_rescue_entry_for_{{{ _RULE_ID }}}</filter>
   </ind:textfilecontent54_object>
 
+  {{#- Filter state: excludes filenames matching *rescue.conf from the object results. -#}}
   <ind:textfilecontent54_state id="state_grub2_rescue_entry_for_{{{ _RULE_ID }}}" version="1">
     <ind:filename operation="pattern match">.*rescue\.conf$</ind:filename>
   </ind:textfilecontent54_state>
-{{%- endif %}}
+{{% endif %}}
 
-{{%- if system_with_expanded_kernel_options_in_grub_cfg %}}
-{{%- macro test_and_object_for_kernel_options_grub_cfg(base_name, path) %}}
+{{#- 4f. grub.cfg — legacy GRUB config (ol7, Ubuntu)
+     Macro generates test+object pair; called once for BIOS, optionally again for UEFI.
+     ol7/Ubuntu regex: ^.*/vmlinuz.*(root=.*)$  →  captures from "root=" onward.
+     ol7/Ubuntu numeric: ^.*/vmlinuz.*ARG_NAME=(\d+)  →  digits only.
+     Other: ^set default_kernelopts=(.*)$  (or numeric variant). -#}}
+{{% if system_with_expanded_kernel_options_in_grub_cfg %}}
+  {{%- macro test_and_object_for_kernel_options_grub_cfg(base_name, path) %}}
+  {{#- Test: check kernel boot line in grub.cfg at the given path. -#}}
   <ind:textfilecontent54_test id="test_{{{ base_name }}}"
   comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} in {{{ path }}} for all kernels"
   check="all" check_existence="all_exist" version="1">
@@ -262,24 +458,39 @@
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
 
+  {{#- Object: reads grub.cfg; pattern depends on product and comparison mode. -#}}
   <ind:textfilecontent54_object id="object_{{{ base_name }}}"
   version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
-    {{% if product in ["ol7"] or 'ubuntu' in product %}}
+  {{% if product in ["ol7"] or 'ubuntu' in product %}}
+    {{% if numeric_comparison %}}
+      <ind:pattern operation="pattern match">^.*/vmlinuz.*{{{ ESCAPED_ARG_NAME }}}=(\d+)</ind:pattern>
+    {{% else %}}
       <ind:pattern operation="pattern match">^.*/vmlinuz.*(root=.*)$</ind:pattern>
+    {{% endif %}}
+  {{% else %}}
+    {{% if numeric_comparison %}}
+      <ind:pattern operation="pattern match">^set default_kernelopts=.*{{{ ESCAPED_ARG_NAME }}}=(\d+)</ind:pattern>
     {{% else %}}
       <ind:pattern operation="pattern match">^set default_kernelopts=(.*)$</ind:pattern>
     {{% endif %}}
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{%- endmacro %}}
+  {{%- endmacro %}}
 
-{{{ test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_grub_cfg", grub2_boot_path ~ "/grub.cfg") }}}
-{{% if system_with_bios_and_uefi_support -%}}
-{{{ test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_grub_cfg_uefi", grub2_uefi_boot_path ~ "/grub.cfg") }}}
-{{%- endif %}}
-{{%- endif %}}
+  {{{- test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_grub_cfg", grub2_boot_path ~ "/grub.cfg") }}}
+  {{%- if system_with_bios_and_uefi_support -%}}
+  {{{- test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_grub_cfg_uefi", grub2_uefi_boot_path ~ "/grub.cfg") }}}
+  {{%- endif %}}
+{{% endif %}}
 
+{{#- 4g. State "$kernelopts detection" (RHEL8 only): matches options lines containing
+     the $kernelopts variable reference — meaning the real args live in grubenv.
+     Regex: ^(?:.*\s)?\$kernelopts(?:\s.*)?$
+     (?:.*\s)?       — optional: preceding args + whitespace (word boundary)
+     \$kernelopts    — literal "$kernelopts" (the $ is regex-escaped)
+     (?:\s.*)?$      — optional: whitespace + trailing args -#}}
 {{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts"
   version="1">
@@ -287,11 +498,44 @@
   </ind:textfilecontent54_state>
 {{% endif %}}
 
-{{% if not ARG_VARIABLE %}}
+{{#- 5. Shared state & variables: branched by (numeric_comparison, ARG_VARIABLE).
+     All non-bootc tests reference the same state ID: state_grub2_{SANITIZED_ARG_NAME}_argument.
+     Each branch defines a state; some also declare external/local variables. -#}}
+
+{{#- 5a. State (numeric mode): captured (\d+) compared as integer.
+     With ARG_VARIABLE → var_ref (XCCDF variable injected at scan time via check-export).
+     With ARG_VALUE    → literal integer baked in.
+     external_variable declares the XCCDF variable so OVAL knows about it. -#}}
+{{% if numeric_comparison %}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
+  version="1">
+  {{% if ARG_VARIABLE %}}
+    <ind:subexpression datatype="int" operation="{{{ OPERATION }}}"
+        var_ref="{{{ ARG_VARIABLE }}}" />
+  {{% else %}}
+    <ind:subexpression datatype="int" operation="{{{ OPERATION }}}">{{{ ARG_VALUE }}}</ind:subexpression>
+  {{% endif %}}
+  </ind:textfilecontent54_state>
+  {{% if ARG_VARIABLE %}}
+  <external_variable comment="Variable for {{{ ARG_NAME }}}"
+      datatype="int" id="{{{ ARG_VARIABLE }}}" version="1" />
+  {{% endif %}}
+{{#- 5b. State (pattern match, literal value): regex checks the arg is a
+     space-delimited token in the captured line.
+     Regex: ^(?:.*\s)?ESCAPED_ARG_NAME_VALUE(?:\s.*)?$
+     (?:.*\s)?  — optional preceding args + whitespace (acts as word boundary)
+     ARG=VALUE  — literal match (dots escaped)
+     (?:\s.*)?$ — optional trailing args -#}}
+{{% elif not ARG_VARIABLE %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   version="1">
     <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
+{{#- 5c. State (pattern match, XCCDF variable): regex built at scan time via <concat>.
+     <literal_component> provides the regex skeleton; <variable_component> splices in
+     the variable's value.  IS_SUBSTRING="true" adds \S* pads around the value for
+     substring matching (e.g. slub_debug on ol8).
+     external_variable declares the XCCDF variable (datatype="string" here). -#}}
 {{% else %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   version="1">
@@ -303,13 +547,13 @@
   datatype="string" version="1">
     <concat>
       <literal_component>^(?:.*\s)?{{{ ARG_NAME }}}=</literal_component>
-      {{% if IS_SUBSTRING == "true" %}}
+    {{% if IS_SUBSTRING == "true" %}}
       <literal_component>\S*</literal_component>
-      {{% endif %}}
+    {{% endif %}}
       <variable_component var_ref="{{{ ARG_VARIABLE }}}" />
-      {{% if IS_SUBSTRING == "true" %}}
+    {{% if IS_SUBSTRING == "true" %}}
       <literal_component>\S*</literal_component>
-      {{% endif %}}
+    {{% endif %}}
       <literal_component>(?:\s.*)?$</literal_component>
     </concat>
   </local_variable>
@@ -317,24 +561,52 @@
   <external_variable comment="Variable defining the value the argument should have" datatype="string" id="{{{ ARG_VARIABLE }}}" version="1" />
 {{% endif %}}
 
+{{#- 6. bootc / RHEL Image Mode (rhel9, rhel10): /usr/lib/bootc/kargs.d/*.toml
+     TOML format: kargs = ["arg1=val1", "arg2=val2", ...]
+     Separate test, object, and state (IDs suffixed with _usr_lib_bootc_kargs_d).
+     The TOML double quotes around each arg act as natural word boundaries. -#}}
 {{% if bootable_containers_supported == "true" %}}
+  {{#- Test "bootc": at least one .toml file must contain the arg. -#}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d"
                               comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
                               check="at least one" check_existence="at_least_one_exists" version="1">
     <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
   </ind:textfilecontent54_test>
+  {{#- Object "bootc": scans *.toml files in /usr/lib/bootc/kargs.d/.
+       Pattern match: ^kargs = \[([^\]]+)\]$                     →  group 1 = bracketed content.
+       Numeric:       ^kargs = \[.*"ESCAPED_ARG_NAME=(\d+)".*\]$  →  group 1 = digits only.
+                      Quotes around the arg in TOML prevent substring false positives. -#}}
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
     <ind:path>/usr/lib/bootc/kargs.d/</ind:path>
     <ind:filename operation="pattern match">^.*\.toml$</ind:filename>
+  {{% if numeric_comparison %}}
+    <ind:pattern operation="pattern match">^kargs = \[.*"{{{ ESCAPED_ARG_NAME }}}=(\d+)".*\]$</ind:pattern>
+  {{% else %}}
     <ind:pattern operation="pattern match">^kargs = \[([^\]]+)\]$</ind:pattern>
+  {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{% if not ARG_VARIABLE %}}
+  {{#- bootc states: same three-way branch as section 5 but with bootc-specific IDs
+       and TOML-adapted patterns (values are wrapped in double quotes). -#}}
+  {{#- bootc state (numeric): compare captured (\d+) as integer. -#}}
+  {{%- if numeric_comparison %}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
+    {{% if ARG_VARIABLE %}}
+    <ind:subexpression datatype="int" operation="{{{ OPERATION }}}"
+        var_ref="{{{ ARG_VARIABLE }}}" />
+    {{% else %}}
+    <ind:subexpression datatype="int" operation="{{{ OPERATION }}}">{{{ ARG_VALUE }}}</ind:subexpression>
+    {{% endif %}}
+  </ind:textfilecontent54_state>
+  {{#- bootc state (pattern match, literal): check "ARG_NAME_VALUE" appears in TOML array.
+       Regex: ^.*"ESCAPED_ARG_NAME_VALUE".*$  →  quotes provide word boundaries. -#}}
+  {{%- elif not ARG_VARIABLE %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
     <ind:subexpression operation="pattern match">^.*"{{{ ESCAPED_ARG_NAME_VALUE }}}".*$</ind:subexpression>
   </ind:textfilecontent54_state>
-{{% else %}}
+  {{#- bootc state (pattern match, variable): runtime regex via <concat> with TOML quotes. -#}}
+  {{%- else %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
     <ind:subexpression operation="pattern match" var_ref="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}_bootc_kargs" />
   </ind:textfilecontent54_state>
@@ -344,19 +616,19 @@
   datatype="string" version="1">
     <concat>
       <literal_component>^.*"{{{ ARG_NAME }}}=</literal_component>
-      {{% if IS_SUBSTRING == "true" %}}
+    {{% if IS_SUBSTRING == "true" %}}
       <literal_component>\S*</literal_component>
-      {{% endif %}}
+    {{% endif %}}
       <variable_component var_ref="{{{ ARG_VARIABLE }}}" />
-      {{% if IS_SUBSTRING == "true" %}}
+    {{% if IS_SUBSTRING == "true" %}}
       <literal_component>\S*</literal_component>
-      {{% endif %}}
+    {{% endif %}}
       <literal_component>".*$</literal_component>
     </concat>
   </local_variable>
 
   <external_variable comment="Variable defining the value the argument should have" datatype="string" id="{{{ ARG_VARIABLE }}}" version="1" />
-{{% endif %}}
+  {{%- endif %}}
 {{% endif %}}
 
 </def-group>
