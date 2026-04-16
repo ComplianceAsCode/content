@@ -1,5 +1,6 @@
 ---
-disable-model-invocation: true
+name: find-rule
+description: Search for existing rules that match a given requirement text. Identify rules that implement a specific control.
 ---
 
 Search for existing rules that match the following requirement:
