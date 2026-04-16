@@ -43,5 +43,6 @@ selections:
     # RHEL-09-215025
     - '!package_nfs-utils_removed'
 
-    # locking of idle sessions is handled by screensaver when GUI is present, the following rule is therefore redundant
+    # locking of idle sessions is handled by screensaver when GUI is present,
+    # the following rule is therefore redundant
     - '!logind_session_timeout'
