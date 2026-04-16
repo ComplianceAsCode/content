@@ -11,17 +11,17 @@ Run Automatus tests for a ComplianceAsCode security rule.
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 ## Phase 1: Validate Rule Exists
 
-1. **Find the rule** using `mcp__content-mcp__get_rule_details` with `rule_id=$ARGUMENTS`:
+1. **Find the rule** using `mcp__content-agent__get_rule_details` with `rule_id=$ARGUMENTS`:
    - This returns the full rule metadata including template info, CCE identifiers, remediation types, and file location.
-   - If the rule is not found, also use `mcp__content-mcp__search_rules` with `query=$ARGUMENTS` to check for similar rule IDs.
+   - If the rule is not found, also use `mcp__content-agent__search_rules` with `query=$ARGUMENTS` to check for similar rule IDs.
    - **Fallback**: Use `Glob` to find `**/$ARGUMENTS/rule.yml`, then read the file to extract metadata. For similar rule search, use `Grep` to search for `$ARGUMENTS` across rule.yml files.
 
 2. **If rule not found**:
-   - Use `mcp__content-mcp__list_templates` to check if it's a template name instead.
+   - Use `mcp__content-agent__list_templates` to check if it's a template name instead.
    **Fallback**: Run `ls shared/templates/` to check for template names.
    - Inform user and exit if not found
 
@@ -98,11 +98,11 @@ Store the mapping of product → VM name for Phase 5.
 ## Phase 4: Verify Prerequisites
 
 1. **Check for existing datastreams**:
-   Use `mcp__content-mcp__list_built_products` to see which products have been built.
+   Use `mcp__content-agent__list_built_products` to see which products have been built.
    **Fallback**: Run `ls build/ssg-*-ds.xml 2>/dev/null` to list built datastreams.
 
 2. **For each selected product**, check if datastream exists and get details:
-   Use `mcp__content-mcp__get_datastream_info` with `product=<product>` to verify the datastream exists and get its details.
+   Use `mcp__content-agent__get_datastream_info` with `product=<product>` to verify the datastream exists and get its details.
    **Fallback**: Run `ls -la build/ssg-<product>-ds.xml` to check if the datastream exists.
 
 3. **Build datastreams if needed**:

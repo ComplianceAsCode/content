@@ -11,7 +11,7 @@ This skill orchestrates `/inspect-control` for setup and `/map-requirement` logi
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 **Without MCP server**: Cross-framework similarity search is unavailable. Candidate rules will be found by keyword search only, which may miss semantically similar but differently-worded requirements.
 
@@ -27,16 +27,16 @@ Examples:
 
 1. **Parse arguments**: Extract `control_id`, optional `--product`, and optional `--policy` from `$ARGUMENTS`.
 
-2. **Load control stats**: Call `mcp__content-mcp__get_control_stats` with `control_id`.
-   - If not found, call `mcp__content-mcp__list_controls` and present options via `AskUserQuestion`.
+2. **Load control stats**: Call `mcp__content-agent__get_control_stats` with `control_id`.
+   - If not found, call `mcp__content-agent__list_controls` and present options via `AskUserQuestion`.
    - **Fallback**: Read `controls/<control_id>.yml` or `products/**/controls/<control_id>.yml`. Count requirements by status manually. List controls with `ls controls/*.yml` and `ls products/*/controls/*.yml`.
 
 3. **If no `--product` specified**, discover available products and ask user via `AskUserQuestion`:
-   - Run `ls products/` (or call `mcp__content-mcp__list_products`) to get the list of available products
+   - Run `ls products/` (or call `mcp__content-agent__list_products`) to get the list of available products
    - "Which product are you mapping rules for?"
    - Options: present the most common products from the discovered list + Other
 
-4. **Check build artifacts**: Call `mcp__content-mcp__list_built_products`.
+4. **Check build artifacts**: Call `mcp__content-agent__list_built_products`.
    - If the target product is NOT in the built list, ask the user via `AskUserQuestion`:
      - "Product '{product}' has not been built yet. Rule search works best with build artifacts (expanded Jinja templates). Build it now?"
      - Options:
@@ -60,7 +60,7 @@ Examples:
 6. **If no `--policy` specified**, inform the user:
    > **Tip**: You can enrich mapping with the original security policy document by adding `--policy <path>` (supports PDF, Markdown, HTML). This provides full policy context for each requirement, improving cross-framework matching accuracy.
 
-7. **Get work queue**: Call `mcp__content-mcp__list_unmapped_requirements` with `control_id`.
+7. **Get work queue**: Call `mcp__content-agent__list_unmapped_requirements` with `control_id`.
    **Fallback**: Read the control YAML and filter requirements where `status` is `pending` or `rules:` is empty/missing.
 
 8. **Ask user scope** via `AskUserQuestion`:
@@ -93,7 +93,7 @@ Display:
 
 If `--policy` was provided:
 1. **Infer document type** from the file extension (`.md` → `markdown`, `.pdf` → `pdf`, `.html` → `html`, otherwise → `text`)
-2. Call `mcp__content-mcp__parse_policy_document` with `source`, `document_type`, and `requirement_id` for the current requirement.
+2. Call `mcp__content-agent__parse_policy_document` with `source`, `document_type`, and `requirement_id` for the current requirement.
    **Fallback**: For markdown/text, read the file and search for the requirement ID. For PDF, inform user that PDF parsing requires the MCP server.
 3. If sections returned, display the policy context:
    ```
@@ -105,7 +105,7 @@ If `--policy` was provided:
 
 #### Step 2b: Cross-Framework Search
 
-Call `mcp__content-mcp__find_similar_requirements` with:
+Call `mcp__content-agent__find_similar_requirements` with:
 - `requirement_text`: if `policy_text` is available, use it; otherwise use the requirement's title + " " + description
 - `exclude_control_id`: current control_id
 - `max_results`: 10
@@ -125,7 +125,7 @@ Extract the union of all rules as cross-framework candidates.
 Search for candidate rules using rendered build artifacts (Jinja-expanded, product-specific):
 
 1. Extract 3-5 key terms from the requirement title and description.
-2. For each key term, call `mcp__content-mcp__search_rendered_content` with:
+2. For each key term, call `mcp__content-agent__search_rendered_content` with:
    - `query`: the key term
    - `product`: the target product from Phase 1
    - `limit`: 15
@@ -133,7 +133,7 @@ Search for candidate rules using rendered build artifacts (Jinja-expanded, produ
 
 3. Deduplicate results across all term searches. Combine with cross-framework candidates from Step 2b.
 
-4. For each candidate rule, use `mcp__content-mcp__get_rendered_rule` (or `get_rule_details`) to read its title and description. Reason about which rules best match the requirement semantically.
+4. For each candidate rule, use `mcp__content-agent__get_rendered_rule` (or `get_rule_details`) to read its title and description. Reason about which rules best match the requirement semantically.
 
 5. Present the top candidates in a table:
    ```
@@ -146,7 +146,7 @@ Search for candidate rules using rendered build artifacts (Jinja-expanded, produ
 
 #### Step 2d: Product Availability Check
 
-Since `search_rendered_content` only returns rules present in the target product's build, all search results are already confirmed available. For cross-framework candidates (from Step 2b) that did NOT appear in the rendered search, call `mcp__content-mcp__get_rule_product_availability` to verify availability.
+Since `search_rendered_content` only returns rules present in the target product's build, all search results are already confirmed available. For cross-framework candidates (from Step 2b) that did NOT appear in the rendered search, call `mcp__content-agent__get_rule_product_availability` to verify availability.
 **Fallback**: Check each rule's `rule.yml` for `cce@<product>` entries and grep for the rule ID in target product profiles/controls.
 
 Flag rules NOT available for the target product. Assess portability:
@@ -173,9 +173,9 @@ Flag rules NOT available for the target product. Assess portability:
 
 #### Step 2f: Write Selection
 
-- **If rules selected**: Call `mcp__content-mcp__update_requirement_rules` with `control_id`, `requirement_id`, `rules`, and appropriate `status`.
+- **If rules selected**: Call `mcp__content-agent__update_requirement_rules` with `control_id`, `requirement_id`, `rules`, and appropriate `status`.
   **Fallback**: Find and edit the requirement's YAML file directly using `Edit` tool.
-- **If not applicable**: Call `mcp__content-mcp__update_requirement_rules` with empty rules and `status="not_applicable"`.
+- **If not applicable**: Call `mcp__content-agent__update_requirement_rules` with empty rules and `status="not_applicable"`.
   **Fallback**: Edit the requirement's YAML file to set `status: not_applicable` and `rules: []`.
 - **If create new rule**: Add to the "new rules needed" list for Phase 3.
 - **If skipped**: Record as skipped, move to next.
@@ -189,7 +189,7 @@ For requirements where the author chose "Create new rule":
 1. For each gap requirement, use LLM analysis to:
    - Decompose the requirement into atomic checks (one config change per rule)
    - Suggest rule IDs following naming conventions (lowercase, underscores)
-   - Suggest which template might apply (call `mcp__content-mcp__list_templates` and match; **Fallback**: `ls shared/templates/`)
+   - Suggest which template might apply (call `mcp__content-agent__list_templates` and match; **Fallback**: `ls shared/templates/`)
    - Suggest severity based on the requirement
 
 2. Present the decomposition:
@@ -234,7 +234,7 @@ Present a complete summary of the mapping session:
 ### Updated Stats
 ```
 
-Call `mcp__content-mcp__get_control_stats` again to show the updated coverage.
+Call `mcp__content-agent__get_control_stats` again to show the updated coverage.
 **Fallback**: Re-read the control YAML and recount requirements by status.
 ```
 | Status   | Before | After |

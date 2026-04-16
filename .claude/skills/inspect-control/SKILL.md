@@ -11,14 +11,14 @@ Analyze a control file and report its current state: how many requirements are m
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 ## Phase 1: Validate and Load Control File
 
 1. **Parse arguments**: Extract control_id from `$ARGUMENTS`.
 
-2. **Validate control exists**: Call `mcp__content-mcp__get_control_stats` with `control_id=$ARGUMENTS`.
-   - If the tool returns an error (control not found), call `mcp__content-mcp__list_controls` and present available control files via `AskUserQuestion`:
+2. **Validate control exists**: Call `mcp__content-agent__get_control_stats` with `control_id=$ARGUMENTS`.
+   - If the tool returns an error (control not found), call `mcp__content-agent__list_controls` and present available control files via `AskUserQuestion`:
      - "Control file '$ARGUMENTS' not found. Which control file do you want to inspect?"
      - Options: top 4 most relevant from the list + Other
    - **Fallback**: Look for `controls/$ARGUMENTS.yml` or `products/**/controls/$ARGUMENTS.yml`. If not found, run `ls controls/*.yml` and `ls products/*/controls/*.yml` to list available control files. To compute stats, read the control YAML and count requirements grouped by `status` field.
@@ -51,7 +51,7 @@ Only show status rows that have non-zero counts.
 
 ## Phase 3: List Unmapped Requirements
 
-1. Call `mcp__content-mcp__list_unmapped_requirements` with `control_id` and default `status_filter` (pending).
+1. Call `mcp__content-agent__list_unmapped_requirements` with `control_id` and default `status_filter` (pending).
    **Fallback**: Read the control YAML and filter requirements where `status` is `pending` or where `rules:` is empty/missing.
 
 2. Present the unmapped work queue:
@@ -86,7 +86,7 @@ Present actionable next steps based on the analysis:
 
 - To map all unmapped requirements interactively: `/map-controls {control_id} --product <product>`
 - To map a single requirement: `/map-requirement {control_id} <requirement_id> --product <product>`
-- To view full control details: use `mcp__content-mcp__get_control_details`
+- To view full control details: use `mcp__content-agent__get_control_details`
 
 **Tip**: If you have the source security policy document (PDF, Markdown, or HTML), pass it with `--policy <path>` to enrich mapping with the original requirement text. This improves cross-framework matching by using the full policy context instead of just the control file's summary. Example:
   `/map-controls {control_id} --product <product> --policy security_policies/<file>`

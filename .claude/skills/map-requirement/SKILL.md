@@ -9,7 +9,7 @@ Map rules to a single requirement in a control file. This is the atomic unit of 
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 **Without MCP server**: Cross-framework similarity search is unavailable. Candidate rules will be found by keyword search only, which may miss semantically similar but differently-worded requirements.
 
@@ -26,11 +26,11 @@ Examples:
 1. **Parse arguments**: Extract `control_id`, `requirement_id`, `--product` flag, and optional `--policy` flag from `$ARGUMENTS`.
 
 2. **If no `--product` specified**, discover available products and ask the user via `AskUserQuestion`:
-   - Run `ls products/` (or call `mcp__content-mcp__list_products`) to get the list of available products
+   - Run `ls products/` (or call `mcp__content-agent__list_products`) to get the list of available products
    - "Which product are you mapping rules for?"
    - Options: present the most common products from the discovered list + Other
 
-3. **Check build artifacts**: Call `mcp__content-mcp__list_built_products`.
+3. **Check build artifacts**: Call `mcp__content-agent__list_built_products`.
    - If the target product is NOT in the built list, ask the user via `AskUserQuestion`:
      - "Product '{product}' has not been built yet. Rule search works best with build artifacts (expanded Jinja templates). Build it now?"
      - Options:
@@ -39,8 +39,8 @@ Examples:
    - If user chooses to build, invoke the `build-product` skill: `Skill(skill="build-product", args="{product} --datastream-only")`. Wait for the build to complete before continuing.
    - **Fallback**: Check if `build/{product}/rules/` directory exists. If not, offer the build prompt above.
 
-4. **Load the requirement**: Call `mcp__content-mcp__get_control_details` with `control_id`.
-   - If control not found, call `mcp__content-mcp__list_controls` and show options.
+4. **Load the requirement**: Call `mcp__content-agent__get_control_details` with `control_id`.
+   - If control not found, call `mcp__content-agent__list_controls` and show options.
    - Find the requirement matching `requirement_id` in the controls list.
    - If requirement not found, list available requirement IDs and ask user to pick.
    - **Fallback**: Read the control YAML directly from `controls/<control_id>.yml` or `products/<product>/controls/<control_id>.yml`. If the file has `controls_dir:`, read individual requirement files from that directory. To list controls, run `ls controls/*.yml` and `ls products/*/controls/*.yml`.
@@ -67,7 +67,7 @@ If `--policy` was specified:
    - `.html` → `html`
    - Otherwise → `text`
 
-2. **Call `mcp__content-mcp__parse_policy_document`** with:
+2. **Call `mcp__content-agent__parse_policy_document`** with:
    - `source`: the policy path
    - `document_type`: inferred from extension
    - `requirement_id`: the requirement ID from Phase 1
@@ -89,7 +89,7 @@ Execute steps 2a-2c to build a candidate list from multiple sources.
 
 ### Step 2a: Cross-Framework Search
 
-Call `mcp__content-mcp__find_similar_requirements` with:
+Call `mcp__content-agent__find_similar_requirements` with:
 - `requirement_text`: if `policy_text` is available, use it; otherwise use the requirement's title + " " + description
 - `exclude_control_id`: current control_id
 - `max_results`: 10
@@ -111,7 +111,7 @@ Extract the union of all rules from similar requirements as "cross-framework can
 Search for candidate rules using rendered build artifacts (Jinja-expanded, product-specific):
 
 1. Extract 3-5 key terms from the requirement title and description.
-2. For each key term, call `mcp__content-mcp__search_rendered_content` with:
+2. For each key term, call `mcp__content-agent__search_rendered_content` with:
    - `query`: the key term
    - `product`: the target product from Phase 1
    - `limit`: 15
@@ -119,7 +119,7 @@ Search for candidate rules using rendered build artifacts (Jinja-expanded, produ
 
 3. Deduplicate results across all term searches. Combine with cross-framework candidates from Step 2a.
 
-4. For each candidate rule, use `mcp__content-mcp__get_rendered_rule` (or `get_rule_details`) to read its title and description. Reason about which rules best match the requirement:
+4. For each candidate rule, use `mcp__content-agent__get_rendered_rule` (or `get_rule_details`) to read its title and description. Reason about which rules best match the requirement:
    - Look for rules whose title/description semantically matches the requirement
    - Prioritize rules that also appeared in Step 2a cross-framework results
    - Consider rule severity alignment with the requirement's intent
@@ -136,7 +136,7 @@ Search for candidate rules using rendered build artifacts (Jinja-expanded, produ
 
 ### Step 2c: Product Availability Check
 
-Since `search_rendered_content` only returns rules present in the target product's build, all search results are already confirmed available. For cross-framework candidates (from Step 2a) that did NOT appear in the rendered search, call `mcp__content-mcp__get_rule_product_availability` to verify availability.
+Since `search_rendered_content` only returns rules present in the target product's build, all search results are already confirmed available. For cross-framework candidates (from Step 2a) that did NOT appear in the rendered search, call `mcp__content-agent__get_rule_product_availability` to verify availability.
 **Fallback**: For each rule, find its `rule.yml` and check the `identifiers:` section for `cce@<product>` entries. Also grep for the rule ID in `products/<target_product>/profiles/*.profile` and `products/<target_product>/controls/*.yml`.
 
 Flag rules that are NOT available for the target product:
@@ -148,7 +148,7 @@ Warning: Rule '{rule_id}' has identifiers for {other_products} but NOT for {targ
 For rules missing from the target product, use LLM judgment to assess portability:
 - If the rule uses a template (`template` is not None in get_rule_details), it's likely portable
 - If it has platform constraints mentioning specific products, note the constraint
-- Optionally call `mcp__content-mcp__get_rule_details` with `rendered_detail=full` and `product=<a product that has it>` to read the actual OVAL/remediation and assess whether it's product-specific
+- Optionally call `mcp__content-agent__get_rule_details` with `rendered_detail=full` and `product=<a product that has it>` to read the actual OVAL/remediation and assess whether it's product-specific
 
 ## Phase 3: Author Decision
 
@@ -173,7 +173,7 @@ Based on author's decision:
 
 ### If rules were selected (automated or partially_automated):
 
-1. Call `mcp__content-mcp__update_requirement_rules` with:
+1. Call `mcp__content-agent__update_requirement_rules` with:
    - `control_id`: the control file ID
    - `requirement_id`: the requirement ID
    - `rules`: the selected rule IDs
@@ -194,7 +194,7 @@ Based on author's decision:
 
 ### If marked not applicable:
 
-1. Call `mcp__content-mcp__update_requirement_rules` with:
+1. Call `mcp__content-agent__update_requirement_rules` with:
    - `control_id`: the control file ID
    - `requirement_id`: the requirement ID
    - `rules`: [] (empty list)
@@ -227,6 +227,6 @@ Next steps:
 
 ## Error Handling
 
-- If `update_requirement_rules` fails, display the error message and suggest the user manually edit the file. Use `mcp__content-mcp__get_requirement_file_path` to find the correct file, or **Fallback**: locate it by reading the control YAML's `controls_dir:` field or searching for the requirement in the inline `controls:` list.
+- If `update_requirement_rules` fails, display the error message and suggest the user manually edit the file. Use `mcp__content-agent__get_requirement_file_path` to find the correct file, or **Fallback**: locate it by reading the control YAML's `controls_dir:` field or searching for the requirement in the inline `controls:` list.
 - If rule search returns no results, rely only on cross-framework candidates from step 2a.
 - If no candidates are found from any source, inform the user and offer options: "Skip", "Enter rule IDs manually", "Create new rule (use /create-rule)".

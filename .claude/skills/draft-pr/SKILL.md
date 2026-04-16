@@ -9,7 +9,7 @@ Generate a pull request description for the current branch by analyzing commits 
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 ## Phase 1: Gather Branch Data
 
@@ -64,10 +64,10 @@ Look for product indicators:
 ### 2.3 Read Key Changed Files
 
 For significant changed files, use MCP functions to get structured metadata:
-- **Rules**: Use `mcp__content-mcp__get_rule_details` with the rule ID to get title, description, rationale, template, severity, references, and platform info
-- **Profiles**: Use `mcp__content-mcp__get_profile_details` with product and profile ID to get profile structure and rule selections
-- **Controls**: Use `mcp__content-mcp__get_control_details` to understand control framework structure
-- **Templates**: Use `mcp__content-mcp__get_template_schema` to get template parameter info
+- **Rules**: Use `mcp__content-agent__get_rule_details` with the rule ID to get title, description, rationale, template, severity, references, and platform info
+- **Profiles**: Use `mcp__content-agent__get_profile_details` with product and profile ID to get profile structure and rule selections
+- **Controls**: Use `mcp__content-agent__get_control_details` to understand control framework structure
+- **Templates**: Use `mcp__content-agent__get_template_schema` to get template parameter info
 
 **Fallback**: Read the files directly — `rule.yml`, `.profile`, control YAML, and template files in `shared/templates/<name>/`.
 
