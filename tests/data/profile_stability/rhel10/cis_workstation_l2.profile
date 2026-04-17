@@ -116,6 +116,7 @@ audit_rules_usergroup_modification_shadow
 audit_sudo_log_events
 auditd_data_disk_error_action
 auditd_data_disk_full_action
+auditd_data_retention_action_mail_acct
 auditd_data_retention_admin_space_left_action
 auditd_data_retention_max_log_file
 auditd_data_retention_max_log_file_action
@@ -335,6 +336,7 @@ package_net-snmp_removed
 package_nginx_removed
 package_openldap-clients_removed
 package_pam_pwquality_installed
+package_postfix_installed
 package_rsync_removed
 package_samba_removed
 package_sequoia-sq_installed
@@ -466,6 +468,7 @@ var_accounts_passwords_pam_faillock_unlock_time=900
 var_accounts_tmout=15_min
 var_accounts_user_umask=027
 var_audit_backlog_limit=8192
+var_auditd_action_mail_acct=root
 var_auditd_admin_space_left_action=cis_rhel10
 var_auditd_disk_error_action=cis_rhel10
 var_auditd_disk_full_action=cis_rhel10

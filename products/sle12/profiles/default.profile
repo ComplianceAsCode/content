@@ -33,7 +33,6 @@ selections:
     - sudo_vdsm_nopasswd
     - ntpd_configure_restrictions
     - fapolicyd_prevent_home_folder_access
-    - package_postfix_installed
     - audit_privileged_commands_poweroff
     - accounts_password_pam_unix_rounds_password_auth
     - sudoers_no_root_target

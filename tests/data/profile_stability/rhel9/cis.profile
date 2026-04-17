@@ -306,6 +306,7 @@ package_nftables_installed
 package_nginx_removed
 package_openldap-clients_removed
 package_pam_pwquality_installed
+package_postfix_installed
 package_rsync_removed
 package_samba_removed
 package_setroubleshoot_removed
