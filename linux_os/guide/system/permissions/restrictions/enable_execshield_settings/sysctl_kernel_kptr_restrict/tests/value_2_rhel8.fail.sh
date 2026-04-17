@@ -1,9 +1,5 @@
 #!/bin/bash
-{{% if product == 'rhel8' %}}
-# platform = Not Applicable
-{{% else %}}
-# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
-{{% endif %}}
+# platform = Red Hat Enterprise Linux 8
 
 # Clean sysctl config directories
 rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
