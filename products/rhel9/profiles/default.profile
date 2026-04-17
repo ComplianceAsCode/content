@@ -438,7 +438,6 @@ selections:
     - package_telnetd-ssl_removed
     - sebool_puppetmaster_use_db
     - audit_rules_successful_file_modification_ftruncate
-    - fapolicy_default_deny
     - dconf_gnome_disable_power_settings
     - sebool_mozilla_plugin_bind_unreserved_ports
     - package_MFEhiplsm_installed

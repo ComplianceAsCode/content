@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # This test verifies that the rule passes when /boot/efi is mounted with vfat filesystem
+# with the nosuid option set
 
 # packages = dosfstools
 

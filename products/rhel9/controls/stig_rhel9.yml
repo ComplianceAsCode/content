@@ -3,7 +3,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://www.cyber.mil/stigs/downloads/
-version: V2R7
+version: V2R8
 reference_type: stigid
 product: rhel9
 
@@ -38,7 +38,8 @@ controls:
     - id: RHEL-09-211015
       levels:
           - medium
-      title: RHEL 9 vendor packaged system security patches and updates must be installed and up to date.
+      title: RHEL 9 vendor packaged system security patches and updates must be installed and up to
+          date.
       rules:
           - security_patches_up_to_date
       status: automated
@@ -46,7 +47,8 @@ controls:
     - id: RHEL-09-211020
       levels:
           - medium
-      title: RHEL 9 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+      title: RHEL 9 must display the Standard Mandatory DOD Notice and Consent Banner before
+          granting
           local or remote access to the system via a command line user logon.
       rules:
           - banner_etc_issue
@@ -57,7 +59,8 @@ controls:
     - id: RHEL-09-211030
       levels:
           - medium
-      title: The graphical display manager must not be the default target on RHEL 9 unless approved.
+      title: The graphical display manager must not be the default target on RHEL 9 unless
+          approved.
       rules:
           - xwindows_runlevel_target
       status: automated
@@ -67,7 +70,9 @@ controls:
           - low
       title: RHEL 9 must enable the hardware random number generator entropy gatherer service.
       related_rules:
-          - service_rngd_enabled  # This rule is causing test failures, See https://github.com/ComplianceAsCode/content/pull/10153
+          - service_rngd_enabled
+          # This rule is causing test failures, See
+          # https://github.com/ComplianceAsCode/content/pull/10153
       status: pending
 
     - id: RHEL-09-211040
@@ -121,7 +126,8 @@ controls:
     - id: RHEL-09-212020
       levels:
           - high
-      title: RHEL 9 must require a unique superusers name upon booting into single-user and maintenance
+      title: RHEL 9 must require a unique superusers name upon booting into single-user and
+          maintenance
           modes.
       rules:
           - grub2_admin_username
@@ -218,7 +224,8 @@ controls:
     - id: RHEL-09-213030
       levels:
           - medium
-      title: RHEL 9 must enable kernel parameters to enforce discretionary access control on hardlinks.
+      title: RHEL 9 must enable kernel parameters to enforce discretionary access control on
+          hardlinks.
       rules:
           - sysctl_fs_protected_hardlinks
       status: automated
@@ -226,7 +233,8 @@ controls:
     - id: RHEL-09-213035
       levels:
           - medium
-      title: RHEL 9 must enable kernel parameters to enforce discretionary access control on symlinks.
+      title: RHEL 9 must enable kernel parameters to enforce discretionary access control on
+          symlinks.
       rules:
           - sysctl_fs_protected_symlinks
       status: automated
@@ -282,7 +290,8 @@ controls:
     - id: RHEL-09-213070
       levels:
           - medium
-      title: RHEL 9 must implement address space layout randomization (ASLR) to protect its memory from
+      title: RHEL 9 must implement address space layout randomization (ASLR) to protect its memory
+          from
           unauthorized code execution.
       rules:
           - sysctl_kernel_randomize_va_space
@@ -347,7 +356,8 @@ controls:
     - id: RHEL-09-213110
       levels:
           - medium
-      title: RHEL 9 must implement nonexecutable data to protect its memory from unauthorized code execution.
+      title: RHEL 9 must implement nonexecutable data to protect its memory from unauthorized code
+          execution.
       rules:
           - sysctl_kernel_exec_shield
       status: automated
@@ -371,7 +381,8 @@ controls:
     - id: RHEL-09-214015
       levels:
           - high
-      title: RHEL 9 must check the GPG signature of software packages originating from external software
+      title: RHEL 9 must check the GPG signature of software packages originating from external
+          software
           repositories before installation.
       rules:
           - ensure_gpgcheck_globally_activated
@@ -380,7 +391,8 @@ controls:
     - id: RHEL-09-214020
       levels:
           - high
-      title: RHEL 9 must check the GPG signature of locally installed software packages before installation.
+      title: RHEL 9 must check the GPG signature of locally installed software packages before
+          installation.
       rules:
           - ensure_gpgcheck_local_packages
       status: automated
@@ -396,7 +408,8 @@ controls:
     - id: RHEL-09-214030
       levels:
           - medium
-      title: RHEL 9 must be configured so that the cryptographic hashes of system files match vendor
+      title: RHEL 9 must be configured so that the cryptographic hashes of system files match
+          vendor
           values.
       related_rules:
           - rpm_verify_hashes  # Due to crypto policies this cannot be selected at this time
@@ -453,7 +466,8 @@ controls:
     - id: RHEL-09-215035
       levels:
           - medium
-      title: RHEL 9 must not install packages from the Extra Packages for Enterprise Linux (EPEL) repository.
+      title: RHEL 9 must not install packages from the Extra Packages for Enterprise Linux (EPEL)
+          repository.
       rules:
           - ensure_epel_repos_disabled
       status: automated
@@ -583,7 +597,8 @@ controls:
     - id: RHEL-09-231010
       levels:
           - medium
-      title: A separate RHEL 9 file system must be used for user home directories (such as /home or an
+      title: A separate RHEL 9 file system must be used for user home directories (such as /home or
+          an
           equivalent).
       rules:
           - partition_for_home
@@ -640,7 +655,8 @@ controls:
     - id: RHEL-09-231045
       levels:
           - medium
-      title: RHEL 9 must prevent device files from being interpreted on file systems that contain user
+      title: RHEL 9 must prevent device files from being interpreted on file systems that contain
+          user
           home directories.
       rules:
           - mount_option_home_nodev
@@ -649,7 +665,8 @@ controls:
     - id: RHEL-09-231050
       levels:
           - medium
-      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on file
+      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on
+          file
           systems that contain user home directories.
       rules:
           - mount_option_home_nosuid
@@ -658,7 +675,8 @@ controls:
     - id: RHEL-09-231055
       levels:
           - medium
-      title: RHEL 9 must prevent code from being executed on file systems that contain user home directories.
+      title: RHEL 9 must prevent code from being executed on file systems that contain user home
+          directories.
       rules:
           - mount_option_home_noexec
       status: automated
@@ -666,7 +684,8 @@ controls:
     - id: RHEL-09-231065
       levels:
           - medium
-      title: RHEL 9 must prevent special devices on file systems that are imported via Network File System
+      title: RHEL 9 must prevent special devices on file systems that are imported via Network File
+          System
           (NFS).
       rules:
           - mount_option_nodev_remote_filesystems
@@ -675,8 +694,8 @@ controls:
     - id: RHEL-09-231070
       levels:
           - medium
-      title: RHEL 9  must prevent code from being executed on file systems that are imported via Network
-          File System (NFS).
+      title: RHEL 9  must prevent code from being executed on file
+          systems that are imported via Network File System (NFS).
       rules:
           - mount_option_noexec_remote_filesystems
       status: automated
@@ -684,7 +703,8 @@ controls:
     - id: RHEL-09-231075
       levels:
           - medium
-      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on file
+      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on
+          file
           systems that are imported via Network File System (NFS).
       rules:
           - mount_option_nosuid_remote_filesystems
@@ -693,7 +713,8 @@ controls:
     - id: RHEL-09-231080
       levels:
           - medium
-      title: RHEL 9 must prevent code from being executed on file systems that are used with removable
+      title: RHEL 9 must prevent code from being executed on file systems that are used with
+          removable
           media.
       rules:
           - mount_option_noexec_removable_partitions
@@ -702,7 +723,8 @@ controls:
     - id: RHEL-09-231085
       levels:
           - medium
-      title: RHEL 9 must prevent special devices on file systems that are used with removable media.
+      title: RHEL 9 must prevent special devices on file systems that are used with removable
+          media.
       rules:
           - mount_option_nodev_removable_partitions
       status: automated
@@ -710,7 +732,8 @@ controls:
     - id: RHEL-09-231090
       levels:
           - medium
-      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on file
+      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on
+          file
           systems that are used with removable media.
       rules:
           - mount_option_nosuid_removable_partitions
@@ -727,7 +750,8 @@ controls:
     - id: RHEL-09-231100
       levels:
           - medium
-      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on the
+      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on
+          the
           /boot directory.
       rules:
           - mount_option_boot_nosuid
@@ -736,7 +760,8 @@ controls:
     - id: RHEL-09-231105
       levels:
           - medium
-      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on the
+      title: RHEL 9 must prevent files with the setuid and setgid bit set from being executed on
+          the
           /boot/efi directory.
       rules:
           - mount_option_boot_efi_nosuid
@@ -873,7 +898,8 @@ controls:
     - id: RHEL-09-231190
       levels:
           - high
-      title: RHEL 9 local disk partitions must implement cryptographic mechanisms to prevent unauthorized
+      title: RHEL 9 local disk partitions must implement cryptographic mechanisms to prevent
+          unauthorized
           disclosure or modification of all information that requires at rest protection.
       rules:
           - encrypt_partitions
@@ -969,7 +995,8 @@ controls:
     - id: RHEL-09-232050
       levels:
           - medium
-      title: All RHEL 9 local interactive user home directories must have mode 0750 or less permissive.
+      title: All RHEL 9 local interactive user home directories must have mode 0750 or less
+          permissive.
       rules:
           - file_permissions_home_directories
       status: automated
@@ -977,7 +1004,8 @@ controls:
     - id: RHEL-09-232055
       levels:
           - medium
-      title: RHEL 9 /etc/group file must have mode 0644 or less permissive to prevent unauthorized access.
+      title: RHEL 9 /etc/group file must have mode 0644 or less permissive to prevent unauthorized
+          access.
       rules:
           - file_permissions_etc_group
       status: automated
@@ -985,7 +1013,8 @@ controls:
     - id: RHEL-09-232060
       levels:
           - medium
-      title: RHEL 9 /etc/group- file must have mode 0644 or less permissive to prevent unauthorized access.
+      title: RHEL 9 /etc/group- file must have mode 0644 or less permissive to prevent unauthorized
+          access.
       rules:
           - file_permissions_backup_etc_group
       status: automated
@@ -993,7 +1022,8 @@ controls:
     - id: RHEL-09-232065
       levels:
           - medium
-      title: RHEL 9 /etc/gshadow file must have mode 0000 or less permissive to prevent unauthorized
+      title: RHEL 9 /etc/gshadow file must have mode 0000 or less permissive to prevent
+          unauthorized
           access.
       rules:
           - file_permissions_etc_gshadow
@@ -1002,7 +1032,8 @@ controls:
     - id: RHEL-09-232070
       levels:
           - medium
-      title: RHEL 9 /etc/gshadow- file must have mode 0000 or less permissive to prevent unauthorized
+      title: RHEL 9 /etc/gshadow- file must have mode 0000 or less permissive to prevent
+          unauthorized
           access.
       rules:
           - file_permissions_backup_etc_gshadow
@@ -1011,7 +1042,8 @@ controls:
     - id: RHEL-09-232075
       levels:
           - medium
-      title: RHEL 9 /etc/passwd file must have mode 0644 or less permissive to prevent unauthorized access.
+      title: RHEL 9 /etc/passwd file must have mode 0644 or less permissive to prevent unauthorized
+          access.
       rules:
           - file_permissions_etc_passwd
       status: automated
@@ -1019,7 +1051,8 @@ controls:
     - id: RHEL-09-232080
       levels:
           - medium
-      title: RHEL 9 /etc/passwd- file must have mode 0644 or less permissive to prevent unauthorized
+      title: RHEL 9 /etc/passwd- file must have mode 0644 or less permissive to prevent
+          unauthorized
           access.
       rules:
           - file_permissions_backup_etc_passwd
@@ -1028,7 +1061,8 @@ controls:
     - id: RHEL-09-232085
       levels:
           - medium
-      title: RHEL 9 /etc/shadow- file must have mode 0000 or less permissive to prevent unauthorized
+      title: RHEL 9 /etc/shadow- file must have mode 0000 or less permissive to prevent
+          unauthorized
           access.
       rules:
           - file_permissions_backup_etc_shadow
@@ -1303,7 +1337,8 @@ controls:
     - id: RHEL-09-232240
       levels:
           - medium
-      title: All RHEL 9 world-writable directories must be owned by root, sys, bin, or an application
+      title: All RHEL 9 world-writable directories must be owned by root, sys, bin, or an
+          application
           user.
       rules:
           - dir_perms_world_writable_system_owned
@@ -1336,7 +1371,8 @@ controls:
     - id: RHEL-09-232260
       levels:
           - medium
-      title: RHEL 9 must be configured so that all system device files are correctly labeled to prevent
+      title: RHEL 9 must be configured so that all system device files are correctly labeled to
+          prevent
           unauthorized modification.
       rules:
           - selinux_all_devicefiles_labeled
@@ -1369,7 +1405,8 @@ controls:
     - id: RHEL-09-251020
       levels:
           - medium
-      title: A RHEL 9 firewall must employ a deny-all, allow-by-exception policy for allowing connections
+      title: A RHEL 9 firewall must employ a deny-all, allow-by-exception policy for allowing
+          connections
           to other systems.
       rules:
           - configured_firewalld_default_deny
@@ -1378,7 +1415,8 @@ controls:
     - id: RHEL-09-251030
       levels:
           - medium
-      title: RHEL 9 must protect against or limit the effects of denial-of-service (DoS) attacks by ensuring
+      title: RHEL 9 must protect against or limit the effects of denial-of-service (DoS) attacks by
+          ensuring
           rate-limiting measures on impacted network interfaces are implemented.
       rules:
           - firewalld-backend
@@ -1387,8 +1425,10 @@ controls:
     - id: RHEL-09-251035
       levels:
           - medium
-      title: RHEL 9 must be configured to prohibit or restrict the use of functions, ports, protocols,
-          and/or services, as defined in the Ports, Protocols, and Services Management (PPSM) Category
+      title: RHEL 9 must be configured to prohibit or restrict the use of functions, ports,
+          protocols,
+          and/or services, as defined in the Ports, Protocols, and Services Management (PPSM)
+          Category
           Assignments List (CAL) and vulnerability assessments.
       rules:
           - firewalld_sshd_port_enabled
@@ -1429,7 +1469,8 @@ controls:
     - id: RHEL-09-252020
       levels:
           - medium
-      title: RHEL 9 must securely compare internal information system clocks at least every 24 hours.
+      title: RHEL 9 must securely compare internal information system clocks at least every 24
+          hours.
       rules:
           - chronyd_or_ntpd_set_maxpoll
           - chronyd_server_directive
@@ -1457,7 +1498,8 @@ controls:
     - id: RHEL-09-252035
       levels:
           - medium
-      title: RHEL 9 systems using Domain Name Servers (DNS) resolution must have at least two name servers
+      title: RHEL 9 systems using Domain Name Servers (DNS) resolution must have at least two name
+          servers
           configured.
       rules:
           - network_configure_name_resolution
@@ -1531,7 +1573,8 @@ controls:
     - id: RHEL-09-253015
       levels:
           - medium
-      title: RHEL 9 must ignore Internet Protocol version 4 (IPv4) Internet Control Message Protocol
+      title: RHEL 9 must ignore Internet Protocol version 4 (IPv4) Internet Control Message
+          Protocol
           (ICMP) redirect messages.
       rules:
           - sysctl_net_ipv4_conf_all_accept_redirects
@@ -1572,7 +1615,8 @@ controls:
     - id: RHEL-09-253040
       levels:
           - medium
-      title: RHEL 9 must prevent IPv4 Internet Control Message Protocol (ICMP) redirect messages from
+      title: RHEL 9 must prevent IPv4 Internet Control Message Protocol (ICMP) redirect messages
+          from
           being accepted.
       rules:
           - sysctl_net_ipv4_conf_default_accept_redirects
@@ -1589,7 +1633,8 @@ controls:
     - id: RHEL-09-253050
       levels:
           - medium
-      title: RHEL 9 must use a reverse-path filter for IPv4 network traffic when possible by default.
+      title: RHEL 9 must use a reverse-path filter for IPv4 network traffic when possible by
+          default.
       rules:
           - sysctl_net_ipv4_conf_default_rp_filter
       status: automated
@@ -1597,7 +1642,8 @@ controls:
     - id: RHEL-09-253055
       levels:
           - medium
-      title: RHEL 9 must not respond to Internet Control Message Protocol (ICMP) echoes sent to a broadcast
+      title: RHEL 9 must not respond to Internet Control Message Protocol (ICMP) echoes sent to a
+          broadcast
           address.
       rules:
           - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
@@ -1606,7 +1652,8 @@ controls:
     - id: RHEL-09-253060
       levels:
           - medium
-      title: RHEL 9 must limit the number of bogus Internet Control Message Protocol (ICMP) response
+      title: RHEL 9 must limit the number of bogus Internet Control Message Protocol (ICMP)
+          response
           errors logs.
       rules:
           - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
@@ -1623,7 +1670,8 @@ controls:
     - id: RHEL-09-253070
       levels:
           - medium
-      title: RHEL 9 must not allow interfaces to perform Internet Control Message Protocol (ICMP) redirects
+      title: RHEL 9 must not allow interfaces to perform Internet Control Message Protocol (ICMP)
+          redirects
           by default.
       rules:
           - sysctl_net_ipv4_conf_default_send_redirects
@@ -1680,7 +1728,8 @@ controls:
     - id: RHEL-09-254035
       levels:
           - medium
-      title: RHEL 9 must prevent IPv6 Internet Control Message Protocol (ICMP) redirect messages from
+      title: RHEL 9 must prevent IPv6 Internet Control Message Protocol (ICMP) redirect messages
+          from
           being accepted.
       rules:
           - sysctl_net_ipv6_conf_default_accept_redirects
@@ -1705,8 +1754,10 @@ controls:
     - id: RHEL-09-255015
       levels:
           - medium
-      title: All RHEL 9 networked systems must have and implement SSH to protect the confidentiality
-          and integrity of transmitted and received information, as well as information during preparation
+      title: All RHEL 9 networked systems must have and implement SSH to protect the
+          confidentiality
+          and integrity of transmitted and received information, as well as information during
+          preparation
           for transmission.
       rules:
           - service_sshd_enabled
@@ -1723,7 +1774,8 @@ controls:
     - id: RHEL-09-255025
       levels:
           - medium
-      title: RHEL 9 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+      title: RHEL 9 must display the Standard Mandatory DOD Notice and Consent Banner before
+          granting
           local or remote access to the system via a SSH logon.
       rules:
           - sshd_enable_warning_banner
@@ -1770,8 +1822,10 @@ controls:
       status: automated
 
     - id: RHEL-09-255064
-      title: The RHEL 9 SSH client must be configured to use only DOD-approved encryption ciphers employing
-          FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH client
+      title: The RHEL 9 SSH client must be configured to use only DOD-approved encryption ciphers
+          employing
+          FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH
+          client
           connections.
       levels:
           - medium
@@ -1781,8 +1835,10 @@ controls:
     - id: RHEL-09-255065
       levels:
           - medium
-      title: The RHEL 9 SSH server must be configured to use only DOD-approved encryption ciphers employing
-          FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH server connections.
+      title: The RHEL 9 SSH server must be configured to use only DOD-approved encryption ciphers
+          employing
+          FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH
+          server connections.
       rules:
           - sshd_include_crypto_policy
           - harden_sshd_ciphers_opensshserver_conf_crypto_policy
@@ -1791,8 +1847,10 @@ controls:
     - id: RHEL-09-255070
       levels:
           - medium
-      title: The RHEL 9 SSH client must be configured to use only DOD-approved Message Authentication
-          Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality
+      title: The RHEL 9 SSH client must be configured to use only DOD-approved Message
+          Authentication
+          Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms to protect the
+          confidentiality
           of SSH client connections.
       rules:
           - harden_sshd_macs_openssh_conf_crypto_policy
@@ -1801,7 +1859,8 @@ controls:
     - id: RHEL-09-255075
       levels:
           - medium
-      title: RHEL 9 SSH server must be configured to use only Message Authentication Codes (MACs) employing
+      title: RHEL 9 SSH server must be configured to use only Message Authentication Codes (MACs)
+          employing
           FIPS 140-3 validated cryptographic hash algorithms.
       status: automated
       rules:
@@ -1827,7 +1886,8 @@ controls:
     - id: RHEL-09-255090
       levels:
           - medium
-      title: RHEL 9 must force a frequent session key renegotiation for SSH connections to the server.
+      title: RHEL 9 must force a frequent session key renegotiation for SSH connections to the
+          server.
       rules:
           - sshd_rekey_limit
           - var_rekey_limit_size=1G
@@ -1837,7 +1897,8 @@ controls:
     - id: RHEL-09-255095
       levels:
           - medium
-      title: RHEL 9 must be configured so that all network connections associated with SSH traffic terminate
+      title: RHEL 9 must be configured so that all network connections associated with SSH traffic
+          terminate
           after becoming unresponsive.
       rules:
           - sshd_set_keepalive
@@ -1847,7 +1908,8 @@ controls:
     - id: RHEL-09-255100
       levels:
           - medium
-      title: RHEL 9 must be configured so that all network connections associated with SSH traffic are
+      title: RHEL 9 must be configured so that all network connections associated with SSH traffic
+          are
           terminated after 10 minutes of becoming unresponsive.
       rules:
           - sshd_set_idle_timeout
@@ -1905,7 +1967,8 @@ controls:
     - id: RHEL-09-255130
       levels:
           - medium
-      title: RHEL 9 SSH daemon must not allow compression or must only allow compression after successful
+      title: RHEL 9 SSH daemon must not allow compression or must only allow compression after
+          successful
           authentication.
       rules:
           - sshd_disable_compression
@@ -1955,7 +2018,8 @@ controls:
     - id: RHEL-09-255160
       levels:
           - medium
-      title: RHEL 9 SSH daemon must perform strict mode checking of home directory configuration files.
+      title: RHEL 9 SSH daemon must perform strict mode checking of home directory configuration
+          files.
       rules:
           - sshd_enable_strictmodes
       status: automated
@@ -1963,7 +2027,8 @@ controls:
     - id: RHEL-09-255165
       levels:
           - medium
-      title: RHEL 9 SSH daemon must display the date and time of the last successful account logon upon
+      title: RHEL 9 SSH daemon must display the date and time of the last successful account logon
+          upon
           an SSH logon.
       rules:
           - sshd_print_last_log
@@ -1980,7 +2045,8 @@ controls:
     - id: RHEL-09-271010
       levels:
           - medium
-      title: RHEL 9 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+      title: RHEL 9 must display the Standard Mandatory DOD Notice and Consent Banner before
+          granting
           local or remote access to the system via a graphical user logon.
       rules:
           - dconf_gnome_banner_enabled
@@ -1989,7 +2055,8 @@ controls:
     - id: RHEL-09-271015
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the banner-message-enable setting for the graphical
+      title: RHEL 9 must prevent a user from overriding the banner-message-enable setting for the
+          graphical
           user interface.
       rules:
           - dconf_gnome_banner_enabled
@@ -2006,7 +2073,8 @@ controls:
     - id: RHEL-09-271025
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the disabling of the graphical user interface
+      title: RHEL 9 must prevent a user from overriding the disabling of the graphical user
+          interface
           automount function.
       rules:
           - dconf_gnome_disable_automount_open
@@ -2023,7 +2091,8 @@ controls:
     - id: RHEL-09-271035
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the disabling of the graphical user interface
+      title: RHEL 9 must prevent a user from overriding the disabling of the graphical user
+          interface
           autorun function.
       rules:
           - dconf_gnome_disable_autorun
@@ -2040,7 +2109,8 @@ controls:
     - id: RHEL-09-271045
       levels:
           - medium
-      title: RHEL 9 must be able to initiate directly a session lock for all connection types using smart
+      title: RHEL 9 must be able to initiate directly a session lock for all connection types using
+          smart
           card when the smart card is removed.
       rules:
           - dconf_gnome_lock_screen_on_smartcard_removal
@@ -2049,7 +2119,8 @@ controls:
     - id: RHEL-09-271050
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the disabling of the graphical user smart card
+      title: RHEL 9 must prevent a user from overriding the disabling of the graphical user smart
+          card
           removal action.
       rules:
           - dconf_gnome_lock_screen_on_smartcard_removal
@@ -2058,7 +2129,8 @@ controls:
     - id: RHEL-09-271055
       levels:
           - medium
-      title: RHEL 9 must enable a user session lock until that user re-establishes access using established
+      title: RHEL 9 must enable a user session lock until that user re-establishes access using
+          established
           identification and authentication procedures for graphical user sessions.
       rules:
           - dconf_gnome_screensaver_lock_enabled
@@ -2067,7 +2139,8 @@ controls:
     - id: RHEL-09-271060
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the screensaver lock-enabled setting for the
+      title: RHEL 9 must prevent a user from overriding the screensaver lock-enabled setting for
+          the
           graphical user interface.
       rules:
           - dconf_gnome_screensaver_lock_enabled
@@ -2085,7 +2158,8 @@ controls:
     - id: RHEL-09-271070
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the session idle-delay setting for the graphical
+      title: RHEL 9 must prevent a user from overriding the session idle-delay setting for the
+          graphical
           user interface.
       rules:
           - dconf_gnome_session_idle_user_locks
@@ -2094,7 +2168,8 @@ controls:
     - id: RHEL-09-271075
       levels:
           - medium
-      title: RHEL 9 must initiate a session lock for graphical user interfaces when the screensaver is
+      title: RHEL 9 must initiate a session lock for graphical user interfaces when the screensaver
+          is
           activated.
       rules:
           - dconf_gnome_screensaver_lock_delay
@@ -2103,7 +2178,8 @@ controls:
     - id: RHEL-09-271080
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the session lock-delay setting for the graphical
+      title: RHEL 9 must prevent a user from overriding the session lock-delay setting for the
+          graphical
           user interface.
       rules:
           - dconf_gnome_screensaver_user_locks
@@ -2112,7 +2188,8 @@ controls:
     - id: RHEL-09-271085
       levels:
           - medium
-      title: RHEL 9 must conceal, via the session lock, information previously visible on the display
+      title: RHEL 9 must conceal, via the session lock, information previously visible on the
+          display
           with a publicly viewable image.
       rules:
           - dconf_gnome_screensaver_mode_blank
@@ -2137,7 +2214,8 @@ controls:
     - id: RHEL-09-271100
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the disable-restart-buttons setting for the graphical
+      title: RHEL 9 must prevent a user from overriding the disable-restart-buttons setting for the
+          graphical
           user interface.
       rules:
           - dconf_gnome_disable_restart_shutdown
@@ -2146,7 +2224,8 @@ controls:
     - id: RHEL-09-271105
       levels:
           - medium
-      title: RHEL 9 must disable the ability of a user to accidentally press Ctrl-Alt-Del and cause a
+      title: RHEL 9 must disable the ability of a user to accidentally press Ctrl-Alt-Del and cause
+          a
           system to shut down or reboot.
       rules:
           - dconf_gnome_disable_ctrlaltdel_reboot
@@ -2155,7 +2234,8 @@ controls:
     - id: RHEL-09-271110
       levels:
           - medium
-      title: RHEL 9 must prevent a user from overriding the Ctrl-Alt-Del sequence settings for the graphical
+      title: RHEL 9 must prevent a user from overriding the Ctrl-Alt-Del sequence settings for the
+          graphical
           user interface.
       rules:
           - dconf_gnome_disable_ctrlaltdel_reboot
@@ -2228,7 +2308,8 @@ controls:
     - id: RHEL-09-411010
       levels:
           - medium
-      title: RHEL 9 user account passwords for new users or password changes must have a 60-day maximum
+      title: RHEL 9 user account passwords for new users or password changes must have a 60-day
+          maximum
           password lifetime restriction in /etc/login.defs.
       rules:
           - accounts_maximum_age_login_defs
@@ -2237,7 +2318,8 @@ controls:
     - id: RHEL-09-411015
       levels:
           - medium
-      title: RHEL 9 user account passwords must have a 60-day maximum password lifetime restriction.
+      title: RHEL 9 user account passwords must have a 60-day maximum password lifetime
+          restriction.
       rules:
           - accounts_password_set_max_life_existing
           - var_accounts_maximum_age_login_defs=60
@@ -2246,7 +2328,8 @@ controls:
     - id: RHEL-09-411020
       levels:
           - medium
-      title: All RHEL 9 local interactive user accounts must be assigned a home directory upon creation.
+      title: All RHEL 9 local interactive user accounts must be assigned a home directory upon
+          creation.
       rules:
           - accounts_have_homedir_login_defs
       status: automated
@@ -2295,7 +2378,8 @@ controls:
     - id: RHEL-09-411050
       levels:
           - medium
-      title: RHEL 9 must disable account identifiers (individuals, groups, roles, and devices) after
+      title: RHEL 9 must disable account identifiers (individuals, groups, roles, and devices)
+          after
           35 days of inactivity.
       rules:
           - account_disable_post_pw_expiration
@@ -2305,8 +2389,10 @@ controls:
     - id: RHEL-09-411055
       levels:
           - medium
-      title: Executable search paths within the initialization files of all local interactive RHEL 9
-          users must only contain paths that resolve to the system default or the users home directory.
+      title: Executable search paths within the initialization files of all local interactive RHEL
+          9
+          users must only contain paths that resolve to the system default or the users home
+          directory.
       rules:
           - accounts_user_home_paths_only
       status: automated
@@ -2314,7 +2400,8 @@ controls:
     - id: RHEL-09-411060
       levels:
           - medium
-      title: All RHEL 9 local interactive users must have a home directory assigned in the /etc/passwd
+      title: All RHEL 9 local interactive users must have a home directory assigned in the
+          /etc/passwd
           file.
       rules:
           - accounts_user_interactive_home_directory_defined
@@ -2323,7 +2410,8 @@ controls:
     - id: RHEL-09-411065
       levels:
           - medium
-      title: All RHEL 9 local interactive user home directories defined in the /etc/passwd file must
+      title: All RHEL 9 local interactive user home directories defined in the /etc/passwd file
+          must
           exist.
       rules:
           - accounts_user_interactive_home_directory_exists
@@ -2332,7 +2420,8 @@ controls:
     - id: RHEL-09-411070
       levels:
           - medium
-      title: All RHEL 9 local interactive user home directories must be group-owned by the home directory
+      title: All RHEL 9 local interactive user home directories must be group-owned by the home
+          directory
           owner's primary group.
       rules:
           - file_groupownership_home_directories
@@ -2341,7 +2430,8 @@ controls:
     - id: RHEL-09-411075
       levels:
           - medium
-      title: RHEL 9 must automatically lock an account when three unsuccessful logon attempts occur.
+      title: RHEL 9 must automatically lock an account when three unsuccessful logon attempts
+          occur.
       rules:
           - accounts_passwords_pam_faillock_deny
           - var_accounts_passwords_pam_faillock_deny=3
@@ -2350,8 +2440,10 @@ controls:
     - id: RHEL-09-411080
       levels:
           - medium
-      title: RHEL 9 must automatically lock the root account until the root account is released by an
-          administrator when three unsuccessful logon attempts occur during a 15-minute time period.
+      title: RHEL 9 must automatically lock the root account until the root account is released by
+          an
+          administrator when three unsuccessful logon attempts occur during a 15-minute time
+          period.
       rules:
           - accounts_passwords_pam_faillock_deny_root
       status: automated
@@ -2359,7 +2451,8 @@ controls:
     - id: RHEL-09-411085
       levels:
           - medium
-      title: RHEL 9 must automatically lock an account when three unsuccessful logon attempts occur during
+      title: RHEL 9 must automatically lock an account when three unsuccessful logon attempts occur
+          during
           a 15-minute time period.
       rules:
           - accounts_passwords_pam_faillock_interval
@@ -2369,7 +2462,8 @@ controls:
     - id: RHEL-09-411090
       levels:
           - medium
-      title: RHEL 9 must maintain an account lock until the locked account is released by an administrator.
+      title: RHEL 9 must maintain an account lock until the locked account is released by an
+          administrator.
       rules:
           - accounts_passwords_pam_faillock_unlock_time
           - var_accounts_passwords_pam_faillock_unlock_time=never
@@ -2411,7 +2505,8 @@ controls:
     - id: RHEL-09-412035
       levels:
           - medium
-      title: RHEL 9 must automatically exit interactive command shell user sessions after 15 minutes
+      title: RHEL 9 must automatically exit interactive command shell user sessions after 15
+          minutes
           of inactivity.
       rules:
           - accounts_tmout
@@ -2421,7 +2516,8 @@ controls:
     - id: RHEL-09-412040
       levels:
           - low
-      title: RHEL 9 must limit the number of concurrent sessions to ten for all accounts and/or account
+      title: RHEL 9 must limit the number of concurrent sessions to ten for all accounts and/or
+          account
           types.
       rules:
           - accounts_max_concurrent_login_sessions
@@ -2439,7 +2535,8 @@ controls:
     - id: RHEL-09-412050
       levels:
           - medium
-      title: RHEL 9 must enforce a delay of at least four seconds between logon prompts following a failed
+      title: RHEL 9 must enforce a delay of at least four seconds between logon prompts following a
+          failed
           logon attempt.
       rules:
           - accounts_logon_fail_delay
@@ -2465,7 +2562,8 @@ controls:
     - id: RHEL-09-412065
       levels:
           - medium
-      title: RHEL 9 must define default permissions for all authenticated users in such a way that the
+      title: RHEL 9 must define default permissions for all authenticated users in such a way that
+          the
           user can only read and modify their own files.
       rules:
           - accounts_umask_etc_login_defs
@@ -2491,7 +2589,8 @@ controls:
     - id: RHEL-09-431010
       levels:
           - high
-      title: RHEL 9 must use a Linux Security Module configured to enforce limits on system services.
+      title: RHEL 9 must use a Linux Security Module configured to enforce limits on system
+          services.
       rules:
           - selinux_state
           - var_selinux_state=enforcing
@@ -2507,7 +2606,8 @@ controls:
       status: automated
 
     - id: RHEL-09-431016
-      title: 'RHEL 9 must elevate the SELinux context when an administrator calls the sudo command.'
+      title: 'RHEL 9 must elevate the SELinux context when an administrator calls the sudo
+          command.'
       rules:
           - selinux_context_elevation_for_sudo
       status: automated
@@ -2515,7 +2615,8 @@ controls:
     - id: RHEL-09-431020
       levels:
           - medium
-      title: RHEL 9 must configure SELinux context type to allow the use of a nondefault faillock tally
+      title: RHEL 9 must configure SELinux context type to allow the use of a nondefault faillock
+          tally
           directory.
       rules:
           - account_password_selinux_faillock_dir
@@ -2557,7 +2658,8 @@ controls:
     - id: RHEL-09-432020
       levels:
           - medium
-      title: RHEL 9 must use the invoking user's password for privilege escalation when using "sudo".
+      title: RHEL 9 must use the invoking user's password for privilege escalation when using
+          "sudo".
       rules:
           - sudoers_validate_passwd
       status: automated
@@ -2605,7 +2707,8 @@ controls:
     - id: RHEL-09-433016
       levels:
           - medium
-      title: The RHEL 9 fapolicy module must be configured to employ a deny-all, permit-by-exception
+      title: The RHEL 9 fapolicy module must be configured to employ a deny-all,
+          permit-by-exception
           policy to allow the execution of authorized software programs.
       rules:
           - fapolicy_default_deny
@@ -2614,7 +2717,8 @@ controls:
     - id: RHEL-09-611010
       levels:
           - medium
-      title: RHEL 9 must ensure the password complexity module in the system-auth file is configured
+      title: RHEL 9 must ensure the password complexity module in the system-auth file is
+          configured
           for three retries or less.
       rules:
           - accounts_password_pam_pwquality_retry
@@ -2632,7 +2736,8 @@ controls:
     - id: RHEL-09-611030
       levels:
           - medium
-      title: RHEL 9 must configure the use of the pam_faillock.so module in the /etc/pam.d/system-auth
+      title: RHEL 9 must configure the use of the pam_faillock.so module in the
+          /etc/pam.d/system-auth
           file.
       rules:
           - account_password_pam_faillock_system_auth
@@ -2641,7 +2746,8 @@ controls:
     - id: RHEL-09-611035
       levels:
           - medium
-      title: RHEL 9 must configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth
+      title: RHEL 9 must configure the use of the pam_faillock.so module in the
+          /etc/pam.d/password-auth
           file.
       rules:
           - account_password_pam_faillock_password_auth
@@ -2650,7 +2756,8 @@ controls:
     - id: RHEL-09-611040
       levels:
           - medium
-      title: RHEL 9 must ensure the password complexity module is enabled in the password-auth file.
+      title: RHEL 9 must ensure the password complexity module is enabled in the password-auth
+          file.
       rules:
           - accounts_password_pam_pwquality_password_auth
       status: automated
@@ -2691,7 +2798,8 @@ controls:
     - id: RHEL-09-611065
       levels:
           - medium
-      title: RHEL 9 must enforce password complexity by requiring that at least one lowercase character
+      title: RHEL 9 must enforce password complexity by requiring that at least one lowercase
+          character
           be used.
       rules:
           - accounts_password_pam_lcredit
@@ -2701,7 +2809,8 @@ controls:
     - id: RHEL-09-611070
       levels:
           - medium
-      title: RHEL 9 must enforce password complexity by requiring that at least one numeric character
+      title: RHEL 9 must enforce password complexity by requiring that at least one numeric
+          character
           be used.
       rules:
           - accounts_password_pam_dcredit
@@ -2711,7 +2820,8 @@ controls:
     - id: RHEL-09-611075
       levels:
           - medium
-      title: RHEL 9 passwords for new users or password changes must have a 24 hours minimum password
+      title: RHEL 9 passwords for new users or password changes must have a 24 hours minimum
+          password
           lifetime restriction in /etc/login.defs.
       rules:
           - accounts_minimum_age_login_defs
@@ -2720,7 +2830,8 @@ controls:
     - id: RHEL-09-611080
       levels:
           - medium
-      title: RHEL 9 passwords must have a 24 hours minimum password lifetime restriction in /etc/shadow.
+      title: RHEL 9 passwords must have a 24 hours minimum password lifetime restriction in
+          /etc/shadow.
       rules:
           - accounts_password_set_min_life_existing
           - var_accounts_minimum_age_login_defs=1
@@ -2746,7 +2857,8 @@ controls:
     - id: RHEL-09-611100
       levels:
           - medium
-      title: RHEL 9 must enforce password complexity by requiring that at least one special character
+      title: RHEL 9 must enforce password complexity by requiring that at least one special
+          character
           be used.
       rules:
           - accounts_password_pam_ocredit
@@ -2765,7 +2877,8 @@ controls:
     - id: RHEL-09-611110
       levels:
           - medium
-      title: RHEL 9 must enforce password complexity by requiring that at least one uppercase character
+      title: RHEL 9 must enforce password complexity by requiring that at least one uppercase
+          character
           be used.
       rules:
           - accounts_password_pam_ucredit
@@ -2775,7 +2888,8 @@ controls:
     - id: RHEL-09-611115
       levels:
           - medium
-      title: RHEL 9 must require the change of at least eight characters when passwords are changed.
+      title: RHEL 9 must require the change of at least eight characters when passwords are
+          changed.
       rules:
           - accounts_password_pam_difok
           - var_password_pam_difok=8
@@ -2784,7 +2898,8 @@ controls:
     - id: RHEL-09-611120
       levels:
           - medium
-      title: RHEL 9 must require the maximum number of repeating characters of the same character class
+      title: RHEL 9 must require the maximum number of repeating characters of the same character
+          class
           be limited to four when passwords are changed.
       rules:
           - accounts_password_pam_maxclassrepeat
@@ -2794,7 +2909,8 @@ controls:
     - id: RHEL-09-611125
       levels:
           - medium
-      title: RHEL 9 must require the maximum number of repeating characters be limited to three when
+      title: RHEL 9 must require the maximum number of repeating characters be limited to three
+          when
           passwords are changed.
       rules:
           - accounts_password_pam_maxrepeat
@@ -2804,7 +2920,8 @@ controls:
     - id: RHEL-09-611130
       levels:
           - medium
-      title: RHEL 9 must require the change of at least four character classes when passwords are changed.
+      title: RHEL 9 must require the change of at least four character classes when passwords are
+          changed.
       rules:
           - accounts_password_pam_minclass
           - var_password_pam_minclass=4
@@ -2813,7 +2930,8 @@ controls:
     - id: RHEL-09-611135
       levels:
           - medium
-      title: RHEL 9 must be configured so that user and group account administration utilities are configured
+      title: RHEL 9 must be configured so that user and group account administration utilities are
+          configured
           to store only encrypted representations of passwords.
       rules:
           - set_password_hashing_algorithm_libuserconf
@@ -2823,7 +2941,8 @@ controls:
     - id: RHEL-09-611140
       levels:
           - medium
-      title: RHEL 9 must be configured to use the shadow file to store only encrypted representations
+      title: RHEL 9 must be configured to use the shadow file to store only encrypted
+          representations
           of passwords.
       rules:
           - set_password_hashing_algorithm_logindefs
@@ -2833,7 +2952,8 @@ controls:
     - id: RHEL-09-611145
       levels:
           - medium
-      title: RHEL 9 must not be configured to bypass password requirements for privilege escalation.
+      title: RHEL 9 must not be configured to bypass password requirements for privilege
+          escalation.
       rules:
           - disallow_bypass_password_sudo
       status: automated
@@ -2899,7 +3019,8 @@ controls:
     - id: RHEL-09-611190
       levels:
           - medium
-      title: RHEL 9, for PKI-based authentication, must enforce authorized access to the corresponding
+      title: RHEL 9, for PKI-based authentication, must enforce authorized access to the
+          corresponding
           private key.
       rules:
           - ssh_keys_passphrase_protected
@@ -2924,7 +3045,8 @@ controls:
     - id: RHEL-09-631010
       levels:
           - medium
-      title: RHEL 9, for PKI-based authentication, must validate certificates by constructing a certification
+      title: RHEL 9, for PKI-based authentication, must validate certificates by constructing a
+          certification
           path (which includes status information) to an accepted trust anchor.
       rules:
           - sssd_has_trust_anchor
@@ -2933,7 +3055,8 @@ controls:
     - id: RHEL-09-631015
       levels:
           - medium
-      title: RHEL 9 must map the authenticated identity to the user or group account for PKI-based authentication.
+      title: RHEL 9 must map the authenticated identity to the user or group account for PKI-based
+          authentication.
       rules:
           - sssd_enable_certmap
       status: automated
@@ -2958,8 +3081,10 @@ controls:
     - id: RHEL-09-651015
       levels:
           - medium
-      title: RHEL 9 must routinely check the baseline configuration for unauthorized changes and notify
-          the system administrator when anomalies in the operation of any security functions are discovered.
+      title: RHEL 9 must routinely check the baseline configuration for unauthorized changes and
+          notify
+          the system administrator when anomalies in the operation of any security functions are
+          discovered.
       rules:
           - aide_scan_notification
       status: automated
@@ -2967,7 +3092,8 @@ controls:
     - id: RHEL-09-651020
       levels:
           - medium
-      title: RHEL 9 must use a file integrity tool that is configured to use FIPS 140-3-approved cryptographic
+      title: RHEL 9 must use a file integrity tool that is configured to use FIPS 140-3-approved
+          cryptographic
           hashes for validating file contents and directories.
       rules:
           - aide_use_fips_hashes
@@ -2984,7 +3110,8 @@ controls:
     - id: RHEL-09-651030
       levels:
           - low
-      title: RHEL 9 must be configured so that the file integrity tool verifies Access Control Lists
+      title: RHEL 9 must be configured so that the file integrity tool verifies Access Control
+          Lists
           (ACLs).
       rules:
           - aide_verify_acls
@@ -2993,7 +3120,8 @@ controls:
     - id: RHEL-09-651035
       levels:
           - low
-      title: RHEL 9 must be configured so that the file integrity tool verifies extended attributes.
+      title: RHEL 9 must be configured so that the file integrity tool verifies extended
+          attributes.
       rules:
           - aide_verify_ext_attributes
       status: automated
@@ -3025,7 +3153,8 @@ controls:
     - id: RHEL-09-652025
       levels:
           - medium
-      title: RHEL 9 must be configured so that the rsyslog daemon does not accept log messages from other
+      title: RHEL 9 must be configured so that the rsyslog daemon does not accept log messages from
+          other
           servers unless the server is being used for log aggregation.
       rules:
           - rsyslog_nolisten
@@ -3042,7 +3171,8 @@ controls:
     - id: RHEL-09-652040
       levels:
           - medium
-      title: RHEL 9 must authenticate the remote logging server for offloading audit logs via rsyslog.
+      title: RHEL 9 must authenticate the remote logging server for offloading audit logs via
+          rsyslog.
       rules:
           - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
       status: automated
@@ -3050,7 +3180,8 @@ controls:
     - id: RHEL-09-652045
       levels:
           - medium
-      title: RHEL 9 must encrypt the transfer of audit records offloaded onto a different system or media
+      title: RHEL 9 must encrypt the transfer of audit records offloaded onto a different system or
+          media
           from the system being audited via rsyslog.
       rules:
           - rsyslog_encrypt_offload_actionsendstreamdrivermode
@@ -3059,7 +3190,8 @@ controls:
     - id: RHEL-09-652050
       levels:
           - medium
-      title: RHEL 9 must encrypt via the gtls driver the transfer of audit records offloaded onto a different
+      title: RHEL 9 must encrypt via the gtls driver the transfer of audit records offloaded onto a
+          different
           system or media from the system being audited via rsyslog.
       rules:
           - rsyslog_encrypt_offload_defaultnetstreamdriver
@@ -3068,7 +3200,8 @@ controls:
     - id: RHEL-09-652055
       levels:
           - medium
-      title: RHEL 9 must be configured to forward audit records via TCP to a different system or media
+      title: RHEL 9 must be configured to forward audit records via TCP to a different system or
+          media
           from the system being audited via rsyslog.
       rules:
           - rsyslog_remote_loghost
@@ -3101,7 +3234,8 @@ controls:
     - id: RHEL-09-653020
       levels:
           - medium
-      title: RHEL 9 audit system must take appropriate action when an error writing to the audit storage
+      title: RHEL 9 audit system must take appropriate action when an error writing to the audit
+          storage
           volume occurs.
       rules:
           - auditd_data_disk_error_action_stig
@@ -3111,7 +3245,8 @@ controls:
     - id: RHEL-09-653025
       levels:
           - medium
-      title: RHEL 9 audit system must take appropriate action when the audit storage volume is full.
+      title: RHEL 9 audit system must take appropriate action when the audit storage volume is
+          full.
       rules:
           - auditd_data_disk_full_action_stig
           - var_auditd_disk_full_action=halt
@@ -3120,7 +3255,8 @@ controls:
     - id: RHEL-09-653030
       levels:
           - medium
-      title: RHEL 9 must allocate audit record storage capacity to store at least one week's worth of
+      title: RHEL 9 must allocate audit record storage capacity to store at least one week's worth
+          of
           audit records.
       rules:
           - auditd_audispd_configure_sufficiently_large_partition
@@ -3129,7 +3265,8 @@ controls:
     - id: RHEL-09-653035
       levels:
           - medium
-      title: RHEL 9 must take action when allocated audit record storage volume reaches 75 percent of
+      title: RHEL 9 must take action when allocated audit record storage volume reaches 75 percent
+          of
           the repository maximum audit record storage capacity.
       rules:
           - auditd_data_retention_space_left_percentage
@@ -3139,7 +3276,8 @@ controls:
     - id: RHEL-09-653040
       levels:
           - medium
-      title: RHEL 9 must notify the system administrator (SA) and information system security officer
+      title: RHEL 9 must notify the system administrator (SA) and information system security
+          officer
           (ISSO) (at a minimum) when allocated audit record storage volume 75 percent utilization.
       rules:
           - auditd_data_retention_space_left_action
@@ -3149,7 +3287,8 @@ controls:
     - id: RHEL-09-653045
       levels:
           - medium
-      title: RHEL 9 must take action when allocated audit record storage volume reaches 95 percent of
+      title: RHEL 9 must take action when allocated audit record storage volume reaches 95 percent
+          of
           the audit record storage capacity.
       rules:
           - auditd_data_retention_admin_space_left_percentage
@@ -3159,7 +3298,8 @@ controls:
     - id: RHEL-09-653050
       levels:
           - medium
-      title: RHEL 9 must take action when allocated audit record storage volume reaches 95 percent of
+      title: RHEL 9 must take action when allocated audit record storage volume reaches 95 percent
+          of
           the repository maximum audit record storage capacity.
       rules:
           - auditd_data_retention_admin_space_left_action
@@ -3169,7 +3309,8 @@ controls:
     - id: RHEL-09-653055
       levels:
           - medium
-      title: RHEL 9 audit system must take appropriate action when the audit files have reached maximum
+      title: RHEL 9 audit system must take appropriate action when the audit files have reached
+          maximum
           size.
       rules:
           - auditd_data_retention_max_log_file_action_stig
@@ -3179,7 +3320,8 @@ controls:
     - id: RHEL-09-653060
       levels:
           - medium
-      title: RHEL 9 must label all offloaded audit logs before sending them to the central log server.
+      title: RHEL 9 must label all offloaded audit logs before sending them to the central log
+          server.
       rules:
           - auditd_name_format
           - var_auditd_name_format=stig
@@ -3196,7 +3338,8 @@ controls:
     - id: RHEL-09-653070
       levels:
           - medium
-      title: RHEL 9 System Administrator (SA) and/or information system security officer (ISSO) (at a
+      title: RHEL 9 System Administrator (SA) and/or information system security officer (ISSO) (at
+          a
           minimum) must be alerted of an audit processing failure event.
       rules:
           - auditd_data_retention_action_mail_acct
@@ -3214,7 +3357,8 @@ controls:
     - id: RHEL-09-653080
       levels:
           - medium
-      title: RHEL 9 audit logs must be group-owned by root or by a restricted logging group to prevent
+      title: RHEL 9 audit logs must be group-owned by root or by a restricted logging group to
+          prevent
           unauthorized read access.
       rules:
           - directory_group_ownership_var_log_audit
@@ -3231,7 +3375,8 @@ controls:
     - id: RHEL-09-653090
       levels:
           - medium
-      title: RHEL 9 audit logs file must have mode 0600 or less permissive to prevent unauthorized access
+      title: RHEL 9 audit logs file must have mode 0600 or less permissive to prevent unauthorized
+          access
           to the audit log.
       rules:
           - file_permissions_var_log_audit
@@ -3240,7 +3385,8 @@ controls:
     - id: RHEL-09-653095
       levels:
           - medium
-      title: RHEL 9 must periodically flush audit records to disk to prevent the loss of audit records.
+      title: RHEL 9 must periodically flush audit records to disk to prevent the loss of audit
+          records.
       rules:
           - auditd_freq
           - var_auditd_freq=100
@@ -3249,7 +3395,8 @@ controls:
     - id: RHEL-09-653100
       levels:
           - medium
-      title: RHEL 9 must produce audit records containing information to establish the identity of any
+      title: RHEL 9 must produce audit records containing information to establish the identity of
+          any
           individual or process associated with the event.
       rules:
           - auditd_log_format
@@ -3266,7 +3413,8 @@ controls:
     - id: RHEL-09-653110
       levels:
           - medium
-      title: RHEL 9 must allow only the information system security manager (ISSM) (or individuals or
+      title: RHEL 9 must allow only the information system security manager (ISSM) (or individuals
+          or
           roles appointed by the ISSM) to select which auditable events are to be audited.
       rules:
           - file_permissions_audit_configuration
@@ -3276,7 +3424,8 @@ controls:
     - id: RHEL-09-653120
       levels:
           - low
-      title: RHEL 9 must allocate an audit_backlog_limit of sufficient size to capture processes that
+      title: RHEL 9 must allocate an audit_backlog_limit of sufficient size to capture processes
+          that
           start prior to the audit daemon.
       rules:
           - grub2_audit_backlog_limit_argument
@@ -3286,7 +3435,8 @@ controls:
     - id: RHEL-09-653125
       levels:
           - medium
-      title: RHEL 9 must have mail aliases to notify the information system security officer (ISSO) and
+      title: RHEL 9 must have mail aliases to notify the information system security officer (ISSO)
+          and
           system administrator (SA) (at a minimum) in the event of an audit processing failure.
       rules:
           - postfix_client_configure_mail_alias
@@ -3332,7 +3482,8 @@ controls:
     - id: RHEL-09-654025
       levels:
           - medium
-      title: RHEL 9 must audit all uses of the setxattr, fsetxattr, lsetxattr, removexattr, fremovexattr,
+      title: RHEL 9 must audit all uses of the setxattr, fsetxattr, lsetxattr, removexattr,
+          fremovexattr,
           and lremovexattr system calls.
       rules:
           - audit_rules_dac_modification_setxattr
@@ -3402,7 +3553,8 @@ controls:
     - id: RHEL-09-654065
       levels:
           - medium
-      title: RHEL 9 must audit all uses of the rename, unlink, rmdir, renameat, and unlinkat system calls.
+      title: RHEL 9 must audit all uses of the rename, unlink, rmdir, renameat, and unlinkat system
+          calls.
       rules:
           - audit_rules_file_deletion_events_rename
           - audit_rules_file_deletion_events_unlink
@@ -3414,7 +3566,8 @@ controls:
     - id: RHEL-09-654070
       levels:
           - medium
-      title: RHEL 9 must audit all uses of the truncate, ftruncate, creat, open, openat, and open_by_handle_at
+      title: RHEL 9 must audit all uses of the truncate, ftruncate, creat, open, openat, and
+          open_by_handle_at
           system calls.
       rules:
           - audit_rules_unsuccessful_file_modification_creat
@@ -3469,7 +3622,8 @@ controls:
     - id: RHEL-09-654097
       levels:
           - medium
-      title: RHEL 9 must audit any script or executable called by cron as root or by any privileged user.
+      title: RHEL 9 must audit any script or executable called by cron as root or by any privileged
+          user.
       rules:
           - audit_rules_etc_cron_d
           - audit_rules_var_spool_cron
@@ -3615,7 +3769,8 @@ controls:
     - id: RHEL-09-654185
       levels:
           - medium
-      title: Successful/unsuccessful uses of the init command in RHEL 9 must generate an audit record.
+      title: Successful/unsuccessful uses of the init command in RHEL 9 must generate an audit
+          record.
       rules:
           - audit_privileged_commands_init
       status: automated
@@ -3623,7 +3778,8 @@ controls:
     - id: RHEL-09-654190
       levels:
           - medium
-      title: Successful/unsuccessful uses of the poweroff command in RHEL 9 must generate an audit record.
+      title: Successful/unsuccessful uses of the poweroff command in RHEL 9 must generate an audit
+          record.
       rules:
           - audit_privileged_commands_poweroff
       status: automated
@@ -3631,7 +3787,8 @@ controls:
     - id: RHEL-09-654195
       levels:
           - medium
-      title: Successful/unsuccessful uses of the reboot command in RHEL 9 must generate an audit record.
+      title: Successful/unsuccessful uses of the reboot command in RHEL 9 must generate an audit
+          record.
       rules:
           - audit_privileged_commands_reboot
       status: automated
@@ -3639,7 +3796,8 @@ controls:
     - id: RHEL-09-654200
       levels:
           - medium
-      title: Successful/unsuccessful uses of the shutdown command in RHEL 9 must generate an audit record.
+      title: Successful/unsuccessful uses of the shutdown command in RHEL 9 must generate an audit
+          record.
       rules:
           - audit_privileged_commands_shutdown
       status: automated
@@ -3647,7 +3805,8 @@ controls:
     - id: RHEL-09-654205
       levels:
           - medium
-      title: Successful/unsuccessful uses of the umount system call in RHEL 9 must generate an audit
+      title: Successful/unsuccessful uses of the umount system call in RHEL 9 must generate an
+          audit
           record.
       rules:
           - audit_rules_dac_modification_umount
@@ -3656,7 +3815,8 @@ controls:
     - id: RHEL-09-654210
       levels:
           - medium
-      title: Successful/unsuccessful uses of the umount2 system call in RHEL 9 must generate an audit
+      title: Successful/unsuccessful uses of the umount2 system call in RHEL 9 must generate an
+          audit
           record.
       rules:
           - audit_rules_dac_modification_umount2
@@ -3665,7 +3825,8 @@ controls:
     - id: RHEL-09-654215
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /etc/sudoers.
       rules:
           - audit_rules_sudoers
@@ -3674,7 +3835,8 @@ controls:
     - id: RHEL-09-654220
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /etc/sudoers.d/ directory.
       rules:
           - audit_rules_sudoers_d
@@ -3683,7 +3845,8 @@ controls:
     - id: RHEL-09-654225
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /etc/group.
       rules:
           - audit_rules_usergroup_modification_group
@@ -3692,7 +3855,8 @@ controls:
     - id: RHEL-09-654230
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /etc/gshadow.
       rules:
           - audit_rules_usergroup_modification_gshadow
@@ -3701,7 +3865,8 @@ controls:
     - id: RHEL-09-654235
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /etc/opasswd.
       rules:
           - audit_rules_usergroup_modification_opasswd
@@ -3710,7 +3875,8 @@ controls:
     - id: RHEL-09-654240
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /etc/passwd.
       rules:
           - audit_rules_usergroup_modification_passwd
@@ -3719,7 +3885,8 @@ controls:
     - id: RHEL-09-654245
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /etc/shadow.
       rules:
           - audit_rules_usergroup_modification_shadow
@@ -3728,7 +3895,8 @@ controls:
     - id: RHEL-09-654250
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /var/log/faillock.
       rules:
           - audit_rules_login_events_faillock
@@ -3737,7 +3905,8 @@ controls:
     - id: RHEL-09-654255
       levels:
           - medium
-      title: RHEL 9 must generate audit records for all account creations, modifications, disabling,
+      title: RHEL 9 must generate audit records for all account creations, modifications,
+          disabling,
           and termination events that affect /var/log/lastlog.
       rules:
           - audit_rules_login_events_lastlog
@@ -3772,16 +3941,14 @@ controls:
           - high
       title: RHEL 9 must enable FIPS mode.
       rules:
-          - enable_fips_mode
           - sysctl_crypto_fips_enabled
-          - var_system_crypto_policy=fips_stig
-          - enable_dracut_fips_module
       status: automated
 
     - id: RHEL-09-671015
       levels:
           - medium
-      title: RHEL 9 must employ FIPS 140-3 approved cryptographic hashing algorithms for all stored passwords.
+      title: RHEL 9 must employ FIPS 140-3 approved cryptographic hashing algorithms for all stored
+          passwords.
       rules:
           - accounts_password_all_shadowed_sha512
       status: automated
@@ -3797,7 +3964,8 @@ controls:
     - id: RHEL-09-671025
       levels:
           - medium
-      title: RHEL 9 pam_unix.so module must be configured in the password-auth file to use a FIPS 140-3
+      title: RHEL 9 pam_unix.so module must be configured in the password-auth file to use a FIPS
+          140-3
           approved cryptographic hashing algorithm for system authentication.
       rules:
           - set_password_hashing_algorithm_passwordauth
@@ -3813,13 +3981,19 @@ controls:
       levels:
           - medium
       title: RHEL 9 cryptographic policy must not be overridden.
-      notes: Rules for this control are intentionally not implemented. Checking whether files under /etc/crypto-policies/back-ends/
-          are symlinks is not an appropriate way to verify the consistency of the system's cryptographic settings.
-          The suggested fix mentioned in the STIG does not fully satisfy its own requirements, as it also symlinks the nss.config file.
-          Furthermore, running sudo 'update-crypto-policies --set FIPS' is not a reliable way to ensure FIPS compliance. Customers should
-          refer to the official Red Hat Documentation and use the 'fips=1' kernel option during system installation to ensure the system is
+      notes: Rules for this control are intentionally not implemented. Checking whether files under
+          /etc/crypto-policies/back-ends/
+          are symlinks is not an appropriate way to verify the consistency of the system's
+          cryptographic settings.
+          The suggested fix mentioned in the STIG does not fully satisfy its own requirements, as
+          it also symlinks the nss.config file.
+          Furthermore, running sudo 'update-crypto-policies --set FIPS' is not a reliable way to
+          ensure FIPS compliance. Customers should
+          refer to the official Red Hat Documentation and use the 'fips=1' kernel option during
+          system installation to ensure the system is
           in FIPS mode.
-          More information can be found at https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening
+          More information can be found at
+          https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening
       status: pending
 
     - id: RHEL-09-672030

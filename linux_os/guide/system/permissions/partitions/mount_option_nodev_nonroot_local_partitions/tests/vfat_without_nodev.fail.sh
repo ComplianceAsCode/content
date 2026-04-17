@@ -14,6 +14,6 @@ for partition in ${partitions[@]}; do
     mount -o remount "$partition"
 done
 
-# A vfat partition without nodev should be ignored by the rule.
+# A vfat partition without nodev should be flagged by the rule.
 PARTITION="/dev/new_partition1"; create_partition
 make_fstab_given_partition_line "/tmp/partition1" vfat defaults

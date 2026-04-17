@@ -30,7 +30,6 @@ excluded_fstypes=(
     lustre
     davfs
     fuse.sshfs
-    vfat
 )
 
 for partition_record in "${partitions_records[@]}"; do
@@ -65,5 +64,5 @@ for partition_record in "${partitions_records[@]}"; do
     {{{ bash_ensure_partition_is_mounted("$mount_point")     | indent(4) }}}
 done
 
-# Remediate unmounted /etc/fstab entries, excluding /boot, /efi, and vfat partitions
-sed -i -E '/nodev/! { /^\s*(\/dev\/\S+|UUID=\S+)\s+\/(boot|efi)/! { /^\s*(\/dev\/\S+|UUID=\S+)\s+\/\w\S*\s+vfat\s/! s;^\s*(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(\S+)(.*)$;\1 \2 \3 \4,nodev \5; } }' /etc/fstab
+# Remediate unmounted /etc/fstab entries, excluding /boot and /efi partitions
+sed -i -E '/nodev/! { /^\s*(\/dev\/\S+|UUID=\S+)\s+\/(boot|efi)/! s;^\s*(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(\S+)(.*)$;\1 \2 \3 \4,nodev \5; }' /etc/fstab

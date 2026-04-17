@@ -338,35 +338,51 @@ def sort_section_keys(file_path, file_contents, sections, sort_func=None):
             continue
 
         # Now we need to map sorted subkeys onto lines in the new contents,
-        # so we can re-order them appropriately. We'll assume the section is
-        # small so we'll do it in O(n^2).
+        # so we can re-order them appropriately. Each subkey may span
+        # multiple lines (e.g. multi-line YAML values), so we collect all
+        # lines belonging to each key.
         subkey_mapping = dict()
+        range_start = section_range.start + start_offset
+        range_end = section_range.end - end_offset + 1
+
+        # First pass: find the line number where each subkey starts.
+        subkey_start_lines = {}
         for key in subkeys:
-            our_line = None
             spaced_key = ' ' + key + ':'
             tabbed_key = '\t' + key + ':'
-            range_start = section_range.start + start_offset
-            range_end = section_range.end - end_offset + 1
             for line_num in range(range_start, range_end):
                 this_line = new_contents[line_num]
                 if spaced_key in this_line or tabbed_key in this_line:
-                    if our_line:
-                        # Not supposed to be possible to have multiple keys
-                        # matching the same value in this file. We should've
-                        # already fixed this with fix-rules.py's duplicate_subkeys.
+                    if key in subkey_start_lines:
                         msg = "File {0} has duplicated key {1}: {2} vs {3}"
-                        msg = msg.format(file_path, key, our_line, this_line)
+                        msg = msg.format(file_path, key,
+                                         new_contents[subkey_start_lines[key]],
+                                         this_line)
                         raise ValueError(msg)
-                    our_line = this_line
-            assert our_line
-            subkey_mapping[key] = our_line
+                    subkey_start_lines[key] = line_num
+            assert key in subkey_start_lines
+
+        # Second pass: collect all lines for each subkey (key line +
+        # continuation lines). A continuation line is any subsequent line
+        # before the next subkey starts.
+        sorted_starts = sorted(subkey_start_lines.values())
+        start_to_key = {v: k for k, v in subkey_start_lines.items()}
+        for i, start in enumerate(sorted_starts):
+            key = start_to_key[start]
+            if i + 1 < len(sorted_starts):
+                end = sorted_starts[i + 1]
+            else:
+                end = range_end
+            subkey_mapping[key] = new_contents[start:end]
 
         # Now we'll remove all the section's subkeys and start over. Include
         # section header but not any of the keys (or potential blank lines
         # in the interior -- but we preserve them on either end of the
         # section).
         prefix = new_contents[:section_range.start+start_offset]
-        contents = list(map(lambda key: subkey_mapping[key], subkeys))
+        contents = []
+        for key in subkeys:
+            contents.extend(subkey_mapping[key])
         suffix = new_contents[section_range.end+1-end_offset:]
 
         new_contents = prefix + contents + suffix
