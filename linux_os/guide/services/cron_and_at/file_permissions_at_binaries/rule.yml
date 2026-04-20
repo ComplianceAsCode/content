@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: 'Restrict Execution of At Job Scheduling Binaries'
+
+description: |-
+    On RHCOS, packages in the base image cannot be removed. As a compensating
+    control, job scheduling utilities such as at should have their execute
+    permissions removed to prevent unauthorized task scheduling.
+    {{{ describe_file_permissions(file="/usr/bin/at", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/atq", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/atrm", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/batch", perms="0644") }}}
+
+rationale: |-
+    The at package provides the ability to schedule one-time tasks for future
+    execution. While not installed by default on RHCOS, if present, attackers
+    could use these utilities to schedule malicious tasks, making it harder to
+    detect and trace unauthorized activity. On immutable systems like RHCOS,
+    removing execute permissions prevents these tools from being used while
+    maintaining system integrity.
+
+severity: high
+
+identifiers:
+    cce@rhcos4: CCE-86492-6
+
+platform: rhcos4
+
+ocil: |-
+    {{{ describe_file_permissions(file="/usr/bin/at", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/atq", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/atrm", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/batch", perms="0644") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath:
+            - /usr/bin/at
+            - /usr/bin/atq
+            - /usr/bin/atrm
+            - /usr/bin/batch
+        filemode: '0644'
+        missing_file_pass: 'true'

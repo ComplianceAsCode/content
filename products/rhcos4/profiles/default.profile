@@ -186,6 +186,10 @@ selections:
     - file_permissions_backup_etc_group
     - etc_system_fips_exists
     - package_net-snmp_removed
+    - file_permissions_at_binaries
+    - file_permissions_dnf_binaries
+    - file_permissions_nmap_ncat_binaries
+    - file_permissions_socat_binaries
     - package_fapolicyd_installed
     - audit_rules_for_ospp
     - sshd_enable_pam

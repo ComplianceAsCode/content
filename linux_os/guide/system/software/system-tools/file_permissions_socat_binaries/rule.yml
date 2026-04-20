@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Restrict Execution of Socat Binaries'
+
+description: |-
+    On RHCOS, packages in the base image cannot be removed. As a compensating
+    control, network utilities such as socat should have their execute permissions
+    removed to prevent unauthorized use.
+    {{{ describe_file_permissions(file="/usr/bin/socat", perms="0644") }}}
+
+rationale: |-
+    Utilities such as socat can be used for legitimate troubleshooting,
+    but they also present a significant security risk if misused by attackers
+    to create unauthorized network connections, transfer data, or establish
+    reverse shells. On immutable operating systems like RHCOS, removing execute
+    permissions prevents these tools from being used while maintaining system integrity.
+
+severity: high
+
+identifiers:
+    cce@rhcos4: CCE-86484-3
+
+platform: rhcos4
+
+ocil: |-
+    {{{ describe_file_permissions(file="/usr/bin/socat", perms="0644") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /usr/bin/socat
+        filemode: '0644'
+        missing_file_pass: 'true'

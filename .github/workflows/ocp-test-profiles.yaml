@@ -91,7 +91,10 @@ jobs:
             done
 
             ALL_PROFILES+=(${ELIGIBLE_PROFILES[@]})
-            PROFILES+=(${ELIGIBLE_PROFILES[$(($RANDOM%(${#ELIGIBLE_PROFILES[@]})))]})
+            # Only add a profile if there are eligible profiles with CI jobs
+            if [ ${#ELIGIBLE_PROFILES[@]} -gt 0 ]; then
+              PROFILES+=(${ELIGIBLE_PROFILES[$(($RANDOM%(${#ELIGIBLE_PROFILES[@]})))]})
+            fi
           done
 
           # Sort and ensure that the profiles are unique
