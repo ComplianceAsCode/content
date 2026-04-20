@@ -80,6 +80,7 @@ package_chrony_installed
 package_fapolicyd_installed
 package_firewalld_installed
 package_rear_installed
+package_rsyslog-gnutls_installed
 package_rsyslog_installed
 package_squid_removed
 package_sudo_installed
