@@ -100,6 +100,7 @@ package_libdnf-plugin-subscription-manager_installed
 package_opensc_installed
 package_pcsc-lite-ccid_installed
 package_pcsc-lite_installed
+package_rsyslog-gnutls_installed
 package_rsyslog_installed
 package_sequoia-sq_installed
 package_squid_removed
