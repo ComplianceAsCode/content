@@ -890,6 +890,12 @@ class Benchmark(XCCDFEntity):
         for rule in self.rules.values():
             if rule.id_ in rules_to_not_include:
                 continue
+            # Skip rules with CEL checks - they are not included in XCCDF/OVAL
+            # Rules with CEL checks are identified by having both expression and inputs
+            has_expression = hasattr(rule, 'expression') and rule.expression
+            has_inputs = hasattr(rule, 'inputs') and rule.inputs
+            if has_expression and has_inputs:
+                continue
             root.append(rule.to_xml_element(env_yaml))
 
     def _add_version_xml(self, root):
@@ -1283,6 +1289,12 @@ class Group(XCCDFEntity):
                 continue
             rule = self.rules.get(rule_id)
             if rule is not None:
+                # Skip rules with CEL checks - they are not included in XCCDF/OVAL
+                # Rules with CEL checks are identified by having both expression and inputs
+                has_expression = hasattr(rule, 'expression') and rule.expression
+                has_inputs = hasattr(rule, 'inputs') and rule.inputs
+                if has_expression and has_inputs:
+                    continue
                 group.append(rule.to_xml_element(env_yaml))
 
     def _add_sub_groups(self, group, components_to_not_include, env_yaml):
@@ -1664,6 +1676,11 @@ class Rule(XCCDFEntity, Templatable):
         inherited_cpe_platform_names=lambda: set(),
         bash_conditional=lambda: None,
         fixes=lambda: dict(),
+        # CEL checking engine fields (loaded from cel/shared.yml if present)
+        check_type=lambda: None,
+        inputs=lambda: list(),
+        expression=lambda: None,
+        failure_reason=lambda: None,
         **XCCDFEntity.KEYS
     )
     KEYS.update(**Templatable.KEYS)
@@ -1781,6 +1798,30 @@ class Rule(XCCDFEntity, Templatable):
             - Validates identifiers and references.
         """
         rule = super(Rule, cls).from_yaml(yaml_file, env_yaml, product_cpes)
+
+        # Load CEL-specific content if a cel/ directory exists alongside the rule.yml
+        # This allows rules to support both CEL and OVAL checks during migration:
+        # - cel/shared.yml contains CEL expression, inputs, and check_type
+        # - template/OVAL in rule.yml provides traditional checks
+        # The build context (--cel-content vs --datastream) determines which is used.
+        rule_dir = os.path.dirname(yaml_file)
+        cel_dir = os.path.join(rule_dir, "cel")
+        cel_shared_file = os.path.join(cel_dir, "shared.yml")
+
+        if os.path.isdir(cel_dir) and os.path.isfile(cel_shared_file):
+            # Load CEL-specific YAML file
+            cel_data = open_and_expand(cel_shared_file, env_yaml)
+
+            # Merge CEL fields into the rule object
+            # These fields are only used when building CEL content
+            if "check_type" in cel_data:
+                rule.check_type = cel_data["check_type"]
+            if "failure_reason" in cel_data:
+                rule.failure_reason = cel_data["failure_reason"]
+            if "inputs" in cel_data:
+                rule.inputs = cel_data["inputs"]
+            if "expression" in cel_data:
+                rule.expression = cel_data["expression"]
 
         # platforms are read as list from the yaml file
         # we need them to convert to set again
@@ -3188,6 +3229,9 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
+            # Skip profiles targeting the CEL checking engine - they are not included in XCCDF/OVAL
+            if hasattr(profile, 'scanner_type') and profile.scanner_type == 'CEL':
+                continue
             if profile.single_rule_profile:
                 profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
                     self.env_yaml, [profile], rule_and_variables_dict, include_contributors=False
@@ -3253,10 +3297,15 @@ class LinearLoader(object):
         Returns:
             str: The benchmark data in XML format.
         """
+        profiles = self.benchmark.profiles
+
+        # Filter out single rule profiles if requested
         if ignore_single_rule_profiles:
-            profiles = [p for p in self.benchmark.profiles if not p.single_rule_profile]
-        else:
-            profiles = self.benchmark.profiles
+            profiles = [p for p in profiles if not p.single_rule_profile]
+
+        # Filter out profiles targeting the CEL checking engine - they are not included in XCCDF/OVAL
+        profiles = [p for p in profiles if not (hasattr(p, 'scanner_type') and p.scanner_type == 'CEL')]
+
         _, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
             self.env_yaml, profiles, rule_and_variables_dict
         )

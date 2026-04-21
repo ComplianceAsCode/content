@@ -79,6 +79,61 @@
           "uniqueItems": true
         }
       }
+    },
+    "check_type": {
+      "type": "string",
+      "description": "Type of check being performed (usually 'Platform' for Kubernetes/OpenShift checks). For rules using CEL checks with split-file structure, this field should be in cel/shared.yml"
+    },
+    "expression": {
+      "type": "string",
+      "description": "CEL expression that evaluates to boolean (true=pass, false=fail). For rules using CEL checks with split-file structure, this field should be in cel/shared.yml"
+    },
+    "inputs": {
+      "type": "array",
+      "description": "List of Kubernetes resources to evaluate in the CEL expression. For rules using CEL checks with split-file structure, this field should be in cel/shared.yml",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Variable name used in the CEL expression"
+          },
+          "kubernetes_input_spec": {
+            "type": "object",
+            "description": "Kubernetes resource specification",
+            "properties": {
+              "api_version": {
+                "type": "string",
+                "description": "Kubernetes API version (e.g., 'v1', 'apps/v1')"
+              },
+              "resource": {
+                "type": "string",
+                "description": "Resource type in plural form (e.g., 'pods', 'deployments')"
+              },
+              "resource_name": {
+                "type": "string",
+                "description": "Optional: specific resource name to query"
+              },
+              "resource_namespace": {
+                "type": "string",
+                "description": "Optional: specific namespace to query"
+              }
+            },
+            "required": [
+              "api_version",
+              "resource"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "kubernetes_input_spec"
+        ]
+      }
+    },
+    "failure_reason": {
+      "type": "string",
+      "description": "Custom message displayed when the CEL check fails. For rules using CEL checks with split-file structure, this field should be in cel/shared.yml, not in rule.yml"
     }
   },
   "required": [

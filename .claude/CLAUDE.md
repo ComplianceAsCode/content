@@ -158,6 +158,122 @@ template:
         pkgname@ubuntu2204: avahi-daemon    # Platform-specific overrides
 ```
 
+## CEL Checking Engine (Kubernetes/OpenShift)
+
+CEL (Common Expression Language) provides native Kubernetes resource evaluation without requiring shell access or OVAL checks. Rules using the CEL checking engine are used by the compliance-operator for Kubernetes and OpenShift compliance scanning.
+
+**Important:** Rules with CEL checks are **excluded** from SCAP data streams and are generated as a separate `${PRODUCT}-cel-content.yaml` file.
+
+### Rule Structure for CEL Checks
+
+Rules using CEL checks use a **split-file structure** to separate metadata from CEL-specific content:
+
+- **`rule.yml`** - Contains metadata (title, description, rationale, severity, references, etc.)
+- **`cel/shared.yml`** - Contains CEL-specific fields (check_type, inputs, expression)
+
+This allows rules to support **both CEL and OVAL** checks during migration from OVAL to CEL.
+
+**Example rule.yml:**
+```yaml
+documentation_complete: true
+
+title: 'Rule Title'
+
+description: |-
+    Description of what the rule checks.
+
+rationale: |-
+    Why this rule matters.
+
+severity: medium
+
+ocil: |-                   # Optional: Manual check instructions
+    Run the following command:
+    <pre>$ oc get pods</pre>
+
+references:                # Optional: Same as regular rules
+    cis@ocp4: 1.2.3
+    nist: CM-6
+```
+
+**Example cel/shared.yml:**
+```yaml
+check_type: Platform        # Usually Platform for K8s checks
+
+failure_reason: |-          # Optional: Custom failure message
+    The resource is not properly configured.
+
+expression: |-             # REQUIRED: CEL expression (must evaluate to boolean)
+    resource.spec.enabled == true
+
+inputs:                    # REQUIRED: Kubernetes resources to evaluate
+  - name: resource
+    kubernetes_input_spec:
+      api_version: v1
+      resource: pods
+      resource_name: my-pod          # Optional: specific resource
+      resource_namespace: default    # Optional: specific namespace
+```
+
+**Note:** The build system automatically detects rules with CEL checks by the presence of the `cel/` directory.
+
+### CEL Expression Examples
+
+Simple boolean check:
+```yaml
+expression: resource.spec.enabled == true
+```
+
+Check for field absence:
+```yaml
+expression: !has(resource.spec.insecureField)
+```
+
+Multiple conditions:
+```yaml
+expression: |-
+    resource.spec.replicas >= 3 &&
+    has(resource.spec.securityContext) &&
+    resource.spec.securityContext.runAsNonRoot == true
+```
+
+### CEL Profile Format
+
+Profiles that select rules using CEL checks must have `scanner_type: CEL`:
+
+```yaml
+documentation_complete: true
+
+title: 'CIS VM Extension Benchmark'
+
+description: |-
+    Profile description.
+
+scanner_type: CEL    # REQUIRED: Marks this as a CEL profile (excluded from XCCDF)
+
+selections:
+    - kubevirt-nonroot-feature-gate-is-enabled
+    - kubevirt-no-permitted-host-devices
+```
+
+**Note:** 
+- Profiles use `scanner_type: CEL` to indicate they target the CEL checking engine and should be excluded from XCCDF/datastream builds.
+- A rule can have both `cel/` (for CEL checks) and `template:` (for OVAL checks) to support both checking engines during migration.
+
+**Important:** Use hyphens rule IDs (Kubernetes naming convention), not underscores.
+
+### Enabling CEL Content for a Product
+
+In `products/${PRODUCT}/CMakeLists.txt`:
+
+```cmake
+set(PRODUCT "ocp4")
+set(PRODUCT_CEL_ENABLED TRUE)  # Enable CEL content generation
+ssg_build_product(${PRODUCT})
+```
+
+See `docs/manual/developer/13_cel_content.md` for complete CEL documentation.
+
 ## Common Jinja2 Macros
 
 Used in rule descriptions, OCIL, fixtext, and warnings fields:
@@ -279,18 +395,34 @@ Common selection patterns:
 ## Build Instructions
 
 ```bash
-# Build a single product (full build)
+# Build a single product (full build, includes CEL content if PRODUCT_CEL_ENABLED)
 ./build_product ocp4
 
-# Build data stream only (faster, skips guides and tables)
+# Build data stream only (faster, skips guides, tables, and CEL content)
+./build_product ocp4 --datastream
+# Short form (only builds datastream):
+./build_product ocp4 -d
+# Legacy form (still supported):
 ./build_product ocp4 --datastream-only
 
+# Build data stream and CEL content
+./build_product ocp4 --datastream --cel-content=ocp4
+
+# Build only CEL content (no data stream)
+./build_product --cel-content=ocp4
+
+# Build CEL content for multiple products
+./build_product --cel-content=ocp4,rhel9
+
 # Build with only specific rules (fastest, for testing individual rules)
-./build_product ocp4 --datastream-only --rule-id api_server_tls_security_profile
+./build_product ocp4 --datastream --rule-id api_server_tls_security_profile
 ```
 
 Build output goes to `build/`. The data stream file is at:
 `build/ssg-<product>-ds.xml`
+
+For products with CEL content enabled, the CEL content file is at:
+`build/<product>-cel-content.yaml`
 
 ## Guidelines for Claude
 

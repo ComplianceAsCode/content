@@ -84,8 +84,8 @@ RUN grep -lr 'documentation_complete: false' ./products | xargs -I '{}' \
 # Build the OpenShift and RHCOS content for x86, aarch64 and ppc64le architectures.
 # Only build OpenShift content for s390x architectures.
 RUN if [ "$(uname -m)" = "x86_64" ] || [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "ppc64le" ]; then \
-        ./build_product ocp4 rhcos4 --datastream-only; \
-        else ./build_product ocp4 --datastream-only; \
+        ./build_product ocp4 rhcos4 --datastream --cel-content=ocp4; \
+        else ./build_product ocp4 --datastream --cel-content=ocp4; \
         fi
 
 FROM registry.redhat.io/ubi9/ubi-minimal:latest
@@ -110,3 +110,4 @@ LABEL \
 WORKDIR /
 COPY --from=builder /go/src/github.com/ComplianceAsCode/content/LICENSE /licenses/LICENSE
 COPY --from=builder /go/src/github.com/ComplianceAsCode/content/build/ssg-*-ds.xml .
+COPY --from=builder /go/src/github.com/ComplianceAsCode/content/build/*-cel-content.yaml .

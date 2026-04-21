@@ -41,6 +41,12 @@ profiles.  These are meant to be run on machines to put them into
 compliance.  We recommend using other formats but understand that for
 some deployment scenarios bash is the only option.
 
+*"CEL content"* refers to compliance content using the Common Expression Language (CEL)
+for Kubernetes and OpenShift platforms. CEL content is generated as YAML files and is
+designed for native Kubernetes resource evaluation through the compliance-operator,
+without requiring shell access to nodes. This format is used for platform-level
+compliance checks on container orchestration systems.
+
 ### Why?
 
 We want multiple organizations to be able to efficiently develop security

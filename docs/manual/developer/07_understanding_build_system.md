@@ -83,6 +83,7 @@ of occurrence:
 - Load resolved rules, profiles, groups, collected remediations and the unlinked OVAL document and generate XCCDF, OVAL and OCIL documents from this data.
 - Generate CPE OVAL and CPE dictionary.
 - Combining the OVAL, OCIL, CPE and XCCDF documents into a single SCAP source data stream.
+- Generate CEL content YAML for Kubernetes/OpenShift compliance checks (if enabled for the product).
 - Generate content for derived products (such as CentOS and Scientific Linux).
 - Generate HTML tables, Bash scripts, Ansible Playbooks and other secondary artifacts.
 
@@ -93,6 +94,9 @@ refer to their help text for more information and usage:
 
 - `build_all_guides.py` -- generates separate HTML guides for every profile
   in an XCCDF document.
+- `build_cel_content.py` -- generates CEL (Common Expression Language) content
+  YAML for Kubernetes/OpenShift compliance checks. See [CEL Content](13_cel_content.md)
+  for detailed information about CEL rules and profiles.
 - `build_rule_playbooks.py` -- generates per-rule per-profile playbooks in
   Ansible content.
 - `build_sce.py` -- outputs SCE content and combined metadata.
@@ -167,3 +171,98 @@ Steps to link an OVAL document to an XCCDF document:
 8. The OVAL Document object is stored as an XML file `build/ssg-${PRODUCT}-oval.xml`.
 9. For each XCCDF rule, a minimal OVAL Documents document is generated as an artifact
 10. For each reference of OVAL check in XCCDF, a link to the `check-content` and a `check-export` element is added.
+
+## How CEL Content is Built
+
+CEL (Common Expression Language) content provides an alternative scanning mechanism to OVAL specifically designed for Kubernetes and OpenShift API resource evaluation. Unlike OVAL which requires shell access and evaluates system state, CEL rules evaluate Kubernetes resources directly through the API server.
+
+CEL content generation is optional and must be explicitly enabled for each product.
+
+### Enabling CEL Content
+
+CEL content generation is enabled by setting `PRODUCT_CEL_ENABLED` in the product's `CMakeLists.txt`:
+
+```cmake
+set(PRODUCT "ocp4")
+set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
+set(PRODUCT_CEL_ENABLED TRUE)
+
+ssg_build_product(${PRODUCT})
+```
+
+### Build Process
+
+When CEL content is enabled for a product, the build system performs the following steps:
+
+1. **Rule and Profile Resolution** - All rules and profiles are compiled to their product-specific resolved form (same as for SCAP content).
+
+2. **CEL Rule Loading** - The `build_cel_content.py` script loads all rules with CEL checks (identified by having both `expression` and `inputs` fields from `cel/shared.yml`) from the `build/${PRODUCT}/rules/` directory.
+
+3. **CEL Profile Loading** - The script loads all profiles with `scanner_type: CEL` from the `build/${PRODUCT}/profiles/` directory.
+
+4. **Validation** - The build system validates CEL content:
+   - Rules must have `expression` field (non-empty CEL expression)
+   - Rules must have `inputs` field (non-empty list of Kubernetes resources)
+   - Profiles must have `selected` field with at least one rule
+   - No duplicate rule names (after conversion to hyphenated format)
+   - All profile rule references must exist in the CEL rules
+
+5. **Content Generation** - The script generates a single CEL content YAML file at `build/${PRODUCT}-cel-content.yaml`.
+
+### CEL Content Structure
+
+The generated CEL content YAML has two main sections:
+
+```yaml
+profiles:
+  - id: cis_vm_extension              # Profile ID (with underscores)
+    name: cis-vm-extension            # Profile name (with hyphens)
+    title: Profile Title
+    description: Profile description
+    productType: Platform
+    rules:                            # List of rule names (hyphenated)
+      - rule-name-one
+      - rule-name-two
+
+rules:
+  - id: rule_name_one                 # Rule ID (with underscores)
+    name: rule-name-one               # Rule name (with hyphens)
+    title: Rule Title
+    description: Rule description
+    rationale: Rule rationale
+    severity: medium
+    checkType: Platform
+    expression: |                     # CEL expression
+      resource.spec.enabled == true
+    inputs:                           # Kubernetes resource inputs
+      - name: resource
+        kubernetesInputSpec:
+          apiVersion: v1
+          resource: pods
+    instructions: Manual check steps  # From ocil field
+    controls:                         # From references field
+      cis@ocp4:
+        - 1.2.3
+      nist:
+        - CM-6
+```
+
+### Differences from SCAP
+
+CEL content is processed differently from traditional SCAP content:
+
+| Aspect | SCAP| CEL Content |
+|--------|-----------|-------------|
+| **Rules Included** | All rules except CEL | Only CEL rules |
+| **Profiles Included** | All profiles except CEL | Only CEL profiles |
+| **Output Format** | XML (DataStream) | YAML |
+| **Output Location** | `build/ssg-${PRODUCT}-ds.xml` | `build/${PRODUCT}-cel-content.yaml` |
+| **Scanner** | OpenSCAP | compliance-operator |
+| **Evaluation** | Shell commands, file checks | Kubernetes API queries |
+
+Rules with no check implemented appear **only** in the SCAP content.
+Rules with only CEL check implemented are **excluded** from SCAP content generation and **only** appear in the CEL content YAML.
+Rules with both OVAL and CEL check implemented are **included** in both SCAP  and CEL content.
+Profiles with `scanner_type: CEL` are **excluded** from SCAP content and **only** appear in the CEL content YAML.
+
+For detailed information about creating CEL rules and profiles, see [CEL Content](13_cel_content.md).
