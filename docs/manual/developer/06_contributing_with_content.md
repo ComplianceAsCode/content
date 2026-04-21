@@ -962,13 +962,19 @@ for evaluating Kubernetes and OpenShift API resources for compliance checking. C
 are used by the [compliance-operator](https://github.com/ComplianceAsCode/compliance-operator)
 to perform platform-level compliance checks without requiring shell access to nodes.
 
-CEL rules are defined directly in the `rule.yml` file using specialized fields:
+CEL rules use a **split-file structure** to separate metadata from CEL-specific content:
 
-* `scanner_type: CEL` - Marks the rule as a CEL rule
-* `check_type: Platform` - Indicates this is a platform-level check
+* **`rule.yml`** - Contains metadata (title, description, rationale, severity, references, etc.)
+* **`cel/shared.yml`** - Contains CEL-specific fields (check_type, failure_reason, inputs, expression)
+
+This allows rules to support **both CEL and OVAL** checks during migration from OVAL to CEL.
+
+Within a rule's `cel/shared.yml` file, the following fields are used:
+
+* `check_type: Platform` - Indicates this is a platform-level check (usually Platform for K8s checks)
+* `failure_reason` - Optional custom failure message displayed when the check fails
 * `expression` - The CEL expression that evaluates to boolean (true=pass, false=fail)
 * `inputs` - List of Kubernetes resources to evaluate
-* `failure_reason` - Optional custom failure message
 
 Within a rule's `inputs` section, each input specifies a Kubernetes resource using `kubernetes_input_spec`:
 
@@ -983,14 +989,33 @@ Within a rule's `inputs` section, each input specifies a Kubernetes resource usi
 * CEL rules generate a separate `${PRODUCT}-cel-content.yaml` file
 * CEL profiles can only select CEL rules
 * Rule directory names should use hyphens (Kubernetes naming convention)
+* The build system automatically detects rules with CEL checks by the presence of the `cel/` directory
 
 For complete documentation on creating CEL rules, see [CEL Content](12_cel_content.md).
 
 Example CEL rule:
 
+**rule.yml:**
 ```yaml
-scanner_type: CEL
+documentation_complete: true
+
+title: 'Ensure Deployments Run as Non-Root'
+
+description: |-
+    Deployments should run with non-root security context.
+
+rationale: |-
+    Running containers as non-root reduces the attack surface.
+
+severity: medium
+```
+
+**cel/shared.yml:**
+```yaml
 check_type: Platform
+
+failure_reason: |-
+    The deployment does not have the required non-root security context.
 
 expression: |-
     resource.spec.replicas >= 3 &&

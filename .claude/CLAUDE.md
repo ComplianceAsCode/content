@@ -191,9 +191,6 @@ ocil: |-                   # Optional: Manual check instructions
     Run the following command:
     <pre>$ oc get pods</pre>
 
-failure_reason: |-          # Optional: Custom failure message
-    The resource is not properly configured.
-
 references:                # Optional: Same as regular rules
     cis@ocp4: 1.2.3
     nist: CM-6
@@ -202,6 +199,9 @@ references:                # Optional: Same as regular rules
 **Example cel/shared.yml:**
 ```yaml
 check_type: Platform        # Usually Platform for K8s checks
+
+failure_reason: |-          # Optional: Custom failure message
+    The resource is not properly configured.
 
 expression: |-             # REQUIRED: CEL expression (must evaluate to boolean)
     resource.spec.enabled == true

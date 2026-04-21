@@ -1,5 +1,9 @@
 check_type: Platform
 
+failure_reason: |-
+    There are registries not using TLS in '.spec.storageImport.insecureRegistries' in
+    the 'kubevirt-hyperconverged' resource.
+
 inputs:
   - name: hco
     kubernetes_input_spec:

@@ -280,7 +280,7 @@ CEL (Common Expression Language) rules are used for Kubernetes/OpenShift complia
 Rules with CEL checks use a split-file structure:
 
 * **`rule.yml`** - Contains metadata (same as any rule)
-* **`cel/shared.yml`** - Contains CEL-specific fields (check_type, inputs, expression)
+* **`cel/shared.yml`** - Contains CEL-specific fields (check_type, failure_reason, inputs, expression)
 
 This allows rules to support both CEL and OVAL checks during migration.
 
@@ -299,9 +299,6 @@ Rule sections must be in the following order, if present:
     * Keys must be in alphabetical order
 * `ocil_clause` (Optional)
 * `ocil` (HTML Like, Optional)
-* `failure_reason` (Optional)
-    * Must be a block
-    * Must describe the condition when the check fails
 
 ##### cel/shared.yml Sections
 
@@ -309,6 +306,9 @@ CEL-specific sections must be in the following order:
 
 * `check_type`
     * Must be `Platform` for Kubernetes/OpenShift checks
+* `failure_reason` (Optional)
+    * Must be a block
+    * Must describe the condition when the check fails
 * `expression`
     * Must be a valid CEL expression that evaluates to boolean
     * Must use variables defined in `inputs`
@@ -343,14 +343,14 @@ severity: medium
 ocil: |-
     Run the following command:
     <pre>$ oc get configmap my-config -n default</pre>
-
-failure_reason: |-
-    The resource is not properly configured.
 ```
 
 **cel/shared.yml:**
 ```yaml
 check_type: Platform
+
+failure_reason: |-
+    The resource is not properly configured.
 
 expression: |-
     resource.spec.enabled == true &&

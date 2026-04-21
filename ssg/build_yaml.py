@@ -1816,6 +1816,8 @@ class Rule(XCCDFEntity, Templatable):
             # These fields are only used when building CEL content
             if "check_type" in cel_data:
                 rule.check_type = cel_data["check_type"]
+            if "failure_reason" in cel_data:
+                rule.failure_reason = cel_data["failure_reason"]
             if "inputs" in cel_data:
                 rule.inputs = cel_data["inputs"]
             if "expression" in cel_data:

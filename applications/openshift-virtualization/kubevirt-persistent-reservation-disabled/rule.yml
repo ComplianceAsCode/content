@@ -20,10 +20,6 @@ rationale: |-
     for specific workload requirements, it should remain disabled to minimize the
     attack surface.
 
-failure_reason: |-
-    The '.spec.featureGates.persistentReservation' field is missing, not set,
-    or not set to 'false' in the 'kubevirt-hyperconverged' resource.
-
 severity: medium
 
 ocil_clause: 'persistentReservation feature gate is not explicitly set to false'

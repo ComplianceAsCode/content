@@ -18,10 +18,6 @@ rationale: |-
     and executed within virtual machines. To maintain security, only registries using
     TLS should be permitted, and the insecureRegistries list should be empty.
 
-failure_reason: |-
-    There are registries not using TLS in '.spec.storageImport.insecureRegistries' in
-    the 'kubevirt-hyperconverged' resource.
-
 severity: medium
 
 ocil_clause: 'insecure registries are configured'

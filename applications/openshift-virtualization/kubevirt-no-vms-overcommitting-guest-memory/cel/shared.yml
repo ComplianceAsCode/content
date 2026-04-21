@@ -1,5 +1,11 @@
 check_type: Platform
 
+failure_reason: |-
+    The '.spec.template.spec.domain.resources.overcommitGuestOverhead' field exists and is
+    set to "true" in the 'VirtualMachine' resource, allowing VMs to
+    overcommit KubeVirt's memory which may lead to guests crashing and
+    interrupting workloads causing malfunctions.
+
 inputs:
   - name: vms
     kubernetes_input_spec:

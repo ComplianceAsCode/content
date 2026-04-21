@@ -22,9 +22,14 @@ Continue using OVAL/template-based rules for:
 
 ## CEL Rule Format
 
-CEL rules are defined using the same `rule.yml` format as other rules, with additional CEL-specific fields.
+CEL rules use a **split-file structure** to separate metadata from CEL-specific content:
 
-### Required Fields for CEL Rules
+- **`rule.yml`** - Contains metadata (title, description, rationale, severity, references, etc.)
+- **`cel/shared.yml`** - Contains CEL-specific fields (check_type, failure_reason, inputs, expression)
+
+This allows rules to support **both CEL and OVAL** checks during migration from OVAL to CEL.
+
+### rule.yml Fields
 
 ```yaml
 documentation_complete: true
@@ -39,12 +44,25 @@ rationale: |-
 
 severity: medium  # low, medium, high
 
-scanner_type: CEL  # REQUIRED: Marks this as a CEL rule
+ocil: |-  # Optional: Manual verification instructions
+    Run the following command to verify:
+    <pre>$ oc get pods</pre>
 
+references:  # Optional
+    cis@ocp4: 1.2.3
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325
+```
+
+### cel/shared.yml Fields
+
+```yaml
 check_type: Platform  # Type of check (usually Platform for K8s checks)
 
-expression: |-
-    # REQUIRED: CEL expression that evaluates to boolean
+failure_reason: |-  # Optional: Custom message displayed when the check fails
+    The resource is not properly configured.
+
+expression: |-  # REQUIRED: CEL expression that evaluates to boolean
     resource.spec.enabled == true
 
 inputs:  # REQUIRED: List of Kubernetes resources to evaluate
@@ -54,22 +72,6 @@ inputs:  # REQUIRED: List of Kubernetes resources to evaluate
       resource: pods
       resource_name: my-pod  # Optional: specific resource name
       resource_namespace: default  # Optional: specific namespace
-```
-
-### Optional Fields
-
-```yaml
-ocil: |-
-    Manual verification instructions.
-    This becomes the "instructions" field in CEL content output.
-
-failure_reason: |-
-    Custom message displayed when the check fails.
-
-references:
-    cis@ocp4: 1.2.3
-    nist: CM-6,CM-6(1)
-    srg: SRG-APP-000516-CTR-001325
 ```
 
 ### CEL Expression
@@ -173,10 +175,11 @@ description: |-
     Security recommendations for OpenShift Virtualization (KubeVirt).
 ```
 
-### 3. Create the rule.yml
+### 3. Create the rule.yml and cel/shared.yml
 
 Follow the CEL rule format described above. Example:
 
+**rule.yml:**
 ```yaml
 documentation_complete: true
 
@@ -192,9 +195,21 @@ rationale: |-
 
 severity: medium
 
-scanner_type: CEL
+ocil: |-
+    Run the following command to verify the NonRoot feature gate:
+    <pre>oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o jsonpath='{.spec.featureGates.nonRoot}'</pre>
+    The output should be <tt>true</tt>.
 
+references:
+    cis@ocp4: 5.7.1
+```
+
+**cel/shared.yml:**
+```yaml
 check_type: Platform
+
+failure_reason: |-
+    The NonRoot feature gate is not enabled in the kubevirt-hyperconverged resource.
 
 expression: |-
     hco.spec.featureGates.nonRoot == true
@@ -206,14 +221,6 @@ inputs:
       resource: hyperconvergeds
       resource_name: kubevirt-hyperconverged
       resource_namespace: openshift-cnv
-
-ocil: |-
-    Run the following command to verify the NonRoot feature gate:
-    <pre>oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o jsonpath='{.spec.featureGates.nonRoot}'</pre>
-    The output should be <tt>true</tt>.
-
-references:
-    cis@ocp4: 5.7.1
 ```
 
 ## Build System Integration
@@ -333,8 +340,9 @@ rules:
 The build system validates CEL content automatically:
 
 **Rule Validation:**
-- `expression` field must be present and non-empty
-- `inputs` field must be present and non-empty list
+- `cel/shared.yml` file must exist for CEL rules
+- `expression` field must be present and non-empty in `cel/shared.yml`
+- `inputs` field must be present and non-empty list in `cel/shared.yml`
 - Rule directory names must match rule IDs (with hyphens)
 
 **Profile Validation:**

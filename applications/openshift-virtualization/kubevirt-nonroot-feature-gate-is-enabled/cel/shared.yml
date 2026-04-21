@@ -1,5 +1,9 @@
 check_type: Platform
 
+failure_reason: |-
+    The '.spec.featureGates.nonRoot' field is missing or not set to 'true' in
+    the 'kubevirt-hyperconverged' resource.
+
 inputs:
   - name: hcoList
     kubernetes_input_spec:
