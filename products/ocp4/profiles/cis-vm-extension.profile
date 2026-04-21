@@ -12,7 +12,7 @@ title: 'CIS Red Hat Openshift Virtual Machine Extension Benchmark'
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
-    Red Hat OpenShift Virtual Machine Extention Benchmark™, V1.0.0.
+    Red Hat OpenShift Virtual Machine Extension Benchmark™, V1.0.0.
 
     This profile includes Center for Internet Security®
     Red Hat OpenShift Virtual Machine Extension Benchmarks™ content.
