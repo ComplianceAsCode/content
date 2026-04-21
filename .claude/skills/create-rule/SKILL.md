@@ -11,7 +11,7 @@ Create a new security rule for ComplianceAsCode. This skill handles both templat
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 ## Phase 1: Validate Input
 
@@ -20,7 +20,7 @@ This skill uses `mcp__content-mcp__*` tools when available (preferred — determ
    - Example valid IDs: `sshd_max_auth_tries`, `accounts_password_minlen`
 
 2. **Check if rule already exists**:
-   Use `mcp__content-mcp__search_rules` with `query=$ARGUMENTS` to check if a rule with this ID already exists.
+   Use `mcp__content-agent__search_rules` with `query=$ARGUMENTS` to check if a rule with this ID already exists.
    **Fallback**: Use `Glob` to search for `**/$ARGUMENTS/rule.yml`.
    - If rule exists, inform user and ask if they want to modify it instead
 
@@ -42,14 +42,14 @@ Use AskUserQuestion to ask the user:
 
 If user chose templated rule:
 
-1. **List available templates** using `mcp__content-mcp__list_templates` to get all available templates with their descriptions.
+1. **List available templates** using `mcp__content-agent__list_templates` to get all available templates with their descriptions.
    **Fallback**: Run `ls shared/templates/` to list available template directories.
 
 2. **Present available templates** from the list obtained in step 1 and help the user select the right one based on their use case.
 
 3. **Ask for template selection** using AskUserQuestion
 
-4. **Get template parameter schema** using `mcp__content-mcp__get_template_schema` with `template_name=<selected_template>` to get the full parameter schema, supported languages, and documentation.
+4. **Get template parameter schema** using `mcp__content-agent__get_template_schema` with `template_name=<selected_template>` to get the full parameter schema, supported languages, and documentation.
    **Fallback**: Read `shared/templates/<template_name>/template.yml` or `template.py` for parameter definitions. Check existing rules using this template for usage examples.
 
 5. **Collect template variables**:
@@ -110,7 +110,7 @@ Collect the following information using AskUserQuestion or prompts:
 
 ### For Templated Rules
 
-Use `mcp__content-mcp__generate_rule_from_template` with:
+Use `mcp__content-agent__generate_rule_from_template` with:
 - `template_name`: The selected template name
 - `parameters`: Template variables collected from the user
 - `rule_id`: $ARGUMENTS
@@ -122,7 +122,7 @@ This generates the rule directory and rule.yml with the template configuration a
 
 ### For Non-Templated Rules
 
-Use `mcp__content-mcp__generate_rule_boilerplate` with:
+Use `mcp__content-agent__generate_rule_boilerplate` with:
 - `rule_id`: $ARGUMENTS
 - `title`: The rule title
 - `description`: The rule description
@@ -323,7 +323,7 @@ Most profiles in the project reference control files rather than listing rules d
 
 ### Step 1: List Available Profiles
 
-Use `mcp__content-mcp__list_profiles` with `product=<product>` to list all available profiles for each target product.
+Use `mcp__content-agent__list_profiles` with `product=<product>` to list all available profiles for each target product.
    **Fallback**: Run `ls products/<product>/profiles/*.profile` to list profiles.
 
 ### Step 2: Ask User Which Profile(s)
@@ -472,7 +472,7 @@ ls tests/data/profile_stability/
    cat <rule_directory>/rule.yml
    ```
 
-2. **Validate rule YAML** using `mcp__content-mcp__validate_rule_yaml` with the content of the generated rule.yml. This validates syntax, structure, and reference formats.
+2. **Validate rule YAML** using `mcp__content-agent__validate_rule_yaml` with the content of the generated rule.yml. This validates syntax, structure, and reference formats.
    **Fallback**: Validate against the JSON schema:
    ```bash
    python3 -c "
@@ -488,7 +488,7 @@ ls tests/data/profile_stability/
    " <path_to_rule.yml>
    ```
 
-   For control files, use `mcp__content-mcp__validate_control_file` with the control file path.
+   For control files, use `mcp__content-agent__validate_control_file` with the control file path.
    **Fallback**: Validate against the control schema:
    ```bash
    python3 -c "

@@ -9,7 +9,7 @@ Parse a security policy document (PDF, Markdown, HTML, or text), create a Compli
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 **Without MCP server**: PDF parsing is unavailable (use markdown/text instead). Control file generation and validation must be done manually. Cross-framework similarity search for auto-mapping is unavailable; keyword-based search is used instead.
 
@@ -31,18 +31,18 @@ Examples:
    - `.html` / `.htm` → `html`
    - Otherwise → `text`
 
-3. **Validate product** (if specified): Call `mcp__content-mcp__get_product_details` with `product_id`.
-   - If not found, call `mcp__content-mcp__list_products` and present options via `AskUserQuestion`:
+3. **Validate product** (if specified): Call `mcp__content-agent__get_product_details` with `product_id`.
+   - If not found, call `mcp__content-agent__list_products` and present options via `AskUserQuestion`:
      - "Product '{product_id}' not found. Which product is this control for?"
      - Options: top 4 relevant products + Other
    - **Fallback**: Check if `products/<product_id>/product.yml` exists. List products with `ls products/`.
 
 4. **If no `--product` specified**, discover available products and ask the user via `AskUserQuestion`:
-   - Run `ls products/` (or call `mcp__content-mcp__list_products`) to get the list of available products
+   - Run `ls products/` (or call `mcp__content-agent__list_products`) to get the list of available products
    - "Which product is this control file for? (optional — leave blank for product-agnostic)"
    - Options: present the most common products from the discovered list + "Product-agnostic (global controls/)" + Other
 
-5. **Check for existing control**: If `--id` was provided, call `mcp__content-mcp__get_control_stats` with `control_id` to check whether a control file with this ID already exists.
+5. **Check for existing control**: If `--id` was provided, call `mcp__content-agent__get_control_stats` with `control_id` to check whether a control file with this ID already exists.
    **Fallback**: Check if `controls/<policy_id>.yml` or `products/<product>/controls/<policy_id>.yml` exists.
    - If it already exists, warn the user via `AskUserQuestion`:
      - "Control file '{policy_id}' already exists with {total} requirements. What would you like to do?"
@@ -53,7 +53,7 @@ Examples:
 
 ## Phase 2: Parse the Policy Document
 
-1. **Parse document**: Call `mcp__content-mcp__parse_policy_document` with:
+1. **Parse document**: Call `mcp__content-agent__parse_policy_document` with:
    - `source`: document_path
    - `document_type`: inferred type from Phase 1
    - **Fallback**: For markdown/text/HTML files, read the file directly and extract structure by splitting on headings. Identify requirements from numbered sections, bullet lists, or tables. For PDF files, inform the user that PDF parsing requires the MCP server and ask for a text/markdown alternative.
@@ -109,7 +109,7 @@ Examples:
        - Other
 
 2. **Ask for additional metadata** via `AskUserQuestion`:
-   - Check existing control files for common level patterns: `grep -h 'id:' controls/*.yml products/*/controls/*.yml | grep -A5 'levels:' | head -20` or call `mcp__content-mcp__list_controls` to see level schemes used in other frameworks
+   - Check existing control files for common level patterns: `grep -h 'id:' controls/*.yml products/*/controls/*.yml | grep -A5 'levels:' | head -20` or call `mcp__content-agent__list_controls` to see level schemes used in other frameworks
    - "Does this policy define compliance levels (e.g., high/medium/low, Level 1/Level 2)?"
    - Options: present common level schemes discovered from existing control files + "No levels" + Other
 
@@ -139,7 +139,7 @@ Examples:
    }
    ```
 
-3. **Generate control files**: Call `mcp__content-mcp__generate_control_files` with:
+3. **Generate control files**: Call `mcp__content-agent__generate_control_files` with:
    - `policy_id`: from Phase 3
    - `policy_title`: from parsed document title
    - `format`: `"directory"` or `"inline"` based on user choice
@@ -174,7 +174,7 @@ Examples:
 
    If there are errors, display them and ask if the user wants to continue or abort.
 
-4. **Validate generated files**: Call `mcp__content-mcp__validate_control_file` with the generated parent file path.
+4. **Validate generated files**: Call `mcp__content-agent__validate_control_file` with the generated parent file path.
    **Fallback**: Validate against the JSON schema:
    ```bash
    python3 -c "
@@ -222,7 +222,7 @@ If `--no-map` was NOT specified, offer to do an initial mapping pass.
 3. **If "Yes, quick auto-map only"**: Perform automatic mapping:
 
    For each requirement:
-   a. Call `mcp__content-mcp__find_similar_requirements` with:
+   a. Call `mcp__content-agent__find_similar_requirements` with:
       - `requirement_text`: requirement title + " " + description
       - `exclude_control_id`: current policy_id
       - `max_results`: 5
@@ -231,11 +231,11 @@ If `--no-map` was NOT specified, offer to do an initial mapping pass.
 
    b. Collect all rules from similar requirements across frameworks.
 
-   c. If the target product is specified, call `mcp__content-mcp__get_rule_product_availability` for the top candidate rules to verify they're available for the product.
+   c. If the target product is specified, call `mcp__content-agent__get_rule_product_availability` for the top candidate rules to verify they're available for the product.
       **Fallback**: Check each rule's `rule.yml` for `cce@<product>` identifiers.
 
    d. If confident matches found (rules appear in 2+ other frameworks for the same concept):
-      - Call `mcp__content-mcp__update_requirement_rules` with the matched rules and `status="automated"`.
+      - Call `mcp__content-agent__update_requirement_rules` with the matched rules and `status="automated"`.
         **Fallback**: Edit the requirement YAML directly using `Edit` tool.
 
    e. Track auto-mapped vs. skipped requirements.
@@ -275,7 +275,7 @@ Present a summary of the onboarding:
 ### Mapping Status
 ```
 
-Call `mcp__content-mcp__get_control_stats` with the new `control_id` (and `product` if specified) to show current state.
+Call `mcp__content-agent__get_control_stats` with the new `control_id` (and `product` if specified) to show current state.
 **Fallback**: Read the generated control YAML and count requirements by status.
 
 ```

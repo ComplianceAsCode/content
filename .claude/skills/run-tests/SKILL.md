@@ -9,12 +9,12 @@ Run the ctest validation suite against built content in `build/`.
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 ## Phase 1: Verify Build Exists
 
 1. **Check that the build directory exists and contains content**:
-   Use `mcp__content-mcp__list_built_products` to check which products have been built and have artifacts available.
+   Use `mcp__content-agent__list_built_products` to check which products have been built and have artifacts available.
    **Fallback**: Run `ls build/ssg-*-ds.xml 2>/dev/null` to check for built datastreams.
 
 2. **If no build artifacts found**, inform the user:

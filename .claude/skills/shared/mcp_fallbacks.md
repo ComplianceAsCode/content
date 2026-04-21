@@ -1,6 +1,6 @@
 # MCP Fallback Reference
 
-When the `mcp__content-mcp__*` tools are not available, use these filesystem-based alternatives.
+When the `mcp__content-agent__*` tools are not available, use these filesystem-based alternatives.
 
 ## Simple Lookups
 
@@ -125,7 +125,7 @@ This is less precise than the MCP tool's text similarity but catches most obviou
 - **Markdown/text files**: Read the file directly. Split by headings (`#`, `##`, etc.) to identify sections. Extract requirement IDs from section headers or numbered lists.
 - **HTML files**: Read the file. The markup is usually readable enough to extract structure.
 - **PDF files**: Cannot be parsed without the MCP server. Inform the user:
-  > PDF parsing requires the content-mcp server. Please convert the PDF to markdown or text first, or configure the MCP server.
+  > PDF parsing requires the content-agent server. Please convert the PDF to markdown or text first, or configure the MCP server.
 
 ### update_requirement_rules
 

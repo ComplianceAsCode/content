@@ -11,16 +11,16 @@ Build a ComplianceAsCode product.
 
 ## Tool Strategy
 
-This skill uses `mcp__content-mcp__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
+This skill uses `mcp__content-agent__*` tools when available (preferred — deterministic, structured results). When the MCP server is not configured, fall back to filesystem-based alternatives noted as **Fallback** in each step. See `.claude/skills/shared/mcp_fallbacks.md` for detailed fallback procedures. The skill must complete successfully either way.
 
 ## Phase 1: Validate Product
 
 1. **Check if product is valid**:
-   Use `mcp__content-mcp__get_product_details` with `product_id=$ARGUMENTS` to validate the product exists and get its metadata.
+   Use `mcp__content-agent__get_product_details` with `product_id=$ARGUMENTS` to validate the product exists and get its metadata.
    **Fallback**: Read `products/$ARGUMENTS/product.yml` directly. If the file doesn't exist, the product is invalid.
 
 2. **If product not found**, list available products:
-   Use `mcp__content-mcp__list_products` to get all available products.
+   Use `mcp__content-agent__list_products` to get all available products.
    **Fallback**: Run `ls products/` to list available product directories.
 
 3. **If no product specified**, ask user using AskUserQuestion:
@@ -72,7 +72,7 @@ Expected artifacts in `build/`:
    - Non-zero = Build failed
 
 2. **Verify key artifacts exist**:
-   Use `mcp__content-mcp__get_datastream_info` with `product=$ARGUMENTS` to verify the datastream was built successfully and get artifact details.
+   Use `mcp__content-agent__get_datastream_info` with `product=$ARGUMENTS` to verify the datastream was built successfully and get artifact details.
    **Fallback**: Check files directly:
    ```bash
    ls -la build/ssg-$ARGUMENTS-ds.xml
