@@ -196,7 +196,7 @@ When CEL content is enabled for a product, the build system performs the followi
 
 1. **Rule and Profile Resolution** - All rules and profiles are compiled to their product-specific resolved form (same as for SCAP content).
 
-2. **CEL Rule Loading** - The `build_cel_content.py` script loads all rules with `scanner_type: CEL` from the `build/${PRODUCT}/rules/` directory.
+2. **CEL Rule Loading** - The `build_cel_content.py` script loads all rules with CEL checks (identified by having both `expression` and `inputs` fields from `cel/shared.yml`) from the `build/${PRODUCT}/rules/` directory.
 
 3. **CEL Profile Loading** - The script loads all profiles with `scanner_type: CEL` from the `build/${PRODUCT}/profiles/` directory.
 

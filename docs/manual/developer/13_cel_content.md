@@ -242,7 +242,7 @@ ssg_build_product(${PRODUCT})
 When `PRODUCT_CEL_ENABLED` is set to `TRUE`, the build system:
 
 1. **Compiles all rules** (including CEL rules) using `compile_all.py`
-2. **Filters CEL rules** - Rules with `scanner_type: CEL` are identified
+2. **Filters CEL rules** - Rules with CEL checks are identified by the presence of `cel/shared.yml` containing `expression` and `inputs` fields
 3. **Filters CEL profiles** - Profiles with `scanner_type: CEL` are identified
 4. **Validates CEL content**:
    - CEL rules must have `expression` field (non-empty)
@@ -262,7 +262,7 @@ The `build_cel_content.py` script is located in `build-scripts/` and performs th
 - Product YAML: `build/${PRODUCT}/product.yml`
 
 #### Processing
-1. Loads all rules with `scanner_type: CEL`
+1. Loads all rules with CEL checks (identified by having both `expression` and `inputs` fields from `cel/shared.yml`)
 2. Validates required CEL fields (`expression`, `inputs`)
 3. Loads all profiles with `scanner_type: CEL`
 4. Validates profile rules are non-empty
@@ -435,13 +435,13 @@ cel-spec '{"resource": {"spec": {"enabled": true}}}' 'resource.spec.enabled == t
 - Add rules to the `selections` field in the profile
 
 **Error: `profile 'profile-name' references unknown rule 'rule-name'`**
-- Verify the rule exists and has `scanner_type: CEL`
+- Verify the rule exists and has CEL checks (has `cel/shared.yml` with `expression` and `inputs`)
 - Check the rule ID matches the profile selection
 
 ### CEL Content Not Generated
 
 1. Verify `PRODUCT_CEL_ENABLED TRUE` is set in `products/${PRODUCT}/CMakeLists.txt`
-2. Check that rules have `scanner_type: CEL`
+2. Check that rules have a `cel/shared.yml` file with `expression` and `inputs` fields
 3. Check that profiles have `scanner_type: CEL`
 4. Review build logs for validation errors
 
