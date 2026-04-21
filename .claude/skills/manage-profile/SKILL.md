@@ -1,4 +1,6 @@
 ---
+name: manage-profile
+description: Create or update a versioned profile pair (versioned + unversioned extends pattern).
 disable-model-invocation: true
 ---
 
