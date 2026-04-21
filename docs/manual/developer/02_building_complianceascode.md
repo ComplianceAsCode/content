@@ -341,7 +341,7 @@ When building products with `PRODUCT_CEL_ENABLED` set in their CMakeLists.txt, C
 
 CEL content files are generated as `build/<product>-cel-content.yaml`.
 
-For more information about CEL content, see [CEL Content Documentation](12_cel_content.md).
+For more information about CEL content, see [CEL Content Documentation](13_cel_content.md).
 
 ### Configuring CMake options using GUI
 

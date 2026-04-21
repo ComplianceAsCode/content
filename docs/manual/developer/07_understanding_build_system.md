@@ -95,7 +95,7 @@ refer to their help text for more information and usage:
 - `build_all_guides.py` -- generates separate HTML guides for every profile
   in an XCCDF document.
 - `build_cel_content.py` -- generates CEL (Common Expression Language) content
-  YAML for Kubernetes/OpenShift compliance checks. See [CEL Content](12_cel_content.md)
+  YAML for Kubernetes/OpenShift compliance checks. See [CEL Content](13_cel_content.md)
   for detailed information about CEL rules and profiles.
 - `build_rule_playbooks.py` -- generates per-rule per-profile playbooks in
   Ansible content.
@@ -265,4 +265,4 @@ Rules with only CEL check implemented are **excluded** from SCAP content generat
 Rules with both OVAL and CEL check implemented are **included** in both SCAP  and CEL content.
 Profiles with `scanner_type: CEL` are **excluded** from SCAP content and **only** appear in the CEL content YAML.
 
-For detailed information about creating CEL rules and profiles, see [CEL Content](12_cel_content.md).
+For detailed information about creating CEL rules and profiles, see [CEL Content](13_cel_content.md).

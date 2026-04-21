@@ -675,7 +675,7 @@ supported by ComplianceAsCode: OVAL, CEL, and SCE.
 
 * **OVAL** (Open Vulnerability and Assessment Language) - Standardized by NIST with better cross-scanner support. Used for traditional operating system compliance checks (file system, processes, packages). Generally the preferred choice for OS-level checks.
 
-* **CEL** (Common Expression Language) - Used for Kubernetes and OpenShift platform compliance checks. CEL rules evaluate Kubernetes API resources without requiring shell access to nodes. See [CEL Content](12_cel_content.md) for complete documentation on creating CEL rules.
+* **CEL** (Common Expression Language) - Used for Kubernetes and OpenShift platform compliance checks. CEL rules evaluate Kubernetes API resources without requiring shell access to nodes. See [CEL Content](13_cel_content.md) for complete documentation on creating CEL rules.
 
 * **SCE** (Script Check Engine) - Can use any language on the target system (Bash, Python, ...) making it more flexible and general-purpose than OVAL, but with less cross-scanner support.
 
@@ -991,7 +991,7 @@ Within a rule's `inputs` section, each input specifies a Kubernetes resource usi
 * Rule directory names should use hyphens (Kubernetes naming convention)
 * The build system automatically detects rules with CEL checks by the presence of the `cel/` directory
 
-For complete documentation on creating CEL rules, see [CEL Content](12_cel_content.md).
+For complete documentation on creating CEL rules, see [CEL Content](13_cel_content.md).
 
 Example CEL rule:
 

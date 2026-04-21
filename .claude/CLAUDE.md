@@ -272,7 +272,7 @@ set(PRODUCT_CEL_ENABLED TRUE)  # Enable CEL content generation
 ssg_build_product(${PRODUCT})
 ```
 
-See `docs/manual/developer/12_cel_content.md` for complete CEL documentation.
+See `docs/manual/developer/13_cel_content.md` for complete CEL documentation.
 
 ## Common Jinja2 Macros
 
