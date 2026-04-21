@@ -944,9 +944,15 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 #}}
 {{% macro ansible_authselect_force_reselect(rule_title=None) -%}}
+- name: '{{{ rule_title }}} - Get current authselect profile'
+  ansible.builtin.command:
+    cmd: authselect current --raw
+  register: authselect_current_profile
+  changed_when: false
+
 - name: '{{{ rule_title }}} - Force reselect authselect profile'
-  ansible.builtin.shell:
-    cmd: authselect select "$(authselect current --raw)" --force
+  ansible.builtin.command:
+    cmd: "authselect select {{ authselect_current_profile.stdout }} --force"
 {{%- endmacro %}}
 
 {{#

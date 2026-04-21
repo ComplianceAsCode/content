@@ -2484,7 +2484,8 @@ fi
 
 #}}
 {{% macro bash_authselect_force_reselect() -%}}
-authselect select "$(authselect current --raw)" --force
+read -ra authselect_args < <(authselect current --raw)
+authselect select "${authselect_args[@]}" --force
 {{%- endmacro %}}
 
 
