@@ -16,7 +16,7 @@
         </criteria>
     </definition>
 
-{{% set legacy_regex = "^\\$ActionSendStreamDriverMode 1$" %}}
+{{% set legacy_regex = "^\\s*\\$ActionSendStreamDriverMode\\s+1\\s*$" %}}
 {{% set rainer_script_regex = "(?ms)^\\s*action\\(.*(?i)\\btype\\b(?-i)=\"omfwd\".*(?i)\\bStreamDriverMode\\b(?-i)=\"1\".*\\)\\s*$" %}}
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
