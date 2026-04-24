@@ -21,7 +21,7 @@
         cmd: firewall-cmd --permanent --zone=trusted --add-interface=lo
       register: result_lo_interface_assignment
       changed_when:
-          - "'ALREADY_ENABLED' not in result_lo_interface_assignment.stderr"
+        - "'ALREADY_ENABLED' not in result_lo_interface_assignment.stderr"
 
     - name: '{{{ rule_title }}} - Ensure firewalld Changes are Applied'
       ansible.builtin.service:
