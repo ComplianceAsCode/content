@@ -43,6 +43,10 @@ jobs:
   tmt_plan: /plans/upstream-parallel/ansible
   identifier: contest-ansible
 
+- <<: *contest-oscap
+  tmt_plan: /plans/upstream-parallel/other
+  identifier: contest-other
+
 # when modifying anything below, modify also tests/tmt/
 
 - job: tests
