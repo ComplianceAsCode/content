@@ -13,7 +13,8 @@
   ansible.builtin.command: wicked ifdown {{ item }}
   loop: '{{ ansible_facts.interfaces }}'
   when:
-    - "'wickedd.service' in ansible_facts.services and ansible_facts.services['wickedd.service'].state == 'running'"
+    - ('wickedd.service' in ansible_facts.services and
+       ansible_facts.services['wickedd.service'].state == 'running')
     - 'item.startswith("wl")'
 
 - name: "{{{ rule_title }}} - Wicked Disable Wireless Network Interfaces"
@@ -23,7 +24,8 @@
     line: STARTMODE=off
   loop: '{{ ansible_facts.interfaces }}'
   when:
-    - "'wickedd.service' in ansible_facts.services and ansible_facts.services['wickedd.service'].state == 'running'"
+    - ('wickedd.service' in ansible_facts.services and
+       ansible_facts.services['wickedd.service'].state == 'running')
     - 'item.startswith("wl")'
 {{%- else %}}
 
@@ -40,4 +42,5 @@
   ansible.builtin.command: nmcli radio wifi off
   when:
     - "'NetworkManager' in ansible_facts.packages"
-    - "'NetworkManager.service' in ansible_facts.services and ansible_facts.services['NetworkManager.service'].state == 'running'"
+    - ('NetworkManager.service' in ansible_facts.services and
+       ansible_facts.services['NetworkManager.service'].state == 'running')

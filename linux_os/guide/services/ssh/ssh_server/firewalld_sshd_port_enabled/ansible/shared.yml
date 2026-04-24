@@ -17,7 +17,8 @@
 - name: '{{{ rule_title }}} - Collect facts about system services'
   ansible.builtin.service_facts:
 
-- name: '{{{ rule_title }}} - Remediation is applicable if firewalld and NetworkManager services are running'
+- name: '{{{ rule_title }}} - Remediation is applicable if firewalld and
+    NetworkManager services are running'
   block:
     - name: '{{{ rule_title }}} - Collect NetworkManager connections names'
       ansible.builtin.shell:
@@ -34,7 +35,7 @@
       changed_when: false
       failed_when: false
       with_items:
-          - "{{ result_nmcli_cmd_connections_names.stdout_lines | default([]) }}"
+        - "{{ result_nmcli_cmd_connections_names.stdout_lines | default([]) }}"
       when:
         - result_nmcli_cmd_connections_names.stdout_lines is defined
         - result_nmcli_cmd_connections_names.stdout_lines | length > 0
@@ -59,7 +60,8 @@
       when:
         - result_nmcli_cmd_zone_assignment is defined
         - result_nmcli_cmd_zone_assignment is changed
-        - result_nmcli_cmd_zone_assignment.results | selectattr('changed', 'equalto', true) | list | length > 0
+        - (result_nmcli_cmd_zone_assignment.results | selectattr('changed', 'equalto', true) |
+           list | length > 0)
 
     - name: '{{{ rule_title }}} - Collect firewalld active zones'
       ansible.builtin.shell:
@@ -82,17 +84,22 @@
         - result_firewall_cmd_zones_names.stdout_lines is defined
         - result_firewall_cmd_zones_names.stdout_lines | length > 0
   when:
-    - "'firewalld.service' in ansible_facts.services and ansible_facts.services['firewalld.service'].state == 'running'"
-    - "'NetworkManager.service' in ansible_facts.services and ansible_facts.services['NetworkManager.service'].state == 'running'"
+    - ('firewalld.service' in ansible_facts.services and
+       ansible_facts.services['firewalld.service'].state == 'running')
+    - ('NetworkManager.service' in ansible_facts.services and
+       ansible_facts.services['NetworkManager.service'].state == 'running')
 
 - name: '{{{ rule_title }}} - Informative message based on services states'
   ansible.builtin.assert:
     that:
-      - "ansible_check_mode or ('firewalld.service' in ansible_facts.services and ansible_facts.services['firewalld.service'].state == 'running')"
-      - "ansible_check_mode or ('NetworkManager.service' in ansible_facts.services and ansible_facts.services['NetworkManager.service'].state == 'running')"
+      - (ansible_check_mode or ('firewalld.service' in ansible_facts.services and
+         ansible_facts.services['firewalld.service'].state == 'running'))
+      - (ansible_check_mode or ('NetworkManager.service' in ansible_facts.services and
+         ansible_facts.services['NetworkManager.service'].state == 'running'))
     fail_msg:
       - firewalld and NetworkManager services are not active. Remediation aborted!
-      - This remediation could not be applied because it depends on firewalld and NetworkManager services running.
+      - This remediation could not be applied because it depends on firewalld
+      - and NetworkManager services running.
       - The service is not started by this remediation in order to prevent connection issues.
     success_msg:
       - {{{ rule_title }}} remediation successfully executed

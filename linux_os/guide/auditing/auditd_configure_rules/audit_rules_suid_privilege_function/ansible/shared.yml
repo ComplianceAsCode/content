@@ -68,4 +68,5 @@
   when:
     - (augenrules_audit_rules_privilege_function_update_result.changed or
        auditctl_audit_rules_privilege_function_update_result.changed)
-    - '"auditd.service" in ansible_facts.services and ansible_facts.services["auditd.service"].state == "running"'
+    - ("auditd.service" in ansible_facts.services and
+       ansible_facts.services["auditd.service"].state == "running")
