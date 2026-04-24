@@ -227,6 +227,7 @@ selections:
     - configure_bind_crypto_policy
     - configure_crypto_policy
     - chronyd_no_chronyc_network
+    - chronyd_configure_local_socket
     - chronyd_client_only
     - kernel_module_atm_disabled
     - kernel_module_can_disabled

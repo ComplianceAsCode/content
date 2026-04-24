@@ -130,6 +130,7 @@ auditd_overflow_action
 banner_etc_issue
 bios_enable_execution_restrictions
 chronyd_client_only
+chronyd_configure_local_socket
 chronyd_no_chronyc_network
 chronyd_or_ntpd_set_maxpoll
 chronyd_server_directive
