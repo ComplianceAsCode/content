@@ -1990,7 +1990,8 @@ controls:
           - l2_workstation
       status: automated
       rules:
-          - accounts_passwords_pam_faillock_deny_root
+          - accounts_passwords_pam_faillock_even_deny_root_or_root_unlock_time
+          - var_accounts_passwords_pam_faillock_root_unlock_time=60
 
     - id: 5.3.2.2.1
       title: Ensure password number of changed characters is configured (Automated)
