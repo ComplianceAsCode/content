@@ -57,6 +57,6 @@
     name: auditd.service
     state: restarted
   when:
-    - ansible_facts.services["auditd.service"].state == "running"
+    - '"auditd.service" in ansible_facts.services and ansible_facts.services["auditd.service"].state == "running"'
     - (augenrules_syscall_auditing_rule_update_result.changed or
        auditctl_syscall_auditing_rule_update_result.changed)

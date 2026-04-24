@@ -38,12 +38,12 @@
       when:
         - result_trusted_ipv4_restriction is changed or result_trusted_ipv6_restriction is changed
   when:
-    - ansible_facts.services['firewalld.service'].state == 'running'
+    - "'firewalld.service' in ansible_facts.services and ansible_facts.services['firewalld.service'].state == 'running'"
 
 - name: '{{{ rule_title }}} - Informative Message Based on Service State'
   ansible.builtin.assert:
     that:
-      - ansible_check_mode or ansible_facts.services['firewalld.service'].state == 'running'
+      - "ansible_check_mode or ('firewalld.service' in ansible_facts.services and ansible_facts.services['firewalld.service'].state == 'running')"
     fail_msg:
       - firewalld service is not active. Remediation aborted!
       - This remediation could not be applied because it depends on firewalld service running.
