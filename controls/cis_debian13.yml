@@ -2393,10 +2393,10 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      rules:
+      related_rules:
           - systemd_journal_upload_server_tls
           - systemd_journal_upload_url
-      status: automated
+      status: manual
 
     - id: 6.1.1.2.3
       title: Ensure systemd-journal-upload is enabled and active (Automated)
@@ -2519,7 +2519,6 @@ controls:
           - package_audit-audispd-plugins_installed
       status: automated
       notes: |
-          Implementation analogous to ubuntu2204/4.1.1.1.
           Added also the missing rule for audispd.
 
     - id: 6.2.1.2
@@ -2542,7 +2541,7 @@ controls:
       status: automated
 
     - id: 6.2.1.4
-      title: Ensure audit_backlog_limit is sufficient (Automated)
+      title: Ensure audit_backlog_limit is configured (Automated)
       levels:
           - l2_server
           - l2_workstation
@@ -2578,8 +2577,8 @@ controls:
           - l2_server
           - l2_workstation
       rules:
-          - var_auditd_disk_error_action=cis_debian12
-          - var_auditd_disk_full_action=cis_debian12
+          - var_auditd_disk_error_action=cis_debian13
+          - var_auditd_disk_full_action=cis_debian13
           - auditd_data_disk_error_action
           - auditd_data_disk_full_action
       status: automated
@@ -2596,7 +2595,7 @@ controls:
           - auditd_data_retention_action_mail_acct
           - auditd_data_retention_admin_space_left_action
           - auditd_data_retention_space_left_action
-      status: partial
+      status: automated
       notes: |
           The variables should allow multiple options.
 
@@ -2664,6 +2663,7 @@ controls:
           - l2_workstation
       rules:
           - audit_rules_networkconfig_modification
+          - audit_rules_networkconfig_modification_hostname_file
       status: automated
 
     - id: 6.2.3.8
@@ -2938,6 +2938,8 @@ controls:
       levels:
           - l2_server
           - l2_workstation
+      rules:
+        - audit_rules_continue_loading
       status: manual
 
     - id: 6.2.3.36
