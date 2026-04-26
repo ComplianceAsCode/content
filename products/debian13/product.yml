@@ -11,13 +11,13 @@ major_version_ordinal: 13
 benchmark_id: DEBIAN-13
 benchmark_root: "../../linux_os/guide"
 
-components_root: "../../components"
 profiles_root: "./profiles"
 
 pkg_manager: "apt_get"
+
 init_system: "systemd"
 
-oval_feed_url: "https://www.debian.org/security/oval/oval-definitions-trixie.xml.bz2"
+oval_feed_url: "https://www.debian.org/security/oval/oval-definitions-bookworm.xml.bz2"
 
 chrony_conf_path: "/etc/chrony/chrony.conf"
 chrony_d_path: "/etc/chrony/chrony.d/"
@@ -44,3 +44,5 @@ platform_package_overrides:
   sssd: sssd-common
   audit: auditd
 
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/debian_linux/'
