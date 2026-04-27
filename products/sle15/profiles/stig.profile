@@ -70,7 +70,6 @@ selections:
     - accounts_user_home_paths_only
     - accounts_user_interactive_home_directory_defined
     - accounts_user_interactive_home_directory_exists
-    - account_temp_expire_date
     - account_unique_id
     - aide_build_database
     - aide_check_audit_tools
