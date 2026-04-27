@@ -72,7 +72,6 @@ selections:
     - accounts_user_interactive_home_directory_exists
     - account_temp_expire_date
     - account_unique_id
-    - agent_mfetpd_running
     - aide_build_database
     - aide_check_audit_tools
     - aide_periodic_cron_checking
