@@ -1,10 +1,11 @@
 # platform = multi_platform_all
 
-{{% if product == 'sle16' %}}
-LOGROTATE_CONF_FILE='/usr/etc/logrotate.conf'
-{{% else %}}
 LOGROTATE_CONF_FILE='/etc/logrotate.conf'
+
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ bash_copy_distro_defaults('/usr/etc/logrotate.conf', "${LOGROTATE_CONF_FILE}") }}}
 {{% endif %}}
+
 {{% if 'sle' in product or product == 'slmicro5' %}}
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 {{% else %}}
