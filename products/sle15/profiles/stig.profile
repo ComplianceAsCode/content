@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R6
+    version: V2R7
     SMEs:
         - svet-se
         - rumch-se
@@ -13,7 +13,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V2R6.
+    DISA STIG for SUSE Linux Enterprise 15 V2R7.
 
 
 selections:
@@ -70,9 +70,7 @@ selections:
     - accounts_user_home_paths_only
     - accounts_user_interactive_home_directory_defined
     - accounts_user_interactive_home_directory_exists
-    - account_temp_expire_date
     - account_unique_id
-    - agent_mfetpd_running
     - aide_build_database
     - aide_check_audit_tools
     - aide_periodic_cron_checking
