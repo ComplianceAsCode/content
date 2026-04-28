@@ -1,5 +1,5 @@
-aide_also_checks_audispd: 'yes'
-aide_also_checks_rsyslog: 'no'
+aide_also_checks_audispd: "yes"
+aide_also_checks_rsyslog: "no"
 aide_bin_path: /usr/bin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
@@ -16,25 +16,25 @@ auid: 1000
 basic_properties_derived: true
 benchmark_id: SLE-15
 benchmark_root: ../../linux_os/guide
-bootable_containers_supported: 'false'
+bootable_containers_supported: "false"
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- sle15-server:
-    check_id: installed_OS_is_sle15
-    name: cpe:/o:suse:linux_enterprise_server:15
-    title: SUSE Linux Enterprise Server 15
-- sle15-desktop:
-    check_id: installed_OS_is_sle15
-    name: cpe:/o:suse:linux_enterprise_desktop:15
-    title: SUSE Linux Enterprise Desktop 15
+  - sle15-server:
+      check_id: installed_OS_is_sle15
+      name: cpe:/o:suse:linux_enterprise_server:15
+      title: SUSE Linux Enterprise Server 15
+  - sle15-desktop:
+      check_id: installed_OS_is_sle15
+      name: cpe:/o:suse:linux_enterprise_desktop:15
+      title: SUSE Linux Enterprise Desktop 15
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/run/faillock
 families:
-- suse
+  - suse
 full_name: SUSE Linux Enterprise 15
 gid_min: 1000
 groups: {}
@@ -51,7 +51,8 @@ ssh_client_config_dir: /etc/ssh/ssh_config.d
 ssh_client_main_config_file: /etc/ssh/ssh_config
 openssh_client_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh.config
 openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/opensshserver.config
-oval_feed_url: https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.15-patch.xml.bz2
+oval_feed_url: >-
+  https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.15-patch.xml.bz2
 pam_faillock_conf_path: /etc/security/faillock.conf
 pkg_manager: zypper
 pkg_manager_config_file: /etc/zypp/zypp.conf
@@ -82,7 +83,8 @@ reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
   app-srg: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
   app-srg-ctr: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security
-  bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
+  bsi: >-
+    https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
   cis: https://www.cisecurity.org/benchmark/suse_linux/
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
@@ -90,7 +92,8 @@ reference_uris:
   cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
   dcid: not_officially_available
   disa: https://www.cyber.mil/stigs/cci/
-  hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
+  hipaa: >-
+   https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
   isa-62443-2009: https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat
   isa-62443-2013: https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu
   ism: https://www.cyber.gov.au/acsc/view-all-content/ism
@@ -98,7 +101,8 @@ reference_uris:
   nerc-cip: https://www.nerc.com/standards/reliability-standards/cip
   nist: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf
   nist-csf: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf
-  os-srg: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os
+  os-srg: >-
+   https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os
   ospp: https://www.niap-ccevs.org/Profile/PP.cfm
   pcidss: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
@@ -109,20 +113,20 @@ release_key_fingerprint: FEAB502539D846DB2C0961CA70AF9E8139DB7C82
 rsyslog_cafile: /etc/pki/tls/cert.pem
 sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
-sshd_distributed_config: 'true'
+sshd_distributed_config: "true"
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
 sshd_main_config_file: /etc/ssh/sshd_config
 sshd_sysconfig_file: /etc/sysconfig/sshd
-sshd_runtime_check: 'false'
-sysctl_remediate_drop_in_file: 'true'
+sshd_runtime_check: "false"
+sysctl_remediate_drop_in_file: "true"
 target_oval_version:
-- 5
-- 11
-target_oval_version_str: '5.11'
+  - 5
+  - 11
+target_oval_version_str: "5.11"
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server
-- xorg-x11-server-extra
-- xorg-x11-server-Xvfb
-- xwayland
+  - xorg-x11-server
+  - xorg-x11-server-extra
+  - xorg-x11-server-Xvfb
+  - xwayland
