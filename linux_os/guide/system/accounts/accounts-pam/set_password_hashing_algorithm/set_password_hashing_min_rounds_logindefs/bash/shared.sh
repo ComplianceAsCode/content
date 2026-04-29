@@ -2,7 +2,7 @@
 
 {{{ bash_instantiate_variables("var_password_hashing_min_rounds_login_defs") }}}
 
-{{% if product == 'sle16' %}}
+{{% if product == [ 'sle16', 'slmicro6' ] %}}
 {{% set login_defs_d_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) ~ "/*.defs" %}}
 
 min_rounds_login_defs=$(grep -Po '^\s*SHA_CRYPT_MIN_ROUNDS\s+\K\d+' {{{ login_defs_d_config_dir }}})

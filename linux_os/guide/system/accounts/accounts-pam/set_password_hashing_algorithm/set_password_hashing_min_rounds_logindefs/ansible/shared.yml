@@ -6,7 +6,7 @@
 
 {{{ ansible_instantiate_variables("var_password_hashing_min_rounds_login_defs") }}}
 
-{{% if product == 'sle16' %}}
+{{% if product == [ 'sle16', 'slmicro6' ] %}}
 {{% set cce_cce_identifier = cce_identifiers['cce'] %}}
 {{{
     ansible_login_defs(

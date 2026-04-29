@@ -12,4 +12,4 @@ if grep -q "^PASS_WARN_AGE" {{{ login_defs_path }}} ; then
 else
     echo "PASS_WARN_AGE 0" >> {{{ login_defs_path }}}
 fi
-echo "PASS_WARN_AGE 7" >> {{{ login_defs_drop_in_path }}}
+echo "PASS_WARN_AGE 8" >> {{{ login_defs_drop_in_path }}}

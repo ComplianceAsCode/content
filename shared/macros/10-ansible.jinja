@@ -2577,6 +2577,8 @@ copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
 {{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
 {{%- set login_defs_config_dir = "/".join(login_defs_path.split("/")[:-1]) -%}}
 {{%- set login_defs_d_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) -%}}
+{{%- set login_defs_has_parameter = parameter + "_login_defs_has_parameter" -%}}
+{{%- set login_defs_correctly = parameter + "_login_defs_correctly" -%}}
 
 {{% if product in ["sle16", "slmicro6"] %}}
 {{{ ansible_copy_distro_defaults(login_defs_defaults_path, login_defs_path, rule_title) }}}
@@ -2590,7 +2592,7 @@ copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
     contains: {{{ line_regex }}}
     patterns:
     - '*.defs'
-  register: _login_defs_has_parameter
+  register: {{{ login_defs_has_parameter }}}
 - name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in login.defs configuration(s)
   ansible.builtin.find:
     paths:
@@ -2599,7 +2601,7 @@ copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
     contains: '{{{ line_regex ~ value ~ "$" }}}'
     patterns:
     - '*.defs'
-  register: _login_defs_correctly
+  register: {{{ login_defs_correctly }}}
 - name: '{{{ rule_title }}}'
   block:
     {{{
@@ -2650,6 +2652,6 @@ copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
         state: present
         insertbefore: {{{ new_line }}}
       when: not ansible_check_mode
-  when: _login_defs_correctly.matched == 0 or _login_defs_has_parameter.matched != 1
+  when: {{{ login_defs_correctly }}}.matched == 0 or {{{ login_defs_has_parameter }}}.matched != 1
 
 {{%- endmacro %}}
