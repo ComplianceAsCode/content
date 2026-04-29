@@ -274,6 +274,14 @@ ssg_build_product(${PRODUCT})
 
 See `docs/manual/developer/13_cel_content.md` for complete CEL documentation.
 
+## Jinja2 conventions
+
+**Use the project's custom Jinja2 delimiters** - this project does NOT use standard Jinja2 syntax. The custom delimiters (defined in `ssg/jinja.py`) avoid conflicts with YAML/XML curly braces:
+- **Variables/expressions**: `{{{ expr }}}` (triple braces), NOT `{{ expr }}`
+- **Statements** (if/for/set): `{{% stmt %}}`, NOT `{% stmt %}`
+- **Comments**: `{{# comment #}}`, NOT `{# comment #}`
+Examples: `{{{ full_name }}}`, `{{{ describe_service_enable(service="auditd") }}}`, `{{% if product in ["rhel9"] %}}`, `{{% set var="value" %}}`
+
 ## Common Jinja2 Macros
 
 Used in rule descriptions, OCIL, fixtext, and warnings fields:
