@@ -1,0 +1,717 @@
+# NIST 800-53 SC Family: System and Communications Protection
+controls:
+  - id: sc-1
+    title: Policy and Procedures
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-2
+    title: Separation of System and User Functionality
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-2.1
+    title: Interfaces for Non-privileged Users
+    rules: []
+    status: pending
+  - id: sc-2.2
+    title: Disassociability
+    rules: []
+    status: pending
+  - id: sc-3
+    title: Security Function Isolation
+    levels:
+      - high
+    rules:
+      - selinux_not_disabled
+      - selinux_state
+    status: automated
+  - id: sc-3.1
+    title: Hardware Separation
+    rules: []
+    status: pending
+  - id: sc-3.2
+    title: Access and Flow Control Functions
+    rules: []
+    status: pending
+  - id: sc-3.3
+    title: Minimize Nonsecurity Functionality
+    rules: []
+    status: pending
+  - id: sc-3.4
+    title: Module Coupling and Cohesiveness
+    rules: []
+    status: pending
+  - id: sc-3.5
+    title: Layered Structures
+    rules: []
+    status: pending
+  - id: sc-4
+    title: Information in Shared System Resources
+    levels:
+      - moderate
+    rules:
+      - dir_perms_world_writable_sticky_bits
+      - file_permissions_unauthorized_world_writable
+    status: automated
+  - id: sc-4.1
+    title: Security Levels
+    rules: []
+    status: pending
+  - id: sc-4.2
+    title: Multilevel or Periods Processing
+    rules: []
+    status: pending
+  - id: sc-5
+    title: Denial-of-service Protection
+    levels:
+      - low
+    rules:
+      - sysctl_net_ipv4_tcp_syncookies
+    status: automated
+  - id: sc-5.1
+    title: Restrict Ability to Attack Other Systems
+    rules: []
+    status: pending
+  - id: sc-5.2
+    title: Capacity, Bandwidth, and Redundancy
+    rules: []
+    status: pending
+  - id: sc-5.3
+    title: Detection and Monitoring
+    rules: []
+    status: pending
+  - id: sc-6
+    title: Resource Availability
+    rules: []
+    status: pending
+  - id: sc-7
+    title: Boundary Protection
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-7.1
+    title: Physically Separated Subnetworks
+    rules: []
+    status: pending
+  - id: sc-7.2
+    title: Public Access
+    rules: []
+    status: pending
+  - id: sc-7.3
+    title: Access Points
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.4
+    title: External Telecommunications Services
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.5
+    title: Deny by Default — Allow by Exception
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.6
+    title: Response to Recognized Failures
+    rules: []
+    status: pending
+  - id: sc-7.7
+    title: Split Tunneling for Remote Devices
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.8
+    title: Route Traffic to Authenticated Proxy Servers
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.9
+    title: Restrict Threatening Outgoing Communications Traffic
+    rules: []
+    status: pending
+  - id: sc-7.10
+    title: Prevent Exfiltration
+    rules: []
+    status: pending
+  - id: sc-7.11
+    title: Restrict Incoming Communications Traffic
+    rules: []
+    status: pending
+  - id: sc-7.12
+    title: Host-based Protection
+    rules: []
+    status: pending
+  - id: sc-7.13
+    title: Isolation of Security Tools, Mechanisms, and Support Components
+    rules: []
+    status: pending
+  - id: sc-7.14
+    title: Protect Against Unauthorized Physical Connections
+    rules: []
+    status: pending
+  - id: sc-7.15
+    title: Networked Privileged Accesses
+    rules: []
+    status: pending
+  - id: sc-7.16
+    title: Prevent Discovery of System Components
+    rules: []
+    status: pending
+  - id: sc-7.17
+    title: Automated Enforcement of Protocol Formats
+    rules: []
+    status: pending
+  - id: sc-7.18
+    title: Fail Secure
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sc-7.19
+    title: Block Communication from Non-organizationally Configured Hosts
+    rules: []
+    status: pending
+  - id: sc-7.20
+    title: Dynamic Isolation and Segregation
+    rules: []
+    status: pending
+  - id: sc-7.21
+    title: Isolation of System Components
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sc-7.22
+    title: Separate Subnets for Connecting to Different Security Domains
+    rules: []
+    status: pending
+  - id: sc-7.23
+    title: Disable Sender Feedback on Protocol Validation Failure
+    rules: []
+    status: pending
+  - id: sc-7.24
+    title: Personally Identifiable Information
+    rules: []
+    status: pending
+  - id: sc-7.25
+    title: Unclassified National Security System Connections
+    rules: []
+    status: pending
+  - id: sc-7.26
+    title: Classified National Security System Connections
+    rules: []
+    status: pending
+  - id: sc-7.27
+    title: Unclassified Non-national Security System Connections
+    rules: []
+    status: pending
+  - id: sc-7.28
+    title: Connections to Public Networks
+    rules: []
+    status: pending
+  - id: sc-7.29
+    title: Separate Subnets to Isolate Functions
+    rules: []
+    status: pending
+  - id: sc-8
+    title: Transmission Confidentiality and Integrity
+    levels:
+      - moderate
+    rules:
+      - configure_custom_crypto_policy_cis
+    status: automated
+  - id: sc-8.1
+    title: Cryptographic Protection
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-8.2
+    title: Pre- and Post-transmission Handling
+    rules: []
+    status: pending
+  - id: sc-8.3
+    title: Cryptographic Protection for Message Externals
+    rules: []
+    status: pending
+  - id: sc-8.4
+    title: Conceal or Randomize Communications
+    rules: []
+    status: pending
+  - id: sc-8.5
+    title: Protected Distribution System
+    rules: []
+    status: pending
+  - id: sc-9
+    title: Transmission Confidentiality
+    rules: []
+    status: pending
+  - id: sc-10
+    title: Network Disconnect
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-11
+    title: Trusted Path
+    rules: []
+    status: pending
+  - id: sc-11.1
+    title: Irrefutable Communications Path
+    rules: []
+    status: pending
+  - id: sc-12
+    title: Cryptographic Key Establishment and Management
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-12.1
+    title: Availability
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sc-12.2
+    title: Symmetric Keys
+    rules: []
+    status: pending
+  - id: sc-12.3
+    title: Asymmetric Keys
+    rules: []
+    status: pending
+  - id: sc-12.4
+    title: PKI Certificates
+    rules: []
+    status: pending
+  - id: sc-12.5
+    title: PKI Certificates / Hardware Tokens
+    rules: []
+    status: pending
+  - id: sc-12.6
+    title: Physical Control of Keys
+    rules: []
+    status: pending
+  - id: sc-13
+    title: Cryptographic Protection
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-13.1
+    title: FIPS-validated Cryptography
+    rules: []
+    status: pending
+  - id: sc-13.2
+    title: NSA-approved Cryptography
+    rules: []
+    status: pending
+  - id: sc-13.3
+    title: Individuals Without Formal Access Approvals
+    rules: []
+    status: pending
+  - id: sc-13.4
+    title: Digital Signatures
+    rules: []
+    status: pending
+  - id: sc-14
+    title: Public Access Protections
+    rules: []
+    status: pending
+  - id: sc-15
+    title: Collaborative Computing Devices and Applications
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-15.1
+    title: Physical or Logical Disconnect
+    rules: []
+    status: pending
+  - id: sc-15.2
+    title: Blocking Inbound and Outbound Communications Traffic
+    rules: []
+    status: pending
+  - id: sc-15.3
+    title: Disabling and Removal in Secure Work Areas
+    rules: []
+    status: pending
+  - id: sc-15.4
+    title: Explicitly Indicate Current Participants
+    rules: []
+    status: pending
+  - id: sc-16
+    title: Transmission of Security and Privacy Attributes
+    rules: []
+    status: pending
+  - id: sc-16.1
+    title: Integrity Verification
+    rules: []
+    status: pending
+  - id: sc-16.2
+    title: Anti-spoofing Mechanisms
+    rules: []
+    status: pending
+  - id: sc-16.3
+    title: Cryptographic Binding
+    rules: []
+    status: pending
+  - id: sc-17
+    title: Public Key Infrastructure Certificates
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-18
+    title: Mobile Code
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-18.1
+    title: Identify Unacceptable Code and Take Corrective Actions
+    rules: []
+    status: pending
+  - id: sc-18.2
+    title: Acquisition, Development, and Use
+    rules: []
+    status: pending
+  - id: sc-18.3
+    title: Prevent Downloading and Execution
+    rules: []
+    status: pending
+  - id: sc-18.4
+    title: Prevent Automatic Execution
+    rules: []
+    status: pending
+  - id: sc-18.5
+    title: Allow Execution Only in Confined Environments
+    rules: []
+    status: pending
+  - id: sc-19
+    title: Voice Over Internet Protocol
+    rules: []
+    status: pending
+  - id: sc-20
+    title: Secure Name/Address Resolution Service (Authoritative Source)
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-20.1
+    title: Child Subspaces
+    rules: []
+    status: pending
+  - id: sc-20.2
+    title: Data Origin and Integrity
+    rules: []
+    status: pending
+  - id: sc-21
+    title: Secure Name/Address Resolution Service (Recursive or Caching Resolver)
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-21.1
+    title: Data Origin and Integrity
+    rules: []
+    status: pending
+  - id: sc-22
+    title: Architecture and Provisioning for Name/Address Resolution Service
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-23
+    title: Session Authenticity
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-23.1
+    title: Invalidate Session Identifiers at Logout
+    rules: []
+    status: pending
+  - id: sc-23.2
+    title: User-initiated Logouts and Message Displays
+    rules: []
+    status: pending
+  - id: sc-23.3
+    title: Unique System-generated Session Identifiers
+    rules: []
+    status: pending
+  - id: sc-23.4
+    title: Unique Session Identifiers with Randomization
+    rules: []
+    status: pending
+  - id: sc-23.5
+    title: Allowed Certificate Authorities
+    rules: []
+    status: pending
+  - id: sc-24
+    title: Fail in Known State
+    levels:
+      - high
+    rules:
+      - service_systemd-journald_enabled
+    status: automated
+  - id: sc-25
+    title: Thin Nodes
+    rules: []
+    status: pending
+  - id: sc-26
+    title: Decoys
+    rules: []
+    status: pending
+  - id: sc-26.1
+    title: Detection of Malicious Code
+    rules: []
+    status: pending
+  - id: sc-27
+    title: Platform-independent Applications
+    rules: []
+    status: pending
+  - id: sc-28
+    title: Protection of Information at Rest
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-28.1
+    title: Cryptographic Protection
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-28.2
+    title: Offline Storage
+    rules: []
+    status: pending
+  - id: sc-28.3
+    title: Cryptographic Keys
+    rules: []
+    status: pending
+  - id: sc-29
+    title: Heterogeneity
+    rules: []
+    status: pending
+  - id: sc-29.1
+    title: Virtualization Techniques
+    rules: []
+    status: pending
+  - id: sc-30
+    title: Concealment and Misdirection
+    rules: []
+    status: pending
+  - id: sc-30.1
+    title: Virtualization Techniques
+    rules: []
+    status: pending
+  - id: sc-30.2
+    title: Randomness
+    rules: []
+    status: pending
+  - id: sc-30.3
+    title: Change Processing and Storage Locations
+    rules: []
+    status: pending
+  - id: sc-30.4
+    title: Misleading Information
+    rules: []
+    status: pending
+  - id: sc-30.5
+    title: Concealment of System Components
+    rules: []
+    status: pending
+  - id: sc-31
+    title: Covert Channel Analysis
+    rules: []
+    status: pending
+  - id: sc-31.1
+    title: Test Covert Channels for Exploitability
+    rules: []
+    status: pending
+  - id: sc-31.2
+    title: Maximum Bandwidth
+    rules: []
+    status: pending
+  - id: sc-31.3
+    title: Measure Bandwidth in Operational Environments
+    rules: []
+    status: pending
+  - id: sc-32
+    title: System Partitioning
+    rules: []
+    status: pending
+  - id: sc-32.1
+    title: Separate Physical Domains for Privileged Functions
+    rules: []
+    status: pending
+  - id: sc-33
+    title: Transmission Preparation Integrity
+    rules: []
+    status: pending
+  - id: sc-34
+    title: Non-modifiable Executable Programs
+    rules: []
+    status: pending
+  - id: sc-34.1
+    title: No Writable Storage
+    rules: []
+    status: pending
+  - id: sc-34.2
+    title: Integrity Protection on Read-only Media
+    rules: []
+    status: pending
+  - id: sc-34.3
+    title: Hardware-based Protection
+    rules: []
+    status: pending
+  - id: sc-35
+    title: External Malicious Code Identification
+    rules: []
+    status: pending
+  - id: sc-36
+    title: Distributed Processing and Storage
+    rules: []
+    status: pending
+  - id: sc-36.1
+    title: Polling Techniques
+    rules: []
+    status: pending
+  - id: sc-36.2
+    title: Synchronization
+    rules: []
+    status: pending
+  - id: sc-37
+    title: Out-of-band Channels
+    rules: []
+    status: pending
+  - id: sc-37.1
+    title: Ensure Delivery and Transmission
+    rules: []
+    status: pending
+  - id: sc-38
+    title: Operations Security
+    rules: []
+    status: pending
+  - id: sc-39
+    title: Process Isolation
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-39.1
+    title: Hardware Separation
+    rules: []
+    status: pending
+  - id: sc-39.2
+    title: Separate Execution Domain Per Thread
+    rules: []
+    status: pending
+  - id: sc-40
+    title: Wireless Link Protection
+    rules: []
+    status: pending
+  - id: sc-40.1
+    title: Electromagnetic Interference
+    rules: []
+    status: pending
+  - id: sc-40.2
+    title: Reduce Detection Potential
+    rules: []
+    status: pending
+  - id: sc-40.3
+    title: Imitative or Manipulative Communications Deception
+    rules: []
+    status: pending
+  - id: sc-40.4
+    title: Signal Parameter Identification
+    rules: []
+    status: pending
+  - id: sc-41
+    title: Port and I/O Device Access
+    rules: []
+    status: pending
+  - id: sc-42
+    title: Sensor Capability and Data
+    rules: []
+    status: pending
+  - id: sc-42.1
+    title: Reporting to Authorized Individuals or Roles
+    rules: []
+    status: pending
+  - id: sc-42.2
+    title: Authorized Use
+    rules: []
+    status: pending
+  - id: sc-42.3
+    title: Prohibit Use of Devices
+    rules: []
+    status: pending
+  - id: sc-42.4
+    title: Notice of Collection
+    rules: []
+    status: pending
+  - id: sc-42.5
+    title: Collection Minimization
+    rules: []
+    status: pending
+  - id: sc-43
+    title: Usage Restrictions
+    rules: []
+    status: pending
+  - id: sc-44
+    title: Detonation Chambers
+    rules: []
+    status: pending
+  - id: sc-45
+    title: System Time Synchronization
+    rules: []
+    status: pending
+  - id: sc-45.1
+    title: Synchronization with Authoritative Time Source
+    rules: []
+    status: pending
+  - id: sc-45.2
+    title: Secondary Authoritative Time Source
+    rules: []
+    status: pending
+  - id: sc-46
+    title: Cross Domain Policy Enforcement
+    rules: []
+    status: pending
+  - id: sc-47
+    title: Alternate Communications Paths
+    rules: []
+    status: pending
+  - id: sc-48
+    title: Sensor Relocation
+    rules: []
+    status: pending
+  - id: sc-48.1
+    title: Dynamic Relocation of Sensors or Monitoring Capabilities
+    rules: []
+    status: pending
+  - id: sc-49
+    title: Hardware-enforced Separation and Policy Enforcement
+    rules: []
+    status: pending
+  - id: sc-50
+    title: Software-enforced Separation and Policy Enforcement
+    rules: []
+    status: pending
+  - id: sc-51
+    title: Hardware-based Protection
+    rules: []
+    status: pending
