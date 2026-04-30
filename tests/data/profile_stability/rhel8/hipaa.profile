@@ -85,6 +85,7 @@ ensure_redhat_gpgkey_installed
 file_groupowner_grub2_cfg
 file_owner_grub2_cfg
 grub2_audit_argument
+grub2_audit_backlog_limit_argument
 grub2_disable_interactive_boot
 grub2_enable_selinux
 grub2_password
@@ -132,6 +133,7 @@ sysctl_kernel_dmesg_restrict
 sysctl_kernel_exec_shield
 sysctl_kernel_randomize_va_space
 use_kerberos_security_all_exports
+var_audit_backlog_limit=8192
 var_audit_failure_mode=panic
 var_authselect_profile=sssd
 var_selinux_policy_name=targeted
