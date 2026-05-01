@@ -1,0 +1,548 @@
+# NIST 800-53 AU Family: Audit and Accountability
+controls:
+  - id: au-1
+    title: Policy and Procedures
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: au-2
+    title: Event Logging
+    levels:
+      - low
+    rules:
+      - audit_access_failed
+      - audit_access_failed_aarch64
+      - audit_access_failed_ppc64le
+      - audit_access_success
+      - audit_access_success_aarch64
+      - audit_access_success_ppc64le
+      - audit_basic_configuration
+      - audit_create_failed
+      - audit_create_failed_aarch64
+      - audit_create_failed_ppc64le
+      - audit_create_success
+      - audit_create_success_aarch64
+      - audit_create_success_ppc64le
+      - audit_delete_failed
+      - audit_delete_failed_aarch64
+      - audit_delete_failed_ppc64le
+      - audit_delete_success
+      - audit_delete_success_aarch64
+      - audit_delete_success_ppc64le
+      - audit_immutable_login_uids
+      - audit_modify_failed
+      - audit_modify_failed_aarch64
+      - audit_modify_failed_ppc64le
+      - audit_modify_success
+      - audit_modify_success_aarch64
+      - audit_modify_success_ppc64le
+      - audit_module_load
+      - audit_module_load_ppc64le
+      - audit_ospp_general
+      - audit_ospp_general_aarch64
+    status: automated
+  - id: au-2.1
+    title: Compilation of Audit Records from Multiple Sources
+    rules: []
+    status: pending
+  - id: au-2.2
+    title: Selection of Audit Events by Component
+    rules: []
+    status: pending
+  - id: au-2.3
+    title: Reviews and Updates
+    rules: []
+    status: pending
+  - id: au-2.4
+    title: Privileged Functions
+    rules: []
+    status: pending
+  - id: au-3
+    title: Content of Audit Records
+    levels:
+      - low
+    rules:
+      - audit_rules_login_events_faillog
+      - audit_rules_privileged_commands_chfn
+      - auditd_log_format
+      - auditd_name_format
+      - service_auditd_enabled
+    status: automated
+  - id: au-3.1
+    title: Additional Audit Information
+    levels:
+      - moderate
+    rules:
+      - audit_rules_etc_cron_d
+      - audit_rules_networkconfig_modification_etc_hosts
+      - audit_rules_networkconfig_modification_etc_issue
+      - audit_rules_networkconfig_modification_etc_issue_net
+      - audit_rules_networkconfig_modification_etc_networkmanager_system_connections
+      - audit_rules_privileged_commands_insmod
+      - audit_rules_privileged_commands_kmod
+      - audit_rules_privileged_commands_modprobe
+      - audit_rules_privileged_commands_unix2_chkpwd
+      - audit_rules_privileged_commands_unix_chkpwd
+    status: automated
+  - id: au-3.2
+    title: Centralized Management of Planned Audit Record Content
+    rules: []
+    status: pending
+  - id: au-3.3
+    title: Limit Personally Identifiable Information Elements
+    rules: []
+    status: pending
+  - id: au-4
+    title: Audit Log Storage Capacity
+    levels:
+      - low
+    rules:
+      - partition_for_var_log
+      - partition_for_var_log_audit
+    status: automated
+  - id: au-4.1
+    title: Transfer to Alternate Storage
+    rules:
+      - auditd_audispd_syslog_plugin_activated
+      - auditd_overflow_action
+      - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+      - rsyslog_encrypt_offload_actionsendstreamdrivermode
+      - rsyslog_encrypt_offload_defaultnetstreamdriver
+      - rsyslog_remote_loghost
+      - service_rsyslog_enabled
+      - service_syslogng_enabled
+    status: automated
+  - id: au-5
+    title: Response to Audit Logging Process Failures
+    levels:
+      - low
+    rules:
+      - audit_rules_continue_loading
+      - audit_rules_enable_syscall_auditing
+      - audit_rules_system_shutdown
+      - postfix_client_configure_mail_alias_postmaster
+    status: automated
+  - id: au-5.1
+    title: Storage Capacity Warning
+    levels:
+      - high
+    rules:
+      - auditd_audispd_disk_full_action
+      - auditd_audispd_network_failure_action
+      - auditd_data_disk_error_action
+      - auditd_data_disk_error_action_stig
+      - auditd_data_disk_full_action
+      - auditd_data_disk_full_action_stig
+      - auditd_data_retention_admin_space_left_action
+      - auditd_data_retention_admin_space_left_percentage
+      - auditd_data_retention_max_log_file_action
+      - auditd_data_retention_max_log_file_action_stig
+      - auditd_data_retention_space_left
+      - auditd_data_retention_space_left_action
+      - auditd_data_retention_space_left_percentage
+    status: automated
+  - id: au-5.2
+    title: Real-time Alerts
+    levels:
+      - high
+    rules:
+      - auditd_audispd_disk_full_action
+      - auditd_audispd_network_failure_action
+      - auditd_data_disk_error_action
+      - auditd_data_disk_error_action_stig
+      - auditd_data_disk_full_action
+      - auditd_data_disk_full_action_stig
+      - auditd_data_retention_action_mail_acct
+      - auditd_data_retention_admin_space_left_action
+      - auditd_data_retention_admin_space_left_percentage
+      - auditd_data_retention_max_log_file_action
+      - auditd_data_retention_max_log_file_action_stig
+      - auditd_data_retention_space_left
+      - auditd_data_retention_space_left_action
+      - auditd_data_retention_space_left_percentage
+    status: automated
+  - id: au-5.3
+    title: Configurable Traffic Volume Thresholds
+    rules: []
+    status: pending
+  - id: au-5.4
+    title: Shutdown on Failure
+    rules:
+      - auditd_audispd_disk_full_action
+      - auditd_audispd_network_failure_action
+      - auditd_data_disk_error_action
+      - auditd_data_disk_error_action_stig
+      - auditd_data_disk_full_action
+      - auditd_data_disk_full_action_stig
+      - auditd_data_retention_admin_space_left_action
+      - auditd_data_retention_admin_space_left_percentage
+      - auditd_data_retention_max_log_file_action
+      - auditd_data_retention_max_log_file_action_stig
+      - auditd_data_retention_space_left
+      - auditd_data_retention_space_left_action
+      - auditd_data_retention_space_left_percentage
+    status: automated
+  - id: au-5.5
+    title: Alternate Audit Logging Capability
+    rules: []
+    status: pending
+  - id: au-6
+    title: Audit Record Review, Analysis, and Reporting
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: au-6.1
+    title: Automated Process Integration
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: au-6.2
+    title: Automated Security Alerts
+    rules: []
+    status: pending
+  - id: au-6.3
+    title: Correlate Audit Record Repositories
+    levels:
+      - moderate
+    rules:
+      - rsyslog_accept_remote_messages_tcp
+      - rsyslog_accept_remote_messages_udp
+    status: automated
+  - id: au-6.4
+    title: Central Review and Analysis
+    rules:
+      - rsyslog_accept_remote_messages_tcp
+      - rsyslog_accept_remote_messages_udp
+    status: automated
+  - id: au-6.5
+    title: Integrated Analysis of Audit Records
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-6.6
+    title: Correlation with Physical Monitoring
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: au-6.7
+    title: Permitted Actions
+    rules: []
+    status: pending
+  - id: au-6.8
+    title: Full Text Analysis of Privileged Commands
+    rules: []
+    status: pending
+  - id: au-6.9
+    title: Correlation with Information from Nontechnical Sources
+    rules: []
+    status: pending
+  - id: au-6.10
+    title: Audit Level Adjustment
+    rules: []
+    status: pending
+  - id: au-7
+    title: Audit Record Reduction and Report Generation
+    levels:
+      - moderate
+    rules:
+      - audit_rules_suid_privilege_function
+    status: automated
+  - id: au-7.1
+    title: Automatic Processing
+    levels:
+      - moderate
+    rules:
+      - package_audit-libs_installed
+      - package_audit_installed
+    status: automated
+  - id: au-7.2
+    title: Automatic Sort and Search
+    rules:
+      - package_audit-libs_installed
+      - package_audit_installed
+    status: automated
+  - id: au-8
+    title: Time Stamps
+    levels:
+      - low
+    rules:
+      - audit_rules_suid_privilege_function
+    status: automated
+  - id: au-8.1
+    title: Synchronization with Authoritative Time Source
+    rules:
+      - chronyd_client_only
+      - chronyd_configure_pool_and_server
+      - chronyd_or_ntpd_set_maxpoll
+      - chronyd_or_ntpd_specify_multiple_servers
+      - chronyd_or_ntpd_specify_remote_server
+      - chronyd_specify_remote_server
+      - ntpd_specify_multiple_servers
+      - ntpd_specify_remote_server
+      - service_chronyd_or_ntpd_enabled
+      - service_ntp_enabled
+      - service_ntpd_enabled
+      - service_timesyncd_enabled
+    status: automated
+  - id: au-8.2
+    title: Secondary Authoritative Time Source
+    rules:
+      - chronyd_or_ntpd_specify_multiple_servers
+      - chronyd_or_ntpd_specify_remote_server
+      - ntpd_specify_multiple_servers
+    status: automated
+  - id: au-9
+    title: Protection of Audit Information
+    levels:
+      - low
+    rules:
+      - audit_rules_immutable_login_uids
+      - audit_rules_mac_modification_etc_apparmor
+      - audit_rules_mac_modification_etc_apparmor_d
+      - directory_permissions_var_log_audit
+      - file_audit_tools_group_ownership
+      - file_audit_tools_ownership
+      - file_audit_tools_permissions
+      - permissions_local_var_log_audit
+      - selinux_policytype
+      - selinux_state
+    status: automated
+  - id: au-9.1
+    title: Hardware Write-once Media
+    rules: []
+    status: pending
+  - id: au-9.2
+    title: Store on Separate Physical Systems or Components
+    levels:
+      - high
+    rules:
+      - rsyslog_remote_loghost
+    status: automated
+  - id: au-9.3
+    title: Cryptographic Protection
+    levels:
+      - high
+    rules:
+      - aide_check_audit_tools
+      - auditd_audispd_encrypt_sent_records
+      - encrypt_partitions
+      - rpm_verify_hashes
+      - rpm_verify_ownership
+      - rpm_verify_permissions
+      - rsyslog_remote_tls
+    status: automated
+  - id: au-9.4
+    title: Access by Subset of Privileged Users
+    levels:
+      - moderate
+    rules:
+      - directory_group_ownership_var_log_audit
+      - directory_ownership_var_log_audit
+      - file_group_ownership_var_log_audit
+      - file_ownership_var_log_audit
+      - file_ownership_var_log_audit_stig
+      - file_permissions_var_log_audit
+    status: automated
+  - id: au-9.5
+    title: Dual Authorization
+    rules: []
+    status: pending
+  - id: au-9.6
+    title: Read-only Access
+    rules: []
+    status: pending
+  - id: au-9.7
+    title: Store on Component with Different Operating System
+    rules: []
+    status: pending
+  - id: au-10
+    title: Non-repudiation
+    levels:
+      - high
+    rules:
+      - coreos_audit_option
+      - grub2_audit_argument
+      - service_auditd_enabled
+    status: automated
+  - id: au-10.1
+    title: Association of Identities
+    rules: []
+    status: pending
+  - id: au-10.2
+    title: Validate Binding of Information Producer Identity
+    rules: []
+    status: pending
+  - id: au-10.3
+    title: Chain of Custody
+    rules: []
+    status: pending
+  - id: au-10.4
+    title: Validate Binding of Information Reviewer Identity
+    rules: []
+    status: pending
+  - id: au-10.5
+    title: Digital Signatures
+    rules: []
+    status: pending
+  - id: au-11
+    title: Audit Record Retention
+    levels:
+      - low
+    rules:
+      - auditd_data_retention_flush
+      - auditd_data_retention_max_log_file
+      - auditd_data_retention_num_logs
+    status: automated
+  - id: au-11.1
+    title: Long-term Retrieval Capability
+    rules: []
+    status: pending
+  - id: au-12
+    title: Audit Record Generation
+    levels:
+      - low
+    rules:
+      - audit_rules_dac_modification_chmod
+      - audit_rules_dac_modification_chown
+      - audit_rules_dac_modification_fchmod
+      - audit_rules_dac_modification_fchmodat
+      - audit_rules_dac_modification_fchmodat2
+      - audit_rules_dac_modification_fchown
+      - audit_rules_dac_modification_fchownat
+      - audit_rules_dac_modification_fremovexattr
+      - audit_rules_dac_modification_fsetxattr
+      - audit_rules_dac_modification_lchown
+      - audit_rules_dac_modification_lremovexattr
+      - audit_rules_dac_modification_lsetxattr
+      - audit_rules_dac_modification_removexattr
+      - audit_rules_dac_modification_setxattr
+      - audit_rules_dac_modification_umount
+      - audit_rules_dac_modification_umount2
+      - audit_rules_execution_chacl
+      - audit_rules_execution_chcon
+      - audit_rules_execution_chmod
+      - audit_rules_execution_rm
+      - audit_rules_execution_setfacl
+      - audit_rules_file_deletion_events_rename
+      - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_renameat2
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_file_deletion_events_unlinkat
+      - audit_rules_kernel_module_loading_create
+      - audit_rules_kernel_module_loading_delete
+      - audit_rules_kernel_module_loading_finit
+      - audit_rules_kernel_module_loading_init
+      - audit_rules_kernel_module_loading_query
+      - audit_rules_login_events_faillock
+      - audit_rules_login_events_lastlog
+      - audit_rules_media_export
+      - audit_rules_privileged_commands_kmod
+      - audit_rules_privileged_commands_usermod
+      - audit_rules_sysadmin_actions
+      - audit_rules_unsuccessful_file_modification_creat
+      - audit_rules_unsuccessful_file_modification_ftruncate
+      - audit_rules_unsuccessful_file_modification_open
+      - audit_rules_unsuccessful_file_modification_openat
+      - audit_rules_unsuccessful_file_modification_truncate
+      - audit_rules_usergroup_modification_group
+      - audit_rules_usergroup_modification_gshadow
+      - audit_rules_usergroup_modification_nsswitch_conf
+      - audit_rules_usergroup_modification_opasswd
+      - audit_rules_usergroup_modification_pam_conf
+      - audit_rules_usergroup_modification_pamd
+      - audit_rules_usergroup_modification_passwd
+      - audit_rules_usergroup_modification_shadow
+      - file_permissions_audit_configuration
+      - grub2_audit_argument
+      - service_auditd_enabled
+    status: automated
+  - id: au-12.1
+    title: System-wide and Time-correlated Audit Trail
+    levels:
+      - high
+    rules:
+      - chronyd_client_only
+      - chronyd_or_ntpd_set_maxpoll
+      - chronyd_or_ntpd_specify_multiple_servers
+      - chronyd_or_ntpd_specify_remote_server
+      - service_chronyd_or_ntpd_enabled
+    status: automated
+  - id: au-12.2
+    title: Standardized Formats
+    rules:
+      - package_audit-libs_installed
+      - package_audit_installed
+    status: automated
+  - id: au-12.3
+    title: Changes by Authorized Individuals
+    levels:
+      - high
+    rules:
+      - audit_rules_suid_privilege_function
+    status: automated
+  - id: au-12.4
+    title: Query Parameter Audits of Personally Identifiable Information
+    rules: []
+    status: pending
+  - id: au-13
+    title: Monitoring for Information Disclosure
+    rules: []
+    status: pending
+  - id: au-13.1
+    title: Use of Automated Tools
+    rules: []
+    status: pending
+  - id: au-13.2
+    title: Review of Monitored Sites
+    rules: []
+    status: pending
+  - id: au-13.3
+    title: Unauthorized Replication of Information
+    rules: []
+    status: pending
+  - id: au-14
+    title: Session Audit
+    rules:
+      - package_audit-libs_installed
+      - package_audit_installed
+    status: automated
+  - id: au-14.1
+    title: System Start-up
+    rules:
+      - coreos_audit_option
+      - grub2_audit_argument
+      - service_auditd_enabled
+    status: automated
+  - id: au-14.2
+    title: Capture and Record Content
+    rules: []
+    status: pending
+  - id: au-14.3
+    title: Remote Viewing and Listening
+    rules: []
+    status: pending
+  - id: au-15
+    title: Alternate Audit Logging Capability
+    rules: []
+    status: pending
+  - id: au-16
+    title: Cross-organizational Audit Logging
+    rules: []
+    status: pending
+  - id: au-16.1
+    title: Identity Preservation
+    rules: []
+    status: pending
+  - id: au-16.2
+    title: Sharing of Audit Information
+    rules: []
+    status: pending
+  - id: au-16.3
+    title: Disassociability
+    rules: []
+    status: pending

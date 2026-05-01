@@ -112,6 +112,14 @@ if [ $retVal -ne 0 ]; then
     exit 1
 fi
 
+# Copy NIST 800-53 Control Viewer
+NIST_VIEWER_DIR="$PAGES_DIR/nist-viewer"
+if [ -d "build/nist-controls-viewer" ]; then
+    mkdir -p "$NIST_VIEWER_DIR"
+    cp -rf build/nist-controls-viewer/* "$NIST_VIEWER_DIR/"
+    echo "NIST 800-53 Control Viewer copied to $NIST_VIEWER_DIR"
+fi
+
 # Generate Prometheus Stats
 PROMETHEUS_STATS_DIR="$PAGES_DIR/prometheus_stats"
 mkdir -p "$PROMETHEUS_STATS_DIR"
@@ -134,6 +142,7 @@ echo "<li><a href=\"guides/index.html\">Guides</a></li>" >> index.html
 echo "<li><a href=\"tables/index.html\">Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"srg_mapping/index.html\">SRG Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"rendered-policies/index.html\">Rendered Policies</a></li>" >> index.html
+echo "<li><a href=\"nist-viewer/nist-controls-viewer.html\">NIST 800-53 Control Viewer & Gap Analysis</a></li>" >> index.html
 echo "<li><a href=\"components/index.html\">Components</a></li>" >> index.html
 echo "<li><a href=\"prometheus_stats/policies_metrics\">Prometheus Policies Metrics</a></li>" >> index.html
 echo "</ul>" >> index.html

@@ -1,0 +1,15 @@
+policy: NIST 800-53 Revision 5 (RHEL8)
+title: NIST Special Publication 800-53 Revision 5 for RHEL8
+id: nist_800_53
+version: Revision 5
+source: https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final
+product: rhel8
+controls_dir: nist_800_53
+levels:
+  - id: low
+  - id: moderate
+    inherits_from:
+      - low
+  - id: high
+    inherits_from:
+      - moderate

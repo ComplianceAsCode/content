@@ -1,0 +1,908 @@
+# NIST 800-53 SC Family: System and Communications Protection
+controls:
+  - id: sc-1
+    title: Policy and Procedures
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-2
+    title: Separation of System and User Functionality
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-2.1
+    title: Interfaces for Non-privileged Users
+    rules:
+      - coreos_disable_interactive_boot
+      - grub2_disable_interactive_boot
+    status: automated
+  - id: sc-2.2
+    title: Disassociability
+    rules: []
+    status: pending
+  - id: sc-3
+    title: Security Function Isolation
+    levels:
+      - high
+    rules:
+      - grub2_init_on_free
+    status: automated
+  - id: sc-3.1
+    title: Hardware Separation
+    rules: []
+    status: pending
+  - id: sc-3.2
+    title: Access and Flow Control Functions
+    rules: []
+    status: pending
+  - id: sc-3.3
+    title: Minimize Nonsecurity Functionality
+    rules: []
+    status: pending
+  - id: sc-3.4
+    title: Module Coupling and Cohesiveness
+    rules: []
+    status: pending
+  - id: sc-3.5
+    title: Layered Structures
+    rules: []
+    status: pending
+  - id: sc-4
+    title: Information in Shared System Resources
+    levels:
+      - moderate
+    rules:
+      - dir_perms_world_writable_sticky_bits
+      - file_permissions_unauthorized_world_writable
+    status: automated
+  - id: sc-4.1
+    title: Security Levels
+    rules: []
+    status: pending
+  - id: sc-4.2
+    title: Multilevel or Periods Processing
+    rules: []
+    status: pending
+  - id: sc-5
+    title: Denial-of-service Protection
+    levels:
+      - low
+    rules:
+      - accounts_passwords_pam_faillock_root_unlock_time
+      - firewalld-backend
+      - kernel_config_binfmt_misc
+      - kernel_config_modify_ldt_syscall
+      - sshd_set_max_sessions
+      - sshd_set_maxstartups
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_send_redirects
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv4_tcp_invalid_ratelimit
+    status: automated
+  - id: sc-5.1
+    title: Restrict Ability to Attack Other Systems
+    rules:
+      - configure_firewalld_rate_limiting
+      - sysctl_net_ipv4_tcp_syncookies
+    status: automated
+  - id: sc-5.2
+    title: Capacity, Bandwidth, and Redundancy
+    rules:
+      - configure_firewalld_rate_limiting
+      - partition_for_home
+      - partition_for_tmp
+      - partition_for_var
+      - partition_for_var_log
+      - partition_for_var_log_audit
+      - sysctl_net_ipv4_tcp_syncookies
+    status: automated
+  - id: sc-5.3
+    title: Detection and Monitoring
+    rules:
+      - configure_firewalld_rate_limiting
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_default_log_martians
+      - sysctl_net_ipv4_tcp_syncookies
+    status: automated
+  - id: sc-6
+    title: Resource Availability
+    rules: []
+    status: pending
+  - id: sc-7
+    title: Boundary Protection
+    levels:
+      - low
+    rules:
+      - ensure_firewall_rules_for_open_ports
+      - firewall_single_service_active
+      - firewalld_loopback_traffic_restricted
+      - firewalld_loopback_traffic_trusted
+      - firewalld_sshd_disabled
+      - ftp_configure_firewall
+      - httpd_configure_firewall
+      - ip6tables_rules_for_open_ports
+      - iptables_rules_for_open_ports
+      - iptables_sshd_disabled
+      - nftables_ensure_default_deny_policy
+      - package_SuSEfirewall2_installed
+      - package_firewalld_removed
+      - service_SuSEfirewall2_enabled
+      - service_firewalld_disabled
+      - set_firewalld_appropriate_zone
+      - set_iptables_outbound_n_established
+      - set_nftables_new_connections
+      - set_nftables_table
+      - set_ufw_default_rule
+      - susefirewall2_ddos_protection
+      - susefirewall2_only_required_services
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_rp_filter
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_send_redirects
+      - sysctl_net_ipv4_ip_forward
+      - ufw_only_required_services
+      - ufw_rate_limit
+      - ufw_rules_for_open_ports
+    status: automated
+  - id: sc-7.1
+    title: Physically Separated Subnetworks
+    rules: []
+    status: pending
+  - id: sc-7.2
+    title: Public Access
+    rules: []
+    status: pending
+  - id: sc-7.3
+    title: Access Points
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.4
+    title: External Telecommunications Services
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.5
+    title: Deny by Default — Allow by Exception
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.6
+    title: Response to Recognized Failures
+    rules: []
+    status: pending
+  - id: sc-7.7
+    title: Split Tunneling for Remote Devices
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.8
+    title: Route Traffic to Authenticated Proxy Servers
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-7.9
+    title: Restrict Threatening Outgoing Communications Traffic
+    rules: []
+    status: pending
+  - id: sc-7.10
+    title: Prevent Exfiltration
+    rules:
+      - disable_users_coredumps
+      - service_systemd-coredump_disabled
+      - sysctl_kernel_core_pattern
+      - sysctl_kernel_unprivileged_bpf_disabled
+      - sysctl_kernel_unprivileged_bpf_disabled_accept_default
+      - sysctl_kernel_yama_ptrace_scope
+      - sysctl_net_core_bpf_jit_harden
+    status: automated
+  - id: sc-7.11
+    title: Restrict Incoming Communications Traffic
+    rules: []
+    status: pending
+  - id: sc-7.12
+    title: Host-based Protection
+    rules: []
+    status: pending
+  - id: sc-7.13
+    title: Isolation of Security Tools, Mechanisms, and Support Components
+    rules: []
+    status: pending
+  - id: sc-7.14
+    title: Protect Against Unauthorized Physical Connections
+    rules: []
+    status: pending
+  - id: sc-7.15
+    title: Networked Privileged Accesses
+    rules: []
+    status: pending
+  - id: sc-7.16
+    title: Prevent Discovery of System Components
+    rules: []
+    status: pending
+  - id: sc-7.17
+    title: Automated Enforcement of Protocol Formats
+    rules: []
+    status: pending
+  - id: sc-7.18
+    title: Fail Secure
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sc-7.19
+    title: Block Communication from Non-organizationally Configured Hosts
+    rules: []
+    status: pending
+  - id: sc-7.20
+    title: Dynamic Isolation and Segregation
+    rules: []
+    status: pending
+  - id: sc-7.21
+    title: Isolation of System Components
+    levels:
+      - high
+    rules:
+      - apparmor_configured
+      - configure_firewalld_ports
+      - package_pam_apparmor_installed
+      - selinux_policytype
+      - selinux_state
+      - service_firewalld_enabled
+      - service_ip6tables_enabled
+      - service_iptables_enabled
+      - set_ip6tables_default_rule
+    status: automated
+  - id: sc-7.22
+    title: Separate Subnets for Connecting to Different Security Domains
+    rules: []
+    status: pending
+  - id: sc-7.23
+    title: Disable Sender Feedback on Protocol Validation Failure
+    rules:
+      - set_firewalld_default_zone
+      - set_iptables_default_rule
+      - set_iptables_default_rule_forward
+    status: automated
+  - id: sc-7.24
+    title: Personally Identifiable Information
+    rules: []
+    status: pending
+  - id: sc-7.25
+    title: Unclassified National Security System Connections
+    rules: []
+    status: pending
+  - id: sc-7.26
+    title: Classified National Security System Connections
+    rules: []
+    status: pending
+  - id: sc-7.27
+    title: Unclassified Non-national Security System Connections
+    rules: []
+    status: pending
+  - id: sc-7.28
+    title: Connections to Public Networks
+    rules: []
+    status: pending
+  - id: sc-7.29
+    title: Separate Subnets to Isolate Functions
+    rules: []
+    status: pending
+  - id: sc-8
+    title: Transmission Confidentiality and Integrity
+    levels:
+      - moderate
+    rules:
+      - dovecot_configure_ssl_cert
+      - dovecot_configure_ssl_key
+      - dovecot_enable_ssl
+      - httpd_configure_tls
+      - libreswan_approved_tunnels
+    status: automated
+  - id: sc-8.1
+    title: Cryptographic Protection
+    levels:
+      - moderate
+    rules:
+      - harden_openssl_crypto_policy
+      - service_sshd_enabled
+    status: automated
+  - id: sc-8.2
+    title: Pre- and Post-transmission Handling
+    rules:
+      - service_sshd_enabled
+    status: automated
+  - id: sc-8.3
+    title: Cryptographic Protection for Message Externals
+    rules:
+      - service_sshd_enabled
+    status: automated
+  - id: sc-8.4
+    title: Conceal or Randomize Communications
+    rules:
+      - service_sshd_enabled
+    status: automated
+  - id: sc-8.5
+    title: Protected Distribution System
+    rules: []
+    status: pending
+  - id: sc-9
+    title: Transmission Confidentiality
+    rules: []
+    status: pending
+  - id: sc-10
+    title: Network Disconnect
+    levels:
+      - moderate
+    rules:
+      - accounts_tmout
+      - logind_session_timeout
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive
+      - sshd_set_keepalive_0
+    status: automated
+  - id: sc-11
+    title: Trusted Path
+    rules: []
+    status: pending
+  - id: sc-11.1
+    title: Irrefutable Communications Path
+    rules: []
+    status: pending
+  - id: sc-12
+    title: Cryptographic Key Establishment and Management
+    levels:
+      - low
+    rules:
+      - ldap_client_start_tls
+    status: automated
+  - id: sc-12.1
+    title: Availability
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: sc-12.2
+    title: Symmetric Keys
+    rules:
+      - configure_bind_crypto_policy
+      - configure_crypto_policy
+      - configure_kerberos_crypto_policy
+      - configure_libreswan_crypto_policy
+      - configure_openssl_crypto_policy
+      - enable_dracut_fips_module
+      - enable_fips_mode
+      - etc_system_fips_exists
+      - grub2_enable_fips_mode
+      - harden_sshd_crypto_policy
+      - installed_OS_is_FIPS_certified
+      - is_fips_mode_enabled
+      - package_dracut-fips-aesni_installed
+      - package_dracut-fips_installed
+      - sebool_fips_mode
+      - sshd_use_approved_ciphers
+      - sshd_use_approved_macs
+      - sysctl_crypto_fips_enabled
+      - system_booted_in_fips_mode
+    status: automated
+  - id: sc-12.3
+    title: Asymmetric Keys
+    rules:
+      - configure_bind_crypto_policy
+      - configure_crypto_policy
+      - configure_kerberos_crypto_policy
+      - configure_libreswan_crypto_policy
+      - configure_openssl_crypto_policy
+      - enable_dracut_fips_module
+      - enable_fips_mode
+      - ensure_almalinux_gpgkey_installed
+      - ensure_amazon_gpgkey_installed
+      - ensure_fedora_gpgkey_installed
+      - ensure_gpgcheck_globally_activated
+      - ensure_gpgcheck_never_disabled
+      - ensure_gpgcheck_repo_metadata
+      - ensure_oracle_gpgkey_installed
+      - ensure_redhat_gpgkey_installed
+      - ensure_suse_gpgkey_installed
+      - etc_system_fips_exists
+      - grub2_enable_fips_mode
+      - harden_sshd_crypto_policy
+      - installed_OS_is_FIPS_certified
+      - is_fips_mode_enabled
+      - package_dracut-fips-aesni_installed
+      - package_dracut-fips_installed
+      - sebool_fips_mode
+      - sshd_use_approved_ciphers
+      - sshd_use_approved_macs
+      - sssd_ldap_configure_tls_ca
+      - sssd_ldap_configure_tls_ca_dir
+      - sssd_ldap_configure_tls_reqcert
+      - sysctl_crypto_fips_enabled
+      - system_booted_in_fips_mode
+    status: automated
+  - id: sc-12.4
+    title: PKI Certificates
+    rules: []
+    status: pending
+  - id: sc-12.5
+    title: PKI Certificates / Hardware Tokens
+    rules: []
+    status: pending
+  - id: sc-12.6
+    title: Physical Control of Keys
+    rules: []
+    status: pending
+  - id: sc-13
+    title: Cryptographic Protection
+    levels:
+      - low
+    rules:
+      - configure_bind_crypto_policy
+      - configure_crypto_policy
+      - configure_kerberos_crypto_policy
+      - configure_libreswan_crypto_policy
+      - configure_openssl_crypto_policy
+      - configure_ssh_crypto_policy
+      - disable_prelink
+      - enable_dracut_fips_module
+      - enable_fips_mode
+      - encrypt_partitions
+      - etc_system_fips_exists
+      - fips_crypto_policy_symlinks
+      - grub2_enable_fips_mode
+      - harden_openssl_crypto_policy
+      - harden_ssh_client_crypto_policy
+      - harden_sshd_crypto_policy
+      - httpd_digest_authentication
+      - httpd_require_client_certs
+      - installed_OS_is_FIPS_certified
+      - is_fips_mode_enabled
+      - package_dracut-fips-aesni_installed
+      - package_dracut-fips_installed
+      - sebool_fips_mode
+      - sshd_allow_only_protocol2
+      - sshd_use_approved_ciphers
+      - sshd_use_approved_macs
+      - sysctl_crypto_fips_enabled
+      - system_booted_in_fips_mode
+    status: automated
+  - id: sc-13.1
+    title: FIPS-validated Cryptography
+    rules: []
+    status: pending
+  - id: sc-13.2
+    title: NSA-approved Cryptography
+    rules: []
+    status: pending
+  - id: sc-13.3
+    title: Individuals Without Formal Access Approvals
+    rules: []
+    status: pending
+  - id: sc-13.4
+    title: Digital Signatures
+    rules: []
+    status: pending
+  - id: sc-14
+    title: Public Access Protections
+    rules: []
+    status: pending
+  - id: sc-15
+    title: Collaborative Computing Devices and Applications
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-15.1
+    title: Physical or Logical Disconnect
+    rules: []
+    status: pending
+  - id: sc-15.2
+    title: Blocking Inbound and Outbound Communications Traffic
+    rules: []
+    status: pending
+  - id: sc-15.3
+    title: Disabling and Removal in Secure Work Areas
+    rules: []
+    status: pending
+  - id: sc-15.4
+    title: Explicitly Indicate Current Participants
+    rules: []
+    status: pending
+  - id: sc-16
+    title: Transmission of Security and Privacy Attributes
+    rules: []
+    status: pending
+  - id: sc-16.1
+    title: Integrity Verification
+    rules: []
+    status: pending
+  - id: sc-16.2
+    title: Anti-spoofing Mechanisms
+    rules: []
+    status: pending
+  - id: sc-16.3
+    title: Cryptographic Binding
+    rules: []
+    status: pending
+  - id: sc-17
+    title: Public Key Infrastructure Certificates
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-18
+    title: Mobile Code
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-18.1
+    title: Identify Unacceptable Code and Take Corrective Actions
+    rules: []
+    status: pending
+  - id: sc-18.2
+    title: Acquisition, Development, and Use
+    rules: []
+    status: pending
+  - id: sc-18.3
+    title: Prevent Downloading and Execution
+    rules: []
+    status: pending
+  - id: sc-18.4
+    title: Prevent Automatic Execution
+    rules: []
+    status: pending
+  - id: sc-18.5
+    title: Allow Execution Only in Confined Environments
+    rules: []
+    status: pending
+  - id: sc-19
+    title: Voice Over Internet Protocol
+    rules: []
+    status: pending
+  - id: sc-20
+    title: Secure Name/Address Resolution Service (Authoritative Source)
+    levels:
+      - low
+    rules:
+      - avahi_check_ttl
+      - avahi_ip_only
+      - avahi_restrict_published_information
+      - network_configure_name_resolution
+    status: automated
+  - id: sc-20.1
+    title: Child Subspaces
+    rules: []
+    status: pending
+  - id: sc-20.2
+    title: Data Origin and Integrity
+    rules: []
+    status: pending
+  - id: sc-21
+    title: Secure Name/Address Resolution Service (Recursive or Caching Resolver)
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-21.1
+    title: Data Origin and Integrity
+    rules: []
+    status: pending
+  - id: sc-22
+    title: Architecture and Provisioning for Name/Address Resolution Service
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: sc-23
+    title: Session Authenticity
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: sc-23.1
+    title: Invalidate Session Identifiers at Logout
+    rules: []
+    status: pending
+  - id: sc-23.2
+    title: User-initiated Logouts and Message Displays
+    rules: []
+    status: pending
+  - id: sc-23.3
+    title: Unique System-generated Session Identifiers
+    rules: []
+    status: pending
+  - id: sc-23.4
+    title: Unique Session Identifiers with Randomization
+    rules: []
+    status: pending
+  - id: sc-23.5
+    title: Allowed Certificate Authorities
+    rules: []
+    status: pending
+  - id: sc-24
+    title: Fail in Known State
+    levels:
+      - high
+    rules:
+      - audit_rules_system_shutdown
+      - service_systemd-journald_enabled
+    status: automated
+  - id: sc-25
+    title: Thin Nodes
+    rules: []
+    status: pending
+  - id: sc-26
+    title: Decoys
+    rules: []
+    status: pending
+  - id: sc-26.1
+    title: Detection of Malicious Code
+    rules: []
+    status: pending
+  - id: sc-27
+    title: Platform-independent Applications
+    rules: []
+    status: pending
+  - id: sc-28
+    title: Protection of Information at Rest
+    levels:
+      - moderate
+    rules:
+      - install_mcafee_antivirus
+      - mcafee_antivirus_definitions_updated
+      - service_nails_enabled
+    status: automated
+  - id: sc-28.1
+    title: Cryptographic Protection
+    levels:
+      - moderate
+    rules:
+      - encrypt_partitions
+    status: automated
+  - id: sc-28.2
+    title: Offline Storage
+    rules: []
+    status: pending
+  - id: sc-28.3
+    title: Cryptographic Keys
+    rules: []
+    status: pending
+  - id: sc-29
+    title: Heterogeneity
+    rules: []
+    status: pending
+  - id: sc-29.1
+    title: Virtualization Techniques
+    rules: []
+    status: pending
+  - id: sc-30
+    title: Concealment and Misdirection
+    rules: []
+    status: pending
+  - id: sc-30.1
+    title: Virtualization Techniques
+    rules: []
+    status: pending
+  - id: sc-30.2
+    title: Randomness
+    rules:
+      - sysctl_kernel_kptr_restrict
+      - sysctl_kernel_randomize_va_space
+    status: automated
+  - id: sc-30.3
+    title: Change Processing and Storage Locations
+    rules: []
+    status: pending
+  - id: sc-30.4
+    title: Misleading Information
+    rules: []
+    status: pending
+  - id: sc-30.5
+    title: Concealment of System Components
+    rules:
+      - sysctl_kernel_kptr_restrict
+    status: automated
+  - id: sc-31
+    title: Covert Channel Analysis
+    rules: []
+    status: pending
+  - id: sc-31.1
+    title: Test Covert Channels for Exploitability
+    rules: []
+    status: pending
+  - id: sc-31.2
+    title: Maximum Bandwidth
+    rules: []
+    status: pending
+  - id: sc-31.3
+    title: Measure Bandwidth in Operational Environments
+    rules: []
+    status: pending
+  - id: sc-32
+    title: System Partitioning
+    rules: []
+    status: pending
+  - id: sc-32.1
+    title: Separate Physical Domains for Privileged Functions
+    rules: []
+    status: pending
+  - id: sc-33
+    title: Transmission Preparation Integrity
+    rules: []
+    status: pending
+  - id: sc-34
+    title: Non-modifiable Executable Programs
+    rules: []
+    status: pending
+  - id: sc-34.1
+    title: No Writable Storage
+    rules: []
+    status: pending
+  - id: sc-34.2
+    title: Integrity Protection on Read-only Media
+    rules: []
+    status: pending
+  - id: sc-34.3
+    title: Hardware-based Protection
+    rules: []
+    status: pending
+  - id: sc-35
+    title: External Malicious Code Identification
+    rules: []
+    status: pending
+  - id: sc-36
+    title: Distributed Processing and Storage
+    rules: []
+    status: pending
+  - id: sc-36.1
+    title: Polling Techniques
+    rules: []
+    status: pending
+  - id: sc-36.2
+    title: Synchronization
+    rules: []
+    status: pending
+  - id: sc-37
+    title: Out-of-band Channels
+    rules: []
+    status: pending
+  - id: sc-37.1
+    title: Ensure Delivery and Transmission
+    rules: []
+    status: pending
+  - id: sc-38
+    title: Operations Security
+    rules: []
+    status: pending
+  - id: sc-39
+    title: Process Isolation
+    levels:
+      - low
+    rules:
+      - bios_enable_execution_restrictions
+      - sysctl_kernel_exec_shield
+      - sysctl_user_max_user_namespaces
+    status: automated
+  - id: sc-39.1
+    title: Hardware Separation
+    rules: []
+    status: pending
+  - id: sc-39.2
+    title: Separate Execution Domain Per Thread
+    rules: []
+    status: pending
+  - id: sc-40
+    title: Wireless Link Protection
+    rules: []
+    status: pending
+  - id: sc-40.1
+    title: Electromagnetic Interference
+    rules: []
+    status: pending
+  - id: sc-40.2
+    title: Reduce Detection Potential
+    rules: []
+    status: pending
+  - id: sc-40.3
+    title: Imitative or Manipulative Communications Deception
+    rules: []
+    status: pending
+  - id: sc-40.4
+    title: Signal Parameter Identification
+    rules: []
+    status: pending
+  - id: sc-41
+    title: Port and I/O Device Access
+    rules: []
+    status: pending
+  - id: sc-42
+    title: Sensor Capability and Data
+    rules: []
+    status: pending
+  - id: sc-42.1
+    title: Reporting to Authorized Individuals or Roles
+    rules: []
+    status: pending
+  - id: sc-42.2
+    title: Authorized Use
+    rules: []
+    status: pending
+  - id: sc-42.3
+    title: Prohibit Use of Devices
+    rules: []
+    status: pending
+  - id: sc-42.4
+    title: Notice of Collection
+    rules: []
+    status: pending
+  - id: sc-42.5
+    title: Collection Minimization
+    rules: []
+    status: pending
+  - id: sc-43
+    title: Usage Restrictions
+    rules: []
+    status: pending
+  - id: sc-44
+    title: Detonation Chambers
+    rules: []
+    status: pending
+  - id: sc-45
+    title: System Time Synchronization
+    rules: []
+    status: pending
+  - id: sc-45.1
+    title: Synchronization with Authoritative Time Source
+    rules: []
+    status: pending
+  - id: sc-45.2
+    title: Secondary Authoritative Time Source
+    rules: []
+    status: pending
+  - id: sc-46
+    title: Cross Domain Policy Enforcement
+    rules: []
+    status: pending
+  - id: sc-47
+    title: Alternate Communications Paths
+    rules: []
+    status: pending
+  - id: sc-48
+    title: Sensor Relocation
+    rules: []
+    status: pending
+  - id: sc-48.1
+    title: Dynamic Relocation of Sensors or Monitoring Capabilities
+    rules: []
+    status: pending
+  - id: sc-49
+    title: Hardware-enforced Separation and Policy Enforcement
+    rules: []
+    status: pending
+  - id: sc-50
+    title: Software-enforced Separation and Policy Enforcement
+    rules: []
+    status: pending
+  - id: sc-51
+    title: Hardware-based Protection
+    rules: []
+    status: pending
