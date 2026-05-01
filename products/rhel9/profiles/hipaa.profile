@@ -63,6 +63,7 @@ selections:
     - "!grub2_admin_username"
     - "!grub2_uefi_admin_username"
     - "!grub2_uefi_password"
+    - "!auditd_audispd_syslog_plugin_activated"
     - "!package_audit-audispd-plugins_installed"
     - "!package_audit_installed"
     - "!package_rsh-server_removed"
