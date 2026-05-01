@@ -37,12 +37,8 @@ description: |-
           tlsSecurityProfile:
               type: Custom
               custom:
-                  ciphers:
-                  - ECDHE-ECDSA-CHACHA20-POLY1305
-                  - ECDHE-RSA-CHACHA20-POLY1305
-                  - ECDHE-RSA-AES128-GCM-SHA256
-                  - ECDHE-ECDSA-AES128-GCM-SHA256
-                  minTLSVersion: {{{ xccdf_value("var_kubelet_tls_min_version") }}}
+                  ciphers: [ {{ .var_kubelet_tls_cipher_suites }} ]
+                  minTLSVersion: "{{.var_kubelet_tls_min_version}}"
           machineConfigPoolSelector:
               matchLabels:
                   pools.operator.machineconfiguration.openshift.io/$pool_name: ""
