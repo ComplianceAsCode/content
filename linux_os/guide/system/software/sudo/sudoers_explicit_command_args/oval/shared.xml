@@ -1,9 +1,39 @@
 <def-group>
      <definition class="compliance" id="{{{ rule_id }}}" version="1">
      {{{ oval_metadata("Check that sudoers doesn't contain commands without arguments specified", rule_title=rule_title) }}}
-     <criteria operator="AND">
-	     <criterion comment="Make sure that no commands are without arguments" test_ref="test_{{{ rule_id }}}" />
+     {{% if product in [ 'sle16', 'slmicro6' ] %}}
+     <criteria operator="OR">
+        <!-- if /etc/sudoers exist, check /etc/sudoers and
+        default drop in /etc/sudoers.d/ and /usr/etc/sudoers.d/
+        -->
+        <criteria operator="AND">
+          <criterion
+              comment="test if configuration file /etc/sudoers exists for {{{ rule_id }}}"
+              test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+          <criterion
+              comment="Make sure that no commands are without arguments in /etc/sudoers"
+              test_ref="test_{{{ rule_id }}}_etc_sudoers" />
+          <criterion
+              comment="Make sure that no commands are without arguments in sudoers.d drop in"
+              test_ref="test_{{{ rule_id }}}_sudoers_drop_in" />
+        </criteria>
+        <criteria operator="AND">
+            <criterion
+                comment="test if configuration file /etc/sudoers does not exists for {{{ rule_id }}}"
+                test_ref="test_{{{ rule_id }}}_config_file_exists" negate="true"/>
+            <criterion
+                comment="Make sure that no commands are without arguments in /usr/etc/sudoers"
+                test_ref="test_{{{ rule_id }}}_usr_etc_sudoers" />
+            <criterion
+                comment="Make sure that no commands are without arguments in sudoers.d drop in"
+                test_ref="test_{{{ rule_id }}}_sudoers_drop_in" />
+        </criteria>
      </criteria>
+     {{% else %}}
+     <criteria operator="AND">
+        <criterion comment="Make sure that no commands are without arguments" test_ref="test_{{{ rule_id }}}" />
+     </criteria>
+     {{% endif %}}
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
@@ -22,4 +52,48 @@
     <ind:pattern operation="pattern match">^(?!\s*Defaults)(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test('/etc/sudoers', rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object('/etc/sudoers', rule_id=rule_id) }}}
+
+  <!-- test default drop in configurations included in /usr/etc/sudoers -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that no command in user spec is without any argument"
+	  id="test_{{{ rule_id }}}_sudoers_drop_in" version="1">
+  <ind:object object_ref="object_{{{ rule_id }}}_sudoers_drop_in" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_sudoers_drop_in" version="1">
+    <ind:filepath operation="pattern match">^(/usr/etc/sudoers.d/.*|/etc/sudoers.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!\s*Defaults)(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- test /etc/sudoers -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that no command in user spec is without any argument"
+	  id="test_{{{ rule_id }}}_etc_sudoers" version="1">
+  <ind:object object_ref="object_{{{ rule_id }}}_etc_sudoers" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_etc_sudoers" version="1">
+    <ind:filepath>/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!\s*Defaults)(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- test /usr/etc/sudoers -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that no command in user spec is without any argument"
+	  id="test_{{{ rule_id }}}_usr_etc_sudoers" version="1">
+  <ind:object object_ref="object_{{{ rule_id }}}_usr_etc_sudoers" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_usr_etc_sudoers" version="1">
+    <ind:filepath>/usr/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!\s*Defaults)(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
 </def-group>

@@ -1,10 +1,40 @@
 <def-group>
      <definition class="compliance" id="{{{ rule_id }}}" version="1">
      {{{ oval_metadata("Check that sudoers doesn't allow users to run commands as root", rule_title=rule_title) }}}
+     {{% if product in [ 'sle16', 'slmicro6' ] %}}
+     <criteria operator="OR">
+        <!-- if /etc/sudoers exist, check /etc/sudoers and
+        default drop in /etc/sudoers.d/ and /usr/etc/sudoers.d/
+        -->
+        <criteria operator="AND">
+          <criterion
+              comment="test if configuration file /etc/sudoers exists for {{{ rule_id }}}"
+              test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+          <criterion comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL" test_ref="test_no_root_or_ALL_in_runas_spec_etc_sudoers" />
+          <criterion comment="Make sure that all user specs in sudoers feature a runas spec" test_ref="test_no_user_spec_rules_etc_sudoers" />
+          <criterion comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL in sudoers drop in configs"
+            test_ref="test_no_root_or_ALL_in_runas_spec_drop_in" />
+          <criterion comment="Make sure that all user specs in sudoers feature a runas spec in sudoers drop in configs"
+            test_ref="test_no_user_spec_rules_drop_in" />
+        </criteria>
+        <criteria operator="AND">
+            <criterion
+                comment="test if configuration file /etc/sudoers does not exists for {{{ rule_id }}}"
+                test_ref="test_{{{ rule_id }}}_config_file_exists" negate="true"/>
+            <criterion comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL" test_ref="test_no_root_or_ALL_in_runas_spec_usr_etc_sudoers" />
+            <criterion comment="Make sure that all user specs in sudoers feature a runas spec" test_ref="test_no_user_spec_rules_usr_etc_sudoers" />
+            <criterion comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL in sudoers drop in configs"
+              test_ref="test_no_root_or_ALL_in_runas_spec_drop_in" />
+            <criterion comment="Make sure that all user specs in sudoers feature a runas spec in sudoers drop in configs"
+              test_ref="test_no_user_spec_rules_drop_in" />
+        </criteria>
+     </criteria>
+     {{% else %}}
      <criteria operator="AND">
         <criterion comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL" test_ref="test_no_root_or_ALL_in_runas_spec" />
         <criterion comment="Make sure that all user specs in sudoers feature a runas spec" test_ref="test_no_user_spec_rules" />
      </criteria>
+     {{% endif %}}
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
@@ -22,7 +52,7 @@
       - \2: target hostname or ALL
       - later: word ALL or root inside brackets
     -->
-    <ind:pattern operation="pattern match">^\s*((?!root\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*\([\w\s]*\b(root|ALL)\b[\w\s]*\)</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*((?!(root|Defaults)\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*\([\w\s]*\b(root|ALL)\b[\w\s]*\)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -41,7 +71,88 @@
       - \2: target hostname or ALL
       - later: No bracket either right after "hosts =", or no bracket after the "previous command"
     -->
-    <ind:pattern operation="pattern match">^\s*((?!root\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*[^\(\s]</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*((?!(root|Defaults)\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*[^\(\s]</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test('/etc/sudoers', rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object('/etc/sudoers', rule_id=rule_id) }}}
+
+  <!-- test drop in configurations for sudoers -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL in default drop in configurations"
+  id="test_no_root_or_ALL_in_runas_spec_drop_in" version="1">
+    <ind:object object_ref="object_root_or_ALL_in_runas_spec_drop_in" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_root_or_ALL_in_runas_spec_drop_in" version="1">
+    <ind:filepath operation="pattern match">^(/usr/etc/sudoers.d/.*|/etc/sudoers.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*((?!(root|Defaults)\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*\([\w\s]*\b(root|ALL)\b[\w\s]*\)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="make sure that all user specs in sudoers feature a runas spec in default drop in configurations"
+  id="test_no_user_spec_rules_drop_in" version="1">
+    <ind:object object_ref="object_no_runas_spec_drop_in" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_no_runas_spec_drop_in" version="1">
+    <ind:filepath operation="pattern match">^(/usr/etc/sudoers.d/.*|/etc/sudoers.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*((?!(root|Defaults)\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*[^\(\s]</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <!-- test /etc/sudoers -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL in /etc/sudoers"
+  id="test_no_root_or_ALL_in_runas_spec_etc_sudoers" version="1">
+    <ind:object object_ref="root_or_ALL_in_runas_spec_etc_sudoers" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="root_or_ALL_in_runas_spec_etc_sudoers" version="1">
+    <ind:filepath>/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*((?!(root|Defaults)\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*\([\w\s]*\b(root|ALL)\b[\w\s]*\)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="make sure that all user specs in sudoers feature a runas spec in /etc/sudoers"
+  id="test_no_user_spec_rules_etc_sudoers" version="1">
+    <ind:object object_ref="object_no_runas_spec_etc_sudoers" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_no_runas_spec_etc_sudoers" version="1">
+    <ind:filepath>/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*((?!(root|Defaults)\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*[^\(\s]</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- test /usr/etc/sudoers -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL in /usr/etc/sudoers"
+  id="test_no_root_or_ALL_in_runas_spec_usr_etc_sudoers" version="1">
+    <ind:object object_ref="root_or_ALL_in_runas_spec_usr_etc_sudoers" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="root_or_ALL_in_runas_spec_usr_etc_sudoers" version="1">
+    <ind:filepath>/usr/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*((?!(root|Defaults)\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*\([\w\s]*\b(root|ALL)\b[\w\s]*\)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="make sure that all user specs in sudoers feature a runas spec in /usr/etc/sudoers"
+  id="test_no_user_spec_rules_usr_etc_sudoers" version="1">
+    <ind:object object_ref="object_no_runas_spec_usr_etc_sudoers" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_no_runas_spec_usr_etc_sudoers" version="1">
+    <ind:filepath>/usr/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*((?!(root|Defaults)\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*[^\(\s]</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
 </def-group>
