@@ -7,7 +7,7 @@ echo ' root ALL=(ALL) ALL' > /etc/sudoers
 echo 'root ALL= ALL' >> /etc/sudoers
 echo '# user ALL= ALL' >> /etc/sudoers
 # add fail line in /usr/etc/sudoers, it should not be checked
-# when /etc/sudoers
+# when /etc/sudoers exists
 {{% if product in [ 'sle16', 'slmicro6' ] %}}
 echo 'user ALL=(ALL) ALL' > /usr/etc/sudoers
 {{% endif %}}
