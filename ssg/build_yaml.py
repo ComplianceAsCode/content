@@ -45,7 +45,7 @@ from .rules import get_rule_dir_yaml, is_rule_dir
 
 from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_expand
-from .utils import required_key, mkdir_p
+from .utils import required_key, mkdir_p, safe_evaluate_boolean_filter
 
 from .xml import ElementTree as ET, register_namespaces, parse_file
 import ssg.build_stig
@@ -1631,9 +1631,7 @@ def rule_filter_from_def(filterdef):
         return noop_rule_filterfunc
 
     def filterfunc(rule):
-        # Remove globals for security and only expose
-        # variables relevant to the rule
-        return eval(filterdef, {"__builtins__": None}, rule.__dict__)
+        return safe_evaluate_boolean_filter(filterdef, rule.__dict__)
     return filterfunc
 
 

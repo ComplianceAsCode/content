@@ -16,6 +16,7 @@ from ..constants import (
     OSCAP_RULE,
     OSCAP_VALUE,
 )
+from ..utils import safe_evaluate_boolean_filter
 
 
 def noop_rule_filterfunc(rule):
@@ -30,9 +31,7 @@ def rule_filter_from_def(filterdef):
         c = copy.copy(rule)
         if c.platform is None:
             c.platform = ''
-        # Remove globals for security and only expose
-        # variables relevant to the rule
-        return eval(filterdef, {"__builtins__": None}, c.__dict__)
+        return safe_evaluate_boolean_filter(filterdef, c.__dict__)
     return filterfunc
 
 
