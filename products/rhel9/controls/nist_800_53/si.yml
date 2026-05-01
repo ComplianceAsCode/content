@@ -1,0 +1,545 @@
+# NIST 800-53 SI Family: System and Information Integrity
+controls:
+  - id: si-1
+    title: Policy and Procedures
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: si-2
+    title: Flaw Remediation
+    levels:
+      - low
+    rules:
+      - ensure_gpgcheck_globally_activated
+      - ensure_gpgcheck_never_disabled
+      - ensure_redhat_gpgkey_installed
+    status: automated
+  - id: si-2.1
+    title: Central Management
+    rules: []
+    status: pending
+  - id: si-2.2
+    title: Automated Flaw Remediation Status
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-2.3
+    title: Time to Remediate Flaws and Benchmarks for Corrective Actions
+    rules: []
+    status: pending
+  - id: si-2.4
+    title: Automated Patch Management Tools
+    rules: []
+    status: pending
+  - id: si-2.5
+    title: Automatic Software and Firmware Updates
+    rules: []
+    status: pending
+  - id: si-2.6
+    title: Removal of Previous Versions of Software and Firmware
+    rules: []
+    status: pending
+  - id: si-2.7
+    title: Root Cause Analysis
+    rules: []
+    status: pending
+  - id: si-3
+    title: Malicious Code Protection
+    levels:
+      - low
+    rules:
+      - kernel_module_usb-storage_disabled
+      - service_autofs_disabled
+    status: automated
+  - id: si-3.1
+    title: Central Management
+    rules: []
+    status: pending
+  - id: si-3.2
+    title: Automatic Updates
+    rules: []
+    status: pending
+  - id: si-3.3
+    title: Non-privileged Users
+    rules: []
+    status: pending
+  - id: si-3.4
+    title: Updates Only by Privileged Users
+    rules: []
+    status: pending
+  - id: si-3.5
+    title: Portable Storage Devices
+    rules: []
+    status: pending
+  - id: si-3.6
+    title: Testing and Verification
+    rules: []
+    status: pending
+  - id: si-3.7
+    title: Nonsignature-based Detection
+    rules: []
+    status: pending
+  - id: si-3.8
+    title: Detect Unauthorized Commands
+    rules: []
+    status: pending
+  - id: si-3.9
+    title: Authenticate Remote Commands
+    rules: []
+    status: pending
+  - id: si-3.10
+    title: Malicious Code Analysis
+    rules: []
+    status: pending
+  - id: si-4
+    title: System Monitoring
+    levels:
+      - low
+    rules:
+      - kernel_module_dccp_disabled
+      - kernel_module_rds_disabled
+      - kernel_module_sctp_disabled
+      - kernel_module_tipc_disabled
+      - service_avahi-daemon_disabled
+    status: automated
+  - id: si-4.1
+    title: System-wide Intrusion Detection System
+    rules: []
+    status: pending
+  - id: si-4.2
+    title: Automated Tools and Mechanisms for Real-time Analysis
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-4.3
+    title: Automated Tool and Mechanism Integration
+    rules: []
+    status: pending
+  - id: si-4.4
+    title: Inbound and Outbound Communications Traffic
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-4.5
+    title: System-generated Alerts
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-4.6
+    title: Restrict Non-privileged Users
+    rules: []
+    status: pending
+  - id: si-4.7
+    title: Automated Response to Suspicious Events
+    rules: []
+    status: pending
+  - id: si-4.8
+    title: Protection of Monitoring Information
+    rules: []
+    status: pending
+  - id: si-4.9
+    title: Testing of Monitoring Tools and Mechanisms
+    rules: []
+    status: pending
+  - id: si-4.10
+    title: Visibility of Encrypted Communications
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.11
+    title: Analyze Communications Traffic Anomalies
+    rules: []
+    status: pending
+  - id: si-4.12
+    title: Automated Organization-generated Alerts
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.13
+    title: Analyze Traffic and Event Patterns
+    rules: []
+    status: pending
+  - id: si-4.14
+    title: Wireless Intrusion Detection
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.15
+    title: Wireless to Wireline Communications
+    rules: []
+    status: pending
+  - id: si-4.16
+    title: Correlate Monitoring Information
+    rules: []
+    status: pending
+  - id: si-4.17
+    title: Integrated Situational Awareness
+    rules: []
+    status: pending
+  - id: si-4.18
+    title: Analyze Traffic and Covert Exfiltration
+    rules: []
+    status: pending
+  - id: si-4.19
+    title: Risk for Individuals
+    rules: []
+    status: pending
+  - id: si-4.20
+    title: Privileged Users
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.21
+    title: Probationary Periods
+    rules: []
+    status: pending
+  - id: si-4.22
+    title: Unauthorized Network Services
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-4.23
+    title: Host-based Devices
+    rules: []
+    status: pending
+  - id: si-4.24
+    title: Indicators of Compromise
+    rules: []
+    status: pending
+  - id: si-4.25
+    title: Optimize Network Traffic Analysis
+    rules: []
+    status: pending
+  - id: si-5
+    title: Security Alerts, Advisories, and Directives
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: si-5.1
+    title: Automated Alerts and Advisories
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-6
+    title: Security and Privacy Function Verification
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-6.1
+    title: Notification of Failed Security Tests
+    rules: []
+    status: pending
+  - id: si-6.2
+    title: Automation Support for Distributed Testing
+    rules: []
+    status: pending
+  - id: si-6.3
+    title: Report Verification Results
+    rules: []
+    status: pending
+  - id: si-7
+    title: Software, Firmware, and Information Integrity
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-7.1
+    title: Integrity Checks
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-7.2
+    title: Automated Notifications of Integrity Violations
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-7.3
+    title: Centrally Managed Integrity Tools
+    rules: []
+    status: pending
+  - id: si-7.4
+    title: Tamper-evident Packaging
+    rules: []
+    status: pending
+  - id: si-7.5
+    title: Automated Response to Integrity Violations
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-7.6
+    title: Cryptographic Protection
+    rules: []
+    status: pending
+  - id: si-7.7
+    title: Integration of Detection and Response
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-7.8
+    title: Auditing Capability for Significant Events
+    rules: []
+    status: pending
+  - id: si-7.9
+    title: Verify Boot Process
+    rules: []
+    status: pending
+  - id: si-7.10
+    title: Protection of Boot Firmware
+    rules: []
+    status: pending
+  - id: si-7.11
+    title: Confined Environments with Limited Privileges
+    rules: []
+    status: pending
+  - id: si-7.12
+    title: Integrity Verification
+    rules: []
+    status: pending
+  - id: si-7.13
+    title: Code Execution in Protected Environments
+    rules: []
+    status: pending
+  - id: si-7.14
+    title: Binary or Machine Executable Code
+    rules: []
+    status: pending
+  - id: si-7.15
+    title: Code Authentication
+    levels:
+      - high
+    rules: []
+    status: pending
+  - id: si-7.16
+    title: Time Limit on Process Execution Without Supervision
+    rules: []
+    status: pending
+  - id: si-7.17
+    title: Runtime Application Self-protection
+    rules: []
+    status: pending
+  - id: si-8
+    title: Spam Protection
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-8.1
+    title: Central Management
+    rules: []
+    status: pending
+  - id: si-8.2
+    title: Automatic Updates
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-8.3
+    title: Continuous Learning Capability
+    rules: []
+    status: pending
+  - id: si-9
+    title: Information Input Restrictions
+    rules: []
+    status: pending
+  - id: si-10
+    title: Information Input Validation
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-10.1
+    title: Manual Override Capability
+    rules: []
+    status: pending
+  - id: si-10.2
+    title: Review and Resolve Errors
+    rules: []
+    status: pending
+  - id: si-10.3
+    title: Predictable Behavior
+    rules: []
+    status: pending
+  - id: si-10.4
+    title: Timing Interactions
+    rules: []
+    status: pending
+  - id: si-10.5
+    title: Restrict Inputs to Trusted Sources and Approved Formats
+    rules: []
+    status: pending
+  - id: si-10.6
+    title: Injection Prevention
+    rules: []
+    status: pending
+  - id: si-11
+    title: Error Handling
+    levels:
+      - moderate
+    rules: []
+    status: pending
+  - id: si-12
+    title: Information Management and Retention
+    levels:
+      - low
+    rules: []
+    status: pending
+  - id: si-12.1
+    title: Limit Personally Identifiable Information Elements
+    rules: []
+    status: pending
+  - id: si-12.2
+    title: Minimize Personally Identifiable Information in Testing, Training, and Research
+    rules: []
+    status: pending
+  - id: si-12.3
+    title: Information Disposal
+    rules: []
+    status: pending
+  - id: si-13
+    title: Predictable Failure Prevention
+    rules: []
+    status: pending
+  - id: si-13.1
+    title: Transferring Component Responsibilities
+    rules: []
+    status: pending
+  - id: si-13.2
+    title: Time Limit on Process Execution Without Supervision
+    rules: []
+    status: pending
+  - id: si-13.3
+    title: Manual Transfer Between Components
+    rules: []
+    status: pending
+  - id: si-13.4
+    title: Standby Component Installation and Notification
+    rules: []
+    status: pending
+  - id: si-13.5
+    title: Failover Capability
+    rules: []
+    status: pending
+  - id: si-14
+    title: Non-persistence
+    rules: []
+    status: pending
+  - id: si-14.1
+    title: Refresh from Trusted Sources
+    rules: []
+    status: pending
+  - id: si-14.2
+    title: Non-persistent Information
+    rules: []
+    status: pending
+  - id: si-14.3
+    title: Non-persistent Connectivity
+    rules: []
+    status: pending
+  - id: si-15
+    title: Information Output Filtering
+    rules: []
+    status: pending
+  - id: si-16
+    title: Memory Protection
+    levels:
+      - moderate
+    rules:
+      - sysctl_kernel_randomize_va_space
+    status: automated
+  - id: si-17
+    title: Fail-safe Procedures
+    rules: []
+    status: pending
+  - id: si-18
+    title: Personally Identifiable Information Quality Operations
+    rules: []
+    status: pending
+  - id: si-18.1
+    title: Automation Support
+    rules: []
+    status: pending
+  - id: si-18.2
+    title: Data Tags
+    rules: []
+    status: pending
+  - id: si-18.3
+    title: Collection
+    rules: []
+    status: pending
+  - id: si-18.4
+    title: Individual Requests
+    rules: []
+    status: pending
+  - id: si-18.5
+    title: Notice of Correction or Deletion
+    rules: []
+    status: pending
+  - id: si-19
+    title: De-identification
+    rules: []
+    status: pending
+  - id: si-19.1
+    title: Collection
+    rules: []
+    status: pending
+  - id: si-19.2
+    title: Archiving
+    rules: []
+    status: pending
+  - id: si-19.3
+    title: Release
+    rules: []
+    status: pending
+  - id: si-19.4
+    title: Removal, Masking, Encryption, Hashing, or Replacement of Direct Identifiers
+    rules: []
+    status: pending
+  - id: si-19.5
+    title: Statistical Disclosure Control
+    rules: []
+    status: pending
+  - id: si-19.6
+    title: Differential Privacy
+    rules: []
+    status: pending
+  - id: si-19.7
+    title: Validated Algorithms and Software
+    rules: []
+    status: pending
+  - id: si-19.8
+    title: Motivated Intruder
+    rules: []
+    status: pending
+  - id: si-20
+    title: Tainting
+    rules: []
+    status: pending
+  - id: si-21
+    title: Information Refresh
+    rules: []
+    status: pending
+  - id: si-22
+    title: Information Diversity
+    rules: []
+    status: pending
+  - id: si-23
+    title: Information Fragmentation
+    rules: []
+    status: pending

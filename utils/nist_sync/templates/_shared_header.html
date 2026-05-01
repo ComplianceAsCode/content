@@ -1,0 +1,35 @@
+<header>
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <h1><a href="index.html">NIST 800-53 Control Viewer</a></h1>
+        <!-- PRODUCT_SELECTOR_PLACEHOLDER -->
+    </div>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="index.html" id="nav-dashboard">Dashboard</a></li>
+        <li><a href="controls.html" id="nav-controls">Controls</a></li>
+        <li><a href="gaps.html" id="nav-gaps">Gaps</a></li>
+        <li><a href="statistics.html" id="nav-statistics">Statistics</a></li>
+        <li><a href="family.html" id="nav-families">Families</a></li>
+    </ul>
+</nav>
+
+<script>
+// Highlight current page in navigation
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = {
+        'index.html': 'nav-dashboard',
+        'controls.html': 'nav-controls',
+        'gaps.html': 'nav-gaps',
+        'statistics.html': 'nav-statistics',
+        'family.html': 'nav-families'
+    };
+
+    const activeNav = document.getElementById(navLinks[currentPage]);
+    if (activeNav) {
+        activeNav.classList.add('active');
+    }
+});
+</script>
