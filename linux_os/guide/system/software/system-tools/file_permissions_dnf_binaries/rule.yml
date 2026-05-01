@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Restrict Execution of DNF Package Manager Binaries'
+
+description: |-
+    On RHCOS, packages in the base image cannot be removed. As a compensating
+    control, package management utilities such as dnf and yum should have their
+    execute permissions removed to prevent unauthorized package installation.
+    {{{ describe_file_permissions(file="/usr/bin/dnf", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/dnf-3", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/yum", perms="0644") }}}
+
+rationale: |-
+    The dnf and python3-dnf packages provide package management utilities for
+    installing, updating, and removing software. RHCOS is designed to be an
+    immutable operating system managed through atomic upgrades and containerization.
+    Retaining these utilities with execute permissions allows unauthorized users
+    to install or modify packages, potentially compromising system integrity.
+    On immutable systems like RHCOS, removing execute permissions prevents
+    unauthorized package management while maintaining system integrity.
+
+severity: high
+
+identifiers:
+    cce@rhcos4: CCE-86494-2
+
+platform: rhcos4
+
+ocil: |-
+    {{{ describe_file_permissions(file="/usr/bin/dnf", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/dnf-3", perms="0644") }}}
+    {{{ describe_file_permissions(file="/usr/bin/yum", perms="0644") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath:
+            - /usr/bin/dnf
+            - /usr/bin/dnf-3
+            - /usr/bin/yum
+        filemode: '0644'
+        missing_file_pass: 'true'
