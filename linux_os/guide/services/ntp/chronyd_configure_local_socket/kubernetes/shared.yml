@@ -1,11 +1,31 @@
----
 # platform = multi_platform_fedora,multi_platform_rhel,multi_platform_rhcos
 # reboot = true
 # strategy = restrict
 # complexity = low
 # disruption = low
+---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
+metadata:
+  annotations:
+    complianceascode.io/ocp-version: '<4.13.0'
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - contents:
+          source: data:,%5BUnit%5D%0ADescription%3DWait%20for%20chrony%20to%20synchronize%20system%20clock%20%28KCS%207064388%29%0ADocumentation%3Dman%3Achronyc%281%29%0AAfter%3Dchronyd.service%0ARequires%3Dchronyd.service%0ABefore%3Dtime-sync.target%0AWants%3Dtime-sync.target%0A%0A%5BService%5D%0AType%3Doneshot%0AExecStart%3D%2Fusr%2Fbin%2Fchronyc%20waitsync%200%200.1%200.0%201%0ATimeoutStartSec%3D180%0ARemainAfterExit%3Dyes%0AStandardOutput%3Dnull%0A%0A%5BInstall%5D%0AWantedBy%3Dmulti-user.target%0A
+        mode: 420
+        overwrite: true
+        path: /etc/systemd/system/chrony-wait.service
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  annotations:
+    complianceascode.io/ocp-version: '>=4.13.0'
 spec:
   config:
     ignition:
