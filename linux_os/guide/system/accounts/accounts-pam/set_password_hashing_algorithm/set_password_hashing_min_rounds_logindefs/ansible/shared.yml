@@ -6,6 +6,25 @@
 
 {{{ ansible_instantiate_variables("var_password_hashing_min_rounds_login_defs") }}}
 
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{{
+    ansible_login_defs(
+      parameter='SHA_CRYPT_MIN_ROUNDS',
+      value='{{ var_password_hashing_min_rounds_login_defs }}',
+      rule_title=rule_title,
+      cce=cce_cce_identifier
+    )
+}}}
+{{{
+    ansible_login_defs(
+      parameter='SHA_CRYPT_MAX_ROUNDS',
+      value='{{ var_password_hashing_min_rounds_login_defs }}',
+      rule_title=rule_title,
+      cce=cce_cce_identifier
+    )
+}}}
+{{% else %}}
 - name: "{{{ rule_title }}} - extract contents of the file {{{ login_defs_path }}}"
   ansible.builtin.slurp:
     src: {{{ login_defs_path }}}
@@ -48,3 +67,4 @@
     path: {{{ login_defs_path }}}
     state: present
   when: etc_login_defs_sha_crypt_max_rounds | length == 0
+{{% endif %}}

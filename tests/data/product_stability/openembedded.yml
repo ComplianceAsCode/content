@@ -20,22 +20,22 @@ bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- openembedded:
-    check_id: installed_OS_is_openembedded
-    name: 'cpe:/o:openembedded:nodistro:'
-    title: OpenEmbedded nodistro
-- poky:
-    check_id: installed_OS_is_poky
-    name: 'cpe:/o:openembedded:poky:'
-    title: OpenEmbedded Poky reference distribution
-- petalinux:
-    check_id: installed_OS_is_petalinux
-    name: 'cpe:/o:openembedded:petalinux:'
-    title: OpenEmbedded petalinux distribution
-- harden:
-    check_id: installed_OS_is_oeharden
-    name: 'cpe:/o:openembedded:harden:'
-    title: OpenEmbedded Harden distribution
+  - openembedded:
+      check_id: installed_OS_is_openembedded
+      name: 'cpe:/o:openembedded:nodistro:'
+      title: OpenEmbedded nodistro
+  - poky:
+      check_id: installed_OS_is_poky
+      name: 'cpe:/o:openembedded:poky:'
+      title: OpenEmbedded Poky reference distribution
+  - petalinux:
+      check_id: installed_OS_is_petalinux
+      name: 'cpe:/o:openembedded:petalinux:'
+      title: OpenEmbedded petalinux distribution
+  - harden:
+      check_id: installed_OS_is_oeharden
+      name: 'cpe:/o:openembedded:harden:'
+      title: OpenEmbedded Harden distribution
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
@@ -48,11 +48,11 @@ grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/grub2
 grub_helper_executable: grubby
 init_system: systemd
+login_defs_defaults_path: /usr/etc/login.defs
+login_defs_drop_in_path: /etc/login.defs.d/oscap.login.defs
 login_defs_path: /etc/login.defs
 nobody_gid: 65534
 nobody_uid: 65534
-ssh_client_config_dir: /etc/ssh/ssh_config.d
-ssh_client_main_config_file: /etc/ssh/ssh_config
 openssh_client_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh.config
 openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/opensshserver.config
 pam_faillock_conf_path: /etc/security/faillock.conf
@@ -103,22 +103,24 @@ reference_uris:
   stigid: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
 rsyslog_cafile: /etc/pki/tls/cert.pem
+ssh_client_config_dir: /etc/ssh/ssh_config.d
+ssh_client_main_config_file: /etc/ssh/ssh_config
 sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
 sshd_distributed_config: 'false'
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
 sshd_main_config_file: /etc/ssh/sshd_config
-sshd_sysconfig_file: /etc/sysconfig/sshd
 sshd_runtime_check: 'false'
+sshd_sysconfig_file: /etc/sysconfig/sshd
 sysctl_remediate_drop_in_file: 'false'
 target_oval_version:
-- 5
-- 11
+  - 5
+  - 11
 target_oval_version_str: '5.11'
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland

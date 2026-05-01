@@ -4,10 +4,9 @@
 # complexity = low
 # disruption = low
 
-{{% if product == 'sle16' %}}
-{{% set LOGROTATE_CONF_FILE="/usr/etc/logrotate.conf" %}}
-{{% else %}}
 {{% set LOGROTATE_CONF_FILE="/etc/logrotate.conf" %}}
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults('/usr/etc/logrotate.conf', LOGROTATE_CONF_FILE, rule_title) }}}
 {{% endif %}}
 
 - name: "Configure daily log rotation in {{{ LOGROTATE_CONF_FILE }}}"

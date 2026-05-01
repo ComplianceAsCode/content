@@ -2537,3 +2537,121 @@ copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
     modification_time: preserve
     access_time: preserve
 {{%- endmacro %}}
+
+
+{{#
+    copy source file to destination file if destination
+    does not exist
+
+:parameter source: source filename
+:type source: str
+:parameter destination: destination filename
+:type destination: str
+
+#}}
+{{% macro ansible_copy_distro_defaults(source, destination, rule_title) -%}}
+- name: {{{ rule_title }}} - Copy distro defaults {{{ source }}} to {{{ destination }}}
+  ansible.builtin.copy:
+    src: {{{ source }}}
+    dest: {{{ destination }}}
+    force: no
+    mode: '0600'
+    remote_src: yes
+{{%- endmacro %}}
+
+{{#
+    set parameter to value in /etc/login.defs.d/ drop in configuration
+    and remove parameter for user drop ins and main configuration
+
+:parameter parameter: parameter to set
+:type parameter: str
+:parameter value: value to set
+:type value: str
+
+#}}
+
+{{%- macro ansible_login_defs(parameter='', value='', rule_title=None, cce='') %}}
+{{%- set new_line = parameter + ' ' + value -%}}
+{{%- set line_regex = "(?i)^\s*" + "{{ \"" + parameter + "\"| regex_escape }}" + "\s+" -%}}
+{{%- set dir_parameter = "login_defs_d_has_parameter" -%}}
+{{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
+{{%- set login_defs_config_dir = "/".join(login_defs_path.split("/")[:-1]) -%}}
+{{%- set login_defs_d_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) -%}}
+{{%- set login_defs_has_parameter = parameter + "_login_defs_has_parameter" -%}}
+{{%- set login_defs_correctly = parameter + "_login_defs_correctly" -%}}
+
+{{% if product in ["sle16", "slmicro6"] %}}
+{{{ ansible_copy_distro_defaults(login_defs_defaults_path, login_defs_path, rule_title) }}}
+{{% endif %}}
+
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured in login.defs configuration(s)
+  ansible.builtin.find:
+    paths:
+    - {{{ login_defs_config_dir }}}
+    - {{{ login_defs_d_config_dir }}}
+    contains: {{{ line_regex }}}
+    patterns:
+    - '*.defs'
+  register: {{{ login_defs_has_parameter }}}
+- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in login.defs configuration(s)
+  ansible.builtin.find:
+    paths:
+    - {{{ login_defs_config_dir }}}
+    - {{{ login_defs_d_config_dir }}}
+    contains: '{{{ line_regex ~ value ~ "$" }}}'
+    patterns:
+    - '*.defs'
+  register: {{{ login_defs_correctly }}}
+- name: '{{{ rule_title }}}'
+  block:
+    {{{
+        ansible_lineinfile(
+            rule_title + " - Deduplicate values from " + login_defs_path,
+            login_defs_path,
+            regex=line_regex,
+            insensitive='false',
+            create='no',
+            state='absent'
+        )|indent
+    }}}
+    - name: "{{{ rule_title }}} - Check if the parameter {{{ parameter }}} is present in {{{ login_defs_d_config_dir }}}"
+      ansible.builtin.find:
+        paths: {{{ login_defs_d_config_dir }}}
+        recurse: 'yes'
+        follow: 'no'
+        contains: '(?i)^\s*{{ "{{{ parameter }}}"| regex_escape }}\s+'
+        patterns:
+        - '*.defs'
+      register: {{{ dir_parameter }}}
+    {{{
+        ansible_lineinfile(
+            rule_title + " - Remove parameter from files in " + login_defs_d_config_dir,
+            path="{{ item.path }}",
+            regex=line_regex,
+            state="absent",
+            with_items=lineinfile_items
+        )|indent
+    }}}
+    {{{
+        ansible_lineinfile(
+            rule_title + " - Insert correct line to " + login_defs_drop_in_path,
+            login_defs_drop_in_path,
+            regex=line_regex,
+            insensitive='false',
+            new_line=new_line,
+            create='yes',
+            state='present',
+            insert_after='',
+            insert_before="BOF"
+        )|indent
+    }}}
+    - name: "{{{ rule_title }}} - Add comment in {{{ login_defs_drop_in_path }}}"
+      ansible.builtin.lineinfile:
+        path: {{{ login_defs_drop_in_path }}}
+        line: '# Per {{{ cce }}} Set {{{ new_line }}} in {{{ login_defs_drop_in_path }}}'
+        state: present
+        insertbefore: {{{ new_line }}}
+      when: not ansible_check_mode
+  when: {{{ login_defs_correctly }}}.matched == 0 or {{{ login_defs_has_parameter }}}.matched != 1
+
+{{%- endmacro %}}

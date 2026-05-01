@@ -1,0 +1,109 @@
+<def-group>
+  <definition class="compliance" id="set_password_hashing_min_rounds_logindefs" version="3">
+    {{{ oval_metadata("The password hashing minimum rounds should be set correctly.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion
+            comment="Check SHA_CRYPT_MIN_ROUNDS in {{{ login_defs_drop_in_path }}} is not set"
+            test_ref="test_sha_crypt_min_rounds_logindefs_drop_in_path_not_set"/>
+        <criterion
+            comment="Check SHA_CRYPT_MIN_ROUNDS should be set appropriately in {{{ login_defs_path }}}"
+            test_ref="test_sha_crypt_min_rounds_logindefs"/>
+
+        <criterion
+            comment="Check SHA_CRYPT_MAX_ROUNDS in {{{ login_defs_drop_in_path }}} is not set"
+            test_ref="test_sha_crypt_max_rounds_logindefs_drop_in_path_not_set"/>
+        <criterion
+            comment="Check SHA_CRYPT_MAX_ROUNDS should be set appropriately in {{{ login_defs_path }}}"
+            test_ref="test_sha_crypt_max_rounds_logindefs"/>
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="Check SHA_CRYPT_MIN_ROUNDS should be set appropriately in {{{ login_defs_drop_in_path }}}"
+            test_ref="test_sha_crypt_min_rounds_logindefs_drop_in_path"/>
+        <criterion comment="Check SHA_CRYPT_MAX_ROUNDS should be set appropriately in {{{ login_defs_drop_in_path }}}"
+            test_ref="test_sha_crypt_max_rounds_logindefs_drop_in_path"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+{{{
+oval_param_in_file_variable_test(
+    filepath=login_defs_path,
+    parameter="SHA_CRYPT_MIN_ROUNDS",
+    pattern="^[\s]*(?i)(SHA_CRYPT_MIN_ROUNDS[\s]+\d+)[\s]*(?:#.*)?$",
+    regex_capture="SHA_CRYPT_MIN_ROUNDS\s+(\d+)",
+    operation="greater than or equal",
+    type="int",
+    variable="var_password_hashing_min_rounds_login_defs",
+    test_id="test_sha_crypt_min_rounds_logindefs"
+)
+}}}
+
+{{{
+oval_param_in_file_variable_test(
+    filepath=login_defs_path,
+    parameter="SHA_CRYPT_MAX_ROUNDS",
+    pattern="^[\s]*(?i)(SHA_CRYPT_MAX_ROUNDS[\s]+\d+)[\s]*(?:#.*)?$",
+    regex_capture="SHA_CRYPT_MAX_ROUNDS\s+(\d+)",
+    operation="greater than or equal",
+    type="int",
+    variable="var_password_hashing_min_rounds_login_defs",
+    test_id="test_sha_crypt_max_rounds_logindefs"
+)
+}}}
+
+{{% set login_defs_drop_in_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) %}}
+{{{
+oval_param_in_file_variable_test(
+    filepath=login_defs_drop_in_config_dir,
+    filename_regex=".*\.defs$",
+    parameter="SHA_CRYPT_MIN_ROUNDS",
+    pattern="^[\s]*(?i)(SHA_CRYPT_MIN_ROUNDS[\s]+\d+)[\s]*(?:#.*)?$",
+    regex_capture="SHA_CRYPT_MIN_ROUNDS\s+(\d+)",
+    operation="greater than or equal",
+    type="int",
+    variable="var_password_hashing_min_rounds_login_defs",
+    test_id="test_sha_crypt_min_rounds_logindefs_drop_in_path"
+)
+}}}
+
+{{{
+oval_param_in_file_variable_test(
+    filepath=login_defs_drop_in_config_dir,
+    filename_regex=".*\.defs$",
+    parameter="SHA_CRYPT_MAX_ROUNDS",
+    pattern="^[\s]*(?i)(SHA_CRYPT_MAX_ROUNDS[\s]+\d+)[\s]*(?:#.*)?$",
+    regex_capture="SHA_CRYPT_MAX_ROUNDS\s+(\d+)",
+    operation="greater than or equal",
+    type="int",
+    variable="var_password_hashing_min_rounds_login_defs",
+    test_id="test_sha_crypt_max_rounds_logindefs_drop_in_path"
+)
+}}}
+
+    <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        comment="Check SHA_CRYPT_MIN_ROUNDS in {{{ login_defs_drop_in_path }}} is not set"
+        id="test_sha_crypt_min_rounds_logindefs_drop_in_path_not_set">
+      <ind:object object_ref="object_sha_crypt_min_rounds_logindefs_drop_in_path_not_set" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="object_sha_crypt_min_rounds_logindefs_drop_in_path_not_set" version="1">
+      <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+      <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+      <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MIN_ROUNDS\s*</ind:pattern>
+      <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        comment="Check SHA_CRYPT_MAX_ROUNDS in {{{ login_defs_drop_in_path }}} is not set"
+        id="test_sha_crypt_max_rounds_logindefs_drop_in_path_not_set">
+      <ind:object object_ref="object_sha_crypt_max_rounds_logindefs_drop_in_path_not_set" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="object_sha_crypt_max_rounds_logindefs_drop_in_path_not_set" version="1">
+      <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+      <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+      <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MAX_ROUNDS\s*</ind:pattern>
+      <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+</def-group>

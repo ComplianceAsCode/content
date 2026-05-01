@@ -23,18 +23,18 @@ chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 components_root: ../../components
 cpes:
-- rhel10:
-    check_id: installed_OS_is_rhel10
-    name: cpe:/o:redhat:enterprise_linux:10
-    title: Red Hat Enterprise Linux 10
+  - rhel10:
+      check_id: installed_OS_is_rhel10
+      name: cpe:/o:redhat:enterprise_linux:10
+      title: Red Hat Enterprise Linux 10
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: distro.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/log/faillock
 families:
-- rhel
-- rhel-like
+  - rhel
+  - rhel-like
 full_name: Red Hat Enterprise Linux 10
 gid_min: 1000
 groups: {}
@@ -43,12 +43,12 @@ grub2_uefi_boot_path: /boot/grub2
 grub_helper_executable: grubby
 init_system: systemd
 journald_conf_dir_path: /etc/systemd/journald.conf.d
+login_defs_defaults_path: /usr/etc/login.defs
+login_defs_drop_in_path: /etc/login.defs.d/oscap.login.defs
 login_defs_path: /etc/login.defs
 major_version_ordinal: 10
 nobody_gid: 65534
 nobody_uid: 65534
-ssh_client_config_dir: /etc/ssh/ssh_config.d
-ssh_client_main_config_file: /etc/ssh/ssh_config
 openssh_client_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh.config
 openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/opensshserver.config
 pam_faillock_conf_path: /etc/security/faillock.conf
@@ -71,11 +71,11 @@ platform_package_overrides:
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
+pqc_key_fingerprint: FCD355B305707A62DA143AB6E422397E50FE8467A2A95343D246D6276AFEDF8F
+pqc_pkg_release: 68e6a1f3
+pqc_pkg_version: 05707a62
 product: rhel10
 profiles_root: ./profiles
-pqc_key_fingerprint: "FCD355B305707A62DA143AB6E422397E50FE8467A2A95343D246D6276AFEDF8F"
-pqc_pkg_release: "68e6a1f3"
-pqc_pkg_version: "05707a62"
 pwhistory_path: /etc/security/pwhistory.conf
 pwquality_path: /etc/security/pwquality.conf
 reference_uris:
@@ -106,22 +106,24 @@ reference_uris:
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
 release_key_fingerprint: 567E347AD0044ADE55BA8A5F199E2F91FD431D51
 rsyslog_cafile: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+ssh_client_config_dir: /etc/ssh/ssh_config.d
+ssh_client_main_config_file: /etc/ssh/ssh_config
 sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
 sshd_distributed_config: 'true'
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
 sshd_main_config_file: /etc/ssh/sshd_config
-sshd_sysconfig_file: /etc/sysconfig/sshd
 sshd_runtime_check: 'false'
+sshd_sysconfig_file: /etc/sysconfig/sshd
 sysctl_remediate_drop_in_file: 'true'
 target_oval_version:
-- 5
-- 11
+  - 5
+  - 11
 target_oval_version_str: '5.11'
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
-- xorg-x11-server-Xwayland
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland

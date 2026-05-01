@@ -5,6 +5,17 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_password_warn_age_login_defs") }}}
 
+{{% if product in [ 'slmicro6', 'sle16' ] %}}
+{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{{
+    ansible_login_defs(
+      parameter='PASS_WARN_AGE',
+      value='{{ var_accounts_password_warn_age_login_defs }}',
+      rule_title=rule_title,
+      cce=cce_cce_identifier
+    )
+}}}
+{{% else %}}
 - name: "Set Password Warning Age"
   ansible.builtin.lineinfile:
     dest: {{{ login_defs_path }}}
@@ -12,3 +23,4 @@
     state: present
     line: "PASS_WARN_AGE        {{ var_accounts_password_warn_age_login_defs }}"
     create: yes
+{{% endif %}}

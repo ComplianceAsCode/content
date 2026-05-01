@@ -2031,3 +2031,65 @@ Macro generates an OVAL test definition to verify that a specified audit tool is
   {{%- endif -%}}
 </def-group>
 {{%- endmacro -%}}
+
+
+{{#
+Macro to check if external variable is set to value
+  :param filepath: Path to the configuration file to be checked.
+  :type filepath: str
+  :param filename_regex: If specified, the first argument is interpreted as `path`, and this will serve as `filename` regex.
+  :type filename_regex: str
+  :param parameter: Name of Parameter to check
+  :type parameter: str
+  :param variable: External variable name
+  :type variable: str
+  :param pattern: Pattern to match in configuration path
+  :type pattern: regex
+  :param regex_capture: regex capture in local variable
+  :type regex_capture: regex
+  :param test_id: test id to create
+  :type test_id: str
+  :param type: variable type
+  :type type: str
+  :param operation: operation
+  :type operation: str
+#}}
+{{%- macro oval_param_in_file_variable_test(filepath, parameter, variable, pattern, regex_capture, test_id, filename_regex='', type='int', operation='equals') -%}}
+
+  <ind:variable_test id="{{{ test_id }}}"
+    check="all" comment="The value of {{{ parameter }}} should be set appropriately in {{{ filepath }}}" version="1">
+    <ind:object object_ref="variable_object_{{{ test_id }}}" />
+    <ind:state state_ref="state_{{{ test_id }}}" />
+  </ind:variable_test>
+
+
+  <ind:textfilecontent54_object id="object_{{{ test_id }}}" version="1">
+    {{% if filename_regex %}}
+    <ind:path>{{{ filepath }}}</ind:path>
+    <ind:filename operation="pattern match">{{{ filename_regex }}}</ind:filename>
+    {{% else %}}
+    <ind:filepath>{{{ filepath }}}</ind:filepath>
+    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ pattern }}}</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="local_variable_{{{ test_id }}}" datatype="{{{ type }}}"
+    comment="The value of {{{ parameter }}} in {{{ filepath }}}" version="1">
+    <regex_capture pattern="{{{ regex_capture }}}">
+      <object_component item_field="subexpression" object_ref="object_{{{ test_id }}}" />
+    </regex_capture>
+  </local_variable>
+
+  <ind:variable_object id="variable_object_{{{ test_id }}}" version="1">
+    <ind:var_ref>local_variable_{{{ test_id }}}</ind:var_ref>
+  </ind:variable_object>
+
+
+  <ind:variable_state id="state_{{{ test_id }}}" version="1">
+    <ind:value operation="{{{ operation }}}" var_ref="{{{ variable }}}" datatype="{{{ type }}}" var_check="at least one" />
+  </ind:variable_state>
+
+  <external_variable comment="External variable {{{ variable }}}" datatype="{{{ type }}}" id="{{{ variable }}}" version="1" />
+
+{{%- endmacro -%}}

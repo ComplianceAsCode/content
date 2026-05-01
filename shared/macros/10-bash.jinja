@@ -2822,3 +2822,50 @@ chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
         prefix_regex=prefix_regex, rule_id=rule_id)
     }}}
 {{%- endmacro %}}
+
+
+
+{{#
+    copy source file to destination file if destination
+    does not exist
+
+:parameter source: source filename
+:type source: str
+:parameter destination: destination filename
+:type destination: str
+
+#}}
+{{% macro bash_copy_distro_defaults(source, destination) -%}}
+
+{{% if  product in ["sle16", "slmicro6"] %}}
+if ! [ -e "{{{ destination }}}" ] ; then
+    cp "{{{ source }}}" "{{{ destination }}}"
+fi
+{{% endif %}}
+{{%- endmacro %}}
+
+{{#
+    set parameter to value in /etc/login.defs.d/ drop in configuration
+    and remove parameter for user drop ins and main configuration
+
+:parameter parameter: parameter to set
+:type parameter: str
+:parameter value: value to set
+:type value: str
+
+#}}
+
+{{%- macro bash_login_defs(parameter, value, cce_identifiers) %}}
+
+{{%- set line_regex_absent = "^\s*" + parameter + "\s\+" -%}}
+{{%- set line_regex_replace = "^" + parameter -%}}
+{{%- set login_defs_d_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) -%}}
+
+{{% if product in [ 'slmicro6', 'sle16' ] %}}
+{{{ bash_copy_distro_defaults(login_defs_defaults_path, login_defs_path) }}}
+{{% endif %}}
+
+{{{ lineinfile_absent_in_directory(login_defs_d_config_dir, line_regex_absent, filename_glob="*.defs") }}}
+{{{ bash_replace_or_append(login_defs_drop_in_path, line_regex_replace, value, '%s %s', cce_identifiers=cce_identifiers) }}}
+
+{{%- endmacro %}}

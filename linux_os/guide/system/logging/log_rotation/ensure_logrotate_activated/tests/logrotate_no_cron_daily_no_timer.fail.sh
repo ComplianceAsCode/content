@@ -2,10 +2,10 @@
 
 # packages = logrotate,crontabs
 
-{{% if product == 'sle16' %}}
-LOGROTATE_CONF_FILE="/usr/etc/logrotate.conf"
-{{% else %}}
 LOGROTATE_CONF_FILE="/etc/logrotate.conf"
+
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ bash_copy_distro_defaults('/usr/etc/logrotate.conf', "${LOGROTATE_CONF_FILE}") }}}
 {{% endif %}}
 
 # disable the timer

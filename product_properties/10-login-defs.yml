@@ -1,7 +1,5 @@
 default:
   login_defs_path: "/etc/login.defs"
+  login_defs_defaults_path: "/usr/etc/login.defs"
+  login_defs_drop_in_path: "/etc/login.defs.d/oscap.login.defs"
 
-overrides:
-{{% if product in [ 'slmicro6', 'sle16' ] %}}
-  login_defs_path: "/usr/etc/login.defs"
-{{% endif %}}

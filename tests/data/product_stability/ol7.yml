@@ -19,18 +19,18 @@ bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- ol7:
-    check_id: installed_OS_is_ol7
-    name: cpe:/o:oracle:linux:7
-    title: Oracle Linux 7
+  - ol7:
+      check_id: installed_OS_is_ol7
+      name: cpe:/o:oracle:linux:7
+      title: Oracle Linux 7
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: local.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/run/faillock
 families:
-- rhel-like
-- ol
+  - rhel-like
+  - ol
 full_name: Oracle Linux 7
 gid_min: 1000
 groups:
@@ -40,12 +40,12 @@ grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/efi/EFI/redhat
 grub_helper_executable: grubby
 init_system: systemd
+login_defs_defaults_path: /usr/etc/login.defs
+login_defs_drop_in_path: /etc/login.defs.d/oscap.login.defs
 login_defs_path: /etc/login.defs
 major_version_ordinal: 7
 nobody_gid: 65534
 nobody_uid: 65534
-ssh_client_config_dir: /etc/ssh/ssh_config.d
-ssh_client_main_config_file: /etc/ssh/ssh_config
 openssh_client_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh.config
 openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/opensshserver.config
 oval_feed_url: https://linux.oracle.com/security/oval/com.oracle.elsa-ol7.xml.bz2
@@ -102,21 +102,23 @@ reference_uris:
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
 release_key_fingerprint: 42144123FECFC55B9086313D72F97B74EC551F03
 rsyslog_cafile: /etc/pki/tls/cert.pem
+ssh_client_config_dir: /etc/ssh/ssh_config.d
+ssh_client_main_config_file: /etc/ssh/ssh_config
 sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
 sshd_distributed_config: 'false'
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
 sshd_main_config_file: /etc/ssh/sshd_config
-sshd_sysconfig_file: /etc/sysconfig/sshd
 sshd_runtime_check: 'false'
+sshd_sysconfig_file: /etc/sysconfig/sshd
 sysctl_remediate_drop_in_file: 'false'
 target_oval_version:
-- 5
-- 11
+  - 5
+  - 11
 target_oval_version_str: '5.11'
 type: platform
 uid_min: 1000
 xwindows_packages:
-- xorg-x11-server-Xorg
-- xorg-x11-server-common
-- xorg-x11-server-utils
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
