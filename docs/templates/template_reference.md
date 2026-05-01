@@ -462,9 +462,17 @@ they must be of the same length.
     -   **arg_name** - argument name, eg. `audit`
 
     -   **arg_value** - argument value, eg. `'1'`
+        This parameter is mutually exclusive with **arg_variable**.
 
     -   **arg_variable** - the variable used as the value for the argument, eg. `'var_slub_debug_options'`
         This parameter is mutually exclusive with **arg_value**.
+
+    -   **operation** - (optional) OVAL operation used to compare the
+        collected argument value with the expected value. Default value:
+        `pattern match`. When set to a numeric operation such as
+        `greater than or equal`, the OVAL check captures only the
+        numeric portion of the argument and compares it as an integer.
+        Works with both **arg_variable** and **arg_value**.
 
 -   Languages: Ansible, Bash, OVAL, Blueprint, Kickstart
 

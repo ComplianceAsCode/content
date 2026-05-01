@@ -4,9 +4,9 @@
 # packages = grub2,grubby
 
 {{%- if ARG_VARIABLE %}}
-# variables = {{{ ARG_VARIABLE }}}=correct_value
-{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
-{{%- set ARG_NAME_VALUE_WRONG= ARG_NAME ~ "=wrong_value" %}}
+# variables = {{{ ARG_VARIABLE }}}={{{ TEST_CORRECT_VALUE }}}
+{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=" ~ TEST_CORRECT_VALUE %}}
+{{%- set ARG_NAME_VALUE_WRONG= ARG_NAME ~ "=" ~ TEST_WRONG_VALUE %}}
 {{%- else %}}
 {{%- set ARG_NAME_VALUE_WRONG= "wrong_variable" %}}
 {{%- endif %}}

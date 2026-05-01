@@ -3,8 +3,8 @@
 # platform = multi_platform_all
 
 {{%- if ARG_VARIABLE %}}
-# variables = {{{ ARG_VARIABLE }}}=correct_value
-{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
+# variables = {{{ ARG_VARIABLE }}}={{{ TEST_CORRECT_VALUE }}}
+{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=" ~ TEST_CORRECT_VALUE %}}
 {{%- endif %}}
 
 source common.sh
