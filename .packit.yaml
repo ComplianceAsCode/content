@@ -26,8 +26,8 @@ jobs:
 - &contest-oscap
   job: tests
   trigger: pull_request
-  fmf_url: https://github.com/RHSecurityCompliance/contest.git
-  fmf_ref: main
+  fmf_url: https://github.com/macko1/contest
+  fmf_ref: fix_centos_10_ansible_posix
   tmt_plan: /plans/upstream-parallel/oscap
   identifier: contest-oscap
   targets:
