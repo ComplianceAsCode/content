@@ -1,6 +1,6 @@
 {{% if product in ["sle12", "sle15", "slmicro5"] %}}
   {{%- set package = "openldap2-client" %}}
-{{% elif "ubuntu" in product %}}
+{{% elif "ubuntu" in product or "debian" in product %}}
   {{%- set package = "ldap-utils" %}}
 {{% else %}}
   {{%- set package = "openldap-clients" %}}
@@ -46,3 +46,4 @@ template:
         pkgname@slmicro5: openldap2-client
         pkgname@ubuntu2204: ldap-utils
         pkgname@ubuntu2404: ldap-utils
+        pkgname@debian13: ldap-utils

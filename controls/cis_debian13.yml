@@ -954,6 +954,16 @@ controls:
       status: automated
 
     - id: 2.1.16
+      title: Ensure telnet server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - package_inetutils-telnetd_removed
+          - package_telnetd_removed
+      status: automated
+
+    - id: 2.1.17
       title: Ensure tftp server services are not in use (Automated)
       levels:
           - l1_server
@@ -963,7 +973,7 @@ controls:
           - service_tftp_disabled
       status: automated
 
-    - id: 2.1.17
+    - id: 2.1.18
       title: Ensure web proxy server services are not in use (Automated)
       levels:
           - l1_server
@@ -973,7 +983,7 @@ controls:
           - service_squid_disabled
       status: automated
 
-    - id: 2.1.18
+    - id: 2.1.19
       title: Ensure web server services are not in use (Automated)
       levels:
           - l1_server
@@ -985,7 +995,7 @@ controls:
           - service_nginx_disabled
       status: automated
 
-    - id: 2.1.19
+    - id: 2.1.20
       title: Ensure xinetd services are not in use (Automated)
       levels:
           - l1_server
@@ -995,7 +1005,7 @@ controls:
           - service_xinetd_disabled
       status: automated
 
-    - id: 2.1.20
+    - id: 2.1.21
       title: Ensure X window server services are not in use (Automated)
       levels:
           - l2_server
@@ -1003,7 +1013,7 @@ controls:
           - package_xorg-x11-server-common_removed
       status: automated
 
-    - id: 2.1.21
+    - id: 2.1.22
       title: Ensure mail transfer agent is configured for local-only mode (Automated)
       levels:
           - l1_server
@@ -1014,7 +1024,7 @@ controls:
           - postfix_network_listening_disabled
       status: automated
 
-    - id: 2.1.22
+    - id: 2.1.23
       title: Ensure only approved services are listening on a network interface (Manual)
       levels:
           - l1_server
@@ -1184,7 +1194,7 @@ controls:
       status: automated
 
     - id: 2.4.1.4
-      title: Ensure access ton /etc/cron.daily are configured (Automated)
+      title: Ensure access to /etc/cron.daily is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1301,21 +1311,21 @@ controls:
       status: automated
 
     - id: 3.2.2
+      title: Ensure can kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_can_disabled
+      status: automated
+
+    - id: 3.2.3
       title: Ensure dccp kernel module is not available (Automated)
       levels:
           - l1_server
           - l1_workstation
       rules:
           - kernel_module_dccp_disabled
-      status: automated
-
-    - id: 3.2.3
-      title: Ensure tipc kernel module is not available (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      rules:
-          - kernel_module_tipc_disabled
       status: automated
 
     - id: 3.2.4
@@ -1336,10 +1346,19 @@ controls:
           - kernel_module_sctp_disabled
       status: automated
 
+    - id: 3.2.6
+      title: Ensure tipc kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_tipc_disabled
+      status: automated
+
     - id: 3.3.1.1
       title: Ensure net.ipv4.ip_forward is configured (Automated)
       levels:
-          - l1_server
+          - l2_server
           - l1_workstation
       rules:
           - sysctl_net_ipv4_ip_forward
