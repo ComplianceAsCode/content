@@ -360,9 +360,9 @@ controls:
     - id: 1.2.1.2
       title: Ensure weak dependencies are configured (Automated)
       levels:
-          - l1_server
-          - l1_workstation
-      status: manual
+          - l2_server
+          - l2_workstation
+      status: pending
       notes: |
           Debian guidance requires configuring APT with:
           APT::Install-Recommends "0";
@@ -374,8 +374,7 @@ controls:
       title: Ensure access to gpg key files are configured (Automated)
       levels:
           - l1_server
-          - l1_workstation
-      status: manual
+      status: pending
       notes: |
           No SSG rule currently implements this check/remediation for Debian.
 
@@ -383,8 +382,7 @@ controls:
       title: Ensure access to /etc/apt/trusted.gpg.d directory is configured (Automated)
       levels:
           - l1_server
-          - l1_workstation
-      status: manual
+      status: pending
       notes: |
           No SSG rule currently implements this check/remediation for Debian.
 
@@ -392,8 +390,7 @@ controls:
       title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
       levels:
           - l1_server
-          - l1_workstation
-      status: manual
+      status: pending
       notes: |
           No SSG rule currently implements this check/remediation for Debian.
 
@@ -402,7 +399,7 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: manual
+      status: pending
       notes: |
           No SSG rule currently implements this check/remediation for Debian.
 
@@ -410,8 +407,7 @@ controls:
       title: Ensure access to /usr/share/keyrings directory is configured (Automated)
       levels:
           - l1_server
-          - l1_workstation
-      status: manual
+      status: pending
       notes: |
           No SSG rule currently implements this check/remediation for Debian.
 
@@ -419,8 +415,7 @@ controls:
       title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
       levels:
           - l1_server
-          - l1_workstation
-      status: manual
+      status: pending
       notes: |
           No SSG rule currently implements this check/remediation for Debian.
 
@@ -428,8 +423,7 @@ controls:
       title: Ensure access to files in /etc/apt/sources.list.d are configured (Automated)
       levels:
           - l1_server
-          - l1_workstation
-      status: manual
+      status: pending
       notes: |
           No SSG rule currently implements this check/remediation for Debian.
 
@@ -560,6 +554,8 @@ controls:
       levels:
           - l1_server
           - l1_workstation
+      rules:
+          - service_apport_disabled
       status: automated
 
     - id: 1.5.8
