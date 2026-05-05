@@ -374,3 +374,272 @@ controls:
     #   rules:
     #       - configure_gpg_key_access
     #   status: automated
+    # TODO
+
+    # - id: 1.2.1.4 
+    #   title: Ensure GPGaccess to /etc/apt/trusted.gpg.d directory is configured (Automated)
+    #   levels:
+    #       - l1_server
+    #       - l2_server
+    #   rules:
+    #       - configure_gpg_key_access_trusted_gpg_d
+    #   status: automated
+    #   TODO   
+
+    # - id: 1.2.1.5 
+    #   title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
+    #   levels:
+    #       - l1_server
+    #       - l2_server
+    #   rules:
+    #       - configure_apt_auth_conf_d_access
+    #   status: automated
+    #   TODO   
+
+    # - id: 1.2.1.6 
+    #   title: Ensure access to files in the /etc/apt/auth.conf.d/ directory is configured (Automated)
+    #   levels:
+    #     - l1_server
+    #     - l1_workstation
+    #   rules:
+    #     - configure_apt_auth_conf_d_files_access
+    #   status: automated
+    #   TODO   
+
+    # - id: 1.2.1.7 
+    #   title: Ensure access to /usr/share/keyrings directory is configured (Automated)
+    #   levels:
+    #       - l1_server
+    #       - l2_server
+    #   rules:
+    #     - configure_usr_share_keyrings_access
+    #   status: automated
+    #   TODO
+
+    # - id: 1.2.1.8
+    #   title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
+    #   levels:
+    #       - l1_server
+    #       - l2_server
+    #   rules:
+    #     - configure_apt_sources_list_d_access
+    #   status: automated
+    #   TODO
+
+    # - id: 1.2.1.8
+    #   title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
+    #   levels:
+    #       - l1_server
+    #       - l2_server
+    #   rules:
+    #     - configure_apt_sources_list_d_access
+    #   status: automated
+    #   TODO
+
+    # - id: 1.2.1.9
+    #   title: Ensure access to files in /etc/apt/sources.list.d are configured (Automated)
+    #   levels:
+    #       - l1_server
+    #       - l2_server
+    #   rules:
+    #     - configure_apt_sources_list_d_files_access
+    #   status: automated
+    #   TODO
+
+    - id: 1.2.2.1
+      title: Ensure updates, patches, and additional security software are installed (Manual)
+      levels:
+        - l1_server
+        - l1_workstation
+      status: manual
+
+    - id: 1.3.1.1
+      title: Ensure AppArmor is installed (Automated) 
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - package_apparmor_installed
+        - package_apparmor-utils_installed
+      status: automated
+
+    - id: 1.3.1.2
+      title: Ensure AppArmor is enabled in the bootloader configuration (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - grub2_enable_apparmor
+      status: automated
+
+    - id: 1.3.1.3
+      title: Ensure all AppArmor Profiles are enforcing (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - all_apparmor_profiles_enforced
+      status: automated
+      notes: |
+          CIS recommendation does not adequately address the nuances
+          of various profiles, including disabled, force-complain,
+          and unconfined. Currently, the control changes the default apparmor
+          mode for all profiles in /etc/apparmor.d which can
+          break certain applications. See https://workbench.cisecurity.org/benchmarks/18959/tickets/23987
+
+    # - id: 1.3.1.4
+    #   title: Ensure apparmor_restrict_unprivileged_unconfined is enabled (Automated)
+    #   levels:
+    #     - l1_server
+    #     - l1_workstation
+    #   rules:
+    #     - apparmor_restrict_unprivileged_unconfined_enabled
+    #   status: automated
+    #   TODO
+
+    - id: 1.4.1
+      title: Ensure bootloader password is set (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - grub2_password
+          - grub2_uefi_password
+      status: automated
+
+    - id: 1.4.2
+      title: Ensure access to bootloader config is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - file_owner_grub2_cfg
+          - file_permissions_grub2_cfg
+      status: automated
+
+    - id: 1.5.1
+      title: Ensure fs.protected_hardlinks is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_fs_protected_hardlinks
+      status: automated
+
+    - id: 1.5.2
+      title: Ensure fs.protected_symlinks is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - sysctl_fs_protected_symlinks
+      status: automated
+
+    - id: 1.5.3
+      title: Ensure kernel.yama.ptrace_scope is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - sysctl_kernel_yama_ptrace_scope
+      status: automated
+
+    - id: 1.5.4
+      title: Ensure fs.suid_dumpable is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules: 
+        - sysctl_fs_suid_dumpable
+      status: automated
+
+    - id: 1.5.5
+      title: Ensure kernel.dmesg_restrict is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - sysctl_kernel_dmesg_restrict
+      status: automated
+
+    - id: 1.5.6
+      title: Ensure prelink is not installed (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+          - disable_prelink
+      status: automated
+
+    # - id: 1.5.7
+    #   title: Ensure Automatic Error Reporting is configured (Automated)
+    #   levels:
+    #     - l1_server
+    #     - l1_workstation
+    #   rules:
+    #     - disable_apport
+    #   status: automated
+    #   TODO
+
+    - id: 1.5.8
+      title: Ensure kernel.kptr_restrict is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - sysctl_kernel_kptr_restrict
+      status: automated
+
+    - id: 1.5.9
+      title: Ensure kernel.randomize_va_space is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - sysctl_kernel_randomize_va_space
+      status: automated
+
+    - id: 1.5.10
+      title: Ensure kernel.yama.ptrace_scope is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+          - sysctl_kernel_yama_ptrace_scope
+      status: automated
+
+    - id: 1.5.11
+      title: Ensure core file size is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+          - disable_users_coredumps
+
+    - id: 1.5.12
+      title: Ensure systemd-coredump ProcessSizeMax is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - coredump_disable_backtraces
+      status: automated
+
+    - id: 1.5.13
+      title: Ensure systemd-coredump Storage is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - coredump_disable_storage
+      status: automated
+
+    - id: 1.6.1
+      title: Ensure /etc/motd is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - banner_etc_motd_cis
+        - cis_banner_text=cis
+      status: automated
