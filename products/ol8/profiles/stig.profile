@@ -72,11 +72,14 @@ selections:
     - var_system_crypto_policy=fips_stig
     # OL08-00-010180
     - package_crypto-policies_installed
+    - package_crypto-policies_installed.severity=high
     # OL08-00-010183
     - configure_crypto_policy
     # OL08-00-010181, OL08-00-010184, OL08-00-010182
     - fips_crypto_subpolicy
+    - fips_crypto_subpolicy.severity=high
     - fips_custom_stig_sub_policy
+    - fips_custom_stig_sub_policy.severity=high
     # OL08-00-010187
     - configure_bind_crypto_policy
     # OL08-00-010186
