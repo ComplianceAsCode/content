@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Verify Permissions on Files in /etc/apt/auth.conf.d'
+
+description: '{{{ describe_file_permissions(file="/etc/apt/auth.conf.d/*.conf", perms="0640") }}}'
+
+rationale: |-
+    Files in /etc/apt/auth.conf.d may contain credentials for private
+    repositories or proxies and should not be readable by unauthorized users.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/apt/auth.conf.d/*.conf", perms="-rw-r-----") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/apt/auth.conf.d/*.conf", perms="-rw-r-----") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/apt/auth.conf.d/*.conf", mode="0640") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/apt/auth.conf.d/
+        file_regex: ^.*\.conf$
+        filemode: '0640'

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /usr/share/keyrings Directory'
+
+description: '{{{ describe_directory_permissions(directory="/usr/share/keyrings", perms="0755") }}}'
+
+rationale: |-
+    A non-root user should not be able to add or remove package repository keys
+    from /usr/share/keyrings.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_permissions(directory="/usr/share/keyrings", perms="drwxr-xr-x") }}}'
+
+ocil: |-
+    {{{ ocil_directory_permissions(directory="/usr/share/keyrings", perms="drwxr-xr-x") }}}
+
+fixtext: '{{{ fixtext_directory_permissions(file="/usr/share/keyrings", mode="0755") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /usr/share/keyrings/
+        filemode: '0755'

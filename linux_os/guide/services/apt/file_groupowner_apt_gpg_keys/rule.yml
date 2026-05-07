@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Verify Group Owner on APT GPG Key Files'
+
+description: '{{{ describe_file_group_owner(file="/usr/share/keyrings/*.gpg and /etc/apt/trusted.gpg.d/*.gpg", group="root") }}}'
+
+rationale: |-
+    APT GPG key files should be group-owned by root to prevent unauthorized
+    modification of package trust anchors.
+
+severity: medium
+
+ocil_clause: 'APT GPG key files are not group-owned by root'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/usr/share/keyrings/*.gpg and /etc/apt/trusted.gpg.d/*.gpg", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/usr/share/keyrings/*.gpg and /etc/apt/trusted.gpg.d/*.gpg", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /usr/share/keyrings/
+            - /etc/apt/trusted.gpg.d/
+        file_regex:
+            - ^.*gpg$
+            - ^.*gpg$
+        gid_or_name: '0'

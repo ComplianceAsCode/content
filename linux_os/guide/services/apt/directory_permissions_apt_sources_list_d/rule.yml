@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /etc/apt/sources.list.d Directory'
+
+description: '{{{ describe_directory_permissions(directory="/etc/apt/sources.list.d", perms="0755") }}}'
+
+rationale: |-
+    A non-root user should not be able to add or remove APT repository
+    configuration from /etc/apt/sources.list.d.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_permissions(directory="/etc/apt/sources.list.d", perms="drwxr-xr-x") }}}'
+
+ocil: |-
+    {{{ ocil_directory_permissions(directory="/etc/apt/sources.list.d", perms="drwxr-xr-x") }}}
+
+fixtext: '{{{ fixtext_directory_permissions(file="/etc/apt/sources.list.d", mode="0755") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/apt/sources.list.d/
+        filemode: '0755'

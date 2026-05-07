@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("APT weak dependencies should be disabled.", rule_title=rule_title) }}}
+
+    <criteria operator="AND">
+      <criterion comment="APT::Install-Recommends is disabled" test_ref="test_{{{ rule_id }}}_recommends" />
+      <criterion comment="APT::Install-Suggests is disabled" test_ref="test_{{{ rule_id }}}_suggests" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+      comment="Check APT::Install-Recommends"
+      id="test_{{{ rule_id }}}_recommends" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_recommends" />
+    <ind:state state_ref="state_{{{ rule_id }}}_disabled" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+      comment="Check APT::Install-Suggests"
+      id="test_{{{ rule_id }}}_suggests" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_suggests" />
+    <ind:state state_ref="state_{{{ rule_id }}}_disabled" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_recommends" version="1">
+    <ind:filepath operation="pattern match">/etc/apt/apt.conf(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)APT::Install-Recommends(?-i)[\s]+(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_suggests" version="1">
+    <ind:filepath operation="pattern match">/etc/apt/apt.conf(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)APT::Install-Suggests(?-i)[\s]+(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_disabled" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^"0";[\s]*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

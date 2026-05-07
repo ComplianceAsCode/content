@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Verify Group Owner on Files in /etc/apt/sources.list.d'
+
+description: '{{{ describe_file_group_owner(file="/etc/apt/sources.list.d/*", group="root") }}}'
+
+rationale: |-
+    Files in /etc/apt/sources.list.d should be group-owned by root to prevent
+    unauthorized changes to APT repository configuration.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/apt/sources.list.d/*", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/apt/sources.list.d/*", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/apt/sources.list.d/*", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/apt/sources.list.d/
+        file_regex: ^.*$
+        gid_or_name: '0'

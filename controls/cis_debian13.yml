@@ -362,70 +362,83 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: pending
-      notes: |
-          Debian guidance requires configuring APT with:
-          APT::Install-Recommends "0";
-          APT::Install-Suggests "0";
-          in /etc/apt/apt.conf.d/60-no-weak-dependencies.
-          No SSG rule currently implements this check/remediation for Debian.
+      rules:
+          - apt_disable_weak_dependencies
+      status: automated
 
     - id: 1.2.1.3
       title: Ensure access to gpg key files are configured (Automated)
       levels:
           - l1_server
-      status: pending
-      notes: |
-          No SSG rule currently implements this check/remediation for Debian.
+      rules:
+          - file_groupowner_apt_gpg_keys
+          - file_groupowner_apt_sources_list_d
+          - file_owner_apt_gpg_keys
+          - file_owner_apt_sources_list_d
+          - file_permissions_apt_gpg_keys
+          - file_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.1.4
       title: Ensure access to /etc/apt/trusted.gpg.d directory is configured (Automated)
       levels:
           - l1_server
-      status: pending
-      notes: |
-          No SSG rule currently implements this check/remediation for Debian.
+      rules:
+          - directory_groupowner_apt_trusted_gpg_d
+          - directory_owner_apt_trusted_gpg_d
+          - directory_permissions_apt_trusted_gpg_d
+      status: automated
 
     - id: 1.2.1.5
       title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
       levels:
           - l1_server
-      status: pending
-      notes: |
-          No SSG rule currently implements this check/remediation for Debian.
+      rules:
+          - directory_groupowner_apt_auth_conf_d
+          - directory_owner_apt_auth_conf_d
+          - directory_permissions_apt_auth_conf_d
+      status: automated
 
     - id: 1.2.1.6
       title: Ensure access to files in the /etc/apt/auth.conf.d/ directory is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |
-          No SSG rule currently implements this check/remediation for Debian.
+      rules:
+          - file_groupowner_apt_auth_conf_d
+          - file_owner_apt_auth_conf_d
+          - file_permissions_apt_auth_conf_d
+      status: automated
 
     - id: 1.2.1.7
       title: Ensure access to /usr/share/keyrings directory is configured (Automated)
       levels:
           - l1_server
-      status: pending
-      notes: |
-          No SSG rule currently implements this check/remediation for Debian.
+      rules:
+          - directory_groupowner_usr_share_keyrings
+          - directory_owner_usr_share_keyrings
+          - directory_permissions_usr_share_keyrings
+      status: automated
 
     - id: 1.2.1.8
       title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
       levels:
           - l1_server
-      status: pending
-      notes: |
-          No SSG rule currently implements this check/remediation for Debian.
+      rules:
+          - directory_groupowner_apt_sources_list_d
+          - directory_owner_apt_sources_list_d
+          - directory_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.1.9
       title: Ensure access to files in /etc/apt/sources.list.d are configured (Automated)
       levels:
           - l1_server
-      status: pending
-      notes: |
-          No SSG rule currently implements this check/remediation for Debian.
+      rules:
+          - file_groupowner_apt_sources_list_d
+          - file_owner_apt_sources_list_d
+          - file_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.2.1
       title: Ensure updates, patches, and additional security software are installed (Manual)
@@ -954,7 +967,7 @@ controls:
       status: automated
 
     - id: 2.1.16
-      title: Ensure telnet server services are not in use (Automated)
+      title: Ensure telnet-server services are not in use (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1014,7 +1027,7 @@ controls:
       status: automated
 
     - id: 2.1.22
-      title: Ensure mail transfer agent is configured for local-only mode (Automated)
+      title: Ensure mail transfer agents are configured for local-only mode (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1032,7 +1045,7 @@ controls:
       status: manual
 
     - id: 2.2.1
-      title: Ensure NIS Client is not installed (Automated)
+      title: Ensure nis client is not installed (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1172,7 +1185,7 @@ controls:
       status: automated
 
     - id: 2.4.1.2
-      title: Ensure access to /etc/crontab are configured (Automated)
+      title: Ensure access to /etc/crontab is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1183,7 +1196,7 @@ controls:
       status: automated
 
     - id: 2.4.1.3
-      title: Ensure access to /etc/cron.hourly are configured (Automated)
+      title: Ensure access to /etc/cron.hourly is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1205,7 +1218,7 @@ controls:
       status: automated
 
     - id: 2.4.1.5
-      title: Ensure access to /etc/cron.weekly are configured (Automated)
+      title: Ensure access to /etc/cron.weekly is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1216,7 +1229,7 @@ controls:
       status: automated
 
     - id: 2.4.1.6
-      title: Ensure access to /etc/cron.monthly are configured (Automated)
+      title: Ensure access to /etc/cron.monthly is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1225,6 +1238,7 @@ controls:
           - file_owner_cron_monthly
           - file_permissions_cron_monthly
       status: automated
+
     - id: 2.4.1.7
       title: Ensure access to /etc/cron.yearly is configured (Automated)
       levels:
@@ -1237,7 +1251,7 @@ controls:
       status: automated
 
     - id: 2.4.1.8
-      title: Ensure access to /etc/cron.d are configured (Automated)
+      title: Ensure access to /etc/cron.d is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1623,8 +1637,8 @@ controls:
     - id: 4.1.4
       title: Ensure ufw outgoing default is configured (Automated)
       levels:
-          - l1_server
-          - l1_workstation
+          - l2_server
+          - l2_workstation
       rules:
           - set_ufw_default_rule
       status: automated
@@ -1901,7 +1915,7 @@ controls:
       status: automated
 
     - id: 5.2.4
-      title: Ensure users must provide password for privilege escalation (Automated)
+      title: Ensure users must provide password for escalation (Automated)
       levels:
           - l2_server
           - l2_workstation
@@ -1919,7 +1933,7 @@ controls:
       status: automated
 
     - id: 5.2.6
-      title: Ensure sudo authentication timeout is configured correctly (Automated)
+      title: Ensure sudo timestamp_timeout is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1952,7 +1966,7 @@ controls:
           it is the latest version as the title suggests.
 
     - id: 5.3.1.2
-      title: Ensure lastest version of libpam-modules is installed (Automated)
+      title: Ensure latest version of libpam-modules is installed (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1961,7 +1975,7 @@ controls:
       status: automated
 
     - id: 5.3.1.3
-      title: Ensure lastes version of libpam-pwquality is installed (Automated)
+      title: Ensure latest version of libpam-pwquality is installed (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2046,7 +2060,7 @@ controls:
       status: automated
 
     - id: 5.3.3.2.2
-      title: Ensure minimum password length is configured (Automated)
+      title: Ensure password length is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2524,8 +2538,8 @@ controls:
     - id: 6.1.2.9
       title: Ensure rsyslog-gnutls is installed (Automated)
       levels:
-          - l1_server
-          - l1_workstation
+          - l2_server
+          - l2_workstation
       rules:
           - package_rsyslog-gnutls_installed
       status: automated
@@ -2533,8 +2547,8 @@ controls:
     - id: 6.1.2.10
       title: Ensure rsyslog forwarding uses gtls (Automated)
       levels:
-          - l1_server
-          - l1_workstation
+          - l2_server
+          - l2_workstation
       rules:
           - rsyslog_remote_tls
       status: automated
@@ -2542,9 +2556,63 @@ controls:
     - id: 6.1.2.11
       title: Ensure rsyslog CA certificates are configured (Manual)
       levels:
+          - l2_server
+          - l2_workstation
+      status: manual
+
+    - id: 6.1.3.1
+      title: Ensure access to all logfiles has been configured (Automated)
+      levels:
           - l1_server
           - l1_workstation
-      status: manual
+      rules:
+          - file_groupownerships_var_log_apt
+          - file_groupownerships_var_log_gdm
+          - file_groupownerships_var_log_gdm3
+          - file_groupownerships_var_log_landscape
+          - file_groupownerships_var_log_sssd
+          - file_groupowner_var_log_auth
+          - file_groupowner_var_log_cloud_init
+          - file_groupowner_var_log_journal
+          - file_groupowner_var_log_lastlog
+          - file_groupowner_var_log_localmessages
+          - file_groupowner_var_log_messages
+          - file_groupowner_var_log_secure
+          - file_groupowner_var_log_syslog
+          - file_groupowner_var_log_waagent
+          - file_groupowner_var_log_wbtmp
+          - file_ownerships_var_log_apt
+          - file_ownerships_var_log_gdm
+          - file_ownerships_var_log_gdm3
+          - file_ownerships_var_log_landscape
+          - file_ownerships_var_log_sssd
+          - file_owner_var_log_auth
+          - file_owner_var_log_cloud_init
+          - file_owner_var_log_journal
+          - file_owner_var_log_lastlog
+          - file_owner_var_log_localmessages
+          - file_owner_var_log_messages
+          - file_owner_var_log_secure
+          - file_owner_var_log_syslog
+          - file_owner_var_log_waagent
+          - file_owner_var_log_wbtmp
+          - file_permissions_var_log_apt
+          - file_permissions_var_log_auth
+          - file_permissions_var_log_cloud-init
+          - file_permissions_var_log_gdm
+          - file_permissions_var_log_gdm3
+          - file_permissions_var_log_lastlog
+          - file_permissions_var_log_localmessages
+          - file_permissions_var_log_messages
+          - file_permissions_var_log_secure
+          - file_permissions_var_log_sssd
+          - file_permissions_var_log_syslog
+          - file_permissions_var_log_waagent
+          - file_permissions_var_log_wbtmp
+          - file_groupownerships_var_log
+          - file_ownerships_var_log
+          - permissions_local_var_log
+      status: automated
 
     - id: 6.2.1.1
       title: Ensure auditd packages are installed (Automated)

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Group Owner on /usr/share/keyrings Directory'
+
+description: '{{{ describe_directory_group_owner(directory="/usr/share/keyrings", group="root") }}}'
+
+rationale: |-
+    The /usr/share/keyrings directory should be group-owned by root to prevent
+    unauthorized changes to package repository keys.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_group_owner(directory="/usr/share/keyrings", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_directory_group_owner(directory="/usr/share/keyrings", group="root") }}}
+
+fixtext: '{{{ fixtext_directory_group_owner(file="/usr/share/keyrings", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /usr/share/keyrings/
+        gid_or_name: '0'
