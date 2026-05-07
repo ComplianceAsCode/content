@@ -3,8 +3,8 @@
 # packages = sudo
 # remediation = none
 
+# remove /etc/sudoers for SUSE Linux Enterprise 16
+# test should fail, by default no drop-in sudoers configuration is present
 if [ -e "/etc/sudoers" ] ; then
     rm "/etc/sudoers"
 fi
-sed -i "/^root[[:space:]]*ALL=(ALL:ALL)[[:space:]]*ALL/d" /usr/etc/sudoers
-echo 'user,!example ALL,SERVERS = /bin/sh ' > /usr/etc/sudoers

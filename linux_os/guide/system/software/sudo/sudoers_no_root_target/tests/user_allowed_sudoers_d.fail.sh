@@ -7,4 +7,4 @@
 if [ ! -e "/etc/sudoers" ] ; then
     touch "/etc/sudoers"
 fi
-echo 'user ALL=(ALL) ALL' > /usr/etc/sudoers.d/user
+echo 'user ALL=(ALL) ALL' > /etc/sudoers.d/user
