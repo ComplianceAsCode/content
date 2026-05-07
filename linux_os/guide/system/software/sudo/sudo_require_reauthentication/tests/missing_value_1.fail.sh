@@ -1,6 +1,9 @@
 #!/bin/bash
 # packages = sudo
 
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+touch /etc/sudoers
+{{% endif %}}
 # Remove Defaults timestamp_timeout from /etc/sudoers
 if grep -q 'timestamp_timeout' /etc/sudoers; then
 	sed -i '/.*timestamp_timeout.*/d' /etc/sudoers
