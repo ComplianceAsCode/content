@@ -1,21 +1,64 @@
 <def-group>
-  <definition class="compliance" id="selinux_confinement_of_daemons" version="1">
-    {{{ oval_metadata("All pids in /proc should be assigned an SELinux security context other than 'unconfined_service_t'.", rule_title=rule_title) }}}
-    <criteria>
-      <criterion comment="no unconfined_service_t in /proc" test_ref="test_selinux_confinement_of_daemons" />
+  <definition class="compliance" id="selinux_confinement_of_daemons" version="2">
+    {{{ oval_metadata("All pids in /proc should be assigned an SELinux security context other than 'unconfined_service_t' (kubelet excluded).", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criterion comment="no unconfined_service_t processes exist" test_ref="test_no_unconfined_service_t_processes" />
+      <criterion comment="only kubelet has unconfined_service_t" test_ref="test_only_kubelet_unconfined" />
     </criteria>
   </definition>
-  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist" comment="none satisfy unconfined_service_t in /proc" id="test_selinux_confinement_of_daemons" version="2">
+
+  <!-- Test 1: Check if NO processes have unconfined_service_t -->
+  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist"
+    comment="no processes with unconfined_service_t" id="test_no_unconfined_service_t_processes" version="1">
     <linux:object object_ref="object_selinux_confinement_of_daemons" />
-    <linux:state state_ref="state_selinux_confinement_of_daemons" />
+    <linux:state state_ref="state_unconfined_service_t" />
   </linux:selinuxsecuritycontext_test>
-  <linux:selinuxsecuritycontext_object comment="find unconfined_service_t in /proc" id="object_selinux_confinement_of_daemons" version="1">
+
+  <!-- Test 2: Check that all unconfined_service_t processes are kubelet -->
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="all unconfined_service_t processes are kubelet" id="test_only_kubelet_unconfined" version="1">
+    <ind:object object_ref="object_unconfined_service_t_cmdlines" />
+    <ind:state state_ref="state_cmdline_is_kubelet" />
+  </ind:textfilecontent54_test>
+
+  <!-- Object: Find all processes in /proc -->
+  <linux:selinuxsecuritycontext_object comment="find all processes in /proc" id="object_selinux_confinement_of_daemons" version="2">
     <linux:behaviors max_depth="1" recurse_direction="down" />
     <linux:path>/proc</linux:path>
-    <linux:filename operation="pattern match">^.*$</linux:filename>
-    <filter action="include">state_selinux_confinement_of_daemons</filter>
+    <linux:filename operation="pattern match">^[0-9]+$</linux:filename>
   </linux:selinuxsecuritycontext_object>
-  <linux:selinuxsecuritycontext_state comment="state unconfined_service_t" id="state_selinux_confinement_of_daemons" version="1">
+
+  <!-- Object: Read cmdline for processes with unconfined_service_t -->
+  <ind:textfilecontent54_object comment="cmdline of unconfined_service_t processes" id="object_unconfined_service_t_cmdlines" version="1">
+    <ind:filepath operation="equals" var_ref="var_unconfined_cmdline_paths" var_check="at least one"/>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Variable: Build /proc/PID/cmdline paths for unconfined processes -->
+  <local_variable id="var_unconfined_cmdline_paths" datatype="string" comment="cmdline paths for unconfined_service_t PIDs" version="1">
+    <concat>
+      <literal_component>/proc/</literal_component>
+      <object_component object_ref="object_unconfined_selinux_contexts" item_field="pid"/>
+      <literal_component>/cmdline</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- Object: SELinux contexts filtered to unconfined_service_t -->
+  <linux:selinuxsecuritycontext_object comment="unconfined_service_t contexts" id="object_unconfined_selinux_contexts" version="1">
+    <linux:behaviors max_depth="1" recurse_direction="down" />
+    <linux:path>/proc</linux:path>
+    <linux:filename operation="pattern match">^[0-9]+$</linux:filename>
+    <filter action="include">state_unconfined_service_t</filter>
+  </linux:selinuxsecuritycontext_object>
+
+  <!-- State: Match unconfined_service_t type -->
+  <linux:selinuxsecuritycontext_state comment="state unconfined_service_t" id="state_unconfined_service_t" version="1">
     <linux:type datatype="string" operation="equals">unconfined_service_t</linux:type>
   </linux:selinuxsecuritycontext_state>
+
+  <!-- State: Match kubelet in cmdline -->
+  <ind:textfilecontent54_state comment="kubelet cmdline" id="state_cmdline_is_kubelet" version="1">
+    <ind:subexpression operation="pattern match">.*kubelet.*</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>
