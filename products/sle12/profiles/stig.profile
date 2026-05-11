@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R4
+    version: V3R5
     SMEs:
         - svet-se
         - rumch-se
@@ -13,7 +13,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 12'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 12 V3R4.
+    DISA STIG for SUSE Linux Enterprise 12 V3R5.
 
 selections:
     - sshd_approved_macs=stig
