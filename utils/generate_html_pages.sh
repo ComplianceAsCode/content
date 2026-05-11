@@ -142,7 +142,7 @@ echo "<li><a href=\"guides/index.html\">Guides</a></li>" >> index.html
 echo "<li><a href=\"tables/index.html\">Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"srg_mapping/index.html\">SRG Mapping Tables</a></li>" >> index.html
 echo "<li><a href=\"rendered-policies/index.html\">Rendered Policies</a></li>" >> index.html
-echo "<li><a href=\"nist-viewer/nist-controls-viewer.html\">NIST 800-53 Control Viewer & Gap Analysis</a></li>" >> index.html
+echo "<li><a href=\"nist-viewer/index.html\">NIST 800-53 Control Viewer & Gap Analysis</a></li>" >> index.html
 echo "<li><a href=\"components/index.html\">Components</a></li>" >> index.html
 echo "<li><a href=\"prometheus_stats/policies_metrics\">Prometheus Policies Metrics</a></li>" >> index.html
 echo "</ul>" >> index.html
