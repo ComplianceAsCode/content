@@ -123,7 +123,7 @@ class NISTSplitSync:
         self.yaml.preserve_quotes = False
         self.yaml.default_flow_style = False
         self.yaml.width = 99
-        self.yaml.indent(mapping=4, sequence=4, offset=2)
+        self.yaml.indent(mapping=4, sequence=6, offset=4)
 
     def extract_family(self, control_id: str) -> str:
         """Extract family prefix from control ID."""
