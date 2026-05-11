@@ -673,18 +673,17 @@ macro(ssg_generate_nist_viewer)
     # This generates for all RHEL products at once
     set(NIST_PRODUCTS rhel8 rhel9 rhel10)
     add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/nist-controls-viewer/nist-controls-viewer.html"
+        OUTPUT "${CMAKE_BINARY_DIR}/nist-controls-viewer/index.html"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/nist-controls-viewer"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/nist_sync/generate_nist_viewer.py"
             --products ${NIST_PRODUCTS}
             --output-dir "${CMAKE_BINARY_DIR}/nist-controls-viewer"
             --repo-root "${CMAKE_SOURCE_DIR}"
-        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/nist-controls-viewer/nist-controls-viewer.html"
         COMMENT "[nist-viewer] generating NIST 800-53 control viewer with gap analysis"
     )
 
     add_custom_target(nist-viewer
-        DEPENDS "${CMAKE_BINARY_DIR}/nist-controls-viewer/nist-controls-viewer.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/nist-controls-viewer/index.html"
     )
 endmacro()
 
