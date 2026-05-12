@@ -42,7 +42,7 @@
          /usr/local/sbin, and /usr/libexec directories belong to user with uid 0 (root) -->
     <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
 {{% endif %}}
-    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <unix:filename operation="not equal">/</unix:filename>
 {{% if 'ubuntu' in product %}}
    <filter action="include">state_owner_binaries_not_system_accounts</filter>
 {{% else %}}
