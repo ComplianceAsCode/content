@@ -7,6 +7,13 @@
 {{%- set files = ['bash_logout', 'bash_profile', 'bashrc', 'cshrc', 'tcshrc', ] %}}
 {{%- set ns = namespace(contents="") %}}
 
+mkdir -p /usr/share/rootfiles
+{{%- for file in files %}}
+    {{% set dest_path = '/root/.' ~ file -%}}
+    {{% set source_path = '/usr/share/rootfiles/.' ~ file -%}}
+    [ -f "{{{ dest_path }}}" ] && [ ! -f "{{{ source_path }}}" ] && cp "{{{ dest_path }}}" "{{{ source_path }}}"
+{{%- endfor %}}
+
 {{%- for file in files %}}
     {{% set dest_path = '/root/.' ~ file -%}}
     {{% set source_path = '/usr/share/rootfiles/.' ~ file -%}}

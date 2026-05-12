@@ -6,10 +6,29 @@
 
 {{%- set files = ["bash_logout", "bash_profile", "bashrc", "cshrc", "tcshrc", ] %}}
 
+- name: "{{{ rule_title }}} - Ensure source directory exists"
+  ansible.builtin.file:
+    path: /usr/share/rootfiles
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+
 {{%- for file in files %}}
     {{% set dest_path = "/root/." ~  file -%}}
     {{% set source_path = "/usr/share/rootfiles/." ~ file -%}}
     {{% set new_line = "C " ~ dest_path ~ " 600 root root - "  ~ source_path  %}}
+- name: "{{{ rule_title }}} - Stat {{{ dest_path }}}"
+  ansible.builtin.stat:
+    path: "{{{ dest_path }}}"
+  register: {{{ rule_id }}}_{{{ file }}}_root_stat
+- name: "{{{ rule_title }}} - Copy {{{ dest_path }}} to {{{ source_path }}} if missing"
+  ansible.builtin.copy:
+    src: "{{{ dest_path }}}"
+    dest: "{{{ source_path }}}"
+    remote_src: true
+    force: false
+  when: {{{ rule_id }}}_{{{ file }}}_root_stat.stat.exists
 - name: "{{{ rule_title }}} - Find configuration files"
   ansible.builtin.find:
     paths: /etc/tmpfiles.d/
