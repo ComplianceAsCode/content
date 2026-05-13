@@ -357,6 +357,7 @@ partition_for_var_log_audit
 partition_for_var_tmp
 postfix_network_listening_disabled
 root_path_no_dot
+rsyslog_filecreatemode
 rsyslog_files_groupownership
 rsyslog_files_ownership
 rsyslog_files_permissions
