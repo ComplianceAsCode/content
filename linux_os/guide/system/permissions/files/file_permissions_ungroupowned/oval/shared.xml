@@ -85,7 +85,7 @@
       recurse_file_system="defined" max_depth="-1"/>
     <unix:path operation="equals" var_check="at least one"
       var_ref="{{{ var_local_mount_points }}}"/>
-    <unix:filename operation="pattern match">.*</unix:filename>
+    <unix:filename operation="not equal">/</unix:filename>
     <filter action="exclude">state_file_permissions_ungroupowned_local_group_owner</filter>
     <filter action="exclude">state_file_permissions_ungroupowned_sysroot</filter>
   </unix:file_object>
@@ -96,7 +96,7 @@
       recurse_file_system="defined" max_depth="-1"/>
     <unix:path operation="equals" var_check="at least one"
       var_ref="{{{ var_local_mount_points }}}"/>
-    <unix:filename operation="pattern match">.*</unix:filename>
+    <unix:filename operation="not equal">/</unix:filename>
     <filter action="exclude">state_file_permissions_ungroupowned_local_group_owner_with_usrlib</filter>
     <filter action="exclude">state_file_permissions_ungroupowned_sysroot</filter>
   </unix:file_object>

@@ -90,7 +90,7 @@
       recurse_file_system="defined" max_depth="-1"/>
     <unix:path operation="equals" var_check="at least one"
       var_ref="{{{ var_local_mount_points }}}"/>
-    <unix:filename operation="pattern match">.*</unix:filename>
+    <unix:filename operation="not equal">/</unix:filename>
     <filter action="exclude">state_{{{ rule_id }}}_local_group_owner</filter>
     <filter action="exclude">state_{{{ rule_id }}}_sysroot</filter>
   </unix:file_object>

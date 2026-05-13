@@ -22,7 +22,7 @@
     {{% else %}}
     <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
     {{% endif %}}
-    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <unix:filename operation="not equal">/</unix:filename>
    <filter action="include">state_groupowner_system_commands_dirs_not_root_or_system_account</filter>
    <filter action="exclude">state_groupowner_system_commands_dirs_symlink</filter>
   </unix:file_object>
