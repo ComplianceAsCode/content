@@ -31,7 +31,7 @@
             recurse_file_system="defined"/>
             <unix:path operation="equals" var_check="at least one"
                 var_ref="{{{ var_local_mount_points }}}"/>
-        <unix:filename operation="pattern match">^.*$</unix:filename>
+        <unix:filename operation="not equal">/</unix:filename>
         <filter action="include">state_file_permissions_unauthorized_sgid_set</filter>
         <filter action="exclude">state_file_permissions_unauthorized_sgid_sysroot</filter>
     </unix:file_object>
