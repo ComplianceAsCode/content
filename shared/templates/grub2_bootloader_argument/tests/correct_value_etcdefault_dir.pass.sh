@@ -3,7 +3,7 @@
 # platform = multi_platform_ubuntu
 # packages = grub2
 
-# Clean up
+# --- Setup: populate grub.d with correct value and update grub ---
 rm -f /etc/default/grub.d/*
 echo "GRUB_CMDLINE_LINUX=\"\"" > /etc/default/grub
 
