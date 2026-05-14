@@ -455,18 +455,48 @@ they must be of the same length.
 -   Languages: Bash, OVAL
 
 #### grub2_bootloader_argument
--   Ensures that a kernel command line argument is present in GRUB 2 configuration.
+- Ensures that a kernel command line argument is present in GRUB 2 configuration. For example `nousb` or `audit_backlog_limit=8192`.
 
--   Parameters:
+- Parameters:
 
-    -   **arg_name** - argument name, eg. `audit`
+    - **arg_name** (required) - kernel argument name, e.g. `audit`, `audit_backlog_limit`, `nousb`.
 
-    -   **arg_value** - argument value, eg. `'1'`
+    - **arg_value** (optional) value of the kernel argument, e.g. `'1'`, `'on'`.
+        - Mutually exclusive with **arg_variable**.
+        - **Must be quoted** in `rule.yml` — YAML auto-parses unquoted scalars
+          (`8192` becomes int, `on`/`off` become bool), but the template needs a
+          string to build regexes and config file content. The build will fail with
+          a clear error if the value is not a string.
 
-    -   **arg_variable** - the variable used as the value for the argument, eg. `'var_slub_debug_options'`
-        This parameter is mutually exclusive with **arg_value**.
+    - **arg_variable** (optional) - XCCDF variable defined in a `.var` file,
+      e.g. `var_audit_backlog_limit`.
+        - Mutually exclusive with **arg_value**.
+        - If used,  **operation** and **datatype** has to be set to match the `.var` file's `type` and `operator` variables.
 
--   Languages: Ansible, Bash, OVAL, Blueprint, Kickstart
+    - **operation** - OVAL comparison operation applied to the extracted value.
+      Default: `equals`. Supported values:
+        - `equals` — exact match. Works with `string` or `int`.
+          Use for arguments with a single known-good value (e.g. `audit=1`,
+          `pti=on`).
+        - `pattern match` — regex match. Works with `string` only.
+          Use when multiple values are acceptable (e.g. `slub_debug` on OL8
+          where `P` must appear anywhere inside values like `FZP`).
+          Replaces the deprecated `is_substring` parameter.
+        - `greater than or equal` — numeric comparison. Works with `int` only.
+          Use for threshold arguments (e.g. `audit_backlog_limit>=8192`).
+        - Other operations (`not equal`, `greater than`, `less than`,
+          `less than or equal`) are validated but have no test coverage.
+          Adding a rule with these operations requires adding test scenarios and updating `template.py` to support them.
+
+    - **datatype** - OVAL datatype for the comparison. Default: `string`.
+      Supported values: `string`, `int`.
+        - `string` — lexicographic comparison. Use for non-numeric values
+          (e.g. `on`, `force`, `none`).
+        - `int` — numeric comparison. Use when the value is a number
+          (e.g. `audit_backlog_limit=8192`, `audit=1`). Required for numeric
+          operations like `greater than or equal`.
+
+- Languages: Ansible, Bash, OVAL, Blueprint, Kickstart
 
 #### grub2_bootloader_argument_absent
 -   Ensures that a kernel command line argument is absent in GRUB 2 configuration.
