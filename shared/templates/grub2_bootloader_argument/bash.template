@@ -14,7 +14,7 @@ if {{{ bash_bootc_build() }}} ; then
     if grep -q -E "{{{ ARG_NAME }}}" "$KARGS_DIR/*.toml" ; then
         sed -i -E "s/^(\s*kargs\s*=\s*\[.*)\"{{{ ARG_NAME }}}=[^\"]*\"(.*]\s*)/\1\"{{{ ARG_NAME_VALUE }}}\"\2/" "$KARGS_DIR/*.toml"
     else
-        echo "kargs = [\"{{{ ARG_NAME_VALUE }}}\"]" >> "$KARGS_DIR/10-{{{ SANITIZED_ARG_NAME }}}.toml"
+        echo "kargs = [\"{{{ ARG_NAME_VALUE }}}\"]" >> "$KARGS_DIR/10-{{{ ARG_NAME_UNDERSCORED }}}.toml"
     fi
 else
 {{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) | indent(4) }}}
