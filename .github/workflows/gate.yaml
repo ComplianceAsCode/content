@@ -12,6 +12,7 @@ concurrency:
 jobs:
   validate-sle:
     name: Build, Test on SLE Latest (Container)
+    if: github.repository == 'ComplianceAsCode/content'
     runs-on: ubuntu-latest
     container:
       image: registry.suse.com/bci/bci-base:latest
@@ -42,6 +43,7 @@ jobs:
 
   validate-suse:
     name: Build, Test on OpenSUSE Leap 15 (Container)
+    if: github.repository == 'ComplianceAsCode/content'
     runs-on: ubuntu-latest
     container:
       image: opensuse/leap:15
@@ -85,6 +87,7 @@ jobs:
 
   validate-ubuntu-22-04:
     name: Build, Test on Ubuntu 22.04
+    if: github.repository == 'ComplianceAsCode/content'
     runs-on: ubuntu-22.04
     steps:
       - name: Install Deps
@@ -104,6 +107,7 @@ jobs:
 
   validate-ubuntu-24-04:
     name: Build, Test on Ubuntu 24.04
+    if: github.repository == 'ComplianceAsCode/content'
     runs-on: ubuntu-24.04
     steps:
       - name: Install Deps
@@ -123,6 +127,7 @@ jobs:
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
+    if: github.repository == 'ComplianceAsCode/content'
     runs-on: ubuntu-latest
     container:
       image: registry.fedoraproject.org/fedora:rawhide

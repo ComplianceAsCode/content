@@ -12,6 +12,7 @@ concurrency:
 jobs:
     validate-fedora:
         name: Build, Test on Fedora Latest (Container)
+        if: github.repository == 'ComplianceAsCode/content'
         runs-on: ubuntu-latest
         container:
             image: fedora:latest
