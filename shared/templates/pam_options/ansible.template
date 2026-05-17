@@ -11,12 +11,8 @@
 # for now.
 
 {{% if product == 'sle16' %}}
-- name: Copy default /usr/lib/pam.d/{{ '{{{ PATH }}}' | basename }} to {{{ PATH }}}
-  ansible.builtin.copy:
-    src: /usr/lib/pam.d/{{ '{{{ PATH }}}' | basename }}
-    dest: {{{ PATH }}}
-    force: no
-    mode: '0644'
+{{% set PAM_VENDOR_FILE = "/usr/lib/pam.d/" + PATH.split('/') | last %}}
+{{{ ansible_copy_distro_defaults(PAM_VENDOR_FILE, PATH, rule_title=rule_title) }}}
 {{% endif %}}
 
 - name: Set control_flag fact
