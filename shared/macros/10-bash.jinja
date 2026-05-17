@@ -2595,6 +2595,7 @@ if [ -e "{{{ pam_file }}}" ] ; then
 else
     echo "{{{ pam_file }}} was not found" >&2
 fi
+
 {{%- endmacro -%}}
 
 
@@ -2837,9 +2838,9 @@ chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
 #}}
 {{% macro bash_copy_distro_defaults(source, destination) -%}}
 
-{{% if  product in ["sle16", "slmicro6"] %}}
+{{% if product in ["sle16", "slmicro6"] %}}
 if ! [ -e "{{{ destination }}}" ] ; then
-    cp "{{{ source }}}" "{{{ destination }}}"
+    cp -p "{{{ source }}}" "{{{ destination }}}"
 fi
 {{% endif %}}
 {{%- endmacro %}}
