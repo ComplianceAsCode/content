@@ -11,6 +11,10 @@
 
 {{{ bash_instantiate_variables("var_password_pam_retry") }}}
 
+{{% if product == 'sle16' %}}
+{{{ bash_copy_distro_defaults('/usr/lib/security/pwquality.conf', pwquality_path) }}}
+{{% endif %}}
+
 {{% if 'rhel' in product or product in ['sle15', 'sle16'] -%}}
 	{{{ bash_replace_or_append(pwquality_path,
 							   '^retry',

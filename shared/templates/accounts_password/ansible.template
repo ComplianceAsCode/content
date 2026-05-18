@@ -43,6 +43,10 @@
 {{{ ansible_ensure_pam_module_configuration('/etc/pam.d/common-password', 'password', 'requisite', 'pam_pwquality.so', '', '', 'BOF', rule_id=rule_id, rule_title=rule_title) }}}
 {{% endif %}}
 
+{{% if product == 'sle16' %}}
+{{{ ansible_copy_distro_defaults('/usr/lib/security/pwquality.conf', pwquality_path, rule_title=rule_title) }}}
+{{% endif %}}
+
 - name: {{{ rule_title }}} - Ensure PAM variable {{{ VARIABLE }}} is set accordingly
   ansible.builtin.lineinfile:
     create: yes
