@@ -2555,7 +2555,7 @@ copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
     src: {{{ source }}}
     dest: {{{ destination }}}
     force: no
-    mode: '0600'
+    mode: 'preserve'
     remote_src: yes
 {{%- endmacro %}}
 
