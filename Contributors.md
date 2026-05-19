@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2026-02-16 16:01 UTC
+Last Modified: 2026-05-19 11:46 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -46,6 +46,7 @@ The following people have contributed to the SCAP Security Guide project
 * Olivier Bonhomme <ptitoliv@ptitoliv.net>
 * bontreger <bontreger@users.noreply.github.com>
 * Lance Bragstad <lbragstad@gmail.com>
+* Vickey Brown <vibrown@redhat.com>
 * Ted Brunell <tbrunell@redhat.com>
 * Marcus Burghardt <maburgha@redhat.com>
 * Matthew Burket <mburket@redhat.com>
@@ -72,6 +73,7 @@ The following people have contributed to the SCAP Security Guide project
 * cueball23 <christoph.alms@westnetz.de>
 * cyarbrough76 <42849651+cyarbrough76@users.noreply.github.com>
 * Maura Dailey <maura@eclipse.ncsc.mil>
+* Harold Dean <hdean3@users.noreply.github.com>
 * Benjamin Deering <ben_deering@jeepingben.net>
 * Shane Dell <shanedell100@gmail.com>
 * Klaas Demter <demter@atix.de>
@@ -174,6 +176,7 @@ The following people have contributed to the SCAP Security Guide project
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
 * Mackemania <8738793+Mackemania@users.noreply.github.com>
+* Peter Macko <pmacko@redhat.com>
 * Caitlin Macleod <caitelatte@gmail.com>
 * Dmitry Makovey <dmakovey@yahoo.com>
 * Nick Maludy <nmaludy@gmail.com>
@@ -197,6 +200,7 @@ The following people have contributed to the SCAP Security Guide project
 * Zbynek Moravec <zmoravec@redhat.com>
 * Kazuo Moriwaka <moriwaka@users.noreply.github.com>
 * Michael Moseley <michael@eclipse.ncsc.mil>
+* Samir MOUHOUNE <samir.mouhoune@nav-timing.safrangroup.com>
 * Nathan Moyer <nmoyer@spectric.com>
 * Ross Murphy <RossMurphy@ibm.com>
 * Renaud Métrich <rmetrich@redhat.com>
@@ -291,6 +295,7 @@ The following people have contributed to the SCAP Security Guide project
 * Nathan Strahs <135379779+nathanstrahs@users.noreply.github.com>
 * Jonathan Sturges <jsturges@redhat.com>
 * svet-se <svetlin.boychev@suse.com>
+* taimurhafeez <taimurhafeez93@gmail.com>
 * Kaushik Talathi <kaushik.talathi1@ibm.com>
 * teacup-on-rockingchair <315160+teacup-on-rockingchair@users.noreply.github.com>
 * Ian Tewksbury <itewk@redhat.com>
