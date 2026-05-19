@@ -40,7 +40,7 @@ PRODUCT_FAMILIES = {
     'rhel': ['rhel8', 'rhel9', 'rhel10'],
     'ol': ['ol7', 'ol8', 'ol9'],
     'ocp': ['ocp4'],
-    'ubuntu': ['ubuntu2004', 'ubuntu2204', 'ubuntu2404'],
+    'ubuntu': ['ubuntu2004', 'ubuntu2204', 'ubuntu2404', 'ubuntu2604'],
     'fedora': ['fedora'],
     'sle': ['sle12', 'sle15'],
     'rhcos': ['rhcos4'],
@@ -604,7 +604,7 @@ Product Families:
   rhel     → rhel8, rhel9, rhel10
   ol       → ol7, ol8, ol9
   ocp      → ocp4
-  ubuntu   → ubuntu2004, ubuntu2204, ubuntu2404
+  ubuntu   → ubuntu2004, ubuntu2204, ubuntu2404, ubuntu2604
   fedora   → fedora
   sle      → sle12, sle15
   rhcos    → rhcos4

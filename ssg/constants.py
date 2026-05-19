@@ -59,7 +59,7 @@ product_directories = [
     'rhv4',
     'sle12', 'sle15', 'sle16', 'slmicro5', 'slmicro6',
     'tencentos4',
-    'ubuntu2204', 'ubuntu2404'
+    'ubuntu2204', 'ubuntu2404', 'ubuntu2604'
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -244,6 +244,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "TencentOS Server 4": "tencentos4",
     "Ubuntu 22.04": "ubuntu2204",
     "Ubuntu 24.04": "ubuntu2404",
+    "Ubuntu 26.04": "ubuntu2604",
     "OpenEmbedded": "openembedded",
     "Not Applicable": "example",
 }
@@ -317,7 +318,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_sle": ["sle12", "sle15", "sle16"],
     "multi_platform_slmicro": ["slmicro5", "slmicro6"],
     "multi_platform_tencentos": ["tencentos4"],
-    "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404"],
+    "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404", "ubuntu2604"],
     "multi_platform_openembedded": ["openembedded"],
     "multi_platform_al": ["al2023"],
 }
