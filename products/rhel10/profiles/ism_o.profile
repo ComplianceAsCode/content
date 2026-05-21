@@ -14,7 +14,7 @@ reference: https://www.cyber.gov.au/ism
 title: 'Australian Cyber Security Centre (ACSC) ISM Official - Base'
 
 description: |-
-    This draft profile contains configuration checks for Red Hat Enterprise Linux 10
+    This profile contains configuration checks for Red Hat Enterprise Linux 10
     that align to the Australian Cyber Security Centre (ACSC) Information Security Manual (ISM).
 
     The ISM uses a risk-based approach to cyber security. This profile provides a guide to aligning
