@@ -41,7 +41,7 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue.net") }}}
 
-{{% if 'ubuntu' not in product %}}
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
 conflicts:
     - sshd_enable_warning_banner
 {{% endif %}}
