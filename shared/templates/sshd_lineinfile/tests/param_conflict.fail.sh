@@ -1,17 +1,18 @@
 #!/bin/bash
 
-
 {{% if XCCDF_VARIABLE %}}
 # variables = {{{ XCCDF_VARIABLE }}}={{{ CORRECT_VALUE }}}
 {{% endif %}}
 
 
-mkdir -p /etc/ssh/sshd_config.d
-touch /etc/ssh/sshd_config.d/nothing
+mkdir -p "{{{ sshd_config_dir }}}"
+touch "{{{ sshd_config_dir }}}/nothing"
 
-if grep -q "^\s*{{{ PARAMETER }}}" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/* ; then
-	sed -i "/^\s*{{{ PARAMETER }}}.*/Id" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+declare -a SSHD_PATHS=("{{{ sshd_main_config_file }}}" "{{{ sshd_config_dir }}}/*")
+
+if grep -q "^\s*{{{ PARAMETER }}}" "${SSHD_PATHS[@]}" ; then
+	sed -i "/^\s*{{{ PARAMETER }}}.*/Id" "${SSHD_PATHS[@]}"
 fi
 
-echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" >> /etc/ssh/sshd_config
-echo "{{{ PARAMETER }}} {{{ WRONG_VALUE }}}" >> /etc/ssh/sshd_config
+echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" >> "{{{ sshd_main_config_file }}}"
+echo "{{{ PARAMETER }}} {{{ WRONG_VALUE }}}" >> "{{{ sshd_main_config_file }}}"
