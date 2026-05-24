@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_debian,multi_platform_sle,multi_platform_ubuntu,debian13
+# platform = multi_platform_debian,multi_platform_sle,multi_platform_ubuntu
 # check-import = stdout
 
 # Fallback values in case the calling engine does not export XCCDF_RESULT_* variables
