@@ -8,15 +8,15 @@ if [ $? -ne 0 ]; then
         exit ${XCCDF_RESULT_FAIL}
 fi
 
-loaded_profiles=$(/usr/sbin/aa-status --profiled)
-enforced_profiles=$(/usr/sbin/aa-status --enforced)
-complain=$(/usr/sbin/aa-status --complaining)
-if [ ${loaded_profiles} -ne $((${enforced_profiles} + ${complain})) ]; then
+loaded_profiles=$(/usr/sbin/aa-status --profiled 2>/dev/null | grep -oE '^[0-9]+$')
+enforced_profiles=$(/usr/sbin/aa-status --enforced 2>/dev/null | grep -oE '^[0-9]+$')
+complain=$(/usr/sbin/aa-status --complaining 2>/dev/null | grep -oE '^[0-9]+$')
+if [ "${loaded_profiles:-0}" -ne "$(( ${enforced_profiles:-0} + ${complain:-0} ))" ]; then
     exit $XCCDF_RESULT_FAIL
 fi
 
-unconfined=$(/usr/sbin/aa-status | grep "processes are unconfined" | awk '{print $1;}')
-if [ $unconfined -ne 0 ]; then
+unconfined=$(/usr/sbin/aa-status 2>/dev/null | grep "processes are unconfined" | awk '{print $1;}')
+if [ "${unconfined:-0}" -ne 0 ]; then
     exit $XCCDF_RESULT_FAIL
 fi
 
