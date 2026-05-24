@@ -2,7 +2,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_cis,xccdf_org.ssgproject.content_profile_pci-dss-4
 # platform = multi_platform_all
 
-SSHD_CONFIG="/etc/ssh/sshd_config"
+SSHD_CONFIG="{{{ sshd_main_config_file }}}"
 
 if grep -q "^LoginGraceTime" $SSHD_CONFIG; then
         sed -i "s/^LoginGraceTime.*/LoginGraceTime 0/" $SSHD_CONFIG

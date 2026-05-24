@@ -2,5 +2,5 @@
 # remediation = none
 
 source common.sh
-echo "AllowGroups " >> /etc/ssh/sshd_config
-echo "DenyGroups " >> /etc/ssh/sshd_config
+echo "AllowGroups " >> "{{{ sshd_main_config_file }}}"
+echo "DenyGroups " >> "{{{ sshd_main_config_file }}}"

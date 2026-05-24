@@ -14,6 +14,10 @@
         {{% endif %}}
       </criteria>
       <criteria operator="AND">
+        {{% if product in [ 'sle16', 'slmicro6' ] %}}
+        <criterion comment="test if SSH main configuration {{{ sshd_main_config_file }}} exists for {{{ rule_id }}}"
+            test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+        {{% endif %}}
         <criterion test_ref="tst_maxstartups_start_parameter" comment="SSH MaxStartups start parameter is less than or equal to 10"/>
         <criterion test_ref="tst_maxstartups_rate_parameter" comment="SSH MaxStartups rate parameter is greater than or equal to 30"/>
         <criterion test_ref="tst_maxstartups_full_parameter" comment="SSH MaxStartups full parameter is less than or equal to 100"/>
@@ -21,6 +25,10 @@
     </criteria>
   </definition>
 
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test(sshd_main_config_file, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(sshd_main_config_file, rule_id=rule_id) }}}
+  {{% endif %}}
   <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_first_parameter" version="2">
     <ind:path operation="pattern match">/etc/(ssh|ssh/sshd_config.d)</ind:path>
     <ind:filename operation="pattern match">(sshd_config|.*\.conf)$</ind:filename>

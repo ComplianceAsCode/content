@@ -3,4 +3,5 @@
 # variables = var_sshd_max_sessions=4
 source include.sh
 
-echo "MaxSessions 20" >> /etc/ssh/sshd_config.d/01-complianceascode.conf
+touch "{{{ sshd_main_config_file }}}"
+echo "MaxSessions 20" >> "{{{ sshd_config_dir }}}/01-complianceascode.conf"
