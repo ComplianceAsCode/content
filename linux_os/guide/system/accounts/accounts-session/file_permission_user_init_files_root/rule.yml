@@ -30,7 +30,7 @@ ocil_clause: 'they are not 0740 or more permissive'
 ocil: |-
     To verify that all user initialization files have a mode of <tt>0740</tt> or
     less permissive, run the following command:
-    <pre>$ sudo find /home -type f -name '\.*' \( -perm -0002 -o -perm -0020 \)</pre>
+    <pre>$ sudo find /root /home -type f -name '\.*' \( -perm -0002 -o -perm -0020 \)</pre>
     There should be no output.
 
 fixtext: |-
