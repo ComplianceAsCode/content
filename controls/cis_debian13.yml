@@ -841,9 +841,10 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_dhcp_removed
-          - service_dhcpd_disabled
-          - service_dhcpd6_disabled
+          - package_kea_removed
+          - service_kea_dhcp4_server_disabled
+          - service_kea_dhcp6_server_disabled
+          - service_kea_dhcp_ddns_server_disabled
       status: automated
 
     - id: 2.1.4
