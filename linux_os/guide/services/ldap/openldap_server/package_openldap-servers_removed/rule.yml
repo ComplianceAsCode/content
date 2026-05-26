@@ -1,6 +1,6 @@
 {{% if product in ["sle12", "sle15", "slmicro5"] %}}
   {{%- set package = "openldap2" %}}
-{{% elif "ubuntu" in product %}}
+{{% elif "debian" in product or "ubuntu" in product %}}
   {{%- set package = "slapd" %}}
 {{% else %}}
   {{%- set package = "openldap-servers" %}}
@@ -47,6 +47,7 @@ template:
     name: package_removed
     vars:
         pkgname: openldap-servers
+        pkgname@debian13: slapd
         pkgname@sle12: openldap2
         pkgname@sle15: openldap2
         pkgname@slmicro5: openldap2

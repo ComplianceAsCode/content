@@ -1,4 +1,4 @@
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
   {{%- set package = "tftpd-hpa" %}}
 {{% elif 'sle' in product %}}
   {{%- set package = "tftp" %}}

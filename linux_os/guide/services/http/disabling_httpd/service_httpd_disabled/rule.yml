@@ -1,6 +1,6 @@
 documentation_complete: true
 
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 {{% set service_name = "apache2" %}}
 {{% else %}}
 {{% set service_name = "httpd" %}}
