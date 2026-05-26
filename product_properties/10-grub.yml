@@ -21,6 +21,9 @@ overrides:
 {{% if "debian-like" in families %}}
   grub2_boot_path: "/boot/grub"
   grub_helper_executable: "update-grub"
+{{% if "ubuntu" not in families %}}
+  grub2_uefi_boot_path: "/boot/grub"
+{{% endif %}}
 {{% endif %}}
 {{% if "ubuntu" in families %}}
 {{% if major_version_ordinal <= 1804 %}}
