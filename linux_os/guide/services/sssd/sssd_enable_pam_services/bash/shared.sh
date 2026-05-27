@@ -1,23 +1,19 @@
 # platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_ol,multi_platform_almalinux,multi_platform_ubuntu
 
 
-
 # sssd configuration files must be created with 600 permissions if they don't exist
 # otherwise the sssd module fails to start
 OLD_UMASK=$(umask)
 umask u=rw,go=
 
 SSSD_CONF="/etc/sssd/sssd.conf"
-SSSD_CONF_DIR="/etc/sssd/conf.d/*.conf"
-
-if [ ! -f "$SSSD_CONF" ] && [ ! -f "$SSSD_CONF_DIR" ]; then
-    mkdir -p /etc/sssd
-    touch "$SSSD_CONF"
-fi
+SSSD_CONF_DIR="/etc/sssd/conf.d"
+{{{ bash_sssd_ensure_default_config("$SSSD_CONF", "$SSSD_CONF_DIR") }}}
+{{{ bash_install_sssd_proxy() }}}
 
 # Flag to check if there is already services with pam
 service_already_exist=false
-for f in $SSSD_CONF $SSSD_CONF_DIR; do
+for f in $SSSD_CONF $SSSD_CONF_DIR/*.conf; do
 	if [ ! -e "$f" ]; then
 		continue
 	fi
@@ -39,13 +35,7 @@ done
 
 # If there was no service in [sssd], add it to first config
 if [ "$service_already_exist" = false ]; then
-    for f in $SSSD_CONF $SSSD_CONF_DIR; do
-        cat << EOF >> "$f"
-[sssd]
-services = pam
-EOF
-        break
-    done
+{{{ bash_ensure_ini_config("$SSSD_CONF $SSSD_CONF_DIR/*.conf", "sssd", "services", "pam") }}}
 fi
 
 umask $OLD_UMASK

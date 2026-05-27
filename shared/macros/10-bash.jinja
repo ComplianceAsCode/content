@@ -1522,6 +1522,46 @@ done
 
 
 {{#
+    Ensure a default domain is configured in sssd.conf so that sssd can start
+
+:param sssd_conf: main sssd configuration file
+:type sssd_conf: str
+:param sssd_conf_dir: sssd conf.d drop-in directory
+:type sssd_conf_dir: str
+#}}
+{{% macro bash_sssd_ensure_default_config(sssd_conf, sssd_conf_dir) -%}}
+mkdir -p "$(dirname "{{{ sssd_conf }}}")"
+if [ ! -f "{{{ sssd_conf }}}" ]; then
+    touch "{{{ sssd_conf }}}"
+fi
+if ! grep -qsrP '^\s*\[domain\/[^]]*]' "{{{ sssd_conf }}}" "{{{ sssd_conf_dir }}}"/*.conf 2>/dev/null; then
+    {{{ bash_ensure_ini_config(sssd_conf, "sssd", "domains", "default") }}}
+    cat >> "{{{ sssd_conf }}}" << EOF
+
+[domain/default]
+{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) -%}}
+id_provider = proxy
+proxy_lib_name = files
+local_auth_policy = only
+{{% else -%}}
+id_provider = files
+{{% endif -%}}
+EOF
+fi
+{{%- endmacro %}}
+
+
+{{#
+    Install sssd-proxy package on products that use proxy id_provider for default domain
+#}}
+{{% macro bash_install_sssd_proxy() -%}}
+{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+{{{ bash_package_install("sssd-proxy") }}}
+{{% endif %}}
+{{%- endmacro %}}
+
+
+{{#
     Check whether or not a package is installed.
 #}}
 {{%- macro bash_package_installed(pkgname) -%}}
@@ -2272,9 +2312,11 @@ Example macro invocation(s)::
 :type key: str
 :param value:   value
 :type value: str
+:param remove_wrong_entries: if true, remove entries in [section] where key has a different value
+:type remove_wrong_entries: bool
 
 #}}
-{{% macro bash_ensure_ini_config(files, section, key, value, no_quotes=true) -%}}
+{{% macro bash_ensure_ini_config(files, section, key, value, no_quotes=true, remove_wrong_entries=false) -%}}
 found=false
 
 # set value in all files if they contain section or key
@@ -2285,7 +2327,7 @@ for f in $(echo -n "{{{ files }}}"); do
 
     # find key in section and change value
     if grep -qzosP "(?m)^[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
-        if ! grep -qzosP "(?m)^[[:space:]]*{{{ key }}}[[:space:]]*=[[:space:]]*{{{ value }}}" "$f"; then
+        if ! grep -qzosP "(?m)^[[:space:]]*{{{ key }}}[[:space:]]*=[[:space:]]*{{{ value }}}"'[[:space:]]*$' "$f"; then
 {{% if no_quotes %}}
             sed -i "/^[[:space:]]*{{{ key }}}/s/\([[:blank:]]*=[[:blank:]]*\).*/\1{{{ value | replace("/", "\/") }}}/" "$f"
 {{% else %}}
@@ -2304,6 +2346,15 @@ for f in $(echo -n "{{{ files }}}"); do
 {{% endif %}}
             found=true
     fi
+
+{{% if remove_wrong_entries %}}
+    # within [{{{ section }}}], remove entries where {{{ key }}} has wrong value
+{{% if no_quotes %}}
+    sed -i "/^[[:space:]]*\[{{{ section }}}\]/,/^[[:space:]]*\[/{/^[[:space:]]*{{{ key }}}[[:blank:]]*=/{ /=[[:blank:]]*{{{ value | replace("/", "\/") }}}"'[[:space:]]*$/!d }}' "$f"
+{{% else %}}
+    sed -i '/^[[:space:]]*\[{{{ section }}}\]/,/^[[:space:]]*\[/{/^[[:space:]]*{{{ key }}}[[:blank:]]*=/{ /=[[:blank:]]*"{{{ value | replace("/", "\/") }}}"[[:space:]]*$/!d }}' "$f"
+{{% endif %}}
+{{% endif %}}
 done
 
 # if section not in any file, append section with key = value to FIRST file in files parameter

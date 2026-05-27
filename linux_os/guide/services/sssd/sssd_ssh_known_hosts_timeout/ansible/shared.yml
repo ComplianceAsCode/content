@@ -5,31 +5,15 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("var_sssd_ssh_known_hosts_timeout") }}}
 
-- name: "Test for domain group"
-  ansible.builtin.command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
-  register: test_grep_domain
-  failed_when: false
-  changed_when: False
-  check_mode: no
+{{% set sssd_conf = "/etc/sssd/sssd.conf" -%}}
+{{% set sssd_conf_dir = "/etc/sssd/conf.d" -%}}
+{{{ ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) }}}
 
-- name: "Add default domain group (if no domain there)"
-  community.general.ini_file:
-    path: /etc/sssd/sssd.conf
-    section: "{{ item.section }}"
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-    create: yes
-    mode: 0600
-  with_items:
-    - { section: sssd, option: domains, value: default}
-    - { section: domain/default, option: id_provider, value: files }
-  when:
-    - test_grep_domain.stdout is defined
-    - test_grep_domain.stdout | length < 1
+{{{ ansible_install_sssd_proxy(rule_title) }}}
 
 - name: "Configure SSSD to Expire SSH Known Hosts"
   community.general.ini_file:
-    dest: /etc/sssd/sssd.conf
+    path: {{{ sssd_conf }}}
     section: ssh
     option: ssh_known_hosts_timeout
     value: "{{ var_sssd_ssh_known_hosts_timeout }}"

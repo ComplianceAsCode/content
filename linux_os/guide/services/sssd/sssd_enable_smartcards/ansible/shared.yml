@@ -3,44 +3,28 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
-- name: "Test for domain group"
-  ansible.builtin.command: grep '^\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
-  register: test_grep_domain
-  failed_when: false
-  changed_when: False
-  check_mode: no
+{{% set sssd_conf = "/etc/sssd/sssd.conf" -%}}
+{{% set sssd_conf_dir = "/etc/sssd/conf.d" -%}}
+{{{ ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) }}}
 
-- name: "Add default domain group (if no domain there)"
-  community.general.ini_file:
-    path: /etc/sssd/sssd.conf
-    section: "{{ item.section }}"
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-    create: yes
-    mode: 0600
-  with_items:
-    - { section: sssd, option: domains, value: default}
-    - { section: domain/default, option: id_provider, value: files }
-  when:
-    - test_grep_domain.stdout is defined
-    - test_grep_domain.stdout | length < 1
+{{{ ansible_install_sssd_proxy(rule_title) }}}
 
 - name: "Enable Smartcards in SSSD"
   community.general.ini_file:
-    dest: /etc/sssd/sssd.conf
+    path: {{{ sssd_conf }}}
     section: pam
     option: pam_cert_auth
     value: 'True'
     create: yes
     mode: 0600
 
-- name: Find all the conf files inside /etc/sssd/conf.d/
+- name: Find all the conf files inside {{{ sssd_conf_dir }}}
   ansible.builtin.find:
-    paths: "/etc/sssd/conf.d/"
+    paths: "{{{ sssd_conf_dir }}}"
     patterns: "*.conf"
   register: sssd_conf_d_files
 
-- name: Fix pam_cert_auth configuration in /etc/sssd/conf.d/
+- name: Fix pam_cert_auth configuration in {{{ sssd_conf_dir }}}
   ansible.builtin.replace:
     path: "{{ item.path }}"
     regexp: '[^#]*pam_cert_auth.*'

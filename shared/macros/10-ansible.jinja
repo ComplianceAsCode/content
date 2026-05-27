@@ -806,6 +806,78 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- endmacro %}}
 
 
+{{#
+    Ensure a default domain is configured in sssd.conf so that sssd can start
+
+:param sssd_conf: Path to the main sssd configuration file
+:type sssd_conf: str
+:param sssd_conf_dir: Path to the sssd conf.d drop-in directory
+:type sssd_conf_dir: str
+:param rule_title: Rule title used as prefix in Ansible task names
+:type rule_title: str
+#}}
+{{% macro ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) -%}}
+- name: "{{{ rule_title }}} - Ensure sssd config directory exists"
+  ansible.builtin.file:
+    path: "{{{ sssd_conf_dir }}}"
+    state: directory
+    mode: '0711'
+
+- name: "{{{ rule_title }}} - Test for domain group in main config"
+  ansible.builtin.command: grep '^\s*\[domain\/[^]]*]' {{{ sssd_conf }}}
+  register: test_grep_domain
+  failed_when: false
+  changed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Test for domain group in conf.d"
+  ansible.builtin.shell: grep -rs '^\s*\[domain\/[^]]*]' {{{ sssd_conf_dir }}}/*.conf 2>/dev/null
+  register: test_grep_domain_conf_d
+  failed_when: false
+  changed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Add default domain group (if no domain there)"
+  community.general.ini_file:
+    path: {{{ sssd_conf }}}
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    create: true
+    mode: 0600
+  with_items:
+    - { section: sssd, option: domains, value: default}
+{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+    - { section: domain/default, option: id_provider, value: proxy }
+    - { section: domain/default, option: proxy_lib_name, value: files }
+    - { section: domain/default, option: local_auth_policy, value: only }
+{{% else %}}
+    - { section: domain/default, option: id_provider, value: files }
+{{% endif %}}
+  when:
+    - test_grep_domain.stdout is defined
+    - test_grep_domain.stdout | length < 1
+    - test_grep_domain_conf_d.stdout is defined
+    - test_grep_domain_conf_d.stdout | length < 1
+{{%- endmacro %}}
+
+
+{{#
+    Install sssd-proxy package on products that use proxy id_provider for default domain
+
+:param rule_title: Rule title used as prefix in Ansible task names
+:type rule_title: str
+#}}
+{{% macro ansible_install_sssd_proxy(rule_title) -%}}
+{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+- name: "{{{ rule_title }}} - Install sssd-proxy for default domain"
+  ansible.builtin.package:
+    name: sssd-proxy
+    state: present
+{{% endif %}}
+{{%- endmacro %}}
+
+
 {{% macro ansible_ini_file_set(filename, section, key, value, description="", no_extra_spaces=False) -%}}
 - name: "{{{ description if description else ("Set '" + key + "' to '" + value + "' in the [" + section + "] section of '" + filename + "'") }}}"
   community.general.ini_file:
