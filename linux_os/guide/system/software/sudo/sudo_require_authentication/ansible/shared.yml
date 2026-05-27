@@ -4,6 +4,19 @@
 # complexity = low
 # disruption = low
 
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults('/usr/etc/sudoers', '/etc/sudoers', rule_title=rule_title) }}}
+{{{
+    ansible_lineinfile(
+        rule_title + " - Remove /usr/etc/sudoers.d include directive from /etc/sudoers",
+        path="/etc/sudoers",
+        regex='^\s*@includedir\s+/usr/etc/sudoers.d',
+        state="absent",
+        when="not ansible_check_mode"
+    )
+}}}
+{{% endif %}}
+
 {{{ ansible_sudo_remove_config("NOPASSWD", "NOPASSWD[\s]*\:") }}}
 
 {{{ ansible_sudo_remove_config("!authenticate", "\!authenticate") }}}

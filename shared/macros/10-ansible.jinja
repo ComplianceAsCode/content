@@ -847,6 +847,9 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   with_items:
     - { path: /etc/sudoers }
     - "{{ sudoers.files }}"
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+  when: not ansible_check_mode
+{{% endif %}}
 {{%- endmacro -%}}
 
 

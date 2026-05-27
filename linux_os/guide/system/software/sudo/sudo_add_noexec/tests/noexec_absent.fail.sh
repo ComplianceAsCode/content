@@ -2,6 +2,9 @@
 # platform = multi_platform_all
 
 touch /etc/sudoers.d/empty
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+touch /etc/sudoers
+{{% endif %}}
 # Code taken from macro bash_sudo_remove_config()
 for f in /etc/sudoers /etc/sudoers.d/*; do
   if [ ! -e "$f" ]; then

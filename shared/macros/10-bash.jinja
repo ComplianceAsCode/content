@@ -1325,7 +1325,13 @@ fi
     {{% if sed_path_separator in regex %}}
     {{{ raise("regex (" + regex + ") uses sed path separator (" + sed_path_separator + ") in " + rule_id) }}}
     {{% endif %}}
-LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
+    {{%- if sed_path_separator != "/" -%}}
+    # non default delimiter with delete operation needs to be escaped
+    LC_ALL=C sed -i "\{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
+    {{%- else -%}}
+    LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
+    {{%- endif -%}}
+
 {{%- endmacro -%}}
 
 

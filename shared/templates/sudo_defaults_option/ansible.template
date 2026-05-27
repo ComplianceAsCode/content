@@ -3,6 +3,20 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults('/usr/etc/sudoers', '/etc/sudoers', rule_title=rule_title) }}}
+{{{
+    ansible_lineinfile(
+        rule_title + " - Remove /usr/etc/sudoers.d include directive from /etc/sudoers",
+        path="/etc/sudoers",
+        regex='^\s*@includedir\s+/usr/etc/sudoers.d',
+        state="absent",
+        when="not ansible_check_mode"
+    )
+}}}
+{{% endif %}}
+
 {{% if VARIABLE_NAME %}}
 {{{ ansible_instantiate_variables(VARIABLE_NAME) }}}
 - name: Ensure {{{ OPTION }}} is enabled with the appropriate value in /etc/sudoers
@@ -13,13 +27,19 @@
     validate: /usr/sbin/visudo -cf %s
     backrefs: yes
   register: edit_sudoers_{{{ OPTION }}}_option
-
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+  when: not ansible_check_mode
+{{% endif %}}
 - name: Enable {{{ OPTION }}} option with appropriate value in /etc/sudoers
   ansible.builtin.lineinfile: # noqa 503
     path: /etc/sudoers
     line: 'Defaults {{{ OPTION }}}={{ {{{ VARIABLE_NAME }}} }}'
     validate: /usr/sbin/visudo -cf %s
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+  when: not ansible_check_mode and edit_sudoers_{{{ OPTION }}}_option is defined and not edit_sudoers_{{{ OPTION }}}_option.changed
+{{% else %}}
   when: edit_sudoers_{{{ OPTION }}}_option is defined and not edit_sudoers_{{{ OPTION }}}_option.changed
+{{% endif %}}
 {{% else %}}
 - name: Ensure {{{ OPTION }}} is enabled in /etc/sudoers
   ansible.builtin.lineinfile:
@@ -27,4 +47,7 @@
     regexp: '^[\s]*Defaults.*\b{{{ OPTION }}}\b.*$'
     line: 'Defaults {{{ OPTION }}}'
     validate: /usr/sbin/visudo -cf %s
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+  when: not ansible_check_mode
+{{% endif %}}
 {{% endif %}}
