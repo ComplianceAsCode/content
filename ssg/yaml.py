@@ -60,7 +60,8 @@ def _unicode_constructor(self, node):
     return str(string_like)
 
 
-# Don't follow python bool case
+# keep YAML booleans as Python strings (on/off/yes/no/true/false,...)
+# instead of converting them to Python bools
 yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', _bool_constructor)
 # Python2-relevant - become able to resolve "unicode strings"
 yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:python/unicode', _unicode_constructor)

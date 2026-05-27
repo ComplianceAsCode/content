@@ -463,18 +463,16 @@ they must be of the same length.
 
     - **arg_value** (optional) value of the kernel argument, e.g. `'1'`, `'on'`.
         - Mutually exclusive with **arg_variable**.
-        - **Must be quoted** in `rule.yml` — YAML auto-parses unquoted scalars
-          (`8192` becomes int, `on`/`off` become bool), but the template needs a
-          string to build regexes and config file content. The build will fail with
-          a clear error if the value is not a string.
+        - Single-quote `arg_value` in `rule.yml`. This template expects `arg_value` to
+          stay a string, even when `datatype` is `int`, for example `arg_value: '20'`.
 
     - **arg_variable** (optional) - XCCDF variable defined in a `.var` file,
       e.g. `var_audit_backlog_limit`.
         - Mutually exclusive with **arg_value**.
-        - If used,  **operation** and **datatype** has to be set to match the `.var` file's `type` and `operator` variables.
+        - If used, set **operation** and **datatype** to match the `.var` file's `type` and `operator` variables.
 
     - **operation** - OVAL comparison operation applied to the extracted value.
-      Default: `equals`. Supported values:
+      Default: `equals` if omitted. Supported values:
         - `equals` — exact match. Works with `string` or `int`.
           Use for arguments with a single known-good value (e.g. `audit=1`,
           `pti=on`).
@@ -488,8 +486,8 @@ they must be of the same length.
           `less than or equal`) are validated but have no test coverage.
           Adding a rule with these operations requires adding test scenarios and updating `template.py` to support them.
 
-    - **datatype** - OVAL datatype for the comparison. Default: `string`.
-      Supported values: `string`, `int`.
+    - **datatype** - OVAL datatype for the comparison. Default: `string`
+      if omitted. Supported values: `string`, `int`.
         - `string` — lexicographic comparison. Use for non-numeric values
           (e.g. `on`, `force`, `none`).
         - `int` — numeric comparison. Use when the value is a number

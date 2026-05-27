@@ -86,20 +86,6 @@
       Only relevant when `BLS` entries use `$kernelopts` on their `options` line
       instead of listing kernel args directly.
 
-  `$kernelopts`  (RHEL 8 / OL8 only, `/boot/loader/entries/*.conf` only)
-      `grub` can store named variables in `/boot/grub2/grubenv` (a `key=value` file on disk).
-      A `/boot/loader/entries/*.conf` file can reference a variable with `$name` on its
-      `options` line, and `grub` substitutes the stored value at boot time -- similar to
-      shell variable expansion.
-      On RHEL 8, the variable `$kernelopts` holds the kernel args. So a
-      `/boot/loader/entries/*.conf` file might say:
-        options $kernelopts
-      and `grub` replaces `$kernelopts` with the `kernelopts=...` value from
-      `/boot/grub2/grubenv`.
-      On RHEL 9+, this indirection no longer exists -- args are always listed directly.
-      This mechanism only exists in BLS entries (`/boot/loader/entries/*.conf`). Legacy
-      `grub.cfg` on OL7/Ubuntu does not use `$kernelopts`.
-
   PRECEDENCE (what overrides what):
 
       `/etc/default/grub` is the persistent source -- survives `grub2-mkconfig` regeneration.
@@ -107,7 +93,7 @@
         `$kernelopts` expansion, but does not survive regeneration.
       `/boot/loader/entries/*.conf` `options` line (BLS) or `/boot/grub2/grub.cfg`
         `linux /vmlinuz...` line (legacy) is what the kernel actually boots with.
-      `/usr/lib/bootc/kargs.d/*.toml` (in RHEL Image mode (ootc)) replaces everything above.
+      `/usr/lib/bootc/kargs.d/*.toml` (in RHEL Image mode (bootc)) replaces everything above.
 
       The OVAL check verifies ALL layers because:
         - If only `/etc/default/grub` is correct but boot entries are wrong, the system

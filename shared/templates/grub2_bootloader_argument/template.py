@@ -24,41 +24,43 @@ VALID_OPERATIONS_BY_DATATYPE = {
 VALID_DATATYPES = list(VALID_OPERATIONS_BY_DATATYPE.keys())
 
 
-def validate_rule_template_arguments(data, rule_id):
-    """Validate and set defaults for rule.yml template arguments.
+def set_default_operation_and_datatype(data):
+    if "operation" not in data:
+        data["operation"] = "equals"
+    if "datatype" not in data:
+        data["datatype"] = "string"
 
-    Sets operation/datatype defaults for non-variable rules, requires
-    explicit values for arg_variable rules, then validates all combinations.
-    """
+
+def validate_rule_template_arguments(data, rule_id):
+    """Validate variables used in the rule.yml and set required defaults if missing."""
     arg_value    = data.get("arg_value")
     arg_variable = data.get("arg_variable")
 
-    # arg_value and arg_variable are mutually exclusive
-    if arg_value is not None and arg_variable is not None:
-        raise RuntimeError(
-            f"The template must not set both 'arg_value' and 'arg_variable'.\n"
-            f"arg_name: {arg_value}\n"
-            f"arg_variable: {arg_variable}"
-        )
+    if arg_value is not None:
+        # arg_value and arg_variable are mutually exclusive
+        if arg_variable is not None:
+            raise RuntimeError(
+                f"The template must not set both 'arg_value' and 'arg_variable'.\n"
+                f"arg_value: {arg_value}\n"
+                f"arg_variable: {arg_variable}"
+            )
 
-    # arg_value must be quoted in rule.yml.  YAML auto-parses unquoted
-    # scalars: 8192 becomes int, on/off become bool True/False.  The
-    # template needs a string to build regexes and config file content —
-    # a silent int or bool would produce wrong patterns downstream.
-    if arg_value is not None and type(arg_value) is not str:
-        raise TypeError(
-            f"arg_value must be a quoted string in rule.yml, got "
-            f"{type(arg_value).__name__}: {arg_value!r} "
-            f"for rule '{rule_id}'"
-        )
+        # Require `arg_value` to be written as a quoted string in `rule.yml`.
+        # - arg_name_value and the templates expect it to be a string.
+        # - This check mainly catches unquoted numbers, as `ssg/yaml.py` keeps
+        #   words such as `true` and `on` as strings, not booleans.
+        if type(arg_value) is not str:
+            raise TypeError(
+                f"arg_value must be written as a quoted string in rule.yml. "
+                f"Got {type(arg_value).__name__}: {arg_value!r} "
+                f"for rule '{rule_id}'"
+            )
 
-    # arg_variable rules must set operation and datatype explicitly.
-    # The .var file defines the XCCDF variable type (string/number) and
-    # operator (equals/greater than or equal/...).  The OVAL state must
-    # use matching datatype and operation, but template.py cannot read
-    # .var files — so we force the rule author to declare both in
-    # rule.yml and keep them in sync with the .var file manually.
-    # Non-variable rules get safe defaults (equals/string).
+    # If arg_variable is set:
+    #   - operation must be explicit
+    #   - datatype must be explicit
+    #   - both must match the values in the `.var` file. `template.py` cannot read
+    #     `.var` files, so the rule author must keep `rule.yml` in sync manually.
     if arg_variable is not None:
         if "operation" not in data:
             raise ValueError(
@@ -74,13 +76,11 @@ def validate_rule_template_arguments(data, rule_id):
                 f"set it to match the 'type' field in "
                 f"'{arg_variable}.var'."
             )
-    else:
-        if "operation" not in data:
-            data["operation"] = "equals"
-        if "datatype" not in data:
-            data["datatype"] = "string"
 
-    # From here on, operation and datatype are always present
+    # If rule.yml does not set operation or datatype, use the defaults.
+    if "operation" not in data or "datatype" not in data:
+        set_default_operation_and_datatype(data)
+
     operation = data["operation"]
     datatype  = data["datatype"]
 
@@ -99,7 +99,7 @@ def validate_rule_template_arguments(data, rule_id):
             f"Valid operations for '{datatype}': {valid_ops}"
         )
 
-    # Any arg_value is a valid string, but int needs a parseable number
+    # If datatype is `int`, `arg_value` must be an integer.
     if datatype == "int" and arg_value is not None:
         try:
             int(arg_value)
@@ -145,21 +145,11 @@ def preprocess(data, lang):
     # (e.g. ipv6.disable -> ipv6_disable)
     data["arg_name_underscored"] = ssg.utils.escape_id(arg_name)
 
-    # --- Test scenario values ---
-    #
-    # Automatus test scripts write values into GRUB config files, then oscap
-    # scans and the result is compared to the filename (.pass.sh / .fail.sh).
-    # Works because OVAL checks file contents directly — no service reload.
-    #
-    # arg_value rules:    value known at build time, compute real pass/fail.
-    # arg_variable rules: value is an XCCDF variable resolved at scan time.
-    #   template.py has no access to .var files, so we use
-    #   arbitrary dummies (99999 for int).  Test scripts emit a directive
-    #   (# variables = var_name=value) that makes Automatus XSLT-patch the
-    #   datastream so oscap resolves the variable to the dummy.
-    #   Same approach as sysctl/template.py.
-    # flag-only GRUB argument (nousb): no value, skip.
-    #
+    # --- Test values for template tests ---
+
+    # If `arg_value` is set, it can be used to compute real test values.
+    # If `arg_variable` is set, its value cannot be resolved from the XCCDF var.
+    #   Therefore, we need to use dummy values for the test scenarios.
     if arg_variable is not None:
         if datatype == "int":
             data["test_value_pass"]    = "99999"
@@ -206,6 +196,6 @@ def preprocess(data, lang):
         data["test_value_pass"] = correct
         data["test_value_fail"] = wrong
 
-    # else: flag-only argument (e.g. nousb) — no value, no test values needed
+    # else: only arg_name is set (e.g. nousb), no test values needed
 
     return data
