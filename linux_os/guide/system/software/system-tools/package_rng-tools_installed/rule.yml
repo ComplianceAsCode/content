@@ -27,7 +27,15 @@ fixtext: '{{{ fixtext_package_installed("rng-tools") }}}'
 
 srg_requirement: '{{{ srg_requirement_package_installed("rng-tools") }}}'
 
+{{% if product == "rhel8" %}}
+platform: (os_linux[rhel]<=8.3 or (os_linux[rhel]>=8.4 and not runtime_kernel_fips_enabled) and system_with_kernel)
+warnings:
+  - general: |-
+      For RHEL versions 8.4 and above running with kernel FIPS mode enabled this rule is not applicable.
+      The in-kernel deterministic random bit generator (DRBG) is used in FIPS mode instead.
+{{% else %}}
 platform: system_with_kernel and not runtime_kernel_fips_enabled
+{{% endif %}}
 
 template:
     name: package_installed
