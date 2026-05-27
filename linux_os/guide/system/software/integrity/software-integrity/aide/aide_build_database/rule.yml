@@ -35,7 +35,7 @@ rationale: |-
 
 warnings:
     - general: |-
-        In RHEL Image Mode (bootc) systems, the AIDE database must be regenerated after each system update.
+        In {{{ full_name }}} Image Mode (bootc) systems, the AIDE database must be regenerated after each system update.
         Image Mode systems receive updates through new container images that may include modified files.
         After applying system updates, run the following commands to regenerate the AIDE database:
         <pre>$ sudo {{{ aide_bin_path }}} --init</pre>
