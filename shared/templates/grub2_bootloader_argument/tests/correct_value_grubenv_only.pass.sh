@@ -2,13 +2,16 @@
 
 # platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 # packages = grub2,grubby
+
 {{%- if ARG_VARIABLE %}}
-# variables = {{{ ARG_VARIABLE }}}=correct_value
-{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
+# variables = {{{ ARG_VARIABLE }}}={{{ TEST_VALUE_PASS }}}
+{{#- Rules that use arg_variable have no =value in ARG_NAME_VALUE, override with dummy #}}
+{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=" ~ TEST_VALUE_PASS %}}
 {{%- endif %}}
 
 source common.sh
 
+# --- Setup: correct value in grubenv with BLS entries referencing $kernelopts ---
 # adds argument from kernel command line into /etc/default/grub
 file="/etc/default/grub"
 if grep -q '^GRUB_CMDLINE_LINUX=.*\<{{{ ARG_NAME }}}\>=\?.*"'  "$file"; then

@@ -40,7 +40,9 @@ template:
     vars:
         arg_name: slub_debug
         arg_variable: var_slub_debug_options
-        is_substring@ol8: "true"
+        datatype: string
+        operation: equals
+        operation@ol8: "pattern match"
 
 fixtext: |-
     {{{ describe_grub2_argument("slub_debug=" ~ xccdf_value("var_slub_debug_options")) | indent(4) }}}

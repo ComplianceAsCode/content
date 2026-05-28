@@ -40,6 +40,8 @@ template:
     vars:
         arg_name: page_poison
         arg_value: '1'
+        datatype: int
+        operation: equals
 
 fixtext: |-
     {{{ describe_grub2_argument("page_poison=1") | indent(4) }}}

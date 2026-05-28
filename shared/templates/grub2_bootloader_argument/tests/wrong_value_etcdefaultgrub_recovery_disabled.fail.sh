@@ -2,16 +2,16 @@
 # platform = multi_platform_all
 
 {{%- if ARG_VARIABLE %}}
-# variables = {{{ ARG_VARIABLE }}}=correct_value
-{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
-{{%- set ARG_NAME_VALUE_WRONG= ARG_NAME ~ "=wrong_value" %}}
-{{%- else %}}
-{{%- set ARG_NAME_VALUE_WRONG= "wrong_variable" %}}
+# variables = {{{ ARG_VARIABLE }}}={{{ TEST_VALUE_PASS }}}
+{{#- Rules that use arg_variable have no =value in ARG_NAME_VALUE, override with dummy #}}
+{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=" ~ TEST_VALUE_PASS %}}
 {{%- endif %}}
+{{#- Wrong value: right argument name, wrong value (e.g. audit_backlog_limit=8191) #}}
+{{%- set ARG_NAME_VALUE_WRONG= ARG_NAME ~ "=" ~ TEST_VALUE_FAIL %}}
 
 source common.sh
 
-# Clean up and make sure we are at a passing state
+# --- Make oscap fail: set wrong value in /etc/default/grub (recovery disabled) ---
 rm -f /etc/default/grub.d/*
 
 # Correct the form of default kernel command line in GRUB /etc/default/grub and applies value through Grubby

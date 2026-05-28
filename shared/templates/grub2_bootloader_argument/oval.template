@@ -1,362 +1,703 @@
 {{#-
-  We set defaults to "off", and products should enable relevant ones depending on how the product configures grub.
-   - /boot/loader/entries/* may not exist.
-   - If they exist, they can reference variables defined in grubenv, or they can contain literal args
-   - The grub cfg may either use those loader entries, or it can contain literal values as well
-   - Kernel opts can be stored in /etc/default/grub so they are persistent between kernel upgrades
+  `grub2_bootloader_argument` `OVAL` template
+  ========================================
+
+  Checks that a kernel boot argument (e.g. `audit=1`) is set across all
+  relevant `grub` configuration files for the given product.
+
+  LOCATIONS WHERE KERNEL ARGS LIVE (per product):
+  ================================================
+
+  [VISUAL TABLE: products vs. config file locations, aligned in columns.]
+
+  Product         Flags                              Boot entries                       Persistent config        Other
+  --------------- ---------------------------------- ---------------------------------- ------------------------ ---------------------------
+  RHEL 9+, Fedora `uses_boot_loader_entries`        `/boot/loader/entries/*.conf`       `/etc/default/grub`     (`bootc`: `/usr/lib/bootc/kargs.d/*.toml`)
+                                                     (args on `options` line)
+  RHEL 8, OL8     `uses_boot_loader_entries`        `/boot/loader/entries/*.conf`       `/etc/default/grub`
+                  `uses_kernelopts`                   (args on `options` line or via
+                                                     `$kernelopts` from `grubenv`)
+                                                     + `/boot/grub2/grubenv`
+  OL7             `uses_grub_cfg`                    `/boot/grub2/grub.cfg`              `/etc/default/grub`
+                                                     (args on `vmlinuz` lines)
+  Ubuntu          `uses_grub_cfg`                    `/boot/grub/grub.cfg`               `/etc/default/grub`     `/etc/default/grub.d/*.cfg`
+                  `uses_etc_default_grub_d`          (args on `vmlinuz` lines)
+
+  LONG DESCRIPTION (text equivalent of the table):
+
+    RHEL 9+, Fedora:
+      Flags: `uses_boot_loader_entries`
+      Boot entries: `/boot/loader/entries/*.conf` (args on `options` line)
+      Persistent config: `/etc/default/grub`
+      Other: `bootc` systems use `/usr/lib/bootc/kargs.d/*.toml` instead
+
+    RHEL 8, OL8:
+      Flags: `uses_boot_loader_entries`, `uses_kernelopts`
+      Boot entries: `/boot/loader/entries/*.conf` (args on `options` line or via
+        `$kernelopts` indirection from `/boot/grub2/grubenv`)
+      Persistent config: `/etc/default/grub`
+
+    OL7:
+      Flags: `uses_grub_cfg`
+      Boot entries: `/boot/grub2/grub.cfg` (args on `vmlinuz` lines)
+      Persistent config: `/etc/default/grub`
+
+    Ubuntu:
+      Flags: `uses_grub_cfg`, `uses_etc_default_grub_d`
+      Boot entries: `/boot/grub/grub.cfg` (args on `vmlinuz` lines)
+      Persistent config: `/etc/default/grub`
+      Other: `/etc/default/grub.d/*.cfg` (drop-in config files)
+
+  WHAT THIS TEMPLATE DOES:
+  ========================
+
+  Kernel boot arguments (e.g. `audit=1`, `pti=on`, `audit_backlog_limit=8192`) are
+  settings passed to the Linux kernel at boot time via the bootloader (`grub2`).
+  Security policies require certain arguments to be set so the kernel enables
+  specific security features (auditing, memory protections, CPU mitigations, etc.).
+
+  The problem is that `grub2` stores these arguments in different files depending
+  on the OS version and platform. This template generates an `OVAL` check that
+  verifies the argument is present in all the right places for the given product.
+
+  KEY CONCEPTS:
+  =============
+
+  --- Boot entries (what the system actually boots) ---
+
+  `/boot/loader/entries/*.conf`  (`BLS` = Boot Loader Specification entries)
+      `BLS` is a freedesktop.org standard: instead of one monolithic `grub.cfg` listing all
+      kernels, each installed kernel gets its own small `.conf` file with key-value lines
+      (`title`, `linux`, `initrd`, `options`), e.g.:
+        title Red Hat Enterprise Linux 9.3
+        linux /vmlinuz-5.14.0-362.el9.x86_64
+        initrd /initramfs-5.14.0-362.el9.x86_64.img
+        options root=/dev/mapper/rhel-root ro audit=1 pti=on
+      The `options` line is a space-separated list of kernel boot arguments passed
+      to the kernel at boot time. This is the line this template checks.
+      RHEL 9+/Fedora: kernel args are listed directly on the `options` line.
+      RHEL 8/OL8:     kernel args are listed directly on the `options` line,
+                       OR the `options` line contains `$kernelopts` -- a `grub` variable
+                       that `grub` expands from `/boot/grub2/grubenv` at boot time.
+
+  `/boot/grub2/grubenv`  (RHEL 8 / OL8 only)
+      Grub environment file. Contains a line like:
+        kernelopts=root=/dev/mapper/rhel-root ro audit=1 pti=on
+      Only relevant when `BLS` entries use `$kernelopts` on their `options` line
+      instead of listing kernel args directly.
+
+  PRECEDENCE (what overrides what):
+
+      `/etc/default/grub` is the persistent source -- survives `grub2-mkconfig` regeneration.
+      `/boot/grub2/grubenv` (RHEL 8) is intermediate -- affects the current boot via
+        `$kernelopts` expansion, but does not survive regeneration.
+      `/boot/loader/entries/*.conf` `options` line (BLS) or `/boot/grub2/grub.cfg`
+        `linux /vmlinuz...` line (legacy) is what the kernel actually boots with.
+      `/usr/lib/bootc/kargs.d/*.toml` (in RHEL Image mode (bootc)) replaces everything above.
+
+      The OVAL check verifies ALL layers because:
+        - If only `/etc/default/grub` is correct but boot entries are wrong, the system
+          is vulnerable .
+        - If only boot entries are correct but `/etc/default/grub` is wrong, the next
+          kernel update or `grub2-mkconfig` regeneration will break it.
+
+  `/boot/grub2/grub.cfg`  (exists on all platforms, but content differs)
+      Generated by `grub2-mkconfig` from `/etc/default/grub`.
+      On OL7 and Ubuntu (non-`BLS` platforms), `grub.cfg` contains the actual kernel
+      boot lines with one `linux /vmlinuz-...` line per installed kernel, e.g.:
+        linux /vmlinuz-5.4.0-150-generic root=/dev/mapper/ubuntu-root ro audit=1
+      This template checks these `vmlinuz` lines for the required kernel argument.
+      On `BLS` platforms (RHEL 8+, Fedora), `grub.cfg` just contains a `blscfg`
+      directive that tells `grub` to load `BLS` entries from `/boot/loader/entries/`.
+      The kernel args are NOT in `grub.cfg` -- so this template does not check it.
+
+  --- Persistent config (survives `grub2-mkconfig` regeneration) ---
+
+  `/etc/default/grub`  (all products)
+      Persistent `grub` configuration. When `grub2-mkconfig` runs (e.g. after kernel
+      install or `grub` update), it reads this file and writes the values into `grub.cfg`
+      or `BLS` boot entries. Contains two relevant shell variables:
+        GRUB_CMDLINE_LINUX="audit=1 pti=on"          -- args added to ALL boot entries
+        GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"     -- args added to non-recovery entries ONLY
+      If `GRUB_DISABLE_RECOVERY=true` is also set, there are no recovery entries,
+      so `_DEFAULT` effectively applies to all entries too.
+
+  `/etc/default/grub.d/*.cfg`  (Ubuntu only)
+      Drop-in config files that supplement `/etc/default/grub`. Can also set
+      `GRUB_CMDLINE_LINUX` and `GRUB_CMDLINE_LINUX_DEFAULT`. `grub2-mkconfig`
+      reads these in addition to `/etc/default/grub`.
+
+  --- `bootc` / RHEL Image Mode ---
+
+  `bootc` (RHEL Image Mode) is a way to run RHEL as an immutable container-based OS.
+  The root filesystem is a container image. There is no traditional `grub` config --
+  the bootloader is managed by `bootc` itself. Kernel args are defined in `TOML` files
+  shipped inside the image.
+
+  `/usr/lib/bootc/kargs.d/*.toml`
+      `TOML` files with `kargs = ["arg=val", "arg2=val2"]`.
+      On `bootc` systems, `grub` files (`/boot/loader/entries`, `grubenv`, `grub.cfg`, etc.)
+      do NOT exist. Kernel args live here instead.
+      The `OVAL` definition has two mutually exclusive branches: one for `bootc` systems
+      (checks `/usr/lib/bootc/kargs.d/*.toml`) and one for normal `grub` systems (checks `grub` files).
+
+  CRITERIA TREE (what must pass for the definition to be compliant):
+  ==================================================================
+
+  Products that support both Image Mode (`bootc`) and normal `grub` (e.g. RHEL 9+, RHEL 10)
+  emit BOTH branches. `oscap` evaluates both, but only one can pass -- the guards
+  (`IS bootc` / `NOT bootc`) ensure the wrong branch always fails.
+  Products without `bootc` support emit only the normal `grub` branch.
+
+  [VISUAL TREE: indented AND/OR hierarchy showing the two branches (Image Mode vs.
+  normal grub) and all sub-checks within the normal grub branch.]
+
+  definition (OR) -- passes if EITHER branch matches the system
+  |
+  +-- [Image Mode] AND (bootable_containers_supported)
+  |   +-- extend_definition: system IS `bootc`
+  |   +-- test: `/usr/lib/bootc/kargs.d/*.toml` has arg=value
+  |
+  +-- [normal grub] AND
+      +-- extend_definition: system is NOT `bootc` (bootable_containers_supported)
+      |
+      +-- [RHEL 8 / OL8] `/boot/loader/entries/*.conf` check (uses_kernelopts):
+      |   +-- test: EACH `/boot/loader/entries/*.conf` has arg=value on `options` line
+      |   |         OR contains `$kernelopts`
+      |   +-- (OR)
+      |       +-- NO `/boot/loader/entries/*.conf` uses `$kernelopts` (skip `/boot/grub2/grubenv`)
+      |       +-- `/boot/grub2/grubenv` has arg=value (BIOS or UEFI path)
+      |
+      +-- [RHEL 9+ / Fedora] `/boot/loader/entries/*.conf` check (uses_boot_loader_entries, !uses_kernelopts):
+      |   +-- test: EACH `/boot/loader/entries/*.conf` has arg=value on `options` line
+      |
+      +-- [OL7 / Ubuntu] `/boot/grub2/grub.cfg` or `/boot/grub/grub.cfg` check (uses_grub_cfg):
+      |   +-- (OR) BIOS or UEFI path has arg=value
+      |
+      +-- [all products] `/etc/default/grub` check:
+          +-- (OR)
+              +-- `GRUB_CMDLINE_LINUX` in `/etc/default/grub` has arg=value
+              |   (+ `/etc/default/grub.d/*.cfg` drop-in on Ubuntu)
+              +-- AND
+                  +-- `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub` has arg=value
+                  |   (+ `/etc/default/grub.d/*.cfg` drop-in on Ubuntu)
+                  +-- `GRUB_DISABLE_RECOVERY=true` in `/etc/default/grub`
+
+  LONG DESCRIPTION (text equivalent of the criteria tree):
+
+    The definition passes (compliant) if EITHER of two branches is true:
+
+    Branch 1 -- Image Mode (only emitted when `bootable_containers_supported`):
+      Both must be true:
+        - The system IS a `bootc` deployment.
+        - `/usr/lib/bootc/kargs.d/*.toml` contains `arg=value`.
+
+    Branch 2 -- normal grub:
+      All of the following must be true:
+        - The system is NOT a `bootc` deployment (guard; only when `bootable_containers_supported`).
+        - [RHEL 8 / OL8, `uses_kernelopts`]:
+            EACH `/boot/loader/entries/*.conf` (excluding rescue) has `arg=value`
+            on its `options` line, OR contains `$kernelopts`.
+            AND EITHER no `/boot/loader/entries/*.conf` references `$kernelopts`
+            (so `/boot/grub2/grubenv` is irrelevant),
+            OR `/boot/grub2/grubenv` contains `arg=value`.
+        - [RHEL 9+ / Fedora, `uses_boot_loader_entries` without `uses_kernelopts`]:
+            EACH `/boot/loader/entries/*.conf` (excluding rescue) has `arg=value`
+            on its `options` line.
+        - [OL7 / Ubuntu, `uses_grub_cfg`]:
+            `/boot/grub2/grub.cfg` or `/boot/grub/grub.cfg` has `arg=value`
+            (BIOS path, or UEFI path if separate).
+        - [all products]:
+            EITHER `GRUB_CMDLINE_LINUX` in `/etc/default/grub` has `arg=value`
+              (plus `/etc/default/grub.d/*.cfg` drop-in on Ubuntu),
+            OR BOTH `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub` has `arg=value`
+              (plus `/etc/default/grub.d/*.cfg` drop-in on Ubuntu)
+              AND `GRUB_DISABLE_RECOVERY=true` in `/etc/default/grub`.
+
+    Only the sub-checks relevant to the product (controlled by `uses_*` flags) are emitted.
+    Branches 1 and 2 are mutually exclusive at runtime due to the `IS bootc` / `NOT bootc` guards.
+
+  DATA FLOW:
+  ==========
+
+  Each object extracts ONLY THE ARGUMENT VALUE via a capturing group.
+  Each state compares that value using OVAL-native operation and datatype
+  (equals, greater than or equal, pattern match; string or int).
+  No local_variable, no concat, no runtime regex assembly.
+  All grub-location tests share one state; bootc shares it too (value
+  extracted from TOML quotes in the object pattern).
+
+  Exception: the RHEL 8 coverage path still captures the full options
+  line and checks for the argument name via pattern match (needed to
+  verify coverage across entries that may use $kernelopts).
+
+  OBJECTS -- each extracts the value after {ARG_NAME}= from a config file:
+
+    A. /boot/loader/entries/*.conf (RHEL 8/9/10, Fedora, OL8/9)
+       Pattern: ^options\s+(?:.*\s)?{ARG_NAME}=(\S+)
+       Captures: just the value (e.g. 8192)
+
+    B. {grub2_boot_path}/grubenv (RHEL 8, OL8)
+       Pattern: ^kernelopts=(?:.*\s)?{ARG_NAME}=(\S+)
+       Captures: just the value
+
+    C. {grub2_boot_path}/grub.cfg (OL7, Ubuntu)
+       Pattern: ^.*/vmlinuz.*\s{ARG_NAME}=(\S+)
+       Captures: just the value
+
+    D. /etc/default/grub (all products)
+       Pattern: ^\s*GRUB_CMDLINE_LINUX="(?:.*\s)?{ARG_NAME}=([^\s"]+)
+       Captures: just the value (stops at whitespace or closing quote)
+
+    E. /etc/default/grub.d/*.cfg (Ubuntu)
+       Same patterns as D.
+
+    F. /usr/lib/bootc/kargs.d/*.toml (RHEL 9+, RHEL 10 — bootc)
+       Pattern: ^kargs\s*=\s*\[.*"{ARG_NAME}=([^"]+)".*\]$
+       Captures: just the value (from within TOML quotes)
+
+  For no-value arguments (e.g. nousb), patterns check presence only
+  (no capturing group, no state).
+
+  STATES -- compare the captured value:
+
+    1. state_grub2_{ARG}_argument (shared by all objects)
+       Uses operation and datatype from rule.yml.
+       arg_value rules: literal comparison (e.g. equals "1")
+       arg_variable rules: var_ref to XCCDF variable (resolved at scan time)
+
+    2. state_grub2_{ARG}_argument_is_kernelopts (RHEL 8, OL8 only)
+       Pattern match: checks if $kernelopts appears in the full options line.
+       Used by the RHEL 8 coverage test with state_operator="OR".
+
+  The uses_* flags control which locations are verified per product.
 -#}}
-{{% set system_with_expanded_kernel_options_in_loader_entries = false -%}}
-{{% set system_with_kernel_options_in_grubenv = false -%}}
-{{% set system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv = false -%}}
-{{% set system_with_kernel_options_in_etc_default_grub = true -%}}
-{{% set system_with_kernel_options_in_etc_default_grub_d = false -%}}
-{{% set system_with_expanded_kernel_options_in_grub_cfg = false -%}}
-{{% set system_with_bios_and_uefi_support = false -%}}
 
-{{% if product in ["fedora", "ol9", "rhel9", "rhel10"] -%}}
-{{% set system_with_expanded_kernel_options_in_loader_entries = true %}}
-{{%- endif -%}}
+{{% set uses_boot_loader_entries   = product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] %}}
+{{% set uses_kernelopts            = product in ["ol8", "rhel8"] %}}
+{{% set uses_etc_default_grub_d    = 'ubuntu' in product %}}
+{{% set uses_grub_cfg              = product in ["ol7"] or 'ubuntu' in product %}}
+{{% set has_separate_bios_and_uefi = grub2_uefi_boot_path and grub2_uefi_boot_path != grub2_boot_path %}}
+{{% set has_value                  = ARG_VALUE or ARG_VARIABLE %}}
 
-{{% if product in ["ol8", "rhel8"] -%}}
-{{% set system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv = true -%}}
-{{%- endif -%}}
-
-{{% if product in ["ol7"] or 'ubuntu' in product -%}}
-{{% set system_with_expanded_kernel_options_in_grub_cfg = true %}}
-{{%- endif -%}}
-
-{{% if 'ubuntu' in product -%}}
-{{% set system_with_kernel_options_in_etc_default_grub_d = true -%}}
-{{%- endif -%}}
-
-{{% if grub2_uefi_boot_path and grub2_uefi_boot_path != grub2_boot_path -%}}
-{{% set system_with_bios_and_uefi_support = true %}}
-{{%- endif -%}}
-
+{{# DEFINITION: `{{{ _RULE_ID }}}`
+     Ensure the kernel boot argument {{{ ARG_NAME_VALUE }}} is set in all
+     relevant `grub` configuration files for this product.
+     See the ASCII-art criteria tree at the top of this file for the full picture. #}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.", rule_title=rule_title) }}}
+    {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is set as a kernel boot argument.", rule_title=rule_title) }}}
     <criteria operator="OR">
-    <criteria operator="AND">
-      {{% if bootable_containers_supported == "true" %}}
-        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" negate="true" />
-      {{% endif %}}
-      {{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
-      <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced"
-      comment="Check /boot/loader/entries/*.conf files if they contain direct reference to {{{ ARG_NAME_VALUE }}} or if they contain $kernelopts" />
-      <criteria operator="OR"
-      comment="Expressing implication">
-        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_at_least_one_entry_referenced" negate="true"
-        comment="Negate the result of the test if there exists at least one $kernelopts in /boot/loader/entries" />
-        {{% if system_with_bios_and_uefi_support -%}}
-        <criteria operator="OR">
+
+      {{%- if bootable_containers_supported == "true" %}}
+      {{# `bootc` / RHEL Image Mode systems
+           System must be `bootc` AND `/usr/lib/bootc/kargs.d/*.toml` must contain {{{ ARG_NAME_VALUE }}}.
+           On non-`bootc` systems the `extend_definition` fails and this branch is skipped. #}}
+      <criteria operator="AND">
+        <extend_definition comment="Verify system is in RHEL Image Mode (bootc)" definition_ref="bootc" />
+        <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_usr_lib_bootc_kargs_d"
+                   comment="Check /usr/lib/bootc/kargs.d/*.toml for {{{ ARG_NAME_VALUE }}}" />
+      </criteria>
+      {{%- endif %}}
+
+      {{# Non-`bootc` systems (normal `grub` configuration) #}}
+      <criteria operator="AND">
+
+        {{%- if bootable_containers_supported == "true" %}}
+        {{# Guard: passes only if the system is NOT `bootc` (negate is true).
+            On `bootc` systems the negated `extend_definition` fails and this branch is skipped.
+            Without this, `bootc` systems would fail sub-checks because `grub` files do not exist. #}}
+        <extend_definition comment="Verify system is NOT in RHEL Image Mode (bootc)" definition_ref="bootc" negate="true" />
         {{%- endif %}}
-        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_boot_path }}}/grubenv" />
-      {{% if system_with_bios_and_uefi_support -%}}
-        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env_uefi"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_uefi_boot_path }}}/grubenv" />
+
+        {{%- if uses_kernelopts %}}
+        {{# RHEL 8 / OL8 BLS check — two criteria:
+             1. Every `/boot/loader/entries/*.conf` has {{{ ARG_NAME }}} on the `options` line
+                OR contains `$kernelopts` (coverage — no entry is left unchecked).
+             2. Entries that list {{{ ARG_NAME }}} directly (not via `$kernelopts`) have the
+                correct value (`check_existence=any_exist` — passes when all entries delegate
+                to `$kernelopts` and none have the arg directly). #}}
+        <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries_coverage"
+                   comment="Check each /boot/loader/entries/*.conf has {{{ ARG_NAME }}} or $kernelopts" />
+        {{%- if has_value %}}
+        <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries_value"
+                   comment="Check /boot/loader/entries/*.conf value of {{{ ARG_NAME }}}" />
+        {{%- endif %}}
+
+        {{# `$kernelopts` / `{grub2_boot_path}/grubenv` gate
+             On RHEL 8, `/boot/loader/entries/*.conf` files can either list kernel args directly
+             on the `options` line, or say `$kernelopts` which means: look up the actual args
+             in `{grub2_boot_path}/grubenv` at boot time.
+             If NO `/boot/loader/entries/*.conf` says `$kernelopts`, all args are already on
+             the `options` lines and there is no need to check `{grub2_boot_path}/grubenv`
+             at all (first branch of this `OR` satisfies it).
+             If ANY `/boot/loader/entries/*.conf` says `$kernelopts`, we fall through to the
+             second branch and check that `{grub2_boot_path}/grubenv` contains
+             {{{ ARG_NAME_VALUE }}} (BIOS or UEFI path). #}}
+        <criteria operator="OR"
+                  comment="Verify no /boot/loader/entries/*.conf uses $kernelopts, or check {{{ grub2_boot_path }}}/grubenv for {{{ ARG_NAME_VALUE }}}">
+
+          {{# No `$kernelopts` in any `/boot/loader/entries/*.conf` (negated).
+               If no `/boot/loader/entries/*.conf` uses `$kernelopts`, all args are on the `options`
+               line and `{grub2_boot_path}/grubenv` is skipped. #}}
+          <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_kernelopts_in_any_boot_loader_entry" negate="true"
+                     comment="Verify no /boot/loader/entries/*.conf references $kernelopts (all args on options line)" />
+
+          {{# `{grub2_boot_path}/grubenv` has {{{ ARG_NAME_VALUE }}}.
+               BIOS: `{grub2_boot_path}/grubenv`          (e.g. `/boot/grub2/grubenv`)
+               UEFI: `{grub2_uefi_boot_path}/grubenv`  (e.g. `/boot/efi/EFI/redhat/grubenv`)
+          #}}
+          <criteria operator="OR">
+            <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_in_grubenv"
+                       comment="Check {{{ grub2_boot_path }}}/grubenv for {{{ ARG_NAME_VALUE }}}" />
+          {{%- if has_separate_bios_and_uefi %}}
+            <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_in_grubenv_uefi"
+                       comment="Check {{{ grub2_uefi_boot_path }}}/grubenv for {{{ ARG_NAME_VALUE }}}" />
+          {{%- endif %}}
+          </criteria>
         </criteria>
         {{%- endif %}}
-      </criteria>
-      {{% elif system_with_kernel_options_in_grubenv -%}}
-        <extend_definition comment="check kernel command line parameters for referenced boot entries reference the $kernelopts variable" definition_ref="grub2_entries_reference_kernelopts" />
-      {{% if system_with_bios_and_uefi_support -%}}
-      <criteria operator="OR">
-      {{%- endif %}}
-        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_boot_path }}}/grubenv" />
-      {{% if system_with_bios_and_uefi_support -%}}
-        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env_uefi"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_uefi_boot_path }}}/grubenv" />
-      </criteria>
-      {{%- endif %}}
-      {{% elif system_with_expanded_kernel_options_in_loader_entries -%}}
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
-                     comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/loader/entries/*.conf" />
-      {{%- endif %}}
-      {{% if system_with_expanded_kernel_options_in_grub_cfg -%}}
-          {{% if system_with_bios_and_uefi_support -%}}
-          <criteria operator="OR">
-          {{%- endif %}}
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
-          comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
-          {{% if system_with_bios_and_uefi_support -%}}
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg_uefi"
-          comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_uefi_boot_path }}}/grub.cfg for all kernels" />
-          </criteria>
-          {{%- endif %}}
-      {{%- endif %}}
-      {{% if system_with_kernel_options_in_etc_default_grub -%}}
+
+        {{%- if uses_boot_loader_entries and not uses_kernelopts %}}
+        {{# RHEL 9+ / Fedora / OL9 boot loader entries
+             Each `/boot/loader/entries/*.conf` (omit rescue) must have {{{ ARG_NAME_VALUE }}} directly
+             on the `options` line. No `$kernelopts` indirection on these platforms. #}}
+        <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries"
+                   comment="Check each /boot/loader/entries/*.conf (omit rescue) for {{{ ARG_NAME_VALUE }}}" />
+        {{%- endif %}}
+
+        {{%- if uses_grub_cfg %}}
+        {{# OL7 / Ubuntu `{grub2_boot_path}/grub.cfg` (`uses_grub_cfg`)
+             BIOS: `{grub2_boot_path}/grub.cfg`          (e.g. `/boot/grub2/grub.cfg`)
+             UEFI: `{grub2_uefi_boot_path}/grub.cfg`  (e.g. `/boot/efi/EFI/redhat/grub.cfg`)
+             UEFI criterion only emitted when `has_separate_bios_and_uefi` is true. #}}
         <criteria operator="OR">
+          <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_in_grub_cfg"
+                      comment="Check {{{ grub2_boot_path }}}/grub.cfg for {{{ ARG_NAME_VALUE }}}" />
+          {{%- if has_separate_bios_and_uefi %}}
+          <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_in_grub_cfg_uefi"
+                      comment="Check {{{ grub2_uefi_boot_path }}}/grub.cfg for {{{ ARG_NAME_VALUE }}}" />
+          {{%- endif %}}
+        </criteria>
+        {{%- endif %}}
+
+        {{# `/etc/default/grub` persistent configuration (all products)
+             `GRUB_CMDLINE_LINUX` in `/etc/default/grub` has {{{ ARG_NAME_VALUE }}} (applies to all boot entries),
+             OR `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub` has it + `GRUB_DISABLE_RECOVERY=true`.
+             `GRUB_CMDLINE_LINUX_DEFAULT` only covers non-recovery boots, so disabling recovery ensures coverage. #}}
+        <criteria operator="OR">
+
+          {{# `GRUB_CMDLINE_LINUX` (applies to all boot entries).
+               Checks `/etc/default/grub`, plus `/etc/default/grub.d/*.cfg` drop-ins on Ubuntu. #}}
           <criteria operator="OR">
-            <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
-            comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX" />
-            {{% if system_with_kernel_options_in_etc_default_grub_d -%}}
-            <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir"
-            comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub.d/*cfg via GRUB_CMDLINE_LINUX" />
-            {{%- endif %}}
+            <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_grub_cmdline_linux"
+                       comment="Check GRUB_CMDLINE_LINUX in /etc/default/grub for {{{ ARG_NAME_VALUE }}}" />
+          {{% if uses_etc_default_grub_d %}}
+            <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_grub_cmdline_linux_from_grub_d"
+                       comment="Check GRUB_CMDLINE_LINUX in /etc/default/grub.d/*.cfg for {{{ ARG_NAME_VALUE }}}" />
+          {{% endif %}}
           </criteria>
+
+          {{# `GRUB_CMDLINE_LINUX_DEFAULT` + `GRUB_DISABLE_RECOVERY=true` in `/etc/default/grub`
+
+               `GRUB_CMDLINE_LINUX_DEFAULT` only applies to non-recovery boot entries, so if this variable is used,
+               rescue boot entries have to be disabled with GRUB_DISABLE_RECOVERY=true in `/etc/default/grub`,
+               to ensure the argument ARG_NAME_UNDERSCORED is set for ALL boot entries. 
+               Also checks `/etc/default/grub.d/*.cfg` drop-ins for Ubuntu. #}}
           <criteria operator="AND">
             <criteria operator="OR">
-              <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
-              comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT" />
-              {{% if system_with_kernel_options_in_etc_default_grub_d -%}}
-              <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir"
-              comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub.d/*cfg via GRUB_CMDLINE_LINUX_DEFAULT" />
-              {{%- endif %}}
+              <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_grub_cmdline_linux_default"
+                         comment="Check GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub for {{{ ARG_NAME_VALUE }}}" />
+            {{% if uses_etc_default_grub_d %}}
+              <criterion test_ref="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_grub_cmdline_linux_default_from_grub_d"
+                         comment="Check GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub.d/*.cfg for {{{ ARG_NAME_VALUE }}}" />
+            {{% endif %}}
             </criteria>
             <extend_definition definition_ref="bootloader_disable_recovery_set_to_true"
-            comment="Check GRUB_DISABLE_RECOVERY=true in /etc/default/grub" />
+                               comment="Verify GRUB_DISABLE_RECOVERY=true in /etc/default/grub" />
           </criteria>
         </criteria>
-      {{%- endif %}}
-    </criteria>
-    {{% if bootable_containers_supported == "true" %}}
-      <criteria operator="AND">
-        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" />
-        <criterion comment="The {{{ ARG_NAME_VALUE }}} is present in the /usr/lib/bootc/kargs.d/*.toml files"  test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
+
       </criteria>
-    {{% endif %}}
+
     </criteria>
   </definition>
 
-{{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced"
-  comment="check all /boot/loader/entries/*.conf for expanded entries of  {{{ ARG_NAME_VALUE }}}. Leave out rescue boot entries. Accept also references to $kernelopts."
-  state_operator="OR" check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced" version="1">
-    <ind:path>/boot/loader/entries/</ind:path>
-    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+{{# Collect a grub shell variable (GRUB_CMDLINE_LINUX or GRUB_CMDLINE_LINUX_DEFAULT)
+     from /etc/default/grub or /etc/default/grub.d/*.cfg drop-ins, and check for {{{ ARG_NAME }}}.
+     When has_value: extracts just the value via capture group.
+     When not has_value (nousb): checks the arg name is present (existence only, no state). #}}
+{{%- macro etc_default_grub_object_and_test(grub_var, from_grub_d=false, check="all") %}}
+  {{%- set name = "grub2_" ~ ARG_NAME_UNDERSCORED ~ "_" ~ grub_var|lower ~ ("_from_grub_d" if from_grub_d else "") -%}}
+  {{%- set source_file = "/etc/default/grub.d/*.cfg" if from_grub_d else "/etc/default/grub" -%}}
+  <ind:textfilecontent54_object id="obj_{{{ name }}}" version="1"
+  comment="Collect {{{ ARG_NAME }}} from {{{ grub_var }}} in {{{ source_file }}}">
+    {{%- if from_grub_d %}}
+    {{# operation must be pattern match -- the filepath below is a regex;
+         without it OVAL defaults to equals and looks for a file literally named [^/]+\.cfg. #}}
+    <ind:filepath operation="pattern match">/etc/default/grub.d/[^/]+\.cfg</ind:filepath>
+    {{%- else %}}
+    <ind:filepath>{{{ source_file }}}</ind:filepath>
+    {{%- endif %}}
+    {{%- if has_value %}}
+    <ind:pattern operation="pattern match">^\s*{{{ grub_var }}}="(?:.*\s)?{{{ ARG_NAME_ESCAPED_DOTS }}}=([^\s"]+)</ind:pattern>
+    {{%- else %}}
+    <ind:pattern operation="pattern match">^\s*{{{ grub_var }}}="(?:.*\s)?{{{ ARG_NAME_ESCAPED_DOTS }}}(?:\s.*)?"$</ind:pattern>
+    {{%- endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-    <filter action="exclude">state_grub2_rescue_entry_for_{{{ _RULE_ID }}}</filter>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_grub2_rescue_entry_for_{{{ _RULE_ID }}}" version="1">
-    <ind:filename operation="pattern match">.*rescue\.conf$</ind:filename>
-  </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_at_least_one_entry_referenced"
-  comment="check all /boot/loader/entries/*.conf files if there is at least one entry referencing $kernelopts. Leave out rescue entries."
-  check="all" check_existence="at_least_one_exists" version="1">
-    <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts" />
+  <ind:textfilecontent54_test id="test_{{{ name }}}"
+  comment="Check {{{ grub_var }}} in {{{ source_file }}} for {{{ ARG_NAME_VALUE }}}"
+  check="{{{ check }}}" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_{{{ name }}}" />
+    {{%- if has_value %}}
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" />
+    {{%- endif %}}
   </ind:textfilecontent54_test>
+{{%- endmacro %}}
+
+{{# Check grubenv for {{{ ARG_NAME_VALUE }}} in the kernelopts= line.
+     Platforms: RHEL 8, OL8 (uses_kernelopts).
+     When has_value: extracts just the value.
+     When not has_value: checks arg name is present (existence only). #}}
+{{%- macro test_and_object_for_grubenv(variant="") %}}
+  {{%- set path = (grub2_uefi_boot_path if variant == "uefi" else grub2_boot_path) ~ "/grubenv" -%}}
+  {{%- set name = "grub2_" ~ ARG_NAME_UNDERSCORED ~ "_in_grubenv" ~ ("_uefi" if variant == "uefi" else "") -%}}
+  <ind:textfilecontent54_object id="obj_{{{ name }}}" version="1"
+  comment="Collect {{{ ARG_NAME }}} from {{{ path }}}">
+    <ind:filepath>{{{ path }}}</ind:filepath>
+    {{%- if has_value %}}
+    <ind:pattern operation="pattern match">^kernelopts=(?:.*\s)?{{{ ARG_NAME_ESCAPED_DOTS }}}=(\S+)</ind:pattern>
+    {{%- else %}}
+    <ind:pattern operation="pattern match">^kernelopts=(?:.*\s)?{{{ ARG_NAME_ESCAPED_DOTS }}}(?:\s|$)</ind:pattern>
+    {{%- endif %}}
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_{{{ name }}}"
+  comment="Check {{{ path }}} for {{{ ARG_NAME_VALUE }}}"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_{{{ name }}}" />
+    {{%- if has_value %}}
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" />
+    {{%- endif %}}
+  </ind:textfilecontent54_test>
+{{%- endmacro %}}
+
+{{# Check grub.cfg vmlinuz lines for {{{ ARG_NAME_VALUE }}} in the kernel command line.
+     Platforms: OL7, Ubuntu (uses_grub_cfg).
+     When has_value: extracts just the value.
+     When not has_value: checks arg name is present (existence only). #}}
+{{%- macro test_and_object_for_grub_cfg(variant, path) %}}
+  {{% set name = "grub2_" ~ ARG_NAME_UNDERSCORED ~ "_in_grub_cfg" ~ ("_uefi" if variant == "uefi" else "") -%}}
+  <ind:textfilecontent54_object id="obj_{{{ name }}}" version="1"
+  comment="Collect {{{ ARG_NAME }}} value from {{{ path }}}">
+    <ind:filepath>{{{ path }}}</ind:filepath>
+    {{%- if has_value %}}
+    <ind:pattern operation="pattern match">^.*/vmlinuz.*\s{{{ ARG_NAME_ESCAPED_DOTS }}}=(\S+)</ind:pattern>
+    {{%- else %}}
+    <ind:pattern operation="pattern match">^.*/vmlinuz.*\s{{{ ARG_NAME_ESCAPED_DOTS }}}(?:\s|$)</ind:pattern>
+    {{%- endif %}}
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_{{{ name }}}"
+  comment="Check {{{ path }}} for {{{ ARG_NAME_VALUE }}}"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_{{{ name }}}" />
+    {{%- if has_value %}}
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" />
+    {{%- endif %}}
+  </ind:textfilecontent54_test>
+{{%- endmacro %}}
+
+{{# Shared state for value comparison.
+     Uses OVAL-native operation + datatype instead of regex.
+     Skipped entirely for args without a value (e.g. nousb). #}}
+
+{{% if ARG_VARIABLE %}}
+  <external_variable comment="Expected {{{ ARG_NAME }}} value from XCCDF variable {{{ ARG_VARIABLE }}}" datatype="{{{ DATATYPE }}}" id="{{{ ARG_VARIABLE }}}" version="1" />
+
+  <ind:textfilecontent54_state id="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" version="1">
+    <ind:subexpression datatype="{{{ DATATYPE }}}" operation="{{{ OPERATION }}}" var_ref="{{{ ARG_VARIABLE }}}" />
+  </ind:textfilecontent54_state>
+{{% elif ARG_VALUE %}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" version="1">
+    <ind:subexpression datatype="{{{ DATATYPE }}}" operation="{{{ OPERATION }}}">{{{ ARG_VALUE }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
 {{% endif %}}
 
+{{# --- /etc/default/grub (all products) --- #}}
 
-{{%- if system_with_kernel_options_in_etc_default_grub %}}
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
-  comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-  </ind:textfilecontent54_test>
+{{{ etc_default_grub_object_and_test("GRUB_CMDLINE_LINUX") }}}
+{{{ etc_default_grub_object_and_test("GRUB_CMDLINE_LINUX_DEFAULT") }}}
 
-  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" version="1">
-    <ind:filepath>/etc/default/grub</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
-  comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-  </ind:textfilecontent54_test>
+{{# RHEL 8/9/10, Fedora, OL8/9 — uses_boot_loader_entries
+     ID uses _RULE_ID (not ARG_NAME_UNDERSCORED) to guarantee uniqueness across rules. #}}
+{{% if uses_boot_loader_entries %}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ _RULE_ID }}}_is_rescue_entry" version="1"
+  comment="Match /boot/loader/entries/*rescue.conf filenames for exclusion">
+    <ind:filename operation="pattern match">.*rescue\.conf$</ind:filename>
+  </ind:textfilecontent54_state>
+{{% endif %}}
 
-  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
-  version="1">
-    <ind:filepath>/etc/default/grub</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-{{%- endif %}}
-
-{{% if system_with_kernel_options_in_etc_default_grub_d -%}}
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir"
-  comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub.d/*cfg via GRUB_CMDLINE_LINUX"
-  check="at least one" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir"
-  comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir" version="1">
-    <ind:filepath operation="pattern match">/etc/default/grub.d/[^/]+\.cfg</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir"
-  version="1">
-    <ind:filepath>/etc/default/grub.d/*.cfg</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-{{%- endif %}}
-
-{{%- if system_with_kernel_options_in_grubenv or system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
-{{%- macro test_and_object_for_kernel_options_grub_env(base_name, path) %}}
-  <ind:textfilecontent54_test id="test_{{{ base_name }}}"
-  comment="check for kernel command line parameters {{{ ARG_NAME_VALUE }}} in {{{ path }}} for all kernels"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_{{{ base_name }}}" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_{{{ base_name }}}"
-  version="1">
-    <ind:filepath>{{{ path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-{{%- endmacro %}}
-
-{{{ test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_grub_env", grub2_boot_path ~ "/grubenv") }}}
-{{% if system_with_bios_and_uefi_support -%}}
-{{{ test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_grub_env_uefi", grub2_uefi_boot_path ~ "/grubenv") }}}
-{{%- endif %}}
-{{%- endif %}}
-
-{{%- if system_with_expanded_kernel_options_in_loader_entries %}}
-    <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
-                                comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
-                                check="all" check_existence="all_exist" version="1">
-      <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" />
-      <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-    </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" version="1">
+{{# RHEL 8, OL8 — uses_kernelopts #}}
+{{% if uses_kernelopts %}}
+  {{# Full-line capture from `/boot/loader/entries/*.conf` for the RHEL 8 coverage test.
+       Each entry produces one item with the full `options` line as subexpression.
+       Used to check that every entry has {{{ ARG_NAME }}} OR `$kernelopts`. #}}
+  <ind:textfilecontent54_object id="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries" version="1"
+  comment="Collect options line from each /boot/loader/entries/*.conf (exclude rescue)">
     <ind:path>/boot/loader/entries/</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-    <filter action="exclude">state_grub2_rescue_entry_for_{{{ _RULE_ID }}}</filter>
+    <filter action="exclude">state_grub2_{{{ _RULE_ID }}}_is_rescue_entry</filter>
   </ind:textfilecontent54_object>
+{{% endif %}}
 
-  <ind:textfilecontent54_state id="state_grub2_rescue_entry_for_{{{ _RULE_ID }}}" version="1">
-    <ind:filename operation="pattern match">.*rescue\.conf$</ind:filename>
-  </ind:textfilecontent54_state>
-{{%- endif %}}
+{{# RHEL 9+/Fedora/OL9 (uses_boot_loader_entries, not uses_kernelopts)
+     OR RHEL 8/OL8 (uses_kernelopts, has_value only) #}}
+{{%- if (uses_boot_loader_entries and not uses_kernelopts) or (uses_kernelopts and has_value) %}}
+  {{# Extract the {{{ ARG_NAME }}} from each `/boot/loader/entries/*.conf`.
+       On RHEL 9+, this is the only BLS object — every entry must have the correct value.
 
-{{%- if system_with_expanded_kernel_options_in_grub_cfg %}}
-{{%- macro test_and_object_for_kernel_options_grub_cfg(base_name, path) %}}
-  <ind:textfilecontent54_test id="test_{{{ base_name }}}"
-  comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} in {{{ path }}} for all kernels"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_{{{ base_name }}}" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-  </ind:textfilecontent54_test>
+       On RHEL 8, entries may use `$kernelopts` instead of listing args directly. Entries
+       that DO have the arg directly are checked here (`check_existence=any_exist` means
+       zero matches is OK — all entries delegated to `$kernelopts`).
 
-  <ind:textfilecontent54_object id="object_{{{ base_name }}}"
-  version="1">
-    <ind:filepath>{{{ path }}}</ind:filepath>
-    {{% if product in ["ol7"] or 'ubuntu' in product %}}
-      <ind:pattern operation="pattern match">^.*/vmlinuz.*(root=.*)$</ind:pattern>
-    {{% else %}}
-      <ind:pattern operation="pattern match">^set default_kernelopts=(.*)$</ind:pattern>
-    {{% endif %}}
+       Edge case: if an entry has both `$kernelopts` and a direct arg override
+       (e.g. `options $kernelopts audit_backlog_limit=4096`), this captures the direct
+       value. The kernel uses the last occurrence, so the direct value wins. 
+  #}}
+  <ind:textfilecontent54_object id="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries_value" version="1"
+  comment="Extract {{{ ARG_NAME }}} value from /boot/loader/entries/*.conf (exclude rescue)">
+    <ind:path>/boot/loader/entries/</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    {{# (?:.*\s)? skips any preceding args on the options line so the arg is matched
+         regardless of position (first, middle, or last). 
+         The group is optional because the {{{ ARG_NAME }}} may be the first thing after `options`. #}}
+    {{%- if has_value %}}
+    <ind:pattern operation="pattern match">^options\s+(?:.*\s)?{{{ ARG_NAME_ESCAPED_DOTS }}}=(\S+)</ind:pattern>
+    {{%- else %}}
+    <ind:pattern operation="pattern match">^options\s+(?:.*\s)?{{{ ARG_NAME_ESCAPED_DOTS }}}(?:\s|$)</ind:pattern>
+    {{%- endif %}}
+    {{# Collect at least one match from each `/boot/loader/entries/*.conf`. #}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    {{# Exclude rescue entries. #}}
+    <filter action="exclude">state_grub2_{{{ _RULE_ID }}}_is_rescue_entry</filter>
   </ind:textfilecontent54_object>
-{{%- endmacro %}}
-
-{{{ test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_grub_cfg", grub2_boot_path ~ "/grub.cfg") }}}
-{{% if system_with_bios_and_uefi_support -%}}
-{{{ test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_grub_cfg_uefi", grub2_uefi_boot_path ~ "/grub.cfg") }}}
-{{%- endif %}}
 {{%- endif %}}
 
-{{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
-  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_is_kernelopts"
-  version="1">
+{{# RHEL 8, OL8 — uses_kernelopts — coverage + value tests + $kernelopts gate #}}
+{{% if uses_kernelopts %}}
+  {{# RHEL 8 coverage state: arg name present (with or without =value) in the full `options` line.
+       Used by the coverage test to ensure every entry accounts for {{{ ARG_NAME }}}. #}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_name_present" version="1">
+    {{# Match the {{{ ARG_NAME }}} name (with optional value) in the full options line. #}}
+    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ARG_NAME_ESCAPED_DOTS }}}(?:=\S+)?(?:\s.*)?$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument_is_kernelopts" version="1">
+    {{# Match the `$kernelopts` keyword in the full options line. #}}
     <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?\$kernelopts(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
-{{% endif %}}
 
-{{% if not ARG_VARIABLE %}}
-  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
-  version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
-  </ind:textfilecontent54_state>
-{{% else %}}
-  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
-  version="1">
-    <ind:subexpression datatype="string" operation="pattern match" var_ref="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}" />
-  </ind:textfilecontent54_state>
-
-  <local_variable id="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}"
-  comment="Regex that matches {{{ ARG_NAME }}} with value {{{ ARG_VARIABLE }}}"
-  datatype="string" version="1">
-    <concat>
-      <literal_component>^(?:.*\s)?{{{ ARG_NAME }}}=</literal_component>
-      {{% if IS_SUBSTRING == "true" %}}
-      <literal_component>\S*</literal_component>
-      {{% endif %}}
-      <variable_component var_ref="{{{ ARG_VARIABLE }}}" />
-      {{% if IS_SUBSTRING == "true" %}}
-      <literal_component>\S*</literal_component>
-      {{% endif %}}
-      <literal_component>(?:\s.*)?$</literal_component>
-    </concat>
-  </local_variable>
-
-  <external_variable comment="Variable defining the value the argument should have" datatype="string" id="{{{ ARG_VARIABLE }}}" version="1" />
-{{% endif %}}
-
-{{% if bootable_containers_supported == "true" %}}
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d"
-                              comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
-                              check="at least one" check_existence="at_least_one_exists" version="1">
-    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
+  {{# RHEL 8 coverage test: every `/boot/loader/entries/*.conf` has {{{ ARG_NAME }}} OR `$kernelopts`.
+       `state_operator` = `OR`: entry passes if it matches either state.
+       `check` = `all`: every entry must pass. #}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries_coverage"
+  comment="Check each /boot/loader/entries/*.conf has {{{ ARG_NAME }}} or $kernelopts"
+  state_operator="OR" check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries" />
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_name_present" />
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument_is_kernelopts" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
+
+  {{%- if has_value %}}
+  {{# RHEL 8 value test: entries that list {{{ ARG_NAME }}} directly have the correct value.
+       `check_existence` = `any_exist`: if all entries use `$kernelopts` and none have
+       the arg directly, zero items are collected and the test passes (grubenv handles it). #}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries_value"
+  comment="Check /boot/loader/entries/*.conf value of {{{ ARG_NAME }}}"
+  check="all" check_existence="any_exist" version="1">
+    <ind:object object_ref="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries_value" />
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" />
+  </ind:textfilecontent54_test>
+  {{%- endif %}}
+
+  {{# $kernelopts presence test: at least one /boot/loader/entries/*.conf references $kernelopts.
+       Used negated in criteria: if no entry has $kernelopts, grubenv check is skipped. #}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_kernelopts_in_any_boot_loader_entry"
+  comment="Check if any /boot/loader/entries/*.conf references $kernelopts"
+  check="at least one" check_existence="at_least_one_exists" version="1">
+    <ind:object object_ref="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries" />
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument_is_kernelopts" />
+  </ind:textfilecontent54_test>
+
+  {{{- test_and_object_for_grubenv() }}}
+  {{%- if has_separate_bios_and_uefi -%}}
+    {{{- test_and_object_for_grubenv(variant="uefi") }}}
+  {{%- endif %}}
+{{% endif %}}
+
+{{# Ubuntu, only — uses_etc_default_grub_d #}}
+{{%- if uses_etc_default_grub_d %}}
+  {{# `/etc/default/grub.d/*.cfg` drop-in files.
+       `GRUB_CMDLINE_LINUX` and `GRUB_CMDLINE_LINUX_DEFAULT` from `/etc/default/grub.d/*.cfg` drop-in config files.
+       `GRUB_CMDLINE_LINUX` uses `check` = `at least one` -- passes if any `/etc/default/grub.d/*.cfg` has the arg. #}}
+  {{{ etc_default_grub_object_and_test("GRUB_CMDLINE_LINUX", from_grub_d=true, check="at least one") }}}
+  {{{ etc_default_grub_object_and_test("GRUB_CMDLINE_LINUX_DEFAULT", from_grub_d=true) }}}
+{{%- endif %}}
+
+{{# RHEL 9+, Fedora, OL9 — uses_boot_loader_entries, not uses_kernelopts #}}
+{{%- if uses_boot_loader_entries and not uses_kernelopts %}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries"
+                              comment="Check each /boot/loader/entries/*.conf (omit rescue) for {{{ ARG_NAME_VALUE }}}"
+                              check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_bls_entries_value" />
+    {{%- if has_value %}}
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" />
+    {{%- endif %}}
+  </ind:textfilecontent54_test>
+{{%- endif %}}
+
+{{# OL7, Ubuntu — uses_grub_cfg #}}
+{{%- if uses_grub_cfg %}}
+  {{# Emit BIOS variant (`{grub2_boot_path}/grub.cfg`) unconditionally;
+       emit UEFI variant (`{grub2_uefi_boot_path}/grub.cfg`) only when the platform has separate BIOS and UEFI paths. #}}
+  {{{ test_and_object_for_grub_cfg("bios", grub2_boot_path ~ "/grub.cfg") }}}
+  {{%- if has_separate_bios_and_uefi -%}}
+    {{{- test_and_object_for_grub_cfg("uefi", grub2_uefi_boot_path ~ "/grub.cfg") }}}
+  {{%- endif %}}
+{{%- endif %}}
+
+{{# RHEL 9+, RHEL 10 — bootable_containers_supported #}}
+{{%- if bootable_containers_supported == "true" %}}
+  {{# bootc object extracts the value from within the TOML quotes, so the shared state works directly. #}}
+  <ind:textfilecontent54_object id="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_usr_lib_bootc_kargs_d" version="1"
+  comment="Collect {{{ ARG_NAME }}} from /usr/lib/bootc/kargs.d/*.toml">
     <ind:path>/usr/lib/bootc/kargs.d/</ind:path>
     <ind:filename operation="pattern match">^.*\.toml$</ind:filename>
-    <ind:pattern operation="pattern match">^kargs = \[([^\]]+)\]$</ind:pattern>
+    {{%- if has_value %}}
+    <ind:pattern operation="pattern match">^kargs\s*=\s*\[.*"{{{ ARG_NAME_ESCAPED_DOTS }}}=([^"]+)".*\]$</ind:pattern>
+    {{%- else %}}
+    <ind:pattern operation="pattern match">^kargs\s*=\s*\[.*"{{{ ARG_NAME_ESCAPED_DOTS }}}".*\]$</ind:pattern>
+    {{%- endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{% if not ARG_VARIABLE %}}
-  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
-    <ind:subexpression operation="pattern match">^.*"{{{ ESCAPED_ARG_NAME_VALUE }}}".*$</ind:subexpression>
-  </ind:textfilecontent54_state>
-{{% else %}}
-  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
-    <ind:subexpression operation="pattern match" var_ref="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}_bootc_kargs" />
-  </ind:textfilecontent54_state>
 
-  <local_variable id="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}_bootc_kargs"
-  comment="Regex that matches {{{ ARG_NAME }}} with value {{{ ARG_VARIABLE }}}"
-  datatype="string" version="1">
-    <concat>
-      <literal_component>^.*"{{{ ARG_NAME }}}=</literal_component>
-      {{% if IS_SUBSTRING == "true" %}}
-      <literal_component>\S*</literal_component>
-      {{% endif %}}
-      <variable_component var_ref="{{{ ARG_VARIABLE }}}" />
-      {{% if IS_SUBSTRING == "true" %}}
-      <literal_component>\S*</literal_component>
-      {{% endif %}}
-      <literal_component>".*$</literal_component>
-    </concat>
-  </local_variable>
+  <ind:textfilecontent54_test id="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_usr_lib_bootc_kargs_d"
+                              comment="Check /usr/lib/bootc/kargs.d/*.toml for {{{ ARG_NAME_VALUE }}}"
+                              check="at least one" check_existence="at_least_one_exists" version="1">
+    <ind:object object_ref="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_usr_lib_bootc_kargs_d" />
+    {{%- if has_value %}}
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" />
+    {{%- endif %}}
+  </ind:textfilecontent54_test>
+{{% endif %}}
 
-  <external_variable comment="Variable defining the value the argument should have" datatype="string" id="{{{ ARG_VARIABLE }}}" version="1" />
-{{% endif %}}
-{{% endif %}}
 
 </def-group>

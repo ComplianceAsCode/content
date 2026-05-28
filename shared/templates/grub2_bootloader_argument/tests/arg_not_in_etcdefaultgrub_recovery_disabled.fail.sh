@@ -1,16 +1,19 @@
 #!/bin/bash
 
 # platform = multi_platform_all
+
 {{%- if ARG_VARIABLE %}}
-# variables = {{{ ARG_VARIABLE }}}=correct_value
-{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
+# variables = {{{ ARG_VARIABLE }}}={{{ TEST_VALUE_PASS }}}
+{{#- Rules that use arg_variable have no =value in ARG_NAME_VALUE, override with dummy #}}
+{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=" ~ TEST_VALUE_PASS %}}
 {{%- endif %}}
 
 source common.sh
 
+# --- Setup: populate all GRUB configs with correct value (recovery disabled) ---
 {{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) }}}
 
-# Removes the argument from kernel command line in /etc/default/grub
+# --- Make oscap fail: remove arg from /etc/default/grub ---
 if grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=.*\<{{{ ARG_NAME }}}\>=\?.*"' '/etc/default/grub' ; then
 	sed -i 's/\(^GRUB_CMDLINE_LINUX_DEFAULT=".*\)\<{{{ ARG_NAME }}}\>=\?[^[:space:]]*\(.*"\)/\1 \2/' '/etc/default/grub'
 fi
