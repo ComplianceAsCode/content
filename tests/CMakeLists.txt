@@ -20,13 +20,10 @@ macro(ssg_python_unit_tests PYTHON_COMPONENT_ID RELATIVE_PYTHONPATH IGNORE_SUBDI
 endmacro()
 
 if(PY_PYTEST)
-    ssg_python_unit_tests("utils" "utils" "oscal/")
+    ssg_python_unit_tests("utils" "utils" "")
     ssg_python_unit_tests("ssg-module" "." "")
     ssg_python_unit_tests("build-scripts" "." "")
     ssg_python_unit_tests("ssg_test_suite" "tests" "")
-    if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
-        ssg_python_unit_tests("utils/oscal" "utils/oscal" "")
-    endif()
 endif()
 
 add_test(
@@ -111,10 +108,6 @@ mypy_test("tests/cces-removed.py" "normal")
 mypy_test("utils/build_control_from_reference.py" "skip")
 mypy_test("tests/rule_removal.py" "skip")
 mypy_test("ssg" "skip")
-
-if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
-    mypy_test("utils/oscal/" "skip")
-endif()
 
 if(Python_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(

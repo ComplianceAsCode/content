@@ -184,11 +184,6 @@ endif()
 # prometheus_metrics requirements
 find_python_module(prometheus_client)
 
-# compliance-trestle requirements
-find_python_module(requests)
-find_python_module(trestle)
-
-
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support it.
 # See also: https://github.com/ComplianceAsCode/content/issues/6798
 if("${OSCAP_VERSION}" VERSION_LESS "1.3.4" AND SSG_PRODUCT_OCP4)
@@ -231,7 +226,6 @@ message(STATUS "python: ${Python_EXECUTABLE} (version: ${Python_VERSION})")
 message(STATUS "python yaml module: ${PY_YAML}")
 message(STATUS "python jinja2 module: ${PY_JINJA2}")
 # Optional Python Tools
-message(STATUS "python compliance-trestle module (optional): ${PY_TRESTLE}")
 message(STATUS "python cmakelint module (optional): ${PY_CMAKELINT}")
 message(STATUS "python github (PyGitHub) module (optional): ${PY_GITHUB}")
 message(STATUS "python json2html module (optional): ${PY_JSON2HTML}")
