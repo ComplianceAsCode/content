@@ -16,7 +16,7 @@
           <split delimiter=",">
               <variable_component var_ref="var_multiple_time_servers" />
           </split>
-          <literal_component>$</literal_component>
+          <literal_component>([[:space:]].*)?$</literal_component>
       </concat>
   </local_variable>
 
@@ -29,7 +29,7 @@
           <split delimiter=",">
               <variable_component var_ref="var_multiple_time_pools" />
           </split>
-          <literal_component>$</literal_component>
+          <literal_component>([[:space:]].*)?$</literal_component>
       </concat>
   </local_variable>
 
