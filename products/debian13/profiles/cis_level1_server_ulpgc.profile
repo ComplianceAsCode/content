@@ -19,3 +19,18 @@ selections:
     - var_timesync_service=chronyd
     - var_multiple_time_servers=ulpgc
     - var_multiple_time_pools=ulpgc
+    # 6.1.1 (journald standalone) y 6.1.2 (syslog daemon) son excluyentes. El perfil ULPGC
+    # usa syslog-ng (6.1.2), por lo que se excluyen las reglas de la ruta journald-solo.
+    - '!journald_disable_forward_to_syslog'
+    - '!package_systemd-journal-remote_installed'
+    - '!service_systemd-journal-upload_enabled'
+    - '!socket_systemd-journal-remote_disabled'
+    # 6.1.2: sustituir rsyslog por syslog-ng
+    - '!package_rsyslog_installed'
+    - '!service_rsyslog_enabled'
+    - '!rsyslog_filecreatemode'
+    - '!rsyslog_nolisten'
+    - package_syslogng_installed
+    - service_syslogng_enabled
+    - syslogng_filecreatemode
+    - syslogng_nolisten

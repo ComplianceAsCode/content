@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Ensure syslog-ng Does Not Accept Remote Messages Unless Acting As Log Server'
+
+description: |-
+    The <tt>syslog-ng</tt> daemon should not accept remote messages unless the
+    system acts as a log server. To ensure that it is not listening on the
+    network, verify that none of the following source driver calls appear
+    uncommented in <tt>syslog-ng</tt> configuration files:
+    <pre>tcp()
+    udp()
+    network()</pre>
+
+rationale: |-
+    Any process which receives messages from the network incurs some risk of
+    receiving malicious messages. This risk can be eliminated for syslog-ng by
+    configuring it not to listen on the network.
+
+severity: medium
+
+references:
+    nist: CM-7(a),CM-7(b),CM-6(a)
+
+ocil_clause: 'syslog-ng accepts remote messages and is not documented as a log aggregation system'
+
+ocil: |-
+    Verify that the system is not accepting syslog-ng messages from other systems
+    unless it is documented as a log aggregation server.
+    Display the contents of the syslog-ng configuration files:
+    <pre>find /etc/syslog-ng -name "*.conf" -exec cat '{}' \;</pre>
+    If any <tt>source</tt> block contains <tt>tcp()</tt>, <tt>udp()</tt>, or
+    <tt>network()</tt> source drivers, ask to see the documentation for the
+    system being used for log aggregation.
+
+fixtext: |-
+    Edit the syslog-ng configuration files under <tt>/etc/syslog-ng/</tt> and
+    comment out or remove any <tt>tcp()</tt>, <tt>udp()</tt>, or
+    <tt>network()</tt> driver entries from <tt>source</tt> blocks.
+    Restart the service:
+    <pre># systemctl restart syslog-ng.service</pre>

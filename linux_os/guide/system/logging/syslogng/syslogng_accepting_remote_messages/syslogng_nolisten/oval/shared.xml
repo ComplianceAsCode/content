@@ -1,0 +1,49 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("syslog-ng should not accept remote messages unless acting as a log server", rule_title=rule_title) }}}
+        <criteria operator="AND">
+            <criterion test_ref="test_syslogng_nolisten_tcp"
+                comment="syslog-ng is not configured to accept TCP messages"/>
+            <criterion test_ref="test_syslogng_nolisten_udp"
+                comment="syslog-ng is not configured to accept UDP messages"/>
+            <criterion test_ref="test_syslogng_nolisten_network"
+                comment="syslog-ng is not configured to accept generic network messages"/>
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test id="test_syslogng_nolisten_tcp" version="1"
+        check="all" check_existence="none_exist"
+        comment="syslog-ng configuration files don't contain tcp() source driver">
+        <ind:object object_ref="object_syslogng_nolisten_tcp"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="object_syslogng_nolisten_tcp" version="1">
+        <ind:filepath operation="pattern match">^\/etc\/syslog-ng\/(syslog-ng\.conf|conf\.d\/.*\.conf)$</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*tcp\(</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test id="test_syslogng_nolisten_udp" version="1"
+        check="all" check_existence="none_exist"
+        comment="syslog-ng configuration files don't contain udp() source driver">
+        <ind:object object_ref="object_syslogng_nolisten_udp"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="object_syslogng_nolisten_udp" version="1">
+        <ind:filepath operation="pattern match">^\/etc\/syslog-ng\/(syslog-ng\.conf|conf\.d\/.*\.conf)$</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*udp\(</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test id="test_syslogng_nolisten_network" version="1"
+        check="all" check_existence="none_exist"
+        comment="syslog-ng configuration files don't contain network() source driver">
+        <ind:object object_ref="object_syslogng_nolisten_network"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="object_syslogng_nolisten_network" version="1">
+        <ind:filepath operation="pattern match">^\/etc\/syslog-ng\/(syslog-ng\.conf|conf\.d\/.*\.conf)$</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*network\(</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+</def-group>
