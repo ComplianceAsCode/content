@@ -969,6 +969,7 @@ selections:
 
     # OL08-00-040010
     - ensure_epel_repos_disabled
+    - ensure_epel_repos_disabled.severity=high
 
     # OL08-00-040020
     - kernel_module_uvcvideo_disabled
