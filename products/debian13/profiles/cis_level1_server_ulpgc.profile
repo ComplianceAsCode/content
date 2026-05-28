@@ -11,6 +11,7 @@ extends: cis_level1_server
 
 selections:
     # El símbolo '!' le dice al compilador: "De todo lo que heredes, quita estas reglas"
+    - sysctl_conf_symlink_etc_sysctl_d
     - '!package_aide_installed'
     - '!aide_build_database'
     - '!aide_periodic_checking_systemd_timer'
