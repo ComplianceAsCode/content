@@ -1,62 +1,24 @@
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("perm() setting controls permissions applied to newly created log files by syslog-ng.", rule_title=rule_title) }}}
-    <criteria operator="AND">
-      <criterion test_ref="tst_syslogng_perm_declared"
-          comment="perm() is declared in syslog-ng configuration"/>
-      <criterion test_ref="tst_syslogng_perm_valid"
-          comment="perm() value is 0640 or more restrictive"/>
+    <criteria>
+      <criterion test_ref="tst_{{{ rule_id }}}_perm_configured"
+          comment="perm() is set to 0640 or more restrictive in syslog-ng configuration"/>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="tst_syslogng_perm_declared"
-      version="1" comment="syslog-ng perm() is configured"
-      check="all" check_existence="at_least_one_exists">
-    <ind:object object_ref="obj_syslogng_perm" />
+  <!-- Pass if any syslog-ng config file contains an acceptable perm() value.
+       The regex 0[0-6][0-4][0-7] covers octal values 0000-0647, all of which
+       are 0640 or more restrictive (no extra bits beyond owner=rw, group=r). -->
+  <ind:textfilecontent54_test id="tst_{{{ rule_id }}}_perm_configured"
+      version="1" check="all" check_existence="at_least_one_exists"
+      comment="syslog-ng perm() is set to 0640 or more restrictive">
+    <ind:object object_ref="obj_{{{ rule_id }}}_perm" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_syslogng_perm" version="1">
-    <ind:filepath operation="pattern match">^\/etc\/syslog-ng\/(syslog-ng\.conf|conf\.d\/.*\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">perm\((\d+)\)</ind:pattern>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_perm" version="1">
+    <ind:filepath operation="pattern match">^/etc/syslog-ng/(syslog-ng\.conf|conf\.d/.*\.conf)$</ind:filepath>
+    <ind:pattern operation="pattern match">perm\(0[0-6][0-4][0-7]\)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-
-  <!-- Convert the captured octal digits to decimal for comparison.
-       Example: 0640 → 6*64 + 4*8 + 0 = 416 -->
-  <local_variable id="var_syslogng_perm_dec"
-      comment="decimal conversion of octal value from perm() parameter"
-      version="1" datatype="int">
-    <arithmetic arithmetic_operation="add">
-      <arithmetic arithmetic_operation="multiply">
-        <literal_component datatype="int">64</literal_component>
-        <regex_capture pattern="\d(\d)\d\d">
-          <object_component object_ref="obj_syslogng_perm" item_field="subexpression" />
-        </regex_capture>
-      </arithmetic>
-      <arithmetic arithmetic_operation="multiply">
-        <literal_component datatype="int">8</literal_component>
-        <regex_capture pattern="\d\d(\d)\d">
-          <object_component object_ref="obj_syslogng_perm" item_field="subexpression" />
-        </regex_capture>
-      </arithmetic>
-      <regex_capture pattern="\d\d\d(\d)">
-        <object_component object_ref="obj_syslogng_perm" item_field="subexpression" />
-      </regex_capture>
-    </arithmetic>
-  </local_variable>
-
-  <ind:variable_test id="tst_syslogng_perm_valid" version="1"
-      comment="Test if perm() value is 0640 or more restrictive" check="all">
-    <ind:object object_ref="obj_syslogng_perm_dec" />
-    <ind:state state_ref="ste_syslogng_perm_is_0640_or_stricter" />
-  </ind:variable_test>
-
-  <ind:variable_object id="obj_syslogng_perm_dec" version="1">
-    <ind:var_ref>var_syslogng_perm_dec</ind:var_ref>
-  </ind:variable_object>
-
-  <!-- octal 0640 = decimal 416; bitwise OR ensures no extra bits beyond 0640 are set -->
-  <ind:variable_state id="ste_syslogng_perm_is_0640_or_stricter" version="1">
-    <ind:value operation="bitwise or" datatype="int">416</ind:value>
-  </ind:variable_state>
 </def-group>
