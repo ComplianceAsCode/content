@@ -17,5 +17,5 @@ selections:
     # Sincronización horaria: usar chrony. Las reglas de systemd-timesyncd quedan
     # automáticamente inaplicables gracias a los guards de var_timesync_service.
     - var_timesync_service=chronyd
-    - var_multiple_time_servers=pool.ntp.ulpgc.es
-    - var_multiple_time_pools=pool.ntp.ulpgc.es
+    - var_multiple_time_servers=ulpgc
+    - var_multiple_time_pools=ulpgc
