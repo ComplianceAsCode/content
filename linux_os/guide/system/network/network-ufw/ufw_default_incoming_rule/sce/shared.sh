@@ -4,7 +4,9 @@
 
 result=$XCCDF_RESULT_FAIL
 
-if ufw status | grep -qw "active"; then
+ufw_default_line=$(ufw status verbose 2>/dev/null | grep "^Default:")
+
+if echo "$ufw_default_line" | grep -Eq "(deny|reject|disabled) \(incoming\)"; then
     result=${XCCDF_RESULT_PASS}
 fi
 

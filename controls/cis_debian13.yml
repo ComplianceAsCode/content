@@ -1629,11 +1629,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - set_ufw_default_rule
+          - ufw_default_incoming_rule
       status: automated
-      notes: |
-          The existing rule set_ufw_default_rule covers the default incoming,
-          outgoing, and routed UFW policies together.
 
     - id: 4.1.4
       title: Ensure ufw outgoing default is configured (Automated)
@@ -1641,11 +1638,8 @@ controls:
           - l2_server
           - l2_workstation
       rules:
-          - set_ufw_default_rule
+          - ufw_default_outgoing_rule
       status: automated
-      notes: |
-          The existing rule set_ufw_default_rule covers the default incoming,
-          outgoing, and routed UFW policies together.
 
     - id: 4.1.5
       title: Ensure ufw routed default is configured (Automated)
@@ -1653,11 +1647,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - set_ufw_default_rule
+          - ufw_disabled_routed
       status: automated
-      notes: |
-          The existing rule set_ufw_default_rule covers the default incoming,
-          outgoing, and routed UFW policies together.
 
     - id: 5.1.1
       title: Ensure access to /etc/ssh/sshd_config is configured (Automated)

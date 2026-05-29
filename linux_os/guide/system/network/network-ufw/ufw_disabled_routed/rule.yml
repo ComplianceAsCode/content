@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Ensure ufw Default Policy for Routed (Forwarded) Traffic is Disabled'
+
+description: |-
+    The default policy for routed (forwarded) traffic in ufw should be set to
+    disabled or deny, ensuring that the system does not forward packets between
+    interfaces unless explicitly configured to do so.
+
+rationale: |-
+    Unless the system is intended to act as a router, forwarding traffic between
+    network interfaces should be disabled. Disabling the routed default policy
+    prevents the system from accidentally or maliciously forwarding traffic.
+
+severity: medium
+
+platform: package[ufw]
+
+ocil_clause: 'the default policy for routed traffic is not set to disabled or deny'
+
+ocil: |-
+    Run the following command and verify that the default policy for routed
+    traffic is disabled or deny:
+    <pre># ufw status verbose | grep Default:</pre>
+    Example output:
+    <pre>Default: ..., disabled (routed)</pre>
+
+warnings:
+    - general: |-
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
