@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R7
+    version: V2R8
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V2R7.
+    DISA STIG for Oracle Linux 8 V2R8.
 
 selections:
     ### Variables
@@ -28,7 +28,6 @@ selections:
     - var_password_pam_remember_control_flag=ol8
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
-    - var_accounts_password_minlen_login_defs=15
     - var_password_pam_unix_rounds=5000
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
@@ -68,11 +67,22 @@ selections:
     - var_multiple_time_servers=stig
 
     ### Enable / Configure FIPS
-    # OL08-00-010293, OL08-00-010020
+    # OL08-00-010020, OL08-00-010182
     - enable_fips_mode
-    - var_system_crypto_policy=fips
+    - var_system_crypto_policy=fips_stig
+    # OL08-00-010180
+    - package_crypto-policies_installed
+    - package_crypto-policies_installed.severity=high
+    # OL08-00-010183
     - configure_crypto_policy
+    # OL08-00-010181, OL08-00-010184, OL08-00-010182
+    - fips_crypto_subpolicy
+    - fips_crypto_subpolicy.severity=high
+    - fips_custom_stig_sub_policy
+    - fips_custom_stig_sub_policy.severity=high
+    # OL08-00-010187
     - configure_bind_crypto_policy
+    # OL08-00-010186
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
@@ -165,6 +175,10 @@ selections:
     # OL08-00-010171
     - package_policycoreutils_installed
 
+    # OL08-00-010185
+    - harden_sshd_macs_openssh_conf_crypto_policy
+    - harden_sshd_macs_openssh_conf_crypto_policy.severity=high
+
     # OL08-00-010190
     - dir_perms_world_writable_sticky_bits
 
@@ -193,23 +207,16 @@ selections:
     # OL08-00-010260
     - file_groupowner_var_log
 
-    # OL08-00-010287
-    - configure_ssh_crypto_policy
-
     # OL08-00-010290
     - harden_sshd_macs_opensshserver_conf_crypto_policy
+    - harden_sshd_macs_opensshserver_conf_crypto_policy.severity=high
 
     # OL08-00-010291
     - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+    - harden_sshd_ciphers_opensshserver_conf_crypto_policy.severity=high
 
     # OL08-00-010292
     - sshd_use_strong_rng
-
-    # OL08-00-010294
-    - configure_openssl_tls_crypto_policy
-
-    # OL08-00-010295
-    - configure_gnutls_tls_crypto_policy
 
     # OL08-00-010300
     - file_permissions_binary_dirs
@@ -608,9 +615,6 @@ selections:
     # OL08-00-020230
     - accounts_password_pam_minlen
 
-    # OL08-00-020231
-    - accounts_password_minlen_login_defs
-
     # OL08-00-020240
     - account_unique_id
 
@@ -965,6 +969,7 @@ selections:
 
     # OL08-00-040010
     - ensure_epel_repos_disabled
+    - ensure_epel_repos_disabled.severity=high
 
     # OL08-00-040020
     - kernel_module_uvcvideo_disabled
@@ -1192,9 +1197,6 @@ selections:
 
     # OL08-00-040341
     - sshd_x11_use_localhost
-
-    # OL08-00-040342
-    - sshd_use_approved_kex_ordered_stig
 
     # OL08-00-040350
     - tftp_uses_secure_mode_systemd
