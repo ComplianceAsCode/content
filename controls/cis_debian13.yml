@@ -362,89 +362,75 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      rules:
-          - disable_weak_deps
-      status: automated
+      status: pending
+      notes: |-
+          Needs a new Debian-specific rule checking weak dependencies
 
-    # - id: 1.2.1.3
-    #   title: Ensure access to gpg key files are configured (Automated)
-    #   levels:
-    #       - l1_server
-    #       - l2_server
-    #   rules:
-    #       - configure_gpg_key_access
-    #   status: automated
-    # TODO
+    - id: 1.2.1.3
+      title: Ensure access to gpg key files are configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Needs a new Debian-specific rule for GPG key file access checks.
+          Check if all .gpg key files in /usr/share/keyrings/ and /etc/apt/trusted.gpg.d have permissions 0644 and owned by root:root
+          Check if .list and .sources in /etc/apt/sources.list.d have permissions 0644 and owned by root:root and include option signed-by
 
-    # - id: 1.2.1.4 
-    #   title: Ensure GPGaccess to /etc/apt/trusted.gpg.d directory is configured (Automated)
-    #   levels:
-    #       - l1_server
-    #       - l2_server
-    #   rules:
-    #       - configure_gpg_key_access_trusted_gpg_d
-    #   status: automated
-    #   TODO   
+    - id: 1.2.1.4
+      title: Ensure access to /etc/apt/trusted.gpg.d directory is configured
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Needs a new Debian-specific rule for /etc/apt/trusted.gpg.d directory access checks.
+          Check if /etc/apt/trusted.gpg.d has permissions 0755 and owned by root:root
+ 
+    - id: 1.2.1.5
+      title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Check if /etc/apt/auth.conf.d has permissions 0755 and owned by root:root
 
-    # - id: 1.2.1.5 
-    #   title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
-    #   levels:
-    #       - l1_server
-    #       - l2_server
-    #   rules:
-    #       - configure_apt_auth_conf_d_access
-    #   status: automated
-    #   TODO   
+    - id: 1.2.1.6
+      title: Ensure access to files in the /etc/apt/auth.conf.d/ directory is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      status: pending
+      notes: |-
+          Check if /etc/apt/auth.conf.d/* has permissions 0755 and owned by root:root 
 
-    # - id: 1.2.1.6 
-    #   title: Ensure access to files in the /etc/apt/auth.conf.d/ directory is configured (Automated)
-    #   levels:
-    #     - l1_server
-    #     - l1_workstation
-    #   rules:
-    #     - configure_apt_auth_conf_d_files_access
-    #   status: automated
-    #   TODO   
+    - id: 1.2.1.7
+      title: Ensure access to /usr/share/keyrings directory is configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Check if /usr/share/keyrings has permissions 0755 and owned by root:root 
 
-    # - id: 1.2.1.7 
-    #   title: Ensure access to /usr/share/keyrings directory is configured (Automated)
-    #   levels:
-    #       - l1_server
-    #       - l2_server
-    #   rules:
-    #     - configure_usr_share_keyrings_access
-    #   status: automated
-    #   TODO
+    - id: 1.2.1.8
+      title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Check if /etc/apt/sources.list.d has permissions 0755 and owned by root:root 
 
-    # - id: 1.2.1.8
-    #   title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
-    #   levels:
-    #       - l1_server
-    #       - l2_server
-    #   rules:
-    #     - configure_apt_sources_list_d_access
-    #   status: automated
-    #   TODO
-
-    # - id: 1.2.1.8
-    #   title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
-    #   levels:
-    #       - l1_server
-    #       - l2_server
-    #   rules:
-    #     - configure_apt_sources_list_d_access
-    #   status: automated
-    #   TODO
-
-    # - id: 1.2.1.9
-    #   title: Ensure access to files in /etc/apt/sources.list.d are configured (Automated)
-    #   levels:
-    #       - l1_server
-    #       - l2_server
-    #   rules:
-    #     - configure_apt_sources_list_d_files_access
-    #   status: automated
-    #   TODO
+    - id: 1.2.1.9
+      title: Ensure access to files in /etc/apt/sources.list.d are configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Check if /etc/apt/sources.list.d/* has permissions 0755 and owned by root:root
 
     - id: 1.2.2.1
       title: Ensure updates, patches, and additional security software are installed (Manual)
@@ -487,15 +473,14 @@ controls:
           mode for all profiles in /etc/apparmor.d which can
           break certain applications. See https://workbench.cisecurity.org/benchmarks/18959/tickets/23987
 
-    # - id: 1.3.1.4
-    #   title: Ensure apparmor_restrict_unprivileged_unconfined is enabled (Automated)
-    #   levels:
-    #     - l1_server
-    #     - l1_workstation
-    #   rules:
-    #     - apparmor_restrict_unprivileged_unconfined_enabled
-    #   status: automated
-    #   TODO
+    - id: 1.3.1.4
+      title: Ensure apparmor_restrict_unprivileged_unconfined is enabled (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      status: pending
+      notes: |-
+          Check if sysctl kernel.apparmor_restrict_unprivileged_unconfined = 1
 
     - id: 1.4.1
       title: Ensure bootloader password is set (Automated)
@@ -571,15 +556,15 @@ controls:
           - disable_prelink
       status: automated
 
-    # - id: 1.5.7
-    #   title: Ensure Automatic Error Reporting is configured (Automated)
-    #   levels:
-    #     - l1_server
-    #     - l1_workstation
-    #   rules:
-    #     - disable_apport
-    #   status: automated
-    #   TODO
+    - id: 1.5.7
+      title: Ensure Automatic Error Reporting is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      status: pending
+      notes: |-
+          Check if systemctl is-active apport.service , fail if it's active
+          Check if apport is installed , if it's not installed pass
 
     - id: 1.5.8
       title: Ensure kernel.kptr_restrict is configured (Automated)
