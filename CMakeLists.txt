@@ -184,6 +184,8 @@ endif()
 # prometheus_metrics requirements
 find_python_module(prometheus_client)
 
+find_python_module(requests)
+
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support it.
 # See also: https://github.com/ComplianceAsCode/content/issues/6798
 if("${OSCAP_VERSION}" VERSION_LESS "1.3.4" AND SSG_PRODUCT_OCP4)
