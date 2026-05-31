@@ -62,13 +62,6 @@ controls:
           - sysctl_net_ipv6_conf_default_accept_ra
           - sysctl_net_ipv6_conf_default_accept_redirects
           - sysctl_net_ipv6_conf_default_accept_source_route
-          - sshd_idle_timeout_value=5_minutes
-          - sysctl_net_ipv4_tcp_syncookies_value=enabled
-          - var_accounts_maximum_age_login_defs=365
-          - var_sshd_max_sessions=10
-          - var_sshd_set_keepalive=1
-          - var_sshd_set_maxstartups=10:30:60
-          - var_user_initialization_files_regex=all_dotfiles
       status: automated
     - id: cm-2
       title: Baseline Configuration
@@ -225,10 +218,8 @@ controls:
           - banner_etc_motd_cis
           - coredump_disable_backtraces
           - coredump_disable_storage
-          - dconf_db_up_to_date
           - dconf_gnome_disable_user_list
           - disable_host_auth
-          - enable_authselect
           - file_groupowner_grub2_cfg
           - file_groupowner_user_cfg
           - file_groupownership_sshd_private_key
@@ -279,31 +270,6 @@ controls:
           - sysctl_net_ipv6_conf_default_accept_ra
           - sysctl_net_ipv6_conf_default_accept_redirects
           - sysctl_net_ipv6_conf_default_accept_source_route
-          - cis_banner_text=cis
-          - dconf_login_banner_contents=cis_default
-          - dconf_login_banner_text=cis_banners
-          - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
-          - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
-          - sysctl_net_ipv4_conf_all_log_martians_value=enabled
-          - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
-          - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
-          - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
-          - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
-          - sysctl_net_ipv4_conf_default_log_martians_value=enabled
-          - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
-          - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
-          - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
-          - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
-          - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
-          - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
-          - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
-          - sysctl_net_ipv6_conf_all_forwarding_value=disabled
-          - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
-          - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
-          - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
-          - var_accounts_user_umask=027
-          - var_authselect_profile=sssd
-          - var_sshd_set_login_grace_time=60
       status: automated
     - id: cm-6.1
       title: Automated Management, Application, and Verification
@@ -332,7 +298,6 @@ controls:
       rules:
           - dconf_gnome_disable_autorun
           - file_ownership_var_log_audit_stig
-          - gnome_gdm_disable_xdmcp
           - has_nonlocal_mta
           - kernel_module_cramfs_disabled
           - kernel_module_dccp_disabled
@@ -356,12 +321,10 @@ controls:
           - package_dhcp_removed
           - package_dovecot_removed
           - package_ftp_removed
-          - package_gdm_removed
           - package_httpd_removed
           - package_net-snmp_removed
           - package_nginx_removed
           - package_openldap-clients_removed
-          - package_postfix_installed
           - package_telnet-server_removed
           - package_telnet_removed
           - package_tftp-server_removed
@@ -378,10 +341,8 @@ controls:
           - service_bluetooth_disabled
           - service_cups_disabled
           - service_dnsmasq_disabled
-          - service_nftables_disabled
           - sshd_disable_forwarding
           - wireless_disable_interfaces
-          - var_postfix_inet_interfaces=loopback-only
       status: automated
     - id: cm-7.1
       title: Periodic Review

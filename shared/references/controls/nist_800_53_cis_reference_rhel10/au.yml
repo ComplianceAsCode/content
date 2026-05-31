@@ -22,7 +22,6 @@ controls:
           - auditd_data_retention_action_mail_acct
           - auditd_data_retention_admin_space_left_action
           - auditd_data_retention_space_left_action
-          - ensure_journald_and_rsyslog_not_active_together
           - grub2_audit_backlog_limit_argument
           - journald_disable_forward_to_syslog
           - package_aide_installed
@@ -33,10 +32,6 @@ controls:
           - service_systemd-journal-upload_enabled
           - service_systemd-journald_enabled
           - socket_systemd-journal-remote_disabled
-          - var_audit_backlog_limit=8192
-          - var_auditd_action_mail_acct=root
-          - var_auditd_admin_space_left_action=cis_rhel10
-          - var_auditd_space_left_action=cis_rhel10
       status: automated
     - id: au-2.1
       title: Compilation of Audit Records from Multiple Sources
@@ -113,7 +108,6 @@ controls:
           - audit_rules_usergroup_modification_pamd
           - audit_rules_usergroup_modification_passwd
           - audit_rules_usergroup_modification_shadow
-          - chronyd_run_as_chrony_user
           - chronyd_specify_remote_server
           - directory_permissions_var_log_audit
           - file_groupownership_audit_binaries
@@ -125,8 +119,6 @@ controls:
           - sudo_custom_logfile
           - sysctl_net_ipv4_conf_all_log_martians
           - sysctl_net_ipv4_conf_default_log_martians
-          - sshd_max_auth_tries_value=4
-          - var_multiple_time_servers=rhel
       status: automated
     - id: au-3.1
       title: Additional Audit Information
@@ -160,8 +152,6 @@ controls:
       rules:
           - auditd_data_disk_error_action
           - auditd_data_disk_full_action
-          - var_auditd_disk_error_action=cis_rhel10
-          - var_auditd_disk_full_action=cis_rhel10
       status: automated
     - id: au-5.1
       title: Storage Capacity Warning
@@ -264,8 +254,6 @@ controls:
       rules:
           - auditd_data_retention_max_log_file
           - auditd_data_retention_max_log_file_action
-          - var_auditd_max_log_file=8
-          - var_auditd_max_log_file_action=keep_logs
       status: automated
     - id: au-8.1
       title: Synchronization with Authoritative Time Source
@@ -281,9 +269,6 @@ controls:
           - low
       rules:
           - audit_rules_immutable
-          - file_groupownership_audit_configuration
-          - file_ownership_audit_binaries
-          - file_ownership_audit_configuration
       status: automated
     - id: au-9.1
       title: Hardware Write-once Media
@@ -299,17 +284,14 @@ controls:
       title: Cryptographic Protection
       levels:
           - high
-      rules:
-          - aide_check_audit_tools
-      status: automated
+      rules: []
+      status: pending
     - id: au-9.4
       title: Access by Subset of Privileged Users
       levels:
           - moderate
-      rules:
-          - file_group_ownership_var_log_audit
-          - file_permissions_var_log_audit
-      status: automated
+      rules: []
+      status: pending
     - id: au-9.5
       title: Dual Authorization
       rules: []
@@ -377,7 +359,6 @@ controls:
           - audit_rules_dac_modification_lsetxattr
           - audit_rules_dac_modification_removexattr
           - audit_rules_dac_modification_setxattr
-          - audit_rules_continue_loading
           - audit_rules_execution_chcon
           - audit_rules_file_deletion_events_rename
           - audit_rules_file_deletion_events_renameat
@@ -407,7 +388,6 @@ controls:
           - audit_rules_usergroup_modification_pamd
           - audit_rules_usergroup_modification_passwd
           - audit_rules_usergroup_modification_shadow
-          - audit_sudo_log_events
           - file_permissions_audit_configuration
           - grub2_audit_argument
           - service_auditd_enabled
