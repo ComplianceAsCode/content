@@ -13,6 +13,10 @@
 
 {{{ ansible_instantiate_variables("var_password_pam_retry") }}}
 
+{{% if product == 'sle16' %}}
+{{{ ansible_copy_distro_defaults('/usr/lib/security/pwquality.conf', pwquality_path, rule_title=rule_title) }}}
+{{% endif %}}
+
 {{% if product in ['rhel8', 'rhel9', 'almalinux', 'sle15', 'sle16'] -%}}
 - name: Ensure PAM variable retry is set accordingly
   ansible.builtin.lineinfile:

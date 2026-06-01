@@ -7,7 +7,11 @@
 
 - name: "Set GNOME3 Screensaver Inactivity Timeout"
   community.general.ini_file:
+{{% if product in ['sle15', 'sle16'] %}}
+    dest: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings"
+{{% else %}}
     dest: "/etc/dconf/db/local.d/00-security-settings"
+{{% endif %}}
     section: "org/gnome/desktop/session"
     option: idle-delay
     value: "uint32 {{ inactivity_timeout_value }}"
@@ -15,6 +19,28 @@
     no_extra_spaces: yes
   register: result_ini
 
+{{% if 'ubuntu' in product or product in ["sle15", "sle16"] %}}
+- name: "Prevent user modification of GNOME Screensaver Inactivity Timeout"
+  ansible.builtin.lineinfile:
+{{% if product in ['sle15', 'sle16'] %}}
+    path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
+{{% else %}}
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+{{% endif %}}
+    regexp: '^/org/gnome/desktop/session/idle-delay$'
+    line: '/org/gnome/desktop/session/idle-delay'
+    create: yes
+  register: result_lineinfile
+{{% endif %}}
+
 - name: Dconf Update
   ansible.builtin.command: dconf update
+{{% if 'ubuntu' in product or product in ["sle15", "sle16"] %}}
+  when: result_ini is changed or result_lineinfile is changed
+{{% else %}}
   when: result_ini is changed
+{{% endif %}}
+
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ ansible_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}

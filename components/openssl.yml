@@ -4,5 +4,7 @@ name: openssl
 packages:
 - openssl
 rules:
+- configure_openssl_crypto_policy
+- configure_openssl_tls_crypto_policy
 - only_allow_dod_certs
 - only_allow_specific_certs

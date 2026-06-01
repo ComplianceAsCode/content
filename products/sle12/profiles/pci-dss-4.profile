@@ -95,6 +95,7 @@ selections:
     -  '!use_pam_wheel_for_su'
     -  use_pam_wheel_group_for_su
     -  var_pam_wheel_group_for_su=cis
+    - '!package_postfix_installed'
     # Following rules once had a prodtype incompatible with the sle12 product
     - '!set_firewalld_default_zone'
     - '!accounts_password_pam_dcredit'

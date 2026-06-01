@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
       - name: Build product
         run: ./build_product fedora --debug
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         with:
           name: ${{ env.DATASTREAM }}
           path: build/${{ env.DATASTREAM }}
@@ -49,7 +49,7 @@ jobs:
           sudo chown root:root /usr/local/bin/oscap-ssh
           rm -f oscap-ssh
       - name: Get Datastream
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v4
         with:
           name: ${{ env.DATASTREAM }}
       - name: Check One Rule

@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on /etc/sysconfig/sshd File'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/sysconfig/sshd", perms="0640") }}}
+    {{{ describe_file_permissions(file=sshd_sysconfig_file, perms="0640") }}}
 
 rationale: |-
     The <tt>/etc/sysconfig/sshd</tt> file contains configuration options for the SSH daemon.
@@ -15,19 +15,19 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-89270-3
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/sysconfig/sshd", perms="-rw-r-----") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file=sshd_sysconfig_file, perms="-rw-r-----") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/sysconfig/sshd", perms="-rw-r-----") }}}
+    {{{ ocil_file_permissions(file=sshd_sysconfig_file, perms="-rw-r-----") }}}
 
-fixtext: '{{{ fixtext_file_permissions(file="/etc/sysconfig/sshd", mode="0640") }}}'
+fixtext: '{{{ fixtext_file_permissions(file=sshd_sysconfig_file, mode="0640") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/sysconfig/sshd", mode="0640") }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file=sshd_sysconfig_file, mode="0640") }}}'
 
 template:
     name: file_permissions
     vars:
-        filepath: /etc/sysconfig/sshd
+        filepath: '{{{ sshd_sysconfig_file }}}'
         filemode: '0640'
         allow_stricter_permissions: "true"
 

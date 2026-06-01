@@ -21,10 +21,6 @@ extends: e8
 selections:
     - ism_o:all:top_secret
 
-    # Setting any nondefault, so a specific driver is expected
-    # using the same as in STIG
-    - var_smartcard_drivers=cac
-
     # ISM 0418,1055,1402
     # Rule is for authconfig not used in
     - "!enable_ldap_client"
@@ -71,20 +67,41 @@ selections:
     - '!usbguard_allow_hid_and_hub'
     - '!sshd_allow_only_protocol2'
     - '!package_ypbind_removed'
-    - '!package_ypbind_removed'
     - '!package_xinetd_removed'
     - '!ensure_redhat_gpgkey_installed'
     - '!package_sequoia-sq_installed'
-    - '!audit_rules_usergroup_modification_opasswd'
-    - '!audit_rules_usergroup_modification_gshadow'
-    - '!audit_rules_usergroup_modification_passwd'
-    - '!audit_rules_usergroup_modification_group'
-    - '!audit_rules_usergroup_modification_shadow'
     - '!service_xinetd_disabled'
     - '!package_talk_removed'
     - '!package_talk-server_removed'
     - '!package_rsh-server_removed'
     - '!package_rsh_removed'
-
-    - "var_password_hashing_algorithm_pam=sha512"
-    - "enable_dracut_fips_module"
+    - '!accounts_password_pam_ocredit'
+    - '!audit_rules_unsuccessful_file_modification_truncate'
+    - '!set_password_hashing_algorithm_systemauth'
+    - '!audit_rules_unsuccessful_file_modification_ftruncate'
+    - '!audit_rules_unsuccessful_file_modification_creat'
+    - '!sebool_kerberos_enabled'
+    - '!accounts_password_pam_minclass'
+    - '!dnf-automatic_apply_updates'
+    - '!set_password_hashing_algorithm_passwordauth'
+    - '!chronyd_or_ntpd_specify_multiple_servers'
+    - '!sebool_authlogin_radius'
+    - '!configure_kerberos_crypto_policy'
+    - '!set_password_hashing_algorithm_libuserconf'
+    - '!audit_rules_unsuccessful_file_modification_openat'
+    - '!sssd_enable_smartcards'
+    - '!accounts_password_pam_ucredit'
+    - '!package_opensc_installed'
+    - '!accounts_password_pam_lcredit'
+    - '!sebool_authlogin_nsswitch_use_ldap'
+    - '!chronyd_configure_pool_and_server'
+    - '!set_password_hashing_algorithm_logindefs'
+    - '!service_pcscd_enabled'
+    - '!package_pcsc-lite_installed'
+    - '!audit_rules_unsuccessful_file_modification_open'
+    - '!configure_opensc_card_drivers'
+    - '!accounts_password_pam_dcredit'
+    - '!secure_boot_enabled'
+    - '!audit_rules_unsuccessful_file_modification_open_by_handle_at'
+    - '!accounts_password_minlen_login_defs'
+    - '!configure_ssh_crypto_policy'

@@ -3,4 +3,4 @@
 
 source common.sh
 
-echo "Ciphers aes192-ctr,aes128-ctr" >> /etc/ssh/sshd_config
+echo "Ciphers aes128-ctr" >> /etc/ssh/sshd_config

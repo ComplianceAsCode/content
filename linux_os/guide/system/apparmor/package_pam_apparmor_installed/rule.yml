@@ -25,9 +25,7 @@ references:
     stigid@sle12: SLES-12-010600
     stigid@sle15: SLES-15-010390
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="pam_apparmor") }}}'
+{{{ complete_ocil_entry_package_installed("pam_apparmor") }}}
 
 template:
     name: package_installed

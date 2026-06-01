@@ -10,7 +10,7 @@ description: |-
     {{% if 'sle' in product or 'slmicro' in product%}}
     password authentication configurations in <tt>/etc/pam.d/</tt>
     {{% elif 'ubuntu' in product %}}
-    <tt>/etc/pam.d/common-password</tt>
+    <tt>/etc/pam.d/common-auth</tt> and <tt>/etc/pam.d/common-password</tt>
     {{% else %}}
     <tt>/etc/pam.d/system-auth</tt> and
     <tt>/etc/pam.d/password-auth</tt>
@@ -63,7 +63,7 @@ ocil: |-
     {{% if 'sle' in product or 'slmicro' in product %}}
     <pre>$ grep pam_unix.so /etc/pam.d/* | grep nullok</pre>
     {{% elif 'ubuntu' in product %}}
-    <pre>grep nullok /etc/pam.d/common-password</pre>
+    <pre>grep nullok /etc/pam.d/common-auth /etc/pam.d/common-password</pre>
     {{% else %}}
     <pre>$ grep nullok /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
     {{% endif %}}
@@ -72,10 +72,10 @@ ocil: |-
     prevent logins with empty passwords.
 
 fixtext: |-
-    Configure {{{ full_name }}} in the {{% if 'ubuntu' in product %}}common-password file {{% else %}}system-auth and password-auth files {{% endif %}} to not allow null
+    Configure {{{ full_name }}} in the {{% if 'ubuntu' in product %}}common-auth and common-password files {{% else %}}system-auth and password-auth files {{% endif %}} to not allow null
     passwords.
     {{% if 'ubuntu' in product %}}
-    Remove any instances of the "nullok" option in "/etc/pam.d/common-password"
+    Remove any instances of the "nullok" option in "/etc/pam.d/common-auth" and "/etc/pam.d/common-password"
     {{% else %}}
     Remove any instances of the "nullok" option in the "/etc/pam.d/system-auth" and
     "/etc/pam.d/password-auth" files
@@ -85,7 +85,7 @@ fixtext: |-
     Note: Manual changes to the listed file may be overwritten by the "authselect" program.
 
 srg_requirement: |-
-    '{{{ full_name }}} must not allow blank or null passwords in the {{% if 'ubuntu' in product %}} common-password file.{{% else %}} system-auth file nor
+    '{{{ full_name }}} must not allow blank or null passwords in the {{% if 'ubuntu' in product %}} common-auth and common-password files.{{% else %}} system-auth file nor
     password-auth. {{% endif %}}'
 
 warnings:

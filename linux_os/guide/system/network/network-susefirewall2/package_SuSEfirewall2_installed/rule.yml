@@ -18,9 +18,7 @@ references:
     srg: SRG-OS-000420-GPOS-00186,SRG-OS-000096-GPOS-00050
     stigid@sle12: SLES-12-030030
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="SuSEfirewall2") }}}'
+{{{ complete_ocil_entry_package_installed("SuSEfirewall2") }}}
 
 template:
     name: package_installed

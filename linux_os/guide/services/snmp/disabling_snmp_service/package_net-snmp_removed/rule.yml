@@ -33,9 +33,9 @@ references:
     cis@sle15: 2.2.15
 
 {{% if pkg_manager != "apt_get" %}}
-{{{ complete_ocil_entry_package(package="net-snmp") }}}
+  {{{- complete_ocil_entry_package_removed("net-snmp") }}}
 {{% else %}}
-{{{ complete_ocil_entry_package(package="snmp") }}}
+  {{{- complete_ocil_entry_package_removed("snmp") }}}
 {{% endif %}}
 
 template:

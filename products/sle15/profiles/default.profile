@@ -27,7 +27,6 @@ selections:
     - sudo_vdsm_nopasswd
     - package_mcstrans_removed
     - fapolicyd_prevent_home_folder_access
-    - package_postfix_installed
     - accounts_password_pam_unix_rounds_password_auth
     - audit_privileged_commands_poweroff
     - configure_etc_hosts_deny

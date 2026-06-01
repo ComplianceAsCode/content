@@ -40,9 +40,9 @@ ocil_clause: |-
     the "IPsec" service is active and the ipsec configuration file does not contain does not contain <tt>include /etc/crypto-policies/back-ends/libreswan.config</tt>
 
 ocil: |-
-    Verify that the IPSec service uses the system crypto policy.
+    Verify that the IPsec service uses the system crypto policy.
 
-    If the ipsec service is not installed is not applicable.
+    If the IPsec service is not installed, this requirement is not applicable.
 
     Check to see if the "IPsec" service is active with the following command:
 
@@ -67,4 +67,4 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
 
-platform: system_with_kernel
+platform: system_with_kernel and package[libreswan]

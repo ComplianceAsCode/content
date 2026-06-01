@@ -23,3 +23,5 @@ ocil: |-
     <pre># grep -Pi -- '^\h*install_weak_deps\h*=\h*(0|false|no)\b' /etc/dnf/dnf.conf</pre>
     The output should return the following:
     <pre>install_weak_deps = 0</pre>
+
+platform: package[dnf]

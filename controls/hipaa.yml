@@ -145,6 +145,8 @@ controls:
           - auditd_data_retention_flush
           - coreos_audit_option
           - grub2_audit_argument
+          - grub2_audit_backlog_limit_argument
+          - var_audit_backlog_limit=8192
           - package_audit-audispd-plugins_installed
           - package_audit_installed
           - service_auditd_enabled
@@ -1248,6 +1250,7 @@ controls:
           - auditd_data_retention_max_log_file_action
           - auditd_data_retention_max_log_file_action_stig
           - auditd_data_retention_space_left_action
+          - package_postfix_installed
           - package_rsyslog_installed
           - service_rsyslog_enabled
           - partition_for_var_log_audit

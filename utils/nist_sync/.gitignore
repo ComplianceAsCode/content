@@ -1,0 +1,36 @@
+# Downloaded OSCAL data files
+data/nist_800_53_rev5_*.json
+
+# Generated files (regenerated from source data)
+data/variable_to_products.json
+
+# Generated profile files (derived from CIS profiles)
+../../products/rhel8/profiles/cis_nist.profile
+../../products/rhel9/profiles/cis_nist.profile
+../../products/rhel10/profiles/cis_nist.profile
+
+# Note: data/cis_nist_mappings.json is COMMITTED (not ignored)
+# It's only regenerated when CIS benchmark PDFs are updated
+
+# CIS Benchmark documents (large binary files)
+*.pdf
+
+# Markdown conversions of PDFs
+CIS_Red_Hat_Enterprise_Linux_*.md
+
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+*.tmp
+*.bak
+
+# Documentation (keep only workflow docs)
+!CIS_NIST_WORKFLOW.md
+!README.md
+
+# Auto-generated CIS-NIST profiles (derived from CIS profiles)
+products/*/profiles/cis_nist.profile

@@ -2,7 +2,7 @@
 policy: Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG)
 title: Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG)
 id: stig_ubuntu2204
-version: V2R3
+version: V2R8
 source: https://www.cyber.mil/stigs/downloads/
 
 levels:
@@ -14,6 +14,14 @@ reference_type: stigid
 product: ubuntu2204
 
 controls:
+    - id: UBTU-22-211000
+      title: Ubuntu 22.04 LTS must be a vendor-supported release.
+      levels:
+          - high
+      rules:
+          - installed_OS_is_vendor_supported
+      status: automated
+
     - id: UBTU-22-211015
       title: Ubuntu 22.04 LTS must disable the x86 Ctrl-Alt-Delete key sequence.
       levels:
@@ -108,6 +116,7 @@ controls:
       levels:
           - low
       rules:
+          - var_timesync_service=chronyd
           - package_chrony_installed
       status: automated
 
@@ -141,6 +150,15 @@ controls:
           - high
       rules:
           - package_telnetd_removed
+      status: automated
+
+    - id: UBTU-22-215040
+      title: Ubuntu 22.04 LTS must not have the "nfs-kernel-server" package installed.
+      levels:
+          - medium
+      rules:
+          - package_nfs-common_removed
+          - package_nfs-kernel-server_removed
       status: automated
 
     - id: UBTU-22-231010
@@ -474,6 +492,42 @@ controls:
           - sysctl_net_ipv4_tcp_syncookies
       status: automated
 
+    - id: UBTU-22-254010
+      title: Ubuntu 22.04 LTS must have the "SSSD" package installed.
+      levels:
+          - medium
+      rules:
+          - package_nss_sss_installed
+          - package_pam_sss_installed
+          - package_sssd_installed
+      status: automated
+
+    - id: UBTU-22-254015
+      title: Ubuntu 22.04 LTS must use the "SSSD" package for multifactor authentication services.
+      levels:
+          - medium
+      rules:
+          - service_sssd_enabled
+      status: automated
+
+    - id: UBTU-22-254020
+      title: Ubuntu 22.04 LTS must ensure SSSD performs certificate path validation, including revocation checking, against a trusted anchor for PKI-based authentication.
+      levels:
+          - medium
+      rules:
+          - sssd_enable_pam_services
+          - sssd_enable_smartcards
+          - sssd_certification_path_trust_anchor
+      status: automated
+
+    - id: UBTU-22-254030
+      title: Ubuntu 22.04 LTS must map the authenticated identity to the user or group account for PKI-based authentication.
+      levels:
+          - medium
+      rules:
+          - sssd_enable_user_cert
+      status: automated
+
     - id: UBTU-22-255010
       title: Ubuntu 22.04 LTS must have SSH installed.
       levels:
@@ -498,6 +552,7 @@ controls:
           - medium
       rules:
           - remote_login_banner_text=dod_banners
+          - remote_login_banner_contents=dod_default
           - sshd_enable_warning_banner_net
           - banner_etc_issue_net
       status: automated
@@ -600,7 +655,8 @@ controls:
       levels:
           - medium
       rules:
-          - login_banner_text=dod_banners
+          - dconf_login_banner_text=dod_banners
+          - dconf_login_banner_contents=dod_default
           - dconf_gnome_login_banner_text
       status: automated
 
@@ -790,7 +846,15 @@ controls:
       levels:
           - medium
       rules:
-          - sudo_require_authentication
+          - sudo_remove_no_authenticate
+      status: automated
+
+    - id: UBTU-22-432011
+      title: Ubuntu 22.04 LTS must require users to provide a password for privilege escalation.
+      levels:
+          - medium
+      rules:
+          - sudo_remove_nopasswd
       status: automated
 
     - id: UBTU-22-432015
@@ -886,7 +950,9 @@ controls:
       levels:
           - medium
       rules:
-          - set_password_hashing_algorithm_systemauth
+          - var_password_pam_unix_rounds=100000
+          - set_password_hashing_algorithm_auth_stig
+          - accounts_password_pam_unix_rounds_password_auth
       status: automated
 
     - id: UBTU-22-611060
@@ -1260,6 +1326,15 @@ controls:
           - audit_rules_privileged_commands_crontab
       status: automated
 
+    - id: UBTU-22-654041
+      title: Ubuntu 22.04 LTS must audit any script or executable called by cron as root or by any privileged user.
+      levels:
+          - medium
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
+      status: automated
+
     - id: UBTU-22-654045
       title: Ubuntu 22.04 LTS must generate audit records for successful/unsuccessful attempts to use
           the fdisk command.
@@ -1598,6 +1673,14 @@ controls:
           - medium
       rules:
           - audit_rules_sudoers
+      status: automated
+
+    - id: UBTU-22-654224
+      title: The operating system must restrict privilege elevation to authorized personnel.
+      levels:
+          - medium
+      rules:
+          - sudo_restrict_privilege_elevation_to_authorized
       status: automated
 
     - id: UBTU-22-654225

@@ -1,8 +1,9 @@
 # platform = Oracle Linux 8,Red Hat Enterprise Linux 8,multi_platform_fedora
 
 {{{ bash_instantiate_variables("sshd_approved_ciphers") }}}
+{{%- set openssh_server_policy_file = openssh_server_crypto_policy_config_file -%}}
 
-CONF_FILE=/etc/crypto-policies/back-ends/opensshserver.config
+CONF_FILE="{{{ openssh_server_policy_file }}}"
 LOCAL_CONF_DIR=/etc/crypto-policies/local.d
 LOCAL_CONF_FILE=${LOCAL_CONF_DIR}/opensshserver-ssg.config
 correct_value="-oCiphers=${sshd_approved_ciphers}"

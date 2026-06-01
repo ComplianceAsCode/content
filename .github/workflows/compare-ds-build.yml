@@ -49,7 +49,7 @@ jobs:
                 with:
                     path: 'output.json'
                     prop_path: 'product'
-            -   name: Build product ${{ github.base_ref }} (${{ steps.fork_point.outputs.FORK_POINT }})
+            -   name: Build product PR ${{ github.event.pull_request.head.sha }}
                 if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
                 run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
             -   name: Create Artifact
@@ -61,9 +61,9 @@ jobs:
                     tar -czvf artifacts.tar.gz artifacts
             -   name: Upload artifacts
                 if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+                uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
                 with:
-                    name: pr-artifacts-${{ github.event.pull_request.head.sha }}
+                    name: pr-artifacts
                     retention-days: 1
                     path: artifacts.tar.gz
             -   name: Save PR info
@@ -74,7 +74,7 @@ jobs:
                     echo "${{ github.base_ref }}" > pr-info/base-branch.txt
                     echo "${{ steps.fork_point.outputs.FORK_POINT }}" > pr-info/fork-point.txt
             -   name: Upload PR info
-                uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+                uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
                 with:
                     name: pr-info
                     retention-days: 1

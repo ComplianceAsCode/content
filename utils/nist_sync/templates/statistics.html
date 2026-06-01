@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer - Statistics</title>
+    <!-- SHARED_STYLES_PLACEHOLDER -->
+    <style>
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            margin-bottom: 30px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .comparison-table th {
+            text-align: left;
+            background: #f6f8fa;
+        }
+
+        .comparison-table td {
+            padding: 12px 10px;
+        }
+
+        .trend-indicator {
+            font-size: 12px;
+            color: #586069;
+        }
+
+        .percentage-bar {
+            display: flex;
+            height: 24px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #e1e4e8;
+        }
+
+        .percentage-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .baseline-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .baseline-card {
+            background: white;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .baseline-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: #586069;
+        }
+
+        .metric-value {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- SHARED_HEADER_PLACEHOLDER -->
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Detailed Statistics</h2>
+            <p>Comprehensive coverage metrics and trends</p>
+        </div>
+
+        <!-- Current Product Overview -->
+        <div class="card">
+            <h3 id="product-title">Product Overview</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label">Total Controls</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-with-rules" style="color: #28a745;">0</div>
+                    <div class="stat-label">With Rules</div>
+                    <div class="trend-indicator" id="with-rules-percent">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-without-rules" style="color: #d73a49;">0</div>
+                    <div class="stat-label">Without Rules</div>
+                    <div class="trend-indicator" id="without-rules-percent">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-automated" style="color: #28a745;">0</div>
+                    <div class="stat-label">Automated</div>
+                    <div class="trend-indicator" id="automated-percent">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-manual" style="color: #0366d6;">0</div>
+                    <div class="stat-label">Manual</div>
+                    <div class="trend-indicator" id="manual-percent">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-pending" style="color: #ffd33d;">0</div>
+                    <div class="stat-label">Pending</div>
+                    <div class="trend-indicator" id="pending-percent">0%</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h4 style="margin-bottom: 15px;">Implementation Status Distribution</h4>
+                <div class="percentage-bar" id="status-bar">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Baseline Level Breakdown -->
+        <div class="card">
+            <h3>Baseline Level Breakdown</h3>
+            <div class="baseline-breakdown" id="baseline-breakdown">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Product Comparison -->
+        <div class="card">
+            <h3>Cross-Product Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Total</th>
+                        <th>With Rules</th>
+                        <th>Without Rules</th>
+                        <th>Automated</th>
+                        <th>Manual</th>
+                        <th>Pending</th>
+                        <th>Coverage %</th>
+                    </tr>
+                </thead>
+                <tbody id="comparison-tbody">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Family Statistics -->
+        <div class="card">
+            <h3>Statistics by Control Family</h3>
+            <table class="comparison-table" id="family-stats-table">
+                <thead>
+                    <tr>
+                        <th>Family</th>
+                        <th>Total</th>
+                        <th>Automated</th>
+                        <th>Manual</th>
+                        <th>Pending</th>
+                        <th>Gaps</th>
+                        <th>Coverage %</th>
+                    </tr>
+                </thead>
+                <tbody id="family-stats-tbody">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+
+        function renderStatistics() {
+            if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
+                document.querySelector('.container').innerHTML =
+                    '<div class="empty-state"><h3>Error loading data</h3></div>';
+                return;
+            }
+
+            const product = CURRENT_PRODUCT;
+            const stats = EMBEDDED_DATA.statistics[product];
+            const controls = EMBEDDED_DATA.products[product]?.controls || [];
+
+            // Update product title
+            document.getElementById('product-title').textContent =
+                `${product.toUpperCase()} Overview`;
+
+            // Update overview statistics
+            renderOverviewStats(stats);
+
+            // Render baseline breakdown
+            renderBaselineBreakdown(controls);
+
+            // Render product comparison
+            renderProductComparison();
+
+            // Render family statistics
+            renderFamilyStatistics(controls);
+        }
+
+        function renderOverviewStats(stats) {
+            const total = stats.total;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-with-rules').textContent = stats.with_rules;
+            document.getElementById('stat-without-rules').textContent = stats.without_rules;
+            document.getElementById('stat-automated').textContent = stats.automated;
+            document.getElementById('stat-manual').textContent = stats.manual;
+            document.getElementById('stat-pending').textContent = stats.pending;
+
+            // Update percentages
+            document.getElementById('with-rules-percent').textContent =
+                `${total > 0 ? Math.round((stats.with_rules / total) * 100) : 0}% of total`;
+            document.getElementById('without-rules-percent').textContent =
+                `${total > 0 ? Math.round((stats.without_rules / total) * 100) : 0}% of total`;
+            document.getElementById('automated-percent').textContent =
+                `${total > 0 ? Math.round((stats.automated / total) * 100) : 0}% of total`;
+            document.getElementById('manual-percent').textContent =
+                `${total > 0 ? Math.round((stats.manual / total) * 100) : 0}% of total`;
+            document.getElementById('pending-percent').textContent =
+                `${total > 0 ? Math.round((stats.pending / total) * 100) : 0}% of total`;
+
+            // Render status distribution bar
+            const automatedPct = total > 0 ? (stats.automated / total) * 100 : 0;
+            const manualPct = total > 0 ? (stats.manual / total) * 100 : 0;
+            const pendingPct = total > 0 ? (stats.pending / total) * 100 : 0;
+
+            document.getElementById('status-bar').innerHTML = `
+                <div class="percentage-segment" style="width: ${automatedPct}%; background: #28a745;">
+                    ${automatedPct > 10 ? Math.round(automatedPct) + '%' : ''}
+                </div>
+                <div class="percentage-segment" style="width: ${manualPct}%; background: #0366d6;">
+                    ${manualPct > 10 ? Math.round(manualPct) + '%' : ''}
+                </div>
+                <div class="percentage-segment" style="width: ${pendingPct}%; background: #ffd33d; color: #24292e;">
+                    ${pendingPct > 10 ? Math.round(pendingPct) + '%' : ''}
+                </div>
+            `;
+        }
+
+        function renderBaselineBreakdown(controls) {
+            const baselines = {
+                low: { total: 0, automated: 0, manual: 0, pending: 0, gaps: 0 },
+                moderate: { total: 0, automated: 0, manual: 0, pending: 0, gaps: 0 },
+                high: { total: 0, automated: 0, manual: 0, pending: 0, gaps: 0 }
+            };
+
+            controls.forEach(control => {
+                (control.levels || []).forEach(level => {
+                    if (baselines[level]) {
+                        baselines[level].total++;
+                        if (control.is_automated) baselines[level].automated++;
+                        else if (control.is_manual) baselines[level].manual++;
+                        else baselines[level].pending++;
+                        if (!control.has_rules) baselines[level].gaps++;
+                    }
+                });
+            });
+
+            const container = document.getElementById('baseline-breakdown');
+            container.innerHTML = ['high', 'moderate', 'low'].map(level => {
+                const stats = baselines[level];
+                const coverage = stats.total > 0 ? Math.round((stats.automated / stats.total) * 100) : 0;
+
+                return `
+                    <div class="baseline-card">
+                        <div class="baseline-title">${level.toUpperCase()} Baseline</div>
+                        <div class="metric-row">
+                            <span class="metric-label">Total Controls</span>
+                            <span class="metric-value">${stats.total}</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Automated</span>
+                            <span class="metric-value" style="color: #28a745;">${stats.automated}</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Manual</span>
+                            <span class="metric-value" style="color: #0366d6;">${stats.manual}</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Pending</span>
+                            <span class="metric-value" style="color: #ffd33d;">${stats.pending}</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Gaps</span>
+                            <span class="metric-value" style="color: #d73a49;">${stats.gaps}</span>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${coverage}%;">${coverage}%</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderProductComparison() {
+            const tbody = document.getElementById('comparison-tbody');
+            tbody.innerHTML = '';
+
+            Object.keys(EMBEDDED_DATA.products).forEach(product => {
+                const stats = EMBEDDED_DATA.statistics[product];
+                const coverage = stats.total > 0 ? Math.round((stats.with_rules / stats.total) * 100) : 0;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${product.toUpperCase()}</strong></td>
+                    <td>${stats.total}</td>
+                    <td style="color: #28a745;">${stats.with_rules}</td>
+                    <td style="color: #d73a49;">${stats.without_rules}</td>
+                    <td><span class="badge badge-automated">${stats.automated}</span></td>
+                    <td><span class="badge badge-manual">${stats.manual}</span></td>
+                    <td><span class="badge badge-pending">${stats.pending}</span></td>
+                    <td><strong>${coverage}%</strong></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderFamilyStatistics(controls) {
+            const familyStats = {};
+
+            EMBEDDED_DATA.families.forEach(family => {
+                familyStats[family.id] = {
+                    name: family.name,
+                    total: 0,
+                    automated: 0,
+                    manual: 0,
+                    pending: 0,
+                    gaps: 0
+                };
+            });
+
+            controls.forEach(control => {
+                const familyId = control.id.split('-')[0];
+                const stats = familyStats[familyId] || familyStats['other'];
+
+                stats.total++;
+                if (control.is_automated) stats.automated++;
+                else if (control.is_manual) stats.manual++;
+                else stats.pending++;
+                if (!control.has_rules) stats.gaps++;
+            });
+
+            const tbody = document.getElementById('family-stats-tbody');
+            tbody.innerHTML = '';
+
+            Object.entries(familyStats)
+                .filter(([_, stats]) => stats.total > 0)
+                .sort((a, b) => b[1].total - a[1].total)
+                .forEach(([familyId, stats]) => {
+                    const coverage = stats.total > 0 ? Math.round(((stats.total - stats.gaps) / stats.total) * 100) : 0;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${stats.name}</strong></td>
+                        <td>${stats.total}</td>
+                        <td style="color: #28a745;">${stats.automated}</td>
+                        <td style="color: #0366d6;">${stats.manual}</td>
+                        <td style="color: #ffd33d;">${stats.pending}</td>
+                        <td style="color: #d73a49;">${stats.gaps}</td>
+                        <td><strong>${coverage}%</strong></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', renderStatistics);
+    </script>
+</body>
+</html>

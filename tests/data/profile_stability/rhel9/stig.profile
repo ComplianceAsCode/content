@@ -142,6 +142,7 @@ auditd_overflow_action
 auditd_write_logs
 banner_etc_issue
 chronyd_client_only
+chronyd_configure_local_socket
 chronyd_no_chronyc_network
 chronyd_or_ntpd_set_maxpoll
 chronyd_server_directive
@@ -170,6 +171,8 @@ dconf_gnome_screensaver_lock_enabled
 dconf_gnome_screensaver_mode_blank
 dconf_gnome_screensaver_user_locks
 dconf_gnome_session_idle_user_locks
+dconf_login_banner_contents=dod_default
+dconf_login_banner_text=dod_banners
 dir_group_ownership_library_dirs
 dir_ownership_library_dirs
 dir_permissions_library_dirs
@@ -186,8 +189,6 @@ disable_host_auth
 disable_users_coredumps
 disallow_bypass_password_sudo
 enable_authselect
-enable_dracut_fips_module
-enable_fips_mode
 encrypt_partitions
 ensure_epel_repos_disabled
 ensure_gpgcheck_globally_activated
@@ -304,6 +305,7 @@ kernel_module_sctp_disabled
 kernel_module_tipc_disabled
 kernel_module_usb-storage_disabled
 libreswan_approved_tunnels
+login_banner_contents=dod_default
 login_banner_text=dod_banners
 logind_session_timeout
 mount_option_boot_efi_nosuid

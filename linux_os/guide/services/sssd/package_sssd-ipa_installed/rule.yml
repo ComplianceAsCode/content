@@ -17,10 +17,8 @@ identifiers:
 
 references:
     srg: SRG-OS-000480-GPOS-00227
-    
-ocil_clause: 'the package is not installed'
 
-ocil: '{{{ ocil_package(package="sssd-ipa") }}}'
+{{{ complete_ocil_entry_package_installed("sssd-ipa") }}}
 
 template:
     name: package_installed

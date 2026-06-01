@@ -4,6 +4,7 @@ documentation_complete: true
 title: 'Configure System Cryptography Policy'
 
 description: |-
+    {{% if product != "hummingbird" -%}}
     To configure the system cryptography policy to use ciphers only from the <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>
     {{% if product != "rhcos4" -%}}
     policy, run the following command:
@@ -41,6 +42,7 @@ description: |-
     nodes labeled with the "master" role.
     </p>
     {{{ machineconfig_description_footer() | indent(4) }}}
+    {{% endif -%}}
     {{% endif -%}}
     The rule checks if settings for selected crypto policy are configured as expected. Configuration files in the <tt>/etc/crypto-policies/back-ends</tt> are either symlinks to correct files provided by Crypto-policies package or they are regular files in case crypto policy customizations are applied.
     Crypto policies may be customized by crypto policy modules, in which case it is delimited from the base policy using a colon.
@@ -86,8 +88,10 @@ ocil: |-
     Outputs of two previous commands should match.
 
 warnings:
+    {{% if product != "hummingbird" -%}}
     - general: |-
         The system needs to be rebooted for these changes to take effect.
+    {{% endif -%}}
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes
         FIPS-140 certifications.

@@ -17,9 +17,7 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-89184-6
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="pam") }}}'
+{{{ complete_ocil_entry_package_installed("pam") }}}
 
 template:
     name: package_installed

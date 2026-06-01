@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_debian
+# platform = multi_platform_debian,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low

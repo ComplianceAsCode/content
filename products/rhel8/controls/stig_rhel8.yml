@@ -2,7 +2,7 @@
 policy: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 title: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 id: stig_rhel8
-version: V2R6
+version: V2R7
 source: https://www.cyber.mil/stigs/downloads
 reference_type: stigid
 product: rhel8
@@ -67,6 +67,9 @@ controls:
           - var_auditd_disk_full_action=rhel8
           - var_sssd_certificate_verification_digest_function=sha1
           - login_banner_text=dod_banners
+          - login_banner_contents=dod_default
+          - dconf_login_banner_text=dod_banners
+          - dconf_login_banner_contents=dod_default
           - var_authselect_profile=sssd
           - var_multiple_time_servers=stig
           - var_time_service_set_maxpoll=18_hours
@@ -2118,6 +2121,7 @@ controls:
       title: RHEL 8 must disable network management of the chrony daemon.
       rules:
           - chronyd_no_chronyc_network
+          - chronyd_configure_local_socket
       status: automated
 
     - id: RHEL-08-040000

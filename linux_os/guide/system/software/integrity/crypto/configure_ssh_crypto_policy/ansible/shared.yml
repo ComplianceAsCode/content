@@ -6,6 +6,6 @@
 
 - name: "{{{ rule_title }}}"
   ansible.builtin.lineinfile:
-    dest: /etc/sysconfig/sshd
+    dest: '{{{ sshd_sysconfig_file }}}'
     state: absent
     regexp: (?i)^\s*CRYPTO_POLICY.*$

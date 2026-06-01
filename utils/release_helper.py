@@ -242,10 +242,10 @@ def create_repo_milestone(repo, name) -> None:
             f'Stabilization phase starts on {formatted_date_stabilization}')
         try:
             repo.create_milestone(
-                title=name, description=milestone_description, due_on=estimated_release_date)
+                title=name, description=milestone_description, due_on=future_release_date)
             print(f'Milestone {name} successfully created with the following information:')
             print(f'Description: {milestone_description}')
-            print(f'Due on: {estimated_release_date}')
+            print(f'Due on: {future_release_date}')
         except Exception as e:
             print(f'Error: {e}')
             exit(1)

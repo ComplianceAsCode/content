@@ -1,15 +1,15 @@
 documentation_complete: true
 
 {{% if 'ubuntu' in product %}}
-{{% set package_name = "apache2" %}}
+  {{%- set package = "apache2" %}}
 {{% else %}}
-{{% set package_name = "httpd" %}}
+  {{%- set package = "httpd" %}}
 {{% endif %}}
 
-title: 'Uninstall {{{ package_name }}} Package'
+title: 'Uninstall {{{ package }}} Package'
 
 description: |-
-    {{{ describe_package_remove(package=package_name) }}}
+    {{{ describe_package_remove(package=package) }}}
 
 rationale: |-
     If there is no need to make the web server software available,
@@ -36,9 +36,9 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
-{{{ complete_ocil_entry_package(package=package_name) }}}
+{{{ complete_ocil_entry_package_removed(package=package) }}}
 
 template:
     name: package_removed
     vars:
-        pkgname: {{{ package_name }}}
+        pkgname: {{{ package }}}

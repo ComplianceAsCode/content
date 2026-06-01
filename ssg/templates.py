@@ -35,7 +35,8 @@ LANGUAGES = {
     "puppet": TemplatingLang("puppet", ".pp",           TemplateType.REMEDIATION, "puppet"),
     "sce-bash": TemplatingLang("sce-bash", ".sh",       TemplateType.CHECK,       "sce"),
     "kickstart": TemplatingLang("kickstart", ".cfg",    TemplateType.REMEDIATION, "kickstart"),
-    "bootc": TemplatingLang("bootc", ".bo",             TemplateType.REMEDIATION, "bootc")
+    "bootc": TemplatingLang("bootc", ".bo",             TemplateType.REMEDIATION, "bootc"),
+    "hummingbird": TemplatingLang("hummingbird", ".sh", TemplateType.REMEDIATION, "hummingbird")
 }
 
 PREPROCESSING_FILE_NAME = "template.py"

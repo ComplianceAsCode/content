@@ -18,9 +18,7 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-89186-1
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="authselect") }}}'
+{{{ complete_ocil_entry_package_installed("authselect") }}}
 
 template:
     name: package_installed

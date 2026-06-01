@@ -61,6 +61,7 @@ selections:
     - '!sshd_disable_kerb_auth'
     - '!sshd_disable_gssapi_auth'
     - '!service_rlogin_disabled'
+    - '!configure_ssh_crypto_policy'
 
     # authselect is enabled by default
     - '!enable_authselect'

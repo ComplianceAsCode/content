@@ -1,3 +1,6 @@
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set sshd_base_dir = sshd_config_base_dir -%}}
 <def-group>
   <definition class="compliance" id="sshd_set_idle_timeout" version="1">
     {{{ oval_metadata("The SSH idle timeout interval should be set to an
@@ -53,7 +56,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_sshd_idle_timeout" version="2">
-    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -67,7 +70,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_sshd_idle_timeout_config_dir" version="2">
-    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
@@ -76,7 +79,7 @@
 
   {{%- if product in ["ol8", "ol9"] %}}
   <ind:textfilecontent54_object id="obj_sshd_include_value_sshd_idle_timeout" version="1">
-    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">(?i)^\s*Include\s+(.*)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -84,7 +87,7 @@
   <local_variable id="var_sshd_config_included_files_sshd_idle_timeout" datatype="string" version="1"
   comment="Include value converted to regex">
     <concat>
-      <literal_component>^(/etc/ssh/(?!/))?</literal_component>
+      <literal_component>^({{{ sshd_base_dir }}}/(?!/))?</literal_component>
       <substring substring_start="2" substring_length="-1">
         <unique>
           <glob_to_regex>

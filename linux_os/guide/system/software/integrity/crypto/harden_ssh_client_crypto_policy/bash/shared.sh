@@ -1,7 +1,8 @@
 # platform = multi_platform_all
 
 #the file starts with 02 so that it is loaded before the 05-redhat.conf which activates configuration provided by system vide crypto policy
-file="/etc/ssh/ssh_config.d/02-ospp.conf"
+{{% set sshc_crypto_policy_config = ssh_client_config_dir ~ "/02-ospp.conf" %}}
+file="{{{ sshc_crypto_policy_config }}}"
 echo -e "Match final all\n\
 RekeyLimit 512M 1h\n\
 GSSAPIAuthentication no\n\

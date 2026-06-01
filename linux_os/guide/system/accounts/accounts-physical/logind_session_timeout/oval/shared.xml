@@ -1,4 +1,4 @@
-{{% if product in ["rhel9", "rhel10", "sle15", "sle16"] %}}
+{{% if product in ["ol9", "ol10", "rhel9", "rhel10", "sle15", "sle16"] %}}
 {{% set logind_conf_file = "/etc/systemd/logind.conf.d/" %}}
 {{% else %}}
 {{% set logind_conf_file = "/etc/systemd/logind.conf" %}}
@@ -6,7 +6,7 @@
 
 <def-group>
   <definition class="compliance" id="logind_session_timeout" version="1">
-    {{% if product in ["rhel9", "rhel10", "sle15", "sle16"] %}}
+    {{% if product in ["ol9", "ol10", "rhel9", "rhel10", "sle15", "sle16"] %}}
     {{{ oval_metadata("Ensure 'StopIdleSessionSec' is configured with desired value in section 'Login' in {{{ logind_conf_file }}}", rule_title=rule_title) }}}
     <criteria comment="logind is configured correctly and configuration file exists" operator="AND">
       <criterion comment="Check the StopIdleSessionSec in {{{ logind_conf_file }}}" test_ref="test_logind_session_timeout_drop_in"/>

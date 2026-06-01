@@ -7,19 +7,26 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
     {{{ oval_metadata("Configure PAM module", rule_title=rule_title) }}}
-    <criteria operator="AND" comment="Make sure arguments are properly configured">
-{{% for arg in ARGUMENTS %}}
-{{% if arg['variable']|length %}}
-      <criterion test_ref="test_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['variable']|lower }}}" comment="Verify {{{ arg['variable'] }}} is set to the desired state" />
-{{% else %}}
-      <criterion test_ref="test_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['argument']|lower }}}" comment="Verify {{{ arg['argument'] }}} is set to the desired state" />
-{{% endif %}}
-{{% endfor %}}
+    <criteria operator="AND" comment="Make sure arguments are properly configured in {{{ PATH }}}">
+    {{% for arg in ARGUMENTS %}}
+    {{% if arg['variable']|length %}}
+        <criterion test_ref="test_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['variable']|lower }}}" comment="Verify {{{ arg['variable'] }}} is set to the desired state" />
+    {{% else %}}
+        <criterion test_ref="test_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['argument']|lower }}}" comment="Verify {{{ arg['argument'] }}} is set to the desired state" />
+    {{% endif %}}
+    {{% endfor %}}
     </criteria>
   </definition>
 
 {{% for arg in ARGUMENTS %}}
 {{% if arg['variable']|length %}}
+{{% if arg['variable_name'] %}}
+{{% set pam_variable_name = arg['variable_name'] %}}
+{{% else %}}
+{{% set pam_variable_name = "var_password_pam_" + arg['variable'] %}}
+{{% endif %}}
+
+
   <ind:textfilecontent54_test id="test_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['variable']|lower }}}"
   check="all"
   comment="Verify {{{ arg['variable'] }}} configuation of {{{ MODULE }}}" version="1">
@@ -29,15 +36,17 @@
 
   <ind:textfilecontent54_object id="object_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['variable']|lower }}}" comment="Check {{{ arg['variable'] }}} configuration of PAM {{{ MODULE }}} module" version="1">
     <ind:filepath>{{{ PATH }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*{{{ TYPE }}}\s+{{{ MATCH_CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s{{{ arg['variable'] }}}=(-?\d+)(?:\s+.*)?</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*{{{ TYPE }}}\s+{{{ MATCH_CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s{{{ arg['variable'] }}}=(-?[a-zA-Z0-9]+)(?:\s+.*)?</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['variable']|lower }}}" version="3">
-    <ind:subexpression datatype="int" operation="{{{ arg['operation'] }}}" var_ref="var_password_pam_{{{ arg['variable'] }}}" />
+    <ind:subexpression datatype={{% if arg['datatype'] %}}"{{{ arg['datatype'] }}}"{{% else %}}"int"{{% endif %}}
+     operation="{{{ arg['operation'] }}}" var_ref="{{{ pam_variable_name }}}" />
   </ind:textfilecontent54_state>
 
-  <external_variable comment="PAM external variable var_password_pam_{{{ arg['variable'] }}}" datatype="int" id="var_password_pam_{{{ arg['variable'] }}}" version="1" />
+  <external_variable comment="PAM external variable {{{ pam_variable_name }}}" datatype="int" id="{{{ pam_variable_name }}}" version="1" />
+
 {{% else %}}
   <ind:textfilecontent54_test id="test_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['argument']|lower }}}"
   check="all" check_existence={{% if arg['remove_argument']|length %}}"none_exist"{{% else %}}"all_exist"{{% endif %}}

@@ -22,18 +22,19 @@ def parse_args():
         "--rule", metavar="RULE_ID",
         help="Compare only the rule specified by given RULE_ID"
     )
-    parser.add_argument(
+    diff_group = parser.add_mutually_exclusive_group()
+    diff_group.add_argument(
         "--no-diffs", action="store_true",
         help="Do not perform detailed comparison of checks and remediations contents."
+    )
+    diff_group.add_argument(
+        "--rule-diffs", action="store_true",
+        help="Output diffs per rule, instead of a single diff. "
+             "The rule diffs are output to directory './compare_ds-diffs/', override by --output-dir."
     )
     parser.add_argument(
         "--only-rules", action="store_true",
         help="Print only removals from rule set."
-    )
-    parser.add_argument(
-        "--rule-diffs", action="store_true",
-        help="Output diffs per rule, instead of a single diff. "
-             "The rule diffs are output to directory './compare_ds-diffs/'."
     )
     parser.add_argument(
         "--output-dir", metavar="OUTPUT_DIR",

@@ -80,6 +80,7 @@ package_chrony_installed
 package_fapolicyd_installed
 package_firewalld_installed
 package_rear_installed
+package_rsyslog-gnutls_installed
 package_rsyslog_installed
 package_squid_removed
 package_sudo_installed
@@ -111,6 +112,7 @@ service_chronyd_enabled
 service_chronyd_or_ntpd_enabled
 service_fapolicyd_enabled
 service_firewalld_enabled
+service_kdump_disabled
 service_rsyslog_enabled
 service_snmpd_disabled
 service_squid_disabled

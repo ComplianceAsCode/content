@@ -1,5 +1,8 @@
 documentation_complete: true
 
+{{% set sshc_main_config = ssh_client_main_config_file %}}
+{{% set sshc_config_dir = ssh_client_config_dir %}}
+{{% set sshc_rekey_config = ssh_client_config_dir ~ "/02-rekey-limit.conf" %}}
 
 title: 'Configure session renegotiation for SSH client'
 
@@ -8,11 +11,11 @@ description: |-
     the session key is renegotiated, both in terms of
     amount of data that may be transmitted and the time
     elapsed. To decrease the default limits, put line
-    <tt>RekeyLimit {{{ xccdf_value("var_ssh_client_rekey_limit_size") }}} {{{ xccdf_value("var_ssh_client_rekey_limit_time") }}}</tt> to file <tt>/etc/ssh/ssh_config.d/02-rekey-limit.conf</tt>.
+    <tt>RekeyLimit {{{ xccdf_value("var_ssh_client_rekey_limit_size") }}} {{{ xccdf_value("var_ssh_client_rekey_limit_time") }}}</tt> to file <tt>{{{ sshc_rekey_config }}}</tt>.
     Make sure that there is no other <tt>RekeyLimit</tt> configuration preceding
     the <tt>include</tt> directive in the main config file
-    <tt>/etc/ssh/ssh_config</tt>. Check also other files in
-    <tt>/etc/ssh/ssh_config.d</tt> directory. Files are processed according to
+    <tt>{{{ sshc_main_config }}}</tt>. Check also other files in
+    <tt>{{{ sshc_config_dir }}}</tt> directory. Files are processed according to
     lexicographical order of file names. Make sure that there is no file
     processed before <tt>02-rekey-limit.conf</tt> containing definition of
     <tt>RekeyLimit</tt>.
@@ -37,12 +40,12 @@ ocil_clause: 'it is commented out or is not set'
 
 ocil: |-
     To check if RekeyLimit is set correctly, run the following command:
-    <pre>$ sudo grep RekeyLimit /etc/ssh/ssh_config.d/*.conf</pre>
+    <pre>$ sudo grep RekeyLimit {{{ sshc_config_dir }}}/*.conf</pre>
     If configured properly, output should be
-    <pre>/etc/ssh/ssh_config.d/02-rekey-limit.conf:
+    <pre>{{{ sshc_rekey_config }}}:
     RekeyLimit {{{ xccdf_value("var_ssh_client_rekey_limit_size") }}} {{{ xccdf_value("var_ssh_client_rekey_limit_time") }}}</pre>
     Check also the main configuration file with the following command:
-    <pre>$ sudo grep RekeyLimit /etc/ssh/ssh_config</pre>
+    <pre>$ sudo grep RekeyLimit {{{ sshc_main_config }}}</pre>
     The command should not return any output.
 
 fixtext: |-
@@ -53,4 +56,3 @@ fixtext: |-
     Restart the SSH daemon for the settings to take effect.
 
     $ sudo systemctl restart sshd.service
-

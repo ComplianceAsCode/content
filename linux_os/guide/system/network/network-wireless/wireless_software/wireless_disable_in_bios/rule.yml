@@ -16,6 +16,16 @@ rationale: |-
 
 severity: unknown
 
+ocil_clause: 'wireless devices (WiFi or Bluetooth) are enabled in BIOS'
+
+ocil: |-
+    Verify that built-in wireless devices (WiFi and Bluetooth) are disabled in the system
+    boot firmware (BIOS/UEFI). The process to configure this setting varies by hardware
+    manufacturer and model. Some systems may not have wireless devices or may not provide
+    BIOS-level controls for wireless devices.
+    Consult your hardware manual or vendor documentation for specific instructions on how to
+    access the firmware setup during boot and disable wireless device support.
+
 identifiers:
     cce@rhcos4: CCE-82659-4
     cce@rhel9: CCE-89909-6

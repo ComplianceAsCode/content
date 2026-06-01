@@ -20,6 +20,7 @@ spec:
       FROM registry.access.redhat.com/ubi8/ubi-minimal
       WORKDIR /
       COPY *-ds.xml .
+      COPY *-cel-content.yaml .
   strategy: 
     dockerStrategy:
       noCache: true

@@ -13,12 +13,12 @@ description: |-
     {{% else %}}
     To activate locking of the screensaver in the GNOME3 desktop when it is activated,
     add or set <tt>lock-enabled</tt> to <tt>true</tt> in
-    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/desktop/screensaver]
     lock-enabled=true
     </pre>
     Once the settings have been added, add a lock to
-    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/desktop/screensaver/lock-enabled</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -71,7 +71,7 @@ ocil: |-
     <pre>$ gsettings get org.gnome.desktop.screensaver lock-enabled</pre>
     If properly configured, the output should be <tt>true</tt>.
     To ensure that users cannot change how long until the screensaver locks, run the following:
-    <pre>$ grep lock-enabled /etc/dconf/db/local.d/locks/*</pre>
+    <pre>$ grep lock-enabled /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>
     {{% endif %}}
 
@@ -80,4 +80,3 @@ fixtext: |-
 
 srg_requirement: |-
     {{{ full_name }}} must enable a user session lock until that user re-establishes access using established identification and authentication procedures for graphical user sessions.
-

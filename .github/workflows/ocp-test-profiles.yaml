@@ -40,7 +40,7 @@ jobs:
       - name: Test if there are no content changes
         run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" ctf-output.json)" >> $GITHUB_OUTPUT
         id: ctf
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ctf-output
@@ -58,7 +58,7 @@ jobs:
 
       - name: Build product OCP and RHCOS content
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}
-        run: ./build_product -d ocp4 rhcos4
+        run: ./build_product --datastream ocp4 rhcos4 --cel-content=ocp4
 
       - name: Process list of rules into a list of product-profiles to test
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}

@@ -6,5 +6,5 @@
 {{{ setup_rsyslog_encrypt_offload_actionsendstreamdriverauthmode() }}}
 
 {{{ set_config_file(path="$RSYSLOG_D_CONF",
-             parameter="\$ActionSendStreamDriverAuthMode", value="x509/name", create=true, separator=" ", separator_regex=" ", rule_id=rule_id)
+             parameter="\$ActionSendStreamDriverAuthMode", value="x509/name", create=true, separator=" ", rule_id=rule_id)
 }}}

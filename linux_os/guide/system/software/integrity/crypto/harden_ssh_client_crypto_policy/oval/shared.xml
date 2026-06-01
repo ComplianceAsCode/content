@@ -4,6 +4,7 @@
 #}}
 {{%- set suffix_id_default_not_overriden = "_default_not_overriden" -%}}
 {{%- set common_prefix_regex = "^Match final all(?:.*\n)*?\s*" -%}}
+{{%- set sshc_crypto_policy_config = ssh_client_config_dir ~ "/02-ospp.conf" -%}}
 
 
 
@@ -131,43 +132,43 @@
 
 <def-group>
   <definition class="compliance" id="harden_ssh_client_crypto_policy" version="3">
-    {{{ oval_metadata("Ensure the ssh client ciphers are configured correctly in /etc/ssh/ssh_config.d/02-ospp.conf", rule_title=rule_title) }}}
+    {{{ oval_metadata("Ensure the ssh client ciphers are configured correctly in " ~ sshc_crypto_policy_config, rule_title=rule_title) }}}
     <criteria comment="SSH client is configured correctly"
     operator="AND">
-        {{{ hsccp_oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match') }}}
-        {{{ hsccp_oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit') }}}
-        {{{ hsccp_oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication') }}}
-        {{{ hsccp_oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers') }}}
-        {{{ hsccp_oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes') }}}
-        {{{ hsccp_oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs') }}}
-        {{{ hsccp_oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms') }}}
+        {{{ hsccp_oval_line_in_file_criterion(path=sshc_crypto_policy_config, parameter='Match') }}}
+        {{{ hsccp_oval_line_in_file_criterion(path=sshc_crypto_policy_config, parameter='RekeyLimit') }}}
+        {{{ hsccp_oval_line_in_file_criterion(path=sshc_crypto_policy_config, parameter='GSSAPIAuthentication') }}}
+        {{{ hsccp_oval_line_in_file_criterion(path=sshc_crypto_policy_config, parameter='Ciphers') }}}
+        {{{ hsccp_oval_line_in_file_criterion(path=sshc_crypto_policy_config, parameter='PubkeyAcceptedKeyTypes') }}}
+        {{{ hsccp_oval_line_in_file_criterion(path=sshc_crypto_policy_config, parameter='MACs') }}}
+        {{{ hsccp_oval_line_in_file_criterion(path=sshc_crypto_policy_config, parameter='KexAlgorithms') }}}
     </criteria>
   </definition>
-  {{{ hsccp_oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match', missing_parameter_pass=false) }}}
-  {{{ hsccp_oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match', separator_regex='[\s]+', missing_parameter_pass=false) }}}
+  {{{ hsccp_oval_line_in_file_test(path=sshc_crypto_policy_config, parameter='Match', missing_parameter_pass=false) }}}
+  {{{ hsccp_oval_line_in_file_object(path=sshc_crypto_policy_config, parameter='Match', separator_regex='[\s]+', missing_parameter_pass=false) }}}
   {{{ hsccp_oval_line_in_file_state(parameter='Match', value='final all') }}}
 
-  {{{ hsccp_oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', missing_parameter_pass=false) }}}
-  {{{ hsccp_oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ hsccp_oval_line_in_file_test(path=sshc_crypto_policy_config, parameter='RekeyLimit', missing_parameter_pass=false) }}}
+  {{{ hsccp_oval_line_in_file_object(path=sshc_crypto_policy_config, parameter='RekeyLimit', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ hsccp_oval_line_in_file_state(parameter='RekeyLimit', value='512M 1h') }}}
 
-  {{{ hsccp_oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', missing_parameter_pass=false) }}}
-  {{{ hsccp_oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ hsccp_oval_line_in_file_test(path=sshc_crypto_policy_config, parameter='GSSAPIAuthentication', missing_parameter_pass=false) }}}
+  {{{ hsccp_oval_line_in_file_object(path=sshc_crypto_policy_config, parameter='GSSAPIAuthentication', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ hsccp_oval_line_in_file_state(parameter='GSSAPIAuthentication', value='no') }}}
 
-  {{{ hsccp_oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', missing_parameter_pass=false) }}}
-  {{{ hsccp_oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ hsccp_oval_line_in_file_test(path=sshc_crypto_policy_config, parameter='Ciphers', missing_parameter_pass=false) }}}
+  {{{ hsccp_oval_line_in_file_object(path=sshc_crypto_policy_config, parameter='Ciphers', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ hsccp_oval_line_in_file_state(parameter='Ciphers', value='aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc') }}}
 
-  {{{ hsccp_oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', missing_parameter_pass=false) }}}
-  {{{ hsccp_oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ hsccp_oval_line_in_file_test(path=sshc_crypto_policy_config, parameter='PubkeyAcceptedKeyTypes', missing_parameter_pass=false) }}}
+  {{{ hsccp_oval_line_in_file_object(path=sshc_crypto_policy_config, parameter='PubkeyAcceptedKeyTypes', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ hsccp_oval_line_in_file_state(parameter='PubkeyAcceptedKeyTypes', value='ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256') }}}
 
-  {{{ hsccp_oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', missing_parameter_pass=false) }}}
-  {{{ hsccp_oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ hsccp_oval_line_in_file_test(path=sshc_crypto_policy_config, parameter='MACs', missing_parameter_pass=false) }}}
+  {{{ hsccp_oval_line_in_file_object(path=sshc_crypto_policy_config, parameter='MACs', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ hsccp_oval_line_in_file_state(parameter='MACs', value='hmac-sha2-512,hmac-sha2-256') }}}
 
-  {{{ hsccp_oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', missing_parameter_pass=false) }}}
-  {{{ hsccp_oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
+  {{{ hsccp_oval_line_in_file_test(path=sshc_crypto_policy_config, parameter='KexAlgorithms', missing_parameter_pass=false) }}}
+  {{{ hsccp_oval_line_in_file_object(path=sshc_crypto_policy_config, parameter='KexAlgorithms', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ hsccp_oval_line_in_file_state(parameter='KexAlgorithms', value='ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group14-sha1') }}}
 </def-group>

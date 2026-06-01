@@ -47,7 +47,6 @@ identifiers:
 
 references:
     cis@eks: 3.2.3
-    cis@ocp4: 4.2.4
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
@@ -55,7 +54,7 @@ references:
 template:
     name: yamlfile_value
     vars:
-        filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        filepath: '/var/run/compliance-operator/kubeletconfig/openscap-kubeletconfig'
         yamlpath: ".kubeletconfig.authentication.x509.clientCAFile"
         check_existence: "all_exist"
         values:

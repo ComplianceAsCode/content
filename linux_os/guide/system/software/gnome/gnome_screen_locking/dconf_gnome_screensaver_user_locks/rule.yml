@@ -6,7 +6,7 @@ title: 'Ensure Users Cannot Change GNOME3 Screensaver Settings'
 description: |-
     If not already configured, ensure that users cannot change GNOME3 screensaver lock settings
     by adding <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
-    to <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    to <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/desktop/screensaver/lock-delay</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -43,7 +43,7 @@ ocil_clause: 'GNOME3 session settings are not locked or configured properly'
 
 ocil: |-
     To ensure that users cannot change session idle and lock settings, run the following:
-    <pre>$ grep 'lock-delay' /etc/dconf/db/local.d/locks/*</pre>
+    <pre>$ grep 'lock-delay' /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should return:
     <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
 
@@ -51,4 +51,3 @@ fixtext: |-
     {{{ fixtext_dconf_lock_settings("/org/gnome/desktop/screensaver/lock-delay") }}}
 
 srg_requirement: '{{{ full_name }}} must prevent a user from overriding the session lock-delay setting for the graphical user interface.'
-

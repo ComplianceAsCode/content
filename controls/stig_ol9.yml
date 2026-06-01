@@ -3,7 +3,7 @@ policy: 'Oracle Linux 9 Security Technical Implementation Guide'
 title: 'Oracle Linux 9 Security Technical Implementation Guide'
 id: stig_ol9
 source: https://www.cyber.mil/stigs/downloads/
-version: V1R1
+version: V1R5
 reference_type: stigid
 product: ol9
 
@@ -53,6 +53,7 @@ controls:
       rules:
           - banner_etc_issue
           - login_banner_text=dod_default
+          - login_banner_contents=dod_default
       status: automated
 
     - id: OL09-00-000020
@@ -466,14 +467,6 @@ controls:
           - package_tftp-server_removed
       status: automated
 
-    - id: OL09-00-000140
-      levels:
-          - medium
-      title: OL 9 must not have the quagga package installed.
-      rules:
-          - package_quagga_removed
-      status: not applicable  # The quagga package is not available in OL 9
-
     - id: OL09-00-000145
       levels:
           - medium
@@ -619,14 +612,6 @@ controls:
       title: OL 9 must prevent code from being executed on file systems that contain user home directories.
       rules:
           - mount_option_home_noexec
-      status: automated
-
-    - id: OL09-00-002010
-      levels:
-          - medium
-      title: OL 9 must be configured so that the Network File System (NFS) is configured to use RPCSEC_GSS.
-      rules:
-          - mount_option_krb_sec_remote_filesystems
       status: automated
 
     - id: OL09-00-002011
@@ -1262,7 +1247,7 @@ controls:
           - medium
       title: OL 9 world-writable directories must be owned by root, sys, bin, or an application user.
       rules:
-          - dir_perms_world_writable_root_owned
+          - dir_perms_world_writable_system_owned
       status: automated
 
     - id: OL09-00-002510
@@ -1423,6 +1408,7 @@ controls:
       title: OL 9 must disable network management of the chrony daemon.
       rules:
           - chronyd_no_chronyc_network
+          - chronyd_configure_local_socket
       status: automated
 
     - id: OL09-00-006003
@@ -1760,7 +1746,7 @@ controls:
 
     - id: OL09-00-000261
       levels:
-          - medium
+          - high
       title: OL 9 must implement DOD-approved encryption ciphers to protect the confidentiality of SSH
           client connections.
       rules:
@@ -1768,42 +1754,36 @@ controls:
           - sshd_approved_ciphers=stig_ol9
       status: automated
 
-    - id: OL09-00-000252
-      levels:
-          - medium
-      title: The OL 9 SSH daemon must be configured to use systemwide cryptographic policies.
-      rules:
-          - file_sshd_50_redhat_exists
-          - sshd_include_crypto_policy
-      status: automated
-
     - id: OL09-00-000254
       levels:
-          - medium
+          - high
       title: OL 9 SSH server must be configured to use only ciphers employing FIPS 140-3 validated cryptographic
           hash algorithms to protect the confidentiality of SSH server connections.
       rules:
           - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+          - harden_sshd_ciphers_opensshserver_conf_crypto_policy.severity=high
           - sshd_approved_ciphers=stig_ol9
       status: automated
 
     - id: OL09-00-000262
       levels:
-          - medium
+          - high
       title: OL 9 SSH client must be configured to use only Message Authentication Codes (MACs) employing
           FIPS 140-3 validated cryptographic hash algorithms.
       status: automated
       rules:
           - harden_sshd_macs_openssh_conf_crypto_policy
+          - harden_sshd_macs_openssh_conf_crypto_policy.severity=high
           - sshd_strong_macs=stig_ol9
 
     - id: OL09-00-000255
       levels:
-          - medium
+          - high
       title: OL 9 SSH server must be configured to use only Message Authentication Codes (MACs) employing
           FIPS 140-3 validated cryptographic hash algorithms.
       rules:
           - harden_sshd_macs_opensshserver_conf_crypto_policy
+          - harden_sshd_macs_opensshserver_conf_crypto_policy.severity=high
           - sshd_approved_macs=stig_ol9
       status: automated
 
@@ -1980,7 +1960,8 @@ controls:
           or remote access to the system via a graphical user logon.
       rules:
           - dconf_gnome_login_banner_text
-          - login_banner_text=dod_default
+          - dconf_login_banner_text=dod_default
+          - dconf_login_banner_contents=dod_default
 
     - id: OL09-00-002122
       levels:
@@ -2063,9 +2044,10 @@ controls:
     - id: OL09-00-002104
       levels:
           - medium
-      title: OL 9 must automatically lock graphical user sessions after 15 minutes of inactivity.
+      title: OL 9 must automatically lock graphical user sessions after 10 minutes of inactivity.
       rules:
           - dconf_gnome_screensaver_idle_delay
+          - inactivity_timeout_value=10_minutes
       status: automated
 
     - id: OL09-00-002124
@@ -2408,14 +2390,6 @@ controls:
       title: OL 9 must implement nonexecutable data to protect its memory from unauthorized code execution.
       rules:
           - sysctl_kernel_exec_shield
-      status: automated
-
-    - id: OL09-00-002427
-      levels:
-          - medium
-      title: Local OL 9 initialization files must not execute world-writable programs.
-      rules:
-          - accounts_user_dot_no_world_writable_programs
       status: automated
 
     - id: OL09-00-002411
@@ -3789,7 +3763,7 @@ controls:
 
     - id: OL09-00-002404
       levels:
-          - medium
+          - high
       title: OL 9 IP tunnels must use FIPS 140-2/140-3 approved cryptographic algorithms.
       rules:
           - configure_libreswan_crypto_policy
@@ -3807,10 +3781,11 @@ controls:
 
     - id: OL09-00-000240
       levels:
-          - medium
+          - high
       title: OL 9 must have the crypto-policies package installed.
       rules:
           - package_crypto-policies_installed
+          - package_crypto-policies_installed.severity=high
       status: automated
 
     - id: OL09-00-000243
@@ -3821,35 +3796,18 @@ controls:
           - rpm_verify_hashes
       status: automated
 
-    - id: OL09-00-000244
-      levels:
-          - high
-      title: OL 9 crypto policy files must match files shipped with the operating system.
-      rules:
-          - rpm_verify_crypto_policies
-      status: automated
-
     - id: OL09-00-000242
       levels:
-          - medium
+          - high
       title: OL 9 crypto policy must not be overridden.
       rules:
           - fips_crypto_policy_symlinks
-      status: automated
-
-    - id: OL09-00-002424
-      levels:
-          - medium
-      title: OL 9 must use mechanisms meeting the requirements of applicable federal laws, executive
-          orders, directives, policies, regulations, standards, and guidance for authentication to a
-          cryptographic module.
-      rules:
-          - configure_kerberos_crypto_policy
+          - fips_crypto_policy_symlinks.severity=high
       status: automated
 
     - id: OL09-00-000241
       levels:
-          - medium
+          - high
       title: OL 9 must implement a system-wide encryption policy.
       rules:
           - configure_crypto_policy
@@ -3857,7 +3815,7 @@ controls:
 
     - id: OL09-00-002421
       levels:
-          - medium
+          - high
       title: OL 9 must implement DOD-approved encryption in the bind package.
       rules:
           - configure_bind_crypto_policy

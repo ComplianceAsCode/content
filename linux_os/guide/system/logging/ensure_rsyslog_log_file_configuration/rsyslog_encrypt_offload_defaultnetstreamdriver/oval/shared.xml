@@ -16,7 +16,7 @@
         </criteria>
     </definition>
 
-{{% set legacy_regex = "^\\$DefaultNetstreamDriver gtls$" %}}
+{{% set legacy_regex = "^\\s*\\$DefaultNetstreamDriver\\s+gtls\\s*$" %}}
 {{% set rainer_script_regex = "(?ms)^\\s*global\\(.*(?i)\\bDefaultNetStreamDriver\\b(?-i)=\"gtls\".*\\)\\s*$" %}}
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"

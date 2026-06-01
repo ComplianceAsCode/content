@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'KubeVirt nonRoot Feature Gate Must Be Enabled'
+
+description: |-
+    The <tt>nonRoot</tt> feature gate in KubeVirt enables restrictions that prevent
+    virtual machines from running with root privileges. This feature enforces
+    security boundaries and helps prevent privilege escalation attacks. All virtual
+    machines should operate with the minimum necessary privileges, and the nonRoot
+    feature gate ensures this principle is enforced at the platform level.
+
+rationale: |-
+    Unauthorized access to a root account without restrictions implemented by
+    the nonRoot feature introduces the risk of unintended or unauthorized
+    access to privilege elevation and the ability to perform administrative
+    tasks. When the <tt>.spec.featureGates.nonRoot</tt> field is set to <tt>true</tt>
+    in the <tt>kubevirt-hyperconverged</tt> resource, KubeVirt enforces non-root
+    execution for virtual machine workloads, significantly reducing the attack
+    surface and limiting the potential impact of security vulnerabilities.
+
+severity: medium
+
+ocil_clause: 'nonRoot feature gate is not set to true'
+
+ocil: |-
+    Run the following command to check the feature gate configuration:
+    <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.featureGates.nonRoot}'</pre>
+    The output should be <tt>true</tt>.

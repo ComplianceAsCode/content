@@ -18,9 +18,7 @@ references:
     nist: CM-6(a)
     srg: SRG-OS-000423-GPOS-00187
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="openssh") }}}'
+{{{ complete_ocil_entry_package_installed("openssh") }}}
 
 template:
     name: package_installed

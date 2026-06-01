@@ -6,8 +6,10 @@ title: 'Ensure Red Hat GPG Key Installed'
 description: |-
     To ensure the system can cryptographically verify base software packages
     come from Red Hat (and to connect to the Red Hat Network to receive them),
-    the Red Hat GPG key must properly be installed. To install the Red Hat GPG
-    key, run:
+    the Red Hat GPG key must properly be installed.
+
+    {{% if product != "hummingbird" %}}
+    To install the Red Hat GPG key, run:
     <pre>$ sudo subscription-manager register</pre>
 
     If the system is not connected to the Internet or an RHN Satellite, then
@@ -20,6 +22,7 @@ description: |-
     Alternatively, the key may be pre-loaded during the RHEL installation. In
     such cases, the key can be installed by running the following command:
     <pre>sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release</pre>
+    {{% endif %}}
 
 
 rationale: |-

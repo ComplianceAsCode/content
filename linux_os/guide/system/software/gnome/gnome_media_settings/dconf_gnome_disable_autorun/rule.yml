@@ -7,12 +7,12 @@ description: |-
     The system's default desktop environment, GNOME3, will mount
     devices and removable media (such as DVDs, CDs and USB flash drives) whenever
     they are inserted into the system. To disable autorun-never within GNOME3, add or set
-    <tt>autorun-never</tt> to <tt>true</tt> in <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
+    <tt>autorun-never</tt> to <tt>true</tt> in <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>.
     For example:
     <pre>[org/gnome/desktop/media-handling]
     autorun-never=true</pre>
     Once the settings have been added, add a lock to
-    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/desktop/media-handling/autorun-never</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -51,7 +51,7 @@ ocil: |-
     <pre>$ gsettings get org.gnome.desktop.media-handling autorun-never</pre>
     If properly configured, the output for <tt>autorun-never</tt>should be <tt>true</tt>.
     To ensure that users cannot enable autorun in GNOME3, run the following:
-    <pre>$ grep 'autorun-never' /etc/dconf/db/local.d/locks/*</pre>
+    <pre>$ grep 'autorun-never' /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output for <tt>autorun-never</tt> should be <tt>/org/gnome/desktop/media-handling/autorun-never</tt>
 
 

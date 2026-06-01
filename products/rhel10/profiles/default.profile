@@ -46,3 +46,4 @@ selections:
     - sshd_use_strong_macs
     - configure_ssh_crypto_policy
     - package_dnsmasq_removed
+    - chrony_set_nts

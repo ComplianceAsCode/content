@@ -56,7 +56,7 @@ srg_requirement: '{{{ full_name }}} must disable core dumps for all users.'
 
 platform: package[pam]
 
-{{% if product in ["rhel8", "rhel9"] %}}
+{{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
 conflicts:
     - sysctl_kernel_core_pattern
 {{% endif %}}

@@ -66,7 +66,6 @@ audit_rules_usergroup_modification_gshadow
 audit_rules_usergroup_modification_opasswd
 audit_rules_usergroup_modification_passwd
 audit_rules_usergroup_modification_shadow
-auditd_audispd_syslog_plugin_activated
 auditd_data_retention_flush
 configure_crypto_policy
 dconf_db_up_to_date
@@ -84,6 +83,7 @@ ensure_redhat_gpgkey_installed
 file_groupowner_grub2_cfg
 file_owner_grub2_cfg
 grub2_audit_argument
+grub2_audit_backlog_limit_argument
 grub2_disable_interactive_boot
 grub2_enable_selinux
 grub2_password
@@ -93,6 +93,7 @@ no_direct_root_logins
 no_empty_passwords
 no_rsh_trust_files
 package_cron_installed
+package_postfix_installed
 package_telnet-server_removed
 package_telnet_removed
 require_singleuser_auth
@@ -128,6 +129,7 @@ sysctl_kernel_dmesg_restrict
 sysctl_kernel_exec_shield
 sysctl_kernel_randomize_va_space
 use_kerberos_security_all_exports
+var_audit_backlog_limit=8192
 var_audit_failure_mode=panic
 var_authselect_profile=sssd
 var_selinux_policy_name=targeted

@@ -147,7 +147,6 @@ auditd_overflow_action
 auditd_write_logs
 banner_etc_issue
 bios_enable_execution_restrictions
-chrony_set_nts
 chronyd_client_only
 chronyd_no_chronyc_network
 chronyd_or_ntpd_set_maxpoll
@@ -318,6 +317,7 @@ kernel_module_sctp_disabled
 kernel_module_tipc_disabled
 kernel_module_usb-storage_disabled
 libreswan_approved_tunnels
+login_banner_contents=dod_default
 login_banner_text=dod_banners
 logind_session_timeout
 mount_option_boot_nodev
@@ -379,6 +379,7 @@ package_pcsc-lite-ccid_installed
 package_pcsc-lite_installed
 package_policycoreutils-python-utils_installed
 package_policycoreutils_installed
+package_postfix_installed
 package_rsyslog-gnutls_installed
 package_rsyslog_installed
 package_s-nail_installed

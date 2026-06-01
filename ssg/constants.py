@@ -89,6 +89,7 @@ puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 kickstart_system = "urn:xccdf:fix:script:kickstart"
 bootc_system = "urn:xccdf:fix:script:bootc"
+hummingbird_system = "urn:xccdf:fix:script:hummingbird"
 cce_uri = "https://ncp.nist.gov/cce"
 stig_ns = "https://www.cyber.mil/stigs/srg-stig-tools/"
 ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
@@ -157,6 +158,7 @@ FIX_TYPE_TO_SYSTEM = {
     "anaconda": anaconda_system,
     "kickstart": kickstart_system,
     "bootc": bootc_system,
+    "hummingbird": hummingbird_system,
 }
 
 for prefix, url_part in OVAL_SUB_NS.items():
@@ -220,6 +222,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
     "Firefox": "firefox",
+    "Hummingbird": "hummingbird",
     "Kylin Server 10": "kylinserver10",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
@@ -289,7 +292,7 @@ REFERENCES = dict(
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
-                       "openeuler", "kylinserver",
+                       "openeuler", "kylinserver", "hummingbird",
                        "opensuse", "sle", "tencentos", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro", "almalinux"]
@@ -302,6 +305,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
+    "multi_platform_hummingbird": ["hummingbird"],
     "multi_platform_kylinserver": ["kylinserver10"],
     "multi_platform_openeuler": ["openeuler2203"],
     "multi_platform_opensuse": ["opensuse"],
@@ -426,6 +430,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'anolis': 'Anolis OS',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
+    'hummingbird': 'Hummingbird',
     'kylinserver': 'Kylin Server',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
@@ -459,6 +464,14 @@ DEFAULT_RSYSLOG_CAFILE = '/etc/pki/tls/cert.pem'
 DEFAULT_FAILLOCK_PATH = '/var/run/faillock'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
 DEFAULT_SSH_RUNTIME_CHECK = 'false'
+DEFAULT_SSHD_MAIN_CONFIG_FILE = '/etc/ssh/sshd_config'
+DEFAULT_SSHD_CONFIG_DIR = '/etc/ssh/sshd_config.d'
+DEFAULT_SSHD_HARDENING_CONFIG_BASENAME = '00-complianceascode-hardening.conf'
+DEFAULT_SSHD_SYSCONFIG_FILE = '/etc/sysconfig/sshd'
+DEFAULT_SSH_CLIENT_MAIN_CONFIG_FILE = '/etc/ssh/ssh_config'
+DEFAULT_SSH_CLIENT_CONFIG_DIR = '/etc/ssh/ssh_config.d'
+DEFAULT_OPENSSH_CLIENT_CRYPTO_POLICY_CONFIG_FILE = '/etc/crypto-policies/back-ends/openssh.config'
+DEFAULT_OPENSSH_SERVER_CRYPTO_POLICY_CONFIG_FILE = '/etc/crypto-policies/back-ends/opensshserver.config'
 DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
 DEFAULT_CHRONY_D_PATH = '/etc/chrony.d/'

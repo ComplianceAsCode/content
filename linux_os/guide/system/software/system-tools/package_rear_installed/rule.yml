@@ -17,10 +17,7 @@ identifiers:
     cce@rhel9: CCE-83503-3
     cce@rhel10: CCE-90643-8
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="rear") }}}'
-
+{{{ complete_ocil_entry_package_installed("rear") }}}
 
 platforms:
     - not ((s390x_arch and os_linux[rhel]<=8.4) or (os_linux[rhel]>=9.0 and aarch64_arch) or (os_linux[ol]>=9.0 and aarch64_arch))

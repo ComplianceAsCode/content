@@ -1,0 +1,153 @@
+<def-group>
+  <definition class="compliance" id="{{{rule_id}}}" version="1">
+    {{{ oval_metadata("The SSH MaxAuthTries should be set to an appropriate value.", rule_title=rule_title) }}}
+    <criteria comment="SSH is configured correctly or is not installed" operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset" definition_ref="sshd_not_required_or_unset"/>
+        <extend_definition comment="rpm package openssh-server removed" definition_ref="package_openssh-server_removed"/>
+      </criteria>
+      <criteria comment="sshd is installed and configured using /etc/ssh/sshd_config" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset" definition_ref="sshd_required_or_unset"/>
+        <extend_definition comment="rpm package openssh-server installed" definition_ref="package_openssh-server_installed"/>
+        <criteria comment="MaxAuthTries is configured correctly in /etc/ssh/sshd_config" operator="AND">
+          <criterion comment="SSH configuration /etc/ssh/sshd_config exists" test_ref="test_etc_ssh_sshd_config_exist"/>
+          <criterion comment="Check MaxAuthTries in /usr/etc/ssh/sshd_config" test_ref="test_sshd_max_auth_tries_etc" />
+          <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config.d/" test_ref="test_sshd_max_auth_tries_config_dir"/>
+          <criterion comment="Check MaxAuthTries in /usr/etc/ssh/sshd_config.d/" test_ref="test_sshd_max_auth_tries_usr_config_dir"/>
+          <criterion comment="the configuration exists" test_ref="test_max_auth_tries_present_etc" />
+        </criteria>
+      </criteria>
+      <criteria comment="sshd is installed and configured using /usr/etc/ssh/sshd_config" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset" definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed" definition_ref="package_openssh-server_installed" />
+        <criteria comment="MaxAuthTries is configured correctly in /usr/etc/ssh/sshd_config" operator="AND">
+          <criterion comment="SSH configuration /etc/ssh/sshd_config does not exists" test_ref="test_etc_ssh_sshd_config_exist" negate="true"/>
+          <criterion comment="Check MaxAuthTries in /usr/etc/ssh/sshd_config" test_ref="test_sshd_max_auth_tries_usr" />
+          <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config.d/" test_ref="test_sshd_max_auth_tries_config_dir"/>
+          <criterion comment="Check MaxAuthTries in /usr/etc/ssh/sshd_config.d/" test_ref="test_sshd_max_auth_tries_usr_config_dir"/>
+          <criterion comment="the configuration exists" test_ref="test_max_auth_tries_present_usr" />
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist"
+      comment="SSH configuration /etc/ssh/sshd_config exists"
+      id="test_etc_ssh_sshd_config_exist"
+      state_operator="AND" version="1">
+    <unix:object object_ref="obj_etc_ssh_sshd_config_exist"/>
+  </unix:file_test>
+  <unix:file_object
+      comment="SSH configuration /etc/ssh/sshd_config exists"
+      id="obj_etc_ssh_sshd_config_exist" version="1">
+    <unix:filepath operation="pattern match">^/etc/ssh/sshd_config</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="MaxAuthTries is configured in /etc/ssh/sshd_config"
+    id="test_sshd_max_auth_tries_etc" version="1">
+    <ind:object object_ref="object_sshd_max_auth_tries_etc" />
+    <ind:state state_ref="state_max_auth_tries_value_upper_bound" />
+    <ind:state state_ref="state_max_auth_tries_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_max_auth_tries_etc" version="2">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MaxAuthTries[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="MaxAuthTries is configured in /usr/etc/ssh/sshd_config"
+    id="test_sshd_max_auth_tries_usr" version="1">
+    <ind:object object_ref="object_sshd_max_auth_tries_usr" />
+    <ind:state state_ref="state_max_auth_tries_value_upper_bound" />
+    <ind:state state_ref="state_max_auth_tries_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_max_auth_tries_usr" version="2">
+    <ind:filepath>/usr/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MaxAuthTries[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="MaxAuthTries is configured in drop-in directory /etc/ssh/sshd_config.d"
+    id="test_sshd_max_auth_tries_config_dir" version="1">
+    <ind:object object_ref="object_sshd_max_auth_tries_config_dir" />
+    <ind:state state_ref="state_max_auth_tries_value_upper_bound" />
+    <ind:state state_ref="state_max_auth_tries_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_max_auth_tries_config_dir" version="2">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MaxAuthTries[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="MaxAuthTries is configured in included directory /usr/etc/ssh/sshd_config.d"
+    id="test_sshd_max_auth_tries_usr_config_dir" version="1">
+    <ind:object object_ref="object_sshd_max_auth_tries_usr_config_dir" />
+    <ind:state state_ref="state_max_auth_tries_value_upper_bound" />
+    <ind:state state_ref="state_max_auth_tries_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_max_auth_tries_usr_config_dir" version="2">
+    <ind:path>/usr/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MaxAuthTries[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state comment="upper bound of MaxAuthTries in number of sessions"
+  id="state_max_auth_tries_value_upper_bound" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal" var_check="all"
+    var_ref="sshd_max_auth_tries_value" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state comment="lower bound of MaxAuthTries in number of sessions"
+  id="state_max_auth_tries_value_lower_bound" version="1">
+    <ind:subexpression datatype="int" operation="greater than">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test id="test_max_auth_tries_present_etc" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Verify that the value of MaxAuthTries is present">
+    <ind:object object_ref="obj_collection_obj_sshd_set_max_auth_tries" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_sshd_set_max_auth_tries" version="1">
+    <set set_operator="UNION">
+      <set set_operator="UNION">
+        <object_reference>object_sshd_max_auth_tries_etc</object_reference>
+      </set>
+      <set set_operator="UNION">
+        <object_reference>object_sshd_max_auth_tries_config_dir</object_reference>
+        <object_reference>object_sshd_max_auth_tries_usr_config_dir</object_reference>
+      </set>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_max_auth_tries_present_usr" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Verify that the value of MaxAuthTries is present">
+    <ind:object object_ref="obj_collection_obj_sshd_set_max_auth_tries_usr" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_sshd_set_max_auth_tries_usr" version="1">
+    <set set_operator="UNION">
+      <set set_operator="UNION">
+        <object_reference>object_sshd_max_auth_tries_usr</object_reference>
+      </set>
+      <set set_operator="UNION">
+        <object_reference>object_sshd_max_auth_tries_config_dir</object_reference>
+        <object_reference>object_sshd_max_auth_tries_usr_config_dir</object_reference>
+      </set>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <external_variable comment="MaxAuthTries value" datatype="int" id="sshd_max_auth_tries_value" version="1" />
+
+</def-group>

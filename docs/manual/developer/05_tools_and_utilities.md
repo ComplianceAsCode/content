@@ -382,7 +382,7 @@ To execute:
 ### `utils/compare_ds.py` &ndash; Compare two data streams (can also compare XCCDFs)
 
 This script compares two data streams or two benchmarks and generates a diff output.
-It can show what changed in rules, for example in description, references and remediation scripts.
+It shows what changed in rules, for example in description, references and remediation scripts.
 Changes in checks (OVAL and OCIL) are shown too, but the OVAL diff is limited to the `criteria`
 and `criterion` order and their IDs.
 
@@ -396,16 +396,16 @@ diff for the whole data stream or benchmark.
 The option `--rule-diffs` can be used to generate a diff file per rule. In this mode the diff files
 are created in a directory: `./compare_ds-diffs`. To change the output dir use `--output-dir` option.
 
-Compare current DISA's manual benchmark, and generate per file diffs:
+Compare two data streams and save the output to a file:
 
 ```bash
-    $ utils/compare_ds.py --disa-content --rule-diffs ./disa-stig-rhel8-v1r6-xccdf-manual.xml shared/references/disa-stig-rhel8-v1r7-xccdf-manual.xml
+    $ utils/compare_ds.py <source.xml> <target.xml> > content.diff
 ```
 
-Compare two data streams:
+Compare two DISA's benchmarks, and generate per rule diffs in the `compare_ds-diffs` directory:
 
 ```bash
-    $ utils/compare_ds.py /tmp/ssg-rhel8-ds.xml build/ssg-rhel8-ds.xml > content.diff
+    $ utils/compare_ds.py --disa-content --rule-diffs <source.xml> <target.xml>
 ```
 
 #### HTML Diffs
@@ -420,11 +420,12 @@ Install `diff2html`:
     $ sudo npm install -g diff2html-cli
 ```
 
-Generate the HTML diffs:
+Generate the HTML diffs in the `html` directory. Run the `utils/compare_ds.py` first to generate the diffs in the `compare_ds-diffs` directory.
 
 ```bash
+    $ rm -r html/
     $ mkdir -p html
-    $ for f in $(ls compare_ds-diffs/); do diff2html -i file -t $f -F "html/$f.html" "compare_ds-diffs/$f"; done
+    $ for f in compare_ds-diffs/*; do name="${f##*/}"; diff2html -i file -t "$name" -F "html/$name.html" -- "$f" & done; wait
 ```
 
 ### `utils/compare_results.py` &ndash; Compare to two ARF result files

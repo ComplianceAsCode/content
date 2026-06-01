@@ -15,13 +15,13 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-85983-5
     cce@rhel9: CCE-85984-3
+    cce@rhel10: CCE-86466-0
 
 references:
+    hipaa: 164.312(a)(2)(ii)
     srg: SRG-OS-000046-GPOS-00022
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="postfix") }}}'
+{{{ complete_ocil_entry_package_installed("postfix") }}}
 
 fixtext: '{{{ fixtext_package_installed(package="postfix") }}}'
 

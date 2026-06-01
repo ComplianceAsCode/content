@@ -5,11 +5,11 @@ title: 'Set GNOME3 Screensaver Inactivity Timeout'
 
 description: |-
     The idle time-out value for inactivity in the GNOME3 desktop is configured via the <tt>idle-delay</tt>
-    setting must be set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
-    and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+    setting must be set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}</tt> directory
+    and locked in <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks</tt> directory to prevent user modification.
     <br /><br />
     For example, to configure the system for a 15 minute delay, add the following to
-    <tt>/etc/dconf/db/local.d/00-security-settings</tt>:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>:
     <pre>[org/gnome/desktop/session]
     idle-delay=uint32 900</pre>
 
@@ -56,11 +56,10 @@ ocil: |-
     <pre>$ gsettings get org.gnome.desktop.session idle-delay</pre>
     If properly configured, the output should be <tt>'uint32 {{{ xccdf_value("inactivity_timeout_value") }}}'</tt>.
     To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
-    <pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
+    <pre>$ grep idle-delay /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
 
 fixtext: |-
     {{{ fixtext_dconf_ini_file("org/gnome/desktop/session", "idle-delay", "uint32 " ~ xccdf_value("inactivity_timeout_value")) }}}
 
 srg_requirement: '{{{ full_name }}} must automatically lock graphical user sessions after 15 minutes of inactivity.'
-

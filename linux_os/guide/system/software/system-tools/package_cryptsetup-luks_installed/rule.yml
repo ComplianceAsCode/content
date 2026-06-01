@@ -20,9 +20,7 @@ identifiers:
     cce@rhel9: CCE-86612-9
     cce@rhel10: CCE-87541-9
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="cryptsetup") }}}'
+{{{ complete_ocil_entry_package_installed("cryptsetup") }}}
 
 template:
     name: package_installed

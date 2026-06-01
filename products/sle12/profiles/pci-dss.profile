@@ -17,6 +17,7 @@ selections:
     - sshd_approved_ciphers=cis_sle12
     - var_multiple_time_servers=suse
     - var_multiple_time_pools=suse
+    - '!package_postfix_installed'
 # Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only
 # rules related to chrony
     - '!ntpd_specify_multiple_servers'

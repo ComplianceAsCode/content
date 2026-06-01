@@ -41,6 +41,7 @@ firewalld_sshd_port_enabled
 grub2_password
 kernel_module_dccp_disabled
 kernel_module_sctp_disabled
+login_banner_contents=usgcb_default
 login_banner_text=usgcb_default
 no_empty_passwords
 no_shelllogin_for_systemaccounts

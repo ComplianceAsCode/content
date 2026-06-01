@@ -10,8 +10,6 @@ reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 title: 'Health Insurance Portability and Accountability Act (HIPAA)'
 
 description: |-
-    This is a draft profile for experimental purposes.
-
     The HIPAA Security Rule establishes U.S. national standards to protect individuals's
     electronic personal health information that is created, received, used, or
     maintained by a covered entity. The Security Rule requires appropriate
@@ -19,7 +17,7 @@ description: |-
     confidentiality, integrity, and security of electronic protected health
     information.
 
-    This draft profile configures Red Hat Enterprise Linux 10 to the HIPAA Security
+    This profile configures Red Hat Enterprise Linux 10 to the HIPAA Security
     Rule identified for securing of electronic protected health information.
     Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).
 

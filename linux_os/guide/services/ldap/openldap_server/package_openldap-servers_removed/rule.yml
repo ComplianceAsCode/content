@@ -1,20 +1,17 @@
-{{% if product in ["sle12", "sle15"] %}}
-{{% set package_name = "openldap2" %}}
-{{% set run_cmd = "$ rpm -q openldap2" %}}
+{{% if product in ["sle12", "sle15", "slmicro5"] %}}
+  {{%- set package = "openldap2" %}}
 {{% elif "ubuntu" in product %}}
-{{% set package_name = "slapd" %}}
-{{% set run_cmd = "$ dpkg -l slapd" %}}
+  {{%- set package = "slapd" %}}
 {{% else %}}
-{{% set package_name = "openldap-servers" %}}
-{{% set run_cmd = "$ rpm -q openldap-servers" %}}
+  {{%- set package = "openldap-servers" %}}
 {{% endif %}}
 
 documentation_complete: true
 
-title: 'Uninstall openldap-servers Package'
+title: 'Uninstall {{{ package }}} Package'
 
 description: |-
-    The {{{ package_name }}} package is not installed by default on a {{{ full_name }}}
+    The {{{ package }}} package is not installed by default on a {{{ full_name }}}
     system. It is needed only by the OpenLDAP server, not by the
     clients which use LDAP for authentication. If the system is not
     intended for use as an LDAP Server it should be removed.
@@ -43,14 +40,8 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
-ocil_clause: "it does not"
 
-ocil: |-
-    To verify the <tt>{{{ package_name }}}</tt> package is not installed, run the
-    following command:
-    <pre>{{{ run_cmd }}}</pre>
-    The output should show the following:
-    <pre>package {{{ package_name }}} is not installed</pre>
+{{{ complete_ocil_entry_package_removed(package=package) }}}
 
 template:
     name: package_removed

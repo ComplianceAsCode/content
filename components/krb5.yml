@@ -3,9 +3,11 @@ groups:
 name: krb5
 packages:
 - krb5
+- krb5-libs
 - krb5-server
 - krb5-workstation
 rules:
+- configure_kerberos_crypto_policy
 - kerberos_disable_no_keytab
 - package_krb5-server_removed
 - package_krb5-workstation_removed

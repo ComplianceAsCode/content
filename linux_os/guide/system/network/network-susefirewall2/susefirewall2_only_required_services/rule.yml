@@ -50,7 +50,8 @@ references:
 ocil_clause: 'unauthorized network services can be accessed from the network'
 
 ocil: |-
-    {{{ ocil_package(package="SuSEfirewall2") }}}
+    Run the following command to determine if the <code>SuSEfirewall2</code> package is installed: <pre>$rpm -q SuSEfirewall2</pre>
+
     {{{ ocil_service_enabled(service="SuSEfirewall2") }}}
 
     Check the firewall configuration for any unnecessary or prohibited 

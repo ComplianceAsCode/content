@@ -14,6 +14,7 @@ import ssg.build_remediations
 import ssg.products
 import ssg.rules
 import ssg.yaml
+from ssg.entities.common import make_items_product_specific
 
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -157,6 +158,15 @@ def handle_remediations(product_list, product_yamls, rule_obj):
 
             env_yaml = dict()
             env_yaml.update(product_yaml)
+            env_yaml["rule_title"] = rule_obj["title"]
+            env_yaml["rule_id"] = rule_obj["id"]
+            identifiers = rule_obj.get("identifiers") or {}
+            if identifiers:
+                product_suffix = "@{0}".format(prod_type)
+                env_yaml["cce_identifiers"] = make_items_product_specific(
+                    dict(identifiers), product_suffix, allow_overwrites=False)
+            else:
+                env_yaml["cce_identifiers"] = {}
             _, config = ssg.build_remediations.parse_from_file_with_jinja(
                 r_path, env_yaml
             )

@@ -16,6 +16,7 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhcos4: CCE-90536-4
     cce@rhel8: CCE-82874-9
     cce@rhel9: CCE-84215-3
     cce@rhel10: CCE-89591-2
@@ -31,9 +32,7 @@ references:
     pcidss: Req-10.4
     srg: SRG-OS-000355-GPOS-00143
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="chrony") }}}'
+{{{ complete_ocil_entry_package_installed("chrony") }}}
 
 fixtext: '{{{ describe_package_install(package="chrony") }}}'
 

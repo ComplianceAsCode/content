@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /etc/sysconfig/sshd File'
 
-description: '{{{ describe_file_group_owner(file="/etc/sysconfig/sshd", group="root") }}}'
+description: '{{{ describe_file_group_owner(file=sshd_sysconfig_file, group="root") }}}'
 
 rationale: |-
     The <tt>/etc/sysconfig/sshd</tt> file contains configuration options for the SSH daemon.
@@ -14,19 +14,19 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-89268-7
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/sysconfig/sshd", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file=sshd_sysconfig_file, group="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/sysconfig/sshd", group="root") }}}
+    {{{ ocil_file_group_owner(file=sshd_sysconfig_file, group="root") }}}
 
-fixtext: '{{{ fixtext_file_group_owner(file="/etc/sysconfig/sshd", group="root") }}}'
+fixtext: '{{{ fixtext_file_group_owner(file=sshd_sysconfig_file, group="root") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/sysconfig/sshd", group="root") }}}'
+srg_requirement: '{{{ srg_requirement_file_group_owner(file=sshd_sysconfig_file, group="root") }}}'
 
 template:
     name: file_groupowner
     vars:
-        filepath: /etc/sysconfig/sshd
+        filepath: '{{{ sshd_sysconfig_file }}}'
         gid_or_name: '0'
 
 platform: system_with_kernel

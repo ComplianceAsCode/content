@@ -29,9 +29,7 @@ references:
     nist-csf: PR.AC-3,PR.PT-4
     srg: SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="dracut-fips") }}}'
+{{{ complete_ocil_entry_package_installed("dracut-fips") }}}
 
 warnings:
     - regulatory: |-

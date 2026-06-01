@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R6
+    version: V2R7
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V2R6.
+    DISA STIG for Oracle Linux 8 V2R7.
 
 selections:
     ### Variables
@@ -39,7 +39,7 @@ selections:
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
     - sshd_approved_macs=stig_extended
-    - sshd_approved_ciphers=stig_extended
+    - sshd_approved_ciphers=stig_ol8
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_authorized_local_users_regex=ol8
     - var_accounts_passwords_pam_faillock_deny=3
@@ -61,6 +61,9 @@ selections:
     - var_auditd_disk_full_action=ol8
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
+    - login_banner_contents=dod_default
+    - dconf_login_banner_text=dod_banners
+    - dconf_login_banner_contents=dod_default
     - var_authselect_profile=sssd
     - var_multiple_time_servers=stig
 
@@ -246,8 +249,7 @@ selections:
     - aide_scan_notification
 
     # OL08-00-010370
-    - ensure_gpgcheck_globally_activated
-    - ensure_gpgcheck_never_disabled
+    - enable_gpgcheck_for_all_repositories
 
     # OL08-00-010371
     - ensure_gpgcheck_local_packages
@@ -408,9 +410,6 @@ selections:
     # OL08-00-010650
     - mount_option_nosuid_remote_filesystems
 
-    # OL08-00-010660
-    - accounts_user_dot_no_world_writable_programs
-
     # OL08-00-010670
     - service_kdump_disabled
 
@@ -532,7 +531,11 @@ selections:
 
     # OL08-00-020035
     - logind_session_timeout
-    - var_logind_session_timeout=15_minutes
+    - var_logind_session_timeout=10_minutes
+
+    # OL08-00-020040
+    - accounts_tmout
+    - var_accounts_tmout=10_min
 
     # OL08-00-020043
     - vlock_installed
@@ -542,6 +545,7 @@ selections:
 
     # OL08-00-020060
     - dconf_gnome_screensaver_idle_delay
+    - inactivity_timeout_value=10_minutes
 
     # OL08-00-020080
     - dconf_gnome_screensaver_user_locks
@@ -650,9 +654,6 @@ selections:
 
     # OL08-00-020331, OL08-00-020332
     - no_empty_passwords
-
-    # OL08-00-020340
-    - display_login_attempts
 
     # OL08-00-020350
     - sshd_print_last_log
@@ -945,6 +946,7 @@ selections:
 
     # OL08-00-030742
     - chronyd_no_chronyc_network
+    - chronyd_configure_local_socket
 
     # OL08-00-040000
     - package_telnet-server_removed

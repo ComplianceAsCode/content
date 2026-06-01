@@ -46,6 +46,8 @@ configure_crypto_policy
 dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_login_banner_text
+dconf_login_banner_contents=cis_default
+dconf_login_banner_text=cis_banners
 enable_authselect
 file_groupowner_grub2_cfg
 file_groupowner_user_cfg
@@ -56,13 +58,17 @@ file_permissions_user_cfg
 firewalld_loopback_traffic_restricted
 firewalld_loopback_traffic_trusted
 grub2_password
+login_banner_contents=cis_default
 login_banner_text=cis_banners
+motd_banner_contents=cis_default
+motd_banner_text=cis_banners
 mount_option_boot_efi_nosuid
 mount_option_boot_nodev
 mount_option_boot_noexec
 mount_option_boot_nosuid
 package_firewalld_installed
 package_usbguard_installed
+remote_login_banner_contents=cis_default
 remote_login_banner_text=cis_banners
 service_firewalld_enabled
 service_nftables_disabled

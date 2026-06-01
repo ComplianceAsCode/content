@@ -100,6 +100,7 @@ package_libdnf-plugin-subscription-manager_installed
 package_opensc_installed
 package_pcsc-lite-ccid_installed
 package_pcsc-lite_installed
+package_rsyslog-gnutls_installed
 package_rsyslog_installed
 package_sequoia-sq_installed
 package_squid_removed
@@ -129,6 +130,7 @@ service_avahi-daemon_disabled
 service_chronyd_enabled
 service_fapolicyd_enabled
 service_firewalld_enabled
+service_kdump_disabled
 service_pcscd_enabled
 service_rsyslog_enabled
 service_snmpd_disabled

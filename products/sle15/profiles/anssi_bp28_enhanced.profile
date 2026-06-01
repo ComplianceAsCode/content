@@ -78,3 +78,5 @@ selections:
     - '!audit_rules_mac_modification_etc_selinux'
     - '!no_nis_in_nsswitch'
     - '!service_chronyd_enabled'
+    - '!audit_rules_immutable'
+

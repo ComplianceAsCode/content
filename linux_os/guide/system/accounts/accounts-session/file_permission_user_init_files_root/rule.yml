@@ -4,10 +4,10 @@ title: 'Ensure All User Initialization Files Have Mode 0740 Or Less Permissive'
 
 description: |-
     Set the mode of the user initialization files, including the <tt>root</tt> user,
-    to <tt>0740</tt> with the following commands:
+    to <tt>0740</tt> or less permissisive with the following commands:
     <pre>
-    $ sudo chmod 0740 /root/.<i>INIT_FILE</i>
-    $ sudo chmod 0740 /home/<i>USER</i>/.<i>INIT_FILE</i>
+    $ sudo chmod u-s,g-wxs,o= /root/.<i>INIT_FILE</i>
+    $ sudo chmod u-s,g-wxs,o= /home/<i>USER</i>/.<i>INIT_FILE</i>
     </pre>
 
 rationale: |-
@@ -34,10 +34,10 @@ ocil: |-
     There should be no output.
 
 fixtext: |-
-    Set the mode of the local initialization files to "0740" with the following command:
+    Set the mode of the local initialization files to "0740" or less permissive with the following command:
 
     Note: The example will be for the smithj user, who has a home directory of "/home/smithj".
 
-    $ sudo chmod 0740 /home/smithj/.
+    $ sudo chmod u-s,g-wxs,o= /home/smithj/.<i>INIT_FILE</i>
 
 srg_requirement: 'All {{{ full_name }}} local initialization files must have mode 0740 or less permissive.'

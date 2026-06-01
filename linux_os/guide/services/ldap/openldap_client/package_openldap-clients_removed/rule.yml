@@ -1,9 +1,9 @@
-{{% if product in ["sle12", "sle15"] %}}
-{{% set package_name = "openldap2-client" %}}
+{{% if product in ["sle12", "sle15", "slmicro5"] %}}
+  {{%- set package = "openldap2-client" %}}
 {{% elif "ubuntu" in product %}}
-{{% set package_name = "ldap-utils" %}}
+  {{%- set package = "ldap-utils" %}}
 {{% else %}}
-{{% set package_name = "openldap-clients" %}}
+  {{%- set package = "openldap-clients" %}}
 {{% endif %}}
 
 documentation_complete: true
@@ -14,7 +14,7 @@ title: 'Ensure LDAP client is not installed'
 description: |-
     The Lightweight Directory Access Protocol (LDAP) is a service that provides
     a method for looking up information from a central database.
-    {{{ describe_package_remove( package_name ) }}}
+    {{{ describe_package_remove(package=package) }}}
 
 
 rationale:
@@ -35,10 +35,7 @@ references:
     cis@sle12: 2.3.5
     cis@sle15: 2.3.5
 
-ocil_clause: 'the package is installed'
-
-ocil: |-
-    {{{ ocil_package(package_name) }}}
+{{{ complete_ocil_entry_package_removed(package=package) }}}
 
 template:
     name: package_removed

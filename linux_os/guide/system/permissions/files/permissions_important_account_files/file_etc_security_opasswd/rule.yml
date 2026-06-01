@@ -32,3 +32,5 @@ ocil: |-
     {{{ ocil_file_owner(file="/etc/security/opasswd", owner="root") }}}
     {{{ ocil_file_group_owner(file="/etc/security/opasswd", group="root") }}}
     {{{ ocil_file_permissions(file="/etc/security/opasswd", perms="0600") }}}
+
+platform: package[pam]

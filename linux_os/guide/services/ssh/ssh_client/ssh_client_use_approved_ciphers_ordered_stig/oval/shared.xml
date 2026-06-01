@@ -1,40 +1,42 @@
 {{%- if product == 'ubuntu2404' %}}
 {{%- set ssh_approved_ciphers="aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr" %}}
 {{%- endif %}}
+{{%- set sshc_main_config = ssh_client_main_config_file -%}}
+{{%- set sshc_config_dir = ssh_client_config_dir -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.", rule_title=rule_title) }}}
     <criteria comment="the configuration is correct if it exists" operator="AND">
-      <criterion comment="Check the ciphers in /etc/ssh/ssh_config if any"
+      <criterion comment="Check the ciphers in {{{ sshc_main_config }}} if any"
         test_ref="test_{{{ rule_id }}}" />
-      <criterion comment="Check the ciphers in /etc/ssh/ssh_config.d if any"
+      <criterion comment="Check the ciphers in {{{ sshc_config_dir }}} if any"
         test_ref="test_{{{ rule_id }}}_config_dir" />
       <criterion comment="the configuration exists" test_ref="test_ciphers_present_{{{ rule_id }}}" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="any_exist"
-    comment="tests the value of ciphers setting in the /etc/ssh/ssh_config file"
+    comment="tests the value of ciphers setting in {{{ sshc_main_config }}}"
     id="test_{{{ rule_id }}}" version="1">
     <ind:object object_ref="obj_{{{ rule_id }}}" />
     <ind:state state_ref="state_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
-    <ind:filepath>/etc/ssh/ssh_config</ind:filepath>
+    <ind:filepath>{{{ sshc_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[ \t]*(?i)ciphers(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="any_exist"
-    comment="tests the value of ciphers setting in the /etc/ssh/ssh_config.d file"
+    comment="tests the value of ciphers setting in {{{ sshc_config_dir }}}"
     id="test_{{{ rule_id }}}_config_dir" version="1">
     <ind:object object_ref="obj_{{{ rule_id }}}_config_dir" />
     <ind:state state_ref="state_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_config_dir" version="1">
-    <ind:path>/etc/ssh/ssh_config.d</ind:path>
+    <ind:path>{{{ sshc_config_dir }}}</ind:path>
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[ \t]*(?i)ciphers(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>

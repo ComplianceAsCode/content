@@ -64,6 +64,7 @@ rules:
 - accounts_passwords_pam_faillock_deny
 - accounts_passwords_pam_faillock_deny_root
 - accounts_passwords_pam_faillock_dir
+- accounts_passwords_pam_faillock_even_deny_root_or_root_unlock_time
 - accounts_passwords_pam_faillock_enforce_local
 - accounts_passwords_pam_faillock_interval
 - accounts_passwords_pam_faillock_silent
@@ -112,6 +113,7 @@ rules:
 - ensure_root_password_configured
 - ensure_shadow_group_empty
 - ensure_sudo_group_restricted
+- file_etc_security_opasswd
 - file_groupowner_etc_issue
 - file_groupowner_etc_issue_net
 - file_groupowner_etc_motd
@@ -121,7 +123,6 @@ rules:
 - file_owner_etc_motd
 - file_ownership_home_directories
 - file_ownership_lastlog
-- file_permission_user_bash_history
 - file_permissions_etc_issue
 - file_permissions_etc_issue_net
 - file_permissions_etc_motd

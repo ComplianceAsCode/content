@@ -1,0 +1,86 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure crypto policy is correctly configured in /etc/crypto-policies/config, and the policy is current.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/config"
+      test_ref="test_{{{ rule_id }}}" />
+      <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/state/current"
+      test_ref="test_{{{ rule_id }}}_current" />
+      <criterion comment="Check if update-crypto-policies has been run after config update" test_ref="test_{{{ rule_id }}}_crypto_policies_updated" />
+      <criterion comment="Check if /etc/crypto-policies/back-ends/nss.config exists" test_ref="test_{{{ rule_id }}}_crypto_policy_nss_config" />
+    </criteria>
+  </definition>
+
+  <unix:file_object id="object_{{{ rule_id }}}_current_file" comment="crypto-policies current state" version="1">
+    <unix:filepath>/etc/crypto-policies/state/current</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_object id="object_{{{ rule_id }}}_crypto_policies_config_file" comment="crypto-policies config state" version="1">
+    <unix:filepath datatype="string">/etc/crypto-policies/config</unix:filepath>
+  </unix:file_object>
+
+  <local_variable id="variable_{{{ rule_id }}}_current_file_timestamp" version="1" comment="Age of /etc/crypto-policies/state/current" datatype="int">
+    <object_component object_ref="object_{{{ rule_id }}}_current_file" item_field="m_time"/>
+  </local_variable>
+
+  <local_variable id="variable_{{{ rule_id }}}_crypto_policies_config_file_timestamp" version="1" comment="Age of /etc/crypto-policies/config" datatype="int">
+    <object_component object_ref="object_{{{ rule_id }}}_crypto_policies_config_file" item_field="m_time"/>
+  </local_variable>
+
+  <ind:variable_test check="all" check_existence="all_exist" id="test_{{{ rule_id }}}_crypto_policies_updated" version="1" comment="Check if update-crypto-policies has been run">
+    <ind:object object_ref="object_{{{ rule_id }}}_crypto_policies_config_file_modified_time" />
+    <ind:state state_ref="state_{{{ rule_id }}}_crypto_current_file_newer_than_config_file" />
+  </ind:variable_test>
+
+  <ind:variable_object comment="Crypto policy current file timestamp"
+id="object_{{{ rule_id }}}_crypto_policies_config_file_modified_time" version="1">
+     <ind:var_ref>variable_{{{ rule_id }}}_crypto_policies_config_file_timestamp</ind:var_ref>
+   </ind:variable_object>
+
+  <ind:variable_state id="state_{{{ rule_id }}}_crypto_current_file_newer_than_config_file" version="1">
+    <ind:value datatype="int" operation="less than or equal" var_check="all"
+    var_ref="variable_{{{ rule_id }}}_current_file_timestamp" />
+  </ind:variable_state>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/config"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}" version="1">
+    <ind:filepath>/etc/crypto-policies/config</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(\S+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:subexpression operation="not equal">LEGACY</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+    <ind:textfilecontent54_test id="test_{{{ rule_id }}}_current"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/state/current"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_current" />
+    <ind:state state_ref="state_{{{ rule_id }}}_current" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_current" version="1">
+    <ind:filepath>/etc/crypto-policies/state/current</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(\S+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_current" version="1">
+    <ind:subexpression operation="not equal">LEGACY</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /etc/crypto-policies/back-ends/nss.config exists" id="test_{{{ rule_id }}}_crypto_policy_nss_config" version="1">
+    <unix:object object_ref="object_{{{ rule_id }}}_crypto_policy_nss_config" />
+  </unix:file_test>
+  <unix:file_object id="object_{{{ rule_id }}}_crypto_policy_nss_config" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/nss.config</unix:filepath>
+  </unix:file_object>
+
+</def-group>

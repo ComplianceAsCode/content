@@ -3,7 +3,7 @@ policy: CCN-STIC-610A22
 title: Security Profile Application Guide for Red Hat Enterprise Linux 9
 id: ccn_rhel9
 version: '2022-10'
-source: https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html
+source: https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html  # yamllint disable-line rule:line-length
 
 levels:
     - id: basic
@@ -121,10 +121,14 @@ controls:
           - var_auditd_max_log_file_action=rotate
 
     - id: A.3.SEC-RHEL7
-      title: Modifications to the Sudoers File Are Audited, As Are Changes to Permissions, Users, Groups,
+      title: >-
+          Modifications to the Sudoers File Are Audited,
+          As Are Changes to Permissions, Users, Groups,
           and Passwords
-      original_title: Se auditan las modificaciones del fichero sudoers, así como los cambios en permisos,
-          usuarios, grupos y contraseñas.
+      original_title: >-
+          Se auditan las modificaciones del fichero sudoers,
+          así como los cambios en permisos, usuarios,
+          grupos y contraseñas.
       levels:
           - basic
           - intermediate
@@ -154,15 +158,20 @@ controls:
 
     - id: A.3.SEC-RHEL8
       title: Changes to Cron Settings and Scheduled Tasks Including Startup Scripts Are Audited
-      original_title: Se auditan los cambios en la configuración de Cron y en tareas programadas incluyendo
-          los de scripts de inicio.
+      original_title: >-
+          Se auditan los cambios en la configuración de
+          Cron y en tareas programadas incluyendo los de
+          scripts de inicio.
       levels:
           - advanced
       status: pending
       notes: |-
-          Some possible rules were included here but it is not clear if the requirement intends to
-          check more than these rules. We can see if more related rules are available in the project
-          and include everything that makes sense in the context of cron and chrony.
+          Some possible rules were included here but it is
+          not clear if the requirement intends to check
+          more than these rules. We can see if more related
+          rules are available in the project and include
+          everything that makes sense in the context of
+          cron and chrony.
       related_rules:
           - audit_rules_time_adjtimex
           - audit_rules_time_settimeofday
@@ -185,15 +194,19 @@ controls:
 
     - id: A.3.SEC-RHEL10
       title: All Mount Operations on the System and Changes to the Swap Are Audited
-      original_title: Se audita toda operación de montaje en el sistema y modificaciones en la memoria
-          de intercambio.
+      original_title: >-
+          Se audita toda operación de montaje en el
+          sistema y modificaciones en la memoria de
+          intercambio.
       levels:
           - intermediate
           - advanced
       status: partial
       notes: |-
-          We probably have audit related rule to monitor mount related syscalls, but it is not clear
-          about the swap. Is the intention to monitor when swap is changed?
+          We probably have audit related rule to monitor
+          mount related syscalls, but it is not clear
+          about the swap. Is the intention to monitor
+          when swap is changed?
       rules:
           - audit_rules_media_export
 
@@ -204,13 +217,18 @@ controls:
           - advanced
       status: pending
       notes: |-
-          The intention here is probably to audit changes in /etc/pam.d files, but we need to confirm
+          The intention here is probably to audit changes
+          in /etc/pam.d files, but we need to confirm
           this assumption and get more context.
 
     - id: A.4.SEC-RHEL1
-      title: Common Users Do Dot Have Local Administrator Permissions and Are Not Included in a Sudo
+      title: >-
+          Common Users Do Dot Have Local Administrator
+          Permissions and Are Not Included in a Sudo
           Group
-      original_title: Los usuarios estándar no disponen de permisos de administrador local ni se encuentran
+      original_title: >-
+          Los usuarios estándar no disponen de permisos
+          de administrador local ni se encuentran
           incluidos en un grupo sudoer.
       levels:
           - basic
@@ -218,9 +236,12 @@ controls:
           - advanced
       status: pending
       notes: |-
-          It is a little tricky to interpret this requirement. Assuming the "Common users" are actually
-          interactive users, this requirement would automatically enforce all admin actions to be
-          performed only by the root user. I am not sure if this is the intetion here.
+          It is a little tricky to interpret this
+          requirement. Assuming the "Common users" are
+          actually interactive users, this requirement
+          would automatically enforce all admin actions
+          to be performed only by the root user. I am
+          not sure if this is the intetion here.
 
     - id: A.4.SEC-RHEL2
       title: The System Has an Updated Antivirus
@@ -231,9 +252,11 @@ controls:
           - advanced
       status: pending
       notes: |-
-          New templated rule is necessary to install the package. But to ensure the chosen antivirus
-          is actually updated would demand a more complex rule. Maybe this requirement can have at
-          leastthe partial status after the templated rule.
+          New templated rule is necessary to install the
+          package. But to ensure the chosen antivirus
+          is actually updated would demand a more complex
+          rule. Maybe this requirement can have at least
+          the partial status after the templated rule.
 
     - id: A.4.SEC-RHEL3
       title: Permissions by Partitions Are Modified
@@ -266,7 +289,9 @@ controls:
 
     - id: A.5.SEC-RHEL2
       title: Elevation Attempts Are Controlled by Defining Users and Sudoer Groups
-      original_title: Se controlan los intentos de elevación mediante definición de usuarios y grupos
+      original_title: >-
+          Se controlan los intentos de elevación
+          mediante definición de usuarios y grupos
           sudoers.
       levels:
           - basic
@@ -286,7 +311,9 @@ controls:
           - advanced
       status: pending
       notes: |-
-          There are rules for ssh_keys, for example. We need to confirm the scope of this requirement
+          There are rules for ssh_keys, for example.
+          We need to confirm the scope of this
+          requirement
 
     - id: A.5.SEC-RHEL4
       title: Disable Insecure Encryption Algorithms
@@ -374,8 +401,10 @@ controls:
 
     - id: A.6.SEC-RHEL2
       title: Access in Recovery Mode Including Grub Boot Modification Mode is Restricted
-      original_title: Se restringen accesos en modo recuperación incluido el modo modificación de inicio
-          de grub.
+      original_title: >-
+          Se restringen accesos en modo recuperación
+          incluido el modo modificación de inicio de
+          grub.
       levels:
           - basic
           - intermediate
@@ -472,7 +501,9 @@ controls:
 
     - id: A.8.SEC-RHEL4
       title: Unnecessary Services are Disabled, Reducing the Attack Surface
-      original_title: Se deshabilitan servicios innecesarios, reduciendo la superficie de exposición.
+      original_title: >-
+          Se deshabilitan servicios innecesarios,
+          reduciendo la superficie de exposición.
       levels:
           - intermediate
           - advanced
@@ -488,6 +519,7 @@ controls:
           - package_telnet-server_removed
           - package_tftp-server_removed
           - package_vsftpd_removed
+          - service_kdump_disabled
 
     - id: A.8.SEC-RHEL5
       title: Application Execution is Controlled
@@ -541,8 +573,10 @@ controls:
 
     - id: A.8.SEC-RHEL7
       title: Password Encrypted Boot That Prevents Modification is Enabled (Protected GRUB)
-      original_title: Está habilitado el arranque cifrado con contraseña que evite modificaciones (GRUB
-          protegido).
+      original_title: >-
+          Está habilitado el arranque cifrado con
+          contraseña que evite modificaciones
+          (GRUB protegido).
       levels:
           - basic
           - intermediate
@@ -560,8 +594,9 @@ controls:
           - advanced
       status: pending
       notes: |-
-          Is it related to downloads from the Internet to the system or from the system to an external
-          storage, for example?
+          Is it related to downloads from the Internet
+          to the system or from the system to an
+          external storage, for example?
       related_rules:
           - audit_rules_file_deletion_events_rename
           - audit_rules_file_deletion_events_renameat
@@ -622,9 +657,13 @@ controls:
           - var_accounts_password_minlen_login_defs=12
 
     - id: A.11.SEC-RHEL4
-      title: During Login, the System Displays a Text in Compliance With the Organization's Standards
+      title: >-
+          During Login, the System Displays a Text in
+          Compliance With the Organization's Standards
           or Directives
-      original_title: Durante el inicio de sesión, el sistema muestra un texto en cumplimiento con las
+      original_title: >-
+          Durante el inicio de sesión, el sistema
+          muestra un texto en cumplimiento con las
           normas o directivas de la organización.
       levels:
           - basic
@@ -635,11 +674,17 @@ controls:
           - banner_etc_issue
           - banner_etc_issue_net
           - banner_etc_motd
+          - motd_banner_text=cis_banners
+          - motd_banner_contents=cis_default
           - dconf_gnome_banner_enabled
           - dconf_gnome_login_banner_text
+          - dconf_login_banner_text=cis_banners
+          - dconf_login_banner_contents=cis_default
           - sshd_enable_warning_banner_net
           - login_banner_text=cis_banners
+          - login_banner_contents=cis_default
           - remote_login_banner_text=cis_banners
+          - remote_login_banner_contents=cis_default
 
     - id: A.11.SEC-RHEL5
       title: Network Acess to the System is Controlled
@@ -779,7 +824,9 @@ controls:
 
     - id: A.23.SEC-RHEL1
       title: The Installation And Use of Any Device Connected to the Equipment is Controlled
-      original_title: Se controla la instalación y uso de cualquier dispositivo conectado al equipo.
+      original_title: >-
+          Se controla la instalación y uso de cualquier
+          dispositivo conectado al equipo.
       levels:
           - basic
           - intermediate

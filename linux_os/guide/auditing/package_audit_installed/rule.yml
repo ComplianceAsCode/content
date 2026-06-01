@@ -33,9 +33,7 @@ references:
     stigid@sle12: SLES-12-020000
     stigid@sle15: SLES-15-030650
 
-ocil_clause: 'the audit package is not installed'
-
-ocil: '{{{ ocil_package("audit") }}}'
+{{{ complete_ocil_entry_package_installed("audit") }}}
 
 fixtext: |-
     Install the audit service (if the audit service is not already installed) with the following command:

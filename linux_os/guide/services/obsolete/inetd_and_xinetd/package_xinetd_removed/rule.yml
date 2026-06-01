@@ -1,7 +1,7 @@
 documentation_complete: true
 
 
-title: 'Uninstall xinetd Package'
+title: 'Uninstall xinetd package if not used by network services'
 
 description: |-
     {{{ describe_package_remove(package="xinetd") }}}
@@ -32,18 +32,17 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.AC-3,PR.IP-1,PR.PT-3,PR.PT-4
 
-ocil: |-
-    If network services are using the xinetd service, this is not applicable.
-    <br /><br />
-    {{{ complete_ocil_entry_package(package="xinetd") }}}
+ocil_clause: "the xinetd package is installed and the network services are not using the xinetd service"
 
-template:
-    name: package_removed
-    vars:
-        pkgname: xinetd
+{{{ ocil_package_installed_how_to_check(package="xinetd") }}}
 
 {{% if product in ["rhel9"] %}}
 warnings:
     - general:
         The package is not available in {{{ full_name }}}.
 {{% endif %}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: xinetd

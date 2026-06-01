@@ -27,7 +27,7 @@ ocil_clause: 'the command does not return any output, or the line is commented o
 ocil: |-
     If the device or {{{ full_name }}} does not have a camera installed, this requirement is not applicable.
 
-    This requirement is not applicable to mobile devices (smartphones and tablets), where the use of the camera is a local AO decision.
+    This requirement is not applicable to mobile devices (smartphones and tablets), where the use of the camera is a local Authorizing Official (AO) decision.
 
     This requirement is not applicable to dedicated VTC suites located in approved VTC locations that are centrally managed.
 
@@ -35,20 +35,21 @@ ocil: |-
 
     For a built-in camera, the camera must be protected by a camera cover (e.g., laptop camera cover slide) when not in use. If the built-in camera is not protected with a camera cover, or is not physically disabled, this is a finding.
 
-    If the camera is not disconnected, covered, or physically disabled, determine if it is being disabled via software with the following commands:
+    If the camera is not disconnected, covered, or physically disabled, determine if it is being disabled via software.
 
-    Verify the operating system disables the ability to load the uvcvideo kernel module.
+    Verify the operating system disables the ability to load the uvcvideo kernel module and ensure that the uvcvideo protocol module is disabled with the following command:
 
-    $ sudo grep -r uvcvideo /etc/modprobe.d/* | grep "/bin/true"
+    $ sudo grep -r uvcvideo /etc/modprobe.d/
 
-    install uvcvideo /bin/true
+    /etc/modprobe.d/uvcvideo-blacklist.conf:install uvcvideo /bin/false
+    /etc/modprobe.d/uvcvideo-blacklist.conf:blacklist uvcvideo
 
 fixtext: |-
     Configure {{{ full_name }}} to disable the built-in or attached camera when not in use.
 
-    Build or modify the "/etc/modprobe.d/blacklist.conf" file by using the following example:
+    Add or update the following lines in the "/etc/modprobe.d/uvcvideo-blacklist.conf" file:
 
-    install uvcvideo /bin/true
+    install uvcvideo /bin/false
     blacklist uvcvideo
 
     Reboot the system for the settings to take effect.

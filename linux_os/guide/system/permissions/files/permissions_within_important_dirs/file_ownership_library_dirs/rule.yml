@@ -11,12 +11,16 @@ description: |-
     /usr/lib
     /usr/lib64
     </pre>
+    {{% if product != "hummingbird" %}}
     Kernel modules, which can be added to the kernel during runtime, are also
-    stored in <tt>/lib/modules</tt>. All files in these directories should be
-    owned by the <tt>root</tt> user. If the directory, or any file in these
-    directories, is found to be owned by a user other than root correct its
-    ownership with the following command:
+    stored in <tt>/lib/modules</tt>.
+    {{% endif %}}
+    All files in these directories should be owned by the <tt>root</tt> user.
+    {{% if product != "hummingbird" %}}
+    If the directory, or any file in these directories, is found to be owned
+    by a user other than root correct its ownership with the following command:
     <pre>$ sudo chown root <i>FILE</i></pre>
+    {{% endif %}}
 
 rationale: |-
     Files from shared library directories are loaded into the address
@@ -64,7 +68,7 @@ template:
             - /usr/lib/
             - /usr/lib64/
         recursive: 'true'
-{{% if 'ol' in families or 'rhel' in product %}}
+{{% if 'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
         file_regex: ^.*\.so.*$
 {{% else %}}
         file_regex: ^.*$
@@ -74,9 +78,15 @@ template:
 fixtext: |-
     Configure the system-wide shared library files (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.
 
+{{%- if 'ubuntu' in product %}}
+    Run the following command:
+
+    <pre>$ sudo find /lib /lib64 /usr/lib /usr/lib64 -type f -name '*.so*' ! -user root -exec chown root {} +</pre>
+{{%- else %}}
     Run the following command, replacing "[FILE]" with any library file not owned by "root".
 
     $ sudo chown root [FILE]
+{{%- endif %}}
 
 srg_requirement:
     {{{ full_name }}} library files must be owned by root.

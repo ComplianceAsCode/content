@@ -77,7 +77,7 @@ def applicable_platforms(fix_path):
     _, config = parse_from_file_without_jinja(fix_path)
 
     if 'platform' not in config:
-        raise ValueError("Malformed fix: missing platform" % fix_path)
+        raise ValueError("Malformed fix: missing platform in %s" % fix_path)
 
     return parse_platform(config['platform'])
 

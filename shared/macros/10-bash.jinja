@@ -173,8 +173,9 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 
 #}}
 {{%- macro bash_sshd_config_set(parameter, value, rule_id=None) -%}}
+{{%- set sshd_config_path = sshd_main_config_file -%}}
 {{{ set_config_file(
-        path="/etc/ssh/sshd_config",
+        path=sshd_config_path,
         parameter=parameter,
         value=value,
         create=true,
@@ -201,14 +202,15 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 :type config_basename: str
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", rule_id=None) -%}}
-{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
-{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="", rule_id=None) -%}}
+{{%- set sshd_config_path = sshd_main_config_file %}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set sshd_base_dir = sshd_config_base_dir -%}}
 
 {{% if product in ["ol8", "ol9"] %}}
 # Find the include keyword, extract from the line the glob expression representing included files.
-# And if it is a relative path prepend '/etc/ssh/'
-included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
+# And if it is a relative path prepend '{{{ sshd_base_dir }}}/'
+included_files=$(grep -oP "^\s*(?i)include.*" {{{ sshd_config_path }}} | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|{{{ sshd_base_dir }}}/&|')
 for included_file in ${included_files} ; do
     {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true, rule_id=rule_id) | indent(4) }}}
 done
@@ -216,15 +218,15 @@ done
 {{%- if config_is_distributed == "true" %}}
 {{%- set prefix_regex = "^\s*" -%}}
 {{%- set separator_regex = "\s\+" -%}}
-{{%- set hardening_config_basename = config_basename %}}
+{{%- set hardening_config_basename = config_basename or sshd_hardening_config_basename %}}
 {{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
-mkdir -p {{{ sshd_config_dir }}}
-touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
-chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
+mkdir -p {{{ sshd_drop_in_dir }}}
+touch {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
+chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
 {{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
-{{{ lineinfile_absent_in_directory(sshd_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
+{{{ lineinfile_absent_in_directory(sshd_drop_in_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
 {{{ set_config_file(
-        path=sshd_config_dir ~ "/" ~ hardening_config_basename,
+        path=sshd_drop_in_dir ~ "/" ~ hardening_config_basename,
         parameter=parameter,
         value=value,
         create=true,
@@ -500,7 +502,9 @@ fi
 {{%- elif pkg_manager == "apt_get" -%}}
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y "{{{ package }}}"
 {{%- elif pkg_manager == "zypper" -%}}
-zypper remove -y "{{{ package }}}"
+if rpm -q --quiet "{{{ package }}}" ; then
+   zypper remove -y "{{{ package }}}"
+fi
 {{%- else -%}}
 {{{ die("Can't generate a remediation for " + pkg_manager) }}}
 {{%- endif -%}}
@@ -807,7 +811,7 @@ pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
     {{% if  product in ['sle15', 'sle16'] %}}
     # insert before pam_unix.so
-    sed -i --follow-symlinks '/^auth.*required.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
+    sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
     {{% else %}}
     # insert at the top
     sed -i --follow-symlinks '/^# here are the per-package modules/i auth        required      pam_faillock.so preauth' "$pam_file"
@@ -844,6 +848,19 @@ if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
     echo 'account   required     pam_faillock.so' >> "$pam_file"
     {{% endif %}}
 fi
+
+{{% if  product in ['sle15', 'sle16'] %}}
+{{{
+    bash_ensure_pam_module_configuration(
+    '/etc/pam.d/common-auth',
+    'auth',
+    'sufficient',
+    'pam_unix.so',
+    '',
+    '',
+    '')
+}}}
+{{% endif %}}
 {{% elif 'ubuntu' in product %}}
 conf_name=cac_faillock
 
@@ -1947,18 +1964,26 @@ fi
 
 #}}
 {{%- macro update_etc_default_grub_manually(arg_name, arg_name_value) -%}}
+{{%- if 'ubuntu' in product -%}}
+{{%- set grub_vars = ['GRUB_CMDLINE_LINUX', 'GRUB_CMDLINE_LINUX_DEFAULT'] -%}}
+{{%- else -%}}
+{{%- set grub_vars = ['GRUB_CMDLINE_LINUX'] -%}}
+{{%- endif -%}}
+
 # Correct the form of default kernel command line in GRUB
-if grep -q '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' ; then
-       # modify the GRUB command-line if an {{{ arg_name }}}= arg already exists
-       sed -i "s/\(^\s*GRUB_CMDLINE_LINUX=\".*\){{{ arg_name }}}=[^[:space:]]\+\(.*\"\)/\1{{{ arg_name_value }}}\2/"  '/etc/default/grub'
-# Add to already existing GRUB_CMDLINE_LINUX parameters
-elif grep -q '^\s*GRUB_CMDLINE_LINUX='  '/etc/default/grub' ; then
-       # no {{{ arg_name }}}=arg is present, append it
-       sed -i "s/\(^\s*GRUB_CMDLINE_LINUX=\".*\)\"/\1 {{{ arg_name_value }}}\"/"  '/etc/default/grub'
-# Add GRUB_CMDLINE_LINUX parameters line
+{{%- for grub_var in grub_vars %}}
+if grep -q '^\s*{{{ grub_var }}}=.*{{{ arg_name }}}=.*\"' '/etc/default/grub' ; then
+    # modify the GRUB command-line if an {{{ arg_name }}}= arg already exists
+    sed -i 's/\(^\s*{{{ grub_var }}}=".*\){{{ arg_name }}}=[^[:space:]]\+\(.*"\)/\1{{{ arg_name_value }}}\2/' '/etc/default/grub'
+# Add to already existing parameters
+elif grep -q '^\s*{{{ grub_var }}}=' '/etc/default/grub' ; then
+    # no {{{ arg_name }}}=arg is present, append it
+    sed -i 's/\(^\s*{{{ grub_var }}}=".*\)"/\1 {{{ arg_name_value }}}"/' '/etc/default/grub'
+# Add parameters line if completely missing
 else
-       echo "GRUB_CMDLINE_LINUX=\"{{{ arg_name_value }}}\"" >> '/etc/default/grub'
+    echo '{{{ grub_var }}}="{{{ arg_name_value }}}"' >> '/etc/default/grub'
 fi
+{{%- endfor %}}
 {{%- endmacro %}}
 
 
@@ -2459,7 +2484,8 @@ fi
 
 #}}
 {{% macro bash_authselect_force_reselect() -%}}
-authselect select "$(authselect current --raw)" --force
+read -ra authselect_args < <(authselect current --raw)
+authselect select "${authselect_args[@]}" --force
 {{%- endmacro %}}
 
 
@@ -2569,6 +2595,7 @@ if [ -e "{{{ pam_file }}}" ] ; then
 else
     echo "{{{ pam_file }}} was not found" >&2
 fi
+
 {{%- endmacro -%}}
 
 
@@ -2746,3 +2773,100 @@ This macro creates a Bash conditional which checks the system architecture in /p
 {{%- macro bash_arch_conditional(arch) -%}}
 ( grep -sqE "^.*\.{{{ arch }}}$" /proc/sys/kernel/osrelease || grep -sqE "^{{{ arch }}}$" /proc/sys/kernel/arch; )
 {{%- endmacro -%}}
+
+
+{{#
+    Set a sshd configuration parameter to a value for system with default configuration in /usr subdir
+
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+:param copy_defaults: If true default sshd configuration in /usr/etc/ssh/sshd_config will be
+copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
+:type copy_defaults: bool
+:parameter config_basename: drop-in filename of sshd configuration file
+:type config_basename: str
+
+#}}
+{{% macro bash_sshd_remediation_usr(parameter, value, copy_defaults="true", config_basename="00-complianceascode-hardening.conf", rule_id=None) -%}}
+{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
+{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set sshd_usr_config_path = "/usr/etc/ssh/sshd_config" %}}
+{{%- set sshd_usr_config_dir = "/usr/etc/ssh/sshd_config.d" -%}}
+{{%- set prefix_regex = "^\s*" -%}}
+{{%- set separator_regex = "\s\+" -%}}
+{{%- set hardening_config_basename = config_basename %}}
+{{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
+
+if ! [ -e "{{{ sshd_config_path }}}" ] ; then
+    cp "{{{ sshd_usr_config_path }}}" "{{{ sshd_config_path }}}"
+fi
+
+mkdir -p {{{ sshd_config_dir }}}
+touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
+chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
+{{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
+{{{ lineinfile_absent_in_directory(sshd_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
+{{{ lineinfile_absent(sshd_usr_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
+{{{ lineinfile_absent_in_directory(sshd_usr_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
+{{{ set_config_file(
+        path=sshd_config_dir ~ "/" ~ hardening_config_basename,
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="BOF",
+        insensitive=true,
+        separator=" ",
+        separator_regex=separator_regex,
+        prefix_regex=prefix_regex, rule_id=rule_id)
+    }}}
+{{%- endmacro %}}
+
+
+
+{{#
+    copy source file to destination file if destination
+    does not exist
+
+:parameter source: source filename
+:type source: str
+:parameter destination: destination filename
+:type destination: str
+
+#}}
+{{% macro bash_copy_distro_defaults(source, destination) -%}}
+
+{{% if product in ["sle16", "slmicro6"] %}}
+if ! [ -e "{{{ destination }}}" ] ; then
+    cp -p "{{{ source }}}" "{{{ destination }}}"
+fi
+{{% endif %}}
+{{%- endmacro %}}
+
+{{#
+    set parameter to value in /etc/login.defs.d/ drop in configuration
+    and remove parameter for user drop ins and main configuration
+
+:parameter parameter: parameter to set
+:type parameter: str
+:parameter value: value to set
+:type value: str
+
+#}}
+
+{{%- macro bash_login_defs(parameter, value, cce_identifiers) %}}
+
+{{%- set line_regex_absent = "^\s*" + parameter + "\s\+" -%}}
+{{%- set line_regex_replace = "^" + parameter -%}}
+{{%- set login_defs_d_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) -%}}
+
+{{% if product in [ 'slmicro6', 'sle16' ] %}}
+{{{ bash_copy_distro_defaults(login_defs_defaults_path, login_defs_path) }}}
+{{% endif %}}
+
+{{{ lineinfile_absent_in_directory(login_defs_d_config_dir, line_regex_absent, filename_glob="*.defs") }}}
+{{{ bash_replace_or_append(login_defs_drop_in_path, line_regex_replace, value, '%s %s', cce_identifiers=cce_identifiers) }}}
+
+{{%- endmacro %}}

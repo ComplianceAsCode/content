@@ -1,4 +1,4 @@
-{{%- set config_path = "/etc/ssh/sshd_config" %}}
+{{%- set config_path = sshd_main_config_file %}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
@@ -26,4 +26,3 @@
   {{{ oval_line_in_file_test(config_path, "match", missing_parameter_pass=true, rule_id=rule_id) | indent (2) }}}
   {{{ oval_line_in_file_object(config_path, parameter="match", missing_parameter_pass=true, prefix_regex="^[ \\t]*(?i)", separator_regex="(?-i)\s+\S+", rule_id=rule_id) | indent (2) }}}
 </def-group>
-

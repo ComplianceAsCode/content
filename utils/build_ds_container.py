@@ -207,7 +207,7 @@ def copy_build_files_to_output_directory(output_directory):
     build_directory = os.path.join(REPO_PATH, 'build')
     for f in os.listdir(build_directory):
         filepath = os.path.join(build_directory, f)
-        if os.path.isfile(filepath) and filepath.endswith('-ds.xml'):
+        if os.path.isfile(filepath) and (filepath.endswith('-ds.xml') or filepath.endswith('-cel-content.yaml')):
             shutil.copy(filepath, output_directory)
 
 
@@ -235,17 +235,34 @@ def create_profile_bundles(products, content_image=None):
             product_name = product
         else:
             product_name = 'upstream-' + product
+
+        # Check if CEL content exists for this product
+        cel_content_file = product + '-cel-content.yaml'
+        build_directory = os.path.join(REPO_PATH, 'build')
+        cel_content_path = os.path.join(build_directory, cel_content_file)
+
+        profile_bundle_spec = {
+            'contentImage': content_image or 'openscap-ocp4-ds:latest',
+            'contentFile': content_file
+        }
+
+        # Add celContentFile if CEL content exists
+        if os.path.isfile(cel_content_path):
+            profile_bundle_spec['celContentFile'] = cel_content_file
+            log.debug(f'Including CEL content for {product}: {cel_content_file}')
+
         profile_bundle_update = {
             'apiVersion': 'compliance.openshift.io/v1alpha1',
             'kind': 'ProfileBundle',
             'metadata': {'name': product_name},
-            'spec': {
-                'contentImage': content_image or 'openscap-ocp4-ds:latest',
-                'contentFile': content_file}}
+            'spec': profile_bundle_spec
+        }
+
         with tempfile.NamedTemporaryFile() as f:
             yaml.dump(profile_bundle_update, f, encoding='utf-8')
             command = ['kubectl', 'apply', '-n', args.namespace, '-f', f.name]
             subprocess.run(command, check=True, capture_output=CAPTURE_OUTPUT)
+
     log.info(f'Created profile bundles for {", ".join(products)}')
 
 

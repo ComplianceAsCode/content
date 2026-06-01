@@ -33,9 +33,7 @@ references:
     srg: SRG-OS-000480-GPOS-00227,SRG-OS-000134-GPOS-00068
     stigid@ol8: OL08-00-010171
 
-ocil_clause: 'the policycoreutils package is not installed'
-
-ocil: '{{{ ocil_package(package="policycoreutils") }}}'
+{{{ complete_ocil_entry_package_installed("policycoreutils") }}}
 
 template:
     name: package_installed

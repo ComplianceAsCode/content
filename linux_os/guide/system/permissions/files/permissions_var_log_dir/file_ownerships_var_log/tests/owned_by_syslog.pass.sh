@@ -1,6 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
-# packages = rsyslog
+
+useradd -r syslog || true
 
 chown root -R /var/log/*
 

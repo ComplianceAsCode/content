@@ -109,6 +109,7 @@ file_permissions_grub2_cfg
 file_permissions_user_cfg
 grub2_admin_username
 grub2_audit_argument
+grub2_audit_backlog_limit_argument
 grub2_disable_interactive_boot
 grub2_enable_selinux
 grub2_password
@@ -118,6 +119,7 @@ no_direct_root_logins
 no_empty_passwords
 package_audit_installed
 package_cron_installed
+package_postfix_installed
 package_rsyslog_installed
 package_sequoia-sq_installed
 package_telnet-server_removed
@@ -161,6 +163,7 @@ sysctl_kernel_dmesg_restrict
 sysctl_kernel_exec_shield
 sysctl_kernel_randomize_va_space
 use_kerberos_security_all_exports
+var_audit_backlog_limit=8192
 var_audit_failure_mode=panic
 var_authselect_profile=sssd
 var_selinux_policy_name=targeted

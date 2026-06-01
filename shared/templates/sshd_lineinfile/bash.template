@@ -5,8 +5,16 @@
 # disruption = low
 
 {{% if XCCDF_VARIABLE %}}
-{{{ bash_instantiate_variables(XCCDF_VARIABLE) }}}
-{{{ bash_sshd_remediation(parameter=PARAMETER, value="$" ~ XCCDF_VARIABLE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
-{{% else %}}
-{{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
-{{% endif %}}
+    {{{- bash_instantiate_variables(XCCDF_VARIABLE) -}}}
+    {{%- if product == 'sle16' -%}}
+        {{{- bash_sshd_remediation_usr(parameter=PARAMETER, value="$" ~ XCCDF_VARIABLE, copy_defaults=true, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
+    {{%- else -%}}
+        {{{- bash_sshd_remediation(parameter=PARAMETER, value="$" ~ XCCDF_VARIABLE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
+    {{%- endif -%}}
+{{%- else -%}}
+    {{%- if product == 'sle16' -%}}
+        {{{- bash_sshd_remediation_usr(parameter=PARAMETER, value=VALUE, copy_defaults=true, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
+    {{%- else -%}}
+        {{{- bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
+    {{%- endif -%}}
+{{%- endif -%}}

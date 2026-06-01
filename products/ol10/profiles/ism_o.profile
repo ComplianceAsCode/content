@@ -75,6 +75,7 @@ selections:
     - '!accounts_password_all_shadowed'
     - '!usbguard_allow_hid_and_hub'
     - '!sshd_allow_only_protocol2'
+    - '!configure_ssh_crypto_policy'
 
     # Older rules, no longer needed
     - '!security_patches_up_to_date'

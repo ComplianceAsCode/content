@@ -27,3 +27,4 @@ selections:
     - '!package_talk_removed'
     - '!package_talk-server_removed'
     - '!ensure_redhat_gpgkey_installed'
+    - '!configure_ssh_crypto_policy'

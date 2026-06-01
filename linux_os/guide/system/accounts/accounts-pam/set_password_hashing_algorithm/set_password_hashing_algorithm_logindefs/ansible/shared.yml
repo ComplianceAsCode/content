@@ -6,6 +6,17 @@
 
 {{{ ansible_instantiate_variables("var_password_hashing_algorithm") }}}
 
+{{% if product in [ 'slmicro6', 'sle16' ] %}}
+{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{{
+    ansible_login_defs(
+      parameter='ENCRYPT_METHOD',
+      value='{{ var_password_hashing_algorithm.split("|")[0] }}',
+      rule_title=rule_title,
+      cce=cce_cce_identifier
+    )
+}}}
+{{% else %}}
 - name: Set Password Hashing Algorithm in {{{ login_defs_path }}}
   ansible.builtin.lineinfile:
       dest: {{{ login_defs_path }}}
@@ -13,3 +24,4 @@
       line: ENCRYPT_METHOD {{ var_password_hashing_algorithm.split('|')[0] }}
       state: present
       create: yes
+{{% endif %}}

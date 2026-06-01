@@ -1,4 +1,5 @@
 documentation_complete: true
+{{% set openssh_server_policy_file = openssh_server_crypto_policy_config_file %}}
 
 
 title: 'Configure SSH Server to Use FIPS 140-2 Validated Ciphers: opensshserver.config'
@@ -9,7 +10,7 @@ description: |-
     set up incorrectly.
 
     To check that Crypto Policies settings for ciphers are configured correctly, ensure that
-    <tt>/etc/crypto-policies/back-ends/opensshserver.config</tt> contains the following
+    <tt>{{{ openssh_server_policy_file }}}</tt> contains the following
     text and is not commented out:
     <pre>-oCiphers={{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
 
@@ -36,7 +37,7 @@ ocil_clause: 'Crypto Policy for OpenSSH Server is not configured correctly'
 
 ocil: |-
     To verify if the OpenSSH server uses defined ciphers in the Crypto Policy, run:
-    <pre>$ grep -Po '(-oCiphers=\S+)' /etc/crypto-policies/back-ends/opensshserver.config</pre>
+    <pre>$ grep -Po '(-oCiphers=\S+)' {{{ openssh_server_policy_file }}}</pre>
     and verify that the line matches:
     <pre>-oCiphers={{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
 

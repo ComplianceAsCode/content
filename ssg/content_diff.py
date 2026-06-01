@@ -137,8 +137,8 @@ class StandardContentDiffer(object):
 
         if old_rule_text == new_rule_text:
             return
-
-        if old_rule_text != "":
+        # new_rule_text != "" to avoid printing the message when the rule is removed in the new content
+        if old_rule_text != "" and new_rule_text != "":
             print(
                 "New content has different text for rule '%s'." % (identifier))
 
@@ -345,6 +345,10 @@ class StigContentDiffer(StandardContentDiffer):
                 new_sv_rule_id = new_rule_mapping[old_sv_rule_id]
             except KeyError:
                 print("%s is missing in new data stream." % old_stig_id)
+                # Compare against empty rule so that a diff is generated for the removed rule
+                if not self.only_rules and self.show_diffs:
+                    empty_rule = ssg.xml.XMLRule(ET.Element("{%s}Rule" % XCCDF12_NS))
+                    self.compare_rule(old_rule, empty_rule, old_stig_id)
                 continue
             if self.only_rules:
                 continue
@@ -362,7 +366,7 @@ class StigContentDiffer(StandardContentDiffer):
             new_stig_id = self._get_stig_id(new_rule)
             new_sv_rule_id = self.get_stig_rule_SV(new_rule.get_attr("id"))
             try:
-                old_sv_rule_id = old_rule_mapping[new_sv_rule_id]  # noqa: F841
+                _ = old_rule_mapping[new_sv_rule_id]
             except KeyError:
                 print("%s was added in new data stream." % (new_stig_id))
 

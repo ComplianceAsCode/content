@@ -31,7 +31,7 @@
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
                     recurse_file_system="local"/>
     <unix:path var_ref="var_accounts_users_home_files_groupownership_dirs" var_check="at least one"/>
-    <unix:filename operation="pattern match">.*</unix:filename>
+    <unix:filename operation="not equal">/</unix:filename>
   </unix:file_object>
 
   <!-- #### creation of state #### -->

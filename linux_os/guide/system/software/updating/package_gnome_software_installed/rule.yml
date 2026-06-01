@@ -10,9 +10,7 @@ rationale: 'The GNOME software package must be installed so that it can be used 
 
 severity: medium
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="gnome-software") }}}'
+{{{ complete_ocil_entry_package_installed("gnome-software") }}}
 
 fixtext: |-
     {{{ describe_package_install("gnome-software") }}}

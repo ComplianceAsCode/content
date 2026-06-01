@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R3
+    version: V3R5
     SMEs:
         - svet-se
         - rumch-se
@@ -13,7 +13,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 12'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 12 V3R3.
+    DISA STIG for SUSE Linux Enterprise 12 V3R5.
 
 selections:
     - sshd_approved_macs=stig
@@ -32,6 +32,9 @@ selections:
     - var_password_pam_ucredit=1
     - var_accounts_maximum_age_login_defs=60
     - login_banner_text=dod_banners
+    - login_banner_contents=dod_default
+    - dconf_login_banner_text=dod_banners
+    - dconf_login_banner_contents=dod_default
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled
@@ -176,7 +179,6 @@ selections:
     - dir_system_commands_root_owned
     - disable_ctrlaltdel_reboot
     - disallow_bypass_password_sudo
-    - display_login_attempts
     - enable_dconf_user_profile
     - encrypt_partitions
     - ensure_gpgcheck_globally_activated

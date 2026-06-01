@@ -3,7 +3,7 @@
 # this file prepares unified test environment used by other scenarios
 # These should be tuned per product to match defaults
 
-{{% if product in ["rhel9", "rhel10", "sle15", "sle16"] %}}
+{{% if product in ["ol9", "ol10", "rhel9", "rhel10", "sle15", "sle16"] %}}
 LOGIND_CONF_FILE="/etc/systemd/logind.conf.d/oscap-idle-sessions.conf"
 mkdir -p /etc/systemd/logind.conf.d/
 {{% else %}}

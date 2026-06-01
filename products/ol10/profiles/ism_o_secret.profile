@@ -76,6 +76,7 @@ selections:
     - "!usbguard_allow_hid_and_hub"
     - "!sshd_allow_only_protocol2"
     - var_authselect_profile=local
+    - "!configure_ssh_crypto_policy"
 
     # Needed for references in other products
     - '!security_patches_up_to_date'

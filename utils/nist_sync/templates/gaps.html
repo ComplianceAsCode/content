@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer - Gap Analysis</title>
+    <!-- SHARED_STYLES_PLACEHOLDER -->
+    <style>
+        .gap-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .priority-section {
+            margin-bottom: 30px;
+        }
+
+        .priority-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .priority-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .gap-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .gap-item {
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-left: 4px solid #d73a49;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .gap-item:hover {
+            border-left-color: #0366d6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .gap-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+
+        .gap-id {
+            font-size: 16px;
+            font-weight: 600;
+            color: #d73a49;
+        }
+
+        .gap-title {
+            font-size: 14px;
+            color: #24292e;
+            margin: 5px 0;
+        }
+
+        .family-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .family-card {
+            background: white;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .family-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .family-name {
+            font-weight: 600;
+            color: #24292e;
+        }
+
+        .gap-count-badge {
+            background: #d73a49;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- SHARED_HEADER_PLACEHOLDER -->
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Gap Analysis</h2>
+            <p>Controls that need rule implementation</p>
+        </div>
+
+        <!-- Gap Summary -->
+        <div class="gap-summary">
+            <div class="stat-card">
+                <div class="stat-value" id="total-gaps" style="color: #d73a49;">0</div>
+                <div class="stat-label">Total Gaps</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="high-gaps" style="color: #721c24;">0</div>
+                <div class="stat-label">High Baseline</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="moderate-gaps" style="color: #856404;">0</div>
+                <div class="stat-label">Moderate Baseline</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="low-gaps" style="color: #0366d6;">0</div>
+                <div class="stat-label">Low Baseline</div>
+            </div>
+        </div>
+
+        <!-- Priority: High Baseline Gaps -->
+        <div class="card priority-section" id="high-section">
+            <div class="priority-header">
+                <div class="priority-title">
+                    🔴 High Baseline Gaps
+                </div>
+                <span class="badge badge-high" id="high-count">0</span>
+            </div>
+            <div id="high-gaps-list">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Priority: Moderate Baseline Gaps -->
+        <div class="card priority-section" id="moderate-section">
+            <div class="priority-header">
+                <div class="priority-title">
+                    🟡 Moderate Baseline Gaps
+                </div>
+                <span class="badge badge-moderate" id="moderate-count">0</span>
+            </div>
+            <div id="moderate-gaps-list">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Priority: Low Baseline Gaps -->
+        <div class="card priority-section" id="low-section">
+            <div class="priority-header">
+                <div class="priority-title">
+                    🔵 Low Baseline Gaps
+                </div>
+                <span class="badge badge-low" id="low-count">0</span>
+            </div>
+            <div id="low-gaps-list">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Gap Breakdown by Family -->
+        <div class="card">
+            <h3>Gaps by Control Family</h3>
+            <div class="family-breakdown" id="family-breakdown">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+
+        function renderGapAnalysis() {
+            if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
+                document.querySelector('.container').innerHTML =
+                    '<div class="empty-state"><h3>Error loading data</h3></div>';
+                return;
+            }
+
+            const product = CURRENT_PRODUCT;
+            const controls = EMBEDDED_DATA.products[product]?.controls || [];
+            const gaps = controls.filter(c => !c.has_rules);
+
+            // Count gaps by baseline
+            const highGaps = gaps.filter(c => (c.levels || []).includes('high'));
+            const moderateGaps = gaps.filter(c => (c.levels || []).includes('moderate') && !(c.levels || []).includes('high'));
+            const lowGaps = gaps.filter(c => (c.levels || []).includes('low') && !(c.levels || []).includes('moderate') && !(c.levels || []).includes('high'));
+
+            // Update summary stats
+            document.getElementById('total-gaps').textContent = gaps.length;
+            document.getElementById('high-gaps').textContent = highGaps.length;
+            document.getElementById('moderate-gaps').textContent = moderateGaps.length;
+            document.getElementById('low-gaps').textContent = lowGaps.length;
+
+            // Render gaps by priority
+            renderGapList('high-gaps-list', 'high-count', highGaps);
+            renderGapList('moderate-gaps-list', 'moderate-count', moderateGaps);
+            renderGapList('low-gaps-list', 'low-count', lowGaps);
+
+            // Hide empty sections
+            document.getElementById('high-section').style.display = highGaps.length > 0 ? 'block' : 'none';
+            document.getElementById('moderate-section').style.display = moderateGaps.length > 0 ? 'block' : 'none';
+            document.getElementById('low-section').style.display = lowGaps.length > 0 ? 'block' : 'none';
+
+            // Render family breakdown
+            renderFamilyBreakdown(gaps);
+        }
+
+        function renderGapList(containerId, countId, gaps) {
+            const container = document.getElementById(containerId);
+            const countBadge = document.getElementById(countId);
+
+            countBadge.textContent = gaps.length;
+
+            if (gaps.length === 0) {
+                container.innerHTML = '<p style="color: #586069; text-align: center; padding: 20px;">No gaps in this category</p>';
+                return;
+            }
+
+            container.innerHTML = gaps.map(control => {
+                const levels = (control.levels || []).join(', ').toUpperCase();
+                const familyName = getFamilyName(control.id);
+
+                return `
+                    <div class="gap-item" onclick="window.location.href='control-detail.html?id=${control.id}'">
+                        <div class="gap-item-header">
+                            <div>
+                                <div class="gap-id">${control.id.toUpperCase()}</div>
+                                <div class="gap-title">${control.title}</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: #586069; margin-top: 8px;">
+                            📁 ${familyName} • 📊 Baselines: ${levels}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderFamilyBreakdown(gaps) {
+            const familyGaps = {};
+
+            // Count gaps by family
+            gaps.forEach(control => {
+                const familyId = control.id.split('-')[0];
+                if (!familyGaps[familyId]) {
+                    familyGaps[familyId] = [];
+                }
+                familyGaps[familyId].push(control);
+            });
+
+            // Sort families by gap count (descending)
+            const sortedFamilies = Object.entries(familyGaps)
+                .sort((a, b) => b[1].length - a[1].length);
+
+            const container = document.getElementById('family-breakdown');
+
+            if (sortedFamilies.length === 0) {
+                container.innerHTML = '<p style="color: #586069; text-align: center; padding: 20px;">No gaps found</p>';
+                return;
+            }
+
+            container.innerHTML = sortedFamilies.map(([familyId, controls]) => {
+                const familyName = getFamilyName(familyId);
+                const gapCount = controls.length;
+
+                return `
+                    <div class="family-card">
+                        <div class="family-card-header">
+                            <div class="family-name">${familyName}</div>
+                            <div class="gap-count-badge">${gapCount}</div>
+                        </div>
+                        <div style="font-size: 13px; color: #586069;">
+                            ${controls.slice(0, 5).map(c => c.id.toUpperCase()).join(', ')}
+                            ${controls.length > 5 ? `<br>+ ${controls.length - 5} more` : ''}
+                        </div>
+                        <a href="family.html?family=${familyId}" class="btn" style="margin-top: 10px; width: 100%;">
+                            View Family Details
+                        </a>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getFamilyName(familyId) {
+            const family = EMBEDDED_DATA.families.find(f => f.id === familyId);
+            return family ? family.name : 'Other';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', renderGapAnalysis);
+    </script>
+</body>
+</html>

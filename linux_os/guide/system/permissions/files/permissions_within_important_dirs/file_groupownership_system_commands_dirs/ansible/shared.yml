@@ -11,7 +11,11 @@
     follow: no
     recurse: no
   register: system_command_files_found
+  {{% if 'ol9' in product %}}
+  with_items: ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/libexec','/usr/local/bin', '/usr/local/sbin']
+  {{% else %}}
   with_items: ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin']
+  {{% endif %}}
   changed_when: false
 
 - name: "{{{ rule_title }}} - Set group ownership to root for system command files"

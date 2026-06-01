@@ -582,8 +582,7 @@ selections:
     - sudo_add_use_pty
     - sudo_custom_logfile
     - sudo_remove_no_authenticate
-    - sudo_require_authentication
-    - sudo_require_reauthentication
+    - sudo_remove_nopasswd
     - sysctl_fs_suid_dumpable
     - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_randomize_va_space

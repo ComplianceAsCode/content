@@ -15,6 +15,7 @@ identifiers:
     cce@rhel8: CCE-82444-1
     cce@rhel9: CCE-86083-3
     cce@rhel10: CCE-88372-8
+    cce@sle16: CCE-96157-3
 
 references:
     cis-csc: 1,12,15,16,5
@@ -26,10 +27,7 @@ references:
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
     srg: SRG-OS-000375-GPOS-00160
 
-
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="sssd") }}}'
+{{{ complete_ocil_entry_package_installed("sssd") }}}
 
 template:
     name: package_installed

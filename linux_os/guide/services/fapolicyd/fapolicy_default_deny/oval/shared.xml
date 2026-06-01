@@ -24,7 +24,7 @@
     <ind:textfilecontent54_object id="object_fapolicy_default_deny_policy_compiled_rules"
         version="1">
         <ind:filepath>/etc/fapolicyd/compiled.rules</ind:filepath>
-        <ind:pattern operation="pattern match">^\s*deny\s*perm=any\s*all\s*:\s*all\s*\z</ind:pattern>
+        <ind:pattern operation="pattern match">^\s*deny(_log|_audit)?\s*perm=any\s*all\s*:\s*all\s*\z</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
@@ -37,7 +37,7 @@
     <ind:textfilecontent54_object id="object_fapolicy_default_deny_policy_fapolicyd_rules"
         version="2">
         <ind:filepath>/etc/fapolicyd/fapolicyd.rules</ind:filepath>
-        <ind:pattern operation="pattern match">^\s*deny\s*perm=any\s*all\s*:\s*all\s*\z</ind:pattern>
+        <ind:pattern operation="pattern match">^\s*deny(_log|_audit)?\s*perm=any\s*all\s*:\s*all\s*\z</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 

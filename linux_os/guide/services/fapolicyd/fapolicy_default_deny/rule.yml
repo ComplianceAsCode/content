@@ -1,18 +1,25 @@
 documentation_complete: true
 
 
-title: 'Configure Fapolicy Module to Employ a Deny-all, Permit-by-exception Policy to Allow the Execution of Authorized Software Programs.'
+title: "Configure Fapolicy Module to Employ a Deny-all, Permit-by-exception Policy to Allow the
+     Execution of Authorized Software Programs."
 
 description: |-
-    The Fapolicy module must be configured to employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs and to prevent unauthorized software from running.
+    The Fapolicy module must be configured to employ a deny-all, permit-by-exception policy to
+    allow the execution of authorized software programs and to prevent unauthorized software from
+    running.
 
 rationale: |-
-    Utilizing a whitelist provides a configuration management method for allowing the execution of only authorized software.
-    Using only authorized software decreases risk by limiting the number of potential vulnerabilities. Verification of whitelisted software occurs prior to execution or at system startup.
+    Utilizing a whitelist provides a configuration management method for allowing the execution of
+    only authorized software.
+    Using only authorized software decreases risk by limiting the number of potential
+    vulnerabilities.
+    Verification of whitelisted software occurs prior to execution or at system startup.
 
     Proceed with caution with enforcing the use of this daemon.
     Improper configuration may render the system non-functional.
-    The "fapolicyd" API is not namespace aware and can cause issues when launching or running containers.
+    The "fapolicyd" API is not namespace aware and can cause issues when launching or running
+    containers.
 
 severity: medium
 
@@ -22,11 +29,12 @@ identifiers:
     cce@rhel10: CCE-90343-5
 
 references:
-  nist: CM-7 (2),CM-7 (5) (b),CM-6 b
-  srg: SRG-OS-000368-GPOS-00154,SRG-OS-000370-GPOS-00155,SRG-OS-000480-GPOS-00232
-  stigid@ol8: OL08-00-040137
+    nist: CM-7 (2),CM-7 (5) (b),CM-6 b
+    srg: SRG-OS-000368-GPOS-00154,SRG-OS-000370-GPOS-00155,SRG-OS-000480-GPOS-00232
+    stigid@ol8: OL08-00-040137
 
-ocil_clause: 'fapolicyd is not running in enforcement mode with a deny-all, permit-by-exception policy'
+ocil_clause: "fapolicyd is not running in enforcement mode with a deny-all, permit-by-exception
+    policy"
 
 ocil: |-
     Verify the {{{ full_name }}} "fapolicyd" employs a deny-all, permit-by-exception policy.
@@ -52,23 +60,33 @@ ocil: |-
     deny_audit perm=any pattern=ld_so : all
     deny perm=any all : all
 
-fixtext: |-
-    Configure {{{ full_name }}} to employ a deny-all, permit-by-exception application whitelisting policy with "fapolicyd".
+    Note: The "deny_log" and "deny_audit" actions also meet the security requirements as they deny
+    execution while additionally providing logging.
 
-    With the "fapolicyd" installed and enabled, configure the daemon to function in permissive mode until the whitelist is built correctly to avoid system lockout. Do this by editing the "/etc/fapolicyd/fapolicyd.conf" file with the following line:
+fixtext: |-
+    Configure {{{ full_name }}} to employ a deny-all, permit-by-exception application whitelisting
+    policy with "fapolicyd".
+
+    With the "fapolicyd" installed and enabled, configure the daemon to function in permissive mode
+    until the whitelist is built correctly to avoid system lockout.
+    Do this by editing the "/etc/fapolicyd/fapolicyd.conf" file with the following line:
 
     permissive = 1
 
     {{%- if product in ["ol8", "rhel8"] %}}
     For {{{ product_short_name }}} 8.5 systems and older:
-    Build the whitelist in the "/etc/fapolicyd/fapolicyd.rules" file ensuring the last rule is "deny perm=any all : all".
+    Build the whitelist in the "/etc/fapolicyd/fapolicyd.rules" file ensuring
+    the last rule is "deny perm=any all : all".
 
     For {{{ product_short_name }}} 8.6 systems and newer:
     {{%- endif %}}
-    Build the whitelist in a file within the "/etc/fapolicyd/rules.d" directory ensuring the last rule is "deny perm=any all : all".
+    Build the whitelist in a file within the "/etc/fapolicyd/rules.d" directory ensuring
+    the last rule implements a deny-all policy, such as "deny perm=any all : all".
 
-    Once it is determined the whitelist is built correctly, set the fapolicyd to enforcing mode by editing the "permissive" line in the /etc/fapolicyd/fapolicyd.conf file.
+    Once it is determined the whitelist is built correctly, set the fapolicyd to enforcing mode by
+    editing the "permissive" line in the /etc/fapolicyd/fapolicyd.conf file.
 
     permissive = 0
 
-srg_requirement: 'The {{{ full_name }}} fapolicy module must be configured to employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs.'
+srg_requirement: "The {{{ full_name }}} fapolicy module must be configured to employ a deny-all,
+    permit-by-exception policy to allow the execution of authorized software programs."

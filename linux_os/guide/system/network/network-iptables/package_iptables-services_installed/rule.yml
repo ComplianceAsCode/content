@@ -23,9 +23,7 @@ references:
     nist: CM-6(a)
     srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: 'the iptables-services package is not installed'
-
-ocil: '{{{ ocil_package(package="iptables-services") }}}'
+{{{ complete_ocil_entry_package_installed("iptables-services") }}}
 
 template:
     name: package_installed

@@ -11,4 +11,6 @@ add_dconf_setting "org/gnome/desktop/session" "idle-delay" "uint32 900" "dummy.d
 
 {{% if 'ubuntu' in product %}}
 add_dconf_lock "org/gnome/desktop/session" "idle-delay" "local.d" "00-security-settings"
+{{% elif product in ["sle15", "sle16"] %}}
+add_dconf_lock "org/gnome/desktop/session" "idle-delay" "{{{ dconf_gdm_dir }}}" "00-security-settings"
 {{% endif %}}

@@ -46,6 +46,15 @@ controls:
           - package_rsh-server_removed
       status: automated
 
+    - id: UBTU-24-100050
+      title: Ubuntu 24.04 LTS must not have the nfs-kernel-server package installed.
+      levels:
+          - high
+      rules:
+          - package_nfs-kernel-server_removed
+          - service_nfs_disabled
+      status: automated
+
     - id: UBTU-24-100100
       title: Ubuntu 24.04 LTS must use a file integrity tool to verify correct operation of all security
           functions.
@@ -317,15 +326,39 @@ controls:
           - var_screensaver_lock_delay=immediate
           - dconf_gnome_screensaver_idle_delay
           - dconf_gnome_screensaver_lock_delay
+          - dconf_gnome_screensaver_lock_enabled
       status: automated
 
     - id: UBTU-24-200040
-      title: Ubuntu 24.04 LTS must retain a user's session lock until the user reestablishes access using
-          established identification and authentication procedures.
+      title: Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user interface automount function.
       levels:
           - medium
       rules:
-          - dconf_gnome_screensaver_lock_enabled
+          - dconf_gnome_disable_automount_open
+      status: automated
+
+    - id: UBTU-24-200041
+      title: Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user interface autorun function.
+      levels:
+          - medium
+      rules:
+          - dconf_gnome_disable_autorun
+      status: automated
+
+    - id: UBTU-24-200042
+      title: Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user smart card removal action.
+      levels:
+          - medium
+      rules:
+          - dconf_gnome_lock_screen_on_smartcard_removal
+      status: automated
+
+    - id: UBTU-24-200043
+      title: Ubuntu 24.04 LTS must conceal, via the session lock, information previously visible on the display with a publicly viewable image.
+      levels:
+          - medium
+      rules:
+          - dconf_gnome_screensaver_mode_blank
       status: automated
 
     - id: UBTU-24-200060
@@ -361,6 +394,15 @@ controls:
           - medium
       rules:
           - account_disable_post_pw_expiration
+      status: automated
+
+    - id: UBTU-24-200270
+      title: Ubuntu 24.04 LTS must audit any script or executable called by cron as root or by any privileged user.
+      levels:
+          - medium
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
       status: automated
 
     - id: UBTU-24-200280
@@ -441,6 +483,7 @@ controls:
           - medium
       rules:
           - remote_login_banner_text=dod_banners
+          - remote_login_banner_contents=dod_default
           - sshd_enable_warning_banner_net
           - banner_etc_issue_net
       status: automated
@@ -461,7 +504,8 @@ controls:
       levels:
           - medium
       rules:
-          - login_banner_text=dod_banners
+          - dconf_login_banner_text=dod_banners
+          - dconf_login_banner_contents=dod_default
           - dconf_gnome_login_banner_text
       status: automated
 
@@ -578,6 +622,22 @@ controls:
       rules:
           - var_password_pam_delay=4000000
           - accounts_passwords_pam_faildelay_delay
+      status: automated
+
+    - id: UBTU-24-300019
+      title: Ubuntu 24.04 LTS must restrict privilege elevation to authorized personnel.
+      levels:
+          - medium
+      rules:
+          - sudo_restrict_privilege_elevation_to_authorized
+      status: automated
+
+    - id: UBTU-24-300020
+      title: Ubuntu 24.04 LTS must require users to provide a password for privilege escalation.
+      levels:
+          - medium
+      rules:
+          - sudo_remove_nopasswd
       status: automated
 
     - id: UBTU-24-300021

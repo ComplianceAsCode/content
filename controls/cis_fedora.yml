@@ -369,9 +369,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: manual
-      related_rules:
+      status: partial
+      rules:
           - ensure_fedora_gpgkey_installed
+      notes: >
+        In CIS Benchmark, the requirement is manual, because of GPG keys for 3rd party repositories.
+        But, add the rule ensure_fedora_gpgkey_installed to the profile because the requirement 1.2.1.2
+        adds ensure_gpgcheck_globally_activated which requires GPG key checking. If the Fedora
+        GPG key wouldn't be installed, people won't be able to install any RPM package using dnf.
 
     - id: 1.2.1.2
       title: Ensure gpgcheck is configured (Automated)
@@ -710,7 +715,8 @@ controls:
       rules:
           - dconf_gnome_banner_enabled
           - dconf_gnome_login_banner_text
-          - login_banner_text=cis_banners
+          - dconf_login_banner_text=cis_banners
+          - dconf_login_banner_contents=cis_default
 
     - id: 1.8.2
       title: Ensure GDM disable-user-list is configured (Automated)
@@ -2077,7 +2083,8 @@ controls:
           - l2_workstation
       status: automated
       rules:
-          - accounts_passwords_pam_faillock_deny_root
+          - accounts_passwords_pam_faillock_even_deny_root_or_root_unlock_time
+          - var_accounts_passwords_pam_faillock_root_unlock_time=60
 
     - id: 5.3.3.2.1
       title: Ensure password number of changed characters is configured (Automated)

@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: ./build_product sle12 sle15
       - name: Test
-        run: ctest -j2 --output-on-failure -E unique-stigids
+        run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
 
   validate-suse:
@@ -55,7 +55,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       - name: Test
-        run: ctest -j2 --output-on-failure -E unique-stigids
+        run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
 
   validate-debian:
@@ -81,7 +81,7 @@ jobs:
           ./build_product debian11 debian12 debian13
       - name: Test
         working-directory: ./build
-        run: ctest -j2 --output-on-failure -E unique-stigids
+        run: ctest -j$(nproc) --output-on-failure -E unique-stigids
 
   validate-ubuntu-22-04:
     name: Build, Test on Ubuntu 22.04
@@ -99,7 +99,7 @@ jobs:
         run: |-
           ./build_product ubuntu2204
       - name: Test
-        run: ctest -j2 --output-on-failure -E unique-stigids
+        run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
 
   validate-ubuntu-24-04:
@@ -118,7 +118,7 @@ jobs:
         run: |-
           ./build_product ubuntu2404
       - name: Test
-        run: ctest -j2 --output-on-failure -E unique-stigids
+        run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
 
   validate-fedora-rawhide:
@@ -141,5 +141,5 @@ jobs:
           env:
             ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       -   name: Test
-          run: ctest -j2 --output-on-failure -E unique-stigids
+          run: ctest -j$(nproc) --output-on-failure -E unique-stigids
           working-directory: ./build

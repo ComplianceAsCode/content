@@ -5,7 +5,7 @@ metadata:
     SMEs:
         - esampson
 
-reference: 
+reference:
 
 title: 'Hardening for Public Cloud Image of SUSE Linux Enterprise Server (SLES) for SAP Applications 15'
 
@@ -24,8 +24,9 @@ selections:
     - var_apparmor_mode=complain
     - motd_banner_text=cis_banners
     - login_banner_text=cis_banners
+    - login_banner_contents=cis_default
     - remote_login_banner_text=cis_banners
-    - login_banner_text=cis_default
+    - remote_login_banner_contents=cis_default
     - var_multiple_time_servers=suse
     - var_multiple_time_pools=suse
     - var_postfix_inet_interfaces=loopback-only

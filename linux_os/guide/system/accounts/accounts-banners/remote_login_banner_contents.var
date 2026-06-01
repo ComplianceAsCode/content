@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Remote Login Banner Verbiage'
+
+description: >-
+    Enter an appropriate login banner text for your organization.
+    This variable is used only in remediations.
+    In OVAL checks a regular expression specified in the remote_login_banner_text variable is used instead.
+    Using a regular expression is needed because some profiles (eg. STIG) allow multiple different banners.
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: 'Authorized users only. All activity may be monitored and reported.'
+# CIS doesn't enforce any specific content for login banners, but doesn't allow technical information.
+# There is a generic content in case a remediation is necessary.
+    cis_default: 'Authorized users only. All activity may be monitored and reported.'
+    dod_default: 'You are accessing a U.S. Government (USG) Information System (IS) that is\nprovided for USG-authorized use only. By using this IS (which includes any\ndevice attached to this IS), you consent to the following conditions:\n\n-The USG routinely intercepts and monitors communications on this IS for\npurposes including, but not limited to, penetration testing, COMSEC monitoring,\nnetwork operations and defense, personnel misconduct (PM), law enforcement\n(LE), and counterintelligence (CI) investigations.\n\n-At any time, the USG may inspect and seize data stored on this IS.\n\n-Communications using, or data stored on, this IS are not private, are subject\nto routine monitoring, interception, and search, and may be disclosed or used\nfor any USG-authorized purpose.\n\n-This IS includes security measures (e.g., authentication and access controls)\nto protect USG interests--not for your personal benefit or privacy.\n\n-Notwithstanding the above, using this IS does not constitute consent to PM, LE\nor CI investigative searching or monitoring of the content of privileged\ncommunications, or work product, related to personal representation or services\nby attorneys, psychotherapists, or clergy, and their assistants. Such\ncommunications and work product are private and confidential. See User\nAgreement for details.'
+    dod_short: 'I''ve read & consent to terms in IS user agreem''t.'
+    dss_odaa_default: 'Use of this or any other DoD interest computer system constitutes consent to\nmonitoring at all times. This is a DoD interest computer system. All DoD\ninterest computer systems and related equipment are intended for the\ncommunication, transmission, processing, and storage of official U.S.\nGovernment or other authorized information only. All DoD interest computer\nsystems are subject to monitoring at all times to ensure proper functioning of\nequipment and systems including security devices and systems, to prevent\nunauthorized use and violations of statutes and security regulations, to deter\ncriminal activity, and for other similar purposes. Any user of a DoD interest\ncomputer system should be aware that any information placed in the system is\nsubject to monitoring and is not subject to any expectation of privacy. If\nmonitoring of this or any other DoD interest computer system reveals possible\nevidence of violation of criminal statutes, this evidence and any other related\ninformation, including identification information about the user, may be\nprovided to law enforcement officials. If monitoring of this or any other DoD\ninterest computer systems reveals violations of security regulations or\nunauthorized use, employees who violate security regulations or make\nunauthorized use of DoD interest computer systems are subject to appropriate\ndisciplinary action. Use of this or any other DoD interest computer system\nconstitutes consent to monitoring at all times.'
+    usgcb_default: '-- WARNING -- This system is for the use of authorized users only. Individuals\nusing this computer system without authority or in excess of their authority\nare subject to having all their activities on this system monitored and\nrecorded by system personnel. Anyone using this system expressly consents to\nsuch monitoring and is advised that if such monitoring reveals possible\nevidence of criminal activity system personal may provide the evidence of such\nmonitoring to law enforcement officials.'

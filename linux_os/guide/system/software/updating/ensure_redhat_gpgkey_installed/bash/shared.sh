@@ -17,7 +17,12 @@ then
   # If they are safe, try to obtain fingerprints from the key file
   # (to ensure there won't be e.g. CRC error).
 {{% if "rhel" in families  and major_version_ordinal >= 10 %}}
-  readarray -t GPG_OUT < <(sq inspect "$REDHAT_RELEASE_KEY" | grep Fingerprint: | cut -d ":" -f 2)
+    if {{{ bash_os_linux_conditional("rhel", expected_ver="10.1", op=">=") | trim }}}
+    then
+      readarray -t GPG_OUT < <(sq inspect "$REDHAT_RELEASE_KEY" | grep Fingerprint: | cut -d ":" -f 2)
+    else
+      readarray -t GPG_OUT < <(gpg --show-keys --with-fingerprint --with-colons "$REDHAT_RELEASE_KEY" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10)
+    fi
 {{% else %}}
   readarray -t GPG_OUT < <(gpg --show-keys --with-fingerprint --with-colons "$REDHAT_RELEASE_KEY" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10)
 {{% endif %}}

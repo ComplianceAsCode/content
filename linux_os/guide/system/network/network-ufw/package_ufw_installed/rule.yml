@@ -15,9 +15,7 @@ severity: medium
 references:
     srg: SRG-OS-000297-GPOS-00115
 
-ocil_clause: 'the package is not installed'
-
-ocil: '{{{ ocil_package(package="ufw") }}}'
+{{{ complete_ocil_entry_package_installed("ufw") }}}
 
 {{%- if 'ubuntu' in product %}}
 template:

@@ -61,6 +61,8 @@ dconf_gnome_screensaver_idle_delay
 dconf_gnome_screensaver_lock_delay
 dconf_gnome_screensaver_user_locks
 dconf_gnome_session_idle_user_locks
+dconf_login_banner_contents=cis_default
+dconf_login_banner_text=cis_banners
 dir_perms_world_writable_sticky_bits
 directory_groupowner_sshd_config_d
 directory_owner_sshd_config_d
@@ -70,6 +72,7 @@ disable_users_coredumps
 ensure_gpgcheck_globally_activated
 ensure_journald_and_rsyslog_not_active_together
 ensure_pam_wheel_group_empty
+ensure_redhat_gpgkey_installed
 ensure_root_password_configured
 file_at_allow_exists
 file_at_deny_not_exist
@@ -188,7 +191,6 @@ kernel_module_jffs2_disabled
 kernel_module_rds_disabled
 kernel_module_sctp_disabled
 kernel_module_tipc_disabled
-login_banner_text=cis_banners
 mount_option_dev_shm_nodev
 mount_option_dev_shm_noexec
 mount_option_dev_shm_nosuid
@@ -234,6 +236,7 @@ package_nginx_removed
 package_pam_pwquality_installed
 package_rsync_removed
 package_samba_removed
+package_sequoia-sq_installed
 package_squid_removed
 package_sudo_installed
 package_systemd-journal-remote_installed

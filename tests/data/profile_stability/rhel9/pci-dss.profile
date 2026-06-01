@@ -188,6 +188,7 @@ package_libselinux_installed
 package_logrotate_installed
 package_net-snmp_removed
 package_nftables_installed
+package_postfix_installed
 package_sudo_installed
 package_telnet-server_removed
 package_telnet_removed

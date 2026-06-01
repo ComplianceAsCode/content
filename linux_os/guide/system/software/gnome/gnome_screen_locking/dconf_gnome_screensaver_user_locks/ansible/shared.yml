@@ -1,11 +1,15 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = unknown
 # complexity = low
 # disruption = medium
 - name: "Prevent user modification of GNOME lock-delay"
   ansible.builtin.lineinfile:
+{{% if product in ['sle15', 'sle16'] %}}
+    path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
+{{% else %}}
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+{{% endif %}}
     regexp: '^/org/gnome/desktop/screensaver/lock-delay$'
     line: '/org/gnome/desktop/screensaver/lock-delay'
     create: yes
@@ -14,3 +18,7 @@
 - name: Dconf Update
   ansible.builtin.command: dconf update
   when: result_lineinfile is changed
+
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ ansible_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}

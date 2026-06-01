@@ -242,10 +242,10 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.mitigation = control_dict.get('mitigation')
         control.fixtext = control_dict.get('fixtext')
         control.check = control_dict.get('check')
-        control.tickets = control_dict.get('tickets')
+        control.tickets = control_dict.get('tickets', [])  # Default to empty list if not present
         control.original_title = control_dict.get('original_title')
-        control.related_rules = control_dict.get('related_rules')
-        control.rules = control_dict.get('rules')
+        control.related_rules = control_dict.get('related_rules', [])  # Default to empty list if not present
+        control.rules = control_dict.get('rules', [])  # Default to empty list if not present
 
         if control.status == "automated":
             control.automated = "yes"
@@ -260,7 +260,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
             msg = "Levels for %s must be an array" % control.id
             raise ValueError(msg)
         control.notes = control_dict.get("notes", "")
-        selections = control_dict.get("rules", {})
+        selections = control_dict.get("rules", [])  # Default to empty list, not dict
 
         control.selections = selections
 

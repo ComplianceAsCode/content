@@ -3,9 +3,9 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-{{{ ansible_instantiate_variables("motd_banner_text") }}}
+{{{ ansible_instantiate_variables("motd_banner_contents") }}}
 
 - name: "{{{ rule_title }}} - ensure correct banner"
   ansible.builtin.copy:
     dest: /etc/motd
-    content: '{{{ ansible_deregexify_banner_etc_issue("motd_banner_text") }}}'
+    content: "{{ motd_banner_contents | replace('\\n', '\n') }}\n"
