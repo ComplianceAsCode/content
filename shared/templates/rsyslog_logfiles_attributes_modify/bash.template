@@ -97,5 +97,11 @@ do
 	then
 		continue
 	fi
+	# Only operate on the file if it exists; non-existent files would cause the command to fail
+	# with a non-zero exit code, which oscap --remediate interprets as an error, skipping the fix.
+	if [ ! -f "$LOG_FILE_PATH" ]
+	then
+		continue
+	fi
 	$FILE_CMD "{{{ VALUE }}}" "$LOG_FILE_PATH"
 done
