@@ -63,7 +63,7 @@
     {{%- if not 'debian' in product %}}
     set -o pipefail{{% endif %}}
     grep -iozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item.1.path }} | \
-    grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)" | \
+    grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"" | \
     grep -oE "\"([/[:alnum:][:punct:]]*)\"" | \
     tr -d "\"" | \
     grep -v '^/dev/' || true
