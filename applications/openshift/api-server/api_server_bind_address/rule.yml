@@ -11,13 +11,17 @@ title: Ensure that the bindAddress is set to a relevant secure port
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
-description: "The bindAddress is set by default to <tt>0.0.0.0:6443</tt>, and listening with TLS enabled."
+description: |-
+  The bindAddress is set by default to <tt>0.0.0.0:6443</tt> on IPv4 clusters
+  or <tt>[::]:6443</tt> on IPv6 and dual-stack clusters, and listening with
+  TLS enabled.
 
 rationale: |-
   The OpenShift API server is served over HTTPS with authentication and authorization;
-  the secure API endpoint is bound to <tt>0.0.0.0:6443</tt> by default. In OpenShift, the only
+  the secure API endpoint is bound to <tt>0.0.0.0:6443</tt> (IPv4) or
+  <tt>[::]:6443</tt> (IPv6/dual-stack) by default. In OpenShift, the only
   supported way to access the API server pod is through the load balancer and then through
-  the internal service.  The value is set by the bindAddress argument under the servingInfo
+  the internal service. The value is set by the bindAddress argument under the servingInfo
   parameter.
 
 identifiers:
@@ -38,7 +42,8 @@ ocil_clause: '<tt>bindAddress</tt> allows unsecure connections'
 ocil: |-
     Run the following command:
     <pre>oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.servingInfo["bindAddress"]'</pre>
-    The output should return <pre>0.0.0.0:6443</pre>.
+    The output should return <pre>0.0.0.0:6443</pre> on IPv4 single-stack clusters
+    or <pre>[::]:6443</pre> on IPv6 and dual-stack clusters.
 
 warnings:
 - general: |-
@@ -52,8 +57,4 @@ template:
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: '.servingInfo["bindAddress"]'
     xccdf_variable: var_apiserver_bind_address
-    embedded_data: "true"
-    values:
-    - value: '(.+)'
-      operation: "pattern match"
-      type: "string"
+    regex_data: "true"
