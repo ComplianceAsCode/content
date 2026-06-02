@@ -268,7 +268,15 @@ selections:
     - installed_OS_is_vendor_supported
 ```
 
-## Phase 8: Build and verify
+## Phase 8: Add to CI
+The product shall be built in at least one GitHub Action Gate job.
+Ensure that the new product is built and ctest is run with the product built.
+
+
+Most products should be added to the `./build_product` step in `.github/workflows/gate_fedora.yml`.
+Some products like SUSE based products should be added their respective products build steps in `.github/workflows/gate.yml`.
+
+## Phase 9: Build and verify
 
 1. Build the product:
    ```bash
