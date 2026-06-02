@@ -35,7 +35,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
       - name: Build
-        run: ./build_product sle12 sle15 sle16
+        run: ./build_product sle12 sle15 sle16 slmicro5 slmicro6
       - name: Test
         run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
