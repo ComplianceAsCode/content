@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   validate-sle:
-    name: Build, Test on SLE 15 (Container)
+    name: Build, Test on SLE Latest (Container)
     runs-on: ubuntu-latest
     container:
       image: registry.suse.com/bci/bci-base:latest
@@ -35,7 +35,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
       - name: Build
-        run: ./build_product sle12 sle15
+        run: ./build_product sle12 sle15 sle16
       - name: Test
         run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
