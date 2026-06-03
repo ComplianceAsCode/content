@@ -12,7 +12,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible ansible-lint libxslt
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v4
       - name: Install python deps
         run: pip install -r requirements-base.txt -r test-requirements.txt
       - name: Configure
