@@ -8,6 +8,7 @@
       {{% endif %}}
       {{% if 'sle' in product or 'slmicro' in product %}}
       <criterion comment="kernel-default-base is installed" test_ref="inventory_test_kernel_default_base_installed" />
+      <criterion comment="kernel-azure is installed" test_ref="inventory_test_kernel_azure_installed" />
       {{% endif %}}
     </criteria>
   </definition>
@@ -16,6 +17,7 @@
 {{% elif 'sle' in product or 'slmicro' in product %}}
 {{{ oval_test_package_installed(package="kernel-default", test_id="inventory_test_kernel_installed") }}}
 {{{ oval_test_package_installed(package="kernel-default-base", test_id="inventory_test_kernel_default_base_installed") }}}
+{{{ oval_test_package_installed(package="kernel-azure", test_id="inventory_test_kernel_azure_installed") }}}
 {{% else %}}
 {{{ oval_test_package_installed(package="kernel-core", test_id="inventory_test_kernel_installed") }}}
 {{% endif %}}
