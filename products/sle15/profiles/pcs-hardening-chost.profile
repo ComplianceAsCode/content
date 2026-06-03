@@ -1,0 +1,151 @@
+documentation_complete: true
+
+metadata:
+    version: V1
+    SMEs:
+        - jgleissner
+
+reference:
+
+title: 'Public Cloud Hardening for SUSE Linux Enterprise 15 CHOST'
+
+description: |-
+    This profile contains configuration checks to be used to harden
+    SUSE Linux Enterprise 15 CHOST for use with public cloud providers.
+
+
+selections:
+    - account_disable_post_pw_expiration
+    - accounts_have_homedir_login_defs
+    - accounts_maximum_age_login_defs
+    - accounts_password_set_max_life_existing
+    - accounts_password_set_min_life_existing
+    - accounts_passwords_pam_faildelay_delay
+    - accounts_passwords_pam_tally2
+    - accounts_tmout
+    - accounts_umask_etc_login_defs
+    - aide_check_audit_tools
+    - aide_periodic_checking_systemd_timer
+    - aide_verify_acls
+    - aide_verify_ext_attributes
+    - auditd_audispd_encrypt_sent_records
+    - auditd_data_disk_full_action
+    - auditd_data_retention_space_left
+    - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fchmodat
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_lremovexattr
+    - audit_rules_dac_modification_lsetxattr
+    - audit_rules_dac_modification_removexattr
+    - audit_rules_dac_modification_setxattr
+    - audit_rules_dac_modification_umount
+    - audit_rules_dac_modification_umount2
+    - audit_rules_enable_syscall_auditing
+    - audit_rules_execution_chacl
+    - audit_rules_execution_chcon
+    - audit_rules_execution_chmod
+    - audit_rules_execution_rm
+    - audit_rules_execution_setfacl
+    - audit_rules_kernel_module_loading_delete
+    - audit_rules_kernel_module_loading_finit
+    - audit_rules_kernel_module_loading_init
+    - audit_rules_login_events_lastlog
+    - audit_rules_login_events_tallylog
+    - audit_rules_media_export
+    - audit_rules_privileged_commands_chage
+    - audit_rules_privileged_commands_chfn
+    - audit_rules_privileged_commands_chsh
+    - audit_rules_privileged_commands_crontab
+    - audit_rules_privileged_commands_gpasswd
+    - audit_rules_privileged_commands_insmod
+    - audit_rules_privileged_commands_kmod
+    - audit_rules_privileged_commands_modprobe
+    - audit_rules_privileged_commands_newgrp
+    - audit_rules_privileged_commands_pam_timestamp_check
+    - audit_rules_privileged_commands_passmass
+    - audit_rules_privileged_commands_passwd
+    - audit_rules_privileged_commands_rmmod
+    - audit_rules_privileged_commands_ssh_agent
+    - audit_rules_privileged_commands_ssh_keysign
+    - audit_rules_privileged_commands_su
+    - audit_rules_privileged_commands_sudo
+    - audit_rules_privileged_commands_sudoedit
+    - audit_rules_privileged_commands_unix2_chkpwd
+    - audit_rules_privileged_commands_unix_chkpwd
+    - audit_rules_privileged_commands_usermod
+    - audit_rules_session_events_btmp
+    - audit_rules_session_events_utmp
+    - audit_rules_session_events_wtmp
+    - audit_rules_suid_privilege_function
+    - audit_rules_sysadmin_actions
+    - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_ftruncate
+    - audit_rules_unsuccessful_file_modification_open
+    - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_rename
+    - audit_rules_unsuccessful_file_modification_renameat
+    - audit_rules_unsuccessful_file_modification_renameat2
+    - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_unsuccessful_file_modification_unlink
+    - audit_rules_unsuccessful_file_modification_unlinkat
+    - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_opasswd
+    - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_shadow
+    - banner_etc_issue
+    - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_difok
+    - cracklib_accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_minlen
+    - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_retry
+    - cracklib_accounts_password_pam_ucredit
+    - disable_ctrlaltdel_burstaction
+    - display_login_attempts
+    - ensure_gpgcheck_globally_activated
+    - file_etc_security_opasswd
+    - file_groupownership_system_commands_dirs
+    - file_permissions_home_directories
+    - inactivity_timeout_value=15_minutes
+    - kernel_module_usb-storage_disabled
+    - package_aide_installed
+    - package_audit-audispd-plugins_installed
+    - package_audit_installed
+    - set_password_hashing_algorithm_systemauth
+    - sshd_disable_root_login
+    - sshd_disable_user_known_hosts
+    - sshd_disable_x11_forwarding
+    - sshd_enable_warning_banner
+    - sshd_idle_timeout_value=10_minutes
+    - sshd_set_idle_timeout
+    - sshd_set_keepalive_0
+    - sshd_set_loglevel_verbose
+    - sshd_use_approved_ciphers_ordered_stig
+    - sshd_use_approved_macs_ordered_stig
+    - var_account_disable_post_pw_expiration=35
+    - var_accounts_fail_delay=4
+    - var_accounts_max_concurrent_login_sessions=10
+    - var_accounts_maximum_age_login_defs=60
+    - var_accounts_minimum_age_login_defs=7
+    - var_accounts_tmout=15_min
+    - var_auditd_disk_full_action=syslog
+    - var_password_pam_dcredit=1
+    - var_password_pam_delay=4000000
+    - var_password_pam_lcredit=1
+    - var_password_pam_minlen=15
+    - var_password_pam_ocredit=1
+    - var_password_pam_ucredit=1
+    - var_password_pam_unix_remember=5
+    - var_removable_partition=dev_cdrom
+    - var_sshd_set_keepalive=0
+    - var_sssd_memcache_timeout=1_day
+    - var_sudo_timestamp_timeout=always_prompt
+    - var_time_service_set_maxpoll=18_hours

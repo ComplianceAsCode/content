@@ -110,8 +110,6 @@ selections:
     #- pam_disable_automatic_configuration
     - set_password_hashing_algorithm_commonauth
     - set_password_hashing_algorithm_systemauth
-    - smartcard_configure_ca
-    - smartcard_configure_cert_checking
     - sshd_disable_root_login
     - sshd_disable_tcp_forwarding
     - sshd_disable_user_known_hosts
