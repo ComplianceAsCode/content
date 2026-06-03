@@ -35,3 +35,6 @@ selections:
     - service_syslogng_enabled
     - syslogng_filecreatemode
     - syslogng_nolisten
+    # 5.1.4: remediación específica ULPGC — configurar AllowGroups
+    - sshd_set_allow_groups
+    - var_sshd_allow_groups=users
