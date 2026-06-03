@@ -232,8 +232,13 @@
             const control = controls.find(c => c.id === controlId.toLowerCase());
 
             if (!control) {
-                document.getElementById('control-detail-container').innerHTML =
-                    `<div class="empty-state"><h3>Control ${controlId.toUpperCase()} not found</h3></div>`;
+                const container = document.getElementById('control-detail-container');
+                const div = document.createElement('div');
+                div.className = 'empty-state';
+                const h3 = document.createElement('h3');
+                h3.textContent = `Control ${controlId.toUpperCase()} not found`;
+                div.appendChild(h3);
+                container.replaceChildren(div);
                 return;
             }
 
@@ -383,15 +388,30 @@
                 return;
             }
 
-            todoList.innerHTML = todos.map((todo, index) => `
-                <li class="todo-item ${todo.completed ? 'completed' : ''}">
-                    <input type="checkbox" ${todo.completed ? 'checked' : ''}
-                           onchange="toggleTodo(${index})">
-                    <span class="todo-text">${todo.text}</span>
-                    <button class="btn" onclick="deleteTodo(${index})"
-                            style="padding: 4px 8px; font-size: 12px;">Delete</button>
-                </li>
-            `).join('');
+            const fragment = document.createDocumentFragment();
+            todos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = todo.completed;
+                checkbox.addEventListener('change', () => toggleTodo(index));
+
+                const span = document.createElement('span');
+                span.className = 'todo-text';
+                span.textContent = todo.text;
+
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.style.cssText = 'padding: 4px 8px; font-size: 12px;';
+                btn.textContent = 'Delete';
+                btn.addEventListener('click', () => deleteTodo(index));
+
+                li.append(checkbox, span, btn);
+                fragment.appendChild(li);
+            });
+            todoList.replaceChildren(fragment);
         }
 
         function addTodo() {
