@@ -1954,8 +1954,9 @@ controls:
           - package_pam_runtime_installed
       status: automated
       notes: |
-          The CIS control checks that version >= 1.5.2-6 and not that
-          it is the latest version as the title suggests.
+          The CIS benchmark requires that libpam-runtime is installed and is the latest
+          version available. The automated check only covers installation; verifying the
+          latest version requires a manual check.
 
     - id: 5.3.1.2
       title: Ensure latest version of libpam-modules is installed (Automated)
@@ -1965,6 +1966,10 @@ controls:
       rules:
           - package_pam_modules_installed
       status: automated
+      notes: |
+          The CIS benchmark requires that libpam-modules is installed and is the latest
+          version available. The automated check only covers installation; verifying the
+          latest version requires a manual check.
 
     - id: 5.3.1.3
       title: Ensure latest version of libpam-pwquality is installed (Automated)
@@ -1974,6 +1979,10 @@ controls:
       rules:
           - package_pam_pwquality_installed
       status: automated
+      notes: |
+          The CIS benchmark requires that libpam-pwquality is installed and is the latest
+          version available. The automated check only covers installation; verifying the
+          latest version requires a manual check.
 
     - id: 5.3.2.1
       title: Ensure pam_unix module is enabled (Automated)
@@ -2095,6 +2104,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - var_password_pam_maxsequence=3
           - accounts_password_pam_maxsequence
       status: automated
 
@@ -2179,7 +2189,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - var_password_hashing_algorithm_pam=yescrypt
+          - var_password_hashing_algorithm_pam=cis_debian13
           - set_password_hashing_algorithm_systemauth
       status: automated
 
@@ -2222,6 +2232,7 @@ controls:
       rules:
           - var_accounts_password_warn_age_login_defs=7
           - accounts_password_warn_age_login_defs
+          - accounts_password_set_warn_age_existing
       status: automated
 
     - id: 5.4.1.4
