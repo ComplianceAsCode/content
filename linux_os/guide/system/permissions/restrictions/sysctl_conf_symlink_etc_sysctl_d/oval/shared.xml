@@ -15,7 +15,8 @@
     </unix:symlink_test>
 
     <unix:symlink_object id="object_{{{ rule_id }}}" version="1">
-        <unix:filepath>/etc/sysctl.d/99-sysctl.conf</unix:filepath>
+        <unix:path>/etc/sysctl.d</unix:path>
+        <unix:filename operation="equals">99-sysctl.conf</unix:filename>
     </unix:symlink_object>
 
     <unix:symlink_state id="state_{{{ rule_id }}}" version="1">
