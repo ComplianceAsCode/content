@@ -9,11 +9,11 @@ DROPIN_FILE="${DROPIN_DIR}/cac_hardening.conf"
 
 mkdir -p "${DROPIN_DIR}"
 
-if ! grep -qrP "^After=.*network\.target" "${DROPIN_DIR}/" 2>/dev/null; then
+if ! grep -qrP "^After=.*network-online\.target" "${DROPIN_DIR}/" 2>/dev/null; then
     if grep -q "^\[Unit\]" "${DROPIN_FILE}" 2>/dev/null; then
-        sed -i '/^\[Unit\]/a After=network.target' "${DROPIN_FILE}"
+        sed -i '/^\[Unit\]/a Wants=network-online.target\nAfter=network-online.target' "${DROPIN_FILE}"
     else
-        printf '[Unit]\nAfter=network.target\n' >> "${DROPIN_FILE}"
+        printf '[Unit]\nAfter=network-online.target\nWants=network-online.target\n' >> "${DROPIN_FILE}"
     fi
 fi
 

@@ -1,46 +1,57 @@
 documentation_complete: true
 
-title: 'Ensure systemd-sysctl Service Starts After Network Initialization'
+title: 'Ensure systemd-sysctl Service Starts After Network Is Online'
 
 description: |-
-    On Debian 13, the network initialization resets kernel parameters that were
-    previously applied by <tt>systemd-sysctl.service</tt> during early boot.
-    To ensure sysctl values such as <tt>net.ipv4.conf.all.log_martians</tt> take
-    effect in their final state, <tt>systemd-sysctl.service</tt> must start after
-    <tt>network.target</tt>.
+    On Debian 13, the network stack (whether managed by <tt>ifupdown</tt>,
+    <tt>systemd-networkd</tt>, or <tt>NetworkManager</tt> via Netplan) may
+    initialize network interfaces after <tt>systemd-sysctl.service</tt> has
+    already applied kernel parameters at early boot. When interfaces are brought
+    up, the kernel resets certain network sysctl values to their defaults,
+    overriding the hardened configuration.
     <br/><br/>
-    Create a systemd drop-in override file
+    To ensure the hardened sysctl values persist, create a systemd drop-in
+    override file
     <tt>/etc/systemd/system/systemd-sysctl.service.d/cac_hardening.conf</tt>
     with the following content:
     <pre>[Unit]
-    After=network.target</pre>
+    After=network-online.target
+    Wants=network-online.target</pre>
     Then reload the systemd daemon:
     <pre>$ sudo systemctl daemon-reload</pre>
+    <tt>network-online.target</tt> is reached only when all managed network
+    interfaces are fully configured and online, regardless of the networking
+    backend in use.
 
 rationale: |-
-    <tt>systemd-sysctl.service</tt> runs early at boot and applies kernel parameters
-    from <tt>/etc/sysctl.conf</tt> and <tt>/etc/sysctl.d/</tt>. On systems where
-    the network stack initializes after this service, the kernel resets certain
-    network-related sysctl parameters to their defaults when interfaces are brought
-    up. This renders network sysctl hardening ineffective at runtime even when the
-    static configuration is correct. Ensuring the service runs after
-    <tt>network.target</tt> guarantees that hardened values persist.
+    <tt>systemd-sysctl.service</tt> runs early at boot and applies kernel
+    parameters from <tt>/etc/sysctl.conf</tt> and <tt>/etc/sysctl.d/</tt>.
+    When a networking subsystem (<tt>systemd-networkd</tt>, <tt>NetworkManager</tt>,
+    or <tt>ifupdown</tt>) initializes interfaces after this service has run,
+    the kernel resets network-related sysctl values such as
+    <tt>net.ipv4.conf.all.log_martians</tt> to their defaults. This renders
+    network sysctl hardening ineffective at runtime even when the static
+    configuration is correct.
+    <br/><br/>
+    Ordering <tt>systemd-sysctl.service</tt> after <tt>network-online.target</tt>
+    ensures that all interfaces are fully up before sysctl values are applied,
+    so the hardened values are the final ones in effect.
 
 severity: medium
 
 platform: machine
 
-ocil_clause: 'no drop-in file configures After=network.target for systemd-sysctl.service'
+ocil_clause: 'no drop-in file orders systemd-sysctl.service after network-online.target'
 
 ocil: |-
     Verify that a drop-in override for <tt>systemd-sysctl.service</tt> exists
-    and adds <tt>network.target</tt> to the ordering:
-    <pre>$ grep -r "After=.*network\.target" /etc/systemd/system/systemd-sysctl.service.d/</pre>
-    The output should contain a line matching <tt>After=network.target</tt>.
+    and orders it after <tt>network-online.target</tt>:
+    <pre>$ grep -r "After=.*network-online\.target" /etc/systemd/system/systemd-sysctl.service.d/</pre>
+    The output should contain a line matching <tt>After=network-online.target</tt>.
 
 fixtext: |-
     Create the drop-in directory and override file:
     <pre>$ sudo mkdir -p /etc/systemd/system/systemd-sysctl.service.d/
-    $ sudo printf '[Unit]\nAfter=network.target\n' &gt; \
+    $ sudo printf '[Unit]\nAfter=network-online.target\nWants=network-online.target\n' &gt; \
         /etc/systemd/system/systemd-sysctl.service.d/cac_hardening.conf
     $ sudo systemctl daemon-reload</pre>
