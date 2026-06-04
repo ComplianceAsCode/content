@@ -1,0 +1,631 @@
+---
+policy: CIS Benchmark for Debian 13
+title: CIS Benchmark for Debian 13
+id: cis_debian13
+version: '1.0.0'
+source: https://www.cisecurity.org/cis-benchmarks
+
+levels:
+    - id: l1_server
+    - id: l2_server
+      inherits_from:
+          - l1_server
+    - id: l1_workstation
+    - id: l2_workstation
+      inherits_from:
+          - l1_workstation
+
+reference_type: cis
+product: debian13
+
+controls:
+    - id: 1.1.1.1
+      title: Ensure cramfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_cramfs_disabled
+      status: automated
+
+    - id: 1.1.1.2
+      title: Ensure freevxfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_freevxfs_disabled
+      status: automated
+
+    - id: 1.1.1.3
+      title: Ensure hfs kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_hfs_disabled
+      status: automated
+
+    - id: 1.1.1.4
+      title: Ensure hfsplus kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_hfsplus_disabled
+      status: automated
+
+    - id: 1.1.1.5
+      title: Ensure jffs2 kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - kernel_module_jffs2_disabled
+      status: automated
+
+    - id: 1.1.1.6
+      title: Ensure overlayfs kernel module is not available (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - kernel_module_overlayfs_disabled
+      status: automated
+
+    - id: 1.1.1.7
+      title: Ensure squashfs kernel module is not available (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      related_rules:
+          - kernel_module_squashfs_disabled
+      status: automated
+
+    - id: 1.1.1.8
+      title: Ensure udf kernel module is not available (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - kernel_module_udf_disabled
+      status: automated
+
+    - id: 1.1.1.9
+      title: Ensure firewire-core kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      rules:
+          - kernel_module_firewire-core_disabled
+      status: automated
+
+    - id: 1.1.1.10
+      title: Ensure usb-storage kernel module is not available (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      rules:
+          - kernel_module_usb-storage_disabled
+      status: automated
+
+    - id: 1.1.1.11
+      title: Ensure unused filesystems kernel modules are not available (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: manual
+
+    - id: 1.1.2.1.1
+      title: Ensure /tmp is a separate partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - partition_for_tmp
+      status: automated
+
+    - id: 1.1.2.1.2
+      title: Ensure nodev option set on /tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_tmp_nodev
+      status: automated
+
+    - id: 1.1.2.1.3
+      title: Ensure nosuid option set on /tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_tmp_nosuid
+      status: automated
+
+    - id: 1.1.2.1.4
+      title: Ensure noexec option set on /tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_tmp_noexec
+      status: automated
+
+    - id: 1.1.2.2.1
+      title: Ensure /dev/shm is tmpfs or a separate partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: automated
+      rules:
+          - partition_for_dev_shm
+
+    - id: 1.1.2.2.2
+      title: Ensure nodev option set on /dev/shm partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_dev_shm_nodev
+      status: automated
+
+    - id: 1.1.2.2.3
+      title: Ensure nosuid option set on /dev/shm partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_dev_shm_nosuid
+      status: automated
+
+    - id: 1.1.2.2.4
+      title: Ensure noexec option set on /dev/shm partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_dev_shm_noexec
+      status: automated
+
+    - id: 1.1.2.3.1
+      title: Ensure separate partition exists for /home (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - partition_for_home
+      status: automated
+
+    - id: 1.1.2.3.2
+      title: Ensure nodev option set on /home partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_home_nodev
+      status: automated
+
+    - id: 1.1.2.3.3
+      title: Ensure nosuid option set on /home partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_home_nosuid
+      status: automated
+
+    - id: 1.1.2.4.1
+      title: Ensure separate partition exists for /var (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - partition_for_var
+      status: automated
+
+    - id: 1.1.2.4.2
+      title: Ensure nodev option set on /var partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_nodev
+      status: automated
+
+    - id: 1.1.2.4.3
+      title: Ensure nosuid option set on /var partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_nosuid
+      status: automated
+
+    - id: 1.1.2.5.1
+      title: Ensure separate partition exists for /var/tmp (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - partition_for_var_tmp
+      status: automated
+
+    - id: 1.1.2.5.2
+      title: Ensure nodev option set on /var/tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_tmp_nodev
+      status: automated
+
+    - id: 1.1.2.5.3
+      title: Ensure nosuid option set on /var/tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_tmp_nosuid
+      status: automated
+
+    - id: 1.1.2.5.4
+      title: Ensure noexec option set on /var/tmp partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_tmp_noexec
+      status: automated
+
+    - id: 1.1.2.6.1
+      title: Ensure separate partition exists for /var/log (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - partition_for_var_log
+      status: automated
+
+    - id: 1.1.2.6.2
+      title: Ensure nodev option set on /var/log partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_log_nodev
+      status: automated
+
+    - id: 1.1.2.6.3
+      title: Ensure nosuid option set on /var/log partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_log_nosuid
+      status: automated
+
+    - id: 1.1.2.6.4
+      title: Ensure noexec option set on /var/log partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_log_noexec
+      status: automated
+
+    - id: 1.1.2.7.1
+      title: Ensure separate partition exists for /var/log/audit (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - partition_for_var_log_audit
+      status: automated
+
+    - id: 1.1.2.7.2
+      title: Ensure nodev option set on /var/log/audit partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_log_audit_nodev
+      status: automated
+
+    - id: 1.1.2.7.3
+      title: Ensure nosuid option set on /var/log/audit partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_log_audit_nosuid
+      status: automated
+
+    - id: 1.1.2.7.4
+      title: Ensure noexec option set on /var/log/audit partition (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - mount_option_var_log_audit_noexec
+      status: automated
+
+    - id: 1.2.1.1
+      title: Ensure the source.list and .source files use the Signed-By option (Manual)
+      levels:
+          - l1_server
+          - l1_workstation
+      status: manual
+
+    - id: 1.2.1.2
+      title: Ensure weak dependencies are configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      status: pending
+      notes: |-
+          Needs a new Debian-specific rule checking weak dependencies
+
+    - id: 1.2.1.3
+      title: Ensure access to gpg key files are configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Needs a new Debian-specific rule for GPG key file access checks.
+          Check if all .gpg key files in /usr/share/keyrings/ and /etc/apt/trusted.gpg.d have permissions 0644 and owned by root:root
+          Check if .list and .sources in /etc/apt/sources.list.d have permissions 0644 and owned by root:root and include option signed-by
+
+    - id: 1.2.1.4
+      title: Ensure access to /etc/apt/trusted.gpg.d directory is configured
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Needs a new Debian-specific rule for /etc/apt/trusted.gpg.d directory access checks.
+          Check if /etc/apt/trusted.gpg.d has permissions 0755 and owned by root:root
+ 
+    - id: 1.2.1.5
+      title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Check if /etc/apt/auth.conf.d has permissions 0755 and owned by root:root
+
+    - id: 1.2.1.6
+      title: Ensure access to files in the /etc/apt/auth.conf.d/ directory is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      status: pending
+      notes: |-
+          Check if /etc/apt/auth.conf.d/* has permissions 0755 and owned by root:root 
+
+    - id: 1.2.1.7
+      title: Ensure access to /usr/share/keyrings directory is configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Check if /usr/share/keyrings has permissions 0755 and owned by root:root 
+
+    - id: 1.2.1.8
+      title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Check if /etc/apt/sources.list.d has permissions 0755 and owned by root:root 
+
+    - id: 1.2.1.9
+      title: Ensure access to files in /etc/apt/sources.list.d are configured (Automated)
+      levels:
+          - l1_server
+          - l2_server
+      status: pending
+      notes: |-
+          Check if /etc/apt/sources.list.d/* has permissions 0755 and owned by root:root
+
+    - id: 1.2.2.1
+      title: Ensure updates, patches, and additional security software are installed (Manual)
+      levels:
+        - l1_server
+        - l1_workstation
+      status: manual
+
+    - id: 1.3.1.1
+      title: Ensure AppArmor is installed (Automated) 
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - package_apparmor_installed
+        - package_apparmor-utils_installed
+      status: automated
+
+    - id: 1.3.1.2
+      title: Ensure AppArmor is enabled in the bootloader configuration (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - grub2_enable_apparmor
+      status: automated
+
+    - id: 1.3.1.3
+      title: Ensure all AppArmor Profiles are enforcing (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - all_apparmor_profiles_enforced
+      status: automated
+      notes: |
+          CIS recommendation does not adequately address the nuances
+          of various profiles, including disabled, force-complain,
+          and unconfined. Currently, the control changes the default apparmor
+          mode for all profiles in /etc/apparmor.d which can
+          break certain applications. See https://workbench.cisecurity.org/benchmarks/18959/tickets/23987
+
+    - id: 1.3.1.4
+      title: Ensure apparmor_restrict_unprivileged_unconfined is enabled (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      status: pending
+      notes: |-
+          Check if sysctl kernel.apparmor_restrict_unprivileged_unconfined = 1
+
+    - id: 1.4.1
+      title: Ensure bootloader password is set (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - grub2_password
+          - grub2_uefi_password
+      status: automated
+
+    - id: 1.4.2
+      title: Ensure access to bootloader config is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - file_owner_grub2_cfg
+          - file_permissions_grub2_cfg
+      status: automated
+
+    - id: 1.5.1
+      title: Ensure fs.protected_hardlinks is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_fs_protected_hardlinks
+      status: automated
+
+    - id: 1.5.2
+      title: Ensure fs.protected_symlinks is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - sysctl_fs_protected_symlinks
+      status: automated
+
+    - id: 1.5.3
+      title: Ensure kernel.yama.ptrace_scope is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - sysctl_kernel_yama_ptrace_scope
+      status: automated
+
+    - id: 1.5.4
+      title: Ensure fs.suid_dumpable is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules: 
+        - sysctl_fs_suid_dumpable
+      status: automated
+
+    - id: 1.5.5
+      title: Ensure kernel.dmesg_restrict is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - sysctl_kernel_dmesg_restrict
+      status: automated
+
+    - id: 1.5.6
+      title: Ensure prelink is not installed (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+          - disable_prelink
+      status: automated
+
+    - id: 1.5.7
+      title: Ensure Automatic Error Reporting is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      status: pending
+      notes: |-
+          Check if systemctl is-active apport.service , fail if it's active
+          Check if apport is installed , if it's not installed pass
+
+    - id: 1.5.8
+      title: Ensure kernel.kptr_restrict is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - sysctl_kernel_kptr_restrict
+      status: automated
+
+    - id: 1.5.9
+      title: Ensure kernel.randomize_va_space is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - sysctl_kernel_randomize_va_space
+      status: automated
+
+    - id: 1.5.10
+      title: Ensure kernel.yama.ptrace_scope is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+          - sysctl_kernel_yama_ptrace_scope
+      status: automated
+
+    - id: 1.5.11
+      title: Ensure core file size is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+          - disable_users_coredumps
+
+    - id: 1.5.12
+      title: Ensure systemd-coredump ProcessSizeMax is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - coredump_disable_backtraces
+      status: automated
+
+    - id: 1.5.13
+      title: Ensure systemd-coredump Storage is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - coredump_disable_storage
+      status: automated
+
+    - id: 1.6.1
+      title: Ensure /etc/motd is configured (Automated)
+      levels:
+        - l1_server
+        - l1_workstation
+      rules:
+        - banner_etc_motd_cis
+        - cis_banner_text=cis
+      status: automated
+
