@@ -1,0 +1,46 @@
+documentation_complete: true
+
+title: 'Ensure systemd-sysctl Service Starts After Network Initialization'
+
+description: |-
+    On Debian 13, the network initialization resets kernel parameters that were
+    previously applied by <tt>systemd-sysctl.service</tt> during early boot.
+    To ensure sysctl values such as <tt>net.ipv4.conf.all.log_martians</tt> take
+    effect in their final state, <tt>systemd-sysctl.service</tt> must start after
+    <tt>network.target</tt>.
+    <br/><br/>
+    Create a systemd drop-in override file
+    <tt>/etc/systemd/system/systemd-sysctl.service.d/cac_hardening.conf</tt>
+    with the following content:
+    <pre>[Unit]
+    After=network.target</pre>
+    Then reload the systemd daemon:
+    <pre>$ sudo systemctl daemon-reload</pre>
+
+rationale: |-
+    <tt>systemd-sysctl.service</tt> runs early at boot and applies kernel parameters
+    from <tt>/etc/sysctl.conf</tt> and <tt>/etc/sysctl.d/</tt>. On systems where
+    the network stack initializes after this service, the kernel resets certain
+    network-related sysctl parameters to their defaults when interfaces are brought
+    up. This renders network sysctl hardening ineffective at runtime even when the
+    static configuration is correct. Ensuring the service runs after
+    <tt>network.target</tt> guarantees that hardened values persist.
+
+severity: medium
+
+platform: machine
+
+ocil_clause: 'no drop-in file configures After=network.target for systemd-sysctl.service'
+
+ocil: |-
+    Verify that a drop-in override for <tt>systemd-sysctl.service</tt> exists
+    and adds <tt>network.target</tt> to the ordering:
+    <pre>$ grep -r "After=.*network\.target" /etc/systemd/system/systemd-sysctl.service.d/</pre>
+    The output should contain a line matching <tt>After=network.target</tt>.
+
+fixtext: |-
+    Create the drop-in directory and override file:
+    <pre>$ sudo mkdir -p /etc/systemd/system/systemd-sysctl.service.d/
+    $ sudo printf '[Unit]\nAfter=network.target\n' &gt; \
+        /etc/systemd/system/systemd-sysctl.service.d/cac_hardening.conf
+    $ sudo systemctl daemon-reload</pre>
