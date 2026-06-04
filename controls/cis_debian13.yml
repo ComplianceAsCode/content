@@ -1518,7 +1518,14 @@ controls:
           - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_all_log_martians
+          - sysctl_reapply_after_network
       status: automated
+      notes: |-
+          On Debian 13, the kernel resets network sysctl values when interfaces
+          come up, overriding the early-boot configuration applied by
+          systemd-sysctl.service. sysctl_reapply_after_network creates a oneshot
+          service that re-applies all sysctl settings after networking is up,
+          ensuring the hardened values persist at runtime.
 
     - id: 3.3.1.17
       title: Ensure net.ipv4.conf.default.log_martians is configured (Automated)
@@ -1527,7 +1534,10 @@ controls:
           - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_default_log_martians
+          - sysctl_reapply_after_network
       status: automated
+      notes: |-
+          See notes for 3.3.1.16.
 
     - id: 3.3.1.18
       title: Ensure net.ipv4.tcp_syncookies is configured (Automated)
