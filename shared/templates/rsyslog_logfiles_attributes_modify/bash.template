@@ -80,9 +80,10 @@ done
 # exclude /dev/* paths (e.g., /dev/console)
 for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
-	ACTION_OMFILE_LINES=$(grep -iozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}")
-	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
-	LOG_FILE_PATHS+=("$(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\"" | grep -v "^/dev/")")
+	ACTION_OMFILE_LINES=$(grep -ioPz "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}" | tr '\0' '\n')
+	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"")
+	readarray -t OMFILE_PATHS < <(echo "${OMFILE_LINES}" | grep -oE "\"([/[:alnum:][:punct:]]*)\"" | tr -d '"' | grep -v "^/dev/")
+	LOG_FILE_PATHS+=("${OMFILE_PATHS[@]}")
 done
 
 # Ensure the correct attribute if file exists
@@ -93,6 +94,12 @@ for LOG_FILE_PATH in "${LOG_FILE_PATHS[@]}"
 do
 	# Sanity check - if particular $LOG_FILE_PATH is empty string, skip it from further processing
 	if [ -z "$LOG_FILE_PATH" ]
+	then
+		continue
+	fi
+	# Only operate on the file if it exists; non-existent files would cause the command to fail
+	# with a non-zero exit code, which oscap --remediate interprets as an error, skipping the fix.
+	if [ ! -f "$LOG_FILE_PATH" ]
 	then
 		continue
 	fi
