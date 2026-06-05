@@ -57,10 +57,12 @@ template:
         excluded_files@slmicro5: ['*[bw]tmp', '*lastlog']
         excluded_files@slmicro6: ['*[bw]tmp', '*lastlog']
         excluded_files@ubuntu2204: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*']
+        excluded_files@debian13: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*']
         excluded_files@ubuntu2404: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*', 'cloud-init.log*', 'localmessages*', 'waagent.log*']
         file_regex: '.*'
         filemode: '0640'
         filepath: /var/log/
+        recursive@debian13: 'true'
         recursive@sle12: 'true'
         recursive@sle15: 'true'
         recursive@sle16: 'true'
