@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /etc/apt/auth.conf.d Directory'
+
+description: '{{{ describe_directory_permissions(directory="/etc/apt/auth.conf.d", perms="0755") }}}'
+
+rationale: |-
+    The /etc/apt/auth.conf.d directory contains configuration that may include
+    repository credentials. Its permissions should prevent unauthorized changes.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_permissions(directory="/etc/apt/auth.conf.d", perms="drwxr-xr-x") }}}'
+
+ocil: |-
+    {{{ ocil_directory_permissions(directory="/etc/apt/auth.conf.d", perms="drwxr-xr-x") }}}
+
+fixtext: '{{{ fixtext_directory_permissions(file="/etc/apt/auth.conf.d", mode="0755") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/apt/auth.conf.d/
+        filemode: '0755'

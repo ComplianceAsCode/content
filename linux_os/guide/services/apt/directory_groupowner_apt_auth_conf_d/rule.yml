@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Group Owner on /etc/apt/auth.conf.d Directory'
+
+description: '{{{ describe_directory_group_owner(directory="/etc/apt/auth.conf.d", group="root") }}}'
+
+rationale: |-
+    The /etc/apt/auth.conf.d directory should be group-owned by root to prevent
+    unauthorized changes to APT authentication configuration.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_group_owner(directory="/etc/apt/auth.conf.d", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_directory_group_owner(directory="/etc/apt/auth.conf.d", group="root") }}}
+
+fixtext: '{{{ fixtext_directory_group_owner(file="/etc/apt/auth.conf.d", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/apt/auth.conf.d/
+        gid_or_name: '0'

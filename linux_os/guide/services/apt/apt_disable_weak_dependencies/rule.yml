@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Disable APT Weak Dependencies'
+
+description: |-
+    APT should be configured to avoid installing packages listed only as
+    Recommends or Suggests dependencies.
+
+rationale: |-
+    Unless a system specifically requires the additional capabilities provided by
+    weak dependencies, those packages should not be installed in order to reduce
+    the potential attack surface.
+
+severity: medium
+
+ocil_clause: 'APT weak dependency options are not disabled'
+
+ocil: |-
+    Run the following command:
+    <pre>$ apt-config dump | grep "APT::Install-"</pre>
+    The output should include:
+    <pre>APT::Install-Recommends "0";
+    APT::Install-Suggests "0";</pre>
+
+fixtext: |-
+    Create an APT configuration file that disables weak dependencies:
+    <pre># printf '%s\n%s\n' 'APT::Install-Recommends "0";' 'APT::Install-Suggests "0";' > /etc/apt/apt.conf.d/60-no-weak-dependencies</pre>

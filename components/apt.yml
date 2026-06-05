@@ -5,4 +5,26 @@ packages:
 - apt
 rules:
 - apt_conf_disallow_unauthenticated
+- apt_disable_weak_dependencies
 - apt_sources_list_official
+- directory_groupowner_apt_auth_conf_d
+- directory_groupowner_apt_sources_list_d
+- directory_groupowner_apt_trusted_gpg_d
+- directory_groupowner_usr_share_keyrings
+- directory_owner_apt_auth_conf_d
+- directory_owner_apt_sources_list_d
+- directory_owner_apt_trusted_gpg_d
+- directory_owner_usr_share_keyrings
+- directory_permissions_apt_auth_conf_d
+- directory_permissions_apt_sources_list_d
+- directory_permissions_apt_trusted_gpg_d
+- directory_permissions_usr_share_keyrings
+- file_groupowner_apt_auth_conf_d
+- file_groupowner_apt_gpg_keys
+- file_groupowner_apt_sources_list_d
+- file_owner_apt_auth_conf_d
+- file_owner_apt_gpg_keys
+- file_owner_apt_sources_list_d
+- file_permissions_apt_auth_conf_d
+- file_permissions_apt_gpg_keys
+- file_permissions_apt_sources_list_d
