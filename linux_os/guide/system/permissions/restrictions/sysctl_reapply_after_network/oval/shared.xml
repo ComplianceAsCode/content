@@ -1,0 +1,37 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Ensure sysctl-reapply-network.service exists and is enabled.", rule_title=rule_title) }}}
+        <criteria operator="AND">
+            <criterion comment="sysctl-reapply-network.service file exists"
+                test_ref="test_{{{ rule_id }}}_file_exists"/>
+            <criterion comment="sysctl-reapply-network.service is enabled"
+                test_ref="test_{{{ rule_id }}}_enabled"/>
+        </criteria>
+    </definition>
+
+    <unix:file_test check="all" check_existence="at_least_one_exists"
+        comment="sysctl-reapply-network.service file exists"
+        id="test_{{{ rule_id }}}_file_exists" version="1">
+        <unix:object object_ref="object_{{{ rule_id }}}_file"/>
+    </unix:file_test>
+
+    <unix:file_object id="object_{{{ rule_id }}}_file" version="1">
+        <unix:filepath>/etc/systemd/system/sysctl-reapply-network.service</unix:filepath>
+    </unix:file_object>
+
+    <linux:systemdunitproperty_test check="all"
+        id="test_{{{ rule_id }}}_enabled" version="1"
+        comment="sysctl-reapply-network.service is enabled">
+        <linux:object object_ref="object_{{{ rule_id }}}_unitfilestate"/>
+        <linux:state state_ref="state_{{{ rule_id }}}_enabled"/>
+    </linux:systemdunitproperty_test>
+
+    <linux:systemdunitproperty_object id="object_{{{ rule_id }}}_unitfilestate" version="1">
+        <linux:unit>sysctl-reapply-network.service</linux:unit>
+        <linux:property>UnitFileState</linux:property>
+    </linux:systemdunitproperty_object>
+
+    <linux:systemdunitproperty_state id="state_{{{ rule_id }}}_enabled" version="1">
+        <linux:value>enabled</linux:value>
+    </linux:systemdunitproperty_state>
+</def-group>
