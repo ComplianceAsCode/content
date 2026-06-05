@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'Remove the GDM Package Group'
 
 description: |-
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
     By removing the <tt>gdm</tt> package, the system no longer has GNOME installed.
     {{% else %}}
     By removing the <tt>gdm3</tt> package, the system no longer has GNOME installed.
@@ -12,7 +12,7 @@ description: |-
     If X Windows is not installed then the system cannot boot into graphical user mode.
     This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
     mode. To do so, run the following command:
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
     <pre>$ sudo yum remove gdm</pre>
     {{% else %}}
     <pre>$ sudo apt remove gdm3</pre>
@@ -38,7 +38,7 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     srg: SRG-OS-000480-GPOS-00227
 
-{{% if 'ubuntu' not in product %}}
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
 ocil_clause: 'gdm has not been removed'
 
 ocil: |-
@@ -66,5 +66,6 @@ template:
     name: package_removed
     vars:
         pkgname: gdm
+        pkgname@debian13: gdm3
         pkgname@ubuntu2204: gdm3
         pkgname@ubuntu2404: gdm3

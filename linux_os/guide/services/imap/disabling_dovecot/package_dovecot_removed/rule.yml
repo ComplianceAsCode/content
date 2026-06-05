@@ -1,4 +1,4 @@
-{{% if 'ubuntu' not in product %}}
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
  {{%- set package = "dovecot" %}}
 {{% else %}}
  {{%- set package = "dovecot-core" %}}
@@ -35,5 +35,6 @@ template:
     name: package_removed
     vars:
         pkgname: dovecot
+        pkgname@debian13: dovecot-core
         pkgname@ubuntu2204: dovecot-core
         pkgname@ubuntu2404: dovecot-core
