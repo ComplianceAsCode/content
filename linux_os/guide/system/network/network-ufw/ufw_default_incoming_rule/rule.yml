@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Ensure ufw Default Deny Policy for Incoming Connections'
+
+description: |-
+    A default deny policy on incoming connections ensures that any unconfigured
+    inbound network traffic will be rejected.
+
+    Note: Any port or protocol without an explicit allow before the default
+    deny will be blocked.
+
+rationale: |-
+    With a default accept policy the firewall will accept any incoming packet
+    that is not configured to be denied. It is easier to allow acceptable
+    usage than to block unacceptable usage.
+
+severity: medium
+
+platform: package[ufw]
+
+ocil_clause: 'the default policy for incoming connections is not set to deny or reject'
+
+ocil: |-
+    Run the following command and verify that the default policy for incoming
+    connections is deny or reject:
+    <pre># ufw status verbose | grep Default:</pre>
+    Example output:
+    <pre>Default: deny (incoming), ...</pre>
+
+warnings:
+    - general: |-
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
