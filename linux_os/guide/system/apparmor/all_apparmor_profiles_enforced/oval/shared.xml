@@ -1,0 +1,52 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure all AppArmor profiles are in enforce mode", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="All AppArmor profiles are in enforce mode"
+        test_ref="{{{ rule_id }}}_test_all_profiles_enforced" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_all_profiles" version="1">
+    <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_enforced_profiles" version="1">
+    <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">^.*(\(enforce\))$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable datatype="int" id="{{{ rule_id }}}_var_num_all_profiles" version="1"
+    comment="Total number of AppArmor profiles">
+    <count>
+      <object_component item_field="subexpression"
+        object_ref="{{{ rule_id }}}_obj_apparmor_all_profiles" />
+    </count>
+  </local_variable>
+
+  <local_variable datatype="int" id="{{{ rule_id }}}_var_num_enforced_profiles" version="1"
+    comment="Number of AppArmor enforce mode profiles">
+    <count>
+      <object_component item_field="subexpression"
+        object_ref="{{{ rule_id }}}_obj_apparmor_enforced_profiles" />
+    </count>
+  </local_variable>
+
+  <ind:variable_object id="{{{ rule_id }}}_obj_num_all_profiles" version="1">
+    <ind:var_ref>{{{ rule_id }}}_var_num_all_profiles</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="{{{ rule_id }}}_state_all_profiles_enforced" version="1">
+    <ind:value datatype="int" operation="equals" var_check="all"
+      var_ref="{{{ rule_id }}}_var_num_enforced_profiles"/>
+  </ind:variable_state>
+
+  <ind:variable_test id="{{{ rule_id }}}_test_all_profiles_enforced" check="all"
+    version="1" comment="Total AppArmor profiles equals enforced profiles">
+    <ind:object object_ref="{{{ rule_id }}}_obj_num_all_profiles"/>
+    <ind:state state_ref="{{{ rule_id }}}_state_all_profiles_enforced"/>
+  </ind:variable_test>
+</def-group>
