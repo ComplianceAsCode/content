@@ -50,3 +50,12 @@ references:
     nist-csf: DE.AE-3,DE.AE-5,DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.AC-3,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4
     pcidss: Req-10.2.3
     srg: SRG-APP-000505-CTR-001285
+
+ocil_clause: 'the system is not configured to audit attempts to alter process and session initiation information'
+
+ocil: |-
+    To determine if the system is configured to audit attempts to alter
+    process and session initiation information, run the following command:
+    <pre>auditctl -l | grep -E '(/var/run/utmp|/var/log/btmp|/var/log/wtmp)'</pre>
+    If the system is configured to watch for these events, lines should be returned for
+    each file specified (and with <tt>-p wa</tt> for each).
