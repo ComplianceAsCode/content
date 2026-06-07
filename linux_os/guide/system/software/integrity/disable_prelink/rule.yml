@@ -41,9 +41,12 @@ references:
 ocil_clause: 'prelinking is enabled'
 
 ocil: |-
-    To determine if prelinking is disabled, run the following command:
+    To determine if prelinking is disabled, first check whether the
+    <tt>prelink</tt> package is installed by running the following command:
+    <pre>$ rpm -q prelink</pre>
+    If the package is not installed, prelinking is not enabled and the rule is
+    satisfied. If the <tt>prelink</tt> package is installed, verify that prelinking
+    is disabled by running the following command:
     <pre>$ grep PRELINKING /etc/sysconfig/prelink</pre>
     If prelinking is disabled, the output should contain the following line:
     <pre>PRELINKING=no</pre>
-    Alternatively, if the <tt>prelink</tt> package is not installed, prelinking is
-    not enabled and the rule is also satisfied.
