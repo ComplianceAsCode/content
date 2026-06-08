@@ -5,6 +5,8 @@ title: 'Ensure ufw Default Deny Policy for Outgoing Connections'
 description: |-
     A default deny policy on outgoing connections ensures that only explicitly
     allowed outbound network traffic will be permitted.
+    Set <tt>DEFAULT_OUTPUT_POLICY</tt> to <tt>DROP</tt> or <tt>REJECT</tt>
+    in <tt>/etc/default/ufw</tt>.
 
     Note: Any port or protocol without an explicit allow before the default
     deny will be blocked.

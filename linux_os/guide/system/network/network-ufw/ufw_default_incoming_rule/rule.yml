@@ -5,6 +5,8 @@ title: 'Ensure ufw Default Deny Policy for Incoming Connections'
 description: |-
     A default deny policy on incoming connections ensures that any unconfigured
     inbound network traffic will be rejected.
+    Set <tt>DEFAULT_INPUT_POLICY</tt> to <tt>DROP</tt> or <tt>REJECT</tt>
+    in <tt>/etc/default/ufw</tt>.
 
     Note: Any port or protocol without an explicit allow before the default
     deny will be blocked.
