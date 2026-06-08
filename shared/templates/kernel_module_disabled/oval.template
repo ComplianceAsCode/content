@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance"
-  id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
+  id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.", rule_title=rule_title) }}}
     <criteria operator="OR">
       {{% if product in ["rhcos4", "fedora"] or 'ol' in families or 'rhel' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
