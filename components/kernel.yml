@@ -127,6 +127,7 @@ rules:
 - package_iptables-nft_installed
 - package_nfs-kernel-server_removed
 - sebool_domain_kernel_load_modules
+- sysctl_conf_symlink_etc_sysctl_d
 - sysctl_fs_protected_fifos
 - sysctl_fs_protected_hardlinks
 - sysctl_fs_protected_regular
@@ -201,6 +202,7 @@ rules:
 - sysctl_net_ipv6_conf_default_forwarding
 - sysctl_net_ipv6_conf_default_max_addresses
 - sysctl_net_ipv6_conf_default_router_solicitations
+- sysctl_reapply_after_network
 - sysctl_user_max_user_namespaces
 - sysctl_user_max_user_namespaces_no_remediation
 - sysctl_vm_mmap_min_addr
