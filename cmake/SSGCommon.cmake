@@ -271,6 +271,42 @@ macro(ssg_build_ansible_roles)
     )
 endmacro()
 
+macro(ssg_build_ansible_collection VERSION)
+    set(ANSIBLE_ROLES_DIR "${CMAKE_BINARY_DIR}/ansible_roles")
+    set(ANSIBLE_COLLECTION_DIR "${CMAKE_BINARY_DIR}/ansible_collection")
+    set(ANSIBLE_COLLECTION_STAMP "${ANSIBLE_COLLECTION_DIR}/collection-${VERSION}")
+
+    if(NOT SSG_ANSIBLE_ROLES_ENABLED)
+        message(WARNING "SSG_ANSIBLE_COLLECTION_ENABLED requires SSG_ANSIBLE_ROLES_ENABLED. "
+                        "Collection target will not be configured.")
+    else()
+        add_custom_command(
+            OUTPUT "${ANSIBLE_COLLECTION_STAMP}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}"
+                "${Python_EXECUTABLE}"
+                "${CMAKE_SOURCE_DIR}/utils/ansible_roles_to_collection.py"
+                --roles-dir "${ANSIBLE_ROLES_DIR}"
+                --output-dir "${ANSIBLE_COLLECTION_DIR}"
+                --version "${VERSION}"
+                --build
+            COMMAND "${CMAKE_COMMAND}" -E touch "${ANSIBLE_COLLECTION_STAMP}"
+            DEPENDS "${ANSIBLE_ROLES_DIR}"
+            COMMENT "Generating Ansible Collection from roles (version ${VERSION})"
+        )
+        add_custom_target(
+            ansible-collection
+            DEPENDS "${ANSIBLE_COLLECTION_STAMP}"
+        )
+
+        if(SSG_ANSIBLE_PLAYBOOKS_ENABLED)
+            install(
+                DIRECTORY "${ANSIBLE_COLLECTION_DIR}/ansible_collections/"
+                DESTINATION "${SSG_ANSIBLE_COLLECTION_INSTALL_DIR}"
+            )
+        endif()
+    endif()
+endmacro()
+
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (${PRODUCT_REMEDIATION_LANGUAGES})...")
 
