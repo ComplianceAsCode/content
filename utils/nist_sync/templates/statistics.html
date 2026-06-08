@@ -396,8 +396,54 @@
                 });
         }
 
+        function renderComponentStatistics() {
+            const compStats = (EMBEDDED_DATA.component_stats || {})[CURRENT_PRODUCT] || {};
+            const entries = Object.entries(compStats);
+            if (entries.length === 0) return;
+
+            const section = document.createElement('div');
+            section.className = 'card';
+            section.innerHTML = `
+                <h3>Component Coverage</h3>
+                <p style="color: #586069; margin-bottom: 15px; font-size: 13px;">
+                    Software components referenced by NIST 800-53 controls
+                    (<a href="components.html" style="color: #6f42c1;">view component details</a>)
+                </p>
+                <table class="comparison-table" id="component-stats-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Controls</th>
+                            <th>Rule Refs</th>
+                            <th>Packages</th>
+                        </tr>
+                    </thead>
+                    <tbody id="component-stats-tbody"></tbody>
+                </table>
+            `;
+            document.querySelector('.container').appendChild(section);
+
+            const tbody = document.getElementById('component-stats-tbody');
+            entries
+                .sort((a, b) => b[1].control_count - a[1].control_count)
+                .forEach(([compName, data]) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><a href="components.html?component=${compName}"
+                               style="color: #6f42c1; font-weight: 600;">${compName}</a></td>
+                        <td>${data.control_count}</td>
+                        <td>${data.rule_count}</td>
+                        <td style="font-size: 12px; color: #586069;">${(data.packages || []).join(', ')}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+        }
+
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', renderStatistics);
+        document.addEventListener('DOMContentLoaded', function() {
+            renderStatistics();
+            renderComponentStatistics();
+        });
     </script>
 </body>
 </html>
