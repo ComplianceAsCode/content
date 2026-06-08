@@ -423,7 +423,7 @@ class RoleGithubUpdater(object):
             except ImportError:
                 print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
                     file=sys.stderr)
-                raise SystemExit(1)
+                raise SystemExit(1) from None
             raise UnknownObjectException(
                 'unable to locate file: ' + path_name + ' in branch: ' + branch)
         return blob
@@ -443,7 +443,7 @@ class RoleGithubUpdater(object):
             except ImportError:
                 print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
                     file=sys.stderr)
-                raise SystemExit(1)
+                raise SystemExit(1) from None
             self.remote_repo.update_file(
                 filepath,
                 "Updated " + filepath,
@@ -500,6 +500,12 @@ def parse_args():
     parser.add_argument(
         "--token", "-t", dest="token",
         help="GitHub token used for organization authorization")
+    parser.add_argument(
+        "--local-roles-dir", dest="local_roles_dir", default=None,
+        metavar="DIR",
+        help="Also save the generated roles to this local directory when pushing to GitHub. "
+             "The saved roles can then be passed directly to ansible_roles_to_collection.py "
+             "without needing to run this script a second time.")
     return parser.parse_args()
 
 
@@ -556,7 +562,7 @@ def main():
         except ImportError:
             print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
                 file=sys.stderr)
-            raise SystemExit(1)
+            raise SystemExit(1) from None
         if not args.token:
             print("Input your GitHub credentials:")
             username = input("username or token: ")
@@ -579,6 +585,9 @@ def main():
                 playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
                 playbook_full_path = os.path.join(
                     args.build_playbooks_dir, playbook_filename)
+                converter = PlaybookToRoleConverter(playbook_full_path)
+                if args.local_roles_dir:
+                    converter.save_to_disk(args.local_roles_dir)
                 RoleGithubUpdater(repo, playbook_full_path).update_repository()
                 if args.tag_release:
                     update_repo_release(github, repo)
