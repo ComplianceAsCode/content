@@ -6,8 +6,12 @@ RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
 # * And also the log file paths listed after rsyslog's $IncludeConfig directive
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
 readarray -t OLD_INC < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
+# eval expands globs in $IncludeConfig paths. Acceptable because
+# /etc/rsyslog.conf is writable only by root and this script runs as root.
 readarray -t RSYSLOG_INCLUDE_CONFIG < <(for INCPATH in "${OLD_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
 readarray -t NEW_INC < <(sed -n '/^\s*include(/,/)/Ip' /etc/rsyslog.conf | sed -n 's@.*file\s*=\s*"\([/[:alnum:][:punct:]]*\)".*@\1@Ip')
+# eval expands globs in include() paths. Acceptable because
+# /etc/rsyslog.conf is writable only by root and this script runs as root.
 readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
 
 # Declare an array to hold the final list of different log file paths
@@ -34,7 +38,23 @@ do
 	then
 		RSYSLOG_CONFIG_FILES+=("${ENTRY}")
 	else
-		echo "Invalid include object: ${ENTRY}"
+		# ENTRY may be a glob such as /etc/rsyslog.d/*.conf (not a single path).
+		# nullglob runs only inside process substitution (subshell), so shopt cannot
+		# affect the caller if this script were ever sourced.
+		readarray -t _glob_paths < <(
+			shopt -s nullglob
+			for _maybe in ${ENTRY}
+			do
+				[[ -f "${_maybe}" ]] && printf '%s\n' "${_maybe}"
+			done
+		)
+		if ((${#_glob_paths[@]}))
+		then
+			RSYSLOG_CONFIG_FILES+=("${_glob_paths[@]}")
+		else
+			echo "Invalid include object: ${ENTRY}"
+		fi
+		unset _glob_paths
 	fi
 done
 
@@ -80,10 +100,21 @@ done
 # exclude /dev/* paths (e.g., /dev/console)
 for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
-	ACTION_OMFILE_LINES=$(grep -ioPz "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}" | tr '\0' '\n')
-	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"")
-	readarray -t OMFILE_PATHS < <(echo "${OMFILE_LINES}" | grep -oE "\"([/[:alnum:][:punct:]]*)\"" | tr -d '"' | grep -v "^/dev/")
-	LOG_FILE_PATHS+=("${OMFILE_PATHS[@]}")
+	[[ -f "${LOG_FILE}" ]] || continue
+	# Pipe grep -z output directly through tr so NUL delimiters become newlines
+	# before bash ever stores the data (bash variables cannot hold NUL bytes).
+	readarray -t _RSYSLOG_OMFILE_PATHS < <(
+		LC_ALL=C grep -iozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}" 2>/dev/null \
+			| tr '\0' '\n' \
+			| grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"" \
+			| grep -oE "\"([/[:alnum:][:punct:]]*)\"" \
+			| tr -d '"' \
+			| grep -v '^/dev/' \
+			| grep -v '^$' \
+			|| true
+	)
+	LOG_FILE_PATHS+=("${_RSYSLOG_OMFILE_PATHS[@]}")
+	unset _RSYSLOG_OMFILE_PATHS
 done
 
 # Ensure the correct attribute if file exists
@@ -97,11 +128,10 @@ do
 	then
 		continue
 	fi
-	# Only operate on the file if it exists; non-existent files would cause the command to fail
-	# with a non-zero exit code, which oscap --remediate interprets as an error, skipping the fix.
-	if [ ! -f "$LOG_FILE_PATH" ]
+	# Skip non-files (mis-parsed paths, directories); chmod on missing paths must not abort.
+	if [[ ! -f "${LOG_FILE_PATH}" ]]
 	then
 		continue
 	fi
-	$FILE_CMD "{{{ VALUE }}}" "$LOG_FILE_PATH"
+	$FILE_CMD "{{{ VALUE }}}" "${LOG_FILE_PATH}"
 done
