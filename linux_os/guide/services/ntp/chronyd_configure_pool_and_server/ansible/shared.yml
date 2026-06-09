@@ -9,7 +9,7 @@
 - name: {{{ rule_title }}} - Add missing / update wrong records for remote time servers
   ansible.builtin.lineinfile:
     path: {{{ chrony_conf_path }}}
-    regexp: '^\s*\bserver\b\s*\b{{ item }}\b$'
+    regexp: '^\s*\bserver\b\s*\b{{ item }}\b'
     state: present
     line: 'server {{ item }}'
     create: true
@@ -19,7 +19,7 @@
 - name: {{{ rule_title }}} - Add missing / update wrong records for remote time pools
   ansible.builtin.lineinfile:
     path: {{{ chrony_conf_path }}}
-    regexp: '^\s*\bpool\b\s*\b{{ item }}\b$'
+    regexp: '^\s*\bpool\b\s*\b{{ item }}\b'
     state: present
     line: 'pool {{ item }}'
     create: true
