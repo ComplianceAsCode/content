@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Owner on /usr/share/keyrings Directory'
+
+description: '{{{ describe_directory_owner(directory="/usr/share/keyrings", owner="root") }}}'
+
+rationale: |-
+    The /usr/share/keyrings directory should be owned by root to prevent
+    unauthorized changes to package repository keys.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_owner(directory="/usr/share/keyrings", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_directory_owner(directory="/usr/share/keyrings", owner="root") }}}
+
+fixtext: '{{{ fixtext_directory_owner(file="/usr/share/keyrings", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /usr/share/keyrings/
+        uid_or_name: '0'
