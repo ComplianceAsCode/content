@@ -224,9 +224,9 @@ def export_guidance(oscal_catalog, data_dir, output_dir, validate, gemara_schema
         if passed is None:
             print(f"  [CUE]  guidance_catalog.yaml  SKIP  ({output})")
         elif passed:
-            print(f"  [CUE]  guidance_catalog.yaml  PASS")
+            print("  [CUE]  guidance_catalog.yaml  PASS")
         else:
-            print(f"  [CUE]  guidance_catalog.yaml  FAIL")
+            print("  [CUE]  guidance_catalog.yaml  FAIL")
             for line in output.splitlines():
                 print(f"         {line}")
 
@@ -267,9 +267,9 @@ def export_product(product, repo_root, oscal_catalog, output_dir, include_mappin
         if passed is None:
             print(f"  [CUE]  control_catalog.yaml  SKIP  ({output})")
         elif passed:
-            print(f"  [CUE]  control_catalog.yaml  PASS")
+            print("  [CUE]  control_catalog.yaml  PASS")
         else:
-            print(f"  [CUE]  control_catalog.yaml  FAIL")
+            print("  [CUE]  control_catalog.yaml  FAIL")
             for line in output.splitlines():
                 print(f"         {line}")
 
@@ -311,9 +311,9 @@ def export_product(product, repo_root, oscal_catalog, output_dir, include_mappin
         if passed is None:
             print(f"  [CUE]  rules_mapping.yaml    SKIP  ({output})")
         elif passed:
-            print(f"  [CUE]  rules_mapping.yaml    PASS")
+            print("  [CUE]  rules_mapping.yaml    PASS")
         else:
-            print(f"  [CUE]  rules_mapping.yaml    FAIL")
+            print("  [CUE]  rules_mapping.yaml    FAIL")
             for line in output.splitlines():
                 print(f"         {line}")
 
@@ -346,7 +346,7 @@ def main():
     include_mapping = not args.no_mapping
     include_guidance = not args.no_guidance
 
-    print(f"Exporting NIST 800-53 to Gemara format")
+    print("Exporting NIST 800-53 to Gemara format")
     print(f"  Products:   {', '.join(products)}")
     print(f"  Output dir: {output_dir}")
 
@@ -354,7 +354,7 @@ def main():
     if oscal_catalog:
         print(f"  OSCAL:      {args.oscal_catalog} (loaded)")
     else:
-        print(f"  OSCAL:      not found — using control titles as objectives")
+        print("  OSCAL:      not found — using control titles as objectives")
 
     gemara_schema = args.gemara_schema
     if args.validate:
@@ -365,10 +365,10 @@ def main():
             sys.stderr.write(f"  [WARN] --gemara-schema path not found: {gemara_schema}\n")
             gemara_schema = None
         elif not cue_bin:
-            print(f"  CUE:        not found on PATH — skipping CUE validation")
+            print("  CUE:        not found on PATH — skipping CUE validation")
             gemara_schema = None
         else:
-            print(f"  CUE:        pass --gemara-schema to enable CUE validation")
+            print("  CUE:        pass --gemara-schema to enable CUE validation")
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -406,7 +406,7 @@ def main():
     # GuidanceCatalog — generated once, platform-independent
     guidance_stats = None
     if include_guidance and oscal_catalog:
-        print(f"\n[guidance_catalog]")
+        print("\n[guidance_catalog]")
         try:
             guidance_stats = export_guidance(
                 oscal_catalog,
