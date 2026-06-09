@@ -119,7 +119,7 @@ args:
     pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
-    {{% if 'sle' in product or 'slmicro' in product or product in ["kylinserver10", "openeuler2203"] %}}
+    {{% if 'sle' in product or 'slmicro' in product or product in ["kylinserver10", "kylinsecserver6", "openeuler2203"] %}}
       pkgname: shadow
     {{% else %}}
       pkgname: shadow-utils
