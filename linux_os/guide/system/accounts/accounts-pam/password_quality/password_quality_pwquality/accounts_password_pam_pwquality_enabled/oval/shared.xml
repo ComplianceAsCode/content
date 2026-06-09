@@ -1,4 +1,4 @@
-{{% if product in ['sle15', 'sle16'] %}}
+{{% if 'debian' in product or 'ubuntu' in product or product in ['sle15', 'sle16'] %}}
 {{% set configuration_files = ["common-password"] %}}
 {{% endif %}}
 <def-group>
