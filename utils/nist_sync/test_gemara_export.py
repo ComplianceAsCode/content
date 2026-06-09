@@ -425,7 +425,7 @@ def main():
     all_failed = 0
 
     print(f"\n{'='*60}")
-    print(f"GuidanceCatalog (platform-independent)")
+    print("GuidanceCatalog (platform-independent)")
     print(f"{'='*60}")
     guidance_result = TestResult()
     run_guidance(args.gemara_dir, guidance_result)

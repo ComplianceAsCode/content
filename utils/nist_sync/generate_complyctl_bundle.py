@@ -4,10 +4,15 @@ Generate a complyctl-compatible OCI bundle from Gemara export artifacts.
 
 This script:
   1. Reads a Gemara ControlCatalog produced by export_to_gemara.py
-  2. Generates a Gemara Policy YAML with full XCCDF rule IDs in assessment-plans
-     (complyctl passes requirement-id directly to the OpenSCAP provider as an XCCDF rule ID)
+  2. Generates a Gemara Policy YAML with SHORT CaC rule names in assessment-plans
+     (the OpenSCAP provider adds the xccdf_org.ssgproject.content_rule_ prefix internally
+     and compares short names against data stream rules after stripping the prefix)
   3. Optionally packages everything into a split-layer OCI artifact using oras and
      pushes it to a local OCI registry
+
+The generated complytime.yaml includes a 'datastream' target variable pointing to the
+product's SCAP data stream, bypassing the provider's OS auto-detection and ensuring
+the correct content is always used regardless of the host OS.
 
 Usage:
     # Generate policy YAML only (no registry needed)
@@ -44,9 +49,6 @@ except ImportError:
 _SCRIPT_DIR = Path(__file__).parent
 _REPO_ROOT = _SCRIPT_DIR.parent.parent
 _GEMARA_VERSION = "1.1.0"
-
-# CaC XCCDF rule ID prefix
-_XCCDF_PREFIX = "xccdf_org.ssgproject.content_rule_"
 
 # OCI media types for complyctl v1.0.0-alpha.0 (go-gemara v0.0.1 split-layer format)
 _MEDIA_TYPE_POLICY = "application/vnd.gemara.policy.v1+yaml"
@@ -93,10 +95,6 @@ def extract_rules_from_catalog(catalog, baseline=None):
       - rule_id is the raw CaC rule ID (e.g. 'accounts_tmout')
       - nist_control_ids is the list of NIST controls that reference this rule
     """
-    # Build control's applicability-groups for baseline filtering
-    meta = catalog.get("metadata", {})
-    app_groups = {g["id"] for g in meta.get("applicability-groups", [])}
-
     rule_to_controls = {}
     for ctrl in catalog.get("controls", []):
         ctrl_id = ctrl.get("id", "")
@@ -141,21 +139,23 @@ def extract_rules_from_catalog(catalog, baseline=None):
 
 def generate_policy(product, catalog_id, rules_with_controls):
     """
-    Build a Gemara Policy YAML dict with XCCDF rule IDs in assessment-plans.
+    Build a Gemara Policy YAML dict with short CaC rule names in assessment-plans.
 
-    requirement-id uses the full XCCDF rule ID so that the complyctl OpenSCAP
-    provider can pass it directly to 'oscap xccdf eval --rule <id>'.
+    The OpenSCAP provider's validateRuleExistence() strips 'xccdf_org.ssgproject.content_rule_'
+    from each data stream rule ID and compares against the requirement-id. So requirement-id
+    must be the SHORT rule name (e.g. 'accounts_tmout'), not the full XCCDF ID.
+    The provider then uses getDsRuleID() to re-add the prefix when building the tailoring XML.
     """
     full_name = _PRODUCT_FULL_NAMES.get(product, product.upper())
     policy_id = f"nist-800-53-rev5-{product}-policy"
 
     assessment_plans = []
-    for rule_id, nist_controls in rules_with_controls:
-        xccdf_id = f"{_XCCDF_PREFIX}{rule_id}"
+    for rule_id, _nist_controls in rules_with_controls:
         assessment_plans.append({
-            "id": f"ap-{rule_id}",
-            # complyctl passes this directly to the OpenSCAP provider as the XCCDF rule ID
-            "requirement-id": xccdf_id,
+            # IMPORTANT: complyctl v1.0.0-alpha.0 (go-gemara v0.0.1) reads AssessmentConfiguration.RequirementID
+            # from the plan 'id' field, not 'requirement-id'. Set both to the short CaC rule name so it works.
+            "id": rule_id,
+            "requirement-id": rule_id,
             "frequency": "on-demand",
             "evaluation-methods": [
                 {
@@ -174,8 +174,8 @@ def generate_policy(product, catalog_id, rules_with_controls):
             "gemara-version": _GEMARA_VERSION,
             "description": (
                 f"Automated evaluation policy for NIST SP 800-53 Rev 5 on {full_name}, "
-                "using ComplianceAsCode rules. requirement-id values are XCCDF rule IDs "
-                "passed directly to the OpenSCAP provider."
+                "using ComplianceAsCode rules. requirement-id values are short CaC rule names "
+                "(the OpenSCAP provider adds the xccdf_org.ssgproject.content_rule_ prefix)."
             ),
             "author": {
                 "id": "complianceascode",
@@ -226,16 +226,20 @@ def generate_policy(product, catalog_id, rules_with_controls):
     }
 
 
-def generate_complytime_yaml(product, registry_url, bundle_tag):
+def generate_complytime_yaml(product, registry_url, bundle_tag, base_profile="cis"):
     """Generate a ~/.complytime/complytime.yaml for this bundle.
 
-    Format expected by complyctl v1.0.0-alpha.0. The http:// prefix triggers
-    PlainHTTP mode in the OCI client (checked by string prefix in the source).
+    Format expected by complyctl v1.0.0-alpha.0:
+    - http:// prefix triggers PlainHTTP mode in the OCI client
+    - 'profile' variable: short XCCDF profile name (provider adds xccdf_org.ssgproject.content_profile_ prefix)
+    - 'datastream' variable: explicit path to the SCAP data stream, bypassing OS auto-detection
+      (the provider's findMatchingDatastream() may pick the wrong file on mixed-OS systems)
     """
     policy_id = f"nist-800-53-rev5-{product}"
-    profile_id = f"nist-800-53-rev5-{product}-policy"
     # complyctl appends :latest by default — strip any existing tag to avoid "latest:latest"
     bundle_ref = bundle_tag.split(":")[0]
+    # Product-specific SCAP data stream path
+    datastream = f"/usr/share/xml/scap/ssg/content/ssg-{product}-ds.xml"
     return f"""\
 # complytime.yaml — complyctl v1.0.0-alpha.0 workspace configuration
 policies:
@@ -247,7 +251,8 @@ targets:
     policies:
       - {policy_id}
     variables:
-      profile: {profile_id}
+      profile: {base_profile}
+      datastream: {datastream}
 """
 
 
@@ -327,7 +332,7 @@ complyctl report
 
   Policy:  {output_dir}/{product}_policy.yaml
            {len(open(f'{output_dir}/{product}_policy.yaml').readlines())} lines
-           assessment-plans use XCCDF rule IDs (xccdf_org.ssgproject.content_rule_*)
+           assessment-plans use SHORT CaC rule names (provider adds XCCDF prefix internally)
 
   Catalog: {output_dir}/{product}_catalog.yaml (copy of build/gemara/{product}/control_catalog.yaml)
            Maps NIST controls → XCCDF rules (for traceability and reporting)
@@ -379,6 +384,15 @@ def parse_args():
         default=None,
         help="Filter rules to a NIST baseline (default: all automated rules)",
     )
+    parser.add_argument(
+        "--base-profile",
+        default="cis",
+        help=(
+            "XCCDF base profile for tailoring (short name without xccdf_org.ssgproject.content_profile_ prefix). "
+            "Must contain all assessment-plan rules. For rhel9 moderate baseline, 'cis' covers all 22 rules. "
+            "(default: cis)"
+        ),
+    )
     parser.add_argument("--push", action="store_true", help="Push bundle to the OCI registry using oras")
     parser.add_argument("--verbose", action="store_true")
     return parser.parse_args()
@@ -409,14 +423,15 @@ def main():
     catalog = load_yaml(catalog_yaml_path)
     catalog_id = catalog["metadata"]["id"]
     rules_with_controls = extract_rules_from_catalog(catalog, baseline=args.baseline)
-    print(f"  Found {len(rules_with_controls)} unique XCCDF rules")
+    print(f"  Found {len(rules_with_controls)} unique CaC rules")
+    print(f"  Base profile:  {args.base_profile} (XCCDF tailoring base)")
 
     # Generate Policy YAML
     policy = generate_policy(product, catalog_id, rules_with_controls)
     policy_path = output_dir / f"{product}_policy.yaml"
     dump_yaml(policy, policy_path)
     print(f"  Wrote Policy:  {policy_path}")
-    print(f"    {len(rules_with_controls)} assessment-plans with XCCDF rule IDs")
+    print(f"    {len(rules_with_controls)} assessment-plans with short CaC rule names")
 
     # Copy catalog (complyctl needs it in the bundle for traceability)
     catalog_copy_path = output_dir / f"{product}_catalog.yaml"
@@ -425,7 +440,7 @@ def main():
     print(f"  Wrote Catalog: {catalog_copy_path}")
 
     # Generate complytime.yaml
-    complytime_yaml = generate_complytime_yaml(product, registry_url, tag)
+    complytime_yaml = generate_complytime_yaml(product, registry_url, tag, base_profile=args.base_profile)
     complytime_path = output_dir / "complytime.yaml"
     complytime_path.write_text(complytime_yaml, encoding="utf-8")
     print(f"  Wrote complytime.yaml: {complytime_path}")
@@ -444,21 +459,21 @@ def main():
             verbose=args.verbose,
         )
         if ok:
-            print(f"\n  Bundle pushed. Next steps:")
+            print("\n  Bundle pushed. Next steps:")
             print(f"    cp {complytime_path} ~/.complytime/complytime.yaml")
-            print(f"    complyctl get")
-            print(f"    complyctl generate")
-            print(f"    complyctl scan")
+            print("    complyctl get")
+            print("    complyctl generate")
+            print("    complyctl scan")
         else:
             sys.exit(1)
     else:
         print(f"\nBundle files written to {output_dir}")
-        print(f"To push to a local registry:")
-        print(f"  podman run -d -p 5000:5000 --name registry docker.io/library/registry:2")
+        print("To push to a local registry:")
+        print("  podman run -d -p 5000:5000 --name registry docker.io/library/registry:2")
         print(f"  python3 utils/nist_sync/generate_complyctl_bundle.py --product {product} --push")
-        print(f"\nThen test with complyctl:")
+        print("\nThen test with complyctl:")
         print(f"  cp {complytime_path} ~/.complytime/complytime.yaml")
-        print(f"  complyctl get && complyctl generate && complyctl scan")
+        print("  complyctl get && complyctl generate && complyctl scan")
 
 
 if __name__ == "__main__":
