@@ -20,6 +20,7 @@ identifiers:
 platform: system_with_kernel and package[sssd]
 
 references:
+    # yamllint disable rule:line-length
     stigid@ubuntu2404: UBTU-24-100660
     cis-csc: 1,12,15,16,5
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
@@ -30,6 +31,7 @@ references:
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
     srg: SRG-OS-000375-GPOS-00160
 
+    # yamllint enable rule:line-length
 ocil_clause: 'the service is not enabled'
 
 ocil: |-
@@ -44,8 +46,8 @@ template:
 
 warnings:
     - general:
-        The service requires a valid sssd configuration. If the configuration is
-        not present, the service will fail to start and consequently this rule
-        will be reported as failing. The configuration shipped in your
-        distribution package might not be sufficient. Manual modification of
-        configuration files might be required.
+          The service requires a valid sssd configuration. If the configuration is
+          not present, the service will fail to start and consequently this rule
+          will be reported as failing. The configuration shipped in your
+          distribution package might not be sufficient. Manual modification of
+          configuration files might be required.

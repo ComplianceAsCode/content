@@ -1,3 +1,5 @@
+# yamllint disable rule:line-length
+
 documentation_complete: true
 
 
@@ -27,7 +29,6 @@ references:
     stigid@ubuntu2404: UBTU-24-100450
     stigid@sle12: SLES-12-020070
     stigid@sle15: SLES-15-030670
-
 template:
     name: package_installed
     vars:
@@ -40,6 +41,6 @@ template:
 {{% if 'rhel' in product %}}
 warnings:
     - general:
-        This package is not available in {{{ full_name }}} [{{{ product }}}]. The correct package
-        is called <pre>audispd-plugins</pre>.
+          This package is not available in {{{ full_name }}} [{{{ product }}}]. The correct package
+          is called <pre>audispd-plugins</pre>.
 {{% endif %}}

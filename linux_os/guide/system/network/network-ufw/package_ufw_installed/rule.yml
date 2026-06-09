@@ -18,6 +18,7 @@ references:
 
 {{{ complete_ocil_entry_package_installed("ufw") }}}
 
+# yamllint disable rule:key-duplicates
 {{%- if 'ubuntu' in product %}}
 template:
     name: package_installed_guard_var
@@ -32,3 +33,4 @@ template:
     vars:
         pkgname: ufw
 {{%- endif %}}
+# yamllint enable rule:key-duplicates

@@ -35,6 +35,7 @@ identifiers:
     cce@slmicro6: CCE-94631-9
 
 references:
+    # yamllint disable rule:line-length
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8,9
     cis@sle12: 4.1.1.2
     cis@sle15: 4.1.1.2
@@ -58,6 +59,7 @@ references:
     stigid@sle12: SLES-12-020010
     stigid@sle15: SLES-15-030050
 
+    # yamllint enable rule:line-length
 ocil_clause: 'the auditd service is not running'
 
 ocil: |-
@@ -66,11 +68,13 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("auditd") }}}
 
+# yamllint disable rule:key-duplicates
 {{% if 'ubuntu' not in product and 'debian' not in product %}}
 srg_requirement: '{{{ srg_requirement_service_enabled("audit") }}}'
 {{% else %}}
 srg_requirement: '{{{ srg_requirement_service_enabled("auditd") }}}'
 {{% endif %}}
+# yamllint enable rule:key-duplicates
 
 
 platform: package[audit]

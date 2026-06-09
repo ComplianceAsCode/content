@@ -1,3 +1,5 @@
+# yamllint disable rule:line-length
+
 {{% if 'ubuntu' in product %}}
 {{% set config_command_line="--config " ~ aide_conf_path ~ " " %}}
 {{% endif %}}
@@ -60,7 +62,6 @@ references:
     stigid@ol7: OL07-00-020030
     stigid@sle12: SLES-12-010500
     stigid@sle15: SLES-15-010420
-
 ocil_clause: 'AIDE is not configured to scan periodically'
 
 ocil: |-

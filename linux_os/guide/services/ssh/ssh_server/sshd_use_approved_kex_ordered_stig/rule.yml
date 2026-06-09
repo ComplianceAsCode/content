@@ -1,3 +1,4 @@
+# yamllint disable rule:line-length
 {{% if product in ['ol8', 'rhel8'] %}}
 {{% set path=openssh_server_crypto_policy_config_file %}}
 {{% set conf="CRYPTO_POLICY='-oKexAlgorithms=ecdh-sha2-nistp256,ecdh-sha2-nistp384" ~

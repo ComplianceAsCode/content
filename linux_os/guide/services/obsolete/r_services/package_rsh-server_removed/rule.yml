@@ -1,3 +1,4 @@
+# yamllint disable rule:line-length
 documentation_complete: true
 
 
@@ -46,5 +47,5 @@ template:
 {{% if product in ["rhel8", "rhel9"] %}}
 warnings:
     - general:
-        The package is not available in {{{ full_name }}}.
+          The package is not available in {{{ full_name }}}.
 {{% endif %}}
