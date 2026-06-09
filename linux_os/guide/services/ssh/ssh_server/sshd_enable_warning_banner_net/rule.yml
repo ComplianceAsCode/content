@@ -28,6 +28,7 @@ identifiers:
     cce@rhel10: CCE-88799-2
 
 references:
+    # yamllint disable rule:line-length
     stigid@ubuntu2404: UBTU-24-200640
     cjis: 5.5.6
     cobit5: DSS05.04,DSS05.10,DSS06.10
@@ -40,6 +41,7 @@ references:
     nist-csf: PR.AC-7
     srg: SRG-OS-000023-GPOS-00006,SRG-OS-000228-GPOS-00088
 
+    # yamllint enable rule:line-length
 {{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue.net") }}}
 
 {{% if 'ubuntu' not in product and 'debian' not in product %}}

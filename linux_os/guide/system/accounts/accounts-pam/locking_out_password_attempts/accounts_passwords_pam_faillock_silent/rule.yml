@@ -42,18 +42,20 @@ fixtext: |-
     To configure the system to prevent messages from being shown when three unsuccessful logon
     attempts occur using <tt>pam_faillock.so</tt>, first enable the faillock feature using the
     following command:
-    
+
     $ sudo authselect enable-feature with-faillock
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
     add or uncomment the following line:
     <pre>silent</pre>
 
+# yamllint disable rule:key-duplicates
 {{% if product == "ol8" %}}
 platform: os_linux[ol]>=8.2 and package[pam]
 {{% else %}}
 platform: package[pam]
 {{% endif %}}
+# yamllint enable rule:key-duplicates
 
 warnings:
     - general: |-

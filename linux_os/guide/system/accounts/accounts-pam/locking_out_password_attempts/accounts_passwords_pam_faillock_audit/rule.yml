@@ -1,3 +1,5 @@
+# yamllint disable rule:indentation
+# yamllint disable rule:line-length
 documentation_complete: true
 
 title: 'Account Lockouts Must Be Logged'
@@ -21,6 +23,7 @@ references:
     stigid@ubuntu2404: UBTU-24-200610
     stigid@ol8: OL08-00-020021
 
+# yamllint disable rule:key-duplicates
 {{% if product == "rhel8" %}}
 platform: os_linux[rhel]>=8.2 and package[pam]
 {{% elif product == "ol8" %}}
@@ -28,6 +31,7 @@ platform: os_linux[ol]>=8.2 and package[pam]
 {{% else %}}
 platform: package[pam]
 {{% endif %}}
+# yamllint enable rule:key-duplicates
 
 ocil_clause: 'the "audit" option is not set, is missing or commented out'
 
