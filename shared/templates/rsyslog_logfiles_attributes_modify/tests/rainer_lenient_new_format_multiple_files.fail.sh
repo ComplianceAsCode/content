@@ -5,11 +5,11 @@
 # real-world default RainerScript rsyslog.conf with multiple action(type="omfile" ...)
 # entries, including entries with extra attributes (e.g. sync="on") after the File= field.
 #
-# Previously, two bugs caused remediation to silently do nothing:
-# 1. grep -iozP stored NUL-separated matches in a bash variable, stripping NULs and
-#    corrupting multi-match output (fixed by piping through tr '\0' '\n').
-# 2. The extracted paths were appended as a single newline-joined string instead of
-#    individual array elements (fixed by using readarray).
+# Previously, grep -iozP stored NUL-separated matches in a bash variable via
+# command substitution.  Bash strips NUL bytes from variables, so the tr '\0'
+# '\n' that followed was a no-op and multi-match output was silently corrupted.
+# Fixed by keeping the grep -z | tr '\0' '\n' chain inside a pipe (where NULs
+# are preserved) and feeding the result directly into readarray.
 
 # Declare variables used for the tests and define the create_rsyslog_test_logs function
 source $SHARED/rsyslog_log_utils.sh
