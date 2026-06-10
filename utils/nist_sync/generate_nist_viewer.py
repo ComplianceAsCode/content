@@ -87,6 +87,23 @@ def load_oscal_catalog(data_dir: Path) -> Dict[str, Any]:
     return controls_map
 
 
+def _flatten_controls(controls_list, parent_id=None):
+    """Recursively flatten nested controls, adding parent_id and enhancements info."""
+    result = []
+    for ctrl in controls_list:
+        ctrl_copy = dict(ctrl)
+        if parent_id:
+            ctrl_copy['parent_id'] = parent_id
+        nested = ctrl_copy.pop('controls', None)
+        if nested:
+            ctrl_copy['enhancements'] = [str(c.get('id', '')) for c in nested]
+            result.append(ctrl_copy)
+            result.extend(_flatten_controls(nested, parent_id=str(ctrl.get('id', ''))))
+        else:
+            result.append(ctrl_copy)
+    return result
+
+
 def load_product_controls(product: str, repo_root: Path) -> Dict[str, Any]:
     """Load control files for a product."""
     controls_dir = repo_root / 'products' / product / 'controls' / 'nist_800_53'
@@ -101,12 +118,12 @@ def load_product_controls(product: str, repo_root: Path) -> Dict[str, Any]:
     if metadata_file.exists():
         metadata = load_yaml(metadata_file)
 
-    # Load all family files
+    # Load all family files, flattening nested enhancements
     controls = []
     for family_file in sorted(controls_dir.glob('*.yml')):
         family_data = load_yaml(family_file)
         if 'controls' in family_data:
-            controls.extend(family_data['controls'])
+            controls.extend(_flatten_controls(family_data['controls']))
 
     return {
         'product': product,
@@ -235,6 +252,11 @@ def merge_control_data(product_controls: Dict[str, Any], oscal_controls: Dict[st
             'is_not_applicable': control.get('status') == 'not applicable',
         }
 
+        if control.get('parent_id'):
+            merged_control['parent_id'] = control['parent_id']
+        if control.get('enhancements'):
+            merged_control['enhancements'] = control['enhancements']
+
         merged.append(merged_control)
 
     return merged
@@ -361,8 +383,12 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
     stats = {}
     for product, data in products_data.items():
         controls = data['controls']
+        base = [c for c in controls if not c.get('parent_id')]
+        enhancements = [c for c in controls if c.get('parent_id')]
         stats[product] = {
             'total': len(controls),
+            'base_controls': len(base),
+            'enhancement_controls': len(enhancements),
             'automated': sum(1 for c in controls if c['is_automated']),
             'manual': sum(1 for c in controls if c['is_manual']),
             'pending': sum(1 for c in controls if c['is_pending']),
@@ -371,6 +397,10 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
             'not_applicable': sum(1 for c in controls if c['is_not_applicable']),
             'with_rules': sum(1 for c in controls if c['has_rules']),
             'without_rules': sum(1 for c in controls if not c['has_rules']),
+            'base_automated': sum(1 for c in base if c['is_automated']),
+            'base_pending': sum(1 for c in base if c['is_pending']),
+            'enh_automated': sum(1 for c in enhancements if c['is_automated']),
+            'enh_pending': sum(1 for c in enhancements if c['is_pending']),
         }
 
     # Build component statistics per product

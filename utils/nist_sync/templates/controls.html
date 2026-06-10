@@ -66,12 +66,15 @@
             min-height: 400px;
         }
 
+        .control-group {
+            margin-bottom: 15px;
+        }
+
         .control-item {
             background: #fff;
             border: 1px solid #e1e4e8;
             border-radius: 6px;
             padding: 15px;
-            margin-bottom: 15px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -79,6 +82,66 @@
         .control-item:hover {
             border-color: #0366d6;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .control-item.base-control {
+            border-left: 4px solid #0366d6;
+        }
+
+        .enhancements-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #0366d6;
+            cursor: pointer;
+            background: #f1f8ff;
+            border: 1px solid #c8e1ff;
+            border-radius: 12px;
+            padding: 2px 10px;
+            margin-left: 8px;
+            user-select: none;
+        }
+
+        .enhancements-toggle:hover {
+            background: #dbedff;
+        }
+
+        .enhancements-toggle .arrow {
+            transition: transform 0.2s;
+            font-size: 10px;
+        }
+
+        .enhancements-toggle .arrow.expanded {
+            transform: rotate(90deg);
+        }
+
+        .enhancements-summary {
+            font-size: 11px;
+            color: #586069;
+            margin-left: 4px;
+        }
+
+        .enhancements-container {
+            margin-left: 20px;
+            margin-top: 8px;
+            border-left: 2px solid #e1e4e8;
+            padding-left: 12px;
+        }
+
+        .enhancements-container .control-item {
+            margin-bottom: 8px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .enhancements-container .control-id {
+            font-size: 14px;
+        }
+
+        .enhancements-container .control-title {
+            font-size: 13px;
         }
 
         .control-header {
@@ -325,6 +388,37 @@
             renderControls();
         }
 
+        function renderControlCard(control, isEnhancement) {
+            const statusClass = control.is_automated ? 'automated' :
+                              control.is_manual ? 'manual' :
+                              control.is_inherently_met ? 'inherently_met' :
+                              control.is_does_not_meet ? 'does_not_meet' :
+                              control.is_not_applicable ? 'not_applicable' : 'pending';
+            const gapIndicator = control.has_rules ? '' :
+                '<span class="gap-indicator gap-full"></span>';
+
+            const levels = (control.levels || []).join(', ').toUpperCase();
+            const ruleCount = (control.rules || []).length;
+
+            return `
+                <div class="control-item ${isEnhancement ? '' : 'base-control'}" onclick="window.location.href='control-detail.html?id=${control.id}'">
+                    <div class="control-header">
+                        <div>
+                            <div class="control-id">
+                                ${gapIndicator}${control.id.toUpperCase()}
+                            </div>
+                            <div class="control-title">${control.title}</div>
+                        </div>
+                        <span class="badge badge-${statusClass}">${statusClass.toUpperCase()}</span>
+                    </div>
+                    <div class="control-meta">
+                        ${levels ? `<span>Baselines: ${levels}</span>` : ''}
+                        <span>Rules: ${ruleCount}</span>
+                    </div>
+                </div>
+            `;
+        }
+
         function renderControls() {
             const container = document.getElementById('controls-container');
             const resultsCount = document.getElementById('results-count');
@@ -336,37 +430,77 @@
                 return;
             }
 
-            container.innerHTML = filteredControls.map(control => {
-                const statusClass = control.is_automated ? 'automated' :
-                                  control.is_manual ? 'manual' :
-                              control.is_inherently_met ? 'inherently_met' :
-                              control.is_does_not_meet ? 'does_not_meet' :
-                              control.is_not_applicable ? 'not_applicable' : 'pending';
-                const gapIndicator = control.has_rules ? '' :
-                    '<span class="gap-indicator gap-full"></span>';
+            // Group: base controls with their enhancements
+            const filteredIds = new Set(filteredControls.map(c => c.id));
+            const baseControls = filteredControls.filter(c => !c.parent_id);
+            const enhancementsByParent = {};
+            filteredControls.forEach(c => {
+                if (c.parent_id) {
+                    if (!enhancementsByParent[c.parent_id]) enhancementsByParent[c.parent_id] = [];
+                    enhancementsByParent[c.parent_id].push(c);
+                }
+            });
 
-                const levels = (control.levels || []).join(', ').toUpperCase();
-                const ruleCount = (control.rules || []).length;
+            // Also find orphan enhancements (parent didn't match filter)
+            const orphanEnhancements = filteredControls.filter(c => c.parent_id && !filteredIds.has(c.parent_id));
 
-                return `
-                    <div class="control-item" onclick="window.location.href='control-detail.html?id=${control.id}'">
-                        <div class="control-header">
-                            <div>
-                                <div class="control-id">
-                                    ${gapIndicator}${control.id.toUpperCase()}
-                                </div>
-                                <div class="control-title">${control.title}</div>
-                            </div>
-                            <span class="badge badge-${statusClass}">${statusClass.toUpperCase()}</span>
+            let html = '';
+
+            baseControls.forEach(base => {
+                const enhancements = enhancementsByParent[base.id] || [];
+                const allEnhancements = (base.enhancements || []);
+                const totalEnhCount = allEnhancements.length;
+
+                html += '<div class="control-group">';
+                html += renderControlCard(base, false);
+
+                if (totalEnhCount > 0) {
+                    const automatedCount = enhancements.filter(e => e.is_automated).length;
+                    // Use all enhancements from data to get the full picture
+                    const allEnhControls = allControls.filter(c => allEnhancements.includes(c.id));
+                    const totalAutomated = allEnhControls.filter(e => e.is_automated).length;
+
+                    const toggleId = `enh-${base.id}`;
+                    html += `
+                        <div style="margin-left: 20px; margin-top: 4px;">
+                            <span class="enhancements-toggle" onclick="toggleEnhancements('${toggleId}', event)">
+                                <span class="arrow" id="arrow-${toggleId}">&#9654;</span>
+                                ${enhancements.length} of ${totalEnhCount} enhancements shown
+                                <span class="enhancements-summary">(${totalAutomated}/${totalEnhCount} automated)</span>
+                            </span>
                         </div>
-                        <div class="control-meta">
-                            ${levels ? `<span>📊 Baselines: ${levels}</span>` : ''}
-                            <span>📋 Rules: ${ruleCount}</span>
-                            ${control.component_count > 0 ? `<span>📦 Components: ${control.component_count}</span>` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                    `;
+
+                    if (enhancements.length > 0) {
+                        html += `<div class="enhancements-container" id="${toggleId}" style="display: none;">`;
+                        enhancements.forEach(enh => {
+                            html += renderControlCard(enh, true);
+                        });
+                        html += '</div>';
+                    }
+                }
+
+                html += '</div>';
+            });
+
+            // Render orphan enhancements (their parent wasn't in the filtered set)
+            orphanEnhancements.forEach(enh => {
+                html += '<div class="control-group">';
+                html += renderControlCard(enh, true);
+                html += '</div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        function toggleEnhancements(toggleId, event) {
+            event.stopPropagation();
+            const container = document.getElementById(toggleId);
+            const arrow = document.getElementById('arrow-' + toggleId);
+            if (!container) return;
+            const isVisible = container.style.display !== 'none';
+            container.style.display = isVisible ? 'none' : 'block';
+            arrow.classList.toggle('expanded', !isVisible);
         }
 
         function resetFilters() {

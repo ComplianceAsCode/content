@@ -47,6 +47,41 @@
             </div>
         </div>
 
+        <!-- Control Type Breakdown -->
+        <div class="card">
+            <h3>Controls by Type</h3>
+            <div class="grid grid-2" id="control-type-breakdown">
+                <div style="border: 1px solid #e1e4e8; border-radius: 6px; padding: 16px; border-left: 4px solid #0366d6;">
+                    <div style="font-size: 13px; font-weight: 600; color: #586069; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">Base Controls</div>
+                    <div style="font-size: 32px; font-weight: 700; color: #24292e;" id="stat-base">0</div>
+                    <div style="margin-top: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
+                        <span style="font-size: 13px;"><span style="color: #28a745; font-weight: 600;" id="stat-base-automated">0</span> automated</span>
+                        <span style="font-size: 13px;"><span style="color: #ffc107; font-weight: 600;" id="stat-base-pending">0</span> pending</span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <div style="background: #e1e4e8; border-radius: 4px; height: 6px;">
+                            <div id="base-progress" style="background: #28a745; height: 6px; border-radius: 4px; width: 0%;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: #586069; margin-top: 4px;" id="base-pct">0% automated</div>
+                    </div>
+                </div>
+                <div style="border: 1px solid #e1e4e8; border-radius: 6px; padding: 16px; border-left: 4px solid #6f42c1;">
+                    <div style="font-size: 13px; font-weight: 600; color: #586069; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">Control Enhancements</div>
+                    <div style="font-size: 32px; font-weight: 700; color: #24292e;" id="stat-enh">0</div>
+                    <div style="margin-top: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
+                        <span style="font-size: 13px;"><span style="color: #28a745; font-weight: 600;" id="stat-enh-automated">0</span> automated</span>
+                        <span style="font-size: 13px;"><span style="color: #ffc107; font-weight: 600;" id="stat-enh-pending">0</span> pending</span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <div style="background: #e1e4e8; border-radius: 4px; height: 6px;">
+                            <div id="enh-progress" style="background: #28a745; height: 6px; border-radius: 4px; width: 0%;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: #586069; margin-top: 4px;" id="enh-pct">0% automated</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Coverage Progress -->
         <div class="card">
             <h3>Overall Coverage</h3>
@@ -66,8 +101,9 @@
                     <tr>
                         <th>Product</th>
                         <th>Total</th>
+                        <th>Base</th>
+                        <th>Enhancements</th>
                         <th>Automated</th>
-                        <th>Manual</th>
                         <th>Pending</th>
                         <th>Coverage</th>
                     </tr>
@@ -133,6 +169,28 @@
             document.getElementById('stat-does-not-meet').textContent = stats.does_not_meet || 0;
             document.getElementById('stat-pending').textContent = stats.pending;
 
+            // Control type breakdown
+            const baseCount = stats.base_controls || 0;
+            const enhCount = stats.enhancement_controls || 0;
+            const baseAuto = stats.base_automated || 0;
+            const enhAuto = stats.enh_automated || 0;
+            const basePending = stats.base_pending || 0;
+            const enhPending = stats.enh_pending || 0;
+            const basePct = baseCount > 0 ? Math.round(baseAuto / baseCount * 100) : 0;
+            const enhPct = enhCount > 0 ? Math.round(enhAuto / enhCount * 100) : 0;
+
+            document.getElementById('stat-base').textContent = baseCount;
+            document.getElementById('stat-base-automated').textContent = baseAuto;
+            document.getElementById('stat-base-pending').textContent = basePending;
+            document.getElementById('base-progress').style.width = basePct + '%';
+            document.getElementById('base-pct').textContent = basePct + '% automated';
+
+            document.getElementById('stat-enh').textContent = enhCount;
+            document.getElementById('stat-enh-automated').textContent = enhAuto;
+            document.getElementById('stat-enh-pending').textContent = enhPending;
+            document.getElementById('enh-progress').style.width = enhPct + '%';
+            document.getElementById('enh-pct').textContent = enhPct + '% automated';
+
             // Update coverage progress
             const coveragePercent = stats.total > 0 ? Math.round((stats.with_rules / stats.total) * 100) : 0;
             const progressBar = document.getElementById('coverage-progress');
@@ -166,8 +224,9 @@
                 row.innerHTML = `
                     <td><strong>${product.toUpperCase()}</strong></td>
                     <td>${stats.total}</td>
+                    <td style="color: #0366d6;">${stats.base_controls || 0}</td>
+                    <td style="color: #6f42c1;">${stats.enhancement_controls || 0}</td>
                     <td><span class="badge badge-automated">${stats.automated}</span></td>
-                    <td><span class="badge badge-manual">${stats.manual}</span></td>
                     <td><span class="badge badge-pending">${stats.pending}</span></td>
                     <td>${coverage}%</td>
                 `;

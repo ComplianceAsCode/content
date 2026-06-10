@@ -142,6 +142,32 @@
                     <!-- Populated by JavaScript -->
                 </div>
             </div>
+
+            <h4 style="margin: 20px 0 12px;">Control Types</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" id="type-breakdown">
+                <div style="border: 1px solid #e1e4e8; border-radius: 6px; padding: 14px; border-left: 4px solid #0366d6;">
+                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #586069; margin-bottom: 8px;">Base Controls</div>
+                    <div style="font-size: 28px; font-weight: 700;" id="stat-base">0</div>
+                    <div style="font-size: 12px; color: #586069; margin-top: 8px;">
+                        <span style="color: #28a745; font-weight: 600;" id="stat-base-auto">0</span> automated ·
+                        <span style="color: #ffc107; font-weight: 600;" id="stat-base-pend">0</span> pending
+                    </div>
+                    <div style="background: #e1e4e8; border-radius: 4px; height: 5px; margin-top: 8px;">
+                        <div id="base-bar" style="background: #28a745; height: 5px; border-radius: 4px; width: 0%;"></div>
+                    </div>
+                </div>
+                <div style="border: 1px solid #e1e4e8; border-radius: 6px; padding: 14px; border-left: 4px solid #6f42c1;">
+                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #586069; margin-bottom: 8px;">Control Enhancements</div>
+                    <div style="font-size: 28px; font-weight: 700;" id="stat-enh">0</div>
+                    <div style="font-size: 12px; color: #586069; margin-top: 8px;">
+                        <span style="color: #28a745; font-weight: 600;" id="stat-enh-auto">0</span> automated ·
+                        <span style="color: #ffc107; font-weight: 600;" id="stat-enh-pend">0</span> pending
+                    </div>
+                    <div style="background: #e1e4e8; border-radius: 4px; height: 5px; margin-top: 8px;">
+                        <div id="enh-bar" style="background: #28a745; height: 5px; border-radius: 4px; width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Baseline Level Breakdown -->
@@ -160,10 +186,11 @@
                     <tr>
                         <th>Product</th>
                         <th>Total</th>
+                        <th>Base</th>
+                        <th>Enhancements</th>
                         <th>With Rules</th>
                         <th>Without Rules</th>
                         <th>Automated</th>
-                        <th>Manual</th>
                         <th>Pending</th>
                         <th>Coverage %</th>
                     </tr>
@@ -249,6 +276,22 @@
                 `${total > 0 ? Math.round((stats.manual / total) * 100) : 0}% of total`;
             document.getElementById('pending-percent').textContent =
                 `${total > 0 ? Math.round((stats.pending / total) * 100) : 0}% of total`;
+
+            // Control type breakdown
+            const baseCount = stats.base_controls || 0;
+            const enhCount = stats.enhancement_controls || 0;
+            const baseAuto = stats.base_automated || 0;
+            const enhAuto = stats.enh_automated || 0;
+            const basePct = baseCount > 0 ? Math.round(baseAuto / baseCount * 100) : 0;
+            const enhPct = enhCount > 0 ? Math.round(enhAuto / enhCount * 100) : 0;
+            document.getElementById('stat-base').textContent = baseCount;
+            document.getElementById('stat-base-auto').textContent = baseAuto;
+            document.getElementById('stat-base-pend').textContent = stats.base_pending || 0;
+            document.getElementById('base-bar').style.width = basePct + '%';
+            document.getElementById('stat-enh').textContent = enhCount;
+            document.getElementById('stat-enh-auto').textContent = enhAuto;
+            document.getElementById('stat-enh-pend').textContent = stats.enh_pending || 0;
+            document.getElementById('enh-bar').style.width = enhPct + '%';
 
             // Render status distribution bar
             const automatedPct = total > 0 ? (stats.automated / total) * 100 : 0;
@@ -337,10 +380,11 @@
                 row.innerHTML = `
                     <td><strong>${product.toUpperCase()}</strong></td>
                     <td>${stats.total}</td>
+                    <td style="color: #0366d6;">${stats.base_controls || 0}</td>
+                    <td style="color: #6f42c1;">${stats.enhancement_controls || 0}</td>
                     <td style="color: #28a745;">${stats.with_rules}</td>
                     <td style="color: #d73a49;">${stats.without_rules}</td>
                     <td><span class="badge badge-automated">${stats.automated}</span></td>
-                    <td><span class="badge badge-manual">${stats.manual}</span></td>
                     <td><span class="badge badge-pending">${stats.pending}</span></td>
                     <td><strong>${coverage}%</strong></td>
                 `;
