@@ -12,80 +12,91 @@ controls:
           - low
       rules: []
       status: pending
-    - id: ac-2.1
-      title: Automated System Account Management
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-2.2
-      title: Automated Temporary and Emergency Account Management
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-2.3
-      title: Disable Accounts
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-2.4
-      title: Automated Audit Actions
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-2.5
-      title: Inactivity Logout
-      levels:
-          - moderate
-      rules:
-          - accounts_tmout
-          - inactivity_timeout_value=15_minutes
-          - no_invalid_shell_accounts_unlocked
-          - no_password_auth_for_systemaccounts
-          - no_shelllogin_for_systemaccounts
-          - var_accounts_tmout=15_min
-      status: automated
-    - id: ac-2.6
-      title: Dynamic Privilege Management
-      rules: []
-      status: pending
-    - id: ac-2.7
-      title: Privileged User Accounts
-      rules: []
-      status: pending
-    - id: ac-2.8
-      title: Dynamic Account Management
-      rules: []
-      status: pending
-    - id: ac-2.9
-      title: Restrictions on Use of Shared and Group Accounts
-      rules: []
-      status: pending
-    - id: ac-2.10
-      title: Shared and Group Account Credential Change
-      rules: []
-      status: pending
-    - id: ac-2.11
-      title: Usage Conditions
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ac-2.12
-      title: Account Monitoring for Atypical Usage
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ac-2.13
-      title: Disable Accounts for High-risk Individuals
-      levels:
-          - moderate
-      rules: []
-      status: pending
+      controls:
+          - id: ac-2.1
+            title: Automated System Account Management
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-2.2
+            title: Automated Temporary and Emergency Account Management
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-2.3
+            title: Disable Accounts
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-2.4
+            title: Automated Audit Actions
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-2.5
+            title: Inactivity Logout
+            levels:
+                - moderate
+            rules:
+                - accounts_tmout
+                - inactivity_timeout_value=15_minutes
+                - no_invalid_shell_accounts_unlocked
+                - no_password_auth_for_systemaccounts
+                - no_shelllogin_for_systemaccounts
+                - var_accounts_tmout=15_min
+            status: automated
+          - id: ac-2.6
+            title: Dynamic Privilege Management
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-2.7
+            title: Privileged User Accounts
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-2.8
+            title: Dynamic Account Management
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-2.9
+            title: Restrictions on Use of Shared and Group Accounts
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-2.10
+            title: Shared and Group Account Credential Change
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-2.11
+            title: Usage Conditions
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ac-2.12
+            title: Account Monitoring for Atypical Usage
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ac-2.13
+            title: Disable Accounts for High-risk Individuals
+            levels:
+                - moderate
+            rules: []
+            status: pending
     - id: ac-3
       title: Access Enforcement
       levels:
@@ -214,202 +225,296 @@ controls:
           - var_accounts_user_umask=027
           - var_pam_wheel_group_for_su=cis
       status: automated
-    - id: ac-3.1
-      title: Restricted Access to Privileged Functions
-      rules: []
-      status: pending
-    - id: ac-3.2
-      title: Dual Authorization
-      rules: []
-      status: pending
-    - id: ac-3.3
-      title: Mandatory Access Control
-      rules: []
-      status: pending
-    - id: ac-3.4
-      title: Discretionary Access Control
-      rules: []
-      status: pending
-    - id: ac-3.5
-      title: Security-relevant Information
-      rules: []
-      status: pending
-    - id: ac-3.6
-      title: Protection of User and System Information
-      rules: []
-      status: pending
-    - id: ac-3.7
-      title: Role-based Access Control
-      rules: []
-      status: pending
-    - id: ac-3.8
-      title: Revocation of Access Authorizations
-      rules: []
-      status: pending
-    - id: ac-3.9
-      title: Controlled Release
-      rules: []
-      status: pending
-    - id: ac-3.10
-      title: Audited Override of Access Control Mechanisms
-      rules: []
-      status: pending
-    - id: ac-3.11
-      title: Restrict Access to Specific Information Types
-      rules: []
-      status: pending
-    - id: ac-3.12
-      title: Assert and Enforce Application Access
-      rules: []
-      status: pending
-    - id: ac-3.13
-      title: Attribute-based Access Control
-      rules: []
-      status: pending
-    - id: ac-3.14
-      title: Individual Access
-      rules: []
-      status: pending
-    - id: ac-3.15
-      title: Discretionary and Mandatory Access Control
-      rules: []
-      status: pending
+      controls:
+          - id: ac-3.1
+            title: Restricted Access to Privileged Functions
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.2
+            title: Dual Authorization
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.3
+            title: Mandatory Access Control
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.4
+            title: Discretionary Access Control
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.5
+            title: Security-relevant Information
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.6
+            title: Protection of User and System Information
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.7
+            title: Role-based Access Control
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.8
+            title: Revocation of Access Authorizations
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.9
+            title: Controlled Release
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.10
+            title: Audited Override of Access Control Mechanisms
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.11
+            title: Restrict Access to Specific Information Types
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.12
+            title: Assert and Enforce Application Access
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.13
+            title: Attribute-based Access Control
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.14
+            title: Individual Access
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-3.15
+            title: Discretionary and Mandatory Access Control
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ac-4
       title: Information Flow Enforcement
       levels:
           - moderate
       rules: []
       status: pending
-    - id: ac-4.1
-      title: Object Security and Privacy Attributes
-      rules: []
-      status: pending
-    - id: ac-4.2
-      title: Processing Domains
-      rules: []
-      status: pending
-    - id: ac-4.3
-      title: Dynamic Information Flow Control
-      rules: []
-      status: pending
-    - id: ac-4.4
-      title: Flow Control of Encrypted Information
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ac-4.5
-      title: Embedded Data Types
-      rules: []
-      status: pending
-    - id: ac-4.6
-      title: Metadata
-      rules: []
-      status: pending
-    - id: ac-4.7
-      title: One-way Flow Mechanisms
-      rules: []
-      status: pending
-    - id: ac-4.8
-      title: Security and Privacy Policy Filters
-      rules: []
-      status: pending
-    - id: ac-4.9
-      title: Human Reviews
-      rules: []
-      status: pending
-    - id: ac-4.10
-      title: Enable and Disable Security or Privacy Policy Filters
-      rules: []
-      status: pending
-    - id: ac-4.11
-      title: Configuration of Security or Privacy Policy Filters
-      rules: []
-      status: pending
-    - id: ac-4.12
-      title: Data Type Identifiers
-      rules: []
-      status: pending
-    - id: ac-4.13
-      title: Decomposition into Policy-relevant Subcomponents
-      rules: []
-      status: pending
-    - id: ac-4.14
-      title: Security or Privacy Policy Filter Constraints
-      rules: []
-      status: pending
-    - id: ac-4.15
-      title: Detection of Unsanctioned Information
-      rules: []
-      status: pending
-    - id: ac-4.16
-      title: Information Transfers on Interconnected Systems
-      rules: []
-      status: pending
-    - id: ac-4.17
-      title: Domain Authentication
-      rules: []
-      status: pending
-    - id: ac-4.18
-      title: Security Attribute Binding
-      rules: []
-      status: pending
-    - id: ac-4.19
-      title: Validation of Metadata
-      rules: []
-      status: pending
-    - id: ac-4.20
-      title: Approved Solutions
-      rules: []
-      status: pending
-    - id: ac-4.21
-      title: Physical or Logical Separation of Information Flows
-      rules: []
-      status: pending
-    - id: ac-4.22
-      title: Access Only
-      rules: []
-      status: pending
-    - id: ac-4.23
-      title: Modify Non-releasable Information
-      rules: []
-      status: pending
-    - id: ac-4.24
-      title: Internal Normalized Format
-      rules: []
-      status: pending
-    - id: ac-4.25
-      title: Data Sanitization
-      rules: []
-      status: pending
-    - id: ac-4.26
-      title: Audit Filtering Actions
-      rules: []
-      status: pending
-    - id: ac-4.27
-      title: Redundant/Independent Filtering Mechanisms
-      rules: []
-      status: pending
-    - id: ac-4.28
-      title: Linear Filter Pipelines
-      rules: []
-      status: pending
-    - id: ac-4.29
-      title: Filter Orchestration Engines
-      rules: []
-      status: pending
-    - id: ac-4.30
-      title: Filter Mechanisms Using Multiple Processes
-      rules: []
-      status: pending
-    - id: ac-4.31
-      title: Failed Content Transfer Prevention
-      rules: []
-      status: pending
-    - id: ac-4.32
-      title: Process Requirements for Information Transfer
-      rules: []
-      status: pending
+      controls:
+          - id: ac-4.1
+            title: Object Security and Privacy Attributes
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.2
+            title: Processing Domains
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.3
+            title: Dynamic Information Flow Control
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.4
+            title: Flow Control of Encrypted Information
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ac-4.5
+            title: Embedded Data Types
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.6
+            title: Metadata
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.7
+            title: One-way Flow Mechanisms
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.8
+            title: Security and Privacy Policy Filters
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.9
+            title: Human Reviews
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.10
+            title: Enable and Disable Security or Privacy Policy Filters
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.11
+            title: Configuration of Security or Privacy Policy Filters
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.12
+            title: Data Type Identifiers
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.13
+            title: Decomposition into Policy-relevant Subcomponents
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.14
+            title: Security or Privacy Policy Filter Constraints
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.15
+            title: Detection of Unsanctioned Information
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.16
+            title: Information Transfers on Interconnected Systems
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.17
+            title: Domain Authentication
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.18
+            title: Security Attribute Binding
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.19
+            title: Validation of Metadata
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.20
+            title: Approved Solutions
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.21
+            title: Physical or Logical Separation of Information Flows
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.22
+            title: Access Only
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.23
+            title: Modify Non-releasable Information
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.24
+            title: Internal Normalized Format
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.25
+            title: Data Sanitization
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.26
+            title: Audit Filtering Actions
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.27
+            title: Redundant/Independent Filtering Mechanisms
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.28
+            title: Linear Filter Pipelines
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.29
+            title: Filter Orchestration Engines
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.30
+            title: Filter Mechanisms Using Multiple Processes
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.31
+            title: Failed Content Transfer Prevention
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-4.32
+            title: Process Requirements for Information Transfer
+            rules: []
+            status: pending
+            levels:
+                - moderate
     - id: ac-5
       title: Separation of Duties
       levels:
@@ -426,61 +531,69 @@ controls:
           - sudo_remove_no_authenticate
           - sudo_remove_nopasswd
       status: automated
-    - id: ac-6.1
-      title: Authorize Access to Security Functions
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-6.2
-      title: Non-privileged Access for Nonsecurity Functions
-      levels:
-          - moderate
-      rules:
-          - package_sudo_installed
-      status: automated
-    - id: ac-6.3
-      title: Network Access to Privileged Commands
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ac-6.4
-      title: Separate Processing Domains
-      rules: []
-      status: pending
-    - id: ac-6.5
-      title: Privileged Accounts
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-6.6
-      title: Privileged Access by Non-organizational Users
-      rules: []
-      status: pending
-    - id: ac-6.7
-      title: Review of User Privileges
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-6.8
-      title: Privilege Levels for Code Execution
-      rules: []
-      status: pending
-    - id: ac-6.9
-      title: Log Use of Privileged Functions
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-6.10
-      title: Prohibit Non-privileged Users from Executing Privileged Functions
-      levels:
-          - moderate
-      rules: []
-      status: pending
+      controls:
+          - id: ac-6.1
+            title: Authorize Access to Security Functions
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-6.2
+            title: Non-privileged Access for Nonsecurity Functions
+            levels:
+                - moderate
+            rules:
+                - package_sudo_installed
+            status: automated
+          - id: ac-6.3
+            title: Network Access to Privileged Commands
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ac-6.4
+            title: Separate Processing Domains
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-6.5
+            title: Privileged Accounts
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-6.6
+            title: Privileged Access by Non-organizational Users
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-6.7
+            title: Review of User Privileges
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-6.8
+            title: Privilege Levels for Code Execution
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-6.9
+            title: Log Use of Privileged Functions
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-6.10
+            title: Prohibit Non-privileged Users from Executing Privileged
+                Functions
+            levels:
+                - moderate
+            rules: []
+            status: pending
     - id: ac-7
       title: Unsuccessful Logon Attempts
       levels:
@@ -496,22 +609,31 @@ controls:
           - var_accounts_passwords_pam_faillock_root_unlock_time=60
           - var_accounts_passwords_pam_faillock_unlock_time=900
       status: automated
-    - id: ac-7.1
-      title: Automatic Account Lock
-      rules: []
-      status: pending
-    - id: ac-7.2
-      title: Purge or Wipe Mobile Device
-      rules: []
-      status: pending
-    - id: ac-7.3
-      title: Biometric Attempt Limiting
-      rules: []
-      status: pending
-    - id: ac-7.4
-      title: Use of Alternate Authentication Factor
-      rules: []
-      status: pending
+      controls:
+          - id: ac-7.1
+            title: Automatic Account Lock
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-7.2
+            title: Purge or Wipe Mobile Device
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-7.3
+            title: Biometric Attempt Limiting
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-7.4
+            title: Use of Alternate Authentication Factor
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ac-8
       title: System Use Notification
       levels:
@@ -524,22 +646,23 @@ controls:
       title: Previous Logon Notification
       rules: []
       status: pending
-    - id: ac-9.1
-      title: Unsuccessful Logons
-      rules: []
-      status: pending
-    - id: ac-9.2
-      title: Successful and Unsuccessful Logons
-      rules: []
-      status: pending
-    - id: ac-9.3
-      title: Notification of Account Changes
-      rules: []
-      status: pending
-    - id: ac-9.4
-      title: Additional Logon Information
-      rules: []
-      status: pending
+      controls:
+          - id: ac-9.1
+            title: Unsuccessful Logons
+            rules: []
+            status: pending
+          - id: ac-9.2
+            title: Successful and Unsuccessful Logons
+            rules: []
+            status: pending
+          - id: ac-9.3
+            title: Notification of Account Changes
+            rules: []
+            status: pending
+          - id: ac-9.4
+            title: Additional Logon Information
+            rules: []
+            status: pending
     - id: ac-10
       title: Concurrent Session Control
       levels:
@@ -557,30 +680,38 @@ controls:
           - dconf_gnome_session_idle_user_locks
           - var_screensaver_lock_delay=5_seconds
       status: automated
-    - id: ac-11.1
-      title: Pattern-hiding Displays
-      levels:
-          - moderate
-      rules: []
-      status: pending
+      controls:
+          - id: ac-11.1
+            title: Pattern-hiding Displays
+            levels:
+                - moderate
+            rules: []
+            status: pending
     - id: ac-12
       title: Session Termination
       levels:
           - moderate
       rules: []
       status: pending
-    - id: ac-12.1
-      title: User-initiated Logouts
-      rules: []
-      status: pending
-    - id: ac-12.2
-      title: Termination Message
-      rules: []
-      status: pending
-    - id: ac-12.3
-      title: Timeout Warning Message
-      rules: []
-      status: pending
+      controls:
+          - id: ac-12.1
+            title: User-initiated Logouts
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-12.2
+            title: Termination Message
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-12.3
+            title: Timeout Warning Message
+            rules: []
+            status: pending
+            levels:
+                - moderate
     - id: ac-13
       title: Supervision and Review — Access Control
       rules: []
@@ -591,10 +722,13 @@ controls:
           - low
       rules: []
       status: pending
-    - id: ac-14.1
-      title: Necessary Uses
-      rules: []
-      status: pending
+      controls:
+          - id: ac-14.1
+            title: Necessary Uses
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ac-15
       title: Automated Marking
       rules: []
@@ -603,46 +737,47 @@ controls:
       title: Security and Privacy Attributes
       rules: []
       status: pending
-    - id: ac-16.1
-      title: Dynamic Attribute Association
-      rules: []
-      status: pending
-    - id: ac-16.2
-      title: Attribute Value Changes by Authorized Individuals
-      rules: []
-      status: pending
-    - id: ac-16.3
-      title: Maintenance of Attribute Associations by System
-      rules: []
-      status: pending
-    - id: ac-16.4
-      title: Association of Attributes by Authorized Individuals
-      rules: []
-      status: pending
-    - id: ac-16.5
-      title: Attribute Displays on Objects to Be Output
-      rules: []
-      status: pending
-    - id: ac-16.6
-      title: Maintenance of Attribute Association
-      rules: []
-      status: pending
-    - id: ac-16.7
-      title: Consistent Attribute Interpretation
-      rules: []
-      status: pending
-    - id: ac-16.8
-      title: Association Techniques and Technologies
-      rules: []
-      status: pending
-    - id: ac-16.9
-      title: Attribute Reassignment — Regrading Mechanisms
-      rules: []
-      status: pending
-    - id: ac-16.10
-      title: Attribute Configuration by Authorized Individuals
-      rules: []
-      status: pending
+      controls:
+          - id: ac-16.1
+            title: Dynamic Attribute Association
+            rules: []
+            status: pending
+          - id: ac-16.2
+            title: Attribute Value Changes by Authorized Individuals
+            rules: []
+            status: pending
+          - id: ac-16.3
+            title: Maintenance of Attribute Associations by System
+            rules: []
+            status: pending
+          - id: ac-16.4
+            title: Association of Attributes by Authorized Individuals
+            rules: []
+            status: pending
+          - id: ac-16.5
+            title: Attribute Displays on Objects to Be Output
+            rules: []
+            status: pending
+          - id: ac-16.6
+            title: Maintenance of Attribute Association
+            rules: []
+            status: pending
+          - id: ac-16.7
+            title: Consistent Attribute Interpretation
+            rules: []
+            status: pending
+          - id: ac-16.8
+            title: Association Techniques and Technologies
+            rules: []
+            status: pending
+          - id: ac-16.9
+            title: Attribute Reassignment — Regrading Mechanisms
+            rules: []
+            status: pending
+          - id: ac-16.10
+            title: Attribute Configuration by Authorized Individuals
+            rules: []
+            status: pending
     - id: ac-17
       title: Remote Access
       levels:
@@ -650,54 +785,67 @@ controls:
       rules:
           - configure_custom_crypto_policy_cis
       status: automated
-    - id: ac-17.1
-      title: Monitoring and Control
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-17.2
-      title: Protection of Confidentiality and Integrity Using Encryption
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-17.3
-      title: Managed Access Control Points
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-17.4
-      title: Privileged Commands and Access
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-17.5
-      title: Monitoring for Unauthorized Connections
-      rules: []
-      status: pending
-    - id: ac-17.6
-      title: Protection of Mechanism Information
-      rules: []
-      status: pending
-    - id: ac-17.7
-      title: Additional Protection for Security Function Access
-      rules: []
-      status: pending
-    - id: ac-17.8
-      title: Disable Nonsecure Network Protocols
-      rules: []
-      status: pending
-    - id: ac-17.9
-      title: Disconnect or Disable Access
-      rules: []
-      status: pending
-    - id: ac-17.10
-      title: Authenticate Remote Commands
-      rules: []
-      status: pending
+      controls:
+          - id: ac-17.1
+            title: Monitoring and Control
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-17.2
+            title: Protection of Confidentiality and Integrity Using Encryption
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-17.3
+            title: Managed Access Control Points
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-17.4
+            title: Privileged Commands and Access
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-17.5
+            title: Monitoring for Unauthorized Connections
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-17.6
+            title: Protection of Mechanism Information
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-17.7
+            title: Additional Protection for Security Function Access
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-17.8
+            title: Disable Nonsecure Network Protocols
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-17.9
+            title: Disconnect or Disable Access
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-17.10
+            title: Authenticate Remote Commands
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ac-18
       title: Wireless Access
       levels:
@@ -705,106 +853,130 @@ controls:
       rules:
           - wireless_disable_interfaces
       status: automated
-    - id: ac-18.1
-      title: Authentication and Encryption
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-18.2
-      title: Monitoring Unauthorized Connections
-      rules: []
-      status: pending
-    - id: ac-18.3
-      title: Disable Wireless Networking
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-18.4
-      title: Restrict Configurations by Users
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ac-18.5
-      title: Antennas and Transmission Power Levels
-      levels:
-          - high
-      rules: []
-      status: pending
+      controls:
+          - id: ac-18.1
+            title: Authentication and Encryption
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-18.2
+            title: Monitoring Unauthorized Connections
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-18.3
+            title: Disable Wireless Networking
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-18.4
+            title: Restrict Configurations by Users
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ac-18.5
+            title: Antennas and Transmission Power Levels
+            levels:
+                - high
+            rules: []
+            status: pending
     - id: ac-19
       title: Access Control for Mobile Devices
       levels:
           - low
       rules: []
       status: pending
-    - id: ac-19.1
-      title: Use of Writable and Portable Storage Devices
-      rules: []
-      status: pending
-    - id: ac-19.2
-      title: Use of Personally Owned Portable Storage Devices
-      rules: []
-      status: pending
-    - id: ac-19.3
-      title: Use of Portable Storage Devices with No Identifiable Owner
-      rules: []
-      status: pending
-    - id: ac-19.4
-      title: Restrictions for Classified Information
-      rules: []
-      status: pending
-    - id: ac-19.5
-      title: Full Device or Container-based Encryption
-      levels:
-          - moderate
-      rules: []
-      status: pending
+      controls:
+          - id: ac-19.1
+            title: Use of Writable and Portable Storage Devices
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-19.2
+            title: Use of Personally Owned Portable Storage Devices
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-19.3
+            title: Use of Portable Storage Devices with No Identifiable Owner
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-19.4
+            title: Restrictions for Classified Information
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-19.5
+            title: Full Device or Container-based Encryption
+            levels:
+                - moderate
+            rules: []
+            status: pending
     - id: ac-20
       title: Use of External Systems
       levels:
           - low
       rules: []
       status: pending
-    - id: ac-20.1
-      title: Limits on Authorized Use
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-20.2
-      title: Portable Storage Devices — Restricted Use
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ac-20.3
-      title: Non-organizationally Owned Systems — Restricted Use
-      rules: []
-      status: pending
-    - id: ac-20.4
-      title: Network Accessible Storage Devices — Prohibited Use
-      rules: []
-      status: pending
-    - id: ac-20.5
-      title: Portable Storage Devices — Prohibited Use
-      rules: []
-      status: pending
+      controls:
+          - id: ac-20.1
+            title: Limits on Authorized Use
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-20.2
+            title: Portable Storage Devices — Restricted Use
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ac-20.3
+            title: Non-organizationally Owned Systems — Restricted Use
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-20.4
+            title: Network Accessible Storage Devices — Prohibited Use
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ac-20.5
+            title: Portable Storage Devices — Prohibited Use
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ac-21
       title: Information Sharing
       levels:
           - moderate
       rules: []
       status: pending
-    - id: ac-21.1
-      title: Automated Decision Support
-      rules: []
-      status: pending
-    - id: ac-21.2
-      title: Information Search and Retrieval
-      rules: []
-      status: pending
+      controls:
+          - id: ac-21.1
+            title: Automated Decision Support
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ac-21.2
+            title: Information Search and Retrieval
+            rules: []
+            status: pending
+            levels:
+                - moderate
     - id: ac-22
       title: Publicly Accessible Content
       levels:
@@ -819,14 +991,15 @@ controls:
       title: Access Control Decisions
       rules: []
       status: pending
-    - id: ac-24.1
-      title: Transmit Access Authorization Information
-      rules: []
-      status: pending
-    - id: ac-24.2
-      title: No User or Process Identity
-      rules: []
-      status: pending
+      controls:
+          - id: ac-24.1
+            title: Transmit Access Authorization Information
+            rules: []
+            status: pending
+          - id: ac-24.2
+            title: No User or Process Identity
+            rules: []
+            status: pending
     - id: ac-25
       title: Reference Monitor
       rules: []
