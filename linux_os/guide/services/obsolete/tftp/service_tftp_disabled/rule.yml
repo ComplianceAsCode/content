@@ -1,6 +1,6 @@
 documentation_complete: true
 
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
   {{%- set service_name = "tftpd-hpa" %}}
   {{%- set package = "tftpd-hpa" %}}
 {{% elif 'sle' in product or product == "slmicro5" %}}
