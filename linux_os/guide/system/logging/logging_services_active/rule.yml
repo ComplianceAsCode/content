@@ -5,7 +5,7 @@ title: 'Ensure One Logging Service Is In Use'
 description: |-
     Ensure that a logging system is active and in use.
     <pre>
-    systemctl is-active rsyslog systemd-journald
+    systemctl is-active rsyslog syslog-ng systemd-journald
     </pre>
     The command should return at least one <tt>active</tt>.
 

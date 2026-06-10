@@ -11,7 +11,7 @@
   <!-- Objects and states to identify active logging_service services -->
   <linux:systemdunitproperty_object id="obj_{{{ rule_id }}}_logging_services" version="1"
       comment="All active logging_service services">
-    <linux:unit operation="pattern match">^(rsyslog|systemd-journald).service$</linux:unit>
+    <linux:unit operation="pattern match">^(rsyslog|syslog-ng|systemd-journald).service$</linux:unit>
     <linux:property>ActiveState</linux:property>
     <filter action="include">ste_{{{ rule_id }}}_logging_services</filter>
   </linux:systemdunitproperty_object>
