@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Configure syslog-ng to Accept Remote Messages If Acting as a Log Server'
+
+description: |-
+    By default, <tt>syslog-ng</tt> does not listen over the network
+    for log messages. If needed, network source drivers (<tt>tcp()</tt>,
+    <tt>udp()</tt>, or <tt>network()</tt>) can be added to allow
+    the syslog-ng daemon to receive messages from other systems and for the
+    system thus to act as a log server.
+    If the system is not a log server, then such source entries should not
+    appear in the syslog-ng configuration files.
