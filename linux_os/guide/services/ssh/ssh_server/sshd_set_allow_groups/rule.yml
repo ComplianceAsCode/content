@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Set SSH AllowGroups'
+
+description: |-
+    The <tt>AllowGroups</tt> parameter restricts which groups of users
+    can log in via SSH. To configure it, edit <tt>/etc/ssh/sshd_config</tt>:
+    <pre>AllowGroups {{{ xccdf_value("var_sshd_allow_groups") }}}</pre>
+
+rationale: |-
+    Restricting SSH access to specific groups reduces the attack surface by
+    ensuring only authorized users can connect remotely.
+
+severity: medium
+
+ocil_clause: 'AllowGroups is not set to the required group'
+
+ocil: |-
+    Run the following command to verify the <tt>AllowGroups</tt> setting:
+    <pre>$ sudo grep -i AllowGroups /etc/ssh/sshd_config</pre>
+    The output should contain:
+    <pre>AllowGroups {{{ xccdf_value("var_sshd_allow_groups") }}}</pre>
+
+platform: package[openssh-server]
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: AllowGroups
+        xccdf_variable: var_sshd_allow_groups
+        datatype: string
