@@ -1,5 +1,8 @@
 {
   "rules": {
+    "account_disable_post_pw_expiration": [
+      "ia-4"
+    ],
     "account_password_pam_faillock_password_auth": [
       "ac-7",
       "cm-1"
@@ -27,6 +30,9 @@
     "accounts_password_all_shadowed": [
       "ia-5"
     ],
+    "accounts_password_last_change_is_in_past": [
+      "ia-5"
+    ],
     "accounts_password_pam_dictcheck": [
       "ia-5"
     ],
@@ -46,6 +52,10 @@
       "ia-5"
     ],
     "accounts_password_pam_minlen": [
+      "ia-5"
+    ],
+    "accounts_password_pam_modules_in_authselect_profile": [
+      "cm-6",
       "ia-5"
     ],
     "accounts_password_pam_pwhistory_enforce_for_root": [
@@ -72,17 +82,44 @@
     "accounts_password_pam_unix_enabled": [
       "ia-5.1"
     ],
+    "accounts_password_pam_unix_no_remember": [
+      "ia-5.1"
+    ],
     "accounts_password_set_max_life_existing": [
       "cm-1"
     ],
     "accounts_password_set_min_life_existing": [
       "ia-5"
     ],
+    "accounts_password_set_warn_age_existing": [
+      "ia-5"
+    ],
+    "accounts_password_warn_age_login_defs": [
+      "ia-5"
+    ],
+    "accounts_passwords_pam_faillock_deny": [
+      "ac-7"
+    ],
+    "accounts_passwords_pam_faillock_even_deny_root_or_root_unlock_time": [
+      "ac-7"
+    ],
+    "accounts_passwords_pam_faillock_unlock_time": [
+      "ac-7"
+    ],
+    "accounts_passwords_pam_faillock_unlock_time_with_zero": [
+      "ac-7"
+    ],
     "accounts_root_gid_zero": [
       "cm-1"
     ],
     "accounts_root_path_dirs_no_write": [
       "cm-1"
+    ],
+    "accounts_set_post_pw_existing": [
+      "ia-4"
+    ],
+    "accounts_tmout": [
+      "ac-2.5"
     ],
     "accounts_umask_etc_bashrc": [
       "ac-3",
@@ -111,8 +148,14 @@
     "aide_build_database": [
       "au-2"
     ],
+    "aide_check_audit_tools": [
+      "au-9.3"
+    ],
     "aide_periodic_cron_checking": [
       "au-2"
+    ],
+    "audit_rules_continue_loading": [
+      "au-12"
     ],
     "audit_rules_dac_modification_chmod": [
       "au-12",
@@ -363,6 +406,9 @@
       "au-12",
       "au-3"
     ],
+    "audit_sudo_log_events": [
+      "au-12"
+    ],
     "auditd_data_disk_error_action": [
       "au-2",
       "au-5"
@@ -395,6 +441,10 @@
     "banner_etc_motd_cis": [
       "cm-6"
     ],
+    "chronyd_run_as_chrony_user": [
+      "au-3",
+      "cm-6"
+    ],
     "chronyd_specify_remote_server": [
       "au-3"
     ],
@@ -410,6 +460,9 @@
       "cm-6"
     ],
     "coredump_disable_storage": [
+      "cm-6"
+    ],
+    "dconf_db_up_to_date": [
       "cm-6"
     ],
     "dconf_gnome_banner_enabled": [
@@ -465,17 +518,29 @@
     "disable_users_coredumps": [
       "cm-6"
     ],
+    "disable_weak_deps": [
+      "cm-7"
+    ],
+    "enable_authselect": [
+      "cm-6"
+    ],
     "ensure_gpgcheck_globally_activated": [
       "si-2"
     ],
     "ensure_gpgcheck_never_disabled": [
       "si-2"
     ],
+    "ensure_journald_and_rsyslog_not_active_together": [
+      "au-2"
+    ],
     "ensure_pam_wheel_group_empty": [
       "ac-3"
     ],
     "ensure_redhat_gpgkey_installed": [
       "si-2"
+    ],
+    "ensure_root_password_configured": [
+      "ia-5"
     ],
     "file_at_allow_exists": [
       "ac-3"
@@ -491,6 +556,9 @@
     ],
     "file_etc_security_opasswd": [
       "ac-3"
+    ],
+    "file_group_ownership_var_log_audit": [
+      "au-9.4"
     ],
     "file_groupowner_at_allow": [
       "ac-3"
@@ -589,6 +657,9 @@
     ],
     "file_groupownership_audit_binaries": [
       "au-3"
+    ],
+    "file_groupownership_audit_configuration": [
+      "au-9"
     ],
     "file_groupownership_sshd_private_key": [
       "ac-3",
@@ -692,6 +763,12 @@
     "file_owner_user_cfg": [
       "ac-3",
       "cm-6"
+    ],
+    "file_ownership_audit_binaries": [
+      "au-9"
+    ],
+    "file_ownership_audit_configuration": [
+      "au-9"
     ],
     "file_ownership_home_directories": [
       "cm-6"
@@ -833,6 +910,9 @@
       "ac-3",
       "cm-6"
     ],
+    "file_permissions_var_log_audit": [
+      "au-9.4"
+    ],
     "firewalld-backend": [
       "ca-9"
     ],
@@ -844,6 +924,9 @@
     ],
     "gid_passwd_group_same": [
       "cm-1"
+    ],
+    "gnome_gdm_disable_xdmcp": [
+      "cm-7"
     ],
     "group_unique_id": [
       "cm-1"
@@ -1048,6 +1131,9 @@
     "package_audit_installed": [
       "au-2"
     ],
+    "package_authselect_installed": [
+      "cm-6"
+    ],
     "package_bind_removed": [
       "cm-7"
     ],
@@ -1070,6 +1156,9 @@
       "ca-9"
     ],
     "package_ftp_removed": [
+      "cm-7"
+    ],
+    "package_gdm_removed": [
       "cm-7"
     ],
     "package_httpd_removed": [
@@ -1096,8 +1185,14 @@
     "package_openldap-clients_removed": [
       "cm-7"
     ],
+    "package_pam_installed": [
+      "cm-6"
+    ],
     "package_pam_pwquality_installed": [
       "cm-6"
+    ],
+    "package_postfix_installed": [
+      "cm-7"
     ],
     "package_rsync_removed": [
       "cm-6"
@@ -1107,6 +1202,9 @@
     ],
     "package_samba_removed": [
       "cm-6"
+    ],
+    "package_sequoia-sq_installed": [
+      "cm-7"
     ],
     "package_setroubleshoot_removed": [
       "ac-3"
@@ -1232,8 +1330,14 @@
     "service_dnsmasq_disabled": [
       "cm-7"
     ],
+    "service_firewalld_enabled": [
+      "sc-7"
+    ],
     "service_nfs_disabled": [
       "cm-6"
+    ],
+    "service_nftables_disabled": [
+      "cm-7"
     ],
     "service_rpcbind_disabled": [
       "cm-6"
@@ -1332,6 +1436,9 @@
     ],
     "sysctl_fs_protected_symlinks": [
       "ac-3"
+    ],
+    "sysctl_fs_suid_dumpable": [
+      "cm-6"
     ],
     "sysctl_kernel_dmesg_restrict": [
       "sc-2"
@@ -1454,6 +1561,9 @@
       "ac-18",
       "cm-7"
     ],
+    "xwayland_disabled": [
+      "cm-7"
+    ],
     "xwindows_runlevel_target": [
       "cm-11"
     ]
@@ -1563,15 +1673,33 @@
     "sysctl_net_ipv6_conf_default_forwarding_value=disabled": [
       "cm-6"
     ],
+    "var_account_disable_post_pw_expiration=45": [
+      "ia-4"
+    ],
     "var_accounts_maximum_age_login_defs=365": [
       "cm-1"
     ],
     "var_accounts_minimum_age_login_defs=1": [
       "ia-5"
     ],
+    "var_accounts_password_warn_age_login_defs=7": [
+      "ia-5"
+    ],
+    "var_accounts_passwords_pam_faillock_deny=5": [
+      "ac-7"
+    ],
     "var_accounts_passwords_pam_faillock_dir=run": [
       "au-12",
       "au-3"
+    ],
+    "var_accounts_passwords_pam_faillock_root_unlock_time=60": [
+      "ac-7"
+    ],
+    "var_accounts_passwords_pam_faillock_unlock_time=900": [
+      "ac-7"
+    ],
+    "var_accounts_tmout=15_min": [
+      "ac-2.5"
     ],
     "var_accounts_user_umask=027": [
       "ac-3",
@@ -1627,6 +1755,9 @@
     ],
     "var_auditd_space_left_action=cis_rhel9": [
       "au-2"
+    ],
+    "var_authselect_profile=sssd": [
+      "cm-6"
     ],
     "var_multiple_time_servers=rhel": [
       "au-3"

@@ -466,12 +466,17 @@ class NISTSplitSync:
                 # Filter rules: only include if in target product's CIS control file
                 filtered_rules = [r for r in mapped_rules if r in all_cis_items]
 
-                # Filter variables: only include the specific assignment for target product
+                # Filter variables: only include the specific assignment for target product.
+                # mapped_vars may contain full assignments as keys (e.g. 'var_x=value')
+                # because cis_nist_mappings.json uses full assignments in the variables
+                # section.  all_cis_items_with_values is keyed by the stripped name
+                # ('var_x'), so we must strip before looking up.
                 filtered_vars = []
                 for var_name in mapped_vars:
-                    if var_name in all_cis_items_with_values:
-                        # Get all assignments for this variable
-                        assignments = all_cis_items_with_values[var_name]
+                    stripped_name = var_name.split('=')[0] if '=' in var_name else var_name
+                    if stripped_name in all_cis_items_with_values:
+                        # Get all assignments for this variable in the target product
+                        assignments = all_cis_items_with_values[stripped_name]
                         # Add all assignments (should only be one per product)
                         filtered_vars.extend(sorted(assignments))
 
@@ -506,8 +511,11 @@ class NISTSplitSync:
             family = self.extract_family(ctrl_id)
             controls_by_family[family].append(control_entry)
 
-        # Add unmapped CIS items (items in CIS control files but not in mapping file)
-        unmapped_item_names = all_cis_items - mapped_items
+        # Add unmapped CIS items (items in CIS control files but not in mapping file).
+        # all_cis_items uses stripped names ('var_x') while mapped_items may contain
+        # full assignments ('var_x=value') for variables.  Normalise both sides.
+        mapped_names = set(item.split('=')[0] if '=' in item else item for item in mapped_items)
+        unmapped_item_names = all_cis_items - mapped_names
 
         # Build list of unmapped items WITH their values (for variables)
         unmapped_items_full = []

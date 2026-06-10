@@ -11,6 +11,9 @@ controls:
       levels:
           - low
       rules:
+          - var_auditd_admin_space_left_action=cis_rhel8
+          - var_auditd_space_left_action=cis_rhel8
+          - var_audit_backlog_limit=8192
           - aide_build_database
           - aide_periodic_cron_checking
           - audit_rules_execution_chacl
@@ -33,9 +36,6 @@ controls:
           - service_systemd-journal-upload_enabled
           - service_systemd-journald_enabled
           - socket_systemd-journal-remote_disabled
-          - var_audit_backlog_limit=8192
-          - var_auditd_admin_space_left_action=cis_rhel8
-          - var_auditd_space_left_action=cis_rhel8
       status: automated
     - id: au-2.1
       title: Compilation of Audit Records from Multiple Sources
@@ -58,6 +58,10 @@ controls:
       levels:
           - low
       rules:
+          - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+          - sshd_max_auth_tries_value=4
+          - var_multiple_time_servers=rhel
+          - sysctl_net_ipv4_conf_default_log_martians_value=enabled
           - audit_rules_dac_modification_chmod
           - audit_rules_dac_modification_chown
           - audit_rules_dac_modification_fchmod
@@ -119,8 +123,6 @@ controls:
           - sudo_custom_logfile
           - sysctl_net_ipv4_conf_all_log_martians
           - sysctl_net_ipv4_conf_default_log_martians
-          - sshd_max_auth_tries_value=4
-          - var_multiple_time_servers=rhel
       status: automated
     - id: au-3.1
       title: Additional Audit Information
@@ -152,10 +154,10 @@ controls:
       levels:
           - low
       rules:
-          - auditd_data_disk_error_action
-          - auditd_data_disk_full_action
           - var_auditd_disk_error_action=cis_rhel8
           - var_auditd_disk_full_action=cis_rhel8
+          - auditd_data_disk_error_action
+          - auditd_data_disk_full_action
       status: automated
     - id: au-5.1
       title: Storage Capacity Warning
@@ -256,10 +258,10 @@ controls:
       levels:
           - low
       rules:
+          - var_auditd_max_log_file_action=keep_logs
+          - var_auditd_max_log_file=8
           - auditd_data_retention_max_log_file
           - auditd_data_retention_max_log_file_action
-          - var_auditd_max_log_file=8
-          - var_auditd_max_log_file_action=keep_logs
       status: automated
     - id: au-8.1
       title: Synchronization with Authoritative Time Source
@@ -357,6 +359,8 @@ controls:
       levels:
           - low
       rules:
+          - var_accounts_passwords_pam_faillock_dir=run
+          - audit_rules_continue_loading
           - audit_rules_dac_modification_chmod
           - audit_rules_dac_modification_chown
           - audit_rules_dac_modification_fchmod
@@ -370,7 +374,6 @@ controls:
           - audit_rules_dac_modification_lsetxattr
           - audit_rules_dac_modification_removexattr
           - audit_rules_dac_modification_setxattr
-          - audit_rules_continue_loading
           - audit_rules_execution_chcon
           - audit_rules_file_deletion_events_rename
           - audit_rules_file_deletion_events_renameat

@@ -26,9 +26,9 @@ controls:
       levels:
           - high
       rules:
+          - var_selinux_state=enforcing
           - selinux_not_disabled
           - selinux_state
-          - var_selinux_state=enforcing
       status: automated
     - id: sc-3.1
       title: Hardware Separation
@@ -71,6 +71,7 @@ controls:
       levels:
           - low
       rules:
+          - sysctl_net_ipv4_tcp_syncookies_value=enabled
           - sysctl_net_ipv4_tcp_syncookies
       status: automated
     - id: sc-5.1

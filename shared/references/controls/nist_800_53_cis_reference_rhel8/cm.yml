@@ -5,6 +5,12 @@ controls:
       levels:
           - low
       rules:
+          - sshd_idle_timeout_value=5_minutes
+          - var_sshd_max_sessions=10
+          - var_sshd_set_keepalive=1
+          - var_sshd_set_maxstartups=10:30:60
+          - var_user_initialization_files_regex=all_dotfiles
+          - var_accounts_maximum_age_login_defs=365
           - account_password_pam_faillock_password_auth
           - account_password_pam_faillock_system_auth
           - account_unique_id
@@ -55,6 +61,7 @@ controls:
           - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
           - sysctl_net_ipv4_ip_forward
           - sysctl_net_ipv4_tcp_syncookies
+          - sysctl_net_ipv4_tcp_syncookies_value=enabled
           - sysctl_net_ipv6_conf_all_accept_ra
           - sysctl_net_ipv6_conf_all_accept_redirects
           - sysctl_net_ipv6_conf_all_accept_source_route
@@ -62,13 +69,6 @@ controls:
           - sysctl_net_ipv6_conf_default_accept_ra
           - sysctl_net_ipv6_conf_default_accept_redirects
           - sysctl_net_ipv6_conf_default_accept_source_route
-          - sshd_idle_timeout_value=5_minutes
-          - sysctl_net_ipv4_tcp_syncookies_value=enabled
-          - var_accounts_maximum_age_login_defs=365
-          - var_sshd_max_sessions=10
-          - var_sshd_set_keepalive=1
-          - var_sshd_set_maxstartups=10:30:60
-          - var_user_initialization_files_regex=all_dotfiles
       status: automated
     - id: cm-2
       title: Baseline Configuration
@@ -215,6 +215,32 @@ controls:
       levels:
           - low
       rules:
+          - var_sshd_set_login_grace_time=60
+          - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+          - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
+          - cis_banner_text=cis
+          - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
+          - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
+          - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+          - var_accounts_user_umask=027
+          - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+          - var_authselect_profile=sssd
+          - sysctl_net_ipv6_conf_all_forwarding_value=disabled
+          - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
+          - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
+          - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
+          - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
+          - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
+          - sysctl_net_ipv4_conf_default_forwarding_value=disabled
+          - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
+          - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
+          - sysctl_net_ipv4_conf_default_log_martians_value=enabled
+          - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+          - sysctl_net_ipv6_conf_default_forwarding_value=disabled
+          - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
+          - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+          - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
+          - accounts_password_pam_modules_in_authselect_profile
           - accounts_password_pam_pwquality_password_auth
           - accounts_password_pam_pwquality_system_auth
           - accounts_umask_etc_bashrc
@@ -225,6 +251,7 @@ controls:
           - banner_etc_issue_cis
           - banner_etc_issue_net_cis
           - banner_etc_motd_cis
+          - chronyd_run_as_chrony_user
           - coredump_disable_backtraces
           - coredump_disable_storage
           - dconf_db_up_to_date
@@ -256,6 +283,8 @@ controls:
           - no_empty_passwords_etc_shadow
           - no_files_or_dirs_ungroupowned
           - no_files_or_dirs_unowned_by_user
+          - package_authselect_installed
+          - package_pam_installed
           - package_pam_pwquality_installed
           - package_rsync_removed
           - package_rsyslog_installed
@@ -296,33 +325,6 @@ controls:
           - sysctl_net_ipv6_conf_default_accept_redirects
           - sysctl_net_ipv6_conf_default_accept_source_route
           - sysctl_net_ipv6_conf_default_forwarding
-          - cis_banner_text=cis
-          - dconf_login_banner_contents=cis_default
-          - dconf_login_banner_text=cis_banners
-          - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
-          - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
-          - sysctl_net_ipv4_conf_all_log_martians_value=enabled
-          - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
-          - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
-          - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
-          - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
-          - sysctl_net_ipv4_conf_default_forwarding_value=disabled
-          - sysctl_net_ipv4_conf_default_log_martians_value=enabled
-          - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
-          - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
-          - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
-          - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
-          - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
-          - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
-          - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
-          - sysctl_net_ipv6_conf_all_forwarding_value=disabled
-          - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
-          - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
-          - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
-          - sysctl_net_ipv6_conf_default_forwarding_value=disabled
-          - var_accounts_user_umask=027
-          - var_authselect_profile=sssd
-          - var_sshd_set_login_grace_time=60
       status: automated
     - id: cm-6.1
       title: Automated Management, Application, and Verification
@@ -349,6 +351,7 @@ controls:
       levels:
           - low
       rules:
+          - var_postfix_inet_interfaces=loopback-only
           - dconf_gnome_disable_autorun
           - disable_weak_deps
           - file_ownership_var_log_audit_stig
@@ -375,7 +378,6 @@ controls:
           - mount_option_tmp_nodev
           - mount_option_tmp_noexec
           - mount_option_tmp_nosuid
-          - package_authselect_installed
           - package_bind_removed
           - package_cyrus-imapd_removed
           - package_dhcp_removed
@@ -386,7 +388,6 @@ controls:
           - package_net-snmp_removed
           - package_nginx_removed
           - package_openldap-clients_removed
-          - package_pam_installed
           - package_telnet-server_removed
           - package_telnet_removed
           - package_tftp-server_removed
@@ -410,7 +411,6 @@ controls:
           - sshd_disable_forwarding
           - wireless_disable_interfaces
           - xwayland_disabled
-          - var_postfix_inet_interfaces=loopback-only
       status: automated
     - id: cm-7.1
       title: Periodic Review
