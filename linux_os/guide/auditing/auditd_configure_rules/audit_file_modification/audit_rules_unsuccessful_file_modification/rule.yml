@@ -25,6 +25,9 @@ description: |-
     -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
     -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
 
+    If the system is aarch64, the 64-bit syscall table does not include
+    <tt>creat</tt> and <tt>open</tt> syscalls. They are replaced by <tt>openat</tt>.
+
 rationale: |-
     Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
     these events could serve as evidence of potential system compromise.

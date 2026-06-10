@@ -13,7 +13,9 @@
 # '/etc/audit/audit.rules' (for 'auditctl') so the remediation works
 # regardless of which tool the system uses to load audit rules.
 
-# Retrieve hardware architecture of the underlying system
+# Audit rules filter by program type: 32-bit programs use a different
+# syscall table than 64-bit programs. On 64-bit systems with a 32-bit
+# compatibility layer, both can run, so rules are written for each.
 [ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 
 for ARCH in "${RULE_ARCHS[@]}"
