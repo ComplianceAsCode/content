@@ -12,4 +12,4 @@ aa-complain /etc/apparmor.d/*
 # rsyslogd apparmor profile is disabled in focal and jammy.
 # Reloading the profile results in an unconfined process
 # which fails the SCE, so we need to restart the process manually.
-systemctl restart rsyslog
+systemctl restart rsyslog 2>/dev/null || true
