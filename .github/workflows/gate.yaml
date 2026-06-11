@@ -121,6 +121,25 @@ jobs:
         run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
 
+  validate-ubuntu-26-04:
+    name: Build, Test on Ubuntu 26.04
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Deps
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build openscap-utils libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+      - name: Install deps python
+        run: pip3 install -r requirements.txt -r test-requirements.txt
+      - name: Build
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+        run: |-
+          ./build_product ubuntu2604
+      - name: Test
+        run: ctest -j$(nproc) --output-on-failure -E unique-stigids
+        working-directory: ./build        
+
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
     runs-on: ubuntu-latest

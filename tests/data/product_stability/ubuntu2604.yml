@@ -1,0 +1,138 @@
+aide_also_checks_audispd: 'no'
+aide_also_checks_rsyslog: 'no'
+aide_bin_path: /usr/bin/aide
+aide_conf_path: /etc/aide/aide.conf
+aide_default_path: /etc/default/aide
+audisp_conf_path: /etc/audit
+audit_binaries:
+  - /sbin/auditctl
+  - /sbin/aureport
+  - /sbin/ausearch
+  - /sbin/autrace
+  - /sbin/auditd
+  - /sbin/augenrules
+  - /sbin/audisp-syslog
+  - /sbin/audisp-remote
+  - /sbin/audispd-zos-remote
+audit_watches_style: legacy
+auid: 1000
+basic_properties_derived: true
+benchmark_id: UBUNTU_26-04
+benchmark_root: ../../linux_os/guide
+bootable_containers_supported: 'false'
+chrony_conf_path: /etc/chrony/chrony.conf
+chrony_d_path: /etc/chrony/conf.d/
+components_root: ../../components
+cpes:
+  - ubuntu2604:
+      check_id: installed_OS_is_ubuntu2604
+      name: cpe:/o:canonical:ubuntu_linux:26.04::~~lts~~~
+      title: Ubuntu release 26.04 (Resolute Raccoon)
+cpes_root: ../../shared/applicability
+dconf_gdm_dir: gdm.d
+dynamic_uid_max: 65519
+dynamic_uid_min: 61184
+faillock_path: /var/run/faillock
+families:
+  - debian-like
+  - ubuntu
+full_name: Ubuntu 26.04
+gid_min: 1000
+groups: {}
+grub2_boot_path: /boot/grub
+grub2_uefi_boot_path: /boot/grub
+grub_helper_executable: update-grub
+init_system: systemd
+journald_conf_dir_path: /etc/systemd/journald.conf.d
+login_defs_defaults_path: /usr/etc/login.defs
+login_defs_drop_in_path: /etc/login.defs.d/oscap.login.defs
+login_defs_path: /etc/login.defs
+major_version_ordinal: 2604
+nobody_gid: 65534
+nobody_uid: 65534
+openssh_client_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh.config
+openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/opensshserver.config
+oval_feed_url: https://security-metadata.canonical.com/oval/com.ubuntu.resolute.usn.oval.xml.bz2
+pam_faillock_conf_path: /etc/security/faillock.conf
+pkg_manager: apt_get
+pkg_manager_config_file: /etc/apt/apt.conf
+pkg_system: dpkg
+platform_package_overrides:
+  NetworkManager: network-manager
+  aarch64_arch: null
+  audit: auditd
+  avahi: avahi-daemon
+  bind: bind9
+  crontabs: cron
+  dconf: dconf-editor
+  gdm: gdm3
+  grub2: grub2-common
+  login_defs: login
+  net-snmp: snmp
+  no_ovirt: null
+  non-uefi: null
+  not_aarch64_arch: null
+  not_s390x_arch: null
+  nss-pam-ldapd: libpam-ldap
+  openssl-pkcs11: libpam-pkcs11
+  ovirt: null
+  pam: libpam-runtime
+  s390x_arch: null
+  shadow: login
+  sssd: sssd-common
+  sssd-ldap: null
+  uefi: null
+  zipl: s390utils-base
+product: ubuntu2604
+profiles_root: ./profiles
+pwhistory_path: /etc/security/pwhistory.conf
+pwquality_path: /etc/security/pwquality.conf
+reference_uris:
+  anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
+  app-srg: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
+  app-srg-ctr: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security
+  bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
+  cis: https://www.cisecurity.org/benchmark/ubuntu_linux/
+  cis-csc: https://www.cisecurity.org/controls/
+  cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
+  cobit5: https://www.isaca.org/resources/cobit
+  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
+  dcid: not_officially_available
+  disa: https://www.cyber.mil/stigs/cci/
+  hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
+  isa-62443-2009: https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat
+  isa-62443-2013: https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu
+  ism: https://www.cyber.gov.au/acsc/view-all-content/ism
+  iso27001-2013: https://www.iso.org/contents/data/standard/05/45/54534.html
+  nerc-cip: https://www.nerc.com/standards/reliability-standards/cip
+  nist: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf
+  nist-csf: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf
+  os-srg: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os
+  ospp: https://www.niap-ccevs.org/Profile/PP.cfm
+  pcidss: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
+  pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
+  stigid: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+  stigref: https://www.cyber.mil/stigs/srg-stig-tools/
+rsyslog_cafile: /etc/pki/tls/cert.pem
+ssh_client_config_dir: /etc/ssh/ssh_config.d
+ssh_client_main_config_file: /etc/ssh/ssh_config
+sshd_config_base_dir: /etc/ssh
+sshd_config_dir: /etc/ssh/sshd_config.d
+sshd_distributed_config: 'true'
+sshd_hardening_config_basename: 00-complianceascode-hardening.conf
+sshd_main_config_file: /etc/ssh/sshd_config
+sshd_runtime_check: 'false'
+sshd_sysconfig_file: /etc/sysconfig/sshd
+sysctl_remediate_drop_in_file: 'false'
+target_oval_version:
+  - 5
+  - 11
+  - 2
+target_oval_version_str: 5.11.2
+type: platform
+uid_min: 1000
+xwindows_packages:
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils
+  - xorg-x11-server-Xwayland
