@@ -81,12 +81,10 @@ selections:
     - cracklib_accounts_password_pam_ocredit
     - cracklib_accounts_password_pam_retry
     - cracklib_accounts_password_pam_ucredit
-    - disable_ctrlaltdel_burstaction
     - disable_users_coredumps
     - display_login_attempts
     - ensure_gpgcheck_globally_activated
     #- ensure_logrotate_activated
-    - file_etc_security_opasswd
     - file_groupowner_etc_issue
     - file_groupownership_system_commands_dirs
     - file_owner_etc_issue
