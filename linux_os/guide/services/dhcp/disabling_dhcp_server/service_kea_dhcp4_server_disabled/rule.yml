@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Disable kea-dhcp4-server Service'
+
+description: |-
+    The <tt>kea-dhcp4-server</tt> service should be disabled on
+    any system that does not need to act as a DHCPv4 server.
+    {{{ describe_service_disable(service="kea-dhcp4-server") }}}
+
+rationale: |-
+    Unmanaged or unintentionally activated DHCP servers may provide faulty information
+    to clients, interfering with the operation of a legitimate site
+    DHCP server if there is one.
+
+severity: medium
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="kea-dhcp4-server") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="kea-dhcp4-server") }}}
+
+platform: system_with_kernel
+
+template:
+    name: service_disabled
+    vars:
+        servicename: kea-dhcp4-server
+        packagename: kea
