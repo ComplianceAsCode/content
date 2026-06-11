@@ -6,7 +6,7 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_invalid_shell_accounts" check="all" check_existence="at_least_one_exists"
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_invalid_shell_accounts" check="at least one" check_existence="at_least_one_exists"
     version="1" comment="Verify there is no account with invalid shell which is not locked exists">
     <ind:object object_ref="obj_{{{ rule_id }}}_shells" />
     <ind:state state_ref="state_{{{ rule_id }}}_valid_shells" />
