@@ -19,7 +19,7 @@ RUN true \
 RUN true \
         && ssh-keygen -A \
         && mkdir -p /root/.ssh \
-        && mkdir /run/sshd && chmod 0755 /run/sshd \
+        && mkdir -p /run/sshd && chmod 0755 /run/sshd \
         && printf "%s\n" "$CLIENT_PUBLIC_KEY" >> "$AUTH_KEYS" \
         && chmod og-rw /root/.ssh "$AUTH_KEYS" \
         && sed -i '/session\s\+required\s\+pam_loginuid.so/d' /etc/pam.d/sshd \
