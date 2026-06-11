@@ -91,6 +91,16 @@ Each control file contains:
 - **`generate_nist_based_cis_profile.py`** - Generate CIS-NIST profiles
 - **`test_workflow_local.sh`** - Local testing script
 
+## Component Integration
+
+NIST controls reference rules, and those rules are mapped to software components in `components/*.yml`. The **control → rule → component** chain is exposed in the NIST viewer:
+
+- **`components.html`** — Grid of all components with control counts and drill-down detail grouped by family
+- **`control-detail.html`** — "Related Components" section on each control's page
+- **`statistics.html`** — "Component Coverage" table
+
+See `docs/manual/developer/15_components_and_controls.md` for documentation including the Python API for querying component relationships programmatically.
+
 ### Deprecated Scripts (Removed)
 
 - ~~`generate_product_family_guards.py`~~ - No longer needed (product-specific files instead of guards)
