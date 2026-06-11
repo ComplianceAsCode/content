@@ -361,6 +361,18 @@
             });
         }
 
+        window.addEventListener('popstate', function() {
+            const compParam = getQueryParam('component');
+            if (compParam) {
+                document.getElementById('grid-view').style.display = 'none';
+                document.getElementById('detail-view').style.display = 'block';
+                renderComponentDetail(compParam);
+            } else {
+                document.getElementById('grid-view').style.display = 'block';
+                document.getElementById('detail-view').style.display = 'none';
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', initComponents);
     </script>
 </body>

@@ -14,7 +14,7 @@ import re
 import yaml
 import argparse
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Tuple
 import sys
 
 # Add parent directory to path for imports
@@ -135,14 +135,14 @@ def _process_prose(prose: str, params_map: Dict[str, str]) -> str:
     if not prose:
         return ''
 
-    def replace_param(m):
+    def replace_param(m: re.Match) -> str:
         param_id = m.group(1).strip()
         label = params_map.get(param_id, param_id)
         return f'<span class="odp" title="{param_id}">[{label}]</span>'
 
     prose = re.sub(r'\{\{\s*insert:\s*param,\s*([^}]+?)\s*\}\}', replace_param, prose)
 
-    def replace_link(m):
+    def replace_link(m: re.Match) -> str:
         text = m.group(1)
         anchor = m.group(2)
         # Anchor examples: #ac-2.4  #ac-2_smt.a  #cm-6_gp  -> extract ctrl ID
@@ -257,7 +257,7 @@ def _build_rule_url_map(repo_root: Path) -> Dict[str, str]:
     return rule_map
 
 
-def _load_components_data(repo_root: Path):
+def _load_components_data(repo_root: Path) -> Tuple[Any, Dict[str, List[str]]]:
     """Load component definitions and return (components_dict, rule_to_components_mapping).
 
     Returns (None, {}) if ssg.components is unavailable or the directory is missing.
