@@ -301,6 +301,21 @@ macro(ssg_build_remediations PRODUCT)
                 endif()
             endif()
         endif()
+        # Test that registered variables in ansible fixes don't conflict with rule IDs
+        # NOTE: This test requires SSG_ANSIBLE_PLAYBOOKS_ENABLED=ON and the per-profile
+        # playbooks to be built (build/<product>/ansible/<product>-playbook-*.yml)
+        # because those contain fully rendered ansible content without unexpanded
+        # XCCDF variables. The individual fix files in build/<product>/fixes/ansible/
+        # still have unexpanded variables like (xccdf-var ...) and are skipped by the test.
+        # Before running this test, ensure playbooks are built:
+        #   ninja <product>-profile-playbooks (or just: ninja <product>)
+        if(SSG_ANSIBLE_PLAYBOOKS_ENABLED)
+            add_test(
+                NAME "ansible-variable-conflicts-${PRODUCT}"
+                COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/test_ansible_variable_conflicts.py" --build-dir "${CMAKE_BINARY_DIR}" --product "${PRODUCT}"
+            )
+            set_tests_properties("ansible-variable-conflicts-${PRODUCT}" PROPERTIES LABELS quick)
+        endif()
     endif()
 endmacro()
 
