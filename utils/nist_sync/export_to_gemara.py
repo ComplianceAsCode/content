@@ -1,0 +1,449 @@
+#!/usr/bin/env python3
+"""
+Export ComplianceAsCode NIST 800-53 controls to Gemara format.
+
+Reads product-specific NIST 800-53 control files and produces per product:
+  - control_catalog.yaml  (ControlCatalog: NIST controls → XCCDF rule IDs)
+  - rules_mapping.yaml    (MappingDocument: traceability between layers)
+
+Also produces a single platform-independent artifact:
+  - guidance_catalog.yaml (GuidanceCatalog: abstract NIST 800-53 standard text)
+
+Usage:
+    python3 utils/nist_sync/export_to_gemara.py --products rhel9 --validate
+    python3 utils/nist_sync/export_to_gemara.py --products rhel8,rhel9,rhel10
+"""
+
+import argparse
+import io
+import json
+import shutil
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+try:
+    from ruamel.yaml import YAML
+except ImportError:
+    sys.stderr.write("Error: ruamel.yaml is required. Install with: pip install ruamel.yaml\n")
+    sys.exit(1)
+
+try:
+    import ssg.controls
+    import ssg.yaml
+except (ModuleNotFoundError, ImportError):
+    sys.stderr.write("Unable to load ssg python modules.\n")
+    sys.stderr.write("Hint: run source ./.pyenv.sh\n")
+    sys.exit(3)
+
+_SCRIPT_DIR = Path(__file__).parent
+_REPO_ROOT = _SCRIPT_DIR.parent.parent
+
+sys.path.insert(0, str(_SCRIPT_DIR))
+from gemara.catalog import GemaraCatalogBuilder
+from gemara.guidance import GemaraGuidanceCatalogBuilder
+from gemara.mapping import GemaraMappingBuilder
+from gemara.schema import validate_catalog, validate_guidance, validate_mapping
+
+
+DEFAULT_PRODUCTS = ["rhel8", "rhel9", "rhel10"]
+DEFAULT_OUTPUT_DIR = _REPO_ROOT / "build" / "gemara"
+DEFAULT_OSCAL_CATALOG = _SCRIPT_DIR / "data" / "nist_800_53_rev5_catalog.json"
+DEFAULT_DATA_DIR = _SCRIPT_DIR / "data"
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Export ComplianceAsCode NIST 800-53 controls to Gemara format",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__,
+    )
+    parser.add_argument(
+        "--products",
+        default=",".join(DEFAULT_PRODUCTS),
+        help="Comma-separated product list (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=DEFAULT_OUTPUT_DIR,
+        help="Output directory (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--repo-root",
+        type=Path,
+        default=_REPO_ROOT,
+        help="Repository root (default: auto-detected)",
+    )
+    parser.add_argument(
+        "--oscal-catalog",
+        type=Path,
+        default=DEFAULT_OSCAL_CATALOG,
+        help="Path to OSCAL catalog JSON for objective text enrichment",
+    )
+    parser.add_argument(
+        "--validate",
+        action="store_true",
+        help="Validate output against Gemara structural rules (Python) "
+             "and CUE schema (if --gemara-schema is provided and cue is on PATH)",
+    )
+    parser.add_argument(
+        "--gemara-schema",
+        type=Path,
+        default=None,
+        metavar="DIR",
+        help="Path to a cloned gemara repo (https://github.com/gemaraproj/gemara) "
+             "containing the CUE schema files. When provided with --validate, "
+             "each output file is validated with 'cue vet'.",
+    )
+    parser.add_argument(
+        "--no-mapping",
+        action="store_true",
+        help="Skip MappingDocument generation",
+    )
+    parser.add_argument(
+        "--no-guidance",
+        action="store_true",
+        help="Skip GuidanceCatalog generation (platform-independent NIST standard text)",
+    )
+    parser.add_argument(
+        "--data-dir",
+        type=Path,
+        default=DEFAULT_DATA_DIR,
+        help="Directory with NIST baseline JSON files for applicability (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Print per-control details",
+    )
+    return parser.parse_args()
+
+
+def load_oscal_catalog(path):
+    """Load the OSCAL catalog JSON file, returning None if unavailable."""
+    if not path or not Path(path).exists():
+        return None
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except Exception as exc:
+        sys.stderr.write(f"Warning: could not load OSCAL catalog {path}: {exc}\n")
+        return None
+
+
+def load_policy(product, repo_root):
+    """
+    Load the NIST 800-53 Policy for a product without requiring a build.
+
+    The NIST control files are plain YAML (no Jinja2), so env_yaml=None is safe.
+    """
+    policy_file = repo_root / "products" / product / "controls" / "nist_800_53.yml"
+    if not policy_file.exists():
+        raise FileNotFoundError(
+            f"Policy file not found for {product}: {policy_file}"
+        )
+    policy = ssg.controls.Policy(str(policy_file), env_yaml=None)
+    policy.load()
+    return policy
+
+
+def _yaml_instance():
+    yaml = YAML()
+    yaml.default_flow_style = False
+    yaml.allow_unicode = True
+    yaml.width = 120
+    return yaml
+
+
+def write_yaml(data, path):
+    """Serialize data to YAML at path."""
+    yaml = _yaml_instance()
+    buf = io.StringIO()
+    yaml.dump(data, buf)
+    content = buf.getvalue()
+    path.write_text(content, encoding="utf-8")
+
+
+def find_cue():
+    """Return the path to the cue binary, or None if not on PATH."""
+    return shutil.which("cue")
+
+
+def cue_validate(schema_dir, schema_expr, yaml_path):
+    """
+    Run 'cue vet' against yaml_path using the CUE schema in schema_dir.
+
+    Args:
+        schema_dir: Path to the cloned gemara repo (contains *.cue files).
+        schema_expr: CUE expression selecting the schema, e.g. '#ControlCatalog'.
+        yaml_path: Path to the YAML file to validate.
+
+    Returns:
+        (passed: bool, output: str)  — output is empty on success.
+    """
+    cue_bin = find_cue()
+    if not cue_bin:
+        return None, "cue binary not found on PATH"
+
+    cmd = [cue_bin, "vet", "-d", schema_expr, "-E", ".", str(yaml_path)]
+    try:
+        result = subprocess.run(
+            cmd,
+            cwd=str(schema_dir),
+            capture_output=True,
+            text=True,
+        )
+        combined = (result.stdout + result.stderr).strip()
+        return result.returncode == 0, combined
+    except Exception as exc:
+        return False, str(exc)
+
+
+def export_guidance(oscal_catalog, data_dir, output_dir, validate, gemara_schema, verbose):
+    """Generate the platform-independent GuidanceCatalog. Returns stats dict."""
+    builder = GemaraGuidanceCatalogBuilder(oscal_catalog, data_dir=data_dir)
+    guidance = builder.build()
+    guideline_count = len(guidance.get("guidelines", []))
+
+    if validate:
+        errors = validate_guidance(guidance)
+        if errors:
+            sys.stderr.write("  [WARN] GuidanceCatalog validation errors:\n")
+            for e in errors:
+                sys.stderr.write(f"    - {e}\n")
+
+    guidance_path = output_dir / "guidance_catalog.yaml"
+    write_yaml(guidance, guidance_path)
+    if verbose:
+        print(f"  Wrote {guidance_path}")
+
+    if validate and gemara_schema:
+        passed, output = cue_validate(gemara_schema, "#GuidanceCatalog", guidance_path)
+        if passed is None:
+            print(f"  [CUE]  guidance_catalog.yaml  SKIP  ({output})")
+        elif passed:
+            print("  [CUE]  guidance_catalog.yaml  PASS")
+        else:
+            print("  [CUE]  guidance_catalog.yaml  FAIL")
+            for line in output.splitlines():
+                print(f"         {line}")
+
+    return {"guideline_count": guideline_count}
+
+
+def export_product(product, repo_root, oscal_catalog, output_dir, include_mapping, validate, gemara_schema, verbose):
+    """Export one product. Returns stats dict."""
+    if verbose:
+        print(f"  Loading policy for {product}...")
+
+    policy = load_policy(product, repo_root)
+    total_controls = len(policy.controls)
+
+    # Build ControlCatalog
+    builder = GemaraCatalogBuilder(product, policy, oscal_catalog)
+    catalog = builder.build()
+    catalog_id = catalog["metadata"]["id"]
+
+    # Validate
+    if validate:
+        errors = validate_catalog(catalog)
+        if errors:
+            sys.stderr.write(f"  [WARN] ControlCatalog validation errors for {product}:\n")
+            for e in errors:
+                sys.stderr.write(f"    - {e}\n")
+
+    # Write ControlCatalog
+    product_dir = output_dir / product
+    product_dir.mkdir(parents=True, exist_ok=True)
+    catalog_path = product_dir / "control_catalog.yaml"
+    write_yaml(catalog, catalog_path)
+    if verbose:
+        print(f"  Wrote {catalog_path}")
+
+    if validate and gemara_schema:
+        passed, output = cue_validate(gemara_schema, "#ControlCatalog", catalog_path)
+        if passed is None:
+            print(f"  [CUE]  control_catalog.yaml  SKIP  ({output})")
+        elif passed:
+            print("  [CUE]  control_catalog.yaml  PASS")
+        else:
+            print("  [CUE]  control_catalog.yaml  FAIL")
+            for line in output.splitlines():
+                print(f"         {line}")
+
+    # Count rules referenced across all controls
+    all_rules = set()
+    for ctrl in policy.controls:
+        for r in (ctrl.rules or []):
+            if "=" not in r:
+                all_rules.add(r)
+
+    stats = {
+        "product": product,
+        "control_count": total_controls,
+        "rule_count": len(all_rules),
+        "mapping_count": 0,
+    }
+
+    if not include_mapping:
+        return stats
+
+    # Build MappingDocument
+    mapping_builder = GemaraMappingBuilder(product, catalog_id, policy)
+    mapping = mapping_builder.build()
+
+    if validate:
+        errors = validate_mapping(mapping)
+        if errors:
+            sys.stderr.write(f"  [WARN] MappingDocument validation errors for {product}:\n")
+            for e in errors:
+                sys.stderr.write(f"    - {e}\n")
+
+    mapping_path = product_dir / "rules_mapping.yaml"
+    write_yaml(mapping, mapping_path)
+    if verbose:
+        print(f"  Wrote {mapping_path}")
+
+    if validate and gemara_schema:
+        passed, output = cue_validate(gemara_schema, "#MappingDocument", mapping_path)
+        if passed is None:
+            print(f"  [CUE]  rules_mapping.yaml    SKIP  ({output})")
+        elif passed:
+            print("  [CUE]  rules_mapping.yaml    PASS")
+        else:
+            print("  [CUE]  rules_mapping.yaml    FAIL")
+            for line in output.splitlines():
+                print(f"         {line}")
+
+    stats["mapping_count"] = len(mapping["mappings"])
+    return stats
+
+
+def write_metadata(output_dir, all_stats, guidance_stats=None):
+    """Write a metadata.json summary file."""
+    meta = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "products": {s["product"]: s for s in all_stats},
+        "totals": {
+            "control_count": sum(s["control_count"] for s in all_stats),
+            "rule_count": sum(s["rule_count"] for s in all_stats),
+            "mapping_count": sum(s["mapping_count"] for s in all_stats),
+        },
+    }
+    if guidance_stats:
+        meta["guidance"] = guidance_stats
+    meta_path = output_dir / "metadata.json"
+    meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
+    return meta_path
+
+
+def main():
+    args = parse_args()
+    products = [p.strip() for p in args.products.split(",") if p.strip()]
+    output_dir = args.output_dir
+    include_mapping = not args.no_mapping
+    include_guidance = not args.no_guidance
+
+    print("Exporting NIST 800-53 to Gemara format")
+    print(f"  Products:   {', '.join(products)}")
+    print(f"  Output dir: {output_dir}")
+
+    oscal_catalog = load_oscal_catalog(args.oscal_catalog)
+    if oscal_catalog:
+        print(f"  OSCAL:      {args.oscal_catalog} (loaded)")
+    else:
+        print("  OSCAL:      not found — using control titles as objectives")
+
+    gemara_schema = args.gemara_schema
+    if args.validate:
+        cue_bin = find_cue()
+        if gemara_schema and gemara_schema.is_dir() and cue_bin:
+            print(f"  CUE:        {cue_bin} (schema: {gemara_schema})")
+        elif gemara_schema and not gemara_schema.is_dir():
+            sys.stderr.write(f"  [WARN] --gemara-schema path not found: {gemara_schema}\n")
+            gemara_schema = None
+        elif not cue_bin:
+            print("  CUE:        not found on PATH — skipping CUE validation")
+            gemara_schema = None
+        else:
+            print("  CUE:        pass --gemara-schema to enable CUE validation")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    all_stats = []
+    failed = []
+    for product in products:
+        print(f"\n[{product}]")
+        try:
+            stats = export_product(
+                product,
+                args.repo_root,
+                oscal_catalog,
+                output_dir,
+                include_mapping,
+                args.validate,
+                gemara_schema,
+                args.verbose,
+            )
+            all_stats.append(stats)
+            print(
+                f"  controls={stats['control_count']}  "
+                f"rules={stats['rule_count']}  "
+                f"mappings={stats['mapping_count']}"
+            )
+        except FileNotFoundError as exc:
+            sys.stderr.write(f"  [SKIP] {exc}\n")
+            failed.append(product)
+        except Exception as exc:
+            sys.stderr.write(f"  [ERROR] {product}: {exc}\n")
+            failed.append(product)
+            if args.verbose:
+                import traceback
+                traceback.print_exc()
+
+    # GuidanceCatalog — generated once, platform-independent
+    guidance_stats = None
+    if include_guidance and oscal_catalog:
+        print("\n[guidance_catalog]")
+        try:
+            guidance_stats = export_guidance(
+                oscal_catalog,
+                args.data_dir,
+                output_dir,
+                args.validate,
+                gemara_schema,
+                args.verbose,
+            )
+            print(f"  guidelines={guidance_stats['guideline_count']}")
+        except Exception as exc:
+            sys.stderr.write(f"  [ERROR] guidance_catalog: {exc}\n")
+            if args.verbose:
+                import traceback
+                traceback.print_exc()
+
+    if all_stats:
+        meta_path = write_metadata(output_dir, all_stats, guidance_stats)
+        print(f"\nWrote metadata: {meta_path}")
+
+    totals = {
+        "controls": sum(s["control_count"] for s in all_stats),
+        "rules": sum(s["rule_count"] for s in all_stats),
+        "mappings": sum(s["mapping_count"] for s in all_stats),
+    }
+    guidance_note = (
+        f", {guidance_stats['guideline_count']} guidelines" if guidance_stats else ""
+    )
+    print(
+        f"\nDone. Total: {totals['controls']} controls, "
+        f"{totals['rules']} rules, {totals['mappings']} mappings{guidance_note}"
+    )
+
+    if failed:
+        sys.stderr.write(f"\nFailed products: {', '.join(failed)}\n")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
