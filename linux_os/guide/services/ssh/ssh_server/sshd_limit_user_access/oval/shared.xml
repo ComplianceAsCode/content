@@ -6,14 +6,31 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("One of the following parameters of the sshd configuration file is set:  AllowUsers, DenyUsers, AllowGroups, DenyGroups.", rule_title=rule_title) }}}
+    {{% if product in [ 'sle16', 'slmicro6' ] %}}
+    <criteria operator="AND">
+        <criterion comment="test if SSH main configuration {{{ sshd_main_config }}} exists for {{{ rule_id }}}"
+            test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+        <criteria operator="OR">
+            <criterion test_ref="test_allow_user_is_configured" />
+            <criterion test_ref="test_allow_group_is_configured" />
+            <criterion test_ref="test_deny_user_is_configured" />
+            <criterion test_ref="test_deny_group_is_configured" />
+        </criteria>
+    </criteria>
+    {{% else %}}
     <criteria operator="OR">
       <criterion test_ref="test_allow_user_is_configured" />
       <criterion test_ref="test_allow_group_is_configured" />
       <criterion test_ref="test_deny_user_is_configured" />
       <criterion test_ref="test_deny_group_is_configured" />
     </criteria>
+    {{% endif %}}
   </definition>
 
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test(sshd_main_config, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(sshd_main_config, rule_id=rule_id) }}}
+  {{% endif %}}
   <ind:textfilecontent54_test id="test_allow_user_is_configured" version="1" check="all"
     check_existence="only_one_exists" comment="Check if there is an AllowUsers entry">
     <ind:object object_ref="obj_allow_user" />

@@ -7,16 +7,18 @@
 # variables = {{{ XCCDF_VARIABLE }}}={{{ CORRECT_VALUE }}}
 {{% endif %}}
 
-mkdir -p /etc/ssh/sshd_config.d
-touch /etc/ssh/sshd_config.d/nothing
+mkdir -p "{{{ sshd_config_dir }}}"
+touch "{{{ sshd_config_dir }}}/nothing"
+
+declare -a SSHD_PATHS=("{{{ sshd_main_config_file }}}" "{{{ sshd_config_dir }}}/*")
 
 {{% if product in ["ol8", "ol9"] %}}
 {{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s", cce_identifiers=cce_identifiers) }}}
 {{% endif %}}
 
-if grep -q "^\s*{{{ PARAMETER }}}" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/* ; then
-	sed -i "/^\s*{{{ PARAMETER }}}.*/Id" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+if grep -q "^\s*{{{ PARAMETER }}}" "${SSHD_PATHS[@]}"; then
+	sed -i "/^\s*{{{ PARAMETER }}}.*/Id" "${SSHD_PATHS[@]}"
 fi
 
-echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" > /etc/ssh/sshd_config.d/good_config.conf
-echo "{{{ PARAMETER }}} {{{ WRONG_VALUE }}}" > /etc/ssh/sshd_config.d/bad_config.conf
+echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" > "{{{ sshd_config_dir }}}/good_config.conf"
+echo "{{{ PARAMETER }}} {{{ WRONG_VALUE }}}" > "{{{ sshd_config_dir }}}/bad_config.conf"

@@ -3,4 +3,5 @@
 # variables = sshd_max_auth_tries_value=4
 source include.sh
 
-echo "MaxAuthTries 4" >> /etc/ssh/sshd_config.d/01-complianceascode.conf
+touch "{{{ sshd_main_config_file }}}"
+echo "MaxAuthTries 4" >> "{{{ sshd_config_dir }}}/01-complianceascode.conf"

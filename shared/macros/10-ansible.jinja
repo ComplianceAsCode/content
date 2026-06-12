@@ -180,6 +180,10 @@ value: :code:`Setting={{ varname1 }}`
     - {{{ config_dir }}}
     contains: {{{ line_regex }}}
   register: _config_dir_has_parameter
+- name: {{{ rule_title }}} - Check if {{{ config_file }}} exists
+  ansible.builtin.stat:
+    path: {{{ config_file }}}
+  register: _config_file_exists
 - name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in {{{ config_file }}}
   ansible.builtin.lineinfile:
     path: {{{ config_file }}}
@@ -188,6 +192,7 @@ value: :code:`Setting={{ varname1 }}`
   check_mode: true
   changed_when: false
   register: _config_file_correctly
+  when: _config_file_exists.stat.exists
 - name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in {{{ config_dir }}}
   ansible.builtin.find:
     paths:
@@ -201,7 +206,9 @@ value: :code:`Setting={{ varname1 }}`
     {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
     {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, insensitive=insensitive, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
     {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
-  when: (_config_file_correctly.found == 0 and _config_dir_correctly.matched == 0) or ((_config_file_has_parameter.found | int) + (_config_dir_has_parameter.matched | int)) != 1
+  when:
+    - _config_file_correctly is not skipped
+    - (_config_file_correctly.found == 0 and _config_dir_correctly.matched == 0) or ((_config_file_has_parameter.found | int) + (_config_dir_has_parameter.matched | int)) != 1
 {{%- endmacro %}}
 
 
@@ -2495,124 +2502,6 @@ lines will be inserted at the beginning of the profile.
   ansible.builtin.command: dconf update
   when: dconf_user_profile_blockinfile is changed
 {{%- endmacro -%}}
-
-
-{{#
-
-    Set a sshd configuration parameter to a value for system with /usr - located default config
-
-:parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
-:type msg: str
-:parameter parameter: Parameter to set
-:type parameter: str
-:parameter value: The value to set
-:type value: str
-:param copy_defaults: If true default sshd configuration in /usr/etc/ssh/sshd_config will be
-copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
-:type copy_defaults: bool
-:parameter config_basename: drop-in filename of sshd configuration file
-:type config_basename: str
-
-#}}
-{{%- macro ansible_sshd_set_usr(msg='', parameter='', value='', copy_defaults=true, config_basename="00-complianceascode-hardening.conf", rule_title=None) %}}
-{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
-{{%- set sshd_usr_config_path = "/usr/etc/ssh/sshd_config" %}}
-{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
-{{%- set sshd_usr_config_dir = "/usr/etc/ssh/sshd_config.d" -%}}
-{{%- set ssh_paths = ['/etc/ssh/sshd_config.d', '/usr/etc/ssh/sshd_config.d'] -%}}
-{{%- set config_file = "/etc/ssh/sshd_config.d/" ~ config_basename -%}}
-{{%- set new_line = parameter + ' ' + value -%}}
-{{%- set line_regex = "(?i)^\s*" + "{{ \"" + parameter + "\"| regex_escape }}" + "\s+" -%}}
-{{%- set dir_parameter = "sshd_config_d_has_parameter" -%}}
-{{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
-
-- name: {{{ rule_title }}} - Copy default {{{ sshd_usr_config_path }}} to {{{ sshd_config_path }}}
-  ansible.builtin.copy:
-    src: {{{ sshd_usr_config_path }}}
-    dest: {{{ sshd_config_path }}}
-    force: no
-    mode: '0600'
-- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured in sshd configuration(s)
-  ansible.builtin.find:
-    paths:
-    - '/etc/ssh'
-    - '/usr/etc/ssh'
-    - {{{ sshd_config_dir }}}
-    - {{{ sshd_usr_config_dir }}}
-    contains: {{{ line_regex }}}
-    patterns:
-    - '*.conf'
-    - 'sshd_config'
-  register: _sshd_config_has_parameter
-- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in sshd configuration(s)
-  ansible.builtin.find:
-    paths:
-    - '/etc/ssh'
-    - '/usr/etc/ssh'
-    - {{{ sshd_config_dir }}}
-    - {{{ sshd_usr_config_dir }}}
-    contains: {{{ line_regex ~ value ~ "$" }}}
-    patterns:
-    - '*.conf'
-    - 'sshd_config'
-  register: _sshd_config_correctly
-- name: '{{{ msg or rule_title }}}'
-  block:
-    {{{ ansible_lineinfile(
-            "Deduplicate values from " + sshd_config_path,
-            sshd_config_path,
-            regex=line_regex,
-            insensitive='false',
-            create='no',
-            state='absent')|indent }}}
-    {{{ ansible_lineinfile(
-            "Deduplicate values from " + sshd_usr_config_path,
-            sshd_usr_config_path,
-            regex=line_regex,
-            insensitive='false',
-            create='no',
-            state='absent')|indent }}}
-    - name: "{{{ rule_title }}} - Check if the parameter {{{ parameter }}} is present in {{{ sshd_config_dir }}} and in {{{ sshd_usr_config_dir }}}"
-      ansible.builtin.find:
-        paths: {{{ ssh_paths }}}
-        recurse: 'yes'
-        follow: 'no'
-        contains: '(?i)^\s*{{ "{{{ parameter }}}"| regex_escape }}\s+'
-      register: {{{ dir_parameter }}}
-    {{{ ansible_lineinfile(
-            "Remove parameter from files in " + sshd_config_dir,
-            path="{{ item.path }}",
-            regex=line_regex,
-            state="absent",
-            with_items=lineinfile_items)|indent}}}
-    {{{ ansible_lineinfile(
-            "Remove parameter from files in " + sshd_usr_config_dir,
-            path="{{ item.path }}",
-            regex=line_regex,
-            state="absent",
-            with_items=lineinfile_items)|indent }}}
-    {{{ ansible_lineinfile(
-            "Insert correct line to " + config_file,
-            config_file,
-            regex=line_regex,
-            insensitive='false',
-            new_line=new_line,
-            create='yes',
-            state='present',
-            validate='/usr/sbin/sshd -t -f %s',
-            insert_after='',
-            insert_before="BOF" )|indent }}}
-  when: _sshd_config_correctly.matched == 0 or _sshd_config_has_parameter.matched != 1
-
-- name: {{{ rule_title }}} - set file mode for {{{ config_file }}}
-  ansible.builtin.file:
-    path: {{{ config_file }}}
-    mode: '0600'
-    state: touch
-    modification_time: preserve
-    access_time: preserve
-{{%- endmacro %}}
-
 
 {{#
     copy source file to destination file if destination
