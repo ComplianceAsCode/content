@@ -5,6 +5,7 @@ from tempfile import mkdtemp
 import io
 import os
 import os.path
+import subprocess
 import sys
 import shutil
 import re
@@ -82,6 +83,21 @@ README_TEMPLATE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "ansible_galaxy_readme_template.md"
 )
+GITHUB_IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
+
+
+def _validate_github_identifier(value, field_name):
+    if not GITHUB_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(
+            "{field_name} contains unsupported characters: {value}".format(
+                field_name=field_name, value=value
+            )
+        )
+    return value
+
+
+def _run_command(args, cwd=None):
+    subprocess.run(args, cwd=cwd, check=True)
 
 
 def create_empty_repositories(github_new_repos, github_org):
@@ -98,20 +114,33 @@ def create_empty_repositories(github_new_repos, github_org):
 
 
 def clone_and_init_repository(parent_dir, organization, repo):
-    # 1. Initialize the Ansible role first (creates the directory)
-    os.system(f"ansible-galaxy init {repo}")
+    organization = _validate_github_identifier(organization, "organization")
+    repo = _validate_github_identifier(repo, "repo")
+    repo_dir = os.path.join(parent_dir, repo)
 
-    # 2. Change directory and initialize git
-    os.chdir(repo)
-    try:
-        os.system("git init --initial-branch=main")
-        os.system(f"git remote add origin git@github.com:{organization}/{repo}")
-        os.system('git add .')
-        os.system('git commit -a -m "Initial commit" --author "%s <%s>"'
-                  % (GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL))
-        os.system('git push origin main')
-    finally:
-        os.chdir("..")
+    # 1. Initialize the Ansible role first (creates the directory)
+    _run_command(["ansible-galaxy", "init", repo], cwd=parent_dir)
+
+    # 2. Initialize git in the generated role directory
+    _run_command(["git", "init", "--initial-branch=main"], cwd=repo_dir)
+    _run_command(
+        ["git", "remote", "add", "origin", f"git@github.com:{organization}/{repo}"],
+        cwd=repo_dir,
+    )
+    _run_command(["git", "add", "."], cwd=repo_dir)
+    _run_command(
+        [
+            "git",
+            "commit",
+            "-a",
+            "-m",
+            "Initial commit",
+            "--author",
+            f"{GIT_COMMIT_AUTHOR_NAME} <{GIT_COMMIT_AUTHOR_EMAIL}>",
+        ],
+        cwd=repo_dir,
+    )
+    _run_command(["git", "push", "origin", "main"], cwd=repo_dir)
 
 
 def update_repo_release(github, repo):
