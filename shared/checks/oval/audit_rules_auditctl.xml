@@ -8,7 +8,7 @@
       <description>Test if auditctl is in use for audit rules.</description>
     </metadata>
 
-{{% if product in ['ocp4', 'rhcos4'] %}}
+{{% if product in ['rhcos4', 'ocp4'] %}}
     <criteria operator="OR">
       <criterion comment="audit auditctl via audit-rules.service" test_ref="test_audit_rules_auditctl_service" />
       <criterion comment="audit auditctl via auditd.service" test_ref="test_audit_rules_auditctl" />
@@ -20,7 +20,7 @@
 {{% endif %}}
   </definition>
 
-{{% if product in ['ocp4', 'rhcos4'] %}}
+{{% if product in ['rhcos4', 'ocp4'] %}}
   <!-- RHCOS on RHEL 10+: auditctl runs via a separate audit-rules.service -->
   <ind:textfilecontent54_test check="all" comment="audit auditctl via audit-rules.service" id="test_audit_rules_auditctl_service" version="1">
     <ind:object object_ref="object_audit_rules_auditctl_service" />

@@ -8,7 +8,7 @@
       <description>Test if augenrules is enabled for audit rules.</description>
     </metadata>
 
-{{% if product in ['ocp4', 'rhcos4'] %}}
+{{% if product in ['rhcos4', 'ocp4'] %}}
     <criteria operator="OR">
       <criterion comment="audit augenrules via audit-rules.service" test_ref="test_audit_rules_augenrules_service" />
       <criterion comment="audit augenrules via auditd.service" test_ref="test_audit_rules_augenrules" />
@@ -20,7 +20,7 @@
 {{% endif %}}
   </definition>
 
-{{% if product in ['ocp4', 'rhcos4'] %}}
+{{% if product in ['rhcos4', 'ocp4'] %}}
   <!-- RHCOS on RHEL 10+: augenrules runs via a separate audit-rules.service -->
   <ind:textfilecontent54_test check="all" comment="audit augenrules via audit-rules.service" id="test_audit_rules_augenrules_service" version="1">
     <ind:object object_ref="object_audit_rules_augenrules_service" />
