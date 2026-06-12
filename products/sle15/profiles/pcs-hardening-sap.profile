@@ -92,7 +92,6 @@ selections:
     - var_accounts_user_umask=027
     - var_pam_wheel_group_for_su=cis
     # CIS L1 Rules
-    - install_smartcard_packages
     - package_aide_installed
     - package_audit-audispd-plugins_installed
     - package_audit_installed
@@ -125,7 +124,6 @@ selections:
     - sysctl_net_ipv4_ip_forward
     - package_nftables_removed
     - permissions_local_var_log
-    - mount_option_dev_shm_noexec
     - sysctl_fs_suid_dumpable
     - sysctl_kernel_randomize_va_space
     - file_at_deny_not_exist
