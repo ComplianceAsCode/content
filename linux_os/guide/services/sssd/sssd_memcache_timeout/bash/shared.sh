@@ -7,6 +7,11 @@
 OLD_UMASK=$(umask)
 umask u=rw,go=
 
-{{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "nss", "memcache_timeout", "$var_sssd_memcache_timeout") }}}
+SSSD_CONF="/etc/sssd/sssd.conf"
+SSSD_CONF_DIR="/etc/sssd/conf.d"
+{{{ bash_sssd_ensure_default_config("$SSSD_CONF", "$SSSD_CONF_DIR") }}}
+{{{ bash_install_sssd_proxy() }}}
+
+{{{ bash_ensure_ini_config("$SSSD_CONF", "nss", "memcache_timeout", "$var_sssd_memcache_timeout") }}}
 
 umask $OLD_UMASK

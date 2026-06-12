@@ -9,7 +9,12 @@
 OLD_UMASK=$(umask)
 umask u=rw,go=
 
-{{{ bash_ensure_ini_config("/etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "pam", "pam_cert_auth", "True") }}}
+SSSD_CONF="/etc/sssd/sssd.conf"
+SSSD_CONF_DIR="/etc/sssd/conf.d"
+{{{ bash_sssd_ensure_default_config("$SSSD_CONF", "$SSSD_CONF_DIR") }}}
+{{{ bash_install_sssd_proxy() }}}
+
+{{{ bash_ensure_ini_config("$SSSD_CONF $SSSD_CONF_DIR/*.conf", "pam", "pam_cert_auth", "True") }}}
 
 umask $OLD_UMASK
 

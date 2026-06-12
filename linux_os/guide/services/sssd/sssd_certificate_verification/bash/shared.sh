@@ -11,8 +11,13 @@
 OLD_UMASK=$(umask)
 umask u=rw,go=
 
-MAIN_CONF="/etc/sssd/conf.d/certificate_verification.conf"
+SSSD_CONF="/etc/sssd/sssd.conf"
+SSSD_CONF_DIR="/etc/sssd/conf.d"
+{{{ bash_sssd_ensure_default_config("$SSSD_CONF", "$SSSD_CONF_DIR") }}}
+{{{ bash_install_sssd_proxy() }}}
 
-{{{ bash_ensure_ini_config("$MAIN_CONF /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "certificate_verification", "ocsp_dgst=$var_sssd_certificate_verification_digest_function") }}}
+MAIN_CONF="$SSSD_CONF_DIR/certificate_verification.conf"
+
+{{{ bash_ensure_ini_config("$MAIN_CONF $SSSD_CONF $SSSD_CONF_DIR/*.conf", "sssd", "certificate_verification", "ocsp_dgst=$var_sssd_certificate_verification_digest_function") }}}
 
 umask $OLD_UMASK
