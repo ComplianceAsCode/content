@@ -41,12 +41,9 @@ controls:
       levels:
           - moderate
       rules:
-          - accounts_tmout
           - no_invalid_shell_accounts_unlocked
           - no_password_auth_for_systemaccounts
           - no_shelllogin_for_systemaccounts
-          - inactivity_timeout_value=15_minutes
-          - var_accounts_tmout=15_min
       status: automated
     - id: ac-2.6
       title: Dynamic Privilege Management
@@ -203,6 +200,7 @@ controls:
           - package_libselinux_installed
           - package_mcstrans_removed
           - package_setroubleshoot_removed
+          - rsyslog_filecreatemode
           - rsyslog_files_groupownership
           - rsyslog_files_ownership
           - rsyslog_files_permissions
@@ -210,9 +208,6 @@ controls:
           - selinux_policytype
           - sshd_limit_user_access
           - use_pam_wheel_group_for_su
-          - var_accounts_user_umask=027
-          - var_pam_wheel_group_for_su=cis
-          - var_selinux_policy_name=targeted
       status: automated
     - id: ac-3.1
       title: Restricted Access to Privileged Functions
@@ -488,13 +483,6 @@ controls:
       rules:
           - account_password_pam_faillock_password_auth
           - account_password_pam_faillock_system_auth
-          - accounts_passwords_pam_faillock_deny
-          - accounts_passwords_pam_faillock_even_deny_root_or_root_unlock_time
-          - accounts_passwords_pam_faillock_unlock_time
-          - var_accounts_passwords_pam_faillock_deny=5
-          - var_accounts_passwords_pam_faillock_dir=run
-          - var_accounts_passwords_pam_faillock_root_unlock_time=60
-          - var_accounts_passwords_pam_faillock_unlock_time=900
       status: automated
     - id: ac-7.1
       title: Automatic Account Lock
@@ -555,7 +543,6 @@ controls:
           - dconf_gnome_screensaver_lock_delay
           - dconf_gnome_screensaver_user_locks
           - dconf_gnome_session_idle_user_locks
-          - var_screensaver_lock_delay=5_seconds
       status: automated
     - id: ac-11.1
       title: Pattern-hiding Displays
