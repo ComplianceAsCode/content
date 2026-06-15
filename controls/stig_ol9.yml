@@ -3800,10 +3800,14 @@ controls:
       levels:
           - high
       title: OL 9 crypto policy must not be overridden.
-      rules:
-          - fips_crypto_policy_symlinks
-          - fips_crypto_policy_symlinks.severity=high
-      status: automated
+      notes: Rules for this control are intentionally not implemented. Checking whether files under /etc/crypto-policies/back-ends/
+        are symlinks is not an appropriate way to verify the consistency of the system's cryptographic settings.
+        The suggested fix mentioned in the STIG does not fully satisfy its own requirements, as it also symlinks the nss.config file.
+        Furthermore, running sudo 'update-crypto-policies --set FIPS' is not a reliable way to ensure FIPS compliance. Customers should
+        refer to the official Oracle Linux Documentation and use the 'fips=1' kernel option during system installation to ensure the system is
+        in FIPS mode.
+        More information https://docs.oracle.com/en/operating-systems/oracle-linux/9/security/configuring_fips_mode.html
+      status: pending
 
     - id: OL09-00-000241
       levels:
