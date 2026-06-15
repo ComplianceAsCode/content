@@ -406,6 +406,23 @@ the latest content.
 Unlike the individual Ansible roles — which are synced to Galaxy from their GitHub repositories —
 the collection is published directly to Ansible Galaxy as a tarball via the Galaxy API.
 
+## Test the Collection Locally
+
+Before publishing, you can verify the full build-and-package pipeline locally using the test script:
+
+```bash
+utils/test_ansible_collection.sh [OUTPUT_DIR] [PRODUCT] [NAMESPACE]
+```
+
+For example, to build a rhel9 collection into `/tmp/test-collection`:
+
+```bash
+utils/test_ansible_collection.sh /tmp/test-collection rhel9 redhatofficial
+```
+
+The script builds the data stream, generates Ansible roles, creates the collection, and checks
+that no unrewritten `community.general` or `ansible.posix` FQCNs remain in the bundled roles.
+
 ## Get the Required Tokens
 
 - Get an Ansible Galaxy API token by logging in with your Red Hat account:
@@ -426,7 +443,7 @@ command to generate the collection and publish it to Ansible Galaxy:
 This single command will:
 1. Download and vendor modules from `community.general` and `ansible.posix`.
 2. Bundle all roles for the allowed products into the `redhatofficial.rhel_hardening_roles` collection.
-3. Build the collection tarball (e.g. `redhat-rhel_hardening_roles-0.1.81.tar.gz`).
+3. Build the collection tarball (e.g. `redhatofficial-rhel_hardening_roles-0.1.82.tar.gz`).
 4. Publish the tarball to Ansible Galaxy via the API.
 
 > **_NOTE:_** The collection version is read automatically from `CMakeLists.txt` at the

@@ -24,6 +24,7 @@ import argparse
 import json
 import os
 import shutil
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -496,12 +497,28 @@ def publish_to_galaxy(artifact_path, galaxy_token, galaxy_server="https://galaxy
 
 
 def build_collection_artifact(collection_dir, output_dir, namespace, collection_name, version):
-    """Build the collection .tar.gz artifact from the collection directory."""
+    """Build the collection .tar.gz artifact using ansible-galaxy collection build.
+
+    This produces a Galaxy-compatible tarball that includes the required
+    MANIFEST.json and FILES.json entries, unlike a raw tarfile archive.
+    """
     artifact_name = f"{namespace}-{collection_name}-{version}.tar.gz"
     artifact_path = os.path.join(output_dir, artifact_name)
     print(f"Building collection artifact: {artifact_name}")
-    with tarfile.open(artifact_path, "w:gz") as tar:
-        tar.add(collection_dir, arcname=".")
+    result = subprocess.run(
+        [
+            "ansible-galaxy", "collection", "build",
+            "--output-path", output_dir,
+            "--force",
+            collection_dir,
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        print(result.stdout)
+        print(result.stderr, file=sys.stderr)
+        raise SystemExit(1)
     print(f"Collection artifact: {artifact_path}")
     return artifact_path
 

@@ -529,7 +529,7 @@ def select_roles_to_upload(product_allowlist, profile_denylist,
         if ext == ".yml":
             # the format is product-playbook-profile.yml
             product, _, profile = root.split("-", 2)
-            if dry_run or (product in product_allowlist and profile not in profile_denylist):
+            if product in product_allowlist and profile not in profile_denylist:
                 role_name = "ansible-role-%s-%s" % (product, profile)
                 selected_roles[role_name] = (product, profile)
     return selected_roles

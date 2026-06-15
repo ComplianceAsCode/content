@@ -257,18 +257,21 @@ macro(ssg_build_ansible_playbooks PRODUCT)
     endif()
 endmacro()
 
-macro(ssg_build_ansible_roles)
+macro(ssg_build_ansible_roles PRODUCT)
     set(ANSIBLE_ROLES_DIR "${CMAKE_BINARY_DIR}/ansible_roles")
+    set(_ROLES_STAMP "${ANSIBLE_ROLES_DIR}/ansible_roles-${PRODUCT}")
     add_custom_command(
-        OUTPUT "${ANSIBLE_ROLES_DIR}/ansible_roles-${PRODUCT}"
+        OUTPUT "${_ROLES_STAMP}"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" --dry-run "${ANSIBLE_ROLES_DIR}" --product "${PRODUCT}" --build-playbooks-dir "${CMAKE_BINARY_DIR}/ansible"
-        DEPENDS generate-all-profile-playbooks-${PRODUCT}
+        COMMAND "${CMAKE_COMMAND}" -E touch "${_ROLES_STAMP}"
+        DEPENDS generate-all-profile-playbooks-${PRODUCT} "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
         COMMENT "[${PRODUCT}-content] Generating Ansible Roles"
     )
     add_custom_target(
         generate-${PRODUCT}-ansible-roles
-        DEPENDS "${ANSIBLE_ROLES_DIR}/ansible_roles-${PRODUCT}"
+        DEPENDS "${_ROLES_STAMP}"
     )
+    set_property(GLOBAL APPEND PROPERTY SSG_ANSIBLE_ROLE_STAMPS "${_ROLES_STAMP}")
 endmacro()
 
 macro(ssg_build_ansible_collection VERSION)
@@ -276,34 +279,30 @@ macro(ssg_build_ansible_collection VERSION)
     set(ANSIBLE_COLLECTION_DIR "${CMAKE_BINARY_DIR}/ansible_collection")
     set(ANSIBLE_COLLECTION_STAMP "${ANSIBLE_COLLECTION_DIR}/collection-${VERSION}")
 
-    if(NOT SSG_ANSIBLE_ROLES_ENABLED)
-        message(WARNING "SSG_ANSIBLE_COLLECTION_ENABLED requires SSG_ANSIBLE_ROLES_ENABLED. "
-                        "Collection target will not be configured.")
-    else()
-        add_custom_command(
-            OUTPUT "${ANSIBLE_COLLECTION_STAMP}"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}"
-                "${Python_EXECUTABLE}"
-                "${CMAKE_SOURCE_DIR}/utils/ansible_roles_to_collection.py"
-                --roles-dir "${ANSIBLE_ROLES_DIR}"
-                --output-dir "${ANSIBLE_COLLECTION_DIR}"
-                --version "${VERSION}"
-                --build
-            COMMAND "${CMAKE_COMMAND}" -E touch "${ANSIBLE_COLLECTION_STAMP}"
-            DEPENDS "${ANSIBLE_ROLES_DIR}"
-            COMMENT "Generating Ansible Collection from roles (version ${VERSION})"
-        )
-        add_custom_target(
-            ansible-collection
-            DEPENDS "${ANSIBLE_COLLECTION_STAMP}"
-        )
+    get_property(_ROLE_STAMPS GLOBAL PROPERTY SSG_ANSIBLE_ROLE_STAMPS)
+    add_custom_command(
+        OUTPUT "${ANSIBLE_COLLECTION_STAMP}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}"
+            "${Python_EXECUTABLE}"
+            "${CMAKE_SOURCE_DIR}/utils/ansible_roles_to_collection.py"
+            --roles-dir "${ANSIBLE_ROLES_DIR}"
+            --output-dir "${ANSIBLE_COLLECTION_DIR}"
+            --version "${VERSION}"
+            --build
+        COMMAND "${CMAKE_COMMAND}" -E touch "${ANSIBLE_COLLECTION_STAMP}"
+        DEPENDS ${_ROLE_STAMPS}
+        COMMENT "Generating Ansible Collection from roles (version ${VERSION})"
+    )
+    add_custom_target(
+        ansible-collection
+        DEPENDS "${ANSIBLE_COLLECTION_STAMP}"
+    )
 
-        if(SSG_ANSIBLE_PLAYBOOKS_ENABLED)
-            install(
-                DIRECTORY "${ANSIBLE_COLLECTION_DIR}/ansible_collections/"
-                DESTINATION "${SSG_ANSIBLE_COLLECTION_INSTALL_DIR}"
-            )
-        endif()
+    if(SSG_ANSIBLE_ROLES_ENABLED)
+        install(
+            DIRECTORY "${ANSIBLE_COLLECTION_DIR}/ansible_collections/"
+            DESTINATION "${SSG_ANSIBLE_COLLECTION_INSTALL_DIR}"
+        )
     endif()
 endmacro()
 
@@ -886,10 +885,7 @@ macro(ssg_build_product PRODUCT)
 
         if(SSG_ANSIBLE_ROLES_ENABLED)
             ssg_build_ansible_roles(${PRODUCT})
-            add_dependencies(
-                ${PRODUCT}-content
-                generate-${PRODUCT}-ansible-roles
-            )
+            add_dependencies(${PRODUCT} generate-${PRODUCT}-ansible-roles)
         endif()
     endif()
 
