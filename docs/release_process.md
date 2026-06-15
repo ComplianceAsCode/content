@@ -404,7 +404,7 @@ After the roles are updated, the Ansible collection in the
 the latest content.
 
 Unlike the individual Ansible roles — which are synced to Galaxy from their GitHub repositories —
-the collection is published directly to Ansible Galaxy as a tarball via the Galaxy API.
+the collection is published as a tarball uploaded directly to Ansible Galaxy.
 
 ## Test the Collection Locally
 
@@ -428,35 +428,52 @@ grep -r "community\.general\.\|ansible\.posix\." \
     && echo FAIL || echo OK
 ```
 
-## Get the Required Tokens
-
-- Get an Ansible Galaxy API token by logging in with your Red Hat account:
-    - https://galaxy.ansible.com/ui/token/
-
-## Run the Ansible Collection Update Script
+## Build the Collection Tarball
 
 - The roles were already saved to `/tmp/ansible-roles` by the previous step. Run the following
-command to generate the collection and publish it to Ansible Galaxy:
+command to generate and build the collection tarball:
     ```bash
-    python utils/ansible_roles_to_collection.py \
+    python3 utils/ansible_roles_to_collection.py \
         --roles-dir /tmp/ansible-roles \
         --output-dir /tmp/ansible-collection \
-        --build \
-        --galaxy-token <galaxy_token>
+        --build
     ```
 
-This single command will:
+If roles for each RHEL major version were built and saved separately (e.g. by a downstream
+process that builds one product at a time), pass `--roles-dir` once per source directory and
+the script will merge them before bundling:
+    ```bash
+    python3 utils/ansible_roles_to_collection.py \
+        --roles-dir /tmp/ansible-roles-rhel8 \
+        --roles-dir /tmp/ansible-roles-rhel9 \
+        --roles-dir /tmp/ansible-roles-rhel10 \
+        --output-dir /tmp/ansible-collection \
+        --build
+    ```
+
+This will:
 1. Download and vendor modules from `community.general` and `ansible.posix`.
 2. Bundle all roles for the allowed products into the `redhatofficial.rhel_hardening_roles` collection.
 3. Build the collection tarball (e.g. `redhatofficial-rhel_hardening_roles-0.1.82.tar.gz`).
-4. Publish the tarball to Ansible Galaxy via the API.
 
 > **_NOTE:_** The collection version is read automatically from `CMakeLists.txt` at the
 > checked-out tag, so it will match the release version without needing to be specified manually.
 
+## Upload to Ansible Galaxy
+
+Upload the tarball manually through the Ansible Galaxy web interface:
+
+1. Log in to https://galaxy.ansible.com with your Red Hat account.
+2. Navigate to the `redhatofficial` namespace.
+3. Click **Import** and upload the generated `.tar.gz` file from `/tmp/ansible-collection/`.
+
+> **_NOTE:_** In the future this step can be automated by passing `--galaxy-token <token>` to
+> `ansible_roles_to_collection.py`, which will upload the tarball to Galaxy via the API without
+> requiring manual intervention.
+
 ## Verify the Collection in Ansible Galaxy
 
-- After the script completes, verify the new version is available in Ansible Galaxy:
+- After the upload completes, verify the new version is available in Ansible Galaxy:
     - https://galaxy.ansible.com/ui/repo/published/redhatofficial/rhel_hardening_roles/
 
 # Announce It!

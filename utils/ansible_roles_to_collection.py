@@ -18,6 +18,14 @@ Usage:
       [--community-general community-general-X.Y.Z.tar.gz] \\
       [--ansible-posix ansible-posix-X.Y.Z.tar.gz] \\
       [--build]
+
+  # Multiple --roles-dir flags merge roles from several builds before packaging:
+  python3 utils/ansible_roles_to_collection.py \\
+      --roles-dir /path/to/rhel8-roles \\
+      --roles-dir /path/to/rhel9-roles \\
+      --roles-dir /path/to/rhel10-roles \\
+      --output-dir /tmp/collection \\
+      [--build]
 """
 
 import argparse
@@ -94,10 +102,10 @@ COLLECTIONS_TO_VENDOR = [
     "ansible.posix",
 ]
 
-def detect_modules_to_bundle(roles_dir, collections_to_vendor):
+def detect_modules_to_bundle(roles_dirs, collections_to_vendor):
     """
-    Scan role YAML files and return which modules from each vendored collection
-    are actually referenced, so only the needed modules are downloaded and bundled.
+    Scan role YAML files across one or more role directories and return which
+    modules from each vendored collection are actually referenced.
 
     Returns a dict: {"community.general": ["ini_file", ...], "ansible.posix": [...]}
     """
@@ -109,24 +117,24 @@ def detect_modules_to_bundle(roles_dir, collections_to_vendor):
 
     found = {c: set() for c in collections_to_vendor}
 
-    for root, _dirs, files in os.walk(roles_dir):
-        for filename in files:
-            if not filename.endswith((".yml", ".yaml")):
-                continue
-            filepath = os.path.join(root, filename)
-            try:
-                with open(filepath, "r", encoding="utf-8") as f:
-                    content = f.read()
-            except (OSError, UnicodeDecodeError):
-                continue
-            for match in fqcn_re.finditer(content):
-                fqcn = match.group(0)
-                # split into collection (first two parts) and module name (rest)
-                parts = fqcn.split(".")
-                collection = ".".join(parts[:2])
-                module = ".".join(parts[2:])
-                if collection in found:
-                    found[collection].add(module)
+    for roles_dir in roles_dirs:
+        for root, _dirs, files in os.walk(roles_dir):
+            for filename in files:
+                if not filename.endswith((".yml", ".yaml")):
+                    continue
+                filepath = os.path.join(root, filename)
+                try:
+                    with open(filepath, "r", encoding="utf-8") as f:
+                        content = f.read()
+                except (OSError, UnicodeDecodeError):
+                    continue
+                for match in fqcn_re.finditer(content):
+                    fqcn = match.group(0)
+                    parts = fqcn.split(".")
+                    collection = ".".join(parts[:2])
+                    module = ".".join(parts[2:])
+                    if collection in found:
+                        found[collection].add(module)
 
     detected = {c: sorted(modules) for c, modules in found.items() if modules}
     for collection, modules in detected.items():
@@ -169,8 +177,11 @@ def parse_args():
     parser.add_argument(
         "--roles-dir", "-r",
         required=True,
-        dest="roles_dir",
-        help="Directory containing the Ansible roles (output of ansible_playbook_to_role.py)."
+        action="append",
+        dest="roles_dirs",
+        metavar="DIR",
+        help="Directory containing Ansible roles. May be specified multiple times to merge "
+             "roles from separate per-version builds before packaging."
     )
     parser.add_argument(
         "--output-dir", "-o",
@@ -410,32 +421,40 @@ def _remove_bundled_collection_deps(meta_path, bundled_collections):
         yaml.dump(meta, f, default_flow_style=False, allow_unicode=True)
 
 
-def copy_roles(roles_dir, collection_dir, bundled_collections):
+def copy_roles(roles_dirs, collection_dir, bundled_collections):
     """
-    Copy Ansible roles into the collection's roles/ directory.
+    Copy Ansible roles from one or more source directories into the collection's
+    roles/ directory. When the same role name appears in multiple source dirs the
+    first occurrence wins (dirs are processed in the order supplied).
 
     Also strips collection dependencies that are now vendored from each role's
     meta/main.yml.
     """
     roles_dest = os.path.join(collection_dir, "roles")
     roles_copied = []
-    for role_name in sorted(os.listdir(roles_dir)):
-        role_src = os.path.join(roles_dir, role_name)
-        if not os.path.isdir(role_src):
-            continue
-        # role names follow the pattern {product}_{profile}
-        product = role_name.split("_")[0]
-        profile = role_name[len(product) + 1:]
-        if product not in PRODUCT_ALLOWLIST or profile in PROFILE_DENYLIST:
-            continue
-        role_dest = os.path.join(roles_dest, role_name)
-        shutil.copytree(role_src, role_dest)
-        roles_copied.append(role_name)
+    seen = set()
+    for roles_dir in roles_dirs:
+        for role_name in sorted(os.listdir(roles_dir)):
+            role_src = os.path.join(roles_dir, role_name)
+            if not os.path.isdir(role_src):
+                continue
+            # role names follow the pattern {product}_{profile}
+            product = role_name.split("_")[0]
+            profile = role_name[len(product) + 1:]
+            if product not in PRODUCT_ALLOWLIST or profile in PROFILE_DENYLIST:
+                continue
+            if role_name in seen:
+                print(f"  Skipping duplicate role '{role_name}' from {roles_dir}")
+                continue
+            seen.add(role_name)
+            role_dest = os.path.join(roles_dest, role_name)
+            shutil.copytree(role_src, role_dest)
+            roles_copied.append(role_name)
 
-        # Remove vendored collection dependencies from role meta
-        meta_path = os.path.join(role_dest, "meta", "main.yml")
-        if os.path.isfile(meta_path):
-            _remove_bundled_collection_deps(meta_path, bundled_collections)
+            # Remove vendored collection dependencies from role meta
+            meta_path = os.path.join(role_dest, "meta", "main.yml")
+            if os.path.isfile(meta_path):
+                _remove_bundled_collection_deps(meta_path, bundled_collections)
 
     print(f"Copied {len(roles_copied)} roles into the collection.")
     return roles_copied
@@ -555,16 +574,17 @@ def build_collection_artifact(collection_dir, output_dir, namespace, collection_
 def main():
     args = parse_args()
 
-    if not os.path.isdir(args.roles_dir):
-        print(f"Error: roles directory '{args.roles_dir}' does not exist.", file=sys.stderr)
-        raise SystemExit(1)
+    for d in args.roles_dirs:
+        if not os.path.isdir(d):
+            print(f"Error: roles directory '{d}' does not exist.", file=sys.stderr)
+            raise SystemExit(1)
 
     os.makedirs(args.output_dir, exist_ok=True)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         # Auto-detect which modules from vendored collections are used in the roles
         print("Scanning roles for external module references...")
-        modules_to_bundle = detect_modules_to_bundle(args.roles_dir, COLLECTIONS_TO_VENDOR)
+        modules_to_bundle = detect_modules_to_bundle(args.roles_dirs, COLLECTIONS_TO_VENDOR)
 
         if not modules_to_bundle:
             print("No external modules detected — skipping vendoring step.")
@@ -611,7 +631,7 @@ def main():
         )
 
         # Copy roles (also strips vendored deps from meta)
-        roles = copy_roles(args.roles_dir, collection_dir, list(modules_to_bundle.keys()))
+        roles = copy_roles(args.roles_dirs, collection_dir, list(modules_to_bundle.keys()))
 
         # Copy vendored modules into plugins/modules/
         bundle_modules(extracted_modules, collection_dir)
