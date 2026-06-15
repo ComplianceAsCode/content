@@ -240,6 +240,29 @@ def parse_args():
         metavar="URL",
         help="Ansible Galaxy server URL. Defaults to https://galaxy.ansible.com/."
     )
+    parser.add_argument(
+        "--description",
+        default=COLLECTION_DESCRIPTION,
+        help="Collection description written into galaxy.yml."
+    )
+    parser.add_argument(
+        "--documentation",
+        default=None,
+        metavar="URL",
+        help="Documentation URL written into galaxy.yml."
+    )
+    parser.add_argument(
+        "--homepage",
+        default=COLLECTION_HOMEPAGE,
+        metavar="URL",
+        help=f"Collection homepage URL. Defaults to '{COLLECTION_HOMEPAGE}'."
+    )
+    parser.add_argument(
+        "--issues",
+        default=COLLECTION_ISSUES,
+        metavar="URL",
+        help=f"Issue tracker URL. Defaults to '{COLLECTION_ISSUES}'."
+    )
     return parser.parse_args()
 
 
@@ -313,7 +336,11 @@ def create_collection_dirs(output_dir, namespace, collection_name):
     return collection_dir
 
 
-def generate_galaxy_yml(collection_dir, namespace, collection_name, version):
+def generate_galaxy_yml(
+    collection_dir, namespace, collection_name, version,
+    description=COLLECTION_DESCRIPTION, documentation=None,
+    homepage=COLLECTION_HOMEPAGE, issues=COLLECTION_ISSUES,
+):
     """Write the galaxy.yml manifest for the collection."""
     galaxy_data = {
         "namespace": namespace,
@@ -321,14 +348,16 @@ def generate_galaxy_yml(collection_dir, namespace, collection_name, version):
         "version": version,
         "readme": "README.md",
         "authors": COLLECTION_AUTHORS,
-        "description": COLLECTION_DESCRIPTION,
+        "description": description,
         "license": COLLECTION_LICENSE,
         "tags": COLLECTION_TAGS,
         "repository": COLLECTION_REPOSITORY,
-        "homepage": COLLECTION_HOMEPAGE,
-        "issues": COLLECTION_ISSUES,
+        "homepage": homepage,
+        "issues": issues,
         "build_ignore": [],
     }
+    if documentation:
+        galaxy_data["documentation"] = documentation
     galaxy_yml_path = os.path.join(collection_dir, "galaxy.yml")
     with open(galaxy_yml_path, "w", encoding="utf-8") as f:
         yaml.dump(galaxy_data, f, default_flow_style=False, allow_unicode=True)
@@ -594,7 +623,11 @@ def main():
 
         # Generate collection metadata
         generate_galaxy_yml(
-            collection_dir, args.namespace, args.collection, args.version
+            collection_dir, args.namespace, args.collection, args.version,
+            description=args.description,
+            documentation=args.documentation,
+            homepage=args.homepage,
+            issues=args.issues,
         )
         generate_readme(collection_dir, args.namespace, args.collection, roles)
 

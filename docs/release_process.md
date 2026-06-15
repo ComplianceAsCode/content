@@ -408,20 +408,25 @@ the collection is published directly to Ansible Galaxy as a tarball via the Gala
 
 ## Test the Collection Locally
 
-Before publishing, you can verify the full build-and-package pipeline locally using the test script:
+Before publishing, verify the full pipeline locally:
 
 ```bash
-utils/test_ansible_collection.sh [OUTPUT_DIR] [PRODUCT] [NAMESPACE]
+# 1. Build the data stream and generate Ansible roles for a product
+ADDITIONAL_CMAKE_OPTIONS="-DSSG_ANSIBLE_ROLES_ENABLED=TRUE" \
+    ./build_product rhel9 --datastream
+ninja -C build generate-rhel9-ansible-roles
+
+# 2. Generate and build the collection
+python3 utils/ansible_roles_to_collection.py \
+    --roles-dir build/ansible_roles \
+    --output-dir /tmp/test-collection \
+    --build
+
+# 3. Verify no unrewritten FQCNs remain in the bundled roles
+grep -r "community\.general\.\|ansible\.posix\." \
+    /tmp/test-collection/ansible_collections/redhatofficial/rhel_hardening_roles/roles/ \
+    && echo FAIL || echo OK
 ```
-
-For example, to build a rhel9 collection into `/tmp/test-collection`:
-
-```bash
-utils/test_ansible_collection.sh /tmp/test-collection rhel9 redhatofficial
-```
-
-The script builds the data stream, generates Ansible roles, creates the collection, and checks
-that no unrewritten `community.general` or `ansible.posix` FQCNs remain in the bundled roles.
 
 ## Get the Required Tokens
 
