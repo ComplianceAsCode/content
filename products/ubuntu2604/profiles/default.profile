@@ -9,3 +9,4 @@ description: |-
 
 selections:
     - installed_OS_is_vendor_supported
+    - ufw_rules_for_open_ports
