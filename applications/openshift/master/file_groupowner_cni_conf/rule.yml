@@ -5,7 +5,12 @@ platform: ocp4-node
 
 title: 'Verify Group Who Owns The OpenShift Container Network Interface Files'
 
-description: '{{{ describe_file_group_owner(file="/etc/cni/net.d/*", group="root") }}}'
+description: |-
+    {{{ describe_file_group_owner(file="/etc/cni/net.d/*", group="root") }}}
+    This also covers CNI configuration files under <tt>/etc/kubernetes/cni/net.d/</tt>,
+    which is the CRI-O network configuration directory (<tt>network_dir</tt>) used by
+    OpenShift; on newer releases <tt>/etc/cni/net.d/</tt> may be absent and the active
+    configuration lives only under <tt>/etc/kubernetes/cni/net.d/</tt>.
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -31,6 +36,6 @@ ocil: |-
 template:
     name: file_groupowner
     vars:
-        filepath: ^/etc/cni/net.d/.*$
+        filepath: ^/etc/(kubernetes/)?cni/net.d/.*\.(conf|conflist|json)$
         gid_or_name: '0'
         filepath_is_regex: "true"
