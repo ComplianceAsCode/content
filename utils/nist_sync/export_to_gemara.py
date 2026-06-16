@@ -405,7 +405,13 @@ def main():
 
     # GuidanceCatalog — generated once, platform-independent
     guidance_stats = None
-    if include_guidance and oscal_catalog:
+    if include_guidance and not oscal_catalog:
+        print("\n[guidance_catalog]")
+        print("  [SKIP] OSCAL catalog not available — guidance_catalog.yaml not generated")
+        print("         To generate it, download the OSCAL data first:")
+        print("           python3 utils/nist_sync/download_oscal.py")
+        print(f"         Expected at: {args.oscal_catalog}")
+    elif include_guidance and oscal_catalog:
         print("\n[guidance_catalog]")
         try:
             guidance_stats = export_guidance(
