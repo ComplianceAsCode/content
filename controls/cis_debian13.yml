@@ -65,7 +65,7 @@ controls:
       status: automated
 
     - id: 1.1.1.6
-      title: Ensure overlayfs kernel module is not available (Automated)
+      title: Ensure overlay kernel module is not available (Automated)
       levels:
           - l2_server
           - l2_workstation
@@ -78,7 +78,7 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      related_rules:
+      rules:
           - kernel_module_squashfs_disabled
       status: automated
 
@@ -117,7 +117,7 @@ controls:
       status: manual
 
     - id: 1.1.2.1.1
-      title: Ensure /tmp is a separate partition (Automated)
+      title: Ensure /tmp is tmpfs or a separate partition (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -363,8 +363,7 @@ controls:
           - l2_server
           - l2_workstation
       rules:
-          - apt_conf_disable_recommends
-          - apt_conf_disable_suggests
+          - apt_disable_weak_dependencies
       status: automated
 
     - id: 1.2.1.3
@@ -372,66 +371,80 @@ controls:
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Needs a new Debian-specific rule for GPG key file access checks.
-          Check if all .gpg key files in /usr/share/keyrings/ and /etc/apt/trusted.gpg.d have permissions 0644 and owned by root:root
-          Check if .list and .sources in /etc/apt/sources.list.d have permissions 0644 and owned by root:root and include option signed-by
+      rules:
+          - file_groupowner_apt_gpg_keys
+          - file_groupowner_apt_sources_list_d
+          - file_owner_apt_gpg_keys
+          - file_owner_apt_sources_list_d
+          - file_permissions_apt_gpg_keys
+          - file_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.1.4
       title: Ensure access to /etc/apt/trusted.gpg.d directory is configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Needs a new Debian-specific rule for /etc/apt/trusted.gpg.d directory access checks.
-          Check if /etc/apt/trusted.gpg.d has permissions 0755 and owned by root:root
+      rules:
+          - directory_groupowner_apt_trusted_gpg_d
+          - directory_owner_apt_trusted_gpg_d
+          - directory_permissions_apt_trusted_gpg_d
+      status: automated
 
     - id: 1.2.1.5
       title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Check if /etc/apt/auth.conf.d has permissions 0755 and owned by root:root
+      rules:
+          - directory_groupowner_apt_auth_conf_d
+          - directory_owner_apt_auth_conf_d
+          - directory_permissions_apt_auth_conf_d
+      status: automated
 
     - id: 1.2.1.6
       title: Ensure access to files in the /etc/apt/auth.conf.d/ directory is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          Check if /etc/apt/auth.conf.d/* has permissions 0755 and owned by root:root
+      rules:
+          - file_groupowner_apt_auth_conf_d
+          - file_owner_apt_auth_conf_d
+          - file_permissions_apt_auth_conf_d
+      status: automated
 
     - id: 1.2.1.7
       title: Ensure access to /usr/share/keyrings directory is configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Check if /usr/share/keyrings has permissions 0755 and owned by root:root
+      rules:
+          - directory_groupowner_usr_share_keyrings
+          - directory_owner_usr_share_keyrings
+          - directory_permissions_usr_share_keyrings
+      status: automated
 
     - id: 1.2.1.8
       title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Check if /etc/apt/sources.list.d has permissions 0755 and owned by root:root
+      rules:
+          - directory_groupowner_apt_sources_list_d
+          - directory_owner_apt_sources_list_d
+          - directory_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.1.9
       title: Ensure access to files in /etc/apt/sources.list.d are configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Check if /etc/apt/sources.list.d/* has permissions 0755 and owned by root:root
+      rules:
+          - file_groupowner_apt_sources_list_d
+          - file_owner_apt_sources_list_d
+          - file_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.2.1
       title: Ensure updates, patches, and additional security software are installed (Manual)
@@ -479,9 +492,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          Check if sysctl kernel.apparmor_restrict_unprivileged_unconfined = 1
+      rules:
+          - sysctl_kernel_apparmor_restrict_unprivileged_unconfined
+      status: automated
 
     - id: 1.4.1
       title: Ensure bootloader password is set (Automated)
@@ -521,6 +534,8 @@ controls:
           - sysctl_fs_protected_symlinks
       status: automated
 
+    # Note: CIS Debian 13 v1.0.0 appears to duplicate kernel.yama.ptrace_scope
+    # in both 1.5.3 and 1.5.10. Keeping both IDs for traceability to the benchmark.
     - id: 1.5.3
       title: Ensure kernel.yama.ptrace_scope is configured (Automated)
       levels:
@@ -555,7 +570,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - disable_prelink
+          - package_prelink_removed
       status: automated
 
     - id: 1.5.7
@@ -563,10 +578,9 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
-      notes: |-
-          Check if systemctl is-active apport.service , fail if it's active
-          Check if apport is installed , if it's not installed pass
+      rules:
+          - service_apport_disabled
+      status: automated
 
     - id: 1.5.8
       title: Ensure kernel.kptr_restrict is configured (Automated)
@@ -603,6 +617,7 @@ controls:
           - l1_workstation
       rules:
           - disable_users_coredumps
+      status: automated
 
     - id: 1.5.12
       title: Ensure systemd-coredump ProcessSizeMax is configured (Automated)
@@ -628,8 +643,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - banner_etc_motd_cis
           - cis_banner_text=cis
+          - banner_etc_motd_cis
       status: automated
 
     - id: 1.6.2
@@ -699,7 +714,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - login_banner_text=cis_default
+          - dconf_login_banner_text=cis_default
+          - dconf_login_banner_contents=cis_default
           - dconf_gnome_banner_enabled
           - dconf_gnome_login_banner_text
       status: automated
@@ -807,7 +823,9 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      rules:
+          - xwayland_disabled
+      status: automated
 
     - id: 2.1.1
       title: Ensure autofs services are not in use (Automated)
