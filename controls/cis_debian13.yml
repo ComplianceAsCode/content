@@ -835,9 +835,10 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_dhcp_removed
-          - service_dhcpd_disabled
-          - service_dhcpd6_disabled
+          - package_kea_removed
+          - service_kea_dhcp4_server_disabled
+          - service_kea_dhcp6_server_disabled
+          - service_kea_dhcp_ddns_server_disabled
       status: automated
 
     - id: 2.1.4
@@ -966,13 +967,9 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - package_telnet-server_removed
-          - service_telnet_disabled
+          - package_inetutils-telnetd_removed
+          - package_telnetd_removed
       status: automated
-      notes: |
-          Although the CIS guide does not prohibit the use of telnetd-ssl, this
-          check will fail when telnetd-ssl is used because it falls back to an
-          unencrypted (non-SSL) mode when the peer does not support SSL.
 
     - id: 2.1.17
       title: Ensure tftp server services are not in use (Automated)
@@ -1025,7 +1022,7 @@ controls:
       status: automated
 
     - id: 2.1.22
-      title: Ensure mail transfer agent are configured for local-only mode (Automated)
+      title: Ensure mail transfer agents are configured for local-only mode (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1043,7 +1040,7 @@ controls:
       status: manual
 
     - id: 2.2.1
-      title: Ensure nis Client is not installed (Automated)
+      title: Ensure nis client is not installed (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1188,7 +1185,6 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - file_cron_allow_exists
           - file_groupowner_crontab
           - file_owner_crontab
           - file_permissions_crontab
@@ -1243,10 +1239,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - file_groupowner_cron_yearly
+          - file_owner_cron_yearly
+          - file_permissions_cron_yearly
+      status: automated
 
     - id: 2.4.1.8
-      title: Ensure permissions on /etc/cron.d are configured (Automated)
+      title: Ensure access to /etc/cron.d is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1262,6 +1262,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
+          - file_cron_allow_exists
           - file_cron_deny_not_exist
           - file_groupowner_cron_allow
           - file_owner_cron_allow
@@ -1310,24 +1311,28 @@ controls:
       status: automated
 
     - id: 3.2.1
-      title: Ensure atm kernel module is not available
+      title: Ensure atm kernel module is not available (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - kernel_module_atm_disabled
+      status: automated
 
     - id: 3.2.2
-      title: Ensure can kernel module is not available
+      title: Ensure can kernel module is not available (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - kernel_module_can_disabled
+      status: automated
 
     - id: 3.2.3
       title: Ensure dccp kernel module is not available (Automated)
       levels:
-          - l2_server
-          - l2_workstation
+          - l1_server
+          - l1_workstation
       rules:
           - kernel_module_dccp_disabled
       status: automated
@@ -1335,8 +1340,8 @@ controls:
     - id: 3.2.4
       title: Ensure rds kernel module is not available (Automated)
       levels:
-          - l2_server
-          - l2_workstation
+          - l1_server
+          - l1_workstation
       rules:
           - kernel_module_rds_disabled
       status: automated
@@ -1344,8 +1349,8 @@ controls:
     - id: 3.2.5
       title: Ensure sctp kernel module is not available (Automated)
       levels:
-          - l2_server
-          - l2_workstation
+          - l1_server
+          - l1_workstation
       rules:
           - kernel_module_sctp_disabled
       status: automated
@@ -1353,8 +1358,8 @@ controls:
     - id: 3.2.6
       title: Ensure tipc kernel module is not available (Automated)
       levels:
-          - l2_server
-          - l2_workstation
+          - l1_server
+          - l1_workstation
       rules:
           - kernel_module_tipc_disabled
       status: automated
@@ -1373,175 +1378,235 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_forwarding
+      status: automated
 
     - id: 3.3.1.3
       title: Ensure net.ipv4.conf.default.forwarding is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_forwarding
+      status: automated
 
     - id: 3.3.1.4
-      title: Ensure net.ipv4.conf.all.send_redirects is configured
+      title: Ensure net.ipv4.conf.all.send_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_send_redirects
+      status: automated
 
     - id: 3.3.1.5
       title: Ensure net.ipv4.conf.default.send_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_send_redirects
+      status: automated
 
     - id: 3.3.1.6
       title: Ensure net.ipv4.icmp_ignore_bogus_error_responses is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      status: automated
 
     - id: 3.3.1.7
       title: Ensure net.ipv4.icmp_echo_ignore_broadcasts is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      status: automated
 
     - id: 3.3.1.8
       title: Ensure net.ipv4.conf.all.accept_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_redirects
+      status: automated
 
     - id: 3.3.1.9
       title: Ensure net.ipv4.conf.default.accept_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_accept_redirects
+      status: automated
 
     - id: 3.3.1.10
       title: Ensure net.ipv4.conf.all.secure_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_secure_redirects
+      status: automated
 
     - id: 3.3.1.11
       title: Ensure net.ipv4.conf.default.secure_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_secure_redirects
+      status: automated
 
     - id: 3.3.1.12
       title: Ensure net.ipv4.conf.all.rp_filter is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_rp_filter
+      status: automated
 
     - id: 3.3.1.13
       title: Ensure net.ipv4.conf.default.rp_filter is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_rp_filter
+      status: automated
 
     - id: 3.3.1.14
       title: Ensure net.ipv4.conf.all.accept_source_route is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_source_route
+      status: automated
 
     - id: 3.3.1.15
       title: Ensure net.ipv4.conf.default.accept_source_route is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_accept_source_route
+      status: automated
 
     - id: 3.3.1.16
       title: Ensure net.ipv4.conf.all.log_martians is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_log_martians
+          - sysctl_reapply_after_network
+      status: automated
+      notes: |-
+          On Debian 13, the kernel resets network sysctl values when interfaces
+          come up, overriding the early-boot configuration applied by
+          systemd-sysctl.service. sysctl_reapply_after_network creates a oneshot
+          service that re-applies all sysctl settings after networking is up,
+          ensuring the hardened values persist at runtime.
 
     - id: 3.3.1.17
       title: Ensure net.ipv4.conf.default.log_martians is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_log_martians
+          - sysctl_reapply_after_network
+      status: automated
+      notes: |-
+          See notes for 3.3.1.16.
 
     - id: 3.3.1.18
       title: Ensure net.ipv4.tcp_syncookies is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv4_tcp_syncookies
+      status: automated
 
     - id: 3.3.2.1
       title: Ensure net.ipv6.conf.all.forwarding is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_all_forwarding
+      status: automated
 
     - id: 3.3.2.2
       title: Ensure net.ipv6.conf.default.forwarding is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_default_forwarding
+      status: automated
 
     - id: 3.3.2.3
       title: Ensure net.ipv6.conf.all.accept_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_redirects
+      status: automated
 
     - id: 3.3.2.4
       title: Ensure net.ipv6.conf.default.accept_redirects is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_redirects
+      status: automated
 
     - id: 3.3.2.5
       title: Ensure net.ipv6.conf.all.accept_source_route is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_source_route
+      status: automated
 
     - id: 3.3.2.6
       title: Ensure net.ipv6.conf.default.accept_source_route is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_source_route
+      status: automated
 
     - id: 3.3.2.7
       title: Ensure net.ipv6.conf.all.accept_ra is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_ra
+      status: automated
 
     - id: 3.3.2.8
       title: Ensure net.ipv6.conf.default.accept_ra is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_ra
+      status: automated
 
     - id: 4.1.1
       title: Ensure ufw is installed (Automated)
@@ -1550,11 +1615,6 @@ controls:
           - l1_workstation
       rules:
           - package_ufw_installed
-          - package_iptables-persistent_removed
-          - firewall_single_service_active
-          - var_network_filtering_service=ufw
-          - check_ufw_active
-          - service_ufw_enabled
       status: automated
 
     - id: 4.1.2
@@ -1562,28 +1622,38 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - check_ufw_active
+          - service_ufw_enabled
+      status: automated
 
     - id: 4.1.3
       title: Ensure ufw incoming default is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - ufw_default_incoming_rule
+      status: automated
 
     - id: 4.1.4
       title: Ensure ufw outgoing default is configured (Automated)
       levels:
-          - l1_server
-          - l1_workstation
-      status: pending
+          - l2_server
+          - l2_workstation
+      rules:
+          - ufw_default_outgoing_rule
+      status: automated
 
     - id: 4.1.5
       title: Ensure ufw routed default is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - ufw_disabled_routed
+      status: automated
+
 
     - id: 5.1.1
       title: Ensure access_to /etc/ssh/sshd_config is configured (Automated)
