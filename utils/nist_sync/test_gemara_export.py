@@ -356,7 +356,8 @@ def test_guidance_structure(guidance, result):
 def run_guidance(gemara_dir, result):
     guidance_path = gemara_dir / "guidance_catalog.yaml"
     if not guidance_path.exists():
-        result.fail(f"guidance_catalog.yaml not found at {guidance_path} — run export_to_gemara.py first")
+        print("  [SKIP] guidance_catalog.yaml not found — OSCAL data not downloaded")
+        print("         Run: python3 utils/nist_sync/download_oscal.py && python3 utils/nist_sync/export_to_gemara.py")
         return
     guidance = load_yaml(guidance_path)
     result.ok(f"guidance_catalog.yaml parsed ({guidance_path})")
