@@ -41,6 +41,7 @@ set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 # Define Install Directories, where built content will be stored.
 set(SSG_ANSIBLE_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/ansible")
 set(SSG_ANSIBLE_PER_RULE_PLAYBOOKS_INSTALL_DIR "${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks")
+set(SSG_ANSIBLE_COLLECTION_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/ansible/collections")
 set(SSG_BASH_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/bash")
 set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
 set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")
@@ -58,6 +59,8 @@ set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
 # Content Generation Opetions
 option(SSG_ANSIBLE_PLAYBOOKS_ENABLED "If enabled, Ansible Playbooks for each profile will be built and installed." TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for each rule will be built and installed." FALSE)
+cmake_dependent_option(SSG_ANSIBLE_ROLES_ENABLED "If enabled, Ansible Roles will be built." FALSE "SSG_ANSIBLE_PLAYBOOKS_ENABLED" FALSE)
+cmake_dependent_option(SSG_ANSIBLE_COLLECTION_ENABLED "If enabled, an Ansible Collection bundling all built roles will be generated." FALSE "SSG_ANSIBLE_ROLES_ENABLED" FALSE)
 option(SSG_BASH_SCRIPTS_ENABLED "If enabled, Bash remediation scripts for each profile will be built and installed." TRUE)
 option(SSG_BUILD_DISA_DELTA_FILES "If enabled, If the product has automated content from DISA for its STIG a tailoring file will be created with rules not covered by DISA's content enabled." TRUE)
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
@@ -274,6 +277,8 @@ message(STATUS "SSG vendor string: ${SSG_VENDOR}")
 message(STATUS "Logging: ${SSG_LOG}")
 message(STATUS "Ansible Playbooks: ${SSG_ANSIBLE_PLAYBOOKS_ENABLED}")
 message(STATUS "Ansible Playbooks Per Rule: ${SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED}")
+message(STATUS "Ansible Roles: ${SSG_ANSIBLE_ROLES_ENABLED}")
+message(STATUS "Ansible Collection: ${SSG_ANSIBLE_COLLECTION_ENABLED}")
 message(STATUS "Bash scripts: ${SSG_BASH_SCRIPTS_ENABLED}")
 message(STATUS "Build SCE Content: ${SSG_SCE_ENABLED}")
 message(STATUS "Build SRG XLSX Export: ${SSG_SRG_XLSX_EXPORT}")
@@ -497,6 +502,10 @@ endif()
 # ZIP only contains source datastreams and kickstarts.
 # People who want sources to build from should get the tarball instead.
 ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+
+if(SSG_ANSIBLE_COLLECTION_ENABLED)
+    ssg_build_ansible_collection("${SSG_VERSION}")
+endif()
 
 ssg_define_guide_and_table_tests()
 

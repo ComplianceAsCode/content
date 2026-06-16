@@ -344,9 +344,15 @@ updated to reflect the latest content.
 
 ## Run the Ansible Role Update Script
 
-- Run the following command to update the Ansible roles, replacing the token with your GitHub token:
+- Run the following command to update the Ansible roles, replacing the token with your GitHub token.
+  Pass `--local-roles-dir` to also save the roles locally — they will be used in the collection
+  generation step below without needing to run this script a second time:
     ```bash
-    python utils/ansible_playbook_to_role.py --build-playbooks-dir <unzipped built ansible playbooks dir> --token <github_dev_token> --tag-release
+    python utils/ansible_playbook_to_role.py \
+        --build-playbooks-dir <unzipped built ansible playbooks dir> \
+        --token <github_dev_token> \
+        --local-roles-dir /tmp/ansible-roles \
+        --tag-release
     ```
 
 > **_NOTE:_** It is also possible to use a GitHub user/password combination if the token is not
@@ -390,6 +396,85 @@ Ansible Galaxy.
 - It usually takes some time until all the roles are refreshed in Galaxy.
 - You can follow the import progress here:
     - https://galaxy.ansible.com/ui/standalone/imports/
+
+# Update Ansible Collection in Galaxy
+
+After the roles are updated, the Ansible collection in the
+[ComplianceAsCode](https://github.com/ComplianceAsCode/) organization should be updated to reflect
+the latest content.
+
+Unlike the individual Ansible roles — which are synced to Galaxy from their GitHub repositories —
+the collection is published as a tarball uploaded directly to Ansible Galaxy.
+
+## Test the Collection Locally
+
+Before publishing, verify the full pipeline locally:
+
+```bash
+# 1. Build the data stream and generate Ansible roles for a product
+ADDITIONAL_CMAKE_OPTIONS="-DSSG_ANSIBLE_ROLES_ENABLED=TRUE" \
+    ./build_product rhel9 --datastream
+ninja -C build generate-rhel9-ansible-roles
+
+# 2. Generate and build the collection
+python3 utils/ansible_roles_to_collection.py \
+    --roles-dir build/ansible_roles \
+    --output-dir /tmp/test-collection \
+    --build
+
+# 3. Verify no unrewritten FQCNs remain in the bundled roles
+grep -r "community\.general\.\|ansible\.posix\." \
+    /tmp/test-collection/ansible_collections/redhatofficial/rhel_hardening_roles/roles/ \
+    && echo FAIL || echo OK
+```
+
+## Build the Collection Tarball
+
+- The roles were already saved to `/tmp/ansible-roles` by the previous step. Run the following
+command to generate and build the collection tarball:
+    ```bash
+    python3 utils/ansible_roles_to_collection.py \
+        --roles-dir /tmp/ansible-roles \
+        --output-dir /tmp/ansible-collection \
+        --build
+    ```
+
+If roles for each RHEL major version were built and saved separately (e.g. by a downstream
+process that builds one product at a time), pass `--roles-dir` once per source directory and
+the script will merge them before bundling:
+    ```bash
+    python3 utils/ansible_roles_to_collection.py \
+        --roles-dir /tmp/ansible-roles-rhel8 \
+        --roles-dir /tmp/ansible-roles-rhel9 \
+        --roles-dir /tmp/ansible-roles-rhel10 \
+        --output-dir /tmp/ansible-collection \
+        --build
+    ```
+
+This will:
+1. Download and vendor modules from `community.general` and `ansible.posix`.
+2. Bundle all roles for the allowed products into the `redhatofficial.rhel_hardening_roles` collection.
+3. Build the collection tarball (e.g. `redhatofficial-rhel_hardening_roles-0.1.82.tar.gz`).
+
+> **_NOTE:_** The collection version is read automatically from `CMakeLists.txt` at the
+> checked-out tag, so it will match the release version without needing to be specified manually.
+
+## Upload to Ansible Galaxy
+
+Upload the tarball manually through the Ansible Galaxy web interface:
+
+1. Log in to https://galaxy.ansible.com with your Red Hat account.
+2. Navigate to the `redhatofficial` namespace.
+3. Click **Import** and upload the generated `.tar.gz` file from `/tmp/ansible-collection/`.
+
+> **_NOTE:_** In the future this step can be automated by passing `--galaxy-token <token>` to
+> `ansible_roles_to_collection.py`, which will upload the tarball to Galaxy via the API without
+> requiring manual intervention.
+
+## Verify the Collection in Ansible Galaxy
+
+- After the upload completes, verify the new version is available in Ansible Galaxy:
+    - https://galaxy.ansible.com/ui/repo/published/redhatofficial/rhel_hardening_roles/
 
 # Announce It!
 

@@ -257,6 +257,55 @@ macro(ssg_build_ansible_playbooks PRODUCT)
     endif()
 endmacro()
 
+macro(ssg_build_ansible_roles PRODUCT)
+    set(ANSIBLE_ROLES_DIR "${CMAKE_BINARY_DIR}/ansible_roles")
+    set(_ROLES_STAMP "${ANSIBLE_ROLES_DIR}/ansible_roles-${PRODUCT}")
+    add_custom_command(
+        OUTPUT "${_ROLES_STAMP}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" --dry-run "${ANSIBLE_ROLES_DIR}" --product "${PRODUCT}" --build-playbooks-dir "${CMAKE_BINARY_DIR}/ansible"
+        COMMAND "${CMAKE_COMMAND}" -E touch "${_ROLES_STAMP}"
+        DEPENDS generate-all-profile-playbooks-${PRODUCT} "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
+        COMMENT "[${PRODUCT}-content] Generating Ansible Roles"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-ansible-roles
+        DEPENDS "${_ROLES_STAMP}"
+    )
+    set_property(GLOBAL APPEND PROPERTY SSG_ANSIBLE_ROLE_STAMPS "${_ROLES_STAMP}")
+endmacro()
+
+macro(ssg_build_ansible_collection VERSION)
+    set(ANSIBLE_ROLES_DIR "${CMAKE_BINARY_DIR}/ansible_roles")
+    set(ANSIBLE_COLLECTION_DIR "${CMAKE_BINARY_DIR}/ansible_collection")
+    set(ANSIBLE_COLLECTION_STAMP "${ANSIBLE_COLLECTION_DIR}/collection-${VERSION}")
+
+    get_property(_ROLE_STAMPS GLOBAL PROPERTY SSG_ANSIBLE_ROLE_STAMPS)
+    add_custom_command(
+        OUTPUT "${ANSIBLE_COLLECTION_STAMP}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}"
+            "${Python_EXECUTABLE}"
+            "${CMAKE_SOURCE_DIR}/utils/ansible_roles_to_collection.py"
+            --roles-dir "${ANSIBLE_ROLES_DIR}"
+            --output-dir "${ANSIBLE_COLLECTION_DIR}"
+            --version "${VERSION}"
+            --build
+        COMMAND "${CMAKE_COMMAND}" -E touch "${ANSIBLE_COLLECTION_STAMP}"
+        DEPENDS ${_ROLE_STAMPS}
+        COMMENT "Generating Ansible Collection from roles (version ${VERSION})"
+    )
+    add_custom_target(
+        ansible-collection
+        DEPENDS "${ANSIBLE_COLLECTION_STAMP}"
+    )
+
+    if(SSG_ANSIBLE_ROLES_ENABLED)
+        install(
+            DIRECTORY "${ANSIBLE_COLLECTION_DIR}/ansible_collections/"
+            DESTINATION "${SSG_ANSIBLE_COLLECTION_INSTALL_DIR}"
+        )
+    endif()
+endmacro()
+
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (${PRODUCT_REMEDIATION_LANGUAGES})...")
 
@@ -833,7 +882,13 @@ macro(ssg_build_product PRODUCT)
         )
         add_dependencies(${PRODUCT} ${PRODUCT}-profile-playbooks)
         add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
+
+        if(SSG_ANSIBLE_ROLES_ENABLED)
+            ssg_build_ansible_roles(${PRODUCT})
+            add_dependencies(${PRODUCT} generate-${PRODUCT}-ansible-roles)
+        endif()
     endif()
+
 
     if("${PRODUCT_BASH_REMEDIATION_ENABLED}" AND SSG_BASH_SCRIPTS_ENABLED)
         ssg_build_profile_bash_scripts(${PRODUCT})
