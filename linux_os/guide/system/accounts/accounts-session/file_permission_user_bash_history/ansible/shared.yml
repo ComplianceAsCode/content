@@ -26,3 +26,4 @@
   when:
     - item.stat is defined
     - item.stat.exists
+    - not item.stat.islink
