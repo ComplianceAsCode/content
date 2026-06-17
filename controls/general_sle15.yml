@@ -1041,6 +1041,14 @@ controls:
       rules:
           - kernel_module_sctp_disabled
 
+    - id: SLES-15-450300075
+      title: Disable IPv6 Support
+      levels:
+          - medium
+      status: automated
+      rules:
+          - grub2_ipv6_disable_argument
+
     - id: SLES-15-450450015
       title: Disable IP forwarding
       levels:
