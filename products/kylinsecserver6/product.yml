@@ -1,0 +1,30 @@
+product: kylinsecserver6
+full_name: KylinSec Server 6
+type: platform
+
+benchmark_id: KYLINSECSERVER6
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+pkg_manager_config_file: "/etc/yum.conf"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - kylinsecserver6-sp1:
+      name: "cpe:/o:KylinSec:KylinSecOS:6:SP1:ga:server"
+      title: "KylinSec OS 6 SP1"
+      check_id: installed_OS_is_kylinsecserver6
+
+  - kylinsecserver6-sp2:
+      name: "cpe:/o:KylinSec:KylinSecOS:6:SP2:ga:server"
+      title: "KylinSec OS 6 SP2"
+      check_id: installed_OS_is_kylinsecserver6
+
+  - kylinsecserver6-sp3:
+      name: "cpe:/o:KylinSec:KylinSecOS:6:SP3:ga:server"
+      title: "KylinSec OS 6 SP3"
+      check_id: installed_OS_is_kylinsecserver6
