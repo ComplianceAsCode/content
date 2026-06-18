@@ -111,9 +111,9 @@ fixtext: |-
     To encrypt an entire partition, dedicate a partition for encryption in the partition layout.
 
     {{% if "slmicro" in product %}}
-    The standard partitioning proposal as suggested by YaST (installation and configuration tool for Linux) does not include an encrypted 
+    The standard partitioning proposal as suggested by YaST (installation and configuration tool for Linux) does not include an encrypted
     partition by default. Add it manually in the partitioning dialog.
-    
+
     The following set of commands will switch {{{ full_name }}} to work in FIPS mode:
     <pre>$ sudo transactional-update pkg install -t pattern microos-fips</pre>
     <pre>$ sudo reboot</pre>
@@ -143,19 +143,19 @@ checktext: |-
     /dev/sda2: "UUID=f5b8a790-14cb-4b82-882d-707d52f27765" TYPE="crypto_LUKS"
     /dev/sda3: "UUID=f2d86128-f975-478d-a5b0-25806c900eac" TYPE="crypto_LUKS"
 
-    Every persistent disk partition present must be of type "crypto_LUKS". 
-    If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) or temporary file systems (that are tmpfs) 
-    are not type "crypto_LUKS", ask the administrator to indicate how the partitions are encrypted. 
+    Every persistent disk partition present must be of type "crypto_LUKS".
+    If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) or temporary file systems (that are tmpfs)
+    are not type "crypto_LUKS", ask the administrator to indicate how the partitions are encrypted.
     If there is no evidence that these partitions are encrypted, this is a finding.
 
     <pre>$ sudo more /etc/cryptab</pre>
     <br /><br />
-    Output will be similar to:    
+    Output will be similar to:
     cr_root UUID=26d4a101-7f48-4394-b730-56dc00e65f64
     cr_home UUID=f5b8a790-14cb-4b82-882d-707d52f27765
-    cr_swap UUID=f2d86128-f975-478d-a5b0-25806c900eac    
-    
-    Every persistent disk partition present on the system must have an entry in the /etc/crypttab file. 
+    cr_swap UUID=f2d86128-f975-478d-a5b0-25806c900eac
+
+    Every persistent disk partition present on the system must have an entry in the /etc/crypttab file.
     If any partitions other than pseudo file systems (such as /proc or /sys) are not listed or "/etc/crypttab" does not exist, this is a finding.
 
     Verify the system works in FIPS mode with the following command:
