@@ -53,7 +53,7 @@ jobs:
           output: |
             {"summary":"Compare DS started. Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}."}
       - name: Checkout forking point (${{ steps.pr_info.outputs.fork_point }})
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
         with:
           repo: ComplianceAsCode/content
           ref: ${{ steps.pr_info.outputs.fork_point }}
@@ -62,7 +62,7 @@ jobs:
       - name: Set git safe directory
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Checkout (CTF)
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
