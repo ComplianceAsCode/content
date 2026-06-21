@@ -27,7 +27,6 @@ controls:
       rules:
           - selinux_not_disabled
           - selinux_state
-          - var_selinux_state=enforcing
       status: automated
     - id: sc-3.1
       title: Hardware Separation
@@ -92,9 +91,8 @@ controls:
       title: Boundary Protection
       levels:
           - low
-      rules:
-          - service_firewalld_enabled
-      status: automated
+      rules: []
+      status: pending
     - id: sc-7.1
       title: Physically Separated Subnetworks
       rules: []
