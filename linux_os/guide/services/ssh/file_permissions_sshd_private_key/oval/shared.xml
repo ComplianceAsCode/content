@@ -101,7 +101,7 @@
         {{# CoreOS doesn't list all groups in /etc/group - that's probably related to the FS immutability #}}
 	<ind:filepath>/usr/lib/group</ind:filepath>
       {{%- endif %}}
-        <ind:pattern operation="pattern match">^{{{ dedicated_ssh_groupname }}}:\w+:(\w+):.*</ind:pattern>
+        <ind:pattern operation="pattern match">^{{{ dedicated_ssh_groupname }}}:[^:]*:([0-9]+):([a-z_][a-z0-9_-]*(\$,?)?)*$</ind:pattern>
         <ind:instance datatype="int" operation="equals">1</ind:instance>
     </ind:textfilecontent54_object>
 
