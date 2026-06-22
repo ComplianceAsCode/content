@@ -27,11 +27,11 @@ jobs:
       - name: Install deps python
         run: pip install json2html sphinxcontrib.jinjadomain GitPython deepdiff Jinja2 xmldiff
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
         with:
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
@@ -79,7 +79,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
       - name: Get cached CTF output
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v4
         id: get_ctf_output

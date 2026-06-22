@@ -15,7 +15,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake make ninja-build openscap-utils python3-pyyaml python3-setuptools python3-jinja2 python3-pygithub ansible ansible-lint libxslt git python3-setuptools
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
       - name: Configure
         run: cmake -DSSG_PRODUCT_RHEL8=ON -DSSG_PRODUCT_RHEL9=ON -DSSG_PRODUCT_RHEL10=ON -G Ninja ..
         working-directory: ./build
