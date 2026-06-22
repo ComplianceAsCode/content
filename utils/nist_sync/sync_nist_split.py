@@ -466,22 +466,18 @@ class NISTSplitSync:
                 # Filter rules: only include if in target product's CIS control file
                 filtered_rules = [r for r in mapped_rules if r in all_cis_items]
 
-                # Filter variables: only include the specific assignment for target product.
-                # mapped_vars may contain full assignments as keys (e.g. 'var_x=value')
-                # because cis_nist_mappings.json uses full assignments in the variables
-                # section.  all_cis_items_with_values is keyed by the stripped name
-                # ('var_x'), so we must strip before looking up.
-                filtered_vars = []
+                # Filter variables: collect into a set first to deduplicate, then sort.
+                # mapped_vars may contain both bare names ('var_x') and full assignments
+                # ('var_x=value') as separate keys; both strip to the same name, so
+                # iterating and calling extend() would add the same assignment multiple times.
+                var_assignments = set()
                 for var_name in mapped_vars:
                     stripped_name = var_name.split('=')[0] if '=' in var_name else var_name
                     if stripped_name in all_cis_items_with_values:
-                        # Get all assignments for this variable in the target product
-                        assignments = all_cis_items_with_values[stripped_name]
-                        # Add all assignments (should only be one per product)
-                        filtered_vars.extend(sorted(assignments))
+                        var_assignments.update(all_cis_items_with_values[stripped_name])
 
                 rules = sorted(filtered_rules)
-                vars = filtered_vars
+                vars = sorted(var_assignments)
             else:
                 # Legacy: include all rules/vars
                 rules = sorted(mapped_rules)
