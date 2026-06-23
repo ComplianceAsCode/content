@@ -70,7 +70,7 @@ ocil: |-
 template:
   name: yamlfile_value
   vars:
-    filepath: '/var/run/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+    filepath: '/tmp/runtime/openscap-kubeletconfig'
     yamlpath: ".kubeletconfig.evictionHard['imagefs.available']"
     check_existence: "all_exist"
     values:
