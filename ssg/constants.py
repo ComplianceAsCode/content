@@ -34,6 +34,7 @@ SSG_REF_URIS = {
     'app-srg': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
     'app-srg-ctr': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security',
     'stigref': 'https://www.cyber.mil/stigs/srg-stig-tools/',
+    'stigref_vulnerability_id': 'https://www.cyber.mil/stigs/srg-stig-tools#vulnerability_id',
 }
 
 product_directories = [
