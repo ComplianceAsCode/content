@@ -1,5 +1,9 @@
 ---
 # platform = multi_platform_ocp
-{{{ kubelet_config(path='kubeletConfig.evictionHard',parameter='imagefs.inodesFree', value='var_kubelet_evictionhard_imagefs_inodesfree') }}}
----
-{{{ kubelet_config_fixed(path='kubeletConfig',parameter='evictionPressureTransitionPeriod', value='0s') }}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+spec:
+  kubeletConfig:
+    evictionHard:
+      imagefs.inodesFree: {{.var_kubelet_evictionhard_imagefs_inodesfree}}
+    evictionPressureTransitionPeriod: 0s

@@ -1,7 +1,11 @@
 ---
 # platform = multi_platform_ocp
-{{{ kubelet_config(path='kubeletConfig.evictionSoft',parameter='imagefs.available', value='var_kubelet_evictionsoft_imagefs_available') }}}
----
-{{{ kubelet_config_fixed(path='kubeletConfig.evictionSoftGracePeriod',parameter='imagefs.available', value='"1m30s"') }}}
----
-{{{ kubelet_config_fixed(path='kubeletConfig',parameter='evictionPressureTransitionPeriod', value='0s') }}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+spec:
+  kubeletConfig:
+    evictionSoft:
+      imagefs.available: {{.var_kubelet_evictionsoft_imagefs_available}}
+    evictionSoftGracePeriod:
+      imagefs.available: "1m30s"
+    evictionPressureTransitionPeriod: 0s

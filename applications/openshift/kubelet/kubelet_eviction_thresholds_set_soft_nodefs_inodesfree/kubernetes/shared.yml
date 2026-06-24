@@ -1,7 +1,11 @@
 ---
 # platform = multi_platform_ocp
-{{{ kubelet_config(path='kubeletConfig.evictionSoft',parameter='nodefs.inodesFree', value='var_kubelet_evictionsoft_nodefs_inodesfree') }}}
----
-{{{ kubelet_config_fixed(path='kubeletConfig.evictionSoftGracePeriod',parameter='nodefs.inodesFree', value='"1m30s"') }}}
----
-{{{ kubelet_config_fixed(path='kubeletConfig',parameter='evictionPressureTransitionPeriod', value='0s') }}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+spec:
+  kubeletConfig:
+    evictionSoft:
+      nodefs.inodesFree: {{.var_kubelet_evictionsoft_nodefs_inodesfree}}
+    evictionSoftGracePeriod:
+      nodefs.inodesFree: "1m30s"
+    evictionPressureTransitionPeriod: 0s
