@@ -1,0 +1,27 @@
+documentation_complete: true
+
+
+title: 'Install unattended-upgrades Package'
+
+description: |-
+    {{{ describe_package_install(package="unattended-upgrades") }}}
+
+rationale: |-
+    <tt>unattended-upgrades</tt> automatically installs security (and optionally
+    other) updates on Debian-based systems, providing the same
+    automatic-patching capability as <tt>dnf-automatic</tt> on Red Hat systems.
+
+severity: medium
+
+references:
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+    srg: SRG-OS-000191-GPOS-00080
+
+{{{ complete_ocil_entry_package_installed("unattended-upgrades") }}}
+
+platform: not bootc and not container
+
+template:
+    name: package_installed
+    vars:
+        pkgname: unattended-upgrades
