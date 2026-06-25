@@ -48,7 +48,7 @@ except ImportError:
 
 _SCRIPT_DIR = Path(__file__).parent
 _REPO_ROOT = _SCRIPT_DIR.parent.parent
-_GEMARA_VERSION = "1.1.0"
+_GEMARA_VERSION = "1.2.0"
 
 # OCI media types for complyctl v1.0.0-alpha.0 (go-gemara v0.0.1 split-layer format)
 _MEDIA_TYPE_POLICY = "application/vnd.gemara.policy.v1+yaml"
@@ -87,7 +87,7 @@ def dump_yaml(data, path):
     path.write_text(buf.getvalue(), encoding="utf-8")
 
 
-def extract_rules_from_catalog(catalog, baseline=None):
+def extract_rules_from_catalog(catalog, baseline=None, product=None):
     """
     Extract unique XCCDF rule IDs from a ControlCatalog.
 
@@ -96,6 +96,9 @@ def extract_rules_from_catalog(catalog, baseline=None):
       - nist_control_ids is the list of NIST controls that reference this rule
     """
     rule_to_controls = {}
+    # Applicability groups use product-scoped IDs (e.g. "rhel9-low"), so build the key to match.
+    baseline_key = f"{product}-{baseline}" if (baseline and product) else baseline
+
     for ctrl in catalog.get("controls", []):
         ctrl_id = ctrl.get("id", "")
         ctrl_state = ctrl.get("state", "")
@@ -104,11 +107,11 @@ def extract_rules_from_catalog(catalog, baseline=None):
         if ctrl_state in ("Deprecated", "Retired"):
             continue
 
-        # Baseline filter: check if control's requirements have the requested baseline
-        if baseline:
+        # Baseline filter: check if any requirement covers the requested baseline group
+        if baseline_key:
             any_in_baseline = False
             for req in ctrl.get("assessment-requirements", []):
-                if baseline in req.get("applicability", []):
+                if baseline_key in req.get("applicability", []):
                     any_in_baseline = True
                     break
             if not any_in_baseline:
@@ -117,17 +120,14 @@ def extract_rules_from_catalog(catalog, baseline=None):
         for req in ctrl.get("assessment-requirements", []):
             req_id = req.get("id", "")
             # Skip placeholder and variable requirements
-            if req_id.endswith("--no-automated-check"):
+            if req_id == "no-automated-check":
                 continue
             text = req.get("text", "")
             if text.startswith("Variable '"):
                 continue
 
-            # Extract rule_id from compound ID: "{control_id}--{rule_id}"
-            if "--" in req_id:
-                rule_id = req_id.split("--", 1)[1]
-            else:
-                continue
+            # req_id is now the bare CaC rule name (e.g. 'accounts_tmout')
+            rule_id = req_id
 
             if rule_id not in rule_to_controls:
                 rule_to_controls[rule_id] = []
@@ -180,7 +180,7 @@ def generate_policy(product, catalog_id, rules_with_controls):
             "author": {
                 "id": "complianceascode",
                 "name": "ComplianceAsCode Project",
-                "type": "Human",
+                "type": "Software",
                 "uri": "https://github.com/ComplianceAsCode/content",
             },
             "date": _now_iso(),
@@ -422,7 +422,7 @@ def main():
     print(f"  Reading {catalog_yaml_path}")
     catalog = load_yaml(catalog_yaml_path)
     catalog_id = catalog["metadata"]["id"]
-    rules_with_controls = extract_rules_from_catalog(catalog, baseline=args.baseline)
+    rules_with_controls = extract_rules_from_catalog(catalog, baseline=args.baseline, product=product)
     print(f"  Found {len(rules_with_controls)} unique CaC rules")
     print(f"  Base profile:  {args.base_profile} (XCCDF tailoring base)")
 
