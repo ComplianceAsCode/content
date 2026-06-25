@@ -143,7 +143,7 @@ def test_mapping_structure(mapping, result):
     mappings = mapping.get("mappings", [])
     result.check(len(mappings) > 0, f"{len(mappings)} mapping entries", "no mapping entries")
 
-    valid_rels = {"implements", "equivalent", "subsumes", "partially-implements", "no-match"}
+    valid_rels = {"implements", "implemented-by", "supports", "supported-by", "equivalent", "subsumes", "no-match", "relates-to"}
     bad_rels = []
     missing_targets = []
     seen_ids = set()
