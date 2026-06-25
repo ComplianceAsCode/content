@@ -19,7 +19,7 @@ description: |-
     Red Hat technologies that are based on Red Hat Enterprise Linux 10.
 
 selections:
-    - srg_gpos:all
+    - stig_rhel10:all
     - '!enable_authselect'
     # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
     - '!enable_dracut_fips_module'

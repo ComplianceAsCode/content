@@ -47,3 +47,13 @@ selections:
     - configure_ssh_crypto_policy
     - package_dnsmasq_removed
     - chrony_set_nts
+    - audit_rules_privileged_commands_pkexec
+    - sshd_include_crypto_policy
+    - file_permission_user_init_files_root
+    - mount_option_nodev_removable_partitions
+    - mount_option_noexec_removable_partitions
+    - audit_rules_privileged_commands_mount
+    - fips_crypto_subpolicy
+    - mount_option_nosuid_removable_partitions
+    - sysctl_net_ipv4_tcp_invalid_ratelimit
+    - set_password_hashing_min_rounds_logindefs
