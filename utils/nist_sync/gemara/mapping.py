@@ -46,8 +46,7 @@ class GemaraMappingBuilder:
             "author": {
                 "id": "complianceascode",
                 "name": "ComplianceAsCode Project",
-                # #EntityType: "Human" | "Software" | "Software Assisted"
-                "type": "Human",
+                "type": "Software",
                 "uri": "https://github.com/ComplianceAsCode/content",
             },
             "date": _now_iso(),
@@ -127,7 +126,7 @@ class GemaraMappingBuilder:
             },
             "target-reference": {
                 "reference-id": _RULES_REF_ID,
-                "entry-type": "Control",
+                "entry-type": "AssessmentRequirement",
             },
             "mappings": mappings,
         }

@@ -96,8 +96,7 @@ class GemaraCatalogBuilder:
             "author": {
                 "id": "complianceascode",
                 "name": "ComplianceAsCode Project",
-                # #EntityType: "Human" | "Software" | "Software Assisted"
-                "type": "Human",
+                "type": "Software",
                 "uri": "https://github.com/ComplianceAsCode/content",
             },
             "version": "Revision 5",
@@ -109,13 +108,14 @@ class GemaraCatalogBuilder:
     def _applicability_groups(self):
         groups = []
         for level in self.policy.levels:
-            desc = f"NIST 800-53 {level.id.capitalize()} impact baseline"
+            group_id = f"{self.product}-{level.id}"
+            desc = f"NIST 800-53 {level.id.capitalize()} impact baseline for {self.product.upper()}"
             if level.inherits_from:
                 parents = ", ".join(p.capitalize() for p in level.inherits_from)
                 desc += f" (inherits {parents})"
             groups.append({
-                "id": level.id,
-                "title": f"{level.id.capitalize()} Baseline",
+                "id": group_id,
+                "title": f"{self.product.upper()} {level.id.capitalize()} Baseline",
                 "description": desc,
             })
         return groups
@@ -138,17 +138,16 @@ class GemaraCatalogBuilder:
         return control.title
 
     def _applicability_for(self, control):
-        """Return non-empty applicability list for a control."""
-        levels = [lv for lv in (control.levels or [])]
-        # Deduplicate while preserving order
+        """Return non-empty product-scoped applicability list for a control."""
         seen = set()
         deduped = []
-        for a in levels:
-            if a not in seen:
-                seen.add(a)
-                deduped.append(a)
+        for level in (control.levels or []):
+            scoped = f"{self.product}-{level}"
+            if scoped not in seen:
+                seen.add(scoped)
+                deduped.append(scoped)
         # applicability must be non-empty: fall back to all baselines
-        return deduped if deduped else list(self._all_baselines)
+        return deduped if deduped else [f"{self.product}-{b}" for b in self._all_baselines]
 
     def _assessment_requirements(self, control):
         """
@@ -164,20 +163,19 @@ class GemaraCatalogBuilder:
         for rule_entry in (control.rules or []):
             if _is_variable_assignment(rule_entry):
                 var_name, var_value = rule_entry.split("=", 1)
-                req_id = f"{control.id}--{var_name}"
-                # #AssessmentRequirement.text (not "requirement")
+                req_id = var_name
                 req_text = f"Variable '{var_name}' is set to '{var_value}'"
             else:
-                req_id = f"{control.id}--{rule_entry}"
-                req_text = f"Rule '{rule_entry}' is applied and passing"
+                req_id = rule_entry
+                req_text = f"Rule '{rule_entry}' MUST be verified"
 
             if req_id in seen_req_ids:
                 continue
             seen_req_ids.add(req_id)
 
-            # applicability is required and must be non-empty
             reqs.append({
                 "id": req_id,
+                "state": "Active",
                 "text": req_text,
                 "applicability": applicability,
             })
@@ -185,7 +183,8 @@ class GemaraCatalogBuilder:
         if not reqs:
             cac_status = control.status if control.status else "pending"
             reqs.append({
-                "id": f"{control.id}--no-automated-check",
+                "id": "no-automated-check",
+                "state": "Active",
                 "text": (
                     f"This control has no automated checks. "
                     f"ComplianceAsCode status: {cac_status}. Manual assessment required."

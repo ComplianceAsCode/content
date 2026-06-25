@@ -55,7 +55,7 @@ NO_MAPPING_STATUSES = {"planned", "pending", "does not meet", "not applicable"}
 
 def map_state(cac_status):
     """Return the Gemara state for a CaC status string."""
-    return CAC_TO_GEMARA_STATE.get(cac_status, "experimental")
+    return CAC_TO_GEMARA_STATE.get(cac_status, "Draft")
 
 
 def map_relationship(cac_status):

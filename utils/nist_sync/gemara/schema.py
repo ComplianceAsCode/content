@@ -1,6 +1,6 @@
 """Gemara schema constants and structural validation."""
 
-GEMARA_VERSION = "1.1.0"
+GEMARA_VERSION = "1.2.0"
 
 # #Lifecycle: "Active" | "Draft" | "Deprecated" | "Retired"  (default: "Active")
 VALID_STATES = {"Active", "Draft", "Deprecated", "Retired"}
