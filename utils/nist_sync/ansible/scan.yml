@@ -1,0 +1,103 @@
+---
+# NIST 800-53 Gemara scan — all baselines (low / moderate / high).
+#
+# Flow per baseline:
+#   1. Export Gemara artifacts on the host  (delegate_to: localhost)
+#   2. Generate per-baseline Policy bundle  (delegate_to: localhost)
+#   3. Push bundle from host → VM registry  (delegate_to: localhost, via ansible_host IP)
+#   4. Write complytime.yaml on the VM
+#   5. complyctl get / generate / scan      (runs ON the VM, against the VM's own OS)
+#   6. Fetch results → host
+#
+# Usage (from utils/nist_sync/):
+#   ansible-playbook -i ansible/inventory.ini ansible/scan.yml
+#   ansible-playbook -i ansible/inventory.ini ansible/scan.yml -e baseline=moderate
+#
+# Optional variables:
+#   baseline      low | moderate | high | all  (default: all)
+#   product       rhel9                        (default: rhel9)
+#   base_profile  nist_800_53                  (default: nist_800_53)
+#   registry_port 5500                         (default: 5500)
+
+- name: NIST 800-53 Gemara scan on RHEL9 VM
+  hosts: rhel9_scanner
+  become: true
+  vars:
+    product:      "{{ lookup('env', 'PRODUCT')        | default('rhel9',       true) }}"
+    base_profile: "{{ lookup('env', 'BASE_PROFILE')   | default('nist_800_53', true) }}"
+    registry_port: "{{ lookup('env', 'REGISTRY_PORT')  | default('5500',        true) }}"
+    # Resolve the list of baselines to test.
+    _baseline_arg: "{{ baseline | default(lookup('env', 'BASELINE') | default('all', true)) }}"
+    baselines: >-
+      {{ ['low', 'moderate', 'high'] if _baseline_arg == 'all'
+         else [_baseline_arg] }}
+    # Paths on the host machine.
+    # playbook_dir = .../utils/nist_sync/ansible — three levels below repo root.
+    repo_root: "{{ playbook_dir | realpath + '/../../..' }}"
+    gemara_dir: "{{ repo_root }}/build/gemara"
+    results_base: "{{ repo_root }}/build/complyctl-results/{{ product }}"
+    # complytime working directory inside the VM.
+    complyctl_home: /root/.complytime
+
+  pre_tasks:
+    - name: Ensure host result directory exists
+      delegate_to: localhost
+      become: false
+      file:
+        path: "{{ results_base }}"
+        state: directory
+        mode: "0755"
+
+    # Export once — covers all baselines.
+    - name: "Export Gemara artifacts for {{ product }} (host)"
+      delegate_to: localhost
+      become: false
+      command: >
+        python3 utils/nist_sync/export_to_gemara.py
+          --products {{ product }}
+          --output-dir build/gemara
+          --data-dir utils/nist_sync/data
+      args:
+        chdir: "{{ repo_root }}"
+      environment:
+        PYTHONPATH: "{{ repo_root }}"
+
+    - name: Show exported files
+      delegate_to: localhost
+      become: false
+      find:
+        paths: "{{ gemara_dir }}"
+        recurse: true
+        patterns: "*.yaml"
+      register: exported
+
+    - name: Gemara files exported
+      debug:
+        msg: "{{ exported.files | map(attribute='path') | map('replace', repo_root + '/', '') | list }}"
+
+  tasks:
+    - name: Scan each baseline
+      include_tasks: tasks/scan_baseline.yml
+      loop: "{{ baselines }}"
+      loop_control:
+        loop_var: baseline_name
+
+  post_tasks:
+    - name: Final results summary
+      delegate_to: localhost
+      become: false
+      find:
+        paths: "{{ results_base }}"
+        recurse: true
+        patterns: "*.xml,*.yaml"
+      register: all_results
+
+    - name: Results written to host
+      debug:
+        msg: |
+          {{ all_results.files | length }} result file(s) under build/complyctl-results/{{ product }}/
+          {% for f in all_results.files | sort(attribute='path') %}
+          - {{ f.path | replace(repo_root + '/', '') }}
+          {% endfor %}
+          Interpret results:
+            build/gemara/{{ product }}/rules_mapping.yaml — maps rule PASS/FAIL → NIST controls
