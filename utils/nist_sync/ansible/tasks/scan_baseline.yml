@@ -1,0 +1,141 @@
+---
+# Tasks for a single NIST baseline.  Called from scan.yml via include_tasks (loop_var: baseline_name).
+#
+# When 'delegate_to: localhost' is used, {{ ansible_host }} still resolves to the VM's IP
+# because Ansible evaluates hostvars from the play's target host, not the delegate.
+
+- name: "[ {{ baseline_name | upper }} ] Create host output directories"
+  delegate_to: localhost
+  become: false
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ repo_root }}/build/gemara-bundle/{{ product }}/{{ baseline_name }}"
+    - "{{ results_base }}/{{ baseline_name }}"
+
+# ---------------------------------------------------------------------------
+# 1. Generate Gemara Policy bundle on the HOST and push to the VM's registry
+# ---------------------------------------------------------------------------
+- name: "[ {{ baseline_name | upper }} ] Generate Policy bundle and push to VM registry"
+  delegate_to: localhost
+  become: false
+  command: >
+    python3 utils/nist_sync/generate_complyctl_bundle.py
+      --product {{ product }}
+      --gemara-dir build/gemara
+      --output-dir build/gemara-bundle/{{ product }}/{{ baseline_name }}
+      --baseline {{ baseline_name }}
+      --base-profile {{ base_profile }}
+      --registry {{ ansible_host }}:{{ registry_port }}
+      --tag nist-800-53-rev5-{{ product }}-{{ baseline_name }}:latest
+      --push
+      --verbose
+  args:
+    chdir: "{{ repo_root }}"
+  environment:
+    PYTHONPATH: "{{ repo_root }}"
+  register: bundle_result
+
+- name: "[ {{ baseline_name | upper }} ] Bundle push complete"
+  debug:
+    msg: >-
+      {{
+        (bundle_result.stdout_lines | select('match', '.*assessment-plan.*|.*Pushed.*|.*rules.*') | list)
+        if bundle_result.stdout_lines | length > 0
+        else bundle_result.stdout_lines
+      }}
+
+# ---------------------------------------------------------------------------
+# 2. Configure complyctl on the VM
+# ---------------------------------------------------------------------------
+- name: "[ {{ baseline_name | upper }} ] Write complytime.yaml on the VM"
+  template:
+    src: "{{ playbook_dir }}/templates/complytime.yaml.j2"
+    dest: "{{ complyctl_home }}/complytime.yaml"
+    mode: "0644"
+  vars:
+    policy_id: "nist-800-53-rev5-{{ product }}-{{ baseline_name }}"
+
+# ---------------------------------------------------------------------------
+# 3. Run complyctl inside the VM
+# ---------------------------------------------------------------------------
+- name: "[ {{ baseline_name | upper }} ] complyctl get (pull bundle metadata from registry)"
+  command: /usr/local/bin/complyctl get
+  args:
+    chdir: "{{ complyctl_home }}"
+  environment:
+    HOME: /root
+  register: get_result
+
+- name: "[ {{ baseline_name | upper }} ] complyctl generate (build tailored XCCDF)"
+  command: >
+    /usr/local/bin/complyctl generate
+      --policy-id nist-800-53-rev5-{{ product }}-{{ baseline_name }}
+  args:
+    chdir: "{{ complyctl_home }}"
+  environment:
+    HOME: /root
+  register: gen_result
+
+- name: "[ {{ baseline_name | upper }} ] complyctl scan"
+  command: >
+    /usr/local/bin/complyctl scan
+      --policy-id nist-800-53-rev5-{{ product }}-{{ baseline_name }}
+  args:
+    chdir: "{{ complyctl_home }}"
+  environment:
+    HOME: /root
+  # Non-zero exit is expected when rules fail (compliance findings).
+  failed_when: false
+  register: scan_result
+
+- name: "[ {{ baseline_name | upper }} ] Scan exit code"
+  debug:
+    msg: >-
+      complyctl scan exit={{ scan_result.rc }}
+      (0=pass, non-zero=compliance findings found — expected for a fresh VM)
+
+# ---------------------------------------------------------------------------
+# 4. Collect result files from the VM and fetch to the host
+# ---------------------------------------------------------------------------
+- name: "[ {{ baseline_name | upper }} ] Find result files on VM"
+  find:
+    paths: "{{ complyctl_home }}"
+    recurse: true
+    patterns:
+      - "arf.xml"
+      - "results.xml"
+      - "evaluation-log-*{{ baseline_name }}*.yaml"
+  register: result_files
+  failed_when: false
+
+- name: "[ {{ baseline_name | upper }} ] Fetch result files to host"
+  fetch:
+    src: "{{ item.path }}"
+    dest: "{{ results_base }}/{{ baseline_name }}/{{ item.path | basename }}"
+    flat: true
+    fail_on_missing: false
+  loop: "{{ result_files.files | unique(attribute='path') }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+
+- name: "[ {{ baseline_name | upper }} ] Generate HTML report from XCCDF results"
+  delegate_to: localhost
+  become: false
+  shell: |
+    oscap xccdf generate report \
+      "{{ results_base }}/{{ baseline_name }}/results.xml" \
+      > "{{ results_base }}/{{ baseline_name }}/report.html"
+  args:
+    executable: /bin/bash
+  failed_when: false
+  register: html_report
+
+- name: "[ {{ baseline_name | upper }} ] Baseline complete"
+  debug:
+    msg: >-
+      Results: build/complyctl-results/{{ product }}/{{ baseline_name }}/
+      ({{ result_files.files | length }} file(s))
+      HTML report: build/complyctl-results/{{ product }}/{{ baseline_name }}/report.html
