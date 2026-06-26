@@ -656,9 +656,11 @@ controls:
       levels:
           - high
       title: RHEL 10 cryptographic policy must not be overridden.
+      notes: >-
+          This rule only contains SCE (Script Check Engine) content. The package
+          openscap-engine-sce must be installed on the target system for the check to work.
       rules:
-          - configure_crypto_policy
-          - var_system_crypto_policy=fips
+          - crypto_policy_not_overridden
       status: automated
     - id: RHEL-10-400000
       levels:

@@ -156,6 +156,7 @@ configure_usbguard_auditbackend
 configured_firewalld_default_deny
 coredump_disable_backtraces
 coredump_disable_storage
+crypto_policy_not_overridden
 dconf_db_up_to_date
 dconf_gnome_banner_enabled
 dconf_gnome_disable_automount_open
