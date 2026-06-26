@@ -1,5 +1,7 @@
 {{# value and xccdf_variable are mutually exclusive (enforced by template.py).
-     The macro uses xccdf_variable when set, value otherwise. #}}
+     The macro uses xccdf_variable when set, value otherwise.
+     operation defaults to "equals" (set by template.py), rules can override
+     to "pattern match" for regex matching (e.g. sshd_disable_compression). #}}
 {{%- if product == 'sle16' -%}}
     {{{ sshd_oval_check_usr(
         parameter=PARAMETER,
