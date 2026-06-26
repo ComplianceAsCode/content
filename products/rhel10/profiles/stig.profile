@@ -2,6 +2,7 @@
 documentation_complete: true
 
 metadata:
+    version: V1R1
     SMEs:
         - mab879
 
@@ -9,10 +10,9 @@ reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-syst
 
 title: 'Red Hat STIG for Red Hat Enterprise Linux 10'
 
-description: |-
-    This is a profile based on what is expected in the RHEL 10 STIG.
-    It is not based on the DISA STIG for RHEL 10, because it was not available at time of
-    the release.
+description: >-
+    This profile contains configuration checks that align to the
+    DISA STIG for Red Hat Enterprise Linux 10 V1R1.
 
     In addition to being applicable to Red Hat Enterprise Linux 10, this
     configuration baseline is applicable to the operating system tier of
@@ -20,6 +20,3 @@ description: |-
 
 selections:
     - stig_rhel10:all
-    - '!enable_authselect'
-    # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
-    - '!enable_dracut_fips_module'

@@ -2,6 +2,7 @@
 documentation_complete: true
 
 metadata:
+    version: V1R1
     SMEs:
         - mab879
 
@@ -9,10 +10,9 @@ reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-syst
 
 title: 'Red Hat STIG with GUI for Red Hat Enterprise Linux 10'
 
-description: |-
-    This is a profile based on what is expected in the RHEL 10 STIG.
-    It is not based on the DISA STIG for RHEL 10, because it was not available at time of
-    the release.
+description: >-
+    This profile contains configuration checks that align to the
+    DISA STIG for Red Hat Enterprise Linux 10 V1R1.
 
     In addition to being applicable to Red Hat Enterprise Linux 10, this
     configuration baseline is applicable to the operating system tier of
@@ -27,20 +27,7 @@ description: |-
 extends: stig
 
 selections:
-    - '!xwindows_remove_packages'
-
     - '!xwindows_runlevel_target'
-
     - '!package_nfs-utils_removed'
-
-    - '!enable_authselect'
-    # Limiting user namespaces cause issues with user apps, such as Firefox and Cheese
-    # https://issues.redhat.com/browse/RHEL-10416
-    - '!sysctl_user_max_user_namespaces'
-    # locking of idle sessions is handled by screensaver when GUI is present, the following rule is therefore redundant
-    - '!logind_session_timeout'
-    # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
-    - '!enable_dracut_fips_module'
-
     # Package gdm cannot be removed as it is required for GUI installation ('@Server with GUI' package group)
     - '!package_gdm_removed'
