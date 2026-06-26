@@ -1,53 +1,29 @@
+{{# value and xccdf_variable are mutually exclusive (enforced by template.py).
+     The macro uses xccdf_variable when set, value otherwise.
+     operation defaults to "equals" (set by template.py), rules can override
+     to "pattern match" for regex matching (e.g. sshd_disable_compression). #}}
 {{%- if product == 'sle16' -%}}
-    {{%- if XCCDF_VARIABLE -%}}
-        {{{
-            sshd_oval_check_usr(
-                parameter=PARAMETER,
-                xccdf_variable=XCCDF_VARIABLE,
-                missing_parameter_pass=MISSING_PARAMETER_PASS,
-                datatype=DATATYPE,
-                rule_id=rule_id,
-                rule_title=rule_title
-            )
-        }}}
-    {{%- else -%}}
-        {{{
-            sshd_oval_check_usr(
-            parameter=PARAMETER,
-            value=VALUE,
-            missing_parameter_pass=MISSING_PARAMETER_PASS,
-            datatype=DATATYPE,
-            rule_id=rule_id,
-            rule_title=rule_title
-            )
-        }}}
-    {{%- endif -%}}
+    {{{ sshd_oval_check_usr(
+        parameter=PARAMETER,
+        value=VALUE,
+        xccdf_variable=XCCDF_VARIABLE,
+        missing_parameter_pass=MISSING_PARAMETER_PASS,
+        datatype=DATATYPE,
+        operation=OPERATION,
+        rule_id=rule_id,
+        rule_title=rule_title
+    ) }}}
 {{%- else -%}}
-    {{%- if XCCDF_VARIABLE -%}}
-        {{{
-            sshd_oval_check(
-                parameter=PARAMETER,
-                xccdf_variable=XCCDF_VARIABLE,
-                missing_parameter_pass=MISSING_PARAMETER_PASS,
-                config_is_distributed=sshd_distributed_config,
-                runtime_check=sshd_runtime_check,
-                datatype=DATATYPE,
-                rule_id=rule_id,
-                rule_title=rule_title
-            )
-        }}}
-    {{%- else -%}}
-        {{{
-            sshd_oval_check(
-            parameter=PARAMETER,
-            value=VALUE,
-            missing_parameter_pass=MISSING_PARAMETER_PASS,
-            config_is_distributed=sshd_distributed_config,
-            runtime_check=sshd_runtime_check,
-            datatype=DATATYPE,
-            rule_id=rule_id,
-            rule_title=rule_title
-            )
-        }}}
-    {{%- endif -%}}
+    {{{ sshd_oval_check(
+        parameter=PARAMETER,
+        value=VALUE,
+        xccdf_variable=XCCDF_VARIABLE,
+        missing_parameter_pass=MISSING_PARAMETER_PASS,
+        config_is_distributed=sshd_distributed_config,
+        runtime_check=sshd_runtime_check,
+        datatype=DATATYPE,
+        operation=OPERATION,
+        rule_id=rule_id,
+        rule_title=rule_title
+    ) }}}
 {{%- endif -%}}
