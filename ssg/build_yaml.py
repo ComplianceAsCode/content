@@ -1911,6 +1911,16 @@ class Rule(XCCDFEntity, Templatable):
         if references:
             self.references["stigref"] = references
 
+        vulnerability_ids = []
+        vulnerability_ids_regex = r'S(?P<vulnerability_id>V-\d+)r\d+_rule'
+        for ref in references:
+            matches = re.match(vulnerability_ids_regex, ref)
+            if matches:
+                vulnerability_ids.append(matches.groupdict().get('vulnerability_id', ''))
+
+        if vulnerability_ids:
+            self.references["stigref_vulnerability_id"] = vulnerability_ids
+
     def _get_product_only_references(self):
         """
         Retrieves a dictionary of product-specific references from the rule's references.
