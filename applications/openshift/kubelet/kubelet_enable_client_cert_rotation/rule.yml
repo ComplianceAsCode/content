@@ -47,7 +47,7 @@ references:
 template:
     name: yamlfile_value
     vars:
-        filepath: '/var/run/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        filepath: '/tmp/runtime/openscap-kubeletconfig'
         yamlpath: ".kubeletconfig.featureGates.RotateKubeletClientCertificate"
         check_existence: "any_exist"
         values:
