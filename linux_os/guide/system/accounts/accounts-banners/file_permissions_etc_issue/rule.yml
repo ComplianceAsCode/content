@@ -21,7 +21,9 @@ identifiers:
     cce@rhel10: CCE-86812-5
     cce@sle12: CCE-92232-8
     cce@sle15: CCE-91354-1
+    cce@sle16: CCE-96154-0
     cce@slmicro5: CCE-94054-4
+    cce@slmicro6: CCE-94870-3
 
 references:
     cis@sle12: 1.8.1.5
@@ -35,7 +37,7 @@ ocil: |-
 template:
     name: file_permissions
     vars:
-{{%- if product == 'slmicro5' %}}
+{{%- if product.startswith('slmicro') %}}
         filepath: /run/issue
 {{%- else %}}
         filepath: /etc/issue
