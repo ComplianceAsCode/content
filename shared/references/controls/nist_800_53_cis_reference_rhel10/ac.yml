@@ -90,9 +90,9 @@ controls:
       levels:
           - low
       rules:
-          - var_selinux_policy_name=targeted
-          - var_pam_wheel_group_for_su=cis
           - var_accounts_user_umask=027
+          - var_pam_wheel_group_for_su=cis
+          - var_selinux_policy_name=targeted
           - accounts_umask_etc_bashrc
           - accounts_umask_etc_login_defs
           - accounts_umask_etc_profile
@@ -495,8 +495,8 @@ controls:
       levels:
           - low
       rules:
-          - var_accounts_passwords_pam_faillock_root_unlock_time=60
           - var_accounts_passwords_pam_faillock_deny=5
+          - var_accounts_passwords_pam_faillock_root_unlock_time=60
           - var_accounts_passwords_pam_faillock_unlock_time=900
           - account_password_pam_faillock_password_auth
           - account_password_pam_faillock_system_auth
@@ -525,8 +525,8 @@ controls:
       levels:
           - low
       rules:
-          - dconf_login_banner_text=cis_banners
           - dconf_login_banner_contents=cis_default
+          - dconf_login_banner_text=cis_banners
           - dconf_gnome_banner_enabled
           - dconf_gnome_login_banner_text
       status: automated
