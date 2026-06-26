@@ -2,6 +2,7 @@
 documentation_complete: true
 
 metadata:
+    version: V1R1
     SMEs:
         - mab879
 
