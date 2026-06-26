@@ -25,7 +25,7 @@
     regexp: '^[\s]*(weekly|monthly|yearly)$'
     state: absent
 
-{{% if 'sle' in product or product == 'slmicro5' %}}
+{{% if product.startswith('sle') or product.startswith('slmicro') %}}
 - name: Enable timer logrotate
   ansible.builtin.systemd:
     name: "logrotate.timer"

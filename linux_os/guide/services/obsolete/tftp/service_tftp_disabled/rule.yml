@@ -3,7 +3,7 @@ documentation_complete: true
 {{% if 'ubuntu' in product or 'debian' in product %}}
   {{%- set service_name = "tftpd-hpa" %}}
   {{%- set package = "tftpd-hpa" %}}
-{{% elif 'sle' in product or product == "slmicro5" %}}
+{{% elif product.startswith('sle') or product.startswith('slmicro') %}}
   {{%- set service_name = "tftp" %}}
   {{%- set package = "tftp" %}}
 {{% else %}}
@@ -26,6 +26,8 @@ severity: high
 identifiers:
     cce@rhel8: CCE-82435-9
     cce@sle15: CCE-92606-3
+    cce@sle16: CCE-96034-4
+    cce@slmicro6: CCE-94983-4
 
 references:
     cis-csc: 11,12,14,15,3,8,9
