@@ -17,7 +17,7 @@ def set_variables_for_test_scenarios(data):
                 data["wrong_value"] = "30:10:110"
                 data["correct_value"] = "10:30:60"
             elif data["xccdf_variable"] == "var_sshd_disable_compression":
-                data["wrong_value"] = "delayed"
+                data["wrong_value"] = "yes"
                 data["correct_value"] = "no"
             else:
                 data["wrong_value"] = "wrong_value"
@@ -40,6 +40,8 @@ def preprocess(data, lang):
         raise ValueError(errmsg)
     data["missing_parameter_pass"] = parse_template_boolean_value(
         data, parameter="missing_parameter_pass", default_value=False)
+    if "operation" not in data:
+        data["operation"] = "equals"
 
     is_default_value = parse_template_boolean_value(
         data, parameter="is_default_value", default_value=False)
