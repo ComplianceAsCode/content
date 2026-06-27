@@ -383,6 +383,12 @@ macro(check_for_rule_removal PRODUCT)
     endif()
 endmacro()
 
+add_test(
+    NAME "profile-variables"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_variables.py" "--build-dir" "${CMAKE_BINARY_DIR}"
+)
+set_tests_properties("profile-variables" PROPERTIES LABELS quick)
+
 if(SSG_PRODUCT_RHEL8)
     check_for_rule_removal("rhel8")
 endif()
