@@ -180,3 +180,29 @@ def test_ver_specs():
     # We support only VersionSpecifier objects as members of VersionSpecifierSet
     with pytest.raises(ValueError):
         utils.VersionSpecifierSet([utils.VersionSpecifier('>=', evr123), '1.2.3'])
+
+
+def test_safe_evaluate_boolean_filter_allows_supported_profile_expressions():
+    variables = {
+        "platform": "ocp4-node",
+        "platforms": {"eks-control-plane", "ocp4-node"},
+    }
+
+    assert utils.safe_evaluate_boolean_filter('"ocp4-node" in platform', variables)
+    assert utils.safe_evaluate_boolean_filter('"eks-node" not in platforms', variables)
+    assert utils.safe_evaluate_boolean_filter(
+        '"ocp4-node" in platform or "ocp4-master-node" in platform', variables
+    )
+    assert utils.safe_evaluate_boolean_filter(
+        'not ("ocp4-master-node" in platform)', variables
+    )
+
+
+def test_safe_evaluate_boolean_filter_rejects_unsafe_constructs():
+    variables = {"platform": "ocp4-node", "platforms": {"ocp4-node"}}
+
+    with pytest.raises(ValueError):
+        utils.safe_evaluate_boolean_filter('__import__("os").system("id")', variables)
+
+    with pytest.raises(ValueError):
+        utils.safe_evaluate_boolean_filter('platform.startswith("ocp4")', variables)
