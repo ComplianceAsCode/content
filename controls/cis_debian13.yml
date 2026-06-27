@@ -65,7 +65,7 @@ controls:
       status: automated
 
     - id: 1.1.1.6
-      title: Ensure overlayfs kernel module is not available (Automated)
+      title: Ensure overlay kernel module is not available (Automated)
       levels:
           - l2_server
           - l2_workstation
@@ -78,7 +78,7 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      related_rules:
+      rules:
           - kernel_module_squashfs_disabled
       status: automated
 
@@ -117,7 +117,7 @@ controls:
       status: manual
 
     - id: 1.1.2.1.1
-      title: Ensure /tmp is a separate partition (Automated)
+      title: Ensure /tmp is tmpfs or a separate partition (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -362,95 +362,109 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: pending
-      notes: |-
-          Needs a new Debian-specific rule checking weak dependencies
+      rules:
+          - apt_disable_weak_dependencies
+      status: automated
 
     - id: 1.2.1.3
       title: Ensure access to gpg key files are configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Needs a new Debian-specific rule for GPG key file access checks.
-          Check if all .gpg key files in /usr/share/keyrings/ and /etc/apt/trusted.gpg.d have permissions 0644 and owned by root:root
-          Check if .list and .sources in /etc/apt/sources.list.d have permissions 0644 and owned by root:root and include option signed-by
+      rules:
+          - file_groupowner_apt_gpg_keys
+          - file_groupowner_apt_sources_list_d
+          - file_owner_apt_gpg_keys
+          - file_owner_apt_sources_list_d
+          - file_permissions_apt_gpg_keys
+          - file_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.1.4
-      title: Ensure access to /etc/apt/trusted.gpg.d directory is configured
+      title: Ensure access to /etc/apt/trusted.gpg.d directory is configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Needs a new Debian-specific rule for /etc/apt/trusted.gpg.d directory access checks.
-          Check if /etc/apt/trusted.gpg.d has permissions 0755 and owned by root:root
- 
+      rules:
+          - directory_groupowner_apt_trusted_gpg_d
+          - directory_owner_apt_trusted_gpg_d
+          - directory_permissions_apt_trusted_gpg_d
+      status: automated
+
     - id: 1.2.1.5
       title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Check if /etc/apt/auth.conf.d has permissions 0755 and owned by root:root
+      rules:
+          - directory_groupowner_apt_auth_conf_d
+          - directory_owner_apt_auth_conf_d
+          - directory_permissions_apt_auth_conf_d
+      status: automated
 
     - id: 1.2.1.6
       title: Ensure access to files in the /etc/apt/auth.conf.d/ directory is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
-      status: pending
-      notes: |-
-          Check if /etc/apt/auth.conf.d/* has permissions 0755 and owned by root:root 
+          - l1_server
+          - l1_workstation
+      rules:
+          - file_groupowner_apt_auth_conf_d
+          - file_owner_apt_auth_conf_d
+          - file_permissions_apt_auth_conf_d
+      status: automated
 
     - id: 1.2.1.7
       title: Ensure access to /usr/share/keyrings directory is configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Check if /usr/share/keyrings has permissions 0755 and owned by root:root 
+      rules:
+          - directory_groupowner_usr_share_keyrings
+          - directory_owner_usr_share_keyrings
+          - directory_permissions_usr_share_keyrings
+      status: automated
 
     - id: 1.2.1.8
       title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Check if /etc/apt/sources.list.d has permissions 0755 and owned by root:root 
+      rules:
+          - directory_groupowner_apt_sources_list_d
+          - directory_owner_apt_sources_list_d
+          - directory_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.1.9
       title: Ensure access to files in /etc/apt/sources.list.d are configured (Automated)
       levels:
           - l1_server
           - l2_server
-      status: pending
-      notes: |-
-          Check if /etc/apt/sources.list.d/* has permissions 0755 and owned by root:root
+      rules:
+          - file_groupowner_apt_sources_list_d
+          - file_owner_apt_sources_list_d
+          - file_permissions_apt_sources_list_d
+      status: automated
 
     - id: 1.2.2.1
       title: Ensure updates, patches, and additional security software are installed (Manual)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       status: manual
 
     - id: 1.3.1.1
-      title: Ensure AppArmor is installed (Automated) 
+      title: Ensure apparmor packages are installed (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-        - package_apparmor_installed
-        - package_apparmor-utils_installed
+          - package_apparmor_installed
+          - package_apparmor-utils_installed
       status: automated
 
     - id: 1.3.1.2
-      title: Ensure AppArmor is enabled in the bootloader configuration (Automated)
+      title: Ensure AppArmor is enabled (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -476,11 +490,11 @@ controls:
     - id: 1.3.1.4
       title: Ensure apparmor_restrict_unprivileged_unconfined is enabled (Automated)
       levels:
-        - l1_server
-        - l1_workstation
-      status: pending
-      notes: |-
-          Check if sysctl kernel.apparmor_restrict_unprivileged_unconfined = 1
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_kernel_apparmor_restrict_unprivileged_unconfined
+      status: automated
 
     - id: 1.4.1
       title: Ensure bootloader password is set (Automated)
@@ -520,112 +534,295 @@ controls:
           - sysctl_fs_protected_symlinks
       status: automated
 
+    # Note: CIS Debian 13 v1.0.0 appears to duplicate kernel.yama.ptrace_scope
+    # in both 1.5.3 and 1.5.10. Keeping both IDs for traceability to the benchmark.
     - id: 1.5.3
       title: Ensure kernel.yama.ptrace_scope is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-        - sysctl_kernel_yama_ptrace_scope
+          - sysctl_kernel_yama_ptrace_scope_value=1
+          - sysctl_kernel_yama_ptrace_scope
       status: automated
 
     - id: 1.5.4
       title: Ensure fs.suid_dumpable is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
-      rules: 
-        - sysctl_fs_suid_dumpable
+          - l1_server
+          - l1_workstation
+      rules:
+          - sysctl_fs_suid_dumpable
       status: automated
 
     - id: 1.5.5
       title: Ensure kernel.dmesg_restrict is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-        - sysctl_kernel_dmesg_restrict
+          - sysctl_kernel_dmesg_restrict
       status: automated
 
     - id: 1.5.6
       title: Ensure prelink is not installed (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-          - disable_prelink
+          - package_prelink_removed
       status: automated
 
     - id: 1.5.7
       title: Ensure Automatic Error Reporting is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
-      status: pending
-      notes: |-
-          Check if systemctl is-active apport.service , fail if it's active
-          Check if apport is installed , if it's not installed pass
+          - l1_server
+          - l1_workstation
+      rules:
+          - service_apport_disabled
+      status: automated
 
     - id: 1.5.8
       title: Ensure kernel.kptr_restrict is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-        - sysctl_kernel_kptr_restrict
+          - sysctl_kernel_kptr_restrict
       status: automated
 
     - id: 1.5.9
       title: Ensure kernel.randomize_va_space is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-        - sysctl_kernel_randomize_va_space
+          - sysctl_kernel_randomize_va_space
       status: automated
 
     - id: 1.5.10
       title: Ensure kernel.yama.ptrace_scope is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
+          - sysctl_kernel_yama_ptrace_scope_value=1
           - sysctl_kernel_yama_ptrace_scope
       status: automated
 
     - id: 1.5.11
       title: Ensure core file size is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
           - disable_users_coredumps
+      status: automated
 
     - id: 1.5.12
       title: Ensure systemd-coredump ProcessSizeMax is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-        - coredump_disable_backtraces
+          - coredump_disable_backtraces
       status: automated
 
     - id: 1.5.13
       title: Ensure systemd-coredump Storage is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-        - coredump_disable_storage
+          - coredump_disable_storage
       status: automated
 
     - id: 1.6.1
       title: Ensure /etc/motd is configured (Automated)
       levels:
-        - l1_server
-        - l1_workstation
+          - l1_server
+          - l1_workstation
       rules:
-        - banner_etc_motd_cis
-        - cis_banner_text=cis
+          - cis_banner_text=cis
+          - banner_etc_motd_cis
       status: automated
 
+    - id: 1.6.2
+      title: Ensure /etc/issue is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - cis_banner_text=cis
+          - banner_etc_issue_cis
+      status: automated
+
+    - id: 1.6.3
+      title: Ensure /etc/issue.net is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - cis_banner_text=cis
+          - banner_etc_issue_net_cis
+      status: automated
+
+    - id: 1.6.4
+      title: Ensure access to /etc/motd is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - file_groupowner_etc_motd
+          - file_owner_etc_motd
+          - file_permissions_etc_motd
+      status: automated
+
+    - id: 1.6.5
+      title: Ensure access to /etc/issue is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - file_groupowner_etc_issue
+          - file_owner_etc_issue
+          - file_permissions_etc_issue
+      status: automated
+
+    - id: 1.6.6
+      title: Ensure access to /etc/issue.net is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - file_groupowner_etc_issue_net
+          - file_owner_etc_issue_net
+          - file_permissions_etc_issue_net
+      status: automated
+
+    - id: 1.7.1
+      title: Ensure GDM is removed (Automated)
+      levels:
+          - l2_server
+      rules:
+          - package_gdm_removed
+      status: automated
+
+    - id: 1.7.2
+      title: Ensure GDM login banner is configured (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - dconf_login_banner_text=cis_default
+          - dconf_login_banner_contents=cis_default
+          - dconf_gnome_banner_enabled
+          - dconf_gnome_login_banner_text
+      status: automated
+
+    - id: 1.7.3
+      title: Ensure GDM disable-user-list option is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - dconf_gnome_disable_user_list
+      status: automated
+
+    - id: 1.7.4
+      title: Ensure GDM screen locks when the user is idle (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - inactivity_timeout_value=15_minutes
+          - var_screensaver_lock_delay=5_seconds
+          - dconf_gnome_screensaver_idle_delay
+          - dconf_gnome_screensaver_lock_enabled
+          - dconf_gnome_screensaver_lock_delay
+      status: automated
+      notes: |
+          The rules satisfy both controls 1.7.4 and 1.7.5.
+          Rule lock_enabled is not part of CIS recommendation but is
+          required to assure the lock is enabled and cannot be manually disabled.
+          See https://workbench.cisecurity.org/benchmarks/18959/tickets/23123
+
+    - id: 1.7.5
+      title: Ensure GDM screen locks cannot be overridden (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - dconf_gnome_screensaver_idle_delay
+          - dconf_gnome_screensaver_lock_enabled
+          - dconf_gnome_screensaver_lock_delay
+      status: automated
+      notes: |
+          The rules satisfy both controls 1.7.4 and 1.7.5.
+          Rule lock_enabled is not part of CIS recommendation but is
+          required to assure the lock is enabled and cannot be manually disabled.
+          See https://workbench.cisecurity.org/benchmarks/18959/tickets/23123
+
+    - id: 1.7.6
+      title: Ensure GDM automatic mounting of removable media is disabled (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      rules:
+          - dconf_gnome_disable_automount
+          - dconf_gnome_disable_automount_open
+      status: automated
+      notes: |
+          The rules satisfy both controls 1.7.6 and 1.7.7
+
+    - id: 1.7.7
+      title: Ensure GDM disabling automatic mounting of removable media is not overridden (Automated)
+      levels:
+          - l1_server
+          - l2_workstation
+      rules:
+          - dconf_gnome_disable_automount
+          - dconf_gnome_disable_automount_open
+      status: automated
+      notes: |
+          The rules satisfy both controls 1.7.6 and 1.7.7
+
+    - id: 1.7.8
+      title: Ensure GDM autorun-never is enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - dconf_gnome_disable_autorun
+      status: automated
+      notes: |
+          The rule satisfies both controls 1.7.8 and 1.7.9
+
+    - id: 1.7.9
+      title: Ensure GDM autorun-never is not overridden (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - dconf_gnome_disable_autorun
+      status: automated
+      notes: |
+          The rule satisfies both controls 1.7.8 and 1.7.9
+
+    - id: 1.7.10
+      title: Ensure XDMCP is not enabled (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - gnome_gdm_disable_xdmcp
+      status: automated
+
+    - id: 1.7.11
+      title: Ensure Xwayland is configured (Automated)
+      levels:
+          - l2_server
+          - l2_workstation
+      rules:
+          - xwayland_disabled
+      status: automated
