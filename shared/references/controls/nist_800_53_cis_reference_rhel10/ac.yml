@@ -90,9 +90,9 @@ controls:
       levels:
           - low
       rules:
+          - var_accounts_user_umask=027
           - var_selinux_policy_name=targeted
           - var_pam_wheel_group_for_su=cis
-          - var_accounts_user_umask=027
           - accounts_umask_etc_bashrc
           - accounts_umask_etc_login_defs
           - accounts_umask_etc_profile
@@ -495,8 +495,8 @@ controls:
       levels:
           - low
       rules:
-          - var_accounts_passwords_pam_faillock_root_unlock_time=60
           - var_accounts_passwords_pam_faillock_deny=5
+          - var_accounts_passwords_pam_faillock_root_unlock_time=60
           - var_accounts_passwords_pam_faillock_unlock_time=900
           - account_password_pam_faillock_password_auth
           - account_password_pam_faillock_system_auth
@@ -561,8 +561,8 @@ controls:
       levels:
           - moderate
       rules:
-          - inactivity_timeout_value=15_minutes
           - var_screensaver_lock_delay=5_seconds
+          - inactivity_timeout_value=15_minutes
           - dconf_gnome_screensaver_idle_delay
           - dconf_gnome_screensaver_lock_delay
           - dconf_gnome_screensaver_user_locks
