@@ -2,12 +2,10 @@
 
 import argparse
 import os
-import sys
 
 import ssg.build_yaml
 import ssg.controls
 import ssg.environment
-import ssg.products
 import ssg.build_stig
 from utils.srg_utils import get_rule_dir_json, fix_changed_text
 from utils.srg_utils.yaml import update_row
@@ -62,10 +60,10 @@ def _get_controls(control_name, ssg_root, env_yaml):
     return controls
 
 
-def _get_rule_obj(control, rule_dir_json):
-    rule_id = list(filter(lambda x: "=" not in x, control.rules))[0]
-    rule_obj = rule_dir_json[rule_id]
-    return rule_obj
+def _get_rule_objs(control, rule_dir_json):
+    for rule_id in filter(lambda x: "=" not in x, control.rules):
+        rule_obj = rule_dir_json[rule_id]
+        yield rule_obj
 
 
 def _get_rule(env_yaml, rule_obj):
@@ -75,14 +73,39 @@ def _get_rule(env_yaml, rule_obj):
     return rule
 
 
-def _control_has_exactly_one_rule(control) -> bool:
-    if control is None:
-        return False
-    if control.rules is None:
-        return False
-    # control.rules contains not only rules but also variable selections
-    rules = list(filter(lambda x: "=" not in x, control.rules))
-    return len(rules) == 1
+def update_rule(rule_obj, env_yaml, stig_rule, changed_name, output_filename):
+    rule = _get_rule(env_yaml, rule_obj)
+    stig_srg_requirement = stig_rule['title']
+    rule_srg_requirement = rule.policy_specific_content.get('srg_requirement')
+    if rule_srg_requirement != stig_srg_requirement:
+        changed_fixtext = fix_changed_text(stig_srg_requirement, changed_name)
+        update_row(changed_fixtext, stig_srg_requirement, rule_obj, 'srg_requirement',
+                output_filename)
+
+    stig_fix_text = stig_rule['fixtext']
+    rule_fixtext = rule.policy_specific_content.get('fixtext')
+    if rule_fixtext != stig_fix_text:
+        changed_fixtext = fix_changed_text(stig_fix_text, changed_name)
+        changed_fixtext = changed_fixtext.replace(f'auid>={env_yaml["uid_min"]}',
+                                                'auid&gt;={{{ uid_min }}}')
+        update_row(changed_fixtext, rule_fixtext, rule_obj, 'fixtext',
+                output_filename)
+
+    stig_checktext = stig_rule['check']
+    rule_checktext = rule.policy_specific_content.get('checkfix')
+    if rule_checktext != stig_checktext:
+        changed_checktext = fix_changed_text(stig_checktext, changed_name)
+        changed_checktext = changed_checktext.replace(f'auid>={env_yaml["uid_min"]}',
+                                                    'auid&gt;={{{ uid_min }}}')
+        update_row(changed_checktext, rule_checktext, rule_obj, 'checktext',
+                output_filename)
+
+    stig_vuln_discussion = stig_rule['vuln_discussion']
+    rule_vuln_discussion = rule.policy_specific_content.get('vuldiscussion')
+    if stig_vuln_discussion != rule_vuln_discussion:
+        changed_vuln_discussion = fix_changed_text(stig_vuln_discussion, changed_name)
+        update_row(changed_vuln_discussion, rule_vuln_discussion, rule_obj,
+                'vuldiscussion', output_filename)
 
 
 def main() -> int:
@@ -97,45 +120,11 @@ def main() -> int:
 
     for stig_id, stig_rule in srgs.items():
         control = controls[stig_id]
-        if not _control_has_exactly_one_rule(control):
-            print(f"Warning: Unable to update {stig_id} since it doesn't have exactly one "
-                  f"rule.", file=sys.stderr)
+        if control is None or control.rules is None:
             continue
+        for rule_obj in _get_rule_objs(control, rule_dir_json):
+            update_rule(rule_obj, env_yaml, stig_rule, changed_name, output_filename)
 
-        rule_obj = _get_rule_obj(control, rule_dir_json)
-        rule = _get_rule(env_yaml, rule_obj)
-
-        stig_srg_requirement = stig_rule['title']
-        rule_srg_requirement = rule.policy_specific_content.get('srg_requirement')
-        if rule_srg_requirement != stig_srg_requirement:
-            changed_fixtext = fix_changed_text(stig_srg_requirement, changed_name)
-            update_row(changed_fixtext, stig_srg_requirement, rule_obj, 'srg_requirement',
-                       output_filename)
-
-        stig_fix_text = stig_rule['fixtext']
-        rule_fixtext = rule.policy_specific_content.get('fixtext')
-        if rule_fixtext != stig_fix_text:
-            changed_fixtext = fix_changed_text(stig_fix_text, changed_name)
-            changed_fixtext = changed_fixtext.replace(f'auid>={env_yaml["uid_min"]}',
-                                                      'auid&gt;={{{ uid_min }}}')
-            update_row(changed_fixtext, rule_fixtext, rule_obj, 'fixtext',
-                       output_filename)
-
-        stig_checktext = stig_rule['check']
-        rule_checktext = rule.policy_specific_content.get('checkfix')
-        if rule_checktext != stig_checktext:
-            changed_checktext = fix_changed_text(stig_checktext, changed_name)
-            changed_checktext = changed_checktext.replace(f'auid>={env_yaml["uid_min"]}',
-                                                          'auid&gt;={{{ uid_min }}}')
-            update_row(changed_checktext, rule_checktext, rule_obj, 'checktext',
-                       output_filename)
-
-        stig_vuln_discussion = stig_rule['vuln_discussion']
-        rule_vuln_discussion = rule.policy_specific_content.get('vuldiscussion')
-        if stig_vuln_discussion != rule_vuln_discussion:
-            changed_vuln_discussion = fix_changed_text(stig_vuln_discussion, changed_name)
-            update_row(changed_vuln_discussion, rule_vuln_discussion, rule_obj,
-                       'vuldiscussion', output_filename)
 
     return 0
 
