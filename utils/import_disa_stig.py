@@ -63,7 +63,7 @@ def _get_controls(control_name, ssg_root, env_yaml):
 
 
 def _get_rule_obj(control, rule_dir_json):
-    rule_id = control.rules[0]
+    rule_id = list(filter(lambda x: "=" not in x, control.rules))[0]
     rule_obj = rule_dir_json[rule_id]
     return rule_obj
 
@@ -73,6 +73,16 @@ def _get_rule(env_yaml, rule_obj):
     rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
     rule.load_policy_specific_content(rule_path, env_yaml)
     return rule
+
+
+def _control_has_exactly_one_rule(control) -> bool:
+    if control is None:
+        return False
+    if control.rules is None:
+        return False
+    # control.rules contains not only rules but also variable selections
+    rules = list(filter(lambda x: "=" not in x, control.rules))
+    return len(rules) == 1
 
 
 def main() -> int:
@@ -87,7 +97,7 @@ def main() -> int:
 
     for stig_id, stig_rule in srgs.items():
         control = controls[stig_id]
-        if control is None or control.rules is None or len(control.rules) != 1:
+        if not _control_has_exactly_one_rule(control):
             print(f"Warning: Unable to update {stig_id} since it doesn't have exactly one "
                   f"rule.", file=sys.stderr)
             continue
