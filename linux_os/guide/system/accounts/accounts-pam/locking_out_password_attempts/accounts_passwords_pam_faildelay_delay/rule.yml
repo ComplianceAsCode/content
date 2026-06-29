@@ -44,12 +44,12 @@ ocil: |-
 template:
     name: pam_options
     vars:
-      path: /etc/pam.d/common-auth
-      type: auth
-      control_flag: required
-      module: pam_faildelay.so
-      arguments:
-        - variable: delay
-          operation: greater than or equal
+        path: /etc/pam.d/common-auth
+        type: auth
+        control_flag: required
+        module: pam_faildelay.so
+        arguments:
+            - variable: delay
+        operation: greater than or equal
 
 platform: package[pam]
