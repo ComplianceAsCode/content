@@ -1,4 +1,4 @@
-{{% if product in ["sle12", "sle15", "slmicro5"] %}}
+{{% if product.startswith('sle') or product.startswith('slmicro') %}}
   {{%- set package = "libaudit1" %}}
 {{% else %}}
   {{%- set package = "audit-libs" %}}
@@ -21,7 +21,9 @@ identifiers:
     cce@rhel10: CCE-90611-5
     cce@sle12: CCE-92320-1
     cce@sle15: CCE-92478-7
+    cce@sle16: CCE-95878-5
     cce@slmicro5: CCE-93872-0
+    cce@slmicro6: CCE-94904-0
 
 references:
     cis@sle12: 4.1.1.1
