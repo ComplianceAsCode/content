@@ -487,7 +487,7 @@ This script only updates STIG items that only have one rule assigned to them.
 
 To execute:
 ```bash
-$ ./utils/import_disa_stig.py --product rhel9 --control stig_rhel9 shared/references/disa-stig-rhel9-v1r2-xccdf-manual.xml
+$ ./utils/import_disa_stig.py --product rhel9 --control stig_rhel9 --output-file-name rhel9.yml shared/references/disa-stig-rhel9-v1r2-xccdf-manual.xml
 ```
 
 ## Profiling the Build System

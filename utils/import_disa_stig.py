@@ -36,6 +36,10 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument('--changed-name', '-n', type=str, action="store",
                         help="The name that DISA uses for the product. Defaults to RHEL 9",
                         default="RHEL 9")
+    parser.add_argument('-o', '--output-file-name', type=str, action="store",
+                        default="shared.yml",
+                        help="Output filename for policy-specific content "
+                        "(e.g. 'rhel10.yml'). Defaults to 'shared.yml'")
     return parser.parse_args()
 
 
@@ -75,6 +79,7 @@ def main() -> int:
     args = _parse_args()
     build_config_yaml = args.build_config_yaml
     changed_name = args.changed_name
+    output_filename = args.output_file_name
     env_yaml = _get_env_yaml(args.root, args.product, build_config_yaml)
     controls = _get_controls(args.control, args.root, env_yaml)
     rule_dir_json = get_rule_dir_json(args.json)
@@ -94,7 +99,8 @@ def main() -> int:
         rule_srg_requirement = rule.policy_specific_content.get('srg_requirement')
         if rule_srg_requirement != stig_srg_requirement:
             changed_fixtext = fix_changed_text(stig_srg_requirement, changed_name)
-            update_row(changed_fixtext, stig_srg_requirement, rule_obj, 'srg_requirement')
+            update_row(changed_fixtext, stig_srg_requirement, rule_obj, 'srg_requirement',
+                       output_filename)
 
         stig_fix_text = stig_rule['fixtext']
         rule_fixtext = rule.policy_specific_content.get('fixtext')
@@ -102,7 +108,8 @@ def main() -> int:
             changed_fixtext = fix_changed_text(stig_fix_text, changed_name)
             changed_fixtext = changed_fixtext.replace(f'auid>={env_yaml["uid_min"]}',
                                                       'auid&gt;={{{ uid_min }}}')
-            update_row(changed_fixtext, rule_fixtext, rule_obj, 'fixtext')
+            update_row(changed_fixtext, rule_fixtext, rule_obj, 'fixtext',
+                       output_filename)
 
         stig_checktext = stig_rule['check']
         rule_checktext = rule.policy_specific_content.get('checkfix')
@@ -110,14 +117,15 @@ def main() -> int:
             changed_checktext = fix_changed_text(stig_checktext, changed_name)
             changed_checktext = changed_checktext.replace(f'auid>={env_yaml["uid_min"]}',
                                                           'auid&gt;={{{ uid_min }}}')
-            update_row(changed_checktext, rule_checktext, rule_obj, 'checktext')
+            update_row(changed_checktext, rule_checktext, rule_obj, 'checktext',
+                       output_filename)
 
         stig_vuln_discussion = stig_rule['vuln_discussion']
         rule_vuln_discussion = rule.policy_specific_content.get('vuldiscussion')
         if stig_vuln_discussion != rule_vuln_discussion:
             changed_vuln_discussion = fix_changed_text(stig_vuln_discussion, changed_name)
             update_row(changed_vuln_discussion, rule_vuln_discussion, rule_obj,
-                       'vuldiscussion')
+                       'vuldiscussion', output_filename)
 
     return 0
 
