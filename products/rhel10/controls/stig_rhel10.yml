@@ -361,6 +361,7 @@ controls:
       title: RHEL 10 must have the Advanced Intrusion Detection Environment (AIDE) package installed.
       rules:
           - package_aide_installed
+          - aide_build_database
       status: automated
     - id: RHEL-10-200631
       levels:
@@ -383,11 +384,7 @@ controls:
       title: RHEL 10 must routinely check the baseline configuration for unauthorized changes and notify
           the system administrator when anomalies in the operation of any security functions are discovered.
       rules:
-          - aide_build_database
-          - aide_periodic_cron_checking
           - aide_scan_notification
-          - aide_use_fips_hashes
-          - package_aide_installed
       status: automated
     - id: RHEL-10-200634
       levels:
