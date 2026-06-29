@@ -51,7 +51,11 @@ ocil: |-
 
 warnings:
     - general: |-
+    {{% if 'rhel' not in product %}}
         The system needs to be rebooted for these changes to take effect.
+    {{% else %}}
+        If this check fails on an installed system, it is a permanent finding until the system is reinstalled with "fips=1" during installation.
+    {{% endif %}}
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes FIPS-140 certifications.
         FIPS-140 is applicable to all Federal agencies that use cryptographic-based security

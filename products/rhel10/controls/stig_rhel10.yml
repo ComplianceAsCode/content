@@ -361,6 +361,7 @@ controls:
       title: RHEL 10 must have the Advanced Intrusion Detection Environment (AIDE) package installed.
       rules:
           - package_aide_installed
+          - aide_build_database
       status: automated
     - id: RHEL-10-200631
       levels:
@@ -383,11 +384,7 @@ controls:
       title: RHEL 10 must routinely check the baseline configuration for unauthorized changes and notify
           the system administrator when anomalies in the operation of any security functions are discovered.
       rules:
-          - aide_build_database
-          - aide_periodic_cron_checking
           - aide_scan_notification
-          - aide_use_fips_hashes
-          - package_aide_installed
       status: automated
     - id: RHEL-10-200634
       levels:
@@ -521,7 +518,6 @@ controls:
           and system administrator (SA) (at a minimum) of an audit processing failure.
       rules:
           - postfix_client_configure_mail_alias
-          - postfix_client_configure_mail_alias_postmaster
           - var_postfix_root_mail_alias=mil_sysadmin
       status: automated
     - id: RHEL-10-200692
@@ -594,9 +590,7 @@ controls:
           - high
       title: RHEL 10 must enable FIPS mode.
       rules:
-          - enable_fips_mode
           - sysctl_crypto_fips_enabled
-          - system_booted_in_fips_mode
       status: automated
     - id: RHEL-10-300030
       levels:

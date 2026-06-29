@@ -48,7 +48,6 @@ accounts_user_interactive_home_directory_defined
 accounts_user_interactive_home_directory_exists
 aide_build_database
 aide_check_audit_tools
-aide_periodic_cron_checking
 aide_scan_notification
 aide_use_fips_hashes
 aide_verify_acls
@@ -191,7 +190,6 @@ disable_ctrlaltdel_reboot
 disable_host_auth
 disable_users_coredumps
 disallow_bypass_password_sudo
-enable_fips_mode
 enable_gpgcheck_for_all_repositories
 encrypt_partitions
 ensure_gpgcheck_globally_activated
@@ -483,7 +481,6 @@ sysctl_net_ipv6_conf_all_forwarding
 sysctl_net_ipv6_conf_default_accept_ra
 sysctl_net_ipv6_conf_default_accept_redirects
 sysctl_net_ipv6_conf_default_accept_source_route
-system_booted_in_fips_mode
 tftp_uses_secure_mode_systemd
 usbguard_generate_policy
 use_pam_wheel_for_su
