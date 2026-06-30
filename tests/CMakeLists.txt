@@ -401,3 +401,11 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/import_srg_spreadsheet.py" "-h"
 )
 endif()
+
+if(SSG_PRODUCT_RHEL10)
+    add_test(
+        NAME "stig-rules-srg-gpos"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_stig_rules_in_srg_gpos.py"  --root "${CMAKE_SOURCE_DIR}" --product "rhel10"
+    )
+    set_tests_properties("stig-rules-srg-gpos" PROPERTIES LABELS quick)
+endif()
