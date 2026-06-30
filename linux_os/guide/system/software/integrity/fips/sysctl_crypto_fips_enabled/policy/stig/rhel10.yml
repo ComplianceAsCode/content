@@ -1,20 +1,26 @@
 srg_requirement: |-
     {{{ full_name }}} must enable FIPS mode.
+    {{{ full_name }}} must enable FIPS mode.
 vuldiscussion: |-
-    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
-    protect data. The operating system must implement cryptographic modules adhering to the higher
-    standards approved by the federal government since this provides assurance they have been tested
-    and validated.
+    Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data. The operating system must implement cryptographic modules adhering to the higher standards approved by the federal government because this provides assurance they have been tested and validated.
+
+
 
 checktext: |-
-    Verify that {{{ full_name }}} is in FIPS mode with the following command:
+    Verify {{{ full_name }}} is in FIPS mode with the following command:
 
-    cat /proc/sys/crypto/fips_enabled
+    $ cat /proc/sys/crypto/fips_enabled
+    1
 
-    If the command doesn't return 1, this is a finding.
+    If the command does not return "1", this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to implement FIPS mode the installer kernel must be started with fips=1.
+    Configure {{{ full_name }}} to implement FIPS mode.
+
+    If this check fails on an installed system, it is a permanent finding until the system is reinstalled with "fips=1" during installation.
+
+    Red Hat 10 does not support switching to strict FIPS mode after installation.
 
 
-    If this checks fails on an installed system it is a permanent finding until the system is reinstalled.
+
+

@@ -1,21 +1,25 @@
 checktext: |-
-    Verify that {{{ full_name }}} subscription-manager package is installed with the following command:
+    Note: If the system is not an internet connected system, this requirement is not applicable.
 
-    $ dnf list --installed subscription-manager
+    Verify {{{ full_name }}} has the "subscription-manager" package installed with the following command:
 
-    Example output:
-
-    subscription-manager.x86_64                          1.30.6-1.el10_0
+    $ sudo dnf list --installed subscription-manager
+    Installed Packages
+    subscription-manager.x86_64                      1.30.6.1-1.el10_0                       @rhel-10-for-x86_64-baseos-rpms
 
     If the "subscription-manager" package is not installed, this is a finding.
 
 srg_requirement: |-
-    {{{ full_name }}} subscription-manager package must be installed.
+    {{{ full_name }}} must have the "subscription-manager" package installed.
 
 vuldiscussion: |-
     The Red Hat Subscription Manager application manages software subscriptions and software repositories for installed software products on the local system. It communicates with backend servers, such as the Red Hat Customer Portal or an on-premise instance of Subscription Asset Manager, to register the local system and grant access to software resources determined by the subscription entitlement.
 
 fixtext: |-
-    The  subscription-manager package can be installed with the following command:
+    Configure {{{ full_name }}} to have the "subscription-manager" package installed with the following command:
 
-    $ sudo dnf install subscription-manager
+    $ sudo dnf -y install subscription-manager
+
+
+
+

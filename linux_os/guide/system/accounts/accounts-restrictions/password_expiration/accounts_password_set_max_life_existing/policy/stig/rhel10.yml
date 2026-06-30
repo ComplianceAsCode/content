@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must, for user account passwords, have a 60-day maximum password lifetime restriction.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce a 60-day maximum password lifetime restriction on user account passwords.
+
+    Set the 60-day maximum password lifetime restriction with the following command:
+
+    $ sudo passwd -x 60 [user]
+
+checktext: |-
+    Verify {{{ full_name }}} enforces a 60-day maximum time period for existing user account passwords with the following commands:
+
+    $ sudo awk -F: '$5 &gt; 60 {print $1 "" "" $5}' /etc/shadow
+
+    $ sudo awk -F: '$5 &lt;= 0 {print $1 "" "" $5}' /etc/shadow
+
+    If any results are returned that are not associated with a system account, this is a finding.
+
+vuldiscussion: |-
+    Any password, no matter how complex, can eventually be cracked. Therefore, passwords must be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.

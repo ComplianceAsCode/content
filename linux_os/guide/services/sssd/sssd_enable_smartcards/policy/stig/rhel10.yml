@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable certificate-based smart card authentication.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable certificate-based smart card authentication.
+
+    Edit the file "/etc/sssd/sssd.conf" or a configuration file in "/etc/sssd/conf.d" and add or edit the following line:
+
+    pam_cert_auth = True
+
+checktext: |-
+    Note: If the system administrator demonstrates the use of an approved alternate multifactor authentication method, this requirement is not applicable.
+
+    Verify {{{ full_name }}} enables smart cards in the System Security Services Daemon (SSSD) with the following command:
+
+    $ sudo grep -ir pam_cert_auth /etc/sssd/sssd.conf /etc/sssd/conf.d/
+    /etc/sssd/conf.d/sssd.conf:pam_cert_auth = True
+
+    If "pam_cert_auth" is not set to "True", the line is commented out, or the line is missing, this is a finding.
+
+vuldiscussion: |-
+    Without the use of multifactor authentication, the ease of access to privileged functions is greatly increased. Multifactor authentication requires using two or more factors to achieve authentication. A privileged account is defined as an information system account with authorizations of a privileged user. The DOD Common Access Card (CAC) with DOD-approved public key infrastructure (PKI) is an example of multifactor authentication.
+
+

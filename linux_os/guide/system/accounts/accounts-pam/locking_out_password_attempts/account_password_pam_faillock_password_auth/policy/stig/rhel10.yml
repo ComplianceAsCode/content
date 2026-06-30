@@ -1,0 +1,30 @@
+srg_requirement: |-
+    {{{ full_name }}} must configure the use of the pam_faillock.so module in the "/etc/pam.d/password-auth" file.
+
+fixtext: |-
+    Configure {{{ full_name }}} to include the use of the pam_faillock.so module in the "/etc/pam.d/password-auth" file. If PAM is managed with "authselect", enable the feature with the following command:
+
+    $ sudo authselect enable-feature with-faillock
+
+    Otherwise, add/modify the appropriate sections of the "/etc/pam.d/password-auth" file to match the following lines:
+
+    Note: The "preauth" line must be listed before pam_unix.so.
+
+    auth required pam_faillock.so preauth
+    auth required pam_faillock.so authfail
+    account required pam_faillock.so
+
+checktext: |-
+    Verify {{{ full_name }}} includes the pam_faillock.so module in the "/etc/pam.d/password-auth" file:
+
+    $ sudo grep pam_faillock.so /etc/pam.d/password-auth
+    auth required pam_faillock.so preauth
+    auth required pam_faillock.so authfail
+    account required pam_faillock.so
+
+    If the pam_faillock.so module is not present in the "/etc/pam.d/password-auth" file with the "preauth" line listed before pam_unix.so, this is a finding.
+
+    If the system administrator can demonstrate that the required configuration is contained in a Pluggable Authentication Module (PAM) configuration file included or substacked from the "system-auth" file, this is not a finding.
+
+vuldiscussion: |-
+    If the pam_faillock.so module is not loaded, the system will not correctly lock out accounts to prevent password guessing attacks.

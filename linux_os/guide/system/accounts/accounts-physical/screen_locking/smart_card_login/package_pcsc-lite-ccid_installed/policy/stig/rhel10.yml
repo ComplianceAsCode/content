@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the "pcsc-lite-ccid" package installed.
+
+fixtext: |-
+    Configure {{{ full_name }}} to have the "pcsc-lite-ccid" package installed with the following command:
+
+    $ sudo dnf -y install pcsc-lite-ccid
+
+checktext: |-
+    Verify {{{ full_name }}} has the "pcsc-lite-ccid" package installed with the following command:
+
+    $ sudo dnf list --installed pcsc-lite-ccid
+    Installed Packages
+    pcsc-lite-ccid.x86_64                                       1.6.0-2.el10                                       @anaconda
+
+    If the "pcsc-lite-ccid" package is not installed, this is a finding.
+
+vuldiscussion: |-
+    The "pcsc-lite-ccid" package must be installed if it is to be available for multifactor authentication using smart cards.

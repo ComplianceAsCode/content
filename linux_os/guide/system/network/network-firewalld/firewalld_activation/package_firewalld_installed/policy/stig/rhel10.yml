@@ -1,30 +1,32 @@
 checktext: |-
-    Run the following command to determine if the firewalld package is installed with the following command:
+    Verify {{{ full_name }}} has the "firewalld" package installed.
 
-    $ dnf list --installed firewalld
+    Run the following command to determine if the "firewalld" package is installed:
 
-    Example output:
-
-    firewalld.noarch          2.3.0-2.el10
+    Installed Packages
+    firewalld.noarch                             2.3.1-1.el10_0                              @rhel-10-for-x86_64-baseos-rpms
 
     If the "firewall" package is not installed, this is a finding.
 
 srg_requirement: |-
-    {{{ full_name }}} must have the firewalld package installed.
+    {{{ full_name }}} must have the "firewalld" package installed.
 
 vuldiscussion: |-
-    "Firewalld" provides an easy and effective way to block/limit remote access to the system via ports, services, and protocols.
+    The "firewalld" package provides an easy and effective way to block/limit remote access to the system via ports, services, and protocols.
 
-    Remote access services, such as those providing remote access to network devices and information systems, which lack automated control capabilities, increase risk and make remote user access management difficult at best.
+    Remote access services, such as those providing remote access to network devices and information systems, that lack automated control capabilities increase risk and make remote user access management difficult at best.
 
-    Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+    Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganizational-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
 
-    {{{ full_name }}} functionality (e.g., SSH) must be capable of taking enforcement action if the audit reveals unauthorized activity. Automated control of remote access sessions allows organizations to ensure ongoing compliance with remote access policies by enforcing connection rules of remote access applications on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).
+    {{{ full_name }}} functionality (e.g., Secure Shell [SSH]) must be capable of taking enforcement action if the audit reveals unauthorized activity. Automated control of remote access sessions allows organizations to ensure ongoing compliance with remote access policies by enforcing connection rules of remote access applications on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).
+
 
 
 fixtext: |-
-    To install the "firewalld" package run the following command:
+    Configure {{{ full_name }}} to have the "firewalld" package installed with the following command:
 
-    $ sudo dnf install firewalld
+    $ sudo dnf -y install firewalld
+
+
 
 

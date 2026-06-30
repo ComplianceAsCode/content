@@ -1,23 +1,25 @@
 checktext: |-
-    Verify that {{{ full_name }}} is configured to allow sending email notifications.
+    Verify {{{ full_name }}} is configured to allow sending email notifications.
 
-    Note: The "s-nail" package provides the "mail" command that is used to send email messages.
+    Verify the "s-nail" package is installed on the system with the following command:
 
-    Verify that the "s-nail" package is installed on the system:
+    $ sudo dnf list --installed s-nail
+    Installed Packages
+    s-nail.x86_64                             14.9.24-12.el10                             @rhel-10-for-x86_64-appstream-rpms
 
-    $ dnf list --installed s-nail
-
-    s-nail.x86_64          14.9.24-12.el10
-
-    If "s-nail" package is not installed, this is a finding.
+    If the "s-nail" package is not installed, this is a finding.
 
 vuldiscussion: |-
     The "s-nail" package provides the mail command required to allow sending email notifications of unauthorized configuration changes to designated personnel.
 
 srg_requirement: |-
-    {{{ full_name }}} must have the s-nail package installed.
+    {{{ full_name }}} must have the "s-nail" package installed.
 
 fixtext: |-
-    The s-nail package can be installed with the following command:
+    Configure {{{ full_name }}} to have the "s-nail" package installed with the following command:
 
-    $ sudo dnf install s-nail
+    $ sudo dnf -y install s-nail
+
+
+
+

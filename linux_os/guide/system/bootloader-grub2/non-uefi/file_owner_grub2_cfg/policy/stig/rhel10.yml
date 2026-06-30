@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must enforce "root" ownership of the "/boot/grub2/grub.cfg" file.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce ownership of the "/boot/grub2/grub.cfg" file.
+
+    Change the owner of the "/boot/grub2/grub.cfg" file to "root" by running the following command:
+
+    $ sudo chown root /boot/grub2/grub.cfg
+
+checktext: |-
+    Verify {{{ full_name }}} enforces ownership of the "/boot/grub2/grub.cfg" file with the following command:
+
+    $ sudo stat -c "%U %n" /boot/grub2/grub.cfg
+    root /boot/grub2/grub.cfg
+
+    If the "/boot/grub2/grub.cfg" file does not have an owner of "root", this is a finding.
+
+vuldiscussion: |-
+    The " /boot/grub2/grub.cfg" file stores sensitive system configuration. Protection of this file is critical for system security.

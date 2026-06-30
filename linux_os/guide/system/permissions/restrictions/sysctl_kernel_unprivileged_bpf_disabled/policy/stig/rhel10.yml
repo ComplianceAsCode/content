@@ -1,0 +1,30 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable access to the network bpf system call from nonprivileged processes.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent privilege escalation through the kernel by disabling access to the bpf system call.
+
+    Create the drop-in file if it does not already exist:
+
+    $ sudo vi /etc/sysctl.d/99-kernel_unprivileged_bpf_disabled
+
+    Add the following line to the file:
+
+    kernel.unprivileged_bpf_disabled = 1
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
+
+checktext: |-
+    Verify {{{ full_name }}} prevents privilege escalation through the kernel by disabling access to the bpf system call.
+
+    Check the status of the "kernel.unprivileged_bpf_disabled" kernel parameter with the following command:
+
+    $ sysctl kernel.unprivileged_bpf_disabled
+    kernel.unprivileged_bpf_disabled = 1
+
+    If "kernel.unprivileged_bpf_disabled" is not set to "1" or is missing, this is a finding.
+
+vuldiscussion: |-
+    Loading and accessing the packet filters programs and maps using the bpf() system call has the potential to reveal sensitive information about the kernel state.

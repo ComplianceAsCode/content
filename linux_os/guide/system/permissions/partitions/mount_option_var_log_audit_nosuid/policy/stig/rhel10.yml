@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must mount "/var/log/audit" with the "nosuid" option.
+
+fixtext: |-
+    Configure {{{ full_name }}} to mount "/var/log/audit" with the "nosuid" option.
+
+    Modify "/etc/fstab" to use the "nosuid" option on the "/var/log/audit" directory.
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that "/var/log/audit" is mounted with the "nosuid" option:
+
+    $ mount | grep /var/log/audit
+    /dev/mapper/luks-4e45e1ad-5337-42c4-a19f-ee12ccc1d502 on /var/log/audit type xfs (rw,nodev,nosuid,noexec,seclabel)
+
+    If the "/var/log/audit" file system is mounted without the "nosuid" option, this is a finding.
+
+vuldiscussion: |-
+    The "nosuid" mount option causes the system to not execute "setuid" and "setgid" files with owner privileges. This option must be used for mounting any file system not containing approved "setuid" and "setguid" files. Executing files from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.

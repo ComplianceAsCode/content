@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must mount "/var/tmp" with the "nosuid" option.
+
+fixtext: |-
+    Configure {{{ full_name }}} to mount "/var/tmp" with the "nosuid" option.
+
+    Modify "/etc/fstab" to use the "nosuid" option on the "/var/tmp" directory.
+
+    To reload all implicit mount units and update the dependency graph so that new options will apply correctly at next remount, run the following command:
+
+    $ sudo systemctl daemon-reload
+
+    Use the following command to apply the changes immediately without a reboot:
+
+    $ sudo mount -o remount /var/tmp
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that "/var/tmp" is mounted with the "nosuid" option:
+
+    $ mount | grep /var/tmp
+    /dev/mapper/luks-c98555c8-0462-4b97-9afa-6db8c4bfee3b on /var/tmp type xfs (rw,nosuid,nodev,noexec,relatime,seclabel,attr2)
+
+    If the "/var/tmp" file system is mounted without the "nosuid" option, this is a finding.
+
+vuldiscussion: |-
+    The "nosuid" mount option causes the system to not execute "setuid" and "setgid" files with owner privileges. This option must be used for mounting any file system not containing approved "setuid" and "setguid" files. Executing files from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.

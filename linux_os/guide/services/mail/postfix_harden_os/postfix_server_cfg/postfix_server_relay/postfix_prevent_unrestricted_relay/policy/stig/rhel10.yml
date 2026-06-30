@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured to prevent unrestricted mail relaying.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the postfix configuration file restricts client connections to the local network with the following command:
+
+    $ sudo postconf -e 'smtpd_client_restrictions = permit_mynetworks,reject'
+
+checktext: |-
+    Note: If postfix is not installed, this is not applicable.
+
+    Verify {{{ full_name }}} is configured to prevent unrestricted mail relaying with the following command:
+
+    $ postconf -n smtpd_client_restrictions
+    smtpd_client_restrictions = permit_mynetworks,reject
+
+    If the "smtpd_client_restrictions" parameter contains any entries other than "permit_mynetworks" and "reject", and the additional entries have not been documented with the information system security officer, this is a finding.
+
+vuldiscussion: |-
+    If unrestricted mail relaying is permitted, unauthorized senders could use this host as a mail relay to send spam or for other unauthorized activity.

@@ -1,0 +1,32 @@
+srg_requirement: |-
+    {{{ full_name }}} must log Internet Protocol version 4 (IPv4) packets with impossible addresses.
+
+fixtext: |-
+    Configure {{{ full_name }}} to log martian packets on IPv4 interfaces.
+
+    Create a configuration file if it does not already exist:
+
+    $ sudo vi /etc/sysctl.d/99-ipv4_log_martians.conf
+
+    Add the following line to the file:
+
+    net.ipv4.conf.all.log_martians=1
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
+
+checktext: |-
+    Verify {{{ full_name }}} logs IPv4 martian packets.
+
+    Check the value of the "net.ipv4.conf.all.log_martians" variable with the following command:
+
+    $ sudo sysctl net.ipv4.conf.all.log_martians
+    net.ipv4.conf.all.log_martians = 1
+
+    If "net.ipv4.conf.all.log_martians" is not set to "1" or is missing, this is a finding.
+
+vuldiscussion: |-
+    The presence of "martian" packets (which have impossible addresses), as well as spoofed packets, source-routed packets, and redirects, could be a sign of nefarious network activity. Logging these packets enables this activity to be detected.
+
+

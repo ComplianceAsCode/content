@@ -1,0 +1,37 @@
+srg_requirement: |-
+    {{{ full_name }}} must conceal, via the session lock, information previously visible on the display with a publicly viewable image.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent a user from overriding the picture-uri setting for graphical user interfaces.
+
+    Note: The example below is using the database "local" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
+
+    Update the "/etc/dconf/db/local.d/00-security-settings" file to prevent a user from overriding the "picture-uri" setting:
+
+    $ sudo vi /etc/dconf/db/local.d/00-security-settings
+
+    [org/gnome/desktop/screensaver]
+    picture-uri=''
+
+    Update the "/etc/dconf/db/local.d/locks/00-security-settings-lock" file to prevent a user from modifying the lock applied to the "picture-uri" setting:
+
+    $ sudo vi /etc/dconf/db/local.d/locks/00-security-settings-lock
+
+    /org/gnome/desktop/screensaver/picture-uri
+
+    Update the dconf system databases:
+
+    $ sudo dconf update
+
+checktext: |-
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is not applicable.
+
+    Verify {{{ full_name }}} prevents a user from overriding settings a blank screensaver with the following command:
+
+    $ gsettings writable org.gnome.desktop.screensaver picture-uri
+    false
+
+    If "picture-uri" is writable, and the result is "true", this is a finding.
+
+vuldiscussion: |-
+    Setting the screensaver mode to blank-only conceals the contents of the display from passersby.

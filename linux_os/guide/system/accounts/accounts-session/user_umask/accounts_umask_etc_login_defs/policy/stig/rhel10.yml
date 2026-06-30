@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must define default permissions for all authenticated users in such a way that the user can read and modify only their own files.
+
+fixtext: |-
+    Configure {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can read and modify only their own files.
+
+    Add or edit the lines for the "umask" parameter in the "/etc/login.defs" file to "077":
+
+    umask 077
+
+checktext: |-
+    Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
+
+    Note: If the value of the "umask" parameter is set to "000" in "/etc/login.defs" file, the Severity is raised to a CAT I.
+
+    $ sudo grep -i umask /etc/login.defs
+    umask 077
+
+    If the value for the "umask" parameter is not "077", or the "umask" parameter is missing or is commented out, this is a finding.
+
+vuldiscussion: |-
+    Setting the most restrictive default permissions ensures that when new accounts are created, they do not have unnecessary access.

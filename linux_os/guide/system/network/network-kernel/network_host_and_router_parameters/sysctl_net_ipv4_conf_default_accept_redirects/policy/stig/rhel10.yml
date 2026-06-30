@@ -1,0 +1,34 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages from being accepted.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent IPv4 ICMP redirect messages from being accepted.
+
+    Create a configuration file if it does not already exist:
+
+    $ sudo vi /etc/sysctl.d/99-ipv4_accept_redirects.conf
+
+    Add the following line to the file:
+
+    net.ipv4.conf.default.accept_redirects = 0
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
+
+checktext: |-
+    Verify {{{ full_name }}} will not accept IPv4 ICMP redirect messages.
+
+    Check the value of the default "net.ipv4.conf.default.accept_redirects" variable with the following command:
+
+    $ sudo sysctl net.ipv4.conf.default.accept_redirects
+    net.ipv4.conf.default.accept_redirects = 0
+
+    If "net.ipv4.conf.default.accept_redirects" is not set to "0" or is missing, this is a finding.
+
+vuldiscussion: |-
+    ICMP redirect messages are used by routers to inform hosts that a more direct route exists for a particular destination. These messages modify the host's route table and are unauthenticated. An illicit ICMP redirect message could result in a man-in-the-middle attack.
+
+    This feature of the IPv4 protocol has few legitimate uses. It must be disabled unless absolutely required.
+
+

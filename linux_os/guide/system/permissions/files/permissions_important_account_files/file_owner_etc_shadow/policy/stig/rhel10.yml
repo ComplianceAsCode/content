@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that the "/etc/shadow" file is owned by "root".
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the owner of the "/etc/shadow" file is set to "root" by running the following command:
+
+    $ sudo chown root /etc/shadow
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the "/etc/shadow" file is owned by "root" with the following command:
+
+    $ sudo stat -c "%U %n" /etc/shadow
+    root /etc/shadow
+
+    If the "/etc/shadow" file does not have an owner of "root", this is a finding.
+
+vuldiscussion: |-
+    The "/etc/shadow" file contains the list of local system accounts and stores password hashes. Protection of this file is critical for system security. Failure to give ownership of this file to "root" provides the designated owner with access to sensitive information, which could weaken the system security posture.

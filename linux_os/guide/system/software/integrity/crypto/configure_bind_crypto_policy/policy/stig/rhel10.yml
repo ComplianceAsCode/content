@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must implement DOD-approved encryption in the bind package.
+
+fixtext: |-
+    Configure {{{ full_name }}} BIND to use the systemwide cryptographic policy.
+
+    Add the following line to the "options" section in "/etc/named.conf":
+
+    include "/etc/crypto-policies/back-ends/bind.config";
+
+checktext: |-
+    Note: If the "bind" package is not installed, this requirement is not applicable.
+
+    Verify {{{ full_name }}} BIND uses the systemwide cryptographic policy with the following command:
+
+    $ sudo grep include /etc/named.conf
+    include "/etc/crypto-policies/back-ends/bind.config";'
+
+    If BIND is installed and the BIND config file does not contain the include "/etc/crypto-policies/back-ends/bind.config" directive, or the line is commented out, this is a finding.
+
+vuldiscussion: |-
+    Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
+
+    Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
+
+    {{{ full_name }}} incorporates systemwide crypto policies by default. The employed algorithms can be viewed in the "/etc/crypto-policies/back-ends/" directory.
+
+
