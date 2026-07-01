@@ -1,7 +1,7 @@
 documentation_complete: true
 
 
-title: 'Configure GnuTLS library to use DoD-approved TLS Encryption'
+title: 'Configure GnuTLS library to use Approved TLS Encryption'
 
 description: |-
     Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
@@ -33,17 +33,17 @@ references:
 ocil_clause: 'cryptographic policy for gnutls is not configured or is configured incorrectly'
 
 ocil: |-
-    To verify if GnuTLS uses defined DoD-approved TLS Crypto Policy, run:
+    To verify if GnuTLS uses the defined approved TLS Crypto Policy, run:
     <pre>$ sudo grep
     '+VERS-ALL:-VERS-DTLS0.9:-VERS-TLS1.1:-VERS-TLS1.0:-VERS-SSL3.0:-VERS-DTLS1.0'
     /etc/crypto-policies/back-ends/gnutls.config</pre> and verify that a match exists.
 
 fixtext: |-
-    Configure the {{{ full_name }}} GnuTLS library to use only DoD-approved encryption by adding the following line to "/etc/crypto-policies/back-ends/gnutls.config":
+    Configure the {{{ full_name }}} GnuTLS library to use only approved encryption by adding the following line to "/etc/crypto-policies/back-ends/gnutls.config":
 
     +VERS-ALL:-VERS-DTLS0.9:-VERS-TLS1.1:-VERS-TLS1.0:-VERS-SSL3.0:-VERS-DTLS1.0
 
     A reboot is required for the changes to take effect.
 
 srg_requirement:
-    {{{ full_name }}} must implement DoD-approved TLS encryption in the GnuTLS package.
+    {{{ full_name }}} must implement approved TLS encryption in the GnuTLS package.

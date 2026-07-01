@@ -2,9 +2,9 @@ srg_requirement: |-
     {{{ full_name }}} must implement certificate status checking for multifactor authentication.
 
 vuldiscussion: |-
-    Using an authentication device, such as a DoD Common Access Card (CAC) or token that is separate from the information system, ensures that even if the information system is compromised, credentials stored on the authentication device will not be affected.
+    Using an authentication device, such as a hardware token or smart card that is separate from the information system, ensures that even if the information system is compromised, credentials stored on the authentication device will not be affected.
 
-    Multifactor solutions that require devices separate from information systems gaining access include, for example, hardware tokens providing time-based or challenge-response authenticators and smart cards such as the U.S. Government Personal Identity Verification (PIV) card and the DoD CAC.
+    Multifactor solutions that require devices separate from information systems gaining access include, for example, hardware tokens providing time-based or challenge-response authenticators and smart cards such as the U.S. Government Personal Identity Verification (PIV) card.
 
     {{{ full_name }}} includes multiple options for configuring certificate status checking, but for this requirement focuses on the System Security Services Daemon (SSSD). By default, sssd performs Online Certificate Status Protocol (OCSP) checking and certificate verification using a sha256 digest function.
 
