@@ -1,0 +1,176 @@
+---
+# One-time setup of the RHEL9 scanner VM.
+#
+# Usage (from utils/nist_sync/):
+#   ansible-playbook -i ansible/inventory.ini ansible/setup.yml \
+#     -e complyctl_bin=/tmp/complyctl \
+#     -e provider_bin=~/.complytime/providers/complyctl-provider-openscap
+#
+# Optional env overrides (also accepted as -e vars):
+#   COMPLYCTL_BIN   path to complyctl binary on the host  (default: /tmp/complyctl)
+#   PROVIDER_BIN    path to complyctl-provider-openscap   (default: ~/.complytime/providers/...)
+#   ORAS_VERSION    oras release to install               (default: 1.2.3)
+#   REGISTRY_PORT   container registry port inside the VM (default: 5500)
+
+- name: Set up complyctl NIST scanner on RHEL9
+  hosts: rhel9_scanner
+  become: true
+  vars:
+    complyctl_bin: "{{ lookup('env', 'COMPLYCTL_BIN')  | default('/tmp/complyctl', true) }}"
+    provider_bin:  "{{ lookup('env', 'PROVIDER_BIN')   | default(ansible_env.HOME + '/.complytime/providers/complyctl-provider-openscap', true) }}"
+    oras_version:  "{{ lookup('env', 'ORAS_VERSION')   | default('1.2.3', true) }}"
+    registry_port: "{{ lookup('env', 'REGISTRY_PORT')  | default('5500', true) }}"
+    # Root of the content repo on the host — three levels above the playbook dir.
+    # playbook_dir = .../utils/nist_sync/ansible
+    repo_root: "{{ playbook_dir | realpath + '/../../..' }}"
+    ds_dest: /usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml
+
+  tasks:
+    # -------------------------------------------------------------------------
+    # complyctl binary
+    # -------------------------------------------------------------------------
+    - name: Copy complyctl binary
+      copy:
+        src: "{{ complyctl_bin }}"
+        dest: /usr/local/bin/complyctl
+        mode: "0755"
+
+    - name: Verify complyctl runs
+      command: /usr/local/bin/complyctl version
+      register: ver
+      changed_when: false
+
+    - name: Show complyctl version
+      debug:
+        msg: "{{ ver.stdout }}"
+
+    # -------------------------------------------------------------------------
+    # complyctl-provider-openscap
+    # -------------------------------------------------------------------------
+    - name: Create provider directory
+      file:
+        path: /root/.complytime/providers
+        state: directory
+        mode: "0755"
+
+    - name: Copy complyctl-provider-openscap
+      copy:
+        src: "{{ provider_bin }}"
+        dest: /root/.complytime/providers/complyctl-provider-openscap
+        mode: "0755"
+
+    # -------------------------------------------------------------------------
+    # OCI registry — distribution/distribution binary (no podman required).
+    # Runs as a systemd service inside the VM listening on all interfaces.
+    # The host pushes bundles to ansible_host:{{ registry_port }} via oras;
+    # complyctl on the VM uses http://localhost:{{ registry_port }}.
+    # -------------------------------------------------------------------------
+    - name: Check if registry binary is already installed
+      stat:
+        path: /usr/local/bin/registry
+      register: registry_bin_stat
+
+    - name: Download distribution/distribution registry binary
+      shell: |
+        curl -sL \
+          "https://github.com/distribution/distribution/releases/download/v2.8.3/registry_2.8.3_linux_amd64.tar.gz" \
+          | tar -xz -C /usr/local/bin registry
+        chmod +x /usr/local/bin/registry
+      when: not registry_bin_stat.stat.exists
+
+    - name: Create registry storage directory
+      file:
+        path: /var/lib/gemara-registry
+        state: directory
+        mode: "0755"
+
+    - name: Write registry config
+      copy:
+        dest: /etc/gemara-registry.yml
+        mode: "0644"
+        content: |
+          version: 0.1
+          log:
+            level: warn
+          storage:
+            filesystem:
+              rootdirectory: /var/lib/gemara-registry
+            delete:
+              enabled: true
+          http:
+            addr: :{{ registry_port }}
+
+    - name: Create systemd service for registry
+      copy:
+        dest: /etc/systemd/system/gemara-registry.service
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=Gemara OCI Registry
+          After=network.target
+          [Service]
+          ExecStart=/usr/local/bin/registry serve /etc/gemara-registry.yml
+          Restart=always
+          RestartSec=3
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Enable and start registry service
+      systemd:
+        name: gemara-registry
+        state: started
+        enabled: true
+        daemon_reload: true
+
+    - name: Wait for registry to become ready
+      uri:
+        url: "http://localhost:{{ registry_port }}/v2/"
+        status_code: 200
+      retries: 15
+      delay: 2
+      register: registry_ready
+      until: registry_ready.status == 200
+
+    - name: Registry is ready
+      debug:
+        msg: "OCI registry running at localhost:{{ registry_port }} (and {{ ansible_host }}:{{ registry_port }} from the host)"
+
+    - name: Open registry port in the VM firewall
+      shell: |
+        firewall-cmd --add-port={{ registry_port }}/tcp --permanent
+        firewall-cmd --reload
+      args:
+        executable: /bin/bash
+      changed_when: true
+
+    # -------------------------------------------------------------------------
+    # SCAP data stream — always copy the repo-built version.
+    # The system RPM (scap-security-guide) predates the nist_800_53 profile
+    # commit and will not contain that profile.  The built data stream must
+    # be deployed even if the RPM is already installed.
+    # -------------------------------------------------------------------------
+    - name: "Copy built data stream from host"
+      copy:
+        src: "{{ repo_root }}/build/ssg-rhel9-ds.xml"
+        dest: "{{ ds_dest }}"
+        mode: "0644"
+        force: true
+
+    - name: Confirm data stream has nist_800_53 profile
+      command: "grep -c nist_800_53 {{ ds_dest }}"
+      register: profile_check
+      changed_when: false
+      failed_when: profile_check.rc != 0 or profile_check.stdout | int == 0
+
+    - name: Show data stream status
+      debug:
+        msg: "Data stream: {{ ds_dest }} — nist_800_53 profile present ({{ profile_check.stdout }} occurrences)"
+
+    # -------------------------------------------------------------------------
+    # Summary
+    # -------------------------------------------------------------------------
+    - name: Setup complete
+      debug:
+        msg: |
+          VM is ready. Run the scan with:
+            ansible-playbook -i ansible/inventory.ini ansible/scan.yml

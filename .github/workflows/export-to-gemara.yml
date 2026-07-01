@@ -1,0 +1,190 @@
+name: Export NIST 800-53 Controls to Gemara Format
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'products/rhel8/controls/nist_800_53/**'
+      - 'products/rhel9/controls/nist_800_53/**'
+      - 'products/rhel10/controls/nist_800_53/**'
+      - 'utils/nist_sync/export_to_gemara.py'
+      - 'utils/nist_sync/gemara/**'
+      - 'utils/nist_sync/data/nist_800_53_rev5_catalog.json'
+      - 'utils/nist_sync/data/nist_800_53_rev5_*_baseline.json'
+  schedule:
+    # Run every Wednesday at 03:17 UTC (off-peak, avoids :00/:30 fleet collisions)
+    - cron: '17 3 * * 3'
+  workflow_dispatch:
+    inputs:
+      products:
+        description: 'Comma-separated list of products to export'
+        required: false
+        default: 'rhel8,rhel9,rhel10'
+      validate:
+        description: 'Run CUE schema validation after export'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  export-to-gemara:
+    name: Export NIST 800-53 to Gemara
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          dnf install -y \
+            git \
+            python3 \
+            python3-pip \
+            python3-jinja2 \
+            python3-pyyaml \
+            python3-setuptools \
+            curl
+
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install ruamel.yaml
+
+      - name: Install CUE binary
+        run: |
+          CUE_VERSION="v0.16.1"
+          curl -sSL \
+            "https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}/cue_${CUE_VERSION}_linux_amd64.tar.gz" \
+            | tar -xz -C /usr/local/bin cue
+          cue version
+
+      - name: Clone Gemara schema repository
+        run: |
+          git clone --depth 1 https://github.com/gemaraproj/gemara.git /tmp/gemara
+
+      - name: Determine export configuration
+        id: config
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
+             [ -n "${{ inputs.products }}" ]; then
+            PRODUCTS="${{ inputs.products }}"
+          else
+            PRODUCTS="rhel8,rhel9,rhel10"
+          fi
+          echo "products=${PRODUCTS}" >> "$GITHUB_OUTPUT"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
+             [ "${{ inputs.validate }}" = "false" ]; then
+            echo "validate=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "validate=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Export NIST 800-53 controls to Gemara format
+        id: export
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p build/gemara
+          python3 utils/nist_sync/export_to_gemara.py \
+            --products "${{ steps.config.outputs.products }}" \
+            --output-dir build/gemara \
+            --oscal-catalog utils/nist_sync/data/nist_800_53_rev5_catalog.json \
+            --data-dir utils/nist_sync/data \
+            --verbose
+
+      - name: Validate output against Gemara CUE schema
+        if: steps.config.outputs.validate == 'true'
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python3 utils/nist_sync/export_to_gemara.py \
+            --products "${{ steps.config.outputs.products }}" \
+            --output-dir build/gemara \
+            --oscal-catalog utils/nist_sync/data/nist_800_53_rev5_catalog.json \
+            --data-dir utils/nist_sync/data \
+            --validate \
+            --gemara-schema /tmp/gemara \
+            --no-mapping
+
+      - name: Write job summary
+        if: always()
+        run: |
+          echo "## Gemara Export Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f build/gemara/metadata.json ]; then
+            echo "### Statistics" >> "$GITHUB_STEP_SUMMARY"
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat build/gemara/metadata.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Output files" >> "$GITHUB_STEP_SUMMARY"
+          find build/gemara -type f | sort | while read -r f; do
+            SIZE=$(wc -l < "$f")
+            echo "- \`${f}\` (${SIZE} lines)" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+      - name: Upload Gemara export artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        if: always()
+        with:
+          name: gemara-export-${{ github.run_number }}
+          path: build/gemara/
+          retention-days: 90
+
+      # Optional: push the generated files to a dedicated Gemara data repository.
+      #
+      # Prerequisites:
+      #   1. Create the target repository (e.g. ComplianceAsCode/gemara-data).
+      #   2. Add a deploy key or PAT with write access as secret GEMARA_DATA_REPO_TOKEN.
+      #   3. Set secret GEMARA_DATA_REPO to "<org>/<repo>" (e.g. ComplianceAsCode/gemara-data).
+      #   4. Uncomment the step below.
+      #
+      # - name: Push to Gemara data repository
+      #   if: >-
+      #     github.repository == 'ComplianceAsCode/content' &&
+      #     (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') &&
+      #     steps.export.outcome == 'success'
+      #   env:
+      #     GEMARA_DATA_REPO: ${{ secrets.GEMARA_DATA_REPO }}
+      #     GEMARA_DATA_REPO_TOKEN: ${{ secrets.GEMARA_DATA_REPO_TOKEN }}
+      #     GIT_AUTHOR_NAME: github-actions[bot]
+      #     GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
+      #     GIT_COMMITTER_NAME: github-actions[bot]
+      #     GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
+      #   run: |
+      #     git clone --depth 1 \
+      #       "https://x-access-token:${GEMARA_DATA_REPO_TOKEN}@github.com/${GEMARA_DATA_REPO}.git" \
+      #       /tmp/gemara-data
+      #     for product in rhel8 rhel9 rhel10; do
+      #       mkdir -p "/tmp/gemara-data/data/${product}/nist_800_53"
+      #       cp "build/gemara/${product}/control_catalog.yaml" \
+      #          "/tmp/gemara-data/data/${product}/nist_800_53/"
+      #       cp "build/gemara/${product}/rules_mapping.yaml" \
+      #          "/tmp/gemara-data/data/${product}/nist_800_53/"
+      #     done
+      #     # guidance_catalog.yaml is platform-independent — stored at the top level
+      #     cp build/gemara/guidance_catalog.yaml /tmp/gemara-data/data/nist_800_53/
+      #     cp build/gemara/metadata.json /tmp/gemara-data/metadata.json
+      #     cd /tmp/gemara-data
+      #     git add -A
+      #     if git diff --cached --quiet; then
+      #       echo "No changes — gemara-data repository is already up to date."
+      #     else
+      #       SHA="${{ github.sha }}"
+      #       git commit -m "chore: sync from content@${SHA:0:8} (${{ github.event_name }})"
+      #       git push
+      #     fi
