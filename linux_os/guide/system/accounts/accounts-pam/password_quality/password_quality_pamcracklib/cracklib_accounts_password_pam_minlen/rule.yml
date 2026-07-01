@@ -30,7 +30,6 @@ references:
     pcidss: Req-8.2.3
     srg: SRG-OS-000078-GPOS-00046
     stigid@sle12: SLES-12-010250
-    stigid@sle15: SLES-15-020260
 
 ocil_clause: 'minlen is not found or not set to the required value (or higher)'
 
@@ -42,10 +41,10 @@ ocil: |-
 template:
     name: pam_options
     vars:
-      path: /etc/pam.d/common-password
-      type: password
-      control_flag: requisite
-      module: pam_cracklib.so
-      arguments:
-        - variable: minlen
-          operation: greater than or equal
+        path: /etc/pam.d/common-password
+        type: password
+        control_flag: requisite
+        module: pam_cracklib.so
+        arguments:
+            - variable: minlen
+              operation: greater than or equal

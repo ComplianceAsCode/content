@@ -1,0 +1,1780 @@
+policy: SUSE Linux Enterprise Server 15 Security Technical Implementation Guide
+title: SUSE Linux Enterprise Server 15 Security Technical Implementation Guide
+id: stig_sle15
+version: V2R7
+source: https://www.cyber.mil/stigs/downloads/
+reference_type: stigid
+product: sle15
+
+levels:
+    - id: high
+    - id: medium
+    - id: low
+
+controls:
+    - id: SLES-15-010000
+      levels:
+          - high
+      title: The SUSE operating system must be a vendor-supported release.
+      rules:
+          - installed_OS_is_vendor_supported
+      status: automated
+    - id: SLES-15-010010
+      levels:
+          - medium
+      title: Vendor-packaged SUSE operating system security patches and updates must be
+        installed and up to date.
+      rules:
+          - security_patches_up_to_date
+      status: automated
+    - id: SLES-15-010020
+      levels:
+          - medium
+      title: The SUSE operating system must display the Standard Mandatory DOD Notice
+        and Consent Banner before granting access via local console.
+      rules:
+          - banner_etc_issue
+          - login_banner_text=dod_banners
+          - login_banner_contents=dod_default
+      status: automated
+    - id: SLES-15-010030
+      levels:
+          - high
+      title: The SUSE operating system must not have the vsftpd package installed if not
+        required for operational support.
+      rules:
+          - package_vsftpd_removed
+      status: automated
+    - id: SLES-15-010040
+      levels:
+          - medium
+      title: The SUSE operating system must display the Standard Mandatory DOD Notice
+        and Consent Banner before granting access via SSH.
+      rules:
+          - sshd_enable_warning_banner
+      status: automated
+    - id: SLES-15-010050
+      levels:
+          - medium
+      title: The SUSE operating system must display the Standard Mandatory DoD Notice
+        and Consent Banner until users acknowledge the usage conditions and take explicit
+        actions to log on for further access to the local graphical user interface (GUI).
+      rules:
+          - gui_login_dod_acknowledgement
+      status: automated
+    - id: SLES-15-010060
+      levels:
+          - medium
+      title: The SUSE operating system file /etc/gdm/banner must contain the Standard
+        Mandatory DoD Notice and Consent banner text.
+      rules:
+          - banner_etc_gdm_banner
+      status: automated
+    - id: SLES-15-010080
+      levels:
+          - medium
+      title: The SUSE operating system must display a banner before granting local or
+        remote access to the system via a graphical user logon.
+      rules:
+          - dconf_gnome_banner_enabled
+      status: automated
+    - id: SLES-15-010090
+      levels:
+          - medium
+      title: The SUSE operating system must display the approved Standard Mandatory DoD
+        Notice before granting local or remote access to the system via a graphical user
+        logon.
+      rules:
+          - dconf_db_up_to_date
+          - dconf_gnome_login_banner_text
+          - dconf_login_banner_text=dod_banners
+          - dconf_login_banner_contents=dod_default
+      status: automated
+    - id: SLES-15-010100
+      levels:
+          - medium
+      title: The SUSE operating system must be able to lock the graphical user interface
+        (GUI).
+      rules:
+          - dconf_gnome_screensaver_lock_enabled
+      status: automated
+    - id: SLES-15-010110
+      levels:
+          - low
+      title: The SUSE operating system must utilize vlock to allow for session locking.
+      rules:
+          - vlock_installed
+      status: automated
+    - id: SLES-15-010120
+      levels:
+          - medium
+      title: The SUSE operating system must initiate a session lock after a 15-minute
+        period of inactivity for the graphical user interface (GUI).
+      rules:
+          - dconf_gnome_screensaver_idle_delay
+          - inactivity_timeout_value=15_minutes
+          - dconf_gnome_session_idle_user_locks
+      status: automated
+    - id: SLES-15-010130
+      levels:
+          - medium
+      title: The SUSE operating system must initiate a session lock after a 10-minute
+        period of inactivity.
+      rules:
+          - accounts_tmout
+          - var_accounts_tmout=10_min
+      status: automated
+    - id: SLES-15-010140
+      levels:
+          - low
+      title: The SUSE operating system must conceal, via the session lock, information
+        previously visible on the display with a publicly viewable image in the graphical
+        user interface (GUI).
+      rules:
+          - dconf_gnome_screensaver_mode_blank
+      status: automated
+    - id: SLES-15-010150
+      levels:
+          - medium
+      title: The SUSE operating system must log SSH connection attempts and failures to
+        the server.
+      rules:
+          - sshd_set_loglevel_verbose
+      status: automated
+    - id: SLES-15-010160
+      levels:
+          - medium
+      title: The SUSE operating system must implement DOD-approved encryption to protect
+        the confidentiality of SSH remote connections.
+      rules:
+          - sshd_use_approved_ciphers
+          - sshd_use_approved_ciphers_ordered_stig
+      status: automated
+    - id: SLES-15-010170
+      levels:
+          - medium
+      title: The SUSE operating system, for PKI-based authentication, must validate certificates
+        by constructing a certification path (which includes status information) to an
+        accepted trust anchor.
+      rules:
+          - smartcard_configure_ca
+      status: automated
+    - id: SLES-15-010180
+      levels:
+          - high
+      title: The SUSE operating system must not have the telnet-server package installed.
+      rules:
+          - package_telnet-server_removed
+      status: automated
+    - id: SLES-15-010190
+      levels:
+          - high
+      title: SUSE operating systems with a basic input/output system (BIOS) must require
+        authentication upon booting into single-user and maintenance modes.
+      rules:
+          - grub2_password
+      status: automated
+    - id: SLES-15-010200
+      levels:
+          - high
+      title: SUSE operating systems with Unified Extensible Firmware Interface (UEFI)
+        implemented must require authentication upon booting into single-user mode and
+        maintenance.
+      rules:
+          - grub2_uefi_password
+      status: automated
+    - id: SLES-15-010220
+      levels:
+          - medium
+      title: The SUSE operating system must be configured to prohibit or restrict the
+        use of functions, ports, protocols, and/or services as defined in the Ports, Protocols,
+        and Services Management (PPSM) Category Assignments List (CAL) and vulnerability
+        assessments.
+      rules:
+          - package_firewalld_installed
+          - service_firewalld_enabled
+      status: automated
+    - id: SLES-15-010230
+      levels:
+          - medium
+      title: The SUSE operating system must not have duplicate User IDs (UIDs) for interactive
+        users.
+      rules:
+          - account_unique_id
+      status: automated
+    - id: SLES-15-010240
+      levels:
+          - medium
+      title: The SUSE operating system must disable the file system automounter.
+      rules:
+          - service_autofs_disabled
+      status: automated
+    - id: SLES-15-010260
+      levels:
+          - medium
+      title: The SUSE operating system must employ FIPS 140-2 approved cryptographic hashing
+        algorithm for system authentication (login.defs).
+      rules:
+          - set_password_hashing_algorithm_logindefs
+      status: automated
+    - id: SLES-15-010270
+      levels:
+          - medium
+      title: The SUSE operating system SSH daemon must be configured to only use Message
+        Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hash algorithms.
+      rules:
+          - sshd_use_approved_macs
+          - sshd_use_approved_macs_ordered_stig
+      status: automated
+    - id: SLES-15-010280
+      levels:
+          - medium
+      title: The SUSE operating system SSH daemon must be configured with a timeout interval.
+      rules:
+          - sshd_set_idle_timeout
+          - sshd_idle_timeout_value=10_minutes
+      status: automated
+    - id: SLES-15-010300
+      levels:
+          - medium
+      title: The sticky bit must be set on all SUSE operating system world-writable directories.
+      rules:
+          - dir_perms_world_writable_sticky_bits
+      status: automated
+    - id: SLES-15-010310
+      levels:
+          - medium
+      title: The SUSE operating system must be configured to use TCP syncookies.
+      rules:
+          - sysctl_net_ipv4_tcp_syncookies
+      status: automated
+    - id: SLES-15-010320
+      levels:
+          - medium
+      title: The SUSE operating system, for all network connections associated with SSH
+        traffic, must immediately terminate at the end of the session or after 10 minutes
+        of inactivity.
+      rules:
+          - sshd_set_keepalive
+          - var_sshd_set_keepalive=1
+          - sshd_set_keepalive_0
+      status: automated
+    - id: SLES-15-010330
+      levels:
+          - high
+      title: All SUSE operating system persistent disk partitions must implement cryptographic
+        mechanisms to prevent unauthorized disclosure or modification of all information
+        that requires at-rest protection.
+      rules:
+          - encrypt_partitions
+      status: automated
+    - id: SLES-15-010340
+      levels:
+          - medium
+      title: The SUSE operating system must generate error messages that provide information
+        necessary for corrective actions without revealing information that could be exploited
+        by adversaries.
+      rules:
+          - permissions_local_var_log
+      status: automated
+    - id: SLES-15-010350
+      levels:
+          - medium
+      title: The SUSE operating system must prevent unauthorized users from accessing
+        system error messages.
+      rules:
+          - file_permissions_local_var_log_messages
+      status: automated
+    - id: SLES-15-010351
+      levels:
+          - medium
+      title: The SUSE operating system library files must have mode 0755 or less permissive.
+      rules:
+          - file_permissions_library_dirs
+      status: automated
+    - id: SLES-15-010352
+      levels:
+          - medium
+      title: The SUSE operating system library directories must have mode 0755 or less
+        permissive.
+      rules:
+          - dir_permissions_library_dirs
+      status: automated
+    - id: SLES-15-010353
+      levels:
+          - medium
+      title: The SUSE operating system library files must be owned by root.
+      rules:
+          - file_ownership_library_dirs
+      status: automated
+    - id: SLES-15-010354
+      levels:
+          - medium
+      title: The SUSE operating system library directories must be owned by root.
+      rules:
+          - dir_ownership_library_dirs
+      status: automated
+    - id: SLES-15-010355
+      levels:
+          - medium
+      title: The SUSE operating system library files must be group-owned by root.
+      rules:
+          - root_permissions_syslibrary_files
+      status: automated
+    - id: SLES-15-010356
+      levels:
+          - medium
+      title: The SUSE operating system library directories must be group-owned by root.
+      rules:
+          - dir_group_ownership_library_dirs
+      status: automated
+    - id: SLES-15-010357
+      levels:
+          - medium
+      title: The SUSE operating system must have system commands set to a mode of 0755
+        or less permissive.
+      rules:
+          - file_permissions_system_commands_dirs
+      status: automated
+    - id: SLES-15-010358
+      levels:
+          - medium
+      title: The SUSE operating system must have directories that contain system commands
+        set to a mode of 0755 or less permissive.
+      rules:
+          - file_permissions_binary_dirs
+      status: automated
+    - id: SLES-15-010359
+      levels:
+          - medium
+      title: The SUSE operating system must have system commands owned by root.
+      rules:
+          - file_ownership_binary_dirs
+      status: automated
+    - id: SLES-15-010360
+      levels:
+          - medium
+      title: The SUSE operating system must have directories that contain system commands
+        owned by root.
+      rules:
+          - dir_system_commands_root_owned
+      status: automated
+    - id: SLES-15-010361
+      levels:
+          - medium
+      title: The SUSE operating system must have system commands group-owned by root or
+        a system account.
+      rules:
+          - file_groupownership_system_commands_dirs
+      status: automated
+    - id: SLES-15-010362
+      levels:
+          - medium
+      title: The SUSE operating system must have directories that contain system commands
+        group-owned by root.
+      rules:
+          - dir_system_commands_group_root_owned
+      status: automated
+    - id: SLES-15-010370
+      levels:
+          - medium
+      title: The SUSE operating system must have a firewall system installed to immediately
+        disconnect or disable remote access to the whole operating system.
+      rules: []
+      status: pending
+    - id: SLES-15-010380
+      levels:
+          - medium
+      title: The SUSE operating system wireless network adapters must be disabled unless
+        approved and documented.
+      rules:
+          - wireless_disable_interfaces
+      status: automated
+    - id: SLES-15-010390
+      levels:
+          - medium
+      title: SUSE operating system AppArmor tool must be configured to control whitelisted
+        applications and user home directory access control.
+      rules:
+          - apparmor_configured
+          - package_pam_apparmor_installed
+      status: automated
+    - id: SLES-15-010400
+      levels:
+          - medium
+      title: The SUSE operating system clock must, for networked systems, be synchronized
+        to an authoritative DOD time source at least every 24 hours.
+      rules:
+          - chronyd_or_ntpd_set_maxpoll
+          - var_time_service_set_maxpoll=18_hours
+      status: automated
+    - id: SLES-15-010410
+      levels:
+          - low
+      title: The SUSE operating system must be configured to use Coordinated Universal
+        Time (UTC) or Greenwich Mean Time (GMT).
+      rules:
+          - ensure_rtc_utc_configuration
+      status: automated
+    - id: SLES-15-010420
+      levels:
+          - medium
+      title: Advanced Intrusion Detection Environment (AIDE) must verify the baseline
+        SUSE operating system configuration at least weekly.
+      rules:
+          - aide_periodic_cron_checking
+      status: automated
+    - id: SLES-15-010430
+      levels:
+          - high
+      title: The SUSE operating system tool zypper must have gpgcheck enabled.
+      rules:
+          - ensure_gpgcheck_globally_activated
+      status: automated
+    - id: SLES-15-010450
+      levels:
+          - high
+      title: The SUSE operating system must reauthenticate users when changing authenticators,
+        roles, or escalating privileges.
+      rules:
+          - sudo_remove_no_authenticate
+          - sudo_remove_nopasswd
+          - sudo_require_authentication
+      status: automated
+    - id: SLES-15-010460
+      levels:
+          - medium
+      title: The SUSE operating system must have the packages required for multifactor
+        authentication to be installed.
+      rules:
+          - install_smartcard_packages
+      status: automated
+    - id: SLES-15-010470
+      levels:
+          - medium
+      title: The SUSE operating system must implement certificate status checking for
+        multifactor authentication.
+      rules:
+          - smartcard_configure_cert_checking
+      status: automated
+    - id: SLES-15-010480
+      levels:
+          - medium
+      title: The SUSE operating system must disable the USB mass storage kernel module.
+      rules:
+          - kernel_module_usb-storage_disabled
+      status: automated
+    - id: SLES-15-010490
+      levels:
+          - medium
+      title: If Network Security Services (NSS) is being used by the SUSE operating system
+        it must prohibit the use of cached authentications after one day.
+      rules:
+          - sssd_memcache_timeout
+          - var_sssd_memcache_timeout=1_day
+      status: automated
+    - id: SLES-15-010500
+      levels:
+          - medium
+      title: The SUSE operating system must configure the Linux Pluggable Authentication
+        Modules (PAM) to prohibit the use of cached offline authentications after one
+        day.
+      rules:
+          - sssd_offline_cred_expiration
+      status: automated
+    - id: SLES-15-010510
+      levels:
+          - high
+      title: FIPS 140-2 mode must be enabled on the SUSE operating system.
+      rules:
+          - is_fips_mode_enabled
+      status: automated
+    - id: SLES-15-010530
+      levels:
+          - high
+      title: All networked SUSE operating systems must have and implement SSH to protect
+        the confidentiality and integrity of transmitted and received information, as
+        well as information during preparation for transmission.
+      rules:
+          - service_sshd_enabled
+      status: automated
+    - id: SLES-15-010540
+      levels:
+          - medium
+      title: The SUSE operating system must implement kptr-restrict to prevent the leaking
+        of internal kernel addresses.
+      rules:
+          - sysctl_kernel_kptr_restrict
+      status: automated
+    - id: SLES-15-010550
+      levels:
+          - medium
+      title: Address space layout randomization (ASLR) must be implemented by the SUSE
+        operating system to protect memory from unauthorized code execution.
+      rules:
+          - sysctl_kernel_randomize_va_space
+      status: automated
+    - id: SLES-15-010560
+      levels:
+          - medium
+      title: The SUSE operating system must remove all outdated software components after
+        updated versions have been installed.
+      rules:
+          - clean_components_post_updating
+      status: automated
+    - id: SLES-15-010570
+      levels:
+          - medium
+      title: The SUSE operating system must notify the System Administrator (SA) when
+        Advanced Intrusion Detection Environment (AIDE) discovers anomalies in the operation
+        of any security functions.
+      rules:
+          - aide_periodic_checking_systemd_timer
+          - aide_scan_notification
+      status: automated
+    - id: SLES-15-010580
+      levels:
+          - medium
+      title: The SUSE operating system must off-load rsyslog messages for networked systems
+        in real time and off-load standalone systems at least weekly.
+      rules:
+          - rsyslog_remote_loghost
+      status: automated
+    - id: SLES-15-020000
+      levels:
+          - medium
+      title: The SUSE operating system must provision temporary accounts with an expiration
+        date for 72 hours.
+      rules: []
+      status: pending
+    - id: SLES-15-020010
+      levels:
+          - medium
+      title: The SUSE operating system must lock an account after three consecutive invalid
+        access attempts.
+      rules:
+          - accounts_passwords_pam_tally2
+          - var_password_pam_tally2=3
+      status: automated
+    - id: SLES-15-020020
+      levels:
+          - low
+      title: The SUSE operating system must limit the number of concurrent sessions to
+        10 for all accounts and/or account types.
+      rules:
+          - accounts_max_concurrent_login_sessions
+          - var_accounts_max_concurrent_login_sessions=10
+      status: automated
+    - id: SLES-15-020030
+      levels:
+          - medium
+      title: The SUSE operating system must implement multifactor authentication for access
+        to privileged accounts via pluggable authentication modules (PAM).
+      rules:
+          - smartcard_pam_enabled
+      status: automated
+    - id: SLES-15-020040
+      levels:
+          - medium
+      title: The SUSE operating system must deny direct logons to the root account using
+        remote access via SSH.
+      rules:
+          - sshd_disable_root_login
+      status: automated
+    - id: SLES-15-020050
+      levels:
+          - medium
+      title: The SUSE operating system must disable account identifiers (individuals,
+        groups, roles, and devices) after 35 days of inactivity after password expiration.
+      rules:
+          - account_disable_post_pw_expiration
+          - var_account_disable_post_pw_expiration=35
+      status: automated
+    - id: SLES-15-020060
+      levels:
+          - medium
+      title: The SUSE operating system must never automatically remove or disable emergency
+        administrator accounts.
+      rules:
+          - account_emergency_admin
+      status: manual
+    - id: SLES-15-020090
+      levels:
+          - medium
+      title: The SUSE operating system must not have unnecessary accounts.
+      rules:
+          - accounts_authorized_local_users
+      # NOTE: must configure "var_accounts_authorized_local_users_regex"
+      # when the rule "accounts_authorized_local_users" is enabled
+      # - var_accounts_authorized_local_users_regex=<authorized local user accounts>
+          - var_accounts_authorized_local_users_regex=sle15
+      status: automated
+    - id: SLES-15-020091
+      levels:
+          - medium
+      title: The SUSE operating system must not have unnecessary account capabilities.
+      rules:
+          - no_shelllogin_for_systemaccounts
+      status: automated
+    - id: SLES-15-020100
+      levels:
+          - high
+      title: The SUSE operating system root account must be the only account with unrestricted
+        access to the system.
+      rules:
+          - accounts_no_uid_except_zero
+      status: automated
+    - id: SLES-15-020101
+      levels:
+          - medium
+      title: The SUSE operating system must restrict privilege elevation to authorized
+        personnel.
+      rules:
+          - sudo_restrict_privilege_elevation_to_authorized
+      status: automated
+    - id: SLES-15-020102
+      levels:
+          - medium
+      title: The SUSE operating system must require reauthentication when using the "sudo"
+        command.
+      rules:
+          - sudo_require_reauthentication
+          - var_sudo_timestamp_timeout=always_prompt
+      status: automated
+    - id: SLES-15-020103
+      levels:
+          - medium
+      title: The SUSE operating system must use the invoking user's password for privilege
+        escalation when using "sudo".
+      rules:
+          - sudoers_validate_passwd
+      status: automated
+    - id: SLES-15-020110
+      levels:
+          - medium
+      title: All SUSE operating system local interactive user accounts, upon creation,
+        must be assigned a home directory.
+      rules:
+          - accounts_have_homedir_login_defs
+      status: automated
+    - id: SLES-15-020120
+      levels:
+          - medium
+      title: The SUSE operating system must display the date and time of the last successful
+        account logon upon an SSH logon.
+      rules:
+          - sshd_print_last_log
+      status: automated
+    - id: SLES-15-020130
+      levels:
+          - medium
+      title: The SUSE operating system must enforce passwords that contain at least one
+        uppercase character.
+      rules:
+          - cracklib_accounts_password_pam_ucredit
+          - var_password_pam_ucredit=1
+      status: automated
+    - id: SLES-15-020140
+      levels:
+          - medium
+      title: The SUSE operating system must enforce passwords that contain at least one
+        lowercase character.
+      rules:
+          - cracklib_accounts_password_pam_lcredit
+          - var_password_pam_lcredit=1
+      status: automated
+    - id: SLES-15-020150
+      levels:
+          - medium
+      title: The SUSE operating system must enforce passwords that contain at least one
+        numeric character.
+      rules:
+          - cracklib_accounts_password_pam_dcredit
+          - var_password_pam_dcredit=1
+      status: automated
+    - id: SLES-15-020160
+      levels:
+          - medium
+      title: The SUSE operating system must require the change of at least eight of the
+        total number of characters when passwords are changed.
+      rules:
+          - cracklib_accounts_password_pam_difok
+      status: automated
+    - id: SLES-15-020170
+      levels:
+          - medium
+      title: The SUSE operating system must configure the Linux Pluggable Authentication
+        Modules (PAM) to only store encrypted representations of passwords.
+      rules:
+          - set_password_hashing_algorithm_systemauth
+      status: automated
+    - id: SLES-15-020180
+      levels:
+          - medium
+      title: The SUSE operating system must employ FIPS 140-2-approved cryptographic hashing
+        algorithms for all stored passwords.
+      rules:
+          - accounts_password_all_shadowed_sha512
+      status: automated
+    - id: SLES-15-020190
+      levels:
+          - medium
+      title: The SUSE operating system must employ FIPS 140-3 approved cryptographic hashing
+        algorithms for all stored passwords.
+      rules:
+          - set_password_hashing_min_rounds_logindefs
+          - var_password_hashing_min_rounds_login_defs=100000
+      status: automated
+    - id: SLES-15-020200
+      levels:
+          - medium
+      title: The SUSE operating system must be configured to create or update passwords
+        with a minimum lifetime of 24 hours (one day).
+      rules:
+          - accounts_minimum_age_login_defs
+          - var_accounts_minimum_age_login_defs=7
+      status: automated
+    - id: SLES-15-020210
+      levels:
+          - medium
+      title: The SUSE operating system must employ user passwords with a minimum lifetime
+        of 24 hours (one day).
+      rules:
+          - accounts_password_set_min_life_existing
+      status: automated
+    - id: SLES-15-020220
+      levels:
+          - medium
+      title: The SUSE operating system must be configured to create or update passwords
+        with a maximum lifetime of 60 days.
+      rules:
+          - accounts_maximum_age_login_defs
+          - var_accounts_maximum_age_login_defs=60
+      status: automated
+    - id: SLES-15-020230
+      levels:
+          - medium
+      title: The SUSE operating system must employ user passwords with a maximum lifetime
+        of 60 days.
+      rules:
+          - accounts_password_set_max_life_existing
+      status: automated
+    - id: SLES-15-020260
+      levels:
+          - medium
+      title: The SUSE operating system must employ passwords with a minimum of 15 characters.
+      rules:
+          - cracklib_accounts_password_pam_minlen
+          - var_password_pam_minlen=15
+      status: automated
+    - id: SLES-15-020270
+      levels:
+          - medium
+      title: The SUSE operating system must enforce passwords that contain at least one
+        special character.
+      rules:
+          - cracklib_accounts_password_pam_ocredit
+          - var_password_pam_ocredit=1
+      status: automated
+    - id: SLES-15-020290
+      levels:
+          - medium
+      title: The SUSE operating system must prevent the use of dictionary words for passwords.
+      rules:
+          - cracklib_accounts_password_pam_retry
+      status: automated
+    - id: SLES-15-020300
+      levels:
+          - high
+      title: The SUSE operating system must not be configured to allow blank or null passwords.
+      rules:
+          - no_empty_passwords
+      status: automated
+    - id: SLES-15-030000
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all account creations,
+        modifications, disabling, and termination events that affect /etc/passwd.
+      rules:
+          - audit_rules_usergroup_modification_passwd
+      status: automated
+    - id: SLES-15-030010
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all account creations,
+        modifications, disabling, and termination events that affect /etc/group.
+      rules:
+          - audit_rules_usergroup_modification_group
+      status: automated
+    - id: SLES-15-030020
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all account creations,
+        modifications, disabling, and termination events that affect /etc/shadow.
+      rules:
+          - audit_rules_usergroup_modification_shadow
+      status: automated
+    - id: SLES-15-030030
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all account creations,
+        modifications, disabling, and termination events that affect /etc/security/opasswd.
+      rules:
+          - audit_rules_usergroup_modification_opasswd
+      status: automated
+    - id: SLES-15-030040
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all account creations,
+        modifications, disabling, and termination events that affect /etc/gshadow.
+      rules:
+          - audit_rules_usergroup_modification_gshadow
+      status: automated
+    - id: SLES-15-030050
+      levels:
+          - medium
+      title: SUSE operating system audit records must contain information to establish
+        what type of events occurred, the source of events, where events occurred, and
+        the outcome of events.
+      rules:
+          - service_auditd_enabled
+      status: automated
+    - id: SLES-15-030060
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        ssh-keysign command.
+      rules:
+          - audit_rules_privileged_commands_ssh_keysign
+      status: automated
+    - id: SLES-15-030070
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        passwd command.
+      rules:
+          - audit_rules_privileged_commands_passwd
+      status: automated
+    - id: SLES-15-030080
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        gpasswd command.
+      rules:
+          - audit_rules_privileged_commands_gpasswd
+      status: automated
+    - id: SLES-15-030090
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        newgrp command.
+      rules:
+          - audit_rules_privileged_commands_newgrp
+      status: automated
+    - id: SLES-15-030100
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for a uses of the chsh
+        command.
+      rules:
+          - audit_rules_privileged_commands_chsh
+      status: automated
+    - id: SLES-15-030110
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        unix_chkpwd or unix2_chkpwd commands.
+      rules:
+          - audit_rules_privileged_commands_unix2_chkpwd
+          - audit_rules_privileged_commands_unix_chkpwd
+      status: automated
+    - id: SLES-15-030120
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        chage command.
+      rules:
+          - audit_rules_privileged_commands_chage
+      status: automated
+    - id: SLES-15-030130
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        crontab command.
+      rules:
+          - audit_rules_privileged_commands_crontab
+      status: automated
+    - id: SLES-15-030140
+      levels:
+          - medium
+      title: The SUSE operating system must audit all uses of the sudoers file and all
+        files in the /etc/sudoers.d/ directory.
+      rules:
+          - audit_rules_sysadmin_actions
+      status: automated
+    - id: SLES-15-030150
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        creat, open, openat, open_by_handle_at, truncate, and ftruncate system calls.
+      rules:
+          - audit_rules_unsuccessful_file_modification_creat
+          - audit_rules_unsuccessful_file_modification_ftruncate
+          - audit_rules_unsuccessful_file_modification_open
+          - audit_rules_unsuccessful_file_modification_open_by_handle_at
+          - audit_rules_unsuccessful_file_modification_openat
+          - audit_rules_unsuccessful_file_modification_truncate
+      status: automated
+    - id: SLES-15-030190
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        setxattr, fsetxattr, lsetxattr, removexattr, fremovexattr, and lremovexattr system
+        calls.
+      rules:
+          - audit_rules_dac_modification_fremovexattr
+          - audit_rules_dac_modification_fsetxattr
+          - audit_rules_dac_modification_lremovexattr
+          - audit_rules_dac_modification_lsetxattr
+          - audit_rules_dac_modification_removexattr
+          - audit_rules_dac_modification_setxattr
+      status: automated
+    - id: SLES-15-030250
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        chown, fchown, fchownat, and lchown system calls.
+      rules:
+          - audit_rules_dac_modification_chown
+          - audit_rules_dac_modification_fchown
+          - audit_rules_dac_modification_fchownat
+          - audit_rules_dac_modification_lchown
+      status: automated
+    - id: SLES-15-030290
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        chmod, fchmod, and fchmodat system calls.
+      rules:
+          - audit_rules_dac_modification_chmod
+          - audit_rules_dac_modification_fchmod
+          - audit_rules_dac_modification_fchmodat
+      status: automated
+    - id: SLES-15-030330
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        sudoedit command.
+      rules:
+          - audit_rules_privileged_commands_sudoedit
+      status: automated
+    - id: SLES-15-030340
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        chfn command.
+      rules:
+          - audit_rules_privileged_commands_chfn
+      status: automated
+    - id: SLES-15-030350
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        mount system call.
+      rules:
+          - audit_rules_media_export
+      status: automated
+    - id: SLES-15-030360
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        umount system call.
+      rules:
+          - audit_rules_dac_modification_umount
+          - audit_rules_dac_modification_umount2
+      status: automated
+    - id: SLES-15-030370
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        ssh-agent command.
+      rules:
+          - audit_rules_privileged_commands_ssh_agent
+      status: automated
+    - id: SLES-15-030380
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        insmod command.
+      rules:
+          - audit_rules_privileged_commands_insmod
+      status: automated
+    - id: SLES-15-030390
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        rmmod command.
+      rules:
+          - audit_rules_privileged_commands_rmmod
+      status: automated
+    - id: SLES-15-030400
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        modprobe command.
+      rules:
+          - audit_rules_privileged_commands_modprobe
+      status: automated
+    - id: SLES-15-030410
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        kmod command.
+      rules:
+          - audit_rules_privileged_commands_kmod
+      status: automated
+    - id: SLES-15-030420
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        chmod command.
+      rules:
+          - audit_rules_execution_chmod
+      status: automated
+    - id: SLES-15-030430
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        setfacl command.
+      rules:
+          - audit_rules_execution_setfacl
+      status: automated
+    - id: SLES-15-030440
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        chacl command.
+      rules:
+          - audit_rules_execution_chacl
+      status: automated
+    - id: SLES-15-030450
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        chcon command.
+      rules:
+          - audit_rules_execution_chcon
+      status: automated
+    - id: SLES-15-030460
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        rm command.
+      rules:
+          - audit_rules_execution_rm
+      status: automated
+    - id: SLES-15-030470
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all modifications
+        to the tallylog file must generate an audit record.
+      rules:
+          - audit_rules_login_events_tallylog
+      status: automated
+    - id: SLES-15-030480
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all modifications
+        to the lastlog file.
+      rules:
+          - audit_rules_login_events_lastlog
+      status: automated
+    - id: SLES-15-030490
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        passmass command.
+      rules:
+          - audit_rules_privileged_commands_passmass
+      status: automated
+    - id: SLES-15-030500
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        usermod command.
+      rules:
+          - audit_rules_privileged_commands_usermod
+      status: automated
+    - id: SLES-15-030510
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        pam_timestamp_check command.
+      rules:
+          - audit_rules_privileged_commands_pam_timestamp_check
+      status: automated
+    - id: SLES-15-030520
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        delete_module system call.
+      rules:
+          - audit_rules_kernel_module_loading_delete
+      status: automated
+    - id: SLES-15-030530
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        init_module and finit_module system calls.
+      rules:
+          - audit_rules_kernel_module_loading_finit
+          - audit_rules_kernel_module_loading_init
+      status: automated
+    - id: SLES-15-030550
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        su command.
+      rules:
+          - audit_rules_privileged_commands_su
+      status: automated
+    - id: SLES-15-030560
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        sudo command.
+      rules:
+          - audit_rules_privileged_commands_sudo
+      status: automated
+    - id: SLES-15-030570
+      levels:
+          - medium
+      title: The Information System Security Officer (ISSO) and System Administrator (SA),
+        at a minimum, must be alerted of a SUSE operating system audit processing failure
+        event.
+      rules:
+          - auditd_data_retention_action_mail_acct
+      status: automated
+    - id: SLES-15-030580
+      levels:
+          - medium
+      title: The Information System Security Officer (ISSO) and System Administrator (SA),
+        at a minimum, must have mail aliases to be notified of a SUSE operating system
+        audit processing failure.
+      rules:
+          - postfix_client_configure_mail_alias
+      status: automated
+    - id: SLES-15-030590
+      levels:
+          - medium
+      title: The SUSE operating system audit system must take appropriate action when
+        the audit storage volume is full.
+      rules:
+          - auditd_data_disk_full_action
+          - var_auditd_disk_full_action=syslog
+      status: automated
+    - id: SLES-15-030600
+      levels:
+          - medium
+      title: The SUSE operating system must protect audit rules from unauthorized modification.
+      rules:
+          - permissions_local_var_log_audit
+      status: automated
+    - id: SLES-15-030620
+      levels:
+          - medium
+      title: The SUSE operating system audit tools must have the proper permissions configured
+        to protect against unauthorized access.
+      rules:
+          - permissions_local_audit_binaries
+      status: automated
+    - id: SLES-15-030630
+      levels:
+          - medium
+      title: The SUSE operating system file integrity tool must be configured to protect
+        the integrity of the audit tools.
+      rules:
+          - aide_check_audit_tools
+      status: automated
+    - id: SLES-15-030640
+      levels:
+          - low
+      title: The SUSE operating system must generate audit records for all uses of the
+        privileged functions.
+      rules:
+          - audit_rules_suid_privilege_function
+      status: automated
+    - id: SLES-15-030650
+      levels:
+          - medium
+      title: The SUSE operating system must have the auditing package installed.
+      rules:
+          - package_audit_installed
+      status: automated
+    - id: SLES-15-030660
+      levels:
+          - medium
+      title: The SUSE operating system must allocate audit record storage capacity to
+        store at least one week of audit records when audit records are not immediately
+        sent to a central audit record storage facility.
+      rules:
+          - auditd_audispd_configure_sufficiently_large_partition
+      status: manual
+    - id: SLES-15-030670
+      levels:
+          - medium
+      title: The audit-audispd-plugins must be installed on the SUSE operating system.
+      rules:
+          - package_audit-audispd-plugins_installed
+      status: automated
+    - id: SLES-15-030680
+      levels:
+          - low
+      title: The SUSE operating system audit event multiplexor must be configured to use
+        Kerberos.
+      rules:
+          - auditd_audispd_encrypt_sent_records
+      status: automated
+    - id: SLES-15-030690
+      levels:
+          - low
+      title: Audispd must off-load audit records onto a different system or media from
+        the SUSE operating system being audited.
+      rules:
+          - auditd_audispd_configure_remote_server
+          # NOTE: must configure "var_audispd_remote_server" when the
+          # rule "auditd_audispd_configure_remote_server" is enabled
+          # - var_audispd_remote_server=<remote audit server name/IP>
+      status: automated
+    - id: SLES-15-030700
+      levels:
+          - medium
+      title: The SUSE operating system auditd service must notify the System Administrator
+        (SA) and Information System Security Officer (ISSO) immediately when audit storage
+        capacity is 75 percent full.
+      rules:
+          - auditd_data_retention_space_left
+      status: automated
+    - id: SLES-15-030740
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for all uses of the
+        unlink, unlinkat, rename, renameat, and rmdir system calls.
+      rules:
+          - audit_rules_unsuccessful_file_modification_rename
+          - audit_rules_unsuccessful_file_modification_renameat
+          - audit_rules_unsuccessful_file_modification_renameat2
+          - audit_rules_unsuccessful_file_modification_unlink
+          - audit_rules_unsuccessful_file_modification_unlinkat
+      status: automated
+    - id: SLES-15-030760
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for the /run/utmp file.
+      rules:
+          - audit_rules_session_events_utmp
+      status: automated
+    - id: SLES-15-030770
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for the /var/log/wtmp
+        file.
+      rules:
+          - audit_rules_session_events_wtmp
+      status: automated
+    - id: SLES-15-030780
+      levels:
+          - medium
+      title: The SUSE operating system must generate audit records for the /var/log/btmp
+        file.
+      rules:
+          - audit_rules_session_events_btmp
+      status: automated
+    - id: SLES-15-030790
+      levels:
+          - medium
+      title: The SUSE operating system must off-load audit records onto a different system
+        or media from the system being audited.
+      rules:
+          - auditd_audispd_network_failure_action
+      status: automated
+    - id: SLES-15-030800
+      levels:
+          - medium
+      title: Audispd must take appropriate action when the SUSE operating system audit
+        storage is full.
+      rules:
+          - auditd_audispd_disk_full_action
+      status: automated
+    - id: SLES-15-030810
+      levels:
+          - low
+      title: The SUSE operating system must use a separate file system for the system
+        audit data path.
+      rules:
+          - partition_for_var_log_audit
+      status: automated
+    - id: SLES-15-030820
+      levels:
+          - medium
+      title: The SUSE operating system must not disable syscall auditing.
+      rules:
+          - audit_rules_enable_syscall_auditing
+      status: automated
+    - id: SLES-15-040000
+      levels:
+          - medium
+      title: The SUSE operating system must enforce a delay of at least four seconds between
+        logon prompts following a failed logon attempt.
+      rules: []
+      status: pending
+    - id: SLES-15-040010
+      levels:
+          - medium
+      title: The SUSE operating system must enforce a delay of at least four seconds between
+        logon prompts following a failed logon attempt.
+      rules:
+          - accounts_passwords_pam_faildelay_delay
+          - var_accounts_fail_delay=4
+          - var_password_pam_delay=4000000
+      status: automated
+    - id: SLES-15-040020
+      levels:
+          - high
+      title: There must be no .shosts files on the SUSE operating system.
+      rules:
+          - no_user_host_based_files
+      status: automated
+    - id: SLES-15-040030
+      levels:
+          - high
+      title: There must be no shosts.equiv files on the SUSE operating system.
+      rules:
+          - no_host_based_files
+      status: automated
+    - id: SLES-15-040040
+      levels:
+          - low
+      title: The SUSE operating system file integrity tool must be configured to verify
+        Access Control Lists (ACLs).
+      rules:
+          - aide_verify_acls
+      status: automated
+    - id: SLES-15-040050
+      levels:
+          - low
+      title: The SUSE operating system file integrity tool must be configured to verify
+        extended attributes.
+      rules:
+          - aide_verify_ext_attributes
+      status: automated
+    - id: SLES-15-040060
+      levels:
+          - high
+      title: The SUSE operating system must disable the x86 Ctrl-Alt-Delete key sequence.
+      rules:
+          - disable_ctrlaltdel_reboot
+      status: automated
+    - id: SLES-15-040061
+      levels:
+          - high
+      title: The SUSE operating system must disable the x86 Ctrl-Alt-Delete key sequence
+        for Graphical User Interfaces.
+      rules:
+          - enable_dconf_user_profile
+      status: automated
+    - id: SLES-15-040062
+      levels:
+          - high
+      title: The SUSE operating system must disable the systemd Ctrl-Alt-Delete burst
+        key sequence.
+      rules:
+          - disable_ctrlaltdel_burstaction
+      status: automated
+    - id: SLES-15-040070
+      levels:
+          - medium
+      title: All SUSE operating system local interactive users must have a home directory
+        assigned in the /etc/passwd file.
+      rules:
+          - accounts_user_interactive_home_directory_defined
+      status: automated
+    - id: SLES-15-040080
+      levels:
+          - medium
+      title: All SUSE operating system local interactive user home directories defined
+        in the /etc/passwd file must exist.
+      rules:
+          - accounts_user_interactive_home_directory_exists
+      status: automated
+    - id: SLES-15-040090
+      levels:
+          - medium
+      title: All SUSE operating system local interactive user home directories must have
+        mode 0750 or less permissive.
+      rules:
+          - file_permissions_home_directories
+      status: automated
+    - id: SLES-15-040100
+      levels:
+          - medium
+      title: All SUSE operating system local interactive user home directories must be
+        group-owned by the home directory owner's primary group.
+      rules:
+          - file_groupownership_home_directories
+      status: automated
+    - id: SLES-15-040110
+      levels:
+          - medium
+      title: All SUSE operating system local initialization files must have mode 0740
+        or less permissive.
+      rules:
+          - file_permission_user_init_files
+      status: automated
+    - id: SLES-15-040120
+      levels:
+          - medium
+      title: All SUSE operating system local interactive user initialization files executable
+        search paths must contain only paths that resolve to the users home directory.
+      rules:
+          - accounts_user_home_paths_only
+      status: manual
+    - id: SLES-15-040130
+      levels:
+          - medium
+      title: All SUSE operating system local initialization files must not execute world-writable
+        programs.
+      rules:
+          - accounts_user_dot_no_world_writable_programs
+      status: automated
+    - id: SLES-15-040140
+      levels:
+          - medium
+      title: SUSE operating system file systems that contain user home directories must
+        be mounted to prevent files with the setuid and setgid bit set from being executed.
+      rules:
+          - mount_option_home_nosuid
+      status: automated
+    - id: SLES-15-040150
+      levels:
+          - medium
+      title: SUSE operating system file systems that are used with removable media must
+        be mounted to prevent files with the setuid and setgid bit set from being executed.
+      rules:
+          - mount_option_nosuid_removable_partitions
+          - var_removable_partition=dev_cdrom
+      status: automated
+    - id: SLES-15-040160
+      levels:
+          - medium
+      title: SUSE operating system file systems that are being imported via Network File
+        System (NFS) must be mounted to prevent files with the setuid and setgid bit set
+        from being executed.
+      rules:
+          - mount_option_nosuid_remote_filesystems
+      status: automated
+    - id: SLES-15-040170
+      levels:
+          - medium
+      title: SUSE operating system file systems that are being imported via Network File
+        System (NFS) must be mounted to prevent binary files from being executed.
+      rules:
+          - mount_option_noexec_remote_filesystems
+      status: automated
+    - id: SLES-15-040180
+      levels:
+          - medium
+      title: All SUSE operating system world-writable directories must be group-owned
+        by root, sys, bin, or an application group.
+      rules:
+          - dir_perms_world_writable_system_owned_group
+      status: automated
+    - id: SLES-15-040190
+      levels:
+          - medium
+      title: SUSE operating system kernel core dumps must be disabled unless needed.
+      rules:
+          - service_kdump_disabled
+      status: automated
+    - id: SLES-15-040200
+      levels:
+          - low
+      title: A separate file system must be used for SUSE operating system user home directories
+        (such as /home or an equivalent).
+      rules:
+          - partition_for_home
+      status: automated
+    - id: SLES-15-040210
+      levels:
+          - low
+      title: The SUSE operating system must use a separate file system for /var.
+      rules:
+          - partition_for_var
+      status: automated
+    - id: SLES-15-040220
+      levels:
+          - medium
+      title: The SUSE operating system must be configured to not overwrite Pluggable Authentication
+        Modules (PAM) configuration on package changes.
+      rules:
+          - pam_disable_automatic_configuration
+      status: automated
+    - id: SLES-15-040230
+      levels:
+          - medium
+      title: The SUSE operating system SSH daemon must be configured to not allow authentication
+        using known hosts authentication.
+      rules:
+          - sshd_disable_user_known_hosts
+      status: automated
+    - id: SLES-15-040240
+      levels:
+          - medium
+      title: The SUSE operating system SSH daemon public host key files must have mode
+        0644 or less permissive.
+      rules:
+          - file_permissions_sshd_pub_key
+      status: automated
+    - id: SLES-15-040250
+      levels:
+          - medium
+      title: The SUSE operating system SSH daemon private host key files must have mode
+        0640 or less permissive.
+      rules:
+          - file_permissions_sshd_private_key
+      status: automated
+    - id: SLES-15-040260
+      levels:
+          - medium
+      title: The SUSE operating system SSH daemon must perform strict mode checking of
+        home directory configuration files.
+      rules:
+          - sshd_enable_strictmodes
+      status: automated
+    - id: SLES-15-040290
+      levels:
+          - medium
+      title: The SUSE operating system SSH daemon must disable forwarded remote X connections
+        for interactive users, unless to fulfill documented and validated mission requirements.
+      rules:
+          - sshd_disable_x11_forwarding
+      status: automated
+    - id: SLES-15-040300
+      levels:
+          - medium
+      title: The SUSE operating system must not forward Internet Protocol version 4 (IPv4)
+        source-routed packets.
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_source_route
+      status: automated
+    - id: SLES-15-040310
+      levels:
+          - medium
+      title: The SUSE operating system must not forward Internet Protocol version 6 (IPv6)
+        source-routed packets.
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_source_route
+      status: automated
+    - id: SLES-15-040320
+      levels:
+          - medium
+      title: The SUSE operating system must not forward Internet Protocol version 4 (IPv4)
+        source-routed packets by default.
+      rules:
+          - sysctl_net_ipv4_conf_default_accept_source_route
+      status: automated
+    - id: SLES-15-040321
+      levels:
+          - medium
+      title: The SUSE operating system must not forward Internet Protocol version 6 (IPv6)
+        source-routed packets by default.
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_source_route
+      status: automated
+    - id: SLES-15-040330
+      levels:
+          - medium
+      title: The SUSE operating system must prevent Internet Protocol version 4 (IPv4)
+        Internet Control Message Protocol (ICMP) redirect messages from being accepted.
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_redirects
+      status: automated
+    - id: SLES-15-040340
+      levels:
+          - medium
+      title: The SUSE operating system must not allow interfaces to accept Internet Protocol
+        version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages by
+        default.
+      rules:
+          - sysctl_net_ipv4_conf_default_accept_redirects
+      status: automated
+    - id: SLES-15-040341
+      levels:
+          - medium
+      title: The SUSE operating system must prevent Internet Protocol version 6 (IPv6)
+        Internet Control Message Protocol (ICMP) redirect messages from being accepted.
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_redirects
+      status: automated
+    - id: SLES-15-040350
+      levels:
+          - medium
+      title: The SUSE operating system must not allow interfaces to accept Internet Protocol
+        version 6 (IPv6) Internet Control Message Protocol (ICMP) redirect messages by
+        default.
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_redirects
+      status: automated
+    - id: SLES-15-040360
+      levels:
+          - medium
+      title: The SUSE operating system must not allow interfaces to send Internet Protocol
+        version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages by
+        default.
+      rules:
+          - sysctl_net_ipv4_conf_default_send_redirects
+      status: automated
+    - id: SLES-15-040370
+      levels:
+          - medium
+      title: The SUSE operating system must not send Internet Protocol version 4 (IPv4)
+        Internet Control Message Protocol (ICMP) redirects.
+      rules:
+          - sysctl_net_ipv4_conf_all_send_redirects
+      status: automated
+    - id: SLES-15-040380
+      levels:
+          - medium
+      title: The SUSE operating system must not be performing Internet Protocol version
+        4 (IPv4) packet forwarding unless the system is a router.
+      rules:
+          - sysctl_net_ipv4_ip_forward
+      status: automated
+    - id: SLES-15-040381
+      levels:
+          - medium
+      title: The SUSE operating system must not be performing Internet Protocol version
+        6 (IPv6) packet forwarding unless the system is a router.
+      rules:
+          - sysctl_net_ipv6_conf_all_forwarding
+      status: automated
+    - id: SLES-15-040382
+      levels:
+          - medium
+      title: The SUSE operating system must not be performing Internet Protocol version
+        6 (IPv6) packet forwarding by default unless the system is a router.
+      rules:
+          - sysctl_net_ipv6_conf_default_forwarding
+      status: automated
+    - id: SLES-15-040390
+      levels:
+          - medium
+      title: The SUSE operating system must not have network interfaces in promiscuous
+        mode unless approved and documented.
+      rules:
+          - network_sniffer_disabled
+      status: automated
+    - id: SLES-15-040400
+      levels:
+          - medium
+      title: All SUSE operating system files and directories must have a valid owner.
+      rules:
+          - no_files_unowned_by_user
+      status: automated
+    - id: SLES-15-040410
+      levels:
+          - medium
+      title: All SUSE operating system files and directories must have a valid group owner.
+      rules:
+          - file_permissions_ungroupowned
+      status: automated
+    - id: SLES-15-040420
+      levels:
+          - medium
+      title: The SUSE operating system default permissions must be defined in such a way
+        that all authenticated users can only read and modify their own files.
+      rules:
+          - accounts_umask_etc_login_defs
+      status: automated
+    - id: SLES-15-040430
+      levels:
+          - high
+      title: The SUSE operating system must not allow unattended or automatic logon via
+        the graphical user interface (GUI).
+      rules:
+          - gnome_gdm_disable_unattended_automatic_login
+      status: automated
+    - id: SLES-15-040440
+      levels:
+          - high
+      title: The SUSE operating system must not allow unattended or automatic logon via
+        SSH.
+      rules:
+          - sshd_disable_empty_passwords
+          - sshd_do_not_permit_user_env
+      status: automated
+    - id: SLES-15-020099
+      levels:
+          - medium
+      title: The SUSE operating system must specify the default "include" directory for
+        the /etc/sudoers file.
+      rules:
+          - sudoers_default_includedir
+      status: automated
+    - id: SLES-15-020104
+      levels:
+          - medium
+      title: The SUSE operating system must not be configured to bypass password requirements
+        for privilege escalation.
+      rules:
+          - disallow_bypass_password_sudo
+      status: automated
+    - id: SLES-15-020181
+      levels:
+          - high
+      title: The SUSE operating system must not have accounts configured with blank or
+        null passwords.
+      rules:
+          - no_empty_passwords_etc_shadow
+      status: automated
+    - id: SLES-15-040450
+      levels:
+          - medium
+      title: The SUSE operating system SSH server must be configured to use only FIPS-validated
+        key exchange algorithms.
+      rules:
+          - sshd_use_approved_kex_ordered_stig
+      status: automated
+    - id: SLES-15-010375
+      levels:
+          - low
+      title: The SUSE operating system must restrict access to the kernel message buffer.
+      rules:
+          - sysctl_kernel_dmesg_restrict
+      status: automated
+    - id: SLES-15-010419
+      levels:
+          - medium
+      title: The SUSE operating system must use a file integrity tool to verify correct
+        operation of all security functions.
+      rules:
+          - aide_build_database
+          - package_aide_installed
+      status: automated
+    - id: SLES-15-010418
+      levels:
+          - medium
+      title: The SUSE operating system must be configured to allow sending email notifications
+        of unauthorized configuration changes to designated personnel.
+      rules:
+          - package_mailx_installed
+      status: automated
+    - id: SLES-15-030015
+      levels:
+          - medium
+      title: The SUSE operating system must audit any script or executable called by cron
+        as root or by any privileged user.
+      rules:
+          - audit_rules_etc_cron_d
+          - audit_rules_var_spool_cron
+      status: automated

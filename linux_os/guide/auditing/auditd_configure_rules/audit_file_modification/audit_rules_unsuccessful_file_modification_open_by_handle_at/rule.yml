@@ -56,7 +56,6 @@ references:
     stigid@ol7: OL07-00-030510
     stigid@ol8: OL08-00-030420
     stigid@sle12: SLES-12-020490
-    stigid@sle15: SLES-15-030150
 
 ocil: |-
     {{{ ocil_audit_rules_unsuccessful_file_modification("open_by_handle_at", "access") | indent(4) }}}
@@ -80,9 +79,9 @@ template:
     vars:
         name: open_by_handle_at
         syscall_grouping:
-          - creat
-          - ftruncate
-          - truncate
-          - open
-          - openat
-          - open_by_handle_at
+            - creat
+            - ftruncate
+            - truncate
+            - open
+            - openat
+            - open_by_handle_at

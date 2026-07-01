@@ -32,7 +32,6 @@ references:
     pcidss: Req-8.2.3
     srg: SRG-OS-000266-GPOS-00101
     stigid@sle12: SLES-12-010180
-    stigid@sle15: SLES-15-020270
 
 ocil_clause: 'ocredit is not found or not set to the required value'
 
@@ -49,10 +48,10 @@ ocil: |-
 template:
     name: pam_options
     vars:
-      path: /etc/pam.d/common-password
-      type: password
-      control_flag: requisite
-      module: pam_cracklib.so
-      arguments:
-        - variable: ocredit
-          operation: less than or equal
+        path: /etc/pam.d/common-password
+        type: password
+        control_flag: requisite
+        module: pam_cracklib.so
+        arguments:
+            - variable: ocredit
+              operation: less than or equal

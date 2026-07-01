@@ -50,7 +50,6 @@ references:
     srg: SRG-OS-000138-GPOS-00069
     stigid@ol8: OL08-00-010190
     stigid@sle12: SLES-12-010460
-    stigid@sle15: SLES-15-010300
 
 ocil_clause: 'any world-writable directories are missing the sticky bit'
 
@@ -99,4 +98,3 @@ warnings:
         These immutable parts cannot be remediated because they are read-only.
         Example of such directories can be OStree deployments located at <tt>/sysroot/ostree/deploy</tt>.
         In such case, it is needed to make modifications to the underlying ostree snapshot and this is out of scope of regular rule remediation.
-

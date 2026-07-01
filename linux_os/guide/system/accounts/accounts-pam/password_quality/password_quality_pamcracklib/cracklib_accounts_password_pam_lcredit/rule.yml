@@ -26,14 +26,13 @@ identifiers:
    cce@slmicro6: CCE-94638-4
 
 references:
-    cis@sle12: 5.3.1
-    cis@sle15: 5.3.1
-    nist@sle12: IA-5(a),IA-5(v)
-    nist@sle15: IA-5(1)(a),IA-5(1).1(v)
-    pcidss: Req-8.2.3
-    srg: SRG-OS-000070-GPOS-00038
-    stigid@sle12: SLES-12-010160
-    stigid@sle15: SLES-15-020140
+   cis@sle12: 5.3.1
+   cis@sle15: 5.3.1
+   nist@sle12: IA-5(a),IA-5(v)
+   nist@sle15: IA-5(1)(a),IA-5(1).1(v)
+   pcidss: Req-8.2.3
+   srg: SRG-OS-000070-GPOS-00038
+   stigid@sle12: SLES-12-010160
 
 ocil_clause: 'lcredit is not found or not set to the required value'
 
@@ -53,12 +52,12 @@ ocil: |-
     This would appear as <tt>lcredit=-{{{ xccdf_value("var_password_pam_lcredit") }}}</tt>.
 
 template:
-    name: pam_options
-    vars:
+   name: pam_options
+   vars:
       path: /etc/pam.d/common-password
       type: password
       control_flag: requisite
       module: pam_cracklib.so
       arguments:
-        - variable: lcredit
-          operation: less than or equal
+         - variable: lcredit
+           operation: less than or equal
