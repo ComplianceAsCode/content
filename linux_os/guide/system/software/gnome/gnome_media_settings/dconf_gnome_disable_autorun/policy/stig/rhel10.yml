@@ -1,0 +1,37 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable the graphical user interface autorunner unless required.
+
+fixtext: |-
+    Configure {{{ full_name }}} GNOME to disable autorunning of removable media.
+
+    Note: The example below is using the database "local" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
+
+    Update the "/etc/dconf/db/local.d/00-security-settings" database to disable the GUI autorun function:
+
+    $ sudo vi /etc/dconf/db/local.d/00-security-settings
+
+    [org/gnome/desktop/media-handling]
+    autorun-never=true
+
+    Update the dconf system databases:
+
+    $ sudo dconf update
+
+checktext: |-
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is not applicable.
+
+    Verify {{{ full_name }}} disables the graphical user interface autorun function.
+
+    Disable the setting with the following command:
+
+    $ gsettings get org.gnome.desktop.media-handling autorun-never
+    true
+
+    If "autorun-never" is set to "false" and is not documented with the information system security officer as an operational requirement, this is a finding.
+
+vuldiscussion: |-
+    Automatically running applications when media is inserted allows for the easy introduction of unknown data, thereby facilitating malicious activity.
+
+
+
+

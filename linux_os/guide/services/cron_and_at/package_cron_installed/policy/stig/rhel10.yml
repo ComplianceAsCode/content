@@ -1,18 +1,21 @@
 fixtext: |-
-    {{{ fixtext_package_installed(package="cronie") | indent(4) }}}
+    Configure {{{ full_name }}} to have the "cronie" package installed with the following command:
 
-srg_requirement: '{{{ srg_requirement_package_installed("cronie") }}}'
+    $ sudo dnf -y install cronie
+
+srg_requirement: |-
+    {{{ full_name }}} must have the "cronie" package installed.
 
 checktext: |-
-    Verify that {{{ full_name }}} has the opensc package installed with the following command:
+    Verify {{{ full_name }}} has the "cronie" package installed with the following command:
 
-    $ dnf list --installed cronie
-
-    Example output:
-
-    cronie.x86_64                            1.7.0-9.el10
+    $ sudo dnf list --installed cronie
+    Installed Packages
+    cronie.x86_64                                           1.7.0-9.el10                                           @anaconda
 
     If the "cronie" package is not installed, this is a finding.
 
 vuldiscussion: |-
-    The cronie package must be installed if it is to be available for multifactor authentication using smart cards.
+    The "cronie" package must be installed if it is to be available for multifactor authentication using smart cards.
+
+

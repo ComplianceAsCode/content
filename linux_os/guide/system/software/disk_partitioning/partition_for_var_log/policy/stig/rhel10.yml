@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} must use a separate file system for "/var/log".
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a separate file system for log file directories by migrating the "/var/log" path onto a separate file system.
+
+checktext: |-
+    Verify {{{ full_name }}} uses a separate file system/partition for "/var/log" with the following command:
+
+    $ mount | grep /var/log
+    /dev/mapper/luks-c651f493-9fdc-4c6e-a711-0a4f03149661 on /var/log type xfs (rw,nosuid,nodev,noexec,relatime,seclabel,attr2)
+    Note: Options displayed for mount may differ.
+
+    If a separate entry for "/var/log" is not in use, this is a finding.
+
+vuldiscussion: |-
+    Placing "/var/log" in its own partition enables better separation between log files and other files in "/var/".

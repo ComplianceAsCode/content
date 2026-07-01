@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must not default to the graphical display manager unless approved.
+
+fixtext: |-
+    Configure {{{ full_name }}} to boot to the command line by setting the default target to "multi-user" with the following command:
+
+    $ sudo systemctl set-default multi-user.target
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to boot to the command line with the following command:
+
+    $ systemctl get-default
+    multi-user.target
+
+    If the system default target is not set to "multi-user.target", and the information system security officer lacks a documented requirement for a graphical user interface, this is a finding.
+
+vuldiscussion: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used unless approved and documented.

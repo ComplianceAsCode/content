@@ -1,0 +1,30 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent a user from overriding the disable-restart-buttons setting for the graphical user interface.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent a user from overriding the disable-restart-buttons setting for graphical user interfaces.
+
+    Note: The example below is using the database "local" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
+
+    Update the "/etc/dconf/db/local.d/locks/session" file to prevent nonprivileged users from modifying the disable-restart-buttons setting:
+
+    $ sudo vi /etc/dconf/db/local.d/locks/session
+
+    /org/gnome/login-screen/disable-restart-buttons
+
+    Run the following command to update the database:
+
+    $ sudo dconf update
+
+checktext: |-
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is not applicable.
+
+    Verify {{{ full_name }}} prevents a user from overriding the disable-restart-buttons setting for graphical user interfaces:
+
+    $ gsettings writable org.gnome.login-screen disable-restart-buttons
+    false
+
+    If "disable-restart-buttons" is writable, and the result is "true", this is a finding.
+
+vuldiscussion: |-
+    A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems due to reboot.

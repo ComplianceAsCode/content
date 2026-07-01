@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers".
+
+fixtext: |-
+    Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers".
+
+    Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
+
+    -a always,exit -F arch=b32 -F path=/etc/sudoers -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/etc/sudoers -F perm=wa -F key=logins
+
+    Restart the audit daemon with the following command for the changes to take effect:
+
+    $ sudo service auditd restart
+
+checktext: |-
+    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers" with the following command:
+
+    $ sudo auditctl -l | grep '/etc/sudoers[^.]'
+    -a always,exit -F arch=b32 -F path=/etc/sudoers -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/etc/sudoers -F perm=wa -F key=logins
+
+    If the command does not return a line, or the line is commented out, this is a finding.
+
+vuldiscussion: |-
+    The actions taken by system administrators must be audited to keep a record of what was executed on the system, as well as for accountability purposes. Editing the "sudoers" file may be sign of an attacker trying to establish persistent methods to a system. Auditing the editing of the "sudoers" files mitigates this risk.
+
+

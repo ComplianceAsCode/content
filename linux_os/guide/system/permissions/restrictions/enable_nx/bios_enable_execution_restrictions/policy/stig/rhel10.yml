@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} must implement nonexecutable data to protect its memory from unauthorized code execution.
+
+fixtext: |-
+    Configure {{{ full_name }}} to implement nonexecutable data to protect its memory from unauthorized code execution.
+
+    Update the GRUB 2 bootloader configuration.
+
+    Run the following command:
+
+    $ sudo grubby --update-kernel=ALL --remove-args=noexec
+
+checktext: |-
+    Verify {{{ full_name }}} implements nonexecutable data to protect its memory from unauthorized code execution.
+
+    Run the following command:
+
+    $ sudo grep ^flags /proc/cpuinfo | grep -Ev '([^[:alnum:]])(nx)([^[:alnum:]]|$)'
+
+    If any output is returned, this is a finding.
+
+    Run the following command:
+
+    $ sudo grubby --info=ALL | grep args | grep -E '([^[:alnum:]])(noexec)([^[:alnum:]])'
+
+    If any output is returned, this is a finding.
+
+vuldiscussion: |-
+    ExecShield uses the segmentation feature on all x86 systems to prevent execution in memory higher than a certain address. It writes an address as a limit in the code segment descriptor, to control where code can be executed, on a per-process basis. When the kernel places a process's memory regions such as the stack and heap higher than this address, the hardware prevents execution in that address range. This is enabled by default on the latest Red Hat and Fedora systems if supported by the hardware.

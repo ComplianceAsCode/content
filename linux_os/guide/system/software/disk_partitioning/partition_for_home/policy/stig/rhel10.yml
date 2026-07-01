@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} must use a separate file system for user home directories (such as "/home" or an equivalent).
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a separate file system for user home directories by migrating the "/home" directory onto a separate file system/partition.
+
+checktext: |-
+    Verify {{{ full_name }}} uses a separate file system/partition for "/home" with the following command:
+
+    $ mount | grep /home
+    /dev/mapper/luks-ca2261ed-7b00-4b7b-84cd-8cd6d8fa4b28 on /home type xfs (rw,nodev,nosuid,noexec,seclabel)
+    Note: Options displayed for mount may differ.
+
+    If a separate entry for "/home" is not in use, this is a finding.
+
+vuldiscussion: |-
+    Ensuring that "/home" is mounted on its own partition enables the setting of more restrictive mount options and helps ensure that users cannot trivially fill partitions used for log or audit data storage.

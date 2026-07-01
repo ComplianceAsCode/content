@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent files with the "setuid" and "setgid" bit set from being executed on the "/boot/efi" directory.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent files with the "setuid" and "setgid" bit set from being executed on the "/boot/efi" directory.
+
+    Modify "/etc/fstab" to use the "nosuid" option on the "/boot/efi" directory.
+
+    To reload all implicit mount units and update the dependency graph so that new options will apply correctly at next remount, run the following command:
+
+    $ sudo systemctl daemon-reload
+
+    Use the following command to apply the changes immediately without a reboot:
+
+    $ sudo mount -o remount /boot/efi
+
+checktext: |-
+    Note: For systems that use BIOS and for vfat systems, this requirement is not applicable.
+
+    Verify {{{ full_name }}} is configured so that the "/boot/efi "directory is mounted with the "nosuid" option with the following command:
+
+    $ mount | grep '\s/boot/efi\s'
+    /dev/sda1 on /boot/efi type vfat (rw,nosuid,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=winnt,errors=remount-ro)
+
+    If the "/boot/efi" file system does not have the "nosuid" option set, this is a finding.
+
+vuldiscussion: |-
+    The "nosuid" mount option causes the system not to execute "setuid" and "setgid" files with owner privileges. This option must be used for mounting any file system not containing approved "setuid" and "setguid" files. Executing files from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.

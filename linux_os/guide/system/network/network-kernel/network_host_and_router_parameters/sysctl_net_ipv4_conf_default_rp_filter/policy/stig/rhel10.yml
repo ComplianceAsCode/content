@@ -1,0 +1,32 @@
+srg_requirement: |-
+    {{{ full_name }}} must use a reverse-path filter for Internet Protocol version 4 (IPv4) network traffic when possible by default.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use reverse path filtering on IPv4 interfaces by default.
+
+    Create a configuration file if it does not already exist:
+
+    $ sudo vi /etc/sysctl.d/ipv4_rp_filter.conf
+
+    Add the following line to the file:
+
+    net.ipv4.conf.default.rp_filter = 1
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
+
+checktext: |-
+    Verify {{{ full_name }}} uses reverse path filtering on IPv4 interfaces.
+
+    Check the value of the "net.ipv4.conf.default.rp_filter" with the following command:
+
+    $ sudo sysctl net.ipv4.conf.default.rp_filter
+    net.ipv4.conf.default.rp_filter = 1
+
+    If the returned line does not have a value of "1", or a line is not returned, this is a finding.
+
+vuldiscussion: |-
+    Enabling reverse path filtering drops packets with source addresses that should not have been able to be received on the interface on which they were received. It must not be used on systems that are routers for complicated networks but is helpful for end hosts and routers serving small networks.
+
+

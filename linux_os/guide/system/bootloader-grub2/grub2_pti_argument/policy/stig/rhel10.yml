@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable mitigations against processor-based vulnerabilities.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable kernel page-table isolation with the following command:
+
+    $ sudo grubby --update-kernel=ALL --args="pti=on"
+
+checktext: |-
+    Verify {{{ full_name }}} enables kernel page-table isolation with the following command:
+
+    $ sudo grubby --info=ALL | grep args | grep -v 'pti=on'
+
+    If any output is returned, this is a finding.
+
+    Check that kernel page-table isolation is enabled by default to persist in kernel updates:
+
+    $ sudo grep pti /etc/default/grub
+    GRUB_CMDLINE_LINUX="pti=on"
+
+    If "pti" is not set to "on", is missing, or is commented out, this is a finding.
+
+vuldiscussion: |-
+    Kernel page-table isolation is a kernel feature that mitigates the Meltdown security vulnerability and hardens the kernel against attempts to bypass kernel address space layout randomization (KASLR).
+
+

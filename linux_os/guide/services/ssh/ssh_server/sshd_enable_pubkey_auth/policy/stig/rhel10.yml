@@ -1,0 +1,35 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that SSHD accepts public key authentication.
+
+fixtext: |-
+    Configure {{{ full_name }}} to accept public key authentication.
+
+    In "/etc/ssh/sshd_config.d", create a drop file that will lexicographically precede 50-redhat.conf and add the following line:
+
+    PubkeyAuthentication yes
+
+    Restart the SSH daemon with the following command for the settings to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+checktext: |-
+    Note: If the system administrator demonstrates the use of an approved alternate multifactor authentication method, this requirement is not applicable.
+
+    Verify {{{ full_name }}} SSH daemons accept public key encryption with the following command:
+
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*pubkeyauthentication'
+    /etc/ssh/sshd_config.d/10-stig.conf:PubkeyAuthentication yes
+
+    Verify the runtime setting with the following command:
+
+    $ sudo sshd -T | grep -i pubkeyauthentication
+    pubkeyauthentication yes
+
+    If the "PubkeyAuthentication" keyword is not set to "yes" in a drop-in that lexicographically precedes 50-redhat.conf, or if no output is returned, this is a finding.
+
+vuldiscussion: |-
+    Without the use of multifactor authentication, the ease of access to privileged functions is greatly increased. Multifactor authentication requires using two or more factors to achieve authentication. A privileged account is defined as an information system account with authorizations of a privileged user. A DOD common access card (CAC) with DOD-approved PKI is an example of multifactor authentication.
+
+    OpenSSH uses the first occurrence of a keyword it sees, and drop-in files are read in lexicographical order at the start of the configuration. Red Hat recommends using drop-in files rather than changing base configuration files.
+
+

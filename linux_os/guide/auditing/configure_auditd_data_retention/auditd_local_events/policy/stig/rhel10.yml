@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} must audit local events.
+
+fixtext: |-
+    Configure {{{ full_name }}} to generate audit records for local events by adding or updating the following line in "/etc/audit/auditd.conf":
+
+    local_events = yes
+
+    Restart the audit daemon with the following command for the changes to take effect:
+
+    $ sudo service auditd restart
+
+checktext: |-
+    Verify that {{{ full_name }}} generates audit records for local events with the following command:
+
+    $ sudo grep local_events /etc/audit/auditd.conf
+    local_events = yes
+
+    If "local_events" is not set to "yes", the command does not return a line, or the line is commented out, this is a finding.
+
+vuldiscussion: |-
+    Without establishing what type of events occurred, along with the source, location, and outcome, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
+
+    If option "local_events" is not set to "yes", only events from the network will be aggregated.

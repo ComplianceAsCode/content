@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} must enforce mode "755" or less permissive for library files.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the library files are protected from unauthorized access. Run the following command, replacing "[FILE]" with any library file with a mode more permissive than "755".
+
+    $ sudo chmod 755 [FILE]
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the systemwide shared library files contained in the following directories have mode "755" or less permissive with the following command:
+
+    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 -perm /022 -type f -exec ls -l {} \;
+
+    If any systemwide shared library file is found to be group-writable or world-writable, this is a finding.
+
+vuldiscussion: |-
+    If {{{ full_name }}} allowed any user to make changes to software libraries, those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.
+
+    This requirement applies to {{{ full_name }}} with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs that execute with escalated privileges.

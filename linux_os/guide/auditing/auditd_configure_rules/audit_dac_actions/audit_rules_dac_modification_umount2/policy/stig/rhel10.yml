@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must generate audit records for successful and unsuccessful uses of the "umount2" system call.
+
+fixtext: |-
+    Configure {{{ full_name }}} to generate audit records upon successful and unsuccessful uses of the "umount2" system call by adding or updating the following rules in a file in "/etc/audit/rules.d":
+
+    -a always,exit -F arch=b32 -S umount2 -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-umount
+    -a always,exit -F arch=b64 -S umount2 -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-umount
+
+    Restart the audit daemon with the following command for the changes to take effect:
+
+    $ sudo service auditd restart
+
+checktext: |-
+    Verify {{{ full_name }}} generates an audit record for all uses of the "umount2" system call with the following command:
+
+    $ sudo auditctl -l | grep umount2
+    -a always,exit -F arch=b64 -S umount2 -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-umount
+    -a always,exit -F arch=b32 -S umount2 -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-umount
+
+    If no line is returned, this is a finding.
+
+vuldiscussion: |-
+    The changing of file permissions could indicate that a user is attempting to gain access to information that would otherwise be disallowed. Auditing discretionary access control (DAC) modifications can facilitate the identification of patterns of abuse among both authorized and unauthorized users.
+
+

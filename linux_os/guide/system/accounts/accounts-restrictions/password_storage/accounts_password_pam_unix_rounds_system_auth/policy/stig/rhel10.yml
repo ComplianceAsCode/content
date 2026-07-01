@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured to use a sufficient number of hashing rounds for the shadow password suite.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a sufficient number of hashing rounds for shadow password suite.
+
+    Add or modify the following line in "/etc/pam.d/system-auth" and set "rounds" to 100000:
+
+    password sufficient pam_unix.so sha512 rounds=100000
+
+checktext: |-
+    Verify {{{ full_name }}} uses a sufficient number of rounds for the shadow password suite hashing algorithm with the following command:
+
+    $ sudo grep rounds /etc/pam.d/system-auth
+    password sufficient pam_unix.so sha512 rounds=100000
+
+    If the setting is not configured or "rounds" is less than 100000, this a finding.
+
+vuldiscussion: |-
+    Passwords must be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
+
+    Using more hashing rounds makes password cracking attacks more difficult.
+
+
