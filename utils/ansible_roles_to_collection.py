@@ -71,7 +71,7 @@ SSG_VERSION = _get_ssg_version()
 COLLECTION_NAMESPACE = "redhatofficial"
 COLLECTION_NAME = "rhel_hardening_roles"
 COLLECTION_AUTHORS = [
-    "ComplianceAsCode development team <scap-security-guide@lists.fedorahosted.org>"
+    "ComplianceAsCode development team"
 ]
 COLLECTION_DESCRIPTION = (
     "Ansible roles for RHEL system hardening, generated from ComplianceAsCode content."
