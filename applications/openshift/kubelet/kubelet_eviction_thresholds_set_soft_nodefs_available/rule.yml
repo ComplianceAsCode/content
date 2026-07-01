@@ -72,4 +72,6 @@ template:
     filepath: '/var/run/compliance-operator/kubeletconfig/openscap-kubeletconfig'
     yamlpath: ".kubeletconfig.evictionSoft['nodefs.available']"
     check_existence: "all_exist"
-    xccdf_variable: var_event_record_qps
+    values:
+      - value: "^.+$"
+        operation: "pattern match"
