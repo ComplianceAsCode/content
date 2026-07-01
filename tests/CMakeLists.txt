@@ -408,4 +408,5 @@ if(SSG_PRODUCT_RHEL10)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_stig_rules_in_srg_gpos.py"  --root "${CMAKE_SOURCE_DIR}" --product "rhel10"
     )
     set_tests_properties("stig-rules-srg-gpos" PROPERTIES LABELS quick)
+    mypy_test("tests/test_stig_rules_in_srg_gpos.py" "normal")
 endif()
