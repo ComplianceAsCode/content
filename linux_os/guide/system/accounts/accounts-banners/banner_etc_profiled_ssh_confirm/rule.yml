@@ -4,10 +4,10 @@ documentation_complete: true
 title: 'Enable the SSH login confirmation banner'
 
 description: |-
-    This rule verifies that that the SSH login confirmation banner is set 
+    This rule verifies that that the SSH login confirmation banner is set
     correctly.
 
-    The DoD required text is:
+    The required text is:
     <br /><br />
     <tt>if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then<br/>
             while true; do<br/>
@@ -45,7 +45,7 @@ rationale: |-
     access to the operating system ensures privacy and security notification
     verbiage used is consistent with applicable federal laws, Executive Orders,
     directives, policies, regulations, standards, and guidance.
-    
+
 severity: medium
 
 ocil_clause: 'it does not display the required banner'
