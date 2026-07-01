@@ -4,46 +4,38 @@
 # complexity = low
 # disruption = low
 
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults("/usr/etc/ssh/sshd_config", sshd_main_config_file, rule_title=rule_title) }}}
+- name: Check if SSH {{{ sshd_main_config_file }}} configuration file exists
+  ansible.builtin.stat:
+    path: {{{ sshd_main_config_file }}}
+  register: sshd_main_config_file_{{{ rule_id }}}
+{{{
+    ansible_lineinfile(
+        rule_title + ' - Remove /usr/etc/ssh/sshd_config.d/*.conf include directive from ' + sshd_main_config_file,
+        path=sshd_main_config_file,
+        regex='^\s*Include\s+\/usr\/etc\/ssh\/sshd_config\.d/\*\.conf',
+        state='absent',
+        when='sshd_main_config_file_' + rule_id + '.stat.exists'
+    )
+}}}
+{{% endif %}}
+
 {{% if XCCDF_VARIABLE %}}
 {{{ ansible_instantiate_variables(XCCDF_VARIABLE) }}}
-    {{%- if product == 'sle16' -%}}
-        {{{
-            ansible_sshd_set_usr(
-                parameter=PARAMETER,
-                value="{{ "+XCCDF_VARIABLE+" }}",
-                copy_defaults='true',
-                config_basename=CONFIG_BASENAME,
-                rule_title=rule_title
-            )
-        }}}
-    {{%- else -%}}
-        {{{
-            ansible_sshd_set(
-                parameter=PARAMETER,
-                value="{{ "+XCCDF_VARIABLE+" }}",
-                config_is_distributed=sshd_distributed_config,
-                config_basename=CONFIG_BASENAME, rule_title=rule_title)
-        }}}
-    {{%- endif -%}}
+    {{{
+        ansible_sshd_set(
+            parameter=PARAMETER,
+            value="{{ "+XCCDF_VARIABLE+" }}",
+            config_is_distributed=sshd_distributed_config,
+            config_basename=CONFIG_BASENAME, rule_title=rule_title)
+    }}}
 {{% else %}}
-    {{%- if product == 'sle16' -%}}
-        {{{
-            ansible_sshd_set_usr(
-                parameter=PARAMETER,
-                value=VALUE,
-                copy_defaults='true',
-                config_basename=CONFIG_BASENAME,
-                rule_title=rule_title
-            )
-        }}}
-    {{%- else -%}}
-        {{{
-            ansible_sshd_set(
-                parameter=PARAMETER,
-                value=VALUE,
-                config_is_distributed=sshd_distributed_config,
-                config_basename=CONFIG_BASENAME, rule_title=rule_title)
-        }}}
-    {{%- endif -%}}
-
+    {{{
+        ansible_sshd_set(
+            parameter=PARAMETER,
+            value=VALUE,
+            config_is_distributed=sshd_distributed_config,
+            config_basename=CONFIG_BASENAME, rule_title=rule_title)
+    }}}
  {{% endif %}}
