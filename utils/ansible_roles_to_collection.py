@@ -342,9 +342,22 @@ def create_collection_dirs(output_dir, namespace, collection_name):
     collection_dir = os.path.join(
         output_dir, "ansible_collections", namespace, collection_name
     )
-    for subdir in ("roles", os.path.join("plugins", "modules")):
+    for subdir in ("roles", os.path.join("plugins", "modules"), "meta"):
         os.makedirs(os.path.join(collection_dir, subdir), exist_ok=True)
     return collection_dir
+
+
+def generate_runtime_yml(collection_dir):
+    """Write meta/runtime.yml declaring the minimum required Ansible version."""
+    try:
+        from ssg.constants import min_ansible_version
+    except ImportError:
+        min_ansible_version = "2.9"
+    runtime_data = {"requires_ansible": ">=%s" % min_ansible_version}
+    runtime_yml_path = os.path.join(collection_dir, "meta", "runtime.yml")
+    with open(runtime_yml_path, "w", encoding="utf-8") as f:
+        yaml.dump(runtime_data, f, default_flow_style=False, allow_unicode=True)
+    print("Generated meta/runtime.yml")
 
 
 def generate_galaxy_yml(
@@ -649,6 +662,7 @@ def main():
             homepage=args.homepage,
             issues=args.issues,
         )
+        generate_runtime_yml(collection_dir)
         generate_readme(collection_dir, args.namespace, args.collection, roles)
 
     artifact_path = None
