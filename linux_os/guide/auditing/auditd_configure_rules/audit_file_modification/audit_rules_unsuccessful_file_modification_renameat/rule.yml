@@ -90,13 +90,13 @@ template:
     vars:
         name: renameat
         syscall_grouping:
-            - rename
-            - renameat
-              {{% if product in ['sle15'] %}}
-            - renameat2
-              {{% endif %}}
-            - unlink
-            - unlinkat
+          - rename
+          - renameat
+          {{% if product in ['sle15'] %}}
+          - renameat2
+          {{% endif %}}
+          - unlink
+          - unlinkat
 
 fixtext: |-
     {{%- if product in ['sle15'] %}}

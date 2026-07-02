@@ -48,10 +48,10 @@ ocil: |-
 template:
     name: pam_options
     vars:
-        path: /etc/pam.d/common-password
-        type: password
-        control_flag: requisite
-        module: pam_cracklib.so
-        arguments:
-            - variable: ocredit
-              operation: less than or equal
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - variable: ocredit
+          operation: less than or equal
