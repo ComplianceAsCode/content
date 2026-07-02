@@ -5,6 +5,7 @@ packages:
 - apt
 rules:
 - apt_conf_disallow_unauthenticated
+- apt_conf_disable_recommends
 - apt_disable_weak_dependencies
 - apt_sources_list_official
 - directory_groupowner_apt_auth_conf_d
@@ -28,3 +29,4 @@ rules:
 - file_permissions_apt_auth_conf_d
 - file_permissions_apt_gpg_keys
 - file_permissions_apt_sources_list_d
+
