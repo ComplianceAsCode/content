@@ -2,7 +2,7 @@
 policy: Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG)
 title: Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG)
 id: stig_ubuntu2404
-version: V1R1
+version: V1R5
 source: https://www.cyber.mil/stigs/downloads/
 
 levels:
@@ -65,7 +65,8 @@ controls:
       status: automated
 
     - id: UBTU-24-100110
-      title: Ubuntu 24.04 LTS must configure AIDE to preform file integrity checking on the file system.
+      title: Ubuntu 24.04 LTS must configure AIDE to perform file integrity checking on the file system
+          if installed.
       levels:
           - medium
       rules:
@@ -666,15 +667,6 @@ controls:
           - sshd_x11_use_localhost
       status: automated
 
-    - id: UBTU-24-300024
-      title: Ubuntu 24.04 LTS must display the date and time of the last successful account logon upon
-          logon.
-      levels:
-          - low
-      rules:
-          - display_login_attempts
-      status: automated
-
     - id: UBTU-24-300025
       title: Ubuntu 24.04 LTS must disable the x86 Ctrl-Alt-Delete key sequence if a graphical user interface
           is installed.
@@ -1250,7 +1242,7 @@ controls:
     - id: UBTU-24-700400
       title: Ubuntu 24.04 LTS must be a vendor-supported release.
       levels:
-          - medium
+          - high
       rules:
           - installed_OS_is_vendor_supported
       status: automated
@@ -1708,7 +1700,7 @@ controls:
       status: automated
 
     - id: UBTU-24-901250
-      title: Ubuntu 24.04 LTS must configure the audit tools to be group-owned by root.
+      title: Ubuntu 24.04 LTS must configure the audit tools to be group owned by root.
       levels:
           - medium
       rules:
@@ -1775,18 +1767,18 @@ controls:
           - directory_permissions_var_log_audit
       status: automated
 
-    - id: UBTU-24-90890
-      title: Ubuntu 24.04 LTS must use cryptographic mechanisms to protect the integrity of audit tools.
-      levels:
-          - medium
-      rules:
-          - aide_check_audit_tools
-      status: automated
-
     - id: UBTU-24-909000
       title: Ubuntu 24.04 LTS audit system must protect auditing rules from unauthorized change.
       levels:
           - medium
       rules:
           - audit_rules_immutable
+      status: automated
+
+    - id: UBTU-24-909890
+      title: Ubuntu 24.04 LTS must use cryptographic mechanisms to protect the integrity of audit tools.
+      levels:
+          - medium
+      rules:
+          - aide_check_audit_tools
       status: automated
