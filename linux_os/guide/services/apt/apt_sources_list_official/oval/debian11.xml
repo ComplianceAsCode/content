@@ -18,7 +18,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_apt_sources_list_base_official" version="1">
     <ind:filepath operation="pattern match">^/etc/apt/sources(\.list\.d/[a-zA-Z0-9._-]+)?\.list$</ind:filepath>
-    <ind:pattern operation="pattern match">^deb[\s]+http://[a-z\.]+\.debian\.org/debian[/]?[\s]+bullseye[\s]+main</ind:pattern>
+    <ind:pattern operation="pattern match">^deb[\s]+https?://[a-z\.]+\.debian\.org/debian[/]?[\s]+bullseye[\s]+main</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Checks usage of official distribution security repositories"
@@ -27,7 +27,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_apt_sources_list_security_official" version="1">
     <ind:filepath operation="pattern match">^/etc/apt/sources(\.list\.d/[a-zA-Z0-9._-]+)?\.list$</ind:filepath>
-    <ind:pattern operation="pattern match">^deb[\s]+http://security\.debian\.org/debian-security[/]?[\s]+bullseye-security[\s]+main</ind:pattern>
+    <ind:pattern operation="pattern match">^deb[\s]+https?://security\.debian\.org/debian-security[/]?[\s]+bullseye-security[\s]+main</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -47,9 +47,9 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_state id="state_apt_sources_deb822_base" version="1">
-    <ind:text operation="pattern match">^(?=[\s\S]*\nURIs:\s*http://[a-z.]*\.debian\.org/debian/?(?=\s|$))(?=[\s\S]*\nSuites:[^\n]*\bbullseye(?=\s|$))(?=[\s\S]*\nComponents:[^\n]*\bmain(?=\s|$))Types:\s*deb(?=\s|$)</ind:text>
+    <ind:text operation="pattern match">^(?=[\s\S]*\nURIs:\s*https?://[a-z.]*\.debian\.org/debian/?(?=\s|$))(?=[\s\S]*\nSuites:[^\n]*\bbullseye(?=\s|$))(?=[\s\S]*\nComponents:[^\n]*\bmain(?=\s|$))Types:\s*deb(?=\s|$)</ind:text>
   </ind:textfilecontent54_state>
   <ind:textfilecontent54_state id="state_apt_sources_deb822_security" version="1">
-    <ind:text operation="pattern match">^(?=[\s\S]*\nURIs:\s*http://[a-z.]*\.debian\.org/debian-security/?(?=\s|$))(?=[\s\S]*\nSuites:[^\n]*\bbullseye-security(?=\s|$))(?=[\s\S]*\nComponents:[^\n]*\bmain(?=\s|$))Types:\s*deb(?=\s|$)</ind:text>
+    <ind:text operation="pattern match">^(?=[\s\S]*\nURIs:\s*https?://[a-z.]*\.debian\.org/debian-security/?(?=\s|$))(?=[\s\S]*\nSuites:[^\n]*\bbullseye-security(?=\s|$))(?=[\s\S]*\nComponents:[^\n]*\bmain(?=\s|$))Types:\s*deb(?=\s|$)</ind:text>
   </ind:textfilecontent54_state>
 </def-group>

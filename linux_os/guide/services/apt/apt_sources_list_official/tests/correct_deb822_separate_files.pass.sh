@@ -1,7 +1,8 @@
 #!/bin/bash
-# platform = multi_platform_debian
+# platform = Debian 12
 # remediation = none
 
+mkdir -p /etc/apt/sources.list.d
 rm -f /etc/apt/sources.list /etc/apt/sources.list.d/*
 
 cat > /etc/apt/sources.list.d/debian.sources << 'EOF'
