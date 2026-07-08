@@ -17,7 +17,7 @@ import sys
 import json
 import re
 from pathlib import Path
-from typing import Dict, Set
+from typing import Dict, Set, Tuple
 
 
 def extract_variable_id(var_ref: str) -> str:
@@ -160,7 +160,7 @@ def extract_variables_from_oval_content(content: str) -> Set[str]:
     return result
 
 
-def process_oval_file(oval_file: Path) -> Dict[str, Set[str]]:
+def process_oval_file(oval_file: Path) -> Tuple[Dict[str, Set[str]], bool]:
     """
     Process a single OVAL file and extract rule-variable mappings.
 
@@ -172,7 +172,7 @@ def process_oval_file(oval_file: Path) -> Dict[str, Set[str]]:
         oval_file: Path to the OVAL XML file
 
     Returns:
-        Dictionary mapping the rule ID to the set of variable IDs it depends on
+        Tuple of (mapping dict, had_error flag)
     """
     # The filename stem is the rule ID for both OVAL file formats.  Using the
     # filename avoids the need to parse definition IDs, which differ between
@@ -186,15 +186,16 @@ def process_oval_file(oval_file: Path) -> Dict[str, Set[str]]:
 
         var_refs = extract_variables_from_oval_content(content)
         if var_refs:
-            return {rule_id: var_refs}
+            return {rule_id: var_refs}, False
 
     except (IOError, UnicodeDecodeError) as e:
         print(f"Warning: Could not process {oval_file}: {e}", file=sys.stderr)
+        return {}, True
 
-    return {}
+    return {}, False
 
 
-def build_rule_variable_mapping(product: str, build_dir: Path) -> Dict[str, list]:
+def build_rule_variable_mapping(product: str, build_dir: Path) -> Tuple[Dict[str, list], int]:
     """
     Build complete rule-variable mapping for a product.
 
@@ -203,7 +204,7 @@ def build_rule_variable_mapping(product: str, build_dir: Path) -> Dict[str, list
         build_dir: Path to the build directory
 
     Returns:
-        Dictionary mapping rule IDs to lists of variable IDs
+        Tuple of (mapping dict, error count)
     """
     product_dir = build_dir / product
     checks_dir = product_dir / "checks" / "oval"
@@ -211,11 +212,14 @@ def build_rule_variable_mapping(product: str, build_dir: Path) -> Dict[str, list
 
     # Aggregate all rule-variable mappings
     all_mappings: Dict[str, Set[str]] = {}
+    errors = 0
 
     # Process regular OVAL checks
     if checks_dir.exists():
         for oval_file in checks_dir.glob("*.xml"):
-            rule_vars = process_oval_file(oval_file)
+            rule_vars, had_error = process_oval_file(oval_file)
+            if had_error:
+                errors += 1
             for rule_id, var_ids in rule_vars.items():
                 if rule_id not in all_mappings:
                     all_mappings[rule_id] = set()
@@ -224,7 +228,9 @@ def build_rule_variable_mapping(product: str, build_dir: Path) -> Dict[str, list
     # Process template-generated OVAL checks
     if templates_dir.exists():
         for oval_file in templates_dir.glob("*.xml"):
-            rule_vars = process_oval_file(oval_file)
+            rule_vars, had_error = process_oval_file(oval_file)
+            if had_error:
+                errors += 1
             for rule_id, var_ids in rule_vars.items():
                 if rule_id not in all_mappings:
                     all_mappings[rule_id] = set()
@@ -233,7 +239,7 @@ def build_rule_variable_mapping(product: str, build_dir: Path) -> Dict[str, list
     # Convert sets to sorted lists for JSON serialization
     result = {rule_id: sorted(list(var_ids)) for rule_id, var_ids in all_mappings.items()}
 
-    return result
+    return result, errors
 
 
 def main():
@@ -251,7 +257,7 @@ def main():
         return 1
 
     # Build the mapping
-    mapping = build_rule_variable_mapping(product, build_dir)
+    mapping, errors = build_rule_variable_mapping(product, build_dir)
 
     # Ensure output directory exists
     output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -260,9 +266,7 @@ def main():
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(mapping, f, indent=2, sort_keys=True)
 
-    # Always return 0 so build failures in individual OVAL files (logged as
-    # warnings) don't break the overall build. Enforcement can be added later.
-    return 0
+    return 1 if errors else 0
 
 
 if __name__ == '__main__':
