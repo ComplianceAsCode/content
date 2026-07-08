@@ -120,10 +120,18 @@ def extract_variables_from_oval_content(content: str) -> Set[str]:
     Returns:
         Set of external variable IDs referenced in the content
     """
-    # Find all variable references via var_ref attributes
+    # Find all variable references via var_ref attributes and element text
     var_refs = set()
     var_ref_pattern = r'var_ref="([^"]+)"'
     matches = re.findall(var_ref_pattern, content)
+
+    for var_ref in matches:
+        var_id = extract_variable_id(var_ref)
+        var_refs.add(var_id)
+
+    # Also capture <ind:var_ref>variable_id</ind:var_ref> element pattern
+    var_ref_element_pattern = r'<(?:ind:)?var_ref>([^<]+)</(?:ind:)?var_ref>'
+    matches = re.findall(var_ref_element_pattern, content)
 
     for var_ref in matches:
         var_id = extract_variable_id(var_ref)
@@ -206,7 +214,6 @@ def build_rule_variable_mapping(product: str, build_dir: Path) -> Dict[str, list
 
     # Process regular OVAL checks
     if checks_dir.exists():
-        # print(f"Processing OVAL checks in {checks_dir}")
         for oval_file in checks_dir.glob("*.xml"):
             rule_vars = process_oval_file(oval_file)
             for rule_id, var_ids in rule_vars.items():
@@ -216,7 +223,6 @@ def build_rule_variable_mapping(product: str, build_dir: Path) -> Dict[str, list
 
     # Process template-generated OVAL checks
     if templates_dir.exists():
-        # print(f"Processing template OVAL checks in {templates_dir}")
         for oval_file in templates_dir.glob("*.xml"):
             rule_vars = process_oval_file(oval_file)
             for rule_id, var_ids in rule_vars.items():
@@ -226,8 +232,6 @@ def build_rule_variable_mapping(product: str, build_dir: Path) -> Dict[str, list
 
     # Convert sets to sorted lists for JSON serialization
     result = {rule_id: sorted(list(var_ids)) for rule_id, var_ids in all_mappings.items()}
-
-    # print(f"Found {len(result)} rules with variable dependencies")
 
     return result
 
@@ -256,8 +260,8 @@ def main():
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(mapping, f, indent=2, sort_keys=True)
 
-    # print(f"Rule-variable mapping written to {output_file}")
-
+    # Always return 0 so build failures in individual OVAL files (logged as
+    # warnings) don't break the overall build. Enforcement can be added later.
     return 0
 
 
