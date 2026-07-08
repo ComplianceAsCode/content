@@ -2,6 +2,8 @@ name: Automatus Ubuntu 22.04
 on:
   pull_request:
     branches: [master, 'stabilization*']
+permissions:
+  contents: read
 concurrency:
   group: >-
     ${{ github.workflow }}-${{

@@ -3,6 +3,8 @@ on:
     schedule:
         # Run daily at 03:00
         -   cron: "0 3 * * *"
+permissions:
+    contents: read
 jobs:
     nightly-fedora:
         name: Nightly build on Fedora Latest (Container)

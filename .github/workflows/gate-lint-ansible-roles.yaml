@@ -2,6 +2,8 @@ name: Gate (AR / RHEL)
 on:
   pull_request:
     branches: [ 'master' ]
+permissions:
+  contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
