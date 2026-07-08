@@ -35,6 +35,10 @@ _SCRIPT_DIR = Path(__file__).parent
 _REPO_ROOT = _SCRIPT_DIR.parent.parent
 _YAML = YAML()
 
+sys.path.insert(0, str(_SCRIPT_DIR))
+from gemara.policy import extract_rules_from_catalog, generate_policy  # noqa: E402
+from gemara.schema import validate_policy  # noqa: E402
+
 
 def load_yaml(path):
     with open(path) as f:
@@ -202,18 +206,16 @@ def test_accuracy_vs_source(catalog, mapping, policy, product, result):
 
         # Collect rule IDs from assessment-requirements in catalog output.
         # Exclude variable-assignment requirements (text starts with "Variable '")
-        # and placeholder requirements (id ends with "--no-automated-check")
+        # and placeholder requirements (id is "no-automated-check")
         out_req_rules = set()
         for req in out_ctrl.get("assessment-requirements", []):
             req_text = req.get("text", "")
             if req_text.startswith("Variable '"):
                 continue
             req_id = req["id"]
-            if req_id.endswith("--no-automated-check"):
+            if req_id == "no-automated-check":
                 continue
-            rule_part = req_id.split("--", 1)[1] if "--" in req_id else ""
-            if rule_part:
-                out_req_rules.add(rule_part)
+            out_req_rules.add(req_id)
 
         missing_from_output = src_rules - out_req_rules
         extra_in_output = out_req_rules - src_rules
@@ -231,8 +233,10 @@ def test_accuracy_vs_source(catalog, mapping, policy, product, result):
         ac25_out = catalog_by_id.get("ac-2.5")
         if ac25_out:
             req_rule_ids = {
-                req["id"].split("--", 1)[1]
+                req["id"]
                 for req in ac25_out.get("assessment-requirements", [])
+                if not req.get("text", "").startswith("Variable '")
+                and req["id"] != "no-automated-check"
             }
             expected = {"accounts_tmout", "no_invalid_shell_accounts_unlocked"}
             found = expected & req_rule_ids
@@ -349,6 +353,237 @@ def test_guidance_structure(guidance, result):
         result.fail("ac-2.5 not found in guidelines")
 
 
+def test_policy_generation(catalog, product, result):
+    """Test Policy generation from a ControlCatalog."""
+    catalog_id = catalog["metadata"]["id"]
+    rules = extract_rules_from_catalog(catalog, product=product)
+
+    result.check(len(rules) > 0, f"extracted {len(rules)} rules from catalog", "no rules extracted from catalog")
+
+    policy = generate_policy(product, catalog_id, rules)
+
+    errors = validate_policy(policy)
+    result.check(not errors, "generated Policy passes validate_policy()", f"validation errors: {errors[:3]}")
+
+    meta = policy.get("metadata", {})
+    result.check(
+        meta.get("type") == "Policy",
+        "metadata.type is 'Policy'",
+        f"metadata.type is {meta.get('type')!r}",
+    )
+    result.check(
+        meta.get("id") == f"nist-800-53-rev5-{product}-policy",
+        f"metadata.id is 'nist-800-53-rev5-{product}-policy'",
+        f"metadata.id is {meta.get('id')!r}",
+    )
+
+    plans = policy.get("adherence", {}).get("assessment-plans", [])
+    result.check(
+        len(plans) == len(rules),
+        f"assessment-plans count matches extracted rules: {len(plans)}",
+        f"count mismatch: plans={len(plans)} rules={len(rules)}",
+    )
+
+    plan_ids = {p["id"] for p in plans}
+    rule_ids = {r[0] for r in rules}
+    result.check(
+        plan_ids == rule_ids,
+        "assessment-plan IDs match extracted rule IDs",
+        f"mismatch: only_in_plans={plan_ids - rule_ids} only_in_rules={rule_ids - plan_ids}",
+    )
+
+    imports = policy.get("imports", {})
+    cat_refs = [c["reference-id"] for c in imports.get("catalogs", [])]
+    result.check(
+        catalog_id in cat_refs,
+        f"imports.catalogs references catalog '{catalog_id}'",
+        f"catalog not in imports: {cat_refs}",
+    )
+
+
+def test_policy_with_guidance(catalog, product, result):
+    """Test Policy generation with guidance references (complytime-policies mode)."""
+    catalog_id = catalog["metadata"]["id"]
+    rules = extract_rules_from_catalog(catalog, product=product)
+    guidance_id = "nist-800-53-rev5-guidance"
+
+    policy = generate_policy(
+        product, catalog_id, rules,
+        guidance_id=guidance_id,
+        catalog_url=f"file://../catalogs/nist-800-53-rev5-{product}-catalog.yaml",
+        guidance_url=f"file://../guidance/{guidance_id}.yaml",
+    )
+
+    errors = validate_policy(policy)
+    result.check(not errors, "Policy with guidance passes validation", f"errors: {errors[:3]}")
+
+    mapping_refs = policy["metadata"]["mapping-references"]
+    ref_ids = {r["id"] for r in mapping_refs}
+    result.check(
+        guidance_id in ref_ids,
+        "guidance ID in mapping-references",
+        f"guidance missing from mapping-references: {ref_ids}",
+    )
+
+    catalog_ref = next(r for r in mapping_refs if r["id"] == catalog_id)
+    result.check(
+        "file://" in catalog_ref.get("url", ""),
+        "catalog mapping-reference has file:// URL",
+        f"catalog URL: {catalog_ref.get('url')!r}",
+    )
+
+    guidance_imports = policy.get("imports", {}).get("guidance", [])
+    result.check(
+        any(g.get("reference-id") == guidance_id for g in guidance_imports),
+        "imports.guidance references guidance catalog",
+        f"guidance not in imports: {guidance_imports}",
+    )
+
+
+def test_baseline_filtering(catalog, product, result):
+    """Test that baseline filtering reduces the rule set."""
+    all_rules = extract_rules_from_catalog(catalog, product=product)
+    low_rules = extract_rules_from_catalog(catalog, baseline="low", product=product)
+    moderate_rules = extract_rules_from_catalog(catalog, baseline="moderate", product=product)
+    high_rules = extract_rules_from_catalog(catalog, baseline="high", product=product)
+
+    result.check(
+        len(all_rules) > 0,
+        f"all rules (no filter): {len(all_rules)}",
+        "no rules without filter",
+    )
+    result.check(
+        len(low_rules) >= len(moderate_rules),
+        f"low ({len(low_rules)}) >= moderate ({len(moderate_rules)})",
+        f"low ({len(low_rules)}) < moderate ({len(moderate_rules)})",
+    )
+    result.check(
+        len(moderate_rules) >= len(high_rules),
+        f"moderate ({len(moderate_rules)}) >= high ({len(high_rules)})",
+        f"moderate ({len(moderate_rules)}) < high ({len(high_rules)})",
+    )
+
+
+def test_validate_policy_catches_errors(result):
+    """Test that validate_policy() catches structural problems."""
+    errors = validate_policy({})
+    result.check(
+        len(errors) > 0,
+        f"empty dict produces {len(errors)} errors",
+        "empty dict produced no errors",
+    )
+
+    errors = validate_policy("not a dict")
+    result.check(
+        "policy must be a dict" in errors,
+        "non-dict input detected",
+        f"unexpected errors: {errors}",
+    )
+
+    minimal = {
+        "title": "T",
+        "metadata": {"id": "x", "type": "Policy", "gemara-version": "1.2.0",
+                      "description": "d", "author": {"id": "a", "name": "n", "type": "Software"},
+                      "mapping-references": [{"id": "c", "title": "t", "version": "v"}]},
+        "contacts": {"responsible": [], "accountable": []},
+        "scope": {"in": {"technologies": []}},
+        "imports": {"catalogs": [{"reference-id": "c"}]},
+        "adherence": {"assessment-plans": [{"id": "r1", "requirement-id": "r1"}]},
+    }
+    errors = validate_policy(minimal)
+    result.check(
+        len(errors) == 0,
+        "minimal valid Policy passes validation",
+        f"minimal Policy has errors: {errors}",
+    )
+
+    bad_ref = dict(minimal)
+    bad_ref["imports"] = {"catalogs": [{"reference-id": "nonexistent"}]}
+    errors = validate_policy(bad_ref)
+    result.check(
+        any("not in mapping-references" in e for e in errors),
+        "mismatched catalog reference detected",
+        f"reference mismatch not caught: {errors}",
+    )
+
+
+def test_policy_parameters_from_variables(result):
+    """Test that control-file variable overrides become assessment-plan parameters.
+
+    Uses a real rule/variable pair (grub2_audit_backlog_limit_argument reads
+    var_audit_backlog_limit via xccdf_value() in its own rule.yml) so the
+    rule-content matching in extract_rules_from_catalog() is exercised against
+    real repo data, not a synthetic fixture.
+    """
+    catalog = {
+        "controls": [
+            {
+                "id": "au-2",
+                "state": "Active",
+                "assessment-requirements": [
+                    {
+                        "id": "grub2_audit_backlog_limit_argument",
+                        "state": "Active",
+                        "text": "Rule 'grub2_audit_backlog_limit_argument' MUST be verified",
+                        "applicability": ["rhel9-low"],
+                    },
+                    {
+                        "id": "service_auditd_enabled",
+                        "state": "Active",
+                        "text": "Rule 'service_auditd_enabled' MUST be verified",
+                        "applicability": ["rhel9-low"],
+                    },
+                    {
+                        "id": "var_audit_backlog_limit",
+                        "state": "Active",
+                        "text": "Variable 'var_audit_backlog_limit' is set to '8192'",
+                        "applicability": ["rhel9-low"],
+                    },
+                ],
+            },
+        ],
+    }
+
+    rules = extract_rules_from_catalog(catalog, product="rhel9")
+    by_id = {r[0]: r for r in rules}
+
+    result.check(
+        by_id.get("grub2_audit_backlog_limit_argument", (None, None, []))[2]
+        == [("var_audit_backlog_limit", "8192")],
+        "variable matched to the rule whose rule.yml references it",
+        f"unexpected parameters: {by_id.get('grub2_audit_backlog_limit_argument')}",
+    )
+    result.check(
+        by_id.get("service_auditd_enabled", (None, None, []))[2] == [],
+        "variable NOT attached to an unrelated sibling rule",
+        f"unexpected parameters leaked onto service_auditd_enabled: {by_id.get('service_auditd_enabled')}",
+    )
+
+    policy = generate_policy("rhel9", "nist-800-53-rev5-rhel9", rules)
+    errors = validate_policy(policy)
+    result.check(not errors, "Policy with parameters passes validate_policy()", f"errors: {errors}")
+
+    plans_by_id = {p["id"]: p for p in policy["adherence"]["assessment-plans"]}
+    param_plan = plans_by_id.get("grub2_audit_backlog_limit_argument", {})
+    result.check(
+        param_plan.get("parameters") == [
+            {
+                "id": "var_audit_backlog_limit",
+                "label": "Audit Backlog Limit",
+                "description": "ComplianceAsCode sets var_audit_backlog_limit to '8192' for this control.",
+                "accepted-values": ["8192"],
+            }
+        ],
+        "assessment-plan carries the matched parameter",
+        f"unexpected parameters block: {param_plan.get('parameters')}",
+    )
+    result.check(
+        "parameters" not in plans_by_id.get("service_auditd_enabled", {}),
+        "unrelated assessment-plan has no parameters key",
+        f"unexpected parameters key: {plans_by_id.get('service_auditd_enabled')}",
+    )
+
+
 # ---------------------------------------------------------------------------
 # Runner
 # ---------------------------------------------------------------------------
@@ -398,6 +633,15 @@ def run_product(product, gemara_dir, repo_root):
     policy = load_policy(product, repo_root)
     test_accuracy_vs_source(catalog, mapping or {}, policy, product, result)
 
+    print("\n[5] Policy generation...")
+    test_policy_generation(catalog, product, result)
+
+    print("\n[6] Policy with guidance (complytime-policies mode)...")
+    test_policy_with_guidance(catalog, product, result)
+
+    print("\n[7] Baseline filtering...")
+    test_baseline_filtering(catalog, product, result)
+
     return result
 
 
@@ -432,6 +676,15 @@ def main():
     run_guidance(args.gemara_dir, guidance_result)
     all_passed += len(guidance_result.passed)
     all_failed += len(guidance_result.failed)
+
+    print(f"\n{'='*60}")
+    print("Policy validation (product-independent)")
+    print(f"{'='*60}")
+    validation_result = TestResult()
+    test_validate_policy_catches_errors(validation_result)
+    test_policy_parameters_from_variables(validation_result)
+    all_passed += len(validation_result.passed)
+    all_failed += len(validation_result.failed)
 
     for product in products:
         result = run_product(product, args.gemara_dir, args.repo_root)
