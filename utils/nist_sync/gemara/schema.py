@@ -36,6 +36,9 @@ VALID_ARTIFACT_TYPES = {
 }
 
 
+VALID_EVALUATION_MODES = {"Automated", "Semi-Automated", "Manual"}
+
+
 def _err(errors, msg):
     errors.append(msg)
 
@@ -138,6 +141,70 @@ def validate_mapping(mapping):
                 _err(errors, f"mapping {mid!r}: invalid relationship {rel!r}")
             if rel != "no-match" and not m.get("targets"):
                 _err(errors, f"mapping {mid!r}: non-no-match relationship requires targets")
+
+    return errors
+
+
+def validate_policy(policy):
+    """
+    Validate a Policy dict against Gemara structural rules.
+    Returns a list of error strings (empty list means valid).
+    """
+    errors = []
+
+    if not isinstance(policy, dict):
+        return ["policy must be a dict"]
+
+    for field in ("metadata", "title", "contacts", "scope", "imports", "adherence"):
+        if field not in policy:
+            _err(errors, f"missing required field: {field!r}")
+
+    metadata = policy.get("metadata", {})
+    if not isinstance(metadata, dict):
+        _err(errors, "metadata must be a dict")
+    else:
+        if metadata.get("type") != "Policy":
+            _err(errors, f"metadata.type must be 'Policy', got {metadata.get('type')!r}")
+        for field in ("id", "gemara-version", "description", "author", "mapping-references"):
+            if field not in metadata:
+                _err(errors, f"missing required metadata field: {field!r}")
+
+        mapping_ref_ids = set()
+        for ref in metadata.get("mapping-references", []):
+            if not isinstance(ref, dict):
+                _err(errors, "mapping-references entries must be dicts")
+                continue
+            for rf in ("id", "title", "version"):
+                if rf not in ref:
+                    _err(errors, f"mapping-reference missing field: {rf!r}")
+            if "id" in ref:
+                mapping_ref_ids.add(ref["id"])
+
+    imports = policy.get("imports", {})
+    if isinstance(imports, dict):
+        for cat_ref in imports.get("catalogs", []):
+            ref_id = cat_ref.get("reference-id", "")
+            if mapping_ref_ids and ref_id not in mapping_ref_ids:
+                _err(errors, f"imports.catalogs reference-id {ref_id!r} not in mapping-references")
+
+    adherence = policy.get("adherence", {})
+    if isinstance(adherence, dict):
+        plans = adherence.get("assessment-plans", [])
+        if not isinstance(plans, list) or len(plans) == 0:
+            _err(errors, "adherence.assessment-plans must be a non-empty list")
+        else:
+            seen_ids = set()
+            for i, plan in enumerate(plans):
+                if not isinstance(plan, dict):
+                    _err(errors, f"assessment-plans[{i}] must be a dict")
+                    continue
+                for field in ("id", "requirement-id"):
+                    if field not in plan:
+                        _err(errors, f"assessment-plans[{i}] missing required field: {field!r}")
+                pid = plan.get("id", f"<index {i}>")
+                if pid in seen_ids:
+                    _err(errors, f"duplicate assessment-plan id: {pid!r}")
+                seen_ids.add(pid)
 
     return errors
 
