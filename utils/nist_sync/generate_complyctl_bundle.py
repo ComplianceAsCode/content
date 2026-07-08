@@ -33,7 +33,6 @@ Prerequisites for --push:
 
 import argparse
 import io
-import json
 import shutil
 import subprocess
 import sys
@@ -48,18 +47,14 @@ except ImportError:
 
 _SCRIPT_DIR = Path(__file__).parent
 _REPO_ROOT = _SCRIPT_DIR.parent.parent
-_GEMARA_VERSION = "1.2.0"
+
+sys.path.insert(0, str(_SCRIPT_DIR))
+from gemara.policy import extract_rules_from_catalog, generate_policy  # noqa: E402
 
 # OCI media types for complyctl v1.0.0-alpha.0 (go-gemara v0.0.1 split-layer format)
 _MEDIA_TYPE_POLICY = "application/vnd.gemara.policy.v1+yaml"
 _MEDIA_TYPE_CATALOG = "application/vnd.gemara.catalog.v1+yaml"
 _ARTIFACT_TYPE = "application/vnd.gemara.bundle.v1"
-
-_PRODUCT_FULL_NAMES = {
-    "rhel8": "Red Hat Enterprise Linux 8",
-    "rhel9": "Red Hat Enterprise Linux 9",
-    "rhel10": "Red Hat Enterprise Linux 10",
-}
 
 
 def _now_iso():
@@ -85,145 +80,6 @@ def dump_yaml(data, path):
     buf = io.StringIO()
     y.dump(data, buf)
     path.write_text(buf.getvalue(), encoding="utf-8")
-
-
-def extract_rules_from_catalog(catalog, baseline=None, product=None):
-    """
-    Extract unique XCCDF rule IDs from a ControlCatalog.
-
-    Returns a list of (rule_id, nist_control_ids) tuples where:
-      - rule_id is the raw CaC rule ID (e.g. 'accounts_tmout')
-      - nist_control_ids is the list of NIST controls that reference this rule
-    """
-    rule_to_controls = {}
-    # Applicability groups use product-scoped IDs (e.g. "rhel9-low"), so build the key to match.
-    baseline_key = f"{product}-{baseline}" if (baseline and product) else baseline
-
-    for ctrl in catalog.get("controls", []):
-        ctrl_id = ctrl.get("id", "")
-        ctrl_state = ctrl.get("state", "")
-
-        # Skip deprecated/retired controls
-        if ctrl_state in ("Deprecated", "Retired"):
-            continue
-
-        # Baseline filter: check if any requirement covers the requested baseline group
-        if baseline_key:
-            any_in_baseline = False
-            for req in ctrl.get("assessment-requirements", []):
-                if baseline_key in req.get("applicability", []):
-                    any_in_baseline = True
-                    break
-            if not any_in_baseline:
-                continue
-
-        for req in ctrl.get("assessment-requirements", []):
-            req_id = req.get("id", "")
-            # Skip placeholder and variable requirements
-            if req_id == "no-automated-check":
-                continue
-            text = req.get("text", "")
-            if text.startswith("Variable '"):
-                continue
-
-            # req_id is now the bare CaC rule name (e.g. 'accounts_tmout')
-            rule_id = req_id
-
-            if rule_id not in rule_to_controls:
-                rule_to_controls[rule_id] = []
-            if ctrl_id not in rule_to_controls[rule_id]:
-                rule_to_controls[rule_id].append(ctrl_id)
-
-    return sorted(rule_to_controls.items())
-
-
-def generate_policy(product, catalog_id, rules_with_controls):
-    """
-    Build a Gemara Policy YAML dict with short CaC rule names in assessment-plans.
-
-    The OpenSCAP provider's validateRuleExistence() strips 'xccdf_org.ssgproject.content_rule_'
-    from each data stream rule ID and compares against the requirement-id. So requirement-id
-    must be the SHORT rule name (e.g. 'accounts_tmout'), not the full XCCDF ID.
-    The provider then uses getDsRuleID() to re-add the prefix when building the tailoring XML.
-    """
-    full_name = _PRODUCT_FULL_NAMES.get(product, product.upper())
-    policy_id = f"nist-800-53-rev5-{product}-policy"
-
-    assessment_plans = []
-    for rule_id, _nist_controls in rules_with_controls:
-        assessment_plans.append({
-            # IMPORTANT: complyctl v1.0.0-alpha.0 (go-gemara v0.0.1) reads AssessmentConfiguration.RequirementID
-            # from the plan 'id' field, not 'requirement-id'. Set both to the short CaC rule name so it works.
-            "id": rule_id,
-            "requirement-id": rule_id,
-            "frequency": "on-demand",
-            "evaluation-methods": [
-                {
-                    "id": "openscap-automated",
-                    "type": "Behavioral",
-                    "mode": "Automated",
-                }
-            ],
-        })
-
-    return {
-        "title": f"NIST SP 800-53 Rev 5 for {full_name}",
-        "metadata": {
-            "id": policy_id,
-            "type": "Policy",
-            "gemara-version": _GEMARA_VERSION,
-            "description": (
-                f"Automated evaluation policy for NIST SP 800-53 Rev 5 on {full_name}, "
-                "using ComplianceAsCode rules. requirement-id values are short CaC rule names "
-                "(the OpenSCAP provider adds the xccdf_org.ssgproject.content_rule_ prefix)."
-            ),
-            "author": {
-                "id": "complianceascode",
-                "name": "ComplianceAsCode Project",
-                "type": "Software",
-                "uri": "https://github.com/ComplianceAsCode/content",
-            },
-            "date": _now_iso(),
-            "mapping-references": [
-                {
-                    "id": catalog_id,
-                    "title": f"NIST SP 800-53 Rev 5 Control Catalog for {product.upper()}",
-                    "version": "Revision 5",
-                    "url": "https://github.com/ComplianceAsCode/content",
-                }
-            ],
-        },
-        "contacts": {
-            "responsible": [{"name": "System Administrator"}],
-            "accountable": [{"name": "Security Team"}],
-        },
-        "scope": {
-            "in": {
-                "technologies": [full_name],
-            }
-        },
-        "imports": {
-            "catalogs": [
-                {"reference-id": catalog_id}
-            ]
-        },
-        "adherence": {
-            "evaluation-methods": [
-                {
-                    "id": "openscap-automated",
-                    "type": "Behavioral",
-                    "mode": "Automated",
-                    "description": "OpenSCAP automated compliance evaluation",
-                    "executor": {
-                        "id": "openscap",
-                        "name": "OpenSCAP",
-                        "type": "Software",
-                    },
-                }
-            ],
-            "assessment-plans": assessment_plans,
-        },
-    }
 
 
 def generate_complytime_yaml(product, registry_url, bundle_tag, base_profile="cis"):
@@ -435,7 +291,6 @@ def main():
 
     # Copy catalog (complyctl needs it in the bundle for traceability)
     catalog_copy_path = output_dir / f"{product}_catalog.yaml"
-    import shutil
     shutil.copy2(catalog_yaml_path, catalog_copy_path)
     print(f"  Wrote Catalog: {catalog_copy_path}")
 
