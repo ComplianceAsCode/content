@@ -2,7 +2,7 @@
 
 # Perform same steps as remediation
 declare -A SETOWNER_RPM_LIST
-FILES_WITH_INCORRECT_OWNERSHIP=($(rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'))
+FILES_WITH_INCORRECT_OWNERSHIP=($(rpm -Va --nofiledigest --noghost | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'))
 
 for FILE_PATH in "${FILES_WITH_INCORRECT_OWNERSHIP[@]}"; do
     RPM_PACKAGES=$(rpm -qf "$FILE_PATH")
