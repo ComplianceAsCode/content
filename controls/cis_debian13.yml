@@ -1487,15 +1487,8 @@ controls:
           - l1_workstation
       status: pending
 
-    - id: 3.3.1.
-      title: Ensure  is configured (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
-
     - id: 3.3.2.1
-      title: Ensure Ensure net.ipv6.conf.all.forwarding is configured (Automated)
+      title: Ensure net.ipv6.conf.all.forwarding is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1742,7 +1735,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - sshd_strong_macs=cis_debian12
+          - sshd_strong_macs=cis_debian13
           - sshd_use_strong_macs
       status: automated
 
@@ -2604,8 +2597,8 @@ controls:
           - l2_server
           - l2_workstation
       rules:
-          - var_auditd_disk_error_action=cis_debian12
-          - var_auditd_disk_full_action=cis_debian12
+          - var_auditd_disk_error_action=cis_debian13
+          - var_auditd_disk_full_action=cis_debian13
           - auditd_data_disk_error_action
           - auditd_data_disk_full_action
       status: automated
@@ -3140,7 +3133,7 @@ controls:
       status: automated
 
     - id: 7.1.4
-      title: Ensure paccess to /etc/group- is configured (Automated)
+      title: Ensure access to /etc/group- is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
