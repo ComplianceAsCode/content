@@ -4,6 +4,8 @@ on:
     tags: [ 'v*.*.*' ]
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 jobs:
   release-fedora:
     name: Release on Fedora Latest (Container)
@@ -32,6 +34,16 @@ jobs:
       - name: Build Package Source
         run: make -j$(nproc) package_source
         working-directory: ./build
+      - name: Attest build provenance
+        uses: actions/attest@a1948c3f048ba23858d222213b7c278aabede763 # v4
+        with:
+          subject-path: |
+            build/scap-security-guide-*.tar.bz2
+            build/scap-security-guide-*.tar.bz2.sha512
+            build/zipfile/scap-security-guide-*.zip
+            build/zipfile/scap-security-guide-*.zip.sha512
+            build/zipfile/scap-security-guide-*.tar.gz
+            build/zipfile/scap-security-guide-*.tar.gz.sha512
       - name: Set Version
         id: set_version
         run: |-
