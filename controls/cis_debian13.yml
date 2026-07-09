@@ -961,6 +961,20 @@ controls:
       status: automated
 
     - id: 2.1.16
+      title: Ensure telnet-server services are not in use (Automated)
+      levels:
+          - l1_server
+          - l1_workstation
+      rules:
+          - package_telnet-server_removed
+          - service_telnet_disabled
+      status: automated
+      notes: |
+          Although the CIS guide does not prohibit the use of telnetd-ssl, this
+          check will fail when telnetd-ssl is used because it falls back to an
+          unencrypted (non-SSL) mode when the peer does not support SSL.
+
+    - id: 2.1.17
       title: Ensure tftp server services are not in use (Automated)
       levels:
           - l1_server
@@ -969,13 +983,6 @@ controls:
           - package_tftp-server_removed
           - service_tftp_disabled
       status: automated
-
-    - id: 2.1.17
-      title: Ensure tftp server services are not in use (Automated)
-      levels:
-          - l1_server
-          - l1_workstation
-      status: pending
 
     - id: 2.1.18
       title: Ensure web proxy server services are not in use (Automated)
