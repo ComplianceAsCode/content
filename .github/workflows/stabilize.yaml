@@ -5,6 +5,8 @@ on:
   schedule:
     # Run weekly at 05:00 on Sunday
     - cron: "0 5 * * 0"
+permissions:
+  contents: read
 env:
   SCAPVAL_JAR: scapval-1.3.5.jar
   SCAPVAL_FILENAME: SCAP-Content-Validation-Tool-1.3.5

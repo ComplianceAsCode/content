@@ -2,6 +2,8 @@ name: Gating
 on:
   pull_request:
     branches: [ master, 'stabilization*' ]
+permissions:
+  contents: read
 jobs:
   content-test-filtering:
     name: Content Test Filtering on Ubuntu Latest

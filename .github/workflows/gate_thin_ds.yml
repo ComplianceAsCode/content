@@ -6,6 +6,8 @@ on:
     branches: ['*', '!stabilization*', '!stable*', 'master' ]
   pull_request:
     branches: [ 'master', 'stabilization*' ]
+permissions:
+  contents: read
 concurrency:
   group: ${{ github.workflow }}-fedora-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
