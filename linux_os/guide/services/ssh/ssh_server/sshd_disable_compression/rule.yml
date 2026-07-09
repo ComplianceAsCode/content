@@ -48,11 +48,13 @@ ocil: |-
     <pre>$ sudo grep Compression /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>no</pre> or <pre>delayed</pre>.
 
+# yamllint disable rule:key-duplicates
 {{% if product == "ol7" %}}
 platform: os_linux[ol]<7.4
 {{% elif product == "sle12" %}}
 platform: package[openssh]<7.4
 {{% endif %}}
+# yamllint enable rule:key-duplicates
 
 fixtext: '{{{ fixtext_sshd_lineinfile("Compression", xccdf_value("var_sshd_disable_compression"), no) }}}'
 
@@ -64,4 +66,3 @@ template:
         parameter: Compression
         xccdf_variable: var_sshd_disable_compression
         datatype: string
-
