@@ -1,13 +1,3 @@
-{{%- if product == 'sle16' -%}}
-{{{ sshd_oval_check_usr(
-    parameter="Compression",
-    value="(no|delayed)",
-    missing_parameter_pass=false,
-    datatype="string",
-    rule_id=rule_id,
-    rule_title=rule_title
-) }}}
-{{%- else -%}}
 {{{ sshd_oval_check(
     parameter="Compression",
     value="(no|delayed)",
@@ -17,4 +7,3 @@
     rule_id=rule_id,
     rule_title=rule_title
 ) }}}
-{{%- endif -%}}
