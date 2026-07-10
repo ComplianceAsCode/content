@@ -31,6 +31,7 @@ Usage:
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -49,6 +50,7 @@ _UTILS_DIR = os.path.dirname(os.path.abspath(__file__))
 if _UTILS_DIR not in sys.path:
     sys.path.insert(0, _UTILS_DIR)
 from ansible_playbook_to_role import PRODUCT_ALLOWLIST, PROFILE_DENYLIST
+from ssg.constants import min_ansible_version
 
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -109,8 +111,6 @@ def detect_modules_to_bundle(roles_dirs, collections_to_vendor):
 
     Returns a dict: {"community.general": ["ini_file", ...], "ansible.posix": [...]}
     """
-    import re
-
     fqcn_re = re.compile(
         r"(?:" + "|".join(re.escape(c) for c in collections_to_vendor) + r")\.\w+"
     )
@@ -349,7 +349,6 @@ def create_collection_dirs(output_dir, namespace, collection_name):
 
 def generate_runtime_yml(collection_dir):
     """Write meta/runtime.yml declaring the minimum required Ansible version."""
-    from ssg.constants import min_ansible_version
     runtime_data = {"requires_ansible": ">=%s" % min_ansible_version}
     runtime_yml_path = os.path.join(collection_dir, "meta", "runtime.yml")
     with open(runtime_yml_path, "w", encoding="utf-8") as f:
@@ -444,7 +443,6 @@ def _rewrite_role_readme(readme_path, role_name, namespace, collection_name):
     fqcn = f"{namespace}.{collection_name}.{role_name}"
 
     # Replace standalone install instruction and role reference
-    import re
     content = re.sub(
         r"Run `ansible-galaxy install \S+` to\s+download and install the role\. "
         r"Then, you can use the following playbook snippet to run the Ansible role:",
