@@ -31,6 +31,7 @@ Usage:
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -49,6 +50,7 @@ _UTILS_DIR = os.path.dirname(os.path.abspath(__file__))
 if _UTILS_DIR not in sys.path:
     sys.path.insert(0, _UTILS_DIR)
 from ansible_playbook_to_role import PRODUCT_ALLOWLIST, PROFILE_DENYLIST
+from ssg.constants import min_ansible_version
 
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -71,7 +73,7 @@ SSG_VERSION = _get_ssg_version()
 COLLECTION_NAMESPACE = "redhatofficial"
 COLLECTION_NAME = "rhel_hardening_roles"
 COLLECTION_AUTHORS = [
-    "ComplianceAsCode development team <scap-security-guide@lists.fedorahosted.org>"
+    "ComplianceAsCode development team"
 ]
 COLLECTION_DESCRIPTION = (
     "Ansible roles for RHEL system hardening, generated from ComplianceAsCode content."
@@ -109,8 +111,6 @@ def detect_modules_to_bundle(roles_dirs, collections_to_vendor):
 
     Returns a dict: {"community.general": ["ini_file", ...], "ansible.posix": [...]}
     """
-    import re
-
     fqcn_re = re.compile(
         r"(?:" + "|".join(re.escape(c) for c in collections_to_vendor) + r")\.\w+"
     )
@@ -342,9 +342,18 @@ def create_collection_dirs(output_dir, namespace, collection_name):
     collection_dir = os.path.join(
         output_dir, "ansible_collections", namespace, collection_name
     )
-    for subdir in ("roles", os.path.join("plugins", "modules")):
+    for subdir in ("roles", os.path.join("plugins", "modules"), "meta"):
         os.makedirs(os.path.join(collection_dir, subdir), exist_ok=True)
     return collection_dir
+
+
+def generate_runtime_yml(collection_dir):
+    """Write meta/runtime.yml declaring the minimum required Ansible version."""
+    runtime_data = {"requires_ansible": ">=%s" % min_ansible_version}
+    runtime_yml_path = os.path.join(collection_dir, "meta", "runtime.yml")
+    with open(runtime_yml_path, "w", encoding="utf-8") as f:
+        yaml.dump(runtime_data, f, default_flow_style=False, allow_unicode=True)
+    print("Generated meta/runtime.yml")
 
 
 def generate_galaxy_yml(
@@ -421,14 +430,50 @@ def _remove_bundled_collection_deps(meta_path, bundled_collections):
         yaml.dump(meta, f, default_flow_style=False, allow_unicode=True)
 
 
-def copy_roles(roles_dirs, collection_dir, bundled_collections):
+def _rewrite_role_readme(readme_path, role_name, namespace, collection_name):
+    """
+    Update a role README copied into a collection:
+    - Replace standalone Galaxy install + usage with the collection FQCN form.
+    - Fix the relative link to defaults/main.yml, which does not resolve in the
+      Galaxy collection UI.
+    """
+    with open(readme_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    fqcn = f"{namespace}.{collection_name}.{role_name}"
+
+    # Replace standalone install instruction and role reference
+    content = re.sub(
+        r"Run `ansible-galaxy install \S+` to\s+download and install the role\. "
+        r"Then, you can use the following playbook snippet to run the Ansible role:",
+        f"Install the `{namespace}.{collection_name}` collection, then use the "
+        f"following playbook snippet:",
+        content,
+    )
+    # Replace standalone role reference in the playbook example
+    content = re.sub(
+        r"\{ role: \S+\." + re.escape(role_name) + r" \}",
+        f"{{ role: {fqcn} }}",
+        content,
+    )
+    # Fix broken relative link — Galaxy collection UI does not serve role subdirectories
+    content = content.replace(
+        "[list of variables](defaults/main.yml)",
+        "`defaults/main.yml`",
+    )
+
+    with open(readme_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+
+def copy_roles(roles_dirs, collection_dir, bundled_collections, namespace, collection_name):
     """
     Copy Ansible roles from one or more source directories into the collection's
     roles/ directory. When the same role name appears in multiple source dirs the
     first occurrence wins (dirs are processed in the order supplied).
 
     Also strips collection dependencies that are now vendored from each role's
-    meta/main.yml.
+    meta/main.yml, and rewrites role READMEs to use the collection FQCN.
     """
     roles_dest = os.path.join(collection_dir, "roles")
     roles_copied = []
@@ -455,6 +500,11 @@ def copy_roles(roles_dirs, collection_dir, bundled_collections):
             meta_path = os.path.join(role_dest, "meta", "main.yml")
             if os.path.isfile(meta_path):
                 _remove_bundled_collection_deps(meta_path, bundled_collections)
+
+            # Rewrite README to reflect collection FQCN and fix broken links
+            readme_path = os.path.join(role_dest, "README.md")
+            if os.path.isfile(readme_path):
+                _rewrite_role_readme(readme_path, role_name, namespace, collection_name)
 
     print(f"Copied {len(roles_copied)} roles into the collection.")
     return roles_copied
@@ -630,8 +680,11 @@ def main():
             args.output_dir, args.namespace, args.collection
         )
 
-        # Copy roles (also strips vendored deps from meta)
-        roles = copy_roles(args.roles_dirs, collection_dir, list(modules_to_bundle.keys()))
+        # Copy roles (also strips vendored deps from meta and rewrites READMEs)
+        roles = copy_roles(
+            args.roles_dirs, collection_dir, list(modules_to_bundle.keys()),
+            args.namespace, args.collection,
+        )
 
         # Copy vendored modules into plugins/modules/
         bundle_modules(extracted_modules, collection_dir)
@@ -649,6 +702,7 @@ def main():
             homepage=args.homepage,
             issues=args.issues,
         )
+        generate_runtime_yml(collection_dir)
         generate_readme(collection_dir, args.namespace, args.collection, roles)
 
     artifact_path = None
