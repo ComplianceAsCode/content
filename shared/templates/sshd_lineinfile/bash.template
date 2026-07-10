@@ -4,17 +4,14 @@
 # complexity = low
 # disruption = low
 
+{{% if product in ['sle16', 'slmicro6'] %}}
+    {{{ bash_copy_distro_defaults("/usr/etc/ssh/sshd_config", sshd_main_config_file) }}}
+    {{{ lineinfile_absent(sshd_main_config_file, "^\s*Include\s*/usr/etc/ssh/sshd_config\.d/\*\.conf", sed_path_separator="#", rule_id=rule_id) }}}
+{{% endif %}}
+
 {{% if XCCDF_VARIABLE %}}
     {{{- bash_instantiate_variables(XCCDF_VARIABLE) -}}}
-    {{%- if product == 'sle16' -%}}
-        {{{- bash_sshd_remediation_usr(parameter=PARAMETER, value="$" ~ XCCDF_VARIABLE, copy_defaults=true, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
-    {{%- else -%}}
-        {{{- bash_sshd_remediation(parameter=PARAMETER, value="$" ~ XCCDF_VARIABLE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
-    {{%- endif -%}}
+    {{{- bash_sshd_remediation(parameter=PARAMETER, value="$" ~ XCCDF_VARIABLE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
 {{%- else -%}}
-    {{%- if product == 'sle16' -%}}
-        {{{- bash_sshd_remediation_usr(parameter=PARAMETER, value=VALUE, copy_defaults=true, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
-    {{%- else -%}}
-        {{{- bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
-    {{%- endif -%}}
+    {{{- bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME, rule_id=rule_id) -}}}
 {{%- endif -%}}

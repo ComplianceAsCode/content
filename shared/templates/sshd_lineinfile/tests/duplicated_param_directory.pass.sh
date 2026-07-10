@@ -2,17 +2,14 @@
 
 # platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10,SUSE Linux Enterprise 16,multi_platform_fedora,multi_platform_ubuntu
 
-mkdir -p /etc/ssh/sshd_config.d
-touch /etc/ssh/sshd_config.d/nothing
+mkdir -p "{{{ sshd_config_dir }}}"
+touch "{{{ sshd_config_dir }}}/nothing"
 
 {{% if product in ["ol8", "ol9"] %}}
 {{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s", cce_identifiers=cce_identifiers) }}}
 {{% endif %}}
 
-declare -a SSHD_PATHS=("/etc/ssh/sshd_config" /etc/ssh/sshd_config.d/*)
-{{% if product == 'sle16' %}}
-SSHD_PATHS+=("/usr/etc/ssh/sshd_config" /usr/etc/ssh/sshd_config.d/*)
-{{% endif %}}
+declare -a SSHD_PATHS=("{{{ sshd_main_config_file }}}" "{{{ sshd_config_dir }}}/*")
 
 if grep -q "^\s*{{{ PARAMETER }}}" "${SSHD_PATHS[@]}" ; then
     sed -i "/^\s*{{{ PARAMETER }}}.*/Id" "${SSHD_PATHS[@]}"
@@ -22,5 +19,9 @@ fi
 # variables = {{{ XCCDF_VARIABLE }}}={{{ CORRECT_VALUE }}}
 {{% endif %}}
 
-echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" >> /etc/ssh/sshd_config.d/first.conf
-echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" >> /etc/ssh/sshd_config.d/second.conf
+{{% if product in ["sle16", "slmicro6"] %}}
+touch "{{{ sshd_main_config_file }}}"
+{{% endif %}}
+
+echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" >> "{{{ sshd_config_dir }}}/first.conf"
+echo "{{{ PARAMETER }}} {{{ CORRECT_VALUE }}}" >> "{{{ sshd_config_dir }}}/second.conf"
