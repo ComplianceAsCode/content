@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 result=$XCCDF_RESULT_FAIL
 
