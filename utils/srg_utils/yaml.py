@@ -22,15 +22,15 @@ def replace_yaml_section(section: str, replacement: str, rule_dir: dict,
     lines = read_file_list(path)
     replacement = replacement.replace('<', '&lt;').replace('>', '&gt;')
     replacement = re.sub(r'Satisfies: SRG-OS.+', '', replacement)
+    replacement = replacement.rstrip('\n')
     section_ranges = find_section_lines(lines, section)
     if section_ranges:
         result = lines[:section_ranges[0].start]
         result = (*result, f"{section}: |-")
         result = add_replacement_to_result(replacement, result)
-        end_line = section_ranges[0].end
+        end_line = section_ranges[0].end + 1
         for line in lines[end_line:]:
             result = [*result, line]
-        result = [*result, '\n']
     else:
         result = lines
         result = (*result, f"\n{section}: |-")
@@ -48,7 +48,7 @@ def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
     if section_ranges:
         result = lines.contents[:section_ranges[0].start]
         result = (*result, replacement_line)
-        end_line = section_ranges[0].end
+        end_line = section_ranges[0].end + 1
         for line in lines.contents[end_line:]:
             result = (*result, line)
     else:
