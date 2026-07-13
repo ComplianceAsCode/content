@@ -11,22 +11,20 @@ fixtext: |-
     Update the aliases database with the following command:
 
     $ sudo newaliases
-
 checktext: |-
     Verify {{{ full_name }}} is configured to notify the appropriate interactive users of an audit processing failure.
 
     Find the alias maps that are being used with the following command:
 
     $ postconf alias_maps
-    alias_maps = hash:/etc/aliases
+    alias_maps = lmdb:/etc/aliases
 
     Query the Postfix alias maps for an alias for the root user with the following command:
 
-    $ postmap -q root hash:/etc/aliases
-    isso
+    $ postmap -q root lmdb:/etc/aliases
+    ISSO
 
     If an alias is not set, this is a finding.
-
 vuldiscussion: |-
     It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without this notification, the security personnel may be unaware of an impending failure of the audit capability, and system operation may be adversely affected.
 
