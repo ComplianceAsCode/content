@@ -22,7 +22,7 @@ bash_conditional: >-
     rpm --quiet -q kernel-default-base ||
     rpm --quiet -q kernel-azure
 {{% elif "ol" in families %}}
-bash_conditional: "rpm --quiet -q kernel || rpm --quiet -q kernel-uek"
+bash_conditional: "( rpm --quiet -q kernel || rpm --quiet -q kernel-uek )"
 {{% elif product == "fedora" or "rhel" in product %}}
 bash_conditional: "rpm --quiet -q kernel-core"
 {{% else %}}
