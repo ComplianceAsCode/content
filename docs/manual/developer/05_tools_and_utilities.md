@@ -683,6 +683,17 @@ The `PLACEHOLDER` values must be filled in later, ideally when the rules are
 provided for each control.
 
 
+### `utils/compare_controls.py` &ndash; Compare two control files
+
+This script compares controls between two YAML control files and outputs a unified diff.
+It ignores the `rules`, `related_rules`, `notes`, and `status` fields so that you can focus on meaningful content changes such as titles, descriptions, and levels.
+
+The script exits with status 1 if differences are found, 0 otherwise.
+
+```bash
+    $ ./utils/compare_controls.py controls/stig_rhel10_v1r1.yml controls/stig_rhel10_v1r2.yml
+```
+
 ### `utils/compare_versions.py` &ndash; Compare ComplianceAsCode versions
 
 Show differences between two ComplianceAsCode versions.
