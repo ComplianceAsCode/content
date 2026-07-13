@@ -2,7 +2,7 @@
 policy: Red Hat Enterprise Linux 10 Security Technical Implementation Guide
 title: Red Hat Enterprise Linux 10 Security Technical Implementation Guide
 id: stig_rhel10
-version: V1R1
+version: V1R2
 source: https://www.cyber.mil/stigs/downloads/
 reference_type: stigid
 product: rhel10
@@ -329,7 +329,7 @@ controls:
     - id: RHEL-10-200611
       levels:
           - medium
-      title: RHEL 10 must have the "pcscd" service set to active.
+      title: RHEL 10 must have the "pcscd" socket set to active.
       rules:
           - service_pcscd_enabled
       status: automated
@@ -2730,10 +2730,10 @@ controls:
     - id: RHEL-10-700750
       levels:
           - medium
-      title: RHEL 10 must automatically lock graphical user sessions after 15 minutes of inactivity.
+      title: RHEL 10 must automatically lock graphical user sessions after 10 minutes of inactivity.
       rules:
           - dconf_gnome_screensaver_idle_delay
-          - inactivity_timeout_value=15_minutes
+          - inactivity_timeout_value=10_minutes
       status: automated
     - id: RHEL-10-700760
       levels:
