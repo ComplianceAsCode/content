@@ -19,17 +19,24 @@ function pass_if_set_correctly()
     local filelist="$1"
     local regex="$2"
     local expected_value="$3"
+    local value_regex="${4:-}"
     local found=0
     for files in $filelist ; do
         [[ -e "$files" ]] || continue
-        found_value=$(grep -P "$regex" $files | sed -E "s/$regex/\1/")
-        if [[ -n "$found_value" ]] ; then
-            if [[ "$found_value" == "$expected_value" ]] ; then
+        while IFS= read -r found_value; do
+            [[ -n "$found_value" ]] || continue
+            if [[ -n "$value_regex" ]] ; then
+                if echo "$found_value" | grep -qP "^($value_regex)$" ; then
+                    found=1
+                else
+                    return 1
+                fi
+            elif [[ "$found_value" == "$expected_value" ]] ; then
                 found=1
             else
                 return 1
             fi
-        fi
+        done < <(grep -P "$regex" $files | sed -E "s/$regex/\1/")
     done
     if [[ $found == 1 ]] ; then
         return 0
@@ -43,7 +50,7 @@ function pass_if_missing()
     local regex="$2"
     for files in $filelist ; do
         [[ -e "$files" ]] || continue
-        if grep -P "$regex"  $files ; then
+        if grep -qP "$regex" $files ; then
             return 1
         fi
     done
@@ -54,11 +61,12 @@ function check_sysctl_configuration()
 {
     local sysctlvar="$1"
     local expected_value="$2"
+    local value_regex="${3:-}"
 
-    regex="^\s*$sysctlvar\s*=\s*(.*)\s*"
+    regex="^\s*$sysctlvar\s*=\s*(.*\S)\s*"
 
     # kernel static parameter $sysctlvar set to $sysctlvar in sysctl files not managed by packages
-    pass_if_set_correctly "${FILES_NOT_MANAGED_BY_PACKAGES[*]}" "$regex" "$expected_value"
+    pass_if_set_correctly "${FILES_NOT_MANAGED_BY_PACKAGES[*]}" "$regex" "$expected_value" "$value_regex"
     set_correctly_in_not_managed="$?"
 
     # kernel static parameter $sysctlvar missing in sysctl files not managed by packages
@@ -66,12 +74,22 @@ function check_sysctl_configuration()
     missing_in_not_managed="$?"
 
     # kernel static parameter $sysctlvar set to $sysctlval in sysctl files managed by packages
-    pass_if_set_correctly "${FILES_MANAGED_BY_PACKAGES[*]}" "$regex" "$expected_value"
+    pass_if_set_correctly "${FILES_MANAGED_BY_PACKAGES[*]}" "$regex" "$expected_value" "$value_regex"
     set_correctly_in_managed="$?"
 
+    {{% if MISSING_PARAMETER_PASS == "true" %}}
+    # kernel static parameter $sysctlvar missing or correct in sysctl files managed by packages
+    pass_if_missing "${FILES_MANAGED_BY_PACKAGES[*]}" "$regex"
+    missing_in_managed="$?"
+
+    if [[ "$set_correctly_in_not_managed" == 0 || ( "$missing_in_not_managed" == 0 && ( "$set_correctly_in_managed" == 0 || "$missing_in_managed" == 0 ) ) ]] ; then
+        return 0
+    fi
+    {{% else %}}
     if [[ "$set_correctly_in_not_managed" == 0 || ( "$missing_in_not_managed" == 0 && "$set_correctly_in_managed" == 0 ) ]] ; then
         return 0
     fi
+    {{% endif %}}
     return 1
 }
 
@@ -86,18 +104,51 @@ fi
 {{% if SYSCTLVAL is string %}}
 {{% if SYSCTLVAL == "" -%}}
 expected_value="$XCCDF_VALUE_sysctl_{{{ SYSCTLID }}}_value"
-{{%- else -%}}
-expected_value="{{{ SYSCTLVAL }}}"
-{{%- endif %}}
 check_sysctl_configuration "{{{ SYSCTLVAR }}}" "$expected_value"
 if [[ $? == 0 ]] ; then
+{{% if CHECK_RUNTIME == "true" %}}
+    runtime_value=$(sysctl -n "{{{ SYSCTLVAR }}}" 2>/dev/null)
+    if [[ "$runtime_value" == "$expected_value" ]] ; then
+        exit $XCCDF_RESULT_PASS
+    fi
+{{% else %}}
     exit $XCCDF_RESULT_PASS
+{{% endif %}}
 fi
+{{%- else %}}
+expected_value="{{{ SYSCTLVAL }}}"
+{{% if OPERATION == "pattern match" %}}
+check_sysctl_configuration "{{{ SYSCTLVAR }}}" "$expected_value" "{{{ SYSCTLVAL_REGEX }}}"
+{{% else %}}
+check_sysctl_configuration "{{{ SYSCTLVAR }}}" "$expected_value"
+{{% endif %}}
+if [[ $? == 0 ]] ; then
+{{% if CHECK_RUNTIME == "true" %}}
+    runtime_value=$(sysctl -n "{{{ SYSCTLVAR }}}" 2>/dev/null)
+{{% if OPERATION == "pattern match" %}}
+    if echo "$runtime_value" | grep -qP "^({{{ SYSCTLVAL_REGEX }}})$" ; then
+{{% else %}}
+    if [[ "$runtime_value" == "$expected_value" ]] ; then
+{{% endif %}}
+        exit $XCCDF_RESULT_PASS
+    fi
+{{% else %}}
+    exit $XCCDF_RESULT_PASS
+{{% endif %}}
+fi
+{{% endif %}}
 {{% elif SYSCTLVAL is sequence %}}
 {{% for x in SYSCTLVAL %}}
 check_sysctl_configuration "{{{ SYSCTLVAR }}}" "{{{ x }}}"
 if [[ $? == 0 ]] ; then
+{{% if CHECK_RUNTIME == "true" %}}
+    runtime_value=$(sysctl -n "{{{ SYSCTLVAR }}}" 2>/dev/null)
+    if [[ "$runtime_value" == "{{{ x }}}" ]] ; then
+        exit $XCCDF_RESULT_PASS
+    fi
+{{% else %}}
     exit $XCCDF_RESULT_PASS
+{{% endif %}}
 fi
 {{% endfor %}}
 {{% endif %}}
