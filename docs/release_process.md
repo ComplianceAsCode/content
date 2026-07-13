@@ -533,7 +533,11 @@ This message can be completely created using the `release_helper.py` script:
 It is good for the community when the packages are also updated and released with the latest
 stable release. In this section there is information about how to update the packages in specific
 distros.
+
 ## Fedora
+
+**Packit will create pull requests on Fedora dist-git automatically once a new upstream version is released on GitHub.**
+Alternatively, Fedora updates can be done manually using the procedure described below.
 
 To update a Fedora package it is ultimately necessary to be approved as a Fedora Packager.
 There are some ways to get this approval and more details are found here:
