@@ -2366,6 +2366,7 @@ controls:
           - systemd_journal_upload_url
       status: automated
 
+
     - id: 6.1.1.2.3
       title: Ensure systemd-journal-upload is enabled and active (Automated)
       levels:
@@ -2440,6 +2441,7 @@ controls:
           is site-specific and can be too complex to reliably audit and remediate.
           See also https://github.com/ComplianceAsCode/content/issues/11812
 
+
     - id: 6.1.2.7
       title: Ensure rsyslog is not configured to receive logs from a remote client (Automated)
       levels:
@@ -2461,21 +2463,27 @@ controls:
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      rules:
+          - package_rsyslog-gnutls_installed
+      status: automated
 
     - id: 6.1.2.10
       title: Ensure rsyslog forwarding uses gtls (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      rules:
+          - rsyslog_remote_tls
+      status: automated
 
     - id: 6.1.2.11
       title: Ensure rsyslog CA certificates are configured (Manual)
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      related_rules:
+          - rsyslog_remote_tls_cacert
+      status: manual
 
     - id: 6.1.3.1
       title: Ensure access to all logfiles has been configured (Automated)
@@ -2540,6 +2548,8 @@ controls:
           - package_audit_installed
           - package_audit-audispd-plugins_installed
       status: automated
+      notes: |
+          Added also the missing rule for audispd.
 
     - id: 6.2.1.2
       title: Ensure auditd service is enabled and active (Automated)
@@ -2619,6 +2629,7 @@ controls:
       notes: |
           The variables should allow multiple options.
 
+
     - id: 6.2.3.1
       title: Ensure modification of the /etc/sudoers file is collected (Automated)
       levels:
@@ -2668,6 +2679,7 @@ controls:
           - audit_rules_networkconfig_modification_setdomainname
       status: automated
 
+
     - id: 6.2.3.6
       title: Ensure events that modify /etc/issue and /etc/issue.net are collected (Automated)
       levels:
@@ -2678,6 +2690,7 @@ controls:
           - audit_rules_networkconfig_modification_etc_issue_net
       status: automated
 
+
     - id: 6.2.3.7
       title: Ensure events that modify /etc/hosts and /etc/hostname are collected (Automated)
       levels:
@@ -2687,6 +2700,7 @@ controls:
           - audit_rules_networkconfig_modification_etc_hosts
           - audit_rules_networkconfig_modification_hostname_file
       status: automated
+
 
     - id: 6.2.3.8
       title: Ensure events that modify the system's network environment are collected (Automated)
@@ -2705,6 +2719,7 @@ controls:
       rules:
           - audit_rules_networkconfig_modification_networkmanager
       status: automated
+
 
     - id: 6.2.3.10
       title: Ensure use of privileged commands are collected (Automated)
@@ -2796,6 +2811,7 @@ controls:
           - audit_rules_dac_modification_fchmodat2
       status: automated
 
+
     - id: 6.2.3.19
       title: Ensure discretionary access control permission modification events chown,fchown,lchown,fchownat are collected (Automated)
       levels:
@@ -2817,9 +2833,9 @@ controls:
           - audit_rules_dac_modification_setxattr
           - audit_rules_dac_modification_lsetxattr
           - audit_rules_dac_modification_fsetxattr
-          - audit_rules_dac_modification_fremovexattr
-          - audit_rules_dac_modification_lremovexattr
           - audit_rules_dac_modification_removexattr
+          - audit_rules_dac_modification_lremovexattr
+          - audit_rules_dac_modification_fremovexattr
       status: automated
 
     - id: 6.2.3.21
@@ -2871,6 +2887,7 @@ controls:
           - audit_rules_file_deletion_events_renameat
           - audit_rules_file_deletion_events_renameat2
       status: automated
+
 
     - id: 6.2.3.26
       title: Ensure events that modify the system's Mandatory Access Controls are collected (Automated)
@@ -2927,6 +2944,7 @@ controls:
           - audit_rules_privileged_commands_kmod
       status: automated
 
+
     - id: 6.2.3.32
       title: Ensure kernel "init_module" and "finit_module" loading unloading and modification is collected (Automated)
       levels:
@@ -2956,12 +2974,15 @@ controls:
           - audit_rules_kernel_module_loading_query
       status: automated
 
+
     - id: 6.2.3.35
       title: Ensure the audit configuration is loaded regardless of errors (Automated)
       levels:
           - l2_server
           - l2_workstation
-      status: pending
+      rules:
+          - audit_rules_continue_loading
+      status: automated
 
     - id: 6.2.3.36
       title: Ensure the audit configuration is immutable (Automated)
@@ -3199,7 +3220,7 @@ controls:
       status: automated
 
     - id: 7.1.10
-      title: Ensure access to  /etc/security/opasswd is configured (Automated)
+      title: Ensure access to /etc/security/opasswd is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
