@@ -33,7 +33,11 @@ ocil: |-
 
     Check the octal permission of each audit tool by running the following command:
 
+    {{% if product in ['rhel10', 'fedora'] %}}
+    $ sudo stat -c "%U %n" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/auditd /sbin/rsyslogd /sbin/augenrules
+    {{% else %}}
     $ sudo stat -c "%U %n" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/rsyslogd /sbin/augenrules
+    {{% endif %}}
 
 fixtext: |-
     Configure the audit tools to be owned by "root", by running the following command:
@@ -51,7 +55,9 @@ template:
             - /sbin/auditctl
             - /sbin/aureport
             - /sbin/ausearch
+            {{% if product not in ['rhel10', 'fedora'] %}}
             - /sbin/autrace
+            {{% endif %}}
             - /sbin/auditd
             - /sbin/rsyslogd
             - /sbin/augenrules

@@ -1,7 +1,13 @@
-aide_also_checks_audispd: 'no'
-aide_also_checks_rsyslog: 'yes'
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
+aide_audit_binaries:
+  - auditctl
+  - auditd
+  - ausearch
+  - aureport
+  - autrace
+  - rsyslogd
+  - augenrules
 audisp_conf_path: /etc/audit
 audit_binaries:
   - /sbin/auditctl

@@ -3,7 +3,7 @@ default:
     - /sbin/auditctl
     - /sbin/aureport
     - /sbin/ausearch
-    {{% if product not in ['rhel10', 'sle16'] %}}
+    {{% if product not in ['rhel10', 'sle16', 'fedora'] %}}
     - /sbin/autrace
     {{% endif %}}
     - /sbin/auditd

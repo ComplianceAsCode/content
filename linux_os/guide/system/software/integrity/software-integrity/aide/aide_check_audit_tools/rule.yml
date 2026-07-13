@@ -52,7 +52,7 @@ ocil: |-
 
     <pre># sudo cat {{{ aide_conf_path }}} | grep /usr/sbin/au
 
-    {{{ aide_files() }}}
+    {{{ aide_config_file_lines() }}}
     </pre>
     If AIDE is configured properly to protect the integrity of the audit tools,
     all lines listed above will be returned from the command.
@@ -63,7 +63,7 @@ fixtext: |-
     Add or update the following lines to {{{ aide_conf_path }}}, to protect the integrity of the audit tools.
 
     <pre>
-    {{{ aide_files() }}}
+    {{{ aide_config_file_lines() }}}
     </pre>
 
 srg_requirement:

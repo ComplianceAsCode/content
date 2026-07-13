@@ -3,7 +3,11 @@
 # packages = aide
 
 declare -a bins
-bins=('/sbin/auditctl' '/sbin/auditd' '/sbin/augenrules' '/sbin/aureport' '/sbin/ausearch' '/sbin/autrace' '/sbin/rsyslogd' '/sbin/audispd')
+bins=(
+{{% for audit_tool in aide_audit_binaries %}}
+"/sbin/{{{ audit_tool }}}"
+{{% endfor %}}
+)
 
 echo >> {{{ aide_conf_path }}}
 for theFile in "${bins[@]}"
