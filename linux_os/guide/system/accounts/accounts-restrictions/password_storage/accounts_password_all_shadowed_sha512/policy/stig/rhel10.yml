@@ -9,8 +9,8 @@ fixtext: |-
 checktext: |-
     Verify {{{ full_name }}} employs FIPS 140-3-approved cryptographic hashing algorithms for all stored passwords for interactive user accounts with the following command:
 
-    $ sudo cut -d: -f2 /etc/shadow
-    $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/
+    $ sudo cut -d: -f1,2 /etc/shadow
+    nsauser:$6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/
 
     Password hashes "!" or "*" indicate inactive accounts not available for login and are not evaluated.
 

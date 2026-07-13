@@ -1,32 +1,30 @@
 srg_requirement: |-
-    {{{ full_name }}} must prevent a user from overriding the Ctrl-Alt-Del sequence settings for the graphical user interface.
-
+    {{{ full_name }}} must disable the ability of a user to accidentally press Ctrl-Alt-Del and cause a system to shut down or reboot.
 fixtext: |-
-    Configure {{{ full_name }}} to disallow the user changing the Ctrl-Alt-Del sequence in the GNOME desktop.
+    Configure {{{ full_name }}} to ignore the Ctrl-Alt-Del sequence in the GNOME desktop.
 
     Note: The example below is using the database "local" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
 
-    Update the "/etc/dconf/db/local.d/locks/session" file to prevent nonprivileged users from modifying the Ctrl-Alt-Del setting:
+    Update the "/etc/dconf/db/local.d/00-media-keys" file to set the media-keys logout setting as an empty string array:
 
-    $ sudo vi /etc/dconf/db/local.d/locks/session
+    $ sudo vi /etc/dconf/db/local.d/00-media-keys
 
-    /org/gnome/settings-daemon/plugins/media-keys/logout
+    [org/gnome/settings-daemon/plugins/media-keys]
+    logout=@as []
 
     Run the following command to update the database:
 
     $ sudo dconf update
-
 checktext: |-
     Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is not applicable.
 
-    Verify {{{ full_name }}} users cannot enable the Ctrl-Alt-Del sequence in the GNOME desktop:
+    Verify {{{ full_name }}} is configured to ignore the Ctrl-Alt-Del sequence in the GNOME desktop with the following command:
 
-    $ gsettings writable org.gnome.settings-daemon.plugins.media-keys logout
-    false
+    Check that the Ctrl-Alt-Del sequence settings for the graphical user interface cannot be overridden with the following command:
 
-    If "logout" is writable and the result is "true", this is a finding.
+    $ gsettings get org.gnome.settings-daemon.plugins.media-keys logout
+    @as []
 
-    If GNOME is configured to shut down when Ctrl-Alt-Del is pressed, this is a finding.
-
+    If the GNOME desktop is configured to shut down when Ctrl-Alt-Del is pressed, this is a finding.
 vuldiscussion: |-
-    A locally logged-in user who presses Ctrl-Alt-Del when at the console can reboot the system. If accidentally pressed, as could happen in the case of a mixed operating system environment, this can create the risk of short-term loss of systems' availability due to unintentional reboot.
+    A locally logged-in user who presses Ctrl-Alt-Del, when at the console, can reboot the system. If accidentally pressed, as could happen in the case of mixed operating system environments, this can create the risk of short-term loss of availability of systems due to unintentional reboot.
