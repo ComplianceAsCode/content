@@ -7,13 +7,17 @@ generate them with `celctl cac scaffold <rule-dir> --from-cluster`).
 The fixtures are evaluated through celctl, which uses cel-go — the same engine
 and environment (parseJSON/parseYAML, scanner binding semantics) as the
 Compliance Operator scanner — so a rule that passes here behaves the same way
-in the operator. See https://github.com/Vincent056/cel-rule-skill.
+in the operator. celctl ships in the compliance-operator repo (cmd/celctl, merged in
+https://github.com/ComplianceAsCode/compliance-operator/pull/1306).
 
 celctl is located via the CELCTL environment variable, then PATH. When absent,
 the evaluation tests are skipped (fixture-presence policy checks still run),
 so contributors without Go are not blocked; CI installs celctl with:
 
-    go install github.com/Vincent056/cel-rule-skill/celctl@<version>
+    go install github.com/ComplianceAsCode/compliance-operator/cmd/celctl@master
+
+(pin a release tag instead of @master once a compliance-operator release ships
+cmd/celctl)
 """
 
 import glob
