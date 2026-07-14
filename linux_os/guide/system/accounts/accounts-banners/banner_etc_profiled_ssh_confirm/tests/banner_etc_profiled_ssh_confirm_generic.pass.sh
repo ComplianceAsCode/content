@@ -1,5 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_all
+# variables = var_ssh_confirm_text=generic_default
 {{% set var_ssh_confirm_text='#!/bin/bash
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
     while true; do
