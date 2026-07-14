@@ -153,7 +153,11 @@ args:
   systemd-timesyncd:
     pkgname: systemd-timesyncd
   telnet-server:
+    {{% if product in ['debian13'] %}}
+    pkgname: inetutils-telnetd
+    {{% else %}}
     pkgname: telnet-server
+    {{% endif %}}
   tftp-server:
     pkgname: tftp-server
   tmux:

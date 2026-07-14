@@ -500,7 +500,22 @@ if rpm -q --quiet "{{{ package }}}" ; then
 {{% endif %}}
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
-DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y "{{{ package }}}"
+# check wether the package is virtual: if not, remove it.
+# if the package is virtual, iterate on providers
+#  if a provider is installed, remove it
+is_virtual=`apt-cache showpkg "{{{ package }}}" | grep -Pzc 'Versions: \n\n'`
+if [ $is_virtual = 1 ]; then
+    rprovides_line=`apt-cache showpkg "{{{ package }}}" | grep -n 'Reverse Provides:' | cut -f1 -d:`
+    pkglist=`apt-cache showpkg "{{{ package }}}" | tail -n +$(($rprovides_line + 1)) | cut -f1 -d' '`
+    for package in $pkglist; do
+        not_installed=`apt-cache policy $package | grep -c 'Installed: (none)'`
+	if [ $not_installed = 0 ]; then
+	    DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y $package
+	fi
+    done
+else
+    DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y "{{{ package }}}"
+fi
 {{%- elif pkg_manager == "zypper" -%}}
 if rpm -q --quiet "{{{ package }}}" ; then
    zypper remove -y "{{{ package }}}"
