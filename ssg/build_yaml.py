@@ -1604,39 +1604,6 @@ class Group(XCCDFEntity):
         return self.id_
 
 
-def noop_rule_filterfunc(rule):
-    return True
-
-
-def rule_filter_from_def(filterdef):
-    """
-    Creates a filter function based on the provided filter definition.
-
-    Args:
-        filterdef (str or None): A string containing a Python expression that will be used
-                                 to filter rules. If None or an empty string is provided,
-                                 a no-operation filter function is returned.
-
-    Returns:
-        function: A function that takes a rule object and evaluates the filter definition against
-                  the rule's attributes. If the filter definition is None or an empty string, a
-                  no-operation filter function is returned.
-
-    Note:
-        The filter function uses `eval` to evaluate the filter definition. For security reasons,
-        only the rule's attributes are exposed to the evaluation context, and Python built-ins
-        are not available.
-    """
-    if filterdef is None or filterdef == "":
-        return noop_rule_filterfunc
-
-    def filterfunc(rule):
-        # Remove globals for security and only expose
-        # variables relevant to the rule
-        return eval(filterdef, {"__builtins__": None}, rule.__dict__)
-    return filterfunc
-
-
 class Rule(XCCDFEntity, Templatable):
     """
     Represents an XCCDF Rule entity with various attributes and methods for handling rule data,

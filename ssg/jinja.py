@@ -7,6 +7,7 @@ from __future__ import absolute_import
 import os.path
 import sys
 import jinja2
+from jinja2.sandbox import SandboxedEnvironment
 
 from urllib.parse import quote
 from shlex import quote as shell_quote
@@ -104,7 +105,7 @@ def preload_macros(env):
         _preload_macros_from_file(env, macros_file)
 
 
-class JinjaEnvironment(jinja2.Environment):
+class JinjaEnvironment(SandboxedEnvironment):
     def __init__(self, bytecode_cache=None):
         super(JinjaEnvironment, self).__init__(
             block_start_string="{{%",

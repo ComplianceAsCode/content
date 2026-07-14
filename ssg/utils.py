@@ -4,6 +4,7 @@ Utils functions consumed by SSG
 
 from __future__ import absolute_import
 
+import ast
 import multiprocessing
 import os
 import re
@@ -981,3 +982,67 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
         )
         raise ValueError(msg)
     return available_scenarios_basenames
+
+
+def _eval_filter_ast_node(node, context):
+    """Evaluate one AST node; only safe boolean/comparison/literal types are allowed."""
+    if isinstance(node, ast.BoolOp):
+        if isinstance(node.op, ast.And):
+            return all(_eval_filter_ast_node(v, context) for v in node.values)
+        elif isinstance(node.op, ast.Or):
+            return any(_eval_filter_ast_node(v, context) for v in node.values)
+        else:
+            raise ValueError(
+                "Unsupported boolean operator in filter: {}".format(
+                    type(node.op).__name__))
+    elif isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.Not):
+        return not _eval_filter_ast_node(node.operand, context)
+    elif isinstance(node, ast.Compare):
+        left = _eval_filter_ast_node(node.left, context)
+        # Chained comparisons share the previous right operand as the next left.
+        for op, comparator in zip(node.ops, node.comparators):
+            right = _eval_filter_ast_node(comparator, context)
+            if isinstance(op, ast.In):
+                if left not in right:
+                    return False
+            elif isinstance(op, ast.NotIn):
+                if left in right:
+                    return False
+            elif isinstance(op, ast.Eq):
+                if left != right:
+                    return False
+            elif isinstance(op, ast.NotEq):
+                if left == right:
+                    return False
+            else:
+                raise ValueError(
+                    "Unsupported operator in filter expression: {}".format(
+                        type(op).__name__))
+            left = right
+        return True
+    elif isinstance(node, ast.Constant):
+        if isinstance(node.value, (str, int, float, bool, type(None))):
+            return node.value
+        raise ValueError(
+            "Unsupported constant type in filter expression: {}".format(
+                type(node.value).__name__))
+    elif isinstance(node, (ast.List, ast.Tuple)):
+        return [_eval_filter_ast_node(elt, context) for elt in node.elts]
+    elif isinstance(node, ast.Name):
+        try:
+            return context[node.id]
+        except KeyError as err:
+            raise ValueError(
+                "Unknown variable in filter expression: {}".format(node.id)) from err
+    raise ValueError(
+        "Unsupported expression type in filter: {}".format(type(node).__name__))
+
+
+def safe_eval_filter(filterdef, context):
+    """Evaluate a filter_rules expression against context using a safe AST whitelist."""
+    try:
+        tree = ast.parse(filterdef, mode='eval')
+    except SyntaxError as exc:
+        raise ValueError(
+            "Invalid filter expression {!r}: {}".format(filterdef, exc)) from exc
+    return _eval_filter_ast_node(tree.body, context)
