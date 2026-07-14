@@ -686,6 +686,9 @@ provided for each control.
 ### `utils/compare_controls.py` &ndash; Compare two control files
 
 This script compares controls between two YAML control files and outputs a unified diff.
+
+**NOTE: this script doesn't support nested controls.**
+
 It ignores the `rules`, `related_rules`, `notes`, and `status` fields so that you can focus on meaningful content changes such as titles, descriptions, and levels.
 
 The script exits with status 1 if differences are found, 0 otherwise.
