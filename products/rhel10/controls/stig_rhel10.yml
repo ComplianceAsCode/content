@@ -898,13 +898,9 @@ controls:
       title: RHEL 10 must be configured so that the Secure Shell (SSH) server configuration file is owned
           by "root".
       rules:
-          - file_sshd_50_redhat_exists
           - file_owner_sshd_config
           - directory_owner_sshd_config_d
           - file_owner_sshd_drop_in_config
-      notes: >
-          TODO: investigate if file_sshd_50_redhat_exists is a convenience rule or a prerequisite
-          or if it's superfluous and should be removed.
       status: automated
     - id: RHEL-10-400160
       levels:
