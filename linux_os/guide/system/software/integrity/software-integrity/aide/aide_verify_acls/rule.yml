@@ -11,13 +11,16 @@ description: |-
     <pre>FIPSR = p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256</pre>
     AIDE rules can be configured in multiple ways; this is merely one example that is already
     configured by default.
+    The <tt>acl</tt> option must also be present on selection lines that specify
+    attributes directly without referencing a group. For example:
+    <pre>/bin p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256</pre>
 
     {{% if "debian" in product %}}
     The remediation provided with this rule adds <tt>acl</tt> to the OwnerMode rule
-    in <tt>{{{ aide_conf_path }}}</tt>
+    in <tt>{{{ aide_conf_path }}}</tt> and to any selection lines that specify attributes directly.
     {{% else %}}
     The remediation provided with this rule adds <tt>acl</tt> to all rule sets available in
-    <tt>{{{ aide_conf_path }}}</tt>
+    <tt>{{{ aide_conf_path }}}</tt> and to any selection lines that specify attributes directly.
     {{% endif %}}
 
 rationale: |-
