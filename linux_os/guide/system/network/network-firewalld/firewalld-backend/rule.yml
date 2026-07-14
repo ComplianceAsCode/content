@@ -55,3 +55,9 @@ template:
         parameter: FirewallBackend
         value: nftables
         no_quotes: 'true'
+
+warnings:
+    - general: >
+        Establish rate-limiting rules based on organization-defined types of DoS attacks on impacted network interfaces.
+        You can use firewalld rich rules or advanced per-ip limiting in nftables configuration to rate-limit incoming connections to specific services.
+        The rule doesn't configure any rate-limiting, this has to be configured individually.
