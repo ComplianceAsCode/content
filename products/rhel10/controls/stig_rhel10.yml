@@ -3344,12 +3344,11 @@ controls:
           ensuring that rate-limiting measures on impacted network interfaces are implemented.
       rules:
           - firewalld-backend
-      related_rules:
-          - sysctl_net_ipv4_tcp_invalid_ratelimit
-          - sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
       notes: >
-          TODO: resolve mismatch of title and description
-      status: automated
+          Establish rate-limiting rules based on organization-defined types of DoS attacks on impacted network interfaces.
+          You can use firewalld rich rules or advanced per-ip limiting in nftables configuration to rate-limit incoming connections to specific services.
+          The selected rule doesn't configure any rate-limiting, this has to be configured individually.
+      status: partial
     - id: RHEL-10-800300
       levels:
           - medium
