@@ -76,7 +76,7 @@ template:
         {{% if product == 'rhel8' %}}
         sysctlval: '1'
         wrong_sysctlval_for_testing: "0"
-        {{% elif 'ol' in families or 'rhel' in product %}}
+        {{% elif 'ol' in families or 'rhel' in families %}}
         sysctlval:
         - '1'
         - '2'
