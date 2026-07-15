@@ -12,6 +12,7 @@ description: |-
     this profile is to keep a rule in the product's XCCDF Benchmark.
 
 selections:
+    - rsyslog_encrypt_offload_defaultnetstreamdriver
     - sshd_use_strong_kex
     - grub2_nousb_argument
     - audit_rules_kernel_module_loading_create

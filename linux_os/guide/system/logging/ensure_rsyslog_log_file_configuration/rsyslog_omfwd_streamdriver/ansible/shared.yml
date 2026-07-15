@@ -1,0 +1,40 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}}: search for omfwd action directive in rsyslog include files"
+  ansible.builtin.find:
+    paths: "/etc/rsyslog.d/"
+    pattern: "*.conf"
+    contains: '^\s*action\s*\(\s*type\s*=\s*"omfwd".*'
+  register: rsyslog_includes_with_directive
+
+- name: "{{{ rule_title }}}: search for omfwd action directive in rsyslog main config file"
+  ansible.builtin.find:
+    paths: "/etc"
+    pattern: "rsyslog.conf"
+    contains: '^\s*action\s*\(\s*type\s*=\s*"omfwd".*'
+  register: rsyslog_main_file_with_directive
+
+- name: "{{{ rule_title }}}: assemble list of files with existing omfwd directives"
+  ansible.builtin.set_fact:
+    rsyslog_files: "{{ rsyslog_includes_with_directive.files | map(attribute='path') | list + rsyslog_main_file_with_directive.files | map(attribute='path') | list }}"
+
+- name: "{{{ rule_title }}}: fix existing omfwd directives"
+  when: rsyslog_includes_with_directive.matched > 0 or rsyslog_main_file_with_directive.matched > 0
+  block:
+    - name: "{{{ rule_title }}}: replace wrong StreamDriver value in omfwd action"
+      ansible.builtin.replace:
+        path: "{{ item }}"
+        regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"[\s\S]*)(streamdriver\s*=\s*"\S*")([\s\S]*\))$'
+        replace: '\1streamdriver="ossl"\3'
+      loop: "{{ rsyslog_files }}"
+
+    - name: "{{{ rule_title }}}: add StreamDriver if missing from omfwd action"
+      ansible.builtin.replace:
+        path: "{{ item }}"
+        regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"(?:(?!streamdriver\s*=\s*"\S*")[\s\S])*?)(\)\s*)$'
+        replace: '\1  streamdriver="ossl"\n\2'
+      loop: "{{ rsyslog_files }}"
