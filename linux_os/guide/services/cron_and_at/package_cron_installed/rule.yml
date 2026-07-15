@@ -1,4 +1,4 @@
-{{% if 'rhel' in product or product in ["ol9", "ol10", "sle12", "sle15", "sle16"] %}}
+{{% if 'rhel' in families or product in ["ol9", "ol10", "sle12", "sle15", "sle16"] %}}
   {{%- set package = "cronie" %}}
 {{% else %}}
   {{%- set package = "cron" %}}
