@@ -25,3 +25,6 @@ do
 	fi
 	sed -i "s/^$group\s*=.*/$group = $config/g" $aide_conf
 done
+
+# Add acl to selection lines that specify attributes directly (e.g., /path p+i+n+u+g)
+LC_ALL=C sed -i -E '/^\/\S+\s+[a-z]/ { /acl/! s/^(\/\S+\s+)([a-z][a-zA-Z0-9+]*)/\1\2+acl/ }' "$aide_conf"
