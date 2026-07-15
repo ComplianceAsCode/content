@@ -1,0 +1,36 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Rsyslog omfwd action must have TLS encryption enabled.", rule_title=rule_title) }}}
+        <criteria operator="OR">
+            <criterion comment="No omfwd action blocks are configured"
+                        test_ref="test_{{{ rule_id }}}_no_omfwd" />
+            <criterion comment="All omfwd action blocks have TLS enabled"
+                        test_ref="test_{{{ rule_id }}}_tls" />
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_omfwd"
+        comment="Verify no omfwd action blocks exist"
+        check_existence="none_exist" check="all" version="1">
+        <ind:object object_ref="obj_{{{ rule_id }}}_omfwd" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_test id="test_{{{ rule_id }}}_tls"
+        comment="Verify all omfwd action blocks have TLS enabled"
+        check_existence="at_least_one_exists" check="all" version="1">
+        <ind:object object_ref="obj_{{{ rule_id }}}_omfwd" />
+        <ind:state state_ref="state_{{{ rule_id }}}_tls" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_omfwd" version="1">
+        <ind:behaviors singleline="true" />
+        <ind:filepath operation="pattern match">^/etc/rsyslog\.(conf|d/.+\.conf)$</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*action\((?i)type(?-i)="omfwd"(.+?)\)</ind:pattern>
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_state id="state_{{{ rule_id }}}_tls"
+        comment="TLS must be enabled via tls=on or StreamDriverMode=1" version="1">
+        <ind:subexpression datatype="string" operation="pattern match">[\S\s]*\s(?i)(?:tls(?-i)\s*=\s*"on"|(?i)streamdrivermode(?-i)\s*=\s*"1")</ind:subexpression>
+    </ind:textfilecontent54_state>
+</def-group>

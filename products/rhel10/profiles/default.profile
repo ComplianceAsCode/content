@@ -13,6 +13,7 @@ description: |-
 
 selections:
     - rsyslog_encrypt_offload_defaultnetstreamdriver
+    - rsyslog_encrypt_offload_actionsendstreamdrivermode
     - sshd_use_strong_kex
     - grub2_nousb_argument
     - audit_rules_kernel_module_loading_create
