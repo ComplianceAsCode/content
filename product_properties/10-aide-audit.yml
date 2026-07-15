@@ -4,7 +4,7 @@ default:
     - "auditd"
     - "ausearch"
     - "aureport"
-    {{% if product not in ['rhel10', 'sle16', 'fedora'] %}}
+    {{% if product not in ['rhel10', 'ol10', 'sle16', 'fedora'] %}}
     - "autrace"
     {{% endif %}}
     {{% if 'rhel' not in product and 'ol' not in families and 'debian' not in families and 'ubuntu' not in families %}}

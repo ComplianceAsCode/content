@@ -33,7 +33,7 @@ ocil: |-
 
     Check the group-owner of each audit tool by running the following command:
 
-    {{% if product in ['rhel10', 'fedora'] %}}
+    {{% if product in ['rhel10', 'ol10', 'sle16', 'fedora'] %}}
     $ sudo stat -c "%G %n" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/auditd /sbin/rsyslogd /sbin/augenrules
     {{% else %}}
     $ sudo stat -c "%G %n" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/rsyslogd /sbin/augenrules
@@ -42,7 +42,7 @@ ocil: |-
     root /sbin/auditctl
     root /sbin/aureport
     root /sbin/ausearch
-    {{% if product not in ['rhel10', 'fedora'] %}}
+    {{% if product not in ['rhel10', 'ol10', 'sle16', 'fedora'] %}}
     root /sbin/autrace
     {{% endif %}}
     root /sbin/auditd
@@ -65,7 +65,7 @@ template:
             - /sbin/auditctl
             - /sbin/aureport
             - /sbin/ausearch
-            {{% if product not in ['rhel10', 'fedora'] %}}
+            {{% if product not in ['rhel10', 'ol10', 'sle16', 'fedora'] %}}
             - /sbin/autrace
             {{% endif %}}
             - /sbin/auditd
