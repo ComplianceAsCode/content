@@ -26,8 +26,8 @@ jobs:
 - &contest-oscap
   job: tests
   trigger: pull_request
-  fmf_url: https://github.com/RHSecurityCompliance/contest.git
-  fmf_ref: main
+  fmf_url: https://github.com/macko1/contest.git
+  fmf_ref: fix/ansible-galaxy-openssl-ssl-error
   tmt_plan: /plans/upstream-parallel/oscap
   identifier: contest-oscap
   targets:
