@@ -542,7 +542,32 @@ class NISTSplitSync:
             })
             print(f"  Added {len(unmapped_item_names)} unmapped CIS items ({len(unmapped_items_full)} total assignments) to 'other' family")
 
-        print(f"  Generated {sum(len(c) for c in controls_by_family.values())} controls across {len(controls_by_family)} families")
+        # Nest enhancements under their parent base controls
+        total_nested = 0
+        total_levels_inherited = 0
+        for family, controls_list in controls_by_family.items():
+            base_controls = []
+            enhancement_map = defaultdict(list)
+            for ctrl in controls_list:
+                if '.' in ctrl['id']:
+                    parent_id = ctrl['id'].rsplit('.', 1)[0]
+                    enhancement_map[parent_id].append(ctrl)
+                else:
+                    base_controls.append(ctrl)
+            for base in base_controls:
+                enhancements = enhancement_map.get(base['id'], [])
+                if enhancements:
+                    base_levels = base.get('levels', [])
+                    for enh in enhancements:
+                        if ('levels' not in enh or not enh['levels']) and base_levels:
+                            enh['levels'] = list(base_levels)
+                            total_levels_inherited += 1
+                    base['controls'] = enhancements
+                    total_nested += len(enhancements)
+            controls_by_family[family] = base_controls
+
+        print(f"  Generated {sum(len(c) for c in controls_by_family.values())} base controls across {len(controls_by_family)} families")
+        print(f"  Nested {total_nested} enhancements, {total_levels_inherited} levels inherited from parent")
 
         return controls_by_family
 

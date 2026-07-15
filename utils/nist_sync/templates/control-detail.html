@@ -482,6 +482,44 @@
                 `;
             }
 
+            // Enhancements (for base controls)
+            if (control.enhancements && control.enhancements.length > 0) {
+                const enhControls = control.enhancements
+                    .map(eid => controls.find(c => c.id === eid))
+                    .filter(Boolean);
+                const automatedCount = enhControls.filter(e => e.is_automated).length;
+                const totalCount = enhControls.length;
+                const pct = totalCount > 0 ? Math.round(automatedCount / totalCount * 100) : 0;
+
+                html += `
+                    <div class="card detail-section">
+                        <h3>Control Enhancements (${automatedCount}/${totalCount} automated)</h3>
+                        <div style="background: #e1e4e8; border-radius: 4px; height: 8px; margin-bottom: 15px;">
+                            <div style="background: #28a745; height: 8px; border-radius: 4px; width: ${pct}%;"></div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                `;
+                enhControls.forEach(enh => {
+                    const enhStatus = enh.is_automated ? 'automated' :
+                                    enh.is_manual ? 'manual' : 'pending';
+                    const enhGap = enh.has_rules ? '' :
+                        '<span class="gap-indicator gap-full"></span>';
+                    html += `
+                        <a href="control-detail.html?id=${enh.id}" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #f6f8fa; border-left: 3px solid #0366d6; border-radius: 4px;">
+                            <div>
+                                <span style="font-weight: 600; color: #0366d6;">${enhGap}${enh.id.toUpperCase()}</span>
+                                <span style="color: #24292e; margin-left: 8px;">${enh.title}</span>
+                            </div>
+                            <span class="badge badge-${enhStatus}">${enhStatus.toUpperCase()}</span>
+                        </a>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
             // Components
             if (control.components && Object.keys(control.components).length > 0) {
                 const sortedComps = Object.entries(control.components)
@@ -512,6 +550,22 @@
                         `).join('')}
                     </div>
                 `;
+            }
+
+            // Parent control link (for enhancements)
+            if (control.parent_id) {
+                const parentCtrl = controls.find(c => c.id === control.parent_id);
+                if (parentCtrl) {
+                    html += `
+                        <div class="card detail-section">
+                            <h3>Parent Control</h3>
+                            <a href="control-detail.html?id=${parentCtrl.id}" style="text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #f6f8fa; border-left: 3px solid #0366d6; border-radius: 4px;">
+                                <span style="font-weight: 600; color: #0366d6;">${parentCtrl.id.toUpperCase()}</span>
+                                <span style="color: #24292e;">${parentCtrl.title}</span>
+                            </a>
+                        </div>
+                    `;
+                }
             }
 
             // Related Controls

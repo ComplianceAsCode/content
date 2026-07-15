@@ -343,31 +343,66 @@
             progressBar.style.width = coverage + '%';
             progressBar.textContent = coverage + '%';
 
-            // Render controls
+            // Render controls grouped by base control
             const controlsContainer = document.getElementById('controls-in-family');
             controlsContainer.innerHTML = '';
 
-            familyControls.sort((a, b) => a.id.localeCompare(b.id)).forEach(control => {
+            const baseControls = familyControls.filter(c => !c.parent_id).sort((a, b) => a.id.localeCompare(b.id));
+            const enhByParent = {};
+            familyControls.filter(c => c.parent_id).forEach(c => {
+                if (!enhByParent[c.parent_id]) enhByParent[c.parent_id] = [];
+                enhByParent[c.parent_id].push(c);
+            });
+
+            baseControls.forEach(control => {
                 const statusClass = control.is_automated ? 'automated' :
                                   control.is_manual ? 'manual' :
                               control.is_inherently_met ? 'inherently_met' :
                               control.is_does_not_meet ? 'does_not_meet' :
                               control.is_not_applicable ? 'not_applicable' : 'pending';
                 const gapClass = control.has_rules ? '' : 'gap';
+                const enhancements = (enhByParent[control.id] || []).sort((a, b) => a.id.localeCompare(b.id));
+                const enhAutoCount = enhancements.filter(e => e.is_automated).length;
 
                 const item = document.createElement('div');
                 item.className = `control-item-mini ${gapClass}`;
+                item.style.borderLeft = '4px solid #0366d6';
                 item.onclick = () => window.location.href = `control-detail.html?id=${control.id}`;
                 item.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong style="color: #0366d6;">${control.id.toUpperCase()}</strong>
+                            ${enhancements.length > 0 ? `<span style="font-size: 11px; color: #586069; margin-left: 6px;">${enhAutoCount}/${enhancements.length} enh. automated</span>` : ''}
                             <div style="font-size: 13px; color: #586069; margin-top: 3px;">${control.title}</div>
                         </div>
                         <span class="badge badge-${statusClass}">${statusClass.toUpperCase()}</span>
                     </div>
                 `;
                 controlsContainer.appendChild(item);
+
+                if (enhancements.length > 0) {
+                    const enhContainer = document.createElement('div');
+                    enhContainer.style.cssText = 'margin-left: 20px; border-left: 2px solid #e1e4e8; padding-left: 8px; margin-bottom: 8px;';
+                    enhancements.forEach(enh => {
+                        const enhStatusClass = enh.is_automated ? 'automated' :
+                                             enh.is_manual ? 'manual' : 'pending';
+                        const enhItem = document.createElement('div');
+                        enhItem.className = `control-item-mini ${enh.has_rules ? '' : 'gap'}`;
+                        enhItem.style.cssText = 'padding: 6px 10px; margin-bottom: 4px;';
+                        enhItem.onclick = (e) => { e.stopPropagation(); window.location.href = `control-detail.html?id=${enh.id}`; };
+                        enhItem.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong style="color: #0366d6; font-size: 13px;">${enh.id.toUpperCase()}</strong>
+                                    <span style="font-size: 12px; color: #586069; margin-left: 6px;">${enh.title}</span>
+                                </div>
+                                <span class="badge badge-${enhStatusClass}" style="font-size: 10px;">${enhStatusClass.toUpperCase()}</span>
+                            </div>
+                        `;
+                        enhContainer.appendChild(enhItem);
+                    });
+                    controlsContainer.appendChild(enhContainer);
+                }
             });
 
             document.getElementById('family-list-view').style.display = 'none';
