@@ -10,7 +10,7 @@
 mkdir -p "{{{ sshd_config_dir }}}"
 touch "{{{ sshd_config_dir }}}/nothing"
 
-declare -a SSHD_PATHS=("{{{ sshd_main_config_file }}}" "{{{ sshd_config_dir }}}/*")
+declare -a SSHD_PATHS=({{{ sshd_main_config_file }}} {{{ sshd_config_dir }}}/*)
 
 {{% if product in ["ol8", "ol9"] %}}
 {{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s", cce_identifiers=cce_identifiers) }}}

@@ -9,7 +9,7 @@ touch "{{{ sshd_config_dir }}}/nothing"
 {{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s", cce_identifiers=cce_identifiers) }}}
 {{% endif %}}
 
-declare -a SSHD_PATHS=("{{{ sshd_main_config_file }}}" "{{{ sshd_config_dir }}}/*")
+declare -a SSHD_PATHS=({{{ sshd_main_config_file }}} {{{ sshd_config_dir }}}/*)
 
 if grep -q "^\s*{{{ PARAMETER }}}" "${SSHD_PATHS[@]}" ; then
     sed -i "/^\s*{{{ PARAMETER }}}.*/Id" "${SSHD_PATHS[@]}"

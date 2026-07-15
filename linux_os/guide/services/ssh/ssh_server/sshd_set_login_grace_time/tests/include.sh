@@ -1,8 +1,8 @@
 #!/bin/bash
 
-declare -a SSHD_PATHS=("{{{ sshd_main_config_file }}}")
+declare -a SSHD_PATHS=({{{ sshd_main_config_file }}})
 {{% if product in [ 'sle16', 'slmicro6' ] %}}
-SSHD_PATHS+=("{{{ sshd_config_dir }}}/*")
+SSHD_PATHS+=({{{ sshd_config_dir }}}/*)
 {{% endif %}}
 # clean up configurations
 sed -i '/^LoginGraceTime.*/d' "${SSHD_PATHS[@]}"
