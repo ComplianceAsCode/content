@@ -2599,11 +2599,7 @@ controls:
       title: RHEL 10 must be configured so that Secure Shell (SSH) server configuration files' permissions
           are not modified.
       rules:
-          - file_permissions_sshd_config
-          - directory_permissions_sshd_config_d
-          - file_permissions_sshd_drop_in_config
-      notes: >
-          TODO: STIG recommends to use rpm to verify the permissions.
+          - file_permissions_sshd_config_not_modified
       status: automated
     - id: RHEL-10-700600
       levels:
