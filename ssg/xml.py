@@ -653,19 +653,25 @@ class XMLRule(XMLElement):
 
     def join_text_elements(self):
         """
-        Collects and concatenates text from relevant subelements of the root element.
+        Collects and concatenates text from relevant subelements and
+        attributes of the root element.
 
-        This function iterates over the subelements of the root element, collects their text,
-        and concatenates it into a single string. It skips certain elements that are not relevant
-        for comparison, such as "fix" elements and "reference" elements with specific attributes.
-        For each collected text, it injects a line indicating the tag of the element from which
-        the text was collected to facilitate tracking.
+        This function iterates over selected subelements and attributes of the
+        root element, collects their text, and concatenates it into a single
+        string. It skips certain elements that are not relevant for comparison,
+        such as "fix" elements and "reference" elements with specific
+        attributes. For each collected text, it injects a line indicating the
+        tag of the element from which the text was collected to facilitate
+        tracking.
 
         Returns:
             str: A concatenated string of text from relevant subelements, with injected lines
                  indicating the source element tags.
         """
         text = ""
+        severity = self.root.get("severity")
+        if severity is not None:
+            text += "[%s]:\n%s\n" % ("severity", severity)
         for el in self.root:
             el_tag = get_element_tag_without_ns(el.tag)
             if el_tag == "fix":
