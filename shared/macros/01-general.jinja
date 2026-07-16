@@ -1261,15 +1261,10 @@ p+i+n+u+g+s+b+acl+xattrs+sha512
     Lists the files need for the rule aide_check_audit_tools with the AIDE string
 
 #}}
-{{%- macro aide_files() -%}}
-    /usr/sbin/auditctl {{{ aide_string() }}}
-    /usr/sbin/auditd {{{ aide_string() }}}
-    /usr/sbin/ausearch {{{ aide_string() }}}
-    /usr/sbin/aureport {{{ aide_string() }}}
-    /usr/sbin/autrace {{{ aide_string() }}}
-    {{% if 'rhel' not in product and 'ol' not in families %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
-    {{% if 'ol' in families %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
-    /usr/sbin/augenrules {{{ aide_string() }}}
+{{%- macro aide_config_file_lines() -%}}
+    {{% for binary in aide_audit_binaries -%}}
+    /usr/sbin/{{{ binary }}} {{{ aide_string() }}}
+    {{% endfor %}}
 {{% endmacro %}}
 
 

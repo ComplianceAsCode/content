@@ -1,24 +1,16 @@
 default:
-  aide_also_checks_rsyslog: "yes"
-  aide_also_checks_audispd: "no"
-
-overrides:
-{{% if "debian-like" in families %}}
-  aide_also_checks_rsyslog: "no"
-  {{% if "debian" in families %}}
-    {{% if major_version_ordinal <= 10 %}}
-  aide_also_checks_audispd: "yes"
-    {{% else %}}
-  aide_also_checks_audispd: "no"
+  aide_audit_binaries:
+    - "auditctl"
+    - "auditd"
+    - "ausearch"
+    - "aureport"
+    {{% if product not in ['rhel10', 'ol10', 'sle16', 'fedora'] %}}
+    - "autrace"
     {{% endif %}}
-  {{% elif "ubuntu" in families %}}
-    {{% if major_version_ordinal <= 2004 %}}
-  aide_also_checks_audispd: "yes"
-    {{% else %}}
-  aide_also_checks_audispd: "no"
+    {{% if 'rhel' not in product and 'ol' not in families and 'debian' not in families and 'ubuntu' not in families %}}
+    - "audispd"
     {{% endif %}}
-  {{% endif %}}
-{{% elif "rhel-like" not in families %}}
-  aide_also_checks_rsyslog: "no"
-  aide_also_checks_audispd: "yes"
-{{% endif %}}
+    {{% if 'ol' in families %}}
+    - "rsyslogd"
+    {{% endif %}}
+    - "augenrules"
