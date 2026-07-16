@@ -3,6 +3,7 @@ import copy
 from xml.sax.saxutils import escape
 
 from ..build_cpe import CPEDoesNotExist
+from ..utils import safe_eval_filter
 
 from ..xml import ElementTree as ET
 
@@ -30,9 +31,7 @@ def rule_filter_from_def(filterdef):
         c = copy.copy(rule)
         if c.platform is None:
             c.platform = ''
-        # Remove globals for security and only expose
-        # variables relevant to the rule
-        return eval(filterdef, {"__builtins__": None}, c.__dict__)
+        return safe_eval_filter(filterdef, c.__dict__)
     return filterfunc
 
 

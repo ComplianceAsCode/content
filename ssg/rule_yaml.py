@@ -164,7 +164,7 @@ def parse_from_yaml(file_contents, lines):
     """
     new_file_arr = file_contents[lines.start:lines.end + 1]
     new_file = "\n".join(new_file_arr)
-    return yaml.load(new_file, Loader=yaml.Loader)
+    return yaml.load(new_file, Loader=yaml.SafeLoader)
 
 
 def get_yaml_contents(rule_obj):

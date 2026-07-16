@@ -21,11 +21,6 @@ except ImportError:
     from yaml import SafeLoader as yaml_SafeLoader  # type: ignore[assignment]
 
 try:
-    from yaml import CLoader as yaml_Loader
-except ImportError:
-    from yaml import Loader as yaml_Loader  # type: ignore[assignment]
-
-try:
     from yaml import CDumper as yaml_Dumper
 except ImportError:
     from yaml import Dumper as yaml_Dumper  # type: ignore[assignment]
@@ -65,6 +60,23 @@ def _unicode_constructor(self, node):
 yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', _bool_constructor)
 # Python2-relevant - become able to resolve "unicode strings"
 yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:python/unicode', _unicode_constructor)
+
+def _standard_bool_constructor(loader, node):
+    # Delegates to SafeConstructor to get real Python True/False (not the project's
+    # string-returning _bool_constructor registered on yaml_SafeLoader).
+    return yaml.constructor.SafeConstructor.construct_yaml_bool(loader, node)
+
+
+# Loader for ordered_load (Ansible content): safe against !!python/object tags but
+# uses standard Python bool semantics (True/False) because Ansible task files rely on
+# real booleans for keys like become:, ignore_errors:, etc.
+class _AnsibleSafeLoader(yaml_SafeLoader):
+    pass
+
+_AnsibleSafeLoader.add_constructor(
+    u'tag:yaml.org,2002:bool',
+    _standard_bool_constructor
+)
 
 
 class DocumentationNotComplete(Exception):
@@ -240,7 +252,7 @@ def open_raw(yaml_file):
     return yaml_contents
 
 
-def ordered_load(stream, Loader=yaml_Loader, object_pairs_hook=OrderedDict):
+def ordered_load(stream, Loader=_AnsibleSafeLoader, object_pairs_hook=OrderedDict):
     """
     Load a YAML stream while preserving the order of dictionaries.
 
@@ -249,7 +261,7 @@ def ordered_load(stream, Loader=yaml_Loader, object_pairs_hook=OrderedDict):
 
     Args:
         stream (str): The YAML stream to load.
-        Loader (yaml.Loader, optional): The YAML loader class to use. Defaults to `yaml_Loader`.
+        Loader (yaml.Loader, optional): The YAML loader class to use. Defaults to `_AnsibleSafeLoader`.
         object_pairs_hook (callable, optional): A callable that will be used to construct
                                                 ordered mappings. Defaults to `OrderedDict`.
 
