@@ -22,3 +22,14 @@ controls:
       rules:
           - restrict_serial_port_logins
       status: automated
+
+    - id: SLES-15-16016015
+      title: Disable DHCP Service
+      levels:
+          - pcidss4
+      status: automated
+      rules:
+          - package_kea_removed
+          - package_dhcp_client_removed
+          - service_kea_dhcp4_server_disabled
+          - service_kea_dhcp6_server_disabled
