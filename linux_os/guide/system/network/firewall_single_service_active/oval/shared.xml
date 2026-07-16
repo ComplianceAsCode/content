@@ -11,7 +11,7 @@
   <!-- Objects and states to identify active firewall services -->
   <linux:systemdunitproperty_object id="obj_{{{ rule_id }}}_firewall_services" version="1"
       comment="All active firewall services">
-    <linux:unit operation="pattern match">^(ufw|iptables|nftables).service$</linux:unit>
+    <linux:unit operation="pattern match">^(firewalld|ufw|iptables|nftables).service$</linux:unit>
     <linux:property>ActiveState</linux:property>
     <filter action="include">ste_{{{ rule_id }}}_firewall_services</filter>
   </linux:systemdunitproperty_object>
