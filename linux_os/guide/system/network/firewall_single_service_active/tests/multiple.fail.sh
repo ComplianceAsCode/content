@@ -1,10 +1,10 @@
 #!/bin/bash
-#
+# platform = multi_platform_debian,multi_platform_fedora,multi_platform_ubuntu
+# packages = ufw,nftables
 # remediation = none
 
-apt install -y iptables nftables ufw
-systemctl stop iptables
-systemctl stop nftables
-systemctl stop ufw
+systemctl stop iptables 2>/dev/null || true
+systemctl stop nftables 2>/dev/null || true
+systemctl stop ufw 2>/dev/null || true
 systemctl start nftables
 systemctl start ufw
