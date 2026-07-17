@@ -906,6 +906,20 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
 - languages: Ansible, Bash, OVAL, SCE
 
+#### socket_enabled
+-   Checks if a systemd socket is enabled.
+
+-   Parameters:
+
+    -   **socketname** - name of the socket, without the ".socket" extension
+
+    -   **packagename** - name of the package that provides this
+        socket. This argument is optional. If **packagename** is not
+        specified it means the name of the package is the same as the
+        name of socket.
+
+-   Languages: Ansible, Bash, OVAL, SCE
+
 #### sshd_lineinfile
 -   Checks SSH server configuration items in `/etc/ssh/sshd_config` or
     `/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf` in case

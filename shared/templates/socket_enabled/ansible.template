@@ -1,0 +1,21 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Collect systemd Socket Units Present in the System"
+  ansible.builtin.command:
+    cmd: systemctl -q list-unit-files --type socket
+  register: result_systemd_unit_files
+  changed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Ensure {{{ SOCKETNAME }}}.socket is Enabled"
+  ansible.builtin.systemd:
+    name: {{{ SOCKETNAME }}}.socket
+    state: started
+    enabled: true
+    masked: false
+  when:
+    - result_systemd_unit_files.stdout_lines is search("{{{ SOCKETNAME }}}.socket")
