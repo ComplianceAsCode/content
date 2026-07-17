@@ -403,7 +403,6 @@ service_debug-shell_disabled
 service_fapolicyd_enabled
 service_firewalld_enabled
 service_kdump_disabled
-service_pcscd_enabled
 service_rsyslog_enabled
 service_sshd_enabled
 service_systemd-coredump_disabled
@@ -413,6 +412,7 @@ set_password_hashing_algorithm_libuserconf
 set_password_hashing_algorithm_logindefs
 set_password_hashing_algorithm_passwordauth
 set_password_hashing_algorithm_systemauth
+socket_pcscd_enabled
 ssh_keys_passphrase_protected
 sshd_approved_ciphers=stig_rhel10
 sshd_approved_macs=stig_rhel10

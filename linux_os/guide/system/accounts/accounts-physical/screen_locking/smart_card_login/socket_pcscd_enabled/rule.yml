@@ -1,0 +1,50 @@
+documentation_complete: true
+
+title: 'Enable the pcscd Socket'
+
+description: |-
+    The pcscd socket must be enabled to allow on-demand activation of the PC/SC
+    Smart Card daemon (pcscd). To enable the <code>pcscd</code> socket, run the
+    following command:
+    <pre>$ sudo systemctl enable --now pcscd.socket</pre>
+
+rationale: |-
+    Using an authentication device, such as a CAC or token that is separate from
+    the information system, ensures that even if the information system is
+    compromised, that compromise will not affect credentials stored on the
+    authentication device.
+    <br /><br />
+    The daemon program for pcsc-lite and the MuscleCard framework is pcscd. It is
+    a resource manager that coordinates communications with smart card readers and
+    smart cards and cryptographic tokens that are connected to the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-88994-9
+
+references:
+    nist: IA-2(1),IA-2(2),IA-2(3),IA-2(4),IA-2(6),IA-2(7),IA-2(11),CM-6(a)
+    srg: SRG-OS-000375-GPOS-00160
+
+ocil_clause: 'the pcscd socket is not enabled or active'
+
+ocil: |-
+    Verify {{{ full_name }}} has the "pcscd" socket set to active with the following command:
+    <pre>$ systemctl is-active pcscd.socket
+    active</pre>
+    If the "pcscd" socket is not active, this is a finding.
+
+template:
+    name: socket_enabled
+    vars:
+        socketname: pcscd
+        packagename: pcsc-lite
+
+fixtext: |-
+    Configure {{{ full_name }}} to have the "pcscd" socket set to active with the following command:
+
+    $ sudo systemctl enable --now pcscd.socket
+
+srg_requirement: |-
+    {{{ full_name }}} must have the "pcscd" socket set to active.
