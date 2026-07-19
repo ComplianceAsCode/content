@@ -40,22 +40,31 @@ controls:
           - service_systemd-journald_enabled
           - socket_systemd-journal-remote_disabled
       status: automated
-    - id: au-2.1
-      title: Compilation of Audit Records from Multiple Sources
-      rules: []
-      status: pending
-    - id: au-2.2
-      title: Selection of Audit Events by Component
-      rules: []
-      status: pending
-    - id: au-2.3
-      title: Reviews and Updates
-      rules: []
-      status: pending
-    - id: au-2.4
-      title: Privileged Functions
-      rules: []
-      status: pending
+      controls:
+          - id: au-2.1
+            title: Compilation of Audit Records from Multiple Sources
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-2.2
+            title: Selection of Audit Events by Component
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-2.3
+            title: Reviews and Updates
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-2.4
+            title: Privileged Functions
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-3
       title: Content of Audit Records
       levels:
@@ -133,20 +142,25 @@ controls:
           - sysctl_net_ipv4_conf_all_log_martians
           - sysctl_net_ipv4_conf_default_log_martians
       status: automated
-    - id: au-3.1
-      title: Additional Audit Information
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: au-3.2
-      title: Centralized Management of Planned Audit Record Content
-      rules: []
-      status: pending
-    - id: au-3.3
-      title: Limit Personally Identifiable Information Elements
-      rules: []
-      status: pending
+      controls:
+          - id: au-3.1
+            title: Additional Audit Information
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: au-3.2
+            title: Centralized Management of Planned Audit Record Content
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-3.3
+            title: Limit Personally Identifiable Information Elements
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-4
       title: Audit Log Storage Capacity
       levels:
@@ -154,10 +168,13 @@ controls:
       rules:
           - journald_compress
       status: automated
-    - id: au-4.1
-      title: Transfer to Alternate Storage
-      rules: []
-      status: pending
+      controls:
+          - id: au-4.1
+            title: Transfer to Alternate Storage
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-5
       title: Response to Audit Logging Process Failures
       levels:
@@ -168,100 +185,123 @@ controls:
           - auditd_data_disk_error_action
           - auditd_data_disk_full_action
       status: automated
-    - id: au-5.1
-      title: Storage Capacity Warning
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: au-5.2
-      title: Real-time Alerts
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: au-5.3
-      title: Configurable Traffic Volume Thresholds
-      rules: []
-      status: pending
-    - id: au-5.4
-      title: Shutdown on Failure
-      rules: []
-      status: pending
-    - id: au-5.5
-      title: Alternate Audit Logging Capability
-      rules: []
-      status: pending
+      controls:
+          - id: au-5.1
+            title: Storage Capacity Warning
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: au-5.2
+            title: Real-time Alerts
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: au-5.3
+            title: Configurable Traffic Volume Thresholds
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-5.4
+            title: Shutdown on Failure
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-5.5
+            title: Alternate Audit Logging Capability
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-6
       title: Audit Record Review, Analysis, and Reporting
       levels:
           - low
       rules: []
       status: pending
-    - id: au-6.1
-      title: Automated Process Integration
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: au-6.2
-      title: Automated Security Alerts
-      rules: []
-      status: pending
-    - id: au-6.3
-      title: Correlate Audit Record Repositories
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: au-6.4
-      title: Central Review and Analysis
-      rules: []
-      status: pending
-    - id: au-6.5
-      title: Integrated Analysis of Audit Records
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: au-6.6
-      title: Correlation with Physical Monitoring
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: au-6.7
-      title: Permitted Actions
-      rules: []
-      status: pending
-    - id: au-6.8
-      title: Full Text Analysis of Privileged Commands
-      rules: []
-      status: pending
-    - id: au-6.9
-      title: Correlation with Information from Nontechnical Sources
-      rules: []
-      status: pending
-    - id: au-6.10
-      title: Audit Level Adjustment
-      rules: []
-      status: pending
+      controls:
+          - id: au-6.1
+            title: Automated Process Integration
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: au-6.2
+            title: Automated Security Alerts
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-6.3
+            title: Correlate Audit Record Repositories
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: au-6.4
+            title: Central Review and Analysis
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-6.5
+            title: Integrated Analysis of Audit Records
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: au-6.6
+            title: Correlation with Physical Monitoring
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: au-6.7
+            title: Permitted Actions
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-6.8
+            title: Full Text Analysis of Privileged Commands
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-6.9
+            title: Correlation with Information from Nontechnical Sources
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-6.10
+            title: Audit Level Adjustment
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-7
       title: Audit Record Reduction and Report Generation
       levels:
           - moderate
       rules: []
       status: pending
-    - id: au-7.1
-      title: Automatic Processing
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: au-7.2
-      title: Automatic Sort and Search
-      rules: []
-      status: pending
+      controls:
+          - id: au-7.1
+            title: Automatic Processing
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: au-7.2
+            title: Automatic Sort and Search
+            rules: []
+            status: pending
+            levels:
+                - moderate
     - id: au-8
       title: Time Stamps
       levels:
@@ -272,14 +312,19 @@ controls:
           - auditd_data_retention_max_log_file
           - auditd_data_retention_max_log_file_action
       status: automated
-    - id: au-8.1
-      title: Synchronization with Authoritative Time Source
-      rules: []
-      status: pending
-    - id: au-8.2
-      title: Secondary Authoritative Time Source
-      rules: []
-      status: pending
+      controls:
+          - id: au-8.1
+            title: Synchronization with Authoritative Time Source
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-8.2
+            title: Secondary Authoritative Time Source
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-9
       title: Protection of Audit Information
       levels:
@@ -290,79 +335,102 @@ controls:
           - file_ownership_audit_binaries
           - file_ownership_audit_configuration
       status: automated
-    - id: au-9.1
-      title: Hardware Write-once Media
-      rules: []
-      status: pending
-    - id: au-9.2
-      title: Store on Separate Physical Systems or Components
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: au-9.3
-      title: Cryptographic Protection
-      levels:
-          - high
-      rules:
-          - aide_check_audit_tools
-      status: automated
-    - id: au-9.4
-      title: Access by Subset of Privileged Users
-      levels:
-          - moderate
-      rules:
-          - file_group_ownership_var_log_audit
-          - file_permissions_var_log_audit
-      status: automated
-    - id: au-9.5
-      title: Dual Authorization
-      rules: []
-      status: pending
-    - id: au-9.6
-      title: Read-only Access
-      rules: []
-      status: pending
-    - id: au-9.7
-      title: Store on Component with Different Operating System
-      rules: []
-      status: pending
+      controls:
+          - id: au-9.1
+            title: Hardware Write-once Media
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-9.2
+            title: Store on Separate Physical Systems or Components
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: au-9.3
+            title: Cryptographic Protection
+            levels:
+                - high
+            rules:
+                - aide_check_audit_tools
+            status: automated
+          - id: au-9.4
+            title: Access by Subset of Privileged Users
+            levels:
+                - moderate
+            rules:
+                - file_group_ownership_var_log_audit
+                - file_permissions_var_log_audit
+            status: automated
+          - id: au-9.5
+            title: Dual Authorization
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-9.6
+            title: Read-only Access
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-9.7
+            title: Store on Component with Different Operating System
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-10
       title: Non-repudiation
       levels:
           - high
       rules: []
       status: pending
-    - id: au-10.1
-      title: Association of Identities
-      rules: []
-      status: pending
-    - id: au-10.2
-      title: Validate Binding of Information Producer Identity
-      rules: []
-      status: pending
-    - id: au-10.3
-      title: Chain of Custody
-      rules: []
-      status: pending
-    - id: au-10.4
-      title: Validate Binding of Information Reviewer Identity
-      rules: []
-      status: pending
-    - id: au-10.5
-      title: Digital Signatures
-      rules: []
-      status: pending
+      controls:
+          - id: au-10.1
+            title: Association of Identities
+            rules: []
+            status: pending
+            levels:
+                - high
+          - id: au-10.2
+            title: Validate Binding of Information Producer Identity
+            rules: []
+            status: pending
+            levels:
+                - high
+          - id: au-10.3
+            title: Chain of Custody
+            rules: []
+            status: pending
+            levels:
+                - high
+          - id: au-10.4
+            title: Validate Binding of Information Reviewer Identity
+            rules: []
+            status: pending
+            levels:
+                - high
+          - id: au-10.5
+            title: Digital Signatures
+            rules: []
+            status: pending
+            levels:
+                - high
     - id: au-11
       title: Audit Record Retention
       levels:
           - low
       rules: []
       status: pending
-    - id: au-11.1
-      title: Long-term Retrieval Capability
-      rules: []
-      status: pending
+      controls:
+          - id: au-11.1
+            title: Long-term Retrieval Capability
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-12
       title: Audit Record Generation
       levels:
@@ -418,58 +486,65 @@ controls:
           - grub2_audit_argument
           - service_auditd_enabled
       status: automated
-    - id: au-12.1
-      title: System-wide and Time-correlated Audit Trail
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: au-12.2
-      title: Standardized Formats
-      rules: []
-      status: pending
-    - id: au-12.3
-      title: Changes by Authorized Individuals
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: au-12.4
-      title: Query Parameter Audits of Personally Identifiable Information
-      rules: []
-      status: pending
+      controls:
+          - id: au-12.1
+            title: System-wide and Time-correlated Audit Trail
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: au-12.2
+            title: Standardized Formats
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: au-12.3
+            title: Changes by Authorized Individuals
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: au-12.4
+            title: Query Parameter Audits of Personally Identifiable Information
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: au-13
       title: Monitoring for Information Disclosure
       rules: []
       status: pending
-    - id: au-13.1
-      title: Use of Automated Tools
-      rules: []
-      status: pending
-    - id: au-13.2
-      title: Review of Monitored Sites
-      rules: []
-      status: pending
-    - id: au-13.3
-      title: Unauthorized Replication of Information
-      rules: []
-      status: pending
+      controls:
+          - id: au-13.1
+            title: Use of Automated Tools
+            rules: []
+            status: pending
+          - id: au-13.2
+            title: Review of Monitored Sites
+            rules: []
+            status: pending
+          - id: au-13.3
+            title: Unauthorized Replication of Information
+            rules: []
+            status: pending
     - id: au-14
       title: Session Audit
       rules: []
       status: pending
-    - id: au-14.1
-      title: System Start-up
-      rules: []
-      status: pending
-    - id: au-14.2
-      title: Capture and Record Content
-      rules: []
-      status: pending
-    - id: au-14.3
-      title: Remote Viewing and Listening
-      rules: []
-      status: pending
+      controls:
+          - id: au-14.1
+            title: System Start-up
+            rules: []
+            status: pending
+          - id: au-14.2
+            title: Capture and Record Content
+            rules: []
+            status: pending
+          - id: au-14.3
+            title: Remote Viewing and Listening
+            rules: []
+            status: pending
     - id: au-15
       title: Alternate Audit Logging Capability
       rules: []
@@ -478,15 +553,16 @@ controls:
       title: Cross-organizational Audit Logging
       rules: []
       status: pending
-    - id: au-16.1
-      title: Identity Preservation
-      rules: []
-      status: pending
-    - id: au-16.2
-      title: Sharing of Audit Information
-      rules: []
-      status: pending
-    - id: au-16.3
-      title: Disassociability
-      rules: []
-      status: pending
+      controls:
+          - id: au-16.1
+            title: Identity Preservation
+            rules: []
+            status: pending
+          - id: au-16.2
+            title: Sharing of Audit Information
+            rules: []
+            status: pending
+          - id: au-16.3
+            title: Disassociability
+            rules: []
+            status: pending
