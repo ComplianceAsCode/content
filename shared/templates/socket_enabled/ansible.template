@@ -9,6 +9,7 @@
     cmd: systemctl -q list-unit-files --type socket
   register: result_systemd_unit_files
   changed_when: false
+  failed_when: result_systemd_unit_files.rc not in [0, 1]
   check_mode: false
 
 - name: "{{{ rule_title }}} - Ensure {{{ SOCKETNAME }}}.socket is Enabled"
