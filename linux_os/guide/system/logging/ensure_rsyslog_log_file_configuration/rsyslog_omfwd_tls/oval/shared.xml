@@ -4,8 +4,12 @@
         <criteria operator="OR">
             <criterion comment="No omfwd action blocks are configured"
                         test_ref="test_{{{ rule_id }}}_no_omfwd" />
-            <criterion comment="All omfwd action blocks have TLS enabled"
-                        test_ref="test_{{{ rule_id }}}_tls" />
+            <criteria operator="AND">
+                <criterion comment="All omfwd action blocks have TLS enabled"
+                            test_ref="test_{{{ rule_id }}}_tls" />
+                <criterion comment="Check for conflicting TLS-disabled directives in omfwd action blocks"
+                            test_ref="test_{{{ rule_id }}}_tls_disabled" negate="true" />
+            </criteria>
         </criteria>
     </definition>
 
@@ -31,6 +35,19 @@
 
     <ind:textfilecontent54_state id="state_{{{ rule_id }}}_tls"
         comment="TLS must be enabled via tls=on or StreamDriverMode=1" version="1">
-        <ind:subexpression datatype="string" operation="pattern match">[\S\s]*\s(?i)(?:tls(?-i)\s*=\s*"on"|(?i)streamdrivermode(?-i)\s*=\s*"1")</ind:subexpression>
+        <ind:subexpression datatype="string" operation="pattern match">[\S\s]*\s(?:(?i)tls(?-i)\s*=\s*"on"|(?i)streamdrivermode(?-i)\s*=\s*"1")</ind:subexpression>
     </ind:textfilecontent54_state>
+
+    <ind:textfilecontent54_test id="test_{{{ rule_id }}}_tls_disabled"
+        comment="Verify all omfwd action blocks have TLS disabled"
+        check_existence="at_least_one_exists" check="all" version="1">
+        <ind:object object_ref="obj_{{{ rule_id }}}_omfwd" />
+        <ind:state state_ref="state_{{{ rule_id }}}_tls_disabled" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_state id="state_{{{ rule_id }}}_tls_disabled"
+        comment="TLS must be disabled via tls=off or StreamDriverMode=0" version="1">
+        <ind:subexpression datatype="string" operation="pattern match">[\S\s]*\s(?:(?i)tls(?-i)\s*=\s*"off"|(?i)streamdrivermode(?-i)\s*=\s*"0")</ind:subexpression>
+    </ind:textfilecontent54_state>
+
 </def-group>

@@ -38,3 +38,10 @@
         regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"(?:(?!tls\s*=\s*"\S*")[\s\S])*?)(\)\s*)$'
         replace: '\1  tls="on"\n\2'
       loop: "{{ rsyslog_files }}"
+
+    - name: "{{{ rule_title }}}: remove StreamDriverMode=0 from omfwd action to prevent conflict with tls=on"
+      ansible.builtin.replace:
+        path: "{{ item }}"
+        regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"[\s\S]*?)\s*StreamDriverMode\s*=\s*"0"([\s\S]*\))$'
+        replace: '\1\2'
+      loop: "{{ rsyslog_files }}"

@@ -15,5 +15,9 @@ if [ ${#files_containing_omfwd[@]} -gt 0 ]; then
                 -e 's|(\s*action\s*\(\s*type\s*=\s*["]omfwd["])|\1\ntls="on"|gI' \
                 "$file"
         fi
+        # Remove StreamDriverMode="0" from omfwd blocks to prevent conflict with tls="on"
+        sed -i -E -e 'H;$!d;x;s/^\n//' \
+            -e 's|(\s*action\s*\(\s*type\s*=\s*["]omfwd["].*?)\s*StreamDriverMode\s*=\s*["]0["](.*\))|\1\2|gI' \
+            "$file"
     done
 fi
