@@ -142,14 +142,14 @@
 {{%- if system_with_expanded_kernel_options_in_loader_entries %}}
     <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
                                 comment="check absence of kernel command line parameters {{{ ARG_NAME}}} on all boot entries."
-                                check="all" check_existence="all_exist" version="1">
+                                check="at least one" check_existence="none_exist" version="1">
       <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" />
     </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" version="1">
     <ind:path>/boot/loader/entries/</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+    <ind:pattern operation="pattern match">^options .*\b{{{ ARG_NAME }}}\b</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_grub2_rescue_entry_for_{{{ _RULE_ID }}}</filter>
   </ind:textfilecontent54_object>
