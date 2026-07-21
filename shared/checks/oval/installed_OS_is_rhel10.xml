@@ -14,13 +14,7 @@
     <criteria>
       <criterion comment="Installed operating system is part of the unix family"
       test_ref="test_rhel10_unix_family" />
-      <criteria operator="OR">
-        <criterion comment="RHEL 10 is installed" test_ref="test_rhel10" />
-        <criteria operator="AND" comment="Red Hat Enterprise Virtualization Host is installed">
-          <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
-          <criterion comment="Red Hat Enterprise Virtualization Host is based on RHEL 10" test_ref="test_rhevh_rhel10_version" />
-        </criteria>
-      </criteria>
+      <criterion comment="RHEL 10 is installed" test_ref="test_rhel10" />
     </criteria>
   </definition>
 
@@ -44,16 +38,4 @@
     <linux:name>redhat-release</linux:name>
   </linux:rpminfo_object>
 
-  <ind:textfilecontent54_test check="all" comment="RHEVH base RHEL is version 10" id="test_rhevh_rhel10_version" version="1">
-    <ind:object object_ref="obj_rhevh_rhel10_version" />
-    <ind:state state_ref="state_rhevh_rhel10_version" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_rhevh_rhel10_version" version="1">
-    <ind:filepath>/etc/redhat-release</ind:filepath>
-    <ind:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_state id="state_rhevh_rhel10_version" version="1">
-    <ind:subexpression operation="pattern match">10</ind:subexpression>
-  </ind:textfilecontent54_state>
 </def-group>
