@@ -599,8 +599,8 @@ def escape_regex(text):
 
     This function mimics the behavior of re.escape() in Python 3.7, which escapes a reasonable set
     of characters.
-    Specifically, it escapes the following characters: #, $, &, *, +, ., ^, `, |, ~, :, (, ), and -.
-    Note that the characters '!', '"', '%', "'", ',', '/', ':', ';', '<', '=', '>', '@', and "`"
+    Specifically, it escapes the following characters: #, $, &, *, +, ., ?, ^, `, |, ~, :, (, ), [, ], and -.
+    Note that the characters '!', '"', '%', "'", ',', '/', ';', '<', '=', '>', '@', and "`"
     are not escaped.
 
     Args:
@@ -612,8 +612,9 @@ def escape_regex(text):
     # We could use re.escape(), but it escapes too many characters, including plain white space.
     # In python 3.7 the set of characters escaped by re.escape is reasonable, so lets mimic it.
     # See https://docs.python.org/3/library/re.html#re.sub
-    # '!', '"', '%', "'", ',', '/', ':', ';', '<', '=', '>', '@', and "`" are not escaped.
-    return re.sub(r"([#$&*+.^`|~:()\[\]-])", r"\\\1", text)
+    # '!', '"', '%', "'", ',', '/', ';', '<', '=', '>', '@', and "`" are not escaped.
+    # '?' must be escaped; otherwise plain-text questions become regex quantifiers.
+    return re.sub(r"([#$&*+.?^`|~:()\[\]-])", r"\\\1", text)
 
 
 def escape_id(text):
