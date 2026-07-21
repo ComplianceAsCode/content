@@ -1012,15 +1012,8 @@ controls:
       title: RHEL 10 must be configured to prohibit modification of permissions for cron configuration
           files and directories from the operating system defaults.
       rules:
-          - file_permissions_cron_d
-          - file_permissions_cron_daily
-          - file_permissions_cron_hourly
-          - file_permissions_cron_monthly
-          - file_permissions_cron_weekly
-          - file_permissions_crontab
+          - file_permissions_cron_not_modified
       status: automated
-      notes: >
-          TODO: STIG recommends to use rpm to verify that permissions match the operating system defaults.
     - id: RHEL-10-400235
       levels:
           - medium
