@@ -19,11 +19,18 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel libxml2-devel libxslt-devel python3-setuptools gawk
+        run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel libxml2-devel libxslt-devel python3-setuptools gawk golang
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v4
       - name: Install deps python
         run: pip install pcre2==0.4.0 -r requirements.txt -r test-requirements.txt
+      # celctl lives in compliance-operator (cmd/celctl) but no release ships it
+      # yet, so pin @master; replace with the release tag once one exists. The
+      # CEL unit tests skip evaluation gracefully if this install ever fails.
+      - name: Install celctl (evaluates CEL rule fixtures in unit tests)
+        run: GOBIN=/usr/local/bin go install github.com/ComplianceAsCode/compliance-operator/cmd/celctl@master
+        env:
+          GOTOOLCHAIN: auto
       - name: Build
         run: |-
           ./build_product -j$(nproc) \
