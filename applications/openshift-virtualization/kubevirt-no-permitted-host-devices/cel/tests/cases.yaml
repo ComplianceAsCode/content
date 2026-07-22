@@ -1,0 +1,80 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: celctl cac scaffold --from-cluster
+  date: '2026-07-14'
+  openshift_version: 4.22.0
+  kubernetes_version: v1.35.5
+  source_api_versions:
+    hcoList: hco.kubevirt.io/v1beta1
+cases:
+  - name: permittedHostDevices absent -> compliant
+    expect: true
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec: {}
+  - name: pciHostDevices configured -> non-compliant
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec:
+              permittedHostDevices:
+                pciHostDevices:
+                  - pciDeviceSelector: 10DE:1EB8
+                    resourceName: nvidia.com/GPU
+  - name: both device lists explicitly empty -> compliant
+    expect: true
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec:
+              permittedHostDevices:
+                pciHostDevices: []
+                mediatedDevices: []
+  - name: only pciHostDevices [] present (no devices permitted; current expression requires both keys,
+      see CMP-4447)
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec:
+              permittedHostDevices:
+                pciHostDevices: []
+  - name: no HyperConverged present -> non-compliant (size != 1)
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items: []

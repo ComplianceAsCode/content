@@ -24,6 +24,8 @@ if(PY_PYTEST)
     ssg_python_unit_tests("ssg-module" "." "")
     ssg_python_unit_tests("build-scripts" "." "")
     ssg_python_unit_tests("ssg_test_suite" "tests" "")
+    # CEL rule fixtures evaluated via celctl (skips itself when celctl is absent)
+    ssg_python_unit_tests("kubernetes" "." "")
 endif()
 
 add_test(
