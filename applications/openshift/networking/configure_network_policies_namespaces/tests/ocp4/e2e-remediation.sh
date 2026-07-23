@@ -14,12 +14,11 @@ cat << EOF | oc apply -n "$NS" -f -
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-all-ingress
+  name: allow-same-namespace
 spec:
-  podSelector: {}
+  podSelector:
   ingress:
-  - {}
-  policyTypes:
-  - Ingress
+  - from:
+    - podSelector: {}
 EOF
 done
