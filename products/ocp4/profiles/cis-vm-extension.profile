@@ -30,3 +30,4 @@ selections:
     - kubevirt-enforce-trusted-tls-registries
     - kubevirt-no-vm-device-passthrough
     - kubevirt-no-shareable-disks
+    - kubevirt-disk-error-policy-not-ignore
