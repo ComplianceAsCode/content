@@ -30,7 +30,7 @@
     </criteria>
   </definition>
 
-{{% macro test_directory_acccess_var_log_audit(audit_tool, filepath, bits) %}}
+{{% macro test_directory_access_var_log_audit(audit_tool, filepath, bits) %}}
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="audit {{{ audit_tool }}} {{{ NAME }}}" id="test_{{{ rule_id }}}_{{{ audit_tool }}}_{{{ bits }}}bit" version="1">
     <ind:object object_ref="object_{{{ rule_id }}}_{{{ audit_tool }}}_{{{ bits }}}bit" />
   </ind:textfilecontent54_test>
@@ -41,9 +41,9 @@
   </ind:textfilecontent54_object>
 {{% endmacro %}}
 
-{{{ test_directory_acccess_var_log_audit("augenrules", "^/etc/audit/rules\.d/.*\.rules$", "32") }}}
-{{{ test_directory_acccess_var_log_audit("augenrules", "^/etc/audit/rules\.d/.*\.rules$", "64") }}}
-{{{ test_directory_acccess_var_log_audit("auditctl", "/etc/audit/audit.rules", "32") }}}
-{{{ test_directory_acccess_var_log_audit("auditctl", "/etc/audit/audit.rules", "64") }}}
+{{{ test_directory_access_var_log_audit("augenrules", "^/etc/audit/rules\.d/.*\.rules$", "32") }}}
+{{{ test_directory_access_var_log_audit("augenrules", "^/etc/audit/rules\.d/.*\.rules$", "64") }}}
+{{{ test_directory_access_var_log_audit("auditctl", "/etc/audit/audit.rules", "32") }}}
+{{{ test_directory_access_var_log_audit("auditctl", "/etc/audit/audit.rules", "64") }}}
 
 </def-group>
