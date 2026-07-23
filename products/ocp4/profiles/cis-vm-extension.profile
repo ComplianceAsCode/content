@@ -30,3 +30,4 @@ selections:
     - kubevirt-enforce-trusted-tls-registries
     - kubevirt-downward-metrics-disabled
     - kubevirt-ksm-disabled
+    - kubevirt-no-jsonpatch-annotations
