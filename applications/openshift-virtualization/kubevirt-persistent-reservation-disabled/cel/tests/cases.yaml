@@ -2,8 +2,8 @@
 # via celctl (cel-go, the Compliance Operator scanner engine).
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
-  fetched_with: celctl cac scaffold --from-cluster
-  date: '2026-07-14'
+  fetched_with: celctl cac scaffold --from-cluster (hand-extended for fix cases)
+  date: '2026-07-23'
   openshift_version: 4.22.0
   kubernetes_version: v1.35.5
   source_api_versions:
@@ -39,9 +39,9 @@ cases:
             spec:
               featureGates:
                 persistentReservation: true
-  - name: persistentReservation absent (semantic default disabled; current expression requires explicit
-      false, see CMP-4449)
-    expect: false
+  - name: persistentReservation absent (semantic default disabled) -> compliant (CMP-4449
+      fix)
+    expect: true
     inputs:
       hcoList:
         apiVersion: v1
@@ -53,7 +53,21 @@ cases:
               name: kubevirt-hyperconverged
               namespace: openshift-cnv
             spec:
-              featureGates: {}
+              featureGates:
+                downwardMetrics: false
+  - name: no featureGates at all -> compliant (default disabled)
+    expect: true
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec: {}
   - name: no HyperConverged present -> non-compliant (size != 1)
     expect: false
     inputs:
