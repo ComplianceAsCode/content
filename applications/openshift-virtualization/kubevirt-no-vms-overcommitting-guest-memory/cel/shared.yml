@@ -1,21 +1,20 @@
 check_type: Platform
 
 failure_reason: |-
-    The '.spec.template.spec.domain.resources.overcommitGuestOverhead' field exists and is
-    set to "true" in the 'VirtualMachine' resource, allowing VMs to
-    overcommit KubeVirt's memory which may lead to guests crashing and
-    interrupting workloads causing malfunctions.
+    One or more 'VirtualMachine' resources set
+    '.spec.template.spec.domain.resources.overcommitGuestOverhead' to "true",
+    allowing VMs to overcommit KubeVirt's memory which may lead to guests
+    crashing and interrupting workloads causing malfunctions.
 
 inputs:
   - name: vms
     kubernetes_input_spec:
       api_version: kubevirt.io/v1
-      resource: VirtualMachine
+      resource: virtualmachines
 
 expression: |
-  vms.all(h,
-      !has(h.spec.template.spec.domain.resources) ||
-      !has(h.spec.template.spec.domain.resources.overcommitGuestOverhead) ||
-      (has(h.spec.template.spec.domain.resources.overcommitGuestOverhead) &&
-       h.spec.template.spec.domain.resources.overcommitGuestOverhead == false)
+  vms.items.all(v,
+      !has(v.spec.template.spec.domain.resources) ||
+      !has(v.spec.template.spec.domain.resources.overcommitGuestOverhead) ||
+      v.spec.template.spec.domain.resources.overcommitGuestOverhead == false
   )
