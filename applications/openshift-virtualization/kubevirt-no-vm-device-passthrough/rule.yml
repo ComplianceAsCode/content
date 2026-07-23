@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Virtual Machines Must Not Pass Through GPUs or Host Devices'
+
+description: |-
+    Passing host devices (GPUs, PCI or USB devices) through to a virtual
+    machine gives the guest direct access to host hardware, bypassing the
+    hypervisor's isolation. A compromised guest with device passthrough can
+    attack the host through the device (DMA, firmware) far more easily than
+    through the virtualized surface. Only explicitly approved workloads
+    should use passthrough; any use must be reviewed.
+
+rationale: |-
+    Every '.spec.template.spec.domain.devices.gpus' or
+    '.spec.template.spec.domain.devices.hostDevices' entry on a
+    VirtualMachine widens the guest's reach into host hardware and weakens
+    the isolation boundary that virtualization provides.
+
+severity: medium
+
+ocil_clause: 'a VirtualMachine requests GPU or host-device passthrough'
+
+ocil: |-
+    Run the following command to list virtual machines requesting device
+    passthrough:
+    <pre>$ oc get vm -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}: gpus={.spec.template.spec.domain.devices.gpus} hostDevices={.spec.template.spec.domain.devices.hostDevices}{"\n"}{end}'</pre>
+    No virtual machine should list gpus or hostDevices entries.
