@@ -38,3 +38,4 @@ selections:
     - kubevirt-restrict-migration-tools-access
     - kubevirt-downward-metrics-disabled
     - kubevirt-ksm-disabled
+    - kubevirt-no-jsonpatch-annotations

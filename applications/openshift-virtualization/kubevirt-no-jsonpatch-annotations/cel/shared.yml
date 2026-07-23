@@ -1,0 +1,31 @@
+check_type: Platform
+
+failure_reason: |-
+    The 'kubevirt-hyperconverged' resource carries one or more jsonpatch
+    annotations (kubevirt.kubevirt.io/jsonpatch,
+    containerizeddataimporter.kubevirt.io/jsonpatch,
+    networkaddonsconfigs.kubevirt.io/jsonpatch or ssp.kubevirt.io/jsonpatch),
+    patching operand resources outside the supported API.
+
+inputs:
+  - name: hcoList
+    kubernetes_input_spec:
+      api_version: hco.kubevirt.io/v1beta1
+      resource: hyperconvergeds
+
+expression: |
+  hcoList.items.filter(h,
+      h.metadata.name == 'kubevirt-hyperconverged' &&
+      h.metadata.namespace == 'openshift-cnv'
+  ).size() == 1 &&
+  hcoList.items.filter(h,
+      h.metadata.name == 'kubevirt-hyperconverged' &&
+      h.metadata.namespace == 'openshift-cnv'
+  ).all(h,
+      !has(h.metadata.annotations) || (
+        !("kubevirt.kubevirt.io/jsonpatch" in h.metadata.annotations) &&
+        !("containerizeddataimporter.kubevirt.io/jsonpatch" in h.metadata.annotations) &&
+        !("networkaddonsconfigs.kubevirt.io/jsonpatch" in h.metadata.annotations) &&
+        !("ssp.kubevirt.io/jsonpatch" in h.metadata.annotations)
+      )
+  )

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'HyperConverged Resource Must Not Carry Unsupported JSON-Patch Annotations'
+
+description: |-
+    OpenShift Virtualization supports jsonpatch annotations
+    (<tt>kubevirt.kubevirt.io/jsonpatch</tt>,
+    <tt>containerizeddataimporter.kubevirt.io/jsonpatch</tt>,
+    <tt>networkaddonsconfigs.kubevirt.io/jsonpatch</tt> and
+    <tt>ssp.kubevirt.io/jsonpatch</tt>) that patch the operand custom
+    resources directly, bypassing the supported HyperConverged API surface.
+    Such patches are unsupported, are not validated, can silently disable
+    security-relevant settings, and survive upgrades unnoticed.
+
+    Environments with an authorized, documented need for a jsonpatch must
+    waive this rule for the specific annotation.
+
+rationale: |-
+    Direct patches to the KubeVirt, CDI, network-addons or SSP operands
+    circumvent the configuration controls and validation the HyperConverged
+    operator provides, creating undocumented configuration drift that may
+    weaken the virtualization platform's security posture.
+
+severity: medium
+
+ocil_clause: 'a jsonpatch annotation is present on the HyperConverged resource'
+
+ocil: |-
+    Run the following command to check for jsonpatch annotations:
+    <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.metadata.annotations}'</pre>
+    None of the following keys should be present:
+    <tt>kubevirt.kubevirt.io/jsonpatch</tt>,
+    <tt>containerizeddataimporter.kubevirt.io/jsonpatch</tt>,
+    <tt>networkaddonsconfigs.kubevirt.io/jsonpatch</tt>,
+    <tt>ssp.kubevirt.io/jsonpatch</tt>.
