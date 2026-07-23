@@ -29,3 +29,4 @@ selections:
     - kubevirt-no-vms-overcommitting-guest-memory
     - kubevirt-enforce-trusted-tls-registries
     - kubevirt-no-vm-device-passthrough
+    - kubevirt-no-shareable-disks
