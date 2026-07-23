@@ -1,8 +1,1 @@
-# CEL rules excluded from lint/fixture unit testing, each with a tracking issue.
-# Remove the entry when the rule is fixed and add cel/tests fixtures for it.
-kubevirt-no-vms-overcommitting-guest-memory:
-  reason: >
-    Expression iterates the list input without .items (vms.all instead of
-    vms.items.all), so evaluation always errors and the scanner reports FAIL
-    regardless of cluster state. Fix tracked in CMP-4451; fixtures will be
-    added with the fix.
+[]
