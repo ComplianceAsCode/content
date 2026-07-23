@@ -44,7 +44,7 @@ ocil: |-
     The following rich-rules should be listed:
     <pre>
     rule family="ipv4" source address="127.0.0.1" destination not address="127.0.0.1" drop
-    rule family="ipv6" source address="::1" destination not address="127.0.0.1" drop
+    rule family="ipv6" source address="::1" destination not address="::1" drop
     </pre>
 
 fixtext: |-
