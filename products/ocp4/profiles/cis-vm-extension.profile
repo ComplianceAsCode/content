@@ -28,3 +28,4 @@ selections:
     - kubevirt-persistent-reservation-disabled
     - kubevirt-no-vms-overcommitting-guest-memory
     - kubevirt-enforce-trusted-tls-registries
+    - kubevirt-restrict-migration-tools-access

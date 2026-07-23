@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Restrict Namespace Administrator Access to Migration Tools'
+
+description: |-
+    Only authorized subjects should be allowed to create
+    <tt>VirtualMachineInstanceMigration</tt> (vmim) and
+    <tt>MigrationPolicy</tt> resources. Unrestricted access to these
+    resources allows namespace administrators to trigger live migrations
+    and define migration policies, which can affect workload placement,
+    resource consumption, and the overall stability of the cluster.
+
+rationale: |-
+    Virtual machine live migration moves a running VM between nodes.
+    Granting the ability to create <tt>VirtualMachineInstanceMigration</tt>
+    or <tt>MigrationPolicy</tt> objects to untrusted or unnecessary
+    subjects increases the risk of unplanned resource contention,
+    denial of service through excessive migrations, and potential
+    exposure of workload data during the migration process. Restricting
+    access to these resources ensures that only approved administrators
+    can initiate or influence VM migration behavior.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects can create vmim or migrationpolicy resources'
+
+ocil: |-
+    Run the following commands to check which subjects can create
+    migration-related resources:
+    <pre>$ oc adm policy who-can create vmim</pre>
+    <pre>$ oc adm policy who-can create migrationpolicy</pre>
+    Verify that only authorized subjects are listed in the output.

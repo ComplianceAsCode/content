@@ -339,8 +339,10 @@ def generate_cel_content(cel_rules, profiles):
         for rule_id in profile.selected:
             if rule_id not in cel_rule_ids:
                 rule_name = rule_id_to_name(rule_id)
-                raise ValueError(
-                    f"profile '{profile_name}' references unknown rule '{rule_name}'"
+                logging.warning(
+                    "profile '%s' references rule '%s' without CEL checks "
+                    "(manual rule) - skipping from CEL content",
+                    profile_name, rule_name,
                 )
 
         cel_profile = profile_to_cel_dict(profile, cel_rule_ids)
