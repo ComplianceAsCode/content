@@ -567,6 +567,8 @@ class Policy(ssg.entities.common.XCCDFEntity):
             tree (Any): The tree structure containing controls to be parsed and saved.
         """
         for c in self._parse_controls_tree(tree):
+            if c.id in self.controls_by_id:
+                raise ValueError(f"Control '{c.id}' already exists in policy '{self.id}'")
             self.controls.append(c)
             self.controls_by_id[c.id] = c
 
