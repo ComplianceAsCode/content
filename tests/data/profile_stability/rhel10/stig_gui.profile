@@ -379,8 +379,8 @@ require_singleuser_auth
 root_permissions_syslibrary_files
 rootfiles_configured
 rsyslog_cron_logging
-rsyslog_encrypt_offload_actionsendstreamdriverauthmode
 rsyslog_nolisten
+rsyslog_omfwd_authmode
 rsyslog_omfwd_streamdriver
 rsyslog_omfwd_tls
 rsyslog_remote_access_monitoring
