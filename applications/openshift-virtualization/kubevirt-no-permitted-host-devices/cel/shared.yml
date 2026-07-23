@@ -1,8 +1,9 @@
 check_type: Platform
 
 failure_reason: |-
-    The '.spec.permittedHostDevices' field is set in the 'kubevirt-hyperconverged'
-    resource, allowing host devices to be used by virtualization workloads.
+    The '.spec.permittedHostDevices' field in the 'kubevirt-hyperconverged'
+    resource permits one or more host devices (pciHostDevices, mediatedDevices
+    or usbHostDevices) to be used by virtualization workloads.
 
 inputs:
   - name: hcoList
@@ -21,6 +22,9 @@ expression: |
   ).all(h,
       !has(h.spec.permittedHostDevices) ||
       h.spec.permittedHostDevices == null ||
-      (has(h.spec.permittedHostDevices.pciHostDevices) && size(h.spec.permittedHostDevices.pciHostDevices) == 0) &&
-      (has(h.spec.permittedHostDevices.mediatedDevices) && size(h.spec.permittedHostDevices.mediatedDevices) == 0)
+      (
+        (!has(h.spec.permittedHostDevices.pciHostDevices) || size(h.spec.permittedHostDevices.pciHostDevices) == 0) &&
+        (!has(h.spec.permittedHostDevices.mediatedDevices) || size(h.spec.permittedHostDevices.mediatedDevices) == 0) &&
+        (!has(h.spec.permittedHostDevices.usbHostDevices) || size(h.spec.permittedHostDevices.usbHostDevices) == 0)
+      )
   )
