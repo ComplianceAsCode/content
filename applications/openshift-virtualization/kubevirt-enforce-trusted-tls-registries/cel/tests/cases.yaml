@@ -2,8 +2,8 @@
 # via celctl (cel-go, the Compliance Operator scanner engine).
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
-  fetched_with: celctl cac scaffold --from-cluster
-  date: '2026-07-14'
+  fetched_with: celctl cac scaffold --from-cluster (hand-extended for fix cases)
+  date: '2026-07-23'
   openshift_version: 4.22.0
   kubernetes_version: v1.35.5
   source_api_versions:
@@ -19,10 +19,25 @@ cases:
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
         spec: {}
+  - name: storageImport without insecureRegistries key -> compliant (CMP-4450 fix,
+      was eval ERROR)
+    expect: true
+    inputs:
+      hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
+        metadata:
+          name: kubevirt-hyperconverged
+          namespace: openshift-cnv
+        spec:
+          storageImport:
+            importProxy: {}
   - name: insecureRegistries empty -> compliant
     expect: true
     inputs:
       hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
         metadata:
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
@@ -33,21 +48,12 @@ cases:
     expect: false
     inputs:
       hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
         metadata:
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
         spec:
           storageImport:
             insecureRegistries:
-              - registry.example.internal:5000
-  - name: storageImport present without insecureRegistries key (no-such-key maps to FAIL in the scanner,
-      see CMP-4450)
-    expect: false
-    inputs:
-      hco:
-        metadata:
-          name: kubevirt-hyperconverged
-          namespace: openshift-cnv
-        spec:
-          storageImport:
-            scratchSpaceStorageClass: fast
+              - registry.internal:5000
