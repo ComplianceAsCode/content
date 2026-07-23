@@ -1,0 +1,84 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+# RHEL9 scanner VM for NIST 800-53 Gemara / complyctl E2E testing.
+#
+# Usage:
+#   cd utils/nist_sync/vagrant
+#   vagrant up                # brings up the VM (libvirt by default)
+#   vagrant ssh               # open a shell
+#   vagrant halt              # power off
+#   vagrant destroy           # remove completely
+#
+# After 'vagrant up', run:
+#   bash populate_inventory.sh          # writes ../ansible/inventory.ini
+#   ansible-playbook -i ../ansible/inventory.ini ../ansible/setup.yml \
+#       -e complyctl_bin=/home/$USER/bin/complyctl \
+#       -e provider_bin=~/.complytime/providers/complyctl-provider-openscap
+#   ansible-playbook -i ../ansible/inventory.ini ../ansible/scan.yml
+
+Vagrant.configure("2") do |config|
+  # generic/rhel9 ships without a Red Hat subscription — no repos by default.
+  # The provisioner below adds CentOS Stream 9 BaseOS/AppStream mirrors so that
+  # openscap-scanner, scap-security-guide, and podman can be installed.
+  config.vm.box = "generic/rhel9"
+  config.vm.hostname = "nist-rhel9-scanner"
+
+  # Private network — host can reach VM via its DHCP-assigned IP.
+  # populate_inventory.sh extracts this IP via 'vagrant ssh-config'.
+  config.vm.network "private_network", type: "dhcp"
+
+  config.vm.provider "libvirt" do |v|
+    v.memory = 2048
+    v.cpus   = 2
+    # The libvirt domain name is auto-derived from the Vagrantfile directory + hostname,
+    # so it won't collide with a pre-existing 'rhel9' libvirt domain.
+  end
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.cpus   = 2
+    v.name   = "nist-gemara-rhel9"
+    v.customize ["modifyvm", :id, "--nictype1", "virtio"]
+  end
+
+  # Configure CentOS Stream 9 repos and install OS-level dependencies.
+  # These repos are binary-compatible with RHEL9 and publicly accessible without subscription.
+  config.vm.provision "shell", name: "base-packages", inline: <<~SHELL
+    set -euo pipefail
+
+    echo "=== Configuring CentOS Stream 9 repos ==="
+    cat > /etc/yum.repos.d/centos-stream9.repo << 'REPO'
+[cs9-baseos]
+name=CentOS Stream 9 - BaseOS
+baseurl=https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/
+gpgcheck=0
+enabled=1
+
+[cs9-appstream]
+name=CentOS Stream 9 - AppStream
+baseurl=https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/
+gpgcheck=0
+enabled=1
+REPO
+
+    echo "=== Installing base packages ==="
+    # Only openscap — podman has a hardcoded RPM file conflict with redhat-release on
+    # generic/rhel9 boxes (containers-common vs redhat-release-9.3).
+    # The OCI registry runs on the host instead (see setup.yml / scan.yml).
+    dnf install -y openscap-scanner openscap-engine-sce 2>&1 | tail -5
+
+    # scap-security-guide provides /usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml.
+    # If unavailable here, setup.yml will copy the data stream built from source.
+    dnf install -y scap-security-guide 2>&1 | tail -5 || \
+      echo "  [WARN] scap-security-guide unavailable; Ansible will copy the built data stream."
+
+    echo "=== Base provisioning complete ==="
+  SHELL
+
+  # After 'vagrant up', write the Ansible inventory on the host machine.
+  config.trigger.after [:up, :reload] do |trigger|
+    trigger.info = "Updating Ansible inventory (../ansible/inventory.ini)..."
+    trigger.run  = { path: "populate_inventory.sh" }
+  end
+end

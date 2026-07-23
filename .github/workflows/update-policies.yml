@@ -1,0 +1,254 @@
+name: Update complytime-policies with Gemara artifacts
+
+# Triggers when NIST 800-53 control files or Gemara export code changes on master.
+# Exports Gemara artifacts and opens a PR on complytime/complytime-policies so
+# their CI (gemara-publish-action) can sign, attest, and publish OCI bundles.
+
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'products/rhel8/controls/nist_800_53/**'
+      - 'products/rhel9/controls/nist_800_53/**'
+      - 'products/rhel10/controls/nist_800_53/**'
+      - 'utils/nist_sync/export_to_gemara.py'
+      - 'utils/nist_sync/gemara/**'
+      - 'utils/nist_sync/generate_policies_pr.py'
+      - 'utils/nist_sync/data/nist_800_53_rev5_catalog.json'
+      - 'utils/nist_sync/data/nist_800_53_rev5_*_baseline.json'
+  schedule:
+    # Every Wednesday at 04:43 UTC (off-peak, avoids :00/:30 fleet collisions)
+    - cron: '43 4 * * 3'
+  workflow_dispatch:
+    inputs:
+      products:
+        description: 'Comma-separated list of products to sync (default: rhel8,rhel9,rhel10)'
+        required: false
+        default: 'rhel8,rhel9,rhel10'
+
+jobs:
+  update-policies:
+    name: Update complytime-policies
+    runs-on: ubuntu-latest
+    # Only run in the upstream repo, not in forks
+    if: github.repository == 'ComplianceAsCode/content'
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          dnf install -y \
+            git \
+            python3 \
+            python3-pip \
+            python3-jinja2 \
+            python3-pyyaml \
+            python3-setuptools
+
+      - name: Checkout ComplianceAsCode/content
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        with:
+          path: content
+
+      - name: Configure git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE/content"
+
+      - name: Install Python dependencies
+        run: pip install ruamel.yaml
+
+      - name: Determine products to sync
+        id: config
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
+             [ -n "${{ inputs.products }}" ]; then
+            PRODUCTS="${{ inputs.products }}"
+          else
+            PRODUCTS="rhel8,rhel9,rhel10"
+          fi
+          echo "products=${PRODUCTS}" >> "$GITHUB_OUTPUT"
+
+      - name: Export NIST 800-53 controls to Gemara format
+        id: export
+        env:
+          PYTHONPATH: "${{ github.workspace }}/content"
+        run: |
+          cd content
+          mkdir -p build/gemara
+          python3 utils/nist_sync/export_to_gemara.py \
+            --products "${{ steps.config.outputs.products }}" \
+            --output-dir build/gemara \
+            --oscal-catalog utils/nist_sync/data/nist_800_53_rev5_catalog.json \
+            --data-dir utils/nist_sync/data
+
+      - name: Stage Gemara artifacts for complytime-policies layout
+        env:
+          PYTHONPATH: "${{ github.workspace }}/content"
+        run: |
+          cd content
+          python3 utils/nist_sync/generate_policies_pr.py \
+            --products "${{ steps.config.outputs.products }}" \
+            --gemara-dir build/gemara \
+            --output-dir /tmp/policies-staging
+
+      # Authenticate with a PAT that has write access to complytime/complytime-policies.
+      # Setup: add a personal access token (or GitHub App installation token) with
+      # Contents: Read & Write + Pull requests: Read & Write on complytime/complytime-policies
+      # as secret POLICIES_REPO_TOKEN in this repository's settings.
+      #
+      # Alternative (GitHub App):
+      #   uses: actions/create-github-app-token@...
+      #   with:
+      #     app-id: ${{ secrets.APP_ID }}
+      #     private-key: ${{ secrets.PRIVATE_KEY }}
+      #     owner: complytime
+      #     repositories: complytime-policies
+      - name: Clone complytime-policies
+        run: |
+          git clone --depth 1 \
+            "https://x-access-token:${{ secrets.POLICIES_REPO_TOKEN }}@github.com/complytime/complytime-policies.git" \
+            /tmp/complytime-policies
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install gh CLI
+        run: |
+          dnf install -y 'dnf-command(config-manager)'
+          dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
+          dnf install -y gh
+
+      - name: Check for existing open PR
+        id: check-pr
+        run: |
+          EXISTING_BRANCH=$(gh pr list \
+            --repo complytime/complytime-policies \
+            --state open \
+            --json headRefName \
+            --jq '.[] | select(.headRefName | startswith("update/nist-800-53-from-content-")) | .headRefName' \
+            | head -n 1)
+          if [ -n "$EXISTING_BRANCH" ]; then
+            echo "Found existing PR branch: $EXISTING_BRANCH"
+            echo "branch=${EXISTING_BRANCH}" >> "$GITHUB_OUTPUT"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            SHORT_SHA="${{ github.sha }}"
+            echo "branch=update/nist-800-53-from-content-${SHORT_SHA:0:8}" >> "$GITHUB_OUTPUT"
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.POLICIES_REPO_TOKEN }}
+
+      - name: Create or switch to PR branch
+        run: |
+          cd /tmp/complytime-policies
+          BRANCH="${{ steps.check-pr.outputs.branch }}"
+          git fetch --all
+          if git show-ref --verify --quiet "refs/remotes/origin/${BRANCH}"; then
+            git checkout -b "${BRANCH}" "origin/${BRANCH}"
+          else
+            git checkout -b "${BRANCH}"
+          fi
+
+      - name: Copy staged artifacts into complytime-policies
+        run: |
+          for subdir in bundles governance; do
+            src="/tmp/policies-staging/${subdir}"
+            dst="/tmp/complytime-policies/${subdir}"
+            if [ -d "$src" ]; then
+              mkdir -p "$dst"
+              cp -r "${src}/." "${dst}/"
+            fi
+          done
+
+      - name: Commit and push changes
+        id: commit
+        run: |
+          cd /tmp/complytime-policies
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes — complytime-policies is already up to date."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            PRODUCTS="${{ steps.config.outputs.products }}"
+            SHA="${{ github.sha }}"
+            git commit -m "$(cat <<EOF
+          chore: update NIST 800-53 Gemara artifacts
+
+          Products: ${PRODUCTS}
+          Source: ComplianceAsCode/content@${SHA:0:8} (${{ github.event_name }})
+          Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EOF
+          )"
+            git push -u origin "${{ steps.check-pr.outputs.branch }}"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create PR on complytime-policies
+        if: steps.commit.outputs.changed == 'true' && steps.check-pr.outputs.exists == 'false'
+        run: |
+          PRODUCTS="${{ steps.config.outputs.products }}"
+          CAC_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+          PR_BODY="$(cat <<EOF
+          ## Summary
+
+          Update NIST SP 800-53 Rev 5 Gemara artifacts for: \`${PRODUCTS}\`.
+
+          Generated from [ComplianceAsCode/content@${{ github.sha }}](${CAC_URL}) via [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+          ### Artifacts updated
+
+          - \`governance/catalogs/\` — ControlCatalog per product (NIST controls → CaC rules)
+          - \`governance/guidance/\` — GuidanceCatalog (NIST SP 800-53 Rev 5 guidance, shared)
+          - \`governance/policies/\` — Policy per product (assessment-plans for OpenSCAP)
+          - \`bundles/\` — Bundle manifests (layer list consumed by \`gemara-publish-action\`)
+
+          ### Verification checklist
+
+          - [ ] CUE schema validation passes (\`cue vet\`)
+          - [ ] \`gemara-publish-action\` assembles bundles successfully
+          - [ ] OCI artifacts published to GHCR / promoted to Quay
+          EOF
+          )"
+          gh pr create \
+            --repo complytime/complytime-policies \
+            --title "chore: update NIST 800-53 Gemara artifacts (${PRODUCTS})" \
+            --head "${{ steps.check-pr.outputs.branch }}" \
+            --base "main" \
+            --body "${PR_BODY}"
+        env:
+          GH_TOKEN: ${{ secrets.POLICIES_REPO_TOKEN }}
+
+      - name: Log status when PR already exists
+        if: steps.commit.outputs.changed == 'true' && steps.check-pr.outputs.exists == 'true'
+        run: |
+          echo "::notice::New commits pushed to existing PR branch ${{ steps.check-pr.outputs.branch }}"
+
+      - name: Log status when no changes
+        if: steps.commit.outputs.changed == 'false'
+        run: |
+          echo "::notice::complytime-policies is already up to date — no PR needed"
+
+      - name: Write job summary
+        if: always()
+        run: |
+          echo "## Gemara Policies Sync Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Field | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|-------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Products | ${{ steps.config.outputs.products }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Branch | ${{ steps.check-pr.outputs.branch }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Changes | ${{ steps.commit.outputs.changed }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Existing PR | ${{ steps.check-pr.outputs.exists }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -d /tmp/policies-staging ]; then
+            echo "### Staged files" >> "$GITHUB_STEP_SUMMARY"
+            find /tmp/policies-staging -type f | sort | while read -r f; do
+              rel="${f#/tmp/policies-staging/}"
+              echo "- \`${rel}\`" >> "$GITHUB_STEP_SUMMARY"
+            done
+          fi
