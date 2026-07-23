@@ -449,7 +449,8 @@ def normalize_passed_arguments(options):
     else:
         hypervisor, domain_name = options.libvirt
         # Possible hypervisor spec we have to catch: qemu+unix:///session
-        if not re.match(r"[\w\+]+:///", hypervisor):
+        # Also accept remote URIs like qemu+tcp://host/system (two slashes)
+        if not re.match(r"[\w\+]+://", hypervisor):
             hypervisor = "qemu:///" + hypervisor
         options.test_env = ssg_test_suite.test_env.VMTestEnv(
             options.scanning_mode, hypervisor, domain_name, options.keep_snapshots)
