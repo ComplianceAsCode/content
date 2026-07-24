@@ -4,7 +4,21 @@
     <criteria operator="AND">
       <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
       definition_ref="var_accounts_user_umask_as_number" />
+      {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+      <criteria operator="OR">
+        <criteria operator="AND">
+          <criterion comment="Check UMASK in {{{ login_defs_drop_in_path }}} is not set"
+              test_ref="test_accounts_umask_etc_login_defs_drop_in_path_not_set"/>
+          <criterion test_ref="tst_accounts_umask_etc_login_defs" />
+        </criteria>
+        <criteria operator="AND">
+          <criterion comment="Check UMASK should be set appropriately in {{{ login_defs_drop_in_path }}}"
+            test_ref="tst_accounts_umask_etc_login_defs_drop_in_path"/>
+        </criteria>
+      </criteria>
+      {{% else %}}
       <criterion test_ref="tst_accounts_umask_etc_login_defs" />
+      {{% endif %}}
     </criteria>
   </definition>
 
@@ -15,45 +29,8 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <local_variable id="var_first_digit_of_umask_from_etc_login_defs"
-  comment="First octal digit of umask from {{{ login_defs_path }}}"
-  datatype="int" version="1">
-    <substring substring_start="1" substring_length="1">
-      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_login_defs" />
-    </substring>
-  </local_variable>
-
-  <local_variable id="var_second_digit_of_umask_from_etc_login_defs"
-  comment="Second octal digit of umask from {{{ login_defs_path }}}"
-  datatype="int" version="1">
-    <substring substring_start="2" substring_length="1">
-      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_login_defs" />
-    </substring>
-  </local_variable>
-
-  <local_variable id="var_third_digit_of_umask_from_etc_login_defs"
-  comment="Third octal digit of umask from {{{ login_defs_path }}}"
-  datatype="int" version="1">
-    <substring substring_start="3" substring_length="1">
-      <object_component item_field="subexpression" object_ref="obj_umask_from_etc_login_defs" />
-    </substring>
-  </local_variable>
-
-  <local_variable id="var_etc_login_defs_umask_as_number"
-  comment="{{{ login_defs_path }}} umask converted from string to a number"
-  datatype="int" version="1">
-    <arithmetic arithmetic_operation="add">
-      <arithmetic arithmetic_operation="multiply">
-        <literal_component datatype="int">64</literal_component>
-        <variable_component var_ref="var_first_digit_of_umask_from_etc_login_defs" />
-      </arithmetic>
-      <arithmetic arithmetic_operation="multiply">
-        <literal_component datatype="int">8</literal_component>
-        <variable_component var_ref="var_second_digit_of_umask_from_etc_login_defs" />
-      </arithmetic>
-      <variable_component var_ref="var_third_digit_of_umask_from_etc_login_defs" />
-    </arithmetic>
-  </local_variable>
+  <!-- Use macro to generate umask conversion for main file -->
+  {{{ oval_umask_string_to_number("obj_umask_from_etc_login_defs", "etc_login_defs", login_defs_path) }}}
 
   <ind:variable_test id="tst_accounts_umask_etc_login_defs" version="1" check="all"
   comment="Test the retrieved {{{ login_defs_path }}} umask value(s) match the var_accounts_user_umask requirement">
@@ -65,10 +42,49 @@
     <ind:var_ref>var_etc_login_defs_umask_as_number</ind:var_ref>
   </ind:variable_object>
 
-  <!-- The 'var_accounts_user_umask_umask_as_number' variable is created by evaluation of
-       the referenced 'var_accounts_user_umask_as_number' OVAL definition -->
   <ind:variable_state id="ste_accounts_umask_etc_login_defs" version="1">
     <ind:value datatype="int" operation="bitwise and" var_ref="var_accounts_user_umask_umask_as_number" />
   </ind:variable_state>
+
+  {{% set login_defs_drop_in_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) %}}
+  
+  <ind:textfilecontent54_object id="obj_umask_from_drop_in_defs"
+  comment="Umask value from drop-in files" version="1">
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*UMASK[\s]+([^#\s]*)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Use macro to generate umask conversion for drop-in files -->
+  {{{ oval_umask_string_to_number("obj_umask_from_drop_in_defs", "drop_in_defs", login_defs_drop_in_config_dir) }}}
+
+  <ind:variable_test id="tst_accounts_umask_etc_login_defs_drop_in_path" version="1" check="all"
+  comment="Test the retrieved drop-in umask value(s) match the var_accounts_user_umask requirement">
+    <ind:object object_ref="obj_accounts_umask_etc_login_defs_drop_in_path" />
+    <ind:state state_ref="ste_accounts_umask_etc_login_defs_drop_in_path" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_accounts_umask_etc_login_defs_drop_in_path" version="1">
+    <ind:var_ref>var_drop_in_defs_umask_as_number</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="ste_accounts_umask_etc_login_defs_drop_in_path" version="1">
+    <ind:value datatype="int" operation="bitwise and" var_ref="var_accounts_user_umask_umask_as_number" />
+  </ind:variable_state>
+
+  <!-- Test if UMASK is not set in drop-in files -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      comment="Check UMASK in drop-in files is not set"
+      id="test_accounts_umask_etc_login_defs_drop_in_path_not_set">
+    <ind:object object_ref="object_accounts_umask_etc_login_defs_drop_in_path_not_set" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_umask_etc_login_defs_drop_in_path_not_set" version="1">
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*UMASK\s*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
 </def-group>

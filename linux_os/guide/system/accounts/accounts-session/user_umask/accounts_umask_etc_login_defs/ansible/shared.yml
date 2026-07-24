@@ -1,11 +1,21 @@
 # platform = multi_platform_all
-# reboot = false
+# disruption = low
 # strategy = restrict
 # complexity = low
-# disruption = low
 {{{ ansible_instantiate_variables("var_accounts_user_umask") }}}
 
-- name: Check if UMASK is already set
+{{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{{
+    ansible_login_defs(
+      parameter='UMASK',
+      value='{{ var_accounts_user_umask }}',
+      rule_title=rule_title,
+      cce=cce_cce_identifier
+    )
+}}}
+{{% else %}}
+- name: Set default umask
   ansible.builtin.lineinfile:
     path: {{{ login_defs_path }}}
     regexp: ^(\s*)UMASK\s+.*
@@ -30,3 +40,5 @@
     mode: 0644
   when:
     - result_umask_is_set.found == 0
+{{% endif %}}
+
