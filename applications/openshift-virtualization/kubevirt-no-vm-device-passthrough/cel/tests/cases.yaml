@@ -1,0 +1,94 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: modeled on real VirtualMachine API objects (celctl cac scaffold format)
+  date: '2026-07-23'
+  openshift_version: 4.22.0
+  kubernetes_version: v1.35.5
+  source_api_versions:
+    vms: kubevirt.io/v1
+cases:
+  - name: no VMs -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items: []
+  - name: VM without devices -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-plain
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices: {}
+  - name: VM with empty gpus/hostDevices lists -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-empty-lists
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      gpus: []
+                      hostDevices: []
+  - name: VM with a GPU passthrough -> non-compliant
+    expect: false
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-gpu
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      gpus:
+                        - deviceName: nvidia.com/T4
+                          name: gpu1
+  - name: VM with a host device -> non-compliant
+    expect: false
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-hostdev
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      hostDevices:
+                        - deviceName: kubevirt.io/usb-storage
+                          name: usb1

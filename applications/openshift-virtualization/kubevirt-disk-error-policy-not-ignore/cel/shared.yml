@@ -1,0 +1,21 @@
+check_type: Platform
+
+failure_reason: |-
+    One or more 'VirtualMachine' resources have a disk with
+    '.errorPolicy' set to "ignore", suppressing I/O errors and risking
+    silent data corruption.
+
+inputs:
+  - name: vms
+    kubernetes_input_spec:
+      api_version: kubevirt.io/v1
+      resource: virtualmachines
+
+expression: |
+  vms.items.all(v,
+      !has(v.spec.template.spec.domain.devices) ||
+      !has(v.spec.template.spec.domain.devices.disks) ||
+      v.spec.template.spec.domain.devices.disks.all(d,
+        !has(d.errorPolicy) || d.errorPolicy != "ignore"
+      )
+  )
