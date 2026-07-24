@@ -31,3 +31,5 @@ selections:
     - kubevirt-no-vm-device-passthrough
     - kubevirt-no-shareable-disks
     - kubevirt-disk-error-policy-not-ignore
+    - kubevirt-sriov-vlan-required
+    - kubevirt-localnet-vlan-required
