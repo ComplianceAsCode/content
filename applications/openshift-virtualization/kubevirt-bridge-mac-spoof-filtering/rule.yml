@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Bridge Network Attachments Must Enable MAC Spoof Filtering'
+
+description: |-
+    Bridge-type NetworkAttachmentDefinitions must set 'macspoofchk: true'
+    in their CNI configuration so the bridge drops frames whose source MAC
+    differs from the address assigned to the interface. Without it, a
+    compromised guest can impersonate other workloads or infrastructure at
+    layer 2 (ARP spoofing, man-in-the-middle).
+
+rationale: |-
+    Layer-2 identity is the basis for switching decisions on secondary
+    networks. A guest that can spoof MAC addresses can intercept or
+    redirect other workloads' traffic on the same segment.
+
+severity: medium
+
+ocil_clause: 'a bridge NetworkAttachmentDefinition does not enable macspoofchk'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get network-attachment-definitions -A -o jsonpath='{range .items[*]}{.metadata.name}: {.spec.config}{"\n"}{end}'</pre>
+    Every config with '"type":"bridge"' should set '"macspoofchk": true'.
