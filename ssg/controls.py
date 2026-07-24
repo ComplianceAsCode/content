@@ -247,6 +247,9 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.related_rules = control_dict.get('related_rules', [])  # Default to empty list if not present
         control.rules = control_dict.get('rules', [])  # Default to empty list if not present
 
+        if not isinstance(control.id, str):
+            msg = f"Control ID {control.id} isn't a string"
+            raise ValueError(msg)
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
