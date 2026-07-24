@@ -141,7 +141,7 @@ selections:
     - kubevirt-persistent-reservation-disabled
 ```
 
-**Important:** CEL profiles can only select CEL rules. If a profile includes both CEL and OVAL rules, only the CEL rules will be included in the generated CEL content file.
+**Important:** CEL profiles can select both CEL rules and manual rules (rules without `cel/shared.yml`). Only CEL rules are included in the generated CEL content file; manual rules are skipped with a build warning.
 
 ## Creating a CEL Rule
 
@@ -347,8 +347,8 @@ The build system validates CEL content automatically:
 
 **Profile Validation:**
 - `selected` field must contain at least one rule
-- All selected rules must exist in CEL rules
-- Profile cannot reference OVAL rules
+- Rules without CEL checks (manual rules) are skipped with a warning
+- Only CEL rules are included in the generated content
 
 **Content Validation:**
 - No duplicate rule names (after underscore-to-hyphen conversion)
@@ -434,9 +434,10 @@ cel-spec '{"resource": {"spec": {"enabled": true}}}' 'resource.spec.enabled == t
 **Error: `CEL profile 'profile-name' has no rules`**
 - Add rules to the `selections` field in the profile
 
-**Error: `profile 'profile-name' references unknown rule 'rule-name'`**
-- Verify the rule exists and has CEL checks (has `cel/shared.yml` with `expression` and `inputs`)
-- Check the rule ID matches the profile selection
+**Warning: `profile 'profile-name' references rule 'rule-name' without CEL checks (manual rule)`**
+- This is expected for manual rules that have no automated CEL check
+- The rule will be skipped from CEL content output but remains in the profile selections
+- If this is unintentional, verify the rule has `cel/shared.yml` with `expression` and `inputs`
 
 ### CEL Content Not Generated
 
