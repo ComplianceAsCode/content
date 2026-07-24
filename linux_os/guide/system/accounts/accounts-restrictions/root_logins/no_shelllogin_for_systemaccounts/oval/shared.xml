@@ -3,20 +3,29 @@
     {{{ oval_metadata("The root account is the only system account that should have
       a login shell.", rule_title=rule_title) }}}
     <criteria operator="OR">
-      <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs
+      <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs or drop-in files
            perform the check that any /etc/passwd entry with shell defined
            has UID outside the default <0, UID_MIN -1> range.
            If at least one UID with shell defined exists within that range,
            the requirement isn't met -->
       <criteria operator="AND">
+        {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+        <criteria operator="AND">
+          <criterion comment="Test SYS_UID_MIN not defined in {{{ login_defs_path }}} and drop-in files"
+        test_ref="test_sys_uid_min_not_defined" />
+          <criterion comment="Test SYS_UID_MAX not defined in {{{ login_defs_path }}} and drop-in files"
+        test_ref="test_sys_uid_max_not_defined" />
+        </criteria>
+        {{% else %}}
         <criterion comment="Test SYS_UID_MIN not defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_min_not_defined" />
         <criterion comment="Test SYS_UID_MAX not defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_max_not_defined" />
+        {{% endif %}}
         <criterion comment="Test shell defined for UID from &lt;0, UID_MIN -1&gt;"
         test_ref="test_shell_defined_default_uid_range" />
       </criteria>
-      <!-- If both SYS_UID_MIN and SYS_UID_MAX are defined in /etc/login.defs
+      <!-- If both SYS_UID_MIN and SYS_UID_MAX are defined in /etc/login.defs or drop-in files
            perform both checks:
            * That any /etc/passwd entry with shell defined has UID outside
            the range for reserved system accounts <0, SYS_UID_MIN> range,
@@ -25,10 +34,25 @@
            If at least one UID with shell defined exists within some of the two
            ranges, the requirement isn't met -->
       <criteria operator="AND">
+        {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+        <criteria operator="OR">
+          <criterion comment="Test SYS_UID_MIN defined in {{{ login_defs_path }}}"
+        test_ref="test_sys_uid_min_not_defined" negate="true" />
+          <criterion comment="Test SYS_UID_MIN defined in drop-in files"
+          test_ref="test_sys_uid_min_not_defined_drop_in" negate="true" />
+        </criteria>
+        <criteria operator="OR">
+          <criterion comment="Test SYS_UID_MAX defined in {{{ login_defs_path }}}"
+        test_ref="test_sys_uid_max_not_defined" negate="true" />
+          <criterion comment="Test SYS_UID_MAX defined in drop-in files"
+          test_ref="test_sys_uid_max_not_defined_drop_in" negate="true" />
+        </criteria>
+        {{% else %}}
         <criterion comment="Test SYS_UID_MIN defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_min_not_defined" negate="true" />
         <criterion comment="Test SYS_UID_MAX defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_max_not_defined" negate="true" />
+        {{% endif %}}
         <criterion comment="Test shell defined for reserved system UIDs"
         test_ref="test_shell_defined_reserved_uid_range" />
         <criterion comment="Test shell defined for dynamically allocated system UIDs"
@@ -68,6 +92,31 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+  {{% set login_defs_drop_in_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) %}}
+  
+  <!-- Get last occurrence of SYS_UID_MIN from drop-in files as OVAL object -->
+  <ind:textfilecontent54_object id="object_last_sys_uid_min_from_drop_in_defs"
+  version="1">
+    <ind:behaviors singleline="true" />
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <!-- Last (uncommented) instance of SYS_UID_MIN directive -->
+    <ind:pattern operation="pattern match">.*(?:^|\n)\s*(SYS_UID_MIN[\s]+[\d]+)\s*(?:$|\n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Get last occurrence of SYS_UID_MAX from drop-in files as OVAL object -->
+  <ind:textfilecontent54_object id="object_last_sys_uid_max_from_drop_in_defs" version="1">
+    <ind:behaviors singleline="true" />
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <!-- Last (uncommented) instance of SYS_UID_MAX directive -->
+    <ind:pattern operation="pattern match">.*(?:^|\n)\s*(SYS_UID_MAX[\s]+[\d]+)\s*(?:$|\n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
+
   <!-- Get all /etc/passwd entries having shell defined as OVAL object -->
   <ind:textfilecontent54_object id="object_etc_passwd_entries" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
@@ -80,13 +129,13 @@
   </ind:textfilecontent54_object>
 
   <!-- FIRST CRITERION -->
-  <!-- If both SYS_UID_MIN and SYS_UID_MAX aren't defined in /etc/login.defs
+  <!-- If both SYS_UID_MIN and SYS_UID_MAX aren't defined in /etc/login.defs or drop-in files
        perform the check that any /etc/passwd entry with shell defined has
        UID outside the <0, UID_MIN - 1> range -->
 
   <!-- Actual /etc/login.defs UID_MIN value as OVAL variable -->
   <local_variable id="variable_uid_min_value" datatype="int"
-  comment="Value of last UID_MIN from {{{ login_defs_path }}}" version="1">
+  comment="Value of last UID_MIN from {{{ login_defs_path }}}} and drop-in files" version="1">
     <regex_capture pattern="UID_MIN[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_uid_min_from_etc_login_defs" />
@@ -125,8 +174,24 @@
     <ind:object object_ref="object_last_sys_uid_max_from_etc_login_defs" />
   </ind:textfilecontent54_test>
 
+  {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+  <!-- Test if SYS_UID_MIN not defined in drop-in files -->
+  <ind:textfilecontent54_test id="test_sys_uid_min_not_defined_drop_in"
+  comment="SYS_UID_MIN not defined in drop-in files" check="all"
+  check_existence="none_exist" version="1">
+    <ind:object object_ref="object_last_sys_uid_min_from_drop_in_defs" />
+  </ind:textfilecontent54_test>
+
+  <!-- Test if SYS_UID_MAX not defined in drop-in files -->
+  <ind:textfilecontent54_test id="test_sys_uid_max_not_defined_drop_in"
+  comment="SYS_UID_MAX not defined in drop-in files" check="all"
+  check_existence="none_exist" version="1">
+    <ind:object object_ref="object_last_sys_uid_max_from_drop_in_defs" />
+  </ind:textfilecontent54_test>
+  {{% endif %}}
+
   <!-- SECOND CRITERION -->
-  <!-- If both SYS_UID_MIN and SYS_UID_MAX are defined in /etc/login.defs,
+  <!-- If both SYS_UID_MIN and SYS_UID_MAX are defined in /etc/login.defs or drop-in files,
        perform more advanced test:
        * Check that any /etc/passwd entry with shell defined has UID
        outside the range of reserved system UIDs, thus <0, SYS_UID_MIN>,
@@ -135,18 +200,18 @@
        <SYS_UID_MIN, SYS_UID_MAX>
   -->
 
-  <!-- Actual /etc/login.defs SYS_UID_MIN value as OVAL variable -->
+  <!-- Actual SYS_UID_MIN value as OVAL variable (prioritize main file) -->
   <local_variable id="variable_sys_uid_min_value" datatype="int"
-  comment="Value of last SYS_UID_MIN from {{{ login_defs_path }}}" version="1">
+  comment="Value of last SYS_UID_MIN from {{{ login_defs_path }}}} and drop-in files" version="1">
     <regex_capture pattern="SYS_UID_MIN[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_sys_uid_min_from_etc_login_defs" />
     </regex_capture>
   </local_variable>
 
-  <!-- Actual /etc/login.defs SYS_UID_MAX value as OVAL variable -->
+  <!-- Actual SYS_UID_MAX value as OVAL variable (prioritize main file) -->
   <local_variable id="variable_sys_uid_max_value" datatype="int"
-  comment="Value of last SYS_UID_MAX from {{{ login_defs_path }}}" version="1">
+  comment="Value of last SYS_UID_MAX from {{{ login_defs_path }}}} and drop-in files" version="1">
     <regex_capture pattern="SYS_UID_MAX[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_sys_uid_max_from_etc_login_defs" />
