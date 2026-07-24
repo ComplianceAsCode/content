@@ -1,0 +1,77 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: modeled on real API objects (celctl cac scaffold format)
+  date: '2026-07-24'
+  openshift_version: 4.21.0
+  kubernetes_version: v1.34
+  source_api_versions:
+    nads: k8s.cni.cncf.io/v1
+cases:
+  - name: no NADs -> compliant
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items: []
+  - name: localnet nad with vlanID -> compliant
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: localnet-a
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "type": "ovn-k8s-cni-overlay", "topology":
+                "localnet", "vlanID": 200, "netAttachDefName": "default/localnet-a"}'
+  - name: non-localnet nad without vlan is ignored -> compliant
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: bridge-a
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "type": "bridge", "bridge": "br1"}'
+  - name: nad config without topology key is ignored -> compliant
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: plugins-nad
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "name": "br-net", "plugins": [{"type":
+                "cnv-bridge", "bridge": "br1"}]}'
+  - name: localnet nad without vlanID -> non-compliant
+    expect: false
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: localnet-untagged
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "type": "ovn-k8s-cni-overlay", "topology":
+                "localnet", "netAttachDefName": "default/localnet-untagged"}'
