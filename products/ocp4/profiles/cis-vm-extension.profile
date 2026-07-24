@@ -30,6 +30,7 @@ selections:
     - kubevirt-enforce-trusted-tls-registries
     - kubevirt-no-vm-device-passthrough
     - kubevirt-no-shareable-disks
+    - kubevirt-use-multi-network-policies
     - kubevirt-disk-error-policy-not-ignore
     - kubevirt-sriov-vlan-required
     - kubevirt-localnet-vlan-required

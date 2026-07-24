@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Use Multi-Network Policies'
+
+description: |-
+    Multi-network policies should be used to control traffic between
+    virtual machines on secondary networks. Standard Kubernetes
+    <tt>NetworkPolicy</tt> resources only govern traffic on the primary
+    pod network. Without <tt>MultiNetworkPolicy</tt> resources, traffic
+    on secondary networks attached via <tt>NetworkAttachmentDefinition</tt>
+    objects is unrestricted, allowing any VM to communicate with any
+    other VM on the same secondary network.
+
+rationale: |-
+    Secondary networks configured through Multus bypass the default
+    Kubernetes network policy enforcement. If multi-network policies are
+    not applied, workloads on those networks have unrestricted
+    connectivity, increasing the risk of lateral movement and
+    unauthorized access between virtual machines. Deploying
+    <tt>MultiNetworkPolicy</tt> resources ensures that traffic on
+    secondary networks is subject to the same segmentation controls
+    as the primary cluster network.
+
+severity: medium
+
+ocil_clause: 'multi-network policies are not in use'
+
+ocil: |-
+    Run the following command to check for multi-network policies:
+    <pre>$ oc get multi-networkpolicies -A</pre>
+    Verify that multi-network policies exist and are configured for
+    namespaces that use secondary networks.
