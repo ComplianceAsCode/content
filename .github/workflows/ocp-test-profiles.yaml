@@ -1,7 +1,7 @@
 name: Trigger OCP Tests When Relevant
 on:
   pull_request:
-    branches: [ master, 'stabilization*' ]
+    branches: [master, 'stabilization*']
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
@@ -62,7 +62,7 @@ jobs:
 
       - name: Process list of rules into a list of product-profiles to test
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}
-        id: profiles_to_test 
+        id: profiles_to_test
         run: |
           # Let's grab the profiles for which we have a CI job configured
           PROW_CONFIG=https://raw.githubusercontent.com/openshift/release/refs/heads/master/ci-operator/config/ComplianceAsCode/content/ComplianceAsCode-content-master.yaml
@@ -90,8 +90,13 @@ jobs:
               done
             done
 
-            ALL_PROFILES+=(${ELIGIBLE_PROFILES[@]})
-            PROFILES+=(${ELIGIBLE_PROFILES[$(($RANDOM%(${#ELIGIBLE_PROFILES[@]})))]})
+            # Rules that are not part of any CI-tested profile (e.g. rules only
+            # in profiles without a prow lane, such as CEL-based profiles) have
+            # no eligible profiles; skip them instead of dividing by zero.
+            if [[ ${#ELIGIBLE_PROFILES[@]} -gt 0 ]]; then
+              ALL_PROFILES+=(${ELIGIBLE_PROFILES[@]})
+              PROFILES+=(${ELIGIBLE_PROFILES[$(($RANDOM%(${#ELIGIBLE_PROFILES[@]})))]})
+            fi
           done
 
           # Sort and ensure that the profiles are unique
