@@ -1,0 +1,26 @@
+check_type: Platform
+
+failure_reason: |-
+    The '.spec.ksmConfiguration' field in the 'kubevirt-hyperconverged'
+    resource configures a nodeLabelSelector, enabling Kernel Samepage Merging
+    on the selected nodes.
+
+inputs:
+  - name: hcoList
+    kubernetes_input_spec:
+      api_version: hco.kubevirt.io/v1beta1
+      resource: hyperconvergeds
+
+expression: |
+  hcoList.items.filter(h,
+      h.metadata.name == 'kubevirt-hyperconverged' &&
+      h.metadata.namespace == 'openshift-cnv'
+  ).size() == 1 &&
+  hcoList.items.filter(h,
+      h.metadata.name == 'kubevirt-hyperconverged' &&
+      h.metadata.namespace == 'openshift-cnv'
+  ).all(h,
+      !has(h.spec.ksmConfiguration) ||
+      h.spec.ksmConfiguration == null ||
+      size(h.spec.ksmConfiguration) == 0
+  )

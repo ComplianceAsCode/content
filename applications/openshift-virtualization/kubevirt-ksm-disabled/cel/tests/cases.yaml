@@ -1,0 +1,80 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: modeled on real HyperConverged API objects (celctl cac scaffold format)
+  date: '2026-07-24'
+  openshift_version: 4.21.0
+  kubernetes_version: v1.34
+  source_api_versions:
+    hcoList: hco.kubevirt.io/v1beta1
+cases:
+  - name: ksmConfiguration absent -> compliant
+    expect: true
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec: {}
+  - name: ksmConfiguration empty object -> compliant (inert HCO default; verified
+      /sys/kernel/mm/ksm/run=0 on a stock install)
+    expect: true
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec:
+              ksmConfiguration: {}
+  - name: ksmConfiguration with nodeLabelSelector -> non-compliant (enables KSM on
+      selected nodes)
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec:
+              ksmConfiguration:
+                nodeLabelSelector:
+                  matchLabels:
+                    ksm: enabled
+  - name: ksmConfiguration with empty nodeLabelSelector -> non-compliant (selects
+      all nodes)
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec:
+              ksmConfiguration:
+                nodeLabelSelector: {}
+  - name: no HyperConverged present -> non-compliant (size != 1)
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items: []
