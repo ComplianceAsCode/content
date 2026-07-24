@@ -28,3 +28,6 @@ selections:
     - kubevirt-persistent-reservation-disabled
     - kubevirt-no-vms-overcommitting-guest-memory
     - kubevirt-enforce-trusted-tls-registries
+    - kubevirt-downward-metrics-disabled
+    - kubevirt-ksm-disabled
+    - kubevirt-no-jsonpatch-annotations

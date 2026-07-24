@@ -1,0 +1,76 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: modeled on real HyperConverged API objects (celctl cac scaffold format)
+  date: '2026-07-23'
+  openshift_version: 4.22.0
+  kubernetes_version: v1.35.5
+  source_api_versions:
+    hcoList: hco.kubevirt.io/v1beta1
+cases:
+  - name: no annotations -> compliant
+    expect: true
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+            spec: {}
+  - name: benign annotations only -> compliant
+    expect: true
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+              annotations:
+                deployOVS: 'false'
+            spec: {}
+  - name: kubevirt jsonpatch annotation -> non-compliant
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+              annotations:
+                kubevirt.kubevirt.io/jsonpatch: '[{"op":"replace","path":"/spec/configuration/developerConfiguration/featureGates","value":[]}]'
+            spec: {}
+  - name: cdi jsonpatch annotation -> non-compliant
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            metadata:
+              name: kubevirt-hyperconverged
+              namespace: openshift-cnv
+              annotations:
+                containerizeddataimporter.kubevirt.io/jsonpatch: '[{"op":"remove","path":"/spec/config/insecureRegistries"}]'
+            spec: {}
+  - name: no HyperConverged present -> non-compliant (size != 1)
+    expect: false
+    inputs:
+      hcoList:
+        apiVersion: v1
+        kind: List
+        items: []

@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'KubeVirt downwardMetrics Feature Gate Must Be Disabled'
+
+description: |-
+    The <tt>downwardMetrics</tt> feature gate exposes host metrics to virtual
+    machine guests through a virtio-serial channel or disk. Exposing host
+    performance metrics inside guests leaks information about the underlying
+    node and co-located workloads, which can assist an attacker in host
+    fingerprinting and side-channel planning. Unless a workload specifically
+    requires it, the feature gate should remain disabled.
+
+rationale: |-
+    When <tt>.spec.featureGates.downwardMetrics</tt> is enabled in the
+    <tt>kubevirt-hyperconverged</tt> resource, every guest that requests a
+    downwardMetrics device can read host-level metrics. Keeping the gate
+    disabled preserves the isolation boundary between guests and the host.
+
+severity: medium
+
+ocil_clause: 'downwardMetrics feature gate is enabled'
+
+ocil: |-
+    Run the following command to check the feature gate configuration:
+    <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.featureGates.downwardMetrics}'</pre>
+    The output should be <tt>false</tt> or empty.
