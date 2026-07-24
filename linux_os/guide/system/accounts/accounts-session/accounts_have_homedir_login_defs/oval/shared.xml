@@ -1,12 +1,11 @@
 <def-group>
   <definition class="compliance" id="accounts_have_homedir_login_defs" version="1">
     {{{ oval_metadata("CREATE_HOME should be enabled", rule_title=rule_title) }}}
-    {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
     <criteria operator="OR">
       <criteria operator="AND">
         <criterion comment="Check CREATE_HOME in {{{ login_defs_drop_in_path }}} is not set"
             test_ref="test_accounts_have_homedir_login_defs_drop_in_path_not_set"/>
-        <criterion comment="Check CREATE_HOME should be set appropriately in {{{ login_defs_path }}}"
+        <criterion comment="Check CREATE_HOME should be set appropriately in /etc/login.defs"
             test_ref="test_accounts_have_homedir_login_defs"/>
       </criteria>
       <criteria operator="AND">
@@ -14,40 +13,21 @@
           test_ref="test_accounts_have_homedir_login_defs_drop_in_path"/>
       </criteria>
     </criteria>
-    {{% else %}}
-    <criteria operator="AND">
-      <criterion comment="Check CREATE_HOME in {{{ login_defs_path }}}" test_ref="test_accounts_have_homedir_login_defs" />
-    </criteria>
-    {{% endif %}}
   </definition>
 
-{{{
-oval_param_in_file_variable_test(
-    filepath=login_defs_path,
-    parameter="CREATE_HOME",
-    pattern="^[\s]*(?i)CREATE_HOME(?-i)[\s]+(yes)",
-    regex_capture="CREATE_HOME\s+(yes)",
-    operation="pattern match",
-    type="string",
-    test_id="test_accounts_have_homedir_login_defs",
-    variable="var_accounts_have_homedir_login_defs"
-)
-}}}
+  {{% set login_defs_drop_in_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) %}}
 
-{{% set login_defs_drop_in_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) %}}
-{{{
-oval_param_in_file_variable_test(
-    filepath=login_defs_drop_in_config_dir,
-    filename_regex=".*\.defs$",
-    parameter="CREATE_HOME",
-    pattern="^[\s]*(?i)CREATE_HOME(?-i)[\s]+(yes)",
-    regex_capture="CREATE_HOME\s+(yes)",
-    operation="pattern match",
-    type="string",
-    test_id="test_accounts_have_homedir_login_defs_drop_in_path",
-    variable="var_accounts_have_homedir_login_defs"
-)
-}}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="Check value of CREATE_HOME in {{{ login_defs_path }}}"
+      id="test_accounts_have_homedir_login_defs" version="1">
+    <ind:object object_ref="obj_accounts_have_homedir_login_defs" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_accounts_have_homedir_login_defs" version="2">
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)CREATE_HOME(?-i)[\s]+yes[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
       comment="Check CREATE_HOME in drop-in files is not set"
@@ -62,5 +42,15 @@ oval_param_in_file_variable_test(
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <external_variable id="var_accounts_have_homedir_login_defs" datatype="string" version="1" comment="Whether to create home directory" />
+  <ind:textfilecontent54_test id="test_accounts_have_homedir_login_defs_drop_in_path" check="all" version="1"
+      check_existence="all_exist" comment="The value of CREATE_HOME should be set appropriately in /etc/login.defs.d">
+    <ind:object object_ref="object_test_accounts_have_homedir_login_defs_drop_in_path" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_test_accounts_have_homedir_login_defs_drop_in_path" version="1">
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)CREATE_HOME(?-i)[\s]+(yes)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
 </def-group>
