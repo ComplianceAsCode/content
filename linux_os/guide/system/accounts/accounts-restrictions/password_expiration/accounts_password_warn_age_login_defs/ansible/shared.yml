@@ -5,7 +5,7 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_password_warn_age_login_defs") }}}
 
-{{% if product in [ 'slmicro6', 'sle16' ] %}}
+{{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
 {{% set cce_cce_identifier = cce_identifiers['cce'] %}}
 {{{
     ansible_login_defs(
