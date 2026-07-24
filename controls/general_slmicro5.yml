@@ -94,14 +94,6 @@ controls:
           - partition_for_home
       status: automated
 
-    - id: SLEM-5-SET-01100000
-      title: Ensure /var Located On Separate Partition
-      levels:
-          - medium
-      rules:
-          - partition_for_var
-      status: automated
-
     - id: SLEM-5-SET-01180000
       title: Add nodev Option to /home
       levels:
@@ -199,7 +191,7 @@ controls:
           - var_sudo_logfile=var_log_sudo_log
           - sudo_custom_logfile
 
-    - id: SLEM-5-SET-03030000
+    - id: SLEM-5-SET-03030000-DUPLICATE
       title: Configure grup.cfg Group/User Ownership and Permissions
       levels:
           - medium
@@ -753,7 +745,7 @@ controls:
           - audit_rules_mac_modification
           - audit_rules_mac_modification_usr_share
 
-    - id: SLEM-5-AUD-01060000
+    - id: SLEM-5-AUD-01060000-DUPLICATE
       title: Collect login and logout events
       levels:
           - medium
