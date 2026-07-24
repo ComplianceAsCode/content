@@ -1,0 +1,102 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: celctl cac scaffold --from-cluster (hand-extended for fix cases)
+  date: '2026-07-23'
+  openshift_version: 4.22.0
+  kubernetes_version: v1.35.5
+  source_api_versions:
+    vms: kubevirt.io/v1
+cases:
+  - name: no VMs -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items: []
+  - name: VM without overcommitGuestOverhead -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-plain
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    resources:
+                      requests:
+                        memory: 2Gi
+  - name: VM with overcommitGuestOverhead false -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-explicit-false
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    resources:
+                      overcommitGuestOverhead: false
+  - name: 'VM with overcommitGuestOverhead true -> non-compliant (CMP-4451: rule errored
+      before this fix)'
+    expect: false
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-ok
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    resources:
+                      requests:
+                        memory: 2Gi
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-overcommit
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    resources:
+                      overcommitGuestOverhead: true
+  - name: VM without resources block -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-noresources
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain: {}

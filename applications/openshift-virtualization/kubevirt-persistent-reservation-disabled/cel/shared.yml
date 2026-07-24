@@ -1,8 +1,9 @@
 check_type: Platform
 
 failure_reason: |-
-    The '.spec.featureGates.persistentReservation' field is missing, not set,
-    or not set to 'false' in the 'kubevirt-hyperconverged' resource.
+    The '.spec.featureGates.persistentReservation' field is set to 'true' in
+    the 'kubevirt-hyperconverged' resource. (An absent field is compliant:
+    persistent reservations are disabled by default.)
 
 inputs:
   - name: hcoList
@@ -19,7 +20,7 @@ expression: |
       h.metadata.name == 'kubevirt-hyperconverged' &&
       h.metadata.namespace == 'openshift-cnv'
   ).all(h,
-      has(h.spec.featureGates) &&
-      has(h.spec.featureGates.persistentReservation) &&
+      !has(h.spec.featureGates) ||
+      !has(h.spec.featureGates.persistentReservation) ||
       h.spec.featureGates.persistentReservation == false
   )

@@ -20,9 +20,11 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: 'nonRoot feature gate is not set to true'
+ocil_clause: 'nonRoot feature gate is present and not set to true'
 
 ocil: |-
     Run the following command to check the feature gate configuration:
     <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.featureGates.nonRoot}'</pre>
-    The output should be <tt>true</tt>.
+    The output should be <tt>true</tt> or empty. On OpenShift Virtualization
+    4.18 and later the field has been removed and non-root execution is always
+    enforced, so an empty output is compliant.
