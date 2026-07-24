@@ -1,7 +1,22 @@
 # platform = multi_platform_all
-# reboot = false
+# disruption = low
 # strategy = restrict
 # complexity = low
-# disruption = low
-
-{{{ ansible_set_config_file(msg='Ensure new users receive home directories', file=login_defs_path, parameter="CREATE_HOME", value='yes', create='yes', rule_title=rule_title) }}}
+{{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{{
+    ansible_login_defs(
+      parameter='CREATE_HOME',
+      value='yes',
+      rule_title=rule_title,
+      cce=cce_cce_identifier
+    )
+}}}
+{{% else %}}
+- name: Ensure CREATE_HOME is set to yes
+  ansible.builtin.lineinfile:
+    dest: {{{ login_defs_path }}}
+    regexp: ^CREATE_HOME
+    line: "CREATE_HOME yes"
+    create: yes
+{{% endif %}}
