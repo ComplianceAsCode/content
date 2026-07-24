@@ -37,3 +37,4 @@ selections:
     - kubevirt-bridge-mac-spoof-filtering
     - kubevirt-restrict-migration-tools-access
     - kubevirt-downward-metrics-disabled
+    - kubevirt-ksm-disabled
