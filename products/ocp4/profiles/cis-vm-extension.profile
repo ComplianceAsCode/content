@@ -28,3 +28,7 @@ selections:
     - kubevirt-persistent-reservation-disabled
     - kubevirt-no-vms-overcommitting-guest-memory
     - kubevirt-enforce-trusted-tls-registries
+    - kubevirt-sriov-vlan-required
+    - kubevirt-localnet-vlan-required
+    - kubevirt-sriov-spoofchk-on
+    - kubevirt-bridge-mac-spoof-filtering

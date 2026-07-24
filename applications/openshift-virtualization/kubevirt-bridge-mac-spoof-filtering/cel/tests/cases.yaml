@@ -1,0 +1,92 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: modeled on real API objects (celctl cac scaffold format)
+  date: '2026-07-24'
+  openshift_version: 4.21.0
+  kubernetes_version: v1.34
+  source_api_versions:
+    nads: k8s.cni.cncf.io/v1
+cases:
+  - name: no NADs -> compliant
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items: []
+  - name: bridge nad with macspoofchk true -> compliant
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: bridge-ok
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "type": "bridge", "bridge": "br1",
+                "macspoofchk": true}'
+  - name: non-bridge nad is ignored -> compliant
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: ovn-a
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "type": "ovn-k8s-cni-overlay", "topology":
+                "layer2", "netAttachDefName": "default/ovn-a"}'
+  - name: nad config without type key is ignored -> compliant
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: plugins-nad
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "name": "br-net", "plugins": [{"type":
+                "cnv-bridge", "bridge": "br1"}]}'
+  - name: bridge nad without macspoofchk -> non-compliant
+    expect: false
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: bridge-nofilter
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "type": "bridge", "bridge": "br2"}'
+  - name: bridge nad with macspoofchk false -> non-compliant
+    expect: false
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: bridge-off
+              namespace: default
+            spec:
+              config: '{"cniVersion": "0.3.1", "type": "bridge", "bridge": "br3",
+                "macspoofchk": false}'

@@ -1,0 +1,20 @@
+check_type: Platform
+
+failure_reason: |-
+    One or more bridge NetworkAttachmentDefinitions do not set
+    'macspoofchk: true' in their CNI configuration, allowing guests to
+    spoof layer-2 identities.
+
+inputs:
+  - name: nads
+    kubernetes_input_spec:
+      api_version: k8s.cni.cncf.io/v1
+      resource: network-attachment-definitions
+
+expression: |
+  nads.items.all(n,
+      !has(n.spec.config) ||
+      !("type" in parseJSON(n.spec.config)) ||
+      parseJSON(n.spec.config).type != "bridge" ||
+      ("macspoofchk" in parseJSON(n.spec.config) && parseJSON(n.spec.config).macspoofchk == true)
+  )

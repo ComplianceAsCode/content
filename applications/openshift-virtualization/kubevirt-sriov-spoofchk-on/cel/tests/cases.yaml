@@ -1,0 +1,62 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: modeled on real API objects (celctl cac scaffold format)
+  date: '2026-07-24'
+  openshift_version: 4.21.0
+  kubernetes_version: v1.34
+  source_api_versions:
+    sriovnets: sriovnetwork.openshift.io/v1
+cases:
+  - name: no SriovNetworks -> compliant
+    expect: true
+    inputs:
+      sriovnets:
+        apiVersion: v1
+        kind: List
+        items: []
+  - name: sriov spoofChk on -> compliant
+    expect: true
+    inputs:
+      sriovnets:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: sriovnetwork.openshift.io/v1
+            kind: SriovNetwork
+            metadata:
+              name: net-a
+              namespace: openshift-sriov-network-operator
+            spec:
+              spoofChk: 'on'
+              resourceName: sriov_a
+  - name: sriov spoofChk off -> non-compliant
+    expect: false
+    inputs:
+      sriovnets:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: sriovnetwork.openshift.io/v1
+            kind: SriovNetwork
+            metadata:
+              name: net-off
+              namespace: openshift-sriov-network-operator
+            spec:
+              spoofChk: 'off'
+              resourceName: sriov_b
+  - name: sriov spoofChk unset -> non-compliant (benchmark requires explicit on)
+    expect: false
+    inputs:
+      sriovnets:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: sriovnetwork.openshift.io/v1
+            kind: SriovNetwork
+            metadata:
+              name: net-unset
+              namespace: openshift-sriov-network-operator
+            spec:
+              resourceName: sriov_c

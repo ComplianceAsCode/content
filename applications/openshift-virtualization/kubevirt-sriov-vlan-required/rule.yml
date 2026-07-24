@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'SR-IOV Networks Must Declare a Dedicated VLAN'
+
+description: |-
+    SR-IOV networks used by virtual machines must segment traffic with a
+    dedicated VLAN declared in '.spec.vlan'. An SR-IOV network without a
+    VLAN places virtual machine traffic on the untagged provider segment,
+    mixing tenant traffic with infrastructure traffic. Environments that
+    intentionally use untagged provider networks should waive this rule for
+    those objects.
+
+    NOTE: this rule reads SriovNetwork resources and therefore requires the
+    SR-IOV Network Operator. On clusters without the operator the resource
+    type does not exist and the check reports an error; CPE applicability
+    for CEL rules (CMP-4483) will mark it Not Applicable instead.
+
+rationale: |-
+    Without VLAN segmentation, workloads attached to SR-IOV networks share
+    a broadcast domain with other traffic, enabling lateral movement,
+    sniffing and spoofing between tenants and toward the infrastructure.
+
+severity: medium
+
+ocil_clause: 'an SriovNetwork does not declare a VLAN'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get sriovnetwork -A -o jsonpath='{range .items[*]}{.metadata.name}: vlan={.spec.vlan}{"\n"}{end}'</pre>
+    Every SR-IOV network should declare a non-zero vlan.

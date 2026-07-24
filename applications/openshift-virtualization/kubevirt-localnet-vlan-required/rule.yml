@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Localnet Network Attachments Must Declare a Dedicated VLAN'
+
+description: |-
+    NetworkAttachmentDefinitions with the OVN 'localnet' topology bridge
+    virtual machine traffic onto the physical provider network. Such
+    attachments must declare a 'vlanID' in their CNI configuration so the
+    traffic is segmented on a dedicated VLAN rather than the untagged
+    provider segment. Environments that intentionally use untagged provider
+    networks should waive this rule for those objects.
+
+rationale: |-
+    Without VLAN segmentation, workloads attached to localnet networks
+    share a broadcast domain with other traffic, enabling lateral movement,
+    sniffing and spoofing between tenants and toward the infrastructure.
+
+severity: medium
+
+ocil_clause: 'a localnet NetworkAttachmentDefinition does not declare a vlanID'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get network-attachment-definitions -A -o jsonpath='{range .items[*]}{.metadata.name}: {.spec.config}{"\n"}{end}'</pre>
+    Every config with '"topology":"localnet"' should declare a non-zero vlanID.
