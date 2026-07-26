@@ -18,38 +18,50 @@ controls:
           - low
       rules: []
       status: pending
-    - id: ps-3.1
-      title: Classified Information
-      rules: []
-      status: pending
-    - id: ps-3.2
-      title: Formal Indoctrination
-      rules: []
-      status: pending
-    - id: ps-3.3
-      title: Information Requiring Special Protective Measures
-      rules: []
-      status: pending
-    - id: ps-3.4
-      title: Citizenship Requirements
-      rules: []
-      status: pending
+      controls:
+          - id: ps-3.1
+            title: Classified Information
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ps-3.2
+            title: Formal Indoctrination
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ps-3.3
+            title: Information Requiring Special Protective Measures
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ps-3.4
+            title: Citizenship Requirements
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ps-4
       title: Personnel Termination
       levels:
           - low
       rules: []
       status: pending
-    - id: ps-4.1
-      title: Post-employment Requirements
-      rules: []
-      status: pending
-    - id: ps-4.2
-      title: Automated Actions
-      levels:
-          - high
-      rules: []
-      status: pending
+      controls:
+          - id: ps-4.1
+            title: Post-employment Requirements
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ps-4.2
+            title: Automated Actions
+            levels:
+                - high
+            rules: []
+            status: pending
     - id: ps-5
       title: Personnel Transfer
       levels:
@@ -62,18 +74,25 @@ controls:
           - low
       rules: []
       status: pending
-    - id: ps-6.1
-      title: Information Requiring Special Protection
-      rules: []
-      status: pending
-    - id: ps-6.2
-      title: Classified Information Requiring Special Protection
-      rules: []
-      status: pending
-    - id: ps-6.3
-      title: Post-employment Requirements
-      rules: []
-      status: pending
+      controls:
+          - id: ps-6.1
+            title: Information Requiring Special Protection
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ps-6.2
+            title: Classified Information Requiring Special Protection
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ps-6.3
+            title: Post-employment Requirements
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ps-7
       title: External Personnel Security
       levels:

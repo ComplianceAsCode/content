@@ -12,18 +12,25 @@ controls:
           - low
       rules: []
       status: pending
-    - id: pl-2.1
-      title: Concept of Operations
-      rules: []
-      status: pending
-    - id: pl-2.2
-      title: Functional Architecture
-      rules: []
-      status: pending
-    - id: pl-2.3
-      title: Plan and Coordinate with Other Organizational Entities
-      rules: []
-      status: pending
+      controls:
+          - id: pl-2.1
+            title: Concept of Operations
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: pl-2.2
+            title: Functional Architecture
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: pl-2.3
+            title: Plan and Coordinate with Other Organizational Entities
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: pl-3
       title: System Security Plan Update
       rules: []
@@ -34,12 +41,13 @@ controls:
           - low
       rules: []
       status: pending
-    - id: pl-4.1
-      title: Social Media and External Site/Application Usage Restrictions
-      levels:
-          - low
-      rules: []
-      status: pending
+      controls:
+          - id: pl-4.1
+            title: Social Media and External Site/Application Usage Restrictions
+            levels:
+                - low
+            rules: []
+            status: pending
     - id: pl-5
       title: Privacy Impact Assessment
       rules: []
@@ -58,14 +66,19 @@ controls:
           - moderate
       rules: []
       status: pending
-    - id: pl-8.1
-      title: Defense in Depth
-      rules: []
-      status: pending
-    - id: pl-8.2
-      title: Supplier Diversity
-      rules: []
-      status: pending
+      controls:
+          - id: pl-8.1
+            title: Defense in Depth
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: pl-8.2
+            title: Supplier Diversity
+            rules: []
+            status: pending
+            levels:
+                - moderate
     - id: pl-9
       title: Central Management
       rules: []
