@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Restrict Update Access to the CDI CR'
+
+description: |-
+    Only authorized subjects should be allowed to update the
+    <tt>CDI</tt> custom resource. The CDI (Containerized Data Importer)
+    CR controls how virtual machine disk images are imported, uploaded,
+    and cloned within the cluster. Unrestricted update access allows
+    any subject to modify CDI settings, potentially enabling insecure
+    data import sources, disabling TLS verification, or altering
+    storage configurations.
+
+rationale: |-
+    The CDI custom resource governs the data import pipeline for
+    virtual machine disk images in OpenShift Virtualization. Modifying
+    this resource can change upload proxy settings, scratch space
+    allocation, and image import behavior. If unauthorized subjects
+    can update the CDI CR, they may introduce insecure import sources,
+    weaken transport security, or disrupt the disk image provisioning
+    workflow. Restricting update access ensures that only approved
+    administrators can alter CDI configuration.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects can update the CDI CR'
+
+ocil: |-
+    Run the following command to check which subjects can update the
+    CDI custom resource:
+    <pre>$ oc adm policy who-can update cdi</pre>
+    Verify that only authorized subjects are listed in the output.
