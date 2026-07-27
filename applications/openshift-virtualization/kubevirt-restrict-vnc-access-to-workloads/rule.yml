@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Restrict VNC Access to Cluster Workloads'
+
+description: |-
+    Only authorized subjects should be granted roles that allow VNC
+    access to virtual machines. VNC access is controlled through
+    Kubernetes RBAC by binding the <tt>token.kubevirt.io:generate</tt>
+    role. Unrestricted VNC access allows any bound subject to open a
+    graphical console session to running virtual machines, potentially
+    exposing sensitive workload data and enabling unauthorized
+    interaction with the guest operating system.
+
+rationale: |-
+    VNC provides direct graphical console access to a running virtual
+    machine. In an OpenShift Virtualization environment, this access is
+    gated by the <tt>token.kubevirt.io:generate</tt> role. If this role
+    is bound too broadly, unauthorized users can view and interact with
+    VM desktops, capture screen contents, and input commands. Restricting
+    VNC access through careful role binding review ensures that only
+    approved subjects can establish console sessions to cluster
+    workloads.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects have VNC access to cluster workloads'
+
+ocil: |-
+    Run the following command to list role bindings that grant VNC access:
+    <pre>$ oc get rolebinding -ojson | jq -c '.items[] | select(.roleRef.name | contains("token.kubevirt.io:generate"))'</pre>
+    Verify that only authorized subjects are bound to the
+    <tt>token.kubevirt.io:generate</tt> role.
