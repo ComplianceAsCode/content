@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Restrict Create/Modify Virtual Machine Cluster Instance and Preference Types'
+
+description: |-
+    Only authorized subjects should be allowed to create or modify
+    <tt>VirtualMachineClusterInstancetype</tt> and
+    <tt>VirtualMachineClusterPreference</tt> resources. These
+    cluster-scoped resources define hardware profiles and configuration
+    preferences that are available to all namespaces. Unrestricted
+    access allows any subject to alter the instance types and
+    preferences used when creating virtual machines, potentially
+    introducing insecure or non-compliant configurations
+    cluster-wide.
+
+rationale: |-
+    Cluster instance types and preferences govern the default hardware
+    and configuration settings applied to new virtual machines. If
+    unauthorized subjects can create or modify these resources, they
+    can introduce overly permissive settings, disable security
+    controls, or allocate excessive resources across the cluster.
+    Restricting access ensures that only approved administrators
+    define the VM profiles available to tenants.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects can create or modify cluster instance or preference types'
+
+ocil: |-
+    Run the following commands to check which subjects can create or
+    update cluster instance and preference types:
+    <pre>$ oc adm policy who-can create virtualmachineclusterinstancetypes</pre>
+    <pre>$ oc adm policy who-can update virtualmachineclusterinstancetypes</pre>
+    <pre>$ oc adm policy who-can create virtualmachineclusterpreferences</pre>
+    <pre>$ oc adm policy who-can update virtualmachineclusterpreferences</pre>
+    Verify that only authorized subjects are listed in the output.
