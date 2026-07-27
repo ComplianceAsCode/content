@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Restrict Exec Access to Pods'
+
+description: |-
+    Only authorized subjects should be allowed to exec into pods.
+    The <tt>oc exec</tt> command opens a shell or runs a command inside
+    a running container, which provides direct access to the workload
+    environment. Unrestricted exec access allows any namespace user to
+    interact with running virtual machine pods, potentially modifying
+    runtime state, accessing sensitive data, or disrupting workloads.
+
+rationale: |-
+    Exec access to pods provides an interactive channel into the
+    container runtime environment. In an OpenShift Virtualization
+    context, this means direct access to the processes backing a
+    running virtual machine. Granting this capability to unauthorized
+    subjects increases the risk of data exfiltration, workload
+    tampering, and privilege escalation. Restricting exec access
+    ensures that only approved administrators can interact with
+    running pods.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects can exec into pods'
+
+ocil: |-
+    Run the following command to check which subjects can exec into pods:
+    <pre>$ oc adm policy who-can exec pod</pre>
+    Verify that only authorized subjects are listed in the output.
