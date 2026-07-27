@@ -25,7 +25,7 @@
 oval_param_in_file_variable_test(
     filepath=login_defs_path,
     parameter="PASS_MAX_DAYS",
-    pattern="^[\s]*(?i)PASS_MAX_DAYS[\s]+(\d+)",
+    pattern="^[\s]*(?i)(PASS_MAX_DAYS[\s]+\d+)",
     regex_capture="PASS_MAX_DAYS\s+(\d+)",
     operation="less than or equal",
     type="int",
@@ -40,7 +40,7 @@ oval_param_in_file_variable_test(
     filepath=login_defs_drop_in_config_dir,
     filename_regex=".*\.defs$",
     parameter="PASS_MAX_DAYS",
-    pattern="^[\s]*(?i)PASS_MAX_DAYS[\s]+(\d+)",
+    pattern="^[\s]*(?i)(PASS_MAX_DAYS[\s]+\d+)",
     regex_capture="PASS_MAX_DAYS\s+(\d+)",
     operation="less than or equal",
     type="int",

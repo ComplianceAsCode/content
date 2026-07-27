@@ -25,7 +25,7 @@
 oval_param_in_file_variable_test(
     filepath=login_defs_path,
     parameter="PASS_MIN_LEN",
-    pattern="^[\s]*(?i)PASS_MIN_LEN[\s]+(\d+)",
+    pattern="^[\s]*(?i)(PASS_MIN_LEN[\s]+\d+)",
     regex_capture="PASS_MIN_LEN\s+(\d+)",
     operation="greater than or equal",
     type="int",
@@ -40,7 +40,7 @@ oval_param_in_file_variable_test(
     filepath=login_defs_drop_in_config_dir,
     filename_regex=".*\.defs$",
     parameter="PASS_MIN_LEN",
-    pattern="^[\s]*(?i)PASS_MIN_LEN[\s]+(\d+)",
+    pattern="^[\s]*(?i)(PASS_MIN_LEN[\s]+\d+)",
     regex_capture="PASS_MIN_LEN\s+(\d+)",
     operation="greater than or equal",
     type="int",
