@@ -39,3 +39,4 @@ selections:
     - kubevirt-downward-metrics-disabled
     - kubevirt-ksm-disabled
     - kubevirt-no-jsonpatch-annotations
+    - kubevirt-restrict-exec-access-to-pods
