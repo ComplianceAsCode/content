@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R8
+    version: V2R9
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V2R8.
+    DISA STIG for Oracle Linux 8 V2R9.
 
 selections:
     ### Variables
@@ -331,6 +331,9 @@ selections:
 
     # OL08-00-010450
     - selinux_policytype
+
+    # OL08-00-010451
+    - selinux_context_elevation_for_sudo
 
     # OL08-00-010460
     - no_host_based_files
