@@ -30,3 +30,4 @@ description: |-
 selections:
     - kubevirt-nested-virtualization-disabled
     - kubevirt-seccomp-profile-permissions
+    - kubevirt-cpu-vulnerabilities-mitigated
