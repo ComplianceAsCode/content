@@ -11,13 +11,13 @@
       <criteria operator="AND">
         {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
         <criteria operator="AND">
-          <criterion comment="Test SYS_UID_MIN not defined in {{{ login_defs_path }}} and drop-in files"
+          <criterion comment="Test SYS_UID_MIN not defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_min_not_defined" />
-          <criterion comment="Test SYS_UID_MAX not defined in {{{ login_defs_path }}} and drop-in files"
+          <criterion comment="Test SYS_UID_MAX not defined in {{{ login_defs_path }}}"
         test_ref="test_sys_uid_max_not_defined" />
-          <criterion comment="Test SYS_UID_MIN not defined in {{{ login_defs_path }}} and drop-in files"
+          <criterion comment="Test SYS_UID_MIN not defined in drop-in files"
         test_ref="test_sys_uid_min_not_defined_drop_in" />
-          <criterion comment="Test SYS_UID_MAX not defined in {{{ login_defs_path }}} and drop-in files"
+          <criterion comment="Test SYS_UID_MAX not defined in drop-in files"
         test_ref="test_sys_uid_max_not_defined_drop_in" />
         </criteria>
         {{% else %}}
@@ -145,7 +145,7 @@
 
   <!-- Actual /etc/login.defs UID_MIN value as OVAL variable -->
   <local_variable id="variable_uid_min_value" datatype="int"
-  comment="Value of last UID_MIN from {{{ login_defs_path }}}} and drop-in files" version="1">
+  comment="Value of last UID_MIN from {{{ login_defs_path }}} and drop-in files" version="1">
     <regex_capture pattern="UID_MIN[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_uid_min_from_etc_login_defs" />
@@ -212,7 +212,7 @@
 
   <!-- Actual SYS_UID_MIN value as OVAL variable (prioritize main file) -->
   <local_variable id="variable_sys_uid_min_value" datatype="int"
-  comment="Value of last SYS_UID_MIN from {{{ login_defs_path }}}} and drop-in files" version="1">
+  comment="Value of last SYS_UID_MIN from {{{ login_defs_path }}} and drop-in files" version="1">
     <regex_capture pattern="SYS_UID_MIN[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_sys_uid_min_from_etc_login_defs" />
@@ -221,7 +221,7 @@
 
   <!-- Actual SYS_UID_MAX value as OVAL variable (prioritize main file) -->
   <local_variable id="variable_sys_uid_max_value" datatype="int"
-  comment="Value of last SYS_UID_MAX from {{{ login_defs_path }}}} and drop-in files" version="1">
+  comment="Value of last SYS_UID_MAX from {{{ login_defs_path }}} and drop-in files" version="1">
     <regex_capture pattern="SYS_UID_MAX[\s]+(\d+)">
       <object_component item_field="subexpression"
       object_ref="object_last_sys_uid_max_from_etc_login_defs" />
