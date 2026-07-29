@@ -4,13 +4,13 @@
 # strategy = restrict
 # complexity = low
 {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
-{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{% set accounts_have_homedir_login_defs_cce_identifier = cce_identifiers['cce'] %}}
 {{{
     ansible_login_defs(
       parameter='CREATE_HOME',
       value='yes',
       rule_title=rule_title,
-      cce=cce_cce_identifier
+      cce=accounts_have_homedir_login_defs_cce_identifier
     )
 }}}
 {{% else %}}

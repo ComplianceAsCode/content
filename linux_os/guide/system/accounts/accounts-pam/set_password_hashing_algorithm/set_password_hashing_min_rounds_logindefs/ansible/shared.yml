@@ -7,13 +7,13 @@
 {{{ ansible_instantiate_variables("var_password_hashing_min_rounds_login_defs") }}}
 
 {{% if product in [ 'sle15', 'sle16', 'slmicro6' ] %}}
-{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{% set password_hashing_min_rounds_logindefs_cce_identifier = cce_identifiers['cce'] %}}
 {{{
     ansible_login_defs(
       parameter='SHA_CRYPT_MIN_ROUNDS',
       value='{{ var_password_hashing_min_rounds_login_defs }}',
       rule_title=rule_title,
-      cce=cce_cce_identifier
+      cce=password_hashing_min_rounds_logindefs_cce_identifier
     )
 }}}
 {{{
@@ -21,7 +21,7 @@
       parameter='SHA_CRYPT_MAX_ROUNDS',
       value='{{ var_password_hashing_min_rounds_login_defs }}',
       rule_title=rule_title,
-      cce=cce_cce_identifier
+      cce=password_hashing_min_rounds_logindefs_cce_identifier
     )
 }}}
 {{% else %}}
