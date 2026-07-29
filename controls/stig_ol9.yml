@@ -3,7 +3,7 @@ policy: 'Oracle Linux 9 Security Technical Implementation Guide'
 title: 'Oracle Linux 9 Security Technical Implementation Guide'
 id: stig_ol9
 source: https://www.cyber.mil/stigs/downloads/
-version: V1R5
+version: V1R6
 reference_type: stigid
 product: ol9
 
@@ -1702,16 +1702,6 @@ controls:
           - sshd_set_loglevel_verbose
       status: automated
 
-    - id: OL09-00-002355
-      levels:
-          - medium
-      title: OL 9 SSH daemon must not allow compression or must only allow compression after successful
-          authentication.
-      rules:
-          - sshd_disable_compression
-          - var_sshd_disable_compression=stig
-      status: automated
-
     - id: OL09-00-002359
       levels:
           - medium
@@ -2479,6 +2469,12 @@ controls:
       rules:
           - selinux_policytype
           - var_selinux_policy_name=targeted
+      status: automated
+
+    - id: OL09-00-000066
+      title: OL 9 must elevate the SELinux context when an administrator calls the sudo command.
+      rules:
+          - selinux_context_elevation_for_sudo
       status: automated
 
     - id: OL09-00-003010
