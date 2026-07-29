@@ -6,13 +6,13 @@
 {{{ ansible_instantiate_variables("var_accounts_minimum_age_login_defs") }}}
 
 {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
-{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{% set accounts_minimum_age_login_defs_cce_identifier = cce_identifiers['cce'] %}}
 {{{
     ansible_login_defs(
       parameter='PASS_MIN_DAYS',
       value='{{ var_accounts_minimum_age_login_defs }}',
       rule_title=rule_title,
-      cce=cce_cce_identifier
+      cce=accounts_minimum_age_login_defs_cce_identifier
     )
 }}}
 {{% else %}}
