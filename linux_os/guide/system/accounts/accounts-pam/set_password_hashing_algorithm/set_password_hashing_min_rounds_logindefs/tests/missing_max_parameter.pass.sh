@@ -1,5 +1,5 @@
 #!/bin/bash
-{{% if product in ['sel15', 'sle16'] %}}
+{{% if product in ['sle15', 'sle16'] %}}
 # platform = Not Applicable
 {{% endif %}}
 # variables = var_password_hashing_min_rounds_login_defs=5000
