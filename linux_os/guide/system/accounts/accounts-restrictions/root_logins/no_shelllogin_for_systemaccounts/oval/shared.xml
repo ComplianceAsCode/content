@@ -299,7 +299,7 @@
   check_existence="any_exist" comment="&lt;SYS_UID_MIN, SYS_UID_MAX&gt; system UIDS having shell set"
   version="1">
     <ind:object object_ref="object_etc_passwd_entries" />
-    <ind:state state_ref="state_uid_less_than_sys_uid_min" />
+    <ind:state state_ref="state_uid_less_than_sys_uid_min_drop_in" />
     <ind:state state_ref="state_uid_greater_than_or_equal_sys_uid_max_drop_in" />
   </ind:textfilecontent54_test>
 
