@@ -6,6 +6,7 @@ grubby --update-kernel=ALL --args="{{{ ARG_NAME }}}={{{ ARG_VALUE }}}"
 # Ensure new kernels and boot entries retain the boot option
 if [ ! -f /etc/kernel/cmdline ]; then
     echo "{{{ ARG_NAME }}}={{{ ARG_VALUE }}}" > /etc/kernel/cmdline
+    chmod 0644 /etc/kernel/cmdline
 elif ! grep -q '^(.*\s)?{{{ ARG_NAME }}}={{{ ARG_VALUE }}}(\s.*)?$' /etc/kernel/cmdline; then
     {{% if '/' in ARG_NAME %}}
     {{{ raise("ARG_NAME (" + ARG_NAME + ") uses sed path separator (" + sed_separator + ") in " + rule_id) }}}

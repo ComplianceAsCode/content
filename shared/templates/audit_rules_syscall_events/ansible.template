@@ -45,12 +45,14 @@
     path: "{{ all_files[0] }}"
     line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     create: yes
+    mode: 0600
 
 - name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on 64bit
   ansible.builtin.lineinfile:
     path: "{{ all_files[0] }}"
     line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     create: yes
+    mode: 0600
   when: audit_arch is defined and audit_arch == 'b64'
 #
 # Inserts/replaces the rule in /etc/audit/audit.rules
@@ -61,6 +63,7 @@
     state: present
     dest: /etc/audit/rules.d/audit.rules
     create: yes
+    mode: 0600
 
 - name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/rules.d/audit.rules when on 64bit
   ansible.builtin.lineinfile:
@@ -68,4 +71,5 @@
     state: present
     dest: /etc/audit/rules.d/audit.rules
     create: yes
+    mode: 0600
   when: audit_arch is defined and audit_arch == 'b64'
