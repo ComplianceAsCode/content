@@ -221,6 +221,7 @@ done
 {{%- set hardening_config_basename = config_basename or sshd_hardening_config_basename %}}
 {{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
 mkdir -p {{{ sshd_drop_in_dir }}}
+chmod 0700 {{{ sshd_drop_in_dir }}}
 touch {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
 chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
 {{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
@@ -254,9 +255,11 @@ chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
 #}}
 {{%- macro bash_create_audit_remediation_unsuccessful_file_modification_detailed(filename) -%}}
 mkdir -p "$(dirname '{{{ filename }}}')"
+chmod 0750 "$(dirname '{{{ filename }}}')"
 cat <<EOF > "{{{ filename }}}"
 {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
 EOF
+chmod 0600 "{{{ filename }}}"
 {{%- endmacro -%}}
 
 
@@ -613,6 +616,7 @@ DCONFFILE="/etc/dconf/db/{{{ db }}}/{{{ setting_file }}}"
 DBDIR="/etc/dconf/db/{{{ db }}}"
 
 mkdir -p "${DBDIR}"
+chmod 0755 "${DBDIR}"
 
 # Comment out the configurations in databases different from the target one
 if [ "${#SETTINGSFILES[@]}" -ne 0 ]
@@ -662,6 +666,7 @@ LOCKFILES=$(grep -r "^/{{{ key }}}/{{{ setting }}}$" "/etc/dconf/db/" \
 LOCKSFOLDER="/etc/dconf/db/{{{ db }}}/locks"
 
 mkdir -p "${LOCKSFOLDER}"
+chmod 0755 "${LOCKSFOLDER}"
 
 # Comment out the configurations in databases different from the target one
 if [[ ! -z "${LOCKFILES}" ]]
@@ -889,6 +894,7 @@ Auth-Type: Primary
 Auth:
     [default=die]                   pam_faillock.so authfail
 EOF
+    chmod 0644 /usr/share/pam-configs/"$conf_name"
 fi
 
 if [ ! -f /usr/share/pam-configs/"$conf_name"_notify ]; then
@@ -904,6 +910,7 @@ Account-Type: Primary
 Account:
     required                        pam_faillock.so
 EOF
+    chmod 0644 /usr/share/pam-configs/"$conf_name"_notify
 fi
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
@@ -948,6 +955,7 @@ Password-Type: Primary
 Password:
     requisite                   pam_pwquality.so
 EOF
+    chmod 0644 /usr/share/pam-configs/"$conf_name"
 fi
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
@@ -966,6 +974,7 @@ if [ ! -f "$conf_path"/"$conf_name" ]; then
     if [ -f "$conf_path"/unix ]; then
         if grep -q "$(md5sum "$conf_path"/unix | cut -d ' ' -f 1)" /var/lib/dpkg/info/libpam-runtime.md5sums;then
             cp "$conf_path"/unix "$conf_path"/"$conf_name"
+            chmod 0644 "$conf_path"/"$conf_name"
             sed -i 's/Priority: [0-9]\+/Priority: 257\
 Conflicts: unix/' "$conf_path"/"$conf_name"
             DEBIAN_FRONTEND=noninteractive pam-auth-update
@@ -1105,6 +1114,7 @@ Password-Type: Primary
 Password: {{{ control }}} pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok
 Password-Initial: {{{ control }}} pam_pwhistory.so remember=24 enforce_for_root try_first_pass
 EOF
+    chmod 0644 "$conf_path"/"$conf_name"
 fi
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
@@ -1323,6 +1333,7 @@ if [ -e "{{{ path }}}" ] ; then
 else
     {{%- if create %}}
     touch "{{{ path }}}"
+    chmod 0644 "{{{ path }}}"
     {{%- else %}}
     {{{ die("Path '" + path + "' wasn't found on this system. Refusing to continue.", action="return") | indent(4) }}}
     {{%- endif %}}
@@ -1421,6 +1432,7 @@ rm "{{{ path }}}.bak"
 cat << 'EOF' > {{{ filepath }}}
 {{{ contents }}}
 EOF
+chmod 0644 {{{ filepath }}}
 {{%- endmacro %}}
 
 
@@ -1545,8 +1557,10 @@ done
 #}}
 {{% macro bash_sssd_ensure_default_config(sssd_conf, sssd_conf_dir) -%}}
 mkdir -p "$(dirname "{{{ sssd_conf }}}")"
+chmod 0711 "$(dirname "{{{ sssd_conf }}}")"
 if [ ! -f "{{{ sssd_conf }}}" ]; then
     touch "{{{ sssd_conf }}}"
+    chmod 0600 "{{{ sssd_conf }}}"
 fi
 if ! grep -qsrP '^\s*\[domain\/[^]]*]' "{{{ sssd_conf }}}" "{{{ sssd_conf_dir }}}"/*.conf 2>/dev/null; then
     {{{ bash_ensure_ini_config(sssd_conf, "sssd", "domains", "default") }}}
@@ -2375,6 +2389,7 @@ done
 if ! $found ; then
     file=$(echo "{{{ files }}}" | cut -f1 -d ' ')
     mkdir -p "$(dirname "$file")"
+    chmod 0755 "$(dirname "$file")"
 {{% if no_quotes %}}
     echo -e "[{{{ section }}}]\n{{{ key }}}={{{ value }}}" >> "$file"
 {{% else %}}
@@ -2797,9 +2812,11 @@ lines will be inserted at the beginning of the profile.
 {{% macro bash_enable_dconf_user_profile(profile, database) -%}}
 
 mkdir -p /etc/dconf/profile
+chmod 0755 /etc/dconf/profile
 dconf_profile_path=/etc/dconf/profile/{{{ profile }}}
 
 [[ -s "${dconf_profile_path}" ]] || echo > "${dconf_profile_path}"
+chmod 0644 "${dconf_profile_path}"
 
 if ! grep -Pzq "(?s)^\s*user-db:user.*\n\s*system-db:{{{ database }}}" "${dconf_profile_path}"; then
     sed -i --follow-symlinks "1s/^/user-db:user\nsystem-db:{{{ database }}}\n/" "${dconf_profile_path}"
@@ -2807,6 +2824,7 @@ fi
 
 # Make sure the corresponding directories exist
 mkdir -p /etc/dconf/db/{{{ database }}}.d
+chmod 0755 /etc/dconf/db/{{{ database }}}.d
 
 # Make sure permissions allow regular users to read dconf settings.
 # Also define the umask to avoid `dconf update` changing permissions.

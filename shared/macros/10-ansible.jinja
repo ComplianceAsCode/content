@@ -398,6 +398,7 @@ value: :code:`Setting={{ varname1 }}`
     content: |+
         {{{ contents|indent(8) }}}
     force: yes
+    mode: 0644
 {{%- endmacro %}}
 
 
@@ -1490,6 +1491,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
             [default=die]                   pam_faillock.so authfail
             sufficient                      pam_faillock.so authsucc
         force: yes
+        mode: 0644
       when: not faillock_file_stat.stat.exists
 
     - name: {{{ rule_title }}} - Put the content into cac_faillock_notify if it does not exist
@@ -1507,6 +1509,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
           Account:
             required                        pam_faillock.so
         force: yes
+        mode: 0644
       when: not faillock_notify_file_stat.stat.exists
 
     {{{ ansible_apply_pam_auth_update_changes('cac_faillock') | indent(4) }}}
@@ -1677,6 +1680,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
           Password:
             requisite           pam_pwquality.so retry=3
         force: yes
+        mode: 0644
       when: not pwquality_file_stat.stat.exists
 
     {{{ ansible_apply_pam_auth_update_changes('cac_pwquality', rule_title=rule_title) | indent(4) }}}
@@ -2410,6 +2414,7 @@ Part of the grub2_bootloader_argument_absent template.
     ansible.builtin.file:
         path: /etc/rsyslog.conf
         state: touch
+        mode: 0644
         modification_time: preserve
         access_time: preserve
 
@@ -2417,6 +2422,7 @@ Part of the grub2_bootloader_argument_absent template.
     ansible.builtin.file:
         path: /etc/rsyslog.d
         state: directory
+        mode: 0755
 {{%- endmacro -%}}
 
 
@@ -2492,6 +2498,7 @@ lines will be inserted at the beginning of the profile.
     path: "/etc/dconf/profile/{{{ profile }}}"
     line: "{{ item }}"
     create: yes
+    mode: 0644
     state: present
   loop:
     - "user-db:user"
