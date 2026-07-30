@@ -574,6 +574,8 @@ def test_generate_cel_content_unknown_rule_reference():
         'existing_rule': rule1
     }
 
+    all_rule_ids = {'existing_rule'}
+
     # Create a profile that references a non-existent rule
     profile = ssg.build_yaml.Profile('test_profile')
     profile.id_ = 'test_profile'
@@ -584,7 +586,7 @@ def test_generate_cel_content_unknown_rule_reference():
     profiles = [profile]
 
     with pytest.raises(ValueError, match="references unknown rule 'nonexistent-rule'"):
-        build_cel_content.generate_cel_content(cel_rules, profiles)
+        build_cel_content.generate_cel_content(cel_rules, profiles, all_rule_ids)
 
 
 def test_validation_empty_expression():
@@ -663,7 +665,7 @@ def test_validation_profile_with_empty_selections():
 
 
 def test_validation_mixed_oval_and_cel_in_profile():
-    """Test that profile with both OVAL and CEL checks only includes rules with CEL checks."""
+    """Test that profile with both OVAL and CEL checks only includes CEL rules in output."""
     # Create rule with CEL checks
     cel_rule = ssg.build_yaml.Rule('cel_rule')
     cel_rule.id_ = 'cel_rule'
@@ -679,19 +681,22 @@ def test_validation_mixed_oval_and_cel_in_profile():
         'cel_rule': cel_rule
     }
 
+    # oval_rule exists as a compiled rule but has no CEL checks
+    all_rule_ids = {'cel_rule', 'oval_rule'}
+
     # Create a CEL profile that references both CEL and OVAL rules
-    # (OVAL rules won't be in cel_rule_ids)
     profile = ssg.build_yaml.Profile('mixed_profile')
     profile.id_ = 'mixed_profile'
     profile.title = 'Mixed Profile'
     profile.description = 'Test'
-    profile.selected = ['cel_rule', 'oval_rule']  # oval_rule doesn't have CEL checks
+    profile.selected = ['cel_rule', 'oval_rule']
 
     profiles = [profile]
 
-    # This should fail because oval_rule doesn't have CEL checks
-    with pytest.raises(ValueError, match="references unknown rule 'oval-rule'"):
-        build_cel_content.generate_cel_content(cel_rules, profiles)
+    # Should warn about oval_rule but not error since it exists
+    content = build_cel_content.generate_cel_content(cel_rules, profiles, all_rule_ids)
+    assert len(content['rules']) == 1
+    assert content['rules'][0]['id'] == 'cel_rule'
 
 
 def test_validation_integration_full_flow():
