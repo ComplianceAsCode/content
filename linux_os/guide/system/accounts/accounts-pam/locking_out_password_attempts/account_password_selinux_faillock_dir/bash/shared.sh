@@ -18,6 +18,7 @@ if [ -n "$faillock_dirs" ]; then
         fi
         if [ ! -e $dir ]; then
             mkdir -p $dir
+            chmod 0755 $dir
         fi
         /usr/sbin/restorecon -R -v $dir
     done

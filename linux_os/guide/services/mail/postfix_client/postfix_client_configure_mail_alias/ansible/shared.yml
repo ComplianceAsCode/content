@@ -12,6 +12,7 @@
     regexp: '^(?:[rR][oO][oO][tT]|"[rR][oO][oO][tT]")\s*:\s*(.+)$'
     create: true
     state: present
+    mode: 0644
   register: aliases_root_mail_alias_changed
 
 - name: {{{ rule_title }}} - Check if newaliases command is available

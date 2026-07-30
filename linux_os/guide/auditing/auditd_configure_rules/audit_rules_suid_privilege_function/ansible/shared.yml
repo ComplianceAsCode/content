@@ -50,6 +50,7 @@
     line: "{{  item.rule  }}"
     regexp: "{{ item.regex }}"
     create: yes
+    mode: 0600
   when:
     - ('"auditd.service" in ansible_facts.services' or
         '"augenrules.service" in ansible_facts.services')

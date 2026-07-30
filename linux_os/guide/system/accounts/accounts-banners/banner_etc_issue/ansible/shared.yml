@@ -9,6 +9,7 @@
 - name: "{{{ rule_title }}} - Ensure Correct Banner"
   ansible.builtin.copy:
     dest: /etc/issue
+    mode: 0644
     content: "{{ login_banner_contents | replace('\\n', '\n') }}\n"
 {{%- else -%}}
 - name: {{{ rule_title }}} Ensure issue-generator is Installed
@@ -19,6 +20,7 @@
 - name: "{{{ rule_title }}} - Ensure Correct Banner"
   ansible.builtin.copy:
     dest: /etc/issue.d/99-oscap-setting
+    mode: 0644
     content: "{{ login_banner_contents | replace('\\n', '\n') }}\n"
 
 - name: "{{{ rule_title }}} - Restart issue-generator Service on Issue Configuration Change"

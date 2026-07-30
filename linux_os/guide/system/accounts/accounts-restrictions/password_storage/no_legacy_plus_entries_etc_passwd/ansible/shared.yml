@@ -9,6 +9,7 @@
     src: /etc/passwd
     dest: /etc/passwd-
     remote_src: true
+    mode: 0644
 
 - name: "{{{ rule_title }}} - Remove Lines Starting with + From /etc/passwd"
   ansible.builtin.lineinfile:

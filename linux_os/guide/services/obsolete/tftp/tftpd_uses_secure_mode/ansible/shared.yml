@@ -28,4 +28,5 @@
     line: "server_args = -s {{ var_tftpd_secure_directory }}"
     state: present
     create: true
+    mode: 0644
   when: tftpd_secure_config_line is defined and tftpd_secure_config_line.matched == 0

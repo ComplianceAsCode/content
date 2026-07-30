@@ -11,6 +11,7 @@
     value: "true"
     create: yes
     no_extra_spaces: yes
+    mode: 0644
   register: result_ini
 
 - name: "Prevent user modification of GNOME3 disablement of WiFi"
@@ -19,6 +20,7 @@
     regexp: '^/org/gnome/nm-applet/disable-wifi-create$'
     line: '/org/gnome/nm-applet/disable-wifi-create'
     create: yes
+    mode: 0644
   register: result_lineinfile
 
 - name: Dconf Update

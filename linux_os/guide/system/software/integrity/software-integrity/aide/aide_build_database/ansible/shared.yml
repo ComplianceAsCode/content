@@ -43,6 +43,7 @@
     dest: {{{ aide_stage_dest }}}
     backup: yes
     remote_src: yes
+    mode: 0644
   when:
     - aide_database_init is changed
     - not ansible_check_mode

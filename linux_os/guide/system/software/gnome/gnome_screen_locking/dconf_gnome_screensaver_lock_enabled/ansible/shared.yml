@@ -12,6 +12,7 @@
     value: "true"
     create: yes
     no_extra_spaces: yes
+    mode: 0644
   when: ansible_distribution != 'SLES'
   register: screensaver_config
 
@@ -21,6 +22,7 @@
     regexp: '^/org/gnome/desktop/screensaver/lock-enabled$'
     line: '/org/gnome/desktop/screensaver/lock-enabled'
     create: yes
+    mode: 0644
   when: ansible_distribution != 'SLES'
   register: screensaver_lock
 
@@ -32,6 +34,7 @@
     value: "false"
     create: yes
     no_extra_spaces: yes
+    mode: 0644
   when: ansible_distribution == 'SLES'
   register: lockdown_config
 
@@ -41,6 +44,7 @@
     regexp: '^/org/gnome/desktop/lockdown/disable-lock-screen$'
     line: '/org/gnome/desktop/lockdown/disable-lock-screen'
     create: yes
+    mode: 0644
   when: ansible_distribution == 'SLES'
   register: lockdown_lock
 

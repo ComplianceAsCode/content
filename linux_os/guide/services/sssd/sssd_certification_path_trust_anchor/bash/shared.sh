@@ -24,6 +24,7 @@ fi
 # if section not in file, append section with key = value
 if ! $found ; then
     mkdir -p "/etc/sssd"
+    chmod 0711 "/etc/sssd"
     echo -e "\n[domain/example.com]\nca_cert = /etc/ssl/certs/ca-certificates.crt" >> "/etc/sssd/sssd.conf"
 fi
 

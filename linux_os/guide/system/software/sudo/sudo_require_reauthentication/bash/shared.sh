@@ -18,6 +18,7 @@ fi
 
 if /usr/sbin/visudo -qcf /etc/sudoers; then
     cp /etc/sudoers /etc/sudoers.bak
+    chmod 0440 /etc/sudoers.bak
     if ! grep -P '^[\s]*Defaults.*timestamp_timeout[\s]*=[\s]*[-]?\w+.*$' /etc/sudoers; then
         # sudoers file doesn't define Option timestamp_timeout
         echo "Defaults timestamp_timeout=${var_sudo_timestamp_timeout}" >> /etc/sudoers

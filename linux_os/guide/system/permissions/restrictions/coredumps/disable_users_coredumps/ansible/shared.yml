@@ -60,10 +60,12 @@
     ansible.builtin.file:
         path: "{{ limits_dropin_dir }}"
         state: directory
+        mode: 0755
     when: not core_limit_valid
 
 -   name: "{{{ rule_title }}} - Deploy 10-ssg-hardening.conf drop-in with correct core limit"
     ansible.builtin.copy:
         dest: "{{ limits_dropin_file }}"
         content: "*     hard   core    0\n"
+        mode: 0644
     when: not core_limit_valid

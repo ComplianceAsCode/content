@@ -9,6 +9,7 @@
 # create drop-in in the /etc/systemd/logind.conf.d/ directory
 {{% set logind_conf_file = "/etc/systemd/logind.conf.d/oscap-idle-sessions.conf" %}}
 mkdir -p "/etc/systemd/logind.conf.d/"
+chmod 0755 "/etc/systemd/logind.conf.d/"
 # remove StopIdleSessionSec from drop-in files
 {{{ lineinfile_absent_in_directory("/etc/systemd/logind.conf.d", "^\s*StopIdleSessionSec\s*=", insensitive=true, filename_glob="*.conf") | indent(4) }}}
 {{% else %}}

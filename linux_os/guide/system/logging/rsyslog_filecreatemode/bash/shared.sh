@@ -13,6 +13,7 @@ if ! grep -qE '^\s*\$FileCreateMode\s+0640' /etc/rsyslog.conf; then
     fi
     ## Assume there is no filter named as 00-, otherwise those filters might be included before this configuration and create file with different permissions
     echo '$FileCreateMode 0640' > /etc/rsyslog.d/00-rsyslog_filecreatemode.conf
+    chmod 0644 /etc/rsyslog.d/00-rsyslog_filecreatemode.conf
     changes_made=true
 fi
 

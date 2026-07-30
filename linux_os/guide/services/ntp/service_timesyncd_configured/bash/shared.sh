@@ -26,6 +26,7 @@ done
 if [ ! -d "/etc/systemd/timesyncd.conf.d" ]
 then 
     mkdir /etc/systemd/timesyncd.conf.d
+    chmod 0755 /etc/systemd/timesyncd.conf.d
 fi
 
 {{{ bash_ini_file_set("/etc/systemd/timesyncd.conf.d/oscap-remedy.conf", "Time", "NTP", "$preferred_ntp_servers", rule_id=rule_id) }}}

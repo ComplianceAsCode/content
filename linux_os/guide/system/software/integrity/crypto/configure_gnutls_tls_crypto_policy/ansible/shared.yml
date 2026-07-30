@@ -21,6 +21,7 @@
     regexp: "{{ lineinfile_reg }}"
     line: "{{ correct_value }}"
     create: yes
+    mode: 0644
   when: not gnutls_file.stat.exists or gnutls_file.stat.size <= correct_value|length
 
 - name: "{{{ rule_title }}}"

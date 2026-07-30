@@ -9,6 +9,7 @@
     src: /etc/group
     dest: /etc/group-
     remote_src: true
+    mode: 0644
 
 - name: "{{{ rule_title }}} - Remove Lines Starting with + From /etc/group"
   ansible.builtin.lineinfile:

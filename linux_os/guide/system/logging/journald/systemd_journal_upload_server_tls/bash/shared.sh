@@ -2,7 +2,9 @@
 {{% if 'ubuntu' in product %}}
 dropin_conf=/etc/systemd/journal-upload.conf.d/60-journald_upload.conf
 mkdir -p /etc/systemd/journal-upload.conf.d
+chmod 0755 /etc/systemd/journal-upload.conf.d
 touch "${dropin_conf}"
+chmod 0644 "${dropin_conf}"
 {{% else %}}
 dropin_conf=/etc/systemd/journal-upload.conf
 {{% endif %}}

@@ -24,6 +24,7 @@
     state: touch
     access_time: preserve
     modification_time: preserve
+    mode: 0644
 
 - name: "{{{ rule_title }}}: Gather conf.d files"
   ansible.builtin.find:
@@ -55,5 +56,6 @@
     line: "{{ item.item.0.selector }} {{ item.item.0.location }}"
     insertafter: ^.*\/var\/log\/secure.*$
     create: yes
+    mode: 0644
   loop: '{{ remote_method_values.results }}'
   when: item.found == 0

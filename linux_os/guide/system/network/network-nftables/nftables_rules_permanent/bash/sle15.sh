@@ -10,6 +10,7 @@
 
 if [ ! -f "${var_nftables_master_config_file}" ]; then
     touch "${var_nftables_master_config_file}"
+    chmod 0644 "${var_nftables_master_config_file}"
 fi
 
 {{% for family in nftables_family_names %}}

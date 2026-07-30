@@ -8,4 +8,5 @@
 - name: "{{{ rule_title }}} - ensure correct banner"
   ansible.builtin.copy:
     dest: /etc/issue.net
+    mode: 0644
     content: "{{ remote_login_banner_contents | replace('\\n', '\n') }}\n"

@@ -34,6 +34,7 @@
     regexp: ^{{ item }}\s
     line: "{{ item }} {{{ aide_string() }}}"
     create: true
+    mode: 0644
   with_items: "{{ audit_tools }}"
   when:
     - '"aide" in ansible_facts.packages'
@@ -43,6 +44,7 @@
     path: {{{ aide_conf_path }}}
     line: "{{ item }} {{{ aide_string() }}}"
     create: true
+    mode: 0644
   with_items: "{{ audit_tools }}"
   when:
     - '"aide" in ansible_facts.packages'

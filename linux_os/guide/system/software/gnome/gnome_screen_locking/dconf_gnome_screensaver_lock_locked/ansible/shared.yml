@@ -9,6 +9,7 @@
     regexp: '^/org/gnome/desktop/screensaver/lock-enabled$'
     line: '/org/gnome/desktop/screensaver/lock-enabled'
     create: yes
+    mode: 0644
   register: result_lineinfile
 
 - name: Dconf Update

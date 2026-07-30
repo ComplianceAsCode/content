@@ -11,6 +11,7 @@
     line: 'setenv SSH_USE_STRONG_RNG 32'
     state: present
     create: yes
+    mode: 0644
 
 - name: "Ensure that the configuration is not overridden in /etc/profile"
   ansible.builtin.lineinfile:

@@ -23,6 +23,7 @@ elif [ ! -d "$DROPIN_DIR" ] && grep -qE "$REGEX_TFTP_SERVICE_FILE" "$TFTP_SERVIC
     exit 0
 else
     mkdir -p "$DROPIN_DIR"
+    chmod 0755 "$DROPIN_DIR"
 
     cat > "$DROPIN_FILE" << EOF
 [Service]
@@ -30,6 +31,7 @@ else
 ExecStart=
 ExecStart=/usr/sbin/in.tftpd -s $var_tftpd_secure_directory
 EOF
+    chmod 0644 $DROPIN_FILE
     systemctl daemon-reload
     systemctl restart tftp.service
 fi

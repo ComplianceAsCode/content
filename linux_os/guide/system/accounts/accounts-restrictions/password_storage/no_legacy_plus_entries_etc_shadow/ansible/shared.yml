@@ -9,6 +9,7 @@
     src: /etc/shadow
     dest: /etc/shadow-
     remote_src: true
+    mode: 0000
 
 - name: "{{{ rule_title }}} - Remove Lines Starting with + From /etc/shadow"
   ansible.builtin.lineinfile:

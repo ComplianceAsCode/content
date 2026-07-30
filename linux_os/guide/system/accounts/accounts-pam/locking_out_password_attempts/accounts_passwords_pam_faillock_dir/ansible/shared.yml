@@ -21,6 +21,7 @@
     path: "{{ var_accounts_passwords_pam_faillock_dir }}"
     state: directory
     setype: 'faillog_t'
+    mode: 0755
 
 - name: '{{{ rule_title }}} - Get SELinux context for faillock directory'
   ansible.builtin.command:

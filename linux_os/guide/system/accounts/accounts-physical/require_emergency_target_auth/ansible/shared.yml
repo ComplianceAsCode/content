@@ -9,6 +9,7 @@
   ansible.builtin.blockinfile:
       create: yes
       dest: /etc/systemd/system/emergency.service.d/10-oscap.conf
+      mode: 0644
       block: |
         [Service]
         ExecStart=
@@ -23,5 +24,6 @@
       line: "ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency"
       {{%- else -%}}
       line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
+      mode: 0644
       {{%- endif %}}
 {{% endif %}}

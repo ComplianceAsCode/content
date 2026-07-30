@@ -19,5 +19,6 @@ elif [ ! -d "$DROPIN_DIR" ] && grep -qE "$REGEX_CORRECT_VALUE" "$SECURITY_LIMITS
     exit 0
 else
     mkdir -p "$DROPIN_DIR"
+    chmod 0755 "$DROPIN_DIR"
     echo "*     hard   core    0" >> $DROPIN_FILE
 fi

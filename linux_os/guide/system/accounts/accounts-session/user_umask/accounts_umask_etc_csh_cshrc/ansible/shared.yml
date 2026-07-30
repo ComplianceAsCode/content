@@ -27,5 +27,6 @@
     create: true
     path: /etc/csh.cshrc
     line: umask {{ var_accounts_user_umask }}
+    mode: 0644
   when:
   - umask_replace.found == 0

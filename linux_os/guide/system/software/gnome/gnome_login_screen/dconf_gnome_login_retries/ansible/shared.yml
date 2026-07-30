@@ -11,6 +11,7 @@
     value: "3"
     create: yes
     no_extra_spaces: yes
+    mode: 0644
   register: result_ini
 
 - name: "Prevent user modification of GNOME3 Login Number of Failures"
@@ -19,6 +20,7 @@
     regexp: '^/org/gnome/login-screen/allowed-failures$'
     line: '/org/gnome/login-screen/allowed-failures'
     create: yes
+    mode: 0644
   register: result_lineinfile
 
 - name: Dconf Update
