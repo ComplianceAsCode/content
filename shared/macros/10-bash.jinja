@@ -184,7 +184,7 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
         insensitive=true,
         separator=" ",
         separator_regex="\s\+",
-        prefix_regex="^\s*", rule_id=rule_id)
+        prefix_regex="^\s*", rule_id=rule_id, mode="0600")
     }}}
 {{%- endmacro -%}}
 
@@ -283,7 +283,7 @@ chmod 0600 "{{{ filename }}}"
         insensitive=true,
         separator=" = ",
         separator_regex="\s*=\s*",
-        prefix_regex="^\s*", rule_id=rule_id)
+        prefix_regex="^\s*", rule_id=rule_id, mode="0640")
     }}}
 {{%- endmacro -%}}
 
@@ -1324,7 +1324,7 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 :type sed_path_separator: char
 
 #}}
-{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/", rule_id=None) -%}}
+{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/", rule_id=None, mode="0644") -%}}
     {{%- set new_line = parameter+separator~value -%}}
     {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
     {{%- set line_regex = prefix_regex + ((parameter | replace("\\$", "$") | escape_regex) | replace("/", "\/")) + separator_regex -%}}
@@ -1333,7 +1333,7 @@ if [ -e "{{{ path }}}" ] ; then
 else
     {{%- if create %}}
     touch "{{{ path }}}"
-    chmod 0644 "{{{ path }}}"
+    chmod {{{ mode }}} "{{{ path }}}"
     {{%- else %}}
     {{{ die("Path '" + path + "' wasn't found on this system. Refusing to continue.", action="return") | indent(4) }}}
     {{%- endif %}}

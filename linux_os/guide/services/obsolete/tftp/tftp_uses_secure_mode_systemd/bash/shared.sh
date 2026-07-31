@@ -31,7 +31,7 @@ else
 ExecStart=
 ExecStart=/usr/sbin/in.tftpd -s $var_tftpd_secure_directory
 EOF
-    chmod 0644 $DROPIN_FILE
+    chmod 0644 "$DROPIN_FILE"
     systemctl daemon-reload
     systemctl restart tftp.service
 fi

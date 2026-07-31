@@ -54,10 +54,10 @@ then
     if ! grep -q 'pam_faildelay.so' "$SYSTEM_AUTH_CONF"
     then
         echo "$(awk '/^'"$PAM_ENV_SO"'/{print $0 RS "'"$SYSTEM_AUTH_PAM_SUCCEED"'" RS "'"$SYSTEM_AUTH_PAM_PKCS11"'";next}1' "$SYSTEM_AUTH_CONF")" > "$SYSTEM_AUTH_CONF"
-        chmod 0644 $SYSTEM_AUTH_CONF
+        chmod 0644 "$SYSTEM_AUTH_CONF"
     else
         echo "$(awk '/^'"$PAM_FAIL_DELAY"'/{print $0 RS "'"$SYSTEM_AUTH_PAM_SUCCEED"'" RS "'"$SYSTEM_AUTH_PAM_PKCS11"'";next}1' "$SYSTEM_AUTH_CONF")" > "$SYSTEM_AUTH_CONF"
-        chmod 0644 $SYSTEM_AUTH_CONF
+        chmod 0644 "$SYSTEM_AUTH_CONF"
     fi
 
 fi

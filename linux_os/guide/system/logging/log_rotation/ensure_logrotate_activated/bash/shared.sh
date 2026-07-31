@@ -30,7 +30,7 @@ fi
 # configure cron.daily if not already
 if ! grep -q "^[[:space:]]*/usr/sbin/logrotate[[:alnum:][:blank:][:punct:]]*$LOGROTATE_CONF_FILE$" $CRON_DAILY_LOGROTATE_FILE; then
 	echo '#!/bin/sh' > $CRON_DAILY_LOGROTATE_FILE
- chmod 0755 $CRON_DAILY_LOGROTATE_FILE
+	chmod 0755 "$CRON_DAILY_LOGROTATE_FILE"
 	echo "/usr/sbin/logrotate $LOGROTATE_CONF_FILE" >> $CRON_DAILY_LOGROTATE_FILE
 fi
 {{% endif %}}
