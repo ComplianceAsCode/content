@@ -1,10 +1,8 @@
 documentation_complete: true
 
-
 platform: '{{{ product }}}-node'
 
 {{%- set kubeletconf_path = "/var/lib/kubelet/seccomp/kubevirt/kubevirt.json" %}}
-
 
 title: 'Ensure kubevirt seccomp profile file permission is set to 700 or more restrictive'
 
@@ -12,9 +10,9 @@ description: |-
     {{{ describe_file_permissions(file=kubeletconf_path, perms="0700") }}}
 
 rationale: |-
-    This configuration ensures that only authorized users have access to modify the 
-    seccomp profile, thereby preventing unauthorized alterations to the allowed system calls for 
-    virt-launcher pods. By enforcing stringent permission controls, potential security risks 
+    This configuration ensures that only authorized users have access to modify the
+    seccomp profile, thereby preventing unauthorized alterations to the allowed system calls for
+    virt-launcher pods. By enforcing stringent permission controls, potential security risks
     associated with unrestricted access to sensitive system calls can be mitigated.
 
 severity: medium
