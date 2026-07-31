@@ -61,65 +61,40 @@ def setup_logging(log_level_str):
     logging.basicConfig(format=MESSAGE_FORMAT, level=numeric_level)
 
 
-def load_all_rule_ids(rules_dir):
+def load_rules(rules_dir):
     """
-    Load IDs of all compiled rules regardless of check type.
+    Load all compiled rules, separating CEL rules from the rest.
+
+    Scans the directory once, returning CEL rules (with expression and
+    inputs) and all remaining rules keyed by ID.
 
     Args:
         rules_dir: Directory containing resolved rule JSON files
 
     Returns:
-        set: Set of all rule IDs found in the directory
-    """
-    all_ids = set()
-
-    if not os.path.isdir(rules_dir):
-        return all_ids
-
-    for rule_file in os.listdir(rules_dir):
-        rule_path = os.path.join(rules_dir, rule_file)
-        try:
-            rule = ssg.build_yaml.Rule.from_compiled_json(rule_path)
-            all_ids.add(rule.id_)
-        except ssg.build_yaml.DocumentationNotComplete:
-            continue
-        except Exception:
-            continue
-
-    return all_ids
-
-
-def load_cel_rules(rules_dir):
-    """
-    Load all rules that use the CEL checking engine.
-
-    Args:
-        rules_dir: Directory containing resolved rule JSON files
-
-    Returns:
-        dict: Dictionary of rule_id -> rule object for rules with CEL checks
+        tuple: (cel_rules, all_rules) where cel_rules is a dict of
+               rule_id -> rule object for rules with CEL checks, and
+               all_rules is a dict of rule_id -> rule object for all rules
 
     Raises:
         ValueError: If a rule with CEL checks is missing required fields
     """
     cel_rules = {}
+    all_rules = {}
 
     if not os.path.isdir(rules_dir):
-        return cel_rules
+        return cel_rules, all_rules
 
     for rule_file in os.listdir(rules_dir):
         rule_path = os.path.join(rules_dir, rule_file)
         try:
             rule = ssg.build_yaml.Rule.from_compiled_json(rule_path)
+            all_rules[rule.id_] = rule
 
-            # Check if this rule has CEL checks by looking for CEL-specific fields
-            # A rule uses CEL if it has both expression and inputs
-            # (loaded from cel/shared.yml during rule compilation)
             has_expression = hasattr(rule, 'expression') and rule.expression
             has_inputs = hasattr(rule, 'inputs') and rule.inputs
 
             if has_expression and has_inputs:
-                # Validate required CEL fields
                 rule_name = rule_id_to_name(rule.id_)
 
                 if not hasattr(rule, 'check_type') or not rule.check_type:
@@ -130,16 +105,14 @@ def load_cel_rules(rules_dir):
 
                 cel_rules[rule.id_] = rule
         except ssg.build_yaml.DocumentationNotComplete:
-            # Skip documentation-incomplete rules in non-debug builds
             continue
         except ValueError:
-            # Re-raise validation errors
             raise
         except Exception as e:
             logging.warning("Failed to load rule from %s: %s", rule_file, e)
             continue
 
-    return cel_rules
+    return cel_rules, all_rules
 
 
 def load_profiles(profiles_dir, cel_rule_ids):
@@ -406,47 +379,13 @@ def generate_cel_content(cel_rules, profiles, all_rule_ids=None,
     return content
 
 
-def load_manual_rules(rules_dir, manual_rule_ids):
-    """
-    Load rules that are selected by CEL profiles but have no CEL checks.
-
-    These are emitted into CEL content with checkType: Manual so the
-    compliance-operator can produce MANUAL/notchecked results for them.
-
-    Args:
-        rules_dir: Directory containing resolved rule JSON files
-        manual_rule_ids: Set of rule IDs to load as manual rules
-
-    Returns:
-        dict: Dictionary of rule_id -> rule object for manual rules
-    """
-    manual_rules = {}
-
-    if not manual_rule_ids or not os.path.isdir(rules_dir):
-        return manual_rules
-
-    for rule_file in os.listdir(rules_dir):
-        rule_path = os.path.join(rules_dir, rule_file)
-        try:
-            rule = ssg.build_yaml.Rule.from_compiled_json(rule_path)
-            if rule.id_ in manual_rule_ids:
-                rule.check_type = 'Manual'
-                manual_rules[rule.id_] = rule
-        except ssg.build_yaml.DocumentationNotComplete:
-            continue
-        except Exception:
-            continue
-
-    return manual_rules
-
-
 def main():
     args = parse_args()
     setup_logging(args.log)
 
-    # Load all rule IDs and rules with CEL checks
-    all_rule_ids = load_all_rule_ids(args.resolved_rules_dir)
-    cel_rules = load_cel_rules(args.resolved_rules_dir)
+    # Load all rules in a single pass
+    cel_rules, all_rules = load_rules(args.resolved_rules_dir)
+    all_rule_ids = set(all_rules.keys())
 
     if not cel_rules:
         content = {'profiles': [], 'rules': []}
@@ -455,14 +394,14 @@ def main():
         cel_rule_ids = set(cel_rules.keys())
         profiles = load_profiles(args.profiles_dir, cel_rule_ids)
 
-        # Collect rule IDs selected by CEL profiles that have no CEL checks
-        manual_rule_ids = set()
+        # Collect manual rules: selected by CEL profiles but no CEL checks
+        manual_rules = {}
         for profile in profiles:
             for rule_id in profile.selected:
                 if rule_id not in cel_rule_ids and rule_id in all_rule_ids:
-                    manual_rule_ids.add(rule_id)
-
-        manual_rules = load_manual_rules(args.resolved_rules_dir, manual_rule_ids)
+                    rule = all_rules[rule_id]
+                    rule.check_type = 'Manual'
+                    manual_rules[rule_id] = rule
 
         # Generate CEL content
         content = generate_cel_content(
