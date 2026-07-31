@@ -2820,7 +2820,7 @@ if the remediation is performed during a build of a bootable container image.
 #}}
 {{%- macro bash_bootc_build() -%}}
 {{%- if pkg_system == "rpm" -%}}
-{ rpm --quiet -q kernel rpm-ostree bootc && ! rpm --quiet -q openshift-kubelet && { [ -f "/run/.containerenv" ] || [ -f "/.containerenv" ]; }; }
+{ rpm --quiet -q kernel bootc && ! rpm --quiet -q openshift-kubelet && { [ -f "/run/.containerenv" ] || [ -f "/.containerenv" ]; }; }
 {{%- else -%}}
 /bin/false
 {{%- endif -%}}
