@@ -39,7 +39,7 @@
     # The newline at the beginning of the content is important
     mode: 0644
     content: |
-      
+
       Ciphersuites = TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
   when: not opensslcnf_config_stat.stat.exists or opensslcnf_config_ciphersuites | length == 0 or opensslcnf_config_ciphersuites | last != correct_ciphersuites
 

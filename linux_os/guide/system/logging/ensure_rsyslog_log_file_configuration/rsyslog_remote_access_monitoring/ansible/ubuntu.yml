@@ -8,15 +8,15 @@
   ansible.builtin.set_fact:
       conf_files: [ '/etc/rsyslog.d/50-default.conf' ]
       remote_methods:
-        - selector: 'auth.*'
-          regexp: ^.*auth\.\*.*$
-          log_path_name: secure
-        - selector: 'authpriv.*'
-          regexp: ^.*authpriv\.\*.*$
-          log_path_name: secure
-        - selector: 'daemon.*'
-          regexp: ^.*daemon\.\*.*$
-          log_path_name: messages
+          - selector: 'auth.*'
+            regexp: ^.*auth\.\*.*$
+            log_path_name: secure
+          - selector: 'authpriv.*'
+            regexp: ^.*authpriv\.\*.*$
+            log_path_name: secure
+          - selector: 'daemon.*'
+            regexp: ^.*daemon\.\*.*$
+            log_path_name: messages
 
 - name: "{{{ rule_title }}} - Ensure /etc/rsyslog.d/50-default.conf Exists"
   ansible.builtin.file:

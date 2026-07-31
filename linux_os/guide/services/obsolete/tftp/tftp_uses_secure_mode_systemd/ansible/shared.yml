@@ -59,26 +59,26 @@
 
 -   name: "{{{ rule_title }}} - Remediate only if necessary"
     block:
-    -   name: "Ensure drop-in directory exists"
-        ansible.builtin.file:
-            path: /etc/systemd/system/tftp.service.d
-            state: directory
-            mode: 0755
+        -   name: "Ensure drop-in directory exists"
+            ansible.builtin.file:
+                path: /etc/systemd/system/tftp.service.d
+                state: directory
+                mode: 0755
 
-    -   name: "Deploy 10-ssg-hardening.conf drop-in"
-        ansible.builtin.copy:
-            dest: /etc/systemd/system/tftp.service.d/10-ssg-hardening.conf
-            mode: 0644
-            content: |-
-                [Service]
-                # clear any existing ExecStart in the original unit
-                ExecStart=
-                ExecStart=/usr/sbin/in.tftpd -s {{ var_tftpd_secure_directory }}
+        -   name: "Deploy 10-ssg-hardening.conf drop-in"
+            ansible.builtin.copy:
+                dest: /etc/systemd/system/tftp.service.d/10-ssg-hardening.conf
+                mode: 0644
+                content: |-
+                    [Service]
+                    # clear any existing ExecStart in the original unit
+                    ExecStart=
+                    ExecStart=/usr/sbin/in.tftpd -s {{ var_tftpd_secure_directory }}
 
-    -   name: "Reload systemd and restart tftp service"
-        ansible.builtin.systemd:
-            daemon_reload: true
-            name: tftp
-            state: restarted
-            enabled: yes
+        -   name: "Reload systemd and restart tftp service"
+            ansible.builtin.systemd:
+                daemon_reload: true
+                name: tftp
+                state: restarted
+                enabled: yes
     when: not tftp_config_valid

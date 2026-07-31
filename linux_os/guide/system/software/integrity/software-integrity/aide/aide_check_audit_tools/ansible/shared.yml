@@ -5,7 +5,7 @@
 # disruption = low
 - name: "{{{ rule_title }}} - Gather List of Packages"
   tags:
-  - aide_check_audit_tools
+    - aide_check_audit_tools
   ansible.builtin.package_facts:
     manager: auto
 
