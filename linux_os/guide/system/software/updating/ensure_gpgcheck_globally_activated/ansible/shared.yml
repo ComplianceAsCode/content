@@ -3,6 +3,20 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
+
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+- name: "{{{ rule_title }}} - set package manager config path fact"
+  ansible.builtin.set_fact:
+    _pkg_manager_config_file: {{{ pkg_manager_config_file }}}
+
+- name: "{{{ rule_title }}} - ensure package manager config directory exists"
+  ansible.builtin.file:
+    path: "{{ _pkg_manager_config_file | dirname }}"
+    state: directory
+    mode: '0755'
+
+{{{ ansible_copy_distro_defaults("/usr/etc/zypp/zypp.conf", pkg_manager_config_file, rule_title=rule_title) }}}
+{{% endif %}}
 - name: Ensure GPG check is globally activated
   community.general.ini_file:
     dest: {{{ pkg_manager_config_file }}}
