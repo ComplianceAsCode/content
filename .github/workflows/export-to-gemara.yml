@@ -64,10 +64,17 @@ jobs:
 
       - name: Install CUE binary
         run: |
+          # Renewal: cue-lang/cue doesn't publish a checksums file per release, so when
+          # bumping CUE_VERSION, download the new linux_amd64 tarball, run `sha256sum` on
+          # it yourself, and update CUE_SHA256 here in the same commit. Never bump the
+          # version without also updating the hash — that defeats the verification.
           CUE_VERSION="v0.16.1"
-          curl -sSL \
-            "https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}/cue_${CUE_VERSION}_linux_amd64.tar.gz" \
-            | tar -xz -C /usr/local/bin cue
+          CUE_SHA256="5d644c1305a2b86504c8dcd2ec829cf5b4999efc2cf51ee375624e0455f774ae"
+          curl -sSL -o cue.tar.gz \
+            "https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}/cue_${CUE_VERSION}_linux_amd64.tar.gz"
+          echo "${CUE_SHA256}  cue.tar.gz" | sha256sum -c -
+          tar -xz -C /usr/local/bin -f cue.tar.gz cue
+          rm cue.tar.gz
           cue version
 
       - name: Clone Gemara schema repository
@@ -148,47 +155,3 @@ jobs:
           name: gemara-export-${{ github.run_number }}
           path: build/gemara/
           retention-days: 90
-
-      # Optional: push the generated files to a dedicated Gemara data repository.
-      #
-      # Prerequisites:
-      #   1. Create the target repository (e.g. ComplianceAsCode/gemara-data).
-      #   2. Add a deploy key or PAT with write access as secret GEMARA_DATA_REPO_TOKEN.
-      #   3. Set secret GEMARA_DATA_REPO to "<org>/<repo>" (e.g. ComplianceAsCode/gemara-data).
-      #   4. Uncomment the step below.
-      #
-      # - name: Push to Gemara data repository
-      #   if: >-
-      #     github.repository == 'ComplianceAsCode/content' &&
-      #     (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') &&
-      #     steps.export.outcome == 'success'
-      #   env:
-      #     GEMARA_DATA_REPO: ${{ secrets.GEMARA_DATA_REPO }}
-      #     GEMARA_DATA_REPO_TOKEN: ${{ secrets.GEMARA_DATA_REPO_TOKEN }}
-      #     GIT_AUTHOR_NAME: github-actions[bot]
-      #     GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
-      #     GIT_COMMITTER_NAME: github-actions[bot]
-      #     GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
-      #   run: |
-      #     git clone --depth 1 \
-      #       "https://x-access-token:${GEMARA_DATA_REPO_TOKEN}@github.com/${GEMARA_DATA_REPO}.git" \
-      #       /tmp/gemara-data
-      #     for product in rhel8 rhel9 rhel10; do
-      #       mkdir -p "/tmp/gemara-data/data/${product}/nist_800_53"
-      #       cp "build/gemara/${product}/control_catalog.yaml" \
-      #          "/tmp/gemara-data/data/${product}/nist_800_53/"
-      #       cp "build/gemara/${product}/rules_mapping.yaml" \
-      #          "/tmp/gemara-data/data/${product}/nist_800_53/"
-      #     done
-      #     # guidance_catalog.yaml is platform-independent — stored at the top level
-      #     cp build/gemara/guidance_catalog.yaml /tmp/gemara-data/data/nist_800_53/
-      #     cp build/gemara/metadata.json /tmp/gemara-data/metadata.json
-      #     cd /tmp/gemara-data
-      #     git add -A
-      #     if git diff --cached --quiet; then
-      #       echo "No changes — gemara-data repository is already up to date."
-      #     else
-      #       SHA="${{ github.sha }}"
-      #       git commit -m "chore: sync from content@${SHA:0:8} (${{ github.event_name }})"
-      #       git push
-      #     fi

@@ -121,11 +121,18 @@ jobs:
       #     repositories: complytime-policies
       - name: Clone complytime-policies
         run: |
-          git clone --depth 1 \
-            "https://x-access-token:${{ secrets.POLICIES_REPO_TOKEN }}@github.com/complytime/complytime-policies.git" \
-            /tmp/complytime-policies
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # Clone over an unauthenticated URL, then store the token as a local git config
+          # extraheader scoped to github.com. Embedding it in the clone URL instead would put
+          # it in this process's argv, readable via /proc/*/cmdline by anything else on the
+          # runner for the URL's lifetime — the config file approach avoids that. Scoped to
+          # this repo's local config (not --global) and to github.com specifically, this also
+          # covers the fetch/push/checkout in later steps since git config persists on disk
+          # for the rest of the job.
+          git clone --depth 1 https://github.com/complytime/complytime-policies.git /tmp/complytime-policies
+          git -C /tmp/complytime-policies config "http.https://github.com/.extraheader" \
+            "AUTHORIZATION: bearer ${{ secrets.POLICIES_REPO_TOKEN }}"
 
       - name: Install gh CLI
         run: |
