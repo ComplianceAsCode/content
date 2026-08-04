@@ -23,6 +23,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 try:
     from ruamel.yaml import YAML
@@ -45,6 +46,7 @@ sys.path.insert(0, str(_SCRIPT_DIR))
 from gemara.catalog import GemaraCatalogBuilder
 from gemara.guidance import GemaraGuidanceCatalogBuilder
 from gemara.mapping import GemaraMappingBuilder
+from gemara.policy import product_full_name
 from gemara.schema import validate_catalog, validate_guidance, validate_mapping
 
 
@@ -53,14 +55,8 @@ DEFAULT_OUTPUT_DIR = _REPO_ROOT / "build" / "gemara"
 DEFAULT_OSCAL_CATALOG = _SCRIPT_DIR / "data" / "nist_800_53_rev5_catalog.json"
 DEFAULT_DATA_DIR = _SCRIPT_DIR / "data"
 
-_PRODUCT_FULL_NAMES = {
-    "rhel8": "Red Hat Enterprise Linux 8",
-    "rhel9": "Red Hat Enterprise Linux 9",
-    "rhel10": "Red Hat Enterprise Linux 10",
-}
 
-
-def _write_xccdf_profile(product, repo_root, verbose):
+def _write_xccdf_profile(product: str, repo_root: Path, verbose: bool) -> None:
     """Generate products/{product}/profiles/nist_800_53.profile.
 
     This profile selects every rule touched by the nist_800_53 control file.
@@ -69,7 +65,7 @@ def _write_xccdf_profile(product, repo_root, verbose):
     The file is intentionally not committed; re-run export_to_gemara.py to
     regenerate it after adding or removing rules from the control file.
     """
-    full_name = _PRODUCT_FULL_NAMES.get(product, product.upper())
+    full_name = product_full_name(product)
     profile_path = repo_root / "products" / product / "profiles" / "nist_800_53.profile"
     content = f"""\
 documentation_complete: true
@@ -88,7 +84,7 @@ selections:
         print(f"  Wrote {profile_path}")
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Export ComplianceAsCode NIST 800-53 controls to Gemara format",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -156,7 +152,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def load_oscal_catalog(path):
+def load_oscal_catalog(path: Optional[Path]) -> Optional[Dict[str, Any]]:
     """Load the OSCAL catalog JSON file, returning None if unavailable."""
     if not path or not Path(path).exists():
         return None
@@ -168,7 +164,7 @@ def load_oscal_catalog(path):
         return None
 
 
-def load_policy(product, repo_root):
+def load_policy(product: str, repo_root: Path) -> ssg.controls.Policy:
     """
     Load the NIST 800-53 Policy for a product without requiring a build.
 
@@ -184,7 +180,7 @@ def load_policy(product, repo_root):
     return policy
 
 
-def _yaml_instance():
+def _yaml_instance() -> YAML:
     yaml = YAML()
     yaml.default_flow_style = False
     yaml.allow_unicode = True
@@ -192,7 +188,7 @@ def _yaml_instance():
     return yaml
 
 
-def write_yaml(data, path):
+def write_yaml(data: Any, path: Path) -> None:
     """Serialize data to YAML at path."""
     yaml = _yaml_instance()
     buf = io.StringIO()
@@ -201,12 +197,14 @@ def write_yaml(data, path):
     path.write_text(content, encoding="utf-8")
 
 
-def find_cue():
+def find_cue() -> Optional[str]:
     """Return the path to the cue binary, or None if not on PATH."""
     return shutil.which("cue")
 
 
-def cue_validate(schema_dir, schema_expr, yaml_path):
+def cue_validate(
+    schema_dir: Path, schema_expr: str, yaml_path: Path
+) -> Tuple[Optional[bool], str]:
     """
     Run 'cue vet' against yaml_path using the CUE schema in schema_dir.
 
@@ -236,7 +234,14 @@ def cue_validate(schema_dir, schema_expr, yaml_path):
         return False, str(exc)
 
 
-def export_guidance(oscal_catalog, data_dir, output_dir, validate, gemara_schema, verbose):
+def export_guidance(
+    oscal_catalog: Optional[Dict[str, Any]],
+    data_dir: Path,
+    output_dir: Path,
+    validate: bool,
+    gemara_schema: Optional[Path],
+    verbose: bool,
+) -> Dict[str, int]:
     """Generate the platform-independent GuidanceCatalog. Returns stats dict."""
     builder = GemaraGuidanceCatalogBuilder(oscal_catalog, data_dir=data_dir)
     guidance = builder.build()
@@ -268,7 +273,16 @@ def export_guidance(oscal_catalog, data_dir, output_dir, validate, gemara_schema
     return {"guideline_count": guideline_count}
 
 
-def export_product(product, repo_root, oscal_catalog, output_dir, include_mapping, validate, gemara_schema, verbose):
+def export_product(
+    product: str,
+    repo_root: Path,
+    oscal_catalog: Optional[Dict[str, Any]],
+    output_dir: Path,
+    include_mapping: bool,
+    validate: bool,
+    gemara_schema: Optional[Path],
+    verbose: bool,
+) -> Dict[str, Any]:
     """Export one product. Returns stats dict."""
     if verbose:
         print(f"  Loading policy for {product}...")
@@ -359,7 +373,11 @@ def export_product(product, repo_root, oscal_catalog, output_dir, include_mappin
     return stats
 
 
-def write_metadata(output_dir, all_stats, guidance_stats=None):
+def write_metadata(
+    output_dir: Path,
+    all_stats: List[Dict[str, Any]],
+    guidance_stats: Optional[Dict[str, int]] = None,
+) -> Path:
     """Write a metadata.json summary file."""
     meta = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -377,7 +395,7 @@ def write_metadata(output_dir, all_stats, guidance_stats=None):
     return meta_path
 
 
-def main():
+def main() -> None:
     args = parse_args()
     products = [p.strip() for p in args.products.split(",") if p.strip()]
     output_dir = args.output_dir

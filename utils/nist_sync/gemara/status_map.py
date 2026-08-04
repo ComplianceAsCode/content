@@ -1,5 +1,7 @@
 """Maps ComplianceAsCode control status values to Gemara fields."""
 
+from typing import Optional
+
 # CaC status -> Gemara #Lifecycle state (capitalized as per CUE schema)
 # Gemara state reflects control *definition* maturity, not automation level.
 # Automation level is captured in MappingDocument strength/confidence fields.
@@ -53,26 +55,26 @@ CAC_TO_CONFIDENCE = {
 NO_MAPPING_STATUSES = {"planned", "pending", "does not meet", "not applicable"}
 
 
-def map_state(cac_status):
+def map_state(cac_status: str) -> str:
     """Return the Gemara state for a CaC status string."""
     return CAC_TO_GEMARA_STATE.get(cac_status, "Draft")
 
 
-def map_relationship(cac_status):
+def map_relationship(cac_status: str) -> Optional[str]:
     """Return the Gemara relationship type for a CaC status, or None if not mappable."""
     return CAC_TO_RELATIONSHIP.get(cac_status)
 
 
-def map_strength(cac_status):
+def map_strength(cac_status: str) -> Optional[int]:
     """Return the Gemara mapping strength (1-10) for a CaC status, or None if not mappable."""
     return CAC_TO_STRENGTH.get(cac_status)
 
 
-def map_confidence(cac_status):
+def map_confidence(cac_status: str) -> Optional[str]:
     """Return the Gemara confidence level string for a CaC status, or None if not mappable."""
     return CAC_TO_CONFIDENCE.get(cac_status)
 
 
-def has_mapping(cac_status):
+def has_mapping(cac_status: str) -> bool:
     """Return True if the status produces mapping entries in the MappingDocument."""
     return cac_status not in NO_MAPPING_STATUSES

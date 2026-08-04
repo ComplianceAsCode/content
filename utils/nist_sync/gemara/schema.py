@@ -1,5 +1,7 @@
 """Gemara schema constants and structural validation."""
 
+from typing import Any, List
+
 GEMARA_VERSION = "1.2.0"
 
 # #Lifecycle: "Active" | "Draft" | "Deprecated" | "Retired"  (default: "Active")
@@ -39,11 +41,11 @@ VALID_ARTIFACT_TYPES = {
 VALID_EVALUATION_MODES = {"Automated", "Semi-Automated", "Manual"}
 
 
-def _err(errors, msg):
+def _err(errors: List[str], msg: str) -> None:
     errors.append(msg)
 
 
-def validate_catalog(catalog):
+def validate_catalog(catalog: Any) -> List[str]:
     """
     Validate a ControlCatalog dict against Gemara structural rules.
     Returns a list of error strings (empty list means valid).
@@ -104,7 +106,7 @@ def validate_catalog(catalog):
     return errors
 
 
-def validate_mapping(mapping):
+def validate_mapping(mapping: Any) -> List[str]:
     """
     Validate a MappingDocument dict against Gemara structural rules.
     Returns a list of error strings (empty list means valid).
@@ -145,7 +147,7 @@ def validate_mapping(mapping):
     return errors
 
 
-def validate_policy(policy):
+def validate_policy(policy: Any) -> List[str]:
     """
     Validate a Policy dict against Gemara structural rules.
     Returns a list of error strings (empty list means valid).
@@ -209,7 +211,7 @@ def validate_policy(policy):
     return errors
 
 
-def validate_guidance(guidance):
+def validate_guidance(guidance: Any) -> List[str]:
     """
     Validate a GuidanceCatalog dict against Gemara structural rules.
     Returns a list of error strings (empty list means valid).

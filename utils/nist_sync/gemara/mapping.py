@@ -2,6 +2,9 @@
 
 import re
 from datetime import datetime, timezone
+from typing import Any, Dict
+
+import ssg.controls
 
 from .schema import GEMARA_VERSION
 from .status_map import (
@@ -17,23 +20,23 @@ _CATALOG_REF_ID = "cac-nist-800-53-control-catalog"
 _RULES_REF_ID = "cac-rules"
 
 
-def _is_variable_assignment(rule_entry):
+def _is_variable_assignment(rule_entry: str) -> bool:
     return bool(_VAR_ASSIGN_RE.match(rule_entry))
 
 
-def _now_iso():
+def _now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 class GemaraMappingBuilder:
     """Builds a Gemara MappingDocument from CaC policy controls."""
 
-    def __init__(self, product, catalog_id, policy):
+    def __init__(self, product: str, catalog_id: str, policy: ssg.controls.Policy) -> None:
         self.product = product
         self.catalog_id = catalog_id
         self.policy = policy
 
-    def _metadata(self):
+    def _metadata(self) -> Dict[str, Any]:
         mapping_id = f"{self.catalog_id}-rules-mapping"
         return {
             "id": mapping_id,
@@ -67,7 +70,7 @@ class GemaraMappingBuilder:
             ],
         }
 
-    def _build_mapping_entry(self, control, rule_id):
+    def _build_mapping_entry(self, control: ssg.controls.Control, rule_id: str) -> Dict[str, Any]:
         cac_status = control.status if control.status else "pending"
         relationship = map_relationship(cac_status) or "implements"
         strength = map_strength(cac_status) or 5
@@ -94,7 +97,7 @@ class GemaraMappingBuilder:
             ],
         }
 
-    def build(self):
+    def build(self) -> Dict[str, Any]:
         """Return a complete MappingDocument dict ready for serialization."""
         mappings = []
         seen_ids = set()

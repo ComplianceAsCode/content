@@ -17,6 +17,7 @@ Usage:
 import argparse
 import sys
 from pathlib import Path
+from typing import Any, Dict, List
 
 try:
     from ruamel.yaml import YAML
@@ -40,12 +41,12 @@ from gemara.policy import extract_rules_from_catalog, generate_policy  # noqa: E
 from gemara.schema import validate_policy  # noqa: E402
 
 
-def load_yaml(path):
+def load_yaml(path: Path) -> Any:
     with open(path) as f:
         return _YAML.load(f)
 
 
-def load_policy(product, repo_root):
+def load_policy(product: str, repo_root: Path) -> ssg.controls.Policy:
     policy_file = repo_root / "products" / product / "controls" / "nist_800_53.yml"
     policy = ssg.controls.Policy(str(policy_file), env_yaml=None)
     policy.load()
@@ -57,19 +58,19 @@ def load_policy(product, repo_root):
 # ---------------------------------------------------------------------------
 
 class TestResult:
-    def __init__(self):
-        self.passed = []
-        self.failed = []
+    def __init__(self) -> None:
+        self.passed: List[str] = []
+        self.failed: List[str] = []
 
-    def ok(self, msg):
+    def ok(self, msg: str) -> None:
         self.passed.append(msg)
         print(f"  [PASS] {msg}")
 
-    def fail(self, msg):
+    def fail(self, msg: str) -> None:
         self.failed.append(msg)
         print(f"  [FAIL] {msg}")
 
-    def check(self, condition, ok_msg, fail_msg):
+    def check(self, condition: bool, ok_msg: str, fail_msg: str) -> None:
         if condition:
             self.ok(ok_msg)
         else:
@@ -80,7 +81,7 @@ class TestResult:
 # Test suites
 # ---------------------------------------------------------------------------
 
-def test_catalog_structure(catalog, result):
+def test_catalog_structure(catalog: Dict[str, Any], result: TestResult) -> None:
     """Verify internal cross-reference integrity of the ControlCatalog."""
     meta = catalog.get("metadata", {})
     result.check(
@@ -135,7 +136,7 @@ def test_catalog_structure(catalog, result):
     result.check(not bad_app_refs, "all applicability references resolve", f"unresolved: {bad_app_refs[:5]}")
 
 
-def test_mapping_structure(mapping, result):
+def test_mapping_structure(mapping: Dict[str, Any], result: TestResult) -> None:
     """Verify internal cross-reference integrity of the MappingDocument."""
     meta = mapping.get("metadata", {})
     result.check(
@@ -173,7 +174,13 @@ def test_mapping_structure(mapping, result):
     result.check(not missing_targets, "all non-no-match mappings have targets", f"missing targets: {missing_targets[:5]}")
 
 
-def test_accuracy_vs_source(catalog, mapping, policy, product, result):
+def test_accuracy_vs_source(
+    catalog: Dict[str, Any],
+    mapping: Dict[str, Any],
+    policy: ssg.controls.Policy,
+    product: str,
+    result: TestResult,
+) -> None:
     """Cross-check generated output against the source CaC control files."""
     # Control count must match exactly
     src_count = len(policy.controls)
@@ -271,7 +278,7 @@ def test_accuracy_vs_source(catalog, mapping, policy, product, result):
     )
 
 
-def test_guidance_structure(guidance, result):
+def test_guidance_structure(guidance: Dict[str, Any], result: TestResult) -> None:
     """Verify internal cross-reference integrity of the GuidanceCatalog."""
     meta = guidance.get("metadata", {})
     result.check(
@@ -353,7 +360,7 @@ def test_guidance_structure(guidance, result):
         result.fail("ac-2.5 not found in guidelines")
 
 
-def test_policy_generation(catalog, product, result):
+def test_policy_generation(catalog: Dict[str, Any], product: str, result: TestResult) -> None:
     """Test Policy generation from a ControlCatalog."""
     catalog_id = catalog["metadata"]["id"]
     rules = extract_rules_from_catalog(catalog, product=product)
@@ -401,7 +408,7 @@ def test_policy_generation(catalog, product, result):
     )
 
 
-def test_policy_with_guidance(catalog, product, result):
+def test_policy_with_guidance(catalog: Dict[str, Any], product: str, result: TestResult) -> None:
     """Test Policy generation with guidance references (complytime-policies mode)."""
     catalog_id = catalog["metadata"]["id"]
     rules = extract_rules_from_catalog(catalog, product=product)
@@ -440,7 +447,7 @@ def test_policy_with_guidance(catalog, product, result):
     )
 
 
-def test_baseline_filtering(catalog, product, result):
+def test_baseline_filtering(catalog: Dict[str, Any], product: str, result: TestResult) -> None:
     """Test that baseline filtering reduces the rule set."""
     all_rules = extract_rules_from_catalog(catalog, product=product)
     low_rules = extract_rules_from_catalog(catalog, baseline="low", product=product)
@@ -464,7 +471,7 @@ def test_baseline_filtering(catalog, product, result):
     )
 
 
-def test_validate_policy_catches_errors(result):
+def test_validate_policy_catches_errors(result: TestResult) -> None:
     """Test that validate_policy() catches structural problems."""
     errors = validate_policy({})
     result.check(
@@ -507,7 +514,7 @@ def test_validate_policy_catches_errors(result):
     )
 
 
-def test_policy_parameters_from_variables(result):
+def test_policy_parameters_from_variables(result: TestResult) -> None:
     """Test that control-file variable overrides become assessment-plan parameters.
 
     Uses a real rule/variable pair (grub2_audit_backlog_limit_argument reads
@@ -588,7 +595,7 @@ def test_policy_parameters_from_variables(result):
 # Runner
 # ---------------------------------------------------------------------------
 
-def run_guidance(gemara_dir, result):
+def run_guidance(gemara_dir: Path, result: TestResult) -> None:
     guidance_path = gemara_dir / "guidance_catalog.yaml"
     if not guidance_path.exists():
         print("  [SKIP] guidance_catalog.yaml not found — OSCAL data not downloaded")
@@ -599,7 +606,7 @@ def run_guidance(gemara_dir, result):
     test_guidance_structure(guidance, result)
 
 
-def run_product(product, gemara_dir, repo_root):
+def run_product(product: str, gemara_dir: Path, repo_root: Path) -> TestResult:
     print(f"\n{'='*60}")
     print(f"Product: {product}")
     print(f"{'='*60}")
@@ -645,7 +652,7 @@ def run_product(product, gemara_dir, repo_root):
     return result
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Test Gemara export output")
     parser.add_argument(
         "--products",

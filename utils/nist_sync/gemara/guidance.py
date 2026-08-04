@@ -13,6 +13,7 @@ import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
 from .catalog import NIST_FAMILIES
 from .schema import GEMARA_VERSION
@@ -20,14 +21,14 @@ from .schema import GEMARA_VERSION
 BASELINES = ["low", "moderate", "high"]
 
 
-def _load_json(path):
+def _load_json(path: Union[str, Path]) -> Any:
     with open(path) as f:
         return json.load(f)
 
 
-def _build_baseline_index(data_dir):
+def _build_baseline_index(data_dir: Union[str, Path]) -> Dict[str, List[str]]:
     """Return dict mapping control_id (lowercase) -> list of applicable baseline IDs."""
-    index = {}
+    index: Dict[str, List[str]] = {}
     for baseline in BASELINES:
         path = Path(data_dir) / f"nist_800_53_rev5_{baseline}_baseline.json"
         if not path.exists():
@@ -43,9 +44,11 @@ def _build_baseline_index(data_dir):
     return index
 
 
-def _build_param_index(ctrl, parent_params=None):
+def _build_param_index(
+    ctrl: Dict[str, Any], parent_params: Optional[Dict[str, str]] = None
+) -> Dict[str, str]:
     """Build param_id -> label dict for {{ insert: param, ... }} substitution."""
-    index = dict(parent_params) if parent_params else {}
+    index: Dict[str, str] = dict(parent_params) if parent_params else {}
     for param in ctrl.get("params", []):
         pid = param.get("id", "")
         label = param.get("label", "")
@@ -61,15 +64,15 @@ def _build_param_index(ctrl, parent_params=None):
 _PARAM_RE = re.compile(r"\{\{\s*insert:\s*param,\s*([^}]+?)\s*\}\}")
 
 
-def _sub_params(text, param_index):
+def _sub_params(text: str, param_index: Dict[str, str]) -> str:
     """Replace OSCAL {{ insert: param, ID }} markers with human-readable labels."""
-    def replacer(m):
+    def replacer(m: "re.Match[str]") -> str:
         pid = m.group(1).strip()
         return param_index.get(pid, f"[{pid}]")
     return _PARAM_RE.sub(replacer, text)
 
 
-def _collect_part_prose(parts, name, param_index):
+def _collect_part_prose(parts: List[Dict[str, Any]], name: str, param_index: Dict[str, str]) -> str:
     """Return prose from the first part matching name, substituting params."""
     for part in parts:
         if part.get("name") != name:
@@ -87,9 +90,11 @@ def _collect_part_prose(parts, name, param_index):
     return ""
 
 
-def _build_statements(parts, ctrl_id, param_index):
+def _build_statements(
+    parts: List[Dict[str, Any]], ctrl_id: str, param_index: Dict[str, str]
+) -> List[Dict[str, str]]:
     """Build Gemara Statement list from OSCAL statement sub-parts."""
-    statements = []
+    statements: List[Dict[str, str]] = []
     for part in parts:
         if part.get("name") != "statement":
             continue
@@ -110,7 +115,13 @@ def _build_statements(parts, ctrl_id, param_index):
     return statements
 
 
-def _build_guideline(ctrl, family_id, param_index, baseline_index, all_baselines):
+def _build_guideline(
+    ctrl: Dict[str, Any],
+    family_id: str,
+    param_index: Dict[str, str],
+    baseline_index: Dict[str, List[str]],
+    all_baselines: List[str],
+) -> Dict[str, Any]:
     """Convert one OSCAL control to a Gemara Guideline dict."""
     ctrl_id = ctrl["id"].lower()
     parts = ctrl.get("parts", [])
@@ -152,14 +163,18 @@ def _build_guideline(ctrl, family_id, param_index, baseline_index, all_baselines
     return guideline
 
 
-def _now_iso():
+def _now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 class GemaraGuidanceCatalogBuilder:
     """Builds a Gemara GuidanceCatalog from the NIST 800-53 OSCAL catalog."""
 
-    def __init__(self, oscal_catalog, data_dir=None):
+    def __init__(
+        self,
+        oscal_catalog: Optional[Dict[str, Any]],
+        data_dir: Optional[Union[str, Path]] = None,
+    ) -> None:
         """
         Args:
             oscal_catalog: Parsed OSCAL catalog dict (top-level with 'catalog' key,
@@ -174,7 +189,7 @@ class GemaraGuidanceCatalogBuilder:
         else:
             self._baseline_index = {}
 
-    def _metadata(self):
+    def _metadata(self) -> Dict[str, Any]:
         return {
             "id": "nist-800-53-rev5-guidance",
             "type": "GuidanceCatalog",
@@ -211,7 +226,7 @@ class GemaraGuidanceCatalogBuilder:
             ],
         }
 
-    def _groups(self):
+    def _groups(self) -> List[Dict[str, str]]:
         return [
             {
                 "id": fam_id,
@@ -221,9 +236,9 @@ class GemaraGuidanceCatalogBuilder:
             for fam_id, fam_title in NIST_FAMILIES.items()
         ]
 
-    def build(self):
+    def build(self) -> Dict[str, Any]:
         """Return a complete GuidanceCatalog dict ready for serialization."""
-        guidelines = []
+        guidelines: List[Dict[str, Any]] = []
         for oscal_group in self._catalog.get("groups", []):
             family_id = oscal_group.get("id", "").lower()
             if family_id not in NIST_FAMILIES:

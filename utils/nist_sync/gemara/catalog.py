@@ -2,6 +2,9 @@
 
 import re
 from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
+
+import ssg.controls
 
 from .schema import GEMARA_VERSION
 from .status_map import map_state
@@ -33,21 +36,21 @@ NIST_FAMILIES = {
 _VAR_ASSIGN_RE = re.compile(r'^[a-z][a-z0-9_]*=[^\s]+$')
 
 
-def _is_variable_assignment(rule_entry):
+def _is_variable_assignment(rule_entry: str) -> bool:
     return bool(_VAR_ASSIGN_RE.match(rule_entry))
 
 
-def _extract_family(control_id):
+def _extract_family(control_id: str) -> str:
     return control_id.split('-')[0].lower()
 
 
-def _now_iso():
+def _now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def _build_oscal_index(oscal_catalog):
+def _build_oscal_index(oscal_catalog: Optional[Dict[str, Any]]) -> Dict[str, str]:
     """Build a dict mapping lowercase control IDs to their statement prose."""
-    index = {}
+    index: Dict[str, str] = {}
     if not oscal_catalog:
         return index
     catalog = oscal_catalog.get("catalog", {})
@@ -57,7 +60,7 @@ def _build_oscal_index(oscal_catalog):
     return index
 
 
-def _index_control(ctrl, index):
+def _index_control(ctrl: Dict[str, Any], index: Dict[str, str]) -> None:
     ctrl_id = ctrl.get("id", "").lower()
     prose = ""
     for part in ctrl.get("parts", []):
@@ -76,14 +79,19 @@ def _index_control(ctrl, index):
 class GemaraCatalogBuilder:
     """Builds a Gemara ControlCatalog dict from a loaded CaC Policy object."""
 
-    def __init__(self, product, policy, oscal_catalog=None):
+    def __init__(
+        self,
+        product: str,
+        policy: ssg.controls.Policy,
+        oscal_catalog: Optional[Dict[str, Any]] = None,
+    ) -> None:
         self.product = product
         self.policy = policy
         self._oscal_index = _build_oscal_index(oscal_catalog)
         # Collect all baseline IDs for use as default applicability
         self._all_baselines = [lv.id for lv in policy.levels]
 
-    def _metadata(self):
+    def _metadata(self) -> Dict[str, Any]:
         catalog_id = f"nist-800-53-rev5-{self.product}"
         return {
             "id": catalog_id,
@@ -105,7 +113,7 @@ class GemaraCatalogBuilder:
             "applicability-groups": self._applicability_groups(),
         }
 
-    def _applicability_groups(self):
+    def _applicability_groups(self) -> List[Dict[str, str]]:
         groups = []
         for level in self.policy.levels:
             group_id = f"{self.product}-{level.id}"
@@ -120,7 +128,7 @@ class GemaraCatalogBuilder:
             })
         return groups
 
-    def _groups(self):
+    def _groups(self) -> List[Dict[str, str]]:
         return [
             {
                 "id": fam_id,
@@ -130,14 +138,14 @@ class GemaraCatalogBuilder:
             for fam_id, fam_title in NIST_FAMILIES.items()
         ]
 
-    def _objective(self, control):
+    def _objective(self, control: ssg.controls.Control) -> str:
         """Return objective text: OSCAL statement prose, or title as fallback."""
         ctrl_id = control.id.lower()
         if ctrl_id in self._oscal_index:
             return self._oscal_index[ctrl_id]
         return control.title
 
-    def _applicability_for(self, control):
+    def _applicability_for(self, control: ssg.controls.Control) -> List[str]:
         """Return non-empty product-scoped applicability list for a control."""
         seen = set()
         deduped = []
@@ -149,7 +157,7 @@ class GemaraCatalogBuilder:
         # applicability must be non-empty: fall back to all baselines
         return deduped if deduped else [f"{self.product}-{b}" for b in self._all_baselines]
 
-    def _assessment_requirements(self, control):
+    def _assessment_requirements(self, control: ssg.controls.Control) -> List[Dict[str, Any]]:
         """
         Convert control.rules to Gemara assessment requirements.
 
@@ -194,7 +202,7 @@ class GemaraCatalogBuilder:
 
         return reqs
 
-    def _build_control(self, control):
+    def _build_control(self, control: ssg.controls.Control) -> Dict[str, Any]:
         family = _extract_family(control.id)
         if family not in NIST_FAMILIES:
             family = list(NIST_FAMILIES.keys())[0]  # fallback to first family
@@ -209,7 +217,7 @@ class GemaraCatalogBuilder:
             "state": map_state(cac_status),
         }
 
-    def build(self):
+    def build(self) -> Dict[str, Any]:
         """Return a complete ControlCatalog dict ready for serialization."""
         controls = [self._build_control(ctrl) for ctrl in self.policy.controls]
         return {

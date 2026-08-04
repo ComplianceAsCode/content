@@ -35,6 +35,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any, List, Optional
 
 try:
     from ruamel.yaml import YAML
@@ -52,7 +53,7 @@ from gemara.schema import validate_policy  # noqa: E402
 _GUIDANCE_ID = "nist-800-53-rev5-guidance"
 
 
-def _yaml():
+def _yaml() -> YAML:
     y = YAML()
     y.default_flow_style = False
     y.allow_unicode = True
@@ -60,24 +61,24 @@ def _yaml():
     return y
 
 
-def load_yaml(path):
+def load_yaml(path: Path) -> Any:
     y = _yaml()
     with open(path) as f:
         return y.load(f)
 
 
-def dump_yaml(data, path):
+def dump_yaml(data: Any, path: Path) -> None:
     y = _yaml()
     buf = io.StringIO()
     y.dump(data, buf)
     path.write_text(buf.getvalue(), encoding="utf-8")
 
 
-def policy_id_for(product):
+def policy_id_for(product: str) -> str:
     return f"nist-800-53-rev5-{product}"
 
 
-def stage_product(product, gemara_dir, output_dir, has_guidance):
+def stage_product(product: str, gemara_dir: Path, output_dir: Path, has_guidance: bool) -> bool:
     """Stage one product's artifacts into complytime-policies layout."""
     catalog_path = gemara_dir / product / "control_catalog.yaml"
     if not catalog_path.exists():
@@ -142,7 +143,7 @@ def stage_product(product, gemara_dir, output_dir, has_guidance):
     return True
 
 
-def stage_guidance(gemara_dir, output_dir):
+def stage_guidance(gemara_dir: Path, output_dir: Path) -> bool:
     """Copy the shared GuidanceCatalog if it exists."""
     guidance_path = gemara_dir / "guidance_catalog.yaml"
     if not guidance_path.exists():
@@ -157,7 +158,7 @@ def stage_guidance(gemara_dir, output_dir):
     return True
 
 
-def copy_to_repo(output_dir, policies_repo):
+def copy_to_repo(output_dir: Path, policies_repo: Path) -> None:
     """Copy staged files into a local clone of complytime-policies."""
     for subdir in ("bundles", "governance"):
         src = output_dir / subdir
@@ -173,7 +174,7 @@ def copy_to_repo(output_dir, policies_repo):
             print(f"  Copied: {rel}")
 
 
-def create_pr(policies_repo, products, branch_name=None):
+def create_pr(policies_repo: Path, products: List[str], branch_name: Optional[str] = None) -> bool:
     """Create a PR on the complytime-policies repo via gh CLI."""
     gh = shutil.which("gh")
     if not gh:
@@ -242,7 +243,7 @@ def create_pr(policies_repo, products, branch_name=None):
     return True
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Stage Gemara artifacts for a PR to complytime-policies",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -285,7 +286,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
+def main() -> None:
     args = parse_args()
     products = [p.strip() for p in args.products.split(",") if p.strip()]
     gemara_dir = args.gemara_dir

@@ -38,6 +38,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any, List
 
 try:
     from ruamel.yaml import YAML
@@ -49,7 +50,7 @@ _SCRIPT_DIR = Path(__file__).parent
 _REPO_ROOT = _SCRIPT_DIR.parent.parent
 
 sys.path.insert(0, str(_SCRIPT_DIR))
-from gemara.policy import extract_rules_from_catalog, generate_policy  # noqa: E402
+from gemara.policy import RuleEntry, extract_rules_from_catalog, generate_policy  # noqa: E402
 
 # OCI media types for complyctl v1.0.0-alpha.0 (go-gemara v0.0.1 split-layer format)
 _MEDIA_TYPE_POLICY = "application/vnd.gemara.policy.v1+yaml"
@@ -57,11 +58,11 @@ _MEDIA_TYPE_CATALOG = "application/vnd.gemara.catalog.v1+yaml"
 _ARTIFACT_TYPE = "application/vnd.gemara.bundle.v1"
 
 
-def _now_iso():
+def _now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def _yaml():
+def _yaml() -> YAML:
     y = YAML()
     y.default_flow_style = False
     y.allow_unicode = True
@@ -69,20 +70,22 @@ def _yaml():
     return y
 
 
-def load_yaml(path):
+def load_yaml(path: Path) -> Any:
     y = _yaml()
     with open(path) as f:
         return y.load(f)
 
 
-def dump_yaml(data, path):
+def dump_yaml(data: Any, path: Path) -> None:
     y = _yaml()
     buf = io.StringIO()
     y.dump(data, buf)
     path.write_text(buf.getvalue(), encoding="utf-8")
 
 
-def generate_complytime_yaml(product, registry_url, bundle_tag, base_profile="cis"):
+def generate_complytime_yaml(
+    product: str, registry_url: str, bundle_tag: str, base_profile: str = "cis"
+) -> str:
     """Generate a ~/.complytime/complytime.yaml for this bundle.
 
     Format expected by complyctl v1.0.0-alpha.0:
@@ -112,7 +115,13 @@ targets:
 """
 
 
-def push_bundle(policy_path, catalog_path, registry_url, tag, verbose=False):
+def push_bundle(
+    policy_path: Path,
+    catalog_path: Path,
+    registry_url: str,
+    tag: str,
+    verbose: bool = False,
+) -> bool:
     """Package and push split-layer OCI bundle using oras."""
     oras = shutil.which("oras")
     if not oras:
@@ -153,7 +162,13 @@ def push_bundle(policy_path, catalog_path, registry_url, tag, verbose=False):
     return True
 
 
-def write_instructions(output_dir, product, registry_url, bundle_tag):
+def _policy_line_count(output_dir: Path, product: str) -> int:
+    """Return the line count of the already-written Policy YAML for the HOWTO summary."""
+    policy_path = output_dir / f"{product}_policy.yaml"
+    return policy_path.read_text(encoding="utf-8").count("\n")
+
+
+def write_instructions(output_dir: Path, product: str, registry_url: str, bundle_tag: str) -> Path:
     """Write a HOWTO file with complyctl commands."""
     instructions = f"""\
 # Testing the NIST 800-53 Gemara bundle with complyctl
@@ -187,7 +202,7 @@ complyctl report
 ## Bundle contents
 
   Policy:  {output_dir}/{product}_policy.yaml
-           {len(open(f'{output_dir}/{product}_policy.yaml').readlines())} lines
+           {_policy_line_count(output_dir, product)} lines
            assessment-plans use SHORT CaC rule names (provider adds XCCDF prefix internally)
 
   Catalog: {output_dir}/{product}_catalog.yaml (copy of build/gemara/{product}/control_catalog.yaml)
@@ -205,7 +220,7 @@ Example: if 'accounts_tmout' PASSES, then NIST ac-2.5 is satisfied.
     return path
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Generate a complyctl-compatible OCI bundle from Gemara export artifacts",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -254,7 +269,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
+def main() -> None:
     args = parse_args()
     product = args.product
     gemara_dir = args.gemara_dir
@@ -278,7 +293,9 @@ def main():
     print(f"  Reading {catalog_yaml_path}")
     catalog = load_yaml(catalog_yaml_path)
     catalog_id = catalog["metadata"]["id"]
-    rules_with_controls = extract_rules_from_catalog(catalog, baseline=args.baseline, product=product)
+    rules_with_controls: List[RuleEntry] = extract_rules_from_catalog(
+        catalog, baseline=args.baseline, product=product
+    )
     print(f"  Found {len(rules_with_controls)} unique CaC rules")
     print(f"  Base profile:  {args.base_profile} (XCCDF tailoring base)")
 

@@ -9,23 +9,23 @@ internally via getDsRuleID().
 import re
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import ssg.products
 
 from .schema import GEMARA_VERSION
-
-_PRODUCT_FULL_NAMES = {
-    "rhel8": "Red Hat Enterprise Linux 8",
-    "rhel9": "Red Hat Enterprise Linux 9",
-    "rhel10": "Red Hat Enterprise Linux 10",
-}
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 _RULE_SEARCH_DIRS = ("linux_os/guide",)
 _VARIABLE_VALUE_RE = re.compile(r"^Variable '.*' is set to '(.*)'$")
 
-_rule_content_cache = None
+# (rule_id, nist_control_ids, [(var_name, var_value), ...])
+RuleEntry = Tuple[str, List[str], List[Tuple[str, str]]]
+
+_rule_content_cache: Optional[Dict[str, str]] = None
 
 
-def _rule_content_index():
+def _rule_content_index() -> Dict[str, str]:
     """Lazily build and cache a rule_id -> rule.yml text index.
 
     Used to tell which sibling rule in a control actually reads a given
@@ -35,7 +35,7 @@ def _rule_content_index():
     """
     global _rule_content_cache
     if _rule_content_cache is None:
-        index = {}
+        index: Dict[str, str] = {}
         for rel_dir in _RULE_SEARCH_DIRS:
             base = _REPO_ROOT / rel_dir
             if not base.is_dir():
@@ -46,7 +46,13 @@ def _rule_content_index():
     return _rule_content_cache
 
 
-def _humanize_var_name(var_name):
+def product_full_name(product: str) -> str:
+    """Return a product's display name (e.g. 'Red Hat Enterprise Linux 9') from its product.yml."""
+    yaml_path = ssg.products.product_yaml_path(str(_REPO_ROOT), product)
+    return ssg.products.load_product_yaml(yaml_path)["full_name"]
+
+
+def _humanize_var_name(var_name: str) -> str:
     name = var_name
     if name.startswith("var_"):
         name = name[len("var_"):]
@@ -55,7 +61,11 @@ def _humanize_var_name(var_name):
     return name.replace("_", " ").strip().title() or var_name
 
 
-def extract_rules_from_catalog(catalog, baseline=None, product=None):
+def extract_rules_from_catalog(
+    catalog: Dict[str, Any],
+    baseline: Optional[str] = None,
+    product: Optional[str] = None,
+) -> List[RuleEntry]:
     """Extract unique XCCDF rule IDs from a ControlCatalog.
 
     Returns a sorted list of (rule_id, nist_control_ids, parameters) tuples where:
@@ -64,8 +74,8 @@ def extract_rules_from_catalog(catalog, baseline=None, product=None):
       - parameters is a sorted list of (var_name, var_value) tuples for control-file
         variable overrides whose rule.yml references var_name (empty if none apply)
     """
-    rule_to_controls = {}
-    rule_to_parameters = {}
+    rule_to_controls: Dict[str, List[str]] = {}
+    rule_to_parameters: Dict[str, Dict[str, str]] = {}
     baseline_key = f"{product}-{baseline}" if (baseline and product) else baseline
     rule_index = _rule_content_index()
 
@@ -120,8 +130,14 @@ def extract_rules_from_catalog(catalog, baseline=None, product=None):
     )
 
 
-def generate_policy(product, catalog_id, rules_with_controls,
-                    guidance_id=None, catalog_url=None, guidance_url=None):
+def generate_policy(
+    product: str,
+    catalog_id: str,
+    rules_with_controls: List[RuleEntry],
+    guidance_id: Optional[str] = None,
+    catalog_url: Optional[str] = None,
+    guidance_url: Optional[str] = None,
+) -> Dict[str, Any]:
     """Build a Gemara Policy YAML dict.
 
     Args:
@@ -137,7 +153,7 @@ def generate_policy(product, catalog_id, rules_with_controls,
     imports.guidance section.  When omitted (local Vagrant mode), those
     fields are absent — matching the existing local-push behavior.
     """
-    full_name = _PRODUCT_FULL_NAMES.get(product, product.upper())
+    full_name = product_full_name(product)
     policy_id = f"nist-800-53-rev5-{product}-policy"
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
