@@ -44,7 +44,7 @@ python3 utils/nist_sync/download_oscal.py
 ### 4. complyctl binary
 
 ```bash
-curl -L https://github.com/complytime/complyctl/releases/download/v1.0.0-alpha.0/complyctl_linux_x86_64.tar.gz \
+curl -L https://github.com/complytime/complyctl/releases/download/v1.0.0/complyctl_linux_x86_64.tar.gz \
     | tar -xz -C ~/bin complyctl
 chmod +x ~/bin/complyctl
 complyctl version
@@ -53,10 +53,10 @@ complyctl version
 ### 5. complyctl-provider-openscap
 
 ```bash
-mkdir -p ~/.complytime/providers
+mkdir -p ~/.local/share/complytime/providers
 # Download from the complytime releases or build from source
-# Place the binary at: ~/.complytime/providers/complyctl-provider-openscap
-chmod +x ~/.complytime/providers/complyctl-provider-openscap
+# Place the binary at: ~/.local/share/complytime/providers/complyctl-provider-openscap
+chmod +x ~/.local/share/complytime/providers/complyctl-provider-openscap
 ```
 
 ### 6. oras CLI
@@ -226,7 +226,8 @@ on generic/rhel9 boxes). The distribution/distribution registry binary is used i
 | complyctl-provider-openscap | see [§5 above](#5-complyctl-provider-openscap) |
 | Python deps | `pip install ruamel.yaml` |
 
-VirtualBox can be used instead of libvirt — Vagrant auto-detects the available provider.
+libvirt only — this project doesn't otherwise depend on VirtualBox, so it isn't
+supported as a second provider here (see the Vagrantfile).
 
 ### Step 1 — Start the VM
 
@@ -255,7 +256,7 @@ cd utils/nist_sync
 
 ansible-playbook -i ansible/inventory.ini ansible/setup.yml \
     -e complyctl_bin=/tmp/complyctl \
-    -e provider_bin=~/.complytime/providers/complyctl-provider-openscap
+    -e provider_bin=~/.local/share/complytime/providers/complyctl-provider-openscap
 ```
 
 `setup.yml` also copies `build/ssg-rhel9-ds.xml` to the VM if `scap-security-guide` is not
@@ -339,7 +340,7 @@ vagrant destroy # remove completely
 | `oras push failed` | Registry not running in VM | `vagrant ssh -- sudo systemctl restart gemara-registry` |
 | `guidance_catalog.yaml` missing | OSCAL data not downloaded | `python3 utils/nist_sync/download_oscal.py` |
 | `complyctl: permission denied` | Binary not executable | `chmod +x /path/to/complyctl` |
-| Provider not found | Wrong path | Check `~/.complytime/providers/complyctl-provider-openscap` |
+| Provider not found | Wrong path | Check `~/.local/share/complytime/providers/complyctl-provider-openscap` |
 | `ansible/inventory.ini` empty or stale | VM IP changed after re-provision | `cd vagrant && bash populate_inventory.sh` |
 | Registry unreachable from host during push | VM firewall blocks port 5500 | `vagrant ssh -- sudo firewall-cmd --add-port=5500/tcp --permanent --zone=public && sudo firewall-cmd --reload` |
 | `vagrant up` fails with libvirt errors | libvirt not running | `sudo systemctl start libvirtd` |
