@@ -5,7 +5,7 @@
 #
 # Usage:
 #   cd utils/nist_sync/vagrant
-#   vagrant up                # brings up the VM (libvirt by default)
+#   vagrant up                # brings up the VM (libvirt — the same provider Automatus uses)
 #   vagrant ssh               # open a shell
 #   vagrant halt              # power off
 #   vagrant destroy           # remove completely
@@ -28,18 +28,14 @@ Vagrant.configure("2") do |config|
   # populate_inventory.sh extracts this IP via 'vagrant ssh-config'.
   config.vm.network "private_network", type: "dhcp"
 
+  # libvirt only — this is what Automatus already uses elsewhere in this project;
+  # adding VirtualBox as a second supported provider here would introduce a virtualization
+  # stack this project doesn't otherwise depend on, for no real benefit.
   config.vm.provider "libvirt" do |v|
     v.memory = 2048
     v.cpus   = 2
     # The libvirt domain name is auto-derived from the Vagrantfile directory + hostname,
     # so it won't collide with a pre-existing 'rhel9' libvirt domain.
-  end
-
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 2048
-    v.cpus   = 2
-    v.name   = "nist-gemara-rhel9"
-    v.customize ["modifyvm", :id, "--nictype1", "virtio"]
   end
 
   # Configure CentOS Stream 9 repos and install OS-level dependencies.
