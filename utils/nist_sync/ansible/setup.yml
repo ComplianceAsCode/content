@@ -30,31 +30,31 @@
     # complyctl binary
     # -------------------------------------------------------------------------
     - name: Copy complyctl binary
-      copy:
+      ansible.builtin.copy:
         src: "{{ complyctl_bin }}"
         dest: /usr/local/bin/complyctl
         mode: "0755"
 
     - name: Verify complyctl runs
-      command: /usr/local/bin/complyctl version
+      ansible.builtin.command: /usr/local/bin/complyctl version
       register: ver
       changed_when: false
 
     - name: Show complyctl version
-      debug:
+      ansible.builtin.debug:
         msg: "{{ ver.stdout }}"
 
     # -------------------------------------------------------------------------
     # complyctl-provider-openscap
     # -------------------------------------------------------------------------
     - name: Create provider directory
-      file:
+      ansible.builtin.file:
         path: /root/.local/share/complytime/providers
         state: directory
         mode: "0755"
 
     - name: Copy complyctl-provider-openscap
-      copy:
+      ansible.builtin.copy:
         src: "{{ provider_bin }}"
         dest: /root/.local/share/complytime/providers/complyctl-provider-openscap
         mode: "0755"
@@ -66,12 +66,12 @@
     # complyctl on the VM uses http://localhost:{{ registry_port }}.
     # -------------------------------------------------------------------------
     - name: Check if registry binary is already installed
-      stat:
+      ansible.builtin.stat:
         path: /usr/local/bin/registry
       register: registry_bin_stat
 
     - name: Download distribution/distribution registry binary
-      shell: |
+      ansible.builtin.shell: |
         curl -sL \
           "https://github.com/distribution/distribution/releases/download/v2.8.3/registry_2.8.3_linux_amd64.tar.gz" \
           | tar -xz -C /usr/local/bin registry
@@ -79,13 +79,13 @@
       when: not registry_bin_stat.stat.exists
 
     - name: Create registry storage directory
-      file:
+      ansible.builtin.file:
         path: /var/lib/gemara-registry
         state: directory
         mode: "0755"
 
     - name: Write registry config
-      copy:
+      ansible.builtin.copy:
         dest: /etc/gemara-registry.yml
         mode: "0644"
         content: |
@@ -101,7 +101,7 @@
             addr: :{{ registry_port }}
 
     - name: Create systemd service for registry
-      copy:
+      ansible.builtin.copy:
         dest: /etc/systemd/system/gemara-registry.service
         mode: "0644"
         content: |
@@ -116,14 +116,14 @@
           WantedBy=multi-user.target
 
     - name: Enable and start registry service
-      systemd:
+      ansible.builtin.systemd_service:
         name: gemara-registry
         state: started
         enabled: true
         daemon_reload: true
 
     - name: Wait for registry to become ready
-      uri:
+      ansible.builtin.uri:
         url: "http://localhost:{{ registry_port }}/v2/"
         status_code: 200
       retries: 15
@@ -132,11 +132,11 @@
       until: registry_ready.status == 200
 
     - name: Registry is ready
-      debug:
+      ansible.builtin.debug:
         msg: "OCI registry running at localhost:{{ registry_port }} (and {{ ansible_host }}:{{ registry_port }} from the host)"
 
     - name: Open registry port in the VM firewall
-      shell: |
+      ansible.builtin.shell: |
         firewall-cmd --add-port={{ registry_port }}/tcp --permanent
         firewall-cmd --reload
       args:
@@ -150,27 +150,27 @@
     # be deployed even if the RPM is already installed.
     # -------------------------------------------------------------------------
     - name: "Copy built data stream from host"
-      copy:
+      ansible.builtin.copy:
         src: "{{ repo_root }}/build/ssg-rhel9-ds.xml"
         dest: "{{ ds_dest }}"
         mode: "0644"
         force: true
 
     - name: Confirm data stream has nist_800_53 profile
-      command: "grep -c nist_800_53 {{ ds_dest }}"
+      ansible.builtin.command: "grep -c nist_800_53 {{ ds_dest }}"
       register: profile_check
       changed_when: false
       failed_when: profile_check.rc != 0 or profile_check.stdout | int == 0
 
     - name: Show data stream status
-      debug:
+      ansible.builtin.debug:
         msg: "Data stream: {{ ds_dest }} — nist_800_53 profile present ({{ profile_check.stdout }} occurrences)"
 
     # -------------------------------------------------------------------------
     # Summary
     # -------------------------------------------------------------------------
     - name: Setup complete
-      debug:
+      ansible.builtin.debug:
         msg: |
           VM is ready. Run the scan with:
             ansible-playbook -i ansible/inventory.ini ansible/scan.yml

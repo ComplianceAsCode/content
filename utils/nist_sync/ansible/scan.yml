@@ -43,7 +43,7 @@
     - name: Ensure host result directory exists
       delegate_to: localhost
       become: false
-      file:
+      ansible.builtin.file:
         path: "{{ results_base }}"
         state: directory
         mode: "0755"
@@ -52,7 +52,7 @@
     - name: "Export Gemara artifacts for {{ product }} (host)"
       delegate_to: localhost
       become: false
-      command: >
+      ansible.builtin.command: >
         python3 utils/nist_sync/export_to_gemara.py
           --products {{ product }}
           --output-dir build/gemara
@@ -65,19 +65,19 @@
     - name: Show exported files
       delegate_to: localhost
       become: false
-      find:
+      ansible.builtin.find:
         paths: "{{ gemara_dir }}"
         recurse: true
         patterns: "*.yaml"
       register: exported
 
     - name: Gemara files exported
-      debug:
+      ansible.builtin.debug:
         msg: "{{ exported.files | map(attribute='path') | map('replace', repo_root + '/', '') | list }}"
 
   tasks:
     - name: Scan each baseline
-      include_tasks: tasks/scan_baseline.yml
+      ansible.builtin.include_tasks: tasks/scan_baseline.yml
       loop: "{{ baselines }}"
       loop_control:
         loop_var: baseline_name
@@ -86,14 +86,14 @@
     - name: Final results summary
       delegate_to: localhost
       become: false
-      find:
+      ansible.builtin.find:
         paths: "{{ results_base }}"
         recurse: true
         patterns: "*.xml,*.yaml"
       register: all_results
 
     - name: Results written to host
-      debug:
+      ansible.builtin.debug:
         msg: |
           {{ all_results.files | length }} result file(s) under build/complyctl-results/{{ product }}/
           {% for f in all_results.files | sort(attribute='path') %}

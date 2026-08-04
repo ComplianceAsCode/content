@@ -7,7 +7,7 @@
 - name: "[ {{ baseline_name | upper }} ] Create host output directories"
   delegate_to: localhost
   become: false
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: "0755"
@@ -21,7 +21,7 @@
 - name: "[ {{ baseline_name | upper }} ] Generate Policy bundle and push to VM registry"
   delegate_to: localhost
   become: false
-  command: >
+  ansible.builtin.command: >
     python3 utils/nist_sync/generate_complyctl_bundle.py
       --product {{ product }}
       --gemara-dir build/gemara
@@ -39,7 +39,7 @@
   register: bundle_result
 
 - name: "[ {{ baseline_name | upper }} ] Bundle push complete"
-  debug:
+  ansible.builtin.debug:
     msg: >-
       {{
         (bundle_result.stdout_lines | select('match', '.*assessment-plan.*|.*Pushed.*|.*rules.*') | list)
@@ -51,7 +51,7 @@
 # 2. Configure complyctl on the VM
 # ---------------------------------------------------------------------------
 - name: "[ {{ baseline_name | upper }} ] Write complytime.yaml on the VM"
-  template:
+  ansible.builtin.template:
     src: "{{ playbook_dir }}/templates/complytime.yaml.j2"
     dest: "{{ complyctl_home }}/complytime.yaml"
     mode: "0644"
@@ -62,7 +62,7 @@
 # 3. Run complyctl inside the VM
 # ---------------------------------------------------------------------------
 - name: "[ {{ baseline_name | upper }} ] complyctl get (pull bundle metadata from registry)"
-  command: /usr/local/bin/complyctl get
+  ansible.builtin.command: /usr/local/bin/complyctl get
   args:
     chdir: "{{ complyctl_home }}"
   environment:
@@ -70,7 +70,7 @@
   register: get_result
 
 - name: "[ {{ baseline_name | upper }} ] complyctl generate (build tailored XCCDF)"
-  command: >
+  ansible.builtin.command: >
     /usr/local/bin/complyctl generate
       --policy-id nist-800-53-rev5-{{ product }}-{{ baseline_name }}
   args:
@@ -80,7 +80,7 @@
   register: gen_result
 
 - name: "[ {{ baseline_name | upper }} ] complyctl scan"
-  command: >
+  ansible.builtin.command: >
     /usr/local/bin/complyctl scan
       --policy-id nist-800-53-rev5-{{ product }}-{{ baseline_name }}
   args:
@@ -92,7 +92,7 @@
   register: scan_result
 
 - name: "[ {{ baseline_name | upper }} ] Scan exit code"
-  debug:
+  ansible.builtin.debug:
     msg: >-
       complyctl scan exit={{ scan_result.rc }}
       (0=pass, non-zero=compliance findings found — expected for a fresh VM)
@@ -101,7 +101,7 @@
 # 4. Collect result files from the VM and fetch to the host
 # ---------------------------------------------------------------------------
 - name: "[ {{ baseline_name | upper }} ] Find result files on VM"
-  find:
+  ansible.builtin.find:
     paths: "{{ complyctl_home }}"
     recurse: true
     patterns:
@@ -112,7 +112,7 @@
   failed_when: false
 
 - name: "[ {{ baseline_name | upper }} ] Fetch result files to host"
-  fetch:
+  ansible.builtin.fetch:
     src: "{{ item.path }}"
     dest: "{{ results_base }}/{{ baseline_name }}/{{ item.path | basename }}"
     flat: true
@@ -124,7 +124,7 @@
 - name: "[ {{ baseline_name | upper }} ] Generate HTML report from XCCDF results"
   delegate_to: localhost
   become: false
-  shell: |
+  ansible.builtin.shell: |
     oscap xccdf generate report \
       "{{ results_base }}/{{ baseline_name }}/results.xml" \
       > "{{ results_base }}/{{ baseline_name }}/report.html"
@@ -134,7 +134,7 @@
   register: html_report
 
 - name: "[ {{ baseline_name | upper }} ] Baseline complete"
-  debug:
+  ansible.builtin.debug:
     msg: >-
       Results: build/complyctl-results/{{ product }}/{{ baseline_name }}/
       ({{ result_files.files | length }} file(s))
