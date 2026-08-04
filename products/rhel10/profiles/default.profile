@@ -62,3 +62,4 @@ selections:
     - set_password_hashing_min_rounds_logindefs
     - directory_group_ownership_var_log_audit
     - file_sshd_50_redhat_exists
+    - journald_forward_to_syslog
