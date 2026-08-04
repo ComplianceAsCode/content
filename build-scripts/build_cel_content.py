@@ -63,7 +63,7 @@ def setup_logging(log_level_str):
 
 def load_rules(rules_dir):
     """
-    Load all compiled rules, separating CEL rules from the rest.
+    Load all compiled rules, separating rules with CEL check from the rest.
 
     Scans the directory once, returning CEL rules (with expression and
     inputs) and all remaining rules keyed by ID.
@@ -91,6 +91,9 @@ def load_rules(rules_dir):
             rule = ssg.build_yaml.Rule.from_compiled_json(rule_path)
             all_rules[rule.id_] = rule
 
+            # Check if this rule has CEL checks by looking for CEL-specific fields
+            # A rule uses CEL if it has both expression and inputs
+            # (loaded from cel/shared.yml during rule compilation)
             has_expression = hasattr(rule, 'expression') and rule.expression
             has_inputs = hasattr(rule, 'inputs') and rule.inputs
 
@@ -301,18 +304,15 @@ def profile_to_cel_dict(profile, cel_rule_ids):
     return cel_profile
 
 
-def generate_cel_content(cel_rules, profiles, all_rule_ids=None,
-                         manual_rules=None):
+def generate_cel_content(cel_rules, profiles, all_rules=None):
     """
     Generate the complete CEL content structure.
 
     Args:
         cel_rules: Dictionary of rules with CEL checks
         profiles: List of profiles targeting the CEL checking engine
-        all_rule_ids: Set of all compiled rule IDs (used to distinguish
-                      manual rules from nonexistent rules)
-        manual_rules: Dictionary of manual rules (rules without CEL checks
-                      that are selected by CEL profiles)
+        all_rules: Dictionary of all compiled rule objects keyed by ID
+                   (used to distinguish manual rules from nonexistent rules)
 
     Returns:
         dict: Complete CEL content structure
@@ -322,21 +322,37 @@ def generate_cel_content(cel_rules, profiles, all_rule_ids=None,
                     a rule that does not exist
     """
     cel_rule_ids = set(cel_rules.keys())
-    if all_rule_ids is None:
-        all_rule_ids = cel_rule_ids
-    if manual_rules is None:
-        manual_rules = {}
+    if all_rules is None:
+        all_rules = {}
+    all_rule_ids = set(all_rules.keys())
 
-    # Combine CEL and manual rules for output
-    all_output_rules = dict(cel_rules)
-    all_output_rules.update(manual_rules)
-    all_output_rule_ids = set(all_output_rules.keys())
+    # Process profiles first to identify manual rules
+    output_rules = dict(cel_rules)
+    for profile in profiles:
+        profile_name = rule_id_to_name(profile.id_)
+        for rule_id in profile.selected:
+            if rule_id not in cel_rule_ids:
+                rule_name = rule_id_to_name(rule_id)
+                if rule_id in all_rule_ids:
+                    logging.warning(
+                        "profile '%s' references rule '%s' without CEL checks "
+                        "- adding as manual rule",
+                        profile_name, rule_name,
+                    )
+                    output_rules[rule_id] = all_rules[rule_id]
+                else:
+                    raise ValueError(
+                        f"profile '{profile_name}' references unknown rule "
+                        f"'{rule_name}'"
+                    )
+
+    output_rule_ids = set(output_rules.keys())
 
     # Generate rules section and check for duplicates
     cel_rules_list = []
     rule_names_seen = set()
-    for rule_id in sorted(all_output_rules.keys()):
-        rule = all_output_rules[rule_id]
+    for rule_id in sorted(output_rules.keys()):
+        rule = output_rules[rule_id]
         cel_rule = rule_to_cel_dict(rule)
 
         # Check for duplicate rule names
@@ -347,26 +363,10 @@ def generate_cel_content(cel_rules, profiles, all_rule_ids=None,
 
         cel_rules_list.append(cel_rule)
 
-    # Generate profiles section and validate rule references
+    # Generate profiles section
     cel_profiles = []
     for profile in profiles:
-        profile_name = rule_id_to_name(profile.id_)
-        for rule_id in profile.selected:
-            if rule_id not in all_output_rule_ids:
-                rule_name = rule_id_to_name(rule_id)
-                if rule_id in all_rule_ids:
-                    logging.warning(
-                        "profile '%s' references rule '%s' without CEL checks "
-                        "(manual rule) - skipping from CEL content",
-                        profile_name, rule_name,
-                    )
-                else:
-                    raise ValueError(
-                        f"profile '{profile_name}' references unknown rule "
-                        f"'{rule_name}'"
-                    )
-
-        cel_profile = profile_to_cel_dict(profile, all_output_rule_ids)
+        cel_profile = profile_to_cel_dict(profile, output_rule_ids)
         if cel_profile:
             cel_profiles.append(cel_profile)
 
@@ -385,7 +385,6 @@ def main():
 
     # Load all rules in a single pass
     cel_rules, all_rules = load_rules(args.resolved_rules_dir)
-    all_rule_ids = set(all_rules.keys())
 
     if not cel_rules:
         content = {'profiles': [], 'rules': []}
@@ -394,19 +393,8 @@ def main():
         cel_rule_ids = set(cel_rules.keys())
         profiles = load_profiles(args.profiles_dir, cel_rule_ids)
 
-        # Collect manual rules: selected by CEL profiles but no CEL checks
-        manual_rules = {}
-        for profile in profiles:
-            for rule_id in profile.selected:
-                if rule_id not in cel_rule_ids and rule_id in all_rule_ids:
-                    rule = all_rules[rule_id]
-                    rule.check_type = 'Manual'
-                    manual_rules[rule_id] = rule
-
         # Generate CEL content
-        content = generate_cel_content(
-            cel_rules, profiles, all_rule_ids, manual_rules
-        )
+        content = generate_cel_content(cel_rules, profiles, all_rules)
 
     # Write output YAML
     os.makedirs(os.path.dirname(args.output), exist_ok=True)

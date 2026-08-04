@@ -578,7 +578,7 @@ def test_generate_cel_content_unknown_rule_reference():
         'existing_rule': rule1
     }
 
-    all_rule_ids = {'existing_rule'}
+    all_rules = {'existing_rule': rule1}
 
     # Create a profile that references a non-existent rule
     profile = ssg.build_yaml.Profile('test_profile')
@@ -590,7 +590,7 @@ def test_generate_cel_content_unknown_rule_reference():
     profiles = [profile]
 
     with pytest.raises(ValueError, match="references unknown rule 'nonexistent-rule'"):
-        build_cel_content.generate_cel_content(cel_rules, profiles, all_rule_ids)
+        build_cel_content.generate_cel_content(cel_rules, profiles, all_rules)
 
 
 def test_validation_empty_expression():
@@ -620,7 +620,7 @@ def test_validation_empty_expression():
 
 
 def test_validation_empty_inputs():
-    """Test that rule with empty inputs list is skipped from CEL rules."""
+    """Test that rule with empty inputs list is not identified as CEL but is included in all rules."""
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create rule with empty inputs
         rule_dict = {
@@ -669,7 +669,7 @@ def test_validation_profile_with_empty_selections():
 
 
 def test_validation_mixed_oval_and_cel_in_profile():
-    """Test that profile with both OVAL and CEL checks only includes CEL rules in output."""
+    """Test that profile with both OVAL and CEL checks are output as CEL and manual rules."""
     # Create rule with CEL checks
     cel_rule = ssg.build_yaml.Rule('cel_rule')
     cel_rule.id_ = 'cel_rule'
@@ -686,7 +686,15 @@ def test_validation_mixed_oval_and_cel_in_profile():
     }
 
     # oval_rule exists as a compiled rule but has no CEL checks
-    all_rule_ids = {'cel_rule', 'oval_rule'}
+    oval_rule = ssg.build_yaml.Rule('oval_rule')
+    oval_rule.id_ = 'oval_rule'
+    oval_rule.title = 'OVAL Rule'
+    oval_rule.description = 'Description'
+    oval_rule.rationale = 'Rationale'
+    oval_rule.severity = 'medium'
+    oval_rule.references = {}
+
+    all_rules = {'cel_rule': cel_rule, 'oval_rule': oval_rule}
 
     # Create a CEL profile that references both CEL and OVAL rules
     profile = ssg.build_yaml.Profile('mixed_profile')
@@ -697,10 +705,26 @@ def test_validation_mixed_oval_and_cel_in_profile():
 
     profiles = [profile]
 
-    # Should warn about oval_rule but not error since it exists
-    content = build_cel_content.generate_cel_content(cel_rules, profiles, all_rule_ids)
-    assert len(content['rules']) == 1
-    assert content['rules'][0]['id'] == 'cel_rule'
+    # Should warn about oval_rule and include it as a manual rule
+    content = build_cel_content.generate_cel_content(cel_rules, profiles, all_rules)
+    assert len(content['rules']) == 2
+    rule_ids = [r['id'] for r in content['rules']]
+    assert 'cel_rule' in rule_ids
+    assert 'oval_rule' in rule_ids
+
+    # Verify the CEL rule has expression and inputs
+    cel_output = next(r for r in content['rules'] if r['id'] == 'cel_rule')
+    assert 'expression' in cel_output
+    assert 'inputs' in cel_output
+
+    # Verify the manual rule does NOT have expression or inputs
+    oval_output = next(r for r in content['rules'] if r['id'] == 'oval_rule')
+    assert 'expression' not in oval_output
+    assert 'inputs' not in oval_output
+
+    # Verify the profile includes both rules
+    assert len(content['profiles']) == 1
+    assert len(content['profiles'][0]['rules']) == 2
 
 
 def test_validation_integration_full_flow():
