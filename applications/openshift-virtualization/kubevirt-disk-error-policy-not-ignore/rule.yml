@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Virtual Machine Disks Must Not Ignore I/O Errors'
+
+description: |-
+    A disk with 'errorPolicy: ignore' tells the hypervisor to suppress I/O
+    errors instead of reporting or stopping on them. Ignored storage errors
+    lead to silent data corruption inside the guest, masking hardware
+    failures and tampering. The default (report) or 'stop' should be used.
+
+rationale: |-
+    Suppressed I/O errors deny the guest and the platform the signal needed
+    to fail over, alert or stop on storage corruption - undermining data
+    integrity guarantees for the workload.
+
+severity: medium
+
+ocil_clause: 'a VirtualMachine disk sets errorPolicy to ignore'
+
+ocil: |-
+    Run the following command to list disks that ignore I/O errors:
+    <pre>$ oc get vm -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}: {.spec.template.spec.domain.devices.disks[?(@.errorPolicy=="ignore")].name}{"\n"}{end}'</pre>
+    No virtual machine disk should set errorPolicy to ignore.
