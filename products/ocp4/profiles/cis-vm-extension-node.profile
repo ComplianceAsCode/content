@@ -29,3 +29,4 @@ description: |-
 
 selections:
     - kubevirt-nested-virtualization-disabled
+    - kubevirt-vcpu-metrics-enabled
