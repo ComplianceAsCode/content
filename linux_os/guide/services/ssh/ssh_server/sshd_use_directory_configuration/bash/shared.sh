@@ -19,5 +19,5 @@ cat > {{{ base_config }}} << EOF
 
 {{{ include_directive }}}
 EOF
-chmod 0644 {{{ base_config }}}
+chmod 0600 {{{ base_config }}}
 fi

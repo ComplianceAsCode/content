@@ -19,6 +19,7 @@ chmod 0755 "${service_dropin_cfg_dir}"
 echo "[Service]" >> "${service_dropin_file}"
 echo "ExecStart=" >> "${service_dropin_file}"
 echo "ExecStart=-$sulogin" >> "${service_dropin_file}"
+chmod 0644 "${service_dropin_file}"
 {{% else %}}
 if grep "^ExecStart=.*" "$service_file" ; then
     sed -i "s%^ExecStart=.*%ExecStart=-$sulogin%" "$service_file"
