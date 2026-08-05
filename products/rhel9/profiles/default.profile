@@ -558,6 +558,8 @@ selections:
     - sebool_cluster_manage_all_files
     - configure_firewalld_ports
     - journald_forward_to_syslog
+    - journald_disable_forward_to_syslog
+    - service_systemd-journal-upload_enabled
     - rsyslog_filecreatemode
     - set_nftables_table
     - sshd_use_approved_ciphers
