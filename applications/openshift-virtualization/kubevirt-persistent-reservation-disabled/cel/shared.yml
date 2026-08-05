@@ -2,8 +2,8 @@ check_type: Platform
 
 failure_reason: |-
     The '.spec.featureGates.persistentReservation' field is set to 'true' in
-    the 'kubevirt-hyperconverged' resource. (An absent field is compliant:
-    persistent reservations are disabled by default.)
+    the 'kubevirt-hyperconverged' resource. An absent field is compliant
+    because persistent reservations are disabled by default.
 
 inputs:
   - name: hcoList

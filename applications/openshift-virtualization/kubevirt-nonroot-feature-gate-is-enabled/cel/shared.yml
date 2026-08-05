@@ -2,9 +2,9 @@ check_type: Platform
 
 failure_reason: |-
     The '.spec.featureGates.nonRoot' field is present and not set to 'true' in
-    the 'kubevirt-hyperconverged' resource. (On OpenShift Virtualization 4.18
+    the 'kubevirt-hyperconverged' resource. On OpenShift Virtualization 4.18
     and later the field is removed and non-root execution is always enforced,
-    so an absent field is compliant.)
+    so an absent field is compliant.
 
 inputs:
   - name: hcoList

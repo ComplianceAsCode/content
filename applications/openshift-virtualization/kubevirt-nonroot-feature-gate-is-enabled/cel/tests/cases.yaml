@@ -2,14 +2,14 @@
 # via celctl (cel-go, the Compliance Operator scanner engine).
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
-  fetched_with: celctl cac scaffold --from-cluster (hand-extended for fix cases)
+  fetched_with: celctl cac scaffold --from-cluster
   date: '2026-07-23'
   openshift_version: 4.22.0
   kubernetes_version: v1.35.5
   source_api_versions:
     hcoList: hco.kubevirt.io/v1beta1
 cases:
-  - name: nonRoot enabled -> compliant
+  - name: nonRoot feature gate enabled is compliant
     expect: true
     inputs:
       hcoList:
@@ -24,7 +24,7 @@ cases:
             spec:
               featureGates:
                 nonRoot: true
-  - name: nonRoot disabled -> non-compliant
+  - name: nonRoot feature gate disabled is non-compliant
     expect: false
     inputs:
       hcoList:
@@ -39,8 +39,7 @@ cases:
             spec:
               featureGates:
                 nonRoot: false
-  - name: nonRoot absent (4.18+ removed the field; always enforced) -> compliant (CMP-4448
-      fix)
+  - name: absent nonRoot field is compliant on 4.18 and later
     expect: true
     inputs:
       hcoList:
@@ -55,7 +54,7 @@ cases:
             spec:
               featureGates:
                 downwardMetrics: false
-  - name: no featureGates at all -> compliant (4.18+ default)
+  - name: missing featureGates block is compliant
     expect: true
     inputs:
       hcoList:
@@ -68,7 +67,7 @@ cases:
               name: kubevirt-hyperconverged
               namespace: openshift-cnv
             spec: {}
-  - name: no HyperConverged present -> non-compliant (size != 1)
+  - name: missing HyperConverged resource is non-compliant
     expect: false
     inputs:
       hcoList:

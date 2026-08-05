@@ -2,14 +2,14 @@
 # via celctl (cel-go, the Compliance Operator scanner engine).
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
-  fetched_with: celctl cac scaffold --from-cluster (hand-extended for fix cases)
+  fetched_with: celctl cac scaffold --from-cluster
   date: '2026-07-23'
   openshift_version: 4.22.0
   kubernetes_version: v1.35.5
   source_api_versions:
     hcoList: hco.kubevirt.io/v1beta1
 cases:
-  - name: permittedHostDevices absent -> compliant
+  - name: absent permittedHostDevices block is compliant
     expect: true
     inputs:
       hcoList:
@@ -22,7 +22,7 @@ cases:
               name: kubevirt-hyperconverged
               namespace: openshift-cnv
             spec: {}
-  - name: all device lists explicitly empty -> compliant
+  - name: explicitly empty device lists are compliant
     expect: true
     inputs:
       hcoList:
@@ -39,8 +39,7 @@ cases:
                 pciHostDevices: []
                 mediatedDevices: []
                 usbHostDevices: []
-  - name: only pciHostDevices [] present (no devices permitted) -> compliant (CMP-4447
-      fix)
+  - name: empty pciHostDevices list alone is compliant
     expect: true
     inputs:
       hcoList:
@@ -55,7 +54,7 @@ cases:
             spec:
               permittedHostDevices:
                 pciHostDevices: []
-  - name: pciHostDevices configured -> non-compliant
+  - name: configured pciHostDevices are non-compliant
     expect: false
     inputs:
       hcoList:
@@ -72,7 +71,7 @@ cases:
                 pciHostDevices:
                   - pciDeviceSelector: 10DE:1EB8
                     resourceName: nvidia.com/T4
-  - name: usbHostDevices configured -> non-compliant
+  - name: configured usbHostDevices are non-compliant
     expect: false
     inputs:
       hcoList:
@@ -91,7 +90,7 @@ cases:
                     selectors:
                       - vendor: 0781
                         product: '5567'
-  - name: mediatedDevices configured -> non-compliant
+  - name: configured mediatedDevices are non-compliant
     expect: false
     inputs:
       hcoList:
@@ -108,7 +107,7 @@ cases:
                 mediatedDevices:
                   - mdevNameSelector: GRID T4-2Q
                     resourceName: nvidia.com/GRID_T4-2Q
-  - name: no HyperConverged present -> non-compliant (size != 1)
+  - name: missing HyperConverged resource is non-compliant
     expect: false
     inputs:
       hcoList:

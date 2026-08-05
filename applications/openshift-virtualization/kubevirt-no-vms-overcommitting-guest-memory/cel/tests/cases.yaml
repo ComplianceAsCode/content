@@ -2,21 +2,21 @@
 # via celctl (cel-go, the Compliance Operator scanner engine).
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
-  fetched_with: celctl cac scaffold --from-cluster (hand-extended for fix cases)
+  fetched_with: celctl cac scaffold --from-cluster
   date: '2026-07-23'
   openshift_version: 4.22.0
   kubernetes_version: v1.35.5
   source_api_versions:
     vms: kubevirt.io/v1
 cases:
-  - name: no VMs -> compliant
+  - name: no VirtualMachines present is compliant
     expect: true
     inputs:
       vms:
         apiVersion: v1
         kind: List
         items: []
-  - name: VM without overcommitGuestOverhead -> compliant
+  - name: VM without overcommitGuestOverhead is compliant
     expect: true
     inputs:
       vms:
@@ -35,7 +35,7 @@ cases:
                     resources:
                       requests:
                         memory: 2Gi
-  - name: VM with overcommitGuestOverhead false -> compliant
+  - name: VM with overcommitGuestOverhead disabled is compliant
     expect: true
     inputs:
       vms:
@@ -53,8 +53,7 @@ cases:
                   domain:
                     resources:
                       overcommitGuestOverhead: false
-  - name: 'VM with overcommitGuestOverhead true -> non-compliant (CMP-4451: rule errored
-      before this fix)'
+  - name: VM with overcommitGuestOverhead enabled is not compliant
     expect: false
     inputs:
       vms:
@@ -84,7 +83,7 @@ cases:
                   domain:
                     resources:
                       overcommitGuestOverhead: true
-  - name: VM without resources block -> compliant
+  - name: VM without a resources block is compliant
     expect: true
     inputs:
       vms:

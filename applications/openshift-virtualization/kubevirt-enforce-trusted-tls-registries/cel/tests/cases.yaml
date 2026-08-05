@@ -2,14 +2,14 @@
 # via celctl (cel-go, the Compliance Operator scanner engine).
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
-  fetched_with: celctl cac scaffold --from-cluster (hand-extended for fix cases)
+  fetched_with: celctl cac scaffold --from-cluster
   date: '2026-07-23'
   openshift_version: 4.22.0
   kubernetes_version: v1.35.5
   source_api_versions:
     hco: hco.kubevirt.io/v1beta1
 cases:
-  - name: no storageImport -> compliant
+  - name: no storageImport block is compliant
     expect: true
     inputs:
       hco:
@@ -19,8 +19,7 @@ cases:
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
         spec: {}
-  - name: storageImport without insecureRegistries key -> compliant (CMP-4450 fix,
-      was eval ERROR)
+  - name: storageImport without an insecureRegistries key is compliant
     expect: true
     inputs:
       hco:
@@ -32,7 +31,7 @@ cases:
         spec:
           storageImport:
             importProxy: {}
-  - name: insecureRegistries empty -> compliant
+  - name: hyperconverged with empty insecureRegistries is compliant
     expect: true
     inputs:
       hco:
@@ -44,7 +43,7 @@ cases:
         spec:
           storageImport:
             insecureRegistries: []
-  - name: insecureRegistries set -> non-compliant
+  - name: hyperconverged with insecureRegistries entries is non-compliant
     expect: false
     inputs:
       hco:
