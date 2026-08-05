@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="compliance" id="kubevirt-nested-virtualization-disabled" version="2">
+    {{{ oval_metadata("Nested virtualization must be disabled via the kvm_intel/kvm_amd module 'nested' parameter.", rule_title=rule_title) }}}
+
+    <criteria operator="AND">
+      <criteria operator="OR">
+        <criterion comment="kvm_intel nested parameter is absent" test_ref="test_kubevirt_nested_kvm_intel_absent" />
+        <criterion comment="kvm_intel nested parameter is N or 0" test_ref="test_kubevirt_nested_kvm_intel_disabled" />
+      </criteria>
+      <criteria operator="OR">
+        <criterion comment="kvm_amd nested parameter is absent" test_ref="test_kubevirt_nested_kvm_amd_absent" />
+        <criterion comment="kvm_amd nested parameter is N or 0" test_ref="test_kubevirt_nested_kvm_amd_disabled" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="kvm_intel nested parameter file does not exist" id="test_kubevirt_nested_kvm_intel_absent" version="2">
+    <ind:object object_ref="object_kubevirt_nested_kvm_intel_content" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="kvm_intel nested parameter is N or 0" id="test_kubevirt_nested_kvm_intel_disabled" version="2">
+    <ind:object object_ref="object_kubevirt_nested_kvm_intel_content" />
+    <ind:state state_ref="state_kubevirt_nested_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_kubevirt_nested_kvm_intel_content" version="2">
+    <ind:filepath>/sys/module/kvm_intel/parameters/nested</ind:filepath>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="kvm_amd nested parameter file does not exist" id="test_kubevirt_nested_kvm_amd_absent" version="2">
+    <ind:object object_ref="object_kubevirt_nested_kvm_amd_content" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="kvm_amd nested parameter is N or 0" id="test_kubevirt_nested_kvm_amd_disabled" version="2">
+    <ind:object object_ref="object_kubevirt_nested_kvm_amd_content" />
+    <ind:state state_ref="state_kubevirt_nested_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_kubevirt_nested_kvm_amd_content" version="2">
+    <ind:filepath>/sys/module/kvm_amd/parameters/nested</ind:filepath>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_kubevirt_nested_disabled" version="2">
+    <ind:subexpression operation="pattern match">^(N|0)$</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

@@ -1,0 +1,29 @@
+documentation_complete: true
+
+platform: {{{ product }}}-node
+
+title: 'Nested Virtualization Must Be Disabled on Virtualization Hosts'
+
+description: |-
+    Nested virtualization allows a virtual machine to itself act as a
+    hypervisor. It is controlled by the <tt>nested</tt> parameter of the
+    <tt>kvm_intel</tt> or <tt>kvm_amd</tt> kernel module, visible at
+    <tt>/sys/module/kvm_intel/parameters/nested</tt> (or
+    <tt>kvm_amd</tt> respectively). The value must be <tt>N</tt> or
+    <tt>0</tt>. Nodes where the KVM modules are not loaded do not expose
+    the parameter, which is compliant.
+
+rationale: |-
+    Nested virtualization exposes additional virtualization interfaces to
+    guest workloads, widening the attack surface of the hypervisor stack
+    and enabling a compromised guest to host further, harder-to-observe
+    virtual machines.
+
+severity: medium
+
+ocil_clause: 'nested virtualization is enabled on a node'
+
+ocil: |-
+    Run the following on each node running virtualization workloads:
+    <pre>$ cat /sys/module/kvm_intel/parameters/nested 2>/dev/null; cat /sys/module/kvm_amd/parameters/nested 2>/dev/null</pre>
+    Any output present should be <tt>N</tt> or <tt>0</tt>.
