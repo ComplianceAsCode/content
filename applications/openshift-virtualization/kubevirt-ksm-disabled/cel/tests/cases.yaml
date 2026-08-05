@@ -2,14 +2,14 @@
 # via celctl (cel-go, the Compliance Operator scanner engine).
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
-  fetched_with: modeled on real HyperConverged API objects (celctl cac scaffold format)
+  fetched_with: modeled on real HyperConverged API objects in celctl cac scaffold format
   date: '2026-07-24'
   openshift_version: 4.21.0
   kubernetes_version: v1.34
   source_api_versions:
     hcoList: hco.kubevirt.io/v1beta1
 cases:
-  - name: ksmConfiguration absent -> compliant
+  - name: missing ksmConfiguration is compliant
     expect: true
     inputs:
       hcoList:
@@ -22,8 +22,7 @@ cases:
               name: kubevirt-hyperconverged
               namespace: openshift-cnv
             spec: {}
-  - name: ksmConfiguration empty object -> compliant (inert HCO default; verified
-      /sys/kernel/mm/ksm/run=0 on a stock install)
+  - name: empty ksmConfiguration object is compliant
     expect: true
     inputs:
       hcoList:
@@ -37,8 +36,7 @@ cases:
               namespace: openshift-cnv
             spec:
               ksmConfiguration: {}
-  - name: ksmConfiguration with nodeLabelSelector -> non-compliant (enables KSM on
-      selected nodes)
+  - name: ksmConfiguration with a nodeLabelSelector is non-compliant
     expect: false
     inputs:
       hcoList:
@@ -55,8 +53,7 @@ cases:
                 nodeLabelSelector:
                   matchLabels:
                     ksm: enabled
-  - name: ksmConfiguration with empty nodeLabelSelector -> non-compliant (selects
-      all nodes)
+  - name: ksmConfiguration with an empty nodeLabelSelector is non-compliant
     expect: false
     inputs:
       hcoList:
@@ -71,7 +68,7 @@ cases:
             spec:
               ksmConfiguration:
                 nodeLabelSelector: {}
-  - name: no HyperConverged present -> non-compliant (size != 1)
+  - name: missing HyperConverged configuration is non-compliant
     expect: false
     inputs:
       hcoList:

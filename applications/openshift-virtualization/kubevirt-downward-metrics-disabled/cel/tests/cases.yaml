@@ -2,14 +2,14 @@
 # via celctl (cel-go, the Compliance Operator scanner engine).
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
-  fetched_with: modeled on real HyperConverged API objects (celctl cac scaffold format)
+  fetched_with: modeled on real HyperConverged API objects in celctl cac scaffold format
   date: '2026-07-23'
   openshift_version: 4.22.0
   kubernetes_version: v1.35.5
   source_api_versions:
     hcoList: hco.kubevirt.io/v1beta1
 cases:
-  - name: downwardMetrics false -> compliant
+  - name: downwardMetrics disabled is compliant
     expect: true
     inputs:
       hcoList:
@@ -24,7 +24,7 @@ cases:
             spec:
               featureGates:
                 downwardMetrics: false
-  - name: downwardMetrics absent -> compliant (disabled by default)
+  - name: absent downwardMetrics field is compliant
     expect: true
     inputs:
       hcoList:
@@ -38,7 +38,7 @@ cases:
               namespace: openshift-cnv
             spec:
               featureGates: {}
-  - name: downwardMetrics enabled -> non-compliant
+  - name: downwardMetrics enabled is non-compliant
     expect: false
     inputs:
       hcoList:
@@ -53,7 +53,7 @@ cases:
             spec:
               featureGates:
                 downwardMetrics: true
-  - name: no HyperConverged present -> non-compliant (size != 1)
+  - name: missing HyperConverged configuration is non-compliant
     expect: false
     inputs:
       hcoList:
