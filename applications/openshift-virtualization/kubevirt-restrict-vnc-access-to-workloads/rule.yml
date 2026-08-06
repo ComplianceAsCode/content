@@ -3,13 +3,11 @@ documentation_complete: true
 title: 'Restrict VNC Access to Cluster Workloads'
 
 description: |-
-    Only authorized subjects should be granted roles that allow VNC
-    access to virtual machines. VNC access is controlled through
-    Kubernetes RBAC by binding the <tt>token.kubevirt.io:generate</tt>
-    role. Unrestricted VNC access allows any bound subject to open a
-    graphical console session to running virtual machines, potentially
-    exposing sensitive workload data and enabling unauthorized
-    interaction with the guest operating system.
+    Because the set of authorized subjects is specific to each
+    organization, this rule requires manual review. Organizations can
+    create a CustomRule using CEL to automate this check by querying
+    RoleBinding resources and verifying that only approved subjects
+    are bound to the <tt>token.kubevirt.io:generate</tt> role.
 
 rationale: |-
     VNC provides direct graphical console access to a running virtual
