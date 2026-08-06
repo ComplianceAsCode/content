@@ -25,7 +25,6 @@ selections:
     - accounts_tmout
     - accounts_umask_etc_login_defs
     - aide_check_audit_tools
-    - aide_periodic_checking_systemd_timer
     - aide_verify_acls
     - aide_verify_ext_attributes
     - auditd_audispd_encrypt_sent_records
@@ -108,8 +107,10 @@ selections:
     - cracklib_accounts_password_pam_ocredit
     - cracklib_accounts_password_pam_retry
     - cracklib_accounts_password_pam_ucredit
+    - disable_ctrlaltdel_burstaction
     - display_login_attempts
     - ensure_gpgcheck_globally_activated
+    - file_etc_security_opasswd
     - file_groupownership_system_commands_dirs
     - file_permissions_home_directories
     - inactivity_timeout_value=15_minutes
@@ -133,7 +134,7 @@ selections:
     - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_maximum_age_login_defs=60
     - var_accounts_minimum_age_login_defs=7
-    - var_accounts_tmout=15_min
+    - var_accounts_tmout=10_min
     - var_auditd_disk_full_action=syslog
     - var_password_pam_dcredit=1
     - var_password_pam_delay=4000000
@@ -147,3 +148,41 @@ selections:
     - var_sssd_memcache_timeout=1_day
     - var_sudo_timestamp_timeout=always_prompt
     - var_time_service_set_maxpoll=18_hours
+    # additional rules
+    - accounts_minimum_age_login_defs
+    - accounts_maximum_age_login_defs
+    - var_accounts_minimum_age_login_defs=7
+    - accounts_password_all_shadowed_sha512
+    - accounts_password_set_max_life_existing
+    - accounts_password_set_min_life_existing
+    - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_difok
+    - cracklib_accounts_password_pam_retry
+    - no_empty_passwords
+    - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_min_rounds_logindefs
+    - cracklib_accounts_password_pam_minlen
+    - cracklib_accounts_password_pam_ocredit
+    - use_pam_wheel_for_su
+    - sshd_disable_root_login
+    - aide_check_audit_tools
+    - audit_rules_suid_privilege_function
+    - auditd_audispd_encrypt_sent_records
+    - package_audit_installed
+    - package_audit-audispd-plugins_installed
+    - permissions_local_audit_binaries
+    - kernel_module_dccp_disabled
+    - kernel_module_rds_disabled
+    - kernel_module_sctp_disabled
+    - kernel_module_tipc_disabled
+    - kernel_module_cramfs_disabled
+    - kernel_module_freevxfs_disabled
+    - kernel_module_hfs_disabled
+    - kernel_module_hfsplus_disabled
+    - kernel_module_jffs2_disabled
+    - kernel_module_squashfs_disabled
+    - kernel_module_udf_disabled
+    - sshd_set_max_auth_tries
+    - sshd_max_auth_tries_value=4
+    - aide_periodic_checking_systemd_timer
+    - service_kdump_disabled
