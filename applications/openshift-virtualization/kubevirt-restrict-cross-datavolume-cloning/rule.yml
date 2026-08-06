@@ -3,13 +3,12 @@ documentation_complete: true
 title: 'Restrict Access to Cross DataVolume Cloning'
 
 description: |-
-    Only authorized subjects should be granted cross-namespace
-    DataVolume cloning permissions. Cross-namespace cloning is
-    controlled by binding a <tt>datavolume-cloner</tt>-style
-    ClusterRole to service accounts in other namespaces. Unrestricted
-    cross-namespace cloning allows subjects to copy virtual machine
-    disk data from one namespace to another, potentially exposing
-    sensitive workload data to unauthorized tenants.
+    Because the set of authorized subjects and namespaces is specific to each
+    cluster, this rule cannot be evaluated automatically and is reported as
+    manual. Organizations can create a CustomRule with a CEL expression that
+    lists RoleBindings referencing the <tt>datavolume-cloner</tt> ClusterRole
+    and verifies that only approved subjects and destination namespaces are
+    bound.
 
 rationale: |-
     Cross-namespace DataVolume cloning copies disk image data between
