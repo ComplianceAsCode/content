@@ -3,12 +3,13 @@ documentation_complete: true
 title: 'Restrict Namespace Administrator Access to Migration Tools'
 
 description: |-
-    Only authorized subjects should be allowed to create
-    <tt>VirtualMachineInstanceMigration</tt> (vmim) and
-    <tt>MigrationPolicy</tt> resources. Unrestricted access to these
-    resources allows namespace administrators to trigger live migrations
-    and define migration policies, which can affect workload placement,
-    resource consumption, and the overall stability of the cluster.
+    Because the set of authorized subjects is specific to each environment,
+    this rule requires manual verification. Organizations can create a
+    CustomRule using CEL to automate this check by evaluating
+    ClusterRoleBindings and ClusterRoles for create and update access to
+    <tt>VirtualMachineInstanceMigration</tt> and
+    <tt>MigrationPolicy</tt> resources, verifying that only approved
+    subjects are bound to those permissions.
 
 rationale: |-
     Virtual machine live migration moves a running VM between nodes.
