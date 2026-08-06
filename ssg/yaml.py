@@ -79,6 +79,74 @@ _AnsibleSafeLoader.add_constructor(
 )
 
 
+class DuplicateKeyCheckLoader(yaml_SafeLoader):
+    """
+    Custom YAML SafeLoader that detects duplicate keys in mappings.
+
+    This loader extends the standard SafeLoader to raise an error when duplicate keys
+    are encountered in a YAML mapping. This prevents the silent overwriting behavior
+    of standard YAML parsers where the last value for a duplicate key wins.
+    """
+    pass
+
+
+def _construct_mapping_no_duplicates(loader, node):
+    """
+    Construct a mapping while checking for duplicate keys.
+
+    This custom constructor is used to detect duplicate keys during YAML parsing.
+    If a duplicate key is found, it raises a ValueError with information about
+    the duplicate key and its location in the file.
+
+    Args:
+        loader: The YAML loader instance
+        node: The YAML node being processed
+
+    Raises:
+        ValueError: If duplicate keys are detected in the mapping
+
+    Returns:
+        dict: The constructed mapping from the YAML node
+    """
+    loader.flatten_mapping(node)
+    mapping = {}
+
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=False)
+
+        # Check if we've already seen this key
+        if key in mapping:
+            # Extract line information from the key_node's mark
+            line_info = ""
+            if hasattr(key_node, 'start_mark') and key_node.start_mark:
+                line_num = key_node.start_mark.line + 1
+                line_info = f" at line {line_num}"
+
+            error_msg = (
+                f"Duplicate key '{key}' found{line_info}. "
+                "YAML files must not contain duplicate keys."
+            )
+            raise ValueError(error_msg)
+
+        # Construct the value and add to mapping
+        value = loader.construct_object(value_node, deep=False)
+        mapping[key] = value
+
+    return mapping
+
+
+# Register the duplicate-checking constructor for all mappings
+DuplicateKeyCheckLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+    _construct_mapping_no_duplicates
+)
+
+# Keep YAML booleans as Python strings for DuplicateKeyCheckLoader too
+DuplicateKeyCheckLoader.add_constructor(u'tag:yaml.org,2002:bool', _bool_constructor)
+# Python2-relevant - become able to resolve "unicode strings"
+DuplicateKeyCheckLoader.add_constructor(u'tag:yaml.org,2002:python/unicode', _unicode_constructor)
+
+
 class DocumentationNotComplete(Exception):
     pass
 
@@ -148,16 +216,28 @@ def _open_yaml(stream, original_file=None, substitutions_dict=None):
     Raises:
         DocumentationNotComplete: If the YAML content contains the key "documentation_complete"
                                   set to "false".
+        ValueError: If duplicate keys are detected in the YAML file.
         Exception: For any other exceptions, including tab indentation errors in the file.
     """
     if substitutions_dict is None:
         substitutions_dict = {}
     try:
-        yaml_contents = yaml.load(stream, Loader=yaml_SafeLoader)
+        yaml_contents = yaml.load(stream, Loader=DuplicateKeyCheckLoader)
 
         return _get_yaml_contents_without_documentation_complete(yaml_contents, substitutions_dict)
     except DocumentationNotComplete as e:
         raise e
+    except ValueError as e:
+        # Handle duplicate key errors with enhanced error reporting
+        _file = original_file if original_file else stream
+        print("Error: Duplicate key found in YAML file", file=sys.stderr)
+        print("  File: %s" % _file, file=sys.stderr)
+        print("  %s" % str(e), file=sys.stderr)
+        print("", file=sys.stderr)
+        print("This YAML file contains a key more than once.", file=sys.stderr)
+        print("Please remove the duplicate entry. The YAML parser silently", file=sys.stderr)
+        print("uses the last value, which can lead to unexpected behavior.", file=sys.stderr)
+        sys.exit(1)
     except Exception as e:
         count = 0
         _file = original_file
