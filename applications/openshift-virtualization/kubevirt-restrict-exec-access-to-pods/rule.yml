@@ -3,12 +3,11 @@ documentation_complete: true
 title: 'Restrict Exec Access to Pods'
 
 description: |-
-    Only authorized subjects should be allowed to exec into pods.
-    The <tt>oc exec</tt> command opens a shell or runs a command inside
-    a running container, which provides direct access to the workload
-    environment. Unrestricted exec access allows any namespace user to
-    interact with running virtual machine pods, potentially modifying
-    runtime state, accessing sensitive data, or disrupting workloads.
+    Because the set of authorized subjects varies by organization, this rule
+    requires manual verification. Consider creating a CustomRule with a CEL
+    expression that inspects ClusterRoleBindings and RoleBindings for subjects
+    granted the <tt>pods/exec</tt> permission, asserting that only your
+    approved administrators appear in the results.
 
 rationale: |-
     Exec access to pods provides an interactive channel into the
