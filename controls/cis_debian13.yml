@@ -363,8 +363,7 @@ controls:
           - l2_server
           - l2_workstation
       rules:
-          - apt_conf_disable_recommends
-          - apt_conf_disable_suggests
+          - apt_disable_weak_dependencies
       status: automated
 
     - id: 1.2.1.3
