@@ -35,7 +35,7 @@ jobs:
         run: make -j$(nproc) package_source
         working-directory: ./build
       - name: Attest build provenance
-        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: |
             build/scap-security-guide-*.tar.bz2
