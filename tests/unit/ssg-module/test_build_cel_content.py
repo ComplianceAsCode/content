@@ -727,6 +727,33 @@ def test_validation_mixed_oval_and_cel_in_profile():
     assert len(content['profiles'][0]['rules']) == 2
 
 
+def test_generate_cel_content_manual_only_profile():
+    """Test that a profile with only manual rules (no CEL rules) is output correctly."""
+    manual_rule = ssg.build_yaml.Rule('manual_only_rule')
+    manual_rule.id_ = 'manual_only_rule'
+    manual_rule.title = 'Manual Only Rule'
+    manual_rule.description = 'Description'
+    manual_rule.rationale = 'Rationale'
+    manual_rule.severity = 'medium'
+    manual_rule.references = {}
+
+    all_rules = {'manual_only_rule': manual_rule}
+
+    profile = ssg.build_yaml.Profile('manual_profile')
+    profile.id_ = 'manual_profile'
+    profile.title = 'Manual Profile'
+    profile.description = 'Profile with only manual rules'
+    profile.selected = ['manual_only_rule']
+
+    content = build_cel_content.generate_cel_content({}, [profile], all_rules)
+    assert len(content['rules']) == 1
+    assert content['rules'][0]['id'] == 'manual_only_rule'
+    assert 'expression' not in content['rules'][0]
+    assert 'inputs' not in content['rules'][0]
+    assert len(content['profiles']) == 1
+    assert len(content['profiles'][0]['rules']) == 1
+
+
 def test_validation_integration_full_flow():
     """Integration test: validate full flow from directories to content generation."""
     with tempfile.TemporaryDirectory() as rules_dir, tempfile.TemporaryDirectory() as profiles_dir:
@@ -774,7 +801,7 @@ def test_validation_integration_full_flow():
         assert len(profiles) == 1
 
         # Generate content
-        content = build_cel_content.generate_cel_content(cel_rules, profiles)
+        content = build_cel_content.generate_cel_content(cel_rules, profiles, all_rules)
         assert len(content['rules']) == 1
         assert len(content['profiles']) == 1
         assert content['rules'][0]['name'] == 'valid-cel-rule'

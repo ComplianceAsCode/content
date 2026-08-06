@@ -386,13 +386,13 @@ def main():
     # Load all rules in a single pass
     cel_rules, all_rules = load_rules(args.resolved_rules_dir)
 
-    if not cel_rules:
+    # Load profiles
+    cel_rule_ids = set(cel_rules.keys())
+    profiles = load_profiles(args.profiles_dir, cel_rule_ids)
+
+    if not cel_rules and not profiles:
         content = {'profiles': [], 'rules': []}
     else:
-        # Load profiles
-        cel_rule_ids = set(cel_rules.keys())
-        profiles = load_profiles(args.profiles_dir, cel_rule_ids)
-
         # Generate CEL content
         content = generate_cel_content(cel_rules, profiles, all_rules)
 

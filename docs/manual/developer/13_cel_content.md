@@ -141,7 +141,7 @@ selections:
     - kubevirt-persistent-reservation-disabled
 ```
 
-**Important:** CEL profiles can select both CEL and SCAP rules. If a CEL rules doesn't have manual rules (rules without `cel/shared.yml`), or a SCAP rule is selected it will be included as  manual rule with a build warning.
+**Important:** CEL profiles can select both CEL and SCAP rules. Rules selected by a CEL profile that don't have a CEL check (no cel/shared.yml) will be included as manual rules with a build warning.
 
 ## Creating a CEL Rule
 
