@@ -47,7 +47,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_nx_disabled_grub" version="1">
-    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] %}}
+    {{% if 'rhel' in product or product in ["fedora", "ol8", "ol9"] %}}
     <ind:path>/boot/loader/entries</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{% else %}}
