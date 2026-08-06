@@ -13,8 +13,14 @@ description: |-
     $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
     Password hashes <tt>!</tt> or <tt>*</tt> indicate inactive accounts not
     available for logon and are not evaluated.
+{{# For RHEL 10+, OL 10+, Fedora: yescrypt is also acceptable #}}
+{{% if product == "fedora" or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+    If any interactive user password hash does not begin with <tt>$6</tt>
+    (SHA-512) or <tt>$y$</tt> (yescrypt), this is a finding.
+{{% else %}}
     If any interactive user password hash does not begin with <tt>$6</tt>,
     this is a finding.
+{{% endif %}}
 
 rationale: |-
     Passwords need to be protected at all times, and encryption is the standard method for
@@ -40,7 +46,12 @@ references:
     stigid@ol8: OL08-00-010120
     stigid@sle12: SLES-12-010220
 
+{{# For RHEL 10+, OL 10+, Fedora: yescrypt is also acceptable #}}
+{{% if product == "fedora" or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+ocil_clause: 'any interactive user password hash does not begin with "$6" or "$y$"'
+{{% else %}}
 ocil_clause: 'any interactive user password hash does not begin with "$6"'
+{{% endif %}}
 
 ocil: |-
     Verify that the interactive user account passwords are using a strong
@@ -52,6 +63,12 @@ ocil: |-
 
     Password hashes <tt>!</tt> or <tt>*</tt> indicate inactive accounts not
     available for logon and are not evaluated.
+{{# For RHEL 10+, OL 10+, Fedora: yescrypt is also acceptable #}}
+{{% if product == "fedora" or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+
+    On {{{ full_name }}} and later versions, yescrypt (<tt>$y$</tt>) is also acceptable
+    as it provides stronger password hashing than SHA-512.
+{{% endif %}}
 
 fixtext: |-
     Lock all interactive user accounts not using SHA-512 hashing until the passwords can be regenerated with SHA-512.
