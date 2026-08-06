@@ -3,13 +3,11 @@ documentation_complete: true
 title: 'Restrict Update Access to the CDI CR'
 
 description: |-
-    Only authorized subjects should be allowed to update the
-    <tt>CDI</tt> custom resource. The CDI (Containerized Data Importer)
-    CR controls how virtual machine disk images are imported, uploaded,
-    and cloned within the cluster. Unrestricted update access allows
-    any subject to modify CDI settings, potentially enabling insecure
-    data import sources, disabling TLS verification, or altering
-    storage configurations.
+    Because the set of authorized subjects is specific to each
+    organization, this rule requires manual verification. Organizations
+    can create a compliance-operator CustomRule with CEL expressions
+    that evaluate ClusterRoleBindings and Roles to verify that only
+    their approved subjects hold update access to CDI resources.
 
 rationale: |-
     The CDI custom resource governs the data import pipeline for
