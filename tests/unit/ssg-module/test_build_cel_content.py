@@ -239,25 +239,29 @@ def test_extract_controls_from_references():
     assert controls_empty == {}
 
 
-def test_load_cel_rules(temp_rules_dir):
+def test_load_rules(temp_rules_dir):
     """Test loading rules with CEL checks from directory."""
-    cel_rules = build_cel_content.load_cel_rules(temp_rules_dir)
+    cel_rules, all_rules = build_cel_content.load_rules(temp_rules_dir)
 
-    # Should load only the rule with CEL checks (identified by presence of expression + inputs)
+    # Should load only the rule with CEL checks
     assert len(cel_rules) == 1
     assert 'kubevirt_nonroot_feature_gate_is_enabled' in cel_rules
 
+    # all_rules should contain both CEL and non-CEL rules
+    assert len(all_rules) == 2
+    assert 'some_oval_rule' in all_rules
+
     rule = cel_rules['kubevirt_nonroot_feature_gate_is_enabled']
-    # Rules with CEL checks are identified by presence of expression and inputs
     assert hasattr(rule, 'expression') and rule.expression
     assert hasattr(rule, 'inputs') and rule.inputs
     assert rule.title == 'Ensure NonRoot Feature Gate is Enabled'
 
 
-def test_load_cel_rules_nonexistent_dir():
-    """Test loading rules with CEL checks from nonexistent directory."""
-    cel_rules = build_cel_content.load_cel_rules('/nonexistent/path')
+def test_load_rules_nonexistent_dir():
+    """Test loading rules from nonexistent directory."""
+    cel_rules, all_rules = build_cel_content.load_rules('/nonexistent/path')
     assert cel_rules == {}
+    assert all_rules == {}
 
 
 def test_load_profiles(temp_profiles_dir):
@@ -469,12 +473,13 @@ def test_load_cel_rules_missing_expression():
 
         # Should not raise error - rule is not identified as CEL without both expression and inputs
         # This rule will be skipped since it doesn't have both fields
-        cel_rules = build_cel_content.load_cel_rules(tmpdir)
-        assert len(cel_rules) == 0  # Rule should be skipped
+        cel_rules, all_rules = build_cel_content.load_rules(tmpdir)
+        assert len(cel_rules) == 0  # Not a CEL rule
+        assert len(all_rules) == 1  # But still loaded as a rule
 
 
 def test_load_cel_rules_missing_inputs():
-    """Test that rule without inputs is skipped."""
+    """Test that rule without inputs is skipped from CEL rules."""
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create rule without inputs (but with expression - incomplete for CEL checks)
         rule_dict = {
@@ -493,10 +498,9 @@ def test_load_cel_rules_missing_inputs():
         with open(rule_path, 'w') as f:
             json.dump(rule_dict, f)
 
-        # Should not raise error - rule is not identified as CEL without both expression and inputs
-        # This rule will be skipped since it doesn't have both fields
-        cel_rules = build_cel_content.load_cel_rules(tmpdir)
-        assert len(cel_rules) == 0  # Rule should be skipped
+        cel_rules, all_rules = build_cel_content.load_rules(tmpdir)
+        assert len(cel_rules) == 0  # Not a CEL rule
+        assert len(all_rules) == 1  # But still loaded as a rule
 
 
 def test_load_profiles_no_rules():
@@ -574,6 +578,8 @@ def test_generate_cel_content_unknown_rule_reference():
         'existing_rule': rule1
     }
 
+    all_rules = {'existing_rule': rule1}
+
     # Create a profile that references a non-existent rule
     profile = ssg.build_yaml.Profile('test_profile')
     profile.id_ = 'test_profile'
@@ -584,7 +590,7 @@ def test_generate_cel_content_unknown_rule_reference():
     profiles = [profile]
 
     with pytest.raises(ValueError, match="references unknown rule 'nonexistent-rule'"):
-        build_cel_content.generate_cel_content(cel_rules, profiles)
+        build_cel_content.generate_cel_content(cel_rules, profiles, all_rules)
 
 
 def test_validation_empty_expression():
@@ -608,13 +614,13 @@ def test_validation_empty_expression():
         with open(rule_path, 'w') as f:
             json.dump(rule_dict, f)
 
-        # Empty expression means rule is not identified as CEL and is skipped
-        cel_rules = build_cel_content.load_cel_rules(tmpdir)
+        cel_rules, all_rules = build_cel_content.load_rules(tmpdir)
         assert len(cel_rules) == 0
+        assert len(all_rules) == 1
 
 
 def test_validation_empty_inputs():
-    """Test that rule with empty inputs list is skipped."""
+    """Test that rule with empty inputs list is not identified as CEL but is included in all rules."""
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create rule with empty inputs
         rule_dict = {
@@ -634,9 +640,9 @@ def test_validation_empty_inputs():
         with open(rule_path, 'w') as f:
             json.dump(rule_dict, f)
 
-        # Empty inputs means rule is not identified as CEL and is skipped
-        cel_rules = build_cel_content.load_cel_rules(tmpdir)
+        cel_rules, all_rules = build_cel_content.load_rules(tmpdir)
         assert len(cel_rules) == 0
+        assert len(all_rules) == 1
 
 
 def test_validation_profile_with_empty_selections():
@@ -663,7 +669,7 @@ def test_validation_profile_with_empty_selections():
 
 
 def test_validation_mixed_oval_and_cel_in_profile():
-    """Test that profile with both OVAL and CEL checks only includes rules with CEL checks."""
+    """Test that profile with both OVAL and CEL checks are output as CEL and manual rules."""
     # Create rule with CEL checks
     cel_rule = ssg.build_yaml.Rule('cel_rule')
     cel_rule.id_ = 'cel_rule'
@@ -679,19 +685,73 @@ def test_validation_mixed_oval_and_cel_in_profile():
         'cel_rule': cel_rule
     }
 
+    # oval_rule exists as a compiled rule but has no CEL checks
+    oval_rule = ssg.build_yaml.Rule('oval_rule')
+    oval_rule.id_ = 'oval_rule'
+    oval_rule.title = 'OVAL Rule'
+    oval_rule.description = 'Description'
+    oval_rule.rationale = 'Rationale'
+    oval_rule.severity = 'medium'
+    oval_rule.references = {}
+
+    all_rules = {'cel_rule': cel_rule, 'oval_rule': oval_rule}
+
     # Create a CEL profile that references both CEL and OVAL rules
-    # (OVAL rules won't be in cel_rule_ids)
     profile = ssg.build_yaml.Profile('mixed_profile')
     profile.id_ = 'mixed_profile'
     profile.title = 'Mixed Profile'
     profile.description = 'Test'
-    profile.selected = ['cel_rule', 'oval_rule']  # oval_rule doesn't have CEL checks
+    profile.selected = ['cel_rule', 'oval_rule']
 
     profiles = [profile]
 
-    # This should fail because oval_rule doesn't have CEL checks
-    with pytest.raises(ValueError, match="references unknown rule 'oval-rule'"):
-        build_cel_content.generate_cel_content(cel_rules, profiles)
+    # Should warn about oval_rule and include it as a manual rule
+    content = build_cel_content.generate_cel_content(cel_rules, profiles, all_rules)
+    assert len(content['rules']) == 2
+    rule_ids = [r['id'] for r in content['rules']]
+    assert 'cel_rule' in rule_ids
+    assert 'oval_rule' in rule_ids
+
+    # Verify the CEL rule has expression and inputs
+    cel_output = next(r for r in content['rules'] if r['id'] == 'cel_rule')
+    assert 'expression' in cel_output
+    assert 'inputs' in cel_output
+
+    # Verify the manual rule does NOT have expression or inputs
+    oval_output = next(r for r in content['rules'] if r['id'] == 'oval_rule')
+    assert 'expression' not in oval_output
+    assert 'inputs' not in oval_output
+
+    # Verify the profile includes both rules
+    assert len(content['profiles']) == 1
+    assert len(content['profiles'][0]['rules']) == 2
+
+
+def test_generate_cel_content_manual_only_profile():
+    """Test that a profile with only manual rules (no CEL rules) is output correctly."""
+    manual_rule = ssg.build_yaml.Rule('manual_only_rule')
+    manual_rule.id_ = 'manual_only_rule'
+    manual_rule.title = 'Manual Only Rule'
+    manual_rule.description = 'Description'
+    manual_rule.rationale = 'Rationale'
+    manual_rule.severity = 'medium'
+    manual_rule.references = {}
+
+    all_rules = {'manual_only_rule': manual_rule}
+
+    profile = ssg.build_yaml.Profile('manual_profile')
+    profile.id_ = 'manual_profile'
+    profile.title = 'Manual Profile'
+    profile.description = 'Profile with only manual rules'
+    profile.selected = ['manual_only_rule']
+
+    content = build_cel_content.generate_cel_content({}, [profile], all_rules)
+    assert len(content['rules']) == 1
+    assert content['rules'][0]['id'] == 'manual_only_rule'
+    assert 'expression' not in content['rules'][0]
+    assert 'inputs' not in content['rules'][0]
+    assert len(content['profiles']) == 1
+    assert len(content['profiles'][0]['rules']) == 1
 
 
 def test_validation_integration_full_flow():
@@ -732,7 +792,7 @@ def test_validation_integration_full_flow():
             json.dump(profile_dict, f)
 
         # Load and validate
-        cel_rules = build_cel_content.load_cel_rules(rules_dir)
+        cel_rules, all_rules = build_cel_content.load_rules(rules_dir)
         assert len(cel_rules) == 1
         assert 'valid_cel_rule' in cel_rules
 
@@ -741,7 +801,7 @@ def test_validation_integration_full_flow():
         assert len(profiles) == 1
 
         # Generate content
-        content = build_cel_content.generate_cel_content(cel_rules, profiles)
+        content = build_cel_content.generate_cel_content(cel_rules, profiles, all_rules)
         assert len(content['rules']) == 1
         assert len(content['profiles']) == 1
         assert content['rules'][0]['name'] == 'valid-cel-rule'

@@ -35,3 +35,4 @@ selections:
     - kubevirt-localnet-vlan-required
     - kubevirt-sriov-spoofchk-on
     - kubevirt-bridge-mac-spoof-filtering
+    - kubevirt-restrict-migration-tools-access
