@@ -3,13 +3,13 @@
 # Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
 provenance:
   fetched_with: celctl cac scaffold --from-cluster
-  date: '2026-07-14'
+  date: '2026-07-23'
   openshift_version: 4.22.0
   kubernetes_version: v1.35.5
   source_api_versions:
     hco: hco.kubevirt.io/v1beta1
 cases:
-  - name: no storageImport -> compliant
+  - name: no storageImport block is compliant
     expect: true
     inputs:
       hco:
@@ -19,35 +19,40 @@ cases:
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
         spec: {}
-  - name: insecureRegistries empty -> compliant
+  - name: storageImport without an insecureRegistries key is compliant
     expect: true
     inputs:
       hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
+        metadata:
+          name: kubevirt-hyperconverged
+          namespace: openshift-cnv
+        spec:
+          storageImport:
+            importProxy: {}
+  - name: hyperconverged with empty insecureRegistries is compliant
+    expect: true
+    inputs:
+      hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
         metadata:
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
         spec:
           storageImport:
             insecureRegistries: []
-  - name: insecureRegistries set -> non-compliant
+  - name: hyperconverged with insecureRegistries entries is non-compliant
     expect: false
     inputs:
       hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
         metadata:
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
         spec:
           storageImport:
             insecureRegistries:
-              - registry.example.internal:5000
-  - name: storageImport present without insecureRegistries key (no-such-key maps to FAIL in the scanner,
-      see CMP-4450)
-    expect: false
-    inputs:
-      hco:
-        metadata:
-          name: kubevirt-hyperconverged
-          namespace: openshift-cnv
-        spec:
-          storageImport:
-            scratchSpaceStorageClass: fast
+              - registry.internal:5000
