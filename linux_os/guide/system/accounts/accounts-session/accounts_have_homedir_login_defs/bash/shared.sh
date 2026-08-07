@@ -1,3 +1,7 @@
 # platform = multi_platform_all
 
-{{{ set_config_file(login_defs_path, "CREATE_HOME", "yes", create=true, insert_after="", insert_before="^\s*CREATE_HOME", insensitive=true, rule_id=rule_id) }}}
+{{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+{{{ bash_login_defs("CREATE_HOME", "yes", cce_identifiers=cce_identifiers) }}}
+{{% else %}}
+{{{ bash_replace_or_append(login_defs_path, '^CREATE_HOME', "yes", '%s %s', cce_identifiers=cce_identifiers) }}}
+{{% endif %}}

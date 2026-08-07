@@ -5,9 +5,21 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_maximum_age_login_defs") }}}
 
+{{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+{{% set accounts_maximum_age_login_defs_cce_identifier = cce_identifiers['cce'] %}}
+{{{
+    ansible_login_defs(
+      parameter='PASS_MAX_DAYS',
+      value='{{ var_accounts_maximum_age_login_defs }}',
+      rule_title=rule_title,
+      cce=accounts_maximum_age_login_defs_cce_identifier
+    )
+}}}
+{{% else %}}
 - name: Set Password Maximum Age
   ansible.builtin.lineinfile:
     create: yes
     dest: {{{ login_defs_path }}}
-    regexp: ^#?PASS_MAX_DAYS
+    regexp: ^PASS_MAX_DAYS
     line: "PASS_MAX_DAYS {{ var_accounts_maximum_age_login_defs }}"
+{{% endif %}}
