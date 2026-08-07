@@ -1,0 +1,157 @@
+name: Export NIST 800-53 Controls to Gemara Format
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'products/rhel8/controls/nist_800_53/**'
+      - 'products/rhel9/controls/nist_800_53/**'
+      - 'products/rhel10/controls/nist_800_53/**'
+      - 'utils/nist_sync/export_to_gemara.py'
+      - 'utils/nist_sync/gemara/**'
+      - 'utils/nist_sync/data/nist_800_53_rev5_catalog.json'
+      - 'utils/nist_sync/data/nist_800_53_rev5_*_baseline.json'
+  schedule:
+    # Run every Wednesday at 03:17 UTC (off-peak, avoids :00/:30 fleet collisions)
+    - cron: '17 3 * * 3'
+  workflow_dispatch:
+    inputs:
+      products:
+        description: 'Comma-separated list of products to export'
+        required: false
+        default: 'rhel8,rhel9,rhel10'
+      validate:
+        description: 'Run CUE schema validation after export'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  export-to-gemara:
+    name: Export NIST 800-53 to Gemara
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          dnf install -y \
+            git \
+            python3 \
+            python3-pip \
+            python3-jinja2 \
+            python3-pyyaml \
+            python3-setuptools \
+            curl
+
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install ruamel.yaml
+
+      - name: Install CUE binary
+        run: |
+          # Renewal: cue-lang/cue doesn't publish a checksums file per release, so when
+          # bumping CUE_VERSION, download the new linux_amd64 tarball, run `sha256sum` on
+          # it yourself, and update CUE_SHA256 here in the same commit. Never bump the
+          # version without also updating the hash — that defeats the verification.
+          CUE_VERSION="v0.16.1"
+          CUE_SHA256="5d644c1305a2b86504c8dcd2ec829cf5b4999efc2cf51ee375624e0455f774ae"
+          curl -sSL -o cue.tar.gz \
+            "https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}/cue_${CUE_VERSION}_linux_amd64.tar.gz"
+          echo "${CUE_SHA256}  cue.tar.gz" | sha256sum -c -
+          tar -xz -C /usr/local/bin -f cue.tar.gz cue
+          rm cue.tar.gz
+          cue version
+
+      - name: Clone Gemara schema repository
+        run: |
+          # Pinned to the version our artifacts declare (gemara/schema.py GEMARA_VERSION)
+          # so upstream schema changes can't break this workflow unexpectedly.
+          # Bump both together after checking https://github.com/gemaraproj/gemara/releases.
+          GEMARA_SCHEMA_VERSION="v1.2.0"
+          git clone --depth 1 --branch "${GEMARA_SCHEMA_VERSION}" https://github.com/gemaraproj/gemara.git /tmp/gemara
+
+      - name: Determine export configuration
+        id: config
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
+             [ -n "${{ inputs.products }}" ]; then
+            PRODUCTS="${{ inputs.products }}"
+          else
+            PRODUCTS="rhel8,rhel9,rhel10"
+          fi
+          echo "products=${PRODUCTS}" >> "$GITHUB_OUTPUT"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
+             [ "${{ inputs.validate }}" = "false" ]; then
+            echo "validate=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "validate=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Export NIST 800-53 controls to Gemara format
+        id: export
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p build/gemara
+          python3 utils/nist_sync/export_to_gemara.py \
+            --products "${{ steps.config.outputs.products }}" \
+            --output-dir build/gemara \
+            --oscal-catalog utils/nist_sync/data/nist_800_53_rev5_catalog.json \
+            --data-dir utils/nist_sync/data \
+            --verbose
+
+      - name: Validate output against Gemara CUE schema
+        if: steps.config.outputs.validate == 'true'
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python3 utils/nist_sync/export_to_gemara.py \
+            --products "${{ steps.config.outputs.products }}" \
+            --output-dir build/gemara \
+            --oscal-catalog utils/nist_sync/data/nist_800_53_rev5_catalog.json \
+            --data-dir utils/nist_sync/data \
+            --validate \
+            --gemara-schema /tmp/gemara \
+            --no-mapping
+
+      - name: Write job summary
+        if: always()
+        run: |
+          echo "## Gemara Export Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f build/gemara/metadata.json ]; then
+            echo "### Statistics" >> "$GITHUB_STEP_SUMMARY"
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat build/gemara/metadata.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Output files" >> "$GITHUB_STEP_SUMMARY"
+          find build/gemara -type f | sort | while read -r f; do
+            SIZE=$(wc -l < "$f")
+            echo "- \`${f}\` (${SIZE} lines)" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+      - name: Upload Gemara export artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        if: always()
+        with:
+          name: gemara-export-${{ github.run_number }}
+          path: build/gemara/
+          retention-days: 90
