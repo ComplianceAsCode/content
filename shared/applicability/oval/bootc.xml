@@ -3,7 +3,6 @@
     {{{ oval_metadata("Bootable container or bootc system", affected_platforms=["multi_platform_all"], rule_title=rule_title) }}}
     <criteria operator="AND">
       <criterion comment="kernel is installed" test_ref="bootc_platform_test_kernel_installed" />
-      <criterion comment="rpm-ostree is installed" test_ref="bootc_platform_test_rpm_ostree_installed" />
       <criterion comment="bootc is installed" test_ref="bootc_platform_test_bootc_installed" />
       <criteria operator="OR">
         <criterion comment="/run/ostree-booted exists, suggesting that we are in a running bootc environment" test_ref="bootc_platform_test_run_ostree_booted_exists" />
@@ -18,7 +17,6 @@
 {{% set kernel_package = "kernel" %}}
 {{% endif %}}
 {{{ oval_test_package_installed(package=kernel_package, test_id="bootc_platform_test_kernel_installed") }}}
-{{{ oval_test_package_installed(package="rpm-ostree", test_id="bootc_platform_test_rpm_ostree_installed") }}}
 {{{ oval_test_package_installed(package="bootc", test_id="bootc_platform_test_bootc_installed") }}}
 {{{ oval_test_package_removed(package="openshift-kubelet", test_id="bootc_platform_test_openshift_kubelet_removed") }}}
 

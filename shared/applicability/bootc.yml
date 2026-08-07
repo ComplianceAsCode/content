@@ -6,19 +6,19 @@ title: Bootable containers
 # Does not match:
 # - classic containers and container images
 # - normal bare-metal systems or VMs
-# - other rpm-ostree based systems eg. Silverblue
+# - other ostree based systems eg. Silverblue
 #
-# The matching platforms and non-matching platforms can be easily distinguished
-# by checking for presence of the kernel, rpm-ostree, and bootc RPM packages.
-# Bootable containers and running bootc systems both contain these packages.
-# Normal bare-metal systems usually don't have the rpm-ostree, normal
-# containers don't contain kernel.
-# Also normal containers are not supposed to have the /run/ostree-booted file.
+# The matching platforms and non-matching platforms can be distinguished by
+# checking for presence of the kernel and bootc RPM packages together with an
+# ostree marker. Bootable containers and running bootc systems have all of
+# them. Normal bare-metal systems and other ostree based systems don't have
+# the bootc package, normal containers don't contain kernel and are not
+# supposed to have the /run/ostree-booted file or the /ostree symlink.
 check_id: bootc
 {{% if product == "fedora" or "rhel" in product %}}
 {{% set kernel_package = "kernel-core" %}}
 {{% else %}}
 {{% set kernel_package = "kernel" %}}
 {{% endif %}}
-bash_conditional: "{ rpm --quiet -q {{{ kernel_package }}} ;} && { rpm --quiet -q rpm-ostree ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;} && ([ -f /run/ostree-booted ] || [ -L /ostree ])"
-ansible_conditional: '"{{{ kernel_package }}}" in ansible_facts.packages and "rpm-ostree" in ansible_facts.packages and "bootc" in ansible_facts.packages and not "openshift-kubelet" in ansible_facts.packages and "ostree" in ansible_proc_cmdline'
+bash_conditional: "{ rpm --quiet -q {{{ kernel_package }}} ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;} && ([ -f /run/ostree-booted ] || [ -L /ostree ])"
+ansible_conditional: '"{{{ kernel_package }}}" in ansible_facts.packages and "bootc" in ansible_facts.packages and not "openshift-kubelet" in ansible_facts.packages and "ostree" in ansible_proc_cmdline'
