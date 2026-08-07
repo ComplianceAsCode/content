@@ -2,6 +2,7 @@
 
 # Prevent the IPv6 kernel module (ipv6) from loading the IPv6 networking stack
 echo "options ipv6 disable=1" > /etc/modprobe.d/ipv6.conf
+chmod 0644 /etc/modprobe.d/ipv6.conf
 
 # Since according to: https://access.redhat.com/solutions/72733
 # "ipv6 disable=1" options doesn't always disable the IPv6 networking stack from

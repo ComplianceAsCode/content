@@ -56,6 +56,7 @@
     ansible.builtin.file:
         path: "{{ local_path | dirname }}"
         state: directory
+        mode: 0755
 
 -   name: "{{{ rule_title }}}: Write CRYPTO_POLICY to local config"
     ansible.builtin.lineinfile:
@@ -63,6 +64,7 @@
         line: "{{ '\n' ~ updated_crypto_policy }}"
         create: yes
         insertafter: EOF
+        mode: 0644
     register: local_config
     when: not cipher_is_correct
 

@@ -10,5 +10,6 @@ find /etc/syslog-ng/conf.d/ -name "*.conf" -exec sed -i '/^\s*perm(/d' {} \;
 
 # Add perm(0640) via a drop-in options block
 echo 'options { perm(0640); };' > /etc/syslog-ng/conf.d/00-syslogng_filecreatemode.conf
+chmod 0644 /etc/syslog-ng/conf.d/00-syslogng_filecreatemode.conf
 
 systemctl restart syslog-ng.service

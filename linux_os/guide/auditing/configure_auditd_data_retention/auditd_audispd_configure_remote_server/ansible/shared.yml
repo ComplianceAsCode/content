@@ -23,6 +23,7 @@
     create: true
     state: present
     backrefs: true
+    mode: 0640
 {{% endif %}}
 
 - name: "{{{ rule_title }}} - Make sure that a remote server is configured for Audispd"
@@ -32,3 +33,4 @@
     regexp: '^\s*remote_server\s*=.*$'
     create: true
     state: present
+    mode: 0640

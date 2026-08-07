@@ -14,6 +14,7 @@
 - name: "{{{ rule_title }}} - Replace chrony-wait.service to use Unix socket (KCS 7064388)"
   ansible.builtin.copy:
     dest: /etc/systemd/system/chrony-wait.service
+    mode: 0644
     content: |
       [Unit]
       Description=Wait for chrony to synchronize system clock(KCS 7064388)

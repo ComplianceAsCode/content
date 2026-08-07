@@ -16,6 +16,7 @@ cat > /etc/systemd/system/aidecheck.service <<CHECKEOF
         [Install]
         WantedBy=multi-user.target
 CHECKEOF
+chmod 0644 /etc/systemd/system/aidecheck.service
 cat > /etc/systemd/system/aidecheck-notify.service <<NOTIFYEOF
 [Unit]
         Description=Status email for AIDE check result
@@ -24,6 +25,7 @@ cat > /etc/systemd/system/aidecheck-notify.service <<NOTIFYEOF
         Type=forking
         ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  $var_aide_scan_notification_email'
 NOTIFYEOF
+chmod 0644 /etc/systemd/system/aidecheck-notify.service
 {{% else %}}
 CRONTAB=/etc/crontab
 CRONDIRS='/etc/cron.d /etc/cron.daily /etc/cron.weekly /etc/cron.monthly'

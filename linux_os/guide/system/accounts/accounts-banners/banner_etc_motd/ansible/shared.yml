@@ -8,4 +8,5 @@
 - name: "{{{ rule_title }}} - ensure correct banner"
   ansible.builtin.copy:
     dest: /etc/motd
+    mode: 0644
     content: "{{ motd_banner_contents | replace('\\n', '\n') }}\n"

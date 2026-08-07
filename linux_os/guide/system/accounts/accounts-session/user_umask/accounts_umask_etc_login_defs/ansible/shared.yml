@@ -20,12 +20,13 @@
     regexp: ^(\s*)UMASK(\s+).*
     replace: \g<1>UMASK\g<2>{{ var_accounts_user_umask }}
   when:
-  - result_umask_is_set.found > 0
+    - result_umask_is_set.found > 0
 
 - name: Ensure the Default UMASK is Appended Correctly
   ansible.builtin.lineinfile:
     create: true
     path: {{{ login_defs_path }}}
     line: UMASK {{ var_accounts_user_umask }}
+    mode: 0644
   when:
-  - result_umask_is_set.found == 0
+    - result_umask_is_set.found == 0

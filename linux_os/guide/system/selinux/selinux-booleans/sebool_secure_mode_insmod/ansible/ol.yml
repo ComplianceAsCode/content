@@ -24,6 +24,7 @@
       dest: /etc/modules-load.d/vfat.conf
       regexp: ^\s*\bvfat\b
       line: "vfat"
+      mode: 0644
 
 - name: {{{ rule_title }}} - Regenerate initramfs
   ansible.builtin.command:

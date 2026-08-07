@@ -10,5 +10,6 @@ Auth-Type: Primary
 Auth:
     required                   pam_faildelay.so delay=$var_password_pam_delay
 EOF
+chmod 0644 /usr/share/pam-configs/cac_faildelay
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update --enable cac_faildelay

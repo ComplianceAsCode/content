@@ -24,4 +24,5 @@
       line: ENCRYPT_METHOD {{ var_password_hashing_algorithm.split('|')[0] }}
       state: present
       create: yes
+      mode: 0644
 {{% endif %}}

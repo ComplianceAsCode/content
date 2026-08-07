@@ -13,7 +13,8 @@
     state: present
     line: 'server {{ item }}'
     create: true
-  with_items: 
+    mode: 0644
+  with_items:
     - '{{ var_multiple_time_servers.split(",") }}'
 
 - name: {{{ rule_title }}} - Add missing / update wrong records for remote time pools
@@ -23,5 +24,6 @@
     state: present
     line: 'pool {{ item }}'
     create: true
-  with_items: 
+    mode: 0644
+  with_items:
     - '{{ var_multiple_time_pools.split(",") }}'

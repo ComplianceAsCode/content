@@ -53,5 +53,6 @@
   ansible.builtin.copy:
     src: /usr/share/aide/config/cron.daily/dailyaidecheck
     dest: /etc/cron.daily/dailyaidecheck
+    mode: 0755
   when: not line_check.found
 {{% endif %}}

@@ -10,3 +10,4 @@
     dest: /etc/gdm/banner
     line: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
     create: yes
+    mode: 0644

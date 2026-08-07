@@ -39,6 +39,7 @@
     insertafter: '^\s*\[\s*crypto_policy\s*]\s*'
     line: {{{ ansible_openssl_include_directive }}}
     path: "{{{ openssl_cnf_dir }}}/{{{ openssl_cnf_file }}}"
+    mode: 0644
   when:
     - test_crypto_policy_group.matched > 0
     - test_crypto_policy_include_directive.matched == 0
@@ -48,5 +49,6 @@
     create: yes
     line: "[crypto_policy]\n{{{ ansible_openssl_include_directive }}}"
     path: "{{{ openssl_cnf_dir }}}/{{{ openssl_cnf_file }}}"
+    mode: 0644
   when:
     - test_crypto_policy_group.matched == 0

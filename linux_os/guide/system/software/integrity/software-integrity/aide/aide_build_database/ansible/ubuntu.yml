@@ -48,6 +48,7 @@
     path: /etc/aide/aide.conf
     line: database=file:/var/lib/aide/aide.db
     create: true
+    mode: 0644
   when: database_replace.found == 0
 
 - name: "{{{ rule_title }}} - Ensure the Default Out Path is Added"
@@ -55,6 +56,7 @@
     path: /etc/aide/aide.conf
     line: database_out=file:/var/lib/aide/aide.db.new
     create: true
+    mode: 0644
   when: database_out_replace.found == 0
 
 - name: "{{{ rule_title }}} - Build and Test AIDE Database"

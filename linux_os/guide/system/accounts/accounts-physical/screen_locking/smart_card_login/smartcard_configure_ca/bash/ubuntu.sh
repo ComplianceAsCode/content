@@ -2,6 +2,7 @@
 
 if [ ! -f /etc/pam_pkcs11/pam_pkcs11.conf ]; then
     cp /usr/share/doc/libpam-pkcs11/examples/pam_pkcs11.conf.example /etc/pam_pkcs11/pam_pkcs11.conf
+    chmod 0644 /etc/pam_pkcs11/pam_pkcs11.conf
 fi
 
 if grep -v "^\s*\#+cert_policy" /etc/pam_pkcs11/pam_pkcs11.conf | grep -qv "ca"; then

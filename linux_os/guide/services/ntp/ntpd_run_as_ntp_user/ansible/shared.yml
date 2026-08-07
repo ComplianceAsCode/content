@@ -19,6 +19,7 @@
     state: present
     create: True
     backrefs: True
+    mode: 0644
   when: ntpd_file.matched > 0
 
 - name: "Put line into file, assume file was empty"
@@ -27,4 +28,5 @@
     line: 'OPTIONS="-u ntp:ntp"'
     state: present
     create: True
+    mode: 0644
   when: ntpd_file.matched == 0

@@ -28,9 +28,11 @@ if [[ -n "$last_crypto_policy" ]]; then
         fi
         # Write updated line to LOCAL_CONF_FILE
         echo -e "\n$last_crypto_policy" > "$LOCAL_CONF_FILE"
+        chmod 0644 "$LOCAL_CONF_FILE"
     fi
 else
     echo -e "\nCRYPTO_POLICY='${correct_value}'" > ${LOCAL_CONF_FILE}
+    chmod 0644 "${LOCAL_CONF_FILE}"
 fi
 
 update-crypto-policies --no-reload

@@ -44,6 +44,7 @@
     line: "{{  item.rule  }}"
     regexp: "{{ item.regex }}"
     create: yes
+    mode: 0600
   when:
     - '"auditd.service" in ansible_facts.services'
     - '"augenrules" in check_rules_scripts_result.stdout'
@@ -56,6 +57,7 @@
     line: "{{  item.rule  }}"
     regexp: "{{ item.regex }}"
     create: yes
+    mode: 0600
   when:
     - '"auditd.service" in ansible_facts.services'
     - '"auditctl" in check_rules_scripts_result.stdout'

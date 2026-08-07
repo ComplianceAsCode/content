@@ -11,6 +11,7 @@ elif grep -Eq '{{{ include_regex }}}' {{{ base_config }}} && ! grep -Eq '^\s*Mat
 	{{{ die("Remediation probably already happened, '" ~ base_config ~ "' already contains the include directive.", action="false") }}}
 else
 	mkdir -p {{{ config_dir }}}
+	chmod 0700 {{{ config_dir }}}
 	mv {{{ base_config }}} {{{ target_file }}}
 cat > {{{ base_config }}} << EOF
 # To modify the system-wide sshd configuration, create a  *.conf  file under
@@ -18,4 +19,5 @@ cat > {{{ base_config }}} << EOF
 
 {{{ include_directive }}}
 EOF
+chmod 0600 {{{ base_config }}}
 fi

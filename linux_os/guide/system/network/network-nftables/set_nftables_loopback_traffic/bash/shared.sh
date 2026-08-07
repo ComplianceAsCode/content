@@ -29,4 +29,5 @@ fi
 
 {{% if "ubuntu" in product %}}
 nft list ruleset > "/etc/${var_nftables_family}-filter.rules"
+chmod 0644 /etc/${var_nftables_family}-filter.rules
 {{% endif %}}

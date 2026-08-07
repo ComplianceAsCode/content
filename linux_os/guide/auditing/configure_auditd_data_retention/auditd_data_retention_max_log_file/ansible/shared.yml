@@ -12,4 +12,5 @@
     line: "max_log_file = {{ var_auditd_max_log_file }}"
     state: present
     create: yes
+    mode: 0640
   #notify: reload auditd

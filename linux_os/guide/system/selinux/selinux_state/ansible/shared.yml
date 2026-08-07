@@ -20,4 +20,5 @@
     state: touch
     access_time: preserve
     modification_time: preserve
+    mode: 0644
   when: current_selinux_state.stdout | lower != var_selinux_state

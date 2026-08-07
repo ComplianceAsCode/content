@@ -17,6 +17,7 @@
     line: "daily"
     state: present
     insertbefore: BOF
+    mode: 0644
 
 - name: "Make sure daily log rotation setting is not overridden in {{{ LOGROTATE_CONF_FILE }}}"
   ansible.builtin.lineinfile:
@@ -41,10 +42,12 @@
         line: "#!/bin/sh"
         insertbefore: BOF
         create: yes
+        mode: 0755
     - name: Add logrotate call
       ansible.builtin.lineinfile:
         path: "/etc/cron.daily/logrotate"
         line: '/usr/sbin/logrotate {{{ LOGROTATE_CONF_FILE }}}'
         regexp: '^[\s]*/usr/sbin/logrotate[\s\S]*{{{ LOGROTATE_CONF_FILE }}}$'
         create: yes
+        mode: 0755
 {{% endif %}}

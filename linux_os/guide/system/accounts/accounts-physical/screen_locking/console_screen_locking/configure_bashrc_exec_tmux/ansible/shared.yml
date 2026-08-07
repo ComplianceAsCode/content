@@ -21,6 +21,7 @@
 - name: "{{{ rule_title }}}: Insert the Correct Script into /etc/profile.d/tmux.sh"
   ansible.builtin.blockinfile:
     path: '/etc/profile.d/tmux.sh'
+    mode: 0644
     block: |
       if [ "$PS1" ]; then
         parent=$(ps -o ppid= -p $$)

@@ -14,6 +14,7 @@ else
   done <    <(find /etc/audit/rules.d -maxdepth 1 -name '*.rules' -print0)
   if [ $immutable_found -eq 0 ]; then
     echo "--loginuid-immutable" >> /etc/audit/rules.d/immutable.rules
+    chmod 0600 /etc/audit/rules.d/immutable.rules
   fi
 fi
 

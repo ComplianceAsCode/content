@@ -12,6 +12,7 @@
       regexp: "^#?ServerKeyFile="
       line: ServerKeyFile={{ var_journal_upload_server_key_file }}
       create: yes
+      mode: 0644
 
 {{{ ansible_instantiate_variables("var_journal_upload_server_certificate_file") }}}
 
@@ -21,6 +22,7 @@
       regexp: "^#?ServerCertificateFile="
       line: ServerCertificateFile={{ var_journal_upload_server_certificate_file }}
       create: yes
+      mode: 0644
 
 {{{ ansible_instantiate_variables("var_journal_upload_server_trusted_certificate_file") }}}
 
@@ -30,3 +32,4 @@
       regexp: "^#?TrustedCertificateFile="
       line: TrustedCertificateFile={{ var_journal_upload_server_trusted_certificate_file }}
       create: yes
+      mode: 0644
