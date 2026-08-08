@@ -9,6 +9,7 @@
     regexp: 'ttyS[0-9]'
     state: absent
 
-{{% if product == "sle16" %}}
+{{% if product in ['sle16', 'slmicro6'] %}}
+{{{ ansible_copy_distro_defaults('/usr/lib/pam.d/login', '/etc/pam.d/login', rule_title=rule_title) }}}
 {{{ ansible_ensure_pam_module_option('/etc/pam.d/login', 'auth', 'required', 'pam_securetty.so', 'noconsole', '', '', rule_id=rule_id, rule_title=rule_title) }}}
 {{% endif %}}
