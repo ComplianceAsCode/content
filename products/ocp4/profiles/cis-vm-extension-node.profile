@@ -28,5 +28,6 @@ description: |-
     cis-vm-extension profile.
 
 selections:
+    - kubevirt-cache-directory-permissions
     - kubevirt-nested-virtualization-disabled
     - kubevirt-seccomp-profile-permissions
