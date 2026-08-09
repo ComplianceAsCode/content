@@ -13,68 +13,85 @@ controls:
       rules:
           - account_unique_id
       status: automated
-    - id: ia-2.1
-      title: Multi-factor Authentication to Privileged Accounts
-      levels:
-          - low
-      rules: []
-      status: pending
-    - id: ia-2.2
-      title: Multi-factor Authentication to Non-privileged Accounts
-      levels:
-          - low
-      rules: []
-      status: pending
-    - id: ia-2.3
-      title: Local Access to Privileged Accounts
-      rules: []
-      status: pending
-    - id: ia-2.4
-      title: Local Access to Non-privileged Accounts
-      rules: []
-      status: pending
-    - id: ia-2.5
-      title: Individual Authentication with Group Authentication
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ia-2.6
-      title: Access to Accounts —separate Device
-      rules: []
-      status: pending
-    - id: ia-2.7
-      title: Network Access to Non-privileged Accounts — Separate Device
-      rules: []
-      status: pending
-    - id: ia-2.8
-      title: Access to Accounts — Replay Resistant
-      levels:
-          - low
-      rules: []
-      status: pending
-    - id: ia-2.9
-      title: Network Access to Non-privileged Accounts — Replay Resistant
-      rules: []
-      status: pending
-    - id: ia-2.10
-      title: Single Sign-on
-      rules: []
-      status: pending
-    - id: ia-2.11
-      title: Remote Access — Separate Device
-      rules: []
-      status: pending
-    - id: ia-2.12
-      title: Acceptance of PIV Credentials
-      levels:
-          - low
-      rules: []
-      status: pending
-    - id: ia-2.13
-      title: Out-of-band Authentication
-      rules: []
-      status: pending
+      controls:
+          - id: ia-2.1
+            title: Multi-factor Authentication to Privileged Accounts
+            levels:
+                - low
+            rules: []
+            status: pending
+          - id: ia-2.2
+            title: Multi-factor Authentication to Non-privileged Accounts
+            levels:
+                - low
+            rules: []
+            status: pending
+          - id: ia-2.3
+            title: Local Access to Privileged Accounts
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-2.4
+            title: Local Access to Non-privileged Accounts
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-2.5
+            title: Individual Authentication with Group Authentication
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ia-2.6
+            title: Access to Accounts —separate Device
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-2.7
+            title: Network Access to Non-privileged Accounts — Separate Device
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-2.8
+            title: Access to Accounts — Replay Resistant
+            levels:
+                - low
+            rules: []
+            status: pending
+          - id: ia-2.9
+            title: Network Access to Non-privileged Accounts — Replay Resistant
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-2.10
+            title: Single Sign-on
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-2.11
+            title: Remote Access — Separate Device
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-2.12
+            title: Acceptance of PIV Credentials
+            levels:
+                - low
+            rules: []
+            status: pending
+          - id: ia-2.13
+            title: Out-of-band Authentication
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ia-3
       title: Device Identification and Authentication
       levels:
@@ -84,22 +101,31 @@ controls:
           - dconf_gnome_disable_automount_open
           - kernel_module_usb-storage_disabled
       status: automated
-    - id: ia-3.1
-      title: Cryptographic Bidirectional Authentication
-      rules: []
-      status: pending
-    - id: ia-3.2
-      title: Cryptographic Bidirectional Network Authentication
-      rules: []
-      status: pending
-    - id: ia-3.3
-      title: Dynamic Address Allocation
-      rules: []
-      status: pending
-    - id: ia-3.4
-      title: Device Attestation
-      rules: []
-      status: pending
+      controls:
+          - id: ia-3.1
+            title: Cryptographic Bidirectional Authentication
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ia-3.2
+            title: Cryptographic Bidirectional Network Authentication
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ia-3.3
+            title: Dynamic Address Allocation
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ia-3.4
+            title: Device Attestation
+            rules: []
+            status: pending
+            levels:
+                - moderate
     - id: ia-4
       title: Identifier Management
       levels:
@@ -109,44 +135,61 @@ controls:
           - account_disable_post_pw_expiration
           - accounts_set_post_pw_existing
       status: automated
-    - id: ia-4.1
-      title: Prohibit Account Identifiers as Public Identifiers
-      rules: []
-      status: pending
-    - id: ia-4.2
-      title: Supervisor Authorization
-      rules: []
-      status: pending
-    - id: ia-4.3
-      title: Multiple Forms of Certification
-      rules: []
-      status: pending
-    - id: ia-4.4
-      title: Identify User Status
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ia-4.5
-      title: Dynamic Management
-      rules: []
-      status: pending
-    - id: ia-4.6
-      title: Cross-organization Management
-      rules: []
-      status: pending
-    - id: ia-4.7
-      title: In-person Registration
-      rules: []
-      status: pending
-    - id: ia-4.8
-      title: Pairwise Pseudonymous Identifiers
-      rules: []
-      status: pending
-    - id: ia-4.9
-      title: Attribute Maintenance and Protection
-      rules: []
-      status: pending
+      controls:
+          - id: ia-4.1
+            title: Prohibit Account Identifiers as Public Identifiers
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-4.2
+            title: Supervisor Authorization
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-4.3
+            title: Multiple Forms of Certification
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-4.4
+            title: Identify User Status
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ia-4.5
+            title: Dynamic Management
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-4.6
+            title: Cross-organization Management
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-4.7
+            title: In-person Registration
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-4.8
+            title: Pairwise Pseudonymous Identifiers
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-4.9
+            title: Attribute Maintenance and Protection
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ia-5
       title: Authenticator Management
       levels:
@@ -184,89 +227,120 @@ controls:
           - set_password_hashing_algorithm_passwordauth
           - set_password_hashing_algorithm_systemauth
       status: automated
-    - id: ia-5.1
-      title: Password-based Authentication
-      levels:
-          - low
-      rules:
-          - var_password_pam_remember=24
-          - var_password_pam_remember_control_flag=requisite_or_required
-          - accounts_password_pam_pwhistory_remember_password_auth
-          - accounts_password_pam_pwhistory_remember_system_auth
-          - accounts_password_pam_unix_no_remember
-      status: automated
-    - id: ia-5.2
-      title: Public Key-based Authentication
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ia-5.3
-      title: In-person or Trusted External Party Registration
-      rules: []
-      status: pending
-    - id: ia-5.4
-      title: Automated Support for Password Strength Determination
-      rules: []
-      status: pending
-    - id: ia-5.5
-      title: Change Authenticators Prior to Delivery
-      rules: []
-      status: pending
-    - id: ia-5.6
-      title: Protection of Authenticators
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ia-5.7
-      title: No Embedded Unencrypted Static Authenticators
-      rules: []
-      status: pending
-    - id: ia-5.8
-      title: Multiple System Accounts
-      rules: []
-      status: pending
-    - id: ia-5.9
-      title: Federated Credential Management
-      rules: []
-      status: pending
-    - id: ia-5.10
-      title: Dynamic Credential Binding
-      rules: []
-      status: pending
-    - id: ia-5.11
-      title: Hardware Token-based Authentication
-      rules: []
-      status: pending
-    - id: ia-5.12
-      title: Biometric Authentication Performance
-      rules: []
-      status: pending
-    - id: ia-5.13
-      title: Expiration of Cached Authenticators
-      rules: []
-      status: pending
-    - id: ia-5.14
-      title: Managing Content of PKI Trust Stores
-      rules: []
-      status: pending
-    - id: ia-5.15
-      title: GSA-approved Products and Services
-      rules: []
-      status: pending
-    - id: ia-5.16
-      title: In-person or Trusted External Party Authenticator Issuance
-      rules: []
-      status: pending
-    - id: ia-5.17
-      title: Presentation Attack Detection for Biometric Authenticators
-      rules: []
-      status: pending
-    - id: ia-5.18
-      title: Password Managers
-      rules: []
-      status: pending
+      controls:
+          - id: ia-5.1
+            title: Password-based Authentication
+            levels:
+                - low
+            rules:
+                - var_password_pam_remember=24
+                - var_password_pam_remember_control_flag=requisite_or_required
+                - accounts_password_pam_pwhistory_remember_password_auth
+                - accounts_password_pam_pwhistory_remember_system_auth
+                - accounts_password_pam_unix_no_remember
+            status: automated
+          - id: ia-5.2
+            title: Public Key-based Authentication
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ia-5.3
+            title: In-person or Trusted External Party Registration
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.4
+            title: Automated Support for Password Strength Determination
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.5
+            title: Change Authenticators Prior to Delivery
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.6
+            title: Protection of Authenticators
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ia-5.7
+            title: No Embedded Unencrypted Static Authenticators
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.8
+            title: Multiple System Accounts
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.9
+            title: Federated Credential Management
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.10
+            title: Dynamic Credential Binding
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.11
+            title: Hardware Token-based Authentication
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.12
+            title: Biometric Authentication Performance
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.13
+            title: Expiration of Cached Authenticators
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.14
+            title: Managing Content of PKI Trust Stores
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.15
+            title: GSA-approved Products and Services
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.16
+            title: In-person or Trusted External Party Authenticator Issuance
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.17
+            title: Presentation Attack Detection for Biometric Authenticators
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-5.18
+            title: Password Managers
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ia-6
       title: Authentication Feedback
       levels:
@@ -285,48 +359,56 @@ controls:
           - low
       rules: []
       status: pending
-    - id: ia-8.1
-      title: Acceptance of PIV Credentials from Other Agencies
-      levels:
-          - low
-      rules: []
-      status: pending
-    - id: ia-8.2
-      title: Acceptance of External Authenticators
-      levels:
-          - low
-      rules: []
-      status: pending
-    - id: ia-8.3
-      title: Use of FICAM-approved Products
-      rules: []
-      status: pending
-    - id: ia-8.4
-      title: Use of Defined Profiles
-      levels:
-          - low
-      rules: []
-      status: pending
-    - id: ia-8.5
-      title: Acceptance of PIV-I Credentials
-      rules: []
-      status: pending
-    - id: ia-8.6
-      title: Disassociability
-      rules: []
-      status: pending
+      controls:
+          - id: ia-8.1
+            title: Acceptance of PIV Credentials from Other Agencies
+            levels:
+                - low
+            rules: []
+            status: pending
+          - id: ia-8.2
+            title: Acceptance of External Authenticators
+            levels:
+                - low
+            rules: []
+            status: pending
+          - id: ia-8.3
+            title: Use of FICAM-approved Products
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-8.4
+            title: Use of Defined Profiles
+            levels:
+                - low
+            rules: []
+            status: pending
+          - id: ia-8.5
+            title: Acceptance of PIV-I Credentials
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ia-8.6
+            title: Disassociability
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ia-9
       title: Service Identification and Authentication
       rules: []
       status: pending
-    - id: ia-9.1
-      title: Information Exchange
-      rules: []
-      status: pending
-    - id: ia-9.2
-      title: Transmission of Decisions
-      rules: []
-      status: pending
+      controls:
+          - id: ia-9.1
+            title: Information Exchange
+            rules: []
+            status: pending
+          - id: ia-9.2
+            title: Transmission of Decisions
+            rules: []
+            status: pending
     - id: ia-10
       title: Adaptive Authentication
       rules: []
@@ -345,51 +427,57 @@ controls:
           - moderate
       rules: []
       status: pending
-    - id: ia-12.1
-      title: Supervisor Authorization
-      rules: []
-      status: pending
-    - id: ia-12.2
-      title: Identity Evidence
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ia-12.3
-      title: Identity Evidence Validation and Verification
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ia-12.4
-      title: In-person Validation and Verification
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ia-12.5
-      title: Address Confirmation
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ia-12.6
-      title: Accept Externally-proofed Identities
-      rules: []
-      status: pending
+      controls:
+          - id: ia-12.1
+            title: Supervisor Authorization
+            rules: []
+            status: pending
+            levels:
+                - moderate
+          - id: ia-12.2
+            title: Identity Evidence
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ia-12.3
+            title: Identity Evidence Validation and Verification
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ia-12.4
+            title: In-person Validation and Verification
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ia-12.5
+            title: Address Confirmation
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ia-12.6
+            title: Accept Externally-proofed Identities
+            rules: []
+            status: pending
+            levels:
+                - moderate
     - id: ia-13
       title: Identity Providers and Authorization Servers
       rules: []
       status: pending
-    - id: ia-13.1
-      title: Protection of Cryptographic Keys
-      rules: []
-      status: pending
-    - id: ia-13.2
-      title: Verification of Identity Assertions and Access Tokens
-      rules: []
-      status: pending
-    - id: ia-13.3
-      title: Token Management
-      rules: []
-      status: pending
+      controls:
+          - id: ia-13.1
+            title: Protection of Cryptographic Keys
+            rules: []
+            status: pending
+          - id: ia-13.2
+            title: Verification of Identity Assertions and Access Tokens
+            rules: []
+            status: pending
+          - id: ia-13.3
+            title: Token Management
+            rules: []
+            status: pending
