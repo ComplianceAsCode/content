@@ -8,7 +8,7 @@ metadata:
 
 reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: 'Red Hat STIG for Red Hat Enterprise Linux 10'
+title: 'DISA STIG for Red Hat Enterprise Linux 10'
 
 description: >-
     This profile contains configuration checks that align to the
