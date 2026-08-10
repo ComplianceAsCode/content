@@ -15,12 +15,6 @@ rationale: |-
     User namespaces are used primarily for Linux containers. The value 0
     disallows the use of user namespaces.
 
-warnings:
-    - general: |-
-       This configuration baseline was created to deploy the base operating system for general purpose
-       workloads. When the operating system is configured for certain purposes, such as to host Linux Containers,
-       it is expected that <tt>user.max_user_namespaces</tt> will be enabled.
-
 severity: medium
 
 identifiers:
@@ -63,6 +57,10 @@ template:
         datatype: int
 
 warnings:
+    - general: |-
+       This configuration baseline was created to deploy the base operating system for general purpose
+       workloads. When the operating system is configured for certain purposes, such as to host Linux Containers,
+       it is expected that <tt>user.max_user_namespaces</tt> will be enabled.
     - functionality: |-
        Remediation of this rule might impair or prevent functionality of certain applications.
        This stands especially for general container usage and for certain desktop applications.

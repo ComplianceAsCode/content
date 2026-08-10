@@ -41,7 +41,7 @@ references:
 
 # In aarch64 cpus the bit is XN and it is not disableable
 # In ppc64le cpus the bit is not applicable
-platform: system_with_kernel and not aarch64_arch and not ppc64le_arch
+platform: machine and not aarch64_arch and not ppc64le_arch
 
 ocil: |-
     Verify the NX (no-execution) bit flag is set on the system.
@@ -66,5 +66,3 @@ fixtext: |-
     The NX bit execute protection must be enabled in the system BIOS.
 
 srg_requirement: '{{{ full_name }}} must implement non-executable data to protect its memory from unauthorized code execution.'
-
-platform: machine

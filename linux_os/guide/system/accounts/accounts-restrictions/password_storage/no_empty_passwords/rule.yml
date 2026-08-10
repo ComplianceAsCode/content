@@ -24,8 +24,6 @@ rationale: |-
 
 severity: high
 
-platform: system_with_kernel
-
 identifiers:
     cce@rhcos4: CCE-82553-9
     cce@rhel8: CCE-80841-0
@@ -101,4 +99,6 @@ warnings:
 
 {{% if 'ubuntu' in product %}}
 platform: package[pam]
+{{% else %}}
+platform: system_with_kernel
 {{% endif %}}
