@@ -38,7 +38,7 @@
     regexp: '^(\s*{{{ TYPE }}}\s+)\S+(\s+{{{ MODULE }}}\s+.*)'
     line: '\g<1>{{{ CONTROL_FLAG }}}\g<2>'
     backrefs: yes
-  when: check_pam_module_result is not skipped and control_flag|length
+  when: check_pam_module_result is not skipped and control_flag|length > 0
 
 {{% for arg in ARGUMENTS %}}
 # NOTE: if 'remove_argument' is present and set to some value, we assume
@@ -94,7 +94,7 @@
     regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}(?:\s+\S+)*\s+{{{ arg['argument'] }}}=)(?!{{{ arg['argument_match'] }}})\S*((\s+\S+)*\s*\\*\s*)$'
     line: '\g<1>{{{ arg['argument_value'] }}}\g<2>'
     backrefs: yes
-  when: argument_value|length
+  when: argument_value|length > 0
 
 - name: Check the presence of "{{{ arg['argument'] }}}" argument in "{{{ MODULE }}}" module
   ansible.builtin.shell: |
