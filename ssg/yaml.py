@@ -38,28 +38,9 @@ def _bool_constructor(self, node):
     """
     return self.construct_scalar(node)
 
-
-def _unicode_constructor(self, node):
-    """
-    Constructs a Unicode string from a YAML node.
-
-    This method takes a YAML node, extracts its scalar value, and converts it to a Unicode string.
-
-    Args:
-        node (yaml.Node): The YAML node to be converted.
-
-    Returns:
-        str: The Unicode string representation of the node's scalar value.
-    """
-    string_like = self.construct_scalar(node)
-    return str(string_like)
-
-
 # keep YAML booleans as Python strings (on/off/yes/no/true/false,...)
 # instead of converting them to Python bools
 yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', _bool_constructor)
-# Python2-relevant - become able to resolve "unicode strings"
-yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:python/unicode', _unicode_constructor)
 
 def _standard_bool_constructor(loader, node):
     # Delegates to SafeConstructor to get real Python True/False (not the project's
@@ -143,8 +124,6 @@ DuplicateKeyCheckLoader.add_constructor(
 
 # Keep YAML booleans as Python strings for DuplicateKeyCheckLoader too
 DuplicateKeyCheckLoader.add_constructor(u'tag:yaml.org,2002:bool', _bool_constructor)
-# Python2-relevant - become able to resolve "unicode strings"
-DuplicateKeyCheckLoader.add_constructor(u'tag:yaml.org,2002:python/unicode', _unicode_constructor)
 
 
 class DocumentationNotComplete(Exception):
