@@ -67,7 +67,7 @@ jobs:
           ${{ github.event_name == 'push' &&
           github.repository == 'ComplianceAsCode/content' &&
           github.ref == 'refs/heads/master' }}
-        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
