@@ -108,7 +108,11 @@
     <ind:subexpression datatype="int" operation="less than">0</ind:subexpression>
   </ind:textfilecontent54_state>
   <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_uid_min" version="1">
+    {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+    <ind:subexpression datatype="int" operation="greater than or equal">{{{ uid_min }}}</ind:subexpression>
+    {{% else %}}
     <ind:subexpression datatype="int" operation="greater than or equal" var_ref="variable_uid_min_value" />
+    {{% endif %}}
   </ind:textfilecontent54_state>
 
   <!-- Test if SYS_UID_MIN not defined in /etc/login.defs -->
