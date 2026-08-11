@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = SUSE Linux Enterprise 16
+# platform = SUSE Linux Enterprise 15, SUSE Linux Enterprise 16
 # variables = var_password_hashing_min_rounds_login_defs=5000
 
 if [ -e {{{ login_defs_drop_in_path }}} ] ; then

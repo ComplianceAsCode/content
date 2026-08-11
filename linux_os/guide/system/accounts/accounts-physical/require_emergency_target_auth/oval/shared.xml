@@ -43,7 +43,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5' or 'ol' in families  %}}
+{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product.startswith('slmicro') or 'ol' in families  %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
     /usr/lib/systemd/systemd-sulogin-shell
