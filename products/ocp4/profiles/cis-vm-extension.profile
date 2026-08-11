@@ -40,4 +40,5 @@ selections:
     - kubevirt-downward-metrics-disabled
     - kubevirt-ksm-disabled
     - kubevirt-no-jsonpatch-annotations
+    - kubevirt-restrict-cross-datavolume-cloning
     - kubevirt-restrict-exec-access-to-pods
