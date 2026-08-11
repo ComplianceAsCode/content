@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Restrict VNC Access to Cluster Workloads'
+
+description: |-
+    Because the set of authorized subjects is specific to each
+    organization, this rule requires manual review. Organizations can
+    create a CustomRule using CEL to automate this check by querying
+    RoleBinding resources and verifying that only approved subjects
+    are bound to the <tt>token.kubevirt.io:generate</tt> role.
+
+rationale: |-
+    VNC provides direct graphical console access to a running virtual
+    machine. In an OpenShift Virtualization environment, this access is
+    gated by the <tt>token.kubevirt.io:generate</tt> role. If this role
+    is bound too broadly, unauthorized users can view and interact with
+    VM desktops, capture screen contents, and input commands. Restricting
+    VNC access through careful role binding review ensures that only
+    approved subjects can establish console sessions to cluster
+    workloads.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects have VNC access to cluster workloads'
+
+ocil: |-
+    Run the following command to list role bindings that grant VNC access:
+    <pre>$ oc get rolebinding -ojson | jq -c '.items[] | select(.roleRef.name | contains("token.kubevirt.io:generate"))'</pre>
+    Verify that only authorized subjects are bound to the
+    <tt>token.kubevirt.io:generate</tt> role.

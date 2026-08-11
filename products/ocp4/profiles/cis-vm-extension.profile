@@ -28,6 +28,7 @@ selections:
     - kubevirt-persistent-reservation-disabled
     - kubevirt-no-vms-overcommitting-guest-memory
     - kubevirt-enforce-trusted-tls-registries
+    - kubevirt-restrict-vnc-access-to-workloads
     - kubevirt-no-vm-device-passthrough
     - kubevirt-no-shareable-disks
     - kubevirt-disk-error-policy-not-ignore
