@@ -63,6 +63,8 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v2r3.profile && \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r2.profile && \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r3.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/cis-vm-extension.profile && \
+    sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/cis-vm-extension-node.profile && \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/bsi.profile && \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/bsi-2022.profile && \
     sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v2r2.profile; \
