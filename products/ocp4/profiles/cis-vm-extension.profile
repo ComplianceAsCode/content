@@ -39,6 +39,7 @@ selections:
     - kubevirt-restrict-vm-cluster-instance-preference-types
     - kubevirt-bridge-mac-spoof-filtering
     - kubevirt-restrict-migration-tools-access
+    - kubevirt-restrict-update-access-to-cdi-cr
     - kubevirt-downward-metrics-disabled
     - kubevirt-ksm-disabled
     - kubevirt-no-jsonpatch-annotations
