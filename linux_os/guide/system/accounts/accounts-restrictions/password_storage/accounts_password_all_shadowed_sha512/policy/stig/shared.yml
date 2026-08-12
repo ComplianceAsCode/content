@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must employ FIPS 140-3 approved cryptographic hashing algorithms for all stored passwords.
+    {{{ full_name }}} must employ FIPS 140-3-approved cryptographic hashing algorithms for all stored passwords.
 
 vuldiscussion: |-
     The system must use a strong hashing algorithm to store the password.
@@ -11,9 +11,9 @@ vuldiscussion: |-
 checktext: |-
     Verify that the interactive user account passwords are using a strong password hash with the following command:
 
-    $ sudo cut -d: -f2 /etc/shadow
+    $ sudo cut -d: -f1,2 /etc/shadow
 
-    $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/
+    nsauser:$6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/
 
     Password hashes "!" or "*" indicate inactive accounts not available for logon and are not evaluated.
 
