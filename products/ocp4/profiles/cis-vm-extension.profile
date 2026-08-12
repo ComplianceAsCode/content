@@ -43,3 +43,4 @@ selections:
     - kubevirt-no-jsonpatch-annotations
     - kubevirt-restrict-cross-datavolume-cloning
     - kubevirt-restrict-exec-access-to-pods
+    - kubevirt-disable-intel-txt
