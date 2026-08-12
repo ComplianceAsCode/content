@@ -594,3 +594,4 @@ selections:
     - configure_ssh_crypto_policy
     - accounts_user_dot_no_world_writable_programs
     - package_dnsmasq_removed
+    - file_permissions_etc_audit_auditd
