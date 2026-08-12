@@ -32,3 +32,4 @@ selections:
     - kubevirt-nested-virtualization-disabled
     - kubevirt-vcpu-metrics-enabled
     - kubevirt-seccomp-profile-permissions
+    - kubevirt-cpu-vulnerabilities-mitigated
