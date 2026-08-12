@@ -1966,17 +1966,6 @@ controls:
           - file_permissions_sshd_pub_key
       status: automated
 
-    - id: RHEL-09-255130
-      levels:
-          - medium
-      title: RHEL 9 SSH daemon must not allow compression or must only allow compression after
-          successful
-          authentication.
-      rules:
-          - sshd_disable_compression
-          - var_sshd_disable_compression=stig
-      status: automated
-
     - id: RHEL-09-255135
       levels:
           - medium
