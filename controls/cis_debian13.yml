@@ -1656,7 +1656,7 @@ controls:
 
 
     - id: 5.1.1
-      title: Ensure access_to /etc/ssh/sshd_config is configured (Automated)
+      title: Ensure access to /etc/ssh/sshd_config is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -1778,7 +1778,14 @@ controls:
       levels:
           - l1_server
           - l1_workstation
-      status: pending
+      rules:
+          - sshd_strong_kex=cis_debian13
+          - sshd_use_strong_kex
+      status: automated
+      notes: |
+          Same KexAlgorithms line and rule as 5.1.12. The cis_debian13 value of
+          sshd_strong_kex already lists the post-quantum algorithms
+          mlkem768x25519-sha256 and sntrup761x25519-sha512@openssh.com first.
 
     - id: 5.1.14
       title: Ensure sshd LoginGraceTime is configured (Automated)
@@ -1921,7 +1928,7 @@ controls:
       status: automated
 
     - id: 5.2.6
-      title: Ensure sudo authentication timeout is configured correctly (Automated)
+      title: Ensure sudo timestamp_timeout is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
@@ -2048,7 +2055,7 @@ controls:
       status: automated
 
     - id: 5.3.3.2.2
-      title: Ensure minimum password length is configured (Automated)
+      title: Ensure password length is configured (Automated)
       levels:
           - l1_server
           - l1_workstation
