@@ -3,7 +3,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://www.cyber.mil/stigs/downloads/
-version: V2R8
+version: V2R9
 reference_type: stigid
 product: rhel9
 
@@ -1953,7 +1953,7 @@ controls:
     - id: RHEL-09-255120
       levels:
           - medium
-      title: RHEL 9 SSH private host key files must have mode 0640 or less permissive.
+      title: RHEL 9 SSH private host key files must have mode 0600 or less permissive.
       rules:
           - file_permissions_sshd_private_key
       status: automated
@@ -1964,17 +1964,6 @@ controls:
       title: RHEL 9 SSH public host key files must have mode 0644 or less permissive.
       rules:
           - file_permissions_sshd_pub_key
-      status: automated
-
-    - id: RHEL-09-255130
-      levels:
-          - medium
-      title: RHEL 9 SSH daemon must not allow compression or must only allow compression after
-          successful
-          authentication.
-      rules:
-          - sshd_disable_compression
-          - var_sshd_disable_compression=stig
       status: automated
 
     - id: RHEL-09-255135

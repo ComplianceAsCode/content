@@ -424,7 +424,6 @@ set_password_hashing_algorithm_passwordauth
 ssh_keys_passphrase_protected
 sshd_approved_ciphers=stig_rhel9
 sshd_approved_macs=stig_rhel9
-sshd_disable_compression
 sshd_disable_empty_passwords
 sshd_disable_gssapi_auth
 sshd_disable_kerb_auth
@@ -537,7 +536,6 @@ var_rekey_limit_time=1hour
 var_selinux_policy_name=targeted
 var_selinux_state=enforcing
 var_smartcard_drivers=cac
-var_sshd_disable_compression=stig
 var_sshd_set_keepalive=1
 var_sssd_certificate_verification_digest_function=sha512
 var_sudo_timestamp_timeout=always_prompt
