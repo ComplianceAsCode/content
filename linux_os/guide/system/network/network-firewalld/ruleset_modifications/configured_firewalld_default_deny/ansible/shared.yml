@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: Ensure firewalld default zone is drop
+  ansible.builtin.lineinfile:
+    path: /etc/firewalld/firewalld.conf
+    regexp: '^DefaultZone='
+    line: 'DefaultZone=drop'
+    create: yes
