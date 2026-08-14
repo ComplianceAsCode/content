@@ -31,7 +31,7 @@
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
     <ind:filepath>{{{ FILEPATH }}}</ind:filepath>
-    <ind:pattern operation="pattern match">(\\v|\\r|\\m|\\s|{{{ product }}})</ind:pattern>
+    <ind:pattern operation="pattern match">(\\v|\\r|\\m|\\s|{{{ product }}}|{{{ full_name }}})</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
