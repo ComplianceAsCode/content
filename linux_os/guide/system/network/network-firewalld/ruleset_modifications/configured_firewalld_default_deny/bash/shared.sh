@@ -4,4 +4,4 @@
 # complexity = low
 # disruption = low
 
-{{{ bash_replace_or_append('/etc/firewalld/firewalld.conf', '^DefaultZone=', 'drop', '%s=%s') }}}
+{{{ bash_replace_or_append('/etc/firewalld/firewalld.conf', '^DefaultZone', 'drop', '%s=%s') }}}
