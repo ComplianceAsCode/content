@@ -1,9 +1,11 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Firewalld Must Employ a Deny-all, Allow-by-exception Policy") }}}
-    <criteria operator="AND">
-      <criterion comment="firewalld default zone has target DROP"
-                 test_ref="test_firewalld_default_zone_target_drop" />
+    <criteria operator="OR">
+      <criterion comment="firewalld default zone has target DROP in /etc"
+                 test_ref="test_firewalld_default_zone_target_drop_etc" />
+      <criterion comment="firewalld default zone has target DROP in /usr"
+                 test_ref="test_firewalld_default_zone_target_drop_usr" />
     </criteria>
   </definition>
 
@@ -24,8 +26,11 @@
     </concat>
   </local_variable>
 
-  <ind:xmlfilecontent_test id="test_firewalld_default_zone_target_drop" version="1" check="all" check_existence="at_least_one_exists" comment="Ensure default zone has target DROP">
+  <ind:xmlfilecontent_test id="test_firewalld_default_zone_target_drop_etc" version="1" check="all" check_existence="at_least_one_exists" comment="Ensure default zone has target DROP in /etc">
     <ind:object object_ref="object_firewalld_default_zone_target_drop_etc" />
+  </ind:xmlfilecontent_test>
+
+  <ind:xmlfilecontent_test id="test_firewalld_default_zone_target_drop_usr" version="1" check="all" check_existence="at_least_one_exists" comment="Ensure default zone has target DROP in /usr">
     <ind:object object_ref="object_firewalld_default_zone_target_drop_usr" />
   </ind:xmlfilecontent_test>
 
