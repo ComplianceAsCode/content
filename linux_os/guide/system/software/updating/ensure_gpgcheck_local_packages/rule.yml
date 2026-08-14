@@ -6,7 +6,8 @@ title: 'Ensure gpgcheck Enabled for Local Packages'
 description: |-
     <tt>{{{ pkg_manager }}}</tt> should be configured to verify the signature(s) of local packages
     prior to installation. To configure <tt>{{{ pkg_manager }}}</tt> to verify signatures of local
-    packages, set the <tt>localpkg_gpgcheck</tt> to <tt>1</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
+    packages, set the <tt>localpkg_gpgcheck</tt> to <tt>1</tt>, <tt>True</tt>, or <tt>yes</tt> in
+    <tt>{{{ pkg_manager_config_file }}}</tt>.
 
 rationale: |-
     Changes to any software components can have significant effects to the overall security
