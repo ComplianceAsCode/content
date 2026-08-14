@@ -1,0 +1,53 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{% set rx_beg = "^[\s]*-a[\s]+always,exit[\s]+" %}}
+{{% set rx_b32 = "-F[\s]+arch=b32[\s]+" %}}
+{{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
+{{% set rx_execve_crond = "-S[\s]+execve[\s]+-F[\s]+subj_type=crond_t[\s]+" %}}
+{{% set rx_euid0 = "-F[\s]+euid=0[\s]+" %}}
+{{% set rx_auid = "-F[\s]+auid>=" ~ uid_min ~ "[\s]+-F[\s]+auid!=unset[\s]+" %}}
+{{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
+
+- name: "{{{ rule_title }}} - Service facts"
+  ansible.builtin.service_facts:
+
+- name: "{{{ rule_title }}} - Set cron_exec_audit_rules fact"
+  ansible.builtin.set_fact:
+    cron_exec_audit_rules:
+      - rule: '-a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec'
+        regex: {{{ rx_beg + rx_b32 + rx_execve_crond + rx_euid0 + rx_end }}}
+      - rule: '-a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec'
+        regex: {{{ rx_beg + rx_b64 + rx_execve_crond + rx_euid0 + rx_end }}}
+      - rule: '-a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F auid>={{{ uid_min }}} -F auid!=unset -k cron_exec'
+        regex: {{{ rx_beg + rx_b32 + rx_execve_crond + rx_auid + rx_end }}}
+      - rule: '-a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F auid>={{{ uid_min }}} -F auid!=unset -k cron_exec'
+        regex: {{{ rx_beg + rx_b64 + rx_execve_crond + rx_auid + rx_end }}}
+
+- name: "{{{ rule_title }}} - Update /etc/audit/rules.d/cron_exec.rules to audit cron execution"
+  ansible.builtin.lineinfile:
+    path: /etc/audit/rules.d/cron_exec.rules
+    line: "{{  item.rule  }}"
+    regexp: "{{ item.regex }}"
+    create: yes
+    mode: 0600
+  when:
+    - '"auditd.service" in ansible_facts.services'
+  register: augenrules_cron_exec_update_result
+  with_items: "{{ cron_exec_audit_rules }}"
+
+- name: "{{{ rule_title }}} - Update /etc/audit/audit.rules to audit cron execution"
+  ansible.builtin.lineinfile:
+    path: /etc/audit/audit.rules
+    line: "{{  item.rule  }}"
+    regexp: "{{ item.regex }}"
+    create: yes
+    mode: 0600
+  when:
+    - '"auditd.service" in ansible_facts.services'
+  register: auditctl_cron_exec_update_result
+  with_items: "{{ cron_exec_audit_rules }}"
+
