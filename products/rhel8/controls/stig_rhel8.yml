@@ -2,7 +2,7 @@
 policy: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 title: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 id: stig_rhel8
-version: V2R7
+version: V2R8
 source: https://www.cyber.mil/stigs/downloads
 reference_type: stigid
 product: rhel8
@@ -1146,9 +1146,10 @@ controls:
     - id: RHEL-08-020060
       levels:
           - medium
-      title: RHEL 8 must automatically lock graphical user sessions after 15 minutes of inactivity.
+      title: RHEL 8 must automatically lock graphical user sessions after 10 minutes of inactivity.
       rules:
           - dconf_gnome_screensaver_idle_delay
+          - inactivity_timeout_value=10_minutes
       status: automated
 
     - id: RHEL-08-020080
