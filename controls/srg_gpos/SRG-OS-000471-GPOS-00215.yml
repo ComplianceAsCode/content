@@ -5,6 +5,7 @@ controls:
         title: {{{ full_name }}} must generate audit records for privileged activities
             or other system-level access.
         rules:
+            - audit_rules_cron_execution
             - audit_rules_dac_modification_chmod
             - audit_rules_dac_modification_chown
             - audit_rules_dac_modification_fchmod
