@@ -1,0 +1,47 @@
+documentation_complete: true
+
+title: 'Audit Any Script or Executable Called by Cron as Root or by Any Privileged User'
+
+description: |-
+    {{{ full_name }}} must audit any script or executable called by cron as root
+    or by any privileged user.
+
+    Add or update the following audit rules to "/etc/audit/rules.d/audit.rules":
+
+    <pre>-a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F auid&gt;={{{ uid_min }}} -F auid!=unset -k cron_exec</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F auid&gt;={{{ uid_min }}} -F auid!=unset -k cron_exec</pre>
+
+    To load the rules to the kernel immediately, use the following command:
+
+    <pre>$ sudo augenrules --load</pre>
+
+rationale: |-
+    Any script or executable called by cron as root or by any privileged user
+    must be owned by that user. It must also have the permissions 755 or more
+    restrictive and should have no extended rights that allow any nonprivileged
+    user to modify the script or executable.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86730-9
+
+references:
+    srg: SRG-OS-000471-GPOS-00215
+
+ocil_clause: 'the command does not return the expected output, or the lines are commented out'
+
+ocil: |-
+    Verify {{{ full_name }}} is configured to audit the execution of any system call made by cron as root or by any privileged user with the following command:
+
+    <pre>$ sudo auditctl -l | grep crond_t</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F auid&gt;={{{ uid_min }}} -F auid!=unset -k cron_exec</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F auid&gt;={{{ uid_min }}} -F auid!=unset -k cron_exec</pre>
+
+    If this command does not return the expected output, or the lines are commented out, this is a finding.
+
+platform: machine
