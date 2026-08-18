@@ -1276,7 +1276,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </unix:password_state>
 
   <unix:password_state id="state_{{{ rule_id }}}_users_nologin_shell" version="1">
-    <unix:login_shell datatype="string" operation="pattern match">^(?:/usr)?/sbin/nologin$</unix:login_shell>
+    <unix:login_shell datatype="string" operation="pattern match">^(?:/usr)?(?:/sbin/nologin|/bin/false)$</unix:login_shell>
   </unix:password_state>
 {{%- endmacro %}}
 

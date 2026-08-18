@@ -4,14 +4,18 @@ documentation_complete: true
 title: 'All Interactive User Home Directories Must Be Group-Owned By The Primary Group'
 
 description: |-
-    Change the group owner of interactive users home directory to the
-    group found in <tt>/etc/passwd</tt>. To change the group owner of
-    interactive users home directory, use the following command:
+    Change the group owner of interactive user home directories to the
+    group found in <tt>getent passwd</tt>. To change the group owner of
+    an interactive user's home directory, use the following command:
     <pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i></pre>
 
     This rule ensures every home directory related to an interactive user is
-    group-owned by an interactive user. It also ensures that interactive users
+    group-owned by that user's primary group. It also ensures that interactive users
     are group-owners of one and only one home directory.
+
+    Interactive users are those with a UID greater than or equal to {{{ uid_min }}}
+    and a valid interactive shell (not <tt>/sbin/nologin</tt>, <tt>/usr/sbin/nologin</tt>,
+    <tt>/bin/false</tt>, or <tt>/usr/bin/false</tt>).
 
 rationale: |-
     If the Group Identifier (GID) of a local interactive users home directory is
@@ -43,15 +47,27 @@ ocil_clause: 'the group ownership is incorrect'
 
 ocil: |-
     To verify the assigned home directory of all interactive users is group-
-    owned by that users primary GID, run the following command:
-    <pre># ls -ld $(awk -F: '($3&gt;={{{ uid_min }}})&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
+    owned by that user's primary GID, run the following command:
+    <pre># ls -ld $(getent passwd | awk -F: '($3&gt;={{{ uid_min }}})&amp;&amp;($7 !~ /nologin/)&amp;&amp;($7 !~ /\/false$/){print $6}')</pre>
+
+    This should return a list of home directories with group ownership matching each user's primary group.
+    Using <tt>getent passwd</tt> instead of reading <tt>/etc/passwd</tt> directly ensures that remote users
+    (LDAP, SSSD, NIS, etc.) are also checked.
 
 fixtext: |-
-    Change the group owner of a local interactive user’s home directory to the group found in "/etc/passwd". To change the group owner of a local interactive user’s home directory, use the following command:
+    Change the group owner of an interactive user’s home directory to the group found in the system user database.
 
-    Note: The example will be for the user "smithj", who has a home directory of "/home/smithj", and has a primary group of users.
+    Identify the user’s primary group:
+    <pre>$ getent passwd smithj
+    smithj:x:1000:1000:John Smith:/home/smithj:/bin/bash</pre>
 
-    $ sudo chgrp users /home/smithj
+    The fourth field (1000) is the primary group ID (GID). Change the home directory group ownership:
+    <pre>$ sudo chgrp 1000 /home/smithj</pre>
+
+    Or use the group name:
+    <pre>$ sudo chgrp users /home/smithj</pre>
+
+    Note: This applies to all interactive users, including those in remote directories (LDAP, SSSD, NIS, etc.).
 
 srg_requirement: 'All {{{ full_name }}} local interactive user home directories must be group-owned by the home directory owner’s primary group.'
 
