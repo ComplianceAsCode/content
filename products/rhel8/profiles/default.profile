@@ -739,3 +739,5 @@ selections:
     - sshd_use_approved_kex_ordered_stig
     - accounts_user_dot_no_world_writable_programs
     - package_dnsmasq_removed
+    - file_permissions_etc_audit_rulesd
+    - file_permissions_etc_audit_auditd
