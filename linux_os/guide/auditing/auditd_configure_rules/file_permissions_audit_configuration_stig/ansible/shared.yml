@@ -1,0 +1,53 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+# Copied and modified from `file_permissions/ansible.yml` template
+
+- name: Ensure audit config files are not more permissive than 0600
+  block:
+    - name: Set /etc/audit/audit.rules and /etc/audit/auditd.conf to 0600
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: '0600'
+        state: file
+      loop:
+        - /etc/audit/audit.rules
+        - /etc/audit/auditd.conf
+      failed_when: false
+
+    - name: Set /etc/audit/rules.d/*.rules files to 0600
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: '0600'
+        state: file
+      with_fileglob:
+        - /etc/audit/rules.d/*.rules
+
+    # augenrules --load hardcodes chmod 0640 on audit.rules on every rewrite of the rules.d files.
+    # Install ExecStartPost in auditd.service to restore 0600 after each run.
+    # Runs inside the auditd_t SELinux domain which has write access to auditd_etc_t files.
+    # On RHEL 8/9, augenrules is called via ExecStartPost in auditd.service directly.
+    - name: Create dropin directory /etc/systemd/system/auditd.service.d
+      ansible.builtin.file:
+        path: /etc/systemd/system/auditd.service.d
+        state: directory
+        mode: '0755'
+
+    - name: Install /etc/systemd/system/auditd.service.d/permissions.conf - chmod audit.rules to 0600 after augenrules runs
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/auditd.service.d/permissions.conf
+        content: |
+          [Service]
+          ExecStartPost=/usr/bin/chmod 0600 /etc/audit/audit.rules
+        mode: '0644'
+
+    - name: Reload systemd daemon to pick up permissions.conf
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+  when:
+    - '"audit" in ansible_facts.packages'
+    - '"kernel-core" in ansible_facts.packages'
