@@ -29,6 +29,10 @@ ocil: |-
     {{{ describe_file_permissions(file="/etc/audit/", perms="0600") }}}
     {{{ describe_file_permissions(file="/etc/audit/rules.d/", perms="0600") }}}
 
+warnings:
+    - general: |-
+        <tt>augenrules --load</tt> resets permissions of <tt>/etc/audit/audit.rules</tt> to <tt>0640</tt>, undoing remediation (<tt>0600</tt>). Fix: A systemd dropin for <tt>audit</tt> service is installed at <tt>/etc/systemd/system/auditd.service.d/permissions.conf</tt>with <tt>ExecStartPost=/usr/bin/chmod 0600 /etc/audit/audit.rules</tt>. This dropin is necessary to restore <tt>0600</tt> permissions after <tt>augenrules</tt> runs and rewrites the <tt>/etc/audit/audit.rules</tt> file. systemd runs both commands in order, restoring <tt>0600</tt>. Use <tt>service auditd restart</tt> to reload and apply the drop-in when remediating manually.
+
 template:
     name: file_permissions
     vars:
