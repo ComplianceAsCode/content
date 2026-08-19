@@ -90,3 +90,15 @@ cases:
             spec:
               config: '{"cniVersion": "0.3.1", "type": "bridge", "bridge": "br3",
                 "macspoofchk": false}'
+  - name: NAD with no spec at all is compliant (regression - istio-cni style)
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: istio-cni
+              namespace: default
