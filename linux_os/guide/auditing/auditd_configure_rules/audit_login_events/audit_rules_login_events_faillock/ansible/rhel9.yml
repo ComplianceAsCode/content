@@ -1,0 +1,55 @@
+# platform = Red Hat Enterprise Linux 9
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{% set rx_beg = "^[\s]*-a[\s]+always,exit[\s]+" %}}
+{{% set rx_b32 = "-F[\s]+arch=b32[\s]+" %}}
+{{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
+{{% set rx_path = "-F[\s]+path=" ~ xccdf_value("var_accounts_passwords_pam_faillock_dir") ~ "[\s]+" %}}
+{{% set rx_perm = "-F[\s]+perm=wa[\s]+" %}}
+{{% set rx_auid = "-F[\s]+auid>=" ~ uid_min ~ "[\s]+-F[\s]+auid!=unset[\s]+" %}}
+{{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
+
+{{{ ansible_instantiate_variables("var_accounts_passwords_pam_faillock_dir") }}}
+
+- name: "{{{ rule_title }}} - Service facts"
+  ansible.builtin.service_facts:
+
+- name: "{{{ rule_title }}} - Set faillock_audit_rules fact"
+  ansible.builtin.set_fact:
+    faillock_audit_rules:
+      - rule: '-a always,exit -F arch=b32 -F path={{ var_accounts_passwords_pam_faillock_dir }} -F perm=wa -F auid>={{{ uid_min }}} -F auid!=unset -k logins'
+        regex: {{{ rx_beg + rx_b32 + rx_path + rx_perm + rx_auid + rx_end }}}
+      - rule: '-a always,exit -F arch=b64 -F path={{ var_accounts_passwords_pam_faillock_dir }} -F perm=wa -F auid>={{{ uid_min }}} -F auid!=unset -k logins'
+        regex: {{{ rx_beg + rx_b64 + rx_path + rx_perm + rx_auid + rx_end }}}
+
+- name: "{{{ rule_title }}} - Update /etc/audit/rules.d/logins.rules to audit faillock"
+  ansible.builtin.lineinfile:
+    path: /etc/audit/rules.d/logins.rules
+    line: "{{ item.rule }}"
+    regexp: "{{ item.regex }}"
+    create: yes
+    mode: 0600
+  when:
+    - '"auditd.service" in ansible_facts.services'
+  register: augenrules_faillock_update_result
+  with_items: "{{ faillock_audit_rules }}"
+
+- name: "{{{ rule_title }}} - Update /etc/audit/audit.rules to audit faillock"
+  ansible.builtin.lineinfile:
+    path: /etc/audit/audit.rules
+    line: "{{ item.rule }}"
+    regexp: "{{ item.regex }}"
+    create: yes
+    mode: 0600
+  when:
+    - '"auditd.service" in ansible_facts.services'
+  register: auditctl_faillock_update_result
+  with_items: "{{ faillock_audit_rules }}"
+
+- name: "{{{ rule_title }}} - Restart auditd"
+  ansible.builtin.command: /usr/sbin/service auditd restart
+  when:
+    - augenrules_faillock_update_result is changed or auditctl_faillock_update_result is changed

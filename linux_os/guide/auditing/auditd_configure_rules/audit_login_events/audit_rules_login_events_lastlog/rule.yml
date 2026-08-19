@@ -48,6 +48,16 @@ ocil_clause: 'the command does not return a line, or the line is commented out'
 ocil: |-
     {{{ ocil_audit_rules_watch("/var/log/lastlog", "logins") }}}
 
+{{% if product in ["rhel9"] %}}
+warnings:
+    - general: |-
+        Note that the OVAL check for this rule accepts audit rules with or without
+        the <tt>auid</tt> filters (<tt>-F auid&gt;=1000 -F auid!=unset</tt>).
+        However, the Bash and Ansible remediations will add these filters to ensure
+        full compliance. This approach ensures compatibility with existing systems
+        while bringing them into compliance when remediation is applied.
+{{% endif %}}
+
 template:
     name: audit_rules_watch
     vars:
