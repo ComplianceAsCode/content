@@ -35,8 +35,8 @@ controls:
           - ensure_journald_and_rsyslog_not_active_together
           - var_audit_backlog_limit=8192
           - var_auditd_action_mail_acct=root
-          - var_auditd_admin_space_left_action=cis_rhel10
-          - var_auditd_space_left_action=cis_rhel10
+          - var_auditd_admin_space_left_action=cis_fedora
+          - var_auditd_space_left_action=cis_fedora
       status: automated
       controls:
           - id: au-2.1
@@ -135,7 +135,7 @@ controls:
           - sysctl_net_ipv4_conf_default_log_martians
           - chronyd_run_as_chrony_user
           - sshd_max_auth_tries_value=4
-          - var_multiple_time_servers=rhel
+          - var_multiple_time_servers=fedora
       status: automated
       controls:
           - id: au-3.1
@@ -177,8 +177,8 @@ controls:
       rules:
           - auditd_data_disk_error_action
           - auditd_data_disk_full_action
-          - var_auditd_disk_error_action=cis_rhel10
-          - var_auditd_disk_full_action=cis_rhel10
+          - var_auditd_disk_error_action=cis_fedora
+          - var_auditd_disk_full_action=cis_fedora
       status: automated
       controls:
           - id: au-5.1
