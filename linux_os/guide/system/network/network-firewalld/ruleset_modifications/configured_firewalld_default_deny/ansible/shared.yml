@@ -5,8 +5,8 @@
 # disruption = low
 
 - name: Ensure firewalld default zone is drop
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: /etc/firewalld/firewalld.conf
     regexp: '^DefaultZone='
     line: 'DefaultZone=drop'
-    create: true
+    create: yes

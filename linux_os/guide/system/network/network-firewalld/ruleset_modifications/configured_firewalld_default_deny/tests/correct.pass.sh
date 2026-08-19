@@ -2,6 +2,7 @@
 # packages = firewalld
 # platform = multi_platform_all
 
+mkdir -p /etc/firewalld
 if grep -q "^DefaultZone=" /etc/firewalld/firewalld.conf; then
     sed -i 's/^DefaultZone=.*/DefaultZone=drop/' /etc/firewalld/firewalld.conf
 else
