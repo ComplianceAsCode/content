@@ -1,5 +1,9 @@
 {{%- set sshd_main_config = sshd_main_config_file -%}}
 {{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{% set sufix_conf="(\s.*)?" %}}
+{{% set prefix_conf="^\s*Ciphers\s*" %}}
+{{% set ciphers=["aes256-ctr","aes192-ctr","aes128-ctr"] %}}
+{{% set ciphers_regex=prefix_conf ~ "(?=[\w-])" "(\\b" ~ ciphers|join("\\b,?)?(\\b") ~ ")?" ~ sufix_conf ~ "[\\s]*(?:#.*)?$" %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.", rule_title=rule_title) }}}
@@ -44,12 +48,17 @@
     comment="tests the value of ciphers setting in the {{{ sshd_main_config }}} file"
     id="test_{{{ rule_id }}}" version="1">
     <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:text operation="pattern match">{{{ ciphers_regex }}}</ind:text>
+  </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
     <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+(?=[\w]+)(aes256-ctr(?=[\w,]+|$),?)?(aes192-ctr(?=[\w,]+|$),?)?(aes128-ctr)?[\s]*(?:#.*)?$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">{{{ prefix_conf }}}.*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
   </ind:textfilecontent54_object>
 
   {{%- if sshd_distributed_config == "true" %}}
@@ -57,16 +66,16 @@
     comment="tests the value of ciphers setting in the {{{ sshd_drop_in_dir }}} file"
     id="test_{{{ rule_id }}}_config_dir" version="1">
     <ind:object object_ref="obj_{{{ rule_id }}}_config_dir" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_config_dir" version="1">
     <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+(?=[\w]+)(aes256-ctr(?=[\w,]+|$),?)?(aes192-ctr(?=[\w,]+|$),?)?(aes128-ctr)?[\s]*(?:#.*)?$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">{{{ prefix_conf }}}.*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
   </ind:textfilecontent54_object>
   {{%- endif %}}
-
 
   <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">
     <set>
