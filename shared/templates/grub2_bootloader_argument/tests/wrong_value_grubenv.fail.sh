@@ -1,6 +1,10 @@
 #!/bin/bash
 
+{{% if not ARG_VALUE and not ARG_VARIABLE %}}
+# platform = Not Applicable
+{{% else %}}
 # platform = Oracle Linux 8,Red Hat Enterprise Linux 8
+{{% endif %}}
 # packages = grub2,grubby
 
 {{%- if ARG_VARIABLE %}}

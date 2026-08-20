@@ -1,6 +1,10 @@
 #!/bin/bash
 
+{{% if not ARG_VALUE and not ARG_VARIABLE %}}
+# platform = Not Applicable
+{{% else %}}
 # platform = multi_platform_ubuntu
+{{% endif %}}
 # packages = grub2
 
 {{%- if ARG_VARIABLE %}}

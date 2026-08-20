@@ -1,5 +1,10 @@
 #!/bin/bash
+
+{{% if not ARG_VALUE and not ARG_VARIABLE %}}
+# platform = Not Applicable
+{{% else %}}
 # platform = multi_platform_all
+{{% endif %}}
 
 {{%- if ARG_VARIABLE %}}
 # variables = {{{ ARG_VARIABLE }}}={{{ TEST_VALUE_PASS }}}
