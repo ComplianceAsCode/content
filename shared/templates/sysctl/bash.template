@@ -52,7 +52,7 @@ fi
 #	else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
 #
 {{% if sysctl_remediate_drop_in_file == "true" %}}
-sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
+sed -i "/^{{{ SYSCTLVAR }}}/d" /etc/sysctl.conf
 {{% endif %}}
 {{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value', cce_identifiers=cce_identifiers) }}}
 
@@ -70,7 +70,7 @@ fi
 #	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
 #
 {{% if sysctl_remediate_drop_in_file == "true" %}}
-sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
+sed -i "/^{{{ SYSCTLVAR }}}/d" /etc/sysctl.conf
 {{% endif %}}
 {{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , SYSCTLVAL, cce_identifiers=cce_identifiers) }}}
 {{%- endif %}}
