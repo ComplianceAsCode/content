@@ -79,10 +79,20 @@
       when: not registry_bin_stat.stat.exists
 
     - name: Create registry config
-      ansible.builtin.template:
-        src: templates/registry-config.yml.j2
+      ansible.builtin.copy:
         dest: /etc/registry-config.yml
         mode: "0644"
+        content: |
+          version: 0.1
+          log:
+            level: info
+          storage:
+            filesystem:
+              rootdirectory: /var/lib/registry
+          http:
+            addr: 0.0.0.0:{{ registry_port }}
+            headers:
+              X-Content-Type-Options: [nosniff]
 
     - name: Create systemd unit for registry
       ansible.builtin.copy:
