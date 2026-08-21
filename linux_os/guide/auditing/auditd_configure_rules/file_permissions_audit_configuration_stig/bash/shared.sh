@@ -5,20 +5,22 @@
 # disruption = low
 
 # Copied and modified from `file_permissions/bash.template` template
-
-if rpm --quiet -q audit && rpm --quiet -q kernel-core; then
+#
+# Sets mode 0600 and ownership root:root on all audit config files.
+# Installs an auditd.service dropin to restore 0600 on audit.rules after augenrules
+# rewrites it to 0640 when /etc/audit/rules.d/ content changes (RHEL 8/9 only, not containers).
 
 find /etc/audit/ -maxdepth 1 -type f \
     -regextype posix-extended -regex '^.*audit(\.rules|d\.conf)$' \
-    -exec chmod 0600 {} \;
+    -exec chmod 0600 {} \; \
+    -exec chown root:root {} \;
 
 find /etc/audit/rules.d/ -maxdepth 1 -type f -name '*.rules' \
-    -exec chmod 0600 {} \;
+    -exec chmod 0600 {} \; \
+    -exec chown root:root {} \;
 
-# augenrules --load hardcodes chmod 0640 on audit.rules on every rewrite of the rules.d files.
-# Install ExecStartPost in auditd.service to restore 0600 after each run.
-# Runs inside the auditd_t SELinux domain which has write access to auditd_etc_t files.
-# On RHEL 8/9, augenrules is called via ExecStartPost in auditd.service directly.
+if rpm --quiet -q audit && rpm --quiet -q kernel-core; then
+
 mkdir -p /etc/systemd/system/auditd.service.d
 chmod 0755 /etc/systemd/system/auditd.service.d
 
@@ -27,9 +29,9 @@ cat > /etc/systemd/system/auditd.service.d/permissions.conf << 'EOF'
 ExecStartPost=/usr/bin/chmod 0600 /etc/audit/audit.rules
 EOF
 chmod 0644 /etc/systemd/system/auditd.service.d/permissions.conf
+restorecon /etc/systemd/system/auditd.service.d/permissions.conf
 
 systemctl daemon-reload
+service restart auditd # IMPORTANT: this is necessary to ensure the dropin is loaded and the permissions for /etc/audit/ and /etc/audit/rules.d/ files are set correctly.
 
-else
-    >&2 echo 'Remediation is not applicable, nothing was done'
 fi
