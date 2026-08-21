@@ -6,7 +6,6 @@ config_file=/usr/share/pam-configs/tmp_unix
 
 cat << EOF > "$config_file"
 Name: Unix authentication
-Conflicts: unix
 Default: yes
 Priority: 257
 Conflicts: unix
@@ -32,7 +31,7 @@ Password-Initial:
 	[success=end default=ignore]	pam_unix.so obscure yescrypt nullok
 EOF
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update --enable tmp_unix
+DEBIAN_FRONTEND=noninteractive pam-auth-update --enable tmp_unix --disable unix
 
 rm "$config_file"
 
