@@ -115,6 +115,7 @@ grub2_enable_selinux
 grub2_password
 kernel_module_usb-storage_disabled
 libreswan_approved_tunnels
+logind_session_timeout
 no_direct_root_logins
 no_empty_passwords
 package_audit_installed
@@ -155,7 +156,6 @@ sshd_do_not_permit_user_env
 sshd_enable_strictmodes
 sshd_enable_warning_banner
 sshd_set_keepalive
-sshd_set_keepalive_0
 sshd_use_directory_configuration
 sshd_use_priv_separation
 sysctl_fs_suid_dumpable

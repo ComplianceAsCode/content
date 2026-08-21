@@ -84,6 +84,7 @@ selections:
     - '!sshd_disable_rhosts_rsa'
     - sshd_disable_user_known_hosts
     - sshd_set_keepalive
+    - '!sshd_set_keepalive_0'
     - sshd_use_approved_ciphers
     - sshd_use_approved_macs
     - '!sshd_use_directory_configuration'
