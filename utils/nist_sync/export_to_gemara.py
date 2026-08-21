@@ -50,7 +50,7 @@ from gemara.policy import product_full_name
 from gemara.schema import validate_catalog, validate_guidance, validate_mapping
 
 
-DEFAULT_PRODUCTS = ["rhel8", "rhel9", "rhel10"]
+DEFAULT_PRODUCTS = ["rhel8", "rhel9", "rhel10", "fedora"]
 DEFAULT_OUTPUT_DIR = _REPO_ROOT / "build" / "gemara"
 DEFAULT_OSCAL_CATALOG = _SCRIPT_DIR / "data" / "nist_800_53_rev5_catalog.json"
 DEFAULT_DATA_DIR = _SCRIPT_DIR / "data"

@@ -1,0 +1,116 @@
+---
+# Run complyctl NIST scans on the Fedora VM.
+#
+# Prerequisites:
+#   - setup_fedora.yml has been run
+#   - A Gemara bundle has been pushed to the VM's registry
+#
+# Usage (from utils/nist_sync/):
+#   # First, push the bundle from the host:
+#   python3 utils/nist_sync/generate_complyctl_bundle.py --product fedora --push \
+#       --registry "http://$(vagrant ssh-config | awk '/HostName/ {print $2}'):5500"
+#
+#   # Then run this playbook:
+#   ansible-playbook -i ansible/inventory.ini ansible/scan_fedora.yml
+
+- name: Run complyctl NIST scans on Fedora
+  hosts: fedora_scanner
+  become: true
+  vars:
+    registry_port: "{{ lookup('env', 'REGISTRY_PORT') | default('5500', true) }}"
+    policy_id: nist-800-53-rev5-fedora
+    bundle_ref: "localhost:{{ registry_port }}/nist-800-53-rev5-fedora"
+    # Baselines to test (Low / Moderate / High)
+    baselines:
+      - low
+      - moderate
+      - high
+
+  tasks:
+    - name: Ensure complytime directories exist (XDG layout)
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0700"
+      loop:
+        - /root/.cache/complytime
+        - /root/.local/share/complytime
+        - /root/.complytime
+
+    - name: Create complytime.yaml
+      ansible.builtin.copy:
+        dest: /root/.complytime/complytime.yaml
+        mode: "0600"
+        content: |
+          policies:
+            - url: http://{{ bundle_ref }}
+              id: {{ policy_id }}
+
+          targets:
+            - id: local
+              policies:
+                - {{ policy_id }}
+              variables:
+                profile: nist_800_53
+                datastream: /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
+
+    - name: Show complytime config
+      ansible.builtin.command: cat /root/.complytime/complytime.yaml
+      register: config_content
+      changed_when: false
+
+    - name: Display config
+      ansible.builtin.debug:
+        msg: "{{ config_content.stdout_lines }}"
+
+    - name: Test registry connectivity
+      ansible.builtin.command: >
+        curl -sf http://localhost:{{ registry_port }}/v2/_catalog
+      register: catalog
+      changed_when: false
+      failed_when: false
+
+    - name: Show registry catalog
+      ansible.builtin.debug:
+        msg: "{{ catalog.stdout }}"
+
+    - name: Pull policy from registry (complyctl get)
+      ansible.builtin.command: >
+        /usr/local/bin/complyctl get --workspace /root/.complytime
+      register: get_result
+      changed_when: false
+
+    - name: Show get result
+      ansible.builtin.debug:
+        msg: "{{ get_result.stdout_lines }}"
+
+    - name: Run complyctl scan
+      ansible.builtin.shell: |
+        set -e
+        echo "=== Running NIST 800-53 scan on Fedora ==="
+        /usr/local/bin/complyctl scan \
+          --workspace /root/.complytime \
+          --policy-id {{ policy_id }} \
+          --format oscal > /tmp/nist-fedora-scan.json
+        echo "Scan complete: /tmp/nist-fedora-scan.json"
+        echo ""
+        echo "Results summary (first 20):"
+        jq -r '.results[] | "\(.rule_id): \(.result)"' /tmp/nist-fedora-scan.json 2>/dev/null | head -20 || echo "No results field"
+        echo ""
+        echo "Pass/Fail counts:"
+        jq '.results | group_by(.result) | map({result: .[0].result, count: length}) | .[]' \
+          /tmp/nist-fedora-scan.json 2>/dev/null || echo "Checking OSCAL format..."
+        # Also show file size and existence
+        ls -lh /tmp/nist-fedora-scan.json
+      register: scan_results
+      changed_when: false
+
+    - name: Display scan results
+      ansible.builtin.debug:
+        msg: "{{ scan_results.stdout_lines }}"
+
+    - name: Fetch scan results to host
+      ansible.builtin.fetch:
+        src: "/tmp/nist-fedora-scan.json"
+        dest: "/tmp/fedora-nist-scan-results.json"
+        flat: true

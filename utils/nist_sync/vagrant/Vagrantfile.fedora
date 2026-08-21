@@ -1,0 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+# Fedora scanner VM for NIST 800-53 Gemara / complyctl E2E testing.
+#
+# Usage:
+#   cd utils/nist_sync/vagrant
+#   VAGRANT_VAGRANTFILE=Vagrantfile.fedora vagrant up
+#   VAGRANT_VAGRANTFILE=Vagrantfile.fedora vagrant ssh
+#   VAGRANT_VAGRANTFILE=Vagrantfile.fedora vagrant halt
+#   VAGRANT_VAGRANTFILE=Vagrantfile.fedora vagrant destroy
+#
+# Or create an alias in your shell:
+#   alias vagrant-fedora='VAGRANT_VAGRANTFILE=Vagrantfile.fedora vagrant'
+#   vagrant-fedora up
+#
+# After 'vagrant up', run:
+#   bash populate_inventory.sh fedora     # writes ../ansible/inventory.ini with fedora_scanner
+#   ansible-playbook -i ../ansible/inventory.ini ../ansible/setup_fedora.yml \
+#       -e complyctl_bin=/home/$USER/bin/complyctl \
+#       -e provider_bin=~/.complytime/providers/complyctl-provider-openscap
+#   ansible-playbook -i ../ansible/inventory.ini ../ansible/scan_fedora.yml
+
+Vagrant.configure("2") do |config|
+  # Generic Fedora 39 box (latest available in generic/ namespace)
+  # Note: While Fedora has newer releases, generic/ boxes lag behind official releases
+  config.vm.box = "generic/fedora39"
+  config.vm.hostname = "nist-fedora-scanner"
+
+  # Private network — host can reach VM via its DHCP-assigned IP.
+  # populate_inventory.sh extracts this IP via 'vagrant ssh-config'.
+  config.vm.network "private_network", type: "dhcp"
+
+  # libvirt only — this is what Automatus already uses elsewhere in this project
+  config.vm.provider "libvirt" do |v|
+    v.memory = 2048
+    v.cpus   = 2
+  end
+
+  # Install OS-level dependencies for OpenSCAP scanning
+  config.vm.provision "shell", name: "base-packages", inline: <<~SHELL
+    set -euo pipefail
+
+    echo "=== Installing base packages ==="
+    # Fedora ships with openscap-scanner and scap-security-guide in the repos
+    dnf install -y openscap-scanner openscap-engine-sce 2>&1 | tail -5
+
+    # scap-security-guide provides /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
+    dnf install -y scap-security-guide 2>&1 | tail -5 || \
+      echo "  [WARN] scap-security-guide unavailable; Ansible will copy the built data stream."
+
+    echo "=== Base provisioning complete ==="
+  SHELL
+
+  # After 'vagrant up', write the Ansible inventory on the host machine.
+  config.trigger.after [:up, :reload] do |trigger|
+    trigger.info = "Updating Ansible inventory (../ansible/inventory.ini)..."
+    trigger.run  = { path: "populate_inventory.sh", args: ["fedora"] }
+  end
+end
