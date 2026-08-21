@@ -9,7 +9,7 @@ echo "║  Local CIS-NIST Workflow Test                              ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 
-PRODUCTS="rhel8 rhel9 rhel10"
+PRODUCTS="rhel8 rhel9 rhel10 fedora"
 
 # Recursively count controls (base + nested enhancements) and rule
 # selections across all family files in a directory. Uses ruamel.yaml
