@@ -29,4 +29,4 @@
     state: file
   loop: '{{ path_exists.results }}'
   when:
-    - item.stat is defined and item.stat.exists
+    - item.stat is defined and item.stat.exists and not item.stat.islnk

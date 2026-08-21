@@ -31,6 +31,7 @@
     path: '{{ item.0.value[4] }}'
     owner: '{{ item.0.value[1] }}'
     recurse: yes
+    follow: false
   loop: '{{ local_users|zip(path_exists.results)|list }}'
   when:
     - item.1.stat is defined and item.1.stat.exists
