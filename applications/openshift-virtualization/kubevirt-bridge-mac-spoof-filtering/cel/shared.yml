@@ -13,6 +13,7 @@ inputs:
 
 expression: |
   nads.items.all(n,
+      !has(n.spec) ||
       !has(n.spec.config) ||
       !("type" in parseJSON(n.spec.config)) ||
       parseJSON(n.spec.config).type != "bridge" ||
