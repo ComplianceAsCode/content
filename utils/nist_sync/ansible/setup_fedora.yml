@@ -1,0 +1,145 @@
+---
+# One-time setup of the Fedora scanner VM.
+#
+# Usage (from utils/nist_sync/):
+#   ansible-playbook -i ansible/inventory.ini ansible/setup_fedora.yml \
+#     -e complyctl_bin=/tmp/complyctl \
+#     -e provider_bin=~/.complytime/providers/complyctl-provider-openscap
+#
+# Optional env overrides (also accepted as -e vars):
+#   COMPLYCTL_BIN   path to complyctl binary on the host  (default: /tmp/complyctl)
+#   PROVIDER_BIN    path to complyctl-provider-openscap   (default: ~/.complytime/providers/...)
+#   ORAS_VERSION    oras release to install               (default: 1.2.3)
+#   REGISTRY_PORT   container registry port inside the VM (default: 5500)
+
+- name: Set up complyctl NIST scanner on Fedora
+  hosts: fedora_scanner
+  become: true
+  vars:
+    complyctl_bin: "{{ lookup('env', 'COMPLYCTL_BIN') | default('/tmp/complyctl', true) }}"
+    provider_bin: "{{ lookup('env', 'PROVIDER_BIN') | default(ansible_env.HOME + '/.complytime/providers/complyctl-provider-openscap', true) }}"
+    oras_version: "{{ lookup('env', 'ORAS_VERSION') | default('1.2.3', true) }}"
+    registry_port: "{{ lookup('env', 'REGISTRY_PORT')  | default('5500', true) }}"
+    # Root of the content repo on the host — three levels above the playbook dir.
+    # playbook_dir = .../utils/nist_sync/ansible
+    repo_root: "{{ playbook_dir | realpath + '/../../..' }}"
+    ds_dest: /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
+
+  tasks:
+    # -------------------------------------------------------------------------
+    # complyctl binary
+    # -------------------------------------------------------------------------
+    - name: Copy complyctl binary
+      ansible.builtin.copy:
+        src: "{{ complyctl_bin }}"
+        dest: /usr/local/bin/complyctl
+        mode: "0755"
+
+    - name: Verify complyctl runs
+      ansible.builtin.command: /usr/local/bin/complyctl version
+      register: ver
+      changed_when: false
+
+    - name: Show complyctl version
+      ansible.builtin.debug:
+        msg: "{{ ver.stdout }}"
+
+    # -------------------------------------------------------------------------
+    # complyctl-provider-openscap
+    # -------------------------------------------------------------------------
+    - name: Create provider directory
+      ansible.builtin.file:
+        path: /root/.local/share/complytime/providers
+        state: directory
+        mode: "0755"
+
+    - name: Copy complyctl-provider-openscap
+      ansible.builtin.copy:
+        src: "{{ provider_bin }}"
+        dest: /root/.local/share/complytime/providers/complyctl-provider-openscap
+        mode: "0755"
+
+    # -------------------------------------------------------------------------
+    # OCI registry — distribution/distribution binary (no podman required).
+    # Runs as a systemd service inside the VM listening on all interfaces.
+    # The host pushes bundles to ansible_host:{{ registry_port }} via oras;
+    # complyctl on the VM uses http://localhost:{{ registry_port }}.
+    # -------------------------------------------------------------------------
+    - name: Check if registry binary is already installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/registry
+      register: registry_bin_stat
+
+    - name: Download distribution/distribution registry binary
+      ansible.builtin.shell: |
+        curl -sL \
+          "https://github.com/distribution/distribution/releases/download/v2.8.3/registry_2.8.3_linux_amd64.tar.gz" \
+          | tar -xz -C /usr/local/bin registry
+        chmod +x /usr/local/bin/registry
+      when: not registry_bin_stat.stat.exists
+
+    - name: Create registry config
+      ansible.builtin.template:
+        src: templates/registry-config.yml.j2
+        dest: /etc/registry-config.yml
+        mode: "0644"
+
+    - name: Create systemd unit for registry
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/oci-registry.service
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=OCI Distribution Registry
+          After=network.target
+
+          [Service]
+          Type=simple
+          ExecStart=/usr/local/bin/registry serve /etc/registry-config.yml
+          Restart=on-failure
+          RestartSec=10s
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Enable and start registry
+      ansible.builtin.systemd:
+        name: oci-registry
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    # -------------------------------------------------------------------------
+    # oras CLI — for pushing bundles to the registry from the host.
+    # -------------------------------------------------------------------------
+    - name: Check if oras is already installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/oras
+      register: oras_stat
+
+    - name: Download oras
+      ansible.builtin.shell: |
+        curl -sL \
+          "https://github.com/oras-project/oras/releases/download/v{{ oras_version }}/oras_{{ oras_version }}_linux_amd64.tar.gz" \
+          | tar -xz -C /usr/local/bin oras
+        chmod +x /usr/local/bin/oras
+      when: not oras_stat.stat.exists
+
+    # -------------------------------------------------------------------------
+    # Data stream — copy the built Fedora data stream from the host.
+    # -------------------------------------------------------------------------
+    - name: Check if scap-security-guide provided a data stream
+      ansible.builtin.stat:
+        path: "{{ ds_dest }}"
+      register: ssg_ds
+
+    - name: Copy built Fedora data stream from host
+      ansible.builtin.copy:
+        src: "{{ repo_root }}/build/ssg-fedora-ds.xml"
+        dest: "{{ ds_dest }}"
+        mode: "0644"
+      when: not ssg_ds.stat.exists
+
+    - name: Show data stream path
+      ansible.builtin.debug:
+        msg: "SCAP data stream: {{ ds_dest }}"
