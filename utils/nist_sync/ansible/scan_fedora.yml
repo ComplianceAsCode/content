@@ -27,11 +27,15 @@
       - high
 
   tasks:
-    - name: Ensure complytime config directory exists
+    - name: Ensure complytime directories exist (XDG layout)
       ansible.builtin.file:
-        path: /root/.complytime
+        path: "{{ item }}"
         state: directory
         mode: "0700"
+      loop:
+        - /root/.cache/complytime
+        - /root/.local/share/complytime
+        - /root/.complytime
 
     - name: Create complytime.yaml
       ansible.builtin.copy:
@@ -39,8 +43,13 @@
         mode: "0600"
         content: |
           policies:
-            {{ policy_id }}:
-              source: http://{{ bundle_ref }}
+            - url: http://{{ bundle_ref }}
+              id: {{ policy_id }}
+
+          targets:
+            - id: local
+              policies:
+                - {{ policy_id }}
               variables:
                 profile: nist_800_53
                 datastream: /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
@@ -65,37 +74,43 @@
       ansible.builtin.debug:
         msg: "{{ catalog.stdout }}"
 
-    - name: Run complyctl scans for each baseline
+    - name: Pull policy from registry (complyctl get)
+      ansible.builtin.command: >
+        /usr/local/bin/complyctl get --workspace /root/.complytime
+      register: get_result
+      changed_when: false
+
+    - name: Show get result
+      ansible.builtin.debug:
+        msg: "{{ get_result.stdout_lines }}"
+
+    - name: Run complyctl scan
       ansible.builtin.shell: |
         set -e
-        echo "=== Baseline: {{ item }} ==="
+        echo "=== Running NIST 800-53 scan on Fedora ==="
         /usr/local/bin/complyctl scan \
-          --policy {{ policy_id }} \
-          --assessment-plan {{ item }} \
-          --output /tmp/nist-fedora-{{ item }}.json \
-          --verbose
-        echo "Scan complete: /tmp/nist-fedora-{{ item }}.json"
+          --workspace /root/.complytime \
+          --policy-id {{ policy_id }} \
+          --format oscal > /tmp/nist-fedora-scan.json
+        echo "Scan complete: /tmp/nist-fedora-scan.json"
         echo ""
-        echo "Results summary:"
-        jq -r '.results[] | "\(.rule_id): \(.result)"' /tmp/nist-fedora-{{ item }}.json | head -20
+        echo "Results summary (first 20):"
+        jq -r '.results[] | "\(.rule_id): \(.result)"' /tmp/nist-fedora-scan.json 2>/dev/null | head -20 || echo "No results field"
         echo ""
         echo "Pass/Fail counts:"
-        jq -r '.results | group_by(.result) | map({result: .[0].result, count: length}) | .[]' \
-          /tmp/nist-fedora-{{ item }}.json
-      loop: "{{ baselines }}"
+        jq '.results | group_by(.result) | map({result: .[0].result, count: length}) | .[]' \
+          /tmp/nist-fedora-scan.json 2>/dev/null || echo "Checking OSCAL format..."
+        # Also show file size and existence
+        ls -lh /tmp/nist-fedora-scan.json
       register: scan_results
       changed_when: false
 
     - name: Display scan results
       ansible.builtin.debug:
-        msg: "{{ item.stdout_lines }}"
-      loop: "{{ scan_results.results }}"
-      loop_control:
-        label: "{{ item.item }}"
+        msg: "{{ scan_results.stdout_lines }}"
 
     - name: Fetch scan results to host
       ansible.builtin.fetch:
-        src: "/tmp/nist-fedora-{{ item }}.json"
-        dest: "../results/fedora-{{ item }}.json"
+        src: "/tmp/nist-fedora-scan.json"
+        dest: "/tmp/fedora-nist-scan-results.json"
         flat: true
-      loop: "{{ baselines }}"
