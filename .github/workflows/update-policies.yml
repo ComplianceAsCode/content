@@ -31,9 +31,9 @@ on:
   workflow_dispatch:
     inputs:
       products:
-        description: 'Comma-separated list of products to sync (default: rhel8,rhel9,rhel10)'
+        description: 'Comma-separated list of products to sync (default: rhel8,rhel9,rhel10,fedora)'
         required: false
-        default: 'rhel8,rhel9,rhel10'
+        default: 'rhel8,rhel9,rhel10,fedora'
 
 jobs:
   update-policies:
@@ -73,7 +73,7 @@ jobs:
              [ -n "${{ inputs.products }}" ]; then
             PRODUCTS="${{ inputs.products }}"
           else
-            PRODUCTS="rhel8,rhel9,rhel10"
+            PRODUCTS="rhel8,rhel9,rhel10,fedora"
           fi
           echo "products=${PRODUCTS}" >> "$GITHUB_OUTPUT"
 
