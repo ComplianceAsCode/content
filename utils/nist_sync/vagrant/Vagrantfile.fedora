@@ -22,8 +22,9 @@
 #   ansible-playbook -i ../ansible/inventory.ini ../ansible/scan_fedora.yml
 
 Vagrant.configure("2") do |config|
-  # Generic Fedora 40 box (latest stable at time of writing)
-  config.vm.box = "generic/fedora40"
+  # Generic Fedora 39 box (latest available in generic/ namespace)
+  # Note: While Fedora has newer releases, generic/ boxes lag behind official releases
+  config.vm.box = "generic/fedora39"
   config.vm.hostname = "nist-fedora-scanner"
 
   # Private network — host can reach VM via its DHCP-assigned IP.
