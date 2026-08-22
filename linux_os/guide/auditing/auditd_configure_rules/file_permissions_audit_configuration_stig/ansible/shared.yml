@@ -57,8 +57,10 @@
         daemon_reload: true
 
     # IMPORTANT: this is necessary to ensure the dropin is loaded and the permissions for /etc/audit/ and /etc/audit/rules.d/ files are set correctly.
+    # !!!USE `service` module instead of `systemd` module to avoid 
+    # "Operation refused" error, see https://access.redhat.com/solutions/2664811
     - name: Restart auditd.service
-      ansible.builtin.systemd:
+      ansible.builtin.service:
         name: auditd.service
         state: restarted
 
