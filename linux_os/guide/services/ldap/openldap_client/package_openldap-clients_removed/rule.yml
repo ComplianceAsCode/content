@@ -1,0 +1,49 @@
+{{% if product in ["sle12", "sle15", "slmicro5"] %}}
+  {{%- set package = "openldap2-client" %}}
+{{% elif "ubuntu" in product or "debian" in product %}}
+  {{%- set package = "ldap-utils" %}}
+{{% else %}}
+  {{%- set package = "openldap-clients" %}}
+{{% endif %}}
+
+documentation_complete: true
+
+
+title: 'Ensure LDAP client is not installed'
+
+description: |-
+    The Lightweight Directory Access Protocol (LDAP) is a service that provides
+    a method for looking up information from a central database.
+    {{{ describe_package_remove(package=package) }}}
+
+
+rationale:
+    If the system does not need to act as an LDAP client, it is recommended that the software is
+    removed to reduce the potential attack surface.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82885-5
+    cce@rhel9: CCE-90831-9
+    cce@rhel10: CCE-90641-2
+    cce@sle12: CCE-91681-7
+    cce@sle15: CCE-91310-3
+    cce@slmicro5: CCE-93914-0
+
+references:
+    cis@sle12: 2.3.5
+    cis@sle15: 2.3.5
+
+{{{ complete_ocil_entry_package_removed(package=package) }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: openldap-clients
+        pkgname@sle12: openldap2-client
+        pkgname@sle15: openldap2-client
+        pkgname@slmicro5: openldap2-client
+        pkgname@ubuntu2204: ldap-utils
+        pkgname@ubuntu2404: ldap-utils
+        pkgname@debian13: ldap-utils

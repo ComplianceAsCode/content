@@ -1,0 +1,99 @@
+documentation_complete: true
+
+
+title: 'Lock Accounts After Failed Password Attempts'
+
+description: |-
+    This rule configures the system to lock out accounts after a number of incorrect login attempts
+    using <tt>pam_faillock.so</tt>.
+    pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
+    defined to work as expected.
+    Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
+    <tt>deny = &lt;count&gt;</tt>
+    Where count should be less than or equal to
+    {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} and greater than 0.
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
+    In order to avoid errors when manually editing these files, it is
+    recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
+    depending on the OS version.
+    {{% endif %}}
+
+rationale: |-
+    By limiting the number of failed logon attempts, the risk of unauthorized system access via
+    user password guessing, also known as brute-forcing, is reduced. Limits are imposed by locking
+    the account.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80667-9
+    cce@rhel9: CCE-83587-6
+    cce@rhel10: CCE-87388-5
+    cce@sle15: CCE-85842-3
+    cce@sle16: CCE-96664-8
+
+references:
+    cis-csc: 1,12,15,16
+    cjis: 5.5.3
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    cui: 3.1.8
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: CM-6(a),AC-7(a)
+    nist-csf: PR.AC-7
+    ospp: FIA_AFL.1
+    pcidss: Req-8.1.6
+    srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
+    stigid@ol7: OL07-00-010320
+    stigid@ol8: OL08-00-020011
+
+{{% if product == "ol8" %}}
+platform: os_linux[ol]>=8.2 and package[pam]
+{{% else %}}
+platform: package[pam]
+{{% endif %}}
+
+ocil_clause: |-
+    the "deny" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}"
+    or less (but not "0"), is missing or commented out
+
+ocil: |-
+    Verify {{{ full_name }}} is configured to lock an account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
+    unsuccessful logon attempts with the command:
+
+    <pre>$ grep 'deny =' /etc/security/faillock.conf</pre>
+    deny = {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}.
+
+fixtext: |-
+    Configure {{{ full_name }}} to lock an account when {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
+    unsuccessful logon attempts occur. First enable the feature using the following command:
+
+    $ sudo authselect enable-feature with-faillock
+
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    deny = {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
+
+warnings:
+    - general: |-
+        If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+        will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+        aborted in order to preserve intentional changes. In this case, an informative message will
+        be shown in the remediation report.
+        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        parameters should be defined in <tt>faillock.conf</tt> file.
+
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur.
+
+template:
+  name: pam_account_password_faillock
+  vars:
+    prm_name: deny
+    prm_regex_conf: ^[\s]*deny[\s]*=[\s]*([0-9]+)
+    prm_regex_pamd: ^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*deny=([0-9]+)
+    ext_variable: var_accounts_passwords_pam_faillock_deny
+    description: Lockout account after failed login attempts.
+    variable_upper_bound: use_ext_variable
+    variable_lower_bound: 1

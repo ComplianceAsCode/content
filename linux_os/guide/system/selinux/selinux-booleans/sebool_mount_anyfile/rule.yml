@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable the mount_anyfile SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>mount_anyfile</tt> is enabled.
+    If this setting is disabled, it should be enabled to allow any file
+    or directory to be mounted.
+    {{{ describe_sebool_enable(sebool="mount_anyfile") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="mount_anyfile") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: mount_anyfile

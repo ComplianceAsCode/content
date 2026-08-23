@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} must use the common access card (CAC) smart card driver.
+
+fixtext: |-
+    Configure {{{ full_name }}} to load the CAC driver:
+
+    $ sudo opensc-tool --set-conf-entry app:default:card_drivers:cac
+
+    Restart the pcscd service with the following command for the changes to take effect:
+
+    $ sudo systemctl restart pcscd
+
+checktext: |-
+    Verify {{{ full_name }}} loads the CAC driver with the following command:
+
+    $ sudo opensc-tool --get-conf-entry app:default:card_drivers
+    cac
+
+    If "cac" is not listed as a card driver, or no line is returned for "card_drivers", this is a finding.
+
+vuldiscussion: |-
+    Smart card login provides two-factor authentication stronger than that provided by a username and password combination. Smart cards leverage public key infrastructure to provide and verify credentials. Configuring the smart card driver helps to prevent the use of unauthorized smart cards.
+
+

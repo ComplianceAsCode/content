@@ -1,0 +1,67 @@
+documentation_complete: true
+
+
+title: 'Ensure that project templates autocreate Network Policies'
+
+description: |-
+    Configure a template for newly created projects to use default network
+    policies and make sure this template is referenced from the default
+    project template.
+
+    The OpenShift Container Platform API server automatically provisions
+    new projects based on the project template that is identified by
+    the <tt>projectRequestTemplate</tt> parameter in the cluster’s project
+    configuration resource.
+
+    As a cluster administrator, you can modify the default project template
+    so that new projects created would satisfy the chosen compliance
+    standards.
+
+    For more information on configuring default network policies, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/networking/network_policy/default-network-policy.html",
+    text="the relevant documentation") }}}.
+
+rationale: |-
+    Running different applications on the same Kubernetes cluster creates a risk of one
+    compromised application attacking a neighboring application. Network segmentation is
+    important to ensure that containers can communicate only with those they are supposed
+    to. When a network policy is introduced to a given namespace, all traffic not allowed
+    by the policy is denied.
+
+    Editing the default project template to include NetworkPolicies in
+    all new namespaces ensures that all namespaces include at least some
+    NetworkPolicy objects.
+
+    Ensuring that the project configuration references
+    a project template that sets up the required objects for new projects ensures
+    that all new projects will be set in accordance with centralized settings.
+
+severity: medium
+
+ocil_clause: 'The project template does not include NetworkPolicies and/or the project configuration does not reference a project request template'
+
+{{% set api_path = '/apis/template.openshift.io/v1/namespaces/openshift-config/templates' %}}
+{{% set jqfilter = '[.items[] | any(.objects[]?; .kind == "NetworkPolicy") ]' %}}
+
+ocil: |-
+    Verify that a Template exists in the <tt>openshift-config</tt> namespace
+    that includes at least one NetworkPolicy Kind in the list of .objects:
+    <pre>oc get -nopenshift-config template -ojson |  jq -r '{{{ jqfilter }}}'</pre>
+    If there is at least one matching template, the above query would
+    return true.
+
+    Verify that the project config named <tt>cluster</tt> references the
+    projectRequestTemplate that defines NetworkPolicies:
+    <pre>oc get project.config.openshift.io/cluster -ojsonpath="{.spec.projectRequestTemplate.name}"</pre>
+
+identifiers:
+      cce@ocp4: CCE-86070-0
+
+references:
+    srg: SRG-APP-000039-CTR-000110
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/projects/cluster") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({api_path: jqfilter}) | indent(4) }}}
+

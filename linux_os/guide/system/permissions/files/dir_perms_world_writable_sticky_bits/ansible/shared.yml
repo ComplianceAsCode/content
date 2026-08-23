@@ -1,0 +1,30 @@
+# platform = multi_platform_sle,multi_platform_slmicro,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_create_list_of_local_paths(list_name="search_paths", rule_title=rule_title) }}}
+
+- name: "{{{ rule_title }}} - Define Rule Specific Facts"
+  ansible.builtin.set_fact:
+    world_writable_dirs: []
+
+- name: "{{{ rule_title }}} - Find All Uncompliant Directories in Local File Systems"
+  ansible.builtin.command:
+    cmd: find {{ item }} -xdev -type d ( -perm -0002 -a ! -perm -1000 )
+  loop: "{{ search_paths }}"
+  changed_when: false
+  register: result_found_dirs
+
+- name: "{{{ rule_title }}} - Create List of World Writable Directories Without Sticky Bit"
+  ansible.builtin.set_fact:
+    world_writable_dirs: '{{ world_writable_dirs | union(item.stdout_lines) | list }}'
+  loop: "{{ result_found_dirs.results }}"
+  when: result_found_dirs is not skipped and item is not skipped
+
+- name: "{{{ rule_title }}} - Ensure Sticky Bit is Set on Local World Writable Directories"
+  ansible.builtin.file:
+    path: '{{ item }}'
+    mode: a+t
+  loop: '{{ world_writable_dirs }}'

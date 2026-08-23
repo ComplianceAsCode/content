@@ -1,0 +1,41 @@
+documentation_complete: true
+
+
+title: 'Ensure All Groups on the System Have Unique Group Names'
+
+description: 'Change the group name or delete groups, so each has a unique name.'
+
+rationale: 'To assure accountability and prevent unauthenticated access, groups must be identified uniquely to prevent potential misuse and compromise of the system.'
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86328-2
+    cce@rhel9: CCE-86966-9
+    cce@rhel10: CCE-88449-4
+    cce@sle12: CCE-92207-0
+    cce@sle15: CCE-91340-0
+    cce@sle16: CCE-96063-3
+    cce@slmicro5: CCE-94046-0
+
+references:
+    cis@sle12: 6.2.17
+    cis@sle15: 6.2.17
+
+ocil_clause: 'has duplicate group names'
+
+ocil: |-
+    Run the following command to check for duplicate group names:
+    Check that the operating system contains no duplicate group names for interactive users by running the following command:
+    <pre>
+        cut -d : -f 1 /etc/group | uniq -d
+    </pre>
+    If output is produced, this is a finding.
+    Configure the operating system to contain no duplicate names for groups.
+    Edit the file "/etc/group" and provide each group that has a duplicate group name with a unique group name.
+
+warnings:
+    - general: |-
+          Automatic remediation of this control is not available due to the unique requirements of each system.
+
+platform: system_with_kernel

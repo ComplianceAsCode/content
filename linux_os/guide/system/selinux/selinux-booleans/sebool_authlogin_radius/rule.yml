@@ -1,0 +1,27 @@
+documentation_complete: true
+
+
+title: 'Disable the authlogin_radius SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>authlogin_radius</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="authlogin_radius") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84294-8
+    cce@rhel10: CCE-90517-4
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="authlogin_radius") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: authlogin_radius

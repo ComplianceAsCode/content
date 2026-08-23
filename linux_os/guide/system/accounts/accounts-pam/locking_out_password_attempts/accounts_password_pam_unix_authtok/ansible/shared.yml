@@ -1,0 +1,8 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+{{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
+{{{ ansible_ensure_pam_module_option("/etc/pam.d/system-auth", "password", "sufficient", "pam_unix.so", "use_authtok", rule_id=rule_id, rule_title=rule_title) }}}
+{{{ ansible_ensure_pam_module_option("/etc/pam.d/password-auth", "password", "sufficient", "pam_unix.so", "use_authtok", rule_id=rule_id, rule_title=rule_title) }}}

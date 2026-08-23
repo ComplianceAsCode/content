@@ -1,0 +1,137 @@
+# platform = multi_platform_all
+
+# List of log file paths to be inspected for correct permissions
+# * Primarily inspect log file paths listed in /etc/rsyslog.conf
+RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
+# * And also the log file paths listed after rsyslog's $IncludeConfig directive
+#   (store the result into array for the case there's shell glob used as value of IncludeConfig)
+readarray -t OLD_INC < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
+# eval expands globs in $IncludeConfig paths. Acceptable because
+# /etc/rsyslog.conf is writable only by root and this script runs as root.
+readarray -t RSYSLOG_INCLUDE_CONFIG < <(for INCPATH in "${OLD_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
+readarray -t NEW_INC < <(sed -n '/^\s*include(/,/)/Ip' /etc/rsyslog.conf | sed -n 's@.*file\s*=\s*"\([/[:alnum:][:punct:]]*\)".*@\1@Ip')
+# eval expands globs in include() paths. Acceptable because
+# /etc/rsyslog.conf is writable only by root and this script runs as root.
+readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
+
+# Declare an array to hold the final list of different log file paths
+declare -a LOG_FILE_PATHS
+
+# Array to hold all rsyslog config entries
+RSYSLOG_CONFIGS=()
+RSYSLOG_CONFIGS=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
+
+# Get full list of files to be checked
+# RSYSLOG_CONFIGS may contain globs such as
+# /etc/rsyslog.d/*.conf /etc/rsyslog.d/*.frule
+# So, loop over the entries in RSYSLOG_CONFIGS and use find to get the list of included files.
+RSYSLOG_CONFIG_FILES=()
+for ENTRY in "${RSYSLOG_CONFIGS[@]}"
+do
+	# If directory, rsyslog will search for config files in recursively.
+	# However, files in hidden sub-directories or hidden files will be ignored.
+	if [ -d "${ENTRY}" ]
+	then
+		readarray -t FINDOUT < <(find "${ENTRY}" -not -path '*/.*' -type f)
+		RSYSLOG_CONFIG_FILES+=("${FINDOUT[@]}")
+	elif [ -f "${ENTRY}" ]
+	then
+		RSYSLOG_CONFIG_FILES+=("${ENTRY}")
+	else
+		# ENTRY may be a glob such as /etc/rsyslog.d/*.conf (not a single path).
+		# nullglob runs only inside process substitution (subshell), so shopt cannot
+		# affect the caller if this script were ever sourced.
+		readarray -t _glob_paths < <(
+			shopt -s nullglob
+			for _maybe in ${ENTRY}
+			do
+				[[ -f "${_maybe}" ]] && printf '%s\n' "${_maybe}"
+			done
+		)
+		if ((${#_glob_paths[@]}))
+		then
+			RSYSLOG_CONFIG_FILES+=("${_glob_paths[@]}")
+		else
+			echo "Invalid include object: ${ENTRY}"
+		fi
+		unset _glob_paths
+	fi
+done
+
+# Browse each file selected above as containing paths of log files
+# ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)
+for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
+do
+	# From each of these files extract just particular log file path(s), thus:
+	# * Ignore lines starting with space (' '), comment ('#"), or variable syntax ('$') characters,
+	# * Ignore empty lines,
+	# * Strip quotes and closing brackets from paths.
+	# * Ignore paths that match /dev|/etc.*\.conf, as those are paths, but likely not log files
+	# * From the remaining valid rows select only fields constituting a log file path
+	# Text file column is understood to represent a log file path if and only if all of the
+	# following are met:
+	# * it contains at least one slash '/' character,
+	# * it is preceded by space
+	# * it doesn't contain space (' '), colon (':'), and semicolon (';') characters
+	# Search log file for path(s) only in case it exists!
+	if [[ -f "${LOG_FILE}" ]]
+	then
+		NORMALIZED_CONFIG_FILE_LINES=$(sed -e "/^[#|$]/d" "${LOG_FILE}")
+		LINES_WITH_PATHS=$(grep '[^/]*\s\+\S*/\S\+$' <<< "${NORMALIZED_CONFIG_FILE_LINES}")
+		FILTERED_PATHS=$(awk '{if(NF>=2&&($NF~/^\//||$NF~/^-\//)){sub(/^-\//,"/",$NF);print $NF}}' <<< "${LINES_WITH_PATHS}")
+		CLEANED_PATHS=$(sed -e "s/[\"')]//g; /\\/etc.*\.conf/d; /\\/dev\\//d" <<< "${FILTERED_PATHS}")
+		MATCHED_ITEMS=$(sed -e "/^$/d" <<< "${CLEANED_PATHS}")
+		# Since above sed command might return more than one item (delimited by newline), split
+		# the particular matches entries into new array specific for this log file
+		readarray -t ARRAY_FOR_LOG_FILE <<< "$MATCHED_ITEMS"
+		# Concatenate the two arrays - previous content of $LOG_FILE_PATHS array with
+		# items from newly created array for this log file
+		LOG_FILE_PATHS+=("${ARRAY_FOR_LOG_FILE[@]}")
+		# Delete the temporary array
+		unset ARRAY_FOR_LOG_FILE
+	fi
+done
+
+# Check for RainerScript action log format which might be also multiline so grep regex is a bit
+# curly:
+# extract possibly multiline action omfile expressions
+# extract File="logfile" expression
+# match only "logfile" expression
+# exclude /dev/* paths (e.g., /dev/console)
+for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
+do
+	[[ -f "${LOG_FILE}" ]] || continue
+	# Pipe grep -z output directly through tr so NUL delimiters become newlines
+	# before bash ever stores the data (bash variables cannot hold NUL bytes).
+	readarray -t _RSYSLOG_OMFILE_PATHS < <(
+		LC_ALL=C grep -iozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}" 2>/dev/null \
+			| tr '\0' '\n' \
+			| grep -iaoP "\bFile\s*=\s*\"([/[:alnum:][:punct:]]*)\"" \
+			| grep -oE "\"([/[:alnum:][:punct:]]*)\"" \
+			| tr -d '"' \
+			| grep -v '^/dev/' \
+			| grep -v '^$' \
+			|| true
+	)
+	LOG_FILE_PATHS+=("${_RSYSLOG_OMFILE_PATHS[@]}")
+	unset _RSYSLOG_OMFILE_PATHS
+done
+
+# Ensure the correct attribute if file exists
+{{{ 'FILE_CMD="chown"' if ATTRIBUTE == "owner" }}}
+{{{- 'FILE_CMD="chgrp"' if ATTRIBUTE == "groupowner" }}}
+{{{- 'FILE_CMD="chmod"' if ATTRIBUTE == "permissions" }}}
+for LOG_FILE_PATH in "${LOG_FILE_PATHS[@]}"
+do
+	# Sanity check - if particular $LOG_FILE_PATH is empty string, skip it from further processing
+	if [ -z "$LOG_FILE_PATH" ]
+	then
+		continue
+	fi
+	# Skip non-files (mis-parsed paths, directories); chmod on missing paths must not abort.
+	if [[ ! -f "${LOG_FILE_PATH}" ]]
+	then
+		continue
+	fi
+	$FILE_CMD "{{{ VALUE }}}" "${LOG_FILE_PATH}"
+done

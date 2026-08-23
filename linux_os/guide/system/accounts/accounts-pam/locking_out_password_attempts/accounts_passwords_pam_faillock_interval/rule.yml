@@ -1,0 +1,108 @@
+documentation_complete: true
+
+
+title: 'Set Interval For Counting Failed Password Attempts'
+
+description: |-
+    Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system
+    to lock out an account after a number of incorrect login attempts within a specified time
+    period.
+
+    Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
+    <tt>fail_interval = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
+
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
+    In order to avoid errors when manually editing these files, it is
+    recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
+    depending on the OS version.
+    {{% endif %}}
+
+rationale: |-
+    By limiting the number of failed logon attempts the risk of unauthorized system
+    access via user password guessing, otherwise known as brute-forcing, is reduced.
+    Limits are imposed by locking the account.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80669-5
+    cce@rhel9: CCE-83583-5
+    cce@rhel10: CCE-86672-3
+    cce@sle15: CCE-91169-3
+    cce@sle16: CCE-96665-5
+
+references:
+    cis-csc: 1,12,15,16
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: CM-6(a),AC-7(a)
+    nist-csf: PR.AC-7
+    ospp: FIA_AFL.1
+    srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
+    stigid@ol7: OL07-00-010320
+    stigid@ol8: OL08-00-020013
+
+{{% if product == "ol8" %}}
+platform: os_linux[ol]>=8.2 and package[pam]
+{{% else %}}
+platform: package[pam]
+{{% endif %}}
+
+ocil_clause: |-
+    the "fail_interval" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}"
+    or less (but not "0"), the line is commented out, or the line is missing
+
+ocil: |-
+    To ensure the failed password attempt policy is configured correctly, run the following command:
+
+    <pre>$ grep fail_interval /etc/security/faillock.conf</pre>
+    The output should show <tt>fail_interval = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
+
+
+fixtext: |-
+    Configure {{{ full_name }}} to lock out an account after a number of incorrect login attempts
+    within 15 minutes using <tt>pam_faillock.so</tt>. First enable the feature using the following
+    command:
+
+    $ sudo authselect enable-feature with-faillock
+
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    <pre>fail_interval = {{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
+
+
+checktext: |-
+    Verify {{{ full_name }}} locks an account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
+    unsuccessful logon attempts within a period of 15 minutes with the following command:
+
+    Note: If the System Administrator demonstrates the use of an approved centralized account
+    management method that locks an account after three unsuccessful logon attempts within a
+    period of 15 minutes, this requirement is not applicable.
+
+    $ grep fail_interval /etc/security/faillock.conf
+
+    <pre>fail_interval = 900</pre>
+
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period.
+
+warnings:
+    - general: |-
+        If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+        will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+        aborted in order to preserve intentional changes. In this case, an informative message will
+        be shown in the remediation report.
+        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        parameters should be defined in <tt>faillock.conf</tt> file.
+
+template:
+  name: pam_account_password_faillock
+  vars:
+    prm_name: fail_interval
+    prm_regex_conf: ^[\s]*fail_interval[\s]*=[\s]*([0-9]+)
+    prm_regex_pamd: ^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*fail_interval=([0-9]+)
+    ext_variable: var_accounts_passwords_pam_faillock_fail_interval
+    description: The number of allowed failed logins should be set correctly.
+    variable_lower_bound: use_ext_variable

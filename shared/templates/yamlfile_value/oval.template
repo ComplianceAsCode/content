@@ -1,0 +1,151 @@
+{{% if target_oval_version >= [5, 11] %}}
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{% call oval_metadata("In the YAML/JSON file '" + FILEPATH + "' at path '" + YAMLPATH + "' " + (ENTITY_CHECK if ENTITY_CHECK else "all") + ": ") %}}
+      {{%- for val in VALUES -%}}
+        {{{- "key '" + val.key + "' " if val.key is defined else "" }}}value{{{ (" of type '" + val.type + "' ") if type in val else " " }}}
+          {{{- val.operation if operation in val else "equals" }}} '{{{ val.value }}}'{{% if not loop.last %}} and {{% endif %}}
+      {{%- endfor -%}}
+    {{%- endcall -%}}
+    <criteria>
+      <criterion {{{ {'comment': "In the YAML/JSON file '" + FILEPATH + "' at path '" + YAMLPATH + "' " + (ENTITY_CHECK if ENTITY_CHECK else "all")}|xmlattr }}} test_ref="test_{{{ rule_id }}}"/>
+      {{% if OCP_DATA %}}
+      <criterion comment="Make sure that the file '{{{ FILEPATH }}}' exists." test_ref="test_file_for_{{{ rule_id }}}"/>
+      {{% endif %}}
+      {{% if CHECK_EXISTENCE_YAMLPATH %}}
+      <criterion {{{ {'comment': "Make sure that all target elements exists for elements at path '" + CHECK_EXISTENCE_YAMLPATH + "'"}|xmlattr }}} test_ref="test_elements_count_for_{{{ rule_id }}}"/>
+      {{% endif %}}
+    </criteria>
+  </definition>
+
+  <local_variable id="{{{ rule_id }}}_file_location" datatype="string" comment="The actual path of the file to scan." version="1">
+    {{% if OCP_DATA %}}
+    <concat>
+      <variable_component var_ref="ocp_data_root"/>
+      <literal_component>{{{ FILEPATH }}}</literal_component>
+      {{% if FILEPATH_SUFFIX %}}
+      <literal_component>/</literal_component>
+      <variable_component var_ref="{{{ FILEPATH_SUFFIX }}}"/>
+      {{% endif %}}
+    </concat>
+    {{% endif %}}
+    {{% if FILEPATH_SUFFIX and not OCP_DATA%}}
+    <concat>
+      <literal_component>{{{ FILEPATH }}}</literal_component>
+      <literal_component>/</literal_component>
+      <variable_component var_ref="{{{ FILEPATH_SUFFIX }}}"/>
+    </concat>
+    {{% endif %}}
+    {{% if not OCP_DATA and not FILEPATH_SUFFIX%}}
+    <literal_component>{{{ FILEPATH }}}</literal_component>
+    {{% endif %}}
+  </local_variable>
+
+  {{% if not XCCDF_VARIABLE or (XCCDF_VARIABLE and not EMBEDDED_DATA) %}}
+  <ind:yamlfilecontent_test id="test_{{{ rule_id }}}" check="all" check_existence="{{{ CHECK_EXISTENCE|default("only_one_exists") }}}"
+    {{{ {'comment': "In the file '" + FILEPATH + "' find only one object at path '" + YAMLPATH + "'."}|xmlattr }}} version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}"/>
+    {{% if CHECK_EXISTENCE != "none_exist" %}}
+    <ind:state state_ref="state_{{{ rule_id }}}"/>
+    {{% endif %}}
+  </ind:yamlfilecontent_test>
+  {{% else %}}
+  <ind:variable_test id="test_{{{ rule_id }}}" check="all" check_existence="all_exist" comment="Variable test to check XCCDF variable" version="1">
+    <ind:object object_ref="variable_object_{{{ rule_id }}}" />
+    <ind:state state_ref="variable_state_{{{ rule_id }}}" />
+  </ind:variable_test>
+
+  <ind:variable_object id="variable_object_{{{ rule_id }}}" version="1">
+    <ind:var_ref>local_variable_{{{ rule_id }}}</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="variable_state_{{{ rule_id }}}" version="1">
+    <ind:value datatype="string" operation="equals" var_ref="{{{ XCCDF_VARIABLE }}}"/>
+  </ind:variable_state>
+
+  <local_variable id="local_variable_{{{ rule_id }}}" datatype="string" comment="Captured value to be compared with XCCDF value" version="1">
+    <regex_capture pattern='{{{ (VALUES|first).value }}}'>
+       <object_component item_field="value" record_field="{{{ (VALUES|first).key|default('#') }}}" object_ref="object_{{{ rule_id }}}" />
+    </regex_capture>
+  </local_variable>
+  {{% endif %}}
+
+  {{% if CHECK_EXISTENCE_YAMLPATH %}}
+  <ind:variable_test version="1" id="test_elements_count_for_{{{ rule_id }}}" check="all"
+    comment="Count elements at both paths and compare">
+    <ind:object object_ref="object_elements_count_for_{{{ rule_id }}}"/>
+    <ind:state state_ref="state_elements_count_for_{{{ rule_id }}}"/>
+  </ind:variable_test>
+  {{% endif %}}
+
+  {{% if XCCDF_VARIABLE %}}
+  <external_variable comment="variable" datatype="string" id="{{{ XCCDF_VARIABLE }}}" version="1" />
+  {{% endif %}}
+
+  {{% if OCP_DATA %}}
+  <unix:file_test id="test_file_for_{{{ rule_id }}}" check="all" check_existence="only_one_exists"
+    comment="Find the file to be checked ('{{{ FILEPATH }}}')." version="1">
+    <unix:object object_ref="object_file_for_{{{ rule_id }}}"/>
+  </unix:file_test>
+  {{% endif %}}
+
+  <unix:file_object id="object_file_for_{{{ rule_id }}}" version="1">
+    <unix:filepath var_ref="{{{ rule_id }}}_file_location"/>
+  </unix:file_object>
+
+  <ind:yamlfilecontent_object id="object_{{{ rule_id }}}" version="1">
+    <ind:filepath var_ref="{{{ rule_id }}}_file_location"/>
+    <ind:yamlpath>{{{ YAMLPATH }}}</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+
+  {{% if CHECK_EXISTENCE_YAMLPATH %}}
+  <ind:yamlfilecontent_object id="object_exists_counter_{{{ rule_id }}}" version="1">
+    <ind:filepath var_ref="{{{ rule_id }}}_file_location"/>
+    <ind:yamlpath>{{{ CHECK_EXISTENCE_YAMLPATH }}}</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+  <ind:variable_object id="object_elements_count_for_{{{ rule_id }}}" version="1">
+    <ind:var_ref>local_variable_counter_{{{ rule_id }}}</ind:var_ref>
+  </ind:variable_object>
+
+  <local_variable comment="Items counter" datatype="int" id="local_variable_counter_{{{ rule_id }}}" version="1">
+    <count><object_component object_ref="object_{{{ rule_id }}}" item_field="value" record_field="#"/></count>
+  </local_variable>
+  <local_variable comment="Items counter control" datatype="int" id="local_variable_counter_control_{{{ rule_id }}}" version="1">
+    <count><object_component object_ref="object_exists_counter_{{{ rule_id }}}" item_field="value" record_field="#"/></count>
+  </local_variable>
+
+  <ind:variable_state id="state_elements_count_for_{{{ rule_id }}}" version="1">
+    <ind:value datatype="int" var_ref="local_variable_counter_control_{{{ rule_id }}}"/>
+  </ind:variable_state>
+  {{% endif %}}
+
+  {{% if not XCCDF_VARIABLE or (XCCDF_VARIABLE and not EMBEDDED_DATA) %}}
+  <ind:yamlfilecontent_state id="state_{{{ rule_id }}}" version="1">
+    <ind:value datatype="record"{{% if ENTITY_CHECK %}} entity_check="{{{ ENTITY_CHECK }}}"{{% endif %}}>
+      {{% if XCCDF_VARIABLE and not EMBEDDED_DATA %}}
+      {{% set name = "#" if not VALUES else (VALUES|first).key|default("#")|escape_yaml_key %}}
+      {{% set datatype = "string" if not VALUES else (VALUES|first).type|default("string") %}}
+      {{% if not REGEX_DATA %}}
+      <field {{{ {'name': name, 'datatype': datatype, 'operation': 'equals'}|xmlattr }}} var_ref="{{{ XCCDF_VARIABLE }}}" />
+      {{% else %}}
+      <field {{{ {'name': "#", 'operation': 'pattern match'}|xmlattr }}} var_ref="{{{ XCCDF_VARIABLE }}}" />
+      {{% endif %}}
+      {{% else %}}
+      {{% for val in VALUES %}}
+      <field {{{ {'name': val.key|default("#")|escape_yaml_key, 'datatype': val.type,  'operation':  val.operation, 'entity_check': val.entity_check}|xmlattr }}}>{{{ val.value }}}</field>
+      {{% endfor %}}
+      {{% endif %}}
+    </ind:value>
+  </ind:yamlfilecontent_state>
+  {{% endif %}}
+
+  {{% if OCP_DATA %}}
+  <external_variable comment="Root of OCP data dump" datatype="string" id="ocp_data_root" version="1" />
+  {{% endif %}}
+  {{% if FILEPATH_SUFFIX %}}
+  <external_variable comment="File Path Suffix" datatype="string" id="{{{ FILEPATH_SUFFIX }}}" version="1" />
+  {{% endif %}}
+
+</def-group>
+{{% endif %}}
+

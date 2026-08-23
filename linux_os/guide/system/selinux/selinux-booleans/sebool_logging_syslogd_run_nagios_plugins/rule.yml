@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the logging_syslogd_run_nagios_plugins SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>logging_syslogd_run_nagios_plugins</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="logging_syslogd_run_nagios_plugins") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="logging_syslogd_run_nagios_plugins") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: logging_syslogd_run_nagios_plugins

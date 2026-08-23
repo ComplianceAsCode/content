@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000225-CTR-000570
+  levels:
+  - medium
+  title: {{{ full_name }}} runtime must fail to a secure state if system initialization
+    fails, shutdown fails, or aborts fail.
+  status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://docs.openshift.com/container-platform/latest/support/gathering-cluster-data.html
+  status_justification: |-
+    In the event that there is a failure or disruption to the OpenShift platform, information necessary to identifying the cause would be preserved. The cluster state (resource definitions) is preserved by etcd, audit and system logs are preserved via journald service at the node levels. The following guide provide steps on how to gather cluster data in order to investigate issue with the cluster.
+    https://docs.openshift.com/container-platform/latest/support/gathering-cluster-data.html

@@ -1,0 +1,12 @@
+controls:
+- id: SRG-APP-000435-CTR-001070
+  levels:
+  - medium
+  title: {{{ full_name }}} must protect against or limit the effects of all types
+    of denial-of-service (DoS) attacks by employing organization-defined security
+    safeguards.
+  rules:
+  - project_config_and_template_resource_quota
+  - resource_requests_quota_per_project
+  - routes_rate_limit
+  status: automated

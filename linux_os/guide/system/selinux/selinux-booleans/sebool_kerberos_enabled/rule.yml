@@ -1,0 +1,25 @@
+documentation_complete: true
+
+
+title: 'Enable the kerberos_enabled SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>kerberos_enabled</tt> is enabled.
+    If this setting is disabled, it should be enabled to allow confined
+    applications to run with Kerberos.
+    {{{ describe_sebool_enable(sebool="kerberos_enabled") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84293-0
+    cce@rhel10: CCE-89262-0
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="kerberos_enabled") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: kerberos_enabled

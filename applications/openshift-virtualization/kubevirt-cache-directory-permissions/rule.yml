@@ -1,0 +1,27 @@
+documentation_complete: true
+
+platform: '{{{ product }}}-node'
+
+{{%- set kubevirt_cache_dir = "/var/run/kubevirt-private/" %}}
+
+title: 'Ensure kubevirt cache directory permission is set to 755 or more restrictive'
+
+description: |-
+    {{{ describe_file_permissions(file=kubevirt_cache_dir, perms="0755") }}}
+
+rationale: |-
+    Setting the kubevirt private directory to 755 or more restrictive limits access to
+    security related administrative functionality to approved administrators.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file=kubevirt_cache_dir, perms="-rwxr-xr-x") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file=kubevirt_cache_dir, perms="-rwxr-xr-x") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: {{{ kubevirt_cache_dir }}}
+        filemode: '0755'

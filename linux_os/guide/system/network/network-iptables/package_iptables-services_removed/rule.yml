@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: 'Remove iptables-services Package'
+
+description: |-
+    {{{ describe_package_remove(package="iptables-services") }}}
+
+rationale: |-
+    <tt>iptables-services</tt> provides the services iptables and ip6tables that have been split
+    out of the base package since they are not active by default anymore. These services load the
+    iptables rules during the system startup and also allow one to reload the iptables rules
+    during runtime. Those iptables services conflicts with firewalld so they should be removed if
+    firewalld is used.
+
+severity: medium
+
+platform: package[iptables]
+
+identifiers:
+    cce@rhel8: CCE-86679-8
+
+{{{ complete_ocil_entry_package_removed("iptables-services") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: iptables-services

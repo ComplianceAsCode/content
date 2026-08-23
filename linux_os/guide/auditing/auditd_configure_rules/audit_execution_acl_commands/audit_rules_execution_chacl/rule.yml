@@ -1,0 +1,39 @@
+documentation_complete: true
+
+
+title: 'Record Any Attempts to Run chacl'
+
+description: |-
+    {{{ describe_arpc("/usr/bin/chacl")}}}
+
+rationale: |-
+    Without generating audit records that are specific to the security and
+    mission needs of the organization, it would be difficult to establish,
+    correlate, and investigate the events relating to an incident or identify
+    those responsible for one.
+    Audit records can be generated from various components within the
+    information system (e.g., module or policy filter).
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89446-9
+    cce@rhel9: CCE-87685-4
+    cce@rhel10: CCE-88467-6
+    cce@sle12: CCE-83190-9
+    cce@sle15: CCE-85595-7
+    cce@slmicro5: CCE-93618-7
+    cce@slmicro6: CCE-94619-4
+
+references:
+    nist@sle12: AU-3,AU-3.1,AU-12.1(ii),AU-12(a),AU-12.1(iv),AU-12(c),MA-4(1)(a)
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-OS-000466-GPOS-00210,SRG-APP-000495-CTR-001235,SRG-APP-000499-CTR-001255
+    stigid@ol8: OL08-00-030570
+    stigid@sle12: SLES-12-020620
+
+{{{ ocil_fix_srg_privileged_command("chacl", "/usr/bin/", "perm_mod") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/bin/chacl

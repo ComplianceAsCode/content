@@ -1,0 +1,27 @@
+documentation_complete: true
+
+
+title: 'Uninstall abrt-cli Package'
+
+description: |-
+    {{{ describe_package_remove(package="abrt-cli") }}}
+
+rationale: |-
+    <tt>abrt-cli</tt> contains a command line client for controlling abrt daemon
+    over sockets.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82907-7
+    cce@rhel9: CCE-83512-4
+
+references:
+    srg: SRG-OS-000095-GPOS-00049
+
+{{{ complete_ocil_entry_package_removed("abrt-cli") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: abrt-cli

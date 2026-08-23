@@ -1,0 +1,17 @@
+controls:
+- id: SRG-APP-000447-CTR-001100
+  levels:
+  - medium
+  title: {{{ full_name }}} must behave in a predictable and documented manner
+    that reflects organizational and system objectives when invalid inputs are received.
+  status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://docs.openshift.com/container-platform/latest/rest_api/understanding-compatibility-guidelines.html
+  status_justification: All changes to the system go through API Server which is protected
+    through transport security (TLS), as well as authentication, authorization, and additional
+    admission controllers. These security mechanisms are configured out of the box with
+    strong security controls but can be even further limited to enforce least privilege.
+    Additionally, the API Server safeguards against unintended consequences by rejecting
+    invalid inputs and creating audit records of API events. Alerts and logs and also
+    be setup to display changes of API events.

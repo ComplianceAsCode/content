@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Disable PubkeyAuthentication Authentication'
+
+description: |-
+    Unless needed, SSH should not permit extraneous or unnecessary
+    authentication mechanisms. To disable PubkeyAuthentication authentication, add or
+    correct the following line in
+    {{{ sshd_config_file() }}}
+    <pre>PubkeyAuthentication no</pre>
+
+rationale: |-
+    PubkeyAuthentication authentication is used to provide additional authentication mechanisms to
+    applications. Allowing PubkeyAuthentication authentication through SSH allows users to
+    generate their own authentication tokens, increasing the attack surface of the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82345-0
+
+{{{ complete_ocil_entry_sshd_option(default="no", option="PubkeyAuthentication", value="no") }}}
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: PubkeyAuthentication
+        value: 'no'
+        datatype: string

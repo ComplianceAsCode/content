@@ -1,0 +1,36 @@
+srg_requirement: |-
+    {{{ full_name }}} must configure a DNS processing mode in Network Manager to avoid conflicts with other Domain Name Server (DNS) managers and to not leak DNS queries to untrusted networks.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a DNS mode in Network Manager.
+
+    In "/etc/NetworkManager/NetworkManager.conf", add the following line in the "[main]" section:
+
+    dns = none
+
+    Where &lt;dns processing mode&gt; is default, none, or systemd-resolved.
+
+    Network Manager must be reloaded for the change to take effect:
+
+    $ sudo systemctl reload NetworkManager
+
+checktext: |-
+    Verify {{{ full_name }}} has a DNS mode configured in Network Manager.
+
+    $ NetworkManager --print-config
+    [main]
+    dns=none
+
+    If the dns key under "main" does not exist or is set to "dnsmasq", this is a finding.
+
+    Note: If {{{ full_name }}} is configured to use a DNS resolver other than Network Manager, the configuration must be documented and approved by the information system security officer.
+
+vuldiscussion: |-
+    To ensure that DNS resolver settings are respected, a DNS mode in Network Manager must be configured. The following are common DNS values in "NetworkManager.conf [main]":
+
+    - default: NetworkManager will update "/etc/resolv.conf" to reflect the nameservers provided by currently active connections.
+    - none: NetworkManager will not modify "/etc/resolv.conf". Used when DNS is managed manually or by another service.
+    - systemd-resolved: Uses "systemd-resolved" to manage DNS.
+    - dnsmasq: Enables the internal "dnsmasq" plugin.
+
+

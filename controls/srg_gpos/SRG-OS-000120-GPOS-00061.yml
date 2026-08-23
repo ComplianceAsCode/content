@@ -1,0 +1,13 @@
+controls:
+    -   id: SRG-OS-000120-GPOS-00061
+        levels:
+            - medium
+        title: {{{ full_name }}} must use mechanisms meeting the requirements of applicable
+            federal laws, Executive orders, directives, policies, regulations, standards,
+            and guidance for authentication to a cryptographic module.
+        rules:
+            - package_rsyslog-gnutls_installed
+            - libreswan_approved_tunnels
+            - set_password_hashing_algorithm_passwordauth
+            - set_password_hashing_algorithm_systemauth
+        status: automated

@@ -1,0 +1,33 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that SSHD does not allow blank passwords.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent SSH users from logging on with blank passwords.
+
+    In "/etc/ssh/sshd_config.d", create a drop file that will lexicographically precede 50-redhat.conf and add the following line:
+
+    PermitEmptyPasswords no
+
+    Restart the SSH daemon with the following command for the settings to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+checktext: |-
+    Verify {{{ full_name }}} remote access using SSH prevents logging on with a blank password with the following command:
+
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*permitemptypasswords'
+    /etc/ssh/sshd_config.d/10-stig.conf:PermitEmptyPasswords no
+
+    Verify the runtime setting with the following command:
+
+    $ sudo sshd -T | grep -i permitemptypasswords
+    permitemptypasswords no
+
+    If the "PermitEmptyPasswords" keyword is not set to "no" in a drop-in that lexicographically precedes 50-redhat.conf, or if no output is returned, this is a finding.
+
+vuldiscussion: |-
+    If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.
+
+    OpenSSH uses the first occurrence of a keyword it sees, and drop-in files are read in lexicographical order at the start of the configuration. Red Hat recommends using drop-in files rather than changing base configuration files.
+
+

@@ -1,0 +1,30 @@
+product: kylinserver10
+full_name: Kylin Server 10 
+type: platform
+
+benchmark_id: KYLINSERVER10
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+pkg_manager_config_file: "/etc/yum.conf"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - kylin-sp1:
+      name: "cpe:/o:Kylin:Kylin:V10_SP1:ga:server"
+      title: "Kylin V10 SP1"
+      check_id: installed_OS_is_kylinserver10
+
+  - kylin-sp2:
+      name: "cpe:/o:Kylin:Kylin:V10_SP2:ga:server"
+      title: "Kylin V10 SP2"
+      check_id: installed_OS_is_kylinserver10
+
+  - kylin-sp3:
+      name: "cpe:/o:Kylin:Kylin:V10_SP3:ga:server"
+      title: "Kylin V10 SP3"
+      check_id: installed_OS_is_kylinserver10

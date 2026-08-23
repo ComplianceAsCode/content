@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Configure GNOME Login Screen'
+
+description: |-
+    In the default GNOME desktop, the login is displayed after system boot
+    and can display user accounts, allow users to reboot the system, and allow users to
+    login automatically and/or with a guest account. The login screen should be configured
+    to prevent such behavior.
+    <br /><br />
+    {{% if "ol" in families %}}
+    For more information about enforcing preferences in the GNOME3 environment using the DConf
+    configuration system, see <b>{{{ weblink(link="http://wiki.gnome.org/dconf") }}}</b> and
+    the man page <tt>dconf(1)</tt>.
+    {{% else %}}
+    For more information about enforcing preferences in the GNOME3 environment using the DConf
+    configuration system, see <b>{{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/desktop_migration_and_administration_guide") }}}/></b> and the man page <tt>dconf(1)</tt>.
+    {{% endif %}}

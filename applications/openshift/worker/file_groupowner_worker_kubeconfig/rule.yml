@@ -1,0 +1,34 @@
+documentation_complete: true
+
+
+platform: {{{ product }}}-node
+
+title: 'Verify Group Who Owns The Worker Kubeconfig File'
+
+description: '{{{ describe_file_group_owner(file="/var/lib/kubelet/kubeconfig", group="root") }}}'
+
+rationale: |-
+    The worker kubeconfig file contains information about the administrative configuration of the
+    OpenShift cluster that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-83409-3
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/kubelet/kubeconfig", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/lib/kubelet/kubeconfig", group="root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/lib/kubelet/kubeconfig
+        gid_or_name: '0'

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Enable the xend_run_blktap SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>xend_run_blktap</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    {{{ describe_sebool_enable(sebool="xend_run_blktap") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="xend_run_blktap") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: xend_run_blktap

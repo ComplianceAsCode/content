@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have the quagga package installed.
+
+vuldiscussion: |-
+    Quagga is a network routing software suite providing implementations of Open Shortest Path First (OSPF), Routing Information Protocol (RIP), Border Gateway Protocol (BGP) for Unix and Linux platforms.
+
+    If there is no need to make the router software available, removing it provides a safeguard against its activation.
+
+checktext: |-
+    Verify that the quagga package is not installed with the following command:
+
+    $ dnf list --installed quagga
+
+    Error: No matching Packages to list
+
+    If the "quagga" package is installed and is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
+
+fixtext: |-
+    Remove the quagga package with the following command:
+
+    $ sudo dnf remove quagga
+
+

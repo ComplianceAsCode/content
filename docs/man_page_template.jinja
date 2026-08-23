@@ -1,0 +1,149 @@
+.TH scap-security-guide 8 "26 Jan 2013" "version 1"
+
+.SH NAME
+SCAP-Security-Guide \- Delivers security guidance, baselines, and
+associated validation mechanisms utilizing the Security Content
+Automation Protocol (SCAP).
+
+
+.SH DESCRIPTION
+The project provides practical security hardening advice
+and also links it to compliance requirements in order to ease deployment
+activities, such as certification and accreditation. These include requirements
+in the U.S. government (Federal, Defense, and Intelligence Community) as well
+as of the financial services and health care industries. For example,
+high-level and widely-accepted policies such as NIST 800-53 provides prose
+stating that System Administrators must audit "privileged user actions," but do
+not define what "privileged actions" are. The SSG bridges the gap between
+generalized policy requirements and specific implementation guidance, in SCAP
+formats to support automation whenever possible.
+
+The projects homepage is located at:
+https://www.open-scap.org/security-policies/scap-security-guide
+
+{{% for product in products %}}
+.SH Profiles in {{{ product.title }}}
+
+Source data stream: \fI {{{ product.ds_filename }}} \fR
+
+The {{{ product.title }}} is broken into 'profiles', groupings of security settings
+that correlate to a known policy. Available profiles are:
+
+{{% for profile in product.profiles %}}
+
+.B {{{ profile.title }}}
+
+.RS
+Profile ID: \fI {{{ profile.profile_id }}} \fR
+
+{{{ profile.description }}}
+.RE
+{{% endfor %}}
+
+
+{{% endfor %}}
+
+.SH EXAMPLES
+To scan your system utilizing the OpenSCAP utility against the
+ospp profile:
+
+oscap xccdf eval --profile ospp \
+--results-arf /tmp/`hostname`-ssg-results.xml \
+--report /tmp/`hostname`-ssg-results.html \
+{{{ install_prefix }}}/{{{ content_path }}}/ssg-{product}-xccdf.xml
+.PP
+
+Additional details can be found on the following websites:
+
+https://www.github.com/ComplianceAsCode/content
+.RS
+The project's Github page.
+.RE
+
+https://complianceascode.readthedocs.io
+.RS
+The project's ReadTheDocs page.
+.RE
+
+https://app.gitter.im/#/room/#Compliance-As-Code-The_content:gitter.im
+.RS
+The project's Gitter IM space
+.RE
+
+.SH FILES
+.I {{{ install_prefix }}}/{{{ content_path }}}
+.RS
+Houses SCAP content utilizing the following naming conventions:
+
+.I SCAP Source data streams:
+ssg-{product}-ds.xml
+
+{{% if xccdf_oval_ocil_cpes -%}}
+.I CPE Dictionaries:
+ssg-{product}-cpe-dictionary.xml
+
+.I CPE OVAL Content:
+ssg-{product}-cpe-oval.xml
+
+.I OVAL Content:
+ssg-{product}-oval.xml
+
+.I XCCDF Content:
+ssg-{product}-xccdf.xml
+{{%- endif %}}
+.RE
+
+{{% if guides_path -%}}
+.I {{{ install_prefix }}}/{{{ guides_path }}}
+.RS
+HTML versions of SSG profiles.
+.RE
+{{%- endif %}}
+
+{{% if ansible_profile_playbooks_path -%}}
+.I {{{ install_prefix }}}/{{{ ansible_profile_playbooks_path }}}/
+.RS
+Contains Ansible Playbooks for SSG profiles.
+.RE
+{{%- endif %}}
+
+
+{{% if ansible_playbooks_generated_for_all_rules_path -%}}
+.I {{{ install_prefix }}}/{{{ ansible_playbooks_generated_for_all_rules_path }}}
+.RS
+Contains Ansible Playbooks for individual rules.
+.RE
+{{%- endif %}}
+
+
+{{% if bash_profile_scripts_path -%}}
+.I {{{ install_prefix }}}/{{{ bash_profile_scripts_path }}}/
+.RS
+Contains Bash remediation scripts for SSG profiles.
+.RE
+{{%- endif %}}
+
+
+{{% if kickstarts_path -%}}
+.I {{{ install_prefix }}}/{{{ kickstarts_path }}}/
+.RS
+Contains example kickstarts that install systems hardened against a particular profile.
+.RE
+{{%- endif %}}
+
+
+{{% if tailoring_path -%}}
+.I {{{ install_prefix }}}/{{{ tailoring_path }}}/
+.RS
+Contains tailoring files that enable rules that are not covered by third-party SCAP content and disables rules that are covered by the content shipped in scap-security-guide.
+.RE
+{{%- endif %}}
+
+
+.SH SEE ALSO
+.B oscap(8)
+
+
+.SH AUTHOR
+Please direct all questions to the SSG mailing list:
+https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide

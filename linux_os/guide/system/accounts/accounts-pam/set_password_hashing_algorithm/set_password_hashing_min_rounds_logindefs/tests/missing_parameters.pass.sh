@@ -1,0 +1,8 @@
+#!/bin/bash
+{{% if product in ['sle15', 'sle16'] %}}
+# platform = Not Applicable
+{{% endif %}}
+# variables = var_password_hashing_min_rounds_login_defs=5000
+
+# Default values are 5000 if the parameters are not defined.
+truncate -s 0 {{{ login_defs_path }}}

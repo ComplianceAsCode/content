@@ -1,0 +1,22 @@
+controls:
+    -   id: SRG-OS-000280-GPOS-00110
+        levels:
+            - medium
+        title: {{{ full_name }}} must provide a logoff capability for user-initiated
+            communications sessions when requiring user access authentication.
+        status: inherently met
+        rationale : |-
+            If a user cannot explicitly end an operating system session, the session may remain open and be exploited by an attacker; this is referred to as a zombie session.
+
+            Information resources to which users gain access via authentication includes for example, local workstations and remote services. For some types of interactive sessions, including, for example, remote logon, information systems typically send logoff messages as final messages prior to terminating sessions.
+        check: |-
+           {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+           {{{ full_name }}} inherently meets this requirement.
+        fixtext: |-
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        artifact_description: |-
+            The "logoff" and "exit" commands are baked into the OS and are available to all users and the user can terminate a remote session by closing their SSH terminal.
+        status_justification: |-
+            The use of the "exit" command will end any communication session on the system.
+            This is part of the kernel and cannot be removed without recompiling.

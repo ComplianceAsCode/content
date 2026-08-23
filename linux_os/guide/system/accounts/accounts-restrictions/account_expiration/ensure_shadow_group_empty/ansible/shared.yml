@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = false
+# complexity = low
+# strategy = restrict
+# disruption = medium
+
+- name: Ensure interactive local users are the owners of their respective initialization files
+  ansible.builtin.lineinfile:
+    dest: /etc/group
+    backrefs: yes
+    regexp: '(^shadow:[^:]*:[^:]*:)([^:]+$)'
+    line: '\1'

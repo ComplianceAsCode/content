@@ -1,0 +1,26 @@
+documentation_complete: true
+
+
+title: 'Ensure SELinux Not Disabled in zIPL'
+
+description: |-
+    To ensure SELinux is not disabled at boot time,
+    check that no boot entry in <tt>/boot/loader/entries/*.conf</tt> has <tt>selinux=0</tt>
+    included in its options.<br />
+
+rationale: |-
+    Disabling a major host protection feature, such as SELinux, at boot time prevents
+    it from confining system services at boot time.  Further, it increases
+    the chances that it will remain off during system operation.
+
+severity: medium
+
+ocil_clause: 'SELinux is disabled at boot time'
+
+ocil: |-
+    To check that SELinux is not disabled at boot time;
+    Check that no boot entry disables selinux:
+    <pre>sudo grep -L "^options\s+.*\bselinux=0\b" /boot/loader/entries/*.conf</pre>
+    No line should be returned, each line returned is a boot entry that disables SELinux.
+
+platform: machine

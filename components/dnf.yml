@@ -1,0 +1,17 @@
+name: dnf
+packages:
+- dnf
+- dnf-automatic
+- dnf-plugin-subscription-manager
+- libdnf-plugin-subscription-manager
+rules:
+- clean_components_post_updating
+- disable_weak_deps
+- enable_gpgcheck_for_all_repositories
+- ensure_gpgcheck_globally_activated
+- ensure_gpgcheck_local_packages
+- ensure_gpgcheck_never_disabled
+- ensure_gpgcheck_repo_metadata
+- package_dnf-automatic_installed
+- package_dnf-plugin-subscription-manager_installed
+- package_libdnf-plugin-subscription-manager_installed

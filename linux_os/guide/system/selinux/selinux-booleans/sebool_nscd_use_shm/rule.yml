@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable the nscd_use_shm SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>nscd_use_shm</tt> is enabled.
+    If this setting is disabled, it should be enabled to allow <tt>nscd</tt>
+    to use shared memory.
+    {{{ describe_sebool_enable(sebool="nscd_use_shm") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="nscd_use_shm") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: nscd_use_shm

@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000504-CTR-001280
+  levels:
+  - medium
+  title: {{{ full_name }}} must generate audit record for privileged activities.
+  rules:
+  - audit_rules_kernel_module_loading_delete
+  - audit_rules_kernel_module_loading_finit
+  - audit_rules_kernel_module_loading_init
+  - audit_rules_privileged_commands_kmod
+  status: automated

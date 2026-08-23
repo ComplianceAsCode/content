@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify Group Who Owns /etc/selinux Directory
+
+description: '{{{ describe_file_group_owner(file="/etc/selinux", group="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/selinux directory by the root group is important
+    because this directory hosts SELinux configuration. Protection of this
+    directory is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the SELinux configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86273-0
+    cce@rhel9: CCE-86274-8
+    cce@rhel10: CCE-87637-5
+    cce@sle15: CCE-92501-6
+    cce@sle16: CCE-96054-2
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/selinux", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/selinux", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/selinux", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/selinux", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/selinux/
+        gid_or_name: root

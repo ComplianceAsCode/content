@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("All Interactive Users Must Have A Home Directory Defined", rule_title=rule_title) }}}
+    <criteria>
+      <criterion test_ref="test_accounts_user_interactive_home_directory_defined"
+                 comment="All Interactive Users Must Have A Home Directory Defined"/>
+    </criteria>
+  </definition>
+
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_interactive_users_list_object(interactive_users_object, rule_id=rule_id) }}}
+
+  <!-- #### creation of state #### -->
+  <unix:password_state id="state_accounts_user_interactive_home_directory_defined" version="1">
+    <unix:home_dir operation="pattern match">^\/[^\/\n]*\/[^\/\n]{1,}.*$</unix:home_dir>
+  </unix:password_state>
+
+  <!-- #### creation of test #### -->
+  <unix:password_test id="test_accounts_user_interactive_home_directory_defined" check="all"
+                      check_existence="any_exist" version="1"
+                      comment="All Interactive Users Have A Home Directory Defined">
+    <unix:object object_ref="{{{ interactive_users_object }}}"/>
+    <unix:state state_ref="state_accounts_user_interactive_home_directory_defined"/>
+  </unix:password_test>
+</def-group>

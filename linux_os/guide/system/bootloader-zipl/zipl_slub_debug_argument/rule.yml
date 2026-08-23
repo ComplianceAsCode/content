@@ -1,0 +1,39 @@
+documentation_complete: true
+
+
+title: 'Enable SLUB/SLAB allocator poisoning in zIPL'
+
+description: |-
+    To enable poisoning of SLUB/SLAB objects,
+    check that all boot entries in <tt>/boot/loader/entries/*.conf</tt> have <tt>slub_debug=P</tt>
+    included in its options.<br />
+    To ensure that new kernels and boot entries continue to enable poisoning of SLUB/SLAB objects,
+    add <tt>slub_debug=P</tt> to <tt>/etc/kernel/cmdline</tt>.
+
+rationale: |-
+    Poisoning writes an arbitrary value to freed objects, so any modification or
+    reference to that object after being freed or before being initialized will be
+    detected and prevented.
+    This prevents many types of use-after-free vulnerabilities at little performance cost.
+    Also prevents leak of data and detection of corrupted memory.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83371-5
+    cce@rhel9: CCE-84094-2
+
+ocil_clause: 'SLUB/SLAB poisoning is not enabled'
+
+ocil: |-
+  To check that SLUB/SLAB poisoning is enabled, check all boot entries with following command;
+  <pre>sudo grep -L "^options\s+.*\bslub_debug=P\b" /boot/loader/entries/*.conf</pre>
+  No line should be returned, each line returned is a boot entry that does not enable poisoning.
+
+platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: slub_debug
+    arg_value: 'P'

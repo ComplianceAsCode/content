@@ -1,0 +1,13 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+include enable_{{{ SERVICENAME }}}
+
+class enable_{{{ SERVICENAME }}} {
+  service {'{{{ DAEMONNAME }}}':
+    enable => true,
+    ensure => 'running',
+  }
+}

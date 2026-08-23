@@ -1,0 +1,47 @@
+
+title: Ensure that OpenShift Logging Operator is scanning the cluster
+
+description: |-
+  OpenShift Logging Operator provides ability to aggregate all the logs from the
+  OpenShift Container Platform cluster, such as node system audit logs, application
+  container logs, and infrastructure logs. OpenShift Logging aggregates these logs
+  from throughout OpenShift cluster and stores them in a default log store. [1]
+
+  [1]https://docs.openshift.com/container-platform/4.16/logging/cluster-logging.html
+
+rationale: |-
+  OpenShift Logging Operator is able to collect, aggregate, and manage logs.
+
+identifiers:
+  cce@ocp4: CCE-86638-4
+
+references:
+  nist: AU-3(2)
+  srg: SRG-APP-000092-CTR-000165,SRG-APP-000111-CTR-000220,SRG-APP-000358-CTR-000805
+
+ocil_clause: 'OpenShift Logging Operator is not installed'
+
+ocil: |-
+    Run the following command to retrieve the clusterlogging objects in the system:
+    <pre>$ oc get clusterlogging --all-namespaces</pre>
+    Make sure the OpenShift Logging Operator is installed and there exists
+    at least one active clusterlogging in the cluster.
+
+severity: medium
+
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterloggings/instance") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterloggings/instance
+    yamlpath: ".metadata.name"
+    entity_check: "at least one"
+    values:
+      - value: ".*"
+        operation: "pattern match"
+

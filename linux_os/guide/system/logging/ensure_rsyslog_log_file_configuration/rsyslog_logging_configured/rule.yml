@@ -1,0 +1,64 @@
+documentation_complete: true
+
+
+title: 'Ensure logging is configured'
+
+description: |-
+    The <tt>/etc/rsyslog.conf</tt> and <tt>/etc/rsyslog.d/*.conf</tt> files
+    specifies rules for logging and which files are to be used to log certain
+    classes of messages.
+
+rationale: |-
+    A great deal of important security-related information is sent via
+    rsyslog (e.g., successful and failed su attempts, failed login attempts,
+    root login attempts, etc.).
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92379-7
+    cce@sle15: CCE-92497-7
+
+references:
+    cis@sle12: 4.2.1.4
+    cis@sle15: 4.2.1.4
+
+ocil_clause: 'no logging is configured'
+
+ocil: |-
+    Review the contents of the <tt>/etc/rsyslog.conf</tt> and <tt>/etc/rsyslog.d/*.conf</tt>
+    files to ensure appropriate logging is set. In addition, run the following command:
+    <pre>ls -l /var/log/</pre>
+    and verify that the log files are logging information
+
+fixtext: |-
+    Configure logging with selectors covering each priority. An example log configuration can be
+    the following content of <tt>/etc/rsyslog.conf</tt> and <tt>/etc/rsyslog.d/*.conf</tt> files:
+    <pre>
+    *.emerg                        :omusrmsg:*
+    auth,authpriv.*                /var/log/secure
+    mail.*                         -/var/log/mail
+    mail.info                      -/var/log/mail.info
+    mail.warning                   -/var/log/mail.warn
+    mail.err                       /var/log/mail.err
+    news.crit                      -/var/log/news/news.crit
+    news.err                       -/var/log/news/news.err
+    news.notice                    -/var/log/news/news.notice
+    *.=warning;*.=err              -/var/log/warn
+    *.crit                         /var/log/warn
+    *.*;mail.none;news.none        -/var/log/messages
+    local0,local1.*                -/var/log/localmessages
+    local2,local3.*                -/var/log/localmessages
+    local4,local5.*                -/var/log/localmessages
+    local6,local7.*                -/var/log/localmessages
+    </pre>
+    To apply new settings use command:
+    <pre>systemctl restart rsyslog </pre>
+
+warnings:
+    - general: |-
+        This rule does not come with remediation as there is no one way to solve the problem, and
+        the requirement from CIS specification does not require one particular way, but persuades
+        the system administrator to perform configuration suitable for the specific environment.
+        This also means that the OVAL check is too generic, and the user most probably should
+        perform additional manual verification.

@@ -1,0 +1,55 @@
+documentation_complete: true
+
+
+title: 'Disable auto-download for proscribed MIME types.'
+
+description: |-
+    Firefox must be configured to not automatically execute or download MIME types that are not
+    authorized for auto-download.
+
+rationale: |-
+    This setting ensures that some file types that may be downloaded or executed without user interaction
+    are not downloaded and/or executed.
+
+severity: medium
+
+references:
+    nist: SI-3 c
+    stigid: FFOX-00-000006
+
+ocil: |-
+    To verify that any proscribed file types are configured for automatic download,
+    type "about:preferences" into the search bar,  then
+    type "Applications" in the Find bar in the upper-right corner.
+    If any of the following file extensions are listed and the Action item associated with it 
+    is an application that does or can execute the code, this is a finding.
+    If the entry exists and the "Action" is "Save File" or "Always Ask", this is not a finding.
+    <ul>
+      <li>HTA</li>
+      <li>JSE</li>
+      <li>JS</li>
+      <li>MOCHA</li>
+      <li>SHS</li>
+      <li>VBE</li>
+      <li>VBS</li>
+      <li>SCT</li>
+      <li>WSC</li>
+      <li>FDF</li>
+      <li>XFDF</li>
+      <li>LSL</li>
+      <li>LSO</li>
+      <li>LSS</li>
+      <li>IQY</li>
+      <li>RQY</li>
+      <li>DOS</li>
+      <li>BAT</li>
+      <li>PS</li>
+      <li>EPS</li>
+      <li>WCH</li>
+      <li>WCM</li>
+      <li>WB1</li>
+      <li>WB3</li>
+      <li>WCH</li>
+      <li>WCM</li>
+      <li>AD</li>
+    </ul>

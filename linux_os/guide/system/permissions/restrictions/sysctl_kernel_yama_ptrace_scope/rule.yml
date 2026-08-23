@@ -1,0 +1,54 @@
+documentation_complete: true
+
+
+title: 'Restrict usage of ptrace to descendant processes'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.yama.ptrace_scope", value="1") }}}'
+
+rationale: |
+    Unrestricted usage of ptrace allows compromised binaries to run ptrace
+    on another processes of the user. Like this, the attacker can steal
+    sensitive information from the target processes (e.g. SSH sessions, web browser, ...)
+    without any additional assistance from the user (i.e. without resorting to phishing).
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82501-8
+    cce@rhel8: CCE-80953-3
+    cce@rhel9: CCE-83965-4
+    cce@rhel10: CCE-88785-1
+    cce@sle12: CCE-91572-8
+    cce@sle15: CCE-91262-6
+    cce@sle16: CCE-96674-7
+
+references:
+    nist: SC-7(10)
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000132-GPOS-00067,SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-040282
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.yama.ptrace_scope", value="1") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to restrict usage of ptrace to descendant processes.
+    {{{ fixtext_sysctl(sysctl="kernel.yama.ptrace_scope", value="1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must restrict usage of ptrace to descendant processes.'
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.yama.ptrace_scope
+        {{% if product in ['ubuntu2404'] %}}
+        sysctlval:
+          - '1'
+          - '2'
+          - '3'
+        wrong_sysctlval_for_testing: '0'
+        {{% else %}}
+        sysctlval: '1'
+        {{% endif %}}
+        datatype: int

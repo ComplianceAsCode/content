@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the httpd_mod_auth_pam SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_mod_auth_pam</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="httpd_mod_auth_pam") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_mod_auth_pam") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_mod_auth_pam

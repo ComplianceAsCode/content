@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Ensure logrotate is Installed'
+
+description: 'logrotate is installed by default. {{{ describe_package_install(package="logrotate") }}}'
+
+rationale: |-
+    The logrotate package provides the logrotate services.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86154-2
+    cce@rhel9: CCE-86155-9
+    cce@rhel10: CCE-88423-9
+    cce@sle12: CCE-92386-2
+    cce@sle15: CCE-92561-0
+    cce@sle16: CCE-96604-4
+    cce@slmicro5: CCE-94015-5
+
+references:
+    cis-csc: 1,14,15,16,3,5,6
+    cis@sle12: "4.2.4"
+    cis@sle15: "4.2.4"
+    cobit5: APO11.04,BAI03.05,DSS05.04,DSS05.07,MEA02.01
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9'
+    iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1
+    nist: CM-6(a)
+    nist-csf: PR.PT-1
+    pcidss: Req-10.7
+
+{{{ complete_ocil_entry_package_installed("logrotate") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: logrotate

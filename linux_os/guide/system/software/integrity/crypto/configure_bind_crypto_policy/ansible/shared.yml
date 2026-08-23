@@ -1,0 +1,23 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+-   name: "{{{ rule_title }}} - Check BIND configuration file exists"
+    ansible.builtin.stat:
+        path: /etc/named.conf
+    register: bind_config_file
+
+-   name: "{{{ rule_title }}} - Aborting remediation, file not found"
+    ansible.builtin.debug:
+        msg: "Aborting remediation as '/etc/named.conf' was not found."
+    when: not bind_config_file.stat.exists
+
+-   name: "{{{ rule_title }}} - Insert crypto-policy into BIND config"
+    ansible.builtin.lineinfile:
+        path: /etc/named.conf
+        insertafter: '^\s*options\s*{'
+        line: ' include "/etc/crypto-policies/back-ends/bind.config";'
+        state: present
+    when: bind_config_file.stat.exists

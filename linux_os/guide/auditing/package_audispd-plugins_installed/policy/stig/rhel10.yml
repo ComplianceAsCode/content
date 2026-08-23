@@ -1,0 +1,21 @@
+checktext: |-
+    Verify {{{ full_name }}} has the "audispd-plugins" package installed with the following command:
+
+    $ sudo dnf list --installed audispd-plugins
+    Installed Packages
+    audispd-plugins.x86_64                           4.0.3-1.el10                            @rhel-10-for-x86_64-baseos-rpms
+
+    If the "audispd-plugins" package is not installed, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to have the "audispd-plugins" package installed with the following command:
+
+    $ sudo dnf -y install audispd-plugins
+
+srg_requirement: |-
+    {{{ full_name }}} must have the "audispd-plugins" package installed.
+
+vuldiscussion: |-
+    The "audispd-plugins" package provides plugins for the real-time interface to the audit subsystem, "audispd". These plugins can do such things as relay events to remote machines or analyze events for suspicious behavior.
+
+

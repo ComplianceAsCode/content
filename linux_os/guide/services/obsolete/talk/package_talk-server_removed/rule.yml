@@ -1,0 +1,36 @@
+documentation_complete: true
+
+
+title: 'Uninstall talk-server Package'
+
+description: '{{{ describe_package_remove(package="talk-server") }}}'
+
+rationale: |-
+    The talk software presents a security risk as it uses unencrypted protocols
+    for communications. Removing the <tt>talk-server</tt> package decreases the
+    risk of the accidental (or intentional) activation of talk services.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82180-1
+    cce@rhel9: CCE-84158-5
+    cce@rhel10: CCE-86747-3
+    cce@sle12: CCE-91464-8
+    cce@sle15: CCE-91433-3
+
+references:
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+
+{{{ complete_ocil_entry_package_removed("talk-server") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: talk-server
+
+{{% if product in ["rhel8", "rhel9"] %}}
+warnings:
+    - general:
+        The package is not available in {{{ full_name }}}.
+{{% endif %}}

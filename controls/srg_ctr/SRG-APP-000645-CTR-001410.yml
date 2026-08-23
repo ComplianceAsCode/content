@@ -1,0 +1,18 @@
+controls:
+- id: SRG-APP-000645-CTR-001410
+  levels:
+  - high
+  title: {{{ full_name }}} must prohibit or restrict the use of protocols that
+    transmit unencrypted authentication information or use flawed cryptographic algorithms
+    for transmission.
+  related_rules:
+  - configure_network_policies_namespaces
+  status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://docs.openshift.com/container-platform/latest/post_installation_configuration/network-configuration.html
+  status_justification: |-
+    The ports and protocols configured with OpenShift are required for the
+    proper functioning of the clusters and associated network.  Details on
+    configuration options are located in the following document:
+    https://docs.openshift.com/container-platform/latest/post_installation_configuration/network-configuration.html

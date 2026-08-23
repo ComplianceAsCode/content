@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Configure Trusted Networks and Hosts'
+
+description: |-
+    Edit <tt>/etc/postfix/main.cf</tt>, and configure the contents of
+    the <tt>mynetworks</tt> variable in one of the following ways:
+    <ul>
+    <li>If any system in the subnet containing the MTA may be trusted to relay
+    messages, add or correct the following line:
+    <pre>mynetworks_style = subnet</pre>
+    This is also the default setting, and is in effect if all
+    <tt>my_networks_style</tt> directives are commented.</li>
+    <li>If only the MTA host itself is trusted to relay messages, add or correct
+    the following line:
+    <pre>mynetworks_style = host</pre></li>
+    <li>If the set of systems which can relay is more complicated, manually
+    specify an entry for each netblock or IP address which is trusted to relay by
+    setting the <tt>mynetworks</tt> variable directly:
+    <pre>mynetworks = 10.0.0.0/16, 192.168.1.0/24, 127.0.0.1</pre></li>
+    </ul>

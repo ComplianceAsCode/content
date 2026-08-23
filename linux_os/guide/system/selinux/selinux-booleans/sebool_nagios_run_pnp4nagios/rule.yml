@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the nagios_run_pnp4nagios SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>nagios_run_pnp4nagios</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="nagios_run_pnp4nagios") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="nagios_run_pnp4nagios") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: nagios_run_pnp4nagios

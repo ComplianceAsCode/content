@@ -1,0 +1,15 @@
+controls:
+- id: SRG-APP-000506-CTR-001290
+  levels:
+  - medium
+  title: {{{ full_name }}} must generate audit records when concurrent logons
+    from different workstations and systems occur.
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  rules:
+  - audit_rules_login_events_faillock
+  - audit_rules_login_events_lastlog
+  status: automated
+

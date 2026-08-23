@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the fcron_crond SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>fcron_crond</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="fcron_crond") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="fcron_crond") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: fcron_crond

@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000063-GPOS-00032
+        levels:
+            - medium
+        title: {{{ full_name }}} must allow only the ISSM (or individuals or roles appointed
+            by the ISSM) to select which auditable events are to be audited.
+        rules:
+            - file_permissions_etc_audit_auditd
+            - file_permissions_etc_audit_rulesd
+        status: automated

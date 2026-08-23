@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} must use a separate file system for "/var".
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a separate file system for the "/var" directory by migrating the "/var" path onto a separate file system.
+
+checktext: |-
+    Verify {{{ full_name }}} uses a separate file system/partition for "/var" with the following command:
+
+    $ mount | grep /var
+    /dev/mapper/luks-51150299-f295-4145-b8f0-ebe9c6dfd5a0 on /var type xfs (rw,nodev,relatime,seclabel,attr2)
+    Note: Options displayed for mount may differ.
+
+    If a separate entry for "/var" is not in use, this is a finding.
+
+vuldiscussion: |-
+    Ensuring that "/var" is mounted on its own partition enables the setting of more restrictive mount options. This helps protect system services such as daemons or other programs that use it. It is not uncommon for the "/var" directory to contain world-writable directories installed by other software packages.

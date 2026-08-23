@@ -1,0 +1,23 @@
+documentation_complete: true
+
+
+title: 'Disable the abrt_handle_event SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>abrt_handle_event</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="abrt_handle_event") }}}
+
+rationale: ""
+
+severity: medium
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="abrt_handle_event") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: abrt_handle_event

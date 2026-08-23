@@ -1,0 +1,13 @@
+controls:
+    -   id: SRG-OS-000445-GPOS-00199
+        levels:
+            - medium
+        title: {{{ full_name }}} must verify correct operation of all security functions.
+        rules:
+            - var_selinux_policy_name=targeted
+            - var_selinux_state=enforcing
+            - selinux_policytype
+            - selinux_state
+            - package_aide_installed
+            - selinux_context_elevation_for_sudo
+        status: automated

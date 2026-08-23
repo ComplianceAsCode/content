@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the nis_enabled SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>nis_enabled</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="nis_enabled") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="nis_enabled") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: nis_enabled

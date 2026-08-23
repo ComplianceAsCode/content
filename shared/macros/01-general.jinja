@@ -1,0 +1,1485 @@
+{{#
+  Macro which generates a warning indicating how to make use of a
+  Kubernetes/OpenShift-related rule. This is used by the Compliance
+  Operator to automatically figure out what resources to fetch.
+
+:param endpoint: The Kubernetes object path(s) to fetch
+:type endpoint: str | list[str]
+:param suppress: Whether to suppress the warning
+:type suppress: bool
+
+#}}
+{{% macro openshift_cluster_setting(endpoint, suppress) -%}}
+This rule's check operates on the cluster configuration dump.
+Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file. {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% endfor %}}.{{% endif %}}
+{{%- endmacro %}}
+
+
+{{% macro openshift_cluster_setting_kubeletconfig() -%}}
+This rule's check operates on the cluster configuration dump. This will be a Platform rule, var_role_worker and var_role_master needed to be set if scan is not expected to run on master, and worker nodes.
+Therefore, you need to use a tool that can query the OCP API, retrieve KubeletConfig through <code class="ocp-api-endpoint-kubeletconfig">"/api/v1/nodes/NODE_NAME/proxy/configz"</code> {{{suppressed_warning()}}} API endpoint to the local <code class="ocp-dump-location-kubeletconfig">{{{ xccdf_value("ocp_data_root") }}}"/kubeletconfig/role/role"</code> file.
+{{%- endmacro %}}
+
+
+{{#
+  Macro which generates a warning indicating how to make use of a
+  Kubernetes/OpenShift-related rule as well as how to filter it. This
+  is used by the Compliance Operator to automatically figure
+  out what resources to fetch. The filtering directive can be used
+  by the jq command ( https://stedolan.github.io/jq/manual/ ).
+
+:param path_filter_pairs: Kubernetes object path/filter directive pairs
+:type path_filter_pairs: dict[str, str]
+:param varargs: A list of path_filter_pairs (in case repeated paths need to be used)
+:type varargs: list[dict[str, str]]
+
+#}}
+{{% macro openshift_filtered_cluster_setting(path_filter_pairs) -%}}
+This rule's check operates on the cluster configuration dump.
+Therefore, you need to use a tool that can query the OCP API, retrieve the following:
+<ul>
+{{% for obj_path, v in path_filter_pairs.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[1] %}}
+  {{% elif vars|length == 3 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[2] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set default_filter = v %}}
+    {{% set custom_filter = v %}}
+  {{% endif %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ custom_filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+default_filter)|sha256 }}}</code>
+    file.
+  </li>
+{{% endfor %}}
+
+{{% for arg in varargs %}}
+    {{% for obj_path, v in arg.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[1] %}}
+  {{% elif vars|length == 3 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[2] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set default_filter = v %}}
+    {{% set custom_filter = v %}}
+  {{% endif %}}
+    <li>
+        <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+        API endpoint, filter with with the <code>jq</code> utility using the following filter
+        <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ custom_filter }}}</code>
+        and persist it to the local
+        <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+default_filter)|sha256 }}}</code>
+        file.
+    </li>
+    {{% endfor %}}
+{{% endfor %}}
+</ul>
+{{%- endmacro %}}
+
+
+{{#
+  Macro which generates a warning indicating how to make use of a
+  Kubernetes/OpenShift-related rule as well as how to filter it. This
+  is used by the Compliance Operator to automatically figure
+  out what resources to fetch. The filtering directive can be used
+  by the jq command ( https://stedolan.github.io/jq/manual/ ).
+  This macro will suppress any non-fatal failed to fetch api warnings.
+
+:param path_filter_pairs: Kubernetes object path/filter directive pairs
+:type path_filter_pairs: dict
+:param varargs: A list of path_filter_pairs (in case repeated paths need to be used)
+:type path_filter_pairs: list
+
+#}}
+{{% macro openshift_filtered_cluster_setting_suppressed(path_filter_pairs) -%}}
+This rule's check operates on the cluster configuration dump.
+Therefore, you need to use a tool that can query the OCP API, retrieve the following:
+<ul>
+{{% for obj_path, v in path_filter_pairs.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[1] %}}
+  {{% elif vars|length == 3 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[2] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set default_filter = v %}}
+    {{% set custom_filter = v %}}
+  {{% endif %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ custom_filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+default_filter)|sha256 }}}</code>
+    file.
+    {{{ suppressed_warning() }}}
+  </li>
+{{% endfor %}}
+
+{{% for arg in varargs %}}
+    {{% for obj_path, v in arg.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[1] %}}
+  {{% elif vars|length == 3 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[2] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set default_filter = v %}}
+    {{% set custom_filter = v %}}
+  {{% endif %}}
+    <li>
+        <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+        API endpoint, filter with with the <code>jq</code> utility using the following filter
+        <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ custom_filter }}}</code>
+        and persist it to the local
+        <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+default_filter)|sha256 }}}</code>
+        file.
+        {{{ suppressed_warning() }}}
+    </li>
+    {{% endfor %}}
+{{% endfor %}}
+</ul>
+{{%- endmacro %}}
+
+{{#
+  Macro which generates a unique identifier for Compliance Operator, this will hide the rule from ComplianceCheckResult
+
+#}}
+{{% macro hide_rule() -%}}
+This rule will be a hidden rule
+<code class="ocp-hide-rule" id="ocp-hide-rule">true</code>
+{{%- endmacro %}}
+
+{{#
+  Macro which generate a unique identifier for Compliance Operator, this will suppress the warning
+#}}
+{{% macro suppressed_warning() -%}}
+<code class="ocp-suppress-warning" id="ocp-suppress-warning">true</code>
+{{%- endmacro %}}
+
+{{% macro openshift_filtered_version(path_filter_pairs) -%}}
+This rule's check operates on the cluster configuration dump.
+Therefore, you need to use a tool that can query the OCP API, retrieve the following:
+<ul>
+{{% for obj_path, v in path_filter_pairs.items() %}}
+  {{% set vars = v.split(',') %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ default_filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}</code>
+    file.
+    {{{ hide_rule() }}}
+    {{{ suppressed_warning() }}}
+  </li>
+{{% endfor %}}
+</ul>
+{{%- endmacro %}}
+
+
+{{#
+  Macro which generates a unique path for a filtered Kubernetes
+  resource. The path and the filter are used to generate a unique
+  identifier in such a way that it won't conflict with unfiltered
+  resources
+
+:param path: The Kubernetes object path to fetch
+:type path: str
+:param filter: A filtering directive
+:type filter: str
+
+#}}
+{{% macro openshift_filtered_path(path, filter) -%}}
+{{{ path }}}#{{{ (path+filter)|sha256 }}}
+{{%- endmacro %}}
+
+
+{{#
+    Calls :code:`xccdf_value` macro under the hood. Deprecated: Use
+    :code:`xccdf_value`.
+
+:param varname: The name of the variable to reference
+:type varname: str
+
+#}}
+{{% macro sub_var_value(varname) -%}}
+{{{ xccdf_value(varname) }}}
+{{%- endmacro %}}
+
+
+{{#
+    Create an XCCDF :code:`<sub>` element
+
+:param varname: The name of the variable to reference
+:type varname: str
+
+#}}
+{{% macro xccdf_value(varname) -%}}
+<sub idref="{{{ varname }}}" />
+{{%- endmacro %}}
+
+
+{{% macro _iptables_desc(traffic_action, how_to_do, proto, port) -%}}
+    To configure <tt>iptables</tt> {{{ traffic_action }}} port {{{ port }}} traffic, one must edit
+    <tt>/etc/sysconfig/iptables</tt> and
+    <tt>/etc/sysconfig/ip6tables</tt> (if IPv6 is in use).
+    {{{ how_to_do }}}
+    <pre>-A INPUT -m state --state NEW -p {{{ proto }}} --dport {{{ port }}} -j ACCEPT</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Describe an iptables block
+
+:param proto: protocol to block
+:type proto: str
+:param port: port to block
+:type port: int
+
+#}}
+{{% macro describe_iptables_block(proto, port) -%}}
+{{{ _iptables_desc(
+	traffic_action="to block",
+	how_to_do="Remove the following line, ensuring that it does not appear the INPUT chain:",
+	proto=proto,
+	port=port
+) }}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe an iptables allow
+
+:param proto: protocol to allow
+:type proto: str
+:param port: port to allow
+:type port: int
+
+#}}
+{{% macro describe_iptables_allow(proto, port) -%}}
+{{{ _iptables_desc(
+	traffic_action="to allow",
+	how_to_do="Add the following line, ensuring that it appears before the final LOG and DROP lines for the INPUT chain:",
+	proto=proto,
+	port=port
+) }}}
+{{%- endmacro %}}
+
+
+{{#
+Describe preventing access to service in firewalld.
+
+:param service: The service to allow
+:type service: str
+
+#}}
+{{%- macro describe_firewalld_prevent_service(service) %}}
+    To configure <code>firewalld</code> to prevent access, run the following command(s):
+    <code>firewall-cmd --permanent --remove-service={{{ service }}}</code>
+{{%- endmacro %}}
+
+
+{{#
+Describe allowing access to a port in firewalld.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+
+#}}
+{{%- macro describe_firewalld_allow_port(port, proto) %}}
+    To configure <code>firewalld</code> to allow <code>{{{ port }}}/{{{ proto }}}</code> access, run the following command(s):
+    <pre>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</pre>
+    Then run the following command to load the newly created rule(s):
+    <pre>firewall-cmd --reload</pre>
+{{%- endmacro %}}
+
+
+{{#
+Describe allowing access to a service in firewalld.
+
+:param service: The service to allow
+:type service: str
+
+#}}
+{{%- macro describe_firewalld_allow_service(service) %}}
+    To configure <code>firewalld</code> to allow <code>{{{ service }}}</code> access, run the following command(s):
+    <pre>firewall-cmd --permanent --add-service={{{ service }}}</pre>
+    Then run the following command to load the newly created rule(s):
+    <pre>firewall-cmd --reload</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Description for how to check for a disabled kernel module.
+
+:param module: The module to disable.
+:type module: str
+
+#}}
+{{%- macro describe_module_disable(module) %}}
+    To configure the system to prevent the <code>{{{ module }}}</code>
+    kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
+    <pre>install {{{ module }}} /bin/false</pre>
+    This entry will cause a non-zero return value during a <code>{{{ module }}}</code> module installation
+    and additionally convey the meaning of the entry to the user in form of an error message.
+    If you would like to omit a non-zero return value and an error message, you may want to add a different line instead
+    (both <code>/bin/true</code> and <code>/bin/false</code> are allowed by OVAL and will be accepted by the scan):
+    <pre>install {{{ module }}} /bin/true</pre>
+    {{% if "ol" in families or product in ["rhel8"] %}}
+    To configure the system to prevent the <code>{{{ module }}}</code> from being used,
+    add the following line to file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
+    <pre>blacklist {{{ module }}}</pre>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to disable socket in systemd.
+
+:param socket: The socket to check
+:type socket: str
+
+#}}
+{{%- macro systemd_describe_socket_disable(socket) %}}
+    The <code>{{{ socket }}}</code> socket can be disabled with the following command:
+    <pre>$ sudo systemctl mask --now {{{ socket }}}.socket</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to enable a socket in systemd.
+
+:param socket: The socket to check
+:type socket: str
+
+#}}
+{{%- macro systemd_describe_socket_enable(socket) %}}
+    The <code>{{{ socket }}}</code> socket can be enabled with the following command:
+    <pre>$ sudo systemctl enable {{{ socket }}}.socket</pre>
+{{%- endmacro %}}
+
+
+{{#
+Inserts a rule description for a case when a socket should be enabled,
+substituting the correct init system.
+
+:param socket: Name of socket
+:type socket: str
+
+#}}
+{{% macro describe_socket_enable(socket) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_describe_socket_enable(socket) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+Inserts a rule description for a case when a socket should be disabled,
+substituting the correct init system.
+
+:param socket: Name of socket
+:type socket: str
+
+#}}
+{{% macro describe_socket_disable(socket) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_describe_socket_disable(socket) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to disable a service in systemd.
+
+:param service: The service to check
+:type service: str
+
+#}}
+{{%- macro systemd_describe_service_disable(service) %}}
+    {{% if product != "rhcos4" -%}}
+    The <code>{{{ service }}}</code> service can be disabled with the following command:
+    <pre>$ sudo systemctl mask --now {{{ service }}}.service</pre>
+    {{%- else -%}}
+    The <code>{{{ service }}}</code> service can be disabled with the following manifest:
+    <pre>
+    ---
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-{{{ service }}}-disable
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        systemd:
+          units:
+          - name: {{{ service }}}.service
+            enabled: false
+            mask: true
+          - name: {{{ service }}}.socket
+            enabled: false
+            mask: true
+    </pre>
+    <p>
+    This will disable the <tt>{{{ service }}}</tt> service in all the
+    nodes labeled with the "master" role.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to enable a service in systemd.
+
+:param service: The service to check
+:type service: str
+
+#}}
+{{%- macro systemd_describe_service_enable(service) %}}
+    {{% if product != "rhcos4" -%}}
+    The <code>{{{ service }}}</code> service can be enabled with the following command:
+    <pre>$ sudo systemctl enable {{{ service }}}.service</pre>
+    {{%- else -%}}
+    The <code>{{{ service }}}</code> service can be enabled with the following manifest:
+    <pre>
+    ---
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-{{{ service }}}-enable
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        systemd:
+          units:
+          - name: {{{ service }}}.service
+            enabled: true
+    </pre>
+    <p>
+    This will enable the <tt>{{{ service }}}</tt> service in all the
+    nodes labeled with the "master" role.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{%- endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro systemd_describe_timer_enable(timer) %}}
+    The <code>{{{ timer }}}</code> timer can be enabled with the following command:
+    <pre>$ sudo systemctl enable {{{ timer }}}.timer</pre>
+{{%- endmacro %}}
+
+
+{{#
+Inserts a rule description for a case when a timer should be enabled,
+substituting the correct init system.
+
+:param timer: Name of timer
+:type timer: str
+
+#}}
+{{% macro describe_timer_enable(timer) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_describe_timer_enable(timer) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+Inserts a rule description for a case when a service should be enabled,
+substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro describe_service_enable(service) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_describe_service_enable(service) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+Inserts a rule description for a case when a service should be disabled,
+substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro describe_service_disable(service) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_describe_service_disable(service) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to set an SELinux boolean depending on a variable.
+
+:param sebool: The SELinux boolean to disable
+:type sebool: str
+
+#}}
+{{%- macro describe_sebool_var(sebool) %}}
+    To set the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} {{{ xccdf_value("var_" + sebool) }}}</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to disable an SELinux boolean.
+
+:param sebool: The SELinux boolean to disable
+:type sebool: str
+
+#}}
+{{%- macro describe_sebool_disable(sebool) %}}
+    To disable the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} off</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to enable an SELinux boolean.
+
+:param sebool: The SELinux boolean to disable
+:type sebool: str
+
+#}}
+{{%- macro describe_sebool_enable(sebool) %}}
+    To enable the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} on</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Show how to install a package with apt-get.
+
+    Example output::
+
+        apt-get install package
+
+:param package: Package to install
+:type package: str
+
+#}}
+{{%- macro apt_get_package_install(package) %}}
+    $ apt-get install {{{ package }}}
+{{%- endmacro %}}
+
+
+{{#
+    Show how to remove a package with apt-get.
+
+    Example output::
+
+        $ apt-get remove package
+
+:param package: Package to remove
+:type package: str
+
+#}}
+{{%- macro apt_get_package_remove(package) %}}
+    $ apt-get remove {{{ package }}}
+{{%- endmacro %}}
+
+
+{{#
+    Show how to install a package with dnf.
+
+    Example output::
+
+        $ sudo dnf install package
+
+:param package: Package to install
+:type package: str
+
+#}}
+{{%- macro dnf_package_install(package) %}}
+    $ sudo dnf install {{{ package }}}
+{{%- endmacro %}}
+
+
+{{#
+    Show how to remove a package with dnf.
+
+    Example output::
+
+        $ sudo dnf remove package
+
+:param package: Package to remove
+:type package: str
+
+#}}
+{{%- macro dnf_package_remove(package) %}}
+    $ sudo dnf remove {{{ package }}}
+{{%- endmacro %}}
+
+
+{{#
+    Show how to install a package with yum.
+
+    Example output::
+
+        $ sudo yum install package
+
+:param package: Package to install
+:type package: str
+
+#}}
+{{%- macro yum_package_install(package) %}}
+    $ sudo yum install {{{ package }}}
+{{%- endmacro %}}
+
+
+{{#
+    Show how to remove a package with yum.
+
+    Example output::
+
+        $ sudo yum erase package
+
+:param package: Package to remove
+:type package: str
+
+#}}
+{{%- macro yum_package_remove(package) %}}
+    $ sudo yum erase {{{ package }}}
+{{%- endmacro %}}
+
+
+{{#
+    Show how to install a package with zypper.
+
+    Example output::
+
+        $ sudo zypper install package
+
+:param package: Package to install
+:type package: str
+
+#}}
+{{%- macro zypper_package_install(package) %}}
+    $ sudo zypper install {{{ package }}}
+{{%- endmacro %}}
+
+
+{{#
+    Show how to remove a package with zypper.
+
+    Example output::
+
+        $ sudo zypper remove package
+
+:param package: Package to remove
+:type package: str
+
+#}}
+{{%- macro zypper_package_remove(package) %}}
+    $ sudo zypper remove {{{ package }}}
+{{%- endmacro %}}
+
+
+{{#
+Outputs a command for installing a package, substituting the correct package
+management software.
+
+:param package: Name of package
+:type package: str
+
+#}}
+{{%- macro package_install(package) -%}}
+  {{% if pkg_manager is defined %}}
+    {{%- if pkg_manager == "apt_get" -%}}
+        {{{ apt_get_package_install(package) }}}
+    {{%- elif pkg_manager == "zypper" -%}}
+        {{{ zypper_package_install(package) }}}
+    {{%- elif pkg_manager == "yum" -%}}
+        {{{ yum_package_install(package) }}}
+    {{%- elif pkg_manager == "dnf" -%}}
+        {{{ dnf_package_install(package) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+Inserts a rule description for a case when a package should be installed,
+substituting the correct package management software.
+
+:param package: Name of package
+:type package: str
+
+#}}
+{{%- macro describe_package_install(package) -%}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ package }}}</code> package needs to be present in the container or container image.
+{{%- else -%}}
+    The <code>{{{ package }}}</code> package can be installed with the following command:
+    <pre>{{{ package_install(package) }}}</pre>
+{{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
+Outputs a command for removing a package, substituting the correct package
+management software.
+
+#}}
+{{%- macro package_remove(package) -%}}
+  {{% if pkg_manager is defined %}}
+    {{%- if pkg_manager == "apt_get" -%}}
+        {{{ apt_get_package_remove(package) }}}
+    {{%- elif pkg_manager == "zypper" -%}}
+        {{{ zypper_package_remove(package) }}}
+    {{%- elif pkg_manager == "yum" -%}}
+        {{{ yum_package_remove(package) }}}
+    {{%- elif pkg_manager == "dnf" -%}}
+        {{{ dnf_package_remove(package) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+Inserts a rule description for a case when a package should be removed,
+substituting the correct package management software.
+
+:param package: Name of package
+:type package: str
+
+#}}
+{{%- macro describe_package_remove(package) -%}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ package }}}</code> package should not be present in the container or container image.
+    Remove the <code>{{{ package }}}</code> package from <code>Containerfile</code> and rebuild the container image.
+{{%- else -%}}
+    The <code>{{{ package }}}</code> package can be removed with the following command:
+    <pre>{{{ package_remove(package) }}}</pre>
+{{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to set the permissions on a file.
+
+:param file: File to change
+:type file: str
+:param perms: The permissions for the file
+:type perms: str
+
+#}}
+{{%- macro describe_file_permissions(file, perms) %}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ file }}}</code> shall have the <code>{{{ perms }}}</code> permission mode.
+{{%- else -%}}
+    To properly set the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ sudo chmod {{{ perms }}} {{{ file }}}</pre>
+{{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to set the file owner of a file.
+
+:param file: File to change
+:type file: str
+:param owner: the owner for the file
+:type owner: str
+
+#}}
+{{%- macro describe_file_owner(file, owner) %}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ file }}}</code> should be owned by the
+    {{%- for own in owner.split("|") %}} <code>{{{ own }}}</code> {{% if not loop.last %}} or {{% endif %}}{{% endfor -%}}
+    user.
+{{%- else -%}}
+    To properly set the owner of <code>{{{ file }}}</code>, run the command:
+    {{% for own in owner.split("|") %}}
+      <pre>$ sudo chown {{{ own }}} {{{ file }}} </pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
+{{%- endif -%}}
+{{%- endmacro %}}
+
+{{#
+    Describe how to set a directory owner
+
+:param directory: Directory to change
+:type directory: str
+:param owner: The owner of the directory
+:type owner: str
+
+#}}
+{{%- macro describe_directory_owner(directory, owner) %}}
+    To properly set the owner of <code>{{{ directory }}}</code>, run the command:
+    {{% for own in owner.split("|") %}}
+      <pre>$ sudo chown {{{ own }}} {{{ directory }}} </pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file owner of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param owner: The owner for the files in the directory
+:type owner: str
+
+#}}
+{{%- macro describe_files_in_directory_owner(directory, owner) %}}
+    To properly set the owner of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chown -L {{{ owner }}} {} \;</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to set the file group owner of a file.
+
+:param file: File to change
+:type file: str
+:param group: The group owner for the file
+:type group: str
+
+#}}
+{{%- macro describe_file_group_owner(file, group) %}}
+{{%- if product == "hummingbird" -%}}
+    The <code>{{{ file }}}</code> should be group-owned by the
+    {{%- for grp in group.split("|") %}} <code>{{{ grp }}}</code> {{% if not loop.last %}} or {{% endif %}}{{% endfor -%}}
+    group.
+{{%- else -%}}
+    To properly set the group owner of <code>{{{ file }}}</code>, run the command:
+    {{% for grp in group.split("|") %}}
+      <pre>$ sudo chgrp {{{ grp }}} {{{ file }}}</pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
+{{%- endif %}}
+{{%- endmacro %}}
+
+{{#
+    Describe how to set a directory group owner
+
+:param directory: Directory to change
+:type directory: str
+:param group: The group owner of the directory
+:type group: str
+
+#}}
+{{%- macro describe_directory_group_owner(directory, group) %}}
+    To properly set the group owner of <code>{{{ directory }}}</code>, run the command:
+    {{% for grp in group.split("|") %}}
+      <pre>$ sudo chgrp {{{ grp }}} {{{ directory }}}</pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file group owner of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param group: The group owner for the files in the directory
+:type group: str
+
+#}}
+{{%- macro describe_files_in_directory_group_owner(directory, group) %}}
+    To properly set the group owner of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chgrp -L {{{ group }}} {} \;</pre>
+{{%- endmacro %}}
+
+{{#
+    How to check a file for the correct permissions.
+
+:param file: File to change
+:type file: str
+:param perms: The permissions for the file
+:type perms: str
+
+#}}
+{{%- macro check_file_permissions(file, perms) %}}
+    To check the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -l {{{ file }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
+
+{{#
+    Describe how to set correct directory permissions
+
+:param directory: Directory to change
+:type directory: str
+:param perms: The permissions of the directory
+:type perms: str
+
+#}}
+{{%- macro describe_directory_permissions(directory, perms) %}}
+    To properly set the permissions of <code>{{{ directory }}}</code>, run the command:
+    <pre>$ sudo chmod {{{ perms }}} {{{ directory }}}</pre>
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file permissions of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param perms: The permissions for the files in the directory
+:type perms: str
+
+#}}
+{{%- macro describe_files_in_directory_permissions(directory, perms) %}}
+    To properly set the permissions of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chown {{{ perms }}} {} \;</pre>
+{{%- endmacro %}}
+
+{{#
+    How add mount options to :code:`/etc/fstab`
+
+:param option: The option to add to the partition
+:type option: str
+:param part: The partition
+:type part: str
+
+#}}
+{{% macro describe_mount(option, part) -%}}
+    {{% if product != "rhcos4" -%}}
+    Add the <code>{{{ option }}}</code> option to the fourth column of
+    <tt>/etc/fstab</tt> for the line which controls mounting of
+    {{% if part.startswith('/') -%}}
+        <code>{{{ part }}}</code>.
+    {{%- else %}}
+        {{{ part }}}.
+    {{%- endif %}}
+    {{%- else -%}}
+    Add the <code>{{{ option }}}</code> option to the list of
+    <code>Options</code> in the <code>systemd.mount</code> unit that
+    controls mounting of
+    {{% if part.startswith('/') -%}}
+        <code>{{{ part }}}</code>.
+    {{%- else %}}
+        {{{ part }}}.
+    {{%- endif %}}
+    {{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe the separate partition is needed.
+
+:param part: The partition
+:type part: str
+
+#}}
+{{% macro partition_description(part) -%}}
+    {{% if product in ["ocp4", "rhcos4"] -%}}
+    <p>
+    Partitioning Red Hat CoreOS is a Day 1 operation and cannot
+    be changed afterwards. For documentation on how to add a
+    MachineConfig manifest that specifies a separate <code>{{{ part }}}</code>
+    partition, follow:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/installing/installing_platform_agnostic/installing-platform-agnostic.html#installation-user-infra-machines-advanced_disk_installing-platform-agnostic") }}}
+    </p>
+    <p>
+    Note that the Red Hat OpenShift documentation often references a block
+    device, such as <tt>/dev/vda</tt>. The name of the available block devices depends
+    on the underlying infrastructure (bare metal vs cloud), and often the specific
+    instance type. For example in AWS, some instance types have NVMe drives
+    (<tt>/dev/nvme*</tt>), others use <tt>/dev/xvda*</tt>.
+
+    You will need to look for relevant documentation for your infrastructure around this.
+    In many cases, the simplest thing is to boot a single machine with an Ignition
+    configuration that just gives you SSH access, and inspect the block devices via
+    e.g. the <tt>lsblk</tt> command.
+
+    For physical hardware, a good best practice is to reference devices via the
+    <tt>/dev/disk/by-id/</tt> or <tt>/dev/disk/by-path</tt> links.
+    </p>
+    {{% else %}}
+    Ensure that <code>{{{ part }}}</code> has its own partition or logical
+    volume at installation time, or migrate it using LVM.
+    {{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to set a sysctl kernel parameter.
+
+:param sysctl: The kernel parameter to change
+:type sysctl: str
+:param value: The value to be set
+:type value: str
+
+#}}
+{{% macro describe_sysctl_option_value(sysctl, value) -%}}
+    To set the runtime status of the <code>{{{ sysctl }}}</code> kernel parameter,
+    run the following command:
+    <pre>$ sudo sysctl -w {{{ sysctl }}}={{{ value }}}</pre>
+
+    To make sure that the setting is persistent,
+    add the following line to a file in the directory <tt>/etc/sysctl.d</tt>:
+    <pre>{{{ sysctl }}} = {{{ value }}}</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Creates an HTML :code:`<a>` element for the given link and text. If no text is given the
+    link will be the text
+
+:param link: The url the link should have
+:type link: str
+:param text: Optional, text for the link
+:type text: str
+
+#}}
+{{% macro weblink(link, text=none) -%}}
+    {{% if text is not none -%}}
+        <a xmlns='http://www.w3.org/1999/xhtml' href='{{{ link }}}'>{{{ text }}}</a>
+    {{%- else %}}
+        <a xmlns='http://www.w3.org/1999/xhtml' href='{{{ link }}}'>{{{ link }}}</a>
+    {{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    An openssl config file with strong entropy.
+
+#}}
+{{% macro openssl_strong_entropy_config_file() -%}}
+# provide a default -rand /dev/random option to openssl commands that
+# support it
+
+# written inefficiently for maximum shell compatibility
+openssl()
+(
+  openssl_bin=/usr/bin/openssl
+
+  case "$*" in
+    # if user specified -rand, honor it
+    *\ -rand\ *|*\ -help*) exec $openssl_bin "$@" ;;
+  esac
+
+  cmds=`$openssl_bin list -digest-commands -cipher-commands | tr '\n' ' '`
+  for i in `$openssl_bin list -commands`; do
+    if $openssl_bin list -options "$i" | grep -q '^rand '; then
+      cmds=" $i $cmds"
+    fi
+  done
+
+  case "$cmds" in
+    *\ "$1"\ *)
+      cmd="$1"; shift
+      exec $openssl_bin "$cmd" -rand /dev/random "$@" ;;
+  esac
+
+  exec $openssl_bin "$@"
+)
+
+{{%- endmacro %}}
+
+
+{{#
+    A note about an item need be done for each :code:`MachineConfigPool`.
+
+#}}
+{{% macro machineconfig_description_footer() -%}}
+<p>
+Note that this needs to be done for each <tt>MachineConfigPool</tt>
+</p>
+<p>
+For more information on how to configure nodes with the Machine Config
+Operator see
+{{{ weblink(link="https://docs.openshift.com/container-platform/4.6/post_installation_configuration/machine-configuration-tasks.html",
+            text="the relevant documentation") }}}.
+</p>
+{{% endmacro %}}
+
+
+{{#
+
+    Makes a rule not applicable on systems where oVirt is installed.
+    Note: This is only applied on RHEL8 content.
+
+#}}
+{{% macro rule_notapplicable_when_ovirt_installed() %}}
+{{%- if product == "rhel8" %}}
+- no_ovirt
+{{%- endif %}}
+{{% endmacro %}}
+
+
+{{#
+    Describe how to configure Grub2 to add an argument to the default kernel command line.
+    The parameter should be in form `parameter=value`.
+
+#}}
+{{%- macro describe_grub2_argument(arg_name_value) -%}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] or 'ubuntu' in product -%}}
+To ensure that <tt>{{{ arg_name_value }}}</tt> is added as a kernel command line
+argument to newly installed kernels, add <tt>{{{ arg_name_value }}}</tt> to the
+default Grub2 command line for Linux operating systems. Modify the line within
+<tt>/etc/default/grub</tt> as shown below:
+<pre>GRUB_CMDLINE_LINUX="... {{{ arg_name_value }}} ..."</pre>
+Run the following command to update command line for already installed kernels:
+{{%- if 'ubuntu' in product -%}}
+<pre># update-grub</pre>
+{{%- else -%}}
+<pre># grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"</pre>
+{{%- endif -%}}
+{{%- else -%}}
+Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}} as follows:
+<pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ arg_name_value }}}"</pre>
+{{%- endif -%}}
+{{% if bootable_containers_supported == "true" %}}
+If the system is distributed as a bootable container image, GRUB2 can't be configured using the method described above, but the following method needs to be used instead.
+The kernel arguments should be set in <tt>/usr/lib/bootc/kargs.d</tt> in a TOML file that has the following form:
+<pre>
+# /usr/lib/bootc/kargs.d/10-example.toml
+kargs = ["{{{ arg_name_value }}}"]
+</pre>
+For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://bootc-dev.github.io/bootc//building/kernel-arguments.html", text="Bootc documentation") }}}.
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+{{#
+    Describe how to remove a kernel argument from Grub2 default kernel command line.
+
+:param arg_name: The kernel parameter name
+:type arg_name: str
+#}}
+{{%- macro describe_grub2_argument_absent(arg_name) -%}}
+Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <tt>/etc/default/grub</tt>
+doesn't contain the argument <tt>{{{ arg_name }}}</tt>.
+Run the following command to update command line for already installed kernels:
+<pre># grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"</pre>
+{{% if bootable_containers_supported == "true" %}}
+If the system is distributed as a bootable container image, GRUB2 can't be configured using the method described above, but the kernel arguments should be configured using TOML files located in the <tt>/usr/lib/bootc/kargs.d</tt> directory.
+Remove all occurences of <tt>{{{ arg_name }}}</tt> from all files in <tt>/usr/lib/bootc/kargs.d</tt>.
+For more details on configuring kernel arguments in bootable container images, please refer to {{{ weblink(link="https://bootc-dev.github.io/bootc//building/kernel-arguments.html", text="Bootc documentation") }}}.
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+{{#
+    Describe how to check a kernel compile parameter
+
+:param config: The kernel config parameter
+:type config: str
+:param value: The value for the given config
+:type value: str
+
+#}}
+{{% macro describe_kernel_build_config(config, value) -%}}
+    The configuration that was used to build kernel is available at <tt>/boot/config-*</tt>.
+    To check the configuration value for <tt>{{{ config }}}</tt>, run the following command:
+    <tt>grep {{{ config }}} /boot/config-*</tt>
+    {{% if value == "n" %}}
+    Configs with value 'n' are not explicitly set in the file, so either commented lines or no
+    lines should be returned.
+    {{% else %}}
+    For each kernel installed, a line with value "{{{ value }}}" should be returned.
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    Returns the AIDE strings based on the current product
+
+#}}
+{{%- macro aide_string() -%}}
+{{%- if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in families and product not in ['fedora'] -%}}
+p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+{{%- else -%}}
+p+i+n+u+g+s+b+acl+xattrs+sha512
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+
+{{#
+    Lists the files need for the rule aide_check_audit_tools with the AIDE string
+
+#}}
+{{%- macro aide_config_file_lines() -%}}
+    {{% for binary in aide_audit_binaries -%}}
+    /usr/sbin/{{{ binary }}} {{{ aide_string() }}}
+    {{% endfor %}}
+{{% endmacro %}}
+
+
+{{#
+Macro to generate a command to modify GRUB 2 configuration or add or remove kernel command line argument in a GRUB 2 bootloader.
+Generates a correct command based on the product (grubby, grub2-mkconfig, update-grub, etc.)
+Part of the grub2_bootloader_argument(_absent) templates.
+
+:param action: What to do with the argument, must be one of: "update", "add", "remove".
+:type action: str
+:param arg_name_value: If action is "add", it's kernel command line argument concatenated with the value of this argument using an equal sign, eg. "audit=1". If action is "remove", it's only the kernel command line argument name, eg. "audit".
+:type arg_name_value: str
+
+#}}
+{{% macro grub_command(action, arg_name_value=None) -%}}
+{{%- if "update-grub" in grub_helper_executable -%}}
+    {{%- set grub_helper_args = [] -%}}
+{{%- elif "grub2-mkconfig" in grub_helper_executable -%}}
+    {{%- if 'suse' in families -%}}
+    {{%- set grub_helper_args = ["-o " ~ grub2_boot_path ~ "/grub.cfg"] -%}}
+    {{%- else -%}}
+    {{%- set grub_helper_args = ["-o " ~ grub2_boot_path ~ "/grub2.cfg"] -%}}
+    {{%- endif -%}}
+{{%- elif "grubby" in grub_helper_executable -%}}
+    {{%- if action == "update" -%}}
+        {{%- set grub_helper_args = ["--update-kernel=ALL"] -%}}
+    {{%- elif action == "add" -%}}
+        {{%- set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ arg_name_value ] -%}}
+    {{%- elif action == "remove" -%}}
+        {{%- set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ arg_name_value ] -%}}
+    {{%- else -%}}
+        {{{ raise("Unknown action" + action) }}}
+    {{%- endif -%}}
+    {{%- if 'rhel-like' in families and major_version_ordinal == 8 -%}}
+        {{# Suppress the None output of append -#}}
+        {{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
+    {{%- endif -%}}
+{{%- elif grub_helper_executable -%}}
+        {{{ raise("Unknown grub helper executable: " ~ grub_helper_executable) }}}
+{{%- endif -%}}
+{{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
+{{%- endmacro %}}
+
+
+{{%- macro audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() -%}}
+## This content is a section of an Audit config snapshot recommended for linux systems that target OSPP compliance.
+## The following content has been retreived on 2019-03-11 from: https://github.com/linux-audit/audit-userspace/blob/master/rules/30-ospp-v42.rules
+
+## The purpose of these rules is to meet the requirements for Operating
+## System Protection Profile (OSPP)v4.2. These rules depends on having
+## 10-base-config.rules, 11-loginuid.rules, and 43-module-load.rules installed.
+
+## Unsuccessful file creation (open with O_CREAT)
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&0100 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&0100 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S open -F a1&0100 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S open -F a1&0100 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&0100 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&0100 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S open -F a1&0100 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S open -F a1&0100 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-create
+
+## Unsuccessful file modifications (open for write or truncate)
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S open -F a1&01003 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S open -F a1&01003 -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&01003 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&01003 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S open -F a1&01003 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S open -F a1&01003 -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-modification
+
+## Unsuccessful file access (any other opens) This has to go last.
+-a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-access
+-a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>={{{ uid_min }}} -F auid!=unset -F key=unsuccesful-access
+{{%- endmacro -%}}
+
+
+{{#
+Join list of items to create a human readable list in which the last item is
+separated by an and and others are separated by a comma.
+
+:param items: list of strings to join
+:type items: list[str]
+
+#}}
+{{%- macro join_list(items) -%}}
+{{%- for x in items -%}}
+{{%- if loop.first -%}}
+{{{ x }}}
+{{%- else -%}}
+{{%- if loop.last -%}}
+{{{ " and " + x }}}
+{{%- else -%}}
+{{{ ", " + x }}}
+{{%- endif -%}}
+{{%- endif -%}}
+{{%- endfor -%}}
+{{%- endmacro -%}}
+
+{{#
+Create a rule description text for rules that use the audit_rules_watch platform.
+
+:param path: The path that should be watched by the watch.
+:type path: str
+:param key: The audit key.
+:type key: str
+#}}
+
+{{% macro describe_audit_rules_watch(path, key) %}}
+{{% if path.endswith("/") %}}
+{{% set filter_type="dir" %}}
+{{% else %}}
+{{% set filter_type="path" %}}
+{{% endif %}}
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+    program to read audit rules during daemon startup (the default), add the
+    following lines to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+    -a always,exit -F arch=b64 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}</pre>
+{{% else %}}
+    <pre>-w {{{ path }}} -p wa -k {{{ key }}}</pre>
+{{% endif %}}
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following lines to
+    <tt>/etc/audit/audit.rules</tt>:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+    -a always,exit -F arch=b64 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}</pre>
+{{% else %}}
+    <pre>-w {{{ path }}} -p wa -k {{{ key }}}</pre>
+{{% endif %}}
+{{% endmacro %}}
+
+{{#
+Create a rule description for rules using the `audit_rules_privileged_commands` template.
+
+:param path: path of the privileged command for which the audit rule should be defined
+:type path: str
+#}}
+
+{{% macro describe_arpc(path) %}}
+{{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "slmicro6", "ubuntu2204", "ubuntu2404"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif -%}}
+{{%- if product in ["fedora", "rhel10"] -%}}
+{{% set arch_clause=", setting ARCH to either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit" %}}
+{{% set rule="-a always,exit -F arch=ARCH -F path=" ~ path ~ " " ~ perm_x ~ "-F auid&gt;=" ~ auid ~ " -F auid!=unset -F key=privileged" %}}
+{{% else %}}
+{{% set arch_clause="" %}}
+{{% set rule="-a always,exit -F path=" ~ path ~ " " ~ perm_x ~ "-F auid&gt;=" ~ auid ~ " -F auid!=unset -F key=privileged" %}}
+{{%- endif %}}
+    At a minimum, the audit system should collect the execution of privileged
+    commands for all users and root.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+    program to read audit rules during daemon startup (the default), add
+    a line of the following form to a file with suffix <tt>.rules</tt>
+    in the directory <tt>/etc/audit/rules.d</tt>{{{ arch_clause }}}:
+    <pre>{{{ rule }}}</pre>
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add a line of the
+    following form to <tt>/etc/audit/audit.rules</tt>{{{ arch_clause }}}:
+    <pre>{{{ rule }}}</pre>
+{{%- endmacro -%}}
+
+{{#
+Create a rule description for rules using the `audit_rules_kernel_module_loading` template.
+
+:param path: name of the syscall for which the audit rule should be defined
+:type path: str
+#}}
+{{% macro describe_audit_rules_kernel_module_loading(name) %}}
+    To capture kernel module loading and unloading events, use the following line, setting ARCH to
+    either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    {{% if "ol" in families or 'rhel' in product or 'ubuntu' in product %}}
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S {{{ name }}} -F auid>={{{ uid_min }}} -F auid!=unset -F key=modules</pre>
+    {{% else %}}
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S {{{ name }}} -F key=modules</pre>
+    {{% endif %}}
+
+    Place to add the line depends on a way <tt>auditd</tt> daemon is configured. If it is configured
+    to use the <tt>augenrules</tt> program (the default), add the line to a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility,
+    add the line to file <tt>/etc/audit/audit.rules</tt>.
+{{% endmacro %}}
+
+{{#
+Create a description text for rules that use the crypto_sub_policies template.
+
+:param module_name: crypto sub policy name, eg. `NO-SSHWEAKCIPHERS`
+:type module_name: str
+:param key: The entry key, eg. cipher@SSH
+:type key: str
+:param value: The entry value, eg. -3DES-CBC -AES-128-CBC -AES-192-CBC -AES-256-CBC -CHACHA20-POLY1305
+:type value: str
+#}}
+{{% macro describe_crypto_sub_policy(module_name, key, value) %}}
+    Add the following line to the file <tt>/etc/crypto-policies/policies/modules/{{{ module_name }}}.pmod</tt>:
+    <pre>
+    {{{ key }}} = {{{ value }}}
+    </pre>
+{{%- endmacro %}}

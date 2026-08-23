@@ -1,0 +1,52 @@
+product: ol7
+full_name: Oracle Linux 7
+type: platform
+
+families:
+  - rhel-like
+  - ol
+
+major_version_ordinal: 7
+
+benchmark_id: OL-7
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "yum"
+
+init_system: "systemd"
+
+dconf_gdm_dir: "local.d"
+
+pkg_release: "53619141"
+pkg_version: "ec551f03"
+
+release_key_fingerprint: "42144123FECFC55B9086313D72F97B74EC551F03"
+
+audisp_conf_path: "/etc/audisp"
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
+oval_feed_url: "https://linux.oracle.com/security/oval/com.oracle.elsa-ol7.xml.bz2"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - ol7:
+      name: "cpe:/o:oracle:linux:7"
+      title: "Oracle Linux 7"
+      check_id: installed_OS_is_ol7
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
+  openssl-pkcs11: "pam_pkcs11"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/oracle_linux/'
+xwindows_packages:
+  - xorg-x11-server-Xorg
+  - xorg-x11-server-common
+  - xorg-x11-server-utils

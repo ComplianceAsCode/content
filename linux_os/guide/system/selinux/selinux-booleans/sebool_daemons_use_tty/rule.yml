@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the daemons_use_tty SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>daemons_use_tty</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="daemons_use_tty") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="daemons_use_tty") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: daemons_use_tty

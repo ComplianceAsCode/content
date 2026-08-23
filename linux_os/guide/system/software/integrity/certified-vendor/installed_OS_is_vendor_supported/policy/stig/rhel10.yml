@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must be a vendor-supported release.
+
+fixtext: |-
+    Upgrade to a supported version of {{{ full_name }}}.
+
+checktext: |-
+    Verify {{{ full_name }}} is a vendor-supported version with the following command:
+
+    $ cat /etc/redhat-release
+    Red Hat Enterprise Linux release 10.0 (Coughlan)
+
+    If the installed version of {{{ full_name }}} is not supported, this is a finding.
+
+vuldiscussion: |-
+    An operating system release is considered "supported" if the vendor continues to provide security patches for the product. With an unsupported release, it will not be possible to resolve security issues discovered in the system software.
+
+    Red Hat offers the Extended Update Support (EUS) add-on to a Red Hat Enterprise Linux subscription, for a fee, for customers who wish to standardize on a specific minor release for an extended period.
+
+    End-of-life dates for Red Hat Linux 10 releases are as follows:
+    - Current end of Full Support for Red Hat Linux 10 is 31 May 2030.
+    - Current end of Maintenance Support for Red Hat Linux 10 is 31 May 2035.
+    - Current end of Extended Life Cycle Support (ELS) for Red Hat Linux 9 is 31 May 2038.

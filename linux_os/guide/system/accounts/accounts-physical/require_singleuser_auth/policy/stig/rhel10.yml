@@ -1,0 +1,49 @@
+srg_requirement: |-
+    {{{ full_name }}} must require authentication to access single-user mode.
+
+fixtext: |-
+    Configure {{{ full_name }}} to require authentication for single-user mode.
+
+    Create a directory for supplementary configuration files:
+
+    $ sudo mkdir /etc/systemd/system/rescue.service.d/
+
+    Copy the original "rescue.service" file to the new directory with:
+
+    $ sudo cp  /usr/lib/systemd/system/rescue.service  /etc/systemd/system/rescue.service.d/rescue.service.conf
+
+    Open the new file:
+
+    $ sudo vi /etc/systemd/system/rescue.service.d/rescue.service.conf
+
+    Add or modify the following line in the new file:
+
+    ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
+
+    Comment out or remove the "ExecStart" and "ExecStartPre" lines in "/usr/lib/systemd/system/rescue.service" as they can only exist in one location.
+
+    Apply changes to unit files without rebooting the system:
+
+    $ sudo systemctl daemon-reload
+
+checktext: |-
+    Verify {{{ full_name }}} requires authentication for single-user mode with the following command:
+
+    $ sudo grep systemd-sulogin /usr/lib/systemd/system/rescue.service
+    # ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
+
+    If the line is not returned from the default "systemd" file, use the following command to look for modifications to "rescue.service":
+
+    $ sudo grep systemd-sulogin /etc/systemd/system/rescue.service.d/*.conf
+    ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
+
+    If the line is not returned from either location, this is a finding.
+
+    Note: The configuration setting can be in either the default location or the drop-in file but not in both locations.
+
+vuldiscussion: |-
+    To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access.
+
+    Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.
+
+    This requirement prevents attackers with physical access from trivially bypassing security on the machine and gaining root access. Such accesses are further prevented by configuring the bootloader password.

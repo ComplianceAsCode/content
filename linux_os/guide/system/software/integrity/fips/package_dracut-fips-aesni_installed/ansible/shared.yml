@@ -1,0 +1,17 @@
+# platform = Oracle Linux 7,Red Hat Virtualization 4,Red Hat OpenShift Container Platform 4
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Check if system supports AES-NI
+  ansible.builtin.command: grep -q -m1 -o aes /proc/cpuinfo
+  failed_when: aesni_supported.rc > 1
+  register: aesni_supported
+  check_mode: no
+
+- name: Ensure dracut-fips-aesni is installed
+  ansible.builtin.package:
+    name: dracut-fips-aesni
+    state: present
+  when:
+    - aesni_supported.rc == 0

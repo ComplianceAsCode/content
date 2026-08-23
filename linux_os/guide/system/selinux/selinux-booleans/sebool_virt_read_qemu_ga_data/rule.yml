@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the virt_read_qemu_ga_data SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>virt_read_qemu_ga_data</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="virt_read_qemu_ga_data") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="virt_read_qemu_ga_data") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: virt_read_qemu_ga_data

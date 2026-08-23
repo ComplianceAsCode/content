@@ -1,0 +1,56 @@
+documentation_complete: true
+
+title: 'The operating system must restrict privilege elevation to authorized personnel'
+
+
+description: |-
+    The sudo command allows a user to execute programs with elevated
+    (administrator) privileges. It prompts the user for their password
+    and confirms your request to execute a command by checking a file,
+    called sudoers.
+    Restrict privileged actions by removing the following entries from the sudoers file:
+    <tt>ALL ALL=(ALL) ALL</tt>
+    <tt>ALL ALL=(ALL:ALL) ALL</tt>
+
+rationale: |-
+    If the "sudoers" file is not configured correctly, any user defined
+    on the system can initiate privileged actions on the target system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83425-9
+    cce@rhel9: CCE-83525-6
+    cce@rhel10: CCE-87421-4
+    cce@sle12: CCE-83229-5
+    cce@sle15: CCE-85712-8
+    cce@slmicro5: CCE-93786-2
+    cce@slmicro6: CCE-95042-8
+
+references:
+    nist: CM-6(b),CM-6(iv)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-010341
+    stigid@ol8: OL08-00-010382
+    stigid@sle12: SLES-12-010111
+
+ocil_clause: 'either of the commands returned a line'
+
+ocil: |-
+    Determine if "sudoers" file restricts sudo access run the following commands:
+    <pre>$ sudo grep -PR '^\s*ALL\s+ALL\=\(ALL\)\s+ALL\s*$' /etc/sudoers /etc/sudoers.d/*</pre>
+    <pre>$ sudo grep -PR '^\s*ALL\s+ALL\=\(ALL\:ALL\)\s+ALL\s*$' /etc/sudoers /etc/sudoers.d/*</pre>
+
+fixtext: |-
+    Remove the following entries from /etc/sudoers or any file in /etc/sudoers.d/*:
+    ALL ALL=(ALL) ALL
+    ALL ALL=(ALL:ALL) ALL
+
+srg_requirement: '{{{ full_name }}} must restrict privilege elevation to authorized personnel.'
+
+platform: package[sudo]
+
+warnings:
+- general: |-
+    This rule doesn't come with a remediation, as the exact requirement allows exceptions,
+    and removing lines from the sudoers file can make the system non-administrable.

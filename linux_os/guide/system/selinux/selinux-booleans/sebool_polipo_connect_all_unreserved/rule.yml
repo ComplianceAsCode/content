@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the polipo_connect_all_unreserved SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>polipo_connect_all_unreserved</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="polipo_connect_all_unreserved") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="polipo_connect_all_unreserved") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: polipo_connect_all_unreserved

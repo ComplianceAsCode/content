@@ -1,0 +1,75 @@
+documentation_complete: true
+
+
+title: 'Enable Certmap in SSSD'
+
+description: |-
+   SSSD should be configured to verify the certificate of the user or group. To set this up
+    ensure that section like <tt>certmap/testing.test/rule_name</tt> is setup in
+   <tt>/etc/sssd/sssd.conf</tt>. For example
+   <pre>
+   [certmap/testing.test/rule_name]
+   matchrule =&lt;SAN&gt;.*EDIPI@mil
+   maprule = (userCertificate;binary={cert!bin})
+   domains = testing.test
+   </pre>
+
+rationale: |-
+   Without mapping the certificate used to authenticate to the user account, the ability to
+   determine the identity of the individual user or group will not be available for forensic
+   analysis.
+
+severity: medium
+
+identifiers:
+   cce@rhel8: CCE-86060-1
+   cce@rhel9: CCE-89737-1
+   cce@rhel10: CCE-90713-9
+
+references:
+   nist: IA-5 (2) (c)
+   srg: SRG-OS-000068-GPOS-00036
+   stigid@ol8: OL08-00-020090
+
+warnings:
+    - general: |-
+        Automatic remediation of this control is not available, since all of the settings in
+        in the certmap need to be customized.
+
+ocil_clause: 'Certmap is not configured in SSSD'
+
+ocil: |-
+    To verify Certmap is enabled in SSSD, run the following command:
+    <pre>$ sudo cat /etc/sssd/sssd.conf</pre>
+    If configured properly, output should contain section like the following
+    <pre>
+    [certmap/testing.test/rule_name]
+    matchrule =&lt;SAN&gt;.*EDIPI@mil
+    maprule = (userCertificate;binary={cert!bin})
+    domains = testing.test
+    </pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to map the authenticated identity to the user or group account by adding or modifying the certmap section of the "/etc/sssd/sssd.conf" file based on the following example:
+
+    [certmap/testing.test/rule_name]
+    matchrule =<SAN>.*EDIPI@mil
+    maprule = (userCertificate;binary={cert!bin})
+    dmains = testing.test
+
+    The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
+
+    $ sudo systemctl restart sssd.service
+
+srg_requirement: |-
+    {{{ full_name }}} must map the authenticated identity to the user or group account for PKI-based authentication.
+
+template:
+    name: lineinfile
+    vars:
+      path: '/etc/sssd/sssd.conf'
+      text: '\[certmap\/.+\/.+\]'
+      escape_text: "false"
+    backends:
+        ansible: "off"
+        bash: "off"

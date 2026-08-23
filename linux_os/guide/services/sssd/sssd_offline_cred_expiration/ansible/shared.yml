@@ -1,0 +1,32 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+{{% set sssd_conf = "/etc/sssd/sssd.conf" -%}}
+{{% set sssd_conf_dir = "/etc/sssd/conf.d" -%}}
+{{{ ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) }}}
+
+{{{ ansible_install_sssd_proxy(rule_title) }}}
+
+- name: "Configure SSD to Expire Offline Credentials"
+  community.general.ini_file:
+    path: {{{ sssd_conf }}}
+    section: pam
+    option: offline_credentials_expiration
+    value: 1
+    create: yes
+    mode: 0600
+
+- name: Find all the conf files inside {{{ sssd_conf_dir }}}
+  ansible.builtin.find:
+    paths: "{{{ sssd_conf_dir }}}"
+    patterns: "*.conf"
+  register: sssd_conf_d_files
+
+- name: Fix offline_credentials_expiration configuration in {{{ sssd_conf_dir }}}
+  ansible.builtin.replace:
+    path: "{{ item.path }}"
+    regexp: '[^#]*offline_credentials_expiration.*'
+    replace: 'offline_credentials_expiration = 1'
+  with_items: "{{ sssd_conf_d_files.files }}"

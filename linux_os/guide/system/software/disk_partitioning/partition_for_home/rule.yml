@@ -1,0 +1,65 @@
+documentation_complete: true
+
+title: 'Ensure /home Located On Separate Partition'
+
+description: |-
+    If user home directories will be stored locally, create a separate partition
+    for <tt>/home</tt> at installation time (or migrate it later using LVM). If
+    <tt>/home</tt> will be mounted from another system such as an NFS server, then
+    creating a separate partition is not necessary at installation time, and the
+    mountpoint can instead be configured later.
+
+rationale: |-
+    Ensuring that <tt>/home</tt> is mounted on its own partition enables the
+    setting of more restrictive mount options, and also helps ensure that
+    users cannot trivially fill partitions used for log or audit data storage.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-82739-4
+    cce@rhel8: CCE-81044-0
+    cce@rhel9: CCE-83468-9
+    cce@rhel10: CCE-88231-6
+    cce@sle12: CCE-83152-9
+    cce@sle15: CCE-85639-3
+    cce@sle16: CCE-95729-0
+    cce@slmicro5: CCE-93796-1
+    cce@slmicro6: CCE-95066-7
+
+references:
+    cis-csc: 12,15,8
+    cis@sle12: 1.1.17
+    cis@sle15: 1.1.17
+    cobit5: APO13.01,DSS05.02
+    isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    iso27001-2013: A.13.1.1,A.13.2.1,A.14.1.3
+    nist: CM-6(a),SC-5(2)
+    nist-csf: PR.PT-4
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-021310
+    stigid@ol8: OL08-00-010800
+    stigid@sle12: SLES-12-010850
+
+{{{ complete_ocil_entry_separate_partition(part="/home") }}}
+
+fixtext: |-
+    Migrate the "/home" directory onto a separate file system.
+
+srg_requirement: 'A separate {{{ full_name }}} filesystem must be used for user home directories (such as /home or an equivalent).'
+
+
+template:
+    name: mount
+    vars:
+        mountpoint: /home
+        min_size: 1073741824
+
+checktext: |-
+    Verify that a separate file system/partition has been created for "/home" with the following command:
+
+    $ mount | grep /home
+
+    UUID=fba5000f-2ffa-4417-90eb-8c54ae74a32f on /home type ext4 (rw,nodev,nosuid,noexec,seclabel)
+
+    If a separate entry for "/home" is not in use, this is a finding.

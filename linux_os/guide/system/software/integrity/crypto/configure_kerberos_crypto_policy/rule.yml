@@ -1,0 +1,47 @@
+documentation_complete: true
+
+
+title: 'Configure Kerberos to use System Crypto Policy'
+
+description: |-
+    Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
+    Kerberos is supported by crypto policy, but it's configuration may be
+    set up to ignore it.
+    To check that Crypto Policies settings for Kerberos are configured correctly, examine that there is a symlink at
+    /etc/krb5.conf.d/crypto-policies targeting /etc/cypto-policies/back-ends/krb5.config.
+    If the symlink exists, Kerberos is configured to use the system-wide crypto policy settings.
+
+rationale: |-
+    Overriding the system crypto policy makes the behavior of Kerberos violate expectations,
+    and makes system configuration more fragmented.
+
+severity: high
+
+identifiers:
+    cce@rhcos4: CCE-82547-1
+    cce@rhel8: CCE-80936-8
+    cce@rhel9: CCE-83449-9
+    cce@rhel10: CCE-88640-8
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
+    nist: SC-13,SC-12(2),SC-12(3)
+    srg: SRG-OS-000120-GPOS-00061
+    stigid@ol8: OL08-00-010020
+
+ocil_clause: 'the symlink does not exist or points to a different target'
+
+ocil: |-
+    Check that the symlink exists and target the correct Kerberos crypto policy, with the following command:
+    <pre>file /etc/krb5.conf.d/crypto-policies</pre>
+    If command output shows the following line, Kerberos is configured to use the system-wide crypto policy.
+    <pre>/etc/krb5.conf.d/crypto-policies: symbolic link to /etc/crypto-policies/back-ends/krb5.config</pre>
+
+fixtext: |-
+    Configure Kerberos to use system crypto policy.
+    Create a symlink pointing to system crypto policy in the Kerberos configuration using the following command:
+    $ sudo ln -s /etc/crypto-policies/back-ends/krb5.config /etc/krb5.conf.d/crypto-policies
+
+srg_requirement: '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
+
+platform: package[krb5-libs]

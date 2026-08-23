@@ -1,0 +1,38 @@
+documentation_complete: true
+
+
+title: 'Remove Default Configuration to Disable Syscall Auditing'
+
+description: |-
+    By default, {{{ full_name }}} ships an audit rule to disable syscall
+    auditing for performance reasons.
+
+    To make sure that syscall auditing works, this line must be removed from
+    <tt>/etc/audit/rules.d/audit.rules</tt> and <tt>/etc/audit/audit.rules</tt>:
+
+    <pre>-a task,never</pre>
+
+rationale: |-
+    Audit rules for syscalls do not take effect unless this line is removed.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83119-8
+    cce@sle15: CCE-85706-0
+    cce@sle16: CCE-96314-0
+    cce@slmicro5: CCE-93739-1
+
+references:
+    nist@sle15: CM-6(b),CM-6.1(iv)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@sle12: SLES-12-020199
+
+
+ocil_clause: 'syscall auditing is still disabled'
+
+ocil: |-
+    To check for the offending line, run the following command:
+    <pre>$ grep task,never /etc/audit/{rules.d,.}/audit.rules</pre>
+    There must not be any output, or else these lines must be removed from
+    the matching files.

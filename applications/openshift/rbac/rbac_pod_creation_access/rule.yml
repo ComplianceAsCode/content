@@ -1,0 +1,33 @@
+documentation_complete: true
+
+
+title: 'Minimize Access to Pod Creation'
+
+description: |-
+    The ability to create pods in a namespace can provide a
+    number of opportunities for privilege escalation. Where
+    applicable, remove <tt>create</tt> access to <tt>pod</tt>
+    objects in the cluster.
+
+rationale: |-
+    The ability to create pods in a cluster opens up the cluster
+    for privilege escalation.
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: 'pod creation privileges in roles needs review'
+
+ocil: |-
+    To review the pod creation privileges in roles, run the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    Review the output, and for any role/clusterrole defining create permissions
+    for pods that are NOT an OpenShift "system:" or other system-provided
+    role/clusterrole, determine if the users bound to the role truly have the
+    need to create pods.

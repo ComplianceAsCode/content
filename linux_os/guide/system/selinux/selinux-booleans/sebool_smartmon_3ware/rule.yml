@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the smartmon_3ware SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>smartmon_3ware</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="smartmon_3ware") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="smartmon_3ware") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: smartmon_3ware

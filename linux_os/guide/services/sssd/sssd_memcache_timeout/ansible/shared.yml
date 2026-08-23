@@ -1,0 +1,21 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+{{{ ansible_instantiate_variables("var_sssd_memcache_timeout") }}}
+
+{{% set sssd_conf = "/etc/sssd/sssd.conf" -%}}
+{{% set sssd_conf_dir = "/etc/sssd/conf.d" -%}}
+{{{ ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) }}}
+
+{{{ ansible_install_sssd_proxy(rule_title) }}}
+
+- name: "Configure SSSD's Memory Cache to Expire"
+  community.general.ini_file:
+    path: {{{ sssd_conf }}}
+    section: nss
+    option: memcache_timeout
+    value: "{{ var_sssd_memcache_timeout }}"
+    create: yes
+    mode: 0600

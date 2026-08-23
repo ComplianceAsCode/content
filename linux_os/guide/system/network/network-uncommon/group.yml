@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Uncommon Network Protocols'
+
+description: |-
+    The system includes support for several network protocols which are not commonly used.
+    Although security vulnerabilities in kernel networking code are not frequently discovered,
+    the consequences can be dramatic. Ensuring uncommon network protocols are disabled
+    reduces the system's risk to attacks targeted at its implementation of those protocols.
+
+warnings:
+    - general: |-
+        Although these protocols are not commonly used, avoid disruption
+        in your network environment by ensuring they are not needed
+        prior to disabling them.
+
+platform: system_with_kernel

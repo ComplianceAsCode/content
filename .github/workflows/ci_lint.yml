@@ -1,0 +1,69 @@
+name: CI Lint
+on:
+  pull_request:
+    branches: [master, 'stabilization*']
+permissions:
+  contents: read
+jobs:
+  yamllint:
+    name: Yaml Lint on Changed yaml files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Git
+        run: sudo apt-get update && sudo apt-get install -y git
+
+      - name: Checkout Repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.repository }}
+          fetch-depth: 0
+
+      - name: Detect Files Changed by PR
+        id: changed_files
+        run: |
+          repo=${{ github.repository }}
+          pr_number=${{ github.event.pull_request.number }}
+          # Fetch all pages of the files for the pull request
+          url="repos/$repo/pulls/$pr_number/files"
+          response=$(gh api "$url" --paginate)
+          echo "$response" | jq -r '.[].filename' > filenames.txt
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Run yamllint on files modified by the PR
+        run: |
+          exit_code=0
+          for file in $(grep -E '\.(yml|yaml|fmf|profile)$' filenames.txt); do
+            if [[ ! -f "$file" ]]; then
+              continue
+            fi
+            echo "Running yamllint on $file..."
+            if grep -qP '\{\{[%{#]' "$file"; then
+              # File contains Jinja2 constructs — strip them before linting.
+              # yamllint -s exits: 0 = clean, 1 = errors, 2 = warnings only.
+              # Use "|| rc=$?" to prevent set -e from killing the script before
+              # we can capture the exit code and print the diagnostic output.
+              rc=0
+              output=$(python3 utils/strip_jinja_for_yamllint.py "$file" \
+                       | yamllint -s -c .yamllint - 2>&1) || rc=$?
+              # Show all output (warnings and errors), replacing "stdin"
+              # with the actual filename since yamllint reads from a pipe.
+              if [ -n "$output" ]; then
+                echo "$output" | sed "s|^stdin|$file|"
+              fi
+              # Fail only on errors (exit code 1), not warnings (exit code 2).
+              if [ "$rc" -eq 1 ]; then
+                exit_code=1
+              fi
+            else
+              rc=0
+              yamllint -s -c .yamllint "$file" || rc=$?
+              if [ "$rc" -eq 1 ]; then
+                exit_code=1
+              fi
+            fi
+          done
+          exit $exit_code

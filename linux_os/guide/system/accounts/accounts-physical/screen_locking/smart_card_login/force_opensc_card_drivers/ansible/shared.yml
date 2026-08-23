@@ -1,0 +1,30 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_rhv,multi_platform_ol,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_smartcard_drivers") }}}
+
+- name: Check existence of opensc conf
+  ansible.builtin.stat:
+{{%- if product not in ['sle12', 'sle15'] %}}
+    path: /etc/opensc-{{ ansible_architecture }}.conf
+{{%- else %}}
+    path: /etc/opensc.conf
+{{%- endif %}}
+  register: opensc_conf_fcd
+
+- name: Force smartcard driver block
+  block:
+    - name: Check if force_card_driver is defined
+      ansible.builtin.command: /usr/bin/opensc-tool -G app:default:force_card_driver
+      changed_when: false
+      register: force_card_driver
+
+    - name: "{{{ rule_title }}}"
+      ansible.builtin.command: |
+        /usr/bin/opensc-tool -S app:default:force_card_driver:{{ var_smartcard_drivers }}
+      when:
+        - force_card_driver.stdout != var_smartcard_drivers
+  when:
+    - opensc_conf_fcd.stat.exists

@@ -1,0 +1,17 @@
+controls:
+- id: SRG-APP-000181-CTR-000485
+  levels:
+  - medium
+  title: {{{ full_name }}} must provide an audit reduction capability that supports
+    on-demand reporting requirements.
+  related_rules:
+  - audit_log_forwarding_enabled
+  - audit_profile_set
+  status: not applicable
+  status_justification: |-
+    Not applicable - The location of the external logging server used for audit
+    log aggregation is outside the scope of {{{ full_name }}} configuration.
+    Because the configuration recommended in response to SRG-APP-000111-CTR-000220
+    configures an external log aggregation server outside of the control of the
+    {{{ full_name }}} cluster, it is up to individual implementation to ensure that
+    the location of that log aggregation point meets other requirements.

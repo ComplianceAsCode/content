@@ -1,0 +1,57 @@
+documentation_complete: true
+
+
+title: 'Disable the AlwaysAdmit Admission Control Plugin'
+
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson]' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '[.data."config.json" | fromjson]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    To ensure OpenShift only responses to requests explicitly allowed by the
+    admission control plugin. Check that the <code>config</code> ConfigMap object does not
+    contain the AlwaysAdmit plugin.
+
+rationale: |-
+    Enabling the admission control plugin <tt>AlwaysAdmit</tt> allows all
+    requests and does not provide any filtering.
+
+identifiers:
+  cce@ocp4: CCE-84148-6
+
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: '<tt>AlwaysAdmit</tt> admission control plugin is not set'
+
+ocil: |-
+    To verify that the <tt>AlwaysAdmit</tt> admission control plugin is not set, run the following command:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    The output should not contain <tt>AlwaysAdmit</tt>
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    check_existence: "none_exist"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["enable-admission-plugins"][:]'
+    values:
+    - value: '^AlwaysAdmit$'
+      operation: "pattern match"

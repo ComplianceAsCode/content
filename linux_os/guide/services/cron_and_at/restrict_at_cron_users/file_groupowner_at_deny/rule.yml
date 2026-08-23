@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns /etc/at.deny file'
+
+description: |-
+    If <tt>/etc/at.deny</tt> exists, it must be group-owned by <tt>root</tt>.
+    {{{ describe_file_group_owner(file="/etc/at.deny", group="root") }}}
+
+rationale: |-
+    If the owner of the at.deny file is not set to root, the possibility exists for an
+    unauthorized user to view or edit sensitive information.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/at.deny", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/at.deny", group="root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/at.deny
+        gid_or_name: '0'

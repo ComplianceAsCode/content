@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the mpd_use_cifs SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>mpd_use_cifs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="mpd_use_cifs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="mpd_use_cifs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: mpd_use_cifs

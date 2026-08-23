@@ -1,0 +1,44 @@
+documentation_complete: true
+
+
+title: 'Disable loading and unloading of kernel modules'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.modules_disabled", value="1") }}}'
+
+rationale: |-
+    Malicious kernel modules can have a significant impact on system security and
+    availability. Disabling loading of kernel modules prevents this threat. Note
+    that once this option has been set, it cannot be reverted without doing a
+    system reboot. Make sure that all needed kernel modules are loaded before
+    setting this option.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83397-0
+    cce@rhel9: CCE-83967-0
+    cce@rhel10: CCE-87060-0
+    cce@sle12: CCE-91566-0
+    cce@sle15: CCE-91256-8
+    cce@sle16: CCE-96441-1
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.modules_disabled", value="1") }}}
+
+platform: system_with_kernel
+
+warnings:
+  - general:
+      This rule doesn't come with remediation.
+      Remediating this rule during the installation process disrupts the install and boot process.
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.modules_disabled
+        sysctlval: '1'
+        datatype: int
+        no_remediation: true
+    backends:
+        # Automated remediation of this rule during installations disrupts the first boot
+        bash: 'off'
+        ansible: 'off'

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: 'Enable the SSH login confirmation banner'
+
+description: |-
+    This rule verifies that the SSH login confirmation banner is set
+    correctly.
+
+    The confirmation text is configurable through the var_ssh_confirm_text
+    variable, which supports the DoD-required consent text or a generic
+    alternative.
+
+rationale: |-
+    Display of a standardized and approved use notification before granting
+    access to the operating system ensures privacy and security notification
+    verbiage used is consistent with applicable federal laws, Executive Orders,
+    directives, policies, regulations, standards, and guidance.
+
+severity: medium
+
+ocil_clause: 'it does not display the required banner'
+
+ocil: |-
+    To check if the system motd banner is compliant,
+    run the following command:
+    <pre>$ less /etc/profile.d/ssh_confirm.sh</pre>
+

@@ -1,0 +1,10 @@
+# platform = multi_platform_ocp
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+    name: default
+    namespace: openshift-ingress-operator
+spec:
+    tlsSecurityProfile:
+        intermediate: {}
+        type: Intermediate

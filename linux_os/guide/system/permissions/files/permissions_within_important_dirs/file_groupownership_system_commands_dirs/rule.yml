@@ -1,0 +1,74 @@
+documentation_complete: true
+
+
+title: 'Verify that system commands files are group owned by root or a system account'
+
+description: |-
+    System commands files are stored in the following directories by default:
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/sbin
+    {{%- if 'ol9' in product %}}
+    /usr/libexec
+    {{%- endif %}}
+    /usr/local/bin
+    /usr/local/sbin
+    </pre>
+    All files in these directories should be owned by the <tt>root</tt> group,
+    or a system account.
+    If the directory, or any file in these directories, is found to be owned
+    by a group other than root or a a system account correct its ownership
+    with the following command:
+    <pre>$ sudo chgrp root <i>FILE</i></pre>
+
+rationale: |-
+    If the operating system allows any user to make changes to software
+    libraries, then those changes might be implemented without undergoing the
+    appropriate testing and approvals that are part of a robust change management
+    process.
+    This requirement applies to operating systems with software libraries
+    that are accessible and configurable, as in the case of interpreted languages.
+    Software libraries also include privileged programs which execute with
+    escalated privileges. Only qualified and authorized individuals must be
+    allowed to obtain access to information system components for purposes
+    of initiating changes, including upgrades and modifications.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86519-6
+    cce@rhel9: CCE-89442-8
+    cce@rhel10: CCE-89800-7
+    cce@sle12: CCE-83243-6
+    cce@sle15: CCE-85742-5
+    cce@sle16: CCE-96446-0
+    cce@slmicro5: CCE-93701-1
+    cce@slmicro6: CCE-94699-6
+
+references:
+    nist: CM-5(6),CM-5(6).1
+    srg: SRG-OS-000259-GPOS-00100
+    stigid@ol8: OL08-00-010320
+    stigid@sle12: SLES-12-010882
+
+ocil_clause: 'any system commands are returned and is not group-owned by a required system account'
+
+ocil: |-
+    Verify the system commands contained in the following directories are group-owned by "root", or a required system account, with the following command:
+
+    {{%- if 'ol9' in product %}}
+    $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/libexec /usr/local/bin /usr/local/sbin ! -group root -exec ls -l {} \;
+    {{%- else %}}
+    $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -exec ls -l {} \;
+    {{%- endif %}}
+
+fixtext: |-
+    Configure the system commands to be protected from unauthorized access.
+
+    Run the following command, replacing "[FILE]" with any system command file not group-owned by "root" or a required system account.
+
+    $ sudo chgrp root [FILE]
+
+srg_requirement:
+    {{{ full_name }}} system commands must be group-owned by root or a system account.

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the lsmd_plugin_connect_any SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>lsmd_plugin_connect_any</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="lsmd_plugin_connect_any") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="lsmd_plugin_connect_any") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: lsmd_plugin_connect_any

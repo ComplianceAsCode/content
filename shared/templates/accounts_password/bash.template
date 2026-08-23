@@ -1,0 +1,42 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ bash_instantiate_variables("var_password_pam_" ~ VARIABLE) }}}
+
+{{% if 'ol' in families or 'rhel' in product %}}
+if grep -sq {{{ VARIABLE }}} /etc/security/pwquality.conf.d/*.conf ; then
+    sed -i "/{{{ VARIABLE }}}/d" /etc/security/pwquality.conf.d/*.conf
+fi
+{{% endif %}}
+
+{{% if "ol" in families %}}
+{{{ bash_remove_pam_module_option_configuration('/etc/pam.d/system-auth',
+                                  'password',
+                                  '',
+                                  'pam_pwquality.so',
+                                  VARIABLE)
+}}}
+{{{ bash_remove_pam_module_option_configuration('/etc/pam.d/password-auth',
+                                  'password',
+                                  '',
+                                  'pam_pwquality.so',
+                                  VARIABLE)
+}}}
+{{% endif %}}
+
+{{% if product == "ubuntu2404" %}}
+{{{ bash_pam_pwquality_enable() }}}
+{{% endif %}}
+
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ bash_ensure_pam_module_configuration('/etc/pam.d/common-password', 'password', 'requisite', 'pam_pwquality.so', '', '', 'BOF') }}}
+{{% endif %}}
+
+{{% if product == 'sle16' %}}
+{{{ bash_copy_distro_defaults('/usr/lib/security/pwquality.conf', pwquality_path) }}}
+{{% endif %}}
+
+{{{ bash_replace_or_append(pwquality_path, '^' ~ VARIABLE , '$var_password_pam_' ~ VARIABLE , '%s = %s', cce_identifiers=cce_identifiers) }}}

@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent a user from overriding the disabling of the graphical user smart card removal action.
+
+vuldiscussion: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+
+    The session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, {{{ full_name }}} needs to provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.
+
+checktext: |-
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+
+    Verify {{{ full_name }}} disables ability of the user to override the smart card removal action setting.
+
+    $ gsettings writable org.gnome.settings-daemon.peripherals.smartcard removal-action
+
+    false
+
+    If "removal-action" is writable and the result is "true", this is a finding.
+
+fixtext: |-
+    Add the following line to "/etc/dconf/db/local.d/locks/00-security-settings-lock" to prevent user override of the smart card removal action:
+
+    /org/gnome/settings-daemon/peripherals/smartcard/removal-action
+
+    Then update the dconf system databases:
+
+    $ sudo dconf update

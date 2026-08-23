@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Verify pam_pwhistory module is activated'
+
+description: |-
+    The <tt>pam_pwhistory.so</tt> module is part of the Pluggable Authentication Modules (PAM) 
+    framework designed to increase password security. It works by storing a history of previously 
+    used passwords for each user, ensuring users cannot alternate between the same passwords too frequently.
+    <br /><br />
+    This module is incompatible with Kerberos. Furthermore, its usage with <tt>NIS</tt> or <tt>LDAP</tt> is 
+    generally impractical, as other machines can not access local password histories.
+
+rationale: |-
+    Enforcing strong passwords increases the difficulty and resources required 
+    for password compromise.
+
+severity: medium
+
+platform: package[pam]

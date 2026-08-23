@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} audit log directory must be owned by root to prevent unauthorized read access.
+
+vuldiscussion: |-
+    Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
+
+checktext: |-
+    Verify the audit logs directory is owned by "root".
+
+    Determine where the audit logs are stored with the following command:
+
+    $ sudo grep -iw log_file /etc/audit/auditd.conf
+
+    log_file = /var/log/audit/audit.log
+
+    Using the location of the audit log file, determine if the audit log directory is owned by "root" using the following command:
+
+    $ sudo stat -c '%U %n' /var/log/audit
+
+    root /var/log/audit
+
+    If the audit log directory is not owned by "root", this is a finding.
+
+fixtext: |-
+    Configure the audit log to be protected from unauthorized read access by setting the correct owner as "root" with the following command:
+
+    $ sudo chown root /var/log/audit

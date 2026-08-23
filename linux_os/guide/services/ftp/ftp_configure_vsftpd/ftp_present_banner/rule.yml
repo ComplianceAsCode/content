@@ -1,0 +1,48 @@
+documentation_complete: true
+
+
+title: 'Create Warning Banners for All FTP Users'
+
+description: |-
+    {{% if product in ["sle12", "sle15"] %}}
+    Edit the vsftpd configuration file, which resides at <tt>/etc/vsftpd.conf</tt>
+    {{% else %}}
+    Edit the vsftpd configuration file, which resides at <tt>/etc/vsftpd/vsftpd.conf</tt>
+    {{% endif %}}
+    by default. Add or correct the following configuration options:
+    <pre>banner_file=/etc/issue</pre>
+
+rationale: 'This setting will cause the system greeting banner to be used for FTP connections as well.'
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83059-6
+
+references:
+    stigid@sle12: SLES-12-030010
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    If FTP services are not installed, this is not applicable.
+    <br /><br />
+    To verify this configuration, run the following command:
+    {{% if product in ["sle12", "sle15"] %}}
+    <pre>grep "banner_file" /etc/vsftpd.conf</pre>
+    {{% else %}}
+    <pre>grep "banner_file" /etc/vsftpd/vsftpd.conf</pre>
+    {{% endif %}}
+
+    The output should show the value of <tt>banner_file</tt> is set to <tt>/etc/issue</tt>, an example of which is shown below:
+    {{% if product in ["sle12", "sle15"] %}}
+    <pre>$ sudo grep "banner_file" /etc/vsftpd.conf
+    {{% else %}}
+    <pre>$ sudo grep "banner_file" /etc/vsftpd/vsftpd.conf
+    {{% endif %}}
+    banner_file=/etc/issue</pre>
+
+{{%- if product in ["sle12"] %}}
+{{{ warning_rule_deprecated_by("SLES 12 STIG Revision v2R10", release='0.1.69', reason_is_rule=False) | indent(4) }}}
+{{%- endif %}}
+

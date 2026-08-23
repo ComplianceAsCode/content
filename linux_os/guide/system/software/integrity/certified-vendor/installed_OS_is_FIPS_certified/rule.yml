@@ -1,0 +1,81 @@
+documentation_complete: true
+
+
+title: 'The Installed Operating System Is FIPS 140-2 Certified'
+
+description: |-
+    To enable processing of sensitive information the operating system must
+    provide certified cryptographic modules compliant with FIPS 140-2
+    standard.
+{{% if product in ["sle12", "sle15"] %}}
+    SUSE Enterprise Linux is supported by SUSE Software Solutions Germany GmbH. As the SUSE Enterprise
+    Linux vendor, SUSE Software Solutions Germany GmbH is responsible for maintaining government
+    certifications and standards.
+{{% elif product in ["ubuntu2204", "ubuntu2404"] %}}
+    Ubuntu Linux is supported by Canonical Ltd. As the Ubuntu Linux Vendor, Canonical Ltd. is
+    responsible for government certifications and standards.
+
+    Users of Ubuntu Linux either need an Ubuntu Advantage subscription or need
+    to be using Ubuntu Pro from a sponsored vendor in order to have access to
+    FIPS content supported by Canonical.
+{{% endif %}}
+
+rationale: |-
+    The Federal Information Processing Standard (FIPS) Publication 140-2, (FIPS
+    PUB 140-2) is a computer security standard. The standard specifies security
+    requirements for cryptographic modules used to protect sensitive
+    unclassified information.  Refer to the full FIPS 140-2 standard at
+    {{{ weblink(link="http://csrc.nist.gov/publications/fips/fips140-2/fips1402.pdf") }}}
+    for further details on the requirements.
+    FIPS 140-2 validation is required by U.S. law when information systems use
+    cryptography to protect sensitive government information. In order to
+    achieve FIPS 140-2 certification, cryptographic modules are subject to
+    extensive testing by independent laboratories, accredited by National
+    Institute of Standards and Technology (NIST).
+
+warnings:
+    - general: |-
+        There is no remediation besides switching to a different operating system.
+    - regulatory: |-
+        System Crypto Modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by
+        a vendor that has undergone this certification. This means providing
+        documentation, test results, design information, and independent third
+        party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-80830-3
+    cce@sle12: CCE-83037-2
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
+    nist: SC-12(2),SC-12(3),IA-7,SC-13,CM-6(a),SC-12
+    stigid@sle12: SLES-12-010420
+
+ocil_clause: 'the installed operating system is not FIPS 140-2 certified'
+
+ocil: |-
+    To verify that the installed operating system is supported or certified, run
+    the following command:
+{{% if product == "ol7" %}}
+    <pre>$ grep -i "oracle" /etc/oracle-release</pre>
+{{% elif product in ["sle12", "sle15"] %}}
+    <pre>$ grep -i "suse" /etc/os-release</pre>
+{{% elif product in ["ubuntu2204", "ubuntu2404"] %}}
+    <pre>$ grep -i "ubuntu" /etc/os-release</pre>
+{{% endif %}}
+    The output should contain something similar to:
+    <pre>{{{ full_name }}}</pre>

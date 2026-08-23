@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Disable SSH TCP Forwarding'
+
+description: |-
+    The <tt>AllowTcpForwarding</tt> parameter specifies whether TCP forwarding is permitted.
+    To disable TCP forwarding, add or correct the following line in
+    {{{ sshd_config_file() }}}
+    <pre>AllowTcpForwarding no</pre>
+
+rationale: |-
+    Leaving port forwarding enabled can expose the organization to security risks and back-doors.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83301-2
+    cce@rhel9: CCE-90806-1
+    cce@rhel10: CCE-89027-7
+    cce@sle12: CCE-92204-7
+    cce@sle15: CCE-91334-3
+    cce@sle16: CCE-96591-3
+    cce@slmicro5: CCE-93884-5
+
+references:
+    cis@sle12: 5.2.20
+    cis@sle15: 5.2.20
+
+ocil_clause: "The AllowTcpForwarding option exists and is disabled"
+
+ocil: |-
+    {{{ ocil_sshd_option(default="no", option="AllowTcpForwarding", value="no") }}}
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: AllowTcpForwarding
+        value: 'no'
+        datatype: string

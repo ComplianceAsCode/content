@@ -1,0 +1,12 @@
+controls:
+- id: SRG-APP-000516-CTR-001330
+  levels:
+  - medium
+  title: {{{ full_name }}} must be able to store and instantiate industry standard
+    container images.
+  status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://docs.openshift.com/container-platform/latest/architecture/architecture.html
+  status_justification: |-
+    Red Hat OpenShift leverages CRI-O as its runtime which was designed as a container engine specifically to work with Kubernetes and can run the legacy Docker container format as well as the newer industry standard OCI container image format

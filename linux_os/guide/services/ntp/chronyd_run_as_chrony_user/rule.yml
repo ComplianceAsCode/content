@@ -1,0 +1,68 @@
+documentation_complete: true
+
+
+title: 'Ensure that chronyd is running under chrony user account'
+
+{{%- set ok_by_default = false %}}
+{{%- if product in ["ol7", "ol8", "ol9", "fedora"] or 'rhel' in product %}}
+{{%- set ok_by_default = true %}}
+{{%- endif %}}
+
+description: |-
+    chrony is a daemon which implements the Network Time Protocol (NTP). It is designed to
+    synchronize system clocks across a variety of systems and use a source that is highly
+    accurate. More information on chrony can be found at
+    {{{ weblink(link="https://chrony-project.org/") }}}.
+    Chrony can be configured to be a client and/or a server.
+    To ensure that chronyd is running under chrony user account,
+    {{% if 'ubuntu' in product %}}
+    <tt>user</tt> variable in <tt>{{{ chrony_conf_path }}}</tt> is set to <tt>_chrony</tt> or is
+    absent:
+    <pre>user _chrony</pre>
+    {{% elif not ok_by_default -%}}
+    add or edit the
+    <tt>OPTIONS</tt> variable in <tt>/etc/sysconfig/chronyd</tt> to include <tt>-u chrony</tt>:
+    <pre>OPTIONS="-u chrony"</pre>
+    {{% else -%}}
+    remove any <tt>-u ...</tt> option from <tt>OPTIONS</tt> other than <tt>-u chrony</tt>,
+    as chrony is run under its own user by default.
+    {{%- endif %}}
+    This recommendation only applies if chrony is in use on the system.
+
+rationale: |-
+    If chrony is in use on the system proper configuration is vital to ensuring time synchronization
+    is working properly.
+
+severity: medium
+
+platform: package[chrony]
+
+identifiers:
+    cce@rhel8: CCE-82879-8
+    cce@rhel9: CCE-84108-0
+    cce@rhel10: CCE-89296-8
+    cce@sle12: CCE-92240-1
+    cce@sle15: CCE-91360-8
+    cce@sle16: CCE-96673-9
+    cce@slmicro5: CCE-93907-4
+
+references:
+    cis@sle12: 2.2.1.3
+    cis@sle15: 2.2.1.3
+
+ocil_clause: 'chronyd is not running under chrony user account'
+
+ocil: |-
+    {{% if 'ubuntu' in product %}}
+    Run the following command and verify that <tt>user</tt> is set to <tt>_chrony</tt> in <tt>{{{ chrony_conf_path }}}</tt>
+    or the <tt>user</tt> parameter is absent:
+    <pre># grep "^user" {{{ chrony_conf_path }}}
+    user _chrony</pre>
+    {{% elif not ok_by_default -%}}
+    Run the following command and verify that <tt>OPTIONS</tt> are configured correctly:
+    <pre># grep "^OPTIONS" /etc/sysconfig/chronyd
+    OPTIONS="-u chrony"</pre>
+    {{% else -%}}
+    <pre># grep "^OPTIONS.*-u" /etc/sysconfig/chronyd | grep -v -e '-u\s*chrony\b'</pre>
+    returns no output
+    {{%- endif %}}

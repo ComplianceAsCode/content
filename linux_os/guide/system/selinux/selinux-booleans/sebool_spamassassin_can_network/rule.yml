@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the spamassassin_can_network SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>spamassassin_can_network</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="spamassassin_can_network") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="spamassassin_can_network") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: spamassassin_can_network

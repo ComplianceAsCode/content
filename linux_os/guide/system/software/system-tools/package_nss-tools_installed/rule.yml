@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Ensure nss-tools is installed'
+
+description: |-
+    {{{ describe_package_install(package="nss-tools") }}}
+
+rationale: |-
+    Network Security Services (NSS) is a set of libraries designed to
+    support cross-platform development of security-enabled client and
+    server applications. Install the <tt>nss-tools</tt> package
+    to install command-line tools to manipulate the NSS certificate
+    and key database.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82396-3
+    cce@rhel9: CCE-89706-6
+    cce@rhel10: CCE-87829-8
+
+references:
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000480-GPOS-00227
+
+{{{ complete_ocil_entry_package_installed("nss-tools") }}}
+
+fixtext: '{{{ fixtext_package_installed("nss-tools") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("nss-tools") }}}'
+
+
+template:
+    name: package_installed
+    vars:
+        pkgname: nss-tools
+
+platform: system_with_kernel

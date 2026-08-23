@@ -1,0 +1,65 @@
+documentation_complete: true
+
+title: 'A remote time server for Chrony is configured'
+
+description: |-
+    <tt>Chrony</tt> is a daemon which implements the Network Time Protocol (NTP). It is designed
+    to synchronize system clocks across a variety of systems and use a source that is highly
+    accurate. More information on <tt>chrony</tt> can be found at
+    {{{ weblink(link="https://chrony-project.org/") }}}.
+    <tt>Chrony</tt> can be configured to be a client and/or a server.
+    Add or edit server or pool lines to <tt>{{{ chrony_conf_path }}}</tt> as appropriate:
+    <pre>server &lt;remote-server&gt;</pre>
+    Alternatively, server or pool directives can be specified in files included via
+    <tt>sourcedir</tt> or <tt>confdir</tt> directives in <tt>{{{ chrony_conf_path }}}</tt>.
+    When using <tt>sourcedir</tt>, create <tt>.sources</tt> files in the specified directory:
+    <pre># In {{{ chrony_conf_path }}}:
+    sourcedir /etc/chrony/sources.d
+
+    # In /etc/chrony/sources.d/ntp.sources:
+    server 0.pool.ntp.org</pre>
+    When using <tt>confdir</tt>, create <tt>.conf</tt> files in the specified directory:
+    <pre># In {{{ chrony_conf_path }}}:
+    confdir /etc/chrony/conf.d
+
+    # In /etc/chrony/conf.d/ntp-servers.conf:
+    pool 1.pool.ntp.org</pre>
+    Multiple servers may be configured.
+
+rationale: |-
+    If <tt>chrony</tt> is in use on the system proper configuration is vital to ensuring time
+    synchronization is working properly.
+
+severity: medium
+
+platform: package[chrony]
+
+identifiers:
+    cce@rhel8: CCE-82873-1
+    cce@rhel9: CCE-84218-7
+    cce@rhel10: CCE-86811-7
+    cce@sle12: CCE-91631-2
+    cce@sle15: CCE-85833-2
+    cce@sle16: CCE-96509-5
+    cce@slmicro5: CCE-93803-5
+
+references:
+    cis@sle12: 2.2.1.3
+    cis@sle15: 2.2.1.3
+    nist: CM-6(a),AU-8(1)(a)
+    pcidss: Req-10.4.3
+    srg: SRG-OS-000355-GPOS-00143
+
+ocil_clause: 'a remote time server is not configured'
+
+ocil: |-
+    Verify that a remote time server is configured. First, check the main configuration file:
+    <pre># grep -E "^(server|pool)" {{{ chrony_conf_path }}}</pre>
+    If no server or pool directive is found, check for sourcedir or confdir directives:
+    <pre># grep -E "^(sourcedir|confdir)" {{{ chrony_conf_path }}}</pre>
+    For each sourcedir found, check <tt>.sources</tt> files in that directory:
+    <pre># grep -E "^(server|pool)" /path/to/sourcedir/*.sources</pre>
+    For each confdir found, check <tt>.conf</tt> files in that directory:
+    <pre># grep -E "^(server|pool)" /path/to/confdir/*.conf</pre>
+    At least one server or pool directive must be present in the main configuration file
+    or in files within directories specified by sourcedir or confdir directives.

@@ -1,0 +1,24 @@
+# Offline mode disables installation of requirements.yml and schema refreshing
+# We can run parallel and runs can take long time, so avoid timeouts and failed
+# tests.
+offline: true
+
+skip_list:
+  - '204' # Lines should be no longer than 160 chars
+  - '301' # Commands should not change things if nothing needs doing
+  - '303' # Using command rather than module
+  - '403' # Package installs should not use latest
+  - '503' # Tasks that run when changed should likely be handlers
+  - no-tabs # Rule permissions_local_var_log uses explicit \t character
+  - command-instead-of-module # sometimes systemctl must be executed instead of the module
+  - risky-file-permissions # Almost all rules do not set perms
+  - yaml # There is no use of using ansible-lint to run yamllint as yamllint has own test
+  - fqcn[action-core] # Most playbooks use old format currently, so skip for now.
+  - fqcn[action] # ditto
+  - jinja[spacing] # Too numerous now
+  - key-order[task] # Too numerous now
+  - no-free-form # Too numerous now
+  - name[template] # Style choice to skip this rule
+
+kinds:
+  - playbook: "**/*.yml"

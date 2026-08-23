@@ -1,0 +1,34 @@
+product: openembedded
+full_name: OpenEmbedded
+type: platform
+
+benchmark_id: OPENEMBEDDED
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - openembedded:
+      name: "cpe:/o:openembedded:nodistro:"
+      title: "OpenEmbedded nodistro"
+      check_id: installed_OS_is_openembedded
+
+  - poky:
+      name: "cpe:/o:openembedded:poky:"
+      title: "OpenEmbedded Poky reference distribution"
+      check_id: installed_OS_is_poky
+
+  - petalinux:
+      name: "cpe:/o:openembedded:petalinux:"
+      title: "OpenEmbedded petalinux distribution"
+      check_id: installed_OS_is_petalinux
+
+  - harden:
+      name: "cpe:/o:openembedded:harden:"
+      title: "OpenEmbedded Harden distribution"
+      check_id: installed_OS_is_oeharden

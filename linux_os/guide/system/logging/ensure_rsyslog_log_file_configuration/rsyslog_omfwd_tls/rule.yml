@@ -1,0 +1,79 @@
+documentation_complete: true
+
+title: 'Ensure Rsyslog omfwd Action Enables TLS Encryption'
+
+description: |-
+    Rsyslog is a system utility providing support for message logging.
+    Support for both internet and Unix domain sockets enables this utility
+    to support both local and remote logging. Coupling this utility with
+    <tt>gnutls</tt> creates a method to securely encrypt and off-load auditing.
+    When this utility is coupled with the omfwd module, it can use the
+    <tt>ossl</tt> network stream driver, which leverages the OpenSSL library
+    for Transport Layer Security (TLS) to securely encrypt and off-load auditing.
+    <br /><br />
+    The <tt>tls="on"</tt> parameter must be set in each <tt>omfwd</tt>
+    action rule to enable TLS encryption for forwarded log data.
+    <br /><br />
+    Example configuration in <tt>/etc/rsyslog.d/99-forwarding.conf</tt>:
+    <pre>action(
+      type="omfwd"
+      target="logserver.example.com"
+      protocol="tcp"
+      port="6514"
+      tls="on"
+    )</pre>
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or
+    incidental deletion or alteration.
+
+    Off-loading is a common process in information systems with limited
+    audit storage capacity.
+
+    Without TLS encryption enabled in the omfwd action, rsyslog may
+    transmit audit records in cleartext during off-loading, leaving
+    them vulnerable to interception.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-86781-2
+
+references:
+    nist: AU-4(1)
+    srg: SRG-OS-000342-GPOS-00133,SRG-OS-000479-GPOS-00224
+
+ocil_clause: 'TLS encryption is not enabled within omfwd action blocks'
+
+ocil: |-
+    Verify {{{ full_name }}} encrypts audit records offloaded onto a
+    different system via rsyslog using the modern "omfwd" action.
+
+    Search for active TLS-enabling configurations within "omfwd" action
+    blocks with the following command:
+
+    <pre>$ sudo grep -rE 'tls="on"|StreamDriverMode\s*=\s*"1"' /etc/rsyslog.conf /etc/rsyslog.d/</pre>
+
+    If an active TCP-based "omfwd" forwarding rule exists on the system
+    but the command above returns no active configuration lines, or if
+    all results are commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt off-loaded audit records via rsyslog by enabling TLS within the "omfwd" action rule.
+
+    Edit the configuration file containing the "omfwd" rule (e.g., /etc/rsyslog.d/99-forwarding.conf) and add the tls="on" parameter.
+
+    Example:
+    action(
+      type="omfwd"
+      target="logserver.example.com"
+      protocol="tcp"
+      port="6514"
+      tls="on"
+    )
+
+    After applying the configuration, restart the rsyslog service:
+    $ sudo systemctl restart rsyslog
+
+srg_requirement: |-
+    {{{ full_name }}} must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited via rsyslog.

@@ -1,0 +1,75 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Rsyslog omfwd action must have authmode set to x509/name and permittedpeer configured.", rule_title=rule_title) }}}
+        <criteria operator="OR">
+            <criterion comment="No omfwd action blocks are configured"
+                        test_ref="test_{{{ rule_id }}}_no_omfwd" />
+            <criteria operator="AND">
+                <criterion comment="All omfwd action blocks have authmode x509/name"
+                            test_ref="test_{{{ rule_id }}}_authmode" />
+                <criterion comment="All omfwd action blocks have permittedpeer set"
+                            test_ref="test_{{{ rule_id }}}_permittedpeer" />
+                <criterion comment="All permittedpeer values match expected loghost address"
+                            test_ref="test_{{{ rule_id }}}_permittedpeer_value" />
+            </criteria>
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_omfwd"
+        comment="Verify no omfwd action blocks exist"
+        check_existence="none_exist" check="all" version="1">
+        <ind:object object_ref="obj_{{{ rule_id }}}_omfwd" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_test id="test_{{{ rule_id }}}_authmode"
+        comment="Verify all omfwd action blocks have authmode x509/name"
+        check_existence="at_least_one_exists" check="all" version="1">
+        <ind:object object_ref="obj_{{{ rule_id }}}_omfwd" />
+        <ind:state state_ref="state_{{{ rule_id }}}_authmode" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_test id="test_{{{ rule_id }}}_permittedpeer"
+        comment="Verify all omfwd action blocks have permittedpeer set"
+        check_existence="at_least_one_exists" check="all" version="1">
+        <ind:object object_ref="obj_{{{ rule_id }}}_omfwd" />
+        <ind:state state_ref="state_{{{ rule_id }}}_permittedpeer" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_omfwd" version="1">
+        <ind:behaviors singleline="true" />
+        <ind:filepath operation="pattern match">^/etc/rsyslog\.(conf|d/.+\.conf)$</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*action\((?i)type(?-i)="omfwd"(.+?)\)</ind:pattern>
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_state id="state_{{{ rule_id }}}_authmode"
+        comment="authmode must be set to x509/name" version="1">
+        <ind:subexpression datatype="string" operation="pattern match">[\S\s]*\s(?i)(?:streamdriver\.authmode|tls\.authmode|streamdriverauthmode)(?-i)\s*=\s*"x509/name"</ind:subexpression>
+    </ind:textfilecontent54_state>
+
+    <ind:textfilecontent54_state id="state_{{{ rule_id }}}_permittedpeer"
+        comment="permittedpeer must be set to a non-empty value" version="1">
+        <ind:subexpression datatype="string" operation="pattern match">[\S\s]*\s(?i)(?:streamdriver\.permittedpeer|tls\.permittedpeer|streamdriverpermittedpeer)(?-i)\s*=\s*"[^"]+"</ind:subexpression>
+    </ind:textfilecontent54_state>
+
+    <ind:textfilecontent54_test id="test_{{{ rule_id }}}_permittedpeer_value"
+        comment="Verify all permittedpeer values match expected loghost address"
+        check_existence="at_least_one_exists" check="all" version="1">
+        <ind:object object_ref="obj_{{{ rule_id }}}_permittedpeer_value" />
+        <ind:state state_ref="state_{{{ rule_id }}}_permittedpeer_value" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_permittedpeer_value" version="1">
+        <ind:behaviors singleline="true" />
+        <ind:filepath operation="pattern match">^/etc/rsyslog\.(conf|d/.+\.conf)$</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*action\((?i)type(?-i)="omfwd"[\S\s]+?(?i)(?:streamdriver\.permittedpeer|tls\.permittedpeer|streamdriverpermittedpeer)(?-i)\s*=\s*"([^"]+)"[\S\s]*?\)</ind:pattern>
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_state id="state_{{{ rule_id }}}_permittedpeer_value"
+        comment="permittedpeer must match the expected loghost address" version="1">
+        <ind:subexpression operation="equals" var_ref="rsyslog_remote_loghost_address" />
+    </ind:textfilecontent54_state>
+
+    <external_variable comment="expected remote loghost address" datatype="string" id="rsyslog_remote_loghost_address" version="1" />
+</def-group>

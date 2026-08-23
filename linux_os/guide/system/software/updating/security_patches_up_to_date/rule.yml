@@ -1,0 +1,113 @@
+documentation_complete: true
+
+
+title: 'Ensure Software Patches Installed'
+
+description: |-
+{{% if 'rhel' in product %}}
+    If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
+    or a yum server, run the following command to install updates:
+    <pre>$ sudo yum update</pre>
+    If the system is not configured to use one of these sources, updates (in the form of RPM packages)
+    can be manually downloaded from the Red Hat Network and installed using <tt>rpm</tt>.
+{{% elif product in ["ol7", "ol8", "ol9"] %}}
+    If the system is joined to the ULN
+    or a yum server, run the following command to install updates:
+    <pre>$ sudo yum update</pre>
+    If the system is not configured to use one of these sources, updates (in the form of RPM packages)
+    can be manually downloaded from the ULN and installed using <tt>rpm</tt>.
+{{% elif 'almalinux' in product %}}
+    Run the following command to install updates:
+    <pre>$ sudo yum update</pre>
+    If the system is not configured to use repos, updates (in the form of RPM packages)
+    can be manually downloaded from the repos and installed using <tt>rpm</tt>.
+{{% elif 'sle' in product or 'slmicro' in product %}}
+    If the system is configured for online updates, invoking the following command will list available
+    security updates:
+    <pre>$ sudo zypper refresh &amp;&amp; sudo zypper list-patches -g security</pre>
+{{% elif 'ubuntu' in product or 'debian' in product %}}
+    If the system has an apt repository available, run the following command to install updates:
+    <pre>$ apt update &#38;&#38; apt full-upgrade</pre>
+{{% endif %}}
+    <br /><br />
+    NOTE: U.S. Defense systems are required to be patched within 30 days or sooner as local policy
+    dictates.
+
+rationale: |-
+    Installing software updates is a fundamental mitigation against
+    the exploitation of publicly-known vulnerabilities. If the most
+    recent security patches and updates are not installed, unauthorized
+    users may take advantage of weaknesses in the unpatched software. The
+    lack of prompt attention to patching could result in a system compromise.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80865-9
+    cce@rhel9: CCE-84185-8
+    cce@sle12: CCE-83002-6
+    cce@sle15: CCE-83261-8
+    cce@sle16: CCE-96484-1
+    cce@slmicro5: CCE-93804-3
+    cce@slmicro6: CCE-95036-0
+
+references:
+    cis-csc: 18,20,4
+    cis@sle12: "1.9"
+    cis@sle15: "1.9"
+    cjis: 5.10.4.1
+    cobit5: APO12.01,APO12.02,APO12.03,APO12.04,BAI03.10,DSS05.01,DSS05.02
+    isa-62443-2009: 4.2.3,4.2.3.12,4.2.3.7,4.2.3.9
+    iso27001-2013: A.12.6.1,A.14.2.3,A.16.1.3,A.18.2.2,A.18.2.3
+    nist: SI-2(5),SI-2(c),CM-6(a)
+    nist-csf: ID.RA-1,PR.IP-12
+    ospp: FMT_MOF_EXT.1
+    pcidss: Req-6.2
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020260
+    stigid@ol8: OL08-00-010010
+    stigid@sle12: SLES-12-010010
+
+# SCAP 1.3 content should reference flat non compressed xml files
+{{% if oval_feed_url %}}
+oval_external_content: {{{ oval_feed_url }}}
+  {{% if not oval_feed_url.endswith(".xml") %}}
+warnings:
+    - general: "The OVAL feed of {{{ full_name }}} is not a XML file, which may not be understood by all scanners."
+  {{% endif %}}
+{{% else %}}
+{{# The rule will be "notchecked" #}}
+warnings:
+    - general: '{{{ full_name }}} does not have a corresponding OVAL CVE Feed. Therefore, this will result in a "not checked" result during a scan.'
+{{% endif %}}
+
+ocil_clause: '{{{ full_name }}} is in non-compliance with the organizational patching policy'
+
+ocil: |-
+    Verify {{{ full_name }}} security patches and updates are installed and up to date.
+    Updates are required to be applied with a frequency determined by organizational policy.
+
+    {{% if 'rhel' in product %}}
+    Obtain the list of available package security updates from Red Hat. The URL for updates is https://access.redhat.com/errata-search/.
+    It is important to note that updates provided by Red Hat may not be present on the system if the underlying packages are not installed.
+
+
+    Check that the available package security updates have been installed on the system with the following command:
+
+    $ sudo yum history list | more
+
+    Loaded plugins: langpacks, product-id, subscription-manager
+    ID | Command line | Date and time | Action(s) | Altered
+    -------------------------------------------------------------------------------
+    70 | install aide | 2020-03-05 10:58 | Install | 1
+    69 | update -y | 2020-03-04 14:34 | Update | 18 EE
+    68 | install vlc | 2020-02-21 17:12 | Install | 21
+    67 | update -y | 2020-02-21 17:04 | Update | 7 EE
+    {{% endif %}}
+
+    Typical update frequency may be overridden by Information Assurance Vulnerability Alert (IAVA) notifications from CYBERCOM.
+
+fixtext: |-
+    Install {{{ full_name }}} patches or updated packages available from Red Hat within 30 days or sooner as local policy dictates.
+
+srg_requirement: '{{{ full_name }}} vendor packaged system security patches and updates must be installed and up to date.'

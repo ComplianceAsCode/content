@@ -1,0 +1,10 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+for user in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) print $1 }' /etc/passwd); do
+    home_dir=$(getent passwd "$user" | cut -d: -f6)
+    find "${home_dir}/.netrc" -type f -exec chmod 0600 {} \;
+done

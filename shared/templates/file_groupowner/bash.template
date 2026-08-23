@@ -1,0 +1,50 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+newgroup=""
+{{%- set ns=namespace(find_groups="") %}}
+{{%- set GROUPS=GID_OR_NAME.split("|") %}}
+{{%- for grp in GROUPS %}}
+{{%- set ns.find_groups=ns.find_groups ~ " ! -group " ~ grp %}}
+{{%- if loop.first %}}
+if getent group "{{{grp}}}" >/dev/null 2>&1; then
+  newgroup="{{{grp}}}"
+{{%- else %}}
+elif getent group "{{{grp}}}" >/dev/null 2>&1; then
+  newgroup="{{{grp}}}"
+{{%- endif %}}
+{{%- if loop.last %}}
+fi
+{{%- endif %}}
+{{%- endfor %}}
+
+if [[ -z "${newgroup}" ]]; then
+  >&2 echo "{{{ GID_OR_NAME|replace("|", " and ") }}} is not a defined group on the system"
+else
+
+{{%- if RECURSIVE %}}
+{{%- set FIND_RECURSE_ARGS_DEP="" %}}
+{{%- elif FILE_REGEX %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
+{{%- endif %}}
+
+{{%- for path in FILEPATH %}}
+{{%- if IS_DIRECTORY %}}
+{{%- if FILE_REGEX %}}
+find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_groups }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp --no-dereference "$newgroup" {} \;
+{{%- else %}}
+find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{{ ns.find_groups }}} -exec chgrp --no-dereference "$newgroup" {} \;
+{{%- endif %}}
+{{%- else %}}
+if ! stat -c "%g %G" "{{{ path }}}" | grep -E -w -q "{{{ GID_OR_NAME }}}"; then
+    chgrp --no-dereference "$newgroup" {{{ path }}}
+fi
+{{%- endif %}}
+{{%- endfor %}}
+
+fi

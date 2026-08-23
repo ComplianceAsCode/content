@@ -1,0 +1,55 @@
+documentation_complete: true
+
+
+title: 'Limit Containers Ability to Escalate Privileges'
+
+description: |-
+    Containers should be limited to only the privileges required
+    to run and should not be allowed to escalate their privileges.
+    To prevent containers from escalating privileges,
+    the appropriate Security Context Constraints (SCCs)
+    should set <tt>allowPrivilegeEscalation</tt> to <tt>false</tt>.
+
+rationale: |-
+    Privileged containers have access to more of the Linux Kernel
+    capabilities and devices. If a privileged container were
+    compromised, an attacker would have full access to the container
+    and host.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-83447-3
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: 'allowPrivilegeEscalation usage in SCCs needs review'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC for those that have <tt>allowPrivilegeEscalation</tt> set to <tt>true</tt>.
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that have <tt>allowPrivilegeEscalation</tt>, examine the associated
+    rolebindings to account for the users that are bound to the role. Review the
+    account to determine if <tt>allowPrivilegeEscalation</tt> is truly required.
+
+#template:
+#    name: yamlfile_value
+#    vars:
+#        ocp_data: "true"
+#        filepath: /apis/security.openshift.io/v1/securitycontextconstraints
+#        yamlpath: ".items[:]['allowPrivilegeEscalation']"
+#        check_existence: "at_least_one_exists"
+#        entity_check: "at least one"
+#        values:
+#          - type: "boolean"
+#            value: "false"

@@ -1,0 +1,25 @@
+checktext: |-
+    Note: If there is no operational need for Libreswan to be installed, this rule is not applicable.
+
+    Verify {{{ full_name }}} has the "libreswan" service package installed with the following command:
+
+    $ sudo dnf list --installed libreswan
+    Installed Packages
+    libreswan.x86_64                                         5.2-1.el10_0                                         @AppStream
+
+    If the "libreswan" package is not installed, this is a finding.
+
+srg_requirement: |-
+    {{{ full_name }}} must have the "libreswan" package installed.
+
+vuldiscussion: |-
+    Providing the ability for remote users or systems to initiate a secure virtual private network connection protects information when it is transmitted over a wide area network.
+
+fixtext: |-
+    Configure {{{ full_name }}} to have the "libreswan" service package installed with the following command:
+
+    $ sudo dnf -y install libreswan
+
+
+
+

@@ -1,0 +1,11 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}}"
+  ansible.builtin.lineinfile:
+    dest: '{{{ sshd_sysconfig_file }}}'
+    state: absent
+    regexp: (?i)^\s*CRYPTO_POLICY.*$

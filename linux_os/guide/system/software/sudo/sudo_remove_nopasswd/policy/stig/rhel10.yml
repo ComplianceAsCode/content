@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must require users to provide a password for privilege escalation.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not allow users to execute privileged actions without authenticating with a password.
+
+    Remove any occurrence of "NOPASSWD" found in the "/etc/sudoers" file or files in the "/etc/sudoers.d" directory:
+
+    $ sudo find /etc/sudoers /etc/sudoers.d -type f -exec sed -i '/NOPASSWD/ s/^/# /g' {} \;
+
+checktext: |-
+    Verify {{{ full_name }}} has no occurrences of "NOPASSWD" in "/etc/sudoers" with the following command:
+
+    $ sudo grep -ir nopasswd /etc/sudoers /etc/sudoers.d/ | grep -v '#'
+
+    If any occurrences of "NOPASSWD" are returned from the command and have not been documented with the information system security officer as an organizationally defined administrative group using multifactor authentication, this is a finding.
+
+vuldiscussion: |-
+    Without reauthentication, users may access resources or perform tasks for which they do not have authorization.
+
+    When operating systems provide the capability to escalate a functional capability, it is critical that the user reauthenticate.
+
+

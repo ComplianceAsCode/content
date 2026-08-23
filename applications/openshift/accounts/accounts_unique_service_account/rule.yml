@@ -1,0 +1,36 @@
+documentation_complete: true
+
+
+title: 'Ensure Usage of Unique Service Accounts '
+
+description: |-
+    Using the <tt>default</tt> service account prevents accurate application
+    rights review and audit tracing. Instead of <tt>default</tt>, create
+    a new and unique service account with the following command:
+    <pre>$ oc create sa <i>service_account_name</i></pre>
+    where <i>service_account_name</i> is the name of a service account
+    that is needed in the project namespace.
+
+rationale: |-
+    Kubernetes provides a default service account which is used by
+    cluster workloads where no specific service account is assigned to the pod.
+    Where access to the Kubernetes API from a pod is required, a specific service account
+    should be created for that pod, and rights granted to that service account.
+    This increases auditability of service account rights and access making it
+    easier and more accurate to trace potential malicious behaviors to a specific
+    service account and project.
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: 'default service account usage needs review'
+
+ocil: |-
+    For each namespace in the cluster, review the rights assigned
+    to the default service account. There should be no cluster or local roles
+    assigned to the default other than the defaults.

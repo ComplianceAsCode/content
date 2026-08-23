@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Disable the xguest_connect_network SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>xguest_connect_network</tt> is enabled.
+    This setting should be disabled as guest users should not be able to configure
+    <tt>NetworkManager</tt>.
+    {{{ describe_sebool_disable(sebool="xguest_connect_network") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="xguest_connect_network") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: xguest_connect_network

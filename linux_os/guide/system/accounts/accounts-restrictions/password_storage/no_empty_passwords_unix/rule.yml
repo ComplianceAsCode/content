@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Prevent Login to Accounts With Empty Password'
+
+description: |-
+    If an account is configured for password authentication
+    but does not have an assigned password, it may be possible to log
+    into the account without authentication. Remove any instances of the
+    <tt>nullok</tt> in
+    <tt>/etc/pam.d/common-{password,auth,account,session,session-noninteractive}</tt>
+    to prevent logins with empty passwords.
+
+rationale: |-
+    If an account has an empty password, anyone could log in and
+    run commands with the privileges of that account. Accounts with
+    empty passwords should never be used in operational environments.
+
+severity: high
+
+platform: system_with_kernel and package[pam]

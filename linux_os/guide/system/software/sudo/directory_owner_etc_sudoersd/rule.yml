@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify User Who Owns /etc/sudoers.d Directory
+
+description: '{{{ describe_file_owner(file="/etc/sudoers.d", owner="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/sudoers.d directory by the root user is important
+    because this directory hosts sudo configuration. Protection of this
+    directory is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the sudo configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86355-5
+    cce@rhel9: CCE-86357-1
+    cce@rhel10: CCE-89589-6
+    cce@sle15: CCE-92512-3
+    cce@sle16: CCE-96623-4
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/sudoers.d", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/sudoers.d", owner="root") }}}
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/sudoers.d", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/sudoers.d", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/sudoers.d/
+        uid_or_name: '0'

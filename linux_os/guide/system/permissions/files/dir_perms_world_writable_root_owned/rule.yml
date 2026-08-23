@@ -1,0 +1,44 @@
+documentation_complete: true
+
+
+title: 'Ensure All World-Writable Directories Are Owned by root User'
+
+description: |-
+    All directories in local partitions which are world-writable should be owned by root.
+    If any world-writable directories are not owned by root, this should be investigated.
+    Following this, the files should be deleted or assigned to root user.
+
+rationale: |-
+    Allowing a user account to own a world-writable directory is undesirable because it allows the
+    owner of that directory to remove or replace any files that may be placed in the directory by
+    other users.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83375-6
+    cce@rhel9: CCE-83903-5
+    cce@rhel10: CCE-89514-4
+    cce@sle12: CCE-91597-5
+    cce@sle15: CCE-91239-4
+    cce@sle16: CCE-95897-5
+
+references:
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000138-GPOS-00069
+
+ocil_clause: 'there are world-writable directories not owned by root'
+
+ocil: |-
+    The following command will discover and print world-writable directories that
+    are not owned by root. Run it once for each local partition <i>PART</i>:
+    <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -uid +0 -print</pre>
+
+fixtext: |-
+    Configure all public directories to be owned by root or a system account to prevent unauthorized and unintended information transferred via shared system resources.
+
+    Set the owner of all public directories as root or a system account using the command, replace "[Public Directory]" with any directory path not owned by root or a system account:
+
+    $ sudo chown root [Public Directory]
+
+srg_requirement:
+    All {{{ full_name }}} world-writable directories must be owned by root, sys, bin, or an application user.

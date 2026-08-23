@@ -1,0 +1,31 @@
+# platform = multi_platform_all
+# reboot = false
+
+function perform_remediation {
+{{% if EXCLUDE_FILESYSTEM_TYPE %}}
+    # Check if the partition is mounted with an excluded filesystem type
+    if findmnt --kernel --raw --evaluate --output=FSTYPE "{{{ MOUNTPOINT }}}" | grep -q "^{{{ EXCLUDE_FILESYSTEM_TYPE }}}$"; then
+        # The mount point {{{ MOUNTPOINT }}} is using {{{ EXCLUDE_FILESYSTEM_TYPE }}} filesystem
+        # which is excluded from this requirement. No remediation needed.
+        return 0
+    fi
+{{% endif %}}
+    {{% if MOUNT_HAS_TO_EXIST %}}
+        # the mount point {{{ MOUNTPOINT }}} has to be defined in /etc/fstab
+        # before this remediation can be executed. In case it is not defined, the
+        # remediation aborts and no changes regarding the mount point are done.
+        {{{ bash_assert_mount_point_in_fstab( MOUNTPOINT ) | indent(4) }}}
+    {{% endif %}}
+
+{{% if MOUNTOPTION_ARG_VAR %}}
+    {{{ bash_instantiate_variables(MOUNTOPTION_ARG_VAR) }}}
+    mountoption="{{{ MOUNTOPTION }}}=${{{ MOUNTOPTION_ARG_VAR }}}"
+    {{{ bash_ensure_mount_option_in_fstab( MOUNTPOINT , "$mountoption" , FILESYSTEM , TYPE ) | indent(4) }}}
+{{% else %}}
+    {{{ bash_ensure_mount_option_in_fstab( MOUNTPOINT , MOUNTOPTION , FILESYSTEM , TYPE ) | indent(4) }}}
+{{% endif %}}
+
+    {{{ bash_ensure_partition_is_mounted( MOUNTPOINT ) | indent(4) }}}
+}
+
+perform_remediation

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: 'Configure the polyinstantiation_enabled SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>polyinstantiation_enabled</tt> is disabled.
+    This setting should be configured to {{{ xccdf_value("var_polyinstantiation_enabled") }}}.
+    <br/>{{{ describe_sebool_var(sebool="polyinstantiation_enabled") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84230-2
+    cce@rhel9: CCE-84083-5
+    cce@rhel10: CCE-88652-3
+    cce@sle12: CCE-91579-3
+    cce@sle15: CCE-91238-6
+    cce@sle16: CCE-95753-0
+
+{{{ complete_ocil_entry_sebool_var(sebool="polyinstantiation_enabled") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: polyinstantiation_enabled

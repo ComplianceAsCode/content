@@ -1,0 +1,59 @@
+documentation_complete: true
+
+
+title: 'Enforce pam_faillock for Local Accounts Only'
+
+description: |-
+    The pam_faillock module's <tt>local_users_only</tt> parameter controls requirements for
+    enforcing failed lockout attempts only for local user accounts and ignoring centralized user
+    account management failed attempt configurations.
+
+rationale: |-
+    The operating system must provide automated mechanisms for supporting account management
+    functions. Enterprise environments make application account management challenging and
+    complex. A manual process for account management functions adds the risk of a potential
+    oversight or other error. Locking out remote accounts may cause unintentional DoS.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83401-0
+
+references:
+    nist: AC-2(1)
+    srg: SRG-OS-000001-GPOS-00001
+
+ocil_clause: 'local_users_only is not uncommented or configured correctly'
+
+ocil: |-
+    To check if only local user are impacted by pam_faillock, run the following command:
+    <pre>$ grep local_users_only /etc/security/faillock.conf</pre>
+    The output should return <tt>local_users_only</tt> not commented.
+
+fixtext: |-
+    To enable the <tt>local_users_only</tt> setting in <tt>/etc/security/faillock.conf</tt>,
+    first enable pam_faillock.so using the following command:
+    $ sudo authselect enable-feature with-faillock
+
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    add or uncomment the following line:
+    <pre>local_users_only</pre>
+
+    add or uncomment the following line:
+    <pre>silent</pre>
+
+platform: package[pam]
+
+warnings:
+    - general: |-
+        If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+        will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+        aborted in order to preserve intentional changes. In this case, an informative message will
+        be shown in the remediation report.
+        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        parameters should be defined in <tt>faillock.conf</tt> file.
+
+    - management: |-
+        Using this rule bypasses pam_faillock's functionality and should be used in cases
+        where centralized management such as LDAP or Active Directory is in use.

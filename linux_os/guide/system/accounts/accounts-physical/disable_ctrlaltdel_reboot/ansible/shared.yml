@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+- name: Disable Ctrl-Alt-Del Reboot Activation
+  ansible.builtin.systemd:
+    name: ctrl-alt-del.target
+    force: yes
+    masked: yes
+    state: stopped

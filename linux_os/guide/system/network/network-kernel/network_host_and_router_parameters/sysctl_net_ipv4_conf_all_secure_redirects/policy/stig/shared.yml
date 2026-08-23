@@ -1,0 +1,31 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    Accepting "secure" ICMP redirects (from those gateways listed as
+    default gateways) has few legitimate uses. It should be disabled unless it is
+    absolutely required.
+
+checktext: |-
+    The runtime status of the  net.ipv4.conf.all.secure_redirects  kernel parameter can be queried
+    by running the following command:
+     $ sysctl net.ipv4.conf.all.secure_redirects
+    The output of the command should indicate a value of  0 .
+    The preferable way how to assure the runtime compliance is to have
+    correct persistent configuration, and rebooting the system.
+
+    The persistent kernel parameter configuration is performed by specifying the appropriate
+    assignment in any file located in the  /etc/sysctl.d  directory.
+    Verify that there is not any existing incorrect configuration by executing the following command:
+     $ grep -r '^\s*net.ipv4.conf.all.secure_redirects\s*=' /etc/sysctl.conf /etc/sysctl.d
+    If any assignments other than
+     net.ipv4.conf.all.secure_redirects = 0
+    are found, or the correct assignment is duplicated, remove those offending lines from respective files,
+    and make sure that exactly one file in
+     /etc/sysctl.d  contains  net.ipv4.conf.all.secure_redirects = 0 , and that one assignment
+    is returned when
+     $ grep -r net.ipv4.conf.all.secure_redirects /etc/sysctl.conf /etc/sysctl.d
+    is executed.
+
+
+    If the correct value is not returned, then this is a finding.

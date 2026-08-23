@@ -1,0 +1,25 @@
+documentation_complete: true
+
+
+title: 'Disable the cluster_use_execmem SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>cluster_use_execmem</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="cluster_use_execmem") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83305-3
+
+
+    
+{{{ complete_ocil_entry_sebool_disabled(sebool="cluster_use_execmem") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: cluster_use_execmem

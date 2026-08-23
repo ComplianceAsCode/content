@@ -1,0 +1,82 @@
+srg_requirement: |-
+  {{{ full_name }}} must enforce approved authorizations for controlling
+  the flow of information between interconnected systems and services
+  based on organization-defined information flow control policies.
+
+vuldiscussion: |-
+  OpenShift provides several layers of protection to control the flow of
+  information between the container platform components and user services. Each
+  user project is given a separate namespace and OpenShift enforces RBAC
+  policies controlling which projects and services users have access to. In
+  addition, NetworkPolicies are used to control the flow of requests to and
+  from externally integrated services to services hosted on the container
+  platform. It is important to define a default Network Policy that will be
+  applied automatically to new projects to prevent unintended requests. These
+  policies can be updated by the project's administrator (with the appropriate
+  RBAC permissions) to apply a policy that is appropriate to the service(s)
+  within the project namespace.
+
+check: |-
+  Verify that a default project template is defined
+
+  > oc get project.config.openshift.io/cluster \
+  -o jsonpath="{.spec.projectRequestTemplate.name}"
+
+  View the default NetworkPolicy
+
+  > oc get templates/project-request -n openshift-config \
+  -o jsonpath="{.objects[?(.kind=='NetworkPolicy')]}{'\n'}"
+
+  If the default project template is not defined, or there are no
+  NetworkPolicy definitions, this is a finding
+
+fixtext: |-
+  Configure a default network policy as necessary to protect the flow of
+  information by performing the following steps.
+
+  1. Create a bootstrap project template (if not already created)
+
+  > oc adm create-bootstrap-project-template -o yaml > template.yaml
+
+  2. Edit the template and add NetworkPolicy object definitions before
+  the parameters section. For example, the following section defines two
+  policies one to allow requests from the same namespace, the other to
+  allow from the openshift ingress routing service.
+
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-from-same-namespace
+    spec:
+      podSelector:
+      ingress:
+      - from:
+        - podSelector: {}
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-from-openshift-ingress
+    spec:
+      ingress:
+      - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+      podSelector: {}
+      policyTypes:
+      - Ingress
+  parameters:
+
+  3. Apply the project template to the cluster by running the following
+  command:
+
+  > oc create -f template.yaml -n openshift-config
+
+  4. Set the default cluster project request template
+
+  > oc patch project.config.openshift.io/cluster --type=merge \
+  -p '{spec":{"projectRequestTemplate":{"name": "<PROJECT_REQUEST_TEMPLATE>"}}}'
+
+  For additional information regarding network policies, see
+  https://docs.openshift.com/container-platform/latest/networking/network_policy/about-network-policy.html
+

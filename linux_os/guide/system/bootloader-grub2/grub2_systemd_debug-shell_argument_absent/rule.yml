@@ -1,0 +1,49 @@
+documentation_complete: true
+
+title: 'Ensure debug-shell service is not enabled during boot'
+
+description: |-
+    systemd's <tt>debug-shell</tt> service is intended to
+    diagnose systemd related boot issues with various <tt>systemctl</tt>
+    commands. Once enabled and following a system reboot, the root shell
+    will be available on <tt>tty9</tt> which is access by pressing
+    <tt>CTRL-ALT-F9</tt>. The <tt>debug-shell</tt> service should only be used
+    for systemd related issues and should otherwise be disabled.
+    <br /><br />
+    By default, the <tt>debug-shell</tt> systemd service is already disabled.
+
+    Ensure the debug-shell is not enabled by the <tt>systemd.debug-shel=1</tt>
+    boot parameter option.
+
+    {{{ describe_grub2_argument_absent("systemd.debug-shell")  | indent(4) }}}
+
+
+rationale: |-
+    This prevents attackers with physical access from trivially bypassing security
+    on the machine through valid troubleshooting configurations and gaining root
+    access when the system is rebooted.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86292-0
+    cce@rhel10: CCE-89168-9
+
+references:
+    ospp: FIA_UAU.1
+
+ocil_clause: 'the command returns a line'
+
+ocil: |-
+    Ensure that debug-shell service is not enabled with the following command:
+    <pre>grep systemd\.debug-shell=1 /boot/grub2/grubenv /etc/default/grub</pre>
+    If the command returns a line, it means that debug-shell service is being enabled.
+
+fixtext: |-
+    {{{ fixtext_grub2_bootloader_argument_absent("debug-shell") | indent(4) }}}
+
+
+template:
+    name: grub2_bootloader_argument_absent
+    vars:
+        arg_name: systemd.debug-shell

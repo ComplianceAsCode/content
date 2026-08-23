@@ -1,0 +1,47 @@
+documentation_complete: true
+
+
+title: 'System Must Avoid Meltdown and Spectre Exploit Vulnerabilities in Modern Processors'
+
+description: |-
+    Verify that Meltdown mitigations are not disabled:
+    <pre>$ sudo grubby --info=ALL | grep mitigations</pre>
+
+    The mitigations must not be set to "off".
+
+    {{{ describe_grub2_argument_absent("mitigations=off") | indent(4) }}}
+
+rationale: |-
+    Hardware vulnerabilities allow programs to steal data that is currently processed on the
+    computer. While programs are typically not permitted to read data from other programs, a
+    malicious program can exploit Meltdown and Spectre to obtain secrets stored in the memory of
+    other running programs. This might include passwords stored in a password manager or browser;
+    personal photos, emails, and instant messages; and business-critical documents.
+
+severity: medium
+
+references:
+    nist: CM-6(b),CM-6.1(iv)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-010424
+
+
+ocil_clause: 'mitigations is set to off'
+
+ocil: |-
+    Verify that Meltdown mitigations are not disabled in any kernel:
+
+    <pre>$ sudo grubby --info=ALL | grep mitigations</pre>
+
+
+fixtext: |-
+    Remove the Meltdown mitigations:
+
+    <pre>$ sudo grubby --update-kernel=ALL --remove-args=mitigations=off</pre>
+
+    Reboot the system for the change to take effect.
+
+template:
+    name: grub2_bootloader_argument_absent
+    vars:
+        arg_name: 'mitigations=off'

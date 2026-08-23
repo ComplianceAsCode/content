@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000426-GPOS-00190
+        levels:
+            - medium
+        title: {{{ full_name }}} must maintain the confidentiality and integrity of information
+            during reception.
+        rules:
+            - package_openssh-server_installed
+            - service_sshd_enabled
+            - configure_bind_crypto_policy
+        status: automated

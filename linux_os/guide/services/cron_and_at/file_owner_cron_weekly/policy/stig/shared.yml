@@ -1,0 +1,16 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    Service configuration files enable or disable features of their respective services that if configured incorrectly
+    can lead to insecure and vulnerable configurations. Therefore, service configuration files should be owned by the
+    correct user to prevent unauthorized changes.
+
+checktext: |-
+    To check the ownership of  /etc/cron.weekly ,
+    run the command:
+     $ ls -lL /etc/cron.weekly
+    If properly configured, the output should indicate the following owner:
+     root
+
+    If /etc/cron.weekly does not have an owner of root, then this is a finding.

@@ -1,0 +1,31 @@
+documentation_complete: true
+
+
+title: 'Record Any Attempts to Run apparmor_parser'
+
+description: |-
+    {{{ describe_arpc("/sbin/apparmor_parser") }}}
+
+rationale: |-
+    Without generating audit records that are specific to the security and
+    mission needs of the organization, it would be difficult to establish,
+    correlate, and investigate the events relating to an incident or identify
+    those responsible for one.
+    Audit records can be generated from various components within the
+    information system (e.g., module or policy filter).
+
+severity: medium
+
+references:
+    srg: SRG-OS-000064-GPOS-00033
+
+ocil: |-
+    To verify that execution of the command is being audited, run the following command:
+    <pre>sudo auditctl -l | grep apparmor_parser</pre>
+    The output should return something similar to:
+    <pre>-a always,exit -F path=/sbin/apparmor_parser -F perm=x -F auid>={{{ uid_min }}} -F auid!=-1 -F key=privileged</pre>
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /sbin/apparmor_parser

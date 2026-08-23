@@ -1,0 +1,61 @@
+documentation_complete: true
+
+
+title: 'Enable logrotate Timer'
+
+description: |-
+    {{{ describe_timer_enable(timer="logrotate") }}}
+
+rationale: |-
+    Log files that are not properly rotated run the risk of growing so large
+    that they fill up the /var/log partition. Valuable logging information could be lost
+    if the /var/log partition becomes full.
+
+severity: medium
+
+{{% if 'rhel' in product %}}
+platform: package[logrotate] and os_linux[rhel]>=9
+{{% elif 'ol' in families %}}
+platform: package[logrotate] and os_linux[ol]>=9
+{{% else %}}
+platform: package[logrotate]
+{{% endif %}}
+
+identifiers:
+    cce@rhel8: CCE-86157-5
+    cce@rhel9: CCE-86158-3
+    cce@rhel10: CCE-87463-6
+    cce@sle12: CCE-92401-9
+    cce@sle15: CCE-92585-9
+    cce@sle16: CCE-95835-5
+    cce@slmicro5: CCE-94013-0
+
+references:
+    cis-csc: 1,14,15,16,3,5,6
+    cis@sle12: "4.2.4"
+    cis@sle15: "4.2.4"
+    cobit5: APO11.04,BAI03.05,DSS05.04,DSS05.07,MEA02.01
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9'
+    iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1
+    nist: CM-6(a)
+    nist-csf: PR.PT-1
+    pcidss: Req-10.7
+
+ocil_clause: 'logrotate timer is not enabled'
+
+ocil: "{{{ ocil_timer_enabled(timer='logrotate') }}}"
+
+template:
+    name: timer_enabled
+    vars:
+        timername: logrotate
+        packagename: logrotate
+
+{{% if product in ["rhel8"] %}}
+warnings:
+    - general:
+        The Systemd unit <tt>logrotate.timer</tt> does not exist in
+        {{{ full_name }}}. The rule <tt>ensure_logrotate_activated</tt> is
+        suggested instead.
+{{% endif %}}

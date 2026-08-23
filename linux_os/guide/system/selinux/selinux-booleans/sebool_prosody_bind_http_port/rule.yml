@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the prosody_bind_http_port SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>prosody_bind_http_port</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="prosody_bind_http_port") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="prosody_bind_http_port") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: prosody_bind_http_port

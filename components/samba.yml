@@ -1,0 +1,17 @@
+groups:
+- configuring_samba
+- disabling_samba
+- smb
+- smb_disable_printing
+- smb_restrict_file_sharing
+name: samba
+packages:
+- samba
+- samba-common
+rules:
+- mount_option_smb_client_signing
+- package_samba-common_installed
+- package_samba_removed
+- require_smb_client_signing
+- service_smb_disabled
+- smb_server_disable_root

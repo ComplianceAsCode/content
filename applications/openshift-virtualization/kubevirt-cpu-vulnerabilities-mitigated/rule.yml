@@ -1,0 +1,34 @@
+documentation_complete: true
+
+platform: {{{ product }}}-node
+
+title: 'Ensure All CPU Vulnerabilities Are Mitigated'
+
+description: |-
+    The Linux kernel exposes the mitigation status of known CPU hardware
+    vulnerabilities via sysfs files under
+    <tt>/sys/devices/system/cpu/vulnerabilities/</tt>. Each file reports
+    whether the running kernel has applied mitigations for a specific
+    vulnerability (e.g., Spectre, Meltdown, MDS, Retbleed). None of
+    these files should report a status beginning with
+    <tt>Vulnerable</tt>.
+
+rationale: |-
+    Unmitigated CPU vulnerabilities expose the host to speculative
+    execution attacks that can leak sensitive data across security
+    boundaries. In a virtualization environment, this risk is amplified
+    because a compromised guest may exploit hardware vulnerabilities to
+    read memory from other guests or the hypervisor. Ensuring that all
+    known CPU vulnerabilities are mitigated reduces the attack surface
+    of the virtualization host.
+
+severity: medium
+
+ocil_clause: 'any CPU vulnerability is not mitigated'
+
+ocil: |-
+    Run the following command on each node to check for unmitigated CPU
+    vulnerabilities:
+    <pre>$ grep -r "Vulnerable" /sys/devices/system/cpu/vulnerabilities/</pre>
+    If any output is returned, the corresponding vulnerability is not
+    mitigated.

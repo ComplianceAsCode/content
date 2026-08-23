@@ -1,0 +1,74 @@
+{{% set title = "SRGs from General Purpose Operating System Security Requirements Guide Mapped to DISA STIG for " ~ full_name -%}}
+
+{{% extends "tables_template_common.html" %}}
+
+{{% block table -%}}
+<table>
+  <thead>
+    <td>CCI</td>
+    <td>SRGID</td>
+    <td>STIGID</td>
+    <td>SRG Requirement</td>
+    <td>Requirement</td>
+    <td>SRG VulnDiscussion</td>
+    <td>VulnDiscussion</td>
+    <td>Status</td>
+    <td>SRG Check</td>
+    <td>Check</td>
+    <td>SRG Fix</td>
+    <td>Fix</td>
+    <td>Severity</td>
+    <td>Mitigation</td>
+    <td>Artifact Description</td>
+    <td>Status Justification</td>
+  </thead>
+{{% for srgid, srg in srgs.items() %}}
+{{% set rules = rules_by_srgid[srgid] %}}
+{{% if rules %}}
+{{% for rule in rules %}}
+  <tr>
+    <td>{{{ srg["cci"] }}}</td>
+    <td>{{{ srgid }}}</td>
+    <td><i>TBD - Assigned by DISA after STIG release</i></td>
+    <td>{{{ srg["title"] }}}</td>
+{{% if rule.identifiers["cce"] %}}
+    <td>{{{ rule.identifiers["cce"] }}}: {{{ rule.title }}}</td>
+{{% else %}}
+    <td>{{{ rule.title }}}</td>
+{{% endif %}}
+    <td>{{{ srg["vuln_discussion"] }}}</td>
+    <td>{{{ rule.description }}}</td>
+    <td>Applicable - Configurable</td>
+    <td>{{{ srg["check"] }}}</td>
+    <td>{{{ rule.ocil }}} Is it the case that {{{ rule.ocil_clause }}}?</td>
+    <td>{{{ srg["fixtext"] }}}</td>
+    <td>{{{ rule.description }}}</td>
+    <td>{{{ rule.severity }}}</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+{{% endfor %}}
+{{% else %}}
+  <tr>
+    <td>{{{ srg["first_ident"] }}}</td>
+    <td>{{{ srgid }}}</td>
+    <td><i>TBD - Assigned by DISA after STIG release</i></td>
+    <td>{{{ srg["title"] }}}</td>
+    <td></td>
+    <td>{{{ srg["vuln_discussion"] }}}</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+{{% endif %}}
+{{% endfor %}}
+</table>
+{{% endblock %}}

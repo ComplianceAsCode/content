@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Key and certificate for kernel module signing'
+
+description: |-
+    The private key and certificate to use when signing modules during kernel build process.
+    On systems where the OpenSSL ENGINE_pkcs11 is functional — a PKCS#11 URI as defined by RFC7512
+    In the latter case, the PKCS#11 URI should reference both a certificate and a private key.
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: certs/signing_key.pem
+    kernel_default: certs/signing_key.pem

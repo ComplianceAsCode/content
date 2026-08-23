@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable the logging_syslogd_use_tty SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>logging_syslogd_use_tty</tt> is enabled.
+    If this setting is disabled, it should be enabled as it allows <tt>syslog</tt>
+    the ability to read/write to terminal.
+    {{{ describe_sebool_enable(sebool="logging_syslogd_use_tty") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="logging_syslogd_use_tty") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: logging_syslogd_use_tty

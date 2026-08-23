@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'UEFI GRUB2 bootloader configuration'
+
+description: |-
+    UEFI GRUB2 bootloader configuration
+
+{{% if grub2_boot_path != grub2_uefi_boot_path -%}}
+platform: uefi
+{{%- endif %}}
+
+warnings:
+    - functionality: |-
+        UEFI generally uses vfat file systems, which does not support Unix-style permissions
+        managed by chmod command. In this case, in order to change file permissions for files
+        within /boot/efi it is necessary to update the mount options in /etc/fstab file and
+        reboot the system.

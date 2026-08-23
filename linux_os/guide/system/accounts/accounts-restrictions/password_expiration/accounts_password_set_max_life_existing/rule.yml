@@ -1,0 +1,61 @@
+documentation_complete: true
+
+
+title: 'Set Existing Passwords Maximum Age'
+
+description: |-
+    Configure non-compliant accounts to enforce a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime
+    restriction by running the following command:
+    {{% if 'sle' in product or 'slmicro' in product %}}
+    <pre>$ sudo passwd -x {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} <i>USER</i></pre>
+    {{% else %}}
+    <pre>$ sudo chage -M {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} <i>USER</i></pre>
+    {{% endif %}}
+
+rationale: |-
+    Any password, no matter how complex, can eventually be cracked. Therefore,
+    passwords need to be changed periodically. If the operating system does
+    not limit the lifetime of passwords and force users to change their
+    passwords, there is the risk that the operating system passwords could be
+    compromised.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82473-0
+    cce@rhel9: CCE-86031-2
+    cce@rhel10: CCE-87137-6
+    cce@sle12: CCE-83041-4
+    cce@sle15: CCE-85571-8
+    cce@sle16: CCE-96606-9
+    cce@slmicro5: CCE-93686-4
+    cce@slmicro6: CCE-94662-4
+
+references:
+    cis@sle12: 5.4.1.2
+    cis@sle15: 5.4.1.2
+    nist: IA-5(f),IA-5(1)(d),CM-6(a)
+    srg: SRG-OS-000076-GPOS-00044
+    stigid@ol7: OL07-00-010260
+    stigid@ol8: OL08-00-020210
+    stigid@sle12: SLES-12-010290
+
+ocil_clause: 'any results are returned that are not associated with a system account'
+
+ocil: |-
+    Check whether the maximum time period for existing passwords is restricted to {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} days with the following commands:
+
+    $ sudo awk -F: '$5 &gt; 60 {print $1 " " $5}' /etc/shadow
+
+    $ sudo awk -F: '$5 &lt;= 0 {print $1 " " $5}' /etc/shadow
+
+fixtext: |-
+    Configure non-compliant accounts to enforce a 60-day maximum password lifetime restriction.
+    {{% if 'sle' in product or 'slmicro' in product %}}
+    <pre>$ sudo passwd -x {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} <i>USER</i></pre>
+    {{% else %}}
+    <pre>$ sudo chage -M {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} <i>USER</i></pre>
+    {{% endif %}}
+
+srg_requirement: |-
+    {{{ full_name }}} user account passwords must have a 60-day maximum password lifetime restriction.

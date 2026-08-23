@@ -1,0 +1,17 @@
+groups:
+- inetd_and_xinetd
+name: inetd
+packages:
+- inetd
+rules:
+- configure_etc_hosts_deny
+- file_groupowner_etc_hosts_allow
+- file_groupowner_etc_hosts_deny
+- file_owner_etc_hosts_allow
+- file_owner_etc_hosts_deny
+- file_permissions_etc_hosts_allow
+- file_permissions_etc_hosts_deny
+- package_tcp_wrappers_installed
+- package_tcp_wrappers_removed
+- package_xinetd_removed
+- service_xinetd_disabled

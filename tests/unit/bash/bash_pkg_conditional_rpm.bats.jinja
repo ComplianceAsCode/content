@@ -1,0 +1,88 @@
+#!/bin/bash
+
+set -pu
+
+# Mock the "rpm" command
+# mocked package: coconut-4.5.17
+# The mock is used to avoid the need to have a specific RPM package in a
+# specific version installed on the system where this test is run.
+function rpm()
+{
+    if [[ "$*" == "--quiet -q coconut" ]] ; then
+        return 0
+    elif [[ "$*" ==  "-q --queryformat %{VERSION} coconut" ]] ; then
+        echo "4.5.17"
+        return 0
+    elif [[ "$*" ==  "-q --queryformat %{EPOCH} coconut" ]] ; then
+        echo "(none)"
+        return 0
+    else
+        echo "BATS mock for rpm doesn't support this command"
+        return 1
+    fi
+}
+export -f rpm
+
+@test "bash_pkg_conditional_rpm - test package presence" {
+    {{{ bash_pkg_conditional_rpm("coconut") | indent(4) }}}
+}
+
+@test "bash_pkg_conditional_rpm - test package version" {
+    {{{ bash_pkg_conditional_rpm("coconut", "<", "0:5") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "<", "0:5.0") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("coconut", "<=", "0:5") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "<=", "0:5.0") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("coconut", "<", "0:4.5.18") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("coconut", "<=", "0:4.5.17") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "<=", "0:4.5.18") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("coconut", ">", "0:4.5.16") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", ">", "0:4.1.1") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("coconut", ">=", "0:4.5.16") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", ">=", "0:4.1.1") | indent(4) }}}
+
+    ! ( {{{ bash_pkg_conditional_rpm("coconut", "!=", "0:4.5.17") | indent(4) }}} )
+
+    ! ( {{{ bash_pkg_conditional_rpm("coconut", "==", "0:4.5.18") | indent(4) }}} )
+
+    {{{ bash_pkg_conditional_rpm("coconut", ">", "0:3") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", ">", "0:3.0") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", ">", "0:3.0.0") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("coconut", ">", "0:3") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", ">=", "0:3.0") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", ">=", "0:3.0.0") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("coconut", "<", "1:1.0") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "<", "1:5.0.4") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "!=", "1:4.5.17") | indent(4) }}}
+    ! ( {{{ bash_pkg_conditional_rpm("coconut", "==", "1:4.5.17") | indent(4) }}} )
+    ! ( {{{ bash_pkg_conditional_rpm("coconut", ">", "1:4.5") | indent(4) }}} )
+    ! ( {{{ bash_pkg_conditional_rpm("coconut", ">", "1:6.7") | indent(4) }}} )
+}
+
+@test "bash_compare_version - test basic version comparison algorithm" {
+    {{{ bash_compare_version("0:0.1.2", "<", "0:1.2") }}}
+    {{{ bash_compare_version("0:2.3", ">", "0:0.2.3") }}}
+    {{{ bash_compare_version("1:2.3", ">", "0:3.2") }}}
+
+    # Undefined behavior - only one epoch specified doesn't produce reasonable results
+    # Kept here for reference, if the behavior is fixed, remove the negation.
+    ! {{{ bash_compare_version("1:2.3", ">", "3.2") }}}
+    ! {{{ bash_compare_version("0:3.2", "==", "3.2") }}}
+
+    {{{ bash_compare_version("1:22.3", ">", "1:3.2") }}}
+    {{{ bash_compare_version("1:2.3", "<", "1:3.2") }}}
+    {{{ bash_compare_version("0:2.3", "<", "1:1.0") }}}
+    {{{ bash_compare_version("1.0", "==", "1.0") }}}
+    {{{ bash_compare_version("0:1.0", "!=", "1:1.0") }}}
+    ! ({{{ bash_compare_version("0:1.0", "==", "1:1.0") }}} )
+    {{{ bash_compare_version("2:17.15.4.5", "<", "2:17.15.4.6") }}}
+    {{{ bash_compare_version("2:17.15.4.5", "<=", "2:17.15.4.6") }}}
+    {{{ bash_compare_version("2:17.15.4.9", ">", "2:17.15.4.7") }}}
+    {{{ bash_compare_version("2:17.15.4.9", ">=", "2:17.15.4.7") }}}
+}

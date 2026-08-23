@@ -1,0 +1,56 @@
+documentation_complete: true
+
+
+title: 'Prevent remote hosts from connecting to the proxy display'
+
+description: |-
+    The SSH daemon should prevent remote hosts from connecting to the proxy
+    display.
+    <br />
+    The default SSH configuration for <tt>X11UseLocalhost</tt> is <tt>yes</tt>,
+    which prevents remote hosts from connecting to the proxy display.
+    <br />
+    To explicitly prevent remote connections to the proxy display, add or correct
+    the following line in
+    {{{ sshd_config_file() }}}
+    <tt>X11UseLocalhost yes</tt>
+
+rationale: |-
+    When X11 forwarding is enabled, there may be additional exposure to the
+    server and client displays if the sshd proxy display is configured to listen
+    on the wildcard address. By default, sshd binds the forwarding server to the
+    loopback address and sets the hostname part of the <tt>DISPLAY</tt>
+    environment variable to localhost. This prevents remote hosts from
+    connecting to the proxy display.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84058-7
+    cce@rhel9: CCE-89105-1
+    cce@rhel10: CCE-86528-7
+    cce@sle12: CCE-83228-7
+
+references:
+    nist: CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040711
+    stigid@ol8: OL08-00-040341
+    stigid@sle12: SLES-12-030261
+
+ocil_clause: "the display proxy is listening on wildcard address"
+
+ocil: |-
+    {{{ ocil_sshd_option(default="yes", option="X11UseLocalhost", value="yes") }}}
+
+fixtext: '{{{ fixtext_sshd_lineinfile("X11UseLocalhost", "yes", "no") }}}'
+
+srg_requirement: 'The {{{ full_name }}} SSH daemon must prevent remote hosts from connecting to the proxy display.'
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: X11UseLocalhost
+        value: 'yes'
+        datatype: string
+        is_default_value: 'true'

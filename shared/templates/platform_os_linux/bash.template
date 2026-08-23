@@ -1,0 +1,6 @@
+{{%- for spec in VER_SPECS -%}}
+{{{ bash_os_linux_conditional(OS_ID, expected_ver=spec.ver, op=spec.op) | trim }}}
+{{%- if not loop.last %}} && {{% endif -%}}
+{{%- else -%}}
+{{{ bash_os_linux_conditional(OS_ID) }}}
+{{%- endfor -%}}

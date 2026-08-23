@@ -1,0 +1,81 @@
+documentation_complete: true
+
+{{%- if 'sle' in product or 'slmicro' in product %}}
+  {{%- set pkg_manager_repos="/etc/zypp/repos.d" %}}
+{{%- else %}}
+  {{%- set pkg_manager_repos="/etc/yum.repos.d" %}}
+{{%- endif %}}
+
+title: 'Ensure gpgcheck Enabled for All {{{ pkg_manager }}} Package Repositories'
+
+description: |-
+    To ensure signature checking is not disabled for
+    any repos, remove any lines from files in <tt>{{{ pkg_manager_repos }}}</tt> of the form:
+    <pre>gpgcheck=0</pre>
+
+rationale: |-
+    Verifying the authenticity of the software prior to installation validates
+    the integrity of the patch or upgrade received from a vendor. This ensures
+    the software has not been tampered with and that it has been provided by a
+    trusted vendor. Self-signed certificates are disallowed by this
+    requirement. Certificates used to verify the software must be from an
+    approved Certificate Authority (CA)."
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-80792-5
+    cce@rhel9: CCE-83464-8
+    cce@rhel10: CCE-88176-3
+    cce@sle12: CCE-83258-4
+    cce@sle15: CCE-85797-9
+    cce@sle16: CCE-96678-8
+    cce@slmicro5: CCE-94070-0
+
+references:
+    cis-csc: 11,2,3,9
+    cis@sle12: 1.2.3
+    cis@sle15: 1.2.3
+    cjis: 5.10.4.1
+    cobit5: APO01.06,BAI03.05,BAI06.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS06.02
+    cui: 3.4.8
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3,4.3.4.4.4
+    isa-62443-2013: 'SR 3.1,SR 3.3,SR 3.4,SR 3.8,SR 7.6'
+    iso27001-2013: A.11.2.4,A.12.1.2,A.12.2.1,A.12.5.1,A.12.6.2,A.14.1.2,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4
+    nist: CM-5(3),SI-7,SC-12,SC-12(3),CM-6(a),SA-12,SA-12(10),CM-11(a),CM-11(b)
+    nist-csf: PR.DS-6,PR.DS-8,PR.IP-1
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+    pcidss: Req-6.2
+    srg: SRG-OS-000366-GPOS-00153
+
+ocil_clause: 'GPG checking is disabled'
+
+ocil: |-
+    To determine whether <tt>{{{ pkg_manager }}}</tt> has been configured to disable
+    <tt>gpgcheck</tt> for any repos,  inspect all files in
+    <tt>{{{ pkg_manager_repos }}}</tt> and ensure the following does not appear in any
+    sections:
+    <pre>gpgcheck=0</pre>
+    A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo.
+
+fixtext: |-
+    Ensure signature checking is enabled for all package repositories with the command:
+
+    $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' {{{ pkg_manager_repos }}}/*
+
+srg_requirement: |-
+    {{{ full_name }}} must have gpgcheck enabled for all repositories.
+
+checktext: |-
+    Verify that {{{ pkg_manager }}} has not been configured to disable gpgcheck for any repos with the following command:
+
+    $ grep gpgcheck {{{ pkg_manager_repos }}}/*.repo | more
+
+    gpgcheck = 1
+
+    If "gpgcheck" is not set to "1" for all returned lines, this is a finding.
+
+{{% if product == "hummingbird" %}}
+platform: package[dnf]
+{{% endif %}}

@@ -1,0 +1,13 @@
+groups:
+- disabling_snmp_service
+- snmp
+- snmp_configure_server
+name: net-snmp
+packages:
+- net-snmp
+rules:
+- package_net-snmp_removed
+- service_snmpd_disabled
+- snmpd_no_rwusers
+- snmpd_not_default_password
+- snmpd_use_newer_protocol

@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'The Chronyd service is enabled'
+
+description: |-
+    chrony is a daemon which implements the Network Time Protocol (NTP) is designed to
+    synchronize system clocks across a variety of systems and use a source that is highly
+    accurate. More information on chrony can be found at
+    {{{ weblink(link="https://chrony-project.org/") }}}.
+    Chrony can be configured to be a client and/or a server.
+    To enable Chronyd service, you can run:
+    <tt># systemctl enable chronyd.service</tt>
+    This recommendation only applies if chrony is in use on the system.
+
+rationale: |-
+    If chrony is in use on the system proper configuration is vital to ensuring time
+    synchronization is working properly.
+
+severity: medium
+
+platform: package[chrony]
+
+identifiers:
+    cce@rhel8: CCE-82875-6
+    cce@rhel9: CCE-84217-9
+    cce@rhel10: CCE-90511-7
+    cce@sle15: CCE-92601-4
+    cce@sle16: CCE-96684-6
+
+references:
+    srg: SRG-OS-000355-GPOS-00143
+
+ocil_clause: 'the chronyd process is not running'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="chronyd") }}}
+
+fixtext: '{{{ fixtext_service_enabled(service="chronyd") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_enabled(service="chronyd") }}}'
+
+{{%- if 'ubuntu' in product %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: chrony
+        servicename: chrony
+        variable: var_timesync_service
+        value: chronyd
+{{%- else %}}
+template:
+    name: service_enabled
+    vars:
+        packagename: chrony
+        servicename: chronyd
+        servicename@ubuntu2204: chrony
+        servicename@debian12: chrony
+        servicename@debian13: chrony
+{{%- endif %}}

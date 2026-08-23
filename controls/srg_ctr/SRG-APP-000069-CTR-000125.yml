@@ -1,0 +1,23 @@
+controls:
+- id: SRG-APP-000069-CTR-000125
+  levels:
+  - low
+  title: {{{ full_name }}} must retain the Standard Mandatory DoD Notice and
+    Consent Banner on the screen until users acknowledge the usage and conditions
+    and take explicit actions to log on for further access.
+  related_rules:
+  - classification_banner
+  - oauth_login_template_set
+  - oauth_provider_selection_set
+  - openshift_motd_exists
+  status: manual
+  check: |-
+    From a web browser, go to the Openshift web console to login (logout
+    if already logged in). Verify that the DOD notice and consent banner is
+    displayed, and that the user must select 'Ok' before proceeding to the
+    login page.
+
+    If the DOD notice and consent banner is not displayed, or does not have an
+    'Ok' button to acknowledge consent before proceeding, this is a finding.
+  fixtext: |-
+    This control is resolved by resolving SRG-APP-000068-CTR-000120

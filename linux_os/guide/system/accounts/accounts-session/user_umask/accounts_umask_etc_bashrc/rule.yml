@@ -1,0 +1,79 @@
+documentation_complete: true
+
+
+title: 'Ensure the Default Bash Umask is Set Correctly'
+
+{{% if 'sle' in product or 'ubuntu' in product or 'debian' in product or product == 'slmicro5' %}}
+{{% set etc_bash_rc = "/etc/bash.bashrc" %}}
+{{% else %}}
+{{% set etc_bash_rc = "/etc/bashrc" %}}
+{{% endif %}}
+
+description: |-
+    To ensure the default umask for users of the Bash shell is set properly,
+    add or correct the <tt>umask</tt> setting in <tt>{{{ etc_bash_rc }}}</tt> to read
+    as follows:
+    <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+
+rationale: |-
+    The umask value influences the permissions assigned to files when they are created.
+    A misconfigured umask value could result in files with excessive permissions that can be read or
+    written to by unauthorized users.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-84260-9
+    cce@rhel8: CCE-81036-6
+    cce@rhel9: CCE-83644-5
+    cce@rhel10: CCE-88580-6
+    cce@sle12: CCE-91530-6
+    cce@sle15: CCE-91215-4
+    cce@sle16: CCE-95724-1
+    cce@slmicro5: CCE-94023-9
+    cce@slmicro6: CCE-95031-1
+
+references:
+    cis-csc: '18'
+    cis@sle12: 5.4.5
+    cis@sle15: 5.4.5
+    cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03
+    isa-62443-2009: 4.3.4.3.3
+    iso27001-2013: A.14.1.1,A.14.2.1,A.14.2.5,A.6.1.5
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: AC-6(1),CM-6(a)
+    nist-csf: PR.IP-2
+    srg: SRG-OS-000480-GPOS-00228,SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-020353
+
+platform: package[bash]
+
+ocil_clause: 'the value for the "umask" parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}", or the "umask" parameter is missing or is commented out'
+
+ocil: |-
+    Verify the <tt>umask</tt> setting is configured correctly in the <tt>{{{ etc_bash_rc }}}</tt> file with the following command:
+
+    <pre>$ sudo grep "umask" {{{ etc_bash_rc }}}
+
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+
+checktext: |-
+    Verify the "umask" setting is configured correctly in the "/etc/bashrc" file with the following command:
+
+    Note: If the value of the "umask" parameter is set to "000" "/etc/bashrc" file, the Severity is raised to a CAT I.
+
+    $ grep umask /etc/bashrc
+
+    umask 077
+    umask 077
+
+    If the value for the "umask" parameter is not "077", or the "umask" parameter is missing or is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to define default permissions for all authenticated users using the bash shell.
+
+    Add or edit the lines for the "umask" parameter in the "{{{ etc_bash_rc }}}" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}
+
+srg_requirement: '{{{ full_name }}} must define default permissions for the bash shell.'

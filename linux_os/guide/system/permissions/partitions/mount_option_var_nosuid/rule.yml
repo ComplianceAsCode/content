@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Add nosuid Option to /var'
+
+description: |-
+    The <tt>nosuid</tt> mount option can be used to prevent
+    execution of setuid programs in <tt>/var</tt>. The SUID and SGID permissions
+    should not be required for this directory.
+    {{{ describe_mount(option="nosuid", part="/var") }}}
+
+rationale: |-
+    The presence of SUID and SGID executables should be tightly controlled.
+
+identifiers:
+    cce@rhel8: CCE-83383-0
+    cce@rhel9: CCE-83867-2
+    cce@rhel10: CCE-89496-4
+    cce@sle12: CCE-91591-8
+    cce@sle15: CCE-91277-4
+    cce@sle16: CCE-95884-3
+
+{{{ complete_ocil_entry_mount_option("/var", "nosuid") }}}
+
+severity: medium
+
+platform: mount[var]
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /var
+        mountoption: nosuid

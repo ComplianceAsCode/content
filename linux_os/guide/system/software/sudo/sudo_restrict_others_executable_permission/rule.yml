@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: 'Ensure only owner and members of group owner of /usr/bin/sudo can execute it'
+
+description: |-
+    Remove the execute permission bit of <tt>/etc/bin/sudo</tt> for the other users.
+    {{{ describe_file_permissions(file="/usr/bin/sudo", perms="4110") }}}
+
+rationale: |-
+    Restricting the set of users able to execute commands as privileged user reduces the attack surface.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83574-4
+
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/usr/bin/sudo", perms="---s--x---") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/usr/bin/sudo", perms="---s--x---") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /usr/bin/sudo
+        filemode: '4110'

@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_kylinsecserver6" version="1">
+    <metadata>
+      <title>KylinSec Server 6</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The operating system installed on the system is KylinSec Server 6.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="KylinSec Server 6 is installed" test_ref="test_kylinsecserver6_installed" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="KylinSec Server 6 is installed" id="test_kylinsecserver6_installed" version="1">
+    <linux:object object_ref="obj_kylinsecserver6_installed" />
+    <linux:state state_ref="state_kylinsecserver6_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_kylinsecserver6_installed" version="1">
+    <linux:version operation="pattern match">^6.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_kylinsecserver6_installed" version="1">
+    <linux:name>kylinsec-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

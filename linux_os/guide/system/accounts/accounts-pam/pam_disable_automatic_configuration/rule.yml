@@ -1,0 +1,39 @@
+documentation_complete: true
+
+
+title: 'The PAM configuration should not be changed automatically'
+
+description: |-
+    Verify the SUSE operating system is configured to not overwrite Pluggable
+    Authentication Modules (PAM) configuration on package changes.
+
+
+rationale: |-
+    <tt>pam-config</tt> is a command line utility that automatically generates
+    a system PAM configuration as packages are installed, updated or removed
+    from the system. <tt>pam-config</tt> removes configurations for PAM modules
+    and parameters that it does not know about. It may render ineffective PAM
+    configuration by the system administrator and thus impact system security.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83113-1
+    cce@sle15: CCE-85641-9
+    cce@slmicro5: CCE-93750-8
+
+references:
+    nist@sle12: CM-6(b),CM-6.1(iv)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@sle12: SLES-12-010910
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    Check that soft links between PAM configuration files are removed with the following command:
+
+    <pre># find /etc/pam.d/ -type l -iname "common-*"</pre>
+
+    If any results are returned, this is a finding.
+
+platform: package[pam_apparmor]

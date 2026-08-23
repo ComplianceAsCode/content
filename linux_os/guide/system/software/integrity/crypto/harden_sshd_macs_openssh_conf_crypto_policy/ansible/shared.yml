@@ -1,0 +1,17 @@
+# platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_fedora
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("sshd_approved_macs") }}}
+{{%- set openssh_client_policy_file = openssh_client_crypto_policy_config_file -%}}
+
+{{{ ansible_only_lineinfile(
+        msg='Configure SSH Daemon to Use FIPS 140-2 Validated MACs: openssh.config',
+        path=openssh_client_policy_file,
+        line_regex='^.*MACs\\s+',
+        new_line='MACs {{ sshd_approved_macs }}',
+        create='yes',
+        block=True,
+        rule_title=rule_title)
+}}}

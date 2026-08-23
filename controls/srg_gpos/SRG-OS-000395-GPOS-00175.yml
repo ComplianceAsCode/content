@@ -1,0 +1,20 @@
+controls:
+    -   id: SRG-OS-000395-GPOS-00175
+        levels:
+            - medium
+        title: '{{{ full_name }}} must verify remote disconnection at the termination of
+    nonlocal maintenance and diagnostic sessions, when used for nonlocal maintenance
+    sessions.'
+        check:
+          {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+          {{{ full_name }}} inherently meets this requirement.
+        fixtext:
+            {{{ full_name }}} inherently meets this requirement. No fix is required.
+        artifact_description:
+            When a process terminates, Linux kernel executes the kernel/exit.c:do_exit() function which indirectly calls fs/file.c:close_files().
+            The latter iterates over all file descriptors of the process and close them.
+            Since a socket also receives a file descriptor, the kernel close those, as well.
+        status_justification:
+            The use of the "exit" command will end any communication session on the system.
+            This is part of the kernel and cannot be removed without recompiling.
+        status: inherently met

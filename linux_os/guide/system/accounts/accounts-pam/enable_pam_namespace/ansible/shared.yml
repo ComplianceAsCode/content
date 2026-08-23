@@ -1,0 +1,12 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_lineinfile(
+  msg="Make changes to /etc/pam.d/login",
+  path="/etc/pam.d/login",
+  regex="^\s*session\s+required\s+pam_namespace.so\s*$",
+  insensitive=false,
+  new_line="session    required     pam_namespace.so", rule_title=rule_title) }}}

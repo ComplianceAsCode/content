@@ -1,0 +1,62 @@
+documentation_complete: true
+
+
+title: Ensure that the bind-address parameter is not used
+
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod' %}}
+{{% set default_jqfilter = '[.data."pod.yaml"]' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-scheduler' %}}
+{{% set hypershift_jqfilter = '[.items[0].spec.containers[0].args | join(" ")]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+  The Scheduler API service which runs on port 10251/TCP by default is used for
+  health and metrics information and is available without authentication or
+  encryption. As such it should only be bound to a localhost interface, to
+  minimize the cluster's attack surface.
+
+rationale: |-
+  In OpenShift 4, The Kubernetes Scheduler operator manages and updates the
+  Kubernetes Scheduler deployed on top of OpenShift. By default, the operator
+  exposes metrics via metrics service. The metrics are collected from the
+  Kubernetes Scheduler operator. Profiling data is sent to healthzPort,
+  the port of the localhost healthz endpoint. Changing this value may disrupt
+  components that monitor the kubelet health.
+
+references:
+  nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
+  nist: CM-6,CM-6(1),SC-8,SC-8(1)
+  pcidss: Req-2.2
+  srg: SRG-APP-000516-CTR-001325
+
+identifiers:
+  cce@ocp4: CCE-83674-2
+
+severity: medium
+
+platform: not ocp4-on-hypershift-hosted and (ocp4.8 or ocp4.9)
+
+ocil_clause: '<tt>kube-scheduler-pod</tt> sets --bind-address'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get -nopenshift-kube-scheduler cm kube-scheduler-pod -ojson | jq -r '.data["pod.yaml"]' | jq -r | grep bind-address</pre>
+    The output should be empty
+
+warnings:
+- general: |-
+    {{{  openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '[:]'
+    values:
+      - value: "bind-address"
+        operation: "pattern match"
+        type: "string"
+        entity_check: "none satisfy"

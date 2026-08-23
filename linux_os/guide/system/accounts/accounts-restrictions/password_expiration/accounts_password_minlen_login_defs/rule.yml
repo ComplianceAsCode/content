@@ -1,0 +1,63 @@
+documentation_complete: true
+
+title: 'Set Password Minimum Length in login.defs'
+
+description: |-
+    To specify password length requirements for new accounts, edit the file
+    <tt>{{{ login_defs_path }}}</tt> and add or correct the following line:
+    <pre>PASS_MIN_LEN {{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</pre>
+    <br /><br />
+    The profile requirement is
+    <tt>{{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</tt>.
+    If a program consults <tt>{{{ login_defs_path }}}</tt> and also another PAM module
+    (such as <tt>pam_pwquality</tt>) during a password change operation, then
+    the most restrictive must be satisfied. See PAM section for more
+    information about enforcing password quality requirements.
+
+rationale: |-
+    Requiring a minimum password length makes password
+    cracking attacks more difficult by ensuring a larger
+    search space. However, any security benefit from an onerous requirement
+    must be carefully weighed against usability problems, support costs, or counterproductive
+    behavior that may result.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80652-1
+    cce@rhel9: CCE-83608-0
+    cce@rhel10: CCE-87452-9
+    cce@sle12: CCE-83257-6
+    cce@sle15: CCE-91168-5
+    cce@sle16: CCE-95762-1
+
+references:
+    cis-csc: 1,12,15,16,5
+    cjis: 5.6.2.1
+    cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    cui: 3.5.7
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1'
+    iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: IA-5(f),IA-5(1)(a),CM-6(a)
+    nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
+    srg: SRG-OS-000078-GPOS-00046
+
+ocil_clause: 'it is not set to the required value'
+
+ocil: |-
+    To check the minimum password length, run the command:
+    <pre>$ grep PASS_MIN_LEN {{{ login_defs_path }}}</pre>
+    The profile requirement is
+    <tt>{{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}</tt>.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce a minimum 15-character password length for new user accounts.
+
+    Add, or modify the following line in the "{{{ login_defs_path }}}" file:
+
+    PASS_MIN_LEN {{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}
+
+srg_requirement: '{{{ full_name }}} passwords for new users must have a minimum of 15 characters.'
+
+platform: package[shadow-utils]

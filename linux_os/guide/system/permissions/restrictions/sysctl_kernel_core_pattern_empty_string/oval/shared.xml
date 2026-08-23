@@ -1,0 +1,142 @@
+
+
+<def-group>
+  <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string" version="3">
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to the appropriate value in both system configuration and system runtime.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <extend_definition comment="kernel.core_pattern configuration setting check"
+                         definition_ref="sysctl_kernel_core_pattern_empty_string_static"/>
+      <extend_definition comment="kernel.core_pattern runtime setting check"
+                         definition_ref="sysctl_kernel_core_pattern_empty_string_runtime"/>
+    </criteria>
+  </definition>
+</def-group>
+
+<def-group>
+  <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string_runtime" version="3">
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to an empty string in the system runtime.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="kernel runtime parameter kernel.core_pattern set to an empty string"
+                 test_ref="test_sysctl_kernel_core_pattern_empty_string_runtime"/>
+    </criteria>
+  </definition>
+
+  <unix:sysctl_test id="test_sysctl_kernel_core_pattern_empty_string_runtime" version="1"
+                    comment="kernel runtime parameter kernel.core_pattern set to an empty string"
+                    check="all" check_existence="all_exist" state_operator="OR">
+    <unix:object object_ref="object_sysctl_kernel_core_pattern_empty_string_runtime"/>
+    <unix:state state_ref="state_sysctl_kernel_core_pattern_empty_string_runtime"/>
+  </unix:sysctl_test>
+
+  <unix:sysctl_object id="object_sysctl_kernel_core_pattern_empty_string_runtime" version="1">
+    <unix:name>kernel.core_pattern</unix:name>
+  </unix:sysctl_object>
+
+  <unix:sysctl_state id="state_sysctl_kernel_core_pattern_empty_string_runtime" version="1">
+    <unix:value datatype="string" operation="equals"></unix:value>
+  </unix:sysctl_state>
+
+</def-group>
+
+<def-group>
+  <definition class="compliance" id="sysctl_kernel_core_pattern_empty_string_static" version="3">
+    {{{ oval_metadata("The kernel 'kernel.core_pattern' parameter should be set to an empty string in the system configuration.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criterion comment="kernel static parameter kernel.core_pattern set to an empty string in sysctl files not managed by packages"
+                 test_ref="test_sysctl_kernel_core_pattern_empty_string_static_user"/>
+      <criteria operator="AND">
+        <criterion comment="kernel static parameter kernel.core_pattern missing in sysctl files not managed by packages"
+                   test_ref="test_sysctl_kernel_core_pattern_empty_string_static_user_missing"/>
+        <criterion comment="kernel static parameter kernel.core_pattern set to an empty string in sysctl files managed by packages"
+                   test_ref="test_sysctl_kernel_core_pattern_empty_string_static_pkg_correct"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- Test: user files have correct value -->
+  <ind:textfilecontent54_test id="test_sysctl_kernel_core_pattern_empty_string_static_user" version="1"
+                              check="all" check_existence="all_exist"
+                              comment="kernel.core_pattern static configuration" state_operator="OR">
+    <ind:object object_ref="object_static_user_sysctl_kernel_core_pattern_empty_string"/>
+    <ind:state state_ref="state_static_sysctld_sysctl_kernel_core_pattern_empty_string"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Test: user files are missing (none_exist) -->
+  <ind:textfilecontent54_test id="test_sysctl_kernel_core_pattern_empty_string_static_user_missing" version="1"
+                              check="all" check_existence="none_exist"
+                              comment="kernel.core_pattern static configuration" state_operator="AND">
+    <ind:object object_ref="object_static_user_sysctl_kernel_core_pattern_empty_string"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Test: package-managed files have correct value -->
+  <ind:textfilecontent54_test id="test_sysctl_kernel_core_pattern_empty_string_static_pkg_correct" version="2"
+                              check="all" check_existence="all_exist"
+                              comment="kernel.core_pattern static configuration in /usr/lib/sysctl.d/*.conf" state_operator="OR">
+    <ind:object object_ref="object_static_usr_lib_sysctld_sysctl_kernel_core_pattern_empty_string"/>
+    <ind:state state_ref="state_static_sysctld_sysctl_kernel_core_pattern_empty_string"/>
+  </ind:textfilecontent54_test>
+
+  <!-- User files: union of etc + run + usr/local/lib -->
+  <ind:textfilecontent54_object id="object_static_user_sysctl_kernel_core_pattern_empty_string" version="1">
+    <set>
+      <object_reference>object_static_etc_lib_sysctls_sysctl_kernel_core_pattern_empty_string</object_reference>
+      <object_reference>object_static_run_usr_local_sysctls_sysctl_kernel_core_pattern_empty_string</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_lib_sysctls_sysctl_kernel_core_pattern_empty_string" version="1">
+    <set>
+      <object_reference>object_static_sysctl_sysctl_kernel_core_pattern_empty_string</object_reference>
+      <object_reference>object_static_etc_sysctld_sysctl_kernel_core_pattern_empty_string</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_usr_local_sysctls_sysctl_kernel_core_pattern_empty_string" version="1">
+    <set>
+      <object_reference>object_static_usr_local_lib_sysctld_sysctl_kernel_core_pattern_empty_string</object_reference>
+      <object_reference>object_static_run_sysctld_sysctl_kernel_core_pattern_empty_string</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <!-- Individual directory objects -->
+  <ind:textfilecontent54_object id="object_static_sysctl_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:filepath>/etc/sysctl.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[[:blank:]]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctld_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:path>/etc/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[[:blank:]]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_sysctld_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:path>/run/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[[:blank:]]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_usr_local_lib_sysctld_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:path>/usr/local/lib/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[[:blank:]]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Package-managed files: /usr/lib/sysctl.d/ -->
+  <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:path>/usr/lib/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[[:blank:]]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- State: subexpression must be empty string -->
+  <ind:textfilecontent54_state id="state_static_sysctld_sysctl_kernel_core_pattern_empty_string" version="1">
+    <ind:subexpression operation="equals" datatype="string"></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

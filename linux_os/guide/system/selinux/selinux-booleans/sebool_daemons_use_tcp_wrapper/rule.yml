@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the daemons_use_tcp_wrapper SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>daemons_use_tcp_wrapper</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="daemons_use_tcp_wrapper") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="daemons_use_tcp_wrapper") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: daemons_use_tcp_wrapper

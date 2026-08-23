@@ -1,0 +1,35 @@
+documentation_complete: true
+
+
+title: 'Add nosuid Option to /opt'
+
+description: |-
+    The <tt>nosuid</tt> mount option can be used to prevent
+    execution of setuid programs in <tt>/opt</tt>. The SUID and SGID permissions
+    should not be required in this directory.
+    {{{ describe_mount(option="nosuid", part="/opt") }}}
+
+rationale: |-
+    The presence of SUID and SGID executables should be tightly controlled. The
+    <tt>/opt</tt> directory contains additional software packages. Users should
+    not be able to execute SUID or SGID binaries from this directory.
+
+{{{ complete_ocil_entry_mount_option("/opt", "nosuid") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83319-4
+    cce@rhel9: CCE-83880-5
+    cce@rhel10: CCE-86868-7
+    cce@sle12: CCE-91584-3
+    cce@sle15: CCE-91270-9
+    cce@sle16: CCE-95940-3
+
+platform: mount[opt]
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /opt
+        mountoption: nosuid

@@ -1,0 +1,33 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Get audit log file from /etc/audit/auditd.conf"
+  ansible.builtin.command: grep -iw ^log_file /etc/audit/auditd.conf
+  check_mode: False
+  failed_when: false
+  changed_when: false
+  register: log_file_exists
+
+- name: "{{{ rule_title }}} - Set audit log file path"
+  ansible.builtin.set_fact:
+      log_file_path: "{{ (log_file_exists.stdout | default('') | split(' ') | last) | default('/var/log/audit/audit.log', true) }}"
+
+- name: "{{{ rule_title }}} - Get audit log group from /etc/audit/auditd.conf"
+  ansible.builtin.command: grep -iw ^log_group /etc/audit/auditd.conf
+  check_mode: False
+  failed_when: false
+  changed_when: false
+  register: log_group_exists
+
+- name: "{{{ rule_title }}} - Set audit log group"
+  ansible.builtin.set_fact:
+      log_group: "{{ (log_group_exists.stdout | default('') | split(' ') | last) | default('root', true) }}"
+
+- name: "{{{ rule_title }}} - Set audit log file permissions"
+  ansible.builtin.file:
+      path: "{{ log_file_path }}"
+      state: file
+      mode: "{{ '0600' if log_group == 'root' else '0640' }}"

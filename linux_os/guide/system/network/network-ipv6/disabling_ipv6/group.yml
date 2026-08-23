@@ -1,0 +1,10 @@
+documentation_complete: true
+
+title: 'Disable Support for IPv6 Unless Needed'
+
+description: |-
+    Despite configuration that suggests support for IPv6 has
+    been disabled, link-local IPv6 address auto-configuration occurs
+    even when only an IPv4 address is assigned. The only way to
+    effectively prevent execution of the IPv6 networking stack is to
+    instruct the system not to activate the IPv6 kernel module.

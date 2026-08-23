@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}} - Backup the Old /etc/group File"
+  ansible.builtin.copy:
+    src: /etc/group
+    dest: /etc/group-
+    remote_src: true
+    mode: 0644
+
+- name: "{{{ rule_title }}} - Remove Lines Starting with + From /etc/group"
+  ansible.builtin.lineinfile:
+    regexp: '^\+.*$'
+    state: absent
+    path: /etc/group

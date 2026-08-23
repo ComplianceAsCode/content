@@ -1,0 +1,33 @@
+documentation_complete: true
+
+
+title: 'Prevent applications from mapping low portion of virtual memory'
+
+description: '{{{ describe_sysctl_option_value(sysctl="vm.mmap_min_addr", value="65536") }}}'
+
+rationale: |-
+    The <tt>vm.mmap_min_addr</tt> parameter specifies the minimum virtual
+    address that a process is allowed to mmap. Allowing a process to mmap low
+    portion of virtual memory can have security implications such as such as
+    heightened risk of kernel null pointer dereference defects.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83363-2
+    cce@rhel9: CCE-83958-9
+    cce@rhel10: CCE-87534-4
+    cce@sle12: CCE-91573-6
+    cce@sle15: CCE-91263-4
+    cce@sle16: CCE-96371-0
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="vm.mmap_min_addr", value="65536") }}}
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: vm.mmap_min_addr
+        sysctlval: '65536'
+        datatype: int

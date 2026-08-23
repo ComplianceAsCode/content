@@ -1,0 +1,10 @@
+srg_requirement: |-
+  The container platform must protect against or limit the effects of all types of Denial-of-Service (DoS) attacks by employing organization-defined security safeguards.
+
+check: |-
+  Verify that all namespaces except those that start with kube-* or openshift-* use the rate-limiting annotation:
+  > oc get routes --all-namespaces -o json | jq '[.items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select(.metadata.annotations["haproxy.router.openshift.io/rate-limit-connections"] == "true" | not) | .metadata.name]'
+  If the above command returns any namespaces, this is a finding.
+
+fixtext: |-
+  Add the haproxy.router.openshift.io/rate-limit-connections annotation to any routes outside the kube-* or openshift-* namespaces

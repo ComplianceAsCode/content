@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Restrict Update Access to the CDI CR'
+
+description: |-
+    Because the set of authorized subjects is specific to each
+    organization, this rule requires manual verification. Organizations
+    can create a compliance-operator CustomRule with CEL expressions
+    that evaluate ClusterRoleBindings and Roles to verify that only
+    their approved subjects hold update access to CDI resources.
+
+rationale: |-
+    The CDI custom resource governs the data import pipeline for
+    virtual machine disk images in OpenShift Virtualization. Modifying
+    this resource can change upload proxy settings, scratch space
+    allocation, and image import behavior. If unauthorized subjects
+    can update the CDI CR, they may introduce insecure import sources,
+    weaken transport security, or disrupt the disk image provisioning
+    workflow. Restricting update access ensures that only approved
+    administrators can alter CDI configuration.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects can update the CDI CR'
+
+ocil: |-
+    Run the following command to check which subjects can update the
+    CDI custom resource:
+    <pre>$ oc adm policy who-can update cdi</pre>
+    Verify that only authorized subjects are listed in the output.

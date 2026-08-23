@@ -1,0 +1,8 @@
+default:
+  property_two: one
+
+overrides:
+{{% if property_one == "one" %}}
+  property_two: two
+{{% endif %}}
+

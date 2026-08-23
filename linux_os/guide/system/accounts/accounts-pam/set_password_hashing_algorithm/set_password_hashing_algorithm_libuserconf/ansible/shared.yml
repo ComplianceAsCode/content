@@ -1,0 +1,17 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_password_hashing_algorithm_pam") }}}
+
+- name: "{{{ rule_title }}} - Set Password Hashing Algorithm in /etc/libuser.conf"
+  ansible.builtin.lineinfile:
+    dest: /etc/libuser.conf
+    insertafter: '^\s*\[defaults]'
+    regexp: ^#?crypt_style
+    line: crypt_style = {{ var_password_hashing_algorithm_pam }}
+    state: present
+    create: true
+    mode: 0644

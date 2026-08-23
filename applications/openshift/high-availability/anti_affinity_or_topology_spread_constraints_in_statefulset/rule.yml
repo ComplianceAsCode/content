@@ -1,0 +1,58 @@
+documentation_complete: true
+
+title: 'Ensure Statefulsets have either Anti-Affinity Rules or Topology Spread Constraints'
+
+description: |-
+    Distributing Kubernetes pods across nodes and availability zones using pod topology spread
+    constraints and anti-affinity rules enhances high availability, fault tolerance, performance,
+    and security by balancing workloads, reducing single points of failure, and ensuring compliance
+    and data protection.
+
+    There might be statefulsets, that do not require high availability or spreading across nodes.
+    To limit the number of false positives, this rule only checks statefulsets with a replica count
+    of more than one. For statefulsets with one replica, neither anti-affinity rules nor topology
+    spread constraints provide any value.
+
+    To exclude other statefulsets from this rule, you can create a regular expression for statefulset
+    names: <tt>var_statefulsets_without_high_availability</tt>. This will ignore statefulsets matching
+    those names in all namespaces.
+
+rationale: |-
+    Distributing Kubernetes pods across nodes and availability zones using pod topology spread
+    constraints and anti-affinity rules is essential for enhancing high availability, fault
+    tolerance, and security.
+    This approach ensures that a single node or AZ failure does not lead to total application
+    downtime, as workloads are balanced and resources are efficiently utilized.
+
+identifiers:
+    cce@ocp4: CCE-89908-8
+
+severity: medium
+
+{{% set jqfilter = '[ .items[] | select(.metadata.name | test("{{.var_statefulsets_without_high_availability}}"; "") | not) | select (.spec.replicas == 0 or .spec.replicas == 1 | not) | select(.spec.template.spec.affinity.podAntiAffinity == null and .spec.template.spec.topologySpreadConstraints == null) | .metadata.namespace + "/" + .metadata.name ]' %}}
+
+ocil_clause: 'StatefulSets with neither anti-affinity rules or topology spread constraints exist'
+
+ocil: |-
+    Run the following command to determine anti-affinity rules and topology spread constraints of
+    all statefulsets:
+    <pre>$ oc get statefulsets -A -o json | jq '{{{ jqfilter }}}'</pre>
+    Make sure that either suitable anti-affinity rule or topology spread constraints are configured
+    for all workloads that require high availability.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/apps/v1/statefulsets?limit=500': jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/apps/v1/statefulsets?limit=500', jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "none_exist"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"

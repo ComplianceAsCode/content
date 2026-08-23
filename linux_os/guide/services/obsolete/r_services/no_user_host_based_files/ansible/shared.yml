@@ -1,0 +1,30 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_create_list_of_local_paths(list_name="search_paths", rule_title=rule_title) }}}
+
+- name: "{{{ rule_title }}} - Define Rule Specific Facts"
+  ansible.builtin.set_fact:
+    user_shosts_files:
+      - /.shosts
+
+- name: "{{{ rule_title }}} - Find All .shosts Files in Local File Systems"
+  ansible.builtin.command:
+    cmd: find {{ item }} -xdev -type f -name ".shosts"
+  loop: "{{ search_paths }}"
+  changed_when: false
+  register: result_found_shosts_files
+
+- name: "{{{ rule_title }}} - Create List of .shosts Files Present in Local File Systems"
+  ansible.builtin.set_fact:
+    user_shosts_files: '{{ user_shosts_files | union(item.stdout_lines) | list }}'
+  loop: "{{ result_found_shosts_files.results }}"
+
+- name: "{{{ rule_title }}} - Ensure No .shosts Files Are Present in the System"
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop: '{{ user_shosts_files }}'

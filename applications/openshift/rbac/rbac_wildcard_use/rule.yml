@@ -1,0 +1,37 @@
+documentation_complete: true
+
+
+title: 'Minimize Wildcard Usage in Cluster and Local Roles'
+
+description: |-
+    Kubernetes Cluster and Local Roles provide access to resources
+    based on sets of objects and actions that can be taken on
+    those objects. It is possible to set either of these using a
+    wildcard <tt>*</tt> which matches all items. This violates the
+    principle of least privilege and leaves a cluster in a more
+    vulnerable state to privilege abuse.
+
+rationale: |-
+    The principle of least privilege recommends that users are
+    provided only the access required for their role and nothing
+    more. The use of wildcard rights grants is likely to provide
+    excessive rights to the Kubernetes API.
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: 'wildcard usage in roles needs review'
+
+ocil: |-
+    To review the wildcard usage in roles, run the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    Review the output, and for any role/clusterrole specifying a wildcard
+    resource that is NOT an OpenShift "system:" or other system-provided
+    role/clusterrole, determine if the wildcard access can be replaced with
+    specific resources.

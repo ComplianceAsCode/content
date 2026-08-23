@@ -1,0 +1,15 @@
+groups:
+- telnet
+name: telnet
+packages:
+- telnet
+- telnet-server
+- telnetd
+- telnetd-ssl
+rules:
+- package_inetutils-telnet_removed
+- package_telnet-server_removed
+- package_telnet_removed
+- package_telnetd-ssl_removed
+- package_telnetd_removed
+- service_telnet_disabled

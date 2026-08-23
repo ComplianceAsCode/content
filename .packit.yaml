@@ -1,0 +1,63 @@
+downstream_package_name: scap-security-guide
+upstream_package_name: scap-security-guide
+specfile_path: scap-security-guide.spec
+
+actions:
+  get-current-version:
+  - bash utils/version.sh
+
+srpm_build_deps:
+  - bash
+
+jobs:
+- &build
+  job: copr_build
+  trigger: pull_request
+  targets:
+  - fedora-all-x86_64
+  - centos-stream-8-x86_64
+  - centos-stream-9-x86_64
+  - centos-stream-10-x86_64
+
+- <<: *build
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+
+- &contest-oscap
+  job: tests
+  trigger: pull_request
+  fmf_url: https://github.com/RHSecurityCompliance/contest.git
+  fmf_ref: main
+  tmt_plan: /plans/upstream-parallel/oscap
+  identifier: contest-oscap
+  targets:
+    centos-stream-8: {}
+    centos-stream-9: {}
+    centos-stream-10: {}
+  tf_extra_params:
+    settings:
+      pipeline:
+        parallel-limit: 32
+
+- <<: *contest-oscap
+  tmt_plan: /plans/upstream-parallel/ansible
+  identifier: contest-ansible
+
+- <<: *contest-oscap
+  tmt_plan: /plans/upstream-parallel/other
+  identifier: contest-other
+
+# when modifying anything below, modify also tests/tmt/
+
+- job: tests
+  trigger: pull_request
+  fmf_path: tests/tmt
+  tmt_plan: /fedora-cis/plan$
+  identifier: fedora-cis
+  targets:
+    fedora-all: {}
+
+- job: propose_downstream
+  trigger: release
+  dist_git_branches:
+    - fedora-all

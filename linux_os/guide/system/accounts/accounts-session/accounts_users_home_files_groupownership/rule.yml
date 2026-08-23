@@ -1,0 +1,50 @@
+documentation_complete: true
+
+
+title: 'All User Files and Directories In The Home Directory Must Be Group-Owned By The Primary Group'
+
+description: |-
+    Change the group of a local interactive users files and directories to a
+    group that the interactive user is a member of. To change the group owner of a
+    local interactive users files and directories, use the following command:
+    <pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i>/<i>FILE_DIR</i></pre>
+
+    This rule ensures every file or directory under the home directory related
+    to an interactive user is group-owned by an interactive user.
+
+rationale: |-
+    If a local interactive users files are group-owned by a group of which the
+    user is not a member, unintended users may be able to access them.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86534-5
+    cce@rhel9: CCE-87039-4
+    cce@rhel10: CCE-87195-4
+    cce@sle12: CCE-92292-2
+    cce@sle15: CCE-91405-1
+    cce@sle16: CCE-96340-5
+
+references:
+    cis@sle12: 6.2.7
+    cis@sle15: 6.2.7
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020670
+    stigid@ol8: OL08-00-010741
+
+ocil_clause: 'the group ownership is incorrect'
+
+ocil: |-
+    To verify all files and directories in interactive user home directory are
+    group-owned by a group the user is a member of, run the
+    following command:
+    <pre>$ sudo ls -lLR /home/<i>USER</i></pre>
+
+warnings:
+    - general: |-
+       Due to OVAL limitation, this rule can report a false negative in a
+       specific situation where two interactive users swap the group-ownership
+       of folders or files in their respective home directories.
+
+platform: system_with_kernel

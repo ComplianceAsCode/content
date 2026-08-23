@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Verify crypto-policies with RPM'
+
+description: |-
+    Without cryptographic integrity protections, system executables and files can be altered by
+    unauthorized users without detection. The RPM package management system can check the hashes
+    of installed software packages, including many that are important to system security.
+
+    If the file was not expected to change, investigate the cause of the change using audit logs
+    or other means. The package can then be reinstalled to restore the file. Run the following
+    command to determine which package owns the file:
+    <pre>$ rpm -qf <i>FILENAME</i></pre>
+
+    The package can be reinstalled from a {{{ pkg_manager }}} repository using the command:
+    <pre>$ sudo {{{ pkg_manager }}} reinstall crypto-policies</pre>
+
+rationale: |-
+    The crypto-policies package defines the cryptography policies for the system.
+    If the files are changed from those shipped with the operating system, 
+    It may be possible for {{{ full_name }}} to use cryptographic functions that are not FIPS 140-3 approved.
+
+severity: high
+
+references:
+    srg: SRG-OS-000478-GPOS-00223,SRG-OS-000396-GPOS-00176
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    Verify that {{{ full_name }}} crypto-policies package has not been modified with the following command:
+    $ rpm -V crypto-policies
+    If the command has any output, this is a finding.
+
+fixtext: |-
+    Reinstall the crypto-policies package to remove any modifications.
+    $ sudo {{{ pkg_manager }}} reinstall -y crypto-policies

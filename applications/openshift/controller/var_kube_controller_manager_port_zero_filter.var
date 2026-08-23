@@ -1,0 +1,14 @@
+documentation_complete: true
+
+title: 'Kube controller manager config check - port should not be zero'
+
+description: 'Kube controller manager config check - port should not be zero'
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    default: '[.data."config.yaml" | fromjson | if .extendedArguments["port"]!=null then .extendedArguments["port"]==["0"] else true end]'

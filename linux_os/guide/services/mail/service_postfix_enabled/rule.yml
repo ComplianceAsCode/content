@@ -1,0 +1,27 @@
+documentation_complete: true
+
+
+title: 'Enable Postfix Service'
+
+description: |-
+    The Postfix mail transfer agent is used for local mail delivery
+    within the system. The default configuration only listens for connections to
+    the default SMTP port (port 25) on the loopback interface (127.0.0.1).  It is
+    recommended to leave this service enabled for local mail delivery.
+    {{{ describe_service_enable(service="postfix") }}}
+
+rationale: |-
+    Local mail delivery is essential to some system maintenance and
+    notification tasks.
+
+severity: unknown
+
+ocil_clause: 'the system is not a cross domain solution and the service is not enabled'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="postfix") }}}
+
+template:
+    name: service_enabled
+    vars:
+        servicename: postfix

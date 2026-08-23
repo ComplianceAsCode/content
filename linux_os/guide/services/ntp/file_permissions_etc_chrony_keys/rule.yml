@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: Verify Permissions On /etc/chrony.keys File
+
+description: '{{{ describe_file_permissions(file="/etc/chrony.keys", perms="0640") }}}'
+
+rationale: |-
+    Setting correct permissions on the /etc/chrony.keys file is important
+    because this file hosts chrony cryptographic keys. Protection
+    of this file is critical for system security. Assigning the correct mode
+    ensures exclusive control of the chrony cryptographic keys.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86383-7
+    cce@rhel9: CCE-86384-5
+    cce@rhel10: CCE-88155-7
+    cce@sle16: CCE-96085-6
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/chrony.keys", perms="0640") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/chrony.keys", perms="0640") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/chrony.keys", mode="0640") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/chrony.keys", mode="0640") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/chrony.keys
+        filemode: '0640'

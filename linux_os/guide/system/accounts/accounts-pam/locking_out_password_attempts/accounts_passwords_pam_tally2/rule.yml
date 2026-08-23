@@ -1,0 +1,77 @@
+{{% if product in ["sle12","sle15"] %}}
+{{% set auth_config="/etc/pam.d/login" %}}
+{{% set audit_cmd="grep -E '^\s*auth\s+\S+\s+pam_(tally2|unix)\.so' /etc/pam.d/login" %}}
+{{% else %}}
+{{% set auth_config="/etc/pam.d/common-auth" %}}
+{{% set audit_cmd="grep pam_tally2.so /etc/pam.d/common-auth" %}}
+{{% endif %}}
+documentation_complete: true
+
+
+title: 'Set Deny For Failed Password Attempts'
+
+description: |-
+    The {{{ full_name }}} operating system must lock an account after - at most - {{{ xccdf_value("var_password_pam_tally2") }}}
+    consecutive invalid access attempts.
+
+rationale: |-
+    By limiting the number of failed logon attempts, the risk of unauthorized
+    system access via user password guessing, otherwise known as brute-force
+    attacks, is reduced. Limits are imposed by locking the account.
+
+    To configure the operating system to lock an account after three
+    unsuccessful consecutive access attempts using <tt>pam_tally2.so</tt>,
+    modify the content of both <tt>{{{ auth_config }}}</tt> and
+    <tt>/etc/pam.d/common-account</tt> as follows:
+    <br /><br />
+    <ul>
+    <li> add or modify the <tt>pam_tally2.so</tt> module line in
+    <tt>{{{ auth_config }}}</tt> to ensure both <tt>onerr=fail</tt> and
+    <tt>deny={{{ xccdf_value("var_password_pam_tally2") }}}</tt> are present. For example:
+    <pre>auth required pam_tally2.so onerr=fail silent audit deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre></li>
+    <li> add or modify the following line in <tt>/etc/pam.d/common-account</tt>:
+    <pre>account required pam_tally2.so</pre></li>
+    </ul>
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83055-4
+    cce@sle15: CCE-85554-4
+    cce@slmicro5: CCE-93775-5
+
+references:
+    cis@sle12: 5.3.2
+    cis@sle15: 5.3.2
+    nist@sle12: AC-7(a)
+    pcidss: Req-8.1.6
+    srg: SRG-OS-000021-GPOS-00005
+    stigid@sle12: SLES-12-010130
+
+ocil_clause: 'the account option is missing or commented out'
+
+ocil: |-
+    Check that the systems locks a user account after - at most - <tt>{{{ xccdf_value("var_password_pam_tally2") }}}</tt>
+    consecutive failed login attempts with the following command:
+
+    <pre># {{{ audit_cmd }}}
+    auth required pam_tally2.so onerr=fail deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre>
+
+    If no line is returned, the line is commented out, or the line is missing
+    "onerr=fail", this is a finding.
+    If the line has "deny" set to a value outside of the range <pre>1-{{{ xccdf_value("var_password_pam_tally2") }}}</pre>,
+    this is a finding.
+
+    Check that the system resets the failed login attempts counter after a
+    successful login using the following command:
+
+    <pre># grep pam_tally2.so /etc/pam.d/common-account
+    account required pam_tally2.so deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre>
+
+    If the account option is missing, or commented out, this is a finding.
+
+{{% if product == "sle15" %}}
+platform: os_linux[sles]<15.7 and package[pam]
+{{% else %}}
+platform: package[pam]
+{{% endif %}}

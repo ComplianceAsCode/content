@@ -1,0 +1,26 @@
+documentation_complete: true
+
+
+title: 'Uninstall python3-abrt-addon Package'
+
+description: |-
+    {{{ describe_package_remove(package="python3-abrt-addon") }}}
+
+rationale: |-
+    <tt>python3-abrt-addon</tt> contains python hook and python analyzer
+    plugin for handling uncaught exceptions in python programs.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-86084-1
+
+references:
+    srg: SRG-OS-000095-GPOS-00049
+
+{{{ complete_ocil_entry_package_removed("python3-abrt-addon") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: python3-abrt-addon

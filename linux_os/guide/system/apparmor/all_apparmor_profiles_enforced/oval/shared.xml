@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure all AppArmor profiles are in enforce mode", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="No AppArmor profiles are outside enforce mode"
+        test_ref="{{{ rule_id }}}_test_no_non_enforced_profiles" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_non_enforced_profiles" version="1">
+    <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match">^.+\s+\((complain|kill|unconfined)\)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check_existence="none_exist" check="all"
+    id="{{{ rule_id }}}_test_no_non_enforced_profiles" version="1"
+    comment="No AppArmor profiles in complain, kill or unconfined mode">
+    <ind:object object_ref="{{{ rule_id }}}_obj_non_enforced_profiles"/>
+  </ind:textfilecontent54_test>
+</def-group>

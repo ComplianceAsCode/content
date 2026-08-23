@@ -1,0 +1,40 @@
+documentation_complete: true
+
+
+title: 'Record Any Attempts to Run ssh-agent'
+
+description: |-
+    {{{ describe_arpc("/usr/bin/ssh-agent") }}}
+
+rationale: |-
+    Without generating audit records that are specific to the security and
+    mission needs of the organization, it would be difficult to establish,
+    correlate, and investigate the events relating to an incident or identify
+    those responsible for one.
+
+    Audit records can be generated from various components within the
+    information system (e.g., module or policy filter).
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85944-7
+    cce@rhel9: CCE-90388-0
+    cce@rhel10: CCE-90081-1
+    cce@sle12: CCE-83199-0
+    cce@sle15: CCE-85590-8
+    cce@slmicro5: CCE-93611-2
+    cce@slmicro6: CCE-94615-2
+
+references:
+    nist@sle12: AU-3,AU-3.1,AU-12(a),AU-12(c),AU-12.1(a),AU-12.1(ii),AU-12.1(iv),MA-4(1)(a)
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-APP-000495-CTR-001235
+    stigid@ol8: OL08-00-030280
+    stigid@sle12: SLES-12-020310
+
+{{{ ocil_fix_srg_privileged_command("ssh-agent") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/bin/ssh-agent

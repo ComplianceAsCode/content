@@ -1,0 +1,18 @@
+controls:
+- id: SRG-APP-000131-CTR-000280
+  levels:
+  - medium
+  title: {{{ full_name }}} must be built from verified packages.
+  related_rules:
+  - reject_unsigned_images_by_default
+  - ocp_allowed_registries
+  - ocp_allowed_registries_for_import
+  status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://github.com/openshift/machine-config-operator/blob/master/docs/OSUpgrades.md#questions-and-answers
+  status_justification: |-
+    Integrity of the OpenShift platform is handled to start by the cluster version operator. Today the CVO will by default GPG verify the integrity of the release image before applying it. The release image contains a sha256 digest of machine-os-content which is used by the MCO for updates. On the host, the container runtime podman verifies the integrity of that sha256 when pulling the image, before the MCO reads its content. Hence, there is end-to-end GPG-verified integrity for the operating system updates (as well as the rest of the cluster components which run as regular containers).
+
+    https://github.com/openshift/machine-config-operator/blob/master/docs/OSUpgrades.md#questions-and-answers

@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Verify Ownership on SSH Server Private *_key Key Files'
+
+description: |-
+    SSH server private keys, files that match the <code>/etc/ssh/*_key</code> glob, must be owned
+    by <code>root</code> user.
+
+rationale: |-
+    If an unauthorized user obtains the private SSH host key file, the host could be impersonated.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86118-7
+    cce@rhel9: CCE-86119-5
+    cce@rhel10: CCE-90624-8
+    cce@sle16: CCE-95879-3
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/ssh/*_key", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/ssh/*_key", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath:
+            - /etc/ssh/
+        file_regex:
+            - ^.*_key$
+        uid_or_name: '0'
+
+warnings:
+    - general: |-
+        Remediation is not possible at bootable container build time because SSH host
+        keys are generated post-deployment.
+
+platform: system_with_kernel

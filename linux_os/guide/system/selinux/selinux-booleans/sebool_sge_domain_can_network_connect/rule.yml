@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the sge_domain_can_network_connect SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>sge_domain_can_network_connect</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="sge_domain_can_network_connect") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="sge_domain_can_network_connect") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: sge_domain_can_network_connect

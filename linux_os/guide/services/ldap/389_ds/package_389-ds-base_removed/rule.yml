@@ -1,0 +1,44 @@
+documentation_complete: true
+  
+
+title: 'Uninstall 389-ds-base Package'
+
+description: |-
+    The 389-ds-base RPM is not installed by default on a {{{ full_name }}}
+    system. It is needed only by the 389-ds server, not by the
+    clients which use LDAP for authentication. If the system is not
+    intended for use as an LDAP Server it should be removed.
+
+rationale: |-
+    Unnecessary packages should not be installed to decrease the attack
+    surface of the system.  While this software is clearly essential on an LDAP
+    server, it is not necessary on typical desktop or workstation systems.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-82725-3
+    cce@rhel8: CCE-82728-7
+
+references:
+    cis-csc: 11,14,3,9
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
+    isa-62443-2009: 4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
+    nist: CM-7(a),CM-7(b),CM-6(a)
+    nist-csf: PR.IP-1,PR.PT-3
+
+ocil_clause: 'the package is installed'
+
+ocil: |-
+    To verify the <tt>389-ds-base</tt> package is not installed, run the
+    following command:
+    <pre>$ rpm -q 389-ds-base</pre>
+    The output should show the following:
+    <pre>package 389-ds-base is not installed</pre>
+
+template:
+    name: package_removed
+    vars:
+        pkgname: 389-ds-base

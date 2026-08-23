@@ -1,0 +1,61 @@
+product: rhel9
+full_name: Red Hat Enterprise Linux 9
+type: platform
+
+families:
+  - rhel
+  - rhel-like
+
+major_version_ordinal: 9
+
+benchmark_id: RHEL-9
+benchmark_root: "."
+components_root: "../../components"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+
+init_system: "systemd"
+
+# EFI and non-EFI configs are stored in same path, see https://fedoraproject.org/wiki/Changes/UnifyGrubConfig
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
+sshd_distributed_config: "true"
+
+dconf_gdm_dir: "distro.d"
+
+faillock_path: "/var/log/faillock"
+
+# The fingerprints below are retrieved from https://access.redhat.com/security/team/key
+pkg_release: "4ae0493b"
+pkg_version: "fd431d51"
+aux_pkg_release: "6229229e"
+aux_pkg_version: "5a6340b3"
+
+release_key_fingerprint: "567E347AD0044ADE55BA8A5F199E2F91FD431D51"
+auxiliary_key_fingerprint: "7E4624258C406535D56D6F135054E4A45A6340B3"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - rhel9:
+      name: "cpe:/o:redhat:enterprise_linux:9"
+      title: "Red Hat Enterprise Linux 9"
+      check_id: installed_OS_is_rhel9
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/red_hat_linux/'
+  ccn: 'https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html'
+
+centos_pkg_release: "5ccc5b19"
+centos_pkg_version: "8483c65d"
+centos_major_version: "9"
+
+journald_conf_dir_path: /etc/systemd/journald.conf.d

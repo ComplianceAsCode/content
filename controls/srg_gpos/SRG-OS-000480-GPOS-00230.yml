@@ -1,0 +1,22 @@
+controls:
+    -   id: SRG-OS-000480-GPOS-00230
+        levels:
+            - medium
+        title: '{{{ full_name }}} must limit the ability of non-privileged users to grant
+            other users direct access to the contents of their home directories/folders.'
+        status: does not meet
+        rationale: |-
+            Users home directories/folders may contain information of a sensitive nature.
+            Non-privileged users should coordinate any sharing of information with an SA
+            through shared resources.
+        fixtext: |-
+            This requirement is a permanent finding and cannot be fixed.
+            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
+        mitigation: |-
+            Ensure discretionary access control policies are implemented at the system level to enforce
+               restrictions preventing non-privileged user from granting other users access to their home directories.
+
+            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+        status_justification: |-
+            {{{ full_name }}} does not natively support a method of limiting the ability of non-privileged users to grant
+             other users direct access to the contents of their home directories/folders.

@@ -1,0 +1,10 @@
+---
+# platform = multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  annotations:
+    complianceascode.io/depends-on: xccdf_org.ssgproject.content_rule_kubelet_enable_protect_kernel_sysctl
+spec:
+  kubeletConfig:
+    protectKernelDefaults: true

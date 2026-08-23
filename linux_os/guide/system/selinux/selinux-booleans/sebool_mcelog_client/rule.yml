@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the mcelog_client SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>mcelog_client</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="mcelog_client") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="mcelog_client") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: mcelog_client

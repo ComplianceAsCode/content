@@ -1,0 +1,26 @@
+documentation_complete: true
+
+
+title: 'Uninstall libreport-plugin-rhtsupport Package'
+
+description: |-
+    {{{ describe_package_remove(package="libreport-plugin-rhtsupport") }}}
+
+rationale: |-
+    <tt>libreport-plugin-rhtsupport</tt> is a ABRT plugin to report bugs into the
+    Red Hat Support system.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-88955-0
+
+references:
+    srg: SRG-OS-000095-GPOS-00049
+
+{{{ complete_ocil_entry_package_removed("libreport-plugin-rhtsupport") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: libreport-plugin-rhtsupport

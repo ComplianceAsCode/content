@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'KubeVirt Must Not Permit Host Devices'
+
+description: |-
+    Host devices should not be permitted to virtualization workloads unless
+    absolutely necessary for workload execution. Allowing host devices provides
+    direct access to host hardware, which can introduce security risks including
+    unauthorized access to sensitive hardware resources, potential for privilege
+    escalation, and bypass of virtualization security boundaries.
+
+    By default, no host devices should be trusted or permitted for use by
+    virtualization workloads.
+
+rationale: |-
+    The <tt>.spec.permittedHostDevices</tt> field in the <tt>kubevirt-hyperconverged</tt>
+    resource controls which host devices can be used by virtualization workloads.
+    Permitting host devices allows virtual machines to bypass virtualization boundaries
+    and directly access host hardware, which introduces significant security risks.
+    This can lead to unauthorized access to sensitive hardware resources, privilege
+    escalation opportunities, and potential compromise of the host system. Unless
+    explicitly required, no host devices should be permitted.
+
+severity: medium
+
+ocil_clause: 'permittedHostDevices are configured in kubevirt-hyperconverged'
+
+ocil: |-
+    Run the following command to check the HyperConverged configuration:
+    <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.permittedHostDevices}'</pre>
+    The output should be empty or show empty lists for both <tt>pciHostDevices</tt> and <tt>mediatedDevices</tt>.

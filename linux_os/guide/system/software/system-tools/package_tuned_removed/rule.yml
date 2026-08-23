@@ -1,0 +1,41 @@
+documentation_complete: true
+
+
+title: 'Uninstall tuned Package'
+
+description: |-
+    {{{ describe_package_remove(package="tuned") }}}
+
+rationale: |-
+    <tt>tuned</tt> contains a daemon that tunes the system settings dynamically.
+    It does so by monitoring the usage of several system components periodically. Based
+    on that information, components will then be put into lower or higher power savings
+    modes to adapt to the current usage.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82904-4
+    cce@rhel9: CCE-83521-5
+    cce@rhel10: CCE-87654-0
+
+references:
+    srg: SRG-OS-000095-GPOS-00049,SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-040390
+
+{{{ complete_ocil_entry_package_removed("tuned") }}}
+
+fixtext: '{{{ fixtext_package_removed("tuned") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_removed("tuned") }}}'
+
+platforms:
+{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
+
+warnings:
+{{{ warning_ovirt_rule_notapplicable("RHV requires tuned package for tuning profiles that can enhance virtualization performance") | indent(4) }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: tuned

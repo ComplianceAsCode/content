@@ -1,0 +1,179 @@
+name: "cpe:/a:{arg}:{ver_specs_cpe}"
+title: "Package {pkgname} is installed"
+versioned: true
+template:
+  name: platform_package
+args:
+  aide:
+    pkgname: aide
+  apparmor:
+    {{% if product in ["sle12", "sle15"] %}}
+      pkgname: apparmor-profiles
+    {{% else %}}
+      pkgname: apparmor
+    {{% endif %}}
+  apport:
+    pkgname: apport
+  audit:
+    {{% if pkg_system == "rpm" %}}
+    pkgname: audit
+    {{% else %}}
+    pkgname: auditd
+    {{% endif %}}
+  autofs:
+    pkgname: autofs
+  avahi:
+    {{% if 'ubuntu' in product %}}
+    pkgname: avahi-daemon
+    {{% else %}}
+    pkgname: avahi
+    {{% endif %}}
+  bash:
+    pkgname: bash
+  bind:
+    pkgname: bind
+  chrony:
+    pkgname: chrony
+  dnf:
+    {{% if product == "fedora" %}}
+    pkgname: dnf5
+    {{% else %}}
+    pkgname: dnf
+    {{% endif %}}
+  firewalld:
+    pkgname: firewalld
+  gdm:
+    {{% if pkg_system == "rpm" %}}
+    pkgname: gdm
+    {{% else %}}
+    pkgname: gdm3
+    {{% endif %}}
+  iptables:
+    pkgname: iptables
+  krb5-libs:
+    pkgname: krb5-libs
+  libpwquality:
+    {{% if 'debian' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
+    pkgname: libpwquality1
+    {{% else %}}
+    pkgname: libpwquality
+    {{% endif %}}
+  libreswan:
+    {{% if product in  ["sle15", "sle16"] %}}
+    pkgname: strongswan-ipsec
+    {{% else %}}
+    pkgname: libreswan
+    {{% endif %}}
+  libuser:
+    pkgname: libuser
+  logrotate:
+    pkgname: logrotate
+  net-snmp:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: net-snmp
+    {{% else %}}
+      pkgname: snmp
+    {{% endif %}}
+  networkmanager:
+    {{% if product in ["ubuntu2204", "ubuntu2404", "ubuntu2604"] %}}
+    pkgname: network-manager
+    {{% else %}}
+    pkgname: NetworkManager
+    {{% endif %}}
+  nftables:
+      pkgname: nftables
+  nss-pam-ldapd:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: nss-pam-ldapd
+    {{% else %}}
+      pkgname: libpam-ldapd
+    {{% endif %}}
+  ntp:
+    {{% if product == "debian13" %}}
+    pkgname: ntpsec
+    {{% else %}}
+    pkgname: ntp
+    {{% endif %}}
+    title: NTP daemon and utilities
+  openssh:
+    pkgname: openssh
+  openssh-clients:
+    pkgname: openssh-clients
+  openssh-server:
+    pkgname: openssh-server
+  openssl:
+    pkgname: openssl
+  pam:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: pam
+    {{% else %}}
+      pkgname: libpam-runtime
+    {{% endif %}}
+  pam_apparmor:
+    pkgname: pam_apparmor
+  polkit:
+    pkgname: polkit
+  postfix:
+    pkgname: postfix
+  rsh-server:
+    pkgname: rsh-server
+  shadow-utils:
+    {{% if pkg_system == "rpm" %}}
+    {{% if 'sle' in product or 'slmicro' in product or product in ["kylinserver10", "kylinsecserver6", "openeuler2203"] %}}
+      pkgname: shadow
+    {{% elif product in ["openembedded"] %}}
+      pkgname: shadow-base
+    {{% else %}}
+      pkgname: shadow-utils
+    {{% endif %}}
+    {{% else %}}
+      pkgname: login
+    {{% endif %}}
+  snmpd:
+    {{% if 'debian' in product %}}
+    pkgname: snmpd
+    {{% else %}}
+    pkgname: net-snmp
+    {{% endif %}}
+  squid:
+    pkgname: squid
+  sssd:
+    {{% if 'sle' in product or 'ubuntu' in product %}}
+      pkgname: sssd
+    {{% else %}}
+      pkgname: sssd-common
+    {{% endif %}}
+  sudo:
+    pkgname: sudo
+  systemd:
+    pkgname: systemd
+  systemd-journal-remote:
+    pkgname: systemd-journal-remote
+  systemd-timesyncd:
+    pkgname: systemd-timesyncd
+  telnet-server:
+    {{% if product in ['debian13'] %}}
+    pkgname: inetutils-telnetd
+    {{% else %}}
+    pkgname: telnet-server
+    {{% endif %}}
+  tftp-server:
+    pkgname: tftp-server
+  tmux:
+    pkgname: tmux
+  ufw:
+    pkgname: ufw
+  usbguard:
+    pkgname: usbguard
+  yum:
+    pkgname: yum
+  zypper:
+    pkgname: zypper
+  apt_get:
+    pkgname: apt
+  rsyslog:
+    pkgname: rsyslog
+  rootfiles:
+    pkgname: rootfiles
+  tcsh:
+    pkgname: tcsh

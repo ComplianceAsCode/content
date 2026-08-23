@@ -1,0 +1,70 @@
+documentation_complete: true
+
+
+title: 'Configure AIDE to Verify the Audit Tools'
+
+description: |-
+    The operating system file integrity tool must be configured to protect the integrity of the audit tools.
+
+rationale: |-
+    Protecting the integrity of the tools used for auditing purposes is a
+    critical step toward ensuring the integrity of audit information. Audit
+    information includes all information (e.g., audit records, audit settings,
+    and audit reports) needed to successfully audit information system
+    activity.
+
+    Audit tools include but are not limited to vendor-provided and open-source
+    audit tools needed to successfully view and manipulate audit information
+    system activity and records. Audit tools include custom queries and report
+    generators.
+
+    It is not uncommon for attackers to replace the audit tools or inject code
+    into the existing tools to provide the capability to hide or erase system
+    activity from the audit logs.
+
+    To address this risk, audit tools must be cryptographically signed to
+    provide the capability to identify when the audit tools have been modified,
+    manipulated, or replaced. An example is a checksum hash of the file or
+    files.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85964-5
+    cce@rhel9: CCE-87757-1
+    cce@rhel10: CCE-86441-3
+    cce@sle12: CCE-83204-8
+    cce@sle15: CCE-85610-4
+    cce@slmicro5: CCE-93703-7
+    cce@slmicro6: CCE-94702-8
+
+references:
+    nist: AU-9(3),AU-9(3).1
+    srg: SRG-OS-000278-GPOS-00108
+    stigid@ol8: OL08-00-030650
+    stigid@sle12: SLES-12-010540
+
+ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
+
+ocil: |-
+    Check that AIDE is properly configured to protect the integrity of the
+    audit tools by running the following command:
+
+    <pre># sudo cat {{{ aide_conf_path }}} | grep /usr/sbin/au
+
+    {{{ aide_config_file_lines() }}}
+    </pre>
+    If AIDE is configured properly to protect the integrity of the audit tools,
+    all lines listed above will be returned from the command.
+
+    If one or more lines are missing, this is a finding.
+
+fixtext: |-
+    Add or update the following lines to {{{ aide_conf_path }}}, to protect the integrity of the audit tools.
+
+    <pre>
+    {{{ aide_config_file_lines() }}}
+    </pre>
+
+srg_requirement:
+    {{{ full_name }}} must use cryptographic mechanisms to protect the integrity of audit tools.

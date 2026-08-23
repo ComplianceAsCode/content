@@ -1,0 +1,11 @@
+---
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_rhcos
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{%- macro audit_sysadmin_actions_rule() -%}}
+-w /etc/sudoers.d/ -p wa -k actions
+-w /etc/sudoers -p wa -k actions
+{{% endmacro %}}
+{{{ kubernetes_machine_config_file(path="/etc/audit/rules.d/75-audit-sysadmin-actions.rules", file_permissions_mode='0600', source=audit_sysadmin_actions_rule()) }}}

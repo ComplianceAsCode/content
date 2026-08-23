@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Ensure users own their home directories'
+
+description: |-
+    The user home directory is space defined for the particular user to set local
+    environment variables and to store personal files. Since the user is
+    accountable for files stored in the user home directory, the user must be
+    the owner of the directory.
+
+rationale: |-
+    Since the user is accountable for files stored in the user home directory,
+    the user must be the owner of the directory.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92294-8
+    cce@sle15: CCE-91407-7
+
+references:
+    cis@sle12: 6.2.7
+    cis@sle15: 6.2.7

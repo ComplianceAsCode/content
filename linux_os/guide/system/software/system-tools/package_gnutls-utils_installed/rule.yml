@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Ensure gnutls-utils is installed'
+
+description: |-
+    {{{ describe_package_install(package="gnutls-utils") }}}
+
+rationale: |-
+    GnuTLS is a secure communications library implementing the SSL, TLS and DTLS
+    protocols and technologies around them. It provides a simple C language
+    application programming interface (API) to access the secure communications
+    protocols as well as APIs to parse and write X.509, PKCS #12, OpenPGP and
+    other required structures.
+    This package contains command line TLS client and server and certificate
+    manipulation tools.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82395-5
+    cce@rhel9: CCE-83494-5
+    cce@rhel10: CCE-90403-7
+
+references:
+    ospp: FIA_X509_EXT.1,FIA_X509_EXT.1.1,FIA_X509_EXT.2
+    srg: SRG-OS-000480-GPOS-00227
+
+{{{ complete_ocil_entry_package_installed("gnutls-utils") }}}
+
+fixtext: '{{{ fixtext_package_installed("gnutls-utils") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("gnutls-utils") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: gnutls-utils
+
+platform: system_with_kernel

@@ -1,0 +1,12 @@
+# platform = Red Hat Enterprise Linux 8,multi_platform_almalinux,multi_platform_ol,multi_platform_sle
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{% for package in xwindows_packages %}}
+- name: "{{{ rule_title }}} - Ensure {{{ package }}} is removed"
+  ansible.builtin.package:
+    name: {{{ package }}}
+    state: absent
+{{% endfor %}}

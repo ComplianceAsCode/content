@@ -1,0 +1,34 @@
+controls:
+- id: SRG-APP-000360-CTR-000815
+  levels:
+  - medium
+  title: {{{ full_name }}} must provide an immediate real-time alert to the SA
+    and ISSO, at a minimum, of all audit failure events requiring real-time alerts.
+  status: manual
+  check: |-
+    Verify that the AlertManager config includes a configured receiver. 
+
+    1. From the Administrator perspective on the OpenShift web console, navigate to Administration->Cluster Settings -> Global Configuration -> Alertmanager
+    2. View the list of receivers, and inspect the configuration
+    3. Verify that at least one receiver is configured as either PagerDuty, Webhook, Email, or Slack according to the organizations policy.
+
+    If an alert receiver is not configured according to the organizational policy this is a finding.
+  fixtext: |-
+    Create a alert notification receiver
+
+    1. From the Administrator perspective on the OpenShift web console, navigate to Administration->Cluster Settings -> Global Configuration -> Alertmanager
+    2. Select Create Receiver
+    3. Set the name, and choose a Receiver Type
+    4. Complete the form as per the organizations policy
+
+    Refer to the following documentation for more information
+
+    https://docs.openshift.com/container-platform/latest/monitoring/managing-alerts.html#sending-notifications-to-external-systems_managing-alerts
+  artifact_description: |-
+    Supporting documentation is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/post_installation_configuration/configuring-alert-notifications.html
+    https://kubernetes.io/docs/tasks/debug-application-cluster/audit/#parameter-tuning
+  status_justification: |-
+    The OpenShift Container Platform provides an alert notification
+    service to notify admins of critical events.

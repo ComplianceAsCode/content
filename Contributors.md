@@ -1,0 +1,365 @@
+<!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
+Last Modified: 2026-08-18 16:01 UTC
+--->
+
+The following people have contributed to the SCAP Security Guide project
+(listed in alphabetical order):
+
+* Frank J Cameron (CAM1244) <cameron@ctc.com>
+* 0x66656c6978 <0x66656c6978@users.noreply.github.com>
+* Håvard F. Aasen <havard.f.aasen@pfft.no>
+* Armando Acosta <armando.acosta@oracle.com>
+* Jack Adolph <jack.adolph@gmail.com>
+* Edgar Aguilar <edgar.aguilar@oracle.com>
+* akuster <akuster808@gmail.com>
+* Gabe Alford <redhatrises@gmail.com>
+* Firas AlShafei <firas.alshafei@us.abb.com>
+* Rodrigo Alvares <ralvares@redhat.com>
+* am-tux <andrew.miller11@gmail.com>
+* Christopher Anderson <cba@fedoraproject.org>
+* Andrejs <andrejs.galzons@gmail.com>
+* Craig Andrews <candrews@integralblue.com>
+* angystardust <angystardust@users.noreply.github.com>
+* anivan-suse <anastasija.ivanovic@suse.com>
+* anixon-rh <55244503+anixon-rh@users.noreply.github.com>
+* Anna-Koudelkova <akoudelk@redhat.com>
+* Arden97 <arden2545@gmail.com>
+* Steve Arnold <sarnold@vctlabs.com>
+* Ikko Ashimine <eltociear@gmail.com>
+* Chuck Atkins <chuck.atkins@kitware.com>
+* axuan <axuan@redhat.com>
+* Bharath B <bhb@redhat.com>
+* Ryan Ballanger <root@rballang-admin-2.fastenal.com>
+* Alex Baranowski <alex@euro-linux.com>
+* Eduardo Barretto <eduardo.barretto@canonical.com>
+* Paul Bastide <pbastide@us.ibm.com>
+* Molly Jo Bault <Molly.Jo.Bault@ballardtech.com>
+* Andrew Becker <A-Beck@users.noreply.github.com>
+* Gabriel Becker <ggasparb@redhat.com>
+* BenGui <benoit.guillon1@etu.unilim.fr>
+* Alexander Bergmann <abergmann@suse.com>
+* Eric Berry <eric@approvedworkman.com>
+* Dale Bewley <dale@bewley.net>
+* Jose Luis BG <bgjoseluis@gmail.com>
+* binyanling <binyanling@uniontech.com>
+* Joseph Bisch <joseph.bisch@gmail.com>
+* Jeff Blank <blank@eclipse.ncsc.mil>
+* Israel Villar Boillos <israel.villar@ulpgc.es>
+* Olivier Bonhomme <ptitoliv@ptitoliv.net>
+* bontreger <bontreger@users.noreply.github.com>
+* Lance Bragstad <lbragstad@gmail.com>
+* Vickey Brown <vibrown@redhat.com>
+* Ted Brunell <tbrunell@redhat.com>
+* Marcus Burghardt <maburgha@redhat.com>
+* Matthew Burket <mburket@redhat.com>
+* Blake Burkhart <blake.burkhart@us.af.mil>
+* Alexander Bushkin <abushkin@abushkin-thinkpadt14gen4.rmtit.csb>
+* Patrick Callahan <pmc@patrickcallahan.com>
+* George Campbell <gcampbell@palantir.com>
+* Nick Carboni <ncarboni@redhat.com>
+* Carlos <64919342+carlosmmatos@users.noreply.github.com>
+* James Cassell <james.cassell@ll.mit.edu>
+* Frank Caviggia <fcaviggia@users.noreply.github.com>
+* Sinong Chen <costinchen@tencent.com>
+* Eric Christensen <echriste@redhat.com>
+* Dan Clark <danclark@redhat.com>
+* Jayson Cofell <1051437+70k10@users.noreply.github.com>
+* David du Colombier <djc@datadoghq.com>
+* Commandcracker <lukas.fricke.dev@gmail.com>
+* Caleb Cooper <coopercd@ornl.gov>
+* copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>
+* CoreyCook8 <129206271+CoreyCook8@users.noreply.github.com>
+* cortesana <acortes@redhat.com>
+* Richard Maciel Costa <richard.maciel.costa@canonical.com>
+* Xavier Coulon <xavier.coulon@suse.com>
+* Deric Crago <deric.crago@gmail.com>
+* crleekwc <crleekwc@gmail.com>
+* cueball23 <christoph.alms@westnetz.de>
+* cyarbrough76 <42849651+cyarbrough76@users.noreply.github.com>
+* Maura Dailey <maura@eclipse.ncsc.mil>
+* Harold Dean <hdean3@users.noreply.github.com>
+* Benjamin Deering <ben_deering@jeepingben.net>
+* Shane Dell <shanedell100@gmail.com>
+* Klaas Demter <demter@atix.de>
+* denknorr <dennis.knorr@suse.com>
+* dhanushkar-wso2 <dhanushkar@wso2.com>
+* Andrew DiPrinzio <andrew.diprinzio@jhuapl.edu>
+* dom <dominique.blaze@devinci.fr>
+* Jean-Baptiste Donnette <jean-baptiste.donnette@epita.fr>
+* Marco De Donno <mdedonno1337@gmail.com>
+* dperrone <dperrone@redhat.com>
+* drax <applezip@gmail.com>
+* Qingmin Duanmu <qduanmu@redhat.com>
+* Sebastian Dunne <sdunne@redhat.com>
+* François Duthilleul <francoisduthilleul@gmail.com>
+* Greg Elin <gregelin@gitmachines.com>
+* eradot4027 <jrtonmac@gmail.com>
+* ericeberry <ericeberry@gmail.com>
+* ermeratos <manuel.ermer@eviden.net>
+* Evelyn <evansvevelyn@gmail.com>
+* Steven Fackler <sfackler@palantir.com>
+* Alexis Facques <alexis.facques@mythalesgroup.io>
+* Jan Fader <jan.fader@web.de>
+* felixmarch <felixmarch@users.noreply.github.com>
+* Asser Schrøder Femø <asser@asser.org>
+* Henry Finucane <hfinucane@zscaler.com>
+* Leah Fisher <lfisher047@gmail.com>
+* Marco Fortina <marco_fortina@hotmail.it>
+* Yavor Georgiev <strandjata@gmail.com>
+* Alijohn Ghassemlouei <alijohn@secureagc.com>
+* Swarup Ghosh <swghosh@redhat.com>
+* ghylock <ghylock@gmail.com>
+* Andrew Gilmore <agilmore2@gmail.com>
+* Joachim Gleissner <jgleissner@suse.com>
+* Joshua Glemza <jglemza@nasa.gov>
+* Nick Gompper <forestgomp@yahoo.com>
+* David Fernandez Gonzalez <david.fernandezgonzalez@canonical.com>
+* Loren Gordon <lorengordon@users.noreply.github.com>
+* Gene Gotimer <otherdevopsgene@portinfo.com>
+* Patrik Greco <sikevux@sikevux.se>
+* Steve Grubb <sgrubb@redhat.com>
+* guangyee <gyee@suse.com>
+* Bhargavi Gudi <bgudi@bgudi-thinkpadt14sgen2i.remote.csb>
+* Christian Hagenest <christian.hagenest@suse.com>
+* Marek Haicman <mhaicman@redhat.com>
+* Sun, Haoxiang <haoxiang.sun@intel.com>
+* Vern Hart <vern.hart@canonical.com>
+* Alex Haydock <alex@alexhaydock.co.uk>
+* Rebekah Hayes <rhayes@corp.rivierautilities.com>
+* hazerre <kotadouglas2@gmail.com>
+* Trey Henefield <thenefield@gmail.com>
+* Henning Henkel <henning.henkel@helvetia.ch>
+* hex2a <hex2a@users.noreply.github.com>
+* hipponix <mirco.santori@gmail.com>
+* John Hooks <jhooks@starscream.pa.jhbcomputers.com>
+* Jakub Hrozek <jhrozek@redhat.com>
+* Donald Hunter <donald.hunter@gmail.com>
+* De Huo <De.Huo@windriver.com>
+* Robin Price II <robin@redhat.com>
+* Yasir Imam <yimam@redhat.com>
+* Jiri Jaburek <jjaburek@redhat.com>
+* Keith Jackson <keithkjackson@gmail.com>
+* Marc Jadoul <mgjadoul@laptomatic.auth-o-matic.corp>
+* Jeremiah Jahn <jeremiah@goodinassociates.com>
+* jcm-123 <1548614078@qq.com>
+* Jakub Jelen <jjelen@redhat.com>
+* Jessicahfy <Jessicahfy@users.noreply.github.com>
+* Stephan Joerrens <Stephan.Joerrens@fiduciagad.de>
+* Simon John <sjohn@tuxcare.com>
+* Hunter Jones <hjones2199@gmail.com>
+* Jono <jono@ubuntu-18.localdomain>
+* julius.ish <julius.ish@zetier.com>
+* justchris1 <justchris1@justchris1.email>
+* Kacper <kacper@kacper.se>
+* Kai Kang <kai.kang@windriver.com>
+* Charles Kernstock <charles.kernstock@ultra-ats.com>
+* Ket_ch0p <96146875+Tomatotech90@users.noreply.github.com>
+* Yuli Khodorkovskiy <ykhodorkovskiy@tresys.com>
+* Sherine Khoury <skhoury@redhat.com>
+* Nathan Kinder <nkinder@redhat.com>
+* Lee Kinser <lee.kinser@gmail.com>
+* Evgeny Kolesnikov <ekolesni@redhat.com>
+* Peter 'Pessoft' Kolínek <github@pessoft.com>
+* Luke Kordell <luke.t.kordell@lmco.com>
+* Malte Kraus <malte.kraus@suse.com>
+* Seth Kress <seth.kress@dsainc.com>
+* Vamshi Krishna <gnansan@gmail.com>
+* Felix Krohn <felix.krohn@helvetia.ch>
+* kspargur <kspargur@kspargur.csb>
+* Amit Kumar <amitkuma@redhat.com>
+* Fen Labalme <fen@civicactions.com>
+* Dexter Le <dexter.le@sap.com>
+* Kleber Leal <kleber.leal@gmail.com>
+* Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+* Ade Lee <alee@redhat.com>
+* Christopher Lee <Crleekwc@gmail.com>
+* Ian Lee <lee1001@llnl.gov>
+* Jarrett Lee <jarrettl@umd.edu>
+* Joseph Lenox <joseph.lenox@collins.com>
+* Stefano Libero <stefano.libero@nozominetworks.com>
+* lichtblaugue <guenther.lichtblau@eviden.com>
+* Jan Lieskovsky <jlieskov@redhat.com>
+* Markus Linnala <Markus.Linnala@knowit.fi>
+* Flos Lonicerae <lonicerae@gmail.com>
+* Simon Lukasik <slukasik@redhat.com>
+* Andrew Lukoshko <andrew.lukoshko@gmail.com>
+* Milan Lysonek <mlysonek@redhat.com>
+* Fredrik Lysén <fredrik@pipemore.se>
+* Mackemania <8738793+Mackemania@users.noreply.github.com>
+* Peter Macko <pmacko@redhat.com>
+* Caitlin Macleod <caitelatte@gmail.com>
+* Dmitry Makovey <dmakovey@yahoo.com>
+* Nick Maludy <nmaludy@gmail.com>
+* Lokesh Mandvekar <lsm5@fedoraproject.org>
+* Matus Marhefka <mmarhefk@redhat.com>
+* Jamie Lorwey Martin <jlmartin@redhat.com>
+* Carlos Matos <cmatos@redhat.com>
+* Robert McAllister <rmcallis@redhat.com>
+* Karen McCarron <kmccarro@redhat.com>
+* Michael McConachie <michael@redhat.com>
+* Marcus Meissner <meissner@suse.de>
+* Khary Mendez <kmendez@redhat.com>
+* Rodney Mercer <rmercer@harris.com>
+* Matt Micene <nzwulfin@gmail.com>
+* Brian Millett <bmillett@gmail.com>
+* Takuya Mishina <tmishina@jp.ibm.com>
+* MitchDrage <25337396+MitchDrage@users.noreply.github.com>
+* Mixer9 <35545791+Mixer9@users.noreply.github.com>
+* mmosel <mmosel@kde.example.com>
+* Thomas Montague <montague.thomas@gmail.com>
+* Alan Moore <alan.moore@canonical.com>
+* Zbynek Moravec <zmoravec@redhat.com>
+* Kazuo Moriwaka <moriwaka@users.noreply.github.com>
+* Michael Moseley <michael@eclipse.ncsc.mil>
+* Samir MOUHOUNE <samir.mouhoune@nav-timing.safrangroup.com>
+* Nathan Moyer <nmoyer@spectric.com>
+* Ross Murphy <RossMurphy@ibm.com>
+* Renaud Métrich <rmetrich@redhat.com>
+* Joe Nall <joe@nall.com>
+* namoyer10 <48189779+namoyer10@users.noreply.github.com>
+* Neiloy <neiloy@redhat.com>
+* Axel Nennker <axel@nennker.de>
+* Michele Newman <mnewman@redhat.com>
+* nnerdmann <128606223+nnerdmann@users.noreply.github.com>
+* Sean O'Keeffe <seanokeeffe797@gmail.com>
+* Jiri Odehnal <jodehnal@redhat.com>
+* Ilya Okomin <ilya.okomin@oracle.com>
+* Kaustubh Padegaonkar <theTuxRacer@gmail.com>
+* Michael Palmiotto <mpalmiotto@tresys.com>
+* Eryx Paredes <eryxp@lyft.com>
+* Max R.D. Parmer <maxp@trystero.is>
+* Arnaud Patard <apatard@hupstream.com>
+* Jan Pazdziora <jpazdziora@redhat.com>
+* pcactr <paul.c.arnold4.ctr@mail.mil>
+* Kenneth Peeples <kennethwpeeples@gmail.com>
+* Nathan Peters <Nathaniel.Peters@ca.com>
+* Frank Lin PIAT <fpiat@klabs.be>
+* Stefan Pietsch <mail.ipv4v6+gh@gmail.com>
+* piggyvenus <piggyvenus@gmail.com>
+* Vojtech Polasek <vpolasek@redhat.com>
+* Orion Poplawski <orion@nwra.com>
+* Jennifer Power <barnabei.jennifer@gmail.com>
+* Nick Poyant <npoyant@redhat.com>
+* Martin Preisler <mpreisle@redhat.com>
+* Wesley Ceraso Prudencio <wcerasop@redhat.com>
+* Raphael Sanchez Prudencio <rsprudencio@redhat.com>
+* Miha Purg <miha.purg@canonical.com>
+* T.O. Radzy Radzykewycz <radzy@windriver.com>
+* rain-Qing <yangyuqing6@qq.com>
+* Kenyon Ralph <kenyon@kenyonralph.com>
+* Mike Ralph <mralph@redhat.com>
+* Federico Ramirez <federico.r.ramirez@oracle.com>
+* rchikov <rumen.chikov@suse.com>
+* Rick Renshaw <Richard_Renshaw@xtoenergy.com>
+* Paul Rensing <prensing@cimetrics.com>
+* Chris Reynolds <c.reynolds82@gmail.com>
+* rhayes <rhayes@rivierautilities.com>
+* Pat Riehecky <riehecky@fnal.gov>
+* rlucente-se-jboss <rlucente@redhat.com>
+* Juan Antonio Osorio Robles <juan.osoriorobles@eu.equinix.com>
+* Paul Roche <paul.roche@menlosecurity.com>
+* Jan Rodak <hony.com@seznam.cz>
+* Matt Rogers <mrogers@redhat.com>
+* Jesse Roland <jesse.roland@onyxpoint.com>
+* Joshua Roys <roysjosh@gmail.com>
+* rrenshaw <bofh69@yahoo.com>
+* rrskris <rrskris@gmail.com>
+* Daniel Ruf <daniel@daniel-ruf.de>
+* Chris Ruffalo <chris.ruffalo@gmail.com>
+* Benjamin Ruland <benjamin.ruland@gmail.com>
+* rumch-se <77793453+rumch-se@users.noreply.github.com>
+* Rutvik <rutksh@gmail.com>
+* Ray Shaw (Cont ARL/CISD) rvshaw <rvshaw@esme.arl.army.mil>
+* Nicolas SAID <nicolas.said@atos.net>
+* Earl Sampson <ESampson@suse.com>
+* sampsone <esampson@suse.com>
+* Mirco Santori <mirco.santori@roche.com>
+* Willy Santos <wsantos@redhat.com>
+* Nagarjuna Sarvepalli <snagarju@redhat.com>
+* Anderson Sasaki <33833274+ansasaki@users.noreply.github.com>
+* Gautam Satish <gautams@hpe.com>
+* Watson Sato <wsato@redhat.com>
+* Satoru SATOH <satoru.satoh@gmail.com>
+* Alexander Scheel <alexander.m.scheel@gmail.com>
+* Bryan Schneiders <pschneiders@trisept.com>
+* Robert Schweikert <rjschwei@suse.com>
+* shaneboulden <shane.boulden@gmail.com>
+* Vincent Shen <wenshen@redhat.com>
+* Dhriti Shikhar <dhriti.shikhar.rokz@gmail.com>
+* Spencer Shimko <sshimko@tresys.com>
+* Mark Shoger <mshoger@redhat.com>
+* Shane Siebken <shane.siebken@capellaspace.com>
+* THOBY Simon <Simon.THOBY@viveris.fr>
+* Thomas Sjögren <konstruktoid@users.noreply.github.com>
+* Jindrich Skacel <102800748+jskacel@users.noreply.github.com>
+* Alexandre Skrzyniarz <alexandre.skrzyniarz@laposte.net>
+* Francisco Slavin <fslavin@tresys.com>
+* sluetze <13255307+sluetze@users.noreply.github.com>
+* Dave Smith <dsmith@eclipse.ncsc.mil>
+* David Smith <dsmith@fornax.eclipse.ncsc.mil>
+* Kevin Spargur <kspargur@redhat.com>
+* Kenneth Stailey <kstailey.lists@gmail.com>
+* Leland Steinke <leland.j.steinke.ctr@mail.mil>
+* Justin Stephenson <jstephen@redhat.com>
+* steven.y.gui <steven_ygui@163.com>
+* Brian Stinson <brian@bstinson.com>
+* Jake Stookey <jakestookey@gmail.com>
+* Nathan Strahs <135379779+nathanstrahs@users.noreply.github.com>
+* Jonathan Sturges <jsturges@redhat.com>
+* svet-se <svetlin.boychev@suse.com>
+* t0292887 <antonin.grepilloux@thalesgroup.com>
+* taimurhafeez <taimurhafeez93@gmail.com>
+* Kaushik Talathi <kaushik.talathi1@ibm.com>
+* teacup-on-rockingchair <315160+teacup-on-rockingchair@users.noreply.github.com>
+* Ian Tewksbury <itewk@redhat.com>
+* Philippe Thierry <phil@reseau-libre.net>
+* Simon THOBY <git@nightmared.fr>
+* Derek Thurston <thegrit@gmail.com>
+* tianzhenjia <jiatianzhen@cmss.chinamobile.com>
+* Greg Tinsley <gtinsley@redhat.com>
+* Paul Tittle <ptittle@cmf.nrl.navy.mil>
+* tom <tom@localhost.localdomain>
+* tomas.hudik <tomas.hudik@embedit.cz>
+* Tomatotech90 <morales.jonathand@outlook.com>
+* Jeb Trayer <jeb.d.trayer@uscg.mil>
+* TrilokGeer <tgeer@redhat.com>
+* Viktors Trubovics <viktors.trubovics@suse.com>
+* Nico Truzzolino <nico.truzzolino@gmx.de>
+* Brian Turek <brian.turek@gmail.com>
+* Matěj Týč <matyc@redhat.com>
+* Jörgen Uhr <jorgen.uhr@sitevision.se>
+* VadimDor <29509093+VadimDor@users.noreply.github.com>
+* Trevor Vaughan <tvaughan@onyxpoint.com>
+* vtrubovics <82443408+vtrubovics@users.noreply.github.com>
+* Sophia Wang <huiwang@redhat.com>
+* Samuel Warren <swarren@redhat.com>
+* wcushen <54533890+wcushen@users.noreply.github.com>
+* Shawn Wells <shawn@redhat.com>
+* Whidix <31294015+Whidix@users.noreply.github.com>
+* Daniel E. White <linuxdan@users.noreply.github.com>
+* Bernhard M. Wiedemann <bwiedemann@suse.de>
+* Roy Williams <roywilli@roywilli.redhat.com>
+* Willumpie <willumpie@xs4all.nl>
+* Rob Wilmoth <rwilmoth@redhat.com>
+* win97pro <win97pro@protonmail.com>
+* WolfAnto <73076854+WolfAnto@users.noreply.github.com>
+* Sam Wouters <231222691+swoutersup@users.noreply.github.com>
+* xcfxr <xucee@qq.com>
+* Lucas Yamanishi <lucas.yamanishi@onyxpoint.com>
+* Xirui Yang <xirui.yang@oracle.com>
+* Yuqing Yang <yyq01323329@alibaba-inc.com>
+* yarunachalam <yarunachalam@suse.com>
+* Guang Yee <guang.yee@suse.com>
+* Achilleas John Yfantis <ayfantis@redhat.com>
+* YiLin.Li <YiLin.Li@linux.alibaba.com>
+* yu410621 <lihuanyu410621@gmail.com>
+* Xiaojie Yuan <xiyuan@redhat.com>
+* yungcero <133906218+yungcero@users.noreply.github.com>
+* yunimoo <yunimoo@nekocake.cafe>
+* YuQing <yyq0391@163.com>
+* Guy Yur <guy.y@claroty.com>
+* zhaoyun <zhaoyun@kylinos.cn>
+* Kevin Zimmerman <kevin.zimmerman@kitware.com>
+* Luigi Mario Zuccarelli <luzuccar@redhat.com>
+* Jan Černý <jcerny@redhat.com>
+* Michal Šrubař <msrubar@redhat.com>

@@ -1,0 +1,37 @@
+- name: Test for existence /boot/grub2/grub.cfg in name of file_owner_grub2_cfg
+  stat:
+    path: /boot/grub2/grub.cfg
+  register: file_exists
+  when: ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+    - file_owner_grub2_cfg
+    - medium_severity
+    - configure_strategy
+    - low_complexity
+    - low_disruption
+    - no_reboot_needed
+    - CCE-26860-7
+    - NIST-800-53-AC-6(7)
+    - NIST-800-171-3.4.5
+    - PCI-DSS-Req-7.1
+    - CJIS-5.5.2.2
+
+- name: "Verify /boot/grub2/grub.cfg User Ownership: Ensure owner 0 on /boot/grub2/grub.cfg"
+  file:
+    path: /boot/grub2/grub.cfg
+    owner: 0
+  when:
+    - file_exists.stat.exists
+    - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+    - file_owner_grub2_cfg
+    - medium_severity
+    - configure_strategy
+    - low_complexity
+    - low_disruption
+    - no_reboot_needed
+    - CCE-26860-7
+    - NIST-800-53-AC-6(7)
+    - NIST-800-171-3.4.5
+    - PCI-DSS-Req-7.1
+    - CJIS-5.5.2.2

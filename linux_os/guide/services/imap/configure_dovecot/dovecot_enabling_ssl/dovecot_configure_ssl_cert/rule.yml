@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Configure Dovecot to Use the SSL Certificate file'
+
+description: |-
+    This option tells Dovecot where to find the mail server's SSL
+    Certificate.
+    <br /><br />
+    Edit <tt>/etc/dovecot/conf.d/10-ssl.conf</tt> and add or correct the
+    following line (<i>note: the path below is the default path set by the
+    Dovecot installation. If you are using a different path, ensure you
+    reference the appropriate file</i>):
+    <pre>ssl_cert = &lt;/etc/pki/dovecot/certs/dovecot.pem</pre>"
+
+rationale: |-
+    SSL certificates are used by the client to authenticate the identity of the
+    server, as well as to encrypt credentials and message traffic. Not using
+    SSL to encrypt mail server traffic could allow unauthorized access to
+    credentials and mail messages since they are sent in plain text over the
+    network.
+
+severity: unknown
+

@@ -1,0 +1,70 @@
+documentation_complete: true
+
+
+title: 'Configure Libreswan to use System Crypto Policy'
+
+description: |-
+    Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
+    Libreswan is supported by system crypto policy, but the Libreswan configuration may be
+    set up to ignore it.
+
+    To check that Crypto Policies settings are configured correctly, ensure that the <tt>/etc/ipsec.conf</tt>
+    includes the appropriate configuration file.
+    In <tt>/etc/ipsec.conf</tt>, make sure that the following line
+    is not commented out or superseded by later includes:
+    <tt>include /etc/crypto-policies/back-ends/libreswan.config</tt>
+
+rationale: |-
+    Overriding the system crypto policy makes the behavior of the Libreswan
+    service violate expectations, and makes system configuration more
+    fragmented.
+
+severity: high
+
+identifiers:
+    cce@rhcos4: CCE-82546-3
+    cce@rhel8: CCE-80937-6
+    cce@rhel9: CCE-83446-5
+    cce@rhel10: CCE-88687-9
+    cce@sle12: CCE-91637-9
+    cce@sle15: CCE-85791-2
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
+    nist: CM-6(a),MA-4(6),SC-13,SC-12(2),SC-12(3)
+    pcidss: Req-2.2
+    srg: SRG-OS-000033-GPOS-00014
+    stigid@ol8: OL08-00-010020,OL08-00-010186
+
+ocil_clause: |-
+    the "IPsec" service is active and the ipsec configuration file does not contain does not contain <tt>include /etc/crypto-policies/back-ends/libreswan.config</tt>
+
+ocil: |-
+    Verify that the IPsec service uses the system crypto policy.
+
+    If the IPsec service is not installed, this requirement is not applicable.
+
+    Check to see if the "IPsec" service is active with the following command:
+
+    $ systemctl status ipsec
+
+    ipsec.service - Internet Key Exchange (IKE) Protocol Daemon for IPsec
+    Loaded: loaded (/usr/lib/systemd/system/ipsec.service; disabled)
+    Active: inactive (dead)
+
+    If the "IPsec" service is active, check to see if it is using the system crypto policy with the following command:
+
+    $ sudo grep include /etc/ipsec.conf /etc/ipsec.d/*.conf
+
+    /etc/ipsec.conf:include /etc/crypto-policies/back-ends/libreswan.config
+
+
+fixtext: |-
+    Configure Libreswan to use the system cryptographic policy.
+
+    Add the following line to "/etc/ipsec.conf":
+    include /etc/crypto-policies/back-ends/libreswan.config
+
+srg_requirement: '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
+
+platform: system_with_kernel and package[libreswan]

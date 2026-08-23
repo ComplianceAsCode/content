@@ -1,0 +1,89 @@
+documentation_complete: true
+
+
+title: 'Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces'
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.rp_filter", value="1") }}}'
+
+rationale: |-
+    Enabling reverse path filtering drops packets with source addresses
+    that should not have been able to be received on the interface they were
+    received on. It should not be used on systems which are routers for
+    complicated networks, but is helpful for end hosts and routers serving small
+    networks.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82488-8
+    cce@rhel8: CCE-81021-8
+    cce@rhel9: CCE-84008-2
+    cce@rhel10: CCE-88689-5
+    cce@sle12: CCE-91533-0
+    cce@sle15: CCE-91218-8
+    cce@sle16: CCE-96435-3
+    cce@slmicro5: CCE-93992-6
+
+references:
+    cis-csc: 1,12,13,14,15,16,18,2,4,6,7,8,9
+    cis@sle12: 3.3.7
+    cis@sle15: 3.3.7
+    cobit5: APO01.06,APO13.01,BAI04.04,DSS01.03,DSS01.05,DSS03.01,DSS03.05,DSS05.02,DSS05.04,DSS05.07,DSS06.02
+    cui: 3.1.20
+    isa-62443-2009: 4.2.3.4,4.3.3.4,4.4.3.3
+    isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 6.2,SR 7.1,SR 7.2,SR 7.6'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.12.1.1,A.12.1.2,A.12.1.3,A.13.1.1,A.13.1.2,A.13.1.3,A.13.2.1,A.13.2.2,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.17.2.1,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nist: CM-7(a),CM-7(b),CM-6(a),SC-7(a)
+    nist-csf: DE.AE-1,DE.CM-1,ID.AM-3,PR.AC-5,PR.DS-4,PR.DS-5,PR.PT-4
+    pcidss: Req-1.4.3
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040611
+    stigid@ol8: OL08-00-040285
+
+ocil: |-
+    The runtime status of the <code>net.ipv4.conf.all.rp_filter</code> parameter can be queried
+    by running the following command:
+    <pre>$ sysctl net.ipv4.conf.all.rp_filter</pre>
+    The output of the command should indicate either:
+    <code>net.ipv4.conf.all.rp_filter = 1</code>
+    {{% if product not in ['ol9','rhel9'] %}}or:
+    <code>net.ipv4.conf.all.rp_filter = 2</code>
+    {{% endif %}}
+    The output of the command should not indicate:
+    <code>net.ipv4.conf.all.rp_filter = 0</code>
+
+    The preferable way how to assure the runtime compliance is to have
+    correct persistent configuration, and rebooting the system.
+
+    The persistent sysctl parameter configuration is performed by specifying the appropriate
+    assignment in any file located in the <pre>/etc/sysctl.d</pre> directory.
+    Verify that there is not any existing incorrect configuration by executing the following command:
+    <pre>$ grep -r '^\s*net.ipv4.conf.all.rp_filter\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
+    The command should not find any assignments other than:
+    net.ipv4.conf.all.rp_filter = 1
+    {{% if product not in ['ol9','rhel9'] %}}or:
+    net.ipv4.conf.all.rp_filter = 2
+    {{% endif %}}
+
+    Conflicting assignments are not allowed.
+
+ocil_clause: |-
+    the net.ipv4.conf.all.rp_filter is not set to {{% if product not in ['ol9','rhel9'] %}}1 or 2 or is configured to be 0{{% else %}}1 or is configured to be 0 or 2{{% endif %}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to use reverse path filtering on all IPv4 interfaces.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.all.rp_filter", value=xccdf_value("sysctl_net_ipv4_conf_all_rp_filter_value")) | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must use reverse path filtering on all IPv4 interfaces.'
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv4.conf.all.rp_filter
+        {{% if ('ol' in families or 'rhel' in product) and product not in ['ol9','rhel9'] %}}
+        sysctlval:
+        - '1'
+        - '2'
+        wrong_sysctlval_for_testing: "0"
+        {{% endif %}}
+        datatype: int

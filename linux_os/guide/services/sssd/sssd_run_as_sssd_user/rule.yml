@@ -1,0 +1,29 @@
+documentation_complete: true
+
+
+title: 'Configure SSSD to run as user sssd'
+
+description: |-
+    SSSD processes should be configured to run as user sssd, not root.
+
+rationale: |-
+    To minimize privileges of SSSD processes, they are configured to
+    run as non-root user.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82536-4
+    cce@rhel8: CCE-82072-0
+    cce@rhel10: CCE-88773-7
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that SSSD is configured to run as user sssd, run the following command:
+    <pre>$ sudo grep -r '\buser\b' /etc/sssd</pre>
+    If configured properly, output should similar to <pre>/etc/sssd/conf.d/ospp.conf:user = sssd</pre>.
+    Sanity of SSSD configuration in general can be checked using <pre>$ sudo sssctl config-check</pre>

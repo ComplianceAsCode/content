@@ -1,0 +1,58 @@
+documentation_complete: true
+
+
+title: 'Configure auditing of loading and unloading of kernel modules'
+
+{{% set file_contents_audit_module_load =
+"## These rules watch for kernel module insertion. By monitoring
+## the syscall, we do not need any watches on programs.
+-a always,exit -F arch=b32 -S init_module,finit_module -F key=module-load
+-a always,exit -F arch=b64 -S init_module,finit_module -F key=module-load
+-a always,exit -F arch=b32 -S delete_module -F key=module-unload
+-a always,exit -F arch=b64 -S delete_module -F key=module-unload" %}}
+
+description: |-
+    Ensure that loading and unloading of kernel modules is audited.
+
+    The following rules configure audit as described above:
+    <pre>{{{ file_contents_audit_module_load|indent }}}    </pre>
+
+    Load new Audit rules into kernel by running:
+    <pre>augenrules --load</pre>
+
+rationale: |-
+    Loading of a malicious kernel module introduces a risk to the system, as the module has access to sensitive data and perform actions at the operating system kernel level. Having such events audited helps in monitoring and investigating of malicious activities.
+
+severity: medium
+
+# on RHEL9+ there are rules which cover particular hardware architectures
+# so do not apply this rule but apply the specific one instead
+{{% if product in ["rhel9", "rhel10"] %}}
+platforms:
+    - not ppc64le_arch
+{{% endif %}}
+
+identifiers:
+    cce@rhel8: CCE-82838-4
+    cce@rhel9: CCE-90814-5
+    cce@rhel10: CCE-90674-3
+
+references:
+    nist: AU-2(a)
+    ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222,SRG-OS-000475-GPOS-00220
+
+ocil_clause: 'the file does not exist or the content differs'
+
+ocil: |-
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>cat /etc/audit/rules.d/43-module-load.rules</pre>
+    The output has to be exactly as follows:
+    <pre>{{{ file_contents_audit_module_load|indent }}}    </pre>
+
+template:
+    name: audit_file_contents
+    vars:
+        filepath: /etc/audit/rules.d/43-module-load.rules
+        contents: |-
+            {{{ file_contents_audit_module_load|indent(12) }}}

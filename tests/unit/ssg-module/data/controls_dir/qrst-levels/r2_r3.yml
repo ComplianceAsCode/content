@@ -1,0 +1,24 @@
+controls:
+    -   id: R2
+        title: Minimization of configuration
+        levels:
+            - medium
+        description: >-
+            The features configured at the level of launched services
+            should be limited to the strict minimum.
+        rationale: >-
+            Minimization of configuration helps to reduce attack surface.
+        automated: no
+        notes: >-
+            This is individual depending on the system workload
+            therefore needs to be audited manually.
+        related_rules:
+            - systemd_target_multi_user
+    -   id: R3
+        levels:
+            - medium
+        title: Enabling SELinux targeted Policy
+        description: >-
+            It is recommended to enable SELinux in enforcing mode
+            and to use the targeted policy.
+        automated: yes

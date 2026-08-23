@@ -1,0 +1,35 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{% if 'sle' in product or 'slmicro' in product %}}
+- name: "{{{ rule_title }}} - Ensure Zypper Removes Previous Package Versions"
+  community.general.ini_file:
+    dest: /etc/zypp/zypp.conf
+    section: main
+    option: solver.upgradeRemoveDroppedPackages
+    value: true
+    create: False
+{{% elif 'ubuntu' in product %}}
+- name: "{{{ rule_title }}} - Ensure Apt Removes Previous Package Versions"
+  ansible.builtin.lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: ^(\/\/)?\\s*{{ item }}.*$
+    line: '{{ item }} "true";'
+    create: true
+    mode: 0644
+  with_items:
+  - Unattended-Upgrade::Remove-Unused-Dependencies
+  - Unattended-Upgrade::Remove-Unused-Kernel-Packages
+{{% else %}}
+- name: "{{{ rule_title }}} - Ensure {{{ pkg_manager | upper }}} Removes Previous Package Versions"
+  ansible.builtin.lineinfile:
+    dest: {{{ pkg_manager_config_file }}}
+    regexp: ^#?clean_requirements_on_remove
+    line: clean_requirements_on_remove=1
+    insertafter: '\[main\]'
+    create: yes
+    mode: 0644
+{{% endif %}}

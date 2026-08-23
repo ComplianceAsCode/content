@@ -1,0 +1,58 @@
+documentation_complete: true
+
+
+title: 'Enable the NTP Daemon'
+
+description: |-
+    {{{ describe_service_enable(service="ntpd") }}}
+
+rationale: |-
+    Enabling the <tt>ntpd</tt> service ensures that the <tt>ntpd</tt>
+    service will be running and that the system will synchronize its time to
+    any servers specified. This is important whether the system is configured to be
+    a client (and synchronize only its own clock) or it is also acting as an NTP
+    server to other systems.  Synchronizing time is essential for authentication
+    services such as Kerberos, but it is also important for maintaining accurate
+    logs and auditing possible security breaches.
+    <br /><br />
+    The NTP daemon offers all of the functionality of <tt>ntpdate</tt>, which is now
+    deprecated.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86486-8
+    cce@rhel9: CCE-87863-7
+    cce@sle12: CCE-91658-5
+    cce@sle15: CCE-91295-6
+
+references:
+    cis-csc: 1,14,15,16,3,5,6
+    cis@sle12: 2.2.1.4
+    cobit5: APO11.04,BAI03.05,DSS05.04,DSS05.07,MEA02.01
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9'
+    iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1
+    nist: CM-6(a),AU-8(1)(a)
+    nist-csf: PR.PT-1
+    pcidss: Req-10.4
+
+ocil: |-
+    {{{ ocil_service_enabled(service="ntpd") }}}
+
+template:
+    name: service_enabled
+    vars:
+        servicename: ntpd
+        servicename@debian13: ntpsec
+        packagename: ntp
+        packagename@debian13: ntpsec
+
+platform: package[ntp]
+
+{{% if product in ["rhel8", "rhel9", "sle15"] %}}
+warnings:
+    - general:
+        The <pre>ntp</pre> package is not available in {{{ full_name }}}. Please
+        consider the <pre>chrony</pre> package instead together with the respective <pre>service_chronyd_enabled</pre> rule.
+{{% endif %}}

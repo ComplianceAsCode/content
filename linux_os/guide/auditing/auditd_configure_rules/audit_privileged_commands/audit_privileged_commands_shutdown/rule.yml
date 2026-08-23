@@ -1,0 +1,34 @@
+{{%- if 'sle' not in product %}}
+  {{%- set path="/usr/sbin" %}}
+{{%- else %}}
+  {{%- set path="/sbin" %}}
+{{%- endif %}}
+
+documentation_complete: true
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - shutdown'
+
+description: |-
+    {{{ describe_arpc(path + "/shutdown") }}}
+
+rationale:
+    Misuse of the shutdown command may cause availability issues for the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-85959-5
+    cce@rhel10: CCE-88922-0
+
+references:
+    nist: AU-12(c)
+    srg: SRG-OS-000477-GPOS-00222
+
+{{{ ocil_fix_srg_privileged_command("shutdown","{{{ path }}}/") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/sbin/shutdown
+        path@sle12: /sbin/shutdown
+        path@sle15: /sbin/shutdown

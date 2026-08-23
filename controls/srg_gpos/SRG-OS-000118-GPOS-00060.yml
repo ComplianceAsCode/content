@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000118-GPOS-00060
+        levels:
+            - medium
+        title: {{{ full_name }}} must disable account identifiers (individuals, groups,
+            roles, and devices) after 35 days of inactivity.
+        rules:
+            - account_disable_post_pw_expiration
+        status: automated

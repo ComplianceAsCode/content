@@ -1,0 +1,25 @@
+controls:
+- id: SRG-APP-000431-CTR-001065
+  levels:
+  - medium
+  title: {{{ full_name }}} runtime must maintain separate execution domains for
+    each container by assigning each container a separate address space.
+  status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html#rbac-default-projects_using-rbac
+    https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
+    https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html#examining-a-security-context-constraints-object_configuring-internal-oauth
+  status_justification: |-
+    The control is met because SELinux and namespaces are enabled by default.
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html#rbac-default-projects_using-rbac
+    https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
+    https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html#examining-a-security-context-constraints-object_configuring-internal-oauth
+    - OpenShift comes with a number of default projects, and projects starting with `openshift-` are considered essential to users. Resources in OpenShift should be segregated by project, to allow for security controls to be applied at that level and to make it easier to manage resources. Review projects to ensure that only system managed resources belong in default projects.
+    oc project < project-name > && oc get all
+    - By default, OpenShift also sets a SCC for all authenticated users. Specifically, it sets the restricted SCC by default, which denies access to all host features and requires pods to be run with a UID and SELinux context that are allocated to the project. 
+    To get all SCC's:
+      oc get scc
+    To describe an SCC, including which users, service accounts, and groups SCC is applied to:
+      oc describe scc <scc-name>

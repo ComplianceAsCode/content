@@ -1,0 +1,32 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_accounts_user_umask") }}}
+
+- name: Check if umask in /etc/csh.cshrc is already set
+  ansible.builtin.lineinfile:
+    path: /etc/csh.cshrc
+    regexp: ^(\s*)umask\s+.*
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: umask_replace
+
+- name: Replace user umask in /etc/csh.cshrc
+  ansible.builtin.replace:
+    path: /etc/csh.cshrc
+    regexp: ^(\s*)umask(\s+).*
+    replace: \g<1>umask\g<2>{{ var_accounts_user_umask }}
+  when:
+  - umask_replace.found > 0
+
+- name: Ensure the Default umask is Appended Correctly
+  ansible.builtin.lineinfile:
+    create: true
+    path: /etc/csh.cshrc
+    line: umask {{ var_accounts_user_umask }}
+    mode: 0644
+  when:
+    - umask_replace.found == 0

@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000480-GPOS-00226
+        levels:
+            - medium
+        title: {{{ full_name }}} must enforce a delay of at least 4 seconds between logon
+            prompts following a failed logon attempt.
+        rules:
+            - accounts_logon_fail_delay
+            - var_accounts_fail_delay=4
+        status: automated

@@ -1,0 +1,61 @@
+documentation_complete: true
+
+
+title: 'All Interactive Users Home Directories Must Exist'
+
+description: |-
+    Create home directories to all local interactive users that currently do not
+    have a home directory assigned. Use the following commands to create the user
+    home directory assigned in <tt>/etc/passwd</tt>:
+    <pre>$ sudo mkdir /home/<i>USER</i></pre>
+
+rationale: |-
+    If a local interactive user has a home directory defined that does not exist,
+    the user may be given access to the / directory as the current working directory
+    upon logon. This could create a Denial of Service because the user would not be
+    able to access their logon configuration files, and it may give them visibility
+    to system files they normally would not be able to access.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83424-2
+    cce@rhel9: CCE-83639-5
+    cce@rhel10: CCE-86659-0
+    cce@sle12: CCE-83074-5
+    cce@sle15: CCE-85628-6
+    cce@slmicro5: CCE-93746-6
+    cce@slmicro6: CCE-95056-8
+
+references:
+    cis@sle12: 6.2.5
+    cis@sle15: 6.2.5
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020620
+    stigid@ol8: OL08-00-010750
+    stigid@sle12: SLES-12-010730
+
+ocil_clause: 'users home directory does not exist'
+
+ocil: |-
+    Verify the assigned home directories of all interactive users on the system exist with the following command:
+
+    <pre>$ sudo pwck -r
+
+    user 'mailnull': directory 'var/spool/mqueue' does not exist</pre>
+
+    The output should not return any interactive users.
+
+fixtext: |-
+    Create home directories to all local interactive users that currently do not have a home directory assigned. Use the following commands to create the user home directory assigned in "/etc/passwd":
+
+    Note: The example will be for the user smithj, who has a home directory of "/home/smithj", a UID of "smithj", and a Group Identifier (GID) of "users assigned" in "/etc/passwd".
+
+    $ sudo mkdir /home/smithj
+    $ sudo chown smithj /home/smithj
+    $ sudo chgrp users /home/smithj
+    $ sudo chmod 0750 /home/smithj
+
+srg_requirement: 'All {{{ full_name }}} local interactive user home directories defined in the /etc/passwd file must exist.'
+
+platform: system_with_kernel

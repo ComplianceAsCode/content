@@ -1,0 +1,57 @@
+documentation_complete: true
+
+
+title: 'Mount Remote Filesystems with noexec'
+
+description: '{{{ describe_mount(option="noexec", part="any NFS mounts") }}}'
+
+rationale: |-
+    The noexec mount option causes the system not to execute binary files. This option must be used
+    for mounting any file system not containing approved binary files as they may be incompatible. Executing
+    files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized
+    administrative access.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84050-4
+    cce@rhel9: CCE-84246-8
+    cce@rhel10: CCE-86463-7
+    cce@sle12: CCE-83103-2
+    cce@sle15: CCE-85636-9
+    cce@slmicro5: CCE-93794-6
+
+references:
+    cis-csc: 12,13,14,15,16,18,3,5
+    cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
+    isa-62443-2009: 4.3.3.7.3
+    isa-62443-2013: 'SR 2.1,SR 5.2'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nist: AC-6,AC-6(8),AC-6(10),CM-6(a)
+    nist-csf: PR.AC-4,PR.DS-5
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-021021
+    stigid@ol8: OL08-00-010630
+    stigid@sle12: SLES-12-010820
+
+ocil_clause: 'the setting does not show'
+
+ocil: |-
+    To verify the <tt>noexec</tt> option is configured for all NFS mounts, run the following command:
+    <pre>$ mount | grep nfs</pre>
+    All NFS mounts should show the <tt>noexec</tt> setting in parentheses.  This is not applicable if NFS is
+    not implemented.
+
+fixtext: 'Configure the "/etc/fstab" to use the "noexec" option on file systems that are being imported via NFS.'
+
+srg_requirement: '{{{ full_name }}} must prevent code from being executed on file systems that are imported via Network File System (NFS).'
+
+
+template:
+    name: mount_option_remote_filesystems
+    vars:
+        mount_has_to_exist: 'yes'
+        mountoption: noexec
+        mountpoint: remote_filesystems
+
+platform: nfs_mount_defined

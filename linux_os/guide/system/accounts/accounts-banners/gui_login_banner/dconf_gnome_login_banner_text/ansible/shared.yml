@@ -1,0 +1,53 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+{{{ ansible_instantiate_variables("dconf_login_banner_contents") }}}
+
+- name: "{{{ rule_title }}}"
+  ansible.builtin.file:
+    path: "/etc/dconf/db/{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  with_items:
+    - "{{{ dconf_gdm_dir }}}"
+    - "{{{ dconf_gdm_dir }}}/locks"
+
+- name: "{{{ rule_title }}}"
+  ansible.builtin.file:
+    path: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+    state: touch
+  with_items:
+    - 00-security-settings
+    - locks/00-security-settings-lock
+
+- name: "{{{ rule_title }}}"
+  community.general.ini_file:
+    dest: /etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings
+    section: org/gnome/login-screen
+    option: banner-message-text
+    value: '''{{ dconf_login_banner_contents }}'''
+    create: yes
+    no_extra_spaces: yes
+    mode: 0644
+  register: result_ini
+
+- name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
+  ansible.builtin.lineinfile:
+    path: '/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock'
+    regexp: '^/org/gnome/login-screen/banner-message-text$'
+    line: '/org/gnome/login-screen/banner-message-text'
+    create: yes
+    state: present
+    mode: 0644
+  register: result_lineinfile
+
+- name: Dconf Update
+  ansible.builtin.command: dconf update
+  when: result_ini is changed or result_lineinfile is changed

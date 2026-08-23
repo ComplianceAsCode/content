@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer & Gap Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #24292e;
+            background: #f6f8fa;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 250px 300px 1fr;
+            grid-template-rows: 60px 1fr;
+            height: 100vh;
+            gap: 0;
+        }
+
+        header {
+            grid-column: 1 / -1;
+            background: #24292e;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .product-selector {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .product-selector select {
+            padding: 6px 12px;
+            border: 1px solid #444;
+            background: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0;
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .view-toggle-btn {
+            padding: 6px 16px;
+            border: none;
+            background: #fff;
+            color: #586069;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-right: 1px solid #e1e4e8;
+        }
+
+        .view-toggle-btn:last-child {
+            border-right: none;
+        }
+
+        .view-toggle-btn:hover {
+            background: #f6f8fa;
+        }
+
+        .view-toggle-btn.active {
+            background: #0366d6;
+            color: white;
+        }
+
+        .sidebar {
+            background: #fff;
+            border-right: 1px solid #e1e4e8;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #586069;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-group {
+            margin-bottom: 10px;
+        }
+
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .filter-group label:hover {
+            background: #f6f8fa;
+        }
+
+        .filter-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .filter-group input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .badge-automated { background: #28a745; color: white; }
+        .badge-manual { background: #0366d6; color: white; }
+        .badge-pending { background: #ffd33d; color: #24292e; }
+        .badge-low { background: #dbedff; color: #0366d6; }
+        .badge-moderate { background: #fff3cd; color: #856404; }
+        .badge-high { background: #f8d7da; color: #721c24; }
+
+        .search-box {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #0366d6;
+            box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
+        }
+
+        .controls-list {
+            background: #fff;
+            border-right: 1px solid #e1e4e8;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .control-item {
+            padding: 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .control-item:hover {
+            border-color: #0366d6;
+            box-shadow: 0 2px 8px rgba(3, 102, 214, 0.1);
+        }
+
+        .control-item.active {
+            border-color: #0366d6;
+            background: #f1f8ff;
+        }
+
+        .control-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .control-id {
+            font-weight: 600;
+            color: #0366d6;
+            text-transform: uppercase;
+        }
+
+        .control-title {
+            font-size: 13px;
+            color: #586069;
+            margin-bottom: 6px;
+        }
+
+        .control-meta {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .detail-panel {
+            background: #fff;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .detail-panel h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #24292e;
+        }
+
+        .detail-panel h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 25px 0 10px 0;
+            color: #24292e;
+            border-bottom: 1px solid #e1e4e8;
+            padding-bottom: 8px;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section p {
+            line-height: 1.6;
+            color: #586069;
+        }
+
+        .rule-list {
+            list-style: none;
+            margin: 10px 0;
+        }
+
+        .rule-list li {
+            padding: 8px 12px;
+            background: #f6f8fa;
+            border-left: 3px solid #0366d6;
+            margin-bottom: 6px;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 13px;
+        }
+
+        .related-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .related-control {
+            padding: 4px 10px;
+            background: #f1f8ff;
+            border: 1px solid #c8e1ff;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #0366d6;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .related-control:hover {
+            background: #c8e1ff;
+        }
+
+        .todo-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fffbdd;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+        }
+
+        .todo-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .todo-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 4px;
+        }
+
+        .todo-input button {
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .todo-input button:hover {
+            background: #0256c7;
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .todo-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .todo-item.completed {
+            text-decoration: line-through;
+            color: #586069;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 600;
+            color: #0366d6;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #586069;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: #e1e4e8;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #34d058);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #586069;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .parameter {
+            padding: 10px;
+            background: #f6f8fa;
+            border-left: 3px solid #ffd33d;
+            margin: 8px 0;
+            border-radius: 3px;
+        }
+
+        .parameter-label {
+            font-weight: 600;
+            color: #24292e;
+            margin-bottom: 4px;
+        }
+
+        .gap-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .gap-none { background: #28a745; }
+        .gap-partial { background: #ffd33d; }
+        .gap-full { background: #d73a49; }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 200px 250px 1fr;
+            }
+        }
+
+        .dashboard-view {
+            grid-column: 1 / -1;
+            background: #fff;
+            overflow-y: auto;
+            padding: 30px;
+            display: none;
+        }
+
+        .dashboard-view.active {
+            display: block;
+        }
+
+        .controls-view {
+            display: contents;
+        }
+
+        .controls-view.hidden {
+            display: none;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .dashboard-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #586069;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            height: 200px;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(180deg, #0366d6, #044289);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #586069;
+            white-space: nowrap;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: 600;
+            color: #24292e;
+        }
+
+        .pie-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .comparison-table th {
+            font-weight: 600;
+            color: #24292e;
+            background: #f6f8fa;
+        }
+
+        .comparison-table tr:hover {
+            background: #f6f8fa;
+        }
+
+        .gap-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .gap-item {
+            padding: 10px;
+            border-left: 3px solid #d73a49;
+            background: #ffeef0;
+            margin-bottom: 8px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+
+        .gap-item-id {
+            font-weight: 600;
+            color: #d73a49;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px auto;
+            }
+
+            .sidebar, .controls-list {
+                display: none;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NIST 800-53 Control Viewer & Gap Analysis</h1>
+            <div class="product-selector">
+                <div class="view-toggle">
+                    <button class="view-toggle-btn active" data-view="dashboard">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: text-bottom; margin-right: 4px;">
+                            <path d="M1.75 0h12.5C15.216 0 16 .784 16 1.75v3.585a2.746 2.746 0 0 1-1.5 2.449v.001a2.75 2.75 0 0 1-2.75 2.75h-.5a2.75 2.75 0 0 1-2.75-2.75v-.001a2.746 2.746 0 0 1-1.5-2.449V1.75C7 .784 7.784 0 8.75 0h5.5ZM1.75 1.5a.25.25 0 0 0-.25.25v3.585c0 .71.42 1.319 1.024 1.603A2.75 2.75 0 0 1 5.25 4.75V1.75a.25.25 0 0 0-.25-.25h-3.25ZM7 7v5.585A1.254 1.254 0 0 0 5.75 14a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5 1.254 1.254 0 0 0-1.25-1.415V7h-2Z"/>
+                        </svg>
+                        Dashboard
+                    </button>
+                    <button class="view-toggle-btn" data-view="controls">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: text-bottom; margin-right: 4px;">
+                            <path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25V1.75zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25H1.75zM3.5 3.75a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75zm.75 3.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7zm0 3.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7z"/>
+                        </svg>
+                        Controls
+                    </button>
+                </div>
+                <label for="product-select">Product:</label>
+                <select id="product-select">
+                    <option value="rhel8">RHEL 8</option>
+                    <option value="rhel9" selected>RHEL 9</option>
+                    <option value="rhel10">RHEL 10</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="dashboard-view" id="dashboard-view">
+            <!-- Dashboard content will be rendered here by JavaScript -->
+        </div>
+
+        <div class="controls-view">
+        <div class="sidebar">
+            <input type="text" class="search-box" id="search-box" placeholder="Search controls...">
+
+            <div class="filter-section">
+                <h2>Families</h2>
+                <div class="filter-group">
+                    <label style="font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 8px; margin-bottom: 8px;">
+                        <input type="checkbox" id="family-select-all" checked> Select All
+                    </label>
+                </div>
+                <div id="family-filters"></div>
+            </div>
+
+            <div class="filter-section">
+                <h2>Baseline Levels</h2>
+                <div class="filter-group">
+                    <label style="font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 8px; margin-bottom: 8px;">
+                        <input type="checkbox" id="level-select-all" checked> Select All
+                    </label>
+                </div>
+                <div id="level-filters">
+                    <div class="filter-group">
+                        <label><input type="checkbox" value="low" checked> Low</label>
+                    </div>
+                    <div class="filter-group">
+                        <label><input type="checkbox" value="moderate" checked> Moderate</label>
+                    </div>
+                    <div class="filter-group">
+                        <label><input type="checkbox" value="high" checked> High</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h2>Status</h2>
+                <div class="filter-group">
+                    <label style="font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 8px; margin-bottom: 8px;">
+                        <input type="checkbox" id="status-select-all" checked> Select All
+                    </label>
+                </div>
+                <div id="status-filters">
+                    <div class="filter-group">
+                        <label><input type="checkbox" value="automated" checked> <span class="badge badge-automated">Automated</span></label>
+                    </div>
+                    <div class="filter-group">
+                        <label><input type="checkbox" value="manual" checked> <span class="badge badge-manual">Manual</span></label>
+                    </div>
+                    <div class="filter-group">
+                        <label><input type="checkbox" value="pending" checked> <span class="badge badge-pending">Pending</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h2>Gap Analysis</h2>
+                <div class="filter-group">
+                    <label style="font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 8px; margin-bottom: 8px;">
+                        <input type="checkbox" id="gap-select-all" checked> Select All
+                    </label>
+                </div>
+                <div id="gap-filters">
+                    <div class="filter-group">
+                        <label><input type="checkbox" value="with-rules" checked> With Rules</label>
+                    </div>
+                    <div class="filter-group">
+                        <label><input type="checkbox" value="without-rules" checked> Without Rules <span class="badge badge-pending" id="gaps-count">0</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-list" id="controls-list">
+            <div class="stats-grid" id="stats-grid"></div>
+            <div id="controls-container"></div>
+        </div>
+
+        <div class="detail-panel" id="detail-panel">
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h3>Select a control to view details</h3>
+                <p>Choose a control from the list to see its description, rules, and OSCAL metadata</p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+        // Global state
+        let appState = {
+            data: null,
+            currentProduct: 'rhel9',
+            currentControl: null,
+            filters: {
+                search: '',
+                families: new Set(),
+                levels: new Set(['low', 'moderate', 'high']),
+                statuses: new Set(['automated', 'manual', 'pending']),
+                gaps: new Set(['with-rules', 'without-rules'])
+            },
+            todos: JSON.parse(localStorage.getItem('nist-todos') || '{}')
+        };
+
+        // Load data
+        async function loadData() {
+            try {
+                // Use embedded data (for local file:// access)
+                if (typeof EMBEDDED_DATA !== 'undefined') {
+                    appState.data = EMBEDDED_DATA;
+                    initializeApp();
+                } else {
+                    // Fallback to fetching JSON (for development)
+                    const response = await fetch('nist-controls-data.json');
+                    appState.data = await response.json();
+                    initializeApp();
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                const errorPanel = document.getElementById('detail-panel') || document.getElementById('dashboard-view');
+                if (errorPanel) {
+                    errorPanel.innerHTML = '<div class="empty-state"><h3>Error loading data</h3><p>Failed to load NIST control data. Please regenerate the viewer.</p></div>';
+                }
+            }
+        }
+
+        // Initialize app
+        function initializeApp() {
+            renderFamilyFilters();
+            renderStats();
+            renderControls();
+            renderDashboard();
+            setupEventListeners();
+            showDashboard(); // Show dashboard by default
+        }
+
+        // Toggle between dashboard and controls view
+        function showDashboard() {
+            document.getElementById('dashboard-view').classList.add('active');
+            document.querySelector('.controls-view').classList.add('hidden');
+        }
+
+        function showControls() {
+            document.getElementById('dashboard-view').classList.remove('active');
+            document.querySelector('.controls-view').classList.remove('hidden');
+        }
+
+        // Render family filters
+        function renderFamilyFilters() {
+            const container = document.getElementById('family-filters');
+            appState.data.families.forEach(family => {
+                const div = document.createElement('div');
+                div.className = 'filter-group';
+                div.innerHTML = `
+                    <label>
+                        <input type="checkbox" value="${family.id}" checked>
+                        ${family.name}
+                    </label>
+                `;
+                container.appendChild(div);
+                appState.filters.families.add(family.id);
+            });
+        }
+
+        // Render statistics
+        function renderStats() {
+            const stats = appState.data.statistics[appState.currentProduct];
+            if (!stats) return;
+
+            const container = document.getElementById('stats-grid');
+            const percentage = Math.round((stats.automated / stats.total) * 100);
+
+            container.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${stats.total}</div>
+                    <div class="stat-label">Total Controls</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.automated}</div>
+                    <div class="stat-label">Automated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.pending}</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${percentage}%</div>
+                    <div class="stat-label">Coverage</div>
+                </div>
+            `;
+
+            // Update gaps count
+            document.getElementById('gaps-count').textContent = stats.without_rules;
+        }
+
+        // Filter controls
+        function getFilteredControls() {
+            const productData = appState.data.products[appState.currentProduct];
+            if (!productData) return [];
+
+            return productData.controls.filter(control => {
+                // Search filter
+                if (appState.filters.search) {
+                    const searchLower = appState.filters.search.toLowerCase();
+                    const matches =
+                        control.id.toLowerCase().includes(searchLower) ||
+                        control.title.toLowerCase().includes(searchLower) ||
+                        (control.description && control.description.toLowerCase().includes(searchLower));
+                    if (!matches) return false;
+                }
+
+                // Family filter
+                const family = control.id.split('-')[0];
+                if (!appState.filters.families.has(family)) return false;
+
+                // Level filter
+                const hasMatchingLevel = control.levels.some(level =>
+                    appState.filters.levels.has(level)
+                );
+                if (!hasMatchingLevel && control.levels.length > 0) return false;
+
+                // Status filter
+                if (control.is_automated && !appState.filters.statuses.has('automated')) return false;
+                if (control.is_manual && !appState.filters.statuses.has('manual')) return false;
+                if (control.is_pending && !appState.filters.statuses.has('pending')) return false;
+
+                // Gap filter
+                if (control.has_rules && !appState.filters.gaps.has('with-rules')) return false;
+                if (!control.has_rules && !appState.filters.gaps.has('without-rules')) return false;
+
+                return true;
+            });
+        }
+
+        // Render controls list
+        function renderControls() {
+            const container = document.getElementById('controls-container');
+            const controls = getFilteredControls();
+
+            if (controls.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No controls match the current filters</p></div>';
+                return;
+            }
+
+            container.innerHTML = controls.map(control => {
+                const statusBadge = control.is_automated ? 'automated' :
+                                   control.is_manual ? 'manual' : 'pending';
+                const gapClass = control.has_rules ? 'gap-none' : 'gap-full';
+
+                return `
+                    <div class="control-item ${appState.currentControl?.id === control.id ? 'active' : ''}"
+                         data-control-id="${control.id}">
+                        <div class="control-item-header">
+                            <span class="control-id">${control.id}</span>
+                            <span class="gap-indicator ${gapClass}"></span>
+                        </div>
+                        <div class="control-title">${control.title}</div>
+                        <div class="control-meta">
+                            <span class="badge badge-${statusBadge}">${statusBadge}</span>
+                            ${control.levels.map(l => `<span class="badge badge-${l}">${l}</span>`).join('')}
+                            ${!control.has_rules ? '<span class="badge badge-pending">No Rules</span>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click listeners
+            container.querySelectorAll('.control-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const controlId = item.dataset.controlId;
+                    const control = controls.find(c => c.id === controlId);
+                    selectControl(control);
+                });
+            });
+        }
+
+        // Select and display control
+        function selectControl(control) {
+            appState.currentControl = control;
+            renderControls(); // Re-render to update active state
+            renderControlDetail(control);
+        }
+
+        // Render control detail
+        function renderControlDetail(control) {
+            const panel = document.getElementById('detail-panel');
+            const todos = appState.todos[control.id] || [];
+
+            panel.innerHTML = `
+                <h2>${control.id.toUpperCase()}: ${control.title}</h2>
+
+                ${control.description ? `
+                    <div class="detail-section">
+                        <h3>Description</h3>
+                        <p>${control.description}</p>
+                    </div>
+                ` : ''}
+
+                ${control.guidance ? `
+                    <div class="detail-section">
+                        <h3>Guidance</h3>
+                        <p>${control.guidance}</p>
+                    </div>
+                ` : ''}
+
+                ${control.parameters && control.parameters.length > 0 ? `
+                    <div class="detail-section">
+                        <h3>Parameters (Organization-Defined)</h3>
+                        ${control.parameters.map(param => `
+                            <div class="parameter">
+                                <div class="parameter-label">${param.id || param.label}</div>
+                                <div>${param.select?.choice || param.guidelines?.[0]?.prose || 'See NIST guidance'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+
+                <div class="detail-section">
+                    <h3>Implementation Status</h3>
+                    <p><strong>Status:</strong> <span class="badge badge-${control.is_automated ? 'automated' : control.is_manual ? 'manual' : 'pending'}">${control.status}</span></p>
+                    <p><strong>Baseline Levels:</strong> ${control.levels.join(', ') || 'None'}</p>
+                    <p><strong>Has Rules:</strong> ${control.has_rules ? '✓ Yes' : '✗ No (Gap)'}</p>
+                </div>
+
+                ${control.rules && control.rules.length > 0 ? `
+                    <div class="detail-section">
+                        <h3>Rules (${control.rules.length})</h3>
+                        <ul class="rule-list">
+                            ${control.rules.map(rule => `<li>${rule}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : `
+                    <div class="detail-section">
+                        <h3>Rules</h3>
+                        <p style="color: #d73a49; font-weight: 600;">⚠ No rules defined (Gap)</p>
+                    </div>
+                `}
+
+                ${control.related_controls && control.related_controls.length > 0 ? `
+                    <div class="detail-section">
+                        <h3>Related Controls</h3>
+                        <div class="related-controls">
+                            ${control.related_controls.map(rel =>
+                                `<span class="related-control" onclick="jumpToControl('${rel}')">${rel}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div class="todo-section">
+                    <h3>TODO / Backlog Items</h3>
+                    <div class="todo-input">
+                        <input type="text" id="todo-input" placeholder="Add a TODO item for this control...">
+                        <button onclick="addTodo('${control.id}')">Add</button>
+                    </div>
+                    <ul class="todo-list">
+                        ${todos.map((todo, idx) => `
+                            <li class="todo-item ${todo.completed ? 'completed' : ''}">
+                                <input type="checkbox" ${todo.completed ? 'checked' : ''}
+                                       onchange="toggleTodo('${control.id}', ${idx})">
+                                <span>${todo.text}</span>
+                                <button onclick="deleteTodo('${control.id}', ${idx})" style="margin-left: auto; background: #d73a49; padding: 4px 8px; border: none; color: white; border-radius: 3px; cursor: pointer;">Delete</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        // TODO functions
+        function addTodo(controlId) {
+            const input = document.getElementById('todo-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            if (!appState.todos[controlId]) {
+                appState.todos[controlId] = [];
+            }
+
+            appState.todos[controlId].push({
+                text: text,
+                completed: false,
+                created: new Date().toISOString()
+            });
+
+            saveTodos();
+            input.value = '';
+            renderControlDetail(appState.currentControl);
+        }
+
+        function toggleTodo(controlId, index) {
+            appState.todos[controlId][index].completed = !appState.todos[controlId][index].completed;
+            saveTodos();
+        }
+
+        function deleteTodo(controlId, index) {
+            appState.todos[controlId].splice(index, 1);
+            saveTodos();
+            renderControlDetail(appState.currentControl);
+        }
+
+        function saveTodos() {
+            localStorage.setItem('nist-todos', JSON.stringify(appState.todos));
+        }
+
+        function jumpToControl(controlId) {
+            const productData = appState.data.products[appState.currentProduct];
+            const control = productData.controls.find(c => c.id === controlId.toLowerCase());
+            if (control) {
+                selectControl(control);
+                document.getElementById('controls-list').scrollTop = 0;
+            }
+        }
+
+        // Render dashboard
+        function renderDashboard() {
+            const container = document.getElementById('dashboard-view');
+            const stats = appState.data.statistics[appState.currentProduct];
+            const productData = appState.data.products[appState.currentProduct];
+
+            if (!stats || !productData) return;
+
+            // Calculate coverage percentages
+            const automatedPercent = Math.round((stats.automated / stats.total) * 100);
+            const manualPercent = Math.round((stats.manual / stats.total) * 100);
+            const pendingPercent = Math.round((stats.pending / stats.total) * 100);
+            const gapPercent = Math.round((stats.without_rules / stats.total) * 100);
+
+            // Get gaps (controls without rules)
+            const gaps = productData.controls.filter(c => !c.has_rules).slice(0, 20);
+
+            // Calculate family statistics
+            const familyStats = {};
+            appState.data.families.forEach(family => {
+                familyStats[family.id] = {
+                    name: family.name,
+                    total: 0,
+                    automated: 0,
+                    manual: 0,
+                    pending: 0
+                };
+            });
+
+            productData.controls.forEach(control => {
+                const family = control.id.split('-')[0];
+                if (familyStats[family]) {
+                    familyStats[family].total++;
+                    if (control.is_automated) familyStats[family].automated++;
+                    if (control.is_manual) familyStats[family].manual++;
+                    if (control.is_pending) familyStats[family].pending++;
+                }
+            });
+
+            // Calculate baseline level statistics
+            const levelStats = {
+                low: 0,
+                moderate: 0,
+                high: 0
+            };
+
+            productData.controls.forEach(control => {
+                control.levels.forEach(level => {
+                    if (levelStats[level] !== undefined) {
+                        levelStats[level]++;
+                    }
+                });
+            });
+
+            container.innerHTML = `
+                <h2>NIST 800-53 Dashboard - ${appState.currentProduct.toUpperCase()}</h2>
+
+                <div class="dashboard-grid">
+                    <!-- Overall Statistics -->
+                    <div class="dashboard-card" style="grid-column: span 2;">
+                        <h3>Overall Coverage</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">${stats.total}</div>
+                                <div class="stat-label">Total Controls</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: #28a745;">${stats.automated}</div>
+                                <div class="stat-label">Automated (${automatedPercent}%)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: #0366d6;">${stats.manual}</div>
+                                <div class="stat-label">Manual (${manualPercent}%)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: #ffd33d;">${stats.pending}</div>
+                                <div class="stat-label">Pending (${pendingPercent}%)</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${automatedPercent}%;">
+                                ${automatedPercent}% Complete
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gap Analysis -->
+                    <div class="dashboard-card">
+                        <h3>Gap Analysis</h3>
+                        <div class="stat-card" style="margin: 20px 0;">
+                            <div class="stat-value" style="color: #d73a49;">${stats.without_rules}</div>
+                            <div class="stat-label">Controls Without Rules (${gapPercent}%)</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${100 - gapPercent}%; background: linear-gradient(90deg, #d73a49, #cb2431);">
+                                ${100 - gapPercent}% Covered
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; font-size: 13px; color: #586069;">
+                            ${stats.with_rules} controls have implemented rules.
+                            ${stats.without_rules} controls need rule implementation.
+                        </p>
+                    </div>
+
+                    <!-- Product Comparison -->
+                    <div class="dashboard-card" style="grid-column: span 3;">
+                        <h3>Product Comparison</h3>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Total</th>
+                                    <th>Automated</th>
+                                    <th>Manual</th>
+                                    <th>Pending</th>
+                                    <th>Coverage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${['rhel8', 'rhel9', 'rhel10'].map(prod => {
+                                    const s = appState.data.statistics[prod];
+                                    const coverage = Math.round((s.automated / s.total) * 100);
+                                    return `
+                                        <tr style="${prod === appState.currentProduct ? 'font-weight: 600; background: #f1f8ff;' : ''}">
+                                            <td>${prod.toUpperCase()}</td>
+                                            <td>${s.total}</td>
+                                            <td><span class="badge badge-automated">${s.automated}</span></td>
+                                            <td><span class="badge badge-manual">${s.manual}</span></td>
+                                            <td><span class="badge badge-pending">${s.pending}</span></td>
+                                            <td>
+                                                <div class="progress-bar" style="height: 10px; width: 100px;">
+                                                    <div class="progress-fill" style="width: ${coverage}%; font-size: 0;"></div>
+                                                </div>
+                                                ${coverage}%
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Family Coverage -->
+                    <div class="dashboard-card" style="grid-column: span 2;">
+                        <h3>Coverage by Control Family</h3>
+                        <div class="bar-chart">
+                            ${Object.entries(familyStats).slice(0, 10).map(([id, data]) => {
+                                const height = data.total > 0 ? (data.automated / data.total) * 100 : 0;
+                                return `
+                                    <div class="bar" style="height: ${height}%;">
+                                        <span class="bar-value">${data.automated}</span>
+                                        <span class="bar-label">${id.toUpperCase()}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Baseline Levels -->
+                    <div class="dashboard-card">
+                        <h3>Controls by Baseline Level</h3>
+                        <div class="stat-card" style="margin: 10px 0;">
+                            <div class="stat-value" style="color: #28a745;">${levelStats.low}</div>
+                            <div class="stat-label">Low Baseline</div>
+                        </div>
+                        <div class="stat-card" style="margin: 10px 0;">
+                            <div class="stat-value" style="color: #ffd33d;">${levelStats.moderate}</div>
+                            <div class="stat-label">Moderate Baseline</div>
+                        </div>
+                        <div class="stat-card" style="margin: 10px 0;">
+                            <div class="stat-value" style="color: #d73a49;">${levelStats.high}</div>
+                            <div class="stat-label">High Baseline</div>
+                        </div>
+                    </div>
+
+                    <!-- Top Gaps -->
+                    <div class="dashboard-card" style="grid-column: span 3;">
+                        <h3>Top Gaps (Controls Without Rules)</h3>
+                        <div class="gap-list">
+                            ${gaps.length > 0 ? gaps.map(control => `
+                                <div class="gap-item">
+                                    <span class="gap-item-id">${control.id}</span> - ${control.title}
+                                    <br><small>Baseline: ${control.levels.join(', ') || 'None'} | Status: ${control.status}</small>
+                                </div>
+                            `).join('') : '<p>No gaps found! All controls have rules.</p>'}
+                        </div>
+                        ${gaps.length > 0 ? `<p style="margin-top: 15px; font-size: 12px; color: #586069;">Showing top 20 of ${stats.without_rules} total gaps</p>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // View toggle buttons
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const view = e.currentTarget.dataset.view;
+
+                    // Update button states
+                    document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+
+                    // Toggle views
+                    if (view === 'dashboard') {
+                        showDashboard();
+                    } else {
+                        showControls();
+                    }
+                });
+            });
+
+            // Product selector
+            document.getElementById('product-select').addEventListener('change', (e) => {
+                appState.currentProduct = e.target.value;
+                appState.currentControl = null;
+                renderStats();
+                renderControls();
+                renderDashboard();
+                document.getElementById('detail-panel').innerHTML = '<div class="empty-state"><h3>Select a control to view details</h3></div>';
+            });
+
+            // Search box
+            document.getElementById('search-box').addEventListener('input', (e) => {
+                appState.filters.search = e.target.value;
+                renderControls();
+            });
+
+            // Family filters - Select All
+            document.getElementById('family-select-all').addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                const familyCheckboxes = document.querySelectorAll('#family-filters input[type="checkbox"]');
+
+                familyCheckboxes.forEach(checkbox => {
+                    checkbox.checked = isChecked;
+                    if (isChecked) {
+                        appState.filters.families.add(checkbox.value);
+                    } else {
+                        appState.filters.families.delete(checkbox.value);
+                    }
+                });
+
+                renderControls();
+            });
+
+            // Family filters - Individual checkboxes
+            document.getElementById('family-filters').addEventListener('change', (e) => {
+                if (e.target.type === 'checkbox') {
+                    if (e.target.checked) {
+                        appState.filters.families.add(e.target.value);
+                    } else {
+                        appState.filters.families.delete(e.target.value);
+                    }
+
+                    // Update "Select All" checkbox state
+                    const familyCheckboxes = document.querySelectorAll('#family-filters input[type="checkbox"]');
+                    const allChecked = Array.from(familyCheckboxes).every(cb => cb.checked);
+                    document.getElementById('family-select-all').checked = allChecked;
+
+                    renderControls();
+                }
+            });
+
+            // Level filters - Select All
+            document.getElementById('level-select-all').addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                const levelCheckboxes = document.querySelectorAll('#level-filters input[type="checkbox"]');
+
+                levelCheckboxes.forEach(checkbox => {
+                    checkbox.checked = isChecked;
+                    if (isChecked) {
+                        appState.filters.levels.add(checkbox.value);
+                    } else {
+                        appState.filters.levels.delete(checkbox.value);
+                    }
+                });
+
+                renderControls();
+            });
+
+            // Level filters - Individual checkboxes
+            document.getElementById('level-filters').addEventListener('change', (e) => {
+                if (e.target.type === 'checkbox') {
+                    if (e.target.checked) {
+                        appState.filters.levels.add(e.target.value);
+                    } else {
+                        appState.filters.levels.delete(e.target.value);
+                    }
+
+                    // Update "Select All" checkbox state
+                    const levelCheckboxes = document.querySelectorAll('#level-filters input[type="checkbox"]');
+                    const allChecked = Array.from(levelCheckboxes).every(cb => cb.checked);
+                    document.getElementById('level-select-all').checked = allChecked;
+
+                    renderControls();
+                }
+            });
+
+            // Status filters - Select All
+            document.getElementById('status-select-all').addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                const statusCheckboxes = document.querySelectorAll('#status-filters input[type="checkbox"]');
+
+                statusCheckboxes.forEach(checkbox => {
+                    checkbox.checked = isChecked;
+                    if (isChecked) {
+                        appState.filters.statuses.add(checkbox.value);
+                    } else {
+                        appState.filters.statuses.delete(checkbox.value);
+                    }
+                });
+
+                renderControls();
+            });
+
+            // Status filters - Individual checkboxes
+            document.getElementById('status-filters').addEventListener('change', (e) => {
+                if (e.target.type === 'checkbox') {
+                    if (e.target.checked) {
+                        appState.filters.statuses.add(e.target.value);
+                    } else {
+                        appState.filters.statuses.delete(e.target.value);
+                    }
+
+                    // Update "Select All" checkbox state
+                    const statusCheckboxes = document.querySelectorAll('#status-filters input[type="checkbox"]');
+                    const allChecked = Array.from(statusCheckboxes).every(cb => cb.checked);
+                    document.getElementById('status-select-all').checked = allChecked;
+
+                    renderControls();
+                }
+            });
+
+            // Gap filters - Select All
+            document.getElementById('gap-select-all').addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                const gapCheckboxes = document.querySelectorAll('#gap-filters input[type="checkbox"]');
+
+                gapCheckboxes.forEach(checkbox => {
+                    checkbox.checked = isChecked;
+                    if (isChecked) {
+                        appState.filters.gaps.add(checkbox.value);
+                    } else {
+                        appState.filters.gaps.delete(checkbox.value);
+                    }
+                });
+
+                renderControls();
+            });
+
+            // Gap filters - Individual checkboxes
+            document.getElementById('gap-filters').addEventListener('change', (e) => {
+                if (e.target.type === 'checkbox') {
+                    if (e.target.checked) {
+                        appState.filters.gaps.add(e.target.value);
+                    } else {
+                        appState.filters.gaps.delete(e.target.value);
+                    }
+
+                    // Update "Select All" checkbox state
+                    const gapCheckboxes = document.querySelectorAll('#gap-filters input[type="checkbox"]');
+                    const allChecked = Array.from(gapCheckboxes).every(cb => cb.checked);
+                    document.getElementById('gap-select-all').checked = allChecked;
+
+                    renderControls();
+                }
+            });
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

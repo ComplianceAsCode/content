@@ -1,0 +1,50 @@
+documentation_complete: true
+
+
+title: 'Record Events that Modify User/Group Information via openat syscall - /etc/gshadow'
+
+description: |-
+    The audit system should collect write events to /etc/gshadow file for all users and root.
+    If the <tt>auditd</tt> daemon is configured
+    to use the <tt>augenrules</tt> program to read audit rules during daemon
+    startup (the default), add the following lines to a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-a always,exit -F arch=b32 -S openat -F a2&amp;03 -F path=/etc/gshadow -F auid>={{{ auid }}} -F auid!=unset -F key=user-modify</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following lines to
+    <tt>/etc/audit/audit.rules</tt> file:
+    <pre>-a always,exit -F arch=b32 -S openat -F a2&amp;03 -F path=/etc/gshadow -F auid>={{{ auid }}} -F auid!=unset -F key=user-modify</pre>
+    If the system is 64 bit then also add the following line:
+    <pre>-a always,exit -F arch=b64 -S openat -F a2&amp;03 -F path=/etc/gshadow -F auid>={{{ auid }}} -F auid!=unset -F key=user-modify</pre>
+
+rationale: |-
+    Creation of users through direct edition of /etc/gshadow could be an indicator of malicious activity on a system.
+    Auditing these events could serve as evidence of potential system compromise.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82704-8
+    cce@rhel8: CCE-80961-6
+    cce@rhel10: CCE-87535-1
+
+references:
+    nerc-cip: CIP-004-6 R2.2.2,CIP-004-6 R2.2.3,CIP-007-3 R.1.3,CIP-007-3 R5,CIP-007-3 R5.1.1,CIP-007-3 R5.1.3,CIP-007-3 R5.2.1,CIP-007-3 R5.2.3
+    nist: AC-2(4),AU-2(d),AU-12(c),AC-6(9),CM-6(a)
+
+{{{ complete_ocil_entry_audit_syscall(syscall="openat") }}}
+
+warnings:
+    - general: |-
+        Note that these rules can be configured in a
+        number of ways while still achieving the desired effect. Here the system calls
+        have been placed independent of other system calls. Grouping system calls related
+        to the same event is more efficient. See the following example:
+        <pre>-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;03 -F path=/etc/gshadow -F auid>={{{ auid }}} -F auid!=unset -F key=user-modify</pre>
+
+template:
+    name: audit_rules_path_syscall
+    vars:
+        path: /etc/gshadow
+        pos: a2
+        syscall: openat

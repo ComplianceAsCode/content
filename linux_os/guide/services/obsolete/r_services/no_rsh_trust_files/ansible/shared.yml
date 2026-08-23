@@ -1,0 +1,26 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: "Detect .rhosts files in users home directories"
+  ansible.builtin.find:
+      paths: ["/root","/home"]
+      recurse: yes
+      patterns: .rhosts
+      hidden: yes
+      file_type: file
+  check_mode: no
+  register: rhosts_locations
+
+- name: "Remove .rhosts files"
+  ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+  with_items: "{{ rhosts_locations.files | map(attribute='path') | list }}"
+  when: rhosts_locations is success
+
+- name: "Remove /etc/hosts.equiv file"
+  ansible.builtin.file:
+      path: /etc/hosts.equiv
+      state: absent

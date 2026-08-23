@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="usbguard_rules_not_empty_not_missing" version="1">
+    <metadata>
+      <title>Check that file storing USBGuard rules exists and is not empty</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check that file storing USBGuard rules at /etc/usbguard/rules.conf exists and is not empty</description>
+    </metadata>
+    <criteria comment="Check that file storing USBGuard rules exists and is not empty" operator="AND">
+        <criterion comment="Check that the usbguard rules in either /etc/usbguard/rules.conf or /etc/usbguard/rules.d/ contain at least one non white space character." test_ref="test_usbguard_rules_nonempty" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check_existence="at_least_one_exists" check="all"
+    comment="Check the usbguard rules in either /etc/usbguard/rules.conf or /etc/usbguard/rules.d/ contain at least one non whitespace character and exists"
+    id="test_usbguard_rules_nonempty" version="1">
+    <ind:object object_ref="obj_usbguard_rules_nonempty" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_usbguard_rules_nonempty" version="1">
+    <ind:filepath operation="pattern match">^/etc/usbguard/(rules|rules\.d/.*)\.conf$</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\S+.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

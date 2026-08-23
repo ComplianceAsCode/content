@@ -1,0 +1,49 @@
+{{% if product in ["ol7"] %}}
+{{% set audisp_conf_file = "/audispd.conf" %}}
+{{% else %}}
+{{% set audisp_conf_file = "/auditd.conf" %}}
+{{% endif %}}
+<def-group>
+  <definition class="compliance" id="auditd_name_format" version="1">
+    <metadata>
+    <title>Set type of computer node name logging in audit logs</title>
+    <affected family="unix">
+    <platform>multi_platform_all</platform>
+    </affected>
+        <description>Ensure 'name_format' is configured with value 'hostname|fdq|numeric' in {{{ audisp_conf_path + audisp_conf_file }}}</description>
+    </metadata>
+    <criteria comment="The respective application or service is configured correctly"
+    operator="OR"><criterion comment="Check the name_format in {{{ audisp_conf_path + audisp_conf_file }}}"
+  test_ref="test_auditd_name_format" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="tests the value of name_format setting in the {{{ audisp_conf_path + audisp_conf_file }}} file"
+    id="test_auditd_name_format" version="1">
+    <ind:object object_ref="obj_auditd_name_format" />
+    <ind:state state_ref="state_auditd_name_format" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_auditd_name_format" version="1">
+    <ind:filepath>{{{ audisp_conf_path + audisp_conf_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)name_format(?-i)[ \t]*=[ \t]*(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_auditd_name_format" version="1">
+    <ind:subexpression operation="pattern match" var_ref="var_auditd_name_format_regex" />
+  </ind:textfilecontent54_state>
+
+  <local_variable datatype="string" id="var_auditd_name_format_regex" version="1"
+  comment="Build regex to be case insensitive">
+    <concat>
+      <literal_component>(?i)</literal_component>
+      <variable_component var_ref="var_auditd_name_format"/>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="audit name_format setting" datatype="string"
+  id="var_auditd_name_format" version="1" />
+
+</def-group>

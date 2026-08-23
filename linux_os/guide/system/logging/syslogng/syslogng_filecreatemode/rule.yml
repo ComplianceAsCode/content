@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Ensure syslog-ng Default File Permissions Configured'
+
+description: |-
+    syslog-ng will create logfiles that do not already exist on the system.
+    The <tt>perm()</tt> option in the global <tt>options</tt> block controls
+    what permissions will be applied to these newly created files.
+
+rationale: |-
+    It is important to ensure that log files have the correct permissions
+    to ensure that sensitive data is archived and protected.
+
+severity: medium
+
+references:
+    nist: CM-6(a)
+
+ocil_clause: 'perm() is not set or is more permissive than 0640'
+
+ocil: |-
+    Run the following command:
+    <pre># grep -r 'perm(' /etc/syslog-ng/syslog-ng.conf /etc/syslog-ng/conf.d/</pre>
+    Verify the output contains <tt>perm(0640)</tt> or a more restrictive value
+    in the global <tt>options</tt> block.
+
+fixtext: |-
+    Edit <tt>/etc/syslog-ng/syslog-ng.conf</tt> or a dedicated file in
+    <tt>/etc/syslog-ng/conf.d/</tt> and ensure the global options block contains:
+    <pre>options {
+        perm(0640);
+    };</pre>
+    Restart the service:
+    <pre># systemctl restart syslog-ng.service</pre>

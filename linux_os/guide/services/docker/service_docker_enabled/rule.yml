@@ -1,0 +1,26 @@
+documentation_complete: true
+
+
+title: 'Enable the Docker service'
+
+description: |-
+    The docker service is commonly needed to
+      create containers.
+    {{{ describe_service_enable(service="docker") }}}
+
+rationale: |-
+    To be able to find any problems with misconfiguration of
+    the docker daemon and running containers, the docker service
+    has to be enabled.
+
+severity: medium
+
+ocil: |-
+    {{{ ocil_service_enabled(service="docker") }}}
+
+platform: machine
+
+template:
+    name: service_enabled
+    vars:
+        servicename: docker

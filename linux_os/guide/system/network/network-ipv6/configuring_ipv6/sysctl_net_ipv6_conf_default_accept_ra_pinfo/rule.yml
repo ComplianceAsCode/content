@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: Configure Accepting Prefix Information in Router Advertisements on All IPv6 Interfaces By Default
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_ra_pinfo", value="0") }}}'
+
+rationale: An illicit router advertisement message could result in a man-in-the-middle attack.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: CCE-84051-2
+    cce@rhel9: CCE-84118-9
+    cce@rhel10: CCE-88012-0
+    cce@sle12: CCE-91524-9
+    cce@sle15: CCE-91209-7
+    cce@sle16: CCE-96557-4
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_ra_pinfo", value="0") }}}
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv6.conf.default.accept_ra_pinfo
+        datatype: int

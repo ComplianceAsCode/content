@@ -1,0 +1,39 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent a user from overriding the banner-message-enable setting for the graphical user interface.
+
+vuldiscussion: |-
+    Display of a standardized and approved use notification before granting access to the operating system ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.
+
+    For U.S. Government systems, system use notifications are required only for access via login interfaces with human users and are not required when such human interfaces do not exist.
+
+
+
+checktext: |-
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+
+    Verify {{{ full_name }}} prevents a user from overriding settings for graphical user interfaces.
+
+    Determine if the org.gnome.login-screen banner-message-enable key is writable with the following command:
+
+    $ gsettings writable org.gnome.login-screen banner-message-enable
+
+    false
+
+    If "banner-message-enable" is writable or the result is "true", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent a user from overriding the banner setting for graphical user interfaces.
+
+    Create a database to contain the systemwide graphical user logon settings (if it does not already exist) with the following command:
+
+    $ sudo touch /etc/dconf/db/local.d/locks/session
+
+    Add the following setting to prevent nonprivileged users from modifying it:
+
+    /org/gnome/login-screen/banner-message-enable
+
+    Run the following command to update the database:
+
+    $ sudo dconf update
+
+

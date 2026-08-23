@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable dnsmasq Service'
+
+description: |-
+    {{{ describe_service_disable(service="dnsmasq") }}}
+
+rationale: |-
+    Unless a system is specifically designated to act as a DNS
+    caching, DNS forwarding and/or DHCP server, it is recommended
+    that the package be removed to reduce the potential attack surface.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-90720-4
+    cce@rhel9: CCE-90721-2
+    cce@rhel10: CCE-90722-0
+    cce@sle15: CCE-92602-2
+
+platform: system_with_kernel
+
+template:
+    name: service_disabled
+    vars:
+        servicename: dnsmasq

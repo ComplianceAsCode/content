@@ -1,0 +1,28 @@
+checktext: |-
+  Check whether a classification banner was configured by creating
+  a Console Notification CRD on OpenShift
+
+  > oc get consolenotification classification-banner -o=jsonpath='{.spec.text}'
+
+  If the above does not return classification text to be displayed in the console,
+  this is a finding.
+
+fixtext: |-
+  The following steps may be used to create a console classification banner.
+  Replace the text in the example below with an appropriate text.
+
+  cat << EOF | oc apply -f -
+  apiVersion: console.openshift.io/v1
+  kind: ConsoleNotification
+  metadata:
+   name: classification-banner
+  spec:
+   text: Unclassified ##Classification Level
+   location: BannerTopBottom ##Other options are BannerBottom, BannerTopBottom
+   color: '#FFFFFF' ##Hexcode for white text color
+   backgroundColor: '#008000' ##Hexcode for banner background color
+  EOF
+
+srg_requirement: |-
+  Red Hat OpenShift Container Platform 4 must display the Standard Mandatory
+  DoD Notice and Consent Banner before granting access to platform components.

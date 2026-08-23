@@ -1,0 +1,45 @@
+documentation_complete: true
+
+title: 'Enable Kernel Parameter to Enforce DAC on Hardlinks'
+
+description: '{{{ describe_sysctl_option_value(sysctl="fs.protected_hardlinks", value="1") }}}'
+
+rationale: |-
+    By enabling this kernel parameter, users can no longer create soft or hard links to
+    files which they do not own. Disallowing such hardlinks mitigate vulnerabilities
+    based on insecure file system accessed by privileged programs, avoiding an
+    exploitation vector exploiting unsafe use of <tt>open()</tt> or <tt>creat()</tt>.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82506-7
+    cce@rhel8: CCE-81027-5
+    cce@rhel9: CCE-84110-6
+    cce@rhel10: CCE-86689-7
+    cce@sle12: CCE-91559-5
+    cce@sle15: CCE-91252-7
+    cce@sle16: CCE-95822-3
+
+references:
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: CM-6(a),AC-6(1)
+    srg: SRG-OS-000312-GPOS-00122,SRG-OS-000312-GPOS-00123,SRG-OS-000324-GPOS-00125
+    stigid@ol8: OL08-00-010374
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.protected_hardlinks", value="1") }}}
+
+fixtext: |-
+    Verify the operating system is configured to enable DAC on hardlinks with the following commands:
+    {{{ fixtext_sysctl("fs.protected_hardlinks", "1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must enable kernel parameters to enforce discretionary access control on hardlinks.'
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: fs.protected_hardlinks
+        sysctlval: '1'
+        datatype: int
+
+platform: system_with_kernel

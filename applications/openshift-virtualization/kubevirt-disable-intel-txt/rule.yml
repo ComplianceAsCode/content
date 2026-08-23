@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Disable Intel Trusted Execution Technology (TXT)'
+
+description: |-
+    Intel Trusted Execution Technology (TXT) should be disabled in the
+    host BIOS/firmware settings. TXT provides hardware-based memory
+    protection through a Measured Launch Environment, but it can
+    conflict with virtualization workloads and introduce compatibility
+    issues with certain hypervisor configurations. In environments
+    where TXT is not actively used for measured launch, leaving it
+    enabled adds unnecessary complexity without a corresponding
+    security benefit.
+
+rationale: |-
+    TXT can interfere with virtualization features and introduce
+    unexpected behavior during host boot and workload scheduling.
+    When TXT is not part of the security architecture, disabling it
+    reduces the attack surface associated with the TXT firmware
+    interface and avoids potential conflicts with the hypervisor
+    and virtual machine management stack.
+
+severity: medium
+
+ocil_clause: 'Intel TXT is enabled in the host firmware'
+
+ocil: |-
+    Run the following command on each cluster node to check the
+    Intel TXT BIOS setting:
+    <pre>$ fwupdmgr get-bios-settings</pre>
+    Look for the TxT setting and ensure its current value is
+    <tt>Disabled</tt>.

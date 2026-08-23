@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Configure Postfix Resource Usage to Limit Denial of Service Attacks'
+
+description: |-
+    Edit <tt>/etc/postfix/main.cf</tt>. Edit the following lines to
+    configure the amount of system resources Postfix can consume:
+    <pre>default_process_limit = 100
+    smtpd_client_connection_count_limit = 10
+    smtpd_client_connection_rate_limit = 30
+    queue_minfree = 20971520
+    header_size_limit = 51200
+    message_size_limit = 10485760
+    smtpd_recipient_limit = 100</pre>
+    The values here are examples.
+
+warnings:
+    - general: |-
+        Note: The values given here are examples, and may
+        need to be modified for any particular site. By default, the Postfix anvil
+        process gathers mail receipt statistics. To get information about about what
+        connection rates are typical at your site, look in <tt>/var/log/maillog</tt>
+        for lines with the daemon name postfix/anvil.

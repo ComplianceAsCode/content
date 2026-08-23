@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the ssh_chroot_rw_homedirs SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>ssh_chroot_rw_homedirs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="ssh_chroot_rw_homedirs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="ssh_chroot_rw_homedirs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: ssh_chroot_rw_homedirs

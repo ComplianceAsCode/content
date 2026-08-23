@@ -1,0 +1,86 @@
+documentation_complete: true
+
+title: Enable FIPS Mode
+
+description: |-
+{{% if product == "rhcos4" %}}
+    OpenShift has an installation-time flag that can enable FIPS mode
+    for the cluster. The flag <pre>fips: true</pre> must be enabled
+    at install time in the <pre>install-config.yaml</pre> file. If
+    this rule fails on an installed cluster, then this is a permanent
+    finding and cannot be fixed.
+{{% elif 'rhel' in product %}}
+    {{{ full_name }}} has an installation-time kernel flag that can enable FIPS mode.
+    The installer must be booted with <tt>fips=1</tt> for the system to have FIPS mode
+    enabled. Enabling FIPS mode on a preexisting system is not supported. If
+    this rule fails on an installed system, then this is a permanent
+    finding and cannot be fixed.
+{{% else %}}
+    To enable FIPS mode, run the following command:
+    <pre>fips-mode-setup --enable</pre>
+    <br />
+    The <tt>fips-mode-setup</tt> command will configure the system in
+    FIPS mode by automatically configuring the following:
+    <ul>
+    <li>Setting the kernel FIPS mode flag (<tt>/proc/sys/crypto/fips_enabled</tt>) to <tt>1</tt></li>
+    <li>Creating <tt>/etc/system-fips</tt></li>
+    <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt></li>
+    <li>Loading the Dracut <tt>fips</tt> module</li>
+    </ul>
+{{% endif %}}
+{{% if bootable_containers_supported == "true" %}}
+    <br />
+    To enable FIPS mode at bootable container build time configure <tt>fips=1</tt> kernel argument
+    in <tt>/usr/lib/bootc/kargs.d/01-fips.toml</tt>:
+    <pre>kargs = ["fips=1"]</pre>
+    Then set the cryptographic policy to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>:
+    <pre>update-crypto-policies --no-reload --set {{{ xccdf_value("var_system_crypto_policy") }}}</pre>
+{{% endif %}}
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: high
+
+identifiers:
+    cce@rhcos4: CCE-82540-6
+    cce@rhel8: CCE-80942-6
+    cce@rhel9: CCE-88742-2
+    cce@rhel10: CCE-86982-6
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
+    nist: CM-3(6),SC-12(2),SC-12(3),IA-7,SC-13,CM-6(a),SC-12
+    ospp: FCS_COP.1(1),FCS_COP.1(2),FCS_COP.1(3),FCS_COP.1(4),FCS_CKM.1,FCS_CKM.2,FCS_TLSC_EXT.1,FCS_RBG_EXT.1
+    srg: SRG-OS-000478-GPOS-00223,SRG-OS-000396-GPOS-00176
+    stigid@ol8: OL08-00-010020,OL08-00-010182
+
+ocil_clause: 'FIPS mode is not enabled'
+
+ocil: |-
+    To verify that FIPS mode is enabled properly, run the following command:
+    <pre>cat /proc/sys/crypto/fips_enabled</pre>
+    The output be must:
+    <pre>1</pre>
+
+warnings:
+    - general: |-
+        To configure {{{ full_name }}} to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        Only enabling FIPS 140 mode during the {{{ full_name }}} installation ensures that the system generates all keys with FIPS-approved algorithms and continuous monitoring tests in place.
+        Enabling FIPS mode on a preexisting system involves a number of modifications to it and therefore is not supported.
+    - regulatory: |-
+        This rule DOES NOT CHECK if the components of the operating system are FIPS certified.
+        You can find the list of FIPS certified modules at {{{ weblink(link="https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search") }}}.
+        This rule checks if the system is running in FIPS mode.
+
+fixtext: |-
+    Configure {{{ full_name }}} to run in FIPS mode.
+
+    The installer for the system must be booted with kernel parameter <tt>fips=1</tt>.
+
+srg_requirement: '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
+
+platform: system_with_kernel and not osbuild

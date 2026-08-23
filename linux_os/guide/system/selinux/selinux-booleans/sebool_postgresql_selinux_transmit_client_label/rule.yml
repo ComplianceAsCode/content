@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the postgresql_selinux_transmit_client_label SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>postgresql_selinux_transmit_client_label</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="postgresql_selinux_transmit_client_label") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="postgresql_selinux_transmit_client_label") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: postgresql_selinux_transmit_client_label

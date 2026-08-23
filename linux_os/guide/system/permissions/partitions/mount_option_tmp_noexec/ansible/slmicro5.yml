@@ -1,0 +1,28 @@
+# platform = multi_platform_slmicro
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: '{{{ rule_title }}} - Check if noexec options is configured in /usr/lib/systemd/system/tmp.mount'
+  ansible.builtin.lineinfile:
+    path: /usr/lib/systemd/system/tmp.mount
+    regexp: ^[\s]*Options=[\s]*.*noexec.*$
+    state: absent
+  check_mode: true
+  register: noexec_match
+
+# if no match, collect current options and add noexec
+- name: '{{{ rule_title }}} - Collect previously configured options'
+  ansible.builtin.shell:
+    cmd: sed -n 's/^[\s]*Options=[\s]*\(.*\)$/\1/p' /usr/lib/systemd/system/tmp.mount
+  register: current_options
+  when:
+    - noexec_match is defined and noexec_match.found == 0
+
+
+- name: '{{{ rule_title }}} - Add noexec option to previously configured options'
+  ansible.builtin.shell:
+    cmd: sed -i "s/^Options=.*/Options={{ current_options.stdout }},noexec/g" /usr/lib/systemd/system/tmp.mount
+  when:
+    - noexec_match.found == 0 and current_options is defined

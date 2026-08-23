@@ -1,0 +1,23 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = medium
+
+- name: "Get root paths which are not symbolic links"
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  changed_when: False
+  failed_when: False
+  register: root_paths
+  with_items: "{{ ansible_env.PATH.split(':') }}"
+
+- name: "Disable writability to root directories"
+  ansible.builtin.file:
+    path: "{{ item.item }}"
+    mode: "g-w,o-w"
+  with_items: "{{ root_paths.results }}"
+  when:
+    - root_paths.results is defined
+    - item.stat.exists
+    - not item.stat.islnk

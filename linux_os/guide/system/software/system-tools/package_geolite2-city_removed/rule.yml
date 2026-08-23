@@ -1,0 +1,22 @@
+documentation_complete: true
+
+
+title: 'Uninstall geolite2-city Package'
+
+description: |-
+    {{{ describe_package_remove(package="geolite2-city") }}}
+
+rationale: |-
+    <tt>geolite2-city</tt> is part of the GeoLite2 database packages, offering geolocation databases and tooling.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82939-0
+
+{{{ complete_ocil_entry_package_removed("geolite2-city") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: geolite2-city

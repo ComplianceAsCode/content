@@ -1,0 +1,37 @@
+documentation_complete: true
+
+
+title: 'Add noauto Option to /boot'
+
+description: |-
+    The <tt>noauto</tt> mount option is used to prevent automatic mounting of th
+    <tt>/boot</tt> partition. 
+    {{{ describe_mount(option="noauto", part="/boot") }}}
+
+rationale: |-
+    The <tt>/boot</tt> partition contains the kernel and the bootloader. Access
+    to the partition after the boot process finishes should not be needed. Files
+    contained within this partition can be analysed and gained information can
+    be used for exploit creation.
+
+{{{ complete_ocil_entry_mount_option("/boot", "noauto") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83345-9
+
+
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /boot
+        mountoption: noauto
+
+warnings:
+    - general: |-
+        Although contents of the <tt>/boot</tt> partition should not be needed
+        during normal system operation, they might need to be accessible during
+        system maintenance and upgrades. Make sure that applying this rule will
+        not break upgrade or maintenance processes affecting the system.

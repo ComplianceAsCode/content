@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<oval-def:oval_definitions xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
+  <oval-def:generator>
+    <oval:product_name>combine_ovals.py from SCAP Security Guide</oval:product_name>
+    <oval:product_version>ssg: [0, 1, 65], python: 3.10.6</oval:product_version>
+    <oval:schema_version>5.11</oval:schema_version>
+    <oval:timestamp>2022-10-04T12:06:33</oval:timestamp>
+  </oval-def:generator>
+  <oval-def:definitions>
+    <oval-def:definition class="compliance" id="oval:ssg-file_permissions_httpd_server_conf_d_files:def:1" version="2">
+      <oval-def:metadata>
+        <oval-def:title>Set Permissions on All Configuration Files Inside /etc/httpd/conf.d/</oval-def:title>
+        <oval-def:affected family="unix">
+          <oval-def:platform>Red Hat Enterprise Linux 9</oval-def:platform>
+        </oval-def:affected>
+        <oval-def:description>The /etc/httpd/conf.d/* files should have the appropriate permissions (0640 or stronger).</oval-def:description>
+        <oval-def:reference ref_id="file_permissions_httpd_server_conf_d_files" source="ssg"/>
+      </oval-def:metadata>
+      <oval-def:criteria operator="OR">
+        <oval-def:extend_definition comment="httpd not present or in use" definition_ref="oval:ssg-package_httpd_removed:def:1"/>
+        <oval-def:criterion test_ref="oval:ssg-test_file_permissions_httpd_server_conf_d_files:tst:1"/>
+      </oval-def:criteria>
+    </oval-def:definition>
+    <oval-def:definition class="compliance" id="oval:ssg-postfix_network_listening_disabled:def:1" version="2">
+      <oval-def:metadata>
+        <oval-def:title>Disable Postfix Network Listening</oval-def:title>
+        <oval-def:affected family="unix">
+          <oval-def:platform>Red Hat Enterprise Linux 9</oval-def:platform>
+        </oval-def:affected>
+        <oval-def:description>Postfix network listening should be disabled</oval-def:description>
+        <oval-def:reference ref_id="CCE-90825-1" source="CCE"/>
+        <oval-def:reference ref_id="postfix_network_listening_disabled" source="ssg"/>
+      </oval-def:metadata>
+      <oval-def:criteria operator="OR">
+        <oval-def:extend_definition comment="Postfix installed and configured to start" negate="true" definition_ref="oval:ssg-service_postfix_enabled:def:1"/>
+        <oval-def:criterion comment="Check inet_interfaces in /etc/postfix/main.cf" test_ref="oval:ssg-test_postfix_network_listening_disabled:tst:1"/>
+      </oval-def:criteria>
+    </oval-def:definition>
+  </oval-def:definitions>
+  <oval-def:tests>
+    <unix:file_test check="all" check_existence="all_exist" comment="/etc/httpd/conf.d/* permissions" id="oval:ssg-test_file_permissions_httpd_server_conf_d_files:tst:1" version="1">
+      <unix:object object_ref="oval:ssg-object_file_permissions_httpd_server_conf_d_files:obj:1"/>
+    </unix:file_test>
+    <ind:textfilecontent54_test id="oval:ssg-test_postfix_network_listening_disabled:tst:1" check="all" check_existence="at_least_one_exists" comment="inet_interfaces in /etc/postfix/main.cf should be set correctly" version="1">
+      <ind:object object_ref="oval:ssg-obj_postfix_network_listening_disabled:obj:1"/>
+    </ind:textfilecontent54_test>
+  </oval-def:tests>
+  <oval-def:objects>
+    <unix:file_object comment="/etc/httpd/conf.d/* permissions" id="oval:ssg-object_file_permissions_httpd_server_conf_d_files:obj:1" version="1">
+      <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local"/>
+      <unix:path operation="equals">/etc/httpd/conf.d/</unix:path>
+      <unix:filename operation="pattern match">^.*$</unix:filename>
+    </unix:file_object>
+    <ind:textfilecontent54_object id="oval:ssg-obj_postfix_network_listening_disabled:obj:1" comment="inet_interfaces in /etc/postfix/main.cf should be set correctly" version="1">
+      <ind:filepath>/etc/postfix/main.cf</ind:filepath>
+      <ind:pattern operation="pattern match">^[\s]*inet_interfaces[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
+      <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+  </oval-def:objects>
+</oval-def:oval_definitions>

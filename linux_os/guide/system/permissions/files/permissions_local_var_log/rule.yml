@@ -1,0 +1,71 @@
+documentation_complete: true
+
+
+title: 'Verify permissions of log files'
+
+description: |-
+    Any operating system providing too much information in error messages
+    risks compromising the data and security of the structure, and content
+    of error messages needs to be carefully considered by the organization.
+
+    Organizations carefully consider the structure/content of error messages.
+    The extent to which information systems are able to identify and handle
+    error conditions is guided by organizational policy and operational
+    requirements. Information that could be exploited by adversaries includes,
+    for example, erroneous logon attempts with passwords entered by mistake
+    as the username, mission/business information that can be derived from
+    (if not stated explicitly by) information recorded, and personal
+    information, such as account numbers, social security numbers, and credit
+    card numbers.
+
+rationale: |-
+    The {{{ full_name }}} must generate error messages that provide information
+    necessary for corrective actions without revealing information that could
+    be exploited by adversaries.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92224-5
+    cce@sle15: CCE-85755-7
+    cce@sle16: CCE-96135-9
+    cce@slmicro5: CCE-93660-9
+    cce@slmicro6: CCE-94687-1
+
+references:
+    cis@sle12: 4.2.3
+    cis@sle15: 4.2.3
+    nist: SI-11(a),SI-11(b),SI-11.1(iii)
+    nist-csf: PR.AC-4,PR.DS-5
+    srg: SRG-OS-000205-GPOS-00083
+
+ocil_clause: 'not all log files have permission 640 or stricter'
+
+ocil: |-
+    Verify the operating system has all system log files under the
+    <pre>/var/log</pre> directory with a permission set to 640,
+    by using the following command:
+    <pre>
+    sudo find /var/log -perm /137 -type f -exec stat -c "%n %a" {} \;
+    </pre>
+
+template:
+    name: file_permissions
+    vars:
+        excluded_files@sle15: ['*[bw]tmp', '*lastlog']
+        excluded_files@slmicro5: ['*[bw]tmp', '*lastlog']
+        excluded_files@slmicro6: ['*[bw]tmp', '*lastlog']
+        excluded_files@ubuntu2204: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*']
+        excluded_files@debian13: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*']
+        excluded_files@ubuntu2404: ['history.log*', 'eipp.log.xz*', '[bw]tmp', '[bw]tmp.*', '[bw]tmp-*', 'lastlog', 'lastlog.*', 'cloud-init.log*', 'localmessages*', 'waagent.log*']
+        file_regex: '.*'
+        filemode: '0640'
+        filepath: /var/log/
+        recursive@debian13: 'true'
+        recursive@sle12: 'true'
+        recursive@sle15: 'true'
+        recursive@sle16: 'true'
+        recursive@slmicro5: 'true'
+        recursive@slmicro6: 'true'
+        recursive@ubuntu2204: 'true'
+        recursive@ubuntu2404: 'true'

@@ -1,0 +1,25 @@
+documentation_complete: true
+
+
+title: 'Verify Group Ownership of /etc/hosts.allow'
+
+description: |-
+    {{{ describe_file_group_owner(file="/etc/hosts.allow", group="root") }}}
+
+rationale: |-
+    The <tt>/etc/hosts.allow</tt> file is used to control access of clients to daemons in the
+    server. Insecure groupownership of this file could allow users to grant clients unrestricted
+    access or no access at all to services in the server.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/hosts.allow", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/hosts.allow", group="root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/hosts.allow
+        gid_or_name: '0'

@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance" id="sysctl_crypto_fips_enabled" version="1">
+    {{{ oval_metadata("The kernel 'crypto.fips_enabled' parameter should be set to '1' in system runtime.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="kernel runtime parameter crypto.fips_enabled set to 1" test_ref="test_sysctl_crypto_fips_enabled" />
+    </criteria>
+  </definition>
+
+  <unix:sysctl_test check="all" check_existence="all_exist" comment="kernel runtime parameter crypto.fips_enabled set to 1" id="test_sysctl_crypto_fips_enabled" version="1">
+    <unix:object object_ref="object_sysctl_crypto_fips_enabled" />
+    <unix:state state_ref="state_sysctl_crypto_fips_enabled" />
+  </unix:sysctl_test>
+
+  <unix:sysctl_object id="object_sysctl_crypto_fips_enabled" version="1">
+    <unix:name>crypto.fips_enabled</unix:name>
+  </unix:sysctl_object>
+
+  <unix:sysctl_state id="state_sysctl_crypto_fips_enabled" version="1">
+    <unix:value datatype="int" operation="equals">1</unix:value>
+  </unix:sysctl_state>
+</def-group>

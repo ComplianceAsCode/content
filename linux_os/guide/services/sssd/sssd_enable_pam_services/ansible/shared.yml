@@ -1,0 +1,61 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+{{% set sssd_conf = "/etc/sssd/sssd.conf" -%}}
+{{% set sssd_conf_dir = "/etc/sssd/conf.d" -%}}
+{{{ ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) }}}
+
+{{{ ansible_install_sssd_proxy(rule_title) }}}
+
+- name: {{{ rule_title }}} - Find all the conf files inside the {{{ sssd_conf_dir }}} directory
+  ansible.builtin.find:
+    paths:
+    - "{{{ sssd_conf_dir }}}"
+    patterns: "*.conf"
+  register: sssd_conf_d_files
+
+- name: {{{ rule_title }}} - Modify lines in files in the {{{ sssd_conf_dir }}} directory
+  ansible.builtin.replace:
+    path: "{{ item }}"
+    regexp: '^(\s*\[sssd\].*(?:\n\s*[^[\s].*)*\n\s*services\s*=(?!.*\bpam\b).*)$'
+    replace: '\1,pam'
+  with_items: "{{ sssd_conf_d_files.files | map(attribute='path') }}"
+  register: modify_lines_sssd_conf_d_files
+  when: sssd_conf_d_files.matched is defined and sssd_conf_d_files.matched >= 1
+
+- name: {{{ rule_title }}} - Find {{{ sssd_conf }}}
+  ansible.builtin.stat:
+    path: {{{ sssd_conf }}}
+  register: sssd_conf_file
+
+- name: {{{ rule_title }}} - Modify lines in {{{ sssd_conf }}}
+  ansible.builtin.replace:
+    path: "{{{ sssd_conf }}}"
+    regexp: '^(\s*\[sssd\].*(?:\n\s*[^[\s].*)*\n\s*services\s*=(?!.*\bpam\b).*)$'
+    replace: '\1,pam'
+  register: modify_lines_sssd_conf_file
+  when: sssd_conf_file.stat.exists
+
+- name: {{{ rule_title }}} - Find services key in {{{ sssd_conf }}}
+  ansible.builtin.replace:
+    path: "{{{ sssd_conf }}}"
+    regexp: '^\s*\[sssd\][^\[\]]*?(?:\n(?!\[)[^\n]*?services\s*=)+'
+    replace: ''
+  changed_when: false
+  check_mode: true
+  register: sssd_conf_file_services
+  when: sssd_conf_file.stat.exists
+
+- name: {{{ rule_title }}} - Insert entry to {{{ sssd_conf }}}
+  community.general.ini_file:
+    path: {{{ sssd_conf }}}
+    section: sssd
+    option: services
+    value: pam
+  when:
+  - not modify_lines_sssd_conf_d_files.changed
+  - not modify_lines_sssd_conf_file.changed
+  - (sssd_conf_file_services.msg is defined and "replacements" not in sssd_conf_file_services.msg) or not sssd_conf_file.stat.exists

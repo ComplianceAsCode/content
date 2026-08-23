@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the sge_use_nfs SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>sge_use_nfs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="sge_use_nfs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="sge_use_nfs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: sge_use_nfs

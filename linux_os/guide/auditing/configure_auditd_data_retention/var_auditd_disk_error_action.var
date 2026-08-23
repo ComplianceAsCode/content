@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Action for auditd to take when disk errors'
+
+description: |-
+    'The setting for disk_error_action in /etc/audit/auditd.conf, if multiple
+    values are allowed write them separated by pipes as in "syslog|single|halt",
+    for remediations the first value will be taken'
+
+type: string
+
+interactive: false
+
+options:
+    default: single
+    exec: exec
+    halt: halt
+    single: single
+    suspend: suspend
+    syslog: syslog
+    ignore: ignore
+    ol8: syslog|single|halt
+    rhel8: syslog|single|halt
+    cis_rhel8: syslog|single|halt
+    cis_rhel9: syslog|single|halt
+    cis_rhel10: syslog|single|halt
+    cis_fedora: syslog|single|halt
+    cis_ubuntu2204: syslog|single|halt
+    cis_ubuntu2404: syslog|single|halt
+    cis_debian12: syslog|single|halt
+    cis_debian13: syslog|single|halt

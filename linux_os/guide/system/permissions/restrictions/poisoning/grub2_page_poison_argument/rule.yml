@@ -1,0 +1,50 @@
+documentation_complete: true
+
+
+title: 'Enable page allocator poisoning'
+
+description: |-
+    To enable poisoning of free pages,
+    add the argument <tt>page_poison=1</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("page_poison=1") | indent(4) }}}
+
+rationale: |-
+    Poisoning writes an arbitrary value to freed pages, so any modification or
+    reference to that page after being freed or before being initialized will be
+    detected and prevented.
+    This prevents many types of use-after-free vulnerabilities at little performance cost.
+    Also prevents leak of data and detection of corrupted memory.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80944-2
+    cce@rhel9: CCE-83985-2
+    cce@rhel10: CCE-89086-3
+
+references:
+    nist: CM-6(a)
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000134-GPOS-00068
+    stigid@ol8: OL08-00-010421
+
+ocil_clause: 'page allocator poisoning is not enabled'
+
+ocil: |-
+    {{{ ocil_grub2_argument("page_poison=1") | indent(4) }}}
+
+platform: grub2
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: page_poison
+        arg_value: '1'
+        datatype: int
+        operation: equals
+
+fixtext: |-
+    {{{ describe_grub2_argument("page_poison=1") | indent(4) }}}
+
+srg_requirement:
+  {{{ full_name }}} must clear the page allocator to prevent use-after-free attacks.

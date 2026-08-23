@@ -1,0 +1,60 @@
+documentation_complete: true
+
+title: Ensure journald ForwardToSyslog is disabled
+
+description: |-
+    Data from journald should be kept in the confines of the service and not forwarded to other services.
+
+rationale:
+    If journald is the method for capturing logs, all logs of the system should be
+    handled by journald and not forwarded to other logging mechanisms.
+
+{{% if product in ['ubuntu2404'] %}}
+platform: package[systemd] and service_disabled[rsyslog]
+{{% else %}}
+platform: package[systemd]
+{{% endif %}}
+
+severity: medium
+
+ocil: |-
+    Run the following command to verify that journald is not forwarding logs to syslog.
+    <pre>
+{{%- if product == "sle15" or "rhel" in product or "ubuntu" in product %}}
+    grep "^\sForwardToSyslog" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
+{{% else %}}
+    grep "^\sForwardToSyslog" /etc/systemd/journald.conf
+{{% endif %}}
+    </pre>
+    and it should return
+    <pre>
+    ForwardToSyslog=no
+    </pre>
+
+ocil_clause: 'is commented out or not configured correctly'
+
+identifiers:
+    cce@rhel8: CCE-88250-6
+    cce@rhel10: CCE-88340-5
+    cce@sle15: CCE-92566-9
+
+{{%- if product == "sle15" or "rhel" in product or "ubuntu" in product %}}
+template:
+    name: systemd_dropin_configuration
+    vars:
+        master_cfg_file: /etc/systemd/journald.conf
+        dropin_dir: {{{ journald_conf_dir_path }}}
+        section: Journal
+        param: ForwardToSyslog
+        value: no
+        no_quotes: 'true'
+        missing_config_file_fail: 'false'
+{{% else %}}
+template:
+    name: shell_lineinfile
+    vars:
+        path: /etc/systemd/journald.conf
+        parameter: ForwardToSyslog
+        value: no
+        no_quotes: 'true'
+{{% endif -%}}

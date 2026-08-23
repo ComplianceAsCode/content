@@ -1,0 +1,44 @@
+srg_requirement: |-
+    {{{ full_name }}} registry must contain the latest images with most
+    recent updates and execute within the container platform runtime as
+    authorized by IAVM, CTOs, DTMs, and STIGs.
+
+vuldiscussion: |-
+    It is critical to the security ond stability of the container platform and the software services running on the platform to ensure that images are deployed through a trusted software supply chain. Some key elements to having a trusted supply chain include ensuring that images deployed to the container platform come from known, trusted sources.  Additionally, it is also important to check for and apply security relevant updates in a timely manner.
+
+    In order to help users manage images, OpenShift uses image streams to provide a level of abstraction for the users. In this way the users can trigger automatic redeployments as images are updated. It is also possible to configure the image stream to periodically check the image source repository for any updates and automatically pull in the latest updates.
+
+    The OpenShift platform can be configured to limit and control which image source repositories may be used by the platform and the users of the platform. By configuring this to only allow users to deploy images from trusted sources, lowers the risk for a user to deploy unsafe, or untested images that would be detrimental to the security and stability of the platform.
+
+checktext: |-
+    To list all the imagestreams and identify which imagestream tags are configured to periodically check for updates (imagePolicy = { scheduled: true }) and (kind = DockerImage) run the following command:
+
+    > oc get imagestream --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{range .spec.tags[*]}{"\t"}{.name}{": "}{.importPolicy}{"\t"}{.from}{"\n"}
+
+    You will see an ouput similar to:
+
+    httpd
+            2.4: {}
+            2.4-el7: {}
+            2.4-el8: {}
+            latest: {}
+            : 
+    installer
+            latest: {"scheduled":true}
+            : 
+    installer-artifacts
+            latest: {"scheduled":true}
+            : 
+
+    Review the listing, and for each imagestream tag version that does not have the value '{"scheduled":true}' that should otherwise check for updates, this is a finding.
+
+fixtext: |-
+    For container images that are not scheduled to check for updates that otherwise should, update the imagestream to schedule updates for each tag using the following command.
+
+    > oc patch imagestream <NAME> -n NAMESPACE --type merge -p '{"spec":{"tags":[{"name":"<TAG_NAME>","importPolicy":{"scheduled":true}}]}}' 
+
+    where,
+    NAME: The imagestream name to update
+    NAMESPACE: The namespace the imagestream is in. This will most often be 'openshift'.
+    TAG_NAME: The imagestream tag to update
+

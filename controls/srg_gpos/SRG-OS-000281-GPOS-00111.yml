@@ -1,0 +1,27 @@
+controls:
+    -   id: SRG-OS-000281-GPOS-00111
+        levels:
+            - medium
+        title: {{{ full_name }}} must display an explicit logoff message to users indicating
+            the reliable termination of authenticated communications sessions.
+        status: inherently met
+        rationale: |-
+            If a user cannot explicitly end an operating system session, the session may remain open and be exploited by an attacker; this is referred to as a zombie session.
+            Users need to be aware of whether or not the session has been terminated.
+
+            Information resources to which users gain access via authentication includes for example, local workstations and remote services.
+            Logoff messages can be displayed after authenticated sessions have been terminated. 
+            However, for some types of interactive sessions, including, for example, remote logon, and information systems typically send logoff messages as final messages prior to terminating sessions.
+        check:
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
+        fixtext: |-
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        artifact_description:
+            When logging off from a SSH terminal session, SSH prints "Connection to <host> closed".
+            This is hard coded in client_loop() in clientloop.c, https://github.com/openssh/openssh-portable/blob/master/clientloop.c
+            When the remote ends the connection, a message is also printed. "Connection to <host> closed by remote host". 
+            This message is hard-code in client_process_net_input() in clientloop.c
+        status_justification:
+          {{{ full_name }}} meets this requirement and it is not configurable.

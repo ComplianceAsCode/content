@@ -1,0 +1,89 @@
+documentation_complete: true
+
+title: 'Verify that Shared Library Files Have Restrictive Permissions'
+
+description: |-
+    System-wide shared library files, which are linked to executables
+    during process load time or run time, are stored in the following directories
+    by default:
+    <pre>/lib
+    /lib64
+    /usr/lib
+    /usr/lib64
+    </pre>
+    {{% if product != "hummingbird" %}}
+    Kernel modules, which can be added to the kernel during runtime, are
+    stored in <tt>/lib/modules</tt>.
+    {{% endif %}}
+    All files in these directories should not be group-writable or world-writable.
+    {{% if product != "hummingbird" %}}
+    If any file in these directories is found to be group-writable
+    or world-writable, correct its permission with the following command:
+    <pre>$ sudo chmod go-w <i>FILE</i></pre>
+    {{% endif %}}
+
+rationale: |-
+    Files from shared library directories are loaded into the address
+    space of processes (including privileged ones) or of the kernel itself at
+    runtime. Restrictive permissions are necessary to protect the integrity of the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80815-4
+    cce@rhel9: CCE-83909-2
+    cce@rhel10: CCE-88771-1
+    cce@sle12: CCE-83233-7
+    cce@sle15: CCE-85670-8
+    cce@slmicro5: CCE-94065-0
+    cce@slmicro6: CCE-94690-5
+
+references:
+    cis-csc: 12,13,14,15,16,18,3,5
+    cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
+    isa-62443-2009: 4.3.3.7.3
+    isa-62443-2013: 'SR 2.1,SR 5.2'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: CM-6(a),CM-5(6),CM-5(6).1,AC-6(1)
+    nist-csf: PR.AC-4,PR.DS-5
+    srg: SRG-OS-000259-GPOS-00100
+    stigid@ol8: OL08-00-010330
+    stigid@sle12: SLES-12-010871
+
+ocil_clause: any system-wide shared library file is found to be group-writable or world-writable
+
+ocil: |-
+    Verify the system-wide shared library files contained in the following directories have mode "755" or less permissive with the following command:
+
+    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 -perm /022 -type f -exec ls -l {} \;
+
+template:
+    name: file_permissions
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        recursive: 'true'
+{{% if 'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
+        file_regex: ^.*\.so.*$
+{{% else %}}
+        file_regex: ^.*$
+{{% endif %}}
+        filemode: '7755'
+
+fixtext: |-
+{{%- if 'ubuntu' in product %}}
+    Configure the systemwide shared library files contained in the directories "/lib", "/lib64", "/usr/lib", and "/usr/lib64" to have mode 0755 or less permissive with the following command:
+
+    <pre>$ sudo find /lib /lib64 /usr/lib /usr/lib64 -type f -name '*.so*' -perm /022 -exec chmod go-w {} +</pre>
+{{%- else %}}
+    Configure the library files to be protected from unauthorized access. Run the following command, replacing "[FILE]" with any library file with a mode more permissive than 755.
+
+    $ sudo chmod 755 [FILE]
+{{%- endif %}}
+
+srg_requirement:
+    {{{ full_name }}} library directories must have mode 755 or less permissive.

@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Record Successful Access Attempts to Files - openat'
+
+description: |-
+    At a minimum, the audit system should collect unauthorized file
+    accesses for all users and root. If the <tt>auditd</tt> daemon is configured
+    to use the <tt>augenrules</tt> program to read audit rules during daemon
+    startup (the default), add the following lines to a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+
+    <pre>-a always,exit -F arch=b32 -S openat -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-access</pre>
+
+    If the system is 64 bit then also add the following lines:
+    <pre>-a always,exit -F arch=b64 -S openat -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-access</pre>
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following lines to
+    <tt>/etc/audit/audit.rules</tt> file:
+    <pre>-a always,exit -F arch=b32 -S openat -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-access</pre>
+
+    If the system is 64 bit then also add the following lines:
+    <pre>-a always,exit -F arch=b64 -S openat -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-access</pre>
+
+rationale: |-
+    File access attempts could be an indicator of malicious activity on a system. Auditing
+    these events could serve as evidence of potential system compromise.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82010-0
+
+{{{ complete_ocil_entry_audit_successful_syscall(syscall="openat") }}}
+
+warnings:
+    - general: |-
+        Note that these rules can be configured in a
+        number of ways while still achieving the desired effect. Here the system calls
+        have been placed independent of other system calls. Grouping these system
+        calls with others as identifying earlier in this guide is more efficient.
+

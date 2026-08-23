@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: "Install pam-runtime Package"
+
+description: |-
+    {{{ describe_package_install(package="libpam-runtime") }}}
+
+rationale: |-
+    libpam-runtime contains configuration that is needed
+    by other rules when configuring PAM options.
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libpam-runtime
+        evr@ubuntu2204: 0:1.4.0-11
+        evr@ubuntu2404: 0:1.5.3-5
+        evr@debian12: 0:1.5.2-6

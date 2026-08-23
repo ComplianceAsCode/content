@@ -1,0 +1,19 @@
+controls:
+- id: SRG-APP-000234-CTR-000590
+  levels:
+  - medium
+  title: {{{ full_name }}} must never automatically remove or disable emergency
+    accounts.
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  status: inherently met
+  status_justification: |-
+    No users are ever created or removed automatically. Any manually created
+    emergency accounts would persist, and it is recommended that normal
+    cluster authentication be delegated to an external IdP as recommended
+    in SRG-APP-000023-CTR-000055.
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://docs.openshift.com/container-platform/latest/post_installation_configuration/preparing-for-users.html

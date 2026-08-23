@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the kdumpgui_run_bootloader SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>kdumpgui_run_bootloader</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="kdumpgui_run_bootloader") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="kdumpgui_run_bootloader") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: kdumpgui_run_bootloader

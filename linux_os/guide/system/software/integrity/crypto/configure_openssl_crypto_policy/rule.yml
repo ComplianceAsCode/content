@@ -1,0 +1,69 @@
+documentation_complete: true
+
+
+title: 'Configure OpenSSL library to use System Crypto Policy'
+
+{{%- if 'sle' in product %}}
+  {{%- set openssl_cnf_path="/etc/ssl/openssl.cnf" %}}
+{{%- else %}}
+  {{%- set openssl_cnf_path="/etc/pki/tls/openssl.cnf" %}}
+{{%- endif %}}
+
+{{% if product in ["fedora", "ol9", "rhel9"] %}}
+    {{% set include_directive = ".include = /etc/crypto-policies/back-ends/opensslcnf.config" %}}
+{{% else %}}
+    {{% set include_directive = ".include /etc/crypto-policies/back-ends/opensslcnf.config" %}}
+{{% endif %}}
+
+description: |-
+    Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
+    OpenSSL is supported by crypto policy, but the OpenSSL configuration may be
+    set up to ignore it.
+    To check that Crypto Policies settings are configured correctly, you have to examine the OpenSSL config file
+    available under <tt>{{{ openssl_cnf_path }}}</tt>.
+    This file has the <tt>ini</tt> format, and it enables crypto policy support
+    if there is a <tt>[ crypto_policy ]</tt> section that contains the <tt>{{{ include_directive }}}</tt> directive.
+
+rationale: |-
+    Overriding the system crypto policy makes the behavior of the Java runtime violates expectations,
+    and makes system configuration more fragmented.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82545-5
+    cce@rhel8: CCE-80938-4
+    cce@rhel9: CCE-83452-3
+    cce@rhel10: CCE-88980-8
+    cce@sle12: CCE-91638-7
+    cce@sle15: CCE-85794-6
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1,CIP-007-3 R7.1
+    nist: AC-17(a),AC-17(2),CM-6(a),MA-4(6),SC-13,SC-12(2),SC-12(3)
+    ospp: FCS_CKM.1,FCS_CKM.1.1,FCS_CKM.2,FCS_COP.1/ENCRYPT,FCS_COP.1/HASH,FCS_COP.1/SIGN,FCS_COP.1/KEYHMAC,FCS_TLSC_EXT.1,FCS_TLSC_EXT.1.1
+    pcidss: Req-2.2
+    srg: SRG-OS-000250-GPOS-00093
+
+ocil_clause: |-
+    the OpenSSL config file doesn't contain the whole section,
+    or the section doesn't contain the <pre>{{{ include_directive }}}</pre> directive
+
+ocil: |-
+    To verify that OpenSSL uses the system crypto policy, check out that the OpenSSL config file
+    <pre>{{{ openssl_cnf_path }}}</pre> contains the <pre>[ crypto_policy ]</pre> section with the
+    <pre>{{{ include_directive }}}</pre> directive:
+
+    <pre>$ sudo grep '\.include\s* /etc/crypto-policies/back-ends/opensslcnf.config$' {{{ openssl_cnf_path }}}</pre>.
+
+fixtext: |-
+    Configure OpenSSL to use the system cryptography policy.
+
+    Add or edit the "[ crypto_policy ]" section in "{{{ openssl_cnf_path }}}" to contain the following line:
+
+    {{{ include_directive }}}
+
+srg_requirement: |-
+    {{{ full_name }}} must implement approved encryption in the OpenSSL package.
+
+platform: package[openssl]

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the staff_use_svirt SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>staff_use_svirt</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="staff_use_svirt") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="staff_use_svirt") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: staff_use_svirt

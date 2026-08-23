@@ -1,0 +1,15 @@
+---
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_rhcos
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - contents:
+          source: data:,%23%23%20These%20rules%20watch%20for%20kernel%20module%20insertion.%20By%20monitoring%0A%23%23%20the%20syscall%2C%20we%20do%20not%20need%20any%20watches%20on%20programs.%0A-a%20always%2Cexit%20-F%20arch%3Db64%20-S%20init_module%2Cfinit_module%20-F%20key%3Dmodule-load%0A-a%20always%2Cexit%20-F%20arch%3Db64%20-S%20delete_module%20-F%20key%3Dmodule-unload%0A
+        mode: 0600
+        path: /etc/audit/rules.d/43-module-load.rules
+        overwrite: true

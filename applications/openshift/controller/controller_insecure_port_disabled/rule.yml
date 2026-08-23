@@ -1,0 +1,75 @@
+documentation_complete: true
+
+
+title: 'Ensure Controller insecure port argument is unset'
+
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["port"]!=null then .extendedArguments["port"]==["0"] else true end]' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--port=[1-9]*[1-9]+") )] | length | if . == 0 then true else false end]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+
+description: |-
+    To ensure the Controller Manager service is bound to secure loopback
+    address and a secure port,
+    set the <tt>RotateKubeletServerCertificate</tt> option to <tt>true</tt>
+    in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "port": ["0"],
+    ...
+    </pre>
+    It is also acceptable for a system to deprecate the insecure port:
+    <pre>
+    "extendedArguments": {
+    ...
+    ...
+    </pre>
+
+rationale: |-
+    The Controller Manager API service is used for health and metrics
+    information and is available without authentication or encryption. As such, it
+    should only be bound to a localhost interface to minimize the cluster's
+    attack surface.
+
+severity: low
+
+identifiers:
+    cce@ocp4: CCE-83578-5
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: |-
+    <tt>port</tt> is not disabled
+
+ocil: |-
+    To verify that <tt>port</tt> is configured correctly,
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq '{{{ jqfilter }}}'</pre>
+    Verify that it's true in the console output (the value will be true if the insecure port is bind to loopback address or disabled) .
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1),SC-8,SC-8(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: "[:]"
+    values:
+      - value: "true"
+        operation: "equals"

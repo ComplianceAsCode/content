@@ -1,0 +1,39 @@
+documentation_complete: true
+
+
+title: 'Prevent user from disabling the screen lock'
+
+description: |-
+    The <tt>tmux</tt> terminal multiplexer is used to implement
+    automatic session locking. It should not be listed in
+    <tt>/etc/shells</tt>.
+
+rationale: |-
+    Not listing <tt>tmux</tt> among permitted shells
+    prevents malicious program running as user
+    from lowering security by disabling the screen lock.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82361-7
+    cce@rhel9: CCE-89538-3
+    cce@rhel10: CCE-86967-7
+
+references:
+    nist: CM-6
+    ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
+    srg: SRG-OS-000324-GPOS-00125,SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
+
+ocil_clause: 'tmux is listed in /etc/shells'
+
+ocil: |-
+    To verify that tmux is not listed as allowed shell on the system
+    run the following command:
+    <pre>$ grep 'tmux$' /etc/shells</pre>
+    The output should be empty.
+
+fixtext: |-
+    Edit the file "/etc/shells" and remove any line that ends in "tmux".
+
+srg_requirement: '{{{ full_name }}} must prevent users from disabling session control mechanisms.'

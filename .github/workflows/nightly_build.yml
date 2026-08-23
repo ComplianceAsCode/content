@@ -1,0 +1,42 @@
+name: Nightly builds with OVAL 5.11
+on:
+    schedule:
+        # Run daily at 03:00
+        -   cron: "0 3 * * *"
+permissions:
+    contents: read
+jobs:
+    nightly-fedora:
+        name: Nightly build on Fedora Latest (Container)
+        runs-on: ubuntu-latest
+        container:
+            image: fedora:latest
+        steps:
+            -   name: Install Dependencies
+                run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible-lint libxslt ansible python3-setuptools
+            -   name: Checkout
+                uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
+            -   name: Install python deps
+                run: pip install -r requirements-base.txt -r test-requirements.txt
+            -   name: Configure
+                run: cmake -G Ninja ..
+                working-directory: ./build
+            -   name: Build All
+                run: ninja -j$(nproc) all
+                working-directory: ./build
+            -   name: Build ZIP
+                run: ninja -j$(nproc) zipfile
+                working-directory: ./build
+            -   name: Test
+                run: ctest -j$(nproc) --output-on-failure -E linkchecker
+                working-directory: ./build
+            -   name: Build Package Source
+                run: ninja -j$(nproc) package_source
+                working-directory: ./build
+            -   name: 'Upload Artifact'
+                uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+                with:
+                  name: Nightly Build
+                  path: |
+                        build/zipfile/scap-security-guide-*.zip
+                        build/zipfile/scap-security-guide-*.zip.sha512

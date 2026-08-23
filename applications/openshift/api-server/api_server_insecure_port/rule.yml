@@ -1,0 +1,66 @@
+documentation_complete: true
+
+
+title: 'Prevent Insecure Port Access'
+
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '.data."config.json" | fromjson' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    By default, traffic for the OpenShift API server is served over
+    HTTPS with authentication and authorization, and the secure API endpoint
+    is bound to <tt>0.0.0.0:8443</tt>. To ensure that the insecure port configuration
+    has not been enabled, the <tt>insecure-port</tt> parameter should be set to 0.
+    Edit the <tt>openshift-kube-apiserver</tt> configmap and change the
+    <tt>insecure-port</tt> value to 0:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "insecure-port":[
+        "1234"
+      ],
+      ...
+    </pre>
+
+rationale: |-
+    Configuring the API Server on an insecure port would allow unauthenticated
+    and unencrypted access to your master node(s). It is assumed firewall rules
+    will be configured to ensure this port is not reachable from outside
+    the cluster, however as a defense in depth measure, OpenShift should not
+    be configured to use insecure ports.
+
+identifiers:
+  cce@ocp4: CCE-83813-6
+
+platform: (ocp4.6 or ocp4.7 or ocp4.8 or ocp4.9 or ocp4.10) and not ocp4-on-hypershift-hosted
+
+severity: medium
+
+
+ocil_clause: '<tt>insecure-port</tt> setting exists'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-port"]'</pre>
+    The output should return <pre>0</pre>.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "all"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["insecure-port"][:]'
+    values:
+    - value: '0'
+      operation: "pattern match"
+      type: "string"

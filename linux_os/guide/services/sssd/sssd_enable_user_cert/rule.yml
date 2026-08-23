@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable Certificates Mapping in SSSD'
+
+description: |-
+   SSSD needs to be set up to link the authenticated identity to the user or group account
+   for PKI-based authentication. To implement this, confirm that the /etc/sssd/sssd.conf
+   file contains the following line
+   <pre>
+   ldap_user_certificate=userCertificate;binary
+   </pre>
+
+rationale: |-
+   Without mapping the certificate used to authenticate to the user account, the ability to
+   determine the identity of the individual user or group will not be available for forensic
+   analysis.
+
+severity: medium
+
+platform: package[sssd]

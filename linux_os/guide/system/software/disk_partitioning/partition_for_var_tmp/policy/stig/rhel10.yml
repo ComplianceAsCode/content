@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} must use a separate file system for "/var/tmp".
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a separate file system for the "/var/tmp" path by migrating "/var/tmp" onto a separate file system.
+
+checktext: |-
+    Verify {{{ full_name }}} uses a separate file system/partition for "/var/tmp" with the following command:
+
+    $ mount | grep /var/tmp
+    /dev/mapper/luks-c98555c8-0462-4b97-9afa-6db8c4bfee3b on /var/tmp type xfs (rw,nosuid,nodev,noexec,relatime,seclabel,attr2)
+    Note: Options displayed for mount may differ.
+
+    If a separate entry for "/var/tmp" is not in use, this is a finding.
+
+vuldiscussion: |-
+    The "/var/tmp" partition is used as temporary storage by many programs. Placing "/var/tmp" in its own partition enables the setting of more restrictive mount options, which can help protect programs that use it.

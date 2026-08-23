@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} must configure dnf-automatic to Install Available Updates Automatically.
+
+
+vuldiscussion: |-
+    Using automated tools to support patch management helps to ensure the timeliness and
+    completeness of system patching operations.
+
+checktext: |-
+    To verify that packages comprising the available updates will be automatically installed by dnf-automatic, run the following command:
+
+    $ sudo grep apply_updates /etc/dnf/automatic.conf
+
+    The output should return the following:
+
+    apply_updates = yes
+
+    If apply_updates line is missing, commented out, or not set to "yes", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to automatically apply updates.
+
+    Edit the file "/etc/dnf/automatic.conf" and add the following:
+
+    apply_updates = yes

@@ -1,0 +1,44 @@
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+{{{ ansible_instantiate_variables("var_screensaver_lock_delay") }}}
+
+- name: "Set GNOME3 Screensaver Lock Delay After Activation Period"
+  community.general.ini_file:
+    mode: 0644
+{{% if product in ['sle15', 'sle16'] %}}
+    dest: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings"
+{{% else %}}
+    dest: "/etc/dconf/db/local.d/00-security-settings"
+{{% endif %}}
+    section: "org/gnome/desktop/screensaver"
+    option: lock-delay
+    value: "uint32 {{ var_screensaver_lock_delay }}"
+    create: yes
+    no_extra_spaces: yes
+  register: result_ini
+
+{{% if product in ['sle15', 'sle16'] %}}
+- name: "Prevent user modification of GNOME Screensaver Lock Delay"
+  ansible.builtin.lineinfile:
+    path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/screensaver/lock-delay$'
+    line: '/org/gnome/desktop/screensaver/lock-delay'
+    create: yes
+    mode: 0644
+  register: result_lineinfile
+{{% endif %}}
+
+- name: Dconf Update
+  ansible.builtin.command: dconf update
+{{% if product in ['sle15', 'sle16'] %}}
+  when: result_ini is changed or result_lineinfile is changed
+{{% else %}}
+  when: result_ini is changed
+{{% endif %}}
+
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ ansible_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}

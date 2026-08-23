@@ -1,0 +1,11 @@
+name: tmux
+packages:
+- tmux
+rules:
+- configure_bashrc_exec_tmux
+- configure_bashrc_tmux
+- configure_tmux_lock_command
+- configure_tmux_lock_after_time
+- configure_tmux_lock_keybinding
+- no_tmux_in_shells
+- package_tmux_installed

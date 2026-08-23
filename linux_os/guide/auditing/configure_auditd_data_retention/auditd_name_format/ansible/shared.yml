@@ -1,0 +1,24 @@
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{%- if product in ["ol7"] %}}
+  {{%- set auditd_conf_path=audisp_conf_path + "/audispd.conf" %}}
+{{%- else %}}
+  {{%- set auditd_conf_path=audisp_conf_path + "/auditd.conf" %}}
+{{%- endif %}}
+
+{{{ ansible_instantiate_variables("var_auditd_name_format") }}}
+
+- name: "{{{ rule_title }}} - Define Value to Be Used in the Remediation"
+  ansible.builtin.set_fact: auditd_name_format_split="{{ var_auditd_name_format.split('|')[0] }}"
+
+{{{ ansible_set_config_file(file=auditd_conf_path,
+                  parameter="name_format",
+                  value="{{ auditd_name_format_split }}",
+                  create=true,
+                  separator=" = ",
+                  separator_regex="\s*=\s*",
+                  prefix_regex="(?i)^\s*", rule_title=rule_title) }}}

@@ -1,0 +1,18 @@
+<def-group>
+  <definition class="inventory" id="bootc_build" version="1">
+    {{{ oval_metadata("Bootable container image being built", affected_platforms=["multi_platform_all"], rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <extend_definition comment="The scan target is a bootc environment" definition_ref="bootc" />
+      <criterion comment="/run/ostree-booted does not exist, so this is not a running bootc system" test_ref="bootc_build_platform_test_run_ostree_booted_absent" />
+    </criteria>
+  </definition>
+
+  <unix:file_test id="bootc_build_platform_test_run_ostree_booted_absent" check="all" check_existence="none_exist" comment="The file /run/ostree-booted does not exist" version="1">
+    <unix:object object_ref="bootc_build_platform_obj_run_ostree_booted_absent" />
+  </unix:file_test>
+
+  <unix:file_object id="bootc_build_platform_obj_run_ostree_booted_absent" comment="The file /run/ostree-booted" version="1">
+    <unix:filepath operation="equals">/run/ostree-booted</unix:filepath>
+  </unix:file_object>
+
+</def-group>

@@ -1,0 +1,58 @@
+documentation_complete: true
+
+title: 'Configure System to Forward All Mail For The Root Account'
+
+description: |-
+    Make sure that mails delivered to root user are forwarded to a monitored
+    email address. Make sure that the address
+    {{{ xccdf_value("var_postfix_root_mail_alias") }}} is a valid email address
+    reachable from the system in question. Use the following command to
+    configure the alias:
+    <pre>$ sudo echo "root: {{{ xccdf_value("var_postfix_root_mail_alias") }}}" &gt;&gt; /etc/aliases
+    $ sudo newaliases</pre>
+
+rationale: |-
+    A number of system services utilize email messages sent to the root user to
+    notify system administrators of active or impending issues.  These messages must
+    be forwarded to at least one monitored email address.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82381-5
+    cce@rhel9: CCE-90826-9
+    cce@rhel10: CCE-87937-9
+    cce@sle12: CCE-83031-5
+    cce@sle15: CCE-85605-4
+    cce@sle16: CCE-95842-1
+    cce@slmicro5: CCE-93678-1
+    cce@slmicro6: CCE-94656-6
+
+references:
+    nist: CM-6(a)
+    nist@sle12: AU-5(a),AU-5.1(ii)
+    srg: SRG-OS-000046-GPOS-00022
+    stigid@sle12: SLES-12-020050
+
+
+ocil_clause: 'the alias is not set'
+
+ocil: |-
+    Find the list of alias maps used by the Postfix mail server:
+    <pre>$ sudo postconf alias_maps</pre>
+    Query the Postfix alias maps for an alias for the <i>root</i> user:
+    <pre>$ sudo postmap -q root hash:/etc/aliases</pre>
+    The output should return an alias.
+
+fixtext: |-
+    Configure a valid email address as an alias for the root account.
+
+    Append the following line to "/etc/aliases":
+
+    root: {{{ xccdf_value("var_postfix_root_mail_alias") }}}
+
+    Then, run the following command:
+
+    $ sudo newaliases
+
+srg_requirement: 'The {{{ full_name }}} Information System Security Officer (ISSO) and System Administrator (SA) (at a minimum) must have mail aliases to be notified of an audit processing failure.'

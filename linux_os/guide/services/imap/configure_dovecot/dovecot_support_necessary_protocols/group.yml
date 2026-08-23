@@ -1,0 +1,5 @@
+documentation_complete: true
+
+title: 'Support Only the Necessary Protocols'
+
+description: "Dovecot supports the IMAP and POP3 protocols, as well as \nSSL-protected versions of those protocols. Configure the Dovecot server \nto support only the protocols needed by your site. Edit <tt>/etc/dovecot/dovecot.conf</tt>. \nAdd or correct the following lines, replacing <tt>PROTOCOL</tt> with \nonly the subset of protocols (<tt>imap</tt>, <tt>imaps</tt>, \n<tt>pop3</tt>, <tt>pop3s</tt>) required:\n<pre>protocols = PROTOCOL</pre>\nIf possible, require SSL protection for all transactions. The SSL \nprotocol variants listen on alternate ports (995 instead of 110 for \npop3s, and 993 instead of 143 for imaps), and require SSL-aware clients. \nAn alternate approach is to listen on the standard port and require the \nclient to use the STARTTLS command before authenticating."

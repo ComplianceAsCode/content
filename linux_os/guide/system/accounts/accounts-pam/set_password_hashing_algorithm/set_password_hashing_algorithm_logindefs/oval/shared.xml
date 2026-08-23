@@ -1,0 +1,64 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("The password hashing algorithm should be set correctly in " + login_defs_path + ".", rule_title=rule_title) }}}
+    {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion comment="Check ENCRYPT_METHOD in {{{ login_defs_drop_in_path }}} is not set"
+            test_ref="test_password_hashing_algorithm_drop_in_path_not_set"/>
+        <criterion comment="Check ENCRYPT_METHOD should be set appropriately in {{{ login_defs_path }}}"
+            test_ref="test_password_hashing_algorithm_logindefs"/>
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="Check ENCRYPT_METHOD should be set appropriately in {{{ login_defs_drop_in_path }}}"
+          test_ref="test_password_hashing_algorithm_logindefs_drop_in_path"/>
+      </criteria>
+    </criteria>
+    {{% else %}}
+    <criteria operator="AND">
+       <criterion test_ref="test_password_hashing_algorithm_logindefs"/>
+    </criteria>
+    {{% endif %}}
+  </definition>
+
+{{{
+oval_param_in_file_variable_test(
+    filepath=login_defs_path,
+    parameter="ENCRYPT_METHOD",
+    pattern="^[\s]*(?i)(ENCRYPT_METHOD[\s]+\w+)[\s]*(?:#.*)?$",
+    regex_capture="ENCRYPT_METHOD\s+(\w+)",
+    operation="pattern match",
+    type="string",
+    test_id="test_password_hashing_algorithm_logindefs",
+    variable="var_password_hashing_algorithm"
+)
+}}}
+{{% set login_defs_drop_in_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) %}}
+{{{
+oval_param_in_file_variable_test(
+    filepath=login_defs_drop_in_config_dir,
+    filename_regex=".*\.defs$",
+    parameter="ENCRYPT_METHOD",
+    pattern="^[\s]*(?i)(ENCRYPT_METHOD[\s]+\w+)[\s]*(?:#.*)?$",
+    regex_capture="ENCRYPT_METHOD\s+(\w+)",
+    operation="pattern match",
+    type="string",
+    test_id="test_password_hashing_algorithm_logindefs_drop_in_path",
+    variable="var_password_hashing_algorithm"
+)
+}}}
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      comment="Check ENCRYPT_METHOD in {{{ login_defs_drop_in_path }}} is not set"
+      id="test_password_hashing_algorithm_drop_in_path_not_set">
+    <ind:object object_ref="object_password_hashing_algorithm_drop_in_path_not_set" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_password_hashing_algorithm_drop_in_path_not_set" version="1">
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*ENCRYPT_METHOD\s*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

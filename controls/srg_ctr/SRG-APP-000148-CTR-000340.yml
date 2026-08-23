@@ -1,0 +1,21 @@
+controls:
+- id: SRG-APP-000148-CTR-000340
+  levels:
+  - medium
+  title: {{{ full_name }}} application program interface (API) must uniquely
+    identify and authenticate users.
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  status: inherently met
+  status_justification: |-
+    Users of the OpenShift Platform must be uniquely identified and
+    authenticated in order to access the platform's console. Anonymous
+    users are prohibited, and authorization is enforced by the platform's
+    RBAC policies. Refer to
+    https://docs.openshift.com/container-platform/latest/authentication/index.html
+    for more information.
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://docs.openshift.com/container-platform/latest/authentication/index.html

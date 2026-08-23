@@ -1,0 +1,73 @@
+documentation_complete: true
+
+title: 'Verify that Shared Library Directories Have Root Ownership'
+
+description: |-
+    System-wide shared library files, which are linked to executables
+    during process load time or run time, are stored in the following directories
+    by default:
+    <pre>/lib
+    /lib64
+    /usr/lib
+    /usr/lib64
+    </pre>
+    {{% if product != "hummingbird" %}}
+    Kernel modules, which can be added to the kernel during runtime, are also
+    stored in <tt>/lib/modules</tt>.
+    {{% endif %}}
+    All files in these directories should be owned by the <tt>root</tt> user.
+    {{% if product != "hummingbird" %}}
+    If the directories are found to be owned by a user other than root correct
+    its ownership with the following command:
+    <pre>$ sudo chown root <i>DIR</i></pre>
+    {{% endif %}}
+
+rationale: |-
+    Files from shared library directories are loaded into the address
+    space of processes (including privileged ones) or of the kernel itself at
+    runtime. Proper ownership of library directories is necessary to protect
+    the integrity of the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89021-0
+    cce@rhel9: CCE-89022-8
+    cce@rhel10: CCE-89745-4
+    cce@sle12: CCE-83236-0
+    cce@sle15: CCE-85735-9
+    cce@slmicro5: CCE-94068-4
+    cce@slmicro6: CCE-94693-9
+
+references:
+    nist: CM-5(6),CM-5(6).1
+    srg: SRG-OS-000259-GPOS-00100
+    stigid@ol8: OL08-00-010341
+    stigid@sle12: SLES-12-010874
+
+ocil_clause: any system-wide shared library directory is not owned by root
+
+ocil: |-
+    Verify the system-wide shared library directories are owned by "root" with the following command:
+
+    $ sudo find /lib /lib64 /usr/lib /usr/lib64 ! -user root -type d -exec stat -c "%n %U" '{}' \;
+
+template:
+    name: file_owner
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        recursive: 'true'
+        uid_or_name: '0'
+
+fixtext: |-
+    Configure the system-wide shared library directories within (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.
+
+    Run the following command, replacing "[DIRECTORY]" with any library directory not owned by "root".
+
+    $ sudo chown root [DIRECTORY]
+
+srg_requirement: '{{{ full_name }}} library directories must be owned by root.'

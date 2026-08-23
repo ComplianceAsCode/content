@@ -1,0 +1,61 @@
+documentation_complete: true
+
+
+title: 'Uninstall rsh Package'
+
+description: |-
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
+    The <tt>rsh</tt> package contains the client commands
+    {{% else %}}
+    The <tt>rsh-client</tt> package contains the client commands
+    {{% endif %}}
+    for the rsh services
+
+rationale: |-
+    These legacy clients contain numerous security exposures and have
+    been replaced with the more secure SSH package. Even if the server is removed,
+    it is best to ensure the clients are also removed to prevent users from
+    inadvertently attempting to use these commands and therefore exposing
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
+    their credentials. Note that removing the <tt>rsh</tt> package removes
+    {{% else %}}
+    their credentials. Note that removing the <tt>rsh-client</tt> package removes
+    {{% endif %}}
+    the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: CCE-82183-5
+    cce@rhel9: CCE-84142-9
+    cce@rhel10: CCE-90124-9
+    cce@sle12: CCE-91454-9
+    cce@sle15: CCE-85760-7
+    cce@slmicro5: CCE-93901-7
+
+references:
+    cis@sle12: 2.3.2
+    cis@sle15: 2.3.2
+    cui: 3.1.13
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    iso27001-2013: A.8.2.3,A.13.1.1,A.13.2.1,A.13.2.3,A.14.1.2,A.14.1.3
+
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+ocil: '{{{ describe_package_remove(package="rsh") }}}'
+{{% else %}}
+ocil: '{{{ describe_package_remove(package="rsh-client") }}}'
+{{% endif %}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: rsh
+        pkgname@debian13: rsh-client
+        pkgname@ubuntu2204: rsh-client
+        pkgname@ubuntu2404: rsh-client
+
+{{% if product in ["rhel8", "rhel9"] %}}
+warnings:
+    - general:
+        The package is not available in {{{ full_name }}}.
+{{% endif %}}

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: 'Uninstall pigz Package'
+
+description: |-
+    {{{ describe_package_remove(package="pigz") }}}
+
+rationale: |-
+    Binaries shipped in <tt>pigz</tt> package in {{{ full_name }}}
+    have not been compiled using recommended compiler flags. The binaries
+    are compiled without sufficient stack protection and its address space
+    layout randomization (ASLR) is weak.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82397-1
+
+references:
+    srg: SRG-OS-000433-GPOS-00192
+
+{{{ complete_ocil_entry_package_removed("pigz") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: pigz

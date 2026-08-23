@@ -1,0 +1,53 @@
+documentation_complete: true
+
+
+title: 'Disable All GNOME3 Thumbnailers'
+
+description: |-
+    The system's default desktop environment, GNOME3, uses
+    a number of different thumbnailer programs to generate thumbnails
+    for any new or modified content in an opened folder. To disable the
+    execution of these thumbnail applications, add or set <tt>disable-all</tt>
+    to <tt>true</tt> in <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
+    For example:
+    <pre>[org/gnome/desktop/thumbnailers]
+    disable-all=true</pre>
+    Once the settings have been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/desktop/thumbnailers/disable-all</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+    This effectively prevents an attacker from gaining access to a
+    system through a flaw in GNOME3's Nautilus thumbnail creators.
+
+rationale: |-
+    An attacker with knowledge of a flaw in a GNOME3 thumbnailer application could craft a malicious
+    file to exploit this flaw. Assuming the attacker could place the malicious file on the local filesystem
+    (via a web upload for example) and assuming a user browses the same location using Nautilus, the
+    malicious file would exploit the thumbnailer with the potential for malicious code execution. It
+    is best to disable these thumbnailer applications unless they are explicitly required.
+
+severity: unknown
+
+identifiers:
+    cce@rhel9: CCE-88714-1
+
+references:
+    cis-csc: 11,14,3,9
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
+    isa-62443-2009: 4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
+    nist: CM-7(a),CM-7(b),CM-6(a)
+    nist-csf: PR.IP-1,PR.PT-3
+
+ocil_clause: 'GNOME thumbnailers are not disabled'
+
+ocil: |-
+    These settings can be verified by running the following:
+    <pre>$ gsettings get org.gnome.desktop.thumbnailers disable-all</pre>
+    If properly configured, the output should be <tt>true</tt>.
+    To ensure that users cannot how long until the screensaver locks, run the following:
+    <pre>$ grep disable-all /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/desktop/thumbnailers/disable-all</tt>
+

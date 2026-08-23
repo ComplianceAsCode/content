@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable the cron_userdomain_transition SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>cron_userdomain_transition</tt> is enabled.
+    This setting should be enabled as end user cron jobs run in their default
+    associated user domain(s) instead of the general cronjob domain.
+    {{{ describe_sebool_enable(sebool="cron_userdomain_transition") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="cron_userdomain_transition") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: cron_userdomain_transition

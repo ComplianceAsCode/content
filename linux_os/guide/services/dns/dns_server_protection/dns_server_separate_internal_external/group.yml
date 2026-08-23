@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Run Separate DNS Servers for External and Internal Queries'
+
+description: |-
+    Is it possible to run external and internal nameservers on
+    separate systems? If so, follow the configuration guidance in this section. On
+    the external nameserver, edit <tt>/etc/named.conf</tt> to add or correct the
+    following directives:
+    <pre>options {
+      allow-query { any; };
+      recursion no;
+      ...
+    };
+    zone "example.com " IN {
+      ...
+    };</pre>
+    On the internal nameserver, edit <tt>/etc/named.conf</tt>. Add or correct the
+    following directives, where SUBNET is the numerical IP representation of your
+    organization in the form xxx.xxx.xxx.xxx/xx:
+    <pre>acl internal {
+      SUBNET ;
+      localhost;
+    };
+    options {
+      allow-query { internal; };
+      ...
+    };
+    zone "internal.example.com " IN {
+      ...
+    };</pre>

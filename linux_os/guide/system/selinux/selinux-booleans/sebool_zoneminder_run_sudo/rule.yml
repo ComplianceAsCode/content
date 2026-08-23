@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the zoneminder_run_sudo SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>zoneminder_run_sudo</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="zoneminder_run_sudo") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="zoneminder_run_sudo") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: zoneminder_run_sudo

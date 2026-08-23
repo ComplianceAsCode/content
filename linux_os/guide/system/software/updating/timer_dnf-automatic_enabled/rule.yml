@@ -1,0 +1,37 @@
+documentation_complete: true
+
+
+title: 'Enable dnf-automatic Timer'
+
+description: |-
+    {{{ describe_timer_enable(timer="dnf-automatic") }}}
+
+rationale: |-
+    The <tt>dnf-automatic</tt> is an alternative command line interface (CLI) to <tt>dnf upgrade</tt> with specific facilities to make it suitable to be executed automatically and regularly from systemd timers, cron jobs and similar.
+    The tool is controlled by <tt>dnf-automatic.timer</tt> SystemD timer.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82360-9
+    cce@rhel9: CCE-83459-8
+    cce@rhel10: CCE-90249-4
+    cce@sle12: CCE-91481-2
+    cce@sle15: CCE-91164-4
+
+references:
+    nist: SI-2(5),CM-6(a),SI-2(c)
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000191-GPOS-00080
+
+ocil_clause: 'the dnf-automatic.timer is not enabled'
+
+ocil: "{{{ ocil_timer_enabled(timer='dnf-automatic') }}}"
+
+platform: not bootc and not container
+
+template:
+    name: timer_enabled
+    vars:
+        timername: dnf-automatic
+        packagename: dnf-automatic

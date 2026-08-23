@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Disable the telepathy_tcp_connect_generic_network_ports SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>telepathy_tcp_connect_generic_network_ports</tt> is enabled.
+    This setting should be disabled as <tt>telepathy</tt> should not connect to any generic network
+    ports.
+    {{{ describe_sebool_disable(sebool="telepathy_tcp_connect_generic_network_ports") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="telepathy_tcp_connect_generic_network_ports") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: telepathy_tcp_connect_generic_network_ports

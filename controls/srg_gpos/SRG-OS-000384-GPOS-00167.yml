@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000384-GPOS-00167
+        levels:
+            - medium
+        title: {{{ full_name }}}, for PKI-based authentication, must implement a local
+            cache of revocation data to support path discovery and validation in case of the
+            inability to access revocation information via the network.
+        status: manual
+        rules:
+            - sssd_has_trust_anchor

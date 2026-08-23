@@ -1,0 +1,21 @@
+check_type: Platform
+
+failure_reason: |-
+    One or more 'VirtualMachine' resources request GPU or host-device
+    passthrough ('.spec.template.spec.domain.devices.gpus' or
+    '.spec.template.spec.domain.devices.hostDevices'), giving guests direct
+    access to host hardware.
+
+inputs:
+  - name: vms
+    kubernetes_input_spec:
+      api_version: kubevirt.io/v1
+      resource: virtualmachines
+
+expression: |
+  vms.items.all(v,
+      (!has(v.spec.template.spec.domain.devices) || (
+        (!has(v.spec.template.spec.domain.devices.gpus) || size(v.spec.template.spec.domain.devices.gpus) == 0) &&
+        (!has(v.spec.template.spec.domain.devices.hostDevices) || size(v.spec.template.spec.domain.devices.hostDevices) == 0)
+      ))
+  )

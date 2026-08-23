@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Minimize Served Information'
+
+description: |-
+    Edit /etc/dhcp/dhcpd.conf. Examine each address range section within
+    the file, and ensure that the following options are not defined unless there is
+    an operational need to provide this information via DHCP:
+    <pre>option domain-name
+    option domain-name-servers
+    option nis-domain
+    option nis-servers
+    option ntp-servers
+    option routers
+    option time-offset</pre>
+
+rationale: |-
+    Because the configuration information provided by the DHCP server
+    could be maliciously provided to clients by a rogue DHCP server, the amount of
+    information provided via DHCP should be minimized. Remove these definitions
+    from the DHCP server configuration to ensure that legitimate clients do not
+    unnecessarily rely on DHCP for this information.
+
+severity: unknown
+
+references:
+    cis-csc: 11,14,3,9
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
+    isa-62443-2009: 4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
+    nist: CM-7(a),CM-7(b),CM-6(a)
+    nist-csf: PR.IP-1,PR.PT-3
+
+warnings:
+    - general: |-
+        By default, the Red Hat Enterprise Linux client installation uses DHCP
+        to request much of the above information from the DHCP server. In particular,
+        domain-name, domain-name-servers, and routers are configured via DHCP.  These
+        settings are typically necessary for proper network functionality, but are also
+        usually static across systems at a given site.

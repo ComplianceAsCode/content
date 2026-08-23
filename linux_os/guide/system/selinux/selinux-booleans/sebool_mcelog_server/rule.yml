@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the mcelog_server SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>mcelog_server</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="mcelog_server") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="mcelog_server") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: mcelog_server

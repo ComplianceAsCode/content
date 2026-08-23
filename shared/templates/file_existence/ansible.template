@@ -1,0 +1,26 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+
+{{% if not EXISTS %}}
+- name: {{{ rule_title }}} - Remove {{{ FILEPATH }}}
+  ansible.builtin.file:
+      path: {{{ FILEPATH }}}
+      state: absent
+{{% else %}}
+- name: {{{ rule_title }}} - Add empty {{{ FILEPATH }}}
+  ansible.builtin.file:
+      path: {{{ FILEPATH }}}
+      state: touch
+    {{%- if FILEUID %}}
+      owner: "{{{ FILEUID }}}"
+    {{%- endif %}}
+    {{%- if FILEMODE %}}
+      mode: "{{{ FILEMODE }}}"
+    {{%- endif %}}
+      modification_time: preserve
+      access_time: preserve
+{{% endif %}}

@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Configure the gluster_export_all_rw SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>gluster_export_all_rw</tt> is enabled.
+    If <tt>GlusterFS</tt> is in use, this setting should be enabled. Otherwise,
+    disable it.
+    {{{ describe_sebool_disable(sebool="gluster_export_all_rw") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="gluster_export_all_rw") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: gluster_export_all_rw

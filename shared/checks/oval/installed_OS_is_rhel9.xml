@@ -1,0 +1,45 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_rhel9" version="1">
+    <metadata>
+      <title>Red Hat Enterprise Linux 9</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:enterprise_linux:9"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 9</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_rhel9_unix_family" />
+      <criteria operator="AND" comment="RHEL 9 is installed">
+        <criterion comment="RHEL 9 is installed" test_ref="test_rhel9" />
+        <!-- This prevent false positive RHEL9 in OL9 because OL9 has redhat-release package present -->
+        <extend_definition comment="Installed OS is not OL9" definition_ref="installed_OS_is_ol9" negate="true"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_rhel9_unix_family" version="1">
+    <ind:object object_ref="obj_rhel9_unix_family" />
+    <ind:state state_ref="state_rhel9_unix_family" />
+  </ind:family_test>
+  <ind:family_state id="state_rhel9_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_rhel9_unix_family" version="1" />
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release is version 9" id="test_rhel9" version="1">
+    <linux:object object_ref="obj_rhel9" />
+    <linux:state state_ref="state_rhel9" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_rhel9" version="1">
+    <linux:version operation="pattern match">^9.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_rhel9" version="1">
+    <linux:name>redhat-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

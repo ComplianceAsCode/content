@@ -1,0 +1,63 @@
+documentation_complete: true
+
+
+title: 'Set Password Strength Minimum Lowercase Characters'
+
+description: |-
+    The pam_cracklib module's <tt>lcredit=</tt> parameter controls requirements
+    for usage of lowercase letters in a password. When set to a negative
+    number, any password will be required to contain that many lowercase
+    characters. When set to a positive number, pam_cracklib will grant +1
+    additional length credit for each lowercase character.
+    Add <tt>lcredit=-1</tt> after pam_cracklib.so to require use of a
+    lowercase character in passwords.
+
+rationale: |-
+    Requiring a minimum number of lowercase characters makes password guessing
+    attacks more difficult by ensuring a larger search space.
+
+severity: medium
+
+identifiers:
+   cce@sle12: CCE-83167-7
+   cce@sle15: CCE-85676-5
+   cce@sle16: CCE-95874-4
+   cce@slmicro5: CCE-93763-1
+   cce@slmicro6: CCE-94638-4
+
+references:
+    cis@sle12: 5.3.1
+    cis@sle15: 5.3.1
+    nist@sle12: IA-5(a),IA-5(v)
+    nist@sle15: IA-5(1)(a),IA-5(1).1(v)
+    pcidss: Req-8.2.3
+    srg: SRG-OS-000070-GPOS-00038
+    stigid@sle12: SLES-12-010160
+
+ocil_clause: 'lcredit is not found or not set to the required value'
+
+ocil: |-
+    Check that the operating system enforces password complexity by requiring
+    that at least one lower-case character be used by using the following
+    command:
+
+    <pre># grep pam_cracklib.so /etc/pam.d/common-password
+    password requisite pam_cracklib.so lcredit={{{ xccdf_value("var_password_pam_lcredit") }}}</pre>
+
+    If the command does not return anything, the returned line is commented
+    out, or has a second column value different from "requisite", or does not
+    contain <tt>lcredit={{{ xccdf_value("var_password_pam_lcredit") }}}</tt>, this is a finding.
+
+    The profile requires at least {{{ xccdf_value("var_password_pam_lcredit") }}} lowercase character in a password.
+    This would appear as <tt>lcredit=-{{{ xccdf_value("var_password_pam_lcredit") }}}</tt>.
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - variable: lcredit
+          operation: less than or equal

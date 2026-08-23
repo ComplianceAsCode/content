@@ -1,0 +1,39 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+#Name of the table
+{{{ ansible_instantiate_variables("var_nftables_table") }}}
+#Family of the table
+{{{ ansible_instantiate_variables("var_nftables_family") }}}
+#Name(s) of base chain
+{{{ ansible_instantiate_variables("var_nftables_base_chain_names") }}}
+#Type(s) of base chain
+{{{ ansible_instantiate_variables("var_nftables_base_chain_types") }}}
+# Hooks for base chain
+{{{ ansible_instantiate_variables("var_nftables_base_chain_hooks") }}}
+#Priority
+{{{ ansible_instantiate_variables("var_nftables_base_chain_priorities") }}}
+#Policy
+{{{ ansible_instantiate_variables("var_nftables_base_chain_policies") }}}
+
+- name: {{{ rule_title }}} - Check Existence of Nftables Table
+  ansible.builtin.shell: nft list tables | grep '{{ var_nftables_family }} {{ var_nftables_table }}'
+  register: existing_nftables
+  changed_when: false
+  failed_when: false
+
+- name: {{{ rule_title }}} - Set NFTables Table
+  ansible.builtin.command: nft create table {{ var_nftables_family }} {{ var_nftables_table }}
+  when: existing_nftables is not skipped and existing_nftables.rc > 0
+
+- name: {{{ rule_title }}} - Add Base Chains
+  ansible.builtin.command: nft 'add chain {{ var_nftables_family }} {{ var_nftables_table }} {{ item.0 }} { type {{ item.1 }} hook {{ item.2 }} priority {{ item.3 }} ; policy {{ item.4 }} ; }'
+  with_together:
+     - '{{ var_nftables_base_chain_names.split(",") }}'
+     - '{{ var_nftables_base_chain_types.split(",") }}'
+     - '{{ var_nftables_base_chain_hooks.split(",") }}'
+     - '{{ var_nftables_base_chain_priorities.split(",") }}'
+     - '{{ var_nftables_base_chain_policies.split(",") }}'

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: Configure Accepting Router Preference in Router Advertisements on All IPv6 Interfaces
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_ra_rtr_pref", value="0") }}}'
+
+rationale: An illicit router advertisement message could result in a man-in-the-middle attack.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: CCE-84288-0
+    cce@rhel9: CCE-84111-4
+    cce@rhel10: CCE-90302-1
+    cce@sle12: CCE-91519-9
+    cce@sle15: CCE-91204-8
+    cce@sle16: CCE-96383-5
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_ra_rtr_pref", value="0") }}}
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv6.conf.all.accept_ra_rtr_pref
+        datatype: int

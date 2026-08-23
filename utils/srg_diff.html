@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>{{ title }}</title>
+<style type="text/css">
+    /* From difflib.HtmlDiff().make_file() */
+    table.diff {font-family:Courier; border:medium;}
+    .diff_header {background-color:#e0e0e0}
+    td.diff_header {text-align:right}
+    .diff_next {background-color:#c0c0c0}
+    .diff_add {background-color:#aaffaa}
+    .diff_chg {background-color:#ffff77}
+    .diff_sub {background-color:#ffaaaa}
+</style>
+</head>
+<body>
+<h1>{{ title }}</h1>
+<h2>Missing in Base</h2>
+<ul>
+    {% for rule in missing_in_base %}
+        <li>{{ rule }}</li>
+    {% endfor %}
+</ul>
+<h2>Missing in Target</h2>
+<ul>
+    {% for rule in missing_in_target %}
+        <li>{{ rule }}</li>
+    {% endfor %}
+</ul>
+{% if base_missing_cces %}
+<h2>Rows Missing STIG IDs in Base</h2>
+<ul>
+    {% for requirement in base_missing_stig_ids %}
+        <li>{{ requirement }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if target_missing_cces %}
+<h2>Rows Missing STIG IDs in Target</h2>
+<ul>
+    {% for requirement in target_missing_stig_ids %}
+        <li>{{ requirement }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Deltas</h2>
+{% for delta in deltas %}
+    {% if delta.should_display() %}
+        <h3>{{ delta.cci }} - {{ delta.rule_id }}</h3>
+        {% if delta.Requirement != "" %}
+            <h4>Requirement</h4>
+            {{ delta.Requirement }}
+        {% endif %}
+
+        {% if delta.Vul_Discussion != "" %}
+            <h4>Vul_Discussion</h4>
+            {{ delta.Vul_Discussion }}
+        {% endif %}
+        {% if delta.Status != "" %}
+            <h4>Status</h4>
+            {{ delta.Status }}
+        {% endif %}
+        {% if delta.Check != "" %}
+            <h4>Check</h4>
+            {{ delta.Check }}
+        {% endif %}
+        {% if delta.Fix != "" %}
+            <h4>Fix</h4>
+            {{ delta.Fix }}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+</body>
+</html>

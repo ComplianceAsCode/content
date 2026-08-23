@@ -1,0 +1,29 @@
+#!/bin/bash
+# packages = authselect,pam
+# platform = Oracle Linux 8,Oracle Linux 9,multi_platform_rhel,multi_platform_fedora
+
+pam_files=("password-auth" "system-auth")
+
+authselect create-profile testingProfile --base-on sssd
+
+CUSTOM_PROFILE_DIR="/etc/authselect/custom/testingProfile"
+
+authselect select --force custom/testingProfile
+
+truncate -s 0 "{{{ pam_faillock_conf_path }}}"
+
+echo "even_deny_root" > "{{{ pam_faillock_conf_path }}}"
+
+{{{ bash_pam_faillock_enable() }}}
+
+for file in ${pam_files[@]}; do
+    if grep -qP "auth.*faillock\.so.*preauth" $CUSTOM_PROFILE_DIR/$file; then
+        sed -i "/^\s*auth.*faillock\.so.*preauth/ s/$/even_deny_root/" \
+            "$CUSTOM_PROFILE_DIR/$file"
+    else
+        sed -i "0,/^\s*auth.*/i auth required pam_faillock.so preauth even_deny_root" \
+        "$CUSTOM_PROFILE_DIR/$file"
+    fi
+done
+
+authselect apply-changes

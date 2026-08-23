@@ -1,0 +1,69 @@
+documentation_complete: true
+
+title: 'Limit the Number of Concurrent Login Sessions Allowed Per User'
+
+description: |-
+    Limiting the number of allowed users and sessions per user can limit risks related to Denial of
+    Service attacks. This addresses concurrent sessions for a single account and does not address
+    concurrent sessions by a single user via multiple accounts. To set the number of concurrent
+    sessions per user add the following line in <tt>/etc/security/limits.conf</tt> or
+    a file under <tt>/etc/security/limits.d/</tt>:
+    <pre>* hard maxlogins {{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}</pre>
+
+rationale: |-
+    Limiting simultaneous user logins can insulate the system from denial of service
+    problems caused by excessive logins. Automated login processes operating improperly or
+    maliciously may result in an exceptional number of simultaneous login sessions.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-80955-8
+    cce@rhel9: CCE-83641-1
+    cce@rhel10: CCE-90751-9
+    cce@sle12: CCE-83065-3
+    cce@sle15: CCE-85555-1
+    cce@slmicro5: CCE-93671-6
+    cce@slmicro6: CCE-94644-2
+
+references:
+    cis-csc: 14,15,18,9
+    cjis: 5.5.2.2
+    cobit5: DSS01.05,DSS05.02
+    isa-62443-2009: 4.3.3.4
+    isa-62443-2013: 'SR 3.1,SR 3.8'
+    iso27001-2013: A.13.1.1,A.13.1.3,A.13.2.1,A.14.1.2,A.14.1.3
+    nerc-cip: CIP-007-3 R5.1,CIP-007-3 R5.1.2
+    nist: AC-10,CM-6(a)
+    nist-csf: PR.AC-5
+    srg: SRG-OS-000027-GPOS-00008
+    stigid@ol7: OL07-00-040000
+    stigid@ol8: OL08-00-020024
+    stigid@sle12: SLES-12-010120
+
+ocil_clause: |-
+    the "maxlogins" item is missing, commented out, or the value is set greater
+    than "{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}" and
+    is not documented with the Information System Security Officer (ISSO) as an
+    operational requirement for all domains that have the "maxlogins" item
+    assigned'
+
+ocil: |-
+    Verify {{{ full_name }}} limits the number of concurrent sessions to
+    "{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}" for all
+    accounts and/or account types with the following command:
+    <pre>$ grep -r -s maxlogins /etc/security/limits.conf /etc/security/limits.d/*.conf</pre>
+    <pre>/etc/security/limits.conf:* hard maxlogins 10</pre>
+    This can be set as a global domain (with the * wildcard) but may be set differently for multiple domains.
+
+fixtext: |-
+    Configure {{{ full_name }}} to limit the number of concurrent sessions to
+    "{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}" for all
+    accounts and/or account types.
+    Add the following line to the top of the /etc/security/limits.conf or in a
+    ".conf" file defined in /etc/security/limits.d/ :
+    <pre>* hard maxlogins 10</pre>
+
+srg_requirement: '{{{ full_name }}} must limit the number of concurrent sessions to ten for all accounts and/or account types.'
+
+platform: package[pam] and system_with_kernel

@@ -1,0 +1,69 @@
+documentation_complete: true
+
+
+title: 'Disable Token-based Authentication'
+
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson]' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '[.data."config.json" | fromjson]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    To ensure OpenShift does not accept token-based authentication,
+    follow the OpenShift documentation and configure alternate mechanisms for
+    authentication. Then, edit the API Server pod specification file
+    Edit the <tt>openshift-kube-apiserver</tt> configmap
+    and remove the <tt>token-auth-file</tt> parameter:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "token-auth-file":[
+        "/path/to/any/file"
+      ],
+      ...
+    </pre>
+
+rationale: |-
+    The token-based authentication utilizes static tokens to authenticate
+    requests to the API Server. The tokens are stored in clear-text in a file
+    on the API Server, and cannot be revoked or rotated without restarting the
+    API Server.
+
+identifiers:
+  cce@ocp4: CCE-83481-2
+
+
+severity: high
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: '<tt>token-auth-file</tt> argument is configured'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments' | grep "token-auth-file"</pre>
+    The output should be empty as OpenShift does not support token-based authentication at all.
+
+warnings:
+    - general: |-
+        {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+        yamlpath: '.apiServerArguments["enable-admission-plugins"][:]'
+        check_existence: "none_exist"
+        values:
+            - value: '^token-auth-file$'
+              operation: "pattern match"

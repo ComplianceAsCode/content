@@ -1,0 +1,49 @@
+documentation_complete: true
+
+title: 'Install nftables Package'
+
+description: |-
+    nftables provides a new in-kernel packet classification framework that is based on a
+    network-specific Virtual Machine (VM) and a new nft userspace command line tool.
+    nftables reuses the existing Netfilter subsystems such as the existing hook infrastructure,
+    the connection tracking system, NAT, userspace queuing and logging subsystem.
+    {{{ describe_package_install(package="nftables") }}}
+
+rationale: |-
+    <tt>nftables</tt> is a subsystem of the Linux kernel that can protect against threats
+    originating from within a corporate network to include malicious mobile code and poorly
+    configured software on a host.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86376-1
+    cce@rhel9: CCE-86378-7
+    cce@rhel10: CCE-87358-8
+    cce@sle15: CCE-92469-6
+    cce@sle16: CCE-96650-7
+    cce@slmicro5: CCE-93985-0
+
+references:
+    cis@sle15: 3.5.2.1
+
+{{{ complete_ocil_entry_package_installed("nftables") }}}
+
+platform: system_with_kernel and service_disabled[iptables] and service_disabled[ufw]
+
+{{%- if 'ubuntu' in product %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: nftables
+        variable: var_network_filtering_service
+        value: nftables
+{{%- else %}}
+template:
+    name: package_installed
+    vars:
+        pkgname: nftables
+{{%- endif %}}
+
+fixtext: |-
+    {{{ describe_package_install(package="nftables") }}}

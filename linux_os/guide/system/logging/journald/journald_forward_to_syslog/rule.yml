@@ -1,0 +1,68 @@
+documentation_complete: true
+
+
+title: Ensure journald is configured to send logs to rsyslog
+
+description: |-
+    Data from journald may be stored in volatile memory or persisted locally.
+    Utilities exist to accept remote export of journald logs.
+
+rationale:
+    Storing log data on a remote host protects log integrity from local attacks. If an attacker
+    gains root access on the local system, they could tamper with or remove log data that is
+    stored on the local system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85995-9
+    cce@rhel9: CCE-85996-7
+    cce@sle12: CCE-92260-9
+    cce@sle15: CCE-91376-4
+    cce@slmicro5: CCE-94017-1
+
+references:
+    cis@sle12: 4.2.2.1
+    cis@sle15: 4.2.2.1
+
+ocil_clause: 'is commented out or not configured correctly'
+
+ocil: |-
+    Storing logs remotely protects the integrity of the data from local attacks.
+    Run the following command to verify that journald is forwarding logs to a remote host.
+    <pre>
+{{%- if product in ["sle15"] or "rhel" in product or "ubuntu" in product %}}
+    grep "^\sForwardToSyslog" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
+{{% else %}}
+    grep "^\sForwardToSyslog" /etc/systemd/journald.conf
+{{% endif %}}
+    </pre>
+    and it should return
+    <pre>
+    ForwardToSyslog=yes
+    </pre>
+
+{{%- if product in ["sle15"] or "rhel" in product or "ubuntu" in product %}}
+template:
+    name: systemd_dropin_configuration
+    vars:
+        master_cfg_file: /etc/systemd/journald.conf
+        dropin_dir: {{{ journald_conf_dir_path }}}
+        section: Journal
+        param: ForwardToSyslog
+        value: yes
+        no_quotes: 'true'
+        missing_config_file_fail: 'false'
+{{% else %}}
+template:
+    name: shell_lineinfile
+    vars:
+        path: /etc/systemd/journald.conf
+        parameter: ForwardToSyslog
+        value: yes
+        no_quotes: 'true'
+{{% endif -%}}
+
+{{% if product in ['ubuntu2404'] %}}
+platform: not service_disabled[rsyslog]
+{{% endif %}}

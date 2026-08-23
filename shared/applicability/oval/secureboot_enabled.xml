@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="inventory" id="secure_boot_enabled" version="1">
+    <metadata>
+      <title>Secure Boot status check</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if System has Secure Boot enabled.</description>
+      <reference ref_id="cpe:/a:secure-boot" source="CPE" />
+    </metadata>
+    <criteria operator="AND"> 
+      <extend_definition definition_ref="system_boot_mode_is_uefi" comment="Pass if System boot mode is UEFI" />
+      <criterion comment="Scure Boot is enabled" test_ref="test_secure_boot_enabled" />
+    </criteria>
+  </definition>
+  <ind:filehash58_test check_existence="all_exist" check="all"
+  comment="Scure Boot is enabled"
+  id="test_secure_boot_enabled" version="1">
+    <ind:object object_ref="obj_secure_boot_enabled" />
+    <ind:state state_ref="state_secure_boot_enabled" />
+  </ind:filehash58_test>
+  <ind:filehash58_object id="obj_secure_boot_enabled" version="1">
+    <ind:filepath operation="pattern match">^/sys/firmware/efi/efivars/SecureBoot-.*</ind:filepath>
+    <ind:hash_type>SHA-256</ind:hash_type>
+  </ind:filehash58_object>
+  <ind:filehash58_state id="state_secure_boot_enabled" version="1">
+      <!-- OVAL doesn't support binary file reading so using hash instead this works as the
+           efivar file contains 4 bytes of var attributes + var data. So it is expected that
+           the only change in the file would be the byte indicating if it is enabled or not -->
+      <!-- Hash of a file with this hexdump: 0006 0000 0001 -->
+      <ind:hash>b401b4bd7e4f321db95fcae00d274ab8aa2cf1852d1495c382356d981f63d771</ind:hash>
+  </ind:filehash58_state>
+</def-group>

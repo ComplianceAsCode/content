@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Disable the xguest_exec_content SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>xguest_exec_content</tt> is enabled.
+    This setting should be disabled as guest users should not be able to run
+    executables.
+    {{{ describe_sebool_disable(sebool="xguest_exec_content") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="xguest_exec_content") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: xguest_exec_content

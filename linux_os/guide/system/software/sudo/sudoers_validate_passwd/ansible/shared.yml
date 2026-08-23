@@ -1,0 +1,43 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{%- macro delete_line_in_sudoers_d(line) %}}
+- name: "Find out if /etc/sudoers.d/* files contain {{{ line }}} to be deduplicated"
+  ansible.builtin.find:
+    path: "/etc/sudoers.d"
+    patterns: "*"
+    contains: '^{{{ line }}}$'
+  register: sudoers_d_defaults
+
+- name: "Remove found occurrences of {{{ line }}} from /etc/sudoers.d/* files"
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}"
+    regexp: "^{{{ line }}}$"
+    state: absent
+  with_items: "{{ sudoers_d_defaults.files }}"
+{{%- endmacro %}}
+
+{{%- macro delete_line_in_sudoers_file(line) %}}
+- name: "Remove any occurrences of {{{ line }}} in /etc/sudoers"
+  ansible.builtin.lineinfile:
+    path: "/etc/sudoers"
+    regexp: "^{{{ line }}}$"
+    validate: /usr/sbin/visudo -cf %s
+    state: absent
+  register: sudoers_file_defaults
+{{%- endmacro %}}
+
+{{{- delete_line_in_sudoers_d("Defaults targetpw") }}}
+{{{- delete_line_in_sudoers_d("Defaults rootpw") }}}
+{{{- delete_line_in_sudoers_d("Defaults runaspw") }}}
+
+{{{- delete_line_in_sudoers_file("Defaults targetpw") }}}
+{{{- delete_line_in_sudoers_file("Defaults rootpw") }}}
+{{{- delete_line_in_sudoers_file("Defaults runaspw") }}}
+
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', line_regex='^Defaults !targetpw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !targetpw', rule_title=rule_title) }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', line_regex='^Defaults !rootpw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !rootpw', rule_title=rule_title) }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', line_regex='^Defaults !runaspw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !runaspw', rule_title=rule_title) }}}

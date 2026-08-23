@@ -1,0 +1,14 @@
+controls:
+- id: SRG-APP-000456-CTR-001130
+  levels:
+  - medium
+  title: {{{ full_name }}} runtime must have updates installed within the time
+    period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs).
+  status: not applicable
+  status_justification: |-
+    The container platform and underlying operating system regularly release updates alongside Red Hat Security Advisories covering CVE patches. These updates are sent out at the same cadence of reliability as Red Hat Enterprise Linux.
+
+    The organization must define how and when to update the container platform, including the synchronization of Red Hat provided updates that patch CVEs to the registry used for the container platform.
+
+    Update Service Architecture Overview
+    https://docs.openshift.com/container-platform/latest/architecture/architecture-installation.html#update-service-overview_architecture-installation

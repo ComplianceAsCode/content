@@ -1,0 +1,60 @@
+documentation_complete: true
+
+{{% if "ubuntu" in product or "debian" in product or "sle" in product %}}
+    {{% set target_perms_octal="0640" %}}
+    {{% set target_perms="-rw-r-----" %}}
+{{% else %}}
+    {{% set target_perms_octal="0000" %}}
+    {{% set target_perms="----------" %}}
+{{% endif %}}
+
+title: 'Verify Permissions on Backup shadow File'
+
+description:  |-
+    {{{ describe_file_permissions(file="/etc/shadow-", perms=target_perms_octal) }}}
+
+rationale: |-
+    The <tt>/etc/shadow-</tt> file is a backup file of <tt>/etc/shadow</tt>, and as such,
+    it contains the list of local system accounts and password hashes.
+    Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83417-6
+    cce@rhel9: CCE-83935-7
+    cce@rhel10: CCE-87423-0
+    cce@sle12: CCE-91698-1
+    cce@sle15: CCE-91328-5
+    cce@sle16: CCE-95820-7
+    cce@slmicro5: CCE-93953-8
+
+references:
+    cis@sle12: 6.1.6
+    cis@sle15: 6.1.6
+    nist: AC-6 (1)
+    pcidss: Req-8.7.c
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow-", perms=target_perms) }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/shadow-", perms=target_perms) }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/shadow-", mode=target_perms_octal) }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/shadow-", mode=target_perms_octal) }}}'
+
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/shadow-
+        filemode: '0000'
+        filemode@debian11: '0640'
+        filemode@debian12: '0640'
+        filemode@ubuntu2204: '0640'
+        filemode@ubuntu2404: '0640'
+        filemode@sle12: '0640'
+        filemode@sle15: '0640'
+        filemode@sle16: '0640'

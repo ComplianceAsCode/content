@@ -1,0 +1,18 @@
+fixtext: |-
+    {{{ fixtext_package_installed(package="pcsc-lite-ccid") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_package_installed("pcsc-lite-ccid") }}}'
+
+checktext: |-
+    Verify that {{{ full_name }}} has the opensc package installed with the following command:
+
+    $ dnf list --installed pcsc-lite-ccid
+
+    Example output:
+
+    pcsc-lite-ccid.x86_64                            1.6.0-2.el10
+
+    If the "pcsc-lite-ccid" package is not installed, this is a finding.
+
+vuldiscussion: |-
+    The pcsc-lite-ccid package must be installed if it is to be available for multifactor authentication using smart cards.

@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Action for auditd to take when log files reach their maximum size'
+
+description: |-
+    The setting for max_log_file_action in /etc/audit/auditd.conf. The following options are available:
+    <br />ignore - audit daemon does nothing.
+    <br />syslog - audit daemon will issue a warning to syslog.
+    <br />suspend - audit daemon will stop writing records to the disk.
+    <br />rotate - audit daemon will rotate logs in the same convention used by logrotate.
+    <br />keep_logs - similar to rotate but prevents audit logs to be overwritten. May trigger space_left_action if volume is full.
+
+type: string
+
+interactive: false
+
+options:
+    default: rotate
+    keep_logs: keep_logs
+    rotate: rotate
+    suspend: suspend
+    syslog: syslog
+    ignore: ignore

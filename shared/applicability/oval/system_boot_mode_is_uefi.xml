@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="inventory" id="system_boot_mode_is_uefi" version="1">
+    <metadata>
+      <title>UEFI system boot mode check</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if system boot mode is UEFI.</description>
+      <reference ref_id="cpe:/a:uefi" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_efi_dir_existence" comment="check if /sys/firmware/efi folder exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="at_least_one_exists" comment="Verify if /sys/firmware/efi folder exists" id="test_efi_dir_existence" version="1">
+    <unix:object object_ref="object_file_sys_firmware_efi" />
+  </unix:file_test>
+
+  <unix:file_object comment="/sys/firmware/efi" id="object_file_sys_firmware_efi" version="1">
+    <unix:path>/sys/firmware/efi</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+</def-group>

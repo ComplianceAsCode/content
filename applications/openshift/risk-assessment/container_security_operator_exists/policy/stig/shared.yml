@@ -1,0 +1,38 @@
+checktext: |-
+  The Container Security Operator, provided by Red Hat as a supported optional component, can be installed to continuously scan container images associated with running containers for vulnerabilities via their manifests.
+  Other tools such as Red Hat Advanced Cluster Security (formerly StackRox) provide documentation on identifying vulnerabilities: https://help.stackrox.com/docs/manage-vulnerabilities/
+  For 3rd party tools, reference their documentation to configure vulnerability scanning.
+
+  To check if the Container Security Operator is installed, run the following command:
+  > oc get sub -nopenshift-operators container-security-operator -ojsonpath='{.status.installedCSV}'
+
+  If this command returns an error or an empty string, and a separate tool is not being used to perform continuous vulnerability scans of components, containers, and container images, this is a finding.
+
+  To check if the Container Security Operator is running, run the following command:
+  > oc get deploy -n openshift-operators container-security-operator -ojsonpath='{.status.readyReplicas}'
+
+  If this command returns an error or the number 0, and a separate tool is not being used to perform continuous vulnerability scans of components, containers, and container images, this is a finding.
+
+fixtext: |-
+  Vulnerability scanning can be performed by the Container Security Operator, Red Hat Advanced Cluster Security (formerly StackRox) or by external applications. To install the Container Security Operator into your cluster, run the following command:
+
+  > oc apply -f - << 'EOF'
+  ---
+  apiVersion: operators.coreos.com/v1alpha1
+  kind: Subscription
+  metadata:
+    labels:
+      operators.coreos.com/container-security-operator.openshift-operators: ''
+    name: container-security-operator
+    namespace: openshift-operators
+  spec:
+    channel: quay-v3.5
+    installPlanApproval: Automatic
+    name: container-security-operator
+    source: redhat-operators
+    sourceNamespace: openshift-marketplace
+  ...
+  EOF
+
+srg_requirement: |-
+  {{{ full_name }}} must continuously scan components, containers, and images for vulnerabilities.

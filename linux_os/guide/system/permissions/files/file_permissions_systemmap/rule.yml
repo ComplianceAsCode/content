@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Verify Permissions on System.map Files'
+
+description: |-
+    The System.map files are symbol map files generated during the compilation of the Linux
+    kernel. They contain the mapping between kernel symbols and their corresponding memory
+    addresses. In general, there is no need for non-root users to read these files.
+
+    {{{ describe_file_permissions(file="/boot/System.map*", perms="0600") }}}
+
+rationale: |-
+    The purpose of <tt>System.map</tt> files is primarily for debugging and profiling the kernel.
+    Unrestricted access to these files might disclose information useful to attackers and
+    malicious software leading to more sophisticated exploitation.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82892-1
+    cce@rhel9: CCE-86581-6
+    cce@rhel10: CCE-86786-1
+    cce@sle16: CCE-96220-9
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/boot/System.map*", perms="-rw-------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/boot/System.map*", perms="-rw-------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /boot/
+        file_regex: ^.*System\.map.*$
+        filemode: '0600'
+        allow_stricter_permissions: 'true'
+
+platform: system_with_kernel

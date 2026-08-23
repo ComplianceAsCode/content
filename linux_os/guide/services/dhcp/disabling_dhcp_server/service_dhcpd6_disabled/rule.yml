@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Disable DHCPD6 Service'
+
+description: |-
+    The <tt>dhcp6</tt> service should be disabled on
+    any system that does not need to act as a DHCP server.
+    {{% if product in ['ubuntu2404'] %}}
+    {{{ describe_service_disable(service="isc-dhcp-server6") }}}
+    {{% else %}}
+    {{{ describe_service_disable(service="dhcpd6") }}}
+    {{% endif %}}
+
+rationale: |-
+    Unmanaged or unintentionally activated DHCP servers may provide faulty information
+    to clients, interfering with the operation of a legitimate site
+    DHCP server if there is one.
+
+severity: medium
+
+platform: system_with_kernel
+
+template:
+    name: service_disabled
+    vars:
+        servicename: dhcpd6
+        servicename@ubuntu2404: isc-dhcp-server6
+        packagename: dhcp
+        packagename@rhel8: dhcp-server
+        packagename@rhel9: dhcp-server
+        packagename@ubuntu2404: isc-dhcp-server

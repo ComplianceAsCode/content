@@ -1,0 +1,65 @@
+documentation_complete: true
+
+
+title: 'Add nodev Option to /home'
+
+description: |-
+    The <tt>nodev</tt> mount option can be used to prevent device files from
+    being created in <tt>/home</tt>.
+    Legitimate character and block devices should exist only in
+    the <tt>/dev</tt> directory on the root partition or within chroot
+    jails built for system services.
+    {{{ describe_mount(option="nodev", part="/home") }}}
+
+rationale: |-
+    The only legitimate location for device files is the <tt>/dev</tt> directory
+    located on the root partition. The only exception to this is chroot jails.
+
+{{{ complete_ocil_entry_mount_option("/home", "nodev") }}}
+
+severity: unknown
+
+identifiers:
+    cce@rhcos4: CCE-82740-2
+    cce@rhel8: CCE-81048-1
+    cce@rhel9: CCE-83871-4
+    cce@rhel10: CCE-87344-8
+    cce@sle12: CCE-92306-0
+    cce@sle15: CCE-92460-5
+    cce@slmicro5: CCE-93941-3
+
+references:
+    cis@sle12: 1.1.18
+    cis@sle15: 1.1.18
+    srg: SRG-OS-000368-GPOS-00154
+
+platform: mount[home]
+
+{{% if "ol" not in families %}}
+template:
+    name: mount_option
+    vars:
+        mountpoint: /home
+        mountoption: nodev
+{{% else %}}
+warnings:
+    - functionality: |-
+        OVAL looks for partitions whose mount point is a substring of any interactive user's home
+        directory and validates that nodev option is there. Because of this, there could be false
+        negatives when several partitions share a base substring. For example, if there is a home
+        directory in <tt>/var/tmp/user1</tt> and there are partitions mounted in <tt>/var</tt> and
+        <tt>/var/tmp</tt>. The nodev option is only expected in <tt>/var/tmp</tt>, but OVAL will
+        check both.<br/>
+        Bash remediation uses the <tt>df</tt> command to find out the partition where the home
+        directory is mounted. However, if the directory doesn't exist the remediation won't be
+        applied.
+template:
+    name: mount_option_home
+    vars:
+        mountoption: nodev
+{{% endif %}}
+
+fixtext: |-
+    {{{ fixtext_mount_option("/home", "nodev") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/home", "nodev") }}}'

@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Ensure that apt Recommends weak dependencies are disabled'
+
+description: |-
+    The debian packaging specification allows for three levels of dependencies to be declared: strong dependencies (Requires), and two levels of weak dependencies (Recommends and Suggests).
+    This rule verify that Recommends dependencies are disabled.
+
+rationale: |-
+    Unless the system explicitely requires the capability provided by a weak dependency, it is recommended that the weak dependency is not installed to reduce the attack surface
+
+severity: unknown

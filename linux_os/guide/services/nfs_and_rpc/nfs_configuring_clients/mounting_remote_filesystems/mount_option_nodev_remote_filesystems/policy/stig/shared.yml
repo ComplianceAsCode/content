@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent special devices on file systems that are imported via Network File System (NFS).
+
+vuldiscussion: |-
+    The "nodev" mount option causes the system to not interpret character or block special devices. Executing character or block special devices from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.
+
+checktext: |-
+    Note: If no NFS mounts are configured, this requirement is Not Applicable.
+
+    Verify {{{ full_name }}} has the "nodev" option configured for all NFS mounts with the following command:
+
+    $ grep nfs /etc/fstab
+
+    192.168.22.2:/mnt/export /data nfs4 rw,nosuid,nodev,noexec,sync,soft,sec=krb5:krb5i:krb5p
+
+    If the system is mounting file systems via NFS and the "nodev" option is missing, this is a finding.
+
+fixtext: |-
+    Update each NFS mounted file system to use the "nodev" option on file systems that are being imported via NFS.
+
+

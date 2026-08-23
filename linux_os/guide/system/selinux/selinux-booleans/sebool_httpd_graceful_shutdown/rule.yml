@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Enable the httpd_graceful_shutdown SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_graceful_shutdown</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    {{{ describe_sebool_enable(sebool="httpd_graceful_shutdown") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="httpd_graceful_shutdown") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_graceful_shutdown

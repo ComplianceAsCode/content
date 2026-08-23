@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} must automatically exit interactive command shell user sessions after 15 minutes of inactivity.
+
+vuldiscussion: |-
+    Terminating an idle interactive command shell user session within a short time period reduces the window of opportunity for unauthorized personnel to take control of it when left unattended in a virtual terminal or physical console.
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to exit interactive command shell user sessions after 15 minutes of inactivity or less with the following command:
+
+    $ sudo grep -i tmout /etc/profile /etc/profile.d/*.sh
+
+    /etc/profile.d/tmout.sh:declare -xr TMOUT=900
+
+    If "TMOUT" is not set to "900" or less in a script located in the "/etc/'profile.d/ directory, is missing or is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to exit interactive command shell user sessions after 15 minutes of inactivity.
+
+    Add or edit the following line in "/etc/profile.d/tmout.sh":
+
+    #!/bin/bash
+
+    declare -xr TMOUT=900
+

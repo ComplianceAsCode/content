@@ -1,0 +1,64 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+  {{% if FILEPATH is not string %}}
+    {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " has mode " + FILEMODE + ".
+      If the target file or directory has an extended ACL, then it will fail the mode check.
+      ", rule_title=rule_title) }}}
+    <criteria>
+  {{% for filepath in FILEPATH %}}
+      <criterion comment="Check file mode of {{{ filepath }}}" test_ref="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}"/>
+  {{% endfor %}}
+  {{% else %}}
+    {{{ oval_metadata("This test makes sure that " +  FILEPATH + " has mode " + FILEMODE + ".
+      If the target file or directory has an extended ACL, then it will fail the mode check.
+      ", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"/>
+  {{% endif %}}
+    </criteria>
+  </definition>
+
+  {{% for filepath in FILEPATH %}}
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing mode of {{{ filepath }}}" id="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="3">
+    <unix:object object_ref="object_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" />
+  </unix:file_test>
+
+  <unix:file_object comment="{{{ filepath }}}" id="object_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+    {{%- if IS_DIRECTORY %}}
+      {{%- if RECURSIVE %}}
+      <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+      {{%- endif %}}
+      <unix:path>{{{ filepath[:-1] }}}</unix:path>
+      {{%- if FILE_REGEX %}}
+      <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
+      {{%- if EXCLUDED_FILES %}}
+      {{%- for excluded_file in EXCLUDED_FILES %}}
+      <filter action="exclude">exclude_files_{{{ FILEID }}}_{{{ loop.index0 }}}</filter>
+      {{%- endfor %}}
+      {{%- endif %}}
+      {{%- else %}}
+      <unix:filename xsi:nil="true" />
+      {{%- endif %}}
+    {{%- else %}}
+      <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
+    {{%- endif %}}
+      <filter action="exclude">exclude_symlinks_{{{ FILEID }}}</filter>
+      <filter action="exclude">state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_{{{ FILEMODE }}}{{{ 'or_stricter_' if ALLOW_STRICTER_PERMISSIONS }}}</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_{{{ FILEMODE }}}{{{ 'or_stricter_' if ALLOW_STRICTER_PERMISSIONS }}}" operator="AND" version="3">
+      {{{ STATEMODE | indent(6) }}}
+  </unix:file_state>
+  {{% endfor %}}
+
+  <unix:file_state id="exclude_symlinks_{{{ FILEID }}}" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+  {{%- if EXCLUDED_FILES %}}
+  {{%- for excluded_file in EXCLUDED_FILES %}}
+  <unix:file_state id="exclude_files_{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+    <unix:filename operation="pattern match">^{{{ excluded_file|replace("*", ".*") }}}$</unix:filename>
+  </unix:file_state>
+  {{%- endfor %}}
+  {{%- endif %}}
+</def-group>

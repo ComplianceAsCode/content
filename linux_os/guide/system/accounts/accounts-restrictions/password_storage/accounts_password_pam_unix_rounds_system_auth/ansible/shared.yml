@@ -1,0 +1,8 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+{{{ ansible_instantiate_variables("var_password_pam_unix_rounds") }}}
+{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'sufficient', 'pam_unix.so', 'rounds', '{{ var_password_pam_unix_rounds }}', '', rule_id=rule_id, rule_title=rule_title) }}}

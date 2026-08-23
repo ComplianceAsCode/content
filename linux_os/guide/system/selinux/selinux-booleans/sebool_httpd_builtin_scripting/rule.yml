@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Configure the httpd_builtin_scripting SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_builtin_scripting</tt> is enabled.
+    This setting should be disabled if <tt>httpd</tt> is not running <tt>php</tt>
+    or some similarly scripting language.
+    {{{ describe_sebool_disable(sebool="httpd_builtin_scripting") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_builtin_scripting") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_builtin_scripting

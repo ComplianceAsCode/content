@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Verify Permissions on /etc/cron.allow file'
+
+{{% set target_perms_octal="0640" %}}
+{{% set target_perms="-rw-r-----" %}}
+
+description: |-
+    If <tt>/etc/cron.allow</tt> exists, it must have permissions <tt>{{{ target_perms_octal }}}</tt>
+    or more restrictive.
+
+    {{{ describe_file_permissions(file="/etc/cron.allow", perms=target_perms_octal) }}}
+
+rationale: |-
+    If the permissions of the cron.allow file are not set to {{{ target_perms_octal }}} or more restrictive,
+    the possibility exists for an unauthorized user to view or edit sensitive information.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86876-0
+    cce@rhel9: CCE-86877-8
+    cce@rhel10: CCE-89121-8
+    cce@sle12: CCE-91690-8
+    cce@sle15: CCE-91320-2
+    cce@sle16: CCE-96522-8
+
+references:
+    cis@sle12: 5.1.8
+    cis@sle15: 5.1.8
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cron.allow", perms=target_perms) }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/cron.allow", perms=target_perms) }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/cron.allow
+        filemode: "{{{ target_perms_octal }}}"

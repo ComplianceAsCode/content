@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000126-CTR-000275
+  levels:
+  - medium
+  title: {{{ full_name }}} must use FIPS validated cryptographic mechanisms to
+    protect the integrity of log information.
+  rules:
+  - fips_mode_enabled_on_all_nodes
+  - audit_log_forwarding_uses_tls
+  status: automated
+

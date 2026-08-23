@@ -1,0 +1,16 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Provide Audit Record Generation Capability For Dod-Defined Auditable Events For All Operating System Components.
+
+vuldiscussion: |-
+    The addition of kernel modules can be used to alter the behavior of
+    the kernel and potentially introduce malicious code into kernel space. It is important
+    to have an audit trail of modules that have been introduced into the kernel.
+
+checktext: |-
+    To determine if the system is configured to audit calls to the
+     init_module  system call, run the following command:
+     $ sudo grep "init_module" /etc/audit/audit.*
+    If the system is configured to audit this activity, it will return a line.
+
+
+    If no line is returned, then this is a finding.

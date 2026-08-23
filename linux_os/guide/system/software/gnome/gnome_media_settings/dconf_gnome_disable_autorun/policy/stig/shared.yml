@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent a user from overriding the disabling of the graphical user interface autorun function.
+
+vuldiscussion: |-
+    Techniques used to address this include protocols using nonces (e.g., numbers generated for a specific one-time use) or challenges (e.g., TLS, WS_Security). Additional techniques include time-synchronous or challenge-response one-time authenticators.
+
+checktext: |-
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+
+    Verify {{{ full_name }}} disables ability of the user to override the graphical user interface autorun setting.
+
+    Determine which profile the system database is using with the following command:
+
+    $ gsettings writable org.gnome.desktop.media-handling autorun-never
+
+    false
+
+    If "autorun-never" is writable, the result is "true". If this is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
+
+fixtext: |-
+    Configure the GNOME desktop to not allow a user to change the setting that disables autorun on removable media.
+
+    Add the following line to "/etc/dconf/db/local.d/locks/00-security-settings-lock" to prevent user modification:
+
+    /org/gnome/desktop/media-handling/autorun-never
+
+    Then update the dconf system databases:
+
+    $ sudo dconf update

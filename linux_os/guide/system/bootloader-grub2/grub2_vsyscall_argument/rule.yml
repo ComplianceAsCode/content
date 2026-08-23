@@ -1,0 +1,54 @@
+documentation_complete: true
+
+
+title: 'Disable vsyscalls'
+
+description: |-
+    To disable use of virtual syscalls,
+    add the argument <tt>vsyscall=none</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("vsyscall=none") | indent(4) }}}
+
+rationale: |-
+    Virtual Syscalls provide an opportunity of attack for a user who has control
+    of the return instruction pointer.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80946-7
+    cce@rhel9: CCE-83842-5
+    cce@rhel10: CCE-87153-3
+
+references:
+    nist: CM-7(a)
+    ospp: FPT_ASLR_EXT.1
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000134-GPOS-00068
+    stigid@ol8: OL08-00-010422
+
+ocil_clause: 'vsyscalls are enabled'
+
+ocil: |-
+    {{{ ocil_grub2_argument("vsyscall=none") | indent(4) }}}
+
+platform: x86_64_arch
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: vsyscall
+        arg_value: 'none'
+        datatype: string
+        operation: equals
+
+fixtext: |-
+    {{{ describe_grub2_argument("vsyscall=none") | indent(4) }}}
+
+srg_requirement:
+  {{{ full_name }}} must disable virtual syscalls.
+
+warnings:
+    - general: |-
+        The vsyscall emulation is only available on x86_64 architecture
+        (CONFIG_X86_VSYSCALL_EMULATION) making this rule not applicable
+        to other CPU architectures.

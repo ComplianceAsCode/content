@@ -1,0 +1,24 @@
+apiVersion: "logging.openshift.io/v1"
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  outputs:
+    # This output is fake... but it's used for a probe to work
+    - name: kafka-app 
+      type: "kafka"
+      url: tls://kafka.secure.com:9093/app-topic
+  pipelines:
+   - name: most-logs
+     inputRefs:
+       - application
+       - audit
+       - infrastructure
+     outputRefs:
+      - default
+   - name: audit-logs
+     inputRefs:
+       - audit
+     outputRefs:
+      - default

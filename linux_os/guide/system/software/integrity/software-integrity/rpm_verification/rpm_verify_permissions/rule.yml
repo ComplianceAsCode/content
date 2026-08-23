@@ -1,0 +1,85 @@
+documentation_complete: true
+
+
+title: 'Verify and Correct File Permissions with RPM'
+
+description: |-
+    The RPM package management system can check file access permissions of installed software
+    packages, including many that are important to system security. Verify that the file
+    permissions of system files and commands match vendor values. Check the file permissions with
+    the following command:
+    <pre>$ sudo rpm -Va | awk '{ if (substr($0,2,1)=="M") print $NF }'</pre>
+    Output indicates files that do not match vendor defaults.
+
+    After locating a file with incorrect permissions, run the following command to determine which
+    package owns it:
+    <pre>$ rpm -qf <i>FILENAME</i></pre>
+    <br />
+    Next, run the following command to reset its permissions to the correct values:
+    <pre>$ sudo rpm --restore <i>PACKAGENAME</i></pre>
+
+rationale: |-
+    Permissions on system binaries and configuration files that are too generous could allow an
+    unauthorized user to gain privileges that they should not have. The permissions set by the
+    vendor should be maintained. Any deviations from this baseline should be investigated.
+
+severity: high
+
+identifiers:
+    cce@rhcos4: CCE-82687-5
+    cce@rhel8: CCE-80858-4
+    cce@rhel9: CCE-90840-0
+    cce@rhel10: CCE-88623-4
+    cce@sle12: CCE-91634-6
+    cce@sle15: CCE-85782-1
+
+references:
+    cis-csc: 1,11,12,13,14,15,16,18,3,5,6,9
+    cis@sle12: 6.1.1
+    cis@sle15: 6.1.1
+    cjis: 5.10.4.1
+    cobit5: APO01.06,APO11.04,BAI03.05,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.04,DSS05.07,DSS06.02,MEA02.01
+    cui: 3.3.8,3.4.1
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.3.7.3,4.3.4.3.2,4.3.4.3.3,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 2.1,SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9,SR 5.2,SR 7.6'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.12.1.2,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.5.1,A.12.6.2,A.12.7.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-007-3 R4,CIP-007-3 R4.1,CIP-007-3 R4.2
+    nist: CM-6(d),CM-6(c),SI-7,SI-7(1),SI-7(6),AU-9(3),CM-6(a)
+    nist-csf: PR.AC-4,PR.DS-5,PR.IP-1,PR.PT-1
+    pcidss: Req-11.5
+    srg: SRG-OS-000256-GPOS-00097,SRG-OS-000257-GPOS-00098,SRG-OS-000258-GPOS-00099,SRG-OS-000278-GPOS-00108
+    stigid@ol7: OL07-00-010010
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    The following command will list which files on the system have permissions different from what
+    is expected by the RPM database:
+    <pre>$ rpm -Va | awk '{ if (substr($0,2,1)=="M") print $NF }'</pre>
+
+fixtext: |-
+    Run the following command to determine which package owns the file:
+
+    $ sudo rpm -qf [path to file]
+
+    Reset the permissions of files within a package with the following command:
+
+    $ sudo rpm --restore [package]
+
+
+srg_requirement: '{{{ full_name }}} must be configured so that the file permissions of system files and commands match the vendor values.'
+
+warnings:
+    - general: |-
+        Profiles may require that specific files have stricter file permissions than defined by
+        the vendor. Such files will be reported as a finding and need to be evaluated according to
+        your policy and deployment environment.
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of packages present on the system. It is not a
+        problem in most cases, but especially systems with a large number of installed packages
+        can be affected.
+        {{% if "rhel" in product %}}
+        See <code>https://access.redhat.com/articles/6999111</code>.
+        {{% endif %}}

@@ -1,0 +1,73 @@
+documentation_complete: true
+
+
+title: "Configure OAuth server so that tokens have a maximum age set"
+
+{{% set default_jqfilter = '.spec' %}}
+{{% set default_api_path = '/apis/config.openshift.io/v1/oauths/cluster' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/{{.hypershift_namespace_prefix}}/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_jqfilter = '.spec.configuration.oauth' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    <p>
+    You can configure OAuth tokens to have have a custom duration.
+    By default, the tokens are valid for 24 hours (86400 seconds).
+    </p>
+    <p>
+    The maximum age can be either set in the OAuth server
+    configuration or in any of the OAuth clients. The client settings
+    override the OAuth server setting.
+    </p>
+    <p>
+    To set the OAuth server token max age, edit the OAuth server
+    object: <tt>oc edit oauth cluster</tt>
+    and set the <tt>.spec.tokenConfig.accessTokenMaxAgeSeconds</tt>
+    parameter to the desired value:
+    <pre>
+    apiVersion: config.openshift.io/v1
+    kind: OAuth
+    metadata:
+    ...
+    spec:
+       tokenConfig:
+         accessTokenMaxAgeSeconds: 28800
+    </pre>
+    For more information on configuring the OAuth server, consult the
+    OpenShift documentation:
+      {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/authentication/configuring-internal-oauth.html") }}}
+    </p>
+
+rationale: |-
+    Setting a token maximum age to a shorter time period reduces the window
+    of opportunity for unauthorized personnel to take control of the session.
+
+references:
+  nist: AC-12
+
+identifiers:
+    cce@ocp4: CCE-83805-2
+
+ocil_clause: 'OAuth server token max age is not configured'
+
+ocil: |-
+  To check if the OAuth server token max age is configured, run the following command:
+  <pre>oc get oauth cluster -ojsonpath='{.spec.tokenConfig.accessTokenMaxAgeSeconds}'</pre>
+  the output should return a timeout value
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+        yamlpath: ".tokenConfig.accessTokenMaxAgeSeconds"
+        check_existence: "only_one_exists"
+        xccdf_variable: var_oauth_token_maxage

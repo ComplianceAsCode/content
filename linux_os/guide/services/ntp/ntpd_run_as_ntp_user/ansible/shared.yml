@@ -1,0 +1,32 @@
+# platform = multi_platform_fedora
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "Detect if file is not empty or missing"
+  ansible.builtin.find:
+    path: /etc/sysconfig/
+    patterns: ntpd
+    contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
+  register: ntpd_file
+
+- name: "Replace existing setting or create a new file, rest is handled by different task"
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/ntpd
+    regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
+    line: '\1 -u ntp:ntp\2'
+    state: present
+    create: True
+    backrefs: True
+    mode: 0644
+  when: ntpd_file.matched > 0
+
+- name: "Put line into file, assume file was empty"
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/ntpd
+    line: 'OPTIONS="-u ntp:ntp"'
+    state: present
+    create: True
+    mode: 0644
+  when: ntpd_file.matched == 0

@@ -1,0 +1,27 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_ssh_client_rekey_limit_size", "var_ssh_client_rekey_limit_time") }}}
+{{%- set sshc_main_config = ssh_client_main_config_file -%}}
+{{%- set sshc_config_dir = ssh_client_config_dir -%}}
+{{%- set sshc_rekey_config = ssh_client_config_dir ~ "/02-rekey-limit.conf" -%}}
+
+{{{ ansible_lineinfile(msg='Ensure RekeyLimit is not configured in ' ~ sshc_main_config, path=sshc_main_config, regex='^\s*RekeyLimit.*$', insensitive=false, create='no', state='absent', rule_title=rule_title) }}}
+
+- name: Collect all include config files for ssh client which configure RekeyLimit
+  ansible.builtin.find:
+    paths: "{{{ sshc_config_dir }}}"
+    contains: '^[\s]*RekeyLimit.*$'
+    patterns: "*.config"
+  register: ssh_config_include_files
+
+- name: Remove all occurrences of RekeyLimit configuration from include config files of ssh client
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    regexp: '^[\s]*RekeyLimit.*$'
+    state: "absent"
+  loop: "{{ ssh_config_include_files.files }}"
+
+{{{ ansible_lineinfile(msg='Ensure that rekey limit is set to {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }} in ' ~ sshc_rekey_config, path=sshc_rekey_config, regex='^\s*RekeyLimit.*$', insensitive=false, new_line='RekeyLimit {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }}', create='yes', state='present', rule_title=rule_title) }}}

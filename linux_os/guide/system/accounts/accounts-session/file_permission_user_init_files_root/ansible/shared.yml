@@ -1,0 +1,34 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_user_initialization_files_regex") }}}
+
+
+- name: '{{{ rule_title }}} - Gather User Info'
+  ansible.builtin.getent:
+    database: passwd
+
+- name: '{{{ rule_title }}} - Find Init Files'
+  ansible.builtin.find:
+    paths: "{{ item.value[4] }}"
+    pattern: "{{ var_user_initialization_files_regex }}"
+    hidden: true
+    use_regex: true
+  with_dict: "{{ ansible_facts.getent_passwd }}"
+  when:
+    - item.value[4] != "/sbin/nologin"
+    - item.key not in ["nobody", "nfsnobody"]
+    - item.value[1] | int >= {{{ uid_min }}} or item.key == "root"
+  register: found_init_files
+
+- name: '{{{ rule_title }}} - Fix Init Files Permissions'
+  ansible.builtin.file:
+    path: "{{ item.1.path }}"
+    mode: u-s,g-wxs,o=
+  loop: "{{ q('ansible.builtin.subelements',
+              found_init_files.results,
+              'files',
+              {'skip_missing': True}) }}"

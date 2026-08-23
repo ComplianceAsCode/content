@@ -1,0 +1,20 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Ensure AIDE Service is Enabled"
+  ansible.builtin.systemd:
+    name: dailyaidecheck.service
+    enabled: true
+    daemon_reload: true
+    masked: false
+
+- name: "{{{ rule_title }}} - Ensure AIDE Service Timer is Enabled"
+  ansible.builtin.systemd:
+    name: dailyaidecheck.timer
+    state: started
+    enabled: true
+    daemon_reload: true
+    masked: false

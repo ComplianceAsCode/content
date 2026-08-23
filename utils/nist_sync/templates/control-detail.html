@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer - Control Detail</title>
+    <!-- SHARED_STYLES_PLACEHOLDER -->
+    <style>
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #24292e;
+            border-bottom: 2px solid #e1e4e8;
+            padding-bottom: 8px;
+        }
+
+        .detail-content {
+            line-height: 1.6;
+            color: #24292e;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metadata-item {
+            background: #f6f8fa;
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .metadata-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #586069;
+            margin-bottom: 5px;
+        }
+
+        .metadata-value {
+            font-size: 14px;
+            color: #24292e;
+        }
+
+        .rule-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rule-list li {
+            padding: 8px 12px;
+            background: #f6f8fa;
+            border-left: 3px solid #0366d6;
+            margin-bottom: 8px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .related-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .related-control-link {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #e1e4e8;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .related-control-link:hover {
+            background: #0366d6;
+            color: white;
+        }
+
+        .parameter-list {
+            background: #f6f8fa;
+            border-radius: 4px;
+            padding: 15px;
+        }
+
+        .parameter-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .parameter-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .parameter-id {
+            font-weight: 600;
+            color: #0366d6;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .parameter-label {
+            margin: 5px 0;
+            color: #24292e;
+        }
+
+        .todo-section {
+            background: #fffbea;
+            border: 1px solid #ffd33d;
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .todo-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 4px;
+        }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+        }
+
+        .todo-text {
+            flex: 1;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #586069;
+        }
+
+        .breadcrumb a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Statement / description */
+        .statement-intro {
+            margin-bottom: 10px;
+            color: #24292e;
+            line-height: 1.6;
+        }
+
+        .statement-list {
+            padding-left: 22px;
+            margin: 0;
+        }
+
+        .statement-list li {
+            padding: 5px 0;
+            line-height: 1.65;
+            color: #24292e;
+        }
+
+        .statement-list li + li {
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .statement-list ol {
+            padding-left: 22px;
+            margin-top: 6px;
+        }
+
+        /* Guidance paragraphs */
+        .guidance-text p {
+            margin: 0 0 14px 0;
+            line-height: 1.7;
+            color: #24292e;
+        }
+
+        .guidance-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ODP — Organization-Defined Parameter placeholders */
+        .odp {
+            display: inline;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 3px;
+            padding: 1px 5px;
+            font-size: 0.92em;
+            color: #856404;
+            font-style: italic;
+            cursor: help;
+        }
+
+        /* Cross-control links inside prose */
+        .ctrl-ref {
+            color: #0366d6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .ctrl-ref:hover {
+            text-decoration: underline;
+        }
+
+        /* Rule list — clickable links */
+        .rule-list li a {
+            color: #24292e;
+            text-decoration: none;
+        }
+
+        .rule-list li a:hover {
+            color: #0366d6;
+            text-decoration: underline;
+        }
+
+        .rule-list li a::after {
+            content: ' ↗';
+            font-size: 10px;
+            color: #586069;
+        }
+
+        .component-item {
+            background: #f6f8fa;
+            border-left: 3px solid #6f42c1;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .component-item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .component-name-link {
+            font-weight: 600;
+            color: #6f42c1;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .component-name-link:hover {
+            text-decoration: underline;
+        }
+
+        .component-rules-list {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #586069;
+            line-height: 1.8;
+        }
+
+        .component-rule-code {
+            display: inline-block;
+            background: #e1e4e8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 11px;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- SHARED_HEADER_PLACEHOLDER -->
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Dashboard</a> /
+            <a href="controls.html">Controls</a> /
+            <span id="breadcrumb-id">Loading...</span>
+        </div>
+
+        <div id="control-detail-container">
+            <div class="empty-state"><h3>Loading control details...</h3></div>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+
+        function getTodos(controlId) {
+            const todos = localStorage.getItem(`todos-${controlId}`);
+            return todos ? JSON.parse(todos) : [];
+        }
+
+        function saveTodos(controlId, todos) {
+            localStorage.setItem(`todos-${controlId}`, JSON.stringify(todos));
+        }
+
+        function renderControlDetail() {
+            if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
+                document.getElementById('control-detail-container').innerHTML =
+                    '<div class="empty-state"><h3>Error loading data</h3></div>';
+                return;
+            }
+
+            const controlId = getQueryParam('id');
+            if (!controlId) {
+                document.getElementById('control-detail-container').innerHTML =
+                    '<div class="empty-state"><h3>No control ID specified</h3></div>';
+                return;
+            }
+
+            const product = CURRENT_PRODUCT;
+            const controls = EMBEDDED_DATA.products[product]?.controls || [];
+            const control = controls.find(c => c.id === controlId.toLowerCase());
+
+            if (!control) {
+                const container = document.getElementById('control-detail-container');
+                const div = document.createElement('div');
+                div.className = 'empty-state';
+                const h3 = document.createElement('h3');
+                h3.textContent = `Control ${controlId.toUpperCase()} not found`;
+                div.appendChild(h3);
+                container.replaceChildren(div);
+                return;
+            }
+
+            document.getElementById('breadcrumb-id').textContent = control.id.toUpperCase();
+            document.title = `${control.id.toUpperCase()} - NIST 800-53 Control Viewer`;
+
+            const statusClass = control.is_automated ? 'automated' :
+                              control.is_manual ? 'manual' : 'pending';
+            const gapIndicator = control.has_rules ? '' :
+                '<span class="gap-indicator gap-full" title="No rules implemented"></span>';
+
+            let html = `
+                <div class="page-header">
+                    <h2>${gapIndicator}${control.id.toUpperCase()}</h2>
+                    <p>${control.title}</p>
+                </div>
+
+                <div class="metadata-grid">
+                    <div class="metadata-item">
+                        <div class="metadata-label">Status</div>
+                        <div class="metadata-value">
+                            <span class="badge badge-${statusClass}">${statusClass.toUpperCase()}</span>
+                        </div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Baseline Levels</div>
+                        <div class="metadata-value">${(control.levels || []).join(', ').toUpperCase() || 'None'}</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Rules</div>
+                        <div class="metadata-value">${(control.rules || []).length}</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Family</div>
+                        <div class="metadata-value">${getFamilyName(control.id)}</div>
+                    </div>
+                </div>
+            `;
+
+            // Statement (structured OSCAL)
+            const stmt = control.statement;
+            if (stmt && (stmt.prose || (stmt.items && stmt.items.length > 0))) {
+                function renderItems(items, tag) {
+                    if (!items || items.length === 0) return '';
+                    const inner = items.map(item => {
+                        const sub = renderItems(item.items, 'ol');
+                        return `<li>${item.prose}${sub}</li>`;
+                    }).join('');
+                    return `<${tag} class="statement-list">${inner}</${tag}>`;
+                }
+                html += `
+                    <div class="card detail-section">
+                        <h3>Control Statement</h3>
+                        ${stmt.prose ? `<p class="statement-intro">${stmt.prose}</p>` : ''}
+                        ${renderItems(stmt.items, 'ol')}
+                    </div>
+                `;
+            }
+
+            // Guidance
+            if (control.guidance && control.guidance.length > 0) {
+                html += `
+                    <div class="card detail-section">
+                        <h3>Supplemental Guidance</h3>
+                        <div class="guidance-text">
+                            ${control.guidance.map(p => `<p>${p}</p>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Parameters
+            if (control.parameters && control.parameters.length > 0) {
+                html += `
+                    <div class="card detail-section">
+                        <h3>Parameters (ODPs)</h3>
+                        <div class="parameter-list">
+                `;
+                control.parameters.forEach(param => {
+                    html += `
+                        <div class="parameter-item">
+                            <div class="parameter-id">${param.id || ''}</div>
+                            <div class="parameter-label">${param.label || ''}</div>
+                        </div>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Rules
+            const ruleUrls = control.rule_urls || {};
+            if (control.rules && control.rules.length > 0) {
+                html += `
+                    <div class="card detail-section">
+                        <h3>Mapped Rules</h3>
+                        <ul class="rule-list">
+                            ${control.rules.map(rule => {
+                                const url = ruleUrls[rule];
+                                const inner = url
+                                    ? `<a href="${url}" target="_blank" rel="noopener">${rule}</a>`
+                                    : rule;
+                                return `<li>${inner}</li>`;
+                            }).join('')}
+                        </ul>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="card detail-section">
+                        <h3>Mapped Rules</h3>
+                        <div class="empty-state" style="padding: 30px;">
+                            <p style="color: #d73a49;">⚠️ No rules mapped to this control</p>
+                            <p style="color: #586069; margin-top: 10px;">This control needs implementation. Add TODO items below to track the work.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Enhancements (for base controls)
+            if (control.enhancements && control.enhancements.length > 0) {
+                const enhControls = control.enhancements
+                    .map(eid => controls.find(c => c.id === eid))
+                    .filter(Boolean);
+                const automatedCount = enhControls.filter(e => e.is_automated).length;
+                const totalCount = enhControls.length;
+                const pct = totalCount > 0 ? Math.round(automatedCount / totalCount * 100) : 0;
+
+                html += `
+                    <div class="card detail-section">
+                        <h3>Control Enhancements (${automatedCount}/${totalCount} automated)</h3>
+                        <div style="background: #e1e4e8; border-radius: 4px; height: 8px; margin-bottom: 15px;">
+                            <div style="background: #28a745; height: 8px; border-radius: 4px; width: ${pct}%;"></div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                `;
+                enhControls.forEach(enh => {
+                    const enhStatus = enh.is_automated ? 'automated' :
+                                    enh.is_manual ? 'manual' : 'pending';
+                    const enhGap = enh.has_rules ? '' :
+                        '<span class="gap-indicator gap-full"></span>';
+                    html += `
+                        <a href="control-detail.html?id=${enh.id}" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #f6f8fa; border-left: 3px solid #0366d6; border-radius: 4px;">
+                            <div>
+                                <span style="font-weight: 600; color: #0366d6;">${enhGap}${enh.id.toUpperCase()}</span>
+                                <span style="color: #24292e; margin-left: 8px;">${enh.title}</span>
+                            </div>
+                            <span class="badge badge-${enhStatus}">${enhStatus.toUpperCase()}</span>
+                        </a>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Components
+            if (control.components && Object.keys(control.components).length > 0) {
+                const sortedComps = Object.entries(control.components)
+                    .sort((a, b) => b[1].length - a[1].length);
+                html += `
+                    <div class="card detail-section">
+                        <h3>Related Components</h3>
+                        <p style="color: #586069; margin-bottom: 15px; font-size: 13px;">
+                            Software components whose rules implement this control
+                            (<a href="components.html" style="color: #6f42c1;">view all components</a>)
+                        </p>
+                        ${sortedComps.map(([compName, rules]) => `
+                            <div class="component-item">
+                                <div class="component-item-header">
+                                    <a href="components.html?component=${compName}"
+                                       class="component-name-link">${compName}</a>
+                                    <span class="badge" style="background: #6f42c1; color: white;">${rules.length} rules</span>
+                                </div>
+                                <div class="component-rules-list">
+                                    ${rules.map(r => {
+                                        const url = ruleUrls[r];
+                                        return url
+                                            ? `<a href="${url}" target="_blank" rel="noopener" class="component-rule-code" style="background:#e1e4e8;padding:2px 6px;border-radius:3px;font-size:11px;font-family:monospace;text-decoration:none;color:#0366d6;">${r} ↗</a>`
+                                            : `<code class="component-rule-code">${r}</code>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            // Parent control link (for enhancements)
+            if (control.parent_id) {
+                const parentCtrl = controls.find(c => c.id === control.parent_id);
+                if (parentCtrl) {
+                    html += `
+                        <div class="card detail-section">
+                            <h3>Parent Control</h3>
+                            <a href="control-detail.html?id=${parentCtrl.id}" style="text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #f6f8fa; border-left: 3px solid #0366d6; border-radius: 4px;">
+                                <span style="font-weight: 600; color: #0366d6;">${parentCtrl.id.toUpperCase()}</span>
+                                <span style="color: #24292e;">${parentCtrl.title}</span>
+                            </a>
+                        </div>
+                    `;
+                }
+            }
+
+            // Related Controls
+            if (control.related_controls && control.related_controls.length > 0) {
+                html += `
+                    <div class="card detail-section">
+                        <h3>Related Controls</h3>
+                        <div class="related-controls">
+                            ${control.related_controls.map(relId =>
+                                `<a href="control-detail.html?id=${relId}" class="related-control-link">${relId.toUpperCase()}</a>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // TODO / Backlog
+            html += `
+                <div class="card detail-section todo-section">
+                    <h3>TODO / Backlog Items</h3>
+                    <div class="todo-input-group">
+                        <input type="text" id="todo-input" class="todo-input" placeholder="Add a TODO item...">
+                        <button class="btn btn-primary" onclick="addTodo()">Add</button>
+                    </div>
+                    <ul class="todo-list" id="todo-list">
+                        <!-- Populated by JavaScript -->
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('control-detail-container').innerHTML = html;
+            renderTodos(control.id);
+        }
+
+        function getFamilyName(controlId) {
+            const familyId = controlId.split('-')[0];
+            const family = EMBEDDED_DATA.families.find(f => f.id === familyId);
+            return family ? family.name : 'Other';
+        }
+
+        function renderTodos(controlId) {
+            const todos = getTodos(controlId);
+            const todoList = document.getElementById('todo-list');
+
+            if (todos.length === 0) {
+                todoList.innerHTML = '<li style="color: #586069; text-align: center; padding: 20px;">No TODO items yet</li>';
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            todos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = todo.completed;
+                checkbox.addEventListener('change', () => toggleTodo(index));
+
+                const span = document.createElement('span');
+                span.className = 'todo-text';
+                span.textContent = todo.text;
+
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.style.cssText = 'padding: 4px 8px; font-size: 12px;';
+                btn.textContent = 'Delete';
+                btn.addEventListener('click', () => deleteTodo(index));
+
+                li.append(checkbox, span, btn);
+                fragment.appendChild(li);
+            });
+            todoList.replaceChildren(fragment);
+        }
+
+        function addTodo() {
+            const controlId = getQueryParam('id');
+            const input = document.getElementById('todo-input');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            const todos = getTodos(controlId);
+            todos.push({ text, completed: false });
+            saveTodos(controlId, todos);
+
+            input.value = '';
+            renderTodos(controlId);
+        }
+
+        function toggleTodo(index) {
+            const controlId = getQueryParam('id');
+            const todos = getTodos(controlId);
+            todos[index].completed = !todos[index].completed;
+            saveTodos(controlId, todos);
+            renderTodos(controlId);
+        }
+
+        function deleteTodo(index) {
+            const controlId = getQueryParam('id');
+            const todos = getTodos(controlId);
+            todos.splice(index, 1);
+            saveTodos(controlId, todos);
+            renderTodos(controlId);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', renderControlDetail);
+
+        // Allow Enter key to add TODO
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.target.id === 'todo-input') {
+                addTodo();
+            }
+        });
+    </script>
+</body>
+</html>

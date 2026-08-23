@@ -1,0 +1,15 @@
+#!/bin/bash
+# packages = authselect
+# platform = multi_platform_fedora,Oracle Linux 9,multi_platform_rhel,multi_platform_fedora,Oracle Linux 8
+# remediation = none
+
+authselect select sssd --force
+authselect enable-feature with-faillock
+# This test scenario simulates conflicting settings in pam and faillock.conf files.
+# It means that authselect is not properly configured and may have a unexpected behaviour. The
+# authselect integrity check will fail and the remediation will be aborted in order to preserve
+# intentional changes. In this case, an informative message will be shown in the remediation report.
+sed -i --follow-symlinks 's/\(pam_faillock.so \(preauth silent\|authfail\)\).*$/\1 even_deny_root/g' /etc/pam.d/system-auth /etc/pam.d/password-auth
+> "{{{ pam_faillock_conf_path }}}"
+echo "even_deny_root" >> "{{{ pam_faillock_conf_path }}}"
+echo "silent" >> "{{{ pam_faillock_conf_path }}}"

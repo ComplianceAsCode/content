@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure the Default Umask is Set Correctly For Interactive Users", rule_title=rule_title) }}}
+    <criteria>
+      <criterion test_ref="test_accounts_umask_interactive_users"
+                 comment="Ensure the Default Umask is Set Correctly For Interactive Users"/>
+    </criteria>
+  </definition>
+
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_local_interactive_users_home_dirs_list_object(interactive_users_object) }}}
+
+  <local_variable id="var_accounts_umask_interactive_users_dirs" datatype="string" version="1"
+                  comment="Variable including all home dirs from interactive users">
+    <object_component item_field="subexpression"
+                      object_ref="{{{ interactive_users_object }}}"/>
+  </local_variable>
+
+  <!-- #### creation of object #### -->
+  <ind:textfilecontent54_object id="object_accounts_umask_interactive_users"
+                                comment="Umask value from initialization files" version="1">
+    <ind:behaviors max_depth="0" recurse_direction="down" />
+    <ind:path var_ref="var_accounts_umask_interactive_users_dirs" var_check="at least one"/>
+    <ind:filename operation="pattern match">^\..*</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*umask\s*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_accounts_umask_interactive_users_bash_history</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_accounts_umask_interactive_users_bash_history"
+    version="1">
+    <ind:filename operation="pattern match">^\.bash_history</ind:filename>
+  </ind:textfilecontent54_state>
+
+  <!-- #### creation of test #### -->
+  <ind:textfilecontent54_test id="test_accounts_umask_interactive_users" check="all"
+                  check_existence="none_exist" version="1"
+                  comment="Umask must not be defined in user initialization files">
+    <ind:object object_ref="object_accounts_umask_interactive_users"/>
+  </ind:textfilecontent54_test>
+</def-group>

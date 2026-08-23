@@ -1,0 +1,15 @@
+# platform = multi_platform_ocp,multi_platform_rhcos
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+#
+{{% macro file_contents_audit_access_failed() -%}}
+## Unsuccessful file access (any other opens) This has to go last.
+-a always,exit -F arch=b32 -S open,openat,openat2,open_by_handle_at -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccessful-access
+-a always,exit -F arch=b64 -S open,openat,openat2,open_by_handle_at -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccessful-access
+-a always,exit -F arch=b32 -S open,openat,openat2,open_by_handle_at -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccessful-access
+-a always,exit -F arch=b64 -S open,openat,openat2,open_by_handle_at -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccessful-access
+{{% endmacro %}}
+{{{ kubernetes_machine_config_file(path='/etc/audit/rules.d/30-ospp-v42-3-access-failed.rules', file_permissions_mode='0600', source=file_contents_audit_access_failed()) }}}
+

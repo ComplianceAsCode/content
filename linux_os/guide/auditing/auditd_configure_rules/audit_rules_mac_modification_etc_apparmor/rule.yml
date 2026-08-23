@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Record Events that Modify the System''s Mandatory Access Controls (/etc/apparmor)'
+
+description: |-
+    {{{ describe_audit_rules_watch("/etc/apparmor/", "MAC-policy") }}}
+
+rationale: |-
+    The system's mandatory access policy (Apparmor) should not be
+    arbitrarily changed by anything other than administrator action. All changes to
+    MAC policy should be audited.
+
+severity: medium
+
+ocil_clause: 'the system is not configured to audit attempts to change files within the /etc/apparmor directory'
+
+ocil: |-
+    {{{ ocil_audit_rules_watch("/etc/apparmor", "MAC-policy") }}}
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: /etc/apparmor
+        key: MAC-policy

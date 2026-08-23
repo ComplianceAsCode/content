@@ -1,0 +1,55 @@
+documentation_complete: true
+
+
+title: 'Disable Prelinking'
+
+description: |-
+    The prelinking feature changes binaries in an attempt to decrease their startup
+    time. In order to disable it, change or add the following line inside the file
+    <tt>/etc/sysconfig/prelink</tt>:
+    <pre>PRELINKING=no</pre>
+    Next, run the following command to return binaries to a normal, non-prelinked state:
+    <pre>$ sudo /usr/sbin/prelink -ua</pre>
+
+rationale: |-
+    Because the prelinking feature changes binaries, it can interfere with the
+    operation of certain software and/or modes such as AIDE, FIPS, etc.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80787-5
+    cce@sle12: CCE-92211-2
+    cce@sle15: CCE-91341-8
+    cce@slmicro5: CCE-94078-3
+
+references:
+    cis-csc: 11,13,14,2,3,9
+    cis@sle12: 1.6.4
+    cis@sle15: 1.6.4
+    cjis: 5.10.1.3
+    cobit5: APO01.06,BAI02.01,BAI03.05,BAI06.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS04.07,DSS05.03,DSS06.02,DSS06.06
+    cui: 3.13.11
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3,4.3.4.4.4
+    isa-62443-2013: 'SR 3.1,SR 3.3,SR 3.4,SR 3.8,SR 4.1,SR 7.6'
+    iso27001-2013: A.11.2.4,A.12.1.2,A.12.2.1,A.12.5.1,A.12.6.2,A.14.1.2,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4,A.8.2.3
+    nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
+    nist: SC-13,CM-6(a)
+    nist-csf: PR.DS-1,PR.DS-6,PR.DS-8,PR.IP-1
+    pcidss: Req-11.5
+
+ocil_clause: 'the prelink package is installed and prelinking is not disabled'
+
+ocil: |-
+    Verify that prelinking is disabled on {{{ full_name }}}.
+
+    First determine whether the <tt>prelink</tt> package is installed:
+    <pre>$ rpm -q prelink</pre>
+
+    If the package is not installed, prelinking cannot be in use and the requirement is met.
+
+    If the package is installed, verify that prelinking is disabled:
+    <pre>$ grep -i PRELINKING /etc/sysconfig/prelink</pre>
+
+    The output must be:
+    <pre>PRELINKING=no</pre>

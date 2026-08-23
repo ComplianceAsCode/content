@@ -1,0 +1,42 @@
+documentation_complete: true
+
+
+title: 'Disable the ssh_sysadm_login SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>ssh_sysadm_login</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="ssh_sysadm_login") }}}
+
+rationale: |-
+    Preventing non-privileged users from executing privileged functions mitigates
+    the risk that unauthorized individuals or processes may gain unnecessary access
+    to information or privileges.
+
+    Privileged functions include, for example, establishing accounts, performing
+    system integrity checks, or administering cryptographic key management
+    activities. Non-privileged users are individuals who do not possess appropriate
+    authorizations. Circumventing intrusion detection and prevention mechanisms or
+    malicious code protection mechanisms are examples of privileged functions that
+    require protection from non-privileged users.
+
+references:
+    srg: SRG-OS-000324-GPOS-00125
+    stigid@ol7: OL07-00-020022
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83311-1
+    cce@rhel9: CCE-84081-9
+    cce@rhel10: CCE-90429-2
+    cce@sle12: CCE-91574-4
+    cce@sle15: CCE-91264-2
+    cce@sle16: CCE-95928-8
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="ssh_sysadm_login") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: ssh_sysadm_login

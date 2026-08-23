@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000233-CTR-000585
+  levels:
+  - medium
+  title: {{{ full_name }}} runtime must isolate security functions from non-security
+    functions.
+  status: automated
+  rules:
+  - coreos_enable_selinux_kernel_argument
+  - selinux_policytype
+  - selinux_state

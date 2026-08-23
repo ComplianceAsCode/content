@@ -1,0 +1,33 @@
+documentation_complete: true
+
+
+title: 'Install audispd-plugins Package'
+
+description: |-
+    {{{ describe_package_install(package="audispd-plugins") }}}
+
+rationale: |-
+    <tt>audispd-plugins</tt> provides plugins for the real-time interface to the
+    audit subsystem, <tt>audispd</tt>. These plugins can do things like relay events
+    to remote machines or analyze events for suspicious behavior.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82953-1
+    cce@rhel9: CCE-83648-6
+    cce@rhel10: CCE-88547-5
+
+references:
+    srg: SRG-OS-000342-GPOS-00133
+
+{{{ complete_ocil_entry_package_installed("audispd-plugins") }}}
+
+fixtext: '{{{ fixtext_package_installed("audispd-plugins") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: audispd-plugins
+
+srg_requirement: "{{{ full_name }}} must off-load audit records onto a different system or media from the system being audited."

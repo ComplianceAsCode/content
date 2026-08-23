@@ -1,0 +1,15 @@
+---
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_rhcos,multi_platform_almalinux
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  annotations:
+    complianceascode.io/depends-on: xccdf_org.ssgproject.content_rule_package_usbguard_installed
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    systemd:
+      units:
+      - name: usbguard.service
+        enabled: true

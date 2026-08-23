@@ -1,0 +1,25 @@
+controls:
+    -   id: SRG-OS-000364-GPOS-00151
+        levels:
+            - medium
+        title: {{{ full_name }}} must enforce access restrictions.
+        status: inherently met
+        rationale: |-
+            Failure to provide logical access restrictions associated with changes to system configuration may have significant effects on the overall security of the system.
+
+            When dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the operating system can have significant effects on the overall security of the system.
+
+            Accordingly, only qualified and authorized individuals should be allowed to obtain access to operating system components for the purposes of initiating changes, including upgrades and modifications.
+
+            Logical access restrictions include, for example, controls that restrict access to workflow automation, media libraries, abstract layers (e.g., changes implemented into third-party interfaces rather than directly into information systems), and change windows (e.g., changes occur only during specified times, making unauthorized changes easy to discover).
+        check: |-
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
+        fixtext: |-
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        status_justification: |-
+          {{{ full_name }}} is based on the Linux kernel. The Linux kernel enforces access restrictions as detailed here: https://www.linux.com/tutorials/overview-linux-kernel-security-features/.
+
+        artifact_description: |-
+            The UNIX permissions construct separates user and privileged user (the operating system accounts) access.

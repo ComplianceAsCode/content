@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000258-GPOS-00099
+        levels:
+            - medium
+        title: {{{ full_name }}} must protect audit tools from unauthorized deletion.
+        rules:
+            - file_audit_tools_permissions
+            - file_audit_tools_ownership
+            - file_audit_tools_group_ownership
+        status: automated

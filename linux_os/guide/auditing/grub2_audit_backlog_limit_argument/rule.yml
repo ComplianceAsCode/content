@@ -1,0 +1,56 @@
+documentation_complete: true
+
+
+title: 'Extend Audit Backlog Limit for the Audit Daemon'
+
+description: |-
+    To improve the kernel capacity to queue all log events, even those which occurred
+    prior to the audit daemon, add the argument <tt>audit_backlog_limit={{{ xccdf_value("var_audit_backlog_limit") }}}</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("audit_backlog_limit=" ~ xccdf_value("var_audit_backlog_limit")) | indent(4) }}}
+
+rationale: |-
+    audit_backlog_limit sets the queue length for audit events awaiting transfer
+    to the audit daemon. Until the audit daemon is up and running, all log messages
+    are stored in this queue.  If the queue is overrun during boot process, the action
+    defined by audit failure flag is taken.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-80943-4
+    cce@rhel9: CCE-83652-8
+    cce@rhel10: CCE-88192-0
+    cce@sle12: CCE-92254-2
+    cce@sle15: CCE-91374-9
+    cce@sle16: CCE-96217-5
+    cce@slmicro5: CCE-93870-4
+
+references:
+    cis@sle12: 4.1.2.4
+    cis@sle15: 4.1.2.4
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(C),164.310(a)(2)(iv),164.310(d)(2)(iii),164.312(b)
+    nist: CM-6(a)
+    ospp: FAU_STG.1,FAU_STG.3
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000254-GPOS-00095,SRG-OS-000341-GPOS-00132,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215
+    stigid@ol8: OL08-00-030602
+
+ocil_clause: 'audit backlog limit is not configured'
+
+ocil: |-
+    {{{ ocil_grub2_argument("audit_backlog_limit=" ~ xccdf_value("var_audit_backlog_limit")) | indent(4) }}}
+
+fixtext: |-
+    {{{ fixtext_grub2_bootloader_argument("audit_backlog_limit", xccdf_value("var_audit_backlog_limit")) | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must allocate an audit_backlog_limit of sufficient size to capture processes that start prior to the audit daemon.'
+
+platform: grub2
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: audit_backlog_limit
+        arg_variable: var_audit_backlog_limit
+        datatype: int
+        operation: greater than or equal

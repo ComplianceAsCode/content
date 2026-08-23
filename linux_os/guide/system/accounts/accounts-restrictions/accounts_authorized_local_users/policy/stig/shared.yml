@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have unauthorized accounts.
+
+vuldiscussion: |-
+    Accounts providing no operational purpose provide additional opportunities for
+    system compromise. Unnecessary accounts include user accounts for individuals not
+    requiring access to the system and application accounts for applications not installed
+    on the system.
+
+checktext: |-
+    Verify that there are no unauthorized local interactive user accounts with the following command:
+
+    $ less /etc/passwd
+
+    root:x:0:0:root:/root:/bin/bash
+    ...
+    smithk:x:1000:1000:smithk:/home/smithk:/bin/bash
+    throckw:x:1001:1001:throckw:/home/throckw:/bin/bash
+
+    Interactive user account, generally will have a UID of {{{ uid_min }}} or greater, a home directory in a specific partition, and an interactive shell.
+
+    Obtain the list of interactive user accounts authorized to be on the system from the System Administrator or Information System Security Officer (ISSO) and compare it to the list of local interactive user accounts on the system.
+
+    If there are unauthorized local user accounts on the system, this is a finding.
+
+fixtext: |-
+    Remove unauthorized local interactive user accounts with the following command where &ltunauthorized_user&gt is the unauthorized account:
+
+    $ sudo userdel  &ltunauthorized_user&gt

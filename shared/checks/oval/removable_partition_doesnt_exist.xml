@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="removable_partition_doesnt_exist" version="1">
+    <metadata>
+      <title>Device Files for Removable Media Partitions Does Not Exist on the System</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Verify if device file representing removable partitions
+      exist on the system</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_removable_partition_doesnt_exist" comment="Check if removable partition really exists on the system" />
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_removable_partition_doesnt_exist" check="all" check_existence="none_exist"
+  comment="Check if expected removable partitions truly exist on the system" version="1">
+    <unix:object object_ref="object_removable_partition_doesnt_exist" />
+  </unix:file_test>
+
+  <unix:file_object id="object_removable_partition_doesnt_exist" version="1">
+    <unix:filepath var_ref="var_removable_partition" var_check="at least one" />
+  </unix:file_object>
+
+  <external_variable comment="removable partition" datatype="string" id="var_removable_partition" version="1" />
+
+</def-group>

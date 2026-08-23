@@ -1,0 +1,64 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+
+- name: "Detect if {{{ PARAMETER }}} can be found on {{{ PATH }}}"
+  ansible.builtin.find:
+    path: {{{ PATH }}}
+    contains: '^\s*{{{ PARAMETER }}}'
+  register: {{{ rule_id }}}_config_files
+
+- name: "Configure {{{ PARAMETER }}} - default file"
+  community.general.ini_file:
+    dest: {{{ PATH }}}/00-security-settings
+    section: {{{ SECTION }}}
+    option: {{{ PARAMETER }}}
+    value: "{{{ VALUE }}}"
+    create: yes
+    mode: 0644
+  when: {{{ rule_id }}}_config_files is defined and {{{ rule_id }}}_config_files.matched == 0
+  register: default_file
+
+- name: "Configure {{{ PARAMETER }}} - existing files"
+  community.general.ini_file:
+    dest: "{{ item.path }}"
+    section: {{{ SECTION }}}
+    option: {{{ PARAMETER }}}
+    value: "{{{ VALUE }}}"
+    create: yes
+    mode: 0644
+  with_items: "{{ {{{ rule_id }}}_config_files.files }}"
+  when: {{{ rule_id }}}_config_files is defined and {{{ rule_id }}}_config_files.matched > 0
+  register: existing_files
+
+- name: "Detect if lock for {{{ PARAMETER }}} can be found on {{{ PATH }}}"
+  ansible.builtin.find:
+    path: {{{ LOCK_PATH }}}
+    contains: '^\s*{{{ PARAMETER }}}'
+  register: {{{ rule_id }}}_lock_files
+
+- name: "Prevent user modification {{{ PARAMETER }}} - default file"
+  ansible.builtin.lineinfile:
+    path: {{{ LOCK_PATH }}}/00-security-settings-lock
+    regexp: '^/{{{ SECTION }}}/{{{ PARAMETER }}}$'
+    line: '/{{{ SECTION }}}/{{{ PARAMETER }}}'
+    create: yes
+    mode: 0644
+  when: {{{ rule_id }}}_lock_files is defined and {{{ rule_id }}}_lock_files.matched == 0
+
+- name: "Prevent user modification {{{ PARAMETER }}} - existing files"
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}"
+    regexp: '^/{{{ SECTION }}}/{{{ PARAMETER }}}$'
+    line: '/{{{ SECTION }}}/{{{ PARAMETER }}}'
+    create: yes
+    mode: 0644
+  with_items: "{{ {{{ rule_id }}}_lock_files.files }}"
+  when: {{{ rule_id }}}_lock_files is defined and {{{ rule_id }}}_lock_files.matched > 0
+
+- name: "Dconf Update - {{{ PARAMETER }}}"
+  ansible.builtin.command: dconf update
+  when: default_file is changed or existing_files is changed

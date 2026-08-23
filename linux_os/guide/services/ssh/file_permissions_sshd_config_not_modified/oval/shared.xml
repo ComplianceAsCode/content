@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Verify that the file permissions of openssh-server package
+        files have not been modified from the vendor defaults.", rule_title=rule_title) }}}
+    <criteria>
+      <criterion test_ref="test_{{{ rule_id }}}"
+        comment="mode of openssh-server files matches local rpm database"/>
+    </criteria>
+  </definition>
+
+  <linux:rpmverifyfile_state id="state_{{{ rule_id }}}_mode_differs" version="1">
+    <linux:mode_differs>fail</linux:mode_differs>
+  </linux:rpmverifyfile_state>
+
+  <linux:rpmverifyfile_object id="object_{{{ rule_id }}}" version="1"
+    comment="rpm verify permissions of openssh-server files">
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
+    <linux:name operation="equals">openssh-server</linux:name>
+    <linux:epoch operation="pattern match">.*</linux:epoch>
+    <linux:version operation="pattern match">.*</linux:version>
+    <linux:release operation="pattern match">.*</linux:release>
+    <linux:arch operation="pattern match">.*</linux:arch>
+    <linux:filepath operation="pattern match">.*</linux:filepath>
+    <filter action="include">state_{{{ rule_id }}}_mode_differs</filter>
+  </linux:rpmverifyfile_object>
+
+  <linux:rpmverifyfile_test id="test_{{{ rule_id }}}" version="1"
+    check="all" check_existence="none_exist"
+    comment="mode of openssh-server files matches local rpm database">
+    <linux:object object_ref="object_{{{ rule_id }}}"/>
+  </linux:rpmverifyfile_test>
+</def-group>

@@ -1,0 +1,60 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{% if REMEDIATION_XCCDF_VARIABLE %}}
+{{{ ansible_instantiate_variables(REMEDIATION_XCCDF_VARIABLE) }}}
+{{% set VALUE = "{{" + REMEDIATION_XCCDF_VARIABLE + "}}" %}}
+{{% endif %}}
+
+
+- name: "{{{ rule_title }}} - Search for a section in files"
+  ansible.builtin.find:
+    paths: "{{item.path}}"
+    patterns: "{{item.pattern}}"
+    contains: '^\s*\[{{{ SECTION }}}\]'
+    read_whole_file: true
+    use_regex: true
+  register: systemd_dropin_files_with_section
+  loop:
+    - path: "{{ '{{{ MASTER_CFG_FILE }}}' | dirname }}"
+      pattern: "{{ '{{{ MASTER_CFG_FILE }}}' | basename | regex_escape }}"
+    - path: "{{{ DROPIN_DIR }}}"
+      pattern: '.*\.conf'
+
+- name: "{{{ rule_title }}} - Count number of files which contain the correct section"
+  ansible.builtin.set_fact:
+    count_of_systemd_dropin_files_with_section: "{{systemd_dropin_files_with_section.results | map(attribute='matched') | list | map('int') | sum}}"
+
+- name: "{{{ rule_title   }}} - Add missing configuration to correct section"
+  community.general.ini_file:
+    path: "{{item}}"
+    section: {{{ SECTION }}}
+    option: {{{ PARAM }}}
+{{% if NO_QUOTES %}}
+    value: "{{{ VALUE }}}"
+{{% else %}}
+    value: '"{{{ VALUE }}}"'
+{{% endif %}}
+    state: present
+    no_extra_spaces: true
+  when: count_of_systemd_dropin_files_with_section | int > 0
+  loop: "{{systemd_dropin_files_with_section.results | sum(attribute='files', start=[]) | map(attribute='path') | list }}"
+
+- name: "{{{ rule_title }}} - Add configuration to new remediation file"
+  community.general.ini_file:
+    path: "{{{ DROPIN_DIR }}}/complianceascode_hardening.conf"
+    section: {{{ SECTION }}}
+    option: {{{ PARAM }}}
+{{% if NO_QUOTES %}}
+    value: "{{{ VALUE }}}"
+{{% else %}}
+    value: '"{{{ VALUE }}}"'
+{{% endif %}}
+    state: present
+    no_extra_spaces: true
+    create: true
+    mode: 0644
+  when: count_of_systemd_dropin_files_with_section | int == 0

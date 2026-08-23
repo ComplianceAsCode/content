@@ -1,0 +1,9 @@
+default:
+    target_oval_version: [5, 11]
+    target_oval_version_str: "5.11"
+
+overrides:
+  {{% if "ubuntu" in families or "debian" in families %}}
+    target_oval_version: [5, 11, 2]
+    target_oval_version_str: "5.11.2"
+  {{% endif %}}

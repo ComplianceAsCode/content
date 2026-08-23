@@ -1,0 +1,43 @@
+documentation_complete: true
+
+title: 'Configure CA certificate for rsyslog remote logging'
+
+description: |-
+    Configure CA certificate for <tt>rsyslog</tt> logging
+    to remote server using Transport Layer Security (TLS)
+    using correct path for the <tt>DefaultNetstreamDriverCAFile</tt>
+    global option in <tt>/etc/rsyslog.conf</tt>, for example with the following command:
+    <pre>echo 'global(DefaultNetstreamDriverCAFile="{{{ rsyslog_cafile }}}")' >> /etc/rsyslog.conf</pre>
+    Replace the <tt>{{{ rsyslog_cafile }}}</tt> in the above command with the path to the file with CA certificate generated for the purpose of remote logging.
+
+rationale: |-
+    The CA certificate needs to be set or <tt>rsyslog.service</tt>
+    fails to start with
+    <pre>error: ca certificate is not set, cannot continue</pre>
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82458-1
+    cce@rhel9: CCE-83992-8
+    cce@rhel10: CCE-88456-9
+    cce@sle12: CCE-91514-0
+    cce@sle15: CCE-91201-4
+    cce@sle16: CCE-96407-2
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'CA certificate for rsyslog remote logging via TLS is not set'
+
+ocil: |-
+    To verify that rsyslog's Forwarding Output Module has CA certificate
+    configured for its TLS connections to remote server, run the following command:
+    <pre>$ grep DefaultNetstreamDriverCAFile /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
+    The output should include record similar to
+    <pre>global(DefaultNetstreamDriverCAFile="{{{ rsyslog_cafile }}}")</pre>
+    where the path to the CA file (<tt>{{{ rsyslog_cafile }}}</tt> in case above) must point to the correct CA certificate.
+
+warnings:
+    - general: |-
+        Automatic remediation is not available as each organization has unique requirements. 

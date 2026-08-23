@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000256-GPOS-00097
+        levels:
+            - medium
+        title: {{{ full_name }}} must protect audit tools from unauthorized access.
+        rules:
+            - file_audit_tools_permissions
+            - file_audit_tools_ownership
+            - file_audit_tools_group_ownership
+        status: automated

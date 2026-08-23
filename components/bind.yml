@@ -1,0 +1,22 @@
+groups:
+- disabling_dns_server
+- dns
+- dns_server_chroot
+- dns_server_dedicated
+- dns_server_isolation
+- dns_server_partition_with_views
+- dns_server_protection
+- dns_server_separate_internal_external
+name: bind
+packages:
+- bind
+rules:
+- configure_bind_crypto_policy
+- dns_server_authenticate_zone_transfers
+- dns_server_disable_dynamic_updates
+- dns_server_disable_zone_transfers
+- package_bind_removed
+- package_dnsmasq_removed
+- package_unbound_removed
+- service_named_disabled
+- service_dnsmasq_disabled

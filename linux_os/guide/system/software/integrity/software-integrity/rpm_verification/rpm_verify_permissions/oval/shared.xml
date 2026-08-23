@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
+    {{{ oval_metadata("Verify the permissions of installed packages by comparing the installed
+        files with information about the files taken from the package metadata stored in the RPM
+        database.", rule_title=rule_title) }}}
+    <criteria>
+      <criterion test_ref="test_rpm_verify_permissions"
+        comment="mode of all files matches local rpm database"/>
+    </criteria>
+  </definition>
+
+  <linux:rpmverifyfile_state id="state_rpm_verify_permissions_files_fail_mode" version="1">
+    <linux:mode_differs>fail</linux:mode_differs>
+  </linux:rpmverifyfile_state>
+
+  <linux:rpmverifyfile_object id="object_rpm_verify_permissions_files_fail_mode" version="1"
+    comment="rpm verify permissions of all files">
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
+    <linux:name operation="pattern match">.*</linux:name>
+    <linux:epoch operation="pattern match">.*</linux:epoch>
+    <linux:version operation="pattern match">.*</linux:version>
+    <linux:release operation="pattern match">.*</linux:release>
+    <linux:arch operation="pattern match">.*</linux:arch>
+    <linux:filepath operation="pattern match">.*</linux:filepath>
+    <filter action="include">state_rpm_verify_permissions_files_fail_mode</filter>
+  </linux:rpmverifyfile_object>
+
+  <linux:rpmverifyfile_test id="test_rpm_verify_permissions" version="1"
+    check="all" check_existence="none_exist"
+    comment="mode of all files matches local rpm database">
+    <linux:object object_ref="object_rpm_verify_permissions_files_fail_mode"/>
+  </linux:rpmverifyfile_test>
+</def-group>

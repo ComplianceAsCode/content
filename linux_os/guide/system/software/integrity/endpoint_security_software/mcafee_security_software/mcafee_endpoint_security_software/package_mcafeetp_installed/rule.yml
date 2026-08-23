@@ -1,0 +1,53 @@
+{{% if 'ubuntu' in product %}}
+{{% set pkg='mfetp' %}}
+{{% else %}}
+{{% set pkg='McAfeeTP' %}}
+{{% endif %}}
+
+documentation_complete: true
+
+
+title: 'Install McAfee Endpoint Security for Linux (ENSL)'
+
+description: |-
+    Install McAfee Endpoint Security for Linux antivirus software
+    which is provided for systems and uses signatures to search for the
+    presence of viruses on the filesystem.
+
+    {{{ describe_package_install(package=pkg) }}}
+
+rationale: |-
+    Virus scanning software can be used to detect if a system has been compromised by
+    computer viruses, as well as to limit their spread to other systems.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86260-7
+    cce@rhel9: CCE-86236-7
+    cce@rhel10: CCE-90709-7
+    cce@sle12: CCE-92347-4
+    cce@sle15: CCE-92486-0
+
+references:
+    nist: SI-2(2)
+    srg: SRG-OS-000191-GPOS-00080
+
+{{{ complete_ocil_entry_package_installed(pkg) }}}
+
+warnings:
+    - general: |-
+        Due to McAfee Endpoint Security for Linux (ENSL) being 3rd party software,
+        automated remediation is not available for this configuration check.
+
+template:
+    name: package_installed
+    vars:
+        pkgname: {{{ pkg }}}
+    backends:
+        bash: "off"
+        ansible: "off"
+        anaconda: "off"
+        puppet: "off"
+        blueprint: "off"
+        kickstart: "off"

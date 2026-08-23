@@ -1,0 +1,9 @@
+documentation_complete: true
+
+title: 'Export Filesystems Read-Only if Possible'
+
+description: |-
+    If a filesystem is being exported so that users can view the files in a convenient
+    fashion, but there is no need for users to edit those files, exporting the filesystem read-only
+    removes an attack vector against the server. The default filesystem export mode is <tt>ro</tt>,
+    so do not specify <tt>rw</tt> without a good reason.

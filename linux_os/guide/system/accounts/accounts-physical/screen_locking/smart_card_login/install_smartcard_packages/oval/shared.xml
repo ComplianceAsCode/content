@@ -1,0 +1,28 @@
+{{% if product in ["sle12", "slmicro5", "slmicro6"] %}}
+{{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
+{{% elif product in ["sle15"] %}}
+{{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc'] %}}
+{{% elif product in ["ol7"] %}}
+{{% set smartcard_packages = ['pam_pkcs11'] %}}
+{{% elif 'ubuntu' in product %}}
+{{% set smartcard_packages = ['libpam-pkcs11'] %}}
+{{% else %}}
+{{% set smartcard_packages = ['openssl-pkcs11'] %}}
+{{% endif %}}
+
+<def-group>
+  <definition class="compliance" id="install_smartcard_packages"
+  version="1">
+    {{{ oval_metadata("The " + pkg_system|upper + " packages " + smartcard_packages|join(',') + " should be installed.", affected_platforms=["multi_platform_sle", "multi_platform_slmicro"], rule_title=rule_title) }}}
+    <criteria operator="AND" comment="Make sure all smartcard packages are installed">
+{{% for pkg in smartcard_packages %}}
+      <criterion comment="package {{{ pkg }}} is installed"
+      test_ref="test_package_{{{ pkg }}}_installed" />
+{{% endfor %}}
+    </criteria>
+  </definition>
+
+{{% for pkg in smartcard_packages %}}
+{{{ oval_test_package_installed(package=pkg, evr=EVR, test_id="test_package_" + pkg + "_installed") }}}
+{{% endfor %}}
+</def-group>

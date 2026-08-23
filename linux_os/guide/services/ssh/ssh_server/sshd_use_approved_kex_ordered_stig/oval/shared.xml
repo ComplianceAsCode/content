@@ -1,0 +1,69 @@
+{{% if product in ['ol8', 'rhel8'] %}}
+{{% set path=openssh_server_crypto_policy_config_file %}}
+{{% set prefix_conf="^\s*CRYPTO_POLICY\s*=.*-oKexAlgorithms=" %}}
+{{% set kex_algos=["ecdh-sha2-nistp256","ecdh-sha2-nistp384",
+             "ecdh-sha2-nistp521","diffie-hellman-group-exchange-sha256",
+             "diffie-hellman-group14-sha256","diffie-hellman-group16-sha512",
+             "diffie-hellman-group18-sha512"] %}}
+{{% set sufix_conf="(\s.*)?'" %}}
+{{% elif product in ['ol7', 'sle12', 'sle15', 'slmicro5', 'slmicro6'] %}}
+{{% set path=sshd_main_config_file %}}
+{{% set prefix_conf="^\s*KexAlgorithms\s*" %}}
+{{% set kex_algos=["ecdh-sha2-nistp256","ecdh-sha2-nistp384","ecdh-sha2-nistp521",
+             "diffie-hellman-group-exchange-sha256"]  %}}
+{{% endif %}}
+
+{{% set kex_algos_regex=prefix_conf ~ "(?=[\w-])" "(\\b" ~ kex_algos|join("\\b,?)?(\\b") ~ ")?" ~
+                        sufix_conf ~ "[\\s]*(?:#.*)?$" %}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Limit the Key Exchange (Kex) algorithms to those which are FIPS-approved.", rule_title=rule_title) }}}
+    <criteria comment="SSH is configured correctly or is not installed"
+      operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+          definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
+        <extend_definition comment="package openssh removed"
+          definition_ref="package_openssh_removed" />
+        {{% else %}}
+        <extend_definition comment="package openssh-server removed"
+          definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
+      </criteria>
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+          definition_ref="sshd_required_or_unset" />
+        {{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
+        <extend_definition comment="package openssh installed"
+          definition_ref="package_openssh_installed" />
+        {{% else %}}
+        <extend_definition comment="package openssh-server installed"
+          definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
+        <criterion comment="Check Kex in {{{ path }}}"
+          test_ref="test_{{{ rule_id }}}" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="tests the value of Kex algorithms setting in the {{{ path }}} file"
+    id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ prefix_conf }}}.*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:text operation="pattern match">{{{ kex_algos_regex }}}</ind:text>
+  </ind:textfilecontent54_state>
+
+</def-group>

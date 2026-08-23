@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000066-GPOS-00034
+        levels:
+            - medium
+        title: {{{ full_name }}}, for PKI-based authentication, must validate certificates
+            by constructing a certification path (which includes status information) to an
+            accepted trust anchor.
+        status: manual
+        rules:
+            - sssd_has_trust_anchor

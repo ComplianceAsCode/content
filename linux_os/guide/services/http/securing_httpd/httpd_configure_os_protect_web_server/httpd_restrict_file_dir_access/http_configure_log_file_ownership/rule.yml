@@ -1,0 +1,23 @@
+documentation_complete: true
+
+
+title: 'HTTPD Log Files Must Be Owned By Root'
+
+description: |-
+    All <tt>httpd</tt> logs must be owned by root user and group. By default,
+    the path for httpd logs is <tt>/var/log/httpd/</tt>
+    {{{ describe_file_owner(file="/var/log/httpd", owner="root") }}}
+    {{{ describe_file_owner(file="/var/log/httpd/*", owner="root") }}}
+
+rationale: |-
+    A major tool in exploring the web site use, attempted use, unusual conditions,
+    and problems are the access and error logs. In the event of a security incident,
+    these logs can provide the SA and the web administrator with valuable
+    information. Because of the information that is captured in the logs, it is
+    critical that only authorized individuals have access to the logs.
+
+severity: medium
+
+ocil: |-
+    {{{ describe_file_owner(file="/var/log/httpd", owner="root") }}}
+    {{{ describe_file_owner(file="/var/log/httpd/*", owner="root") }}}

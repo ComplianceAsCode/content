@@ -1,0 +1,14 @@
+controls:
+    -   id: SRG-OS-000745-GPOS-00210
+        title: '{{{ full_name }}} must accept only external credentials that are NIST-compliant.'
+        levels:
+            - medium
+        status: does not meet
+        rationale: |-
+            Allowing only NIST-compliant external authenticators ensures that the system meets or exceeds federal requirements, enabling federal government relying parties to trust these authenticators during authentication transactions at a specified authenticator assurance level.
+        mitigation: |-
+            Ensure system level controls are in place to implement comprehensive authenticator and identifier alignment to correlating system requirements.
+
+            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+        status_justification: |-
+            {{{ full_name }}} does not natively provide mechanisms which satisfy all requirements identified in NIST SP 800-63b.

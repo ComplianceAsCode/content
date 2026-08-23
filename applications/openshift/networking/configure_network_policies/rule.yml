@@ -1,0 +1,53 @@
+documentation_complete: true
+
+
+title: 'Ensure that the CNI in use supports Network Policies'
+
+description: |-
+    There are a variety of CNI plugins available for Kubernetes. If the CNI in
+    use does not support Network Policies it may not be possible to effectively
+    restrict traffic in the cluster. OpenShift supports Kubernetes NetworkPolicy
+    using a Kubernetes Container Network Interface (CNI) plug-in.
+
+rationale: |-
+    Kubernetes network policies are enforced by the CNI plugin in use. As such
+    it is important to ensure that the CNI plugin supports both Ingress and
+    Egress network policies.
+
+severity: high
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-1.1.4,Req-1.2,Req-2.2
+    srg: SRG-APP-000038-CTR-000105
+
+platform: not ocp4-on-hypershift
+
+ocil_clause: 'Support for Network Policies needs review'
+
+ocil: |-
+    Verify that your CNI plugin supports NetworkPolicies:
+    <pre>$ oc get network cluster -ojsonpath='{.spec.networkType}'</pre>
+    The result should list a CNI plugin that supports NetworkPolicies,
+    currently the plugins in the rule's pass list are OpenShiftSDN, OVN
+    and Calico.
+
+{{% set api_path = '/apis/operator.openshift.io/v1/networks/cluster' %}}
+{{% set jqfilter = '[.spec.defaultNetwork.type]' %}}
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({api_path: jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path(api_path, jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "any_exist"
+    entity_check: "all"
+    regex_data: "true"
+    xccdf_variable: var_configure_network_policies_regex

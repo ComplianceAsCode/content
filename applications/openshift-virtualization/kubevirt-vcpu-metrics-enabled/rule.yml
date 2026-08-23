@@ -1,0 +1,29 @@
+documentation_complete: true
+
+platform: '{{{ product }}}-node'
+
+title: 'Ensure vCPU metrics are enabled'
+
+description: |-
+    OpenShift Virtualization provides metrics that you can use to monitor the
+    consumption of cluster infrastructure resources, including virtual CPU
+    (vCPU). In order to use the vCPU metric, the <tt>schedstats=enable</tt>
+    kernel argument must be applied.
+
+rationale: |-
+    Metrics are a fundamental mechanism for understanding if the guest is
+    behaving in an anomalous or otherwise suspicious manner.
+
+severity: medium
+
+ocil_clause: 'schedstats is not enabled in the kernel command line'
+
+ocil: |-
+    Verify if the option is enabled in the kernel command line:
+    <pre>$ cat /proc/cmdline | grep schedstats=enable</pre>
+
+template:
+    name: coreos_kernel_option
+    vars:
+        arg_name: schedstats
+        arg_value: enable

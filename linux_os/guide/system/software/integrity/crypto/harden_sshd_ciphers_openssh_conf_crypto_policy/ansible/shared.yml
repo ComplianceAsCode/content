@@ -1,0 +1,16 @@
+# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,multi_platform_fedora
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("sshd_approved_ciphers") }}}
+{{%- set openssh_client_policy_file = openssh_client_crypto_policy_config_file -%}}
+
+{{{ ansible_set_config_file(
+        msg='Configure SSH Daemon to Use FIPS 140-2 Validated Ciphers: openssh.config',
+        file=openssh_client_policy_file,
+        parameter='Ciphers',
+        value="{{ sshd_approved_ciphers }}",
+        create='yes',
+        prefix_regex='^.*', rule_title=rule_title)
+}}}

@@ -1,0 +1,40 @@
+documentation_complete: true
+
+
+title: 'Uninstall nfs-utils Package'
+
+description: |-
+    {{{ describe_package_remove(package="nfs-utils") }}}
+
+rationale: |-
+    <tt>nfs-utils</tt> provides a daemon for the kernel NFS server and related tools. This
+    package also contains the <tt>showmount</tt> program. <tt>showmount</tt> queries the mount
+    daemon on a remote host for information about the Network File System (NFS) server on the
+    remote host. For example, <tt>showmount</tt> can display the clients which are mounted on
+    that host.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82932-5
+    cce@rhel9: CCE-84243-5
+    cce@rhel10: CCE-88270-4
+    cce@sle12: CCE-91641-1
+    cce@sle15: CCE-91284-0
+    cce@slmicro5: CCE-93911-6
+
+references:
+    cis@sle12: 2.2.7
+    cis@sle15: 2.2.7
+    srg: SRG-OS-000095-GPOS-00049
+
+{{{ complete_ocil_entry_package_removed("nfs-utils") }}}
+
+fixtext: '{{{ fixtext_package_removed("nfs-utils") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_removed("nfs-utils") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: nfs-utils

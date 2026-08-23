@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000095-GPOS-00049
+        levels:
+            - medium
+        title: {{{ full_name }}} must be configured to disable non-essential capabilities.
+        rules:
+            - kernel_module_can_disabled
+            - kernel_module_sctp_disabled
+            - kernel_module_tipc_disabled
+            - kernel_module_bluetooth_disabled
+        status: automated

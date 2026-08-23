@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must generate audit records for successful and unsuccessful uses of the "init" command.
+
+fixtext: |-
+    Configure {{{ full_name }}} to generate audit records upon successful and unsuccessful uses of the "init" command by adding or updating the following rule in the "/etc/audit/rules.d/audit.rules" file:
+
+    -a always,exit -F path=/usr/sbin/init -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-init
+
+    Restart the audit daemon with the following command for the changes to take effect:
+
+    $ sudo service auditd restart
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to audit the execution of the "init" command with the following command:
+
+    $ sudo auditctl -l | grep /usr/sbin/init
+    -a always,exit -S all -F path=/usr/sbin/init -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-init
+
+    If the command does not return a line, or the line is commented out, this is a finding.
+
+vuldiscussion: |-
+    Misuse of the "init" command may cause availability issues for the system.

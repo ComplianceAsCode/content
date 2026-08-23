@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Root of files obtained from OCP nodes'
+
+description: |-
+    When scanning OpenShift clusters, some settings are not exposed as files.
+    In the case that they are exported from the cluster (typically as yaml files),
+    this variable determines the directory where they will end up.
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    default: /kubernetes-api-resources

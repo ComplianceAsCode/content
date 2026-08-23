@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000446-GPOS-00200
+        levels:
+            - medium
+        title: '{{{ full_name }}} must perform verification of the correct operation
+    of security functions: upon system start-up and/or restart; upon command by a
+    user with privileged access; and/or every 30 days.'
+        rules:
+            - aide_periodic_cron_checking
+        status: automated

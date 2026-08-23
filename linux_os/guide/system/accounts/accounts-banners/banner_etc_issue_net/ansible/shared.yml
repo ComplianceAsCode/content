@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+{{{ ansible_instantiate_variables("remote_login_banner_contents") }}}
+
+- name: "{{{ rule_title }}} - ensure correct banner"
+  ansible.builtin.copy:
+    dest: /etc/issue.net
+    mode: 0644
+    content: "{{ remote_login_banner_contents | replace('\\n', '\n') }}\n"

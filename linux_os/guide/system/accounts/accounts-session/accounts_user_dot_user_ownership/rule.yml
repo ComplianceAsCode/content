@@ -1,0 +1,49 @@
+documentation_complete: true
+
+
+title: 'User Initialization Files Must Be Owned By the Primary User'
+
+description: |-
+    Set the owner of the user initialization files for interactive users to
+    the primary owner with the following command:
+    <pre>$ sudo chown <i>USER</i> /home/<i>USER</i>/.*</pre>
+
+    This rule ensures every initialization file related to an interactive user
+    is owned by an interactive user.
+
+rationale: |-
+    Local initialization files are used to configure the user's shell environment
+    upon logon. Malicious modification of these files could compromise accounts upon
+    logon.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86316-7
+    cce@rhel9: CCE-87038-6
+    cce@rhel10: CCE-86981-8
+    cce@sle12: CCE-92296-3
+    cce@sle15: CCE-91409-3
+    cce@sle16: CCE-96227-4
+
+references:
+    cis@sle12: 6.2.8
+    cis@sle15: 6.2.8
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020690
+
+ocil_clause: 'they are not'
+
+ocil: |-
+    To verify all local initialization files for interactive users are owned by the
+    primary user, run the following command:
+    <pre>$ sudo ls -al /home/<i>USER</i>/.*</pre>
+    The user initialization files should be owned by <i>USER</i>.
+
+warnings:
+    - general: |-
+       Due to OVAL limitation, this rule can report a false negative in a
+       specific situation where two interactive users swap the ownership of
+       their respective initialization files.
+
+platform: system_with_kernel

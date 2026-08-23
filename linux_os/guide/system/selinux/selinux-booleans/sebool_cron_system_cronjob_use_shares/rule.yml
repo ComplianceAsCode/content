@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the cron_system_cronjob_use_shares SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>cron_system_cronjob_use_shares</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="cron_system_cronjob_use_shares") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="cron_system_cronjob_use_shares") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: cron_system_cronjob_use_shares

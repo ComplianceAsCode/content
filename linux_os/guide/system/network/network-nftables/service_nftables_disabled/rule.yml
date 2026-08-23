@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'Verify nftables Service is Disabled'
+
+description: |-
+    nftables is a subsystem of the Linux kernel providing filtering and classification of network
+    packets/datagrams/frames and is the successor to iptables.
+    The <code>nftables</code> service can be disabled with the following command:
+    <pre>systemctl disable nftables</pre>
+
+rationale: |-
+    {{%- if 'ubuntu' in product  %}}
+    nftables should be disabled if another firewall service is used as it may lead to conflict.
+    {{%- else %}}
+    Running both <tt>firewalld</tt> and <tt>nftables</tt> may lead to conflict. <tt>nftables</tt>
+    is actually one of the backends for <tt>firewalld</tt> management tools.
+    {{%- endif %}}
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88428-8
+    cce@rhel9: CCE-88429-6
+    cce@rhel10: CCE-88523-6
+    cce@sle15: CCE-92529-7
+    cce@sle16: CCE-96683-8
+    cce@slmicro5: CCE-93982-7
+
+references:
+    cis@sle15: 3.5.1.2
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="nftables") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="nftables") }}}
+
+fixtext: '{{{ fixtext_service_disabled("nftables") }}}'
+
+{{%- if 'ubuntu' in product  %}}
+platform: system_with_kernel and package[nftables]
+{{%- else %}}
+platform: system_with_kernel and package[nftables] and package[firewalld]
+{{%- endif %}}
+
+{{%- if product in [ "sle12", "sle15", "ubuntu2404" ] %}}
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: nftables
+        servicename: nftables
+        variable: var_network_filtering_service
+        value: nftables
+{{%- else %}}
+template:
+    name: service_disabled
+    vars:
+        servicename: nftables
+        packagename: nftables
+{{%- endif %}}

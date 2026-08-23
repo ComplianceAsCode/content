@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Disable Network File System Lock Service (nfslock)'
+
+description: |-
+    The Network File System Lock (nfslock) service starts the required
+    remote procedure call (RPC) processes which allow clients to lock files on the
+    server. If the local system is not configured to mount NFS filesystems then
+    this service should be disabled.
+    {{{ describe_service_disable(service="nfslock") }}}
+
+rationale: ""
+
+severity: unknown
+
+template:
+    name: service_disabled
+    vars:
+        servicename: nfslock
+        packagename: nfs-utils

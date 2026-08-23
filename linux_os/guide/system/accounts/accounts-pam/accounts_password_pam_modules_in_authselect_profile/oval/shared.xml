@@ -1,0 +1,81 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure active authselect profile includes pam modules", rule_title=rule_title) }}}
+    <criteria operator="AND" comment="Check that authselect is enabled and profile includes required modules">
+      <!-- First check that authselect is enabled -->
+      <extend_definition comment="authselect must be enabled" definition_ref="enable_authselect" />
+
+      <!-- Check that all required modules exist in system-auth -->
+      <criteria operator="AND" comment="All required PAM modules must be present in system-auth">
+        <criterion test_ref="test_{{{ rule_id }}}_pam_pwquality_system_auth"
+          comment="pam_pwquality.so exists in system-auth"/>
+        <criterion test_ref="test_{{{ rule_id }}}_pam_pwhistory_system_auth"
+          comment="pam_pwhistory.so exists in system-auth"/>
+        <criterion test_ref="test_{{{ rule_id }}}_pam_faillock_system_auth"
+          comment="pam_faillock.so exists in system-auth"/>
+        <criterion test_ref="test_{{{ rule_id }}}_pam_unix_system_auth"
+          comment="pam_unix.so exists in system-auth"/>
+      </criteria>
+
+      <!-- Check that all required modules exist in password-auth -->
+      <criteria operator="AND" comment="All required PAM modules must be present in password-auth">
+        <criterion test_ref="test_{{{ rule_id }}}_pam_pwquality_password_auth"
+          comment="pam_pwquality.so exists in password-auth"/>
+        <criterion test_ref="test_{{{ rule_id }}}_pam_pwhistory_password_auth"
+          comment="pam_pwhistory.so exists in password-auth"/>
+        <criterion test_ref="test_{{{ rule_id }}}_pam_faillock_password_auth"
+          comment="pam_faillock.so exists in password-auth"/>
+        <criterion test_ref="test_{{{ rule_id }}}_pam_unix_password_auth"
+          comment="pam_unix.so exists in password-auth"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- Read the current authselect profile from /etc/authselect/authselect.conf -->
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_authselect_profile" version="1">
+    <ind:filepath>/etc/authselect/authselect.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^(.+)$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Extract the profile name from the first line -->
+  <local_variable id="var_{{{ rule_id }}}_authselect_profile" datatype="string" comment="Current authselect profile name" version="1">
+    <regex_capture pattern="^(.+)$">
+      <object_component item_field="text" object_ref="obj_{{{ rule_id }}}_authselect_profile" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- Check files in the currently selected authselect profile (custom location only) -->
+{{%- macro oval_pam_module_check(module_name, file_name) -%}}
+  <!-- Construct full file path for custom profile location -->
+  <local_variable id="var_{{{ rule_id }}}_pam_{{{ module_name }}}_{{{ file_name | replace("-", "_") }}}_path" datatype="string" comment="Full path to {{{ file_name }}} in current profile" version="1">
+    <concat>
+      <literal_component>/etc/authselect/</literal_component>
+      <variable_component var_ref="var_{{{ rule_id }}}_authselect_profile" />
+      <literal_component>/{{{ file_name }}}</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_pam_{{{ module_name }}}_{{{ file_name | replace("-", "_") }}}" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Check that pam_{{{ module_name }}}.so exists in {{{ file_name }}}">
+    <ind:object object_ref="obj_{{{ rule_id }}}_pam_{{{ module_name }}}_{{{ file_name | replace("-", "_") }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_pam_{{{ module_name }}}_{{{ file_name | replace("-", "_") }}}" version="1">
+    <ind:filepath var_ref="var_{{{ rule_id }}}_pam_{{{ module_name }}}_{{{ file_name | replace("-", "_") }}}_path" />
+    <ind:pattern operation="pattern match">^\s*\S+\s+\S+\s+pam_{{{ module_name }}}\.so</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{%- endmacro -%}}
+
+{{{ oval_pam_module_check("pwquality", "system-auth") }}}
+{{{ oval_pam_module_check("pwhistory", "system-auth") }}}
+{{{ oval_pam_module_check("faillock", "system-auth") }}}
+{{{ oval_pam_module_check("unix", "system-auth") }}}
+{{{ oval_pam_module_check("pwquality", "password-auth") }}}
+{{{ oval_pam_module_check("pwhistory", "password-auth") }}}
+{{{ oval_pam_module_check("faillock", "password-auth") }}}
+{{{ oval_pam_module_check("unix", "password-auth") }}}
+
+</def-group>

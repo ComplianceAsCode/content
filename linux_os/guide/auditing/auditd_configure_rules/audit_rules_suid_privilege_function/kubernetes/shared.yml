@@ -1,0 +1,13 @@
+---
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_rhcos
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{%- macro audit_suid_privilege_function() -%}}
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv
+-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
+-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv
+{{% endmacro %}}
+{{{ kubernetes_machine_config_file(path="/etc/audit/rules.d/75-audit-suid-privilege-function.rules", file_permissions_mode='0600', source=audit_suid_privilege_function()) }}}

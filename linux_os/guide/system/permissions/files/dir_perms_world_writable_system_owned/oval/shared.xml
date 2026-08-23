@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("All world writable directories should be owned by a system account.", rule_title=rule_title) }}}
+    <criteria>
+      <criterion test_ref="test_dir_perms_world_writable_system_owned"
+        comment="Check world-writable directories with uid greater than or equal to {{{ uid_min }}}"/>
+    </criteria>
+  </definition>
+
+  <unix:file_state id="state_dir_perms_world_writable_system_owned" version="1"
+    comment="uid greater than or equal to {{{ uid_min }}} and world writable">
+    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+
+  {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+  {{{ create_local_mount_points_list(var_local_mount_points, rule_id=rule_id) }}}
+
+  <!--
+    This file_object will only find files located in local and not special file systems. The
+    recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+    leave the scope of that mount point. For example, when probing "/", the probe will ignore
+    any child directory which is a mount point for any other partition. This will ensure
+    considerable performance improvement. -->
+  <unix:file_object id="object_dir_perms_world_writable_system_owned" version="1"
+    comment="All world-writable directories.">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="defined"/>
+      <unix:path operation="equals" var_check="at least one"
+        var_ref="{{{ var_local_mount_points }}}"/>
+    <unix:filename xsi:nil="true"/>
+    <filter action="include">state_dir_perms_world_writable_system_owned</filter>
+  </unix:file_object>
+
+  <unix:file_test id="test_dir_perms_world_writable_system_owned" version="2"
+    check="all" check_existence="none_exist"
+    comment="Check the existence of world-writable directories not owned by system accounts.">
+    <unix:object object_ref="object_dir_perms_world_writable_system_owned"/>
+  </unix:file_test>
+</def-group>

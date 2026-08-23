@@ -1,0 +1,46 @@
+documentation_complete: true
+
+
+title: 'Ensure that /etc/cron.deny does not exist'
+
+description: |-
+    The file <tt>/etc/cron.deny</tt> should not exist.
+    Use <tt>/etc/cron.allow</tt> instead.
+
+rationale: |-
+    Access to <tt>cron</tt> should be restricted.
+    It is easier to manage an allow list than a deny list.
+
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86849-7
+    cce@rhel9: CCE-86850-5
+    cce@rhel10: CCE-88579-8
+    cce@sle12: CCE-91684-1
+    cce@sle15: CCE-91314-5
+    cce@sle16: CCE-95821-5
+
+references:
+    cis@sle12: 5.1.8
+    cis@sle15: 5.1.8
+
+ocil_clause: 'the file /etc/cron.deny exists'
+
+ocil: |-
+    The file <tt>/etc/cron.deny</tt> should not exist.
+    This can be checked by running the following
+    <pre>
+    stat /etc/cron.deny
+    </pre>
+    and the output should be
+    <pre>
+    stat: cannot stat `/etc/cron.deny': No such file or directory
+    </pre>
+
+template:
+    name: file_existence
+    vars:
+        filepath: /etc/cron.deny
+        exists: false

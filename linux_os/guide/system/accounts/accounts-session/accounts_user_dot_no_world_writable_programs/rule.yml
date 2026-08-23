@@ -1,0 +1,54 @@
+documentation_complete: true
+
+
+title: 'User Initialization Files Must Not Run World-Writable Programs'
+
+description: |-
+    Set the mode on files being executed by the user initialization files with the
+    following command:
+    <pre>$ sudo chmod o-w <i>FILE</i></pre>
+
+rationale: |-
+    If user start-up files execute world-writable programs, especially in
+    unprotected directories, they could be maliciously modified to destroy user
+    files or otherwise compromise the system at the user level. If the system is
+    compromised at the user level, it is easier to elevate privileges to eventually
+    compromise the system at the root and network level.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84039-7
+    cce@rhel9: CCE-87451-1
+    cce@rhel10: CCE-90449-0
+    cce@sle12: CCE-83099-2
+    cce@sle15: CCE-85632-8
+    cce@slmicro5: CCE-93790-4
+    cce@slmicro6: CCE-95061-8
+
+references:
+    cis@sle12: 6.2.8
+    cis@sle15: 6.2.8
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020730
+    stigid@ol8: OL08-00-010660
+    stigid@sle12: SLES-12-010780
+
+ocil_clause: 'any local initialization files are found to reference world-writable files'
+
+ocil: |-
+    Verify that local initialization files do not execute world-writable programs with the following command:
+
+    Note: The example will be for a system that is configured to create user home directories in the "/home" directory.
+
+    <pre>$ sudo find /home -perm -002 -type f -name ".[^.]*" -exec ls -ld {} \;</pre>
+
+fixtext: |-
+    Set the mode on files being executed by the local initialization files with the following command:
+
+    $ sudo chmod 0755 &lt;file&gt;
+
+srg_requirement: |-
+    Local {{{ full_name }}} initialization files must not execute world-writable programs.
+
+platform: system_with_kernel

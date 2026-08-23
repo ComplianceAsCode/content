@@ -1,0 +1,26 @@
+srg_requirements: |-
+    {{{ full_name }}} must have root's dotfiles configured correctly.
+
+checktext: |-
+    Check the all files from <tt>/usr/share/rootfiles/</tt> are overridden correctly in {{{ full_name }}}.
+    <pre>
+        $ grep /usr/share/rootfiles/.bash_logout *.conf
+        C /root/.bash_logout   600 root root - /usr/share/rootfiles/.bash_logout
+        C /root/.bash_profile  600 root root - /usr/share/rootfiles/.bash_profile
+        C /root/.bashrc        600 root root - /usr/share/rootfiles/.bashrc
+        C /root/.cshrc         600 root root - /usr/share/rootfiles/.cshrc
+        C /root/.tcshrc        600 root root - /usr/share/rootfiles/.tcshrc
+    </pre>
+
+fixtext: |-
+    Ensure the following lines are in <tt>.conf</tt> file under <tt>/etc/tmpfiles.d/</tt>.
+    <pre>
+        C /root/.bash_logout   600 root root - /usr/share/rootfiles/.bash_logout
+        C /root/.bash_profile  600 root root - /usr/share/rootfiles/.bash_profile
+        C /root/.bashrc        600 root root - /usr/share/rootfiles/.bashrc
+        C /root/.cshrc         600 root root - /usr/share/rootfiles/.cshrc
+        C /root/.tcshrc        600 root root - /usr/share/rootfiles/.tcshrc
+    </pre>
+
+vuldiscussion: |-
+     Excessive permissions on local interactive user home directories may allow unauthorized access to user files by other users.

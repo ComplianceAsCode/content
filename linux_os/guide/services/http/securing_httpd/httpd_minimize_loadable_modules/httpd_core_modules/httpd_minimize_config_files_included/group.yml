@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Minimize Configuration Files Included'
+
+description: |-
+    The <tt>Include</tt> directive directs <tt>httpd</tt> to load supplementary configuration files
+    from a provided path. The default configuration loads all files that end in <tt>.conf</tt>
+    from the <tt>/etc/httpd/conf.d</tt> directory.
+    <br /><br />
+    To restrict excess configuration, the following line should be commented out and
+    replaced with <tt>Include</tt> directives that only reference required configuration files:
+    <pre>#Include conf.d/*.conf</pre>
+    If the above change was made, ensure that the SSL encryption remains loaded by
+    explicitly including the corresponding configuration file:
+    <pre>Include conf.d/ssl.conf</pre>
+    If PHP is necessary, a similar alteration must be made:
+    <pre>Include conf.d/php.conf</pre>
+
+    Explicitly listing the configuration files to be loaded during web server start-up avoids
+    the possibility of unwanted or malicious configuration files to be automatically included as
+    part of the server's running configuration.

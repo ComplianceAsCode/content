@@ -1,0 +1,95 @@
+documentation_complete: true
+
+
+platform: ocp4-node
+
+title: 'kubelet - Set Up Sysctl to Enable Protect Kernel Defaults - Check sysctl configuration file exist'
+
+description: |-
+  <p>
+  Setup required tuned kernel parameters before enabling overwritten protection.
+  </p>
+
+  <p>
+  Before enabling kernel parameter overwritten protection default, 
+  it's important and necessary to first create a <tt>MachineConfig</tt>
+  object that persist the required sysctl's. The required sysctl's are the following:
+  </p>
+
+  <pre>
+  kernel.keys.root_maxbytes=25000000
+  kernel.keys.root_maxkeys=1000000
+  kernel.panic=10
+  kernel.panic_on_oops=1
+  vm.overcommit_memory=1
+  vm.panic_on_oom=0
+  </pre>
+  
+  <p>
+  The these need to be enabled via MachineConfig since they need to be
+  available as soon as the node starts and before the Kubelet does.
+  The manifest may look as follows:
+  </p>
+
+  <pre>
+  ---
+  apiVersion: machineconfiguration.openshift.io/v1
+  kind: MachineConfig
+  metadata:
+    labels:
+      machineconfiguration.openshift.io/role: master
+    name: 75-master-kubelet-sysctls
+  spec:
+    config:
+      ignition:
+        version: 3.1.0
+      storage:
+        files:
+        - contents:
+            source: data:,vm.overcommit_memory%3D1%0Avm.panic_on_oom%3D0%0Akernel.panic%3D10%0Akernel.panic_on_oops%3D1%0Akernel.keys.root_maxkeys%3D1000000%0Akernel.keys.root_maxbytes%3D25000000%0A
+          mode: 0644
+          path: /etc/sysctl.d/90-kubelet.conf
+          overwrite: true
+  </pre>
+  
+  <p>
+  This will need to be done for each relevant <tt>MachineConfigPool</tt>
+  in the cluster.
+  </p>
+
+  <p>
+  To configure, follow the directions in
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/nodes/nodes/nodes-nodes-managing.html",
+              text="the documentation") }}}
+  </p>
+
+rationale: |-
+  Kernel parameters are usually tuned and hardened by the system administrators
+  before putting the systems into production. These parameters protect the
+  kernel and the system. Your kubelet kernel defaults that rely on such
+  parameters should be appropriately set to match the desired secured system
+  state. Ignoring this could potentially lead to running pods with undesired
+  kernel behavior.
+
+
+severity: medium
+
+ocil_clause: 'the kubelet can modify kernel parameters'
+
+ocil: |-
+  Run the following command on the kubelet node(s):
+  <pre>$ sudo [ -f /etc/sysctl.d/90-kubelet.conf ] &amp;&amp; echo "Exists" || echo "Not Exists"</pre>
+  The output should return <tt>Exists</tt>.
+
+#identifiers:
+#   cce@ocp4: 
+
+references:
+  nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+  nist: CM-6,CM-6(1)
+
+template:
+    name: file_existence
+    vars:
+        filepath: /etc/sysctl.d/90-kubelet.conf
+        exists: true

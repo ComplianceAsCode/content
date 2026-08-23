@@ -1,0 +1,52 @@
+documentation_complete: true
+
+title: 'Ensure that User Home Directories are not Group-Writable or World-Readable'
+
+description: |-
+    For each human user of the system, view the
+    permissions of the user's home directory:
+    <pre># ls -ld /home/<i>USER</i></pre>
+    Ensure that the directory is not group-writable and that it
+    is not world-readable. If necessary, repair the permissions:
+    <pre># chmod g-w /home/<i>USER</i>
+    # chmod o-rwx /home/<i>USER</i></pre>
+
+rationale: |-
+    User home directories contain many configuration files which
+    affect the behavior of a user's account. No user should ever have
+    write permission to another user's home directory. Group shared
+    directories can be configured in sub-directories or elsewhere in the
+    filesystem if they are needed. Typically, user home directories
+    should not be world-readable, as it would disclose file names
+    to other users. If a subset of users need read access
+    to one another's home directories, this can be provided using
+    groups or ACLs.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84274-0
+    cce@rhel9: CCE-83638-7
+
+references:
+    cis-csc: 12,13,14,15,16,18,3,5
+    cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
+    isa-62443-2009: 4.3.3.7.3
+    isa-62443-2013: 'SR 2.1,SR 5.2'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: CM-6(a),AC-6(1),CM-6(a)
+    nist-csf: PR.AC-4,PR.DS-5
+
+ocil_clause: 'the user home directory is group-writable or world-readable'
+
+ocil: |-
+    To ensure the user home directory is not group-writable or world-readable, run the following:
+    <pre># ls -ld /home/<i>USER</i></pre>
+
+warnings:
+    - functionality: |-
+        This action may involve modifying user home directories.
+        Notify your user community, and solicit input if appropriate,
+        before making this type of change.
+{{{ warning_rule_deprecated_by("file_permissions_home_directories", "0.1.62") | indent(4) }}}

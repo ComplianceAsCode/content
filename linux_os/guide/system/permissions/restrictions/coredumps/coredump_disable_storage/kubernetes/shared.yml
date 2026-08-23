@@ -1,0 +1,15 @@
+---
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_rhcos
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - contents:
+          source: data:,%23%20%20This%20file%20is%20part%20of%20systemd.%0A%23%0A%23%20%20systemd%20is%20free%20software%3B%20you%20can%20redistribute%20it%20and/or%20modify%20it%0A%23%20%20under%20the%20terms%20of%20the%20GNU%20Lesser%20General%20Public%20License%20as%20published%20by%0A%23%20%20the%20Free%20Software%20Foundation%3B%20either%20version%202.1%20of%20the%20License%2C%20or%0A%23%20%20%28at%20your%20option%29%20any%20later%20version.%0A%23%0A%23%20Entries%20in%20this%20file%20show%20the%20compile%20time%20defaults.%0A%23%20You%20can%20change%20settings%20by%20editing%20this%20file.%0A%23%20Defaults%20can%20be%20restored%20by%20simply%20deleting%20this%20file.%0A%23%0A%23%20See%20coredump.conf%285%29%20for%20details.%0A%0A%5BCoredump%5D%0A%23Storage%3Dexternal%0A%23Compress%3Dyes%0A%23ProcessSizeMax%3D2G%0A%23ExternalSizeMax%3D2G%0A%23JournalSizeMax%3D767M%0A%23MaxUse%3D%0A%23KeepFree%3D%0AStorage%3Dnone%0AProcessSizeMax%3D0%0A
+        mode: 0644
+        path: /etc/systemd/coredump.conf
+        overwrite: true

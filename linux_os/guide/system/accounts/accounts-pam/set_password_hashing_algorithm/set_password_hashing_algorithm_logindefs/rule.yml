@@ -1,0 +1,73 @@
+documentation_complete: true
+
+title: 'Set Password Hashing Algorithm in {{{ login_defs_path }}}'
+
+description: |-
+    In <tt>{{{ login_defs_path }}}</tt>, add or update the following line to ensure the system will use
+    {{{ xccdf_value("var_password_hashing_algorithm") }}} as the hashing algorithm:
+    <pre>ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}</pre>
+
+rationale: |-
+    Passwords need to be protected at all times, and encryption is the standard method for
+    protecting passwords. If passwords are not encrypted, they can be plainly read
+    (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm
+    are no more protected than if they are kept in plain text.
+    <br /><br />
+    Using a stronger hashing algorithm makes password cracking attacks more difficult.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80892-3
+    cce@rhel9: CCE-90590-1
+    cce@rhel10: CCE-89508-6
+    cce@sle12: CCE-83029-9
+    cce@sle15: CCE-83279-0
+    cce@sle16: CCE-96020-3
+    cce@slmicro5: CCE-93689-8
+
+references:
+    cis-csc: 1,12,15,16,5
+    cis@sle12: 5.4.1.1
+    cis@sle15: 5.4.1.1
+    cjis: 5.6.2.2
+    cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    cui: 3.13.11
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1'
+    iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: IA-5(c),IA-5(1)(c),CM-6(a)
+    nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
+    pcidss: Req-8.2.1
+    srg: SRG-OS-000073-GPOS-00041
+    stigid@ol7: OL07-00-010210
+    stigid@ol8: OL08-00-010110
+    stigid@sle12: SLES-12-010210
+
+ocil_clause: 'ENCRYPT_METHOD is not set to {{{ xccdf_value("var_password_hashing_algorithm") }}}'
+
+ocil: |-
+    {{% if product in ['ol9', 'rhel9'] -%}}
+    Verify that the shadow password suite configuration is set to encrypt password with a FIPS 140-3 approved cryptographic hashing algorithm.
+    {{% else %}}
+    Verify that the shadow password suite configuration is set to encrypt password with a FIPS 140-2 approved cryptographic hashing algorithm.
+    {{%- endif %}}
+
+    Check the hashing algorithm that is being used to hash passwords with the following command:
+
+    $ sudo grep -i ENCRYPT_METHOD  {{{ login_defs_path }}}
+
+    ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}
+
+{{% if product in ['ol9', 'rhel9'] -%}}
+srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the system-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
+{{%- endif %}}
+
+platform: package[shadow-utils]
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt all stored passwords.
+
+    Add or update the following line in the "{{{ login_defs_path }}}" file:
+
+    ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}

@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} must display the Standard Mandatory DOD Notice and Consent Banner before granting local or remote access to the system via a SSH logon.
+
+vuldiscussion: |-
+    The warning message reinforces policy awareness during the logon process and facilitates possible legal action against attackers. Alternatively, systems whose ownership should not be obvious should ensure usage of a banner that does not provide easy attribution.
+
+
+
+checktext: |-
+    Verify that any SSH connection to the operating system displays the Standard Mandatory DOD Notice and Consent Banner before granting access to the system.
+
+    Check for the location of the banner file currently being used with the following command:
+
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*banner'
+
+    banner /etc/issue
+
+    If the line is commented out or if the file is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to display the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via ssh.
+
+    Edit the "etc/ssh/sshd_config" file or a file in "/etc/ssh/sshd_config.d" to uncomment the banner keyword and configure it to point to a file that will contain the logon banner (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor).
+
+    An example configuration line is:
+
+    Banner /etc/issue
+
+

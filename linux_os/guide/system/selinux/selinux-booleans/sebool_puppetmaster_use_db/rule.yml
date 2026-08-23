@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the puppetmaster_use_db SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>puppetmaster_use_db</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="puppetmaster_use_db") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="puppetmaster_use_db") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: puppetmaster_use_db

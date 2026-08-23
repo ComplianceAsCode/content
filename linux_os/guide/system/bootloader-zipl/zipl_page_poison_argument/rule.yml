@@ -1,0 +1,39 @@
+documentation_complete: true
+
+
+title: 'Enable page allocator poisoning in zIPL'
+
+description: |-
+    To enable poisoning of free pages,
+    check that all boot entries in <tt>/boot/loader/entries/*.conf</tt> have <tt>page_poison=1</tt>
+    included in its options.<br />
+    To ensure that new kernels and boot entries continue to enable page poisoning,
+    add <tt>page_poison=1</tt> to <tt>/etc/kernel/cmdline</tt>.
+
+rationale: |-
+    Poisoning writes an arbitrary value to freed pages, so any modification or
+    reference to that page after being freed or before being initialized will be
+    detected and prevented.
+    This prevents many types of use-after-free vulnerabilities at little performance cost.
+    Also prevents leak of data and detection of corrupted memory.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83351-7
+    cce@rhel9: CCE-84101-5
+
+ocil_clause: 'page allocator poisoning is not enabled'
+
+ocil: |-
+  To check that page poisoning is enabled at boot time, check all boot entries with following command:
+  <pre>sudo grep -L "^options\s+.*\bpage_poison=1\b" /boot/loader/entries/*.conf</pre>
+  No line should be returned, each line returned is a boot entry that doesn't enable page poisoning.
+
+platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: page_poison
+    arg_value: '1'

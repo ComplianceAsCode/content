@@ -1,0 +1,32 @@
+policy: UVWX Benchmark for securing Linux systems
+title: UVWX Benchmark for securing Linux systems
+id: uvwx
+version: 1.2.3
+source: https://www.uvwx.com/linux.pdf
+reference_type: cis
+controls:
+  - id: R1
+    title: User session timeout
+    description: >-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+    automated: yes
+    rules:
+    - sshd_set_idle_timeout
+    - compiled_references_test_rule
+    - var_accounts_tmout=10_min
+    - configure_crypto_policy
+    notes: >-
+      Certain period of inactivity is vague.
+  - id: R2
+    title: User session timeout
+    description: >-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+    automated: yes
+    rules:
+    - compiled_references_test_rule
+    - compiled_references_test_rule_2
+    - selinux_state
+    notes: >-
+      Certain period of activity is not vague.

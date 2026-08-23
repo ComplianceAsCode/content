@@ -1,0 +1,80 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Configure Firewalld to Restrict Loopback Traffic", rule_title=rule_title) }}}
+        <criteria operator="OR">
+            <criteria operator="AND">
+                <!-- The test_firewalld_trusted_zone_not_overridden test is defined in the
+                     firewalld_loopback_traffic_trusted rule -->
+                <criterion
+                    comment="Ensure default trusted zone file was not overridden"
+                    test_ref="test_firewalld_trusted_zone_not_overridden"/>
+                <criterion
+                    comment="Ensure default trusted zone has IPv4 loopback restriction rule"
+                    test_ref="test_firewalld_loopback_restricted_ipv4_usr"/>
+                <criteria operator="OR">
+                    <extend_definition comment="IPv6 disabled or..."
+                        definition_ref="sysctl_kernel_ipv6_disable"/>
+                    <criterion
+                        comment="Ensure default trusted zone has IPv6 loopback restriction rule"
+                        test_ref="test_firewalld_loopback_restricted_ipv6_usr"/>
+                </criteria>
+            </criteria>
+            <criteria operator="AND">
+                <criterion
+                    comment="Ensure custom trusted zone has IPv4 loopback restriction rule"
+                    test_ref="test_firewalld_loopback_restricted_ipv4_etc"/>
+                <criteria operator="OR">
+                    <extend_definition comment="IPv6 disabled or..."
+                        definition_ref="sysctl_kernel_ipv6_disable"/>
+                    <criterion
+                        comment="Ensure custom trusted zone has IPv6 loopback restriction rule"
+                        test_ref="test_firewalld_loopback_restricted_ipv6_etc"/>
+                </criteria>
+            </criteria>
+        </criteria>
+    </definition>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_ipv4_usr" version="1"
+        check="all" check_existence="all_exist"
+        comment="default trusted zone has IPv4 loopback restriction rich-rule">
+        <ind:object object_ref="object_firewalld_loopback_restricted_ipv4_usr"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_ipv4_usr" version="1">
+        <ind:filepath>/usr/lib/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule[@family='ipv4'][source[@address='127.0.0.1']][destination[@address='127.0.0.1' and @invert='True']][drop]</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_ipv6_usr" version="1"
+        check="all" check_existence="all_exist"
+        comment="default trusted zone has IPv6 loopback restriction rich-rule">
+        <ind:object object_ref="object_firewalld_loopback_restricted_ipv6_usr"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_ipv6_usr" version="1">
+        <ind:filepath>/usr/lib/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule[@family='ipv6'][source[@address='::1']][destination[@address='::1' and @invert='True']][drop]</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_ipv4_etc" version="1"
+        check="all" check_existence="all_exist"
+        comment="custom trusted zone has IPv4 loopback restriction rich-rule">
+        <ind:object object_ref="object_firewalld_loopback_restricted_ipv4_etc"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_ipv4_etc" version="1">
+        <ind:filepath>/etc/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule[@family='ipv4'][source[@address='127.0.0.1']][destination[@address='127.0.0.1' and @invert='True']][drop]</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_loopback_restricted_ipv6_etc" version="1"
+        check="all" check_existence="all_exist"
+        comment="custom trusted zone has IPv6 loopback restriction rich-rule">
+        <ind:object object_ref="object_firewalld_loopback_restricted_ipv6_etc"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_loopback_restricted_ipv6_etc" version="1">
+        <ind:filepath>/etc/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/rule[@family='ipv6'][source[@address='::1']][destination[@address='::1' and @invert='True']][drop]</ind:xpath>
+    </ind:xmlfilecontent_object>
+</def-group>

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the minidlna_read_generic_user_content SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>minidlna_read_generic_user_content</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="minidlna_read_generic_user_content") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="minidlna_read_generic_user_content") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: minidlna_read_generic_user_content

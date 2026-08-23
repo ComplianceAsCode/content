@@ -1,0 +1,31 @@
+<def-group>
+
+  <definition class="compliance" id="sshd_requirement_unset" version="1">
+    <metadata>
+      <title>It doesn't matter if sshd is installed or not</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Test if value sshd_required is 0.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_sshd_requirement_unset" />
+    </criteria>
+  </definition>
+  <ind:variable_test id="test_sshd_requirement_unset"
+  comment="Verify if Value of sshd_required is the default"
+  check="all" check_existence="at_least_one_exists" version="1">
+    <ind:object object_ref="object_sshd_requirement_unknown" />
+    <ind:state state_ref="state_sshd_requirement_unset" />
+  </ind:variable_test>
+  <ind:variable_object id="object_sshd_requirement_unknown" version="1">
+    <ind:var_ref>sshd_required</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_state id="state_sshd_requirement_unset" version="1">
+      <ind:value operation="equals" datatype="int">0</ind:value>
+  </ind:variable_state>
+
+  <external_variable comment="May be defined by Profiles to explicitly say if sshd is required or not" datatype="int"
+  id="sshd_required" version="1" />
+</def-group>
+

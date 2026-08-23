@@ -1,0 +1,67 @@
+documentation_complete: true
+
+
+title: 'Configure AIDE to Verify Extended Attributes'
+
+description: |-
+    By default, the <tt>xattrs</tt> option is added to the <tt>FIPSR</tt> ruleset in AIDE.
+    If using a custom ruleset or the <tt>xattrs</tt> option is missing, add <tt>xattrs</tt>
+    to the appropriate ruleset.
+    For example, add <tt>xattrs</tt> to the following line in <tt>{{{ aide_conf_path }}}</tt>:
+    <pre>FIPSR = p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256</pre>
+    AIDE rules can be configured in multiple ways; this is merely one example that is already
+    configured by default.
+    The <tt>xattrs</tt> option must also be present on selection lines that specify
+    attributes directly without referencing a group. For example:
+    <pre>/bin p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256</pre>
+
+    {{% if "debian" in product %}}
+    The remediation provided with this rule adds <tt>xattrs</tt> to the InodeData rule in
+    <tt>{{{ aide_conf_path }}}</tt> and to any selection lines that specify attributes directly.
+    {{% else %}}
+    The remediation provided with this rule adds <tt>xattrs</tt> to all rule sets available in
+    <tt>{{{ aide_conf_path }}}</tt> and to any selection lines that specify attributes directly.
+    {{% endif %}}
+
+rationale: |-
+    Extended attributes in file systems are used to contain arbitrary data and file metadata
+    with security implications.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-83733-6
+    cce@rhel9: CCE-83439-0
+    cce@rhel10: CCE-89625-8
+    cce@sle12: CCE-83151-1
+    cce@sle15: CCE-85624-5
+    cce@sle16: CCE-96620-0
+    cce@slmicro5: CCE-93743-3
+    cce@slmicro6: CCE-95053-5
+
+references:
+    cis-csc: 2,3
+    cobit5: APO01.06,BAI03.05,BAI06.01,DSS06.02
+    isa-62443-2009: 4.3.4.4.4
+    isa-62443-2013: 'SR 3.1,SR 3.3,SR 3.4,SR 3.8'
+    iso27001-2013: A.11.2.4,A.12.2.1,A.12.5.1,A.14.1.2,A.14.1.3,A.14.2.4
+    nist: SI-7,SI-7(1),CM-6(a)
+    nist-csf: PR.DS-6,PR.DS-8
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-021610
+    stigid@ol8: OL08-00-040300
+    stigid@sle12: SLES-12-010530
+
+ocil_clause: 'the xattrs option is missing or not added to the correct ruleset'
+
+ocil: |-
+    To determine that AIDE is verifying extended file attributes, run the following command:
+    <pre>$ grep xattrs {{{ aide_conf_path }}}</pre>
+    Verify that the <tt>xattrs</tt> option is added to the correct ruleset.
+
+fixtext: |-
+    Configure the file integrity tool to check file and directory extended attributes.
+
+    If AIDE is installed, ensure the "xattrs" rule is present on all uncommented file and directory selection lists.
+
+srg_requirement: 'The {{{ full_name }}} file integrity tool must be configured to verify extended attributes.'

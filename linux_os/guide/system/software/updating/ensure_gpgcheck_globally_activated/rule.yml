@@ -1,0 +1,82 @@
+documentation_complete: true
+
+
+title: 'Ensure gpgcheck Enabled In Main {{{ pkg_manager }}} Configuration'
+
+description: |-
+    The <tt>gpgcheck</tt> option controls whether
+    RPM packages' signatures are always checked prior to installation.
+    To configure {{{ pkg_manager }}} to check package signatures before installing
+    them, ensure the following line appears in <tt>{{{ pkg_manager_config_file }}}</tt> in
+    the <tt>[main]</tt> section:
+    <pre>gpgcheck=1</pre>
+
+rationale: |-
+    Changes to any software components can have significant effects on the
+    overall security of the operating system. This requirement ensures the
+    software has not been tampered with and that it has been provided by a
+    trusted vendor.
+    <br />
+    Accordingly, patches, service packs, device drivers, or operating system
+    components must be signed with a certificate recognized and approved by the
+    organization.
+    <br />Verifying the authenticity of the software prior to installation
+    validates the integrity of the patch or upgrade received from a vendor.
+    This ensures the software has not been tampered with and that it has been
+    provided by a trusted vendor. Self-signed certificates are disallowed by
+    this requirement. Certificates used to verify the software must be from an
+    approved Certificate Authority (CA).
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-80790-9
+    cce@rhel9: CCE-83457-2
+    cce@rhel10: CCE-88404-9
+    cce@sle12: CCE-83068-7
+    cce@sle15: CCE-83290-7
+    cce@sle16: CCE-95809-0
+    cce@slmicro5: CCE-93712-8
+    cce@slmicro6: CCE-94715-0
+
+references:
+    cis-csc: 11,2,3,9
+    cis@sle12: 1.2.3
+    cis@sle15: 1.2.3
+    cjis: 5.10.4.1
+    cobit5: APO01.06,BAI03.05,BAI06.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS06.02
+    cui: 3.4.8
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3,4.3.4.4.4
+    isa-62443-2013: 'SR 3.1,SR 3.3,SR 3.4,SR 3.8,SR 7.6'
+    iso27001-2013: A.11.2.4,A.12.1.2,A.12.2.1,A.12.5.1,A.12.6.2,A.14.1.2,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4
+    nist: CM-5(3),SI-7,SC-12,SC-12(3),CM-6(a),SA-12,SA-12(10),CM-11(a),CM-11(b)
+    nist-csf: PR.DS-6,PR.DS-8,PR.IP-1
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+    pcidss: Req-6.2
+    srg: SRG-OS-000366-GPOS-00153
+    stigid@ol7: OL07-00-020050
+    stigid@sle12: SLES-12-010550
+
+ocil_clause: 'there is no process to validate certificates that is approved by the organization'
+
+ocil: |-
+    Verify that {{{ pkg_manager }}} verifies the signature of packages from a repository prior to install with the following command:
+
+    <pre>$ grep gpgcheck {{{ pkg_manager_config_file }}}</pre>
+
+    <pre>gpgcheck=1</pre>
+
+    If "gpgcheck" is not set to "1", or if the option is missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
+
+platform: package[{{{ pkg_manager }}}]
+
+fixtext: |-
+    Configure {{{ full_name }}} to always check package signatures before installation.
+
+    Add or update the following line in [main] section of the {{{ pkg_manager_config_file }}} file:
+
+    gpgcheck=1
+
+srg_requirement: |-
+    {{{ full_name }}} must prevent the installation of software, patches, service packs, device drivers, or operating system components from a repository without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.

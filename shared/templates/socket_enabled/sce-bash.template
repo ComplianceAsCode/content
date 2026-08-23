@@ -1,0 +1,8 @@
+#!/bin/bash
+# check-import = stdout
+state=$(systemctl is-enabled {{{ SOCKETNAME }}}.socket 2>/dev/null)
+active=$(systemctl is-active {{{ SOCKETNAME }}}.socket 2>/dev/null)
+if [[ ("$state" == "enabled" || "$state" == "indirect" || "$state" == "static") && "$active" == "active" ]] ; then
+    exit "$XCCDF_RESULT_PASS"
+fi
+exit "$XCCDF_RESULT_FAIL"

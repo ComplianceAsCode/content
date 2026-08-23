@@ -1,0 +1,25 @@
+controls:
+    -   id: SRG-OS-000710-GPOS-00160
+        title: '{{{ full_name }}} must, for password-based authentication, verify when users
+                create or update passwords the passwords are not found on the list of commonly-used,
+                expected, or compromised passwords in IA-5 (1) (a).'
+        levels:
+            - medium
+        status: does not meet
+        rationale: |-
+            Password-based authentication applies to passwords regardless of whether they are used in single-factor or multifactor authentication.
+            Long passwords or passphrases are preferable over shorter passwords. Enforced composition rules provide marginal security benefits while decreasing usability.
+
+            However, organizations may choose to establish certain rules for password generation (e.g., minimum character length for long passwords) under certain
+            circumstances and can enforce this requirement in IA-5(1)(h). Account recovery can occur, for example, in situations when a password is forgotten.
+            Cryptographically protected passwords include salted one-way cryptographic hashes of passwords. The list of commonly used, compromised, or expected passwords includes
+            passwords obtained from previous breach corpuses, dictionary words, and repetitive or sequential characters. The list includes context-specific words, such as the name
+            of the service, username, and derivatives thereof.
+        fixtext: |-
+            This requirement is a permanent finding and cannot be fixed.
+
+            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
+        mitigation: |-
+            This requirement must be implemented at the system level using an authorized third-party mechanism to compare authenticators selected by users to lists of commonly-used, expected, or compromised passwords.
+        status_justification: |-
+          {{{ full_name }}} does not natively support a method of comparing user selected passwords to lists of commonly-used, expected, or compromised passwords.

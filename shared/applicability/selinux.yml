@@ -1,0 +1,5 @@
+name: cpe:/a:selinux
+title: SELinux enabled on system
+check_id: selinux_is_enabled
+bash_conditional: selinuxenabled
+ansible_conditional: 'ansible_facts.selinux.status != "disabled"'

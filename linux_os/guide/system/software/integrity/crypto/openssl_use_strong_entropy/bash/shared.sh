@@ -1,0 +1,6 @@
+# platform = Red Hat Enterprise Linux 8,Oracle Linux 8
+
+cat > /etc/profile.d/openssl-rand.sh <<- 'EOM'
+{{{ openssl_strong_entropy_config_file() }}}
+EOM
+chmod 0644 /etc/profile.d/openssl-rand.sh

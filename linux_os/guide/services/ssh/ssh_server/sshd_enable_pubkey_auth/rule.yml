@@ -1,0 +1,46 @@
+documentation_complete: true
+
+title: 'Enable Public Key Authentication'
+
+description: |-
+    Enable SSH login with public keys.
+    <br/>
+    The default SSH configuration enables authentication based on public keys. The appropriate
+    configuration is used if no value is set for <tt>PubkeyAuthentication</tt>.
+    <br/>
+    To explicitly enable Public Key Authentication, add or correct the following
+    {{{ sshd_config_file() }}}
+    <pre>PubkeyAuthentication yes</pre>
+
+rationale: |-
+    Without the use of multifactor authentication, the ease of access to
+    privileged functions is greatly increased. Multifactor authentication
+    requires using two or more factors to achieve authentication.
+    A privileged account is defined as an information system account with
+    authorizations of a privileged user. 
+    Smart cards or hardware tokens paired with digital certificates are
+    common examples of multifactor implementations.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86138-5
+    cce@rhel10: CCE-90625-5
+
+references:
+    srg: SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055
+
+{{{ complete_ocil_entry_sshd_option(default="no", option="PubkeyAuthentication", value="yes") }}}
+
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile("PubkeyAuthentication", "yes") }}}
+
+srg_requirement:
+  {{{ full_name }}} SSHD must accept public key authentication.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: PubkeyAuthentication
+        value: 'yes'
+        datatype: string

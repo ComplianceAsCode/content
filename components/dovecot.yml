@@ -1,0 +1,16 @@
+groups:
+- configure_dovecot
+- disabling_dovecot
+- dovecot_allow_imap_access
+- dovecot_enabling_ssl
+- dovecot_support_necessary_protocols
+name: dovecot
+packages:
+- dovecot
+rules:
+- dovecot_configure_ssl_cert
+- dovecot_configure_ssl_key
+- dovecot_disable_plaintext_auth
+- dovecot_enable_ssl
+- package_dovecot_removed
+- service_dovecot_disabled

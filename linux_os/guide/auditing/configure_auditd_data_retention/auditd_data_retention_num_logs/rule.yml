@@ -1,0 +1,48 @@
+documentation_complete: true
+
+title: 'Configure auditd Number of Logs Retained'
+
+description: |-
+    Determine how many log files
+    <tt>auditd</tt> should retain when it rotates logs.
+    Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following
+    line, substituting <i>NUMLOGS</i> with the correct value of {{{ xccdf_value("var_auditd_num_logs") }}}:
+    <pre>num_logs = <i>NUMLOGS</i></pre>
+    Set the value to 5 for general-purpose systems.
+    Note that values less than 2 result in no log rotation.
+
+rationale: |-
+    The total storage for audit log files must be large enough to retain
+    log information over the period required. This is a function of the maximum log
+    file size and the number of logs retained.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82693-3
+    cce@rhel8: CCE-80683-6
+    cce@rhel9: CCE-83688-2
+    cce@sle12: CCE-91621-3
+    cce@sle15: CCE-85780-5
+
+references:
+    cis-csc: 1,11,12,13,14,15,16,19,3,4,5,6,7,8
+    cjis: 5.4.1.1
+    cobit5: APO11.04,APO12.06,BAI03.05,BAI08.02,DSS02.02,DSS02.04,DSS02.07,DSS03.01,DSS05.04,DSS05.07,MEA02.01
+    cui: 3.3.1
+    isa-62443-2009: 4.2.3.10,4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.3.4.5.6,4.3.4.5.7,4.3.4.5.8,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9,SR 6.1'
+    iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.16.1.4,A.16.1.5,A.16.1.7
+    nerc-cip: CIP-004-6 R2.2.3,CIP-004-6 R3.3,CIP-007-3 R5.2,CIP-007-3 R5.3.1,CIP-007-3 R5.3.2,CIP-007-3 R5.3.3,CIP-007-3 R6.5
+    nist: AU-11,CM-6(a)
+    nist-csf: DE.AE-3,DE.AE-5,PR.PT-1,RS.AN-1,RS.AN-4
+    pcidss: Req-10.7
+
+ocil_clause: 'the system log file retention has not been properly configured'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine how many logs the system is configured to retain after rotation:
+    <tt>$ sudo grep num_logs /etc/audit/auditd.conf</tt>
+    <pre>num_logs = 5</pre>
+

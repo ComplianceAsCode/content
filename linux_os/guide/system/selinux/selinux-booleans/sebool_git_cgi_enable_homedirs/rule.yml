@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the git_cgi_enable_homedirs SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>git_cgi_enable_homedirs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="git_cgi_enable_homedirs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="git_cgi_enable_homedirs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: git_cgi_enable_homedirs

@@ -1,0 +1,72 @@
+documentation_complete: true
+
+
+title: 'Configure the Client Certificate Authority for the API Server'
+
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | select(.apiServerArguments["client-ca-file"]) | .apiServerArguments["client-ca-file"][] | select(test("{{.var_apiserver_client_ca}}"))]' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '[.data."config.json" | fromjson | select(.apiServerArguments["client-ca-file"]) | .apiServerArguments["client-ca-file"][] | select(test("/etc/kubernetes/certs/client-ca/ca.crt"))]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    Certificates must be provided to fully setup TLS client certificate
+    authentication. To ensure the API Server utilizes its own TLS certificates, the
+    <tt>clientCA</tt> must be configured. Verify
+    that <tt>servingInfo</tt> has the <tt>clientCA</tt> configured in
+    the <tt>openshift-kube-apiserver</tt> <tt>config</tt> configmap
+    to something similar to:
+    <pre>
+    "apiServerArguments": {
+      ...
+        "client-ca-file": [
+          "/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt"
+        ],
+      ...
+    </pre>
+
+rationale: |-
+    API Server communication contains sensitive parameters that should remain
+    encrypted in transit. Configure the API Server to serve only HTTPS traffic.
+    If <tt>-clientCA</tt> is set, any request presenting a client
+    certificate signed by one of the authorities in the <tt>client-ca-file</tt>
+    is authenticated with an identity corresponding to the <i>CommonName</i> of
+    the client certificate.
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
+    nist: SC-8,SC-8(1),SC-8(2)
+    pcidss: Req-2.2,Req-2.2.3,Req-2.3
+    srg: SRG-APP-000441-CTR-001090,SRG-APP-000442-CTR-001095
+
+identifiers:
+    cce@ocp4: CCE-84284-9
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: '<tt>client-ca-file</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["client-ca-file"]'</pre>
+    The output should return a configured TLS CA certificate file.
+
+warnings:
+    - general: |-
+        {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(8) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "at_least_one_exists"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"

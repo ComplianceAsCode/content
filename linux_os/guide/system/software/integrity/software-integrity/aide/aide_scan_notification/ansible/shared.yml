@@ -1,0 +1,58 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- (xccdf-var var_aide_scan_notification_email)
+
+- name: "{{{ rule_title }}} - Ensure AIDE is installed"
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - aide
+
+{{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
+- name: "{{{ rule_title }}} - Check Service"
+  ansible.builtin.blockinfile:
+      create: yes
+      dest: /etc/systemd/system/aidecheck.service
+      owner: root
+      group: root
+      mode: '0644'
+      block: |
+        [Unit]
+        Description=Aide Check
+        Before=aidecheck-notify.service
+        Wants=aidecheck-notify.service
+        [Service]
+        Type=forking
+        ExecStart={{{ aide_bin_path }}} --check -r file:/tmp/aide-report.log
+        [Install]
+        WantedBy=multi-user.target
+
+- name: "{{{ rule_title }}} - Notify Service"
+  ansible.builtin.blockinfile:
+      create: yes
+      dest: /etc/systemd/system/aidecheck-notify.service
+      owner: root
+      group: root
+      mode: '0644'
+      block: |
+        [Unit]
+        Description=Status email for AIDE check result
+        After=aidecheck.service
+        [Service]
+        Type=forking
+        ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  {{ var_aide_scan_notification_email }}'
+
+{{% else %}}
+- name: "{{{ rule_title }}} - Setup Cron Tab"
+  ansible.builtin.cron:
+    name: "run AIDE check"
+    minute: 05
+    hour: 04
+    weekday: 0
+    user: root
+    job: '{{{ aide_bin_path }}}  --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" {{ var_aide_scan_notification_email }}'
+{{% endif %}}

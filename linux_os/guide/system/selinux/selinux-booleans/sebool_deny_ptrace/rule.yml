@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the deny_ptrace SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>deny_ptrace</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="deny_ptrace") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="deny_ptrace") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: deny_ptrace

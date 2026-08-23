@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'OCP version api path'
+
+description: |-
+    When scanning OpenShift clusters, not all type of cluster has same api
+    resource path for ocp version, ex. HyperShift OCP version api resource path
+    is different than a regular OpenShift Cluster.
+    This variable determines which api resource to fetch to detect ocp version,
+    the default value is for a regular OpenShift Cluster.
+    This variable should be used in conjunction with ocp_version_yaml_path.
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    default: /apis/config.openshift.io/v1/clusteroperators/openshift-apiserver

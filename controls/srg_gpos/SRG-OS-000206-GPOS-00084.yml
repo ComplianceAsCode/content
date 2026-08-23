@@ -1,0 +1,18 @@
+controls:
+    -   id: SRG-OS-000206-GPOS-00084
+        levels:
+            - medium
+        title: {{{ full_name }}} must reveal error messages only to authorized users.
+        rules:
+            - directory_group_ownership_var_log_audit
+            - directory_ownership_var_log_audit
+            - file_group_ownership_var_log_audit
+            - file_ownership_var_log_audit_stig
+            - file_permissions_var_log_audit
+            - file_groupowner_var_log
+            - file_groupowner_var_log_messages
+            - file_owner_var_log
+            - file_owner_var_log_messages
+            - file_permissions_var_log
+            - file_permissions_var_log_messages
+        status: automated

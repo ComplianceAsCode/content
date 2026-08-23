@@ -1,0 +1,49 @@
+documentation_complete: true
+
+
+title: 'Ensure All User Initialization Files Have Mode 0740 Or Less Permissive'
+
+description: |-
+    Set the mode of the user initialization files to <tt>0740</tt> or less permissisive with the
+    following command:
+    <pre>$ sudo chmod u-s,g-wxs,o= /home/<i>USER</i>/.<i>INIT_FILE</i></pre>
+
+rationale: |-
+    Local initialization files are used to configure the user's shell environment
+    upon logon. Malicious modification of these files could compromise accounts upon
+    logon.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84043-9
+    cce@rhel9: CCE-83637-9
+    cce@rhel10: CCE-87771-2
+    cce@sle12: CCE-83097-6
+    cce@sle15: CCE-85630-2
+    cce@sle16: CCE-96448-6
+    cce@slmicro5: CCE-93749-0
+    cce@slmicro6: CCE-95059-2
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020710
+    stigid@ol8: OL08-00-010770
+    stigid@sle12: SLES-12-010760
+
+ocil_clause: 'they are not 0740 or more permissive'
+
+ocil: |-
+    To verify that all user initialization files have a mode of <tt>0740</tt> or
+    less permissive, run the following command:
+    <pre>$ sudo find /home -type f -name '\.*' \( -perm -0002 -o -perm -0020 \)</pre>
+    There should be no output.
+
+fixtext: |-
+    Set the mode of the local initialization files to "0740" or less permissive with the following command:
+
+    Note: The example will be for the smithj user, who has a home directory of "/home/smithj".
+
+    $ sudo chmod u-s,g-wxs,o= /home/smithj/.<i>INIT_FILE</i>
+
+srg_requirement: 'All {{{ full_name }}} local initialization files must have mode 0740 or less permissive.'

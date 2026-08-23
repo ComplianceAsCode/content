@@ -1,0 +1,28 @@
+controls:
+- id: SRG-APP-000474-CTR-001180
+  levels:
+  - medium
+  title: {{{ full_name }}} must provide system notifications to the system administrator
+    and operational staff when anomalies in the operation of the organization-defined
+    security functions are discovered.
+  status: does not meet
+  related_rules:
+  - scansettingbinding_exists
+  - scansettings_have_schedule
+  - file_integrity_exists
+  status_justification: |-
+    If the OpenShift Compliance Operator is configured in accordance with
+    the Fix data in SRG-APP-000516-CTR-001325, then administrators will be
+    able to query when a ComplianceCheckResult shows non-compliant status
+    for any of the rules defined in the compliance profile, aligning with
+    the SSP for the system.
+
+    This capability does not currently natively support alerting for
+    non-compliant status. External tooling, such as Red Hat Advanced Cluster
+    Security or compliance solutions from other vendors, may be integrated
+    using their own mechanisms to provide active alerts conditionally.
+  mitigation: |-
+    Use external tooling, such as Red Hat Advanced Cluster Security or
+    compliance solutions from other vendors to provide active alerts
+    conditionally. Applying an external tool mitigates this risk to a
+    CAT III.

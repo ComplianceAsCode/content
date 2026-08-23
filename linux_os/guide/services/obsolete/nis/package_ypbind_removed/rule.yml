@@ -1,0 +1,46 @@
+documentation_complete: true
+
+
+title: 'Remove NIS Client'
+
+description: |-
+    The Network Information Service (NIS), formerly known as Yellow Pages,
+    is a client-server directory service protocol used to distribute system configuration
+    files. The NIS client (<tt>ypbind</tt>) was used to bind a system to an NIS server
+    and receive the distributed configuration files.
+
+rationale: |-
+    The NIS service is inherently an insecure system that has been vulnerable
+    to DOS attacks, buffer overflows and has poor authentication for querying
+    NIS maps. NIS generally has been replaced by such protocols as Lightweight
+    Directory Access Protocol (LDAP). It is recommended that the service be
+    removed.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: CCE-82181-9
+    cce@rhel9: CCE-84151-0
+    cce@rhel10: CCE-87211-9
+    cce@sle12: CCE-91458-0
+    cce@sle15: CCE-91159-4
+    cce@slmicro5: CCE-93903-3
+
+references:
+    cis@sle12: 2.3.1
+    cis@sle15: 2.3.1
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+
+ocil: '{{{ describe_package_remove(package="ypbind") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: ypbind
+        pkgname@debian12: ypbind-mt
+
+{{% if product in ["rhel9"] %}}
+warnings:
+    - general:
+        The package is not available in {{{ full_name }}}.
+{{% endif %}}

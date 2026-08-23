@@ -1,0 +1,5 @@
+name: cpe:/a:kernel-uek
+title: System is running on uek kernel
+check_id: kernel_uek
+bash_conditional: '[[ $(uname -r) == *"uek"* ]]'
+ansible_conditional: '"uek" in ansible_kernel'

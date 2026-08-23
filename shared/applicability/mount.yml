@@ -1,0 +1,26 @@
+name: "cpe:/a:mount-{arg}"
+title: "The {mountpoint} mountpoint is active (mounted) or configured in /etc/fstab"
+check_id: installed_env_mount_{arg}
+bash_conditional: {{{ bash_mount_conditional("{mountpoint}") }}}
+ansible_conditional: {{{ ansible_mount_conditional("{mountpoint}") }}}
+template:
+  name: platform_mount
+args:
+  home:
+    mountpoint: /home
+  opt:
+    mountpoint: /opt
+  srv:
+    mountpoint: /srv
+  tmp:
+    mountpoint: /tmp
+  var:
+    mountpoint: /var
+  var-log:
+    mountpoint: /var/log
+  var-log-audit:
+    mountpoint: /var/log/audit
+  var-tmp:
+    mountpoint: /var/tmp
+  boot-efi:
+    mountpoint: /boot/efi

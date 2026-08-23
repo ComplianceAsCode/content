@@ -1,0 +1,29 @@
+documentation_complete: true
+
+
+title: 'Enable Kernel Parameter to Use TCP RFC 1337 on IPv4 Interfaces'
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.tcp_rfc1337", value="1") }}}'
+
+rationale: |-
+    Enable TCP behavior conformant with RFC 1337. When disabled, if a RST is
+    received in TIME_WAIT state, we close the socket immediately without waiting
+    for the end of the TIME_WAIT period.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84270-8
+    cce@rhel9: CCE-84012-4
+    cce@rhel10: CCE-86164-1
+    cce@sle12: CCE-91538-9
+    cce@sle15: CCE-91223-8
+    cce@sle16: CCE-96069-0
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.tcp_rfc1337", value="1") }}}
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv4.tcp_rfc1337
+        datatype: int

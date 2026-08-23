@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000148-CTR-000350
+  levels:
+  - medium
+  title: {{{ full_name }}} application program interface (API) must uniquely
+    identify and authenticate processes acting on behalf of the users.
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  rules:
+  - rbac_least_privilege
+  status: manual

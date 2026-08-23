@@ -1,0 +1,54 @@
+documentation_complete: true
+
+
+title: 'Configure tmux to lock session after inactivity'
+
+description: |-
+    To enable console screen locking in <tt>tmux</tt> terminal multiplexer
+    after a period of inactivity,
+    the <tt>lock-after-time</tt> option has to be set to a value greater than 0 and less than
+    or equal to 900 in <tt>/etc/tmux.conf</tt>.
+
+rationale: |-
+    Locking the session after a period of inactivity limits the
+    potential exposure if the session is left unattended.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82199-1
+    cce@rhel9: CCE-89876-7
+    cce@rhel10: CCE-88723-2
+
+references:
+    ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
+    srg: SRG-OS-000029-GPOS-00010,SRG-OS-000031-GPOS-00012
+
+platform: package[tmux]
+
+ocil_clause: '"lock-after-time" is not set to "900" or less in the global tmux configuration file to enforce session lock after inactivity'
+
+ocil: |-
+    Verify {{{ full_name }}} initiates a session lock after 15 minutes of inactivity.
+
+    Check the value of the system inactivity timeout with the following command:
+
+    <pre>$ grep -i lock-after-time /etc/tmux.conf</pre>
+
+    <pre>set -g lock-after-time 900</pre>
+
+    Then, verify that the /etc/tmux.conf file can be read by other users than root:
+
+    <pre>$ sudo ls -al /etc/tmux.conf</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce session lock after a period of 15 minutes
+    of inactivity by adding the following line to the "/etc/tmux.conf" global configuration file:
+
+    set -g lock-after-time 900
+
+    Then, ensure a correct mode of /etc/tmux.conf using this command:
+
+    $ sudo chmod 0644 /etc/tmux.conf
+
+srg_requirement: '{{{ full_name }}} must automatically lock command line user sessions after 15 minutes of inactivity.'

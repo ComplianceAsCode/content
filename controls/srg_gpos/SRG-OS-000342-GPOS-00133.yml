@@ -1,0 +1,18 @@
+controls:
+    -   id: SRG-OS-000342-GPOS-00133
+        levels:
+            - low
+        title: {{{ full_name }}} must offload audit records onto a different system or media from
+            the system being audited.
+        rules:
+            - auditd_name_format
+            - auditd_overflow_action
+            - package_audispd-plugins_installed
+            - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+            - rsyslog_encrypt_offload_actionsendstreamdrivermode
+            - rsyslog_encrypt_offload_defaultnetstreamdriver
+            - rsyslog_omfwd_streamdriver
+            - rsyslog_remote_loghost
+            - rsyslog_omfwd_authmode
+            - rsyslog_omfwd_tls
+        status: automated

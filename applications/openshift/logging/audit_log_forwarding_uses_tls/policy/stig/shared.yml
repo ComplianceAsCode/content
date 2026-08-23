@@ -1,0 +1,26 @@
+checktext: |-
+  Verify that the Cluster Log Forwarder is using an encrypted transport:
+
+  > oc get clusterlogforwarder -n openshift-logging
+
+  For each Cluster Log Forwarder, run the following command to display the configuration
+
+  > oc describe clusterlogforwarder <name> -n openshift-logging
+
+  Review the configuration and determine if the transport is secure, such
+  as tls:// or https://. If there are any transports configured that are
+  not secured by TLS, this is a finding.
+
+fixtext: |-
+  Edit the Cluster Log Forwarder configuration to configure TLS on the transport.
+
+  > oc edit clusterlogforwarder <name> -n openshift-logging
+
+  For detailed information regarding
+  configuration of the Cluster Log Forwarder see
+  https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html
+
+srg_requirement: |-
+  The container platform must use FIPS validated cryptographic mechanisms to protect the integrity
+  of log information.
+

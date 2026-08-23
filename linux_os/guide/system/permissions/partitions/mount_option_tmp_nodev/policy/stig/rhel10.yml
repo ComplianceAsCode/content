@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must mount "/tmp" with the "nodev" option.
+
+fixtext: |-
+    Configure {{{ full_name }}} to mount "/tmp" with the "nodev" option.
+
+    Modify "/etc/fstab" to use the "nodev" option on the "/tmp" directory.
+
+    To reload all implicit mount units and update the dependency graph so that new options will apply correctly at next remount, run the following command:
+
+    $ sudo systemctl daemon-reload
+
+    Use the following command to apply the changes immediately without a reboot:
+
+    $ sudo mount -o remount /tmp
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that "/tmp" is mounted with the "nodev" option:
+
+    $ mount | grep /tmp
+    /dev/mapper/luks-c98555c8-0462-4b97-9afa-6db8c4bfee3b on /var/tmp type xfs (rw,nosuid,nodev,noexec,relatime,seclabel,attr2)
+
+    If the "/tmp" file system is mounted without the "nodev" option, this is a finding.
+
+vuldiscussion: |-
+    The "nodev" mount option causes the system to not interpret character or block special devices. Executing character or block special devices from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.
+
+    The only legitimate location for device files is the "/dev" directory located on the root partition, with the exception of chroot jails if implemented.

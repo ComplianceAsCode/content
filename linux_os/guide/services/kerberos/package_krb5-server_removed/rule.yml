@@ -1,0 +1,40 @@
+documentation_complete: true
+
+# new major OS versions will most likely not be applicable because of the
+# kerberos version higher than 1.17-18
+
+title: 'Remove the Kerberos Server Package'
+
+description: |-
+    The <tt>krb5-server</tt> package should be removed if not in use.
+    Is this system the Kerberos server? If not, remove the package.
+    {{{ describe_package_remove(package="krb5-server") }}}
+    The krb5-server RPM is not installed by default on a {{{ full_name }}}
+    system. It is needed only by the Kerberos servers, not by the
+    clients which use Kerberos for authentication. If the system is not
+    intended for use as a Kerberos Server it should be removed.
+
+rationale: |-
+    Unnecessary packages should not be installed to decrease the attack
+    surface of the system.  While this software is clearly essential on an KDC
+    server, it is not necessary on typical desktop or workstation systems.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85887-8
+
+references:
+    nist: IA-7,IA-7.1
+    srg: SRG-OS-000120-GPOS-00061
+    stigid@ol8: OL08-00-010163
+
+platforms:
+    - krb5_server_older_than_1_17-18
+
+{{{ complete_ocil_entry_package_removed("krb5-server") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: krb5-server

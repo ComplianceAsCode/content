@@ -1,0 +1,34 @@
+policy: ABCD Benchmark for securing Linux systems
+title: ABCD Benchmark for securing Linux systems
+id: abcd
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+controls:
+  - id: R1
+    title: User session timeout
+    levels:
+        - l1
+    description: >-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+    automated: yes
+    rules:
+    - sshd_set_idle_timeout
+    - accounts_tmout
+    - var_accounts_tmout=10_min
+    - configure_crypto_policy
+    notes: >-
+      Certain period of inactivity is vague.
+  - id: R2
+    title: Minimization of configuration
+    description: >-
+      The features configured at the level of launched services
+      should be limited to the strict minimum.
+    rationale: >-
+      Minimization of configuration helps to reduce attack surface.
+    automated: no
+    notes: >-
+      This is individual depending on the system workload
+      therefore needs to be audited manually.
+    related_rules:
+       - systemd_target_multi_user

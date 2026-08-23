@@ -1,0 +1,26 @@
+documentation_complete: true
+
+
+title: 'Install sssd-ipa Package'
+
+description: |-
+    {{{ describe_package_install(package="sssd-ipa") }}}
+
+rationale: |-
+    <tt>sssd-ipa</tt> provides the IPA back end that the SSSD can utilize to
+    fetch identity data from and authenticate against an IPA server.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82994-5
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+
+{{{ complete_ocil_entry_package_installed("sssd-ipa") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: sssd-ipa

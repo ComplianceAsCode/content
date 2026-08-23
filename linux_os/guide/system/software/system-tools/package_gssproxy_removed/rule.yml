@@ -1,0 +1,46 @@
+documentation_complete: true
+
+
+title: 'Uninstall gssproxy Package'
+
+description: |-
+    {{{ describe_package_remove(package="gssproxy") }}}
+
+rationale: |-
+    <tt>gssproxy</tt> is a proxy for GSS API credential handling.
+    Kerberos relies on some key derivation functions that may not
+    be compatible with some site policies such as FIPS 140.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82943-2
+    cce@rhel9: CCE-83516-5
+    cce@rhel10: CCE-87596-3
+
+references:
+    srg: SRG-OS-000095-GPOS-00049,SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-040370
+
+{{{ complete_ocil_entry_package_removed("gssproxy") }}}
+
+srg_requirement: '{{{ srg_requirement_package_removed("gssproxy") }}}'
+
+fixtext: '{{{ fixtext_package_removed("gssproxy") }}}'
+
+platforms:
+{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
+
+{{% if "ol" in families %}}
+platform: not nfs_mount_defined
+{{% endif %}}
+
+warnings:
+{{{ warning_ovirt_rule_notapplicable("RHV uses NFS storage, which has dependency on gssproxy") | indent(4) }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: gssproxy
+    backends:
+        anaconda: "off"

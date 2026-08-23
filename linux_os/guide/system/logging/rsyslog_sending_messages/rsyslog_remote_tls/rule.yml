@@ -1,0 +1,54 @@
+documentation_complete: true
+
+
+title: 'Configure TLS for rsyslog remote logging'
+
+description: |-
+    Configure <tt>rsyslog</tt> to use Transport Layer
+    Security (TLS) support for logging to remote server
+    for the Forwarding Output Module in <tt>/etc/rsyslog.conf</tt>
+    using action. You can use the following command:
+    <pre>echo 'action(type="omfwd" protocol="tcp" Target="&lt;remote system>" port="6514"
+        StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name" streamdriver.CheckExtendedKeyPurpose="on")' >> /etc/rsyslog.conf
+    </pre>
+    Replace the <tt>&lt;remote system></tt> in the above command with an IP address or a host name of the remote logging server.
+
+rationale: |-
+    For protection of data being logged, the connection to the
+    remote logging server needs to be authenticated and encrypted.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82457-3
+    cce@rhel9: CCE-83991-0
+    cce@rhel10: CCE-86592-3
+    cce@sle12: CCE-91513-2
+    cce@sle15: CCE-91200-6
+    cce@sle16: CCE-96405-6
+
+references:
+    nist: AU-9(3),CM-6(a)
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000120-GPOS-00061
+
+ocil_clause: 'omfwd is not configured with gtls and AuthMode'
+
+ocil: |-
+    To verify that rsyslog's Forwarding Output Module is configured
+    to use TLS for logging to remote server, run the following command:
+    <pre>$ grep omfwd /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
+    The output should include record similar to
+    <pre>action(type="omfwd" protocol="tcp" Target="&lt;remote system>" port="6514"
+        StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name" streamdriver.CheckExtendedKeyPurpose="on")
+    </pre>
+    where the <tt>&lt;remote system></tt> present in the configuration line above must be a valid IP address or a host name of the remote logging server.
+
+fixtext: |-
+    Configure rsyslog to use Transport Layer Security (TLS) support for logging
+    to remote server for the Forwarding Output Module.
+
+    Add or update the following entry in /etc/rsyslog.conf:
+
+    action(type="omfwd" protocol="tcp" Target="remote system" port="6514" StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name" streamdriver.CheckExtendedKeyPurpose="on")
+
+    Replace the remote system in the above command with an IP address or a host name of the remote logging server.

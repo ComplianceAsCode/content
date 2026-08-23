@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Record Events that Modify the System''s Mandatory Access Controls (/etc/selinux)'
+
+description: |-
+    {{{ describe_audit_rules_watch("/etc/selinux/", "MAC-policy") }}}
+
+rationale: |-
+    The system's mandatory access policy (SELinux) should not be
+    arbitrarily changed by anything other than administrator action. All changes to
+    MAC policy should be audited.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-88995-6
+    cce@rhel10: CCE-90737-8
+    cce@sle15: CCE-92694-9
+    cce@sle16: CCE-96212-6
+
+references:
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    pcidss: Req-10.5.5
+
+ocil_clause: 'the system is not configured to audit attempts to change files within the /etc/selinux directory'
+
+ocil: |-
+    {{{ ocil_audit_rules_watch("/etc/selinux/", "MAC-policy") }}}
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: /etc/selinux/
+        key: MAC-policy

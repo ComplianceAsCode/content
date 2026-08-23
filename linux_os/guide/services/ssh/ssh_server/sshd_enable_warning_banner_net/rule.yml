@@ -1,0 +1,54 @@
+documentation_complete: true
+
+title: 'Enable SSH Warning Banner'
+
+description: |-
+    To enable the warning banner and ensure it is consistent
+    across the system, add or correct the following line in
+    {{% if sshd_distributed_config == "true" %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
+    <pre>Banner /etc/issue.net</pre>
+    Another section contains information on how to create an
+    appropriate system-wide warning banner.
+
+rationale: |-
+    The warning message reinforces policy awareness during the logon process and
+    facilitates possible legal action against attackers. Alternatively, systems
+    whose ownership should not be obvious should ensure usage of a banner that does
+    not provide easy attribution.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87978-3
+    cce@rhel9: CCE-87979-1
+    cce@rhel10: CCE-88799-2
+
+references:
+    cjis: 5.5.6
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    cui: 3.1.9
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: AC-8(a),AC-8(c),AC-17(a),CM-6(a)
+    nist-csf: PR.AC-7
+    srg: SRG-OS-000023-GPOS-00006,SRG-OS-000228-GPOS-00088
+
+{{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue.net") }}}
+
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+conflicts:
+    - sshd_enable_warning_banner
+{{% endif %}}
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: Banner
+        value: /etc/issue.net
+        datatype: string

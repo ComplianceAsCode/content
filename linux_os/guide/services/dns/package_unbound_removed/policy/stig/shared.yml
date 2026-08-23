@@ -1,0 +1,17 @@
+srg_requirement: '{{{ full_name }}} must not have the unbound package installed.'
+
+fixtext: "{{{ fixtext_package_removed('unbound') }}}"
+
+checktext: |-
+    Verify that {{{ full_name }}} does not have a Domain Name Server (DNS) server package installed with the following command:
+
+    $ dnf list --installed unbound
+
+    package unbound is not installed
+
+    If the "unbound" package is installed and the information system security officer (ISSO) lacks a documented requirement for a DNS server, this is a finding.
+
+vuldiscussion: |-
+    If system is not a Domain Name Server (DNS) server it shouldn't have a DNS server package installed to decrease the attack surface of the system.
+
+

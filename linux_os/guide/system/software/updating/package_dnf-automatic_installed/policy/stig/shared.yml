@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the dnf-automatic package installed.
+
+vuldiscussion: |-
+    "dnf-automatic" is a package designed to allow automatic updates of {{{ full_name }}}.
+
+checktext: |-
+    Verify that {{{ full_name }}} dnf-automatic package is installed with the following command:
+
+    $ sudo dnf list --installed dnf-automatic
+
+    Example output:
+
+    dnf-automatic.x86_64         4.20.0-6.el10
+
+    If the "dnf-automatic" package is not installed, this is a finding.
+
+fixtext: |-
+    The  dnf-automatic  package can be installed with the following command:
+
+    $ sudo dnf install dnf-automatic

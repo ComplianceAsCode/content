@@ -1,0 +1,49 @@
+documentation_complete: true
+
+
+title: 'Record Successful Creation Attempts to Files - openat O_CREAT'
+
+
+description: |-
+    The <tt>openat</tt> syscall can be used to create new files
+    when O_CREAT flag is specified.
+
+    The following audit rules will assure that successful attempts to create a
+    file via <tt>openat</tt> syscall are collected.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+    program to read audit rules during daemon startup (the default), add the
+    rules below to a file with suffix <tt>.rules</tt> in the directory
+    <tt>/etc/audit/rules.d</tt>.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the rules below to
+    <tt>/etc/audit/audit.rules</tt> file.
+
+    <pre>
+    -a always,exit -F arch=b32 -S openat -F a2&amp;0100 -F success=1 -F auid>={{{ auid }}} -F auid!=unset -F key=successful-create
+    </pre>
+
+    If the system is 64 bit then also add the following lines:
+    <pre>
+    -a always,exit -F arch=b64 -S openat -F a2&amp;0100 -F success=1 -F auid>={{{ auid }}} -F auid!=unset -F key=successful-create
+    </pre>
+
+rationale: |-
+    Successful attempts to access files could be an indicator of malicious activity on a system. Auditing
+    these events could serve as evidence of potential system compromise.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-81128-1
+
+{{{ complete_ocil_entry_audit_successful_syscall(syscall="openat") }}}
+
+warnings:
+    - general: |-
+        Note that these rules can be configured in a
+        number of ways while still achieving the desired effect. Here the system calls
+        have been placed independent of other system calls. Grouping system calls related
+        to the same event is more efficient. See the following example:
+        <pre>-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;0100 -F success=1 -F auid>={{{ auid }}} -F auid!=unset -F key=successful-create</pre>

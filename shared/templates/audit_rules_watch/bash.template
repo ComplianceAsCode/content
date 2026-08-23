@@ -1,0 +1,20 @@
+# platform = multi_platform_all
+
+# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
+
+{{% if PATH_IS_VARIABLE %}}
+{{{ bash_instantiate_variables(PATH) }}}
+{{% set path = "${" + PATH + "}" %}}
+{{% else %}}
+{{% set path = PATH %}}
+{{% endif %}}
+
+{{% if audit_watches_style == "modern" %}}
+{{{ bash_fix_audit_watch_rule("auditctl", path, "wa", KEY, audit_watches_style, "b32", FILTER_TYPE) }}}
+{{{ bash_fix_audit_watch_rule("auditctl", path, "wa", KEY, audit_watches_style, "b64", FILTER_TYPE) }}}
+{{{ bash_fix_audit_watch_rule("augenrules", path, "wa", KEY, audit_watches_style, "b32", FILTER_TYPE) }}}
+{{{ bash_fix_audit_watch_rule("augenrules", path, "wa", KEY, audit_watches_style, "b64", FILTER_TYPE) }}}
+{{% else %}}
+{{{ bash_fix_audit_watch_rule("auditctl", path, "wa", KEY, audit_watches_style, FILTER_TYPE) }}}
+{{{ bash_fix_audit_watch_rule("augenrules", path, "wa", KEY, audit_watches_style, FILTER_TYPE) }}}
+{{% endif %}}

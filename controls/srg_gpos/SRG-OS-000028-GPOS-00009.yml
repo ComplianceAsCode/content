@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000028-GPOS-00009
+        title: {{{ full_name }}} must retain a users session lock until that user reestablishes
+            access using established identification and authentication procedures.
+        rules:
+            - dconf_gnome_lock_screen_on_smartcard_removal
+            - dconf_gnome_screensaver_lock_enabled
+            - dconf_gnome_screensaver_lock_locked
+        status: automated

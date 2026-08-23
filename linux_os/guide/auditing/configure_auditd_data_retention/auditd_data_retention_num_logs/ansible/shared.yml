@@ -1,0 +1,16 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_auditd_num_logs") }}}
+
+- name: Configure auditd Number of Logs Retained
+  ansible.builtin.lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: "num_logs = {{ var_auditd_num_logs }}"
+    regexp: '^\s*num_logs\s*=\s*.*$'
+    state: present
+    create: yes
+    mode: 0640
+  #notify: reload auditd

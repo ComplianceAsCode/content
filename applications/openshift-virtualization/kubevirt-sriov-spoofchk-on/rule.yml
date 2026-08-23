@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'SR-IOV Networks Must Enable MAC Spoof Checking'
+
+description: |-
+    SR-IOV networks must set '.spec.spoofChk' to "on" so the NIC rejects
+    frames whose source MAC differs from the address assigned to the
+    virtual function. Without it, a compromised guest can impersonate other
+    workloads or infrastructure at layer 2.
+
+    NOTE: this rule reads SriovNetwork resources and therefore requires the
+    SR-IOV Network Operator. On clusters without the operator the resource
+    type does not exist and the check reports an error; CPE applicability
+    for CEL rules (CMP-4483) will mark it Not Applicable instead.
+
+rationale: |-
+    Layer-2 identity is the basis for switching decisions on secondary
+    networks. A guest that can spoof MAC addresses can intercept or
+    redirect other workloads' traffic on the same segment.
+
+severity: medium
+
+ocil_clause: 'an SriovNetwork does not set spoofChk to on'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get sriovnetwork -A -o jsonpath='{range .items[*]}{.metadata.name}: spoofChk={.spec.spoofChk}{"\n"}{end}'</pre>
+    Every SR-IOV network should set spoofChk to "on".

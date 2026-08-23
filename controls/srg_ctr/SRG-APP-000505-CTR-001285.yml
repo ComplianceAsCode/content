@@ -1,0 +1,14 @@
+controls:
+- id: SRG-APP-000505-CTR-001285
+  levels:
+  - medium
+  title: {{{ full_name }}} audit records must record user access start and end
+    times.
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  rules:
+  - audit_rules_session_events
+  status: automated
+

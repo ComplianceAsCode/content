@@ -1,0 +1,35 @@
+documentation_complete: true
+
+
+title: 'Disable IEEE 1394 (FireWire) Support'
+
+description: |-
+    The IEEE 1394 (FireWire) is a serial bus standard for
+    high-speed real-time communication.
+    {{{ describe_module_disable(module="firewire-core") }}}
+
+rationale: |-
+    Disabling FireWire protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-82517-4
+    cce@rhel8: CCE-82005-0
+    cce@rhel9: CCE-84060-3
+    cce@rhel10: CCE-90436-7
+
+references:
+    nist: AC-18
+    srg: SRG-OS-000095-GPOS-00049
+    stigid@ol8: OL08-00-040026
+
+{{{ complete_ocil_entry_module_disable(module="firewire-core") }}}
+
+srg_requirement: '{{{ srg_requirement_kernel_module_disable('firewire-core') }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: firewire-core

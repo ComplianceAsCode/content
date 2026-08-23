@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Ensure AppArmor is installed'
+
+description: |-
+    AppArmor provide Mandatory Access Controls.
+
+rationale: |-
+    Without a Mandatory Access Control system installed only the default
+    Discretionary Access Control system will be available.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92594-1
+
+references:
+    srg: SRG-OS-000368-GPOS-00154,SRG-OS-000312-GPOS-00122,SRG-OS-000312-GPOS-00123,SRG-OS-000312-GPOS-00124,SRG-OS-000324-GPOS-00125,SRG-OS-000370-GPOS-00155
+
+template:
+    name: package_installed
+    vars:
+        pkgname: apparmor
+        pkgname@sle15: patterns-base-apparmor

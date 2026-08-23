@@ -1,0 +1,17 @@
+# platform = multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_password_pam_tally2")  }}}
+
+{{% if product in ["sle12","sle15"] %}}
+{{% set cfg_file = '/etc/pam.d/login' %}}
+{{% else %}}
+{{% set cfg_file = '/etc/pam.d/common-auth' %}}
+{{% endif %}}
+
+{{{ ansible_ensure_pam_module_option(cfg_file, 'auth', 'required', 'pam_tally2.so', 'onerr', 'fail', '(fail)', rule_id=rule_id, rule_title=rule_title) }}}
+{{{ ansible_ensure_pam_module_option(cfg_file, 'auth', 'required', 'pam_tally2.so', 'deny', "{{ var_password_pam_tally2 }}", '', rule_id=rule_id, rule_title=rule_title) }}}
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/common-account', 'account', 'required', 'pam_tally2.so', '', '', '', rule_id=rule_id, rule_title=rule_title) }}}

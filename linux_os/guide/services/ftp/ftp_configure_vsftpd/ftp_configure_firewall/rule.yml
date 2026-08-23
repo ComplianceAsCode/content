@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Configure Firewalls to Protect the FTP Server'
+
+description: |-
+    By default, <tt>iptables</tt>
+    blocks access to the ports used by the web server.
+
+    {{{ describe_iptables_allow(proto="tcp", port=21) }}}
+    Edit the file <tt>/etc/sysconfig/iptables-config</tt>. Ensure that the space-separated list of modules contains
+    the FTP connection tracking module:
+    <pre>IPTABLES_MODULES="ip_conntrack_ftp"</pre>
+
+rationale: |-
+    These settings configure the firewall to allow connections to an FTP server.
+
+severity: unknown

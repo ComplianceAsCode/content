@@ -1,0 +1,32 @@
+documentation_complete: true
+
+
+title: 'Ensure /usr Located On Separate Partition'
+
+description: |-
+    It is recommended that the <tt>/usr</tt> directory resides on a separate
+    partition.
+
+rationale: |-
+    The <tt>/usr</tt> partition contains system software, utilities and files.
+    Putting it on a separate partition allows limiting its size and applying
+    restrictions through mount options.
+
+severity: medium
+
+
+identifiers:
+    cce@rhel8: CCE-83343-4
+    cce@rhel9: CCE-90144-7
+    cce@rhel10: CCE-90748-5
+    cce@sle12: CCE-91488-7
+    cce@sle15: CCE-91180-0
+    cce@sle16: CCE-96274-6
+
+{{{ complete_ocil_entry_separate_partition(part="/usr") }}}
+
+template:
+    name: mount
+    vars:
+        mountpoint: /usr
+        min_size: 5368709120

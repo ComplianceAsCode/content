@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the varnishd_connect_any SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>varnishd_connect_any</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="varnishd_connect_any") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="varnishd_connect_any") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: varnishd_connect_any

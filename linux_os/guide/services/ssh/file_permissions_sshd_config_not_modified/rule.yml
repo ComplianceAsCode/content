@@ -1,0 +1,54 @@
+documentation_complete: true
+
+title: 'Verify Permissions on SSH Server Configuration Files Are Not Modified'
+
+description: |-
+    Verify that {{{ full_name }}} is configured so that SSH server
+    configuration files' permissions are not modified from the vendor
+    defaults. Check the openssh-server package verification status with
+    the following command:
+    <pre>$ sudo rpm --verify openssh-server</pre>
+    If the command returns any output indicating that file permissions
+    have been changed, this is a finding.
+
+rationale: |-
+    Service configuration files enable or disable features of their respective
+    services, which if configured incorrectly can lead to insecure and vulnerable
+    configurations. Therefore, service configuration files must be owned by the
+    correct group to prevent unauthorized changes.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-89828-8
+
+references:
+    nist: AC-17(a),CM-6(a),AC-6(1)
+    srg: SRG-OS-000080-GPOS-00048
+
+ocil_clause: 'the command returns any output'
+
+ocil: |-
+    Verify {{{ full_name }}} is configured so that SSH server configuration
+    files' permissions are not modified.
+
+    Check the permissions of the SSH server configuration files with the
+    following command:
+
+    <pre>$ sudo rpm --verify openssh-server | awk '! ($2 == "c" &amp;&amp; $1 ~ /^.\..\.\.\.\..\./) {print $0}'</pre>
+
+    If the command returns any output, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that SSH server configuration files'
+    permissions are not modified.
+
+    Run the following commands to restore the correct permissions of OpenSSH
+    server configuration files:
+
+    $ sudo rpm --setperms openssh-server
+
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that Secure Shell (SSH) server configuration files' permissions are not modified.
+
+platform: system_with_kernel

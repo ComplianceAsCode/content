@@ -1,0 +1,71 @@
+documentation_complete: true
+
+
+title: 'Remove the GDM Package Group'
+
+description: |-
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
+    By removing the <tt>gdm</tt> package, the system no longer has GNOME installed.
+    {{% else %}}
+    By removing the <tt>gdm3</tt> package, the system no longer has GNOME installed.
+    {{% endif %}}
+    If X Windows is not installed then the system cannot boot into graphical user mode.
+    This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
+    mode. To do so, run the following command:
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
+    <pre>$ sudo yum remove gdm</pre>
+    {{% else %}}
+    <pre>$ sudo apt remove gdm3</pre>
+    {{% endif %}}
+
+rationale: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system.
+    A graphical environment is unnecessary for certain types of systems including a virtualization
+    hypervisor.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82367-4
+    cce@rhel9: CCE-83549-6
+    cce@rhel10: CCE-88880-0
+    cce@sle12: CCE-92352-4
+    cce@sle15: CCE-92502-4
+
+references:
+    cis@sle12: '1.10'
+    cis@sle15: '1.10'
+    nist: CM-7(a),CM-7(b),CM-6(a)
+    srg: SRG-OS-000480-GPOS-00227
+
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+ocil_clause: 'gdm has not been removed'
+
+ocil: |-
+    To ensure the gdm package group is removed, run the following command:
+    <pre>$ rpm -qi gdm</pre>
+    The output should be:
+    <pre>package gdm is not installed</pre>
+{{% else %}}
+ocil_clause: 'gdm3 has not been removed'
+
+ocil: |-
+    To ensure the gdm3 package group is removed, run the following command:
+    <pre>$ dpkg -l gdm3</pre>
+    The output should begin with:
+    <pre>rc gdm3</pre>
+    Or
+    <pre>dpkg-query: no packages found matching gdm3</pre>
+{{% endif %}}
+
+fixtext: '{{{ fixtext_package_removed("gdm") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_removed("gdm") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: gdm
+        pkgname@debian13: gdm3
+        pkgname@ubuntu2204: gdm3
+        pkgname@ubuntu2404: gdm3

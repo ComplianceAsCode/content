@@ -1,0 +1,23 @@
+checktext: |-
+    Verify {{{ full_name }}} has the "policycoreutils-python-utils" service package installed with the following command:
+
+    $ sudo dnf list --installed policycoreutils-python-utils
+    Installed Packages
+    policycoreutils-python-utils.noarch                                3.8-1.el10                                 @AppStream
+
+    If the "policycoreutils-python-utils" package is not installed, this is a finding.
+
+srg_requirement: |-
+    {{{ full_name }}} must have the "policycoreutils-python-utils" package installed.
+
+vuldiscussion: |-
+    The "policycoreutils-python-utils" package is required to operate and manage an SELinux environment and its policies. It provides utilities such as "semanage", "audit2allow", "audit2why", "chcat", and "sandbox".
+
+fixtext: |-
+    Configure {{{ full_name }}} to have the "policycoreutils-python-utils" service package installed with the following command:
+
+    $ sudo dnf -y install policycoreutils-python-utils
+
+
+
+

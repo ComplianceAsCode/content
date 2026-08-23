@@ -1,0 +1,63 @@
+documentation_complete: true
+
+
+title: 'Enable the Hardware RNG Entropy Gatherer Service'
+
+description: |-
+    The Hardware RNG Entropy Gatherer service should be enabled.
+    {{{ describe_service_enable(service="rngd") }}}
+
+rationale: |-
+    The <tt>rngd</tt> service
+    feeds random data from hardware device to kernel random device.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-82535-6
+    cce@rhel8: CCE-82831-9
+    cce@rhel9: CCE-84223-7
+    cce@rhel10: CCE-88930-3
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-010473
+
+{{% if product == "ol8" %}}
+platform: os_linux[ol]<8.4 or not runtime_kernel_fips_enabled
+{{% endif %}}
+
+ocil_clause: '{{{ ocil_clause_service_enabled("rngd") }}}'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="rngd") }}}
+
+fixtext: '{{{ fixtext_service_disabled("rngd") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_disabled("rngd") }}}'
+
+{{% if product == "rhel8" %}}
+platform: os_linux[rhel]<=8.3 or (os_linux[rhel]>=8.4 and not runtime_kernel_fips_enabled)
+warnings:
+  - general: |-
+      For RHEL versions 8.4 and above running with kernel FIPS mode enabled this rule is not applicable.
+      The in-kernel deterministic random bit generator (DRBG) is used in FIPS mode instead.
+      Consequently, the rngd service can't be started in FIPS mode.
+{{% endif %}}
+
+{{% if product in ["fedora", "ol9", "ol10", "rhel9", "rhel10"] %}}
+platform: not runtime_kernel_fips_enabled
+warnings:
+  - general: |-
+      For {{{ full_name }}} running with kernel FIPS mode enabled this rule is not applicable.
+      The in-kernel deterministic random bit generator (DRBG) is used in FIPS mode instead.
+      Consequently, the rngd service can't be started in FIPS mode.
+{{% endif %}}
+
+
+
+template:
+    name: service_enabled
+    vars:
+        servicename: rngd
+        packagename: rng-tools

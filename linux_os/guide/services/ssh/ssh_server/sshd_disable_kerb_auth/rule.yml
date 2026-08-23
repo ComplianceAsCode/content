@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'Disable Kerberos Authentication'
+
+description: |-
+    Unless needed, SSH should not permit extraneous or unnecessary
+    authentication mechanisms like Kerberos.
+    <br/>
+    The default SSH configuration disallows authentication validation through Kerberos.
+    The appropriate configuration is used if no value is set for <tt>KerberosAuthentication</tt>.
+    <br/>
+    To explicitly disable Kerberos authentication, add or correct the following line in
+    {{{ sshd_config_file() }}}
+    <pre>KerberosAuthentication no</pre>
+
+rationale: |-
+    Kerberos authentication for SSH is often implemented using GSSAPI. If Kerberos
+    is enabled through SSH, the SSH daemon provides a means of access to the
+    system's Kerberos implementation.
+    Configuring these settings for the SSH daemon provides additional assurance that remote logon via SSH will not use unused methods of authentication, even in the event of misconfiguration elsewhere.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80898-0
+    cce@rhel9: CCE-90802-0
+    cce@rhel10: CCE-90591-9
+    cce@sle15: CCE-91442-4
+    cce@sle16: CCE-95744-9
+
+references:
+    cis-csc: 11,3,9
+    cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05
+    cui: 3.1.12
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3
+    isa-62443-2013: 'SR 7.6'
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4
+    nist: AC-17(a),CM-7(a),CM-7(b),CM-6(a)
+    nist-csf: PR.IP-1
+    ospp: FTP_ITC_EXT.1,FCS_SSH_EXT.1.2
+    srg: SRG-OS-000364-GPOS-00151,SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040440
+    stigid@ol8: OL08-00-010521
+
+{{{ complete_ocil_entry_sshd_option(default="yes", option="KerberosAuthentication", value="no") }}}
+
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile("KerberosAuthentication", "no") }}}
+
+srg_requirement: 'The {{{ full_name }}} SSH daemon must not allow Kerberos authentication, except to fulfill documented and validated mission requirements.'
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: KerberosAuthentication
+        value: 'no'
+        datatype: string
+        is_default_value: 'true'

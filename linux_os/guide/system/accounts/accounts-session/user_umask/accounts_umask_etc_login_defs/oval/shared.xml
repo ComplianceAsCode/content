@@ -1,0 +1,90 @@
+<def-group>
+  <definition class="compliance" id="accounts_umask_etc_login_defs" version="2">
+    {{{ oval_metadata("The default umask for all users specified in {{{ login_defs_path }}}", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
+      definition_ref="var_accounts_user_umask_as_number" />
+      {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+      <criteria operator="OR">
+        <criteria operator="AND">
+          <criterion comment="Check UMASK in {{{ login_defs_drop_in_path }}} is not set"
+              test_ref="test_accounts_umask_etc_login_defs_drop_in_path_not_set"/>
+          <criterion test_ref="tst_accounts_umask_etc_login_defs" />
+        </criteria>
+        <criteria operator="AND">
+          <criterion comment="Check UMASK should be set appropriately in {{{ login_defs_drop_in_path }}}"
+            test_ref="tst_accounts_umask_etc_login_defs_drop_in_path"/>
+        </criteria>
+      </criteria>
+      {{% else %}}
+      <criterion test_ref="tst_accounts_umask_etc_login_defs" />
+      {{% endif %}}
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="obj_umask_from_etc_login_defs"
+  comment="Umask value from {{{ login_defs_path }}}" version="1">
+    <ind:filepath>{{{ login_defs_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*UMASK[\s]+([^#\s]*)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Use macro to generate umask conversion for main file -->
+  {{{ oval_umask_string_to_number("obj_umask_from_etc_login_defs", "etc_login_defs", login_defs_path) }}}
+
+  <ind:variable_test id="tst_accounts_umask_etc_login_defs" version="1" check="all"
+  comment="Test the retrieved {{{ login_defs_path }}} umask value(s) match the var_accounts_user_umask requirement">
+    <ind:object object_ref="obj_accounts_umask_etc_login_defs" />
+    <ind:state state_ref="ste_accounts_umask_etc_login_defs" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_accounts_umask_etc_login_defs" version="1">
+    <ind:var_ref>var_etc_login_defs_umask_as_number</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="ste_accounts_umask_etc_login_defs" version="1">
+    <ind:value datatype="int" operation="bitwise and" var_ref="var_accounts_user_umask_umask_as_number" />
+  </ind:variable_state>
+
+  {{% set login_defs_drop_in_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) %}}
+  
+  <ind:textfilecontent54_object id="obj_umask_from_drop_in_defs"
+  comment="Umask value from drop-in files" version="1">
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*UMASK[\s]+([^#\s]*)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Use macro to generate umask conversion for drop-in files -->
+  {{{ oval_umask_string_to_number("obj_umask_from_drop_in_defs", "drop_in_defs", login_defs_drop_in_config_dir) }}}
+
+  <ind:variable_test id="tst_accounts_umask_etc_login_defs_drop_in_path" version="1" check="all"
+  comment="Test the retrieved drop-in umask value(s) match the var_accounts_user_umask requirement">
+    <ind:object object_ref="obj_accounts_umask_etc_login_defs_drop_in_path" />
+    <ind:state state_ref="ste_accounts_umask_etc_login_defs_drop_in_path" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_accounts_umask_etc_login_defs_drop_in_path" version="1">
+    <ind:var_ref>var_drop_in_defs_umask_as_number</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="ste_accounts_umask_etc_login_defs_drop_in_path" version="1">
+    <ind:value datatype="int" operation="bitwise and" var_ref="var_accounts_user_umask_umask_as_number" />
+  </ind:variable_state>
+
+  <!-- Test if UMASK is not set in drop-in files -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      comment="Check UMASK in drop-in files is not set"
+      id="test_accounts_umask_etc_login_defs_drop_in_path_not_set">
+    <ind:object object_ref="object_accounts_umask_etc_login_defs_drop_in_path_not_set" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_umask_etc_login_defs_drop_in_path_not_set" version="1">
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*UMASK\s*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

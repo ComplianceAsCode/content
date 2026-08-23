@@ -1,0 +1,38 @@
+product: al2023
+full_name: Amazon Linux 2023
+type: platform
+
+benchmark_id: AL-2023
+benchmark_root: "../../linux_os/guide"
+components_root: "../../components"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+
+init_system: "systemd"
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
+sshd_distributed_config: "true"
+
+faillock_path: "/var/log/faillock"
+
+release_key_fingerprint: "B21C50FA44A99720EAA72F7FE951904AD832C631"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - al2023:
+      name: "cpe:/o:amazon:amazon_linux:2023"
+      title: "Amazon Linux 2023"
+      check_id: installed_OS_is_al2023
+
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/amazon_linux/'
+
+journald_conf_dir_path: /etc/systemd/journald.conf.d

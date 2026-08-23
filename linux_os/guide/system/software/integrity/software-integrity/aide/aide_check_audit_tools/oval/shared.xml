@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="aide_check_audit_tools" version="1">
+    {{{ oval_metadata("The " ~ full_name ~ " operating system file integrity tool must be configured to protect the integrity of the audit tools.", title="Configure AIDE to Verify the Audit Tools", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
+      {{% for audit_tool in aide_audit_binaries -%}}
+      <criterion comment="{{{ audit_tool }}} is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_{{{ audit_tool }}}" />
+      {{% endfor %}}
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_state id="state_aide_check_attributes" version="1">
+    {{% if 'rhel' not in product and 'ubuntu' not in product and 'ol' not in families and 'fedora' not in product %}}
+    <ind:subexpression operation="equals">p+i+n+u+g+s+b+acl+selinux+xattrs+sha512</ind:subexpression>
+    {{% else %}}
+    <ind:subexpression operation="pattern match">^p\+i\+n\+u\+g\+s\+b\+acl(|\+selinux)\+xattrs\+sha512$</ind:subexpression>
+    {{% endif %}}
+  </ind:textfilecontent54_state>
+
+  {{% for audit_tool in aide_audit_binaries %}}
+    {{{ oval_test_aide_audit_tools(audit_tool) }}}
+  {{%- endfor %}}
+</def-group>

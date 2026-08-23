@@ -1,0 +1,30 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable the Transparent Inter Process Communication (TIPC) kernel module.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the ability to load the tipc kernel module.
+
+    Create a drop-in if it does not already exist:
+
+    $ sudo vi /etc/modprobe.d/tipc.conf
+
+    Add the following lines to the file:
+
+    install tipc /bin/false
+    blacklist tipc
+
+checktext: |-
+    Verify {{{ full_name }}} disables the ability to load the tipc kernel module with the following command:
+
+    $ sudo grep -rs tipc /etc/modprobe.conf /etc/modprobe.d/* | grep -v '#'
+    /etc/modprobe.d/tipc-blacklist.conf:install tipc /bin/false
+    /etc/modprobe.d/tipc-blacklist.conf:blacklist tipc
+
+    If the command does not return any output, or the lines are commented out, and use of tipc is not documented with the information system security officer as an operational requirement, this is a finding.
+
+vuldiscussion: |-
+    It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore, may remain unsecured. They increase the risk to the platform by providing additional attack vectors.
+
+    Failing to disconnect unused protocols can result in a system compromise.
+
+    The TIPC is a protocol that is specially designed for intra-cluster communication. It can be configured to transmit messages either on User Datagram Protocol (UDP) or directly across Ethernet. Message delivery is sequence guaranteed, loss free, and flow controlled. Disabling TIPC protects the system against exploitation of any flaws in its implementation.

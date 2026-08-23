@@ -1,0 +1,14 @@
+controls:
+    -   id: SRG-OS-000424-GPOS-00188
+        levels:
+            - high
+        title: {{{ full_name }}} must implement cryptographic mechanisms to prevent unauthorized
+            disclosure of information and/or detect changes to information during transmission
+            unless otherwise protected by alternative physical safeguards, such as, at a minimum,
+            a Protected Distribution System (PDS).
+        rules:
+            - package_openssh-server_installed
+            - service_sshd_enabled
+            - wireless_disable_interfaces
+            - ssh_client_rekey_limit
+        status: automated

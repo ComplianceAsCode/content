@@ -1,0 +1,70 @@
+documentation_complete: true
+
+
+title: 'Configure the Service Account Certificate Authority Key for the Controller Manager'
+
+
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["root-ca-file"]!=null then true else false end]' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--root-ca-file") )] | length | if . ==1 then true else false end]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    To ensure the API Server utilizes its own key pair, set the <tt>masterCA</tt>
+    parameter to the public key file for service accounts in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "root-ca-file": [
+        "/etc/kubernetes/static-pod-resources/configmaps/serviceaccount-ca/ca-bundle.crt"
+      ],
+    ...
+    </pre>
+
+rationale: |-
+    Service accounts authenticate to the API using tokens signed by a private RSA
+    key. The authentication layer verifies the signature using a matching public RSA key.
+    Configuring the certificate authority file ensures that the API server's signing
+    certificates are validated.
+
+identifiers:
+  cce@ocp4: CCE-84244-3
+
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1),SC-8,SC-8(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: '<tt>root-ca-file</tt> is not configured</tt>'
+
+ocil: |-
+    To verify that <tt>root-ca-file</tt> is configured correctly,
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["root-ca-file"]'</pre>
+    The output should return a configured certificate authority file.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '[:]'
+    values:
+    - value: 'true'
+      type: "string"
+      entity_check: "at least one"

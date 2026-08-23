@@ -1,0 +1,14 @@
+controls:
+- id: SRG-APP-000375-CTR-000870
+  levels:
+  - medium
+  title: {{{ full_name }}} must record time stamps for audit records that meet
+    a granularity of one second for a minimum degree of precision.
+  related_rules:
+  - audit_profile_set
+  status: inherently met
+  status_justification: |-
+    Openshift Container Platform conforms to DoD/DISA requirements regarding audit log fields.
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://docs.openshift.com/container-platform/latest/security/audit-log-view.html

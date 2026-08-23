@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000030-GPOS-00011
+        levels:
+            - medium
+        title: {{{ full_name }}} must provide the capability for users to directly initiate
+            a session lock for all connection types.
+        rules:
+            - dconf_gnome_lock_screen_on_smartcard_removal
+            - dconf_gnome_screensaver_lock_enabled
+            - dconf_gnome_screensaver_lock_locked
+        status: automated

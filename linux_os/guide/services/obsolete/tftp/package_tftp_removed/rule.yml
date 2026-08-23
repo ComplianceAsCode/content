@@ -1,0 +1,36 @@
+documentation_complete: true
+
+
+title: 'Remove tftp Daemon'
+
+description: |-
+    Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol,
+    typically used to automatically transfer configuration or boot files between systems.
+    TFTP does not support authentication and can be easily hacked. The package
+    <tt>tftp</tt> is a client program that allows for connections to a <tt>tftp</tt> server.
+
+rationale: |-
+    It is recommended that TFTP be removed, unless there is a specific need
+    for TFTP (such as a boot server). In that case, use extreme caution when configuring
+    the services.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-83590-0
+    cce@rhel9: CCE-84153-6
+    cce@rhel10: CCE-88586-3
+    cce@sle12: CCE-91465-5
+    cce@sle15: CCE-91158-6
+    cce@sle16: CCE-96201-9
+
+references:
+    srg: SRG-OS-000074-GPOS-00042
+
+
+ocil: '{{{ describe_package_remove(package="tftp") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: tftp

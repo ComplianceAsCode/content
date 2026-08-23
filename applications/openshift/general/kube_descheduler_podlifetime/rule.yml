@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Set Pod Lifetime for the Deschedulers'
+
+description: |-
+    If there is an increased risk of external influences and a very high need for protection, pods should be stopped and restarted regularly.
+    No pod should run for more than 24 hours. The availability of the applications in the pod should be ensured.
+
+rationale: |-
+    If there is an increased risk of external influences and a very high need for protection, pods should be stopped and restarted regularly. With this an attacker who gained control over a pod loses it and the pod gets restarted from a known good state (the image).
+
+severity: medium
+
+ocil_clause: 'podLifetime Values of Deschedulers need review'
+
+ocil: |-
+    Run the following command and review the kubedeschedulers and how they are configured. <pre>$ oc get kubedeschedulers.operator.openshift.io --all-namespaces -o=custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,deschedulingIntervalSeconds:.spec.deschedulingIntervalSeconds,podLifetime:.spec.profileCustomizations.podLifetime,Profiles:.spec.profiles </pre>
+
+    Ensure that each kubedescheduler, which defines the LifecycleAndUtilization Profile also defines a podLifetime of none or below your company threshold (i.e. 24h)

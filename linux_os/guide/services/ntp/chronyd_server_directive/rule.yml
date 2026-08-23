@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Ensure Chrony is only configured with the server directive'
+
+description: |-
+    Check that Chrony only has time sources configured with the <tt>server</tt> directive.
+
+rationale: |-
+    Depending on the infrastructure being used the <tt>pool</tt> directive may not be supported.
+    Using the <tt>server</tt> directive allows for better control of where the system gets time data from.
+
+severity: medium
+
+platform: package[chrony]
+
+warnings:
+  - general: This rule doesn't come with a remediation, the time source needs to be added by the administrator.
+
+identifiers:
+    cce@rhel8: CCE-86077-5
+    cce@rhel9: CCE-87077-4
+    cce@rhel10: CCE-88824-8
+
+references:
+    srg: SRG-OS-000355-GPOS-00143,SRG-OS-000356-GPOS-00144,SRG-OS-000359-GPOS-00146
+    stigid@ol8: OL08-00-030740
+
+ocil_clause: 'an authoritative remote time server is not configured or configured with pool directive'
+
+ocil: |-
+    Run the following command and verify that time sources are only configured with <tt>server</tt> directive:
+    <pre># grep -E "^(server|pool)" {{{ chrony_conf_path }}}</pre>
+    A line with the appropriate server should be returned, any line returned starting with <tt>pool</tt> is a finding.
+
+srg_requirement: '{{{ full_name }}} must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).'
+
+fixtext: |-
+    Configure {{{ full_name }}} to securely compare internal information system clocks at least every 24 hours with an NTP server by adding/modifying the following line in the /etc/chrony.conf file.
+
+    server [ntp.server.name] iburst maxpoll 16

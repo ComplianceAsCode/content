@@ -1,0 +1,62 @@
+documentation_complete: true
+
+
+title: 'All Interactive User Home Directories Must Be Group-Owned By The Primary Group'
+
+description: |-
+    Change the group owner of interactive users home directory to the
+    group found in <tt>/etc/passwd</tt>. To change the group owner of
+    interactive users home directory, use the following command:
+    <pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i></pre>
+
+    This rule ensures every home directory related to an interactive user is
+    group-owned by an interactive user. It also ensures that interactive users
+    are group-owners of one and only one home directory.
+
+rationale: |-
+    If the Group Identifier (GID) of a local interactive users home directory is
+    not the same as the primary GID of the user, this would allow unauthorized
+    access to the users files, and users that share the same group may not be
+    able to access files that they legitimately should.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83434-1
+    cce@rhel9: CCE-83629-6
+    cce@rhel10: CCE-87946-0
+    cce@sle12: CCE-83096-8
+    cce@sle15: CCE-85711-0
+    cce@slmicro5: CCE-93748-2
+    cce@slmicro6: CCE-95058-4
+
+references:
+    cis@sle12: 6.2.7
+    cis@sle15: 6.2.7
+    nist@sle15: CM-6(b),CM-6.1(iv)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020650
+    stigid@ol8: OL08-00-010740
+    stigid@sle12: SLES-12-010750
+
+ocil_clause: 'the group ownership is incorrect'
+
+ocil: |-
+    To verify the assigned home directory of all interactive users is group-
+    owned by that users primary GID, run the following command:
+    <pre># ls -ld $(awk -F: '($3&gt;={{{ uid_min }}})&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
+
+fixtext: |-
+    Change the group owner of a local interactive user’s home directory to the group found in "/etc/passwd". To change the group owner of a local interactive user’s home directory, use the following command:
+
+    Note: The example will be for the user "smithj", who has a home directory of "/home/smithj", and has a primary group of users.
+
+    $ sudo chgrp users /home/smithj
+
+srg_requirement: 'All {{{ full_name }}} local interactive user home directories must be group-owned by the home directory owner’s primary group.'
+
+warnings:
+    - general: |-
+       Due to OVAL limitation, this rule can report a false negative in a
+       specific situation where two interactive users swap the group-ownership
+       of their respective home directories.

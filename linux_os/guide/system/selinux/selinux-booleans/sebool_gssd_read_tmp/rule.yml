@@ -1,0 +1,22 @@
+documentation_complete: true
+
+
+title: 'Enable the gssd_read_tmp SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>gssd_read_tmp</tt> is enabled.
+    This setting allows <tt>gssd</tt> processes to access Kerberos to read
+    TGTs in the temp directory. If this setting is disabled, it should
+    be enabled.
+    {{{ describe_sebool_enable(sebool="gssd_read_tmp") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="gssd_read_tmp") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: gssd_read_tmp

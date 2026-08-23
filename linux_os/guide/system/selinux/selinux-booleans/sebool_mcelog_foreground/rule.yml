@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the mcelog_foreground SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>mcelog_foreground</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="mcelog_foreground") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="mcelog_foreground") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: mcelog_foreground

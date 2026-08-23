@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} SSH private host key files must have mode 0640 or less permissive.
+
+vuldiscussion: |-
+    If an unauthorized user obtains the private SSH host key file, the host could be impersonated.
+
+checktext: |-
+    Verify the SSH private host key files have a mode of "0640" or less permissive with the following command:
+
+    $ stat -c "%a %n" /etc/ssh/*_key
+
+    640 /etc/ssh/ssh_host_dsa_key
+    640 /etc/ssh/ssh_host_ecdsa_key
+    640 /etc/ssh/ssh_host_ed25519_key
+    640 /etc/ssh/ssh_host_rsa_key
+
+    If any private host key file has a mode more permissive than "0640", this is a finding.
+
+fixtext: |-
+    Configure the mode of SSH private host key files under "/etc/ssh" to "0640" with the following command:
+
+    $ sudo chmod 0640 /etc/ssh/ssh_host*key
+
+    Restart the SSH daemon for the changes to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+

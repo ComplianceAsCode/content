@@ -1,0 +1,27 @@
+documentation_complete: true
+
+
+title: 'Uninstall abrt-plugin-rhtsupport Package'
+
+description: |-
+    {{{ describe_package_remove(package="abrt-plugin-rhtsupport") }}}
+
+rationale: |-
+    <tt>abrt-plugin-rhtsupport</tt> is a ABRT plugin to report bugs into the
+    Red Hat Support system.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82916-8
+    cce@rhel9: CCE-83514-0
+
+references:
+    srg: SRG-OS-000095-GPOS-00049
+
+{{{ complete_ocil_entry_package_removed("abrt-plugin-rhtsupport") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: abrt-plugin-rhtsupport

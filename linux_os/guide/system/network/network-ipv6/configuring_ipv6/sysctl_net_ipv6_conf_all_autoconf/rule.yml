@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: Configure Auto Configuration on All IPv6 Interfaces
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.all.autoconf", value="0") }}}'
+
+rationale: An illicit router advertisement message could result in a man-in-the-middle attack.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: CCE-84266-6
+    cce@rhel9: CCE-84126-2
+    cce@rhel10: CCE-88386-8
+    cce@sle12: CCE-91520-7
+    cce@sle15: CCE-91205-5
+    cce@sle16: CCE-96669-7
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.all.autoconf", value="0") }}}
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv6.conf.all.autoconf
+        datatype: int

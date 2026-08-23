@@ -1,0 +1,14 @@
+# platform = Oracle Linux 7,Red Hat Virtualization 4,SUSE Linux Enterprise 12,multi_platform_slmicro
+# reboot = false
+# complexity = low
+# disruption = low
+# strategy = configure
+
+- name: Configure Kerberos 5 Encryption in Audit Event Multiplexor (audispd)
+  ansible.builtin.lineinfile:
+    dest: {{{ audisp_conf_path }}}/audisp-remote.conf
+    line: enable_krb5 = yes
+    regexp: ^\s*enable_krb5\s*=\s*.*$
+    state: present
+    mode: 0640
+    create: true

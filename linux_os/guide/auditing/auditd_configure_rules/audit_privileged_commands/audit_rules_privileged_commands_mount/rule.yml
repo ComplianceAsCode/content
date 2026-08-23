@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - mount'
+
+description: |-
+    {{{ describe_arpc("/usr/bin/mount") }}}
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have compromised system accounts,
+    is a serious and ongoing concern and can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify
+    the risk from insider and advanced persistent threats.
+    <br /><br />
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82595-0
+    cce@rhel8: CCE-80989-7
+    cce@rhel9: CCE-89564-9
+    cce@rhel10: CCE-87814-0
+    cce@sle12: CCE-83145-3
+
+references:
+    nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-APP-000029-CTR-000085
+    stigid@ol7: OL07-00-030740
+    stigid@ol8: OL08-00-030300
+    stigid@sle12: SLES-12-020290
+
+{{{ ocil_fix_srg_privileged_command("mount") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/bin/mount

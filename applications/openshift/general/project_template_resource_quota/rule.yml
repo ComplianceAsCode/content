@@ -1,0 +1,65 @@
+documentation_complete: true
+
+
+title: 'Ensure that project templates autocreate Resource Quotas'
+
+description: |-
+    Configure a template for newly created projects to use default resource
+    quotas and make sure this template is referenced from the default
+    project template.
+
+    For more information, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.12/applications/projects/configuring-project-creation.html",
+    text="the relevant documentation") }}}.
+
+rationale: |-
+    Running different applications on the same Kubernetes cluster creates a risk of 
+    a "noisy neighbor" when one application monopolizes cluster resources.
+    A resource quota, defined by a ResourceQuota object, provides constraints
+    that limit aggregate resource consumption per project. It can limit
+    the quantity of objects that can be created in a project by type, as
+    well as the total amount of compute resources and storage that might
+    be consumed by resources in that project.
+
+    Ensuring that the project configuration references
+    a project template that sets up the required objects for new projects ensures
+    that all new projects will be set in accordance with centralized settings.
+
+severity: medium
+
+{{% set api_path = '/apis/template.openshift.io/v1/namespaces/openshift-config/templates' %}}
+{{% set jqfilter = '[.items[] | any(.objects[]?; .kind == "ResourceQuota") ]' %}}
+
+ocil_clause: 'The project template does not include ResourceQuotas'
+
+ocil: |-
+    Verify that a Template exists in the <tt>openshift-config</tt> namespace
+    that includes at least one ResourceQuota Kind in the list of .objects:
+    <pre>oc get -nopenshift-config template -ojson |  jq -r '{{{ jqfilter }}}'</pre>
+    If there is at least one matching template, the above query would
+    return true.
+
+references:
+    nist: SC-5,SC-5(1)
+    srg: SRG-APP-000246-CTR-000605,SRG-APP-000246-CTR-000605
+
+identifiers:
+  cce@ocp4: CCE-86372-0
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({api_path: jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path(api_path, jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "all_exist"
+    entity_check: "all"
+    values:
+      - value: "true"
+        operation: "pattern match"
+

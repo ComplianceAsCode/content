@@ -1,0 +1,31 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable the user list at login for graphical user interfaces.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the user list at login for graphical user interfaces.
+
+    Note: The example below is using the database "local" for the system. If the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
+
+    Create a database to contain the systemwide screensaver settings (if it does not already exist) with the following command:
+
+    $ sudo vi /etc/dconf/db/local.d/02-login-screen
+
+    [org/gnome/login-screen]
+    disable-user-list=true
+
+    Update the system databases:
+
+    $ sudo dconf update
+
+checktext: |-
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is not applicable.
+
+    Verify {{{ full_name }}} disables the user login list for graphical user interfaces with the following command:
+
+    $ gsettings get org.gnome.login-screen disable-user-list
+    true
+
+    If the setting is "false", this is a finding.
+
+vuldiscussion: |-
+    Leaving the user list enabled is a security risk because it allows anyone with physical access to the system to enumerate known user accounts without authenticated access to the system.

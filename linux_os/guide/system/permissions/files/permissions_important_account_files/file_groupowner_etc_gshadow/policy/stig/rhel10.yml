@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that the "/etc/gshadow" file is group-owned by "root".
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the group of the "/etc/gshadow" file is set to "root" by running the following command:
+
+    $ sudo chgrp root /etc/gshadow
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the "/etc/gshadow" file is group-owned by "root" with the following command:
+
+    $ sudo stat -c "%G %n" /etc/gshadow
+    root /etc/gshadow
+
+    If the "/etc/gshadow" file does not have a group owner of "root", this is a finding.
+
+vuldiscussion: |-
+    The "/etc/gshadow" file contains group password hashes. Protection of this file is critical for system security.

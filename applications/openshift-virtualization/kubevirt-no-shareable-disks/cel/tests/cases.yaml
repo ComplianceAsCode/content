@@ -1,0 +1,91 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: modeled on real VirtualMachine API objects (celctl cac scaffold format)
+  date: '2026-07-23'
+  openshift_version: 4.22.0
+  kubernetes_version: v1.35.5
+  source_api_versions:
+    vms: kubevirt.io/v1
+cases:
+  - name: no VMs -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items: []
+  - name: VM with a normal disk -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-normal
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      disks:
+                        - name: rootdisk
+                          disk:
+                            bus: virtio
+  - name: VM disk with shareable false -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-explicit
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      disks:
+                        - name: rootdisk
+                          shareable: false
+  - name: VM disk with shareable true -> non-compliant
+    expect: false
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-ok
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      disks:
+                        - name: rootdisk
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-shared
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      disks:
+                        - name: data
+                          shareable: true

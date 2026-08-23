@@ -1,0 +1,36 @@
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: file-integrity-operator
+  namespace: openshift-marketplace
+spec:
+  displayName: File Integrity Operator
+  publisher: github.com/openshift/file-integrity-operator
+  sourceType: grpc
+  image: quay.io/file-integrity-operator/file-integrity-operator-catalog:latest
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-file-integrity
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: file-integrity-operator
+  namespace: openshift-file-integrity
+spec:
+  targetNamespaces:
+  - openshift-file-integrity
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: file-integrity-operator-sub
+  namespace: openshift-file-integrity
+spec:
+  channel: alpha
+  name: file-integrity-operator
+  source: file-integrity-operator
+  sourceNamespace: openshift-marketplace

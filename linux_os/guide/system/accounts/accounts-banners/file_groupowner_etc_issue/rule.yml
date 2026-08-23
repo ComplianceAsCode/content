@@ -1,0 +1,49 @@
+documentation_complete: true
+
+
+title: 'Verify Group Ownership of System Login Banner'
+
+description: |-
+    {{{ describe_file_group_owner(file="/etc/issue", group="root") }}}
+
+rationale: |-
+    Display of a standardized and approved use notification before granting
+    access to the operating system ensures privacy and security notification
+    verbiage used is consistent with applicable federal laws, Executive Orders,
+    directives, policies, regulations, standards, and guidance.<br />
+    Proper group ownership will ensure that only root user can modify the banner.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83708-8
+    cce@rhel9: CCE-86699-6
+    cce@rhel10: CCE-89209-1
+    cce@sle12: CCE-92233-6
+    cce@sle15: CCE-91355-8
+    cce@slmicro5: CCE-94060-1
+
+references:
+    cis@sle12: 1.8.1.5
+    cis@sle15: 1.8.1.5
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/issue", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/issue", group="root") }}}
+
+{{%- if product in ['sle15', 'slmicro5', 'slmicro6'] %}}
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/issue.d/
+        gid_or_name: '0'
+        file_regex: ^.*$
+        recursive: 'true'
+{{%- else %}}
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/issue
+        gid_or_name: '0'
+{{% endif %}}

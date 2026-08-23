@@ -1,0 +1,32 @@
+documentation_complete: true
+
+
+title: 'Disable Cockpit Management Server'
+
+description: |-
+    The Cockpit Management Server (<tt>cockpit</tt>) provides a web based
+    login and management framework.
+    {{{ describe_service_disable(service="cockpit") }}}
+
+rationale: |-
+    Cockpit provides a form of remote login.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89026-9
+    cce@rhel10: CCE-87509-6
+
+platform: system_with_kernel
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="cockpit") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="cockpit") }}}
+
+template:
+    name: service_disabled
+    vars:
+        servicename: cockpit
+        packagename: cockpit

@@ -1,0 +1,34 @@
+{{%- if 'sle' not in product %}}
+  {{%- set path="/usr/sbin" %}}
+{{%- else %}}
+  {{%- set path="/sbin" %}}
+{{%- endif %}}
+
+documentation_complete: true
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - init'
+
+description: |-
+    {{{ describe_arpc(path + "/init") }}}
+
+rationale:
+    Misuse of the init command may cause availability issues for the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-85956-1
+    cce@rhel10: CCE-88214-2
+
+references:
+    nist: AU-12(c)
+    srg: SRG-OS-000477-GPOS-00222
+
+{{{ ocil_fix_srg_privileged_command("init","{{{ path }}}/") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/sbin/init
+        path@sle12: /sbin/init
+        path@sle15: /sbin/init

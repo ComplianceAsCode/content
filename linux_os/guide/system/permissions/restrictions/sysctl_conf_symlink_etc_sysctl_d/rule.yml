@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Ensure /etc/sysctl.d/99-sysctl.conf Is a Symlink to /etc/sysctl.conf'
+
+description: |-
+    The file <tt>/etc/sysctl.d/99-sysctl.conf</tt> must be a symbolic link
+    pointing to <tt>/etc/sysctl.conf</tt>. This symlink is normally created by
+    the <tt>procps</tt> package and ensures that <tt>systemd-sysctl</tt>
+    processes <tt>/etc/sysctl.conf</tt> with the correct priority during boot.
+    Without it, kernel parameter settings written to <tt>/etc/sysctl.conf</tt>
+    are silently ignored by <tt>systemd-sysctl</tt> and do not persist across
+    reboots.
+
+rationale: |-
+    When <tt>/etc/sysctl.d/99-sysctl.conf</tt> is absent or is not a symlink to
+    <tt>/etc/sysctl.conf</tt>, <tt>systemd-sysctl</tt> does not load
+    <tt>/etc/sysctl.conf</tt> during boot. As a result, any kernel parameters
+    configured in that file — including security hardening settings — are not
+    applied at startup, undermining system hardening.
+
+severity: medium
+
+platform: machine
+
+references:
+    nist: CM-6(a)
+
+ocil_clause: '/etc/sysctl.d/99-sysctl.conf does not exist or is not a symlink to /etc/sysctl.conf'
+
+ocil: |-
+    Verify that <tt>/etc/sysctl.d/99-sysctl.conf</tt> is a symbolic link
+    pointing to <tt>/etc/sysctl.conf</tt>:
+    <pre>$ ls -l /etc/sysctl.d/99-sysctl.conf</pre>
+    The output should show a symlink pointing to <tt>/etc/sysctl.conf</tt>.
+
+fixtext: |-
+    Create the symbolic link:
+    <pre># ln -sf /etc/sysctl.conf /etc/sysctl.d/99-sysctl.conf</pre>
+    Apply the settings immediately:
+    <pre># systemctl restart systemd-sysctl.service</pre>

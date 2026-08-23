@@ -1,0 +1,49 @@
+documentation_complete: true
+
+
+title: 'Configure GnuTLS library to use Approved TLS Encryption'
+
+description: |-
+    Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
+    GnuTLS is supported by system crypto policy, but the GnuTLS configuration may be
+    set up to ignore it.
+
+    To check that Crypto Policies settings are configured correctly, ensure that
+    <tt>/etc/crypto-policies/back-ends/gnutls.config</tt> contains the following
+    line and is not commented out:
+    <tt>+VERS-ALL:-VERS-DTLS0.9:-VERS-TLS1.1:-VERS-TLS1.0:-VERS-SSL3.0:-VERS-DTLS1.0</tt>
+
+    These keywords are order-independent, so the line can be in any order. GnuTLS will then prefer the highest version.
+
+rationale: |-
+    Overriding the system crypto policy makes the behavior of the GnuTLS
+    library violate expectations, and makes system configuration more
+    fragmented.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84254-2
+    cce@rhel9: CCE-86860-4
+
+references:
+    nist: AC-17(2)
+    srg: SRG-OS-000250-GPOS-00093,SRG-OS-000423-GPOS-00187
+
+ocil_clause: 'cryptographic policy for gnutls is not configured or is configured incorrectly'
+
+ocil: |-
+    To verify if GnuTLS uses the defined approved TLS Crypto Policy, run:
+    <pre>$ sudo grep
+    '+VERS-ALL:-VERS-DTLS0.9:-VERS-TLS1.1:-VERS-TLS1.0:-VERS-SSL3.0:-VERS-DTLS1.0'
+    /etc/crypto-policies/back-ends/gnutls.config</pre> and verify that a match exists.
+
+fixtext: |-
+    Configure the {{{ full_name }}} GnuTLS library to use only approved encryption by adding the following line to "/etc/crypto-policies/back-ends/gnutls.config":
+
+    +VERS-ALL:-VERS-DTLS0.9:-VERS-TLS1.1:-VERS-TLS1.0:-VERS-SSL3.0:-VERS-DTLS1.0
+
+    A reboot is required for the changes to take effect.
+
+srg_requirement:
+    {{{ full_name }}} must implement DoD-approved TLS encryption in the GnuTLS package.

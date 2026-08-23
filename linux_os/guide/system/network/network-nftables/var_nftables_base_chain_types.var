@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Nftables Base Chain Types'
+
+description: |-
+   Base chains are those that are registered into the Netfilter hooks, 
+   i.e. these chains see packets flowing through the Linux TCP/IP stack.
+   The possible chain types are:
+   <tt>filter</tt>, which is used to filter packets. This is supported by 
+   the arp, bridge, ip, ip6 and inet table families.
+   <tt>route</tt>, which is used to reroute packets if any relevant IP 
+   header field or the packet mark is modified. This chain type provides 
+   equivalent semantics to the mangle table but only for the output hook 
+   (for other hooks use type filter instead). This is supported by the 
+   ip, ip6 and inet table families.
+   <tt>nat</tt>, which is used to perform Networking Address Translation (NAT). 
+   Only the first packet of a given flow hits this chain; subsequent packets bypass it. 
+   This chain should be never used for filtering. The nat chain type 
+   is supported by the ip, ip6 and inet table families.
+    
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: "filter,filter,filter"
+    filter: filter 
+    route: route
+    nat: nat
+    chain_types: "filter,filter,filter"

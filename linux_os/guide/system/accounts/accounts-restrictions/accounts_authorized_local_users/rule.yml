@@ -1,0 +1,70 @@
+documentation_complete: true
+
+
+title: 'Only Authorized Local User Accounts Exist on Operating System'
+
+description: |-
+    Enterprise Application tends to use the server or virtual machine exclusively.
+    Besides the default operating system user, there should be only authorized local
+    users required by the installed software groups and applications that exist on
+    the operating system. The authorized user list can be customized in the refine
+    value variable <tt>var_accounts_authorized_local_users_regex</tt>.
+    OVAL regular expression is used for the user list.
+    Configure the system so all accounts on the system are assigned to an active system,
+    application, or user account. Remove accounts that do not support approved system
+    activities or that allow for a normal user to perform administrative-level actions.
+    To remove unauthorized system accounts, use the following command:
+    <pre>$ sudo userdel <i>unauthorized_user</i></pre>
+
+rationale: |-
+    Accounts providing no operational purpose provide additional opportunities for
+    system compromise. Unnecessary accounts include user accounts for individuals not
+    requiring access to the system and application accounts for applications not installed
+    on the system.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-88196-1
+    cce@rhel8: CCE-85987-6
+    cce@rhel9: CCE-88048-4
+    cce@rhel10: CCE-88135-9
+    cce@sle12: CCE-83195-8
+    cce@sle15: CCE-85561-9
+    cce@sle16: CCE-96418-9
+    cce@slmicro5: CCE-93731-8
+    cce@slmicro6: CCE-95038-6
+
+references:
+    nist@sle12: CM-6(b),CM-6.1(iv)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020270
+    stigid@ol8: OL08-00-020320
+    stigid@sle12: SLES-12-010630
+
+ocil_clause: 'there are unauthorized local user accounts on the system'
+
+{{% if 'rhel' in product or 'ol' in families or product.startswith('slmicro') or 'rhcos' in product %}}
+warnings:
+    - general: |-
+        Automatic remediation of this control is not available due to the unique
+        requirements of each system.
+{{% endif %}}
+
+ocil: |-
+    To verify that there are no unauthorized local user accounts, run the following command:
+    <pre>$ less /etc/passwd </pre>
+    Inspect the results, and if unauthorized local user accounts exist, remove them by running
+    the following command:
+    <pre>$ sudo userdel <i>unauthorized_user</i></pre>
+
+fixtext: |-
+    Configure the system so all accounts on the system are assigned to an active system, application, or user account.
+
+    Remove accounts that do not support approved system activities or that allow for a normal user to perform administrative-level actions.
+
+    Document all authorized accounts on the system.
+
+srg_requirement: '{{{ full_name }}} must not have unnecessary accounts.'
+
+platform: system_with_kernel

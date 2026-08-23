@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="system_info_architecture_64bit"
+  version="1">
+    <!-- Note that this does not meet requirements for class=inventory as
+         that only tests for patches per 5.10.1 Revision 1 -->
+    <metadata>
+      <title>Test for 64-bit Architecture</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Generic test for 64-bit architectures to be used by other tests</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="Generic test for x86_64 architecture"
+      definition_ref="system_info_architecture_x86_64" />
+      <extend_definition comment="Generic test for ppc64 architecture"
+      definition_ref="system_info_architecture_ppc_64" />
+      <extend_definition comment="Generic test for aarch64 architecture"
+      definition_ref="system_info_architecture_aarch_64" />
+      <extend_definition comment="Generic test for s390x architecture"
+      definition_ref="system_info_architecture_s390_64" />
+    </criteria>
+  </definition>
+
+</def-group>

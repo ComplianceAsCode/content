@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the glance_use_fusefs SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>glance_use_fusefs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="glance_use_fusefs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="glance_use_fusefs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: glance_use_fusefs

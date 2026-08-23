@@ -1,0 +1,50 @@
+documentation_complete: true
+
+
+title: 'All User Files and Directories In The Home Directory Must Have a Valid Owner'
+
+description: |-
+    Either remove all files and directories from the system that
+    do not have a valid user, or assign a valid user to all unowned
+    files and directories. To assign a valid owner to a local
+    interactive user's files and directories, use the following command:
+    <pre>$ sudo chown -R <i>USER</i> /home/<i>USER</i></pre>
+
+    This rule ensures every file or directory under the home directory related
+    to an interactive user is owned by an interactive user.
+
+rationale: |-
+    If local interactive users do not own the files in their directories,
+    unauthorized users may be able to access them. Additionally, if files are not
+    owned by the user, this could be an indication of system compromise.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87040-2
+    cce@rhel9: CCE-87041-0
+    cce@rhel10: CCE-88043-5
+    cce@sle12: CCE-92293-0
+    cce@sle15: CCE-91406-9
+    cce@sle16: CCE-96099-7
+
+references:
+    cis@sle12: 6.2.7
+    cis@sle15: 6.2.7
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020660
+
+ocil_clause: 'the user ownership is incorrect'
+
+ocil: |-
+    To verify all files and directories in a local interactive user's
+    home directory have a valid owner, run the following command:
+    <pre>$ sudo ls -lLR /home/<i>USER</i></pre>
+
+warnings:
+    - general: |-
+       Due to OVAL limitation, this rule can report a false negative in a
+       specific situation where two interactive users swap the ownership of
+       folders or files in their respective home directories.
+
+platform: system_with_kernel

@@ -1,0 +1,44 @@
+documentation_complete: true
+
+
+title: 'Uninstall talk Package'
+
+description: |-
+    The <tt>talk</tt> package contains the client program for the
+    Internet talk protocol, which allows the user to chat with other users on
+    different systems. Talk is a communication program which copies lines from one
+    terminal to the terminal of another user.
+    {{{ describe_package_remove(package="talk") }}}
+
+rationale: |-
+    The talk software presents a security risk as it uses unencrypted protocols
+    for communications. Removing the <tt>talk</tt> package decreases the
+    risk of the accidental (or intentional) activation of talk client program.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80848-5
+    cce@rhel9: CCE-84157-7
+    cce@rhel10: CCE-90657-8
+    cce@sle12: CCE-91456-4
+    cce@sle15: CCE-91432-5
+    cce@slmicro5: CCE-93900-9
+
+references:
+    cis@sle12: 2.3.3
+    cis@sle15: 2.3.3
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+
+{{{ complete_ocil_entry_package_removed("talk") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: talk
+
+{{% if product in ["rhel8", "rhel9"] %}}
+warnings:
+    - general:
+        The package is not available in {{{ full_name }}}.
+{{% endif %}}

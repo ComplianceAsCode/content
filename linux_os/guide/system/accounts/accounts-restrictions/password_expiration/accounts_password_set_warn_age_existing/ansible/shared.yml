@@ -1,0 +1,19 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_accounts_password_warn_age_login_defs") }}}
+
+- name: {{{ rule_title }}} - Collect Users With Incorrect Number of Days of Warning Before Password Expires
+  ansible.builtin.command:
+    cmd: awk -F':' '(($6 < {{ var_accounts_password_warn_age_login_defs }} || $6 == "") && $2 ~ /^\$/) {print $1}' /etc/shadow
+  register: result_pass_warn_age_user_names
+  changed_when: false
+
+- name: {{{ rule_title }}} - Ensure the Number of Days of Warning Before Password Expires
+  ansible.builtin.command:
+    cmd: chage --warndays {{ var_accounts_password_warn_age_login_defs }} {{ item }}
+  with_items: '{{ result_pass_warn_age_user_names.stdout_lines }}'
+  when: result_pass_warn_age_user_names is not skipped and result_pass_warn_age_user_names.stdout_lines | length > 0

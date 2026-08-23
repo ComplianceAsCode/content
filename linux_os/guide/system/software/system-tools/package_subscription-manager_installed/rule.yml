@@ -1,0 +1,46 @@
+documentation_complete: true
+
+
+title: 'Install subscription-manager Package'
+
+description: |-
+    {{{ describe_package_install(package="subscription-manager") }}}
+
+rationale: |-
+    Red Hat Subscription Manager is a local service which tracks installed products
+    and subscriptions on a local system to help manage subscription assignments.
+    It communicates with the backend subscription service (the Customer Portal
+    or an on-premise server such as Subscription Asset Manager) and works with
+    content management tools such as {{{ package_manager }}}.
+
+    {{% if product in ["rhel9"] %}}
+    The package provides, among other things, {{{ package_manager }}} plugins
+    to interact with repositories and subscriptions
+    from the Red Hat entitlement platform - the subscription-manager and
+    product-id plugins.
+    {{% endif %}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82316-1
+    cce@rhel9: CCE-83506-6
+    cce@rhel10: CCE-88542-6
+
+references:
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+    srg: SRG-OS-000366-GPOS-00153
+
+{{{ complete_ocil_entry_package_installed("subscription-manager") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: subscription-manager
+
+fixtext: |-
+    {{{ describe_package_install(package="subscription-manager") }}}
+
+srg_requirement: '{{{ srg_requirement_package_installed("subscription-manager") }}}'
+
+platform: system_with_kernel

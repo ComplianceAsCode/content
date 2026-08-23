@@ -1,0 +1,15 @@
+controls:
+    -   id: SRG-OS-000478-GPOS-00223
+        levels:
+            - high
+        title: '{{{ full_name }}} must implement NIST FIPS-validated cryptography for
+    the following: to provision digital signatures, to generate cryptographic hashes,
+    and to protect unclassified information requiring confidentiality and cryptographic
+    protection in accordance with applicable federal laws, Executive Orders, directives,
+    policies, regulations, and standards.'
+        rules:
+            - system_booted_in_fips_mode
+            - aide_use_fips_hashes
+            - configure_kerberos_crypto_policy
+            - enable_fips_mode
+        status: automated

@@ -1,0 +1,12 @@
+controls:
+- id: SRG-APP-000023-CTR-000055
+  levels:
+  - medium
+  title: {{{ full_name }}} must use a centralized user management solution to
+    support account management functions.
+  rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  - ocp_no_ldap_insecure
+  status: automated

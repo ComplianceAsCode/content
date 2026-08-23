@@ -1,0 +1,37 @@
+documentation_complete: true
+
+
+title: 'Install openscap-scanner Package'
+
+description: |-
+    {{{ describe_package_install(package="openscap-scanner") }}}
+
+rationale: |-
+    <tt>openscap-scanner</tt> contains the <tt>oscap</tt> command line tool. This tool is a
+    configuration and vulnerability scanner, capable of performing compliance checking using
+    SCAP content.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82220-5
+    cce@rhel9: CCE-83502-5
+    cce@rhel10: CCE-89429-5
+
+references:
+    ospp: AGD_PRE.1,AGD_OPE.1
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000191-GPOS-00080
+
+{{{ complete_ocil_entry_package_installed("openscap-scanner") }}}
+
+fixtext: '{{{ fixtext_package_installed("openscap-scanner") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("openscap-scanner") }}}'
+
+
+template:
+    name: package_installed
+    vars:
+        pkgname: openscap-scanner
+
+platform: system_with_kernel

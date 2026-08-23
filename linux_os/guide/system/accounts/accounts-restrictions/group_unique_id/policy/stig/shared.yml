@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} groups must have unique Group ID (GID).
+
+vuldiscussion: |-
+    To ensure accountability and prevent unauthenticated access, groups must be identified uniquely to prevent potential misuse and compromise of the system.
+
+checktext: |-
+    Verify that {{{ full_name }}} contains no duplicate GIDs for interactive users with the following command:
+
+     $  cut -d : -f 3 /etc/group | uniq -d
+
+    If the system has duplicate GIDs, this is a finding.
+
+fixtext: |-
+    Edit the file "/etc/group" and provide each group that has a duplicate GID with a unique GID.
+
+

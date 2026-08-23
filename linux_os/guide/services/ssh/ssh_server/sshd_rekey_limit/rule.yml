@@ -1,0 +1,52 @@
+{{% set sshd_main_config = sshd_main_config_file %}}
+{{% set sshd_drop_in_glob = sshd_config_dir ~ "/*" %}}
+documentation_complete: true
+
+title: 'Force frequent session key renegotiation'
+
+description: |-
+    The <tt>RekeyLimit</tt> parameter specifies how often
+    the session key of the is renegotiated, both in terms of
+    amount of data that may be transmitted and the time
+    elapsed.<br/>
+    To decrease the default limits, add or correct the following line in
+    {{{ sshd_config_file() }}}
+    <pre>RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}</pre>
+
+rationale: |-
+    By decreasing the limit based on the amount of data and enabling
+    time-based limit, effects of potential attacks against
+    encryption keys are limited.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82177-7
+    cce@rhel9: CCE-90815-2
+    cce@rhel10: CCE-88356-1
+
+references:
+    ospp: FCS_SSH_EXT.1.8
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000033-GPOS-00014
+    stigid@ol8: OL08-00-040161
+
+ocil_clause: 'it is commented out or is not set'
+
+ocil: |-
+    To check if RekeyLimit is set correctly, run the
+    following command:
+    {{% if sshd_distributed_config == "true" %}}
+    <pre>$ sudo grep RekeyLimit {{{ sshd_main_config }}} {{{ sshd_drop_in_glob }}}</pre>
+    {{% else %}}
+    <pre>$ sudo grep RekeyLimit {{{ sshd_main_config }}}</pre>
+    {{% endif %}}
+    If configured properly, output should be
+    <pre>RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}</pre>
+
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile(
+        parameter="RekeyLimit",
+        value=xccdf_value("var_rekey_limit_size") ~ " " ~ xccdf_value("var_rekey_limit_time"),
+        config_is_distributed=(sshd_distributed_config == "true")) }}}
+
+srg_requirement: '{{{ full_name }}} must force a frequent session key renegotiation for SSH connections to the server.'

@@ -1,0 +1,45 @@
+documentation_complete: true
+
+
+title: 'Add noexec Option to /var/log/audit'
+
+description: |-
+    The <tt>noexec</tt> mount option can be used to prevent binaries
+    from being executed out of <tt>/var/log/audit</tt>.
+    {{{ describe_mount(option="noexec", part="/var/log/audit") }}}
+
+rationale: |-
+    Allowing users to execute binaries from directories containing audit log files
+    such as <tt>/var/log/audit</tt> should never be necessary in normal operation and
+    can expose the system to potential compromise.
+
+{{{ complete_ocil_entry_mount_option("/var/log/audit", "noexec") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82975-4
+    cce@rhel9: CCE-83878-9
+    cce@rhel10: CCE-88957-6
+    cce@sle15: CCE-92584-2
+
+references:
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: CM-7(a),CM-7(b),CM-6(a),AC-6,AC-6(1),MP-7
+    nist-csf: PR.IP-1,PR.PT-2,PR.PT-3
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000368-GPOS-00154
+    stigid@ol8: OL08-00-040131
+
+platform: mount[var-log-audit]
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /var/log/audit
+        mountoption: noexec
+
+fixtext: |-
+    {{{ fixtext_mount_option("/var/log/audit", "noexec") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/var/log/audit", "noexec") }}}'

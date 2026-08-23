@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Action for auditd to take when disk is full'
+
+description: |-
+    'The setting for disk_full_action in /etc/audit/auditd.conf, if multiple
+    values are allowed write them separated by pipes as in "syslog|single|halt",
+    for remediations the first value will be taken'
+
+type: string
+
+interactive: false
+
+options:
+    default: single
+    exec: exec
+    halt: halt
+    single: single
+    suspend: suspend
+    syslog: syslog
+    ignore: ignore
+    rotate: rotate
+    ol8: syslog|single|halt
+    rhel8: syslog|single|halt
+    cis_rhel8: single|halt
+    cis_rhel9: halt|single
+    cis_rhel10: halt|single
+    cis_fedora: halt|single
+    cis_ubuntu2204: halt|single
+    cis_ubuntu2404: halt|single
+    cis_debian12: halt|single
+    cis_debian13: halt|single

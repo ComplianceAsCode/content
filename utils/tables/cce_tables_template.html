@@ -1,0 +1,29 @@
+{{% set title = "CCE Identifiers in Guide to the Secure Configuration of " ~ full_name -%}}
+
+{{% extends "tables_template_common.html" %}}
+
+{{% block table %}}
+<table>
+  <thead>
+    <th>Mapping</th>
+    <th>Rule Title</th>
+    <th>Description</th>
+    <th>Rationale</th>
+  </thead>
+  <tbody>
+    {{% for cce in rules_by_cce | sort -%}}
+    {{% set rule = rules_by_cce[cce] %}}
+    <tr>
+      <td>{{{ cce }}}</td>
+      <td>{{{ rule.title }}}</td>
+      <td xml:lang="en-US">
+        {{{ rule.description }}}
+      </td>
+      <td xml:lang="en-US">
+        {{{ rule.rationale }}}
+      </td>
+    </tr>
+    {{% endfor -%}}
+  </tbody>
+</table>
+{{% endblock %}}

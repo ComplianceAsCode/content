@@ -1,0 +1,79 @@
+documentation_complete: true
+
+
+title: 'Ensure that project templates autocreate Resource Quotas'
+
+description: |-
+    <p>
+    Configure a template for newly created projects to use default resource
+    quotas and make sure this template is referenced from the default
+    project template.
+    </p>
+    <p>
+    The OpenShift Container Platform API server automatically provisions
+    new projects based on the project template that is identified by
+    the <tt>projectRequestTemplate</tt> parameter in the cluster’s project
+    configuration resource.
+    </p>
+    <p>
+    As a cluster administrator, you can modify the default project template
+    so that new projects created would satisfy the chosen compliance
+    standards.
+    </p>
+    <p>
+    For more information, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.12/applications/projects/configuring-project-creation.html",
+    text="the relevant documentation") }}}.
+    </p>
+
+rationale: |-
+    <p>
+    Running different applications on the same Kubernetes cluster creates a risk of 
+    a "noisy neighbor" when one application monopolizes cluster resources.
+    A resource quota, defined by a ResourceQuota object, provides constraints
+    that limit aggregate resource consumption per project. It can limit
+    the quantity of objects that can be created in a project by type, as
+    well as the total amount of compute resources and storage that might
+    be consumed by resources in that project.
+    </p>
+    <p>
+    Editing the default project template to include ResourceQuotas in
+    all new namespaces ensures that all namespaces include at least some
+    ResourceQuotas objects.
+    </p>
+    <p>
+    Ensuring that the project configuration references
+    a project template that sets up the required objects for new projects ensures
+    that all new projects will be set in accordance with centralized settings.
+    </p>
+
+severity: medium
+
+ocil_clause: 'The project template does not include ResourceQuotas and/or the project configuration does not reference a project request template'
+
+{{% set api_path = '/apis/template.openshift.io/v1/namespaces/openshift-config/templates' %}}
+{{% set jqfilter = '[.items[] | any(.objects[]?; .kind == "ResourceQuota") ]' %}}
+
+ocil: |-
+    Verify that a Template exists in the <tt>openshift-config</tt> namespace
+    that includes at least one ResourceQuota Kind in the list of .objects:
+    <pre>oc get -nopenshift-config template -ojson |  jq -r '{{{ jqfilter }}}'</pre>
+    If there is at least one matching template, the above query would
+    return true.
+
+    Verify that the project config named <tt>cluster</tt> references the
+    projectRequestTemplate that defines ResourceQuotas:
+    <pre>oc get project.config.openshift.io/cluster -ojsonpath="{.spec.projectRequestTemplate.name}"</pre>
+
+identifiers:
+    cce@ocp4: CCE-90734-5
+
+references:
+    nist: SC-5,SC-5(1)
+    srg: SRG-APP-000246-CTR-000605,SRG-APP-000435-CTR-001070
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/projects/cluster") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({api_path: jqfilter}) | indent(4) }}}
+

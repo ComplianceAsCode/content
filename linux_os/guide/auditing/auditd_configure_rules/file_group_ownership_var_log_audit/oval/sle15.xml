@@ -1,0 +1,116 @@
+<def-group>
+  <definition class="compliance" id="file_group_ownership_var_log_audit" version="1">
+    {{{ oval_metadata("Checks that all audit log files are group owned by the root user.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criteria operator="AND" comment="log_file set">
+        <extend_definition comment="log file set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" negate="true" />
+
+        <criteria operator="OR">
+          <criteria operator="AND" comment="log_file set and log_group set to not root">
+            <criterion comment="log_group in auditd.conf is set" test_ref="test_auditd_conf_log_group_not_set" negate="true"/>
+            <criterion comment="default log_file and log_group set" test_ref="test_group_ownership_audit_log_files_not_root"/>
+          </criteria>
+          <criteria operator="AND" comment="log_file set and log_group root">
+            <criterion comment="log_group in auditd.conf is not set" test_ref="test_auditd_conf_log_group_not_set"/>
+            <criterion comment="default log_file and log_group root" test_ref="test_group_ownership_audit_log_files_root"/>
+          </criteria>
+        </criteria>
+
+      </criteria>
+      <criteria operator="AND" comment="log_file not set">
+        <extend_definition comment="log file not set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" />
+
+        <criteria operator="OR">
+          <criteria operator="AND" comment="default log_file and log_group set to not root">
+            <criterion comment="log_group in auditd.conf is set" test_ref="test_auditd_conf_log_group_not_set" negate="true"/>
+            <criterion comment="default log_file and log_group set" test_ref="test_group_ownership_default_audit_log_files_not_root"/>
+          </criteria>
+          <criteria operator="AND" comment="default log_file and log_group root">
+            <criterion comment="log_group in auditd.conf is not set" test_ref="test_auditd_conf_log_group_not_set"/>
+            <criterion comment="default log_file and log_group root" test_ref="test_group_ownership_default_audit_log_files_root"/>
+          </criteria>
+        </criteria>
+
+      </criteria>
+    </criteria>
+  </definition>
+
+
+  <ind:textfilecontent54_test id="test_auditd_conf_log_group_not_set" check="all" check_existence="none_exist" comment="log_group not set" version="1">
+    <ind:object object_ref="object_auditd_conf_log_group_configured" />
+  </ind:textfilecontent54_test>
+
+
+  <!-- default file and default state -->
+  <unix:file_object comment="/var/log/audit files" id="object_default_audit_log_file" version="1">
+    <unix:filepath operation="equals">/var/log/audit/audit.log</unix:filepath>
+  </unix:file_object>
+  <unix:file_state id="state_default_group_root" version="1">
+    <unix:group_id datatype="int" operation="equals">0</unix:group_id>
+  </unix:file_state>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit/audit.log file is owned by root" id="test_group_ownership_default_audit_log_files_root" version="1">
+    <unix:object object_ref="object_default_audit_log_file" />
+    <unix:state state_ref="state_default_group_root" />
+  </unix:file_test>
+
+
+  <!-- default file and non default state -->
+  <ind:textfilecontent54_object id="object_auditd_conf_log_group_configured" comment="log_group is set" version="1">
+    <ind:filepath operation="equals">/etc/audit/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[ ]*log_group[ ]+=[ ](\w+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_auditd_conf_log_group" version="1" datatype="string" comment="audit log_group">
+    <object_component item_field="subexpression" object_ref="object_auditd_conf_log_group_configured" />
+  </local_variable>
+
+  <local_variable id="var_auditd_conf_log_group_regex" datatype="string" version="1"
+    comment="a local variable regex to auditd configured log_group">
+      <concat>
+          <literal_component>^</literal_component>
+          <variable_component var_ref="var_auditd_conf_log_group"/>
+          <literal_component>:\w+:(\w+):.*</literal_component>
+      </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_object id="object_auditd_log_group_etc_group_id" version="1" comment="gid of the audit log_group (from /etc/group)">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_auditd_conf_log_group_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_file_groupowner_audit_log_group_gid" datatype="int" version="1" comment="Retrieve the gid audit log_group">
+    <object_component item_field="subexpression" object_ref="object_auditd_log_group_etc_group_id"/>
+  </local_variable>
+
+  <unix:file_state id="state_group_owner_log_group_var_log_audit" version="1">
+    <unix:group_id datatype="int" operation="equals" var_ref="var_file_groupowner_audit_log_group_gid"></unix:group_id>
+  </unix:file_state>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit/audit.log file is owned by log_group" id="test_group_ownership_default_audit_log_files_not_root" version="1">
+    <unix:object object_ref="object_default_audit_log_file"/>
+    <unix:state state_ref="state_group_owner_log_group_var_log_audit"/>
+  </unix:file_test>
+
+
+  <!-- non default file default state -->
+  <unix:file_object comment="audit log file" id="object_non_default_audit_log_file" version="1">
+    <unix:filepath operation="equals" var_ref="audit_log_file_path"/>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="log_file file is owned by root" id="test_group_ownership_audit_log_files_root" version="1">
+    <unix:object object_ref="object_non_default_audit_log_file"/>
+    <unix:state state_ref="state_default_group_root"/>
+  </unix:file_test>
+
+
+  <!-- non default file non default state -->
+
+  <unix:file_test check="all" check_existence="all_exist" comment="log_file file is owned by log_group" id="test_group_ownership_audit_log_files_not_root" version="1">
+    <unix:object object_ref="object_non_default_audit_log_file"/>
+    <unix:state state_ref="state_group_owner_log_group_var_log_audit"/>
+  </unix:file_test>
+
+</def-group>

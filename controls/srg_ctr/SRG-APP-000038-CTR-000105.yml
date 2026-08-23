@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000038-CTR-000105
+  levels:
+  - medium
+  title: {{{ full_name }}} must enforce approved authorizations for controlling
+    the flow of information within {{{ full_name }}} based on organization-defined
+    information flow control policies.
+  rules:
+  - configure_network_policies_namespaces
+  - configure_network_policies
+  related_rules:
+  - routes_protected_by_tls
+  status: automated

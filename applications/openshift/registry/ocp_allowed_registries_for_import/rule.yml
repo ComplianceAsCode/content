@@ -1,0 +1,53 @@
+documentation_complete: true
+
+
+title: "Allowed registries for import are configured"
+
+description: |-
+    The configuration <tt>allowedRegistriesForImport</tt> limits the container
+    image registries from which normal users may import images. This is important
+    to control, as a user who can stand up a malicious registry can then import
+    content which claims to include the SHAs of legitimate content layers.
+    You can set the allowed repositories for import by applying the following
+    manifest using <pre>oc patch</pre>, e.g. if you save the following snippet to
+    <pre>/tmp/allowed-import-registries-patch.yaml</pre>
+    <pre>
+    spec:
+      allowedRegistriesForImport:
+      - domainName: my-trusted-registry.internal.example.com
+        insecure: false
+    </pre> you would call
+    <pre>oc patch image.config.openshift.io cluster --patch="$(cat /tmp/allowed-import-registries-patch.yaml)" --type=merge</pre>
+
+rationale: |-
+    Allowed registries for import should be specified to limit the registries 
+    from which users may import images.
+
+severity: medium
+
+references:
+    nist: CM-5(3),CM-7(2),CM-7(5),CM-11
+    srg: SRG-APP-000456-CTR-001125
+
+ocil_clause: 'allowed registries for import are not set explicitly'
+
+ocil: |-
+  To verify that the allowed registries for import are configured, run the following:
+  <pre>$ oc get image.config.openshift.io cluster -ojsonpath='{.spec.allowedRegistriesForImport[:].domainName}'</pre>
+  make sure the output is not empty and matches the registries that you wish to allow
+  importing from.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/images/cluster
+        yamlpath: ".spec.allowedRegistriesForImport[:].domainName"
+        entity_check: "at least one"
+        values:
+            - value: ".*"
+              operation: "pattern match"

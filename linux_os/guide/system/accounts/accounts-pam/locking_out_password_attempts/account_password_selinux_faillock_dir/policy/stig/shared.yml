@@ -1,0 +1,47 @@
+srg_requirement: |-
+    {{{ full_name }}} must configure SELinux context type to allow the use of a nondefault faillock tally directory.
+
+vuldiscussion: |-
+    Not having the correct SELinux context on the faillock directory may lead to unauthorized access to the directory.
+
+checktext: |-
+    Verify the location of the nondefault tally directory for the pam_faillock module with the following command:
+
+    Note: If the system does not have SELinux enabled and enforcing a targeted policy, or if the pam_faillock module is not configured for use, this requirement is Not Applicable.
+
+    $ sudo grep -w dir /etc/security/faillock.conf
+
+    dir = /var/log/faillock
+
+    Check the security context type of the nondefault tally directory with the following command:
+
+    $ ls -Zd /var/log/faillock
+
+    unconfined_u:object_r:faillog_t:s0 /var/log/faillock
+
+    If the security context type of the nondefault tally directory is not "faillog_t", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to allow the use of a nondefault faillock tally directory while SELinux enforces a targeted policy.
+
+    First enable the feature using the following command:
+
+    $ sudo authselect enable-feature with-faillock
+
+    Create a nondefault faillock tally directory (if it does not already exist) with the following example:
+
+    $ sudo mkdir /var/log/faillock
+
+    Then add/modify the "/etc/security/faillock.conf" file to match the following line:
+
+    dir = /var/log/faillock
+
+    Update the /etc/selinux/targeted/contexts/files/file_contexts.local with "faillog_t" context type for the nondefault faillock tally directory with the following command:
+
+    $ sudo semanage fcontext -a -t faillog_t "/var/log/faillock(/.*)?"
+
+    Next, update the context type of the nondefault faillock directory/subdirectories and files with the following command:
+
+    $ sudo restorecon -R -v /var/log/faillock
+
+

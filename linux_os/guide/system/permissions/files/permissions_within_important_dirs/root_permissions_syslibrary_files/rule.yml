@@ -1,0 +1,85 @@
+documentation_complete: true
+
+title: |-
+    Verify the system-wide library files in directories
+    "/lib", "/lib64", "/usr/lib/" and "/usr/lib64" are group-owned by root.
+
+description: |-
+    System-wide library files are stored in the following directories
+    by default:
+    <pre>/lib
+    /lib64
+    /usr/lib
+    /usr/lib64
+    </pre>
+    All system-wide shared library files should be protected from unauthorised
+    access. If any of these files is not group-owned by root,
+    correct its group-owner with the following command:
+    <pre>$ sudo chgrp root <i>FILE</i></pre>
+
+rationale: |-
+    If the operating system were to allow any user to make changes to software libraries,
+    then those changes might be implemented without undergoing the appropriate testing and
+    approvals that are part of a robust change management process.
+
+    This requirement applies to operating systems with software libraries that are
+    accessible and configurable, as in the case of interpreted languages. Software libraries
+    also include privileged programs which execute with escalated privileges. Only qualified
+    and authorized individuals must be allowed to obtain access to information system components
+    for purposes of initiating changes, including upgrades and modifications.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86523-8
+    cce@rhel9: CCE-87108-7
+    cce@rhel10: CCE-86440-5
+    cce@sle12: CCE-83237-8
+    cce@sle15: CCE-85736-7
+    cce@slmicro5: CCE-94064-3
+    cce@slmicro6: CCE-94694-7
+
+references:
+    nist: CM-5(6),CM-5(6).1
+    srg: SRG-OS-000259-GPOS-00100
+    stigid@ol8: OL08-00-010350
+    stigid@sle12: SLES-12-010875
+
+ocil_clause: any system wide shared library file is returned and is not group-owned by root
+
+ocil: |-
+    Verify the system-wide shared library files are group-owned by root with the following command:
+
+    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -group root -exec ls -l {} \;
+
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+{{% if 'ol' in families or 'rhel' in product or 'ubuntu' in product %}}
+        file_regex: ^.*\.so.*$
+{{% else %}}
+        file_regex: ^.*$
+{{% endif %}}
+        recursive: 'true'
+        gid_or_name: '0'
+
+fixtext: |-
+    Configure the system-wide shared library files (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.
+
+{{%- if 'ubuntu' in product %}}
+    Run the following command:
+
+    <pre>$ sudo find /lib /lib64 /usr/lib /usr/lib64 -type f -name '*.so*' ! -group root -exec chgrp root {} +</pre>
+{{%- else %}}
+    Run the following command, replacing "[FILE]" with any library file not group-owned by root.
+
+    $ sudo chgrp root [FILE]
+{{%- endif %}}
+
+srg_requirement:
+    {{{ full_name }}} library files must be group-owned by root.

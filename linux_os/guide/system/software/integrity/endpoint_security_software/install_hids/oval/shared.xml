@@ -1,0 +1,34 @@
+<def-group>
+
+  <definition class="compliance" id="install_mcafee_hbss"
+  version="1">
+    {{{ oval_metadata("Install McAfee Host-Based Intrusion Detection Software (HBSS)", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <extend_definition comment="McAfee HBSS" definition_ref="install_mcafee_cma_rt" />
+      <extend_definition comment="McAfee HBSS" definition_ref="install_mcafee_hbss_accm" />
+      <extend_definition comment="McAfee HBSS" definition_ref="package_MFEhiplsm_installed" />
+      <extend_definition comment="McAfee HBSS" definition_ref="install_mcafee_hbss_pa" />
+    </criteria>
+  </definition>
+
+  <definition class="compliance" id="install_hids"
+  version="1">
+    {{{ oval_metadata("Intrusion detection software or SELinux should be installed and enabled.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <extend_definition comment="McAfee HBSS" definition_ref="install_mcafee_hbss" />
+      <criterion comment="SELinux enabled" test_ref="test_selinux_enforcing" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="/selinux/enforce is 1" id="test_selinux_enforcing" version="1">
+    <ind:object object_ref="object_selinux_enforcing" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_selinux_enforcing" version="1">
+    <ind:filepath>/etc/selinux/config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*SELINUX[\s]*=[\s]*enforcing[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

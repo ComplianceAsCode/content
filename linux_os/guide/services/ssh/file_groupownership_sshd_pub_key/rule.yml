@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Verify Group Ownership on SSH Server Public *.pub Key Files'
+
+description: |-
+    SSH server public keys, files that match the <code>/etc/ssh/*.pub</code> glob, must be
+    group-owned by <code>root</code> group.
+
+rationale: |-
+    If a public host key file is modified by an unauthorized user, the SSH service
+    may be compromised.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86133-6
+    cce@rhel9: CCE-86136-9
+    cce@rhel10: CCE-90469-8
+    cce@sle16: CCE-96361-1
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/ssh/*.pub", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/ssh/*.pub", group="root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /etc/ssh/
+        file_regex:
+            - ^.*\.pub$
+        gid_or_name: '0'
+
+warnings:
+    - general: |-
+        Remediation is not possible at bootable container build time because SSH host
+        keys are generated post-deployment.
+
+platform: system_with_kernel

@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000243-CTR-000600
+  levels:
+  - medium
+  title: {{{ full_name }}} must prevent unauthorized and unintended information
+    transfer via shared system resources.
+  status: automated
+  rules:
+  - coreos_page_poison_kernel_argument
+  - coreos_vsyscall_kernel_argument
+  - coreos_slub_debug_kernel_argument
+  - sysctl_kernel_dmesg_restrict
+  - sysctl_kernel_perf_event_paranoid

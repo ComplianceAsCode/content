@@ -1,0 +1,15 @@
+documentation_complete: true
+
+
+title: 'Set Permissions on the /etc/httpd/conf/ Directory'
+
+description: '{{{ describe_file_permissions(file="/etc/http/conf", perms="0750") }}}'
+
+rationale: |-
+    Access to the web server's configuration files may allow an unauthorized user or attacker
+    to access information about the web server or alter the server's configuration files.
+
+severity: unknown
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/http/conf", perms="-rwxr-x---") }}}

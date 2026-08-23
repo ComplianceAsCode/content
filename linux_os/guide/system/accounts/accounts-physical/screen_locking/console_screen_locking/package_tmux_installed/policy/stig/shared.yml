@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the tmux package installed.
+
+vuldiscussion: |-
+    Tmux is a terminal multiplexer that enables a number of terminals to be created, accessed, and controlled from a single screen. Red Hat endorses tmux as the recommended session controlling package.
+
+checktext: |-
+    Verify that {{{ full_name }}} has the tmux package installed with the following command:
+
+    $ sudo dnf list --installed tmux
+
+    Example output:
+
+    tmux.x86_64          3.2a-4.el9
+
+    If the "tmux" package is not installed, this is a finding.
+
+fixtext: |-
+    The tmux package can be installed with the following command:
+
+    $ sudo dnf install tmux
+

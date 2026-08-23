@@ -1,0 +1,31 @@
+documentation_complete: true
+
+
+title: 'Uninstall Samba Package'
+
+description: '{{{ describe_package_remove(package="samba") }}}'
+
+rationale: |-
+    If there is no need to make the Samba software available,
+    removing it provides a safeguard against its activation.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: CCE-85978-5
+    cce@rhel9: CCE-85979-3
+    cce@rhel10: CCE-89779-3
+    cce@sle12: CCE-91644-5
+    cce@sle15: CCE-91287-3
+    cce@slmicro5: CCE-93893-6
+
+references:
+    cis@sle12: 2.2.13
+    cis@sle15: 2.2.13
+
+{{{ complete_ocil_entry_package_removed("samba") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: samba

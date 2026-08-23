@@ -1,0 +1,46 @@
+documentation_complete: true
+
+
+title: 'Ensure sudo only includes the default configuration directory'
+
+description: |-
+    Administrators can configure authorized <tt>sudo</tt> users via drop-in files, and it is possible to include
+    other directories and configuration files from the file currently being parsed.
+
+    Make sure that <tt>/etc/sudoers</tt> only includes drop-in configuration files from <tt>/etc/sudoers.d</tt>,
+    or that no drop-in file is included.
+    Either the <tt>/etc/sudoers</tt> should contain only one <tt>#includedir</tt> directive pointing to
+    <tt>/etc/sudoers.d</tt>, and no file in <tt>/etc/sudoers.d/</tt> should include other files or directories;
+    Or the <tt>/etc/sudoers</tt> should not contain any <tt>#include</tt>,
+    <tt>@include</tt>, <tt>#includedir</tt> or <tt>@includedir</tt> directives.
+    Note that the '#' character doesn't denote a comment in the configuration file.
+
+rationale: |-
+   Some <tt>sudo</tt> configuration options allow users to run programs without re-authenticating.
+   Use of these configuration options makes it easier for one compromised account to be used to
+   compromise other accounts.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86377-9
+    cce@rhel9: CCE-86477-7
+    cce@sle12: CCE-83255-0
+    cce@sle15: CCE-91151-1
+    cce@slmicro5: CCE-93733-4
+    cce@slmicro6: CCE-95040-2
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-010339
+    stigid@ol8: OL08-00-010379
+    stigid@sle12: SLES-12-010109
+
+ocil_clause: "the /etc/sudoers doesn't include /etc/sudores.d or includes other directories?"
+
+ocil: |-
+    To determine whether <tt>sudo</tt> command includes configuration files from the appropriate directory,
+    run the following command:
+    <pre>$ sudo grep -rP '^[#@]include(dir)?' /etc/sudoers /etc/sudoers.d</pre>
+    If only the line <tt>/etc/sudoers:#includedir /etc/sudoers.d</tt> is returned, then the drop-in include configuration is set correctly.
+    Any other line returned is a finding.

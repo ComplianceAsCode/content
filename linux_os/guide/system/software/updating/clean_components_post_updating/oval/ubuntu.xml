@@ -1,0 +1,42 @@
+ <def-group>
+   <definition class="compliance" id="clean_components_post_updating" version="1">
+     <metadata>
+       <title>Ensure APT Removes Previous Package Versions</title>
+       <affected family="unix">
+         <platform>multi_platform_ubuntu</platform>
+       </affected>
+       <description>Configure APT to remove all software components after
+           updated versions have been installed.</description>
+     </metadata>
+     <criteria comment="Detect Remove-Unused-Dependencies and
+                        Remove-Unused-Kernel-Packages options" operator="AND">
+       <criterion comment="Check Remove-Unused-Dependencies"
+                  test_ref="test_remove_unused_dependencies" />
+       <criterion comment="Check Remove-Unused-Kernel-Packages"
+                  test_ref="test_remove_unused_kernel_packages" />
+     </criteria>
+   </definition>
+
+   <ind:textfilecontent54_test check="all" check_existence="all_exist"
+       comment="Check if Remove-Unused-Dependencies in file"
+       id="test_remove_unused_dependencies" version="1">
+       <ind:object object_ref="obj_unused_dependencies" />
+   </ind:textfilecontent54_test>
+   <ind:textfilecontent54_test check="all" check_existence="all_exist"
+       comment="Check if Remove-Unused-Kernel-Packages in file"
+       id="test_remove_unused_kernel_packages" version="1">
+       <ind:object object_ref="obj_unused_kernel_packages" />
+   </ind:textfilecontent54_test>
+
+   <ind:textfilecontent54_object id="obj_unused_dependencies" version="1">
+       <ind:filepath operation="pattern match">^/etc/apt/apt.conf.*$</ind:filepath>
+       <ind:pattern operation="pattern match">^(?i)[\s]*Unattended-Upgrade::Remove-Unused-Dependencies(?-i)(=|[\s]+)\"(yes|true|1)\";.*$</ind:pattern>
+       <ind:instance datatype="int">1</ind:instance>
+   </ind:textfilecontent54_object>
+
+   <ind:textfilecontent54_object id="obj_unused_kernel_packages" version="1">
+       <ind:filepath operation="pattern match">^/etc/apt/apt.conf.*$</ind:filepath>
+       <ind:pattern operation="pattern match">^(?i)[\s]*Unattended-Upgrade::Remove-Unused-Kernel-Packages(?-i)(=|[\s]+)\"(yes|true|1)\";.*$</ind:pattern>
+       <ind:instance datatype="int">1</ind:instance>
+   </ind:textfilecontent54_object>
+</def-group>

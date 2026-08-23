@@ -1,0 +1,153 @@
+{{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{%- set sshd_base_dir = sshd_config_base_dir -%}}
+<def-group>
+  <definition class="compliance" id="sshd_set_idle_timeout" version="1">
+    {{{ oval_metadata("The SSH idle timeout interval should be set to an
+      appropriate value.", rule_title=rule_title) }}}
+    <criteria comment="SSH is configured correctly or is not installed"
+    operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12', 'sle15', 'slmicro5'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server removed"
+        definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
+      </criteria>
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+        definition_ref="sshd_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12', 'sle15', 'slmicro5'] %}}
+        <extend_definition comment="rpm package openssh installed"
+        definition_ref="package_openssh_installed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server installed"
+        definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
+        <criteria comment="ClientAliveInterval is configured correctly" operator="AND">
+          {{%- if product in ["sle16", "slmicro6"] %}}
+          <criterion comment="test if configuration file {{{ sshd_main_config }}} exists for {{{ rule_id }}}"
+              test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+          {{%- endif %}}
+          <criterion comment="Check ClientAliveInterval in /etc/ssh/sshd_config"
+          test_ref="test_sshd_idle_timeout" />
+          {{%- if sshd_distributed_config == "true" %}}
+          <criterion comment="Check ClientAliveInterval in /etc/ssh/sshd_config.d/"
+          test_ref="test_sshd_idle_timeout_config_dir" />
+          {{%- endif %}}
+          <criterion comment="the configuration exists" test_ref="test_clientaliveinterval_present" />
+          {{%- if product in ["ol8", "ol9"] %}}
+          <criterion comment="Check ClientAliveInterval in included files"
+          test_ref="test_sshd_idle_timeout_included_files"/>
+          {{%- endif %}}
+        </criteria>
+        {{%- if product not in ["ol8", "ol9"] and "rhel" not in product %}}
+        <extend_definition comment="The SSH ClientAliveCountMax is set to zero" definition_ref="sshd_set_keepalive" />
+        {{% endif %}}
+      </criteria>
+    </criteria>
+  </definition>
+
+  {{%- if product in ["sle16", "slmicro6"] %}}
+  {{{ oval_config_file_exists_test(sshd_main_config, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(sshd_main_config, rule_id=rule_id) }}}
+  {{%- endif %}}
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="timeout is configured" id="test_sshd_idle_timeout" version="1">
+    <ind:object object_ref="object_sshd_idle_timeout" />
+    <ind:state state_ref="state_timeout_value_upper_bound" />
+    <ind:state state_ref="state_timeout_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_idle_timeout" version="2">
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  {{%- if sshd_distributed_config == "true" %}}
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="timeout is configured in config directory" id="test_sshd_idle_timeout_config_dir" version="1">
+    <ind:object object_ref="object_sshd_idle_timeout_config_dir" />
+    <ind:state state_ref="state_timeout_value_upper_bound" />
+    <ind:state state_ref="state_timeout_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_idle_timeout_config_dir" version="2">
+    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{%- endif %}}
+
+  {{%- if product in ["ol8", "ol9"] %}}
+  <ind:textfilecontent54_object id="obj_sshd_include_value_sshd_idle_timeout" version="1">
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
+    <ind:pattern operation="pattern match">(?i)^\s*Include\s+(.*)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_sshd_config_included_files_sshd_idle_timeout" datatype="string" version="1"
+  comment="Include value converted to regex">
+    <concat>
+      <literal_component>^({{{ sshd_base_dir }}}/(?!/))?</literal_component>
+      <substring substring_start="2" substring_length="-1">
+        <unique>
+          <glob_to_regex>
+            <object_component item_field="subexpression" object_ref="obj_sshd_include_value_sshd_idle_timeout" />
+          </glob_to_regex>
+        </unique>
+      </substring>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="timeout is configured in included files" id="test_sshd_idle_timeout_included_files" version="1">
+    <ind:object object_ref="object_sshd_idle_timeout_included_files" />
+    <ind:state state_ref="state_timeout_value_upper_bound" />
+    <ind:state state_ref="state_timeout_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_idle_timeout_included_files" version="1">
+    <ind:filepath operation="pattern match" var_ref="var_sshd_config_included_files_sshd_idle_timeout" var_check="at least one"/>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{%- endif %}}
+
+  <ind:textfilecontent54_state comment="upper bound of ClientAliveInterval in seconds"
+  id="state_timeout_value_upper_bound" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal" var_check="all"
+    var_ref="sshd_idle_timeout_value" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state comment="lower bound of ClientAliveInterval in seconds"
+  id="state_timeout_value_lower_bound" version="1">
+    <ind:subexpression datatype="int" operation="greater than">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test id="test_clientaliveinterval_present" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Verify that the value of ClientAliveInterval is present">
+    <ind:object object_ref="obj_collection_obj_sshd_set_idle_timeout" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_sshd_set_idle_timeout" version="1">
+    <set>
+      <object_reference>object_sshd_idle_timeout</object_reference>
+      {{% if sshd_distributed_config == "true" %}}
+      <object_reference>object_sshd_idle_timeout_config_dir</object_reference>
+      {{% endif %}}
+    </set>
+  </ind:textfilecontent54_object>
+
+
+  <external_variable comment="timeout value" datatype="int"
+  id="sshd_idle_timeout_value" version="1" />
+
+</def-group>

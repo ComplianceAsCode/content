@@ -1,0 +1,76 @@
+documentation_complete: true
+
+
+title: 'Configure audit according to OSPP requirements'
+
+{{% set docs_dir="" %}}
+{{# in ol7 docs dir are versioned #}}
+{{% if product in ["ol7"] %}}
+  {{% set docs_dir="-VERSION" %}}
+{{% endif %}}
+
+
+description: |-
+    Configure audit to meet requirements for Operating System Protection Profile (OSPP) v4.2.1.
+
+    Audit defines groups of rules in <tt>/usr/share/doc/audit/rules</tt> to satisfy specific policies.
+
+    To fulfill requirements for compliance with OSPP v4.2.1, the following files are necessary:
+    <ul>
+    <li>/usr/share/doc/audit{{{ docs_dir }}}/rules/10-base-config.rules</li>
+    <li>/usr/share/doc/audit{{{ docs_dir }}}/rules/11-loginuid.rules</li>
+    <li>/usr/share/doc/audit{{{ docs_dir }}}/rules/30-ospp-v42.rules</li>
+    <li>/usr/share/doc/audit{{{ docs_dir }}}/rules/43-module-load.rules</li>
+    </ul>
+
+    Copy the files from <tt>/usr/share/doc/audit/rules</tt> to <tt>/etc/audit/rules.d</tt>:
+    <pre>
+    cp /usr/share/doc/audit*/rules/{10-base-config,11-loginuid,30-ospp-v42,43-module-load}.rules /etc/audit/rules.d/
+    </pre>
+
+
+
+rationale: |-
+    The audit rules defined in <tt>/usr/share/doc/audit/rules</tt> are the recommended way to meet compliance with OSPP v4.2.1.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82309-6
+    cce@rhel9: CCE-85991-8
+    cce@rhel10: CCE-87186-3
+
+references:
+    nist: NONE
+    srg: SRG-OS-000004-GPOS-00004,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000476-GPOS-00221,SRG-OS-000327-GPOS-00127,SRG-OS-000064-GPOS-00033,SRG-OS-000365-GPOS-00152,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000462-GPOS-00206,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-OS-000466-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000470-GPOS-00214,SRG-OS-000471-GPOS-00215,SRG-OS-000471-GPOS-00216,SRG-OS-000472-GPOS-00217,SRG-OS-000474-GPOS-00219,SRG-OS-000475-GPOS-00220,SRG-OS-000477-GPOS-00222
+
+ocil_clause: 'the files are not there or differ'
+
+ocil: |-
+    To verify that audit is configured for OSPP v4.2.1, run the following commands:
+    <pre>for file in "10-base-config" "11-loginuid" "30-ospp-v42" "43-module-load";do diff /etc/audit/rules.d/$file.rules /usr/share/doc/audit*/rules/$file.rules; done</pre>
+
+    If the system is configured properly, no lines should be returned.
+
+fixtext: |-
+    Configure audit to meet requirements for OSPP v4.2.1.
+
+    Run the following commands to copy all audit rules:
+
+    $ sudo cp /usr/share/doc/audit*/rules/10-base-config.rules /etc/audit/rules.d
+    $ sudo cp /usr/share/doc/audit*/rules/11-loginuid.rules /etc/audit/rules.d
+    $ sudo cp /usr/share/doc/audit*/rules/30-ospp-v42.rules /etc/audit/rules.d
+    $ sudo cp /usr/share/doc/audit*/rules/43-module-load.rules /etc/audit/rules.d
+
+    Then, run the following command to load all audit rules:
+
+    $ sudo augenrules --load
+
+warnings:
+    - performance:
+        It might happen that Audit buffer configured by this rule is not large
+        enough for certain use cases. If that is the case, the buffer size can
+        be overridden by placing <pre>-b larger_buffer_size</pre> into a file
+        within <tt>/etc/audit/rules.d</tt> directory, replacing
+        <tt>larger_file_size</tt> with the desired value. The file name should
+        start with a number higher than 10 and lower than 99.

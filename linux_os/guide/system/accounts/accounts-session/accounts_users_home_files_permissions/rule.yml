@@ -1,0 +1,42 @@
+documentation_complete: true
+
+
+title: 'All User Files and Directories In The Home Directory Must Have Mode 0750 Or Less Permissive'
+
+description: |-
+    Set the mode on files and directories in the local interactive user home
+    directory with the following command:
+    <pre>$ sudo chmod 0750 /home/<i>USER</i>/<i>FILE_DIR</i></pre>
+    Files that begin with a "." are excluded from this requirement.
+
+rationale: |-
+    If a local interactive user files have excessive permissions, unintended users
+    may be able to access or modify them.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85888-6
+    cce@rhel9: CCE-87042-8
+    cce@rhel10: CCE-87460-2
+    cce@sle12: CCE-92290-6
+    cce@sle15: CCE-91403-6
+    cce@sle16: CCE-96668-9
+    cce@slmicro5: CCE-94028-8
+
+references:
+    cis@sle12: 6.2.6
+    cis@sle15: 6.2.6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020680
+    stigid@ol8: OL08-00-010731
+
+ocil_clause: 'home directory files or folders have incorrect permissions'
+
+ocil: |-
+    To verify all files and directories contained in interactive user home
+    directory, excluding local initialization files, have a mode of <tt>0750</tt>,
+    run the following command:
+    <pre>$ sudo ls -lLR /home/<i>USER</i></pre>
+
+platform: system_with_kernel

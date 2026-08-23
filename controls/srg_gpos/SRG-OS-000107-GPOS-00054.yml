@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000107-GPOS-00054
+        levels:
+            - medium
+        title: {{{ full_name }}} must use multifactor authentication for local access
+            to privileged accounts.
+        rules:
+            - sshd_enable_pubkey_auth
+            - configure_opensc_card_drivers
+        status: automated

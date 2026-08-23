@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Configure the selinuxuser_direct_dri_enabled SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>selinuxuser_direct_dri_enabled</tt> is enabled.
+    If XWindows is not installed or used on the system, this setting should be disabled.
+    Otherwise, enable it.
+    {{{ describe_sebool_disable(sebool="selinuxuser_direct_dri_enabled") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="selinuxuser_direct_dri_enabled") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: selinuxuser_direct_dri_enabled

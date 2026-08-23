@@ -1,0 +1,24 @@
+{
+	"name": "ComplianceAsCode Workshop Exercise 1",
+	"image": "ghcr.io/ggbecker/cac-dev:latest",
+
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	},
+
+	"postCreateCommand": "bash utils/setup_dev.sh fedora lab1_introduction",
+
+	// Configure tool-specific properties.
+	"customizations": {
+        "vscode":{
+            "extensions": [
+                "ggbecker.content-navigator", // useful extension for the ComplianceAsCode/content project
+                "ms-vscode.live-server", // HTML preview
+                "rogalmic.bash-debug", // support bashdb debug configurations
+                "eamodio.gitlens", // cool git extension with a bunch of extra features
+                "twxs.cmake", // support to CMakeLists.txt syntax highlighting and more
+                "ms-python.python" // running python configurations
+            ]
+        }
+    }
+}

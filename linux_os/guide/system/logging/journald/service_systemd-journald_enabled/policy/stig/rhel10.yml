@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable the systemd-journald service.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable the systemd-journald service.
+
+    To enable the systemd-journald service, run the following command:
+
+    $ sudo systemctl enable --now systemd-journald
+
+checktext: |-
+    Verify {{{ full_name }}} enables the systemd-journald service with the following command:
+
+    $ systemctl is-active systemd-journald
+    active
+
+    If the systemd-journald service is not active, this is a finding.
+
+vuldiscussion: |-
+    In the event of a system failure, {{{ full_name }}} must preserve any information necessary to determine cause of failure and return to operations with least disruption to system processes.

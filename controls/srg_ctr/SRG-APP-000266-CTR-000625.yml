@@ -1,0 +1,22 @@
+controls:
+- id: SRG-APP-000266-CTR-000625
+  levels:
+  - medium
+  title: {{{ full_name }}} must generate error messages that provide information
+    necessary for corrective actions without revealing information that could be exploited
+    by adversaries.
+  related_rules:
+  - audit_profile_set
+  status: inherently met
+  status_justification: |-
+    In OpenShift, the logs depend greatly on the component. Some components would just write messages to stdout that the cluster administrator can retrieve logs through the use of the oc command. Some components emit events, and others emit a Prometheus metric which the API server would write into their logs.
+
+    For the OCP components that run in a container (most operators), the usual RBAC rules would prevent a non-admin user from reading the container logs or events.
+
+    OpenShift error message handling is designed to obscure or not log sensitive information which is contained inside Secrets.
+
+    Error Messages from applications will need to be reviewed independently as the messages provided by the application hosted on the platform is outside the scope of the platform control.
+  artifact_description: |-
+    Supporting evidence is in the following documentation:
+    https://docs.openshift.com/container-platform/latest/logging/cluster-logging-visualizer.html
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html

@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Disable systemd-journal-remote Socket'
+
+description: |-
+    Journald supports the ability to receive messages from remote hosts,
+    thus acting as a log server. Clients should not receive data from
+    other hosts.
+    NOTE:
+        The same package, systemd-journal-remote , is used for both sending
+        logs to remote hosts and receiving incoming logs.
+        With regards to receiving logs, there are two Systemd unit files;
+        systemd-journal-remote.socket and systemd-journal-remote.service.
+
+rationale: |-
+    If a client is configured to also receive data, thus turning it into
+    a server, the client system is acting outside it's operational boundary.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87605-2
+    cce@rhel9: CCE-87606-0
+    cce@rhel10: CCE-87754-8
+    cce@sle15: CCE-92608-9
+
+ocil_clause: 'the systemd-journal-remote socket is not masked'
+
+ocil: |-
+    {{{ socket_disabled_check_with_systemd("systemd-journal-remote.socket") }}}
+
+fixtext: |-
+    {{{ fixtext_socket_disabled("systemd-journal-remote.socket") }}}
+
+template:
+    name: socket_disabled
+    vars:
+        socketname: systemd-journal-remote

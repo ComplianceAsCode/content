@@ -1,0 +1,72 @@
+documentation_complete: true
+
+
+title: 'Lock Accounts Must Persist'
+
+description: |-
+    This rule ensures that the system lock out accounts using <tt>pam_faillock.so</tt> persist
+    after system reboot. From "pam_faillock" man pages:
+    <pre>Note that the default directory that "pam_faillock" uses is usually cleared on system
+    boot so the access will be re-enabled after system reboot. If that is undesirable, a different
+    tally directory must be set with the "dir" option.</pre>
+
+    pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
+    defined to work as expected. In order to avoid errors when manually editing these files, it is
+    recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
+    depending on the OS version.
+
+    The chosen profile expects the directory to be <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}</tt>.
+
+    To configure the tally directory, add the following line to <tt>/etc/security/faillock.conf</tt>:
+    <pre>dir = {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}</pre>
+
+rationale: |-
+    Locking out user accounts after a number of incorrect attempts prevents direct password
+    guessing attacks. In combination with the <tt>silent</tt> option, user enumeration attacks
+    are also mitigated.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86067-6
+    cce@rhel9: CCE-86068-4
+    cce@rhel10: CCE-90182-7
+
+references:
+    nist: AC-7(b),AC-7(a),AC-7.1(ii)
+    srg: SRG-OS-000021-GPOS-00005,SRG-OS-000329-GPOS-00128
+    stigid@ol8: OL08-00-020017
+
+ocil_clause: 'the "dir" option is not set to a non-default documented tally log directory, is missing or commented out'
+
+ocil: |-
+    To ensure the tally directory is configured correctly, run the following command:
+    <pre>$ sudo grep 'dir =' /etc/security/faillock.conf</pre>
+    The output should show that dir is set to something other than "/var/run/faillock"
+
+fixtext: |-
+    To configure {{{ full_name }}} to persist locked out accounts after reboot using
+    <tt>pam_faillock.so</tt>, first enable the feature using the following command:
+    $ sudo authselect enable-feature with-faillock
+
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    add, uncomment or edit the following line:
+    <pre>dir = {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}</pre>
+
+{{% if product == "ol8" %}}
+platform: os_linux[ol]>=8.2 and package[pam]
+{{% else %}}
+platform: package[pam]
+{{% endif %}}
+
+srg_requirement: '{{{ full_name }}} must ensure account lockouts persist.'
+
+warnings:
+    - general: |-
+        If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+        will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+        aborted in order to preserve intentional changes. In this case, an informative message will
+        be shown in the remediation report.
+        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        parameters should be defined in <tt>faillock.conf</tt> file.

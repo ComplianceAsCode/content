@@ -1,0 +1,25 @@
+# EditorConfig https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[**]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indentation_guess = true
+
+[**.py]
+indent_style = space
+indent_size = unset
+tab_width = 4
+max_line_length = 99
+
+[{**.yml,**.yaml,**.jinja,**.var,**.profile,**.json}]
+indent_style = space
+indent_size = 4
+
+[{CMakeLists.txt,**.cmake}]
+indent_style = space
+indent_size = 4

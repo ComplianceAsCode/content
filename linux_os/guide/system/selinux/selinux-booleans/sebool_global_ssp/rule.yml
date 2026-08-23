@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the global_ssp SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>global_ssp</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="global_ssp") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="global_ssp") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: global_ssp

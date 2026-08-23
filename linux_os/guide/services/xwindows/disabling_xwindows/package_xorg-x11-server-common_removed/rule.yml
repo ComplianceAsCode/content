@@ -1,0 +1,65 @@
+documentation_complete: true
+
+title: "Remove the X Windows Package Group"
+
+description: |-
+    By removing the xorg-x11-server-common package, the system no longer has X Windows
+    installed. If X Windows is not installed then the system cannot boot into graphical user mode.
+    This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
+    mode. To do so, run the following command:
+    {{%- if product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'rhv4'] -%}}
+    <pre>$ sudo {{{ pkg_manager }}} groupremove base-x</pre>
+    {{%- else %}}
+    <pre>$ sudo {{{ pkg_manager }}} groupremove "X Window System"</pre>
+    {{%- endif %}}
+    <pre>$ sudo {{{ pkg_manager }}} remove xorg-x11-server-common</pre>
+
+rationale: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
+    vulnerabilities and should not be installed unless approved and documented.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82757-6
+    cce@rhel9: CCE-84104-9
+    cce@rhel10: CCE-89061-6
+    cce@sle12: CCE-92241-9
+    cce@sle15: CCE-91361-6
+    cce@slmicro5: CCE-93874-6
+
+references:
+    cis-csc: 12,15,8
+    cis@sle12: 2.2.2
+    cis@sle15: 2.2.2
+    cobit5: APO13.01,DSS01.04,DSS05.02,DSS05.03
+    isa-62443-2009: 4.3.3.6.6
+    isa-62443-2013: "SR 1.13,SR 2.6,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6"
+    iso27001-2013: A.11.2.6,A.13.1.1,A.13.2.1,A.14.1.3,A.6.2.1,A.6.2.2
+    nist: CM-7(a),CM-7(b),CM-6(a)
+    nist-csf: PR.AC-3,PR.PT-4
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: "the X Windows package group or xorg-x11-server-common has not be removed"
+
+ocil: |-
+    To ensure the X Windows package group is removed, run the following command:
+    <pre>$ rpm -qi xorg-x11-server-common</pre>
+    The output should be:
+    <pre>package xorg-x11-server-common is not installed</pre>
+
+warnings:
+    - functionality: |-
+          The installation and use of a Graphical User Interface (GUI) increases your attack vector and decreases your
+          overall security posture. Removing the package xorg-x11-server-common package will remove the graphical target
+          which might bring your system to an inconsistent state requiring additional configuration to access the system
+          again. If a GUI is an operational requirement, a tailored profile that removes this rule should used before
+          continuing installation.
+
+template:
+    name: package_removed
+    vars:
+        pkgname: xorg-x11-server-common
+        pkgname@debian13: xserver-common
+        pkgname@ubuntu2204: xserver-common
+        pkgname@ubuntu2404: xserver-common

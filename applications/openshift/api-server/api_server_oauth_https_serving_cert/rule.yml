@@ -1,0 +1,39 @@
+documentation_complete: true
+
+
+title: 'Ensure the openshift-oauth-apiserver service uses TLS'
+
+description: |-
+    By default, the OpenShift OAuth API Server uses TLS. HTTPS should be
+    used for connections between openshift-oauth-apiserver and kube-apiserver.
+    By default, the OpenShift OAuth API Server uses Intermediate profile which
+    requires a minimum TLS version of 1.2.
+
+rationale: |-
+    Connections between the kube-apiserver and the extension
+    openshift-oauth-apiserver could potentially carry sensitive data such
+    as secrets and keys. It is important to use in-transit encryption
+    for any communication between the kube-apiserver and the extension
+    openshift-apiserver.
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1),SC-8,SC-8(1)
+    pcidss: Req-2.2,Req-2.2.3,Req-2.3
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: |-
+    The openshift-apiserver TLS security profile is set to old.
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get APIServer cluster -o yaml</pre>
+    Verify that the <tt>tlsSecurityProfile</tt> is not type <tt>Old</tt>.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/apiservers/cluster") | indent(8) }}}
+
+

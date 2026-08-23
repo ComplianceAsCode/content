@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000219-CTR-000550
+  levels:
+  - high
+  title: {{{ full_name }}} must protect authenticity of communications sessions
+    with the use of FIPS-validated 140-2 or 140-3 security requirements for cryptographic
+    modules.
+  rules:
+  - fips_mode_enabled_on_all_nodes
+  status: automated

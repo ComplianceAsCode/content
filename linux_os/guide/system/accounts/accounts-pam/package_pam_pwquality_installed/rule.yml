@@ -1,0 +1,46 @@
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+ {{%- set package = "libpwquality" %}}
+{{% else %}}
+ {{%- set package = "libpam-pwquality" %}}
+{{% endif %}}
+documentation_complete: true
+
+
+title: 'Install pam_pwquality Package'
+
+description: |-
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
+    {{{ describe_package_install(package="libpwquality") }}}
+    {{% else %}}
+    {{{ describe_package_install(package="libpam-pwquality") }}}
+    {{% endif %}}
+
+rationale: |-
+    Use of a complex password helps to increase the time and resources required
+    to compromise the password. Password complexity, or strength, is a measure
+    of the effectiveness of a password in resisting attempts at guessing and
+    brute-force attacks. "pwquality" enforces complex password construction
+    configuration and has the ability to limit brute-force attacks on the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86225-0
+    cce@rhel9: CCE-86226-8
+    cce@rhel10: CCE-90527-3
+
+references:
+    srg: SRG-OS-000480-GPOS-00225
+
+{{{ complete_ocil_entry_package_installed(package=package) }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libpwquality
+        pkgname@ubuntu2204: libpam-pwquality
+        pkgname@ubuntu2404: libpam-pwquality
+        pkgname@debian12: libpam-pwquality
+        pkgname@debian13: libpam-pwquality
+
+platform: package[pam]

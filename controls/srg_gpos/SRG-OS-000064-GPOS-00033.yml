@@ -1,0 +1,30 @@
+controls:
+    -   id: SRG-OS-000064-GPOS-00033
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records when successful/unsuccessful
+            attempts to access privileges occur.
+        rules:
+            - audit_rules_dac_modification_chmod
+            - audit_rules_dac_modification_chown
+            - audit_rules_dac_modification_fchmod
+            - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchmodat2
+            - audit_rules_dac_modification_fchown
+            - audit_rules_dac_modification_fchownat
+            - audit_rules_dac_modification_fremovexattr
+            - audit_rules_dac_modification_fsetxattr
+            - audit_rules_dac_modification_lchown
+            - audit_rules_dac_modification_lremovexattr
+            - audit_rules_dac_modification_lsetxattr
+            - audit_rules_dac_modification_removexattr
+            - audit_rules_dac_modification_setxattr
+            - audit_rules_unsuccessful_file_modification_creat
+            - audit_rules_unsuccessful_file_modification_ftruncate
+            - audit_rules_unsuccessful_file_modification_open
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at
+            - audit_rules_unsuccessful_file_modification_openat
+            - audit_rules_privileged_commands_unix_update
+            - audit_rules_privileged_commands_sudo
+            - audit_rules_privileged_commands_su
+        status: automated

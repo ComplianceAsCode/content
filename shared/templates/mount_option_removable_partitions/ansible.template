@@ -1,0 +1,13 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = high
+{{{ ansible_instantiate_variables("var_removable_partition") }}}
+
+- name: Ensure permission {{{ MOUNTOPTION }}} are set on var_removable_partition
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '^\s*({{ var_removable_partition }})\s+([^\s]*)\s+([^\s]*)\s+([^\s]*)(.*)$'
+    backrefs: yes
+    line: '\1 \2 \3 \4,{{{ MOUNTOPTION }}} \5'

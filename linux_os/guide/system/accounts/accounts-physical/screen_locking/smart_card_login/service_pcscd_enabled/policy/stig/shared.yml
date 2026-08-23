@@ -1,0 +1,23 @@
+srg_requirement: |-
+    The pcscd service on {{{ full_name }}} must be active.
+
+vuldiscussion: |-
+    The information system ensures that even if the information system is compromised, that compromise will not affect credentials stored on the authentication device.
+
+    The daemon program for pcsc-lite and the MuscleCard framework is pcscd. It is a resource manager that coordinates communications with smart card readers and smart cards and cryptographic tokens that are connected to the system.
+
+checktext: |-
+    Verify that the "pcscd" socket is active with the following command:
+
+    $ systemctl is-active pcscd.socket
+
+    active
+
+    If the pcscd socket is not active, this is a finding.
+
+fixtext: |-
+    To enable the pcscd socket, run the following command:
+
+    $ sudo systemctl enable --now pcscd.socket
+
+

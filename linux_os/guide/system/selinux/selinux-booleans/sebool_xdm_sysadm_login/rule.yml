@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the xdm_sysadm_login SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>xdm_sysadm_login</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="xdm_sysadm_login") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="xdm_sysadm_login") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: xdm_sysadm_login

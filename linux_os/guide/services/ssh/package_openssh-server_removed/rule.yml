@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Remove the OpenSSH Server Package'
+
+description: |-
+    The <tt>openssh-server</tt> package should be removed.
+    {{{ describe_package_remove(package="openssh-server") }}}
+
+rationale: |-
+    Without protection of the transmitted information, confidentiality, and
+    integrity may be compromised because unprotected communications can be
+    intercepted and either read or altered.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-86709-3
+
+{{{ complete_ocil_entry_package_removed("openssh-server") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: openssh-server

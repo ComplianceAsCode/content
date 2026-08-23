@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: {{{ rule_title }}} - Add missing / update wrong records for root distance
+  ansible.builtin.lineinfile:
+    mode: 0644
+{{% if "sle15" in product %}}
+    path: /usr/lib/systemd/timesyncd.conf.d/oscap-remedy.conf
+{{% else %}}
+    path: /etc/systemd/timesyncd.d/oscap-remedy.conf
+{{% endif %}}
+    regexp: '^\s*RootDistanceMax\s*='
+    state: present
+    line: 'RootDistanceMax=1'
+    create: true

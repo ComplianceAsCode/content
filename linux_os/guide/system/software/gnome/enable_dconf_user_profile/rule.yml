@@ -1,0 +1,83 @@
+documentation_complete: true
+
+title: 'Configure GNOME3 DConf User Profile'
+
+description: |-
+    By default, DConf provides a standard user profile. This profile contains a list
+    of DConf configuration databases. The user profile and database always take the
+    highest priority. As such the DConf User profile should always exist and be
+    configured correctly.
+    <br /><br />
+    {{% if 'sle' in product %}}
+    To make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/gdm</tt>
+    should be set as follows:
+    <pre>user-db:user
+    system-db:gdm
+    </pre>
+    {{% elif 'ubuntu' in product %}}
+    To make sure that the gdm profile is configured correctly, the <tt>/etc/dconf/profile/gdm</tt>
+    should be set as follows:
+    <pre>user-db:user
+    system-db:gdm
+    </pre>
+    To make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/user</tt>
+    should be set as follows:
+    <pre>user-db:user
+    system-db:local
+    </pre>
+    {{% else %}}
+    To make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/user</tt>
+    should be set as follows:
+    <pre>user-db:user
+    system-db:local
+    system-db:site
+    system-db:distro
+    </pre>
+    {{% endif %}}
+
+rationale: |-
+    Failure to have a functional DConf profile prevents GNOME3 configuration settings
+    from being enforced for all users and allows various security risks.
+
+severity: high
+
+identifiers:
+    cce@rhel9: CCE-88767-9
+    cce@sle12: CCE-83006-7
+    cce@sle15: CCE-83267-5
+    cce@sle16: CCE-96032-8
+
+references:
+    cis@sle12: '1.10'
+    cis@sle15: '1.10'
+    stigid@sle12: SLES-12-010611
+
+ocil_clause: 'DConf User profile does not exist or is not configured correctly'
+
+ocil: |-
+    To verify that the DConf User profile is configured correctly, run the following
+    command:
+    {{% if 'sle' in product %}}
+    <pre>$ cat /etc/dconf/profile/gdm</pre>
+    The output should show the following:
+    <pre>user-db:user
+    system-db:gdm</pre>
+    {{% elif 'ubuntu' in product %}}
+    <pre>$ cat /etc/dconf/profile/gdm</pre>
+    The output should show the following:
+    <pre>user-db:user
+    system-db:gdm</pre>
+    <pre>$ cat /etc/dconf/profile/user</pre>
+    The output should show the following:
+    <pre>user-db:user
+    system-db:local
+    {{% else %}}
+    <pre>$ cat /etc/dconf/profile/user</pre>
+    The output should show the following:
+    <pre>user-db:user
+    system-db:local
+    system-db:site
+    system-db:distro</pre>
+    {{% endif %}}
+
+platform: system_with_kernel

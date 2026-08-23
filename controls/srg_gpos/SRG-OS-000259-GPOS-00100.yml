@@ -1,0 +1,17 @@
+controls:
+    -   id: SRG-OS-000259-GPOS-00100
+        levels:
+            - medium
+        title: {{{ full_name }}} must limit privileges to change software resident within
+            software libraries.
+        rules:
+            - dir_group_ownership_library_dirs
+            - dir_ownership_library_dirs
+            - file_groupownership_system_commands_dirs
+            - file_ownership_binary_dirs
+            - file_ownership_library_dirs
+            - file_permissions_binary_dirs
+            - dir_permissions_library_dirs
+            - file_permissions_library_dirs
+            - root_permissions_syslibrary_files
+        status: automated

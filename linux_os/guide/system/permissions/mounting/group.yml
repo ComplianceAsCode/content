@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: |-
+    Restrict Dynamic Mounting and Unmounting of
+    Filesystems
+
+description: |-
+    Linux includes a number of facilities for the automated addition
+    and removal of filesystems on a running system.  These facilities may be
+    necessary in many environments, but this capability also carries some risk -- whether direct
+    risk from allowing users to introduce arbitrary filesystems,
+    or risk that software flaws in the automated mount facility itself could
+    allow an attacker to compromise the system.
+    <br /><br />
+    This command can be used to list the types of filesystems that are
+    available to the currently executing kernel:
+    <pre>$ find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
+    If these filesystems are not required then they can be explicitly disabled
+    in a configuratio file in  <tt>/etc/modprobe.d</tt>.

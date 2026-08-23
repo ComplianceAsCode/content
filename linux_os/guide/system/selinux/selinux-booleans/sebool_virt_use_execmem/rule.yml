@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Disable the virt_use_execmem SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>virt_use_execmem</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="virt_use_execmem") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83312-9
+
+    
+{{{ complete_ocil_entry_sebool_disabled(sebool="virt_use_execmem") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: virt_use_execmem

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the collectd_tcp_network_connect SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>collectd_tcp_network_connect</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="collectd_tcp_network_connect") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="collectd_tcp_network_connect") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: collectd_tcp_network_connect

@@ -1,0 +1,30 @@
+controls:
+- id: SRG-APP-000414-CTR-001010
+  levels:
+  - medium
+  title: Vulnerability scanning applications must implement privileged access authorization
+    to all container platform components, containers, and container images for selected
+    organization-defined vulnerability scanning activities.
+  status: manual
+  check: |-
+    Identify the service accounts used by the vulnerability scanning tools. If the tool runs as a container on the platform, then service account information can be found in the the pod details.
+    > oc get pod <POD_ID> -o jsonpath='{.spec.serviceAccount}{"\n"}'
+
+    View cluster role bindings to determine which role the service account is bound to.
+    > oc get clusterrolebinding -ojson | jq '.items[]|select(.subjects[]?|select(.kind == "ServiceAccount" and .name == "<SA_NAME>"))|{ "crb": .metadata.name, "roleRef": .roleRef, "subjects": .subjects}'
+    Find the role to which the service account is bound, if the service account is not bound to a cluster role, or the role does not provide sufficient access, this is a finding. If no service account exists for the vulnerabilty scanning toll, this is also a finding.
+  fixtext: |-
+    Create a service if one does not already exist in the appropriate namespace.
+
+    > oc create serviceaccount <NAME>
+
+    Bind to the appropriate cluster RBAC role
+
+    > oc adm policy add-cluster-role-to-user <ROLE> -z <NAME>
+
+    For more information see the following guides:
+
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+    https://docs.openshift.com/container-platform/latest/authentication/understanding-and-creating-service-accounts.html
+    https://docs.openshift.com/container-platform/latest/authentication/using-service-accounts-in-applications.html
+

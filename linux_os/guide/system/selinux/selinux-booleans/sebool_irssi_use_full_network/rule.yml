@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the irssi_use_full_network SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>irssi_use_full_network</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="irssi_use_full_network") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="irssi_use_full_network") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: irssi_use_full_network

@@ -1,0 +1,62 @@
+documentation_complete: true
+
+title: 'Ensure SELinux is Not Disabled'
+
+description: |-
+    The SELinux state should be set to <tt>enforcing</tt> or <tt>permissive</tt> at system boot
+    time. In the file <tt>/etc/selinux/config</tt>, add or correct the following line to configure
+    the system to boot into enforcing or permissive mode:
+    <pre>SELINUX=enforcing</pre>
+    OR
+    <pre>SELINUX=permissive</pre>
+    If SELinux is currently disabled or not configured, ensure that all files have correct SELinux
+    labels by running:
+    <pre>fixfiles onboot</pre>
+    Then reboot the system.
+
+rationale: |-
+    Running SELinux in disabled mode is strongly discouraged. It prevents enforcing the SELinux
+    controls without a system reboot. It also avoids labeling any persistent objects such as
+    files, making it difficult to enable SELinux in the future.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-86151-8
+    cce@rhel9: CCE-86152-6
+    cce@rhel10: CCE-90205-6
+
+ocil_clause: 'SELinux is disabled'
+
+ocil: |-
+    Ensure that {{{ full_name }}} does not disable SELinux.
+
+    Check if "SELinux" is active and in "enforcing" or "permissive" mode with the following command:
+
+    $ sudo getenforce
+    Enforcing
+    -OR-
+    Permissive
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable SELinux.
+
+    If SELinux is currently set to "enforcing" or "permissive" in /etc/selinux/config,
+    the system is compliant and no changes are needed.
+
+    If SELinux is disabled or not configured, edit the file <tt>/etc/selinux/config</tt>
+    and add or modify the following line:
+    <pre>SELINUX=enforcing</pre>
+    OR
+    <pre>SELINUX=permissive</pre>
+
+    A reboot is required for the changes to take effect.
+
+warnings:
+    - general: |-
+        The automated remediation checks the SELinux configuration in /etc/selinux/config.
+        If SELinux is already set to "enforcing" or "permissive", the current state is preserved
+        and no changes are made. If SELinux is "disabled" or not configured, the remediation will
+        adopt a conservative approach and set it to "permissive" in order to avoid any system
+        disruption and give the administrator the opportunity to assess the impact and necessary
+        efforts before setting it to "enforcing", which is strongly recommended.

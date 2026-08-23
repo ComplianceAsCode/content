@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - fusermount3'
+
+description: |-
+    {{{ describe_arpc("/usr/bin/fusermount3") }}}
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have compromised system accounts,
+    is a serious and ongoing concern and can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify
+    the risk from insider and advanced persistent threats.
+    <br /><br />
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-86676-4
+
+references:
+    srg: SRG-APP-000029-CTR-000085
+
+{{{ ocil_fix_srg_privileged_command("fusermount3") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/bin/fusermount3

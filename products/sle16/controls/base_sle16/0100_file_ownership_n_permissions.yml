@@ -1,0 +1,20 @@
+#
+# Rules regarding secure file ownersip and permissions
+# SLES-16 ids allocated for this group from SLES-16-16016100 till SLES-16-16016399
+#
+controls:
+    - id: SLES-16-16016100
+      title: Ensure All Files Are Owned by a Group
+      levels:
+          - anssi_minimal
+      rules:
+          - file_permissions_ungroupowned
+      status: automated
+
+    - id: SLES-16-16016105
+      title: Ensure All Files Are Owned by a User
+      levels:
+          - anssi_minimal
+      rules:
+          - no_files_unowned_by_user
+      status: automated

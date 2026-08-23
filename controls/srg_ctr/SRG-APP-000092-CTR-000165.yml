@@ -1,0 +1,12 @@
+controls:
+- id: SRG-APP-000092-CTR-000165
+  levels:
+  - medium
+  title: {{{ full_name }}} must initiate session auditing upon startup.
+  rules:
+  - cluster_logging_operator_exist
+  - audit_log_forwarding_enabled
+  - coreos_audit_option
+  - coreos_audit_backlog_limit_kernel_argument
+  status: automated
+

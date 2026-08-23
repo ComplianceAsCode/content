@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Disable the httpd_execmem SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_execmem</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="httpd_execmem") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83309-5
+
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_execmem") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_execmem

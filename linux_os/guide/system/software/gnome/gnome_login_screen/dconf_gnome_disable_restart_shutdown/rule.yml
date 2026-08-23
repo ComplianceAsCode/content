@@ -1,0 +1,54 @@
+documentation_complete: true
+
+
+title: 'Disable the GNOME3 Login Restart and Shutdown Buttons'
+
+description: |-
+    In the default graphical environment, users logging directly into the
+    system are greeted with a login screen that allows any user, known or
+    unknown, the ability the ability to shutdown or restart the system. This
+    functionality should be disabled by setting
+    <tt>disable-restart-buttons</tt> to <tt>true</tt>.
+    <br /><br />
+    To disable, add or edit <tt>disable-restart-buttons</tt> to
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
+    <pre>[org/gnome/login-screen]
+    disable-restart-buttons=true</pre>
+    Once the setting has been added, add a lock to
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent
+    user modification. For example:
+    <pre>/org/gnome/login-screen/disable-restart-buttons</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons
+    are pressed at the login screen, this can create the risk of short-term loss of availability of systems
+    due to reboot.
+
+severity: high
+
+identifiers:
+    cce@rhel9: CCE-86315-9
+    cce@rhel10: CCE-87837-1
+
+references:
+    cis-csc: 12,13,14,15,16,18,3,5
+    cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
+    cui: 3.1.2
+    isa-62443-2009: 4.3.3.7.3
+    isa-62443-2013: 'SR 2.1,SR 5.2'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nist: CM-6(a),AC-6(1),CM-7(b)
+    nist-csf: PR.AC-4,PR.DS-5
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'disable-restart-buttons has not been configured or is not disabled'
+
+ocil: |-
+    To ensure disable and restart on the login screen are disabled, run the following command:
+    <pre>$ grep disable-restart-buttons /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
+    The output should be <tt>true</tt>.
+    To ensure that users cannot enable disable and restart on the login screen, run the following:
+    <pre>$ grep disable-restart-buttons /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/login-screen/disable-restart-buttons</tt>
+

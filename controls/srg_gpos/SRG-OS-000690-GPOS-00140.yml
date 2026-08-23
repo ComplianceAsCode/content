@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000690-GPOS-00140
+        title: '{{{ full_name }}} must prohibit the use or connection of unauthorized hardware
+                components.'
+        levels:
+            - medium
+        status: automated
+        rules:
+            - service_usbguard_enabled
+            - package_usbguard_installed
+            - usbguard_generate_policy

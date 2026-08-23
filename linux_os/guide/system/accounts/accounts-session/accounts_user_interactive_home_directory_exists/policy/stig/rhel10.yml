@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must ensure that all local interactive user home directories defined in the "/etc/passwd" file must exist.
+
+fixtext: |-
+    Configure {{{ full_name }}} interactive users' home directories to exist on the system.
+
+    Create home directories to all local interactive users that do not have a home directory assigned. Use the following commands to create the user home directory assigned in "/etc/ passwd":
+
+    Note: The example will be for the user "disauser", who has a home directory of "/home/disauser", a user identifier (UID) of "disauser", and a group identifier (GID) of "users assigned" in "/etc/passwd".
+
+    $ sudo mkdir /home/disauser
+    $ sudo chown disauser /home/disauser
+    $ sudo chgrp users /home/disauser
+    $ sudo chmod 0750 /home/disauser
+
+checktext: |-
+    Verify {{{ full_name }}} interactive users' home directories exist on the system with the following command:
+
+    $ sudo pwck -r
+    user 'mailnull': directory 'var/spool/mqueue' does not exist
+
+    The output should not return any interactive users.
+
+    If an interactive user's home directory does not exist, this is a finding.
+
+vuldiscussion: |-
+    If a local interactive user has a home directory defined that does not exist, the user may be given access to the / directory as the current working directory upon login. This could create a denial of service because the user would not be able to access their login configuration files, and it may give them visibility to system files they normally would not be able to access.

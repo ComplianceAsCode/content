@@ -1,0 +1,27 @@
+controls:
+    -   id: SRG-OS-000344-GPOS-00135
+        levels:
+            - medium
+        title: {{{ full_name }}} must provide an immediate real-time alert to the SA
+            and ISSO, at a minimum, of all audit failure events requiring real-time alerts.
+        status: does not meet
+        description: |-
+            {{{ full_name }}} must provide an immediate real-time alert to the SA and ISSO, at a minimum, of all audit failure events requiring real-time alerts.
+        rationale: |-
+            It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required.
+            Without a real-time alert, security personnel may be unaware of an impending failure of the audit capability and system operation may be adversely affected.
+
+            Alerts provide organizations with urgent messages.
+            Real-time alerts provide these messages immediately (i.e., the time from event detection to alert occurs in seconds or less).
+        check: |-
+            {{{ full_name }}} does not support this requirement.
+            This is an applicable-does not meet finding.
+        fixtext:
+            This requirement is a permanent finding and cannot be fixed.
+            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
+        mitigation:
+            Mitigate with third-party software.
+
+            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+        status_justification:
+            Notification when accounts are created/modified/deleted must be provided by a third party application that will communicate that an audit record of these actions has been created.

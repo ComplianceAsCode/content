@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure ufw default outgoing policy is deny or reject", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="DEFAULT_OUTPUT_POLICY is DROP or REJECT in /etc/default/ufw"
+        test_ref="{{{ rule_id }}}_test_default_output_policy" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    id="{{{ rule_id }}}_test_default_output_policy" version="1"
+    comment="Check DEFAULT_OUTPUT_POLICY is DROP or REJECT in /etc/default/ufw">
+    <ind:object object_ref="{{{ rule_id }}}_obj_default_output_policy"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_default_output_policy" version="1">
+    <ind:filepath>/etc/default/ufw</ind:filepath>
+    <ind:pattern operation="pattern match">^DEFAULT_OUTPUT_POLICY="(DROP|REJECT)"$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

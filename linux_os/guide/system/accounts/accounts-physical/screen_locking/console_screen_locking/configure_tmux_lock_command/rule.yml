@@ -1,0 +1,56 @@
+documentation_complete: true
+
+
+title: 'Configure the tmux Lock Command'
+
+description: |-
+    To enable console screen locking in <tt>tmux</tt> terminal multiplexer,
+    the <tt>vlock</tt> command must be configured to be used as a locking
+    mechanism.
+    Add the following line to <tt>/etc/tmux.conf</tt>:
+    <pre>set -g lock-command vlock</pre>.
+    The console can now be locked with the following key combination:
+    <pre>ctrl+b :lock-session</pre>
+
+rationale: |-
+    The <tt>tmux</tt> package allows for a session lock to be implemented and configured.
+    However, the session lock is implemented by an external command. The <tt>tmux</tt>
+    default configuration does not contain an effective session lock.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80940-0
+    cce@rhel9: CCE-90171-0
+    cce@rhel10: CCE-86847-1
+
+references:
+    nist: AC-11(a),AC-11(b),CM-6(a)
+    ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
+    srg: SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
+
+platform: package[tmux]
+
+ocil_clause: 'the "lock-command" is not set in the global settings to call "vlock"'
+
+ocil: |-
+    Verify {{{ full_name }}} enables the user to initiate a session lock with the following command:
+
+    <pre>$ grep lock-command /etc/tmux.conf</pre>
+
+    <pre>set -g lock-command vlock</pre>
+
+    Then, verify that the /etc/tmux.conf file can be read by other users than root:
+
+    <pre>$ sudo ls -al /etc/tmux.conf</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to allow a user to initiate a sessions lock by adding the following line to the file "/etc/tmux.conf":
+
+    <pre>set -g lock-command vlock</pre>
+
+    Then, ensure a correct mode of /etc/tmux.conf using this command:
+
+    $ sudo chmod 0644 /etc/tmux.conf
+
+srg_requirement: '{{{ full_name }}} must enable a user session lock until that user re-establishes access using established identification and authentication procedures for command line sessions.'

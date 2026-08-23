@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_rhv4" version="1">
+    <metadata>
+      <title>Red Hat Virtualization 4</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:virtualization:4"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Red Hat Virtualization Host 4.4+ or Red Hat Enterprise Host.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="RHEL8 OS installed" definition_ref="installed_OS_is_rhel8" />
+      <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="only_one_exists" comment="redhat-release-virtualization-host RPM package is installed" id="test_rhvh4_version" version="1">
+    <linux:object object_ref="obj_rhvh4_version" />
+    <linux:state state_ref="state_rhvh4_version" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhvh4_version" version="1">
+    <linux:name>redhat-release-virtualization-host</linux:name>
+  </linux:rpminfo_object>
+    <linux:rpminfo_state id="state_rhvh4_version" version="1">
+    <linux:evr datatype="evr_string" operation="greater than or equal">0:4.4</linux:evr>
+  </linux:rpminfo_state>
+
+</def-group>

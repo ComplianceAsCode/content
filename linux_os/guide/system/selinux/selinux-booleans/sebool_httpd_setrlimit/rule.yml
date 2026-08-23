@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the httpd_setrlimit SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_setrlimit</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="httpd_setrlimit") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_setrlimit") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_setrlimit

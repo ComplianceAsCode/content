@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable the nfs_export_all_ro SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>nfs_export_all_ro</tt> is enabled.
+    If this setting is disabled, it should be enabled as it allows NFS to
+    export read-only mounts.
+    {{{ describe_sebool_enable(sebool="nfs_export_all_ro") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="nfs_export_all_ro") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: nfs_export_all_ro

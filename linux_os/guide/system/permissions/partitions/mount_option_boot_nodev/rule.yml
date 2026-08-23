@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Add nodev Option to /boot'
+
+description: |-
+    The <tt>nodev</tt> mount option can be used to prevent device files from
+    being created in <tt>/boot</tt>.
+    Legitimate character and block devices should exist only in
+    the <tt>/dev</tt> directory on the root partition or within chroot
+    jails built for system services.
+    {{{ describe_mount(option="nodev", part="/boot") }}}
+
+rationale: |-
+    The only legitimate location for device files is the <tt>/dev</tt> directory
+    located on the root partition. The only exception to this is chroot jails.
+
+{{{ complete_ocil_entry_mount_option("/boot", "nodev") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82941-6
+    cce@rhel9: CCE-83884-7
+    cce@rhel10: CCE-90132-2
+
+references:
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: CM-7(a),CM-7(b),CM-6(a),AC-6,AC-6(1),MP-7
+    nist-csf: PR.IP-1,PR.PT-2,PR.PT-3
+    srg: SRG-OS-000368-GPOS-00154
+
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /boot
+        mountoption: nodev
+
+fixtext: |-
+    {{{ fixtext_mount_option("/boot", "nodev") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/boot", "nodev") }}}'

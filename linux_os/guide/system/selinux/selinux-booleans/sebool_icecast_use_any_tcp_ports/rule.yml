@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the icecast_use_any_tcp_ports SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>icecast_use_any_tcp_ports</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="icecast_use_any_tcp_ports") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="icecast_use_any_tcp_ports") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: icecast_use_any_tcp_ports

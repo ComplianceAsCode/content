@@ -1,0 +1,80 @@
+{{% if 'ol' in families or 'rhel' in product %}}
+{{% set filepath_regex="^/etc/security/pwquality\.conf(\.d/[^/]+\.conf)?$" %}}
+{{% else %}}
+{{% set filepath_regex="^" + pwquality_path + "$" %}}
+{{% endif %}}
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
+    {{{ oval_metadata("The password " + VARIABLE + " should meet minimum requirements", rule_title=rule_title) }}}
+    <criteria operator="AND" comment="conditions for {{{ VARIABLE }}} are satisfied">
+      <extend_definition comment="pwquality.so exists in system-auth" definition_ref="accounts_password_pam_pwquality" />
+      <criteria operator="OR">
+        <criterion comment="pwquality.conf" test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}" />
+      </criteria>
+      {{% if "ol" in families %}}
+      <criterion comment="{{{ VARIABLE }}} is not overwritten in system-auth"
+        test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten"/>
+      <criterion comment="{{{ VARIABLE }}} is not overwritten in password-auth"
+        test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten_password-auth"/>
+      {{% endif %}}
+    </criteria>
+  </definition>
+
+  {{% if "ol" in families %}}
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="check the configuration of /etc/pam.d/system-auth doens't override pwquality.conf"
+    id="test_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten" version="1">
+    <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten"
+  version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern
+    operation="pattern match">^\s*password.*pam_pwquality\.so.*\b{{{ VARIABLE }}}\b</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="check the configuration of /etc/pam.d/password-auth doens't override pwquality.conf"
+    id="test_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten_password-auth" version="1">
+    <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten_password-auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_password_pam_pwquality_{{{ VARIABLE }}}_not_overwritten_password-auth"
+  version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern
+    operation="pattern match">^\s*password.*pam_pwquality\.so.*\b{{{ VARIABLE }}}\b</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
+
+  <ind:textfilecontent54_test check="all" state_operator="AND"
+    comment="check the configuration of {{{ filepath_regex }}}"
+    id="test_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
+    <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}" />
+    <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}" />
+  {{%- if ZERO_COMPARISON_OPERATION %}}
+    <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}_zero_comparison" />
+  {{%- endif %}}
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
+    <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*{{{ VARIABLE }}}[\s]*=[\s]*(-?\d+)(?:[\s]|$)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}" version="3">
+    <ind:subexpression datatype="int" operation="{{{ OPERATION }}}" var_ref="var_password_pam_{{{ VARIABLE }}}" />
+  </ind:textfilecontent54_state>
+
+  {{%- if ZERO_COMPARISON_OPERATION %}}
+  <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}_zero_comparison" version="1">
+    <ind:subexpression datatype="int" operation="{{{ ZERO_COMPARISON_OPERATION }}}" >0</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{%- endif %}}
+
+  <external_variable comment="External variable for pam_{{{ VARIABLE }}}" datatype="int" id="var_password_pam_{{{ VARIABLE }}}" version="3" />
+</def-group>

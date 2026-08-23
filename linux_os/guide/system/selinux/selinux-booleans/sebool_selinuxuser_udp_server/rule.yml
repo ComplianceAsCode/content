@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the selinuxuser_udp_server SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>selinuxuser_udp_server</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="selinuxuser_udp_server") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="selinuxuser_udp_server") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: selinuxuser_udp_server

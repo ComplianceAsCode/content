@@ -1,0 +1,66 @@
+documentation_complete: true
+
+
+title: 'Ensure System is Not Acting as a Network Sniffer'
+
+description: |-
+    The system should not be acting as a network sniffer, which can
+    capture all traffic on the network to which it is connected. Run the following
+    to determine if any interface is running in promiscuous mode:
+    <pre>$ ip link | grep PROMISC</pre>
+    Promiscuous mode of an interface can be disabled with the following command:
+    <pre>$ sudo ip link set dev <tt>device_name</tt> multicast off promisc off</pre>
+
+rationale: |-
+    Network interfaces in promiscuous mode allow for the capture of all network traffic
+    visible to the system. If unauthorized individuals can access these applications, it
+    may allow them to collect information such as logon IDs, passwords, and key exchanges
+    between systems.
+    <br /><br />
+    If the system is being used to perform a network troubleshooting function, the use of these
+    tools must be documented with the Information Systems Security Manager (ISSM) and restricted
+    to only authorized personnel.
+
+severity: medium
+
+platform: machine  # The oscap interface probe doesn't support offline mode
+
+identifiers:
+    cce@rhel8: CCE-82283-3
+    cce@rhel9: CCE-83996-9
+    cce@rhel10: CCE-88985-7
+    cce@sle12: CCE-83147-9
+    cce@sle15: CCE-85656-7
+    cce@sle16: CCE-96433-8
+    cce@slmicro5: CCE-93752-4
+    cce@slmicro6: CCE-95086-5
+
+references:
+    cis-csc: 1,11,14,3,9
+    cobit5: APO11.06,APO12.06,BAI03.10,BAI09.01,BAI09.02,BAI09.03,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS01.05,DSS04.05,DSS05.02,DSS05.05,DSS06.06
+    isa-62443-2009: 4.2.3.4,4.3.3.3.7,4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3,4.4.3.4
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6,SR 7.8'
+    iso27001-2013: A.11.1.2,A.11.2.4,A.11.2.5,A.11.2.6,A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.16.1.6,A.8.1.1,A.8.1.2,A.9.1.2
+    nist: CM-7(a),CM-7(b),CM-6(a),CM-7(2),MA-3
+    nist-csf: DE.DP-5,ID.AM-1,PR.IP-1,PR.MA-1,PR.PT-3
+    nist@sle12: CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040670
+    stigid@ol8: OL08-00-040330
+    stigid@sle12: SLES-12-030440
+
+ocil_clause: 'any network device is in promiscuous mode'
+
+ocil: |-
+    Verify that Promiscuous mode of an interface is disabled, run the following command:
+    <pre>$ ip link | grep PROMISC</pre>
+
+fixtext: |-
+    Configure network interfaces to turn off promiscuous mode unless approved by the ISSO and documented.
+
+    Set the promiscuous mode of an interface to off with the following command:
+
+    $ sudo ip link set dev multicast off promisc off
+
+
+srg_requirement: '{{{ full_name }}} network interfaces must not be in promiscuous mode.'

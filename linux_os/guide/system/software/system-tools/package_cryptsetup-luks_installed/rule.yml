@@ -1,0 +1,30 @@
+documentation_complete: true
+
+
+title: 'Install cryptsetup Package'
+
+description: |-
+    {{{ describe_package_install(package="cryptsetup") }}}
+
+rationale: |-
+    LUKS is the upcoming standard for Linux hard disk encryption. By providing a standard
+    on-disk format, it does not only facilitate compatibility among distributions, but also
+    provide secure management of multiple user passwords. In contrast to existing solution,
+    LUKS stores all necessary setup information in the partition header, enabling the user
+    to transport or migrate their data seamlessly. LUKS for dm-crypt is implemented in
+    <tt>cryptsetup</tt>.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86612-9
+    cce@rhel10: CCE-87541-9
+
+{{{ complete_ocil_entry_package_installed("cryptsetup") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: cryptsetup
+
+platform: system_with_kernel

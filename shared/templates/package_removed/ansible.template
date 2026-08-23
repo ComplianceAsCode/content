@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+{{% for package in PACKAGES %}}
+- name: "{{{ rule_title }}}: Ensure {{{ package }}} is removed"
+  ansible.builtin.package:
+    name: "{{{ package }}}"
+    state: absent
+{{% endfor %}}

@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: net.ipv4.conf.default.arp_filter
+
+description: |-
+    Controls whether the ARP filter is enabled or not.
+
+    1 - Allows you to have multiple network interfaces on the same subnet, and have the ARPs for each
+    interface be answered based on whether or not the kernel would route a packet from the ARP’d IP out that interface.
+    In other words it allows control of which cards (usually 1) will respond to an ARP request.
+
+    0 - (default) The kernel can respond to arp requests with addresses from other interfaces.
+    This may seem wrong but it usually makes sense, because it increases the chance of successful communication.
+    IP addresses are owned by the complete host on Linux, not by particular interfaces.
+
+type: number
+
+operator: equals
+
+interactive: false
+
+options:
+    default: "0"
+    disabled: "0"
+    enabled: 1
+
+

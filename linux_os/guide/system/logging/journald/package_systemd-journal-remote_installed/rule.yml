@@ -1,0 +1,41 @@
+documentation_complete: true
+
+
+title: 'Install systemd-journal-remote Package'
+
+description: |-
+    Journald (via systemd-journal-remote ) supports the ability to send
+    log events it gathers to a remote log host or to receive messages
+    from remote hosts, thus enabling centralised log management.
+
+rationale: |-
+    Storing log data on a remote host protects log integrity from local
+    attacks. If an attacker gains root access on the local system, they
+    could tamper with or remove log data that is stored on the local system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86467-8
+    cce@rhel9: CCE-86760-6
+    cce@rhel10: CCE-89465-9
+    cce@sle15: CCE-92598-2
+    cce@slmicro5: CCE-94085-8
+    cce@slmicro6: CCE-94738-2
+
+references:
+    srg: SRG-OS-000479-GPOS-00224
+
+{{{ complete_ocil_entry_package_installed("systemd-journal-remote") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: systemd-journal-remote
+
+{{% if 'ubuntu' in product %}}
+platform: service_disabled[rsyslog]
+{{% endif %}}
+
+fixtext: |-
+    {{{ describe_package_install(package="systemd-journal-remote") }}}

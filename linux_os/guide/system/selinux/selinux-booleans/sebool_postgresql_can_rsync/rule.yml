@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the postgresql_can_rsync SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>postgresql_can_rsync</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="postgresql_can_rsync") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="postgresql_can_rsync") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: postgresql_can_rsync

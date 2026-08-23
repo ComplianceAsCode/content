@@ -1,0 +1,62 @@
+srg_requirement: |-
+    {{{ full_name }}} registry must contain the latest images with most
+    recent updates and execute within the container platform runtime as
+    authorized by IAVM, CTOs, DTMs, and STIGs.
+
+vuldiscussion: |-
+    It is critical to the security ond stability of the container platform and the software services running on the platform to ensure that images are deployed through a trusted software supply chain. Some key elements to having a trusted supply chain include ensuring that images deployed to the container platform come from known, trusted sources.  Additionally, it is also important to check for and apply security relevant updates in a timely manner.
+
+    In order to help users manage images, OpenShift uses image streams to provide a level of abstraction for the users. In this way the users can trigger automatic redeployments as images are updated. It is also possible to configure the image stream to periodically check the image source repository for any updates and automatically pull in the latest updates.
+
+    The OpenShift platform can be configured to limit and control which image source repositories may be used by the platform and the users of the platform. By configuring this to only allow users to deploy images from trusted sources, lowers the risk for a user to deploy unsafe, or untested images that would be detrimental to the security and stability of the platform.
+
+checktext: |-
+    To verify that the image source policy is configured, run the following command
+
+    > oc get image.config.openshift.io/cluster -o jsonpath='{.spec.registrySources}{"\nAllowedRegistriesForImport: "}{.spec.allowedRegistriesForImport}{"\n"}'
+
+    You will see an output similar to the following:
+
+    {"allowedRegistries":["quay.io","registry.redhat.io","image-registry.openshift-image-registry.svc:5000"]}
+    AllowedRegistriesForImport: [{"domainName":"quay.io","insecure":false}]
+
+    If nothing is returned, this is a finding. If the registries listed under allowedRegistries, insecureRegistries, or AllowedRegistriesForImport are not from trusted sources as defined by the organization, this is a finding. 
+
+fixtext: |-
+    Edit the cluster image config resource to define the allowed registries.
+
+    > oc edit image.config.openshift.io/cluster
+
+    The following is an example configuration, for a detailed explanation of the configuration properties see https://docs.openshift.com/container-platform/4.8/openshift_images/image-configuration.html
+
+    ----------------------------------------------------------------------
+    apiVersion: config.openshift.io/v1
+    kind: Image 
+    metadata:
+    annotations:
+        release.openshift.io/create-only: "true"
+    creationTimestamp: "2019-05-17T13:44:26Z"
+    generation: 1
+    name: cluster
+    resourceVersion: "8302"
+    selfLink: /apis/config.openshift.io/v1/images/cluster
+    uid: e34555da-78a9-11e9-b92b-06d6c7da38dc
+    spec:
+    allowedRegistriesForImport: 
+        - domainName: quay.io
+        insecure: false
+    additionalTrustedCA: 
+        name: myconfigmap
+    registrySources: 
+        allowedRegistries:
+        - example.com
+        - quay.io
+        - registry.redhat.io
+        - image-registry.openshift-image-registry.svc:5000
+        - reg1.io/myrepo/myapp:latest
+        insecureRegistries:
+        - insecure.com
+    status:
+    internalRegistryHostname: image-registry.openshift-image-registry.svc:5000
+    ----------------------------------------------------------------------
+

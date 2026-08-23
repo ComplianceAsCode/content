@@ -1,0 +1,15 @@
+controls:
+- id: SRG-APP-000359-CTR-000810
+  levels:
+  - medium
+  title: {{{ full_name }}} must provide an immediate warning to the SA and ISSO
+    (at a minimum) when allocated audit record storage volume reaches 75 percent of
+    repository maximum audit record storage capacity.
+  status: not applicable
+  status_justification: |-
+    Not applicable - The location of the external logging server
+    used for audit log aggregation is outside the scope of OpenShift Container Platform
+    configuration. Because the configuration recommended in response to SRG-APP-000111-CTR-000220
+    configures an external log aggregation server outside of the control of the OpenShift
+    cluster, it is up to individual implementation to ensure that the location of that
+    log aggregation point meets other requirements.

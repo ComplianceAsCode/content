@@ -1,0 +1,61 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}}: Set facts"
+  ansible.builtin.set_fact:
+    conf_files: [ '/etc/rsyslog.conf' ]
+    remote_methods:
+      - selector: 'auth.*'
+        regexp: ^[^#]*auth\.\*.*$
+        location: "/var/log/secure"
+      - selector: 'authpriv.*'
+        regexp: ^[^#]*authpriv\.\*.*$
+        location: "/var/log/secure"
+      - selector: 'daemon.*'
+        regexp: ^[^#]*daemon\.\*.*$
+        location: "/var/log/messages"
+
+- name: "{{{ rule_title }}}: Ensure rsyslog.conf exists"
+  ansible.builtin.file:
+    path: "{{ conf_files.0 }}"
+    state: touch
+    access_time: preserve
+    modification_time: preserve
+    mode: 0644
+
+- name: "{{{ rule_title }}}: Gather conf.d files"
+  ansible.builtin.find:
+    patterns:
+      - '*.conf'
+    paths:
+      - /etc/rsyslog.d
+  register: rsyslogd
+
+- name: "{{{ rule_title }}}: Set conf file(s)"
+  ansible.builtin.set_fact:
+    conf_files: "{{ conf_files + [item.path] }}"
+  loop: "{{ rsyslogd.files }}"
+  when: rsyslogd.matched > 0
+
+- name: "{{{ rule_title }}}: Check for existing values"
+  ansible.builtin.lineinfile:
+    path: "{{ item.1 }}"
+    regexp: "{{ item.0.regexp }}"
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: remote_method_values
+  loop: "{{ remote_methods|product(conf_files)|list }}"
+
+- name: "{{{ rule_title }}}: Configure"
+  ansible.builtin.lineinfile:
+    path: /etc/rsyslog.conf
+    line: "{{ item.item.0.selector }} {{ item.item.0.location }}"
+    insertafter: ^.*\/var\/log\/secure.*$
+    create: yes
+    mode: 0644
+  loop: '{{ remote_method_values.results }}'
+  when: item.found == 0

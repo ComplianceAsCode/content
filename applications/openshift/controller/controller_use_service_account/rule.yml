@@ -1,0 +1,74 @@
+documentation_complete: true
+
+
+title: 'Ensure that use-service-account-credentials is enabled'
+
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["use-service-account-credentials"][]=="true" then true else false end]' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--use-service-account-credentials=true") )] | length | if . ==1 then true else false end]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    To ensure individual service account credentials are used,
+    set the <tt>use-service-account-credentials</tt> option to <tt>true</tt>
+    in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "use-service-account-credentials": [
+        "true"
+      ],
+    ...
+    </pre>
+
+rationale: |-
+    The controller manager creates a service account per controller in
+    <tt>kube-system</tt> namespace, generates an API token and credentials for it,
+    then builds a dedicated API client with that service account credential
+    for each controller loop to use. Setting the
+    <tt>use-service-account-credentials</tt> to <tt>true</tt> runs each
+    control loop within the controller manager using a separate service
+    account credential. When used in combination with RBAC, this ensures
+    that the control loops run with the minimum permissions required to
+    perform their intended tasks.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-84208-8
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: '<tt>use-service-account-credentials</tt> is set to <tt>false</tt>'
+
+ocil: |-
+    To verify that <tt>service-account-credentials</tt> is configured correctly,
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["use-service-account-credentials"]'</pre>
+    The value of <tt>use-service-account-credentials</tt> should be <tt>true</tt>.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '[:]'
+    values:
+    - value: 'true'
+      type: "string"
+      entity_check: "at least one"

@@ -1,0 +1,17 @@
+groups:
+- bootloader-zipl
+name: zipl
+packages:
+- zipl
+rules:
+- zipl_audit_argument
+- zipl_audit_backlog_limit_argument
+- zipl_bls_entries_only
+- zipl_bootmap_is_up_to_date
+- zipl_enable_selinux
+- zipl_init_on_alloc_argument
+- zipl_page_alloc_shuffle_argument
+- zipl_page_poison_argument
+- zipl_slub_debug_argument
+- zipl_systemd_debug-shell_argument_absent
+- zipl_vsyscall_argument

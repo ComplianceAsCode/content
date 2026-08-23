@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000098-CTR-000185
+  levels:
+  - medium
+  title: All audit records must identify the source of the event within the container
+    platform.
+  related_rules:
+  - audit_profile_set
+  rules:
+  - auditd_log_format
+  - auditd_data_disk_error_action
+  - auditd_data_retention_max_log_file_action_stig
+  status: automated

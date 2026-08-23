@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Disable the cups_execmem SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>cups_execmem</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="cups_execmem") }}}
+
+rationale: ""
+
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83306-1
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="cups_execmem") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: cups_execmem

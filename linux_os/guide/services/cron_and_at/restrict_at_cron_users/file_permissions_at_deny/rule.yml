@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /etc/at.deny file'
+
+{{%  if 'rhel' not in product %}}
+    {{% set target_perms_octal="0640" %}}
+    {{% set target_perms="-rw-r-----" %}}
+{{% else %}}
+    {{% set target_perms_octal="0600" %}}
+    {{% set target_perms="-rw-------" %}}
+{{% endif %}}
+
+description: |-
+    If <tt>/etc/at.deny</tt> exists, it must have permissions <tt>{{{ target_perms_octal }}}</tt>
+    or more restrictive.
+
+    {{{ describe_file_permissions(file="/etc/at.deny", perms=target_perms_octal) }}}
+
+rationale: |-
+    If the permissions of the at.deny file are not set to {{{ target_perms_octal }}} or more restrictive,
+    the possibility exists for an unauthorized user to view or edit sensitive information.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/at.deny", perms=target_perms) }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/at.deny", perms=target_perms) }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/at.deny
+        filemode: '{{{ target_perms_octal }}}'

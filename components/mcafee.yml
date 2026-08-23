@@ -1,0 +1,19 @@
+groups:
+- mcafee_endpoint_security_software
+- mcafee_hbss_software
+- mcafee_security_software
+name: mcafee
+packages:
+- MFEhiplsm
+- McAfeeTP
+- mcafee
+rules:
+- agent_mfetpd_running
+- install_mcafee_antivirus
+- install_mcafee_cma_rt
+- install_mcafee_hbss_accm
+- install_mcafee_hbss_pa
+- mcafee_antivirus_definitions_updated
+- package_MFEhiplsm_installed
+- package_mcafeetp_installed
+- service_nails_enabled

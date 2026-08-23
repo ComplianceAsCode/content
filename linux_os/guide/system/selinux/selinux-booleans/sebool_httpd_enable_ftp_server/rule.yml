@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the httpd_enable_ftp_server SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_enable_ftp_server</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="httpd_enable_ftp_server") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_enable_ftp_server") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_enable_ftp_server

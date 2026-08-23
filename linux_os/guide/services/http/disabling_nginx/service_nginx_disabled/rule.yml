@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable nginx Service'
+
+description: |-
+    {{{ describe_service_disable(service="nginx") }}}
+
+rationale: |-
+    Running web server software provides a network-based avenue
+    of attack, and should be disabled if not needed.
+
+severity: unknown
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="nginx") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="nginx") }}}
+
+platform: system_with_kernel
+
+template:
+    name: service_disabled
+    vars:
+        servicename: nginx

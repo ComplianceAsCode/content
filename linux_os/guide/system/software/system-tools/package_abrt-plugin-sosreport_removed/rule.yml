@@ -1,0 +1,26 @@
+documentation_complete: true
+
+
+title: 'Uninstall abrt-plugin-sosreport Package'
+
+description: |-
+    {{{ describe_package_remove(package="abrt-plugin-sosreport") }}}
+
+rationale: |-
+    <tt>abrt-plugin-sosreport</tt> provides a plugin to include an sosreport in an ABRT report.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82910-1
+    cce@rhel9: CCE-83515-7
+
+references:
+    srg: SRG-OS-000095-GPOS-00049
+
+{{{ complete_ocil_entry_package_removed("abrt-plugin-sosreport") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: abrt-plugin-sosreport

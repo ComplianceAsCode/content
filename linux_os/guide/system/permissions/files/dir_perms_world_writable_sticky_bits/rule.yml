@@ -1,0 +1,101 @@
+documentation_complete: true
+
+title: 'Verify that All World-Writable Directories Have Sticky Bits Set'
+
+description: |-
+    When the so-called 'sticky bit' is set on a directory, only the owner of a given file may
+    remove that file from the directory. Without the sticky bit, any user with write access to a
+    directory may remove any file in the directory. Setting the sticky bit prevents users from
+    removing each other's files. In cases where there is no reason for a directory to be
+    world-writable, a better solution is to remove that permission rather than to set the sticky
+    bit. However, if a directory is used by a particular application, consult that application's
+    documentation instead of blindly changing modes.
+    <br />
+    To set the sticky bit on a world-writable directory <i>DIR</i>, run the following command:
+    <pre>$ sudo chmod +t <i>DIR</i></pre>
+
+rationale: |-
+    Failing to set the sticky bit on public directories allows unauthorized users to delete files
+    in the directory structure.
+    <br /><br />
+    The only authorized public directories are those temporary directories supplied with the
+    system, or those designed to be temporary file repositories. The setting is normally reserved
+    for directories used by the system, by users for temporary file storage (such as <tt>/tmp</tt>),
+    and for directories requiring global read/write access.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82753-5
+    cce@rhel8: CCE-80783-4
+    cce@rhel9: CCE-83895-3
+    cce@rhel10: CCE-88397-5
+    cce@sle12: CCE-83047-1
+    cce@sle15: CCE-83282-4
+    cce@sle16: CCE-95771-2
+    cce@slmicro5: CCE-93693-0
+    cce@slmicro6: CCE-94682-2
+
+references:
+    cis-csc: 12,13,14,15,16,18,3,5
+    cis@sle12: 1.1.22
+    cis@sle15: 1.1.22
+    cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
+    isa-62443-2009: 4.3.3.7.3
+    isa-62443-2013: 'SR 2.1,SR 5.2'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: CM-6(a),AC-6(1)
+    nist-csf: PR.AC-4,PR.DS-5
+    srg: SRG-OS-000138-GPOS-00069
+    stigid@ol8: OL08-00-010190
+    stigid@sle12: SLES-12-010460
+
+ocil_clause: 'any world-writable directories are missing the sticky bit'
+
+ocil: |-
+    {{% if product == "rhcos4" -%}}
+    Verify that all world-writable directories have the sticky bit set. The following command will list any world-writeable directories that do not have the sticky bit set.
+
+    > for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; find / -type d \( -perm -0002 -a ! -perm -1000 ! -path "/var/lib/containers/*" ! -path "/var/lib/kubelet/pods/*" ! -path "/sysroot/ostree/deploy/*" \) -print 2>/dev/null' 2>/dev/null; done
+
+    If there are any directories listed in the results, this is a finding.
+    {{% else -%}}
+    To find world-writable directories that lack the sticky bit, run the following command:
+    <pre>$ sudo find / -type d \( -perm -0002 -a ! -perm -1000 \) -print 2>/dev/null</pre>
+    {{% endif -%}}
+
+fixtext: |-
+    {{% if product == "rhcos4" -%}}
+    Fix the directory permissions, by either removing world-writeable permission, or setting the sticky bit
+
+    > oc debug node/<node_name> -- chroot /host /bin/bash -c 'chmod XXXX <directory>'
+
+    where
+      node_name: The name of the node to connect to (oc get node)
+      XXXX:  Either 1777 (sticky bit) or 0755 (remove group and world write permission)
+      <directory>: The directory on which to correct the permissions
+    {{% else -%}}
+    Configure all world-writable directories to have the sticky bit set to prevent unauthorized and unintended information transferred via shared system resources.
+
+    Set the sticky bit on all world-writable directories using the command, replace "[World-Writable Directory]" with any directory path missing the sticky bit:
+
+    $ chmod a+t [World-Writable Directory]
+    {{% endif -%}}
+
+srg_requirement:
+    A sticky bit must be set on all {{{ full_name }}} public directories to prevent unauthorized and unintended information transferred via shared system resources.
+
+warnings:
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of directories present on the system. It is
+        not a problem in most cases, but especially systems with a large number of directories can
+        be affected. See <code>https://access.redhat.com/articles/6999111</code>.
+    - general: |-
+        Please note that there might be cases where the rule remediation cannot fix directory permissions.
+        This can happen for example when running on a system with some immutable parts.
+        These immutable parts cannot be remediated because they are read-only.
+        Example of such directories can be OStree deployments located at <tt>/sysroot/ostree/deploy</tt>.
+        In such case, it is needed to make modifications to the underlying ostree snapshot and this is out of scope of regular rule remediation.
+

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the git_session_users SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>git_session_users</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="git_session_users") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="git_session_users") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: git_session_users

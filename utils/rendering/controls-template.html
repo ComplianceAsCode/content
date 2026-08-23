@@ -1,0 +1,52 @@
+{{% extends "html-template.html" %}}
+
+{{% block body %}}
+{{{ super() }}}
+
+{{% if policy.source %}}
+based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
+{{% endif %}}
+
+<div class="all_controls">
+{{% for control in policy.controls -%}}
+<div class="one_control">
+  <h2>{{{ control.id }}}: {{{ control.title }}}</h2>
+  <p>Description: {{{ control.description | safe }}}</p>
+  Levels: 
+  <ul>
+    {{%- for level in control.levels -%}}
+    <li>{{{ level }}}</li>
+    {{%- endfor %}}
+  </ul>
+  <p>Automated: {{{ control.automated }}}</p>
+  {{% if control.selections -%}}
+  Selections:
+  <ul>
+    {{%- for selection in control.selections|sort -%}}
+    {{%- if '=' in selection %}}
+    {{% set value_id, value = selection.split('=') %}}
+    {{%- if value_id in values %}}
+    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ values[value_id].relative_definition_location }}}">{{{ value_id }}}</a> = {{{ value }}}</li>
+    {{%- endif -%}}
+    {{%- else %}}
+    {{%- if selection in rules %}}
+    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[selection].relative_definition_location }}}"> {{{ selection }}}</a>: {{{ rules[selection].title }}}
+      {{%- if rules[selection].identifiers and rules[selection].identifiers.get('cce') %}}
+      <ul><li>{{{ rules[selection].identifiers['cce'] }}}</li></ul>
+      {{%- endif %}}
+    </li>
+    {{%- else %}}
+    <li>{{{ selection }}} - not available for this product</li>
+    {{%- endif -%}}
+    {{%- endif -%}}
+    {{%- endfor %}}
+  </ul>
+  {{% else -%}}
+  <p>
+  <strong>No rules selected</strong>
+  </p>
+  {{%- endif %}}
+</div>  
+{{% endfor -%}}
+</div>  
+{{% endblock %}}

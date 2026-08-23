@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Configure NSS DB To Use opensc'
+
+description: |-
+    The <tt>opensc</tt> module should be configured for use over the
+    <tt>Coolkey PKCS#11</tt> module in the NSS database. To configure the
+    NSS database to use the <tt>opensc</tt> module, run the following
+    command:
+    <pre>$ sudo pkcs11-switch opensc</pre>
+
+rationale: |-
+    Smart card login provides two-factor authentication stronger than
+    that provided by a username and password combination. Smart cards leverage PKI
+    (public key infrastructure) in order to provide and verify credentials.
+
+severity: medium
+
+references:
+    cis-csc: 1,12,15,16,5
+    cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1'
+    iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: IA-2(1),IA-2(2),IA-2(3),IA-2(4),IA-2(6),IA-2(7),IA-2(11),CM-6(a)
+    nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
+    pcidss: Req-8.3
+    srg: SRG-OS-000104-GPOS-00051,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000109-GPOS-00056,SRG-OS-000108-GPOS-00055,SRG-OS-000108-GPOS-00057,SRG-OS-000108-GPOS-00058
+
+ocil_clause: 'opensc is not in use by the nss database'
+
+ocil: |-
+    To verify that <tt>opensc</tt> is configured in the NSS database,
+    run the following command:
+    <pre>$ pkcs11-switch</pre>
+    The output should return <pre>opensc</pre>
+
+warnings:
+    - general: |-
+       NSS modules information are stored in NSS database which is in binary format. Currently
+       it is not possible to check NSS database using OVAL. This is the reason there is no OVAL
+       check for this rule.

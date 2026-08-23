@@ -1,0 +1,43 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure that User Home Directories are not Group-Writable or World-Readable", rule_title=rule_title) }}}
+    <criteria >
+      <criterion comment="home directories" test_ref="test_file_permissions_home_dirs"/>
+    </criteria>
+  </definition>
+
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_interactive_users_list_object(interactive_users_object, rule_id=rule_id) }}}
+
+  <!-- #### prepare for test_file_permissions_home_dirs #### -->
+  <local_variable id="var_file_permissions_home_dirs_dirs" datatype="string" version="1"
+                  comment="Variable including all home dirs from interactive users">
+    <object_component item_field="home_dir"
+                      object_ref="{{{ interactive_users_object }}}"/>
+  </local_variable>
+
+  <!-- #### creation of object #### -->
+  <unix:file_object id="object_file_permissions_home_dirs_dirs" version="1">
+    <unix:path var_ref="var_file_permissions_home_dirs_dirs" var_check="at least one"/>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <!-- #### creation of state #### -->
+  <unix:file_state id="state_file_permissions_home_dirs_dirs" version="1" operator='AND'>
+    <unix:type operation="equals">directory</unix:type>
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+  <!-- #### creation of test #### -->
+  <unix:file_test id="test_file_permissions_home_dirs" check="all" check_existence="any_exist"
+                  version="1" comment="All home directories have proper permissions">
+    <unix:object object_ref="object_file_permissions_home_dirs_dirs"/>
+    <unix:state state_ref="state_file_permissions_home_dirs_dirs"/>
+  </unix:file_test>
+</def-group>

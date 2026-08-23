@@ -1,0 +1,59 @@
+documentation_complete: true
+
+
+title: 'Enable the NamespaceLifecycle Admission Control Plugin'
+
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '.data."config.json" | fromjson' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    OpenShift enables the <tt>NamespaceLifecycle</tt> plugin by default.
+
+rationale: |-
+    Setting admission control policy to <tt>NamespaceLifecycle</tt> ensures that
+    objects cannot be created in non-existent namespaces, and that namespaces
+    undergoing termination are not used for creating new objects. This
+    is recommended to enforce the integrity of the namespace termination process
+    and also for the availability of new objects.
+
+identifiers:
+  cce@ocp4: CCE-83854-0
+
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: 'API server config contains <tt>NamespaceLifecycle</tt>'
+
+ocil: |-
+    To verify that the <tt>NamespaceLifecycle</tt> plugin is enabled in
+    the apiserver configuration, run:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["enable-admission-plugins"][:]'
+    values:
+    - value: '^NamespaceLifecycle$'
+      operation: "pattern match"
+      entity_check: "at least one"

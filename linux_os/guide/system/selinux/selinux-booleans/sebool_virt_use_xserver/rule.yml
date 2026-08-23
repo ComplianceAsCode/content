@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the virt_use_xserver SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>virt_use_xserver</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="virt_use_xserver") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="virt_use_xserver") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: virt_use_xserver

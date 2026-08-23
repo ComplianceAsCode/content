@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000433-GPOS-00193
+        levels:
+            - medium
+        title: {{{ full_name }}} must implement address space layout randomization to
+            protect its memory from unauthorized code execution.
+        rules:
+            - grub2_pti_argument
+            - sysctl_kernel_randomize_va_space
+        status: automated

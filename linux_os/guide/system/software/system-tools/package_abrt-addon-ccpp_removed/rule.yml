@@ -1,0 +1,27 @@
+documentation_complete: true
+
+
+title: 'Uninstall abrt-addon-ccpp Package'
+
+description: |-
+    {{{ describe_package_remove(package="abrt-addon-ccpp") }}}
+
+rationale: |-
+    <tt>abrt-addon-ccpp</tt> contains hooks for C/C++ crashed programs and <tt>abrt</tt>'s
+    C/C++ analyzer plugin.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82919-2
+    cce@rhel9: CCE-83507-4
+
+references:
+    srg: SRG-OS-000095-GPOS-00049
+
+{{{ complete_ocil_entry_package_removed("abrt-addon-ccpp") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: abrt-addon-ccpp

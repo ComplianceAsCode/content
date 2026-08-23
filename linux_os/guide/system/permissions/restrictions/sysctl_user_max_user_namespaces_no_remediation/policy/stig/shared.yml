@@ -1,0 +1,34 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable the use of user namespaces.
+
+vuldiscussion: |-
+    User namespaces are used primarily for Linux containers. The value "0" disallows the use of user namespaces.
+
+checktext: |-
+    Verify {{{ full_name }}} disables the use of user namespaces with the following commands:
+
+    $ sudo sysctl user.max_user_namespaces
+
+    user.max_user_namespaces = 0
+
+    If the returned line does not have a value of "0", or a line is not returned, this is a finding.
+
+    Check that the configuration files are present to enable this kernel parameter.
+
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F user.max_user_namespaces | tail -1
+    user.max_user_namespaces = 0
+
+    If the network parameter "user.max_user_namespaces" is not equal to "0", or nothing is returned, this is a finding.
+
+    If the use of namespaces is operationally required and documented with the information system security manager (ISSM), this is not a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the use of user namespaces by adding the following line to a file, in the "/etc/sysctl.d" directory:
+
+    user.max_user_namespaces = 0
+
+    The system configuration files need to be reloaded for the changes to take effect. To reload the contents of the files, run the following command:
+
+    $ sudo sysctl --system
+
+

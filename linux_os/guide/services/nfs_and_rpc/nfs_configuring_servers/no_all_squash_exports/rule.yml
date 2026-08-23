@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Ensure All-Squashing Disabled On All Exports'
+
+description: |-
+    The <tt>all_squash</tt> maps all uids and gids to an anonymous user.
+    This should be disabled by removing any instances of the
+    <tt>all_squash</tt> option from the file <tt>/etc/exports</tt>.
+
+rationale: |-
+    The all_squash option maps all client requests to a single anonymous
+    uid/gid on the NFS server, negating the ability to track file access
+    by user ID.
+
+severity: low
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    To verify all squashing has been disabled, run the following command:
+    <pre>$ grep all_squash /etc/exports</pre>

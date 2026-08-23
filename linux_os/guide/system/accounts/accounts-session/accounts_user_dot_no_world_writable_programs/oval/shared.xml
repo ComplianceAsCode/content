@@ -1,0 +1,64 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("User Initialization Files Must Not Execute World-Writable Programs", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_accounts_user_dot_no_world_writable_programs"
+      comment="User Initialization Files Must Not Execute World-Writable Programs"/>
+    </criteria>
+  </definition>
+
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_interactive_users_list_object(interactive_users_object, rule_id=rule_id) }}}
+
+  <local_variable id="var_accounts_user_dot_no_world_writable_programs_dirs" datatype="string"
+      version="1" comment="Variable including all home dirs from interactive users">
+    <object_component item_field="home_dir"
+      object_ref="{{{ interactive_users_object }}}"/>
+  </local_variable>
+
+  <local_variable id="var_world_writable_programs" datatype="string" version="1"
+      comment="Variable including all world writable programs">
+    <object_component item_field="filepath" object_ref="object_world_writable_programs"/>
+  </local_variable>
+
+  <local_variable id="var_world_writable_programs_regex" datatype="string" version="1"
+      comment="Regex including all world writable programs">
+    <concat>
+      <literal_component>^[^#]*</literal_component>
+      <escape_regex>
+        <variable_component var_ref="var_world_writable_programs"/>
+      </escape_regex>
+    </concat>
+  </local_variable>
+
+  <unix:file_state id="state_world_writable_programs" version="1" operator='AND'>
+    <unix:type>regular</unix:type>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+
+  <unix:file_object id="object_world_writable_programs" version="2">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="defined"/>
+    <unix:path>/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_world_writable_programs</filter>
+  </unix:file_object>
+
+  <ind:textfilecontent54_object id="object_accounts_user_dot_no_world_writable_programs_init_files"
+      version="3">
+    <ind:path var_ref="var_accounts_user_dot_no_world_writable_programs_dirs"
+      var_check="at least one"/>
+    <ind:filename operation="pattern match" var_ref="var_user_initialization_files_regex"/>
+    <ind:pattern operation="pattern match" var_ref="var_world_writable_programs_regex"
+      var_check="at least one"/>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_accounts_user_dot_no_world_writable_programs"
+      check_existence="none_exist" check="all" version="1"
+      comment="Init files do not execute world-writable programs">
+    <ind:object object_ref="object_accounts_user_dot_no_world_writable_programs_init_files"/>
+  </ind:textfilecontent54_test>
+
+  <external_variable id="var_user_initialization_files_regex" datatype="string" version="1" comment="User initialization files" />
+</def-group>

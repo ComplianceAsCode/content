@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the xdm_exec_bootloader SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>xdm_exec_bootloader</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="xdm_exec_bootloader") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="xdm_exec_bootloader") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: xdm_exec_bootloader

@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000480-GPOS-00232
+        levels:
+            - medium
+        title: {{{ full_name }}} must enable an application firewall, if available.
+        rules:
+            - package_firewalld_installed
+            - service_firewalld_enabled
+        status: automated

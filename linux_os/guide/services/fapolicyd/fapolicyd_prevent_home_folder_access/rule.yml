@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'fapolicyd Must be Configured to Limit Access to Users Home Folders'
+
+description:
+    fapolicyd needs be configured so that users cannot give access to their home folders to other users.
+
+rationale: |-
+    Users' home directories/folders may contain information of a sensitive nature.
+    Non-privileged users should coordinate any sharing of information with a System Administrator (SA) through shared resources.
+    fapolicyd can confine users to their home directory, not allowing them to make any changes outside of their own home directories.
+    Confining users to their home directory will minimize the risk of sharing information.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86018-9
+
+references:
+    nist: CM-6 b
+    srg: SRG-OS-000480-GPOS-00230
+
+warnings:
+    - general: |-
+          This rule is deprecated and there is no replacement at this time.
+          Previous versions of this rule provided fixtext that would cause fapolicyd not to start.

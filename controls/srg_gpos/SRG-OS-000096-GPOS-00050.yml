@@ -1,0 +1,15 @@
+controls:
+    -   id: SRG-OS-000096-GPOS-00050
+        levels:
+            - medium
+        title: {{{ full_name }}} must be configured to prohibit or restrict the use of
+            functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability
+            assessments.
+        rules:
+            - chronyd_client_only
+            - chronyd_no_chronyc_network
+            - package_firewalld_installed
+            - service_firewalld_enabled
+            - configure_firewalld_ports
+            - firewalld_sshd_port_enabled
+        status: automated

@@ -1,0 +1,10 @@
+documentation_complete: true
+
+title: 'Non-UEFI GRUB2 bootloader configuration'
+
+description: |-
+    Non-UEFI GRUB2 bootloader configuration
+
+{{% if grub2_boot_path != grub2_uefi_boot_path -%}}
+platform: non-uefi
+{{%- endif %}}

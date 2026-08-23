@@ -1,0 +1,54 @@
+documentation_complete: true
+
+title: 'Verify Permissions on Backup gshadow File'
+
+{{% if "ubuntu" in product or "debian" in product %}}
+    {{% set target_perms_octal="0640" %}}
+    {{% set target_perms="-rw-r-----" %}}
+{{% else %}}
+    {{% set target_perms_octal="0000" %}}
+    {{% set target_perms="----------" %}}
+{{% endif %}}
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/gshadow-", perms=target_perms_octal) }}}
+
+rationale: |-
+    The <tt>/etc/gshadow-</tt> file is a backup of <tt>/etc/gshadow</tt>, and as such,
+    it contains group password hashes. Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83573-6
+    cce@rhel9: CCE-83942-3
+    cce@rhel10: CCE-89056-6
+    cce@sle12: CCE-92449-8
+    cce@sle15: CCE-92700-4
+    cce@slmicro5: CCE-93955-3
+
+references:
+    cis@sle12: 6.1.6
+    cis@sle15: 6.1.6
+    nist: AC-6 (1)
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/gshadow-", perms=target_perms) }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/gshadow-", perms=target_perms) }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/gshadow-", mode=target_perms_octal) }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/gshadow-", mode=target_perms_octal) }}}'
+
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/gshadow-
+        filemode: '0000'
+        filemode@debian11: '0640'
+        filemode@debian12: '0640'
+        filemode@ubuntu2204: '0640'
+        filemode@ubuntu2404: '0640'

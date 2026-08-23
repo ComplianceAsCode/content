@@ -1,0 +1,13 @@
+controls:
+    -   id: SRG-OS-000480-GPOS-00228
+        levels:
+            - medium
+        title: {{{ full_name }}} must define default permissions for all authenticated
+            users in such a way that the user can only read and modify their own files.
+        rules:
+            - var_accounts_user_umask=077
+            - accounts_umask_etc_bashrc
+            - accounts_umask_etc_csh_cshrc
+            - accounts_umask_etc_login_defs
+            - accounts_umask_etc_profile
+        status: automated

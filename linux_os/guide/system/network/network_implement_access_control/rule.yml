@@ -1,0 +1,88 @@
+documentation_complete: true
+
+
+title: 'Grant Or Deny System Access To Specific Hosts And Services'
+
+description: |-
+    To verify the system's access control program is configured
+    to grant or deny system access to specific hosts check to see
+    if "firewalld" is active with the following command:
+
+    <pre># systemctl status firewalld
+    firewalld.service - firewalld - dynamic firewall daemon
+    Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+    Active: active (running) since Sun 2014-04-20 14:06:46 BST; 30s ago</pre>
+
+    If "firewalld" is active, check to see if it is configured to grant or deny
+    access to specific hosts or services with the following commands:
+
+    <pre># firewall-cmd --get-default-zone
+    public
+
+    # firewall-cmd --list-all --zone=public
+    public (active)
+    target: default
+    icmp-block-inversion: no
+    interfaces: eth0
+    sources:
+    services: mdns ssh
+    ports:
+    protocols:
+    masquerade: no
+    forward-ports:
+    icmp-blocks:</pre>
+
+    If "firewalld" is not active, determine whether "tcpwrappers" is being used by checking
+    whether the "hosts.allow" and "hosts.deny" files are empty with the following commands:
+
+    <pre># ls -al /etc/hosts.allow
+    rw-r----- 1 root root 9 Aug 2 23:13 /etc/hosts.allow
+
+    # ls -al /etc/hosts.deny
+    -rw-r----- 1 root root 9 Apr 9 2007 /etc/hosts.deny</pre>
+
+    If "firewalld" and "tcpwrappers" are not installed, configured, and active,
+    ask the SA if another access control program (such as iptables) is installed
+    and active.
+
+    Ask the SA to show that the running configuration grants or denies access
+    to specific hosts or services.
+
+    If "firewalld" is active and is not configured to grant access to specific
+    hosts or "tcpwrappers" is not configured to grant or deny access to
+    specific hosts, this is a finding.
+
+rationale: |-
+    If the systems access control program is not configured with appropriate
+    rules for allowing and denying access to system network resources,
+    services may be accessible to unauthorized hosts.
+
+severity: medium
+
+platform: package[firewalld]
+
+references:
+    nist: CM-6 b,CM-6.1(iv)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040810
+
+ocil_clause: 'the system access control program is not configured'
+
+ocil: |-
+    To verify there is a system access control program configured
+    to grant or deny system access to specific hosts check to see
+    if "firewalld" is active and the default zone is "public".
+
+    If "firewalld" is not active, determine whether "tcpwrappers"
+    is being used by checking whether the "hosts.allow" and "hosts.deny"
+    files are empty.
+
+    If "firewalld" is not active and configured, and the "hosts.allow" and
+    "hosts.deny" files are empty, this is a finding.
+
+warnings:
+    - general: |-
+        This rule checks that either firewalld or tcpwrappers are being used
+        to restrict system access to some hosts and/or services. It does not
+        check for any specific hosts/services. Make sure that the allowed
+        hosts/services meet your operational needs.

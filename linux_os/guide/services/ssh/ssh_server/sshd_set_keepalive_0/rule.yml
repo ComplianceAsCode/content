@@ -1,0 +1,77 @@
+documentation_complete: true
+
+# applicable only to products that ship OpenSSH<8.2
+
+title: 'Set SSH Client Alive Count Max to zero'
+
+description: |-
+    The SSH server sends at most <tt>ClientAliveCountMax</tt> messages
+    during a SSH session and waits for a response from the SSH client.
+    The option <tt>ClientAliveInterval</tt> configures timeout after
+    each <tt>ClientAliveCountMax</tt> message. If the SSH server does not
+    receive a response from the client, then the connection is considered unresponsive
+    and terminated.
+
+    To ensure the SSH timeout occurs precisely when the
+    <tt>ClientAliveInterval</tt> is set, set the <tt>ClientAliveCountMax</tt> to
+    value of <tt>0</tt> in
+    {{{ sshd_config_file() }}}
+
+rationale: |-
+    This ensures a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>
+    is reached.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-83406-9
+    cce@rhel8: CCE-83405-1
+    cce@rhel9: CCE-90271-8
+    cce@rhel10: CCE-88840-4
+    cce@sle12: CCE-83407-7
+    cce@sle15: CCE-83284-0
+    cce@sle16: CCE-96122-7
+
+references:
+    cis-csc: 1,12,13,14,15,16,18,3,5,7,8
+    cjis: 5.5.6
+    cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03,DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    cui: 3.1.11
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.3
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 6.2'
+    iso27001-2013: A.12.4.1,A.12.4.3,A.14.1.1,A.14.2.1,A.14.2.5,A.18.1.4,A.6.1.2,A.6.1.5,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
+    nerc-cip: CIP-004-6 R2.2.3,CIP-007-3 R5.1,CIP-007-3 R5.2,CIP-007-3 R5.3.1,CIP-007-3 R5.3.2,CIP-007-3 R5.3.3
+    nist: AC-2(5),AC-12,AC-17(a),SC-10,CM-6(a)
+    nist-csf: DE.CM-1,DE.CM-3,PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7,PR.IP-2
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000126-GPOS-00066,SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109
+    stigid@ol7: OL07-00-040340
+    stigid@sle12: SLES-12-030191
+
+requires:
+    - sshd_set_idle_timeout
+
+ocil_clause: 'it is commented out or not configured properly'
+
+ocil: |-
+    To ensure <tt>ClientAliveInterval</tt> is set correctly, run the following command:
+    {{% if sshd_distributed_config == "true" %}}
+    <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf</pre>
+    {{% else %}}
+    <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
+    {{% endif %}}
+    If properly configured, the output should be:
+    <pre>ClientAliveCountMax 0</pre>
+
+    In this case, the SSH timeout occurs precisely when
+    the <tt>ClientAliveInterval</tt> is set.
+
+template:
+  name: sshd_lineinfile
+  vars:
+    parameter: "ClientAliveCountMax"
+    value: "0"
+    datatype: int
+  backends:
+    kubernetes: "off"

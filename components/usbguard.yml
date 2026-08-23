@@ -1,0 +1,13 @@
+groups:
+- usbguard
+name: usbguard
+packages:
+- usbguard
+rules:
+- configure_usbguard_auditbackend
+- package_usbguard_installed
+- service_usbguard_enabled
+- usbguard_allow_hid
+- usbguard_allow_hid_and_hub
+- usbguard_allow_hub
+- usbguard_generate_policy

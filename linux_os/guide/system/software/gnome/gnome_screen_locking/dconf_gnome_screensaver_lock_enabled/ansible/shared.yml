@@ -1,0 +1,77 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}} - Enable GNOME3 Screensaver Lock After Idle Period"
+  community.general.ini_file:
+    dest: "/etc/dconf/db/local.d/00-security-settings"
+    section: "org/gnome/desktop/screensaver"
+    option: lock-enabled
+    value: "true"
+    create: yes
+    no_extra_spaces: yes
+    mode: 0644
+  when: ansible_distribution != 'SLES'
+  register: screensaver_config
+
+- name: "{{{ rule_title }}} - Prevent user modification of GNOME lock-enabled"
+  ansible.builtin.lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/screensaver/lock-enabled$'
+    line: '/org/gnome/desktop/screensaver/lock-enabled'
+    create: yes
+    mode: 0644
+  when: ansible_distribution != 'SLES'
+  register: screensaver_lock
+
+- name: "{{{ rule_title }}} - Enable GNOME3 Screensaver Lock After Idle Period"
+  community.general.ini_file:
+    dest: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings"
+    section: "org/gnome/desktop/lockdown"
+    option: disable-lock-screen
+    value: "false"
+    create: yes
+    no_extra_spaces: yes
+    mode: 0644
+  when: ansible_distribution == 'SLES'
+  register: lockdown_config
+
+- name: "{{{ rule_title }}} - Prevent user modification of GNOME disable-lock-screen"
+  ansible.builtin.lineinfile:
+    path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/lockdown/disable-lock-screen$'
+    line: '/org/gnome/desktop/lockdown/disable-lock-screen'
+    create: yes
+    mode: 0644
+  when: ansible_distribution == 'SLES'
+  register: lockdown_lock
+
+- name: "{{{ rule_title }}} - Check GNOME3 screenserver disable-lock-screen false"
+  ansible.builtin.command: gsettings get org.gnome.desktop.lockdown disable-lock-screen
+  register: cmd_out
+  when: ansible_distribution == 'SLES'
+  changed_when: false
+
+- name: "{{{ rule_title }}} - Update GNOME3 screenserver disable-lock-screen false"
+  ansible.builtin.command: gsettings set org.gnome.desktop.lockdown disable-lock-screen false
+  when:
+    - ansible_distribution == 'SLES'
+    - cmd_out.stdout != 'false'
+
+- name: "{{{ rule_title }}} - Update dconf database for non-SLES systems"
+  ansible.builtin.command: dconf update
+  when:
+    - ansible_distribution != 'SLES'
+    - (screensaver_config is changed or screensaver_lock is changed)
+
+- name: "{{{ rule_title }}} - Update dconf database for SLES systems"
+  ansible.builtin.command: dconf update
+  when:
+    - ansible_distribution == 'SLES'
+    - (lockdown_config is changed or lockdown_lock is changed)
+
+{{% if product in ['sle15', 'sle16'] %}}
+{{{ ansible_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
+{{% endif %}}

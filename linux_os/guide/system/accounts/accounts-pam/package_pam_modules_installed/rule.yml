@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: "Install pam-modules Package"
+
+description: |-
+    {{{ describe_package_install(package="libpam-modules") }}}
+
+rationale: |-
+    libpam-modules contains PAM modules that are needed
+    by other rules when configuring PAM options.
+
+severity: medium
+
+platform: package[pam]
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libpam-modules
+        evr@ubuntu2204: 0:1.4.0-11
+        evr@ubuntu2404: 0:1.5.3-5
+        evr@debian12: 0:1.5.2-6

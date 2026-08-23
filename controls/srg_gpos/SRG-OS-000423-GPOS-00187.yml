@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000423-GPOS-00187
+        levels:
+            - high
+        title: {{{ full_name }}} must protect the confidentiality and integrity of transmitted
+            information.
+        rules:
+            - package_openssh-server_installed
+            - service_sshd_enabled
+            - configure_bind_crypto_policy
+            - sysctl_crypto_fips_enabled
+        status: automated

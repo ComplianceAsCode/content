@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="installed_firefox_version_supported"  version="1">
+    <metadata>
+      <title>Supported Version of Firefox Installed</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>Use of versions of an application which are not
+      supported by the vendor are not permitted. Vendors respond to
+      security flaws with updates and patches. These updates are not
+      available for unsupported versions which can leave the application
+      vulnerable to attack.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="installed version of firefox supported" test_ref="test_supported_version_of_firefox" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="any_exist" comment="Installed version of firefox is greater than 68.4.0" id="test_supported_version_of_firefox" version="1">
+    <linux:object object_ref="obj_supported_version_of_firefox" />
+    <linux:state state_ref="state_supported_version_of_firefox" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_supported_version_of_firefox" version="1">
+    <linux:evr operation="greater than" datatype="evr_string">68.4.0</linux:evr> 
+  </linux:rpminfo_state>
+<linux:rpminfo_object id="obj_supported_version_of_firefox" version="1">
+    <linux:name>firefox</linux:name>
+ </linux:rpminfo_object>
+
+</def-group>

@@ -1,0 +1,43 @@
+srg_requirement: |-
+    {{{ full_name }}} must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited via rsyslog.
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt off-loaded audit records via rsyslog by enabling TLS within the "omfwd" action rule.
+
+    Edit the configuration file containing the "omfwd" rule (e.g., /etc/rsyslog.d/99-forwarding.conf) and add the tls="on" parameter.
+
+    Example:
+    action(
+      type="omfwd"
+      target="logserver.example.com"
+      protocol="tcp"
+      port="6514"
+      tls="on"
+    )
+
+    After applying the configuration, restart the rsyslog service:
+    $ sudo systemctl restart rsyslog
+
+checktext: |-
+    Verify {{{ full_name }}} encrypts audit records offloaded onto a different system via rsyslog using the modern "omfwd" action.
+
+    Search for active TLS-enabling configurations within "omfwd" action blocks with the following command:
+
+    $ sudo grep -rE 'tls="on"|StreamDriver.Mode\s*=\s*"1"' /etc/rsyslog.conf /etc/rsyslog.d/
+
+    If an active TCP-based "omfwd" forwarding rule exists on the system but the command above returns no active configuration lines, or if all results are commented out, this is a finding.
+
+vuldiscussion: |-
+    Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+
+    Off-loading is a common process in information systems with limited audit storage capacity.
+
+    {{{ full_name }}} installation media provides "rsyslogd", a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Coupling this utility with "gnutls" (a secure communications library implementing the Secure Sockets Layer [SSL], Transport Layer Security [TLS], and Datagram TLS [DTLS] protocols) creates a method to securely encrypt and off-load auditing. When this utility is coupled with the omfwd module, it can use the ossl network stream driver, which leverages the OpenSSL library for Transport Layer Security (TLS) to securely encrypt and off-load auditing.
+
+    "Rsyslog" supported authentication modes include:
+    - anon - Anonymous authentication.
+    - x509/fingerprint - Certificate fingerprint authentication.
+    - x509/certvalid - Certificate validation only.
+    - x509/name - Certificate validation and subject name authentication.
+
+

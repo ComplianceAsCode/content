@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the virt_use_sanlock SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>virt_use_sanlock</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="virt_use_sanlock") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="virt_use_sanlock") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: virt_use_sanlock

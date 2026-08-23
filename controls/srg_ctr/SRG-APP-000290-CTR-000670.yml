@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000290-CTR-000670
+  levels:
+  - medium
+  title: {{{ full_name }}} must use cryptographic mechanisms to protect the integrity
+    of audit tools.
+  related_rules:
+  - audit_log_forwarding_uses_tls
+  rules:
+  - auditd_log_format
+  - auditd_data_disk_error_action
+  - auditd_data_retention_max_log_file_action_stig
+  status: automated

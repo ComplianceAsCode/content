@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Groupownership of Files in /var/log/apt'
+
+description: '{{{ describe_file_group_owner(file="/var/log/apt/*", group="adm|root") }}}'
+
+rationale: |-
+    The <tt>/var/log/apt</tt> directory contains information about APT
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/apt/*", group="adm|root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/apt/*", group="adm|root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/apt/
+        file_regex: .*
+        gid_or_name: 'adm|root' 

@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance" id="wireless_disable_interfaces" version="1">
+    {{{ oval_metadata("All wireless interfaces should be disabled.", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="check if wifi interfaces are disabled" test_ref="test_wireless_disable_interfaces" negate="true" />
+    </criteria>
+  </definition>
+
+  <unix:interface_test check="all" check_existence="at_least_one_exists" id="test_wireless_disable_interfaces" version="1" comment="check if UP flag is present on wifi interfaces">
+    <unix:object object_ref="object_active_wifi_interfaces" />
+    <unix:state state_ref="state_wifi_up" />
+  </unix:interface_test>
+
+  <unix:interface_object id="object_active_wifi_interfaces" version="1">
+    <unix:name operation="pattern match">^wl.*$</unix:name>
+  </unix:interface_object>
+
+  <unix:interface_state id="state_wifi_up" version="1">
+    <unix:flag datatype="string" entity_check="at least one" operation="equals">UP</unix:flag>
+  </unix:interface_state>
+</def-group>

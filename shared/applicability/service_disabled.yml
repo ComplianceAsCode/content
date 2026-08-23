@@ -1,0 +1,21 @@
+name: "cpe:/a:platform-service-disabled-{servicename}"
+title: "The {servicename} is disabled on the system"
+check_id: service_disabled_{arg}
+template:
+  name: platform_service_disabled
+args:
+  firewalld:
+      servicename: firewalld
+      packagename: firewalld
+  iptables:
+      servicename: iptables
+      packagename: iptables
+  nftables:
+      servicename: nftables
+      packagename: nftables
+  ufw:
+      servicename: ufw
+      packagename: ufw
+  rsyslog:
+      servicename: rsyslog
+      packagename: rsyslog

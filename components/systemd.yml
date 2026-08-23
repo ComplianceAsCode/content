@@ -1,0 +1,47 @@
+groups:
+- journald
+name: systemd
+packages:
+- systemd
+- systemd-journal-remote
+- systemd-timesyncd
+rules:
+- coredump_disable_backtraces
+- coredump_disable_storage
+- dir_permissions_system_journal
+- dir_owner_system_journal
+- dir_groupowner_system_journal
+- disable_ctrlaltdel_burstaction
+- disable_ctrlaltdel_reboot
+- ensure_journald_and_rsyslog_not_active_together
+- file_groupowner_etc_crypttab
+- file_groupowner_journalctl
+- file_groupowner_system_journal
+- file_owner_etc_crypttab
+- file_owner_journalctl
+- file_owner_system_journal
+- file_permissions_etc_crypttab
+- file_permissions_journalctl
+- file_permissions_system_journal
+- journald_compress
+- journald_forward_to_syslog
+- journald_disable_forward_to_syslog
+- journald_storage
+- logging_services_active
+- logind_session_timeout
+- package_systemd-journal-remote_installed
+- package_timesyncd_installed
+- package_timesyncd_removed
+- require_emergency_target_auth
+- service_debug-shell_disabled
+- service_systemd-coredump_disabled
+- service_systemd-journald_enabled
+- service_systemd-journal-upload_enabled
+- service_timesyncd_configured
+- service_timesyncd_root_distance_configured
+- service_timesyncd_enabled
+- service_timesyncd_disabled
+- socket_systemd-journal-remote_disabled
+- systemd_tmp_mount_enabled
+- systemd_journal_upload_server_tls
+- systemd_journal_upload_url

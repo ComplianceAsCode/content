@@ -1,0 +1,25 @@
+documentation_complete: true
+
+
+title: 'Verify Permissions on /etc/hosts.allow'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/hosts.allow", perms="0644") }}}
+
+rationale: |-
+    The <tt>/etc/hosts.allow</tt> file is used to control access of clients to daemons in the
+    server. Insecure groupownership of this file could allow users to grant clients unrestricted
+    access or no access at all to services in the server.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/hosts.allow", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/hosts.allow", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/hosts.allow
+        filemode: '0644'

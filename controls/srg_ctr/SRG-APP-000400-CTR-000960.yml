@@ -1,0 +1,22 @@
+controls:
+- id: SRG-APP-000400-CTR-000960
+  levels:
+  - medium
+  title: {{{ full_name }}} must prohibit the use of cached authenticators after
+    an organization-defined time period.
+  status: automated
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/authentication/configuring-internal-oauth.html#oauth-configuring-internal-oauth_configuring-internal-oauth
+  status_justification: |-
+    By default, OpenShift Oauth tokens that permit interaction with the API Server are only valid for 24 hours. Expired tokens are not honored.
+    To confirm the current timeout value of an OpenShift 4.x cluster, run the following:
+    `oc describe oauth.config.openshift.io/cluster` and reference the `Spec.Access Token Max Age Seconds` Key value.
+
+     To configure the duration of a token change the `Spec.Access Token Max Age Seconds` value.
+    `oc edit oauth.config.openshift.io/cluster`
+    See:
+    https://docs.openshift.com/container-platform/latest/authentication/configuring-internal-oauth.html#oauth-configuring-internal-oauth_configuring-internal-oauth
+  rules:
+  - oauth_or_oauthclient_token_maxage

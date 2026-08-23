@@ -1,0 +1,10 @@
+name: package_ntp_eq_1_0
+original_expression: package[ntp]==1.0
+xml_content: <ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="package_ntp_eq_1_0"><ns0:logical-test
+    operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:ntp:eq:1.0" /></ns0:logical-test></ns0:platform>
+bash_conditional: rpm --quiet -q ntp && { real=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}'
+    ntp); ver=1.0;[[ "$real" == "$ver" ]]; }
+ansible_conditional: '"ntp" in ansible_facts.packages and (ansible_facts.packages["ntp"]
+    | last)["version"] is version("1.0", "==")'
+title: ''
+documentation_complete: true

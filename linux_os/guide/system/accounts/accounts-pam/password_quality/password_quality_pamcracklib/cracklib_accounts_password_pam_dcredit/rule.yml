@@ -1,0 +1,56 @@
+documentation_complete: true
+
+
+title: 'Set Password Strength Minimum Digit Characters'
+
+description: |-
+    The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements
+    for usage of digits in a password. When set to a negative number, any
+    password will be required to contain that many digits. When set to a
+    positive number, pam_cracklib will grant +1 additional length credit for
+    each digit. Add <tt>dcredit=-1</tt> after pam_cracklib.so to require use of
+    a digit in passwords.
+
+rationale: |-
+    Requiring digits makes password guessing attacks more difficult by ensuring
+    a larger search space.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83168-5
+    cce@sle15: CCE-85564-3
+    cce@sle16: CCE-96207-6
+    cce@slmicro5: CCE-93764-9
+    cce@slmicro6: CCE-94639-2
+
+references:
+    cis@sle12: 5.3.1
+    cis@sle15: 5.3.1
+    nist@sle12: IA-5(a),IA-5(v)
+    pcidss: Req-8.2.3
+    srg: SRG-OS-000071-GPOS-00039
+    stigid@sle12: SLES-12-010170
+
+ocil_clause: 'dcredit is not found or not set to the required value'
+
+ocil: |-
+    To check how many digits are required in a password, run the following
+    command:
+    <pre># grep pam_cracklib /etc/pam.d/common-password
+    password requisite pam_cracklib.so dcredit={{{ xccdf_value("var_password_pam_dcredit") }}}</pre>
+    The <tt>dcredit</tt> parameter (as a negative number) will indicate how
+    many digits are required.
+    The profile requires at least {{{ xccdf_value("var_password_pam_dcredit") }}} digit in a password.
+    This would appear as <tt>dcredit=-{{{ xccdf_value("var_password_pam_dcredit") }}}</tt>.
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - variable: dcredit
+          operation: less than or equal

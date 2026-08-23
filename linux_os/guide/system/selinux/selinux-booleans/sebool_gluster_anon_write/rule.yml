@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the gluster_anon_write SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>gluster_anon_write</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="gluster_anon_write") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="gluster_anon_write") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: gluster_anon_write

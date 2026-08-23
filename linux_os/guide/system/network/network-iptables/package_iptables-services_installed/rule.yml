@@ -1,0 +1,31 @@
+documentation_complete: true
+
+
+title: 'Install iptables-services Package'
+
+description: |-
+    {{{ describe_package_install(package="iptables-services") }}}
+
+rationale: |-
+    <tt>iptables-services</tt> provides the services iptables and ip6tables that have been split
+    out of the base package since they are not active by default anymore.
+    These services load the iptables rules during the system startup and also allow one to reload
+    the iptables rules during runtime.
+
+severity: medium
+
+platform: package[iptables]
+
+identifiers:
+    cce@rhel8: CCE-85982-7
+
+references:
+    nist: CM-6(a)
+    srg: SRG-OS-000480-GPOS-00227
+
+{{{ complete_ocil_entry_package_installed("iptables-services") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: iptables-services

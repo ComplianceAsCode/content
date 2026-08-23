@@ -1,0 +1,5 @@
+deny_templated_scenarios:
+  # this rule uses chrony package originated user and group
+  # so we cannot use the template tests, since they are not per package limited
+  - incorrect_groupowner.fail.sh
+  - correct_groupowner.pass.sh

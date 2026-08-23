@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}} - Backup the Old /etc/passwd File"
+  ansible.builtin.copy:
+    src: /etc/passwd
+    dest: /etc/passwd-
+    remote_src: true
+    mode: 0644
+
+- name: "{{{ rule_title }}} - Remove Lines Starting with + From /etc/passwd"
+  ansible.builtin.lineinfile:
+    regexp: '^\+.*$'
+    state: absent
+    path: /etc/passwd

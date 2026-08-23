@@ -1,0 +1,47 @@
+---
+documentation_complete: true
+
+metadata:
+    version: V2R8
+    SMEs:
+        - mab879
+        - ggbecker
+
+reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+
+title: 'DISA STIG with GUI for Red Hat Enterprise Linux 8'
+
+description: |-
+    This profile contains configuration checks that align to the
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V2R8.
+
+    In addition to being applicable to Red Hat Enterprise Linux 8, this
+    configuration baseline is applicable to the operating system tier of
+    Red Hat technologies that are based on Red Hat Enterprise Linux 8, such as:
+
+    - Red Hat Enterprise Linux Server
+    - Red Hat Enterprise Linux Workstation and Desktop
+    - Red Hat Enterprise Linux for HPC
+    - Red Hat Storage
+    - Red Hat Containers with a Red Hat Enterprise Linux 8 image
+
+    Warning: The installation and use of a Graphical User Interface (GUI)
+    increases your attack vector and decreases your overall security posture. If
+    your Information Systems Security Officer (ISSO) lacks a documented operational
+    requirement for a graphical user interface, please consider using the
+    standard DISA STIG for Red Hat Enterprise Linux 8 profile.
+
+extends: stig
+
+selections:
+    # RHEL-08-040320
+    - '!xwindows_remove_packages'
+
+    # RHEL-08-040321
+    - '!xwindows_runlevel_target'
+
+    # RHEL-08-040001
+    - '!package_libreport-plugin-rhtsupport_removed'
+
+    # locking of idle sessions is handled by screensaver when GUI is present, the following rule is therefore redundant
+    - '!logind_session_timeout'

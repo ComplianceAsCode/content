@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000447-GPOS-00201
+        levels:
+            - medium
+        title: {{{ full_name }}} must shut down the information system, restart the information
+            system, and/or notify the system administrator when anomalies in the operation
+            of any security functions are discovered.
+        rules:
+            - aide_periodic_cron_checking
+            - aide_scan_notification
+        status: automated

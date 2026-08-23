@@ -1,0 +1,35 @@
+documentation_complete: true
+
+
+title: 'SSH client uses strong entropy to seed (Bash-like shells)'
+
+description: |-
+    To set up SSH client to use entropy from a high-quality source, make sure
+    that the appropriate shell environment variable is configured. The
+    <tt>SSH_USE_STRONG_RNG</tt> environment variable determines how many bytes
+    of entropy to use. Make sure that the file
+    <tt>/etc/profile.d/cc-ssh-strong-rng.sh</tt> contains line
+    <pre>export SSH_USE_STRONG_RNG=32</pre>.
+
+rationale: |-
+    Some SSH implementations use the openssl library for entropy, which by default, doesn't use high-entropy sources.
+    Randomness is needed to generate considerably more secure data-encryption keys. Plaintext padding, initialization vectors
+    in encryption algorithms, and high-quality entropy eliminates the possibility that the output of
+    the random number generator used by SSH would be known to potential attackers.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83346-7
+    cce@rhel10: CCE-86267-2
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'SSH client is not configured to use 32 bytes of entropy or more'
+
+ocil: |-
+    Run the following command to verify that SSH client is configured to use 32 bytes of entropy:
+    <pre>grep SSH_USE_STRONG_RNG /etc/profile.d/cc-ssh-strong-rng.sh</pre>
+    The output should be:
+    <pre>export SSH_USE_STRONG_RNG=32</pre>

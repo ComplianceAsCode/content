@@ -1,0 +1,72 @@
+policy: ABCD Benchmark for securing Linux systems
+title: ABCD Benchmark for securing Linux systems
+id: abcd
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+controls:
+  - id: R1
+    title: User session timeout
+    description: >-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+    automated: yes
+    rules:
+    - sshd_set_idle_timeout
+    - accounts_tmout
+    - var_accounts_tmout=10_min
+    - configure_crypto_policy
+    notes: >-
+      Certain period of inactivity is vague.
+  - id: R2
+    title: Minimization of configuration
+    description: >-
+      The features configured at the level of launched services
+      should be limited to the strict minimum.
+    rationale: >-
+      Minimization of configuration helps to reduce attack surface.
+    automated: no
+    notes: >-
+      This is individual depending on the system workload
+      therefore needs to be audited manually.
+    related_rules:
+       - systemd_target_multi_user
+  - id: R3
+    title: Enabling SELinux targeted Policy
+    description: >-
+      It is recommended to enable SELinux in enforcing mode
+      and to use the targeted policy.
+    automated: yes
+  - id: R4
+    title: Configure authentication
+    description: >- 
+      Ensure authentication methods are functional to prevent
+      unauthorized access to the system.
+    controls:
+      - id: R4.a
+        title: Disable administrator accounts
+        automated: yes
+        rules:
+          -  accounts_passwords_pam_faillock_deny_root
+      - id: R4.b
+        title: Enforce password quality standards
+        automated: yes
+        rules:
+          - accounts_password_pam_minlen
+          - accounts_password_pam_ocredit
+          - var_password_pam_ocredit=1
+  -   id: R5
+      title: The product must provide automated mechanisms for supporting account management functions.
+      status: does not meet
+      fixtext: There is no fixtext.
+      check: There is no check.
+      mitigation: |-
+        Mitigate with third-party software.
+
+        Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+      description:
+        The operating system must provide automated mechanisms for supporting account management functions.
+      rationale:
+        Enterprise environments make account management challenging and complex.
+        A manual process for account management functions adds the risk of a potential oversight or other errors.
+      status_justification:
+        Mitigate with third-party software.

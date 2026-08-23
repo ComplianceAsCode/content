@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: "Disable Samba"
+
+description: |-
+    {{{ describe_service_disable(service="smb") }}}
+
+rationale: |-
+    Running a Samba server provides a network-based avenue of attack, and
+    should be disabled if not needed.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82759-2
+    cce@rhel9: CCE-84201-3
+    cce@sle12: CCE-92250-0
+    cce@sle15: CCE-91370-7
+    cce@slmicro5: CCE-93892-8
+
+references:
+    cis@sle12: 2.2.13
+    cis@sle15: 2.2.13
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="smb") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="smb") }}}
+
+platform: system_with_kernel
+
+template:
+    name: service_disabled
+    vars:
+        servicename: smb
+        servicename@debian13: smbd
+        servicename@ubuntu2204: smbd
+        servicename@ubuntu2404: smbd
+        packagename: samba

@@ -1,0 +1,34 @@
+documentation_complete: true
+
+
+title: 'Install the pcsc-lite package'
+
+description: |-
+    {{{ describe_package_install(package="pcsc-lite") }}}
+
+rationale: |-
+    The pcsc-lite package must be installed if it is to be available for
+    multifactor authentication using smartcards.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80993-9
+    cce@rhel9: CCE-86280-5
+    cce@rhel10: CCE-88682-0
+
+references:
+    nist: CM-6(a)
+    srg: SRG-OS-000375-GPOS-00160
+
+{{{ complete_ocil_entry_package_installed("pcsc-lite") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: pcsc-lite
+
+fixtext: |-
+    {{{ fixtext_package_installed(package="pcsc-lite") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_package_installed("pcsc-lite") }}}'

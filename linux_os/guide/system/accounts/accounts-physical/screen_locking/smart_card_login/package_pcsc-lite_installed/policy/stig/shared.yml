@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the pcsc-lite package installed.
+
+vuldiscussion: |-
+    The pcsc-lite package must be installed if it is to be available for multifactor authentication using smart cards.
+
+checktext: |-
+    Note: If the system administrator (SA) demonstrates the use of an approved alternate multifactor authentication method, this requirement is Not Applicable.
+
+    Verify that {{{ full_name }}} has the pcsc-lite package installed with the following command:
+
+    $ dnf list --installed pcsc-lite
+
+    Example output:
+
+    pcsc-lite.x86_64          1.9.4-1.el9
+
+    If the "pcsc-lite" package is not installed, this is a finding.
+
+fixtext: |-
+    The  pcsc-lite  package can be installed with the following command:
+
+    $ sudo dnf install pcsc-lite
+
+

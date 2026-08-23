@@ -1,0 +1,48 @@
+documentation_complete: true
+
+title: 'Verify nftables Service is Enabled'
+
+description: |-
+    The nftables service allows for the loading of nftables rulesets during boot,
+    or starting on the nftables service
+    {{{ describe_service_enable(service="nftables") }}}
+
+rationale: |-
+    The nftables service restores the nftables rules from the rules files referenced
+    in the <tt>/etc/sysconfig/nftables.conf</tt> file during boot or the starting of
+    the nftables service
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86725-9
+    cce@sle15: CCE-92560-2
+    cce@slmicro5: CCE-93983-5
+
+references:
+    cis@sle15: 3.5.2.9
+
+ocil_clause: '{{{ ocil_clause_service_enabled("nftables") }}}'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="nftables") }}}
+
+fixtext: |-
+    {{{ fixtext_service_enabled("nftables") }}}
+
+platform: system_with_kernel and package[nftables] and service_disabled[firewalld]
+
+{{%- if product in [ "sle12", "sle15", "ubuntu2404" ] %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: nftables
+        servicename: nftables
+        variable: var_network_filtering_service
+        value: nftables
+{{%- else %}}
+template:
+    name: service_enabled
+    vars:
+        servicename: nftables
+{{%- endif %}}

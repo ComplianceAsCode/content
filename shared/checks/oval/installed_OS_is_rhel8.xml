@@ -1,0 +1,92 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_rhel8" version="1">
+    <metadata>
+      <title>Red Hat Enterprise Linux 8</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:enterprise_linux:8"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 8</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_rhel8_unix_family" />
+      <criteria operator="OR">
+        <criteria operator="AND" comment="RHEL 8 is installed">
+          <criterion comment="RHEL 8 is installed" test_ref="test_rhel8" />
+          <!-- This prevent false positive RHEL8 in OL8 because OL8 has redhat-release package present-->
+          <extend_definition comment="Installed OS is not OL8" definition_ref="installed_OS_is_ol8" negate="true"/>
+        </criteria>
+        <criteria operator="AND" comment="Red Hat Enterprise Virtualization Host is installed">
+          <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
+          <criterion comment="Red Hat Enterprise Virtualization Host is based on RHEL 8" test_ref="test_rhevh_rhel8_version" />
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_rhel8_unix_family" version="1">
+    <ind:object object_ref="obj_rhel8_unix_family" />
+    <ind:state state_ref="state_rhel8_unix_family" />
+  </ind:family_test>
+  <ind:family_state id="state_rhel8_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_rhel8_unix_family" version="1" />
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release is version 8" id="test_rhel8" version="1">
+    <linux:object object_ref="obj_rhel8" />
+    <linux:state state_ref="state_rhel8" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_rhel8" version="1">
+    <linux:version operation="pattern match">^8\.\d{1,2}$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_rhel8" version="1">
+    <linux:name>redhat-release</linux:name>
+  </linux:rpminfo_object>
+
+  {{% for minorversion in range(0, 11) %}}
+  <definition class="inventory" id="installed_OS_is_rhel8_{{{ minorversion }}}" version="1">
+    <metadata>
+      <title>Red Hat Enterprise Linux 8.{{{ minorversion }}}</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 8.{{{ minorversion }}}</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:enterprise_linux:8.{{{ minorversion }}}" source="CPE" />
+      <description>The operating system installed on the system is Red Hat Enterprise Linux 8.{{{ minorversion }}}</description>
+    </metadata>
+    <criteria>
+      <criterion comment="RHEL 8.{{{ minorversion }}} is installed" test_ref="test_rhel8_{{{ minorversion }}}" />
+    </criteria>
+  </definition>
+
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release is version 8.{{{ minorversion }}}"
+   id="test_rhel8_{{{ minorversion }}}" version="1">
+    <linux:object object_ref="obj_rhel8_{{{ minorversion }}}" />
+    <linux:state state_ref="state_rhel8_{{{ minorversion }}}" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_rhel8_{{{ minorversion }}}" version="1">
+    <linux:version operation="pattern match">^8.{{{ minorversion }}}*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_rhel8_{{{ minorversion }}}" version="1">
+    <linux:name>redhat-release</linux:name>
+  </linux:rpminfo_object>
+  {{% endfor %}}
+
+  <ind:textfilecontent54_test check="all" comment="RHEVH base RHEL is version 8" id="test_rhevh_rhel8_version" version="1">
+    <ind:object object_ref="obj_rhevh_rhel8_version" />
+    <ind:state state_ref="state_rhevh_rhel8_version" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhevh_rhel8_version" version="1">
+    <ind:filepath>/etc/redhat-release</ind:filepath>
+    <ind:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhevh_rhel8_version" version="1">
+    <ind:subexpression operation="pattern match">8</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

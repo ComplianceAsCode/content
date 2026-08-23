@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Enable Auditing to Start Prior to the Audit Daemon in zIPL'
+
+description: |-
+    To ensure all processes can be audited, even those which start prior to the audit daemon,
+    check that all boot entries in <tt>/boot/loader/entries/*.conf</tt> have <tt>audit=1</tt>
+    included in its options.<br />
+
+    To ensure that new kernels and boot entries continue to enable audit,
+    add <tt>audit=1</tt> to <tt>/etc/kernel/cmdline</tt>.
+
+rationale: |-
+    Each process on the system carries an "auditable" flag which indicates whether
+    its activities can be audited. Although <tt>auditd</tt> takes care of enabling
+    this for all processes which launch after it does, adding the kernel argument
+    ensures it is set for every process during boot.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83321-0
+    cce@rhel9: CCE-84096-7
+    cce@rhel10: CCE-88929-5
+
+references:
+    ospp: FAU_GEN.1
+
+ocil_clause: 'auditing is not enabled at boot time'
+
+ocil: |-
+  To check that audit is enabled at boot time, check all boot entries with following command:
+  <pre>sudo grep -L "^options\s+.*\baudit=1\b" /boot/loader/entries/*.conf</pre>
+  No line should be returned, each line returned is a boot entry that doesn't enable audit.
+
+platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: audit
+    arg_value: '1'

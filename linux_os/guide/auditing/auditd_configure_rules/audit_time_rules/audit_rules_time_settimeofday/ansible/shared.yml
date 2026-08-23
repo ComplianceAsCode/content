@@ -1,0 +1,54 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Set architecture for audit tasks
+  set_fact:
+    audit_arch: "b64"
+  when:
+  - ansible_architecture == "aarch64" or
+    ansible_architecture == "ppc64" or
+    ansible_architecture == "ppc64le" or
+    ansible_architecture == "s390x" or
+    ansible_architecture == "x86_64"
+
+- name: Perform remediation of Audit rules for settimeofday for 32bit platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="",
+      syscalls=["settimeofday"],
+      key="audit_time_rules",
+      syscall_grouping=["adjtimex", "settimeofday", "stime"],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="",
+      syscalls=["settimeofday"],
+      key="audit_time_rules",
+      syscall_grouping=["adjtimex", "settimeofday", "stime"],
+      )|indent(4) }}}
+
+- name: Perform remediation of Audit rules for settimeofday for 64bit platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="",
+      syscalls=["settimeofday"],
+      key="audit_time_rules",
+      syscall_grouping=["adjtimex", "settimeofday", "stime"],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="",
+      syscalls=["settimeofday"],
+      key="audit_time_rules",
+      syscall_grouping=["adjtimex", "settimeofday", "stime"],
+      )|indent(4) }}}
+  when: audit_arch == "b64"

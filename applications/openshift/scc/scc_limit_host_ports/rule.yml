@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Limit Containers Ability to bind to privileged ports'
+
+description: |-
+    Containers should be limited to bind to non-privileged ports directly
+    on the hosts. To prevent containers from binding to privileged ports
+    on the host the appropriate Security Context Constraints (SCCs)
+    should set <tt>allowHostPorts</tt> to <tt>false</tt>.
+
+rationale: |-
+    Privileged ports are those ports below 1024 and that require system
+    privileges for their use. If containers are able to use these ports,
+    the container must be run as a privileged user. The container platform
+    must stop containers that try to map to these ports directly. Allowing
+    non-privileged ports to be mapped to the container-privileged port
+    is the allowable method when a certain port is needed. An example is
+    mapping port 8080 externally to port 80 in the container.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86205-2
+
+references:
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000142-CTR-000330
+
+ocil_clause: 'allowHostPorts usage in SCCs needs review'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC for those that have <tt>allowHostPorts</tt> set to <tt>true</tt>.
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that have <tt>allowHostPorts</tt>, examine the associated
+    rolebindings to account for the users that are bound to the role. Review the
+    account to determine if <tt>allowHostPorts</tt> is truly required.

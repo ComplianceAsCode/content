@@ -1,0 +1,94 @@
+documentation_complete: true
+
+
+title: "Set kernel parameter 'crypto.fips_enabled' to 1"
+
+description: |-
+    System running in FIPS mode is indicated by kernel parameter
+    <tt>'crypto.fips_enabled'</tt>. This parameter should be set to <tt>1</tt> in FIPS mode.
+    {{% if 'rhel' not in product %}}
+    To enable FIPS mode, run the following command:
+    <pre>fips-mode-setup --enable</pre>
+    {{% else %}}
+    {{{ full_name }}} has an installation-time kernel flag that can enable FIPS mode.
+    The installer must be booted with <tt>fips=1</tt> for the system to have FIPS mode
+    enabled. Enabling FIPS mode on a preexisting system is not supported. If
+    this rule fails on an installed system, then this is a permanent
+    finding and cannot be fixed.
+    {{% endif %}}
+
+
+    To enable strict FIPS compliance, the fips=1 kernel option needs to be added to the kernel boot
+    parameters during system installation so key generation is done with FIPS-approved algorithms
+    and continuous monitoring tests in place.
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-84027-2
+    cce@rhel9: CCE-83441-6
+    cce@rhel10: CCE-89047-5
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
+    nist: SC-12(2),SC-12(3),IA-7,SC-13,CM-6(a),SC-12
+    srg: SRG-OS-000033-GPOS-00014,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174,SRG-OS-000396-GPOS-00176,SRG-OS-000423-GPOS-00187,SRG-OS-000478-GPOS-00223
+    stigid@ol8: OL08-00-010020
+
+ocil_clause: 'crypto.fips_enabled is not 1'
+
+ocil: |-
+    To verify that kernel parameter 'crypto.fips_enabled' is set properly, run the following command:
+    <pre>sysctl crypto.fips_enabled</pre>
+    The output should contain the following:
+    <pre>crypto.fips_enabled = 1</pre>
+
+warnings:
+    - general: |-
+    {{% if 'rhel' not in product %}}
+        The system needs to be rebooted for these changes to take effect.
+    {{% else %}}
+        If this check fails on an installed system, it is a permanent finding until the system is reinstalled with "fips=1" during installation.
+    {{% endif %}}
+    - regulatory: |-
+        System Crypto Modules must be provided by a vendor that undergoes FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use cryptographic-based security
+        systems to protect sensitive information in computer and telecommunication systems
+        (including voice systems) as defined in Section 5131 of the Information Technology
+        Management Reform Act of 1996, Public Law 104-106. This standard shall be used in designing
+        and implementing cryptographic modules that Federal departments and agencies operate or are
+        operated for them under contract.
+        See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by a vendor that has
+        undergone this certification. This means providing documentation, test results, design
+        information, and independent third party review by an accredited lab. While open source
+        software is capable of meeting this, it does not meet FIPS-140 unless the vendor submits to
+        this process.
+
+fixtext: |-
+    Configure the operating system to implement FIPS mode with the following command:
+
+    $ sudo fips-mode-setup --enable
+
+    Reboot the system for the changes to take effect.
+
+srg_requirement:
+    '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to
+    provision digital signatures, to generate cryptographic hashes, and to
+    protect data requiring data-at-rest protections in accordance with
+    applicable federal laws, Executive Orders, directives, policies,
+    regulations, and standards.'
+
+checktext: |-
+    Verify that {{{ full_name }}} is in FIPS mode with the following command:
+    $ sudo fips-mode-setup --check
+    FIPS mode is enabled.
+    If FIPS mode is not enabled, this is a finding.
+
+platform: system_with_kernel and not osbuild

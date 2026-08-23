@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000380-CTR-000900
+  levels:
+  - medium
+  title: {{{ full_name }}} must enforce access restrictions for container platform
+    configuration changes.
+  related_rules:
+  - audit_profile_set
+  rules:
+  - rbac_least_privilege
+  status: manual

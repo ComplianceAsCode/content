@@ -1,0 +1,48 @@
+documentation_complete: true
+
+
+title: 'Ensure All Groups on the System Have Unique Group ID'
+
+description: 'Change the group name or delete groups, so each has a unique id.'
+
+rationale: 'To assure accountability and prevent unauthenticated access, groups must be identified uniquely to prevent potential misuse and compromise of the system.'
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86201-1
+    cce@rhel9: CCE-86043-7
+    cce@rhel10: CCE-86908-1
+    cce@sle12: CCE-92206-2
+    cce@sle15: CCE-91339-2
+    cce@sle16: CCE-96019-5
+    cce@slmicro5: CCE-94047-8
+
+references:
+    cis@sle12: 6.2.15
+    cis@sle15: 6.2.15
+    srg: SRG-OS-000104-GPOS-00051
+
+ocil_clause: 'the system has duplicate group ids'
+
+ocil: |-
+    Run the following command to check for duplicate group names:
+    Check that the operating system contains no duplicate Group ID (GID) for interactive users by running the following command:
+    <pre>
+        cut -d : -f 3 /etc/group | uniq -d
+    </pre>
+    If output is produced, this is a finding.
+    Configure the operating system to contain no duplicate GIDs.
+    Edit the file "/etc/group" and provide each group that has a duplicate GID with a unique GID.
+
+fixtext: |-
+    Edit the file "/etc/group" and provide each group that has a duplicate Group ID (GID) with a unique GID.
+
+srg_requirement:
+  {{{ full_name }}} groups must have unique Group ID (GID).
+
+warnings:
+    - general: |-
+          Automatic remediation of this control is not available due to the unique requirements of each system.
+
+platform: system_with_kernel

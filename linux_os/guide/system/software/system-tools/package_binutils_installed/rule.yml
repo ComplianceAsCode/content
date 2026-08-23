@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Install binutils Package'
+
+description: |-
+    {{{ describe_package_install(package="binutils") }}}
+
+rationale: |-
+    <tt>binutils</tt> is a collection of binary utilities required for
+    foundational system operator activities, such as <tt>ld</tt>,
+    <tt>nm</tt>, <tt>objcopy</tt> and <tt>readelf</tt>.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82989-5
+
+{{{ complete_ocil_entry_package_installed("binutils") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: binutils

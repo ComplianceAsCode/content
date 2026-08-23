@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the httpd_ssi_exec SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_ssi_exec</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="httpd_ssi_exec") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_ssi_exec") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_ssi_exec

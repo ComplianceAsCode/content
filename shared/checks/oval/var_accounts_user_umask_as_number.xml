@@ -1,0 +1,70 @@
+<def-group>
+  <definition class="compliance" id="var_accounts_user_umask_as_number" version="1">
+    <metadata>
+      <title>Value of 'var_accounts_user_umask' variable represented as octal number</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Value of 'var_accounts_user_umask' variable represented as octal number</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_existence_of_var_accounts_user_umask_as_number_variable" />
+    </criteria>
+  </definition>
+
+  <external_variable id="var_accounts_user_umask" datatype="string" version="1"
+  comment="Value of var_accounts_user_umask (the required umask) as string" />
+
+  <local_variable id="var_first_digit_of_umask_from_var_accounts_user_umask"
+  comment="First octal digit of umask from var_accounts_user_umask"
+  datatype="int" version="1">
+    <substring substring_start="1" substring_length="1">
+      <variable_component var_ref="var_accounts_user_umask" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_second_digit_of_umask_from_var_accounts_user_umask"
+  comment="Second octal digit of umask from var_accounts_user_umask"
+  datatype="int" version="1">
+    <substring substring_start="2" substring_length="1">
+      <variable_component var_ref="var_accounts_user_umask" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_third_digit_of_umask_from_var_accounts_user_umask"
+  comment="Third octal digit of umask from var_accounts_user_umask"
+  datatype="int" version="1">
+    <substring substring_start="3" substring_length="1">
+      <variable_component var_ref="var_accounts_user_umask" />
+    </substring>
+  </local_variable>
+
+  <local_variable id="var_accounts_user_umask_umask_as_number"
+  comment="var_accounts_user_umask umask converted from string to a number"
+  datatype="int" version="1">
+    <arithmetic arithmetic_operation="add">
+      <arithmetic arithmetic_operation="multiply">
+        <literal_component datatype="int">64</literal_component>
+        <variable_component var_ref="var_first_digit_of_umask_from_var_accounts_user_umask" />
+      </arithmetic>
+      <arithmetic arithmetic_operation="multiply">
+        <literal_component datatype="int">8</literal_component>
+        <variable_component var_ref="var_second_digit_of_umask_from_var_accounts_user_umask" />
+      </arithmetic>
+      <variable_component var_ref="var_third_digit_of_umask_from_var_accounts_user_umask" />
+    </arithmetic>
+  </local_variable>
+
+  <!-- Dummy test to check existence of 'var_accounts_user_umask_as_number' variable.
+       This allows us to reference the variable later -->
+  <ind:variable_test id="test_existence_of_var_accounts_user_umask_as_number_variable"
+  comment="Verify the existence of var_accounts_user_umask_as_number variable"
+  check="all" check_existence="at_least_one_exists" version="1">
+    <ind:object object_ref="object_var_accounts_user_umask_umask_as_number" />
+  </ind:variable_test>
+
+  <ind:variable_object id="object_var_accounts_user_umask_umask_as_number" version="1">
+    <ind:var_ref>var_accounts_user_umask_umask_as_number</ind:var_ref>
+  </ind:variable_object>
+
+</def-group>

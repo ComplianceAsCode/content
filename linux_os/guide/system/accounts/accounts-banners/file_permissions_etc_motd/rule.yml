@@ -1,0 +1,39 @@
+documentation_complete: true
+
+
+title: 'Verify permissions on Message of the Day Banner'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/motd", perms="0644") }}}
+
+rationale: |-
+    Display of a standardized and approved use notification before granting
+    access to the operating system ensures privacy and security notification
+    verbiage used is consistent with applicable federal laws, Executive Orders,
+    directives, policies, regulations, standards, and guidance.<br />
+    Proper permissions will ensure that only root user can modify the banner.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83338-4
+    cce@rhel9: CCE-83554-6
+    cce@rhel10: CCE-90411-0
+    cce@sle12: CCE-92229-4
+    cce@sle15: CCE-91351-7
+    cce@slmicro5: CCE-94052-8
+
+references:
+    cis@sle12: 1.8.1.4
+    cis@sle15: 1.8.1.4
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/motd", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/motd", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/motd
+        filemode: '0644'

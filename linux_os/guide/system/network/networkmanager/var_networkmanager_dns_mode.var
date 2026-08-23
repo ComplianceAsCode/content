@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'NetworkManager DNS Mode'
+
+type: string
+
+description: |-
+    This sets how NetworkManager handles DNS.
+
+    default - NetworkManager will update /etc/resolv.conf to reflect the nameservers provided by currently active connections.
+    none - NetworkManager will not modify /etc/resolv.conf. Used when DNS is managed manually or by another service.
+    systemd-resolved - Uses systemd-resolved to manage DNS.
+
+interactive: true
+
+operator: 'equals'
+
+options:
+    none: none
+    default: default
+    explicit_default: default
+    systemd_resolved: systemd-resolved

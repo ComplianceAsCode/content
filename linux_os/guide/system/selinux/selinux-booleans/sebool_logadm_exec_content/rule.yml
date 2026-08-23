@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Enable the logadm_exec_content SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>logadm_exec_content</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    {{{ describe_sebool_enable(sebool="logadm_exec_content") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="logadm_exec_content") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: logadm_exec_content

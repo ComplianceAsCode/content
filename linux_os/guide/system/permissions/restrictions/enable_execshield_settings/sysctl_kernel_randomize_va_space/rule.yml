@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'Enable Randomized Layout of Virtual Address Space'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.randomize_va_space", value="2") }}}'
+
+rationale: |-
+    Address space layout randomization (ASLR) makes it more difficult for an
+    attacker to predict the location of attack code they have introduced into a
+    process's address space during an attempt at exploitation. Additionally,
+    ASLR makes it more difficult for an attacker to know the location of
+    existing code in order to re-purpose it using return oriented programming
+    (ROP) techniques.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-88128-4
+    cce@rhel8: CCE-80916-0
+    cce@rhel9: CCE-83971-2
+    cce@rhel10: CCE-87876-9
+    cce@sle12: CCE-83146-1
+    cce@sle15: CCE-83300-4
+    cce@sle16: CCE-96568-1
+    cce@slmicro5: CCE-93628-6
+    cce@slmicro6: CCE-94728-3
+
+references:
+    cis@sle12: 1.6.3
+    cis@sle15: 1.6.3
+    cui: 3.1.7
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
+    nerc-cip: CIP-002-5 R1.1,CIP-002-5 R1.2,CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 4.1,CIP-004-6 4.2,CIP-004-6 R2.2.3,CIP-004-6 R2.2.4,CIP-004-6 R2.3,CIP-004-6 R4,CIP-005-6 R1,CIP-005-6 R1.1,CIP-005-6 R1.2,CIP-007-3 R3,CIP-007-3 R3.1,CIP-007-3 R5.1,CIP-007-3 R5.1.2,CIP-007-3 R5.1.3,CIP-007-3 R5.2.1,CIP-007-3 R5.2.3,CIP-007-3 R8.4,CIP-009-6 R.1.1,CIP-009-6 R4
+    nist: SC-30,SC-30(2),CM-6(a)
+    pcidss: Req-2.2.1
+    srg: SRG-OS-000433-GPOS-00193,SRG-OS-000480-GPOS-00227,SRG-APP-000450-CTR-001105
+    stigid@ol7: OL07-00-040201
+    stigid@ol8: OL08-00-010430
+    stigid@sle12: SLES-12-030330
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.randomize_va_space", value="2") }}}
+
+srg_requirement: '{{{ full_name }}} must implement address space layout randomization (ASLR) to protect its memory from unauthorized code execution.'
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.randomize_va_space
+        sysctlval: '2'
+        datatype: int
+{{% if "openeuler" in product or "kylinsecserver" in product %}}
+        missing_parameter_pass: 'true'
+{{% endif %}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to implement virtual address space randomization.
+    {{{ fixtext_sysctl("kernel.randomize_va_space", "2") | indent(4) }}}

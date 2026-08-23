@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Uninstall cyrus-imapd Package'
+
+description: |-
+    {{{ describe_package_remove(package="cyrus-imapd") }}}
+
+rationale: |-
+    If there is no need to make the cyrus-imapd software available,
+    removing it provides a safeguard against its activation.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: CCE-88119-3
+    cce@rhel9: CCE-88120-1
+    cce@rhel10: CCE-90156-1
+    cce@sle15: CCE-92595-8
+
+{{{ complete_ocil_entry_package_removed("cyrus-imapd") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: cyrus-imapd

@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Record Any Attempts to Run seunshare'
+
+description: |-
+    {{{ describe_arpc("/usr/sbin/seunshare")}}}
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have compromised system accounts,
+    is a serious and ongoing concern and can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify
+    the risk from insider and advanced persistent threats.
+    <br /><br />
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82574-5
+    cce@rhel8: CCE-80933-5
+    cce@rhel9: CCE-83746-8
+    cce@rhel10: CCE-86735-8
+
+references:
+    nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
+
+ocil: |-
+    To verify that execution of the command is being audited, run the following command:
+    <pre>$ sudo grep "path=/usr/sbin/seunshare" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
+    The output should return something similar to:
+    <pre>-a always,exit -F path=/usr/sbin/seunshare {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/sbin/seunshare

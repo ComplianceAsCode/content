@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Install GNOME Software'
+
+description: |-
+    {{{ describe_package_install(package="gnome-software") }}}
+
+rationale: 'The GNOME software package must be installed so that it can be used for software and firmware updates.'
+
+severity: medium
+
+{{{ complete_ocil_entry_package_installed("gnome-software") }}}
+
+fixtext: |-
+    {{{ describe_package_install("gnome-software") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: gnome-software

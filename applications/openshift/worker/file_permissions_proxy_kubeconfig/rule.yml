@@ -1,0 +1,68 @@
+documentation_complete: true
+
+
+platform: ocp4-on-sdn
+
+title: 'Verify Permissions on the Worker Proxy Kubeconfig File'
+
+description: |-
+  To ensure the Kubernetes ConfigMap is mounted into the sdn daemonset pods with the
+  correct permissions, make sure that the <tt>sdn-config</tt> ConfigMap is mounted using
+  restrictive permissions. Check that the <tt>config</tt> VolumeMount mounts the
+  <tt>sdn-config</tt> configMap with permissions set to 420:
+  <pre>
+  {
+  "configMap": {
+    "defaultMode": 420,
+    "name": "sdn-config"
+    },
+  "name": "config"
+  }
+  </pre>
+
+rationale: |-
+  The kube-proxy kubeconfig file controls various parameters of the kube-proxy
+  service in the worker node. If used, you should restrict its file permissions
+  to maintain the integrity of the file. The file should be writable by only
+  the administrators on the system.
+
+  The kube-proxy runs with the kubeconfig parameters configured as
+  a Kubernetes ConfigMap instead of a file. In this case, there is no proxy
+  kubeconfig file. But appropriate permissions still need to be set in the
+  ConfigMap mount.
+
+severity: medium
+
+identifiers:
+  cce@ocp4: CCE-84047-0
+
+
+references:
+  nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+  nist: CM-6,CM-6(1)
+  pcidss: Req-2.2
+  srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: 'The kube-proxy configuration ConfigMap mount is mounted using wrong permissions'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get -nopenshift-sdn ds sdn -ojson | jq -r '.spec.template.spec.volumes[] | select(.configMap.name == "sdn-config") | .configMap.defaultMode'</pre>
+    The output should return a value of <pre>420</pre>.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/apps/v1/namespaces/openshift-sdn/daemonsets/sdn", true) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/apps/v1/namespaces/openshift-sdn/daemonsets/sdn
+    yamlpath: spec.template.spec.volumes[:].configMap['defaultMode','name']
+    entity_check: "at least one"
+    values:
+    - key: "name"
+      value: "sdn-config"
+    - key: "defaultMode"
+      value: "420"

@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Bind Address of secure API endpoint'
+
+description: |-
+    Regular expression matching the expected bind address
+    of the secure API endpoint. Accepts both IPv4 (0.0.0.0:6443)
+    and IPv6 ([::]:6443) wildcard addresses to support
+    single-stack and dual-stack clusters.
+
+type: string
+
+operator: pattern match
+
+interactive: false
+
+options:
+    default: "^(0\\.0\\.0\\.0:6443|\\[::\\]:6443)$"

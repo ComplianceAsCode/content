@@ -1,0 +1,116 @@
+documentation_complete: true
+
+title: 'Ensure Logs Sent To Remote Host'
+
+description: |-
+    To configure rsyslog to send logs to a remote log server,
+    open <tt>/etc/rsyslog.conf</tt> and read and understand the last section of the file,
+    which describes the multiple directives necessary to activate remote
+    logging.
+    Along with these other directives, the system can be configured
+    to forward its logs to a particular log server by
+    adding or correcting one of the following lines,
+    substituting <tt><i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></tt> appropriately.
+    The choice of protocol depends on the environment of the system;
+    although TCP and RELP provide more reliable message delivery,
+    they may not be supported in all environments.
+    <br />
+    To use UDP for log message delivery:
+    <pre>*.* @<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    <br />
+    Or in RainerScript:
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="udp")</pre>
+    <br />
+    To use TCP for log message delivery:
+    <pre>*.* @@<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    <br />
+    Or in RainerScript:
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="tcp")</pre>
+    <br />
+    To use RELP for log message delivery:
+    <pre>*.* :omrelp:<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    <br />
+    Or in RainerScript:
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="relp")</pre>
+    <br />
+    There must be a resolvable DNS CNAME or Alias record set to "{{{ xccdf_value("rsyslog_remote_loghost_address") }}}" for logs to be sent correctly to the centralized logging utility.
+
+rationale: |-
+    A log server (loghost) receives syslog messages from one or more
+    systems. This data can be used as an additional log source in the event a
+    system is compromised and its local logs are suspect. Forwarding log messages
+    to a remote loghost also provides system administrators with a centralized
+    place to view the status of multiple hosts within the enterprise.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80863-4
+    cce@rhel9: CCE-83990-2
+    cce@rhel10: CCE-90372-4
+    cce@sle12: CCE-83180-0
+    cce@sle15: CCE-85552-8
+    cce@sle16: CCE-95714-2
+
+references:
+    cis-csc: 1,13,14,15,16,2,3,5,6
+    cis@sle12: 4.2.1.5
+    cis@sle15: 4.2.1.5
+    cobit5: APO11.04,APO13.01,BAI03.05,BAI04.04,DSS05.04,DSS05.07,MEA02.01
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(B),164.308(a)(5)(ii)(C),164.308(a)(6)(ii),164.308(a)(8),164.310(d)(2)(iii),164.312(b),164.314(a)(2)(i)(C),164.314(a)(2)(iii)
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9,SR 7.1,SR 7.2'
+    iso27001-2013: A.12.1.3,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.17.2.1
+    nerc-cip: CIP-003-8 R5.2,CIP-004-6 R3.3
+    nist: CM-6(a),AU-4(1),AU-9(2)
+    nist-csf: PR.DS-4,PR.PT-1
+    srg: SRG-OS-000479-GPOS-00224,SRG-OS-000480-GPOS-00227,SRG-OS-000342-GPOS-00133
+    stigid@ol7: OL07-00-031000
+    stigid@ol8: OL08-00-030690
+    stigid@sle12: SLES-12-030340
+
+ocil_clause: 'no evidence that the audit logs are being off-loaded to another system or media'
+
+ocil: |-
+    To ensure logs are sent to a remote host, examine the file
+    <tt>/etc/rsyslog.conf</tt>.
+    If using UDP, a line similar to the following should be present:
+    <pre> *.* @<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    or
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="udp")</pre>
+    If using TCP, a line similar to the following should be present:
+    <pre> *.* @@<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    or
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="tcp")</pre>
+    If using RELP, a line similar to the following should be present:
+    <pre> *.* :omrelp:<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    or
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="relp")</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to off-load audit records onto a different system or media from the system being audited by specifying the remote logging server in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf" with the name or IP address of the log aggregation server.
+
+    *.* @@[remoteloggingserver]:[port]"
+    or
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="relp")</pre>
+
+srg_requirement: 'The {{{ full_name }}} audit records must be off-loaded onto a different system or storage media from the system being audited.'
+
+warnings:
+    - functionality: |-
+        It is important to configure queues in case the client is sending log
+        messages to a remote server. If queues are not configured,
+        the system will stop functioning when the connection
+        to the remote server is not available. Please consult Rsyslog
+        documentation for more information about configuration of queues. The
+        example configuration which should go into <tt>/etc/rsyslog.conf</tt>
+        can look like the following lines:
+        <pre>
+        $ActionQueueType LinkedList
+        $ActionQueueFileName queuefilename
+        $ActionQueueMaxDiskSpace 1g
+        $ActionQueueSaveOnShutdown on
+        $ActionResumeRetryCount -1
+        </pre>
+        Or if using Rainer Script syntax, it could be:
+        <pre>*.* action(type="omfwd" queue.type="linkedlist" queue.filename="example_fwd" action.resumeRetryCount="-1" queue.saveOnShutdown="on" target="example.com" port="30514" protocol="tcp")</pre>

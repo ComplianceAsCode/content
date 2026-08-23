@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Disable network management of chrony daemon'
+
+description: |-
+    The <tt>cmdport</tt> option in <tt>{{{ chrony_conf_path }}}</tt> can be set to
+    <tt>0</tt> to stop chrony daemon from listening on the UDP port 323
+    for management connections made by chronyc.
+
+rationale: |-
+    Minimizing the exposure of the server functionality of the chrony
+    daemon diminishes the attack surface.
+
+severity: low
+
+platform: package[chrony]
+
+identifiers:
+    cce@rhcos4: CCE-82466-4
+    cce@rhel8: CCE-82840-0
+    cce@rhel9: CCE-88876-8
+    cce@rhel10: CCE-87066-7
+
+references:
+    nist: CM-7(1)
+    srg: SRG-OS-000096-GPOS-00050,SRG-OS-000095-GPOS-00049
+    stigid@ol8: OL08-00-030742
+
+ocil_clause: 'the "cmdport" option is not set to "0", is commented out, or is missing'
+
+ocil: |-
+    Verify {{{ full_name }}} disables network management of the chrony daemon with the following command:
+    <pre>$ grep -w cmdport {{{ chrony_conf_path }}}</pre>
+    <pre>cmdport 0</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable network management of the chrony daemon by adding/modifying the following line in the {{{ chrony_conf_path }}} file:
+
+    cmdport 0
+
+srg_requirement:
+  {{{ full_name }}} must disable network management of the chrony daemon.

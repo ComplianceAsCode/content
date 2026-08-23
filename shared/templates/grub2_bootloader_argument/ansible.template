@@ -1,0 +1,11 @@
+# platform = multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
+# reboot = true
+# strategy = restrict
+# complexity = medium
+# disruption = low
+
+{{% if ARG_VARIABLE %}}
+{{{ ansible_instantiate_variables(ARG_VARIABLE) }}}
+{{% set ARG_NAME_VALUE = ARG_NAME ~ "={{ " ~ ARG_VARIABLE ~ " }}" %}}
+{{% endif %}}
+{{{ ansible_grub2_bootloader_argument(ARG_NAME, ARG_NAME_VALUE, ARG_VARIABLE) }}}

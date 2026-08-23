@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000148-CTR-000335
+  levels:
+  - medium
+  title: {{{ full_name }}} must uniquely identify and authenticate users.
+  rules:
+  - sshd_disable_root_login
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  status: automated
+

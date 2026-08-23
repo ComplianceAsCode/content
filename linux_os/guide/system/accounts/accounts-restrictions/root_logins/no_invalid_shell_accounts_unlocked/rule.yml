@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Verify Non-Interactive Accounts Are Locked'
+
+description: |-
+    Accounts meant for non-interactive purposes should be locked to prevent
+    unauthorized access. Accounts with non-standard shells (those not defined in
+    <tt>/etc/shells</tt>) should be locked using <tt>usermod -L</tt>.
+
+rationale: |-
+    Locking non-interactive accounts improves security by preventing potential
+    misuse. While many systems configure these accounts with invalid strings,
+    setting the shell field to <tt>nologin</tt> is also suggested
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88390-0
+    cce@rhel9: CCE-86746-5
+    cce@rhel10: CCE-86751-5
+    cce@sle15: CCE-92591-7
+
+warnings:
+    - general: |-
+        Automatic remediation of this control is not recommended. Locking system accounts
+        could be highly disruptive.

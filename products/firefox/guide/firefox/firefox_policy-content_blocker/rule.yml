@@ -1,0 +1,31 @@
+documentation_complete: true
+
+
+title: 'Ensure the Content Blocker uBlock Origin is Installed'
+
+description: |-
+    The uBlock Origin will be installed automatically by configuring Firefox policy, and updates will be enabled. It can also be installed through the Mozilla Add-Ons store at https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/.
+
+rationale: |-
+    The content blocking feature of uBlock Origin stops Firefox from loading content from malicious sites. The content might be a script or an image, for example. If a site is on one of the lists uBlock Origin uses, then the content will not be loaded from that site.
+    This may prevent malicious ads from confusing users and concealing the page contents, as well as the loading of content that may contain malware.
+severity: medium
+
+ocil: |-
+    To verify that the policy is modified to automatically install the content blocker and that it's updates are not disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following under ExtensionSettings:
+    <pre>"uBlock0@raymondhill.net": {</pre>
+    <pre>"    "installation_mode":"normal_installed",</pre>
+    <pre>"    "install_url":"https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",</pre>
+    <pre>"    "updates_disabled":false}</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Ensure the content blocker uBlock Origin is installed
+        policies:
+          - {path: "ExtensionSettings uBlock0@raymondhill.net", parameter: "installation_mode", value: "normal_installed"}
+          - {path: "ExtensionSettings uBlock0@raymondhill.net", parameter: "install_url", value: "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"}
+          - {path: "ExtensionSettings uBlock0@raymondhill.net", parameter: "updates_disabled", value: "false"}

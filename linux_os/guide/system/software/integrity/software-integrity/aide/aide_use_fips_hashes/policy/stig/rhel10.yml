@@ -1,0 +1,41 @@
+srg_requirement: |-
+    {{{ full_name }}} must use a file integrity tool that is configured to use FIPS 140-3-approved cryptographic hashes for validating file contents and directories.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the file integrity tool uses FIPS 140-3 cryptographic hashes for validating file and directory contents.
+
+    If AIDE is installed, ensure the "sha512" rule is present on all uncommented file and directory selection lists, and that no legacy hashes exist.
+
+    By default, AIDE excludes log files such as "/var/log" and other volatile files to reduce unnecessary notifications.
+
+checktext: |-
+    Verify {{{ full_name }}} AIDE is configured to use FIPS 140-3 file hashing.
+
+    Verify global default hash settings with the following command:
+
+    $ sudo grep -iE 'sha|md5|rmd' /etc/aide.conf | grep -v ^#
+    FIPSR = p+i+n+u+g+s+m+ftype+growing+acl+selinux+xattrs+sha512
+    ALLXTRAHASHES = sha512
+    /usr/sbin/auditctl p+i+n+u+g+s+b+acl+xattrs+sha512
+    /usr/sbin/auditd p+i+n+u+g+s+b+acl+xattrs+sha512
+    /usr/sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha512
+    /usr/sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha512
+    /usr/sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512
+    NORMAL = FIPSR+sha512
+    LSPP = FIPSR+sha512
+    DATAONLY =  R+sha512
+    /etc/gshadow  NORMAL
+    /etc/shadow   NORMAL
+
+    If any hashes other than "sha512" are present, this is a finding.
+
+    Confirm no legacy hashes exist with the following command:
+
+    $ sudo grep -iE 'md5|sha1|whirlpool|tiger' /etc/aide.conf | grep -v ^#
+
+    If any uncommented lines are returned, this is a finding.
+
+vuldiscussion: |-
+    {{{ full_name }}} installation media ships with an optional file integrity tool called Advanced Intrusion Detection Environment (AIDE). AIDE is highly configurable at install time. This requirement assumes the "aide.conf" file is under the "/etc" directory.
+
+    File integrity tools use cryptographic hashes for verifying that file contents and directories have not been altered. These hashes must be FIPS 140-3-approved cryptographic hashes.

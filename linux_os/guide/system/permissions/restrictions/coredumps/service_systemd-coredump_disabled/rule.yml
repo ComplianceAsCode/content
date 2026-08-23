@@ -1,0 +1,61 @@
+documentation_complete: true
+
+
+title: 'Disable acquiring, saving, and processing core dumps'
+
+description: |-
+    The <tt>systemd-coredump.socket</tt> unit is a socket activation of
+    the <tt>systemd-coredump@.service</tt> which processes core dumps.
+    By masking the unit, core dump processing is disabled.
+
+rationale: |-
+    A core dump includes a memory image taken at the time the operating system
+    terminates an application. The memory image could contain sensitive data
+    and is generally useful only for developers trying to debug problems.
+
+severity: medium
+
+platform: system_with_kernel
+
+identifiers:
+    cce@rhcos4: CCE-82530-7
+    cce@rhel8: CCE-82881-4
+    cce@rhel9: CCE-83974-6
+    cce@rhel10: CCE-90438-3
+
+references:
+    nist: SC-7(10)
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-010672
+
+ocil_clause: unit systemd-coredump.socket is not masked or running
+
+ocil: |-
+    To verify that acquiring, saving, and processing core dumps is disabled, run the
+    following command:
+    <pre>$ systemctl status systemd-coredump.socket</pre>
+    The output should be similar to:
+    <pre>● systemd-coredump.socket
+       Loaded: masked (Reason: Unit systemd-coredump.socket is masked.)
+       Active: inactive (dead) ...
+    </pre>
+
+fixtext: '{{{ fixtext_service_disabled("systemd-coredump") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_disabled("systemd-coredump") }}}'
+
+{{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
+conflicts:
+    - sysctl_kernel_core_pattern
+{{% endif %}}
+
+template:
+    name: socket_disabled
+    vars:
+        socketname: systemd-coredump
+{{% if product in ["ol8", "rhel8"] %}}
+        packagename: systemd
+{{% else %}}
+        packagename: systemd-udev
+{{% endif %}}

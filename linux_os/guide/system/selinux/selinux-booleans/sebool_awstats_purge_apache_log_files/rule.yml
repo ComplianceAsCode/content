@@ -1,0 +1,23 @@
+documentation_complete: true
+
+
+title: 'Disable the awstats_purge_apache_log_files SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>awstats_purge_apache_log_files</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="awstats_purge_apache_log_files") }}}
+
+rationale: ""
+
+severity: medium
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="awstats_purge_apache_log_files") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: awstats_purge_apache_log_files

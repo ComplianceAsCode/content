@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000279-GPOS-00109
+        levels:
+            - medium
+        title: {{{ full_name }}} must automatically terminate a user session after inactivity
+            time-outs have expired or at shutdown.
+        status: automated
+        rules:
+            - sshd_set_idle_timeout
+            - accounts_tmout

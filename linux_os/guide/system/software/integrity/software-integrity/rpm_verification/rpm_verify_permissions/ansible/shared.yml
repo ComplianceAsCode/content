@@ -1,0 +1,24 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = medium
+- name: "Read list of files with incorrect permissions"
+  ansible.builtin.command: rpm -Va --nodeps --nosignature --nofiledigest --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup
+  register: files_with_incorrect_permissions
+  failed_when: files_with_incorrect_permissions.rc > 1
+  changed_when: False
+  check_mode: False
+
+- name: Create list of packages
+  ansible.builtin.command: rpm -qf "{{ item }}"
+  with_items: "{{ files_with_incorrect_permissions.stdout_lines | map('regex_findall', '^[.]+[M]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
+  register: list_of_packages
+  changed_when: False
+  check_mode: False
+  when: (files_with_incorrect_permissions.stdout_lines | length > 0)
+
+- name: "Correct file permissions with RPM"
+  ansible.builtin.command: "rpm --restore '{{ item }}'"
+  with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
+  when: (files_with_incorrect_permissions.stdout_lines | length > 0)

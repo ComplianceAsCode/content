@@ -1,0 +1,20 @@
+controls:
+- id: SRG-APP-000178-CTR-000470
+  levels:
+  - medium
+  title: {{{ full_name }}} must obscure feedback of authentication information
+    during the authentication process to protect the information from possible exploitation/use
+    by unauthorized individuals.
+  status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/authentication/index.html
+  status_justification: |-
+    The OpenShift Container Platform's web console hides the user's
+    password as it is typed in. The CLI interface also hides the password as it is typed
+    via standard input on the console.  To access the API server a user must first authenticate
+    and obtain an OAuth token (or a x.509 certificate) in order send requests to the
+    API server. In this way, the user's authentication credentials (username/password)
+    are protected from discovery.
+

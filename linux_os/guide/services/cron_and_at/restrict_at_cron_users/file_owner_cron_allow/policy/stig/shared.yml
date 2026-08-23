@@ -1,0 +1,15 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    If the owner of the cron.allow file is not set to root, the possibility exists for an
+    unauthorized user to view or edit sensitive information.
+
+checktext: |-
+    To check the ownership of  /etc/cron.allow ,
+    run the command:
+     $ ls -lL /etc/cron.allow
+    If properly configured, the output should indicate the following owner:
+     root
+
+    If /etc/cron.allow does not have an owner of root, then this is a finding.

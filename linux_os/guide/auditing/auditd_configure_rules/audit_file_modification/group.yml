@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Record Unauthorized Access Attempts Events to Files (unsuccessful)'
+
+description: |-
+    At a minimum, the audit system should collect unauthorized file
+    accesses for all users and root. Note that the "-F arch=b32" lines should be
+    present even on a 64 bit system. These commands identify system calls for
+    auditing. Even if the system is 64 bit it can still execute 32 bit system
+    calls. Additionally, these rules can be configured in a number of ways while
+    still achieving the desired effect. An example of this is that the "-S" calls
+    could be split up and placed on separate lines, however, this is less efficient.
+    Add the following to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
+        -a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    If your system is 64 bit then these lines should be duplicated and the
+    arch=b32 replaced with arch=b64 as follows:
+    <pre>-a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
+        -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>

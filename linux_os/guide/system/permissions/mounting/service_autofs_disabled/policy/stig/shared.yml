@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} file system automount function must be disabled unless required.
+
+vuldiscussion: |-
+    An authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message.
+
+
+
+checktext: |-
+    Note: If the autofs service is not installed, this requirement is Not Applicable.
+
+    Verify that the {{{ full_name }}} file system automount function has been disabled with the following command:
+
+    $ systemctl is-enabled  autofs
+
+    masked
+
+    If the returned value is not "masked", "disabled", or "Failed to get unit file state for autofs.service for autofs" and is not documented as an operational requirement with the information system security officer (ISSO), this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the ability to automount devices.
+
+    The autofs service can be disabled with the following command:
+
+    $ sudo systemctl mask --now autofs.service
+
+

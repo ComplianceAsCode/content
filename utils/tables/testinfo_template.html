@@ -1,0 +1,35 @@
+{{% extends "tables_template_common.html" %}}
+
+{{% block table -%}}
+<div style="text-align: center; font-size: normal ">
+{{{ description }}}
+</div>
+<br><br>
+<table>
+  <thead>
+    <td>ID</td>
+    <td>Severity</td>
+    <td>Title</td>
+    <td>Discussion (Rationale)</td>
+    <td>Fix Text (Description)</td>
+    <td>Check Text (OCIL Check)</td>
+    <td>SRG Refs</td>
+    <td>CCI Refs</td>
+    <td>800-53 Refs</td>
+  </thead>
+{{% for rule in rules %}}
+  <tr>
+    <td>{{{ "xccdf_org.ssgproject.content_rule_" + rule.id_ }}}</td>
+    <td>{{{ rule.severity }}}</td>
+    <td>{{{ rule.title }}}</td>
+    <td>{{{ rule.rationale }}}</td>
+    <td>{{{ rule.description }}}</td>
+    <td><pre>{{{ rule.ocil }}}
+      Is it the case that {{{ rule.ocil_clause }}}?</pre></td>
+    <td>{{{ rule.references.srg | join(", ") }}}</td>
+    <td>{{{ rule.references.cci | join(", ") }}}</td>
+    <td>{{{ rule.references.nist | join(", ") }}}</td>
+  </tr>
+{{% endfor %}}
+</table>
+{{% endblock %}}

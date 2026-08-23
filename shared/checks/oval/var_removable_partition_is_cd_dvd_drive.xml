@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="var_removable_partition_is_cd_dvd_drive" version="1">
+    <metadata>
+      <title>Value of 'var_removable_partition' variable is set to '/dev/cdrom'</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Verify if value of 'var_removable_partition' variable is set
+      to '/dev/cdrom'</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_var_removable_partition_is_cd_dvd_drive"
+      comment="Check if removable partition value represents CD/DVD drive" />
+    </criteria>
+  </definition>
+
+  <!-- Check if 'var_removable_partition' variable value is set to '/dev/cdrom' -->
+  <ind:variable_test id="test_var_removable_partition_is_cd_dvd_drive" check="all"
+  comment="Check if removable partition variable value represents CD/DVD drive" version="1">
+    <ind:object object_ref="object_var_removable_partition_is_cd_dvd_drive" />
+    <ind:state state_ref="state_var_removable_partition_is_cd_dvd_drive" />
+  </ind:variable_test>
+
+  <ind:variable_object id="object_var_removable_partition_is_cd_dvd_drive" version="1">
+    <ind:var_ref>var_removable_partition</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_var_removable_partition_is_cd_dvd_drive" version="1">
+    <ind:value operation="equals">/dev/cdrom</ind:value>
+  </ind:variable_state>
+
+  <external_variable comment="removable partition" datatype="string" id="var_removable_partition" version="1" />
+
+</def-group>

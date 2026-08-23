@@ -1,0 +1,16 @@
+controls:
+    -   id: SRG-OS-000250-GPOS-00093
+        levels:
+            - high
+        title: {{{ full_name }}} must implement cryptography to protect the integrity
+            of remote access sessions.
+        rules:
+            - file_sshd_50_redhat_exists
+            - sshd_include_crypto_policy
+            - harden_sshd_ciphers_openssh_conf_crypto_policy
+            - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+            - harden_sshd_macs_openssh_conf_crypto_policy
+            - harden_sshd_macs_opensshserver_conf_crypto_policy
+            - sshd_approved_ciphers=stig_rhel9
+            - sshd_approved_macs=stig_rhel9
+        status: automated

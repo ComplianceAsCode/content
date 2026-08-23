@@ -1,0 +1,81 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Define Rsyslog Config Lines Regex in Legacy Syntax"
+  ansible.builtin.set_fact:
+    rsyslog_listen_legacy_regex:
+      '^\s*\$(((Input(TCP|RELP)|UDP)ServerRun)|ModLoad\s+(imtcp|imudp|imrelp))'
+
+- name: "{{{ rule_title }}} - Search for Legacy Config Lines in Rsyslog Main Config File"
+  ansible.builtin.find:
+    paths: "/etc"
+    pattern: "rsyslog.conf"
+    contains: "{{ rsyslog_listen_legacy_regex }}"
+  register: rsyslog_listen_legacy_main_file
+
+- name: "{{{ rule_title }}} - Search for Legacy Config Lines in Rsyslog Include Files"
+  ansible.builtin.find:
+    paths: "/etc/rsyslog.d/"
+    pattern: "*.conf"
+    contains: "{{ rsyslog_listen_legacy_regex }}"
+  register: rsyslog_listen_legacy_include_files
+
+- name: "{{{ rule_title }}} - Assemble List of Config Files With Listen Lines in Legacy Syntax"
+  ansible.builtin.set_fact:
+    rsyslog_legacy_remote_listen_files: >-
+      {{ rsyslog_listen_legacy_main_file.files | map(attribute='path') | list
+      + rsyslog_listen_legacy_include_files.files | map(attribute='path') | list }}
+
+- name: "{{{ rule_title }}} - Comment Listen Config Lines Wherever Defined Using Legacy Syntax"
+  ansible.builtin.replace:
+    path: "{{ item }}"
+    regexp: "{{ rsyslog_listen_legacy_regex }}"
+    replace: '# \1'
+  loop: "{{ rsyslog_legacy_remote_listen_files }}"
+  register: rsyslog_listen_legacy_comment
+  when:
+    - rsyslog_legacy_remote_listen_files | length > 0
+
+- name: "{{{ rule_title }}} - Define Rsyslog Config Lines Regex in RainerScript Syntax"
+  ansible.builtin.set_fact:
+    rsyslog_listen_rainer_regex: '^\s*(module|input)\((load|type)="(imtcp|imudp)".*$'
+
+- name: "{{{ rule_title }}} - Search for RainerScript Config Lines in Rsyslog Main Config File"
+  ansible.builtin.find:
+    paths: "/etc"
+    pattern: "rsyslog.conf"
+    contains: "{{ rsyslog_listen_rainer_regex }}"
+  register: rsyslog_rainer_remote_main_file
+
+- name: "{{{ rule_title }}} - Search for RainerScript Config Lines in Rsyslog Include Files"
+  ansible.builtin.find:
+    paths: "/etc/rsyslog.d/"
+    pattern: "*.conf"
+    contains: "{{ rsyslog_listen_rainer_regex }}"
+  register: rsyslog_rainer_remote_include_files
+
+- name: "{{{ rule_title }}} - Assemble List of Config Files With Listen Lines in RainerScript"
+  ansible.builtin.set_fact:
+    rsyslog_rainer_remote_listen_files: >-
+      {{ rsyslog_rainer_remote_main_file.files | map(attribute='path') | list
+      + rsyslog_rainer_remote_include_files.files | map(attribute='path') | list }}
+
+- name: "{{{ rule_title }}} - Comment Listen Config Lines Wherever Defined Using RainerScript"
+  ansible.builtin.replace:
+    path: "{{ item }}"
+    regexp: "{{ rsyslog_listen_rainer_regex }}"
+    replace: '# \1'
+  loop: "{{ rsyslog_rainer_remote_listen_files }}"
+  register: rsyslog_listen_rainer_comment
+  when:
+    - rsyslog_rainer_remote_listen_files | length > 0
+
+- name: "{{{ rule_title }}} - Restart Rsyslog if Any Line Were Commented Out"
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted
+  when:
+    - rsyslog_listen_legacy_comment is changed or rsyslog_listen_rainer_comment is changed

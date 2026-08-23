@@ -1,0 +1,30 @@
+srg_requirement: |-
+    {{{ full_name }}} must audit any script or executable called by cron as root or by any privileged user.
+
+fixtext: |-
+    Configure {{{ full_name }}} to audit the execution of any system call made by cron as root or by any privileged user.
+
+    Add or update the following file system rules to "/etc/audit/rules.d/audit.rules":
+
+    -a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec
+    -a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec
+    -a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F auid&gt;={{{ uid_min }}} -F auid!=unset -k cron_exec
+    -a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F auid&gt;={{{ uid_min }}} -F auid!=unset -k cron_exec
+
+    To load the rules to the kernel immediately, use the following command:
+
+    $ sudo augenrules --load
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to audit the execution of any system call made by cron as root or by any privileged user with the following command:
+
+    $ sudo auditctl -l | grep crond_t
+    -a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec
+    -a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F euid=0 -k cron_exec
+    -a always,exit -F arch=b64 -S execve -F subj_type=crond_t -F auid&gt;={{{ uid_min }}} -F auid!=unset -k cron_exec
+    -a always,exit -F arch=b32 -S execve -F subj_type=crond_t -F auid&gt;={{{ uid_min }}} -F auid!=unset -k cron_exec
+
+    If this command does not return the expected output, or the lines are commented out, this is a finding.
+
+vuldiscussion: |-
+    Any script or executable called by cron as root or by any privileged user must be owned by that user. It must also have the permissions 755 or more restrictive and should have no extended rights that allow any nonprivileged user to modify the script or executable.

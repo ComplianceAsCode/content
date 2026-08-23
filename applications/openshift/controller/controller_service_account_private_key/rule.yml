@@ -1,0 +1,72 @@
+documentation_complete: true
+
+
+title: 'Configure the Service Account Private Key for the Controller Manager'
+
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["service-account-private-key-file"]!=null then true else false end]' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--service-account-private-key-file") )] | length | if . ==1 then true else false end]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+
+description: |-
+    To ensure the API Server utilizes its own key pair, set the <tt>privateKeyFile</tt>
+    parameter to the public key file for service accounts in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "service-account-private-key-file": [
+        "/etc/kubernetes/static-pod-resources/secrets/service-account-private-key/service-account.key"
+      ],
+    ...
+    </pre>
+
+rationale: |-
+    By default if no private key file is specified to the
+    API Server, the API Server uses the private key from the TLS serving
+    certificate to verify service account tokens. To ensure that the keys
+    for service account tokens could be rotated as needed, a separate
+    public/private key pair should be used for signing service account
+    tokens.
+
+identifiers:
+  cce@ocp4: CCE-83526-4
+
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1),SC-8,SC-8(1)
+    pcidss: Req-2.2,Req-2.2.3,Req-2.3
+    srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: '<tt>service-account-private-key-file</tt> does not exist or is configured properly'
+
+ocil: |-
+    To verify that <tt>service-account-private-key-file</tt> is configured correctly,
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["service-account-private-key-file"]'</pre>
+    The output should return a configured private key file.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '[:]'
+    values:
+    - value: 'true'
+      type: "string"
+      entity_check: "at least one"

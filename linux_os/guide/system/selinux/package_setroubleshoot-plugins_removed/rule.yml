@@ -1,0 +1,31 @@
+documentation_complete: true
+
+
+title: 'Uninstall setroubleshoot-plugins Package'
+
+description: |-
+    The SETroubleshoot plugins are used to analyze SELinux AVC data. The service provides information around configuration errors,
+    unauthorized intrusions, and other potential errors.
+    {{{ describe_package_remove(package="setroubleshoot-plugins") }}}
+
+rationale: |-
+    The SETroubleshoot service is an unnecessary daemon to
+    have running on a server.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-84091-8
+    cce@rhel8: CCE-84250-0
+    cce@rhel9: CCE-84251-8
+    cce@rhel10: CCE-89365-1
+    cce@sle12: CCE-91582-7
+    cce@sle15: CCE-91269-1
+    cce@sle16: CCE-96431-2
+
+{{{ complete_ocil_entry_package_removed("setroubleshoot-plugins") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: setroubleshoot-plugins

@@ -1,0 +1,28 @@
+controls:
+    -   id: SRG-OS-000079-GPOS-00047
+        levels:
+            - medium
+        title:  {{{ full_name }}} must obscure feedback of authentication information
+            during the authentication process to protect the information from possible exploitation/use
+            by unauthorized individuals.
+        description: {{{ full_name }}} must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals.
+        rationale: |-
+            To prevent the compromise of authentication information, such as passwords during the authentication process, the feedback from {{{ full_name }}} must not provide any information allowing an unauthorized user to compromise the authentication mechanism.
+
+            Obfuscation of user-provided information that is typed into the system is a method used when addressing this risk.
+
+            For example, displaying asterisks when a user types in a password is an example of obscuring feedback of authentication information.
+        check: |-
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
+        fixtext: The technology inherently meets this requirement. No fix is required.
+        mitigation: |-
+            The "passwd", "login", and "sudo" do not display the passwords being typed.
+
+            The "passwd.c" from the "passwd" source code uses the "getpass" function, which is specific for retrieving passwords, thus does not provide a feedback to the terminal.
+
+            The "tgetpass.c" from the sudo source code uses "tgetpass" function, which has a similar behavior to "getpass", including not providing a terminal feedback for passwords.
+
+            The login uses pam_authenticate, which similarly does not provide a terminal feedback during password authentication.
+        status_justification: The "passwd", "login", and "sudo" commands on the system does not print any characters that are entered as a password.
+        status: inherently met

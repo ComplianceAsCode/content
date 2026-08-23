@@ -1,0 +1,45 @@
+documentation_complete: true
+
+title: 'Verify Permissions on Backup passwd File'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/passwd-", perms="0644") }}}
+
+rationale: |-
+    The <tt>/etc/passwd-</tt> file is a backup file of <tt>/etc/passwd</tt>, and as such,
+    it contains information about the users that are configured on the system.
+    Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83332-7
+    cce@rhel9: CCE-83940-7
+    cce@rhel10: CCE-86854-7
+    cce@sle12: CCE-91695-7
+    cce@sle15: CCE-91325-1
+    cce@sle16: CCE-95893-4
+    cce@slmicro5: CCE-93954-6
+
+references:
+    cis@sle12: 6.1.5
+    cis@sle15: 6.1.5
+    nist: AC-6 (1)
+    pcidss: Req-8.7.c
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/passwd-", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/passwd-", perms="-rw-r--r--") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/passwd-", mode="0644") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/passwd-", mode="0644") }}}'
+
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/passwd-
+        filemode: '0644'

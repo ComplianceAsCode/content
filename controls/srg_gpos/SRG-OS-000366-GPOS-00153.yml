@@ -1,0 +1,30 @@
+controls:
+    -   id: SRG-OS-000366-GPOS-00153
+        levels:
+            - high
+        title: {{{ full_name }}} must prevent the installation of patches, service packs,
+            device drivers, or operating system components without verification they have
+            been digitally signed using a certificate that is recognized and approved by the
+            organization.
+        rules:
+            - sysctl_kernel_kexec_load_disabled
+            - package_subscription-manager_installed
+            - ensure_gpgcheck_globally_activated
+            - ensure_gpgcheck_local_packages
+            - ensure_gpgcheck_never_disabled
+            {{% if 'ubuntu' in product %}}
+            - apt_conf_disallow_unauthenticated
+            {{% endif %}}
+            {{% if 'rhel' in product %}}
+            - ensure_redhat_gpgkey_installed
+            - package_sequoia-sq_installed
+            {{% endif %}}
+            {{% if 'ol' in families %}}
+            - ensure_oracle_gpgkey_installed
+            {{% endif %}}
+            {{% if 'almalinux' in product %}}
+            - ensure_almalinux_gpgkey_installed
+            {{% endif %}}
+            - enable_gpgcheck_for_all_repositories
+
+        status: automated

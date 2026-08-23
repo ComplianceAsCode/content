@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable the postfix_local_write_mail_spool SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>postfix_local_write_mail_spool</tt> is enabled.
+    If this setting is disabled, it should be enabled as it allows Postfix to write
+    to the mail spool directories.
+    {{{ describe_sebool_enable(sebool="postfix_local_write_mail_spool") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="postfix_local_write_mail_spool") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: postfix_local_write_mail_spool

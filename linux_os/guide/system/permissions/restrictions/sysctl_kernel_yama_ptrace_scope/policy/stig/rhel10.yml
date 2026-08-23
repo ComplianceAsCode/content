@@ -1,0 +1,30 @@
+srg_requirement: |-
+    {{{ full_name }}} must restrict usage of ptrace to descendant processes.
+
+fixtext: |-
+    Configure {{{ full_name }}} to restrict the usage of ptrace to descendant processes.
+
+    Create the drop-in if it does not already exist:
+
+    $ sudo vi /etc/sysctl.d/99-kernel_yama.ptrace_scope.conf
+
+    Add the following line to the file:
+
+    kernel.yama.ptrace_scope = 1
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
+
+checktext: |-
+    Verify {{{ full_name }}} restricts the usage of ptrace to descendant processes.
+
+    Check the status of the "kernel.yama.ptrace_scope" kernel parameter with the following command:
+
+    $ sysctl kernel.yama.ptrace_scope
+    kernel.yama.ptrace_scope = 1
+
+    If the network parameter "kernel.yama.ptrace_scope" is not equal to "1", or nothing is returned, this is a finding.
+
+vuldiscussion: |-
+    Unrestricted usage of ptrace allows compromised binaries to run ptrace on other processes of the user. The attacker can then steal sensitive information from the target processes (e.g., SSH sessions, web browser, etc.) without any additional assistance from the user (i.e., without resorting to phishing).

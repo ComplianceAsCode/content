@@ -1,0 +1,14 @@
+controls:
+    -   id: SRG-OS-000458-GPOS-00203
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records when successful/unsuccessful
+            attempts to access security objects occur.
+        rules:
+            - audit_rules_dac_modification_fremovexattr
+            - audit_rules_dac_modification_fsetxattr
+            - audit_rules_dac_modification_lremovexattr
+            - audit_rules_dac_modification_lsetxattr
+            - audit_rules_dac_modification_removexattr
+            - audit_rules_dac_modification_setxattr
+        status: automated

@@ -1,0 +1,57 @@
+documentation_complete: true
+
+
+title: 'Limit Use of the CAP_NET_RAW'
+
+description: |-
+    Containers should not enable more capabilities than needed as this
+    opens the door for malicious use. <tt>CAP_NET_RAW</tt> enables a container
+    to launch a network attack on another container or cluster. To disable the
+    <tt>CAP_NET_RAW</tt> capability, the appropriate Security Context Constraints (SCCs)
+    should set <tt>NET_RAW</tt> in <tt>requiredDropCapabilities</tt>.
+
+rationale: |-
+    By default, containers run with a default set of capabilities as assigned
+    by the Container Runtime which can include dangerous or highly privileged
+    capabilities. If the CAP_NET_RAW is enabled, it may be misused
+    by malicious containers or attackers.
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: 'NET_RAW use in SCCs needs review'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC for those that do not have <tt>NET_RAW</tt> or <tt>ALL</tt> set under <tt>requiredDropCapabilities</tt>.
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that do not drop <tt>NET_RAW</tt> or <tt>ALL</tt>, examine the
+    associated rolebindings to account for the users that are bound to the role.
+    Review each SCC and determine that either <tt>NET_RAW</tt> or <tt>ALL</tt>
+    is either included as a list entry under <tt>requiredDropCapabilities</tt>,
+    or that either <tt>NET_RAW</tt> or <tt>ALL</tt> is only enabled to a small
+    set of containers and SCCs.
+
+#template:
+#    name: yamlfile_value
+#    vars:
+#        ocp_data: "true"
+#        filepath: /apis/security.openshift.io/v1/securitycontextconstraints
+#        yamlpath: ".items[:]['requiredDropCapabilities','#'][:]"
+#        check_existence: "at_least_one_exists"
+#        entity_check: "at least one"
+#        values:
+#          - key: "requiredDropCapabilities"
+#            value: "^NET_RAW|ALL$"
+#            entity_check: "at least one"
+#            operation: "pattern match"

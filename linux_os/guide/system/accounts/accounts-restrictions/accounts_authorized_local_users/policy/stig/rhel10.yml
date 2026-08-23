@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have unauthorized accounts.
+
+fixtext: |-
+    Configure {{{ full_name }}} to have no unauthorized local interactive user accounts with the following command, where &lt;unauthorized_user&gt; is the unauthorized account:
+
+    $ sudo userdel  &lt;unauthorized_user&gt;
+
+checktext: |-
+    Verify {{{ full_name }}} has no unauthorized local interactive user accounts with the following command:
+
+    $ less /etc/passwd
+    root:x:0:0:root:/root:/bin/bash
+    ...
+    nsauser:x:1000:1000:nsauser:/home/nsauser:/bin/bash
+    doduser:x:1001:1001:doduser:/home/doduser:/bin/bash
+
+    Interactive user accounts generally will have a user ID (UID) of 1000 or greater, a home directory in a specific partition, and an interactive shell.
+
+    Obtain the list of interactive user accounts authorized to be on the system from the system administrator or information system security officer and compare it to the list of local interactive user accounts on the system.
+
+    If there are unauthorized local user accounts on the system, this is a finding.
+
+vuldiscussion: |-
+    Having lockouts persist across reboots ensures that account is unlocked only by an administrator. If the lockouts did not persist across reboots, an attacker could reboot the system to continue brute force attacks against the accounts on the system.

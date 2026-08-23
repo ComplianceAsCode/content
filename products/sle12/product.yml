@@ -1,0 +1,51 @@
+product: sle12
+full_name: SUSE Linux Enterprise 12
+type: platform
+
+families:
+  - suse
+
+major_version_ordinal: 12
+
+benchmark_id: SLE-12
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+init_system: "systemd"
+
+pkg_manager: "zypper"
+pkg_manager_config_file: "/etc/zypp/zypp.conf"
+oval_feed_url: "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.12-patch.xml.bz2"
+
+aide_bin_path: "/usr/bin/aide"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - sle12-server:
+      name: "cpe:/o:suse:linux_enterprise_server:12"
+      title: "SUSE Linux Enterprise Server 12"
+      check_id: installed_OS_is_sle12
+
+  - sle12-desktop:
+      name: "cpe:/o:suse:linux_enterprise_desktop:12"
+      title: "SUSE Linux Enterprise Desktop 12"
+      check_id: installed_OS_is_sle12
+
+platform_package_overrides:
+  login_defs: "shadow"
+  grub2: "grub2"
+  sssd: "sssd"
+  passwd: "shadow"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/suse_linux/'
+
+dconf_gdm_dir: "gdm.d"
+
+sysctl_remediate_drop_in_file: "true"
+xwindows_packages:
+  - xorg-x11-server
+  - xorg-x11-server-extra
+  - xorg-x11-server-Xvfb
+  - xwayland

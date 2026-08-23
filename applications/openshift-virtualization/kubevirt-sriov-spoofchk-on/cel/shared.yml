@@ -1,0 +1,16 @@
+check_type: Platform
+
+failure_reason: |-
+    One or more SriovNetwork resources do not set '.spec.spoofChk' to "on",
+    allowing guests to spoof layer-2 identities.
+
+inputs:
+  - name: sriovnets
+    kubernetes_input_spec:
+      api_version: sriovnetwork.openshift.io/v1
+      resource: sriovnetworks
+
+expression: |
+  sriovnets.items.all(n,
+      has(n.spec.spoofChk) && n.spec.spoofChk == "on"
+  )

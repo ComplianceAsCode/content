@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} audit log directory must have a mode of 0750 or less permissive to prevent unauthorized read access.
+
+vuldiscussion: |-
+    If users can write to audit logs, audit trails can be modified or destroyed.
+
+checktext: |-
+    Verify the audit log directories have a correct mode or less permissive mode.
+
+    Find the location of the audit logs:
+
+    $ sudo grep "^log_file" /etc/audit/auditd.conf
+
+    Find the group that owns audit logs:
+
+    $ sudo grep "^log_group" /etc/audit/auditd.conf
+
+    Run the following command to check the mode of the system audit logs:
+
+    $ sudo stat -c "%a %n" [audit_log_directory]
+
+    Replace "[audit_log_directory]" to the correct audit log directory path, by default this location is "/var/log/audit".
+
+    If the log_group is "root" or is not set, the correct permissions are 0700, otherwise they are 0750.
+
+    If audit logs have a more permissive mode, then this is a finding.
+
+fixtext: |-
+    The audit daemon must be restarted for the changes to take effect.

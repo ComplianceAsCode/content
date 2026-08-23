@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the logwatch_can_network_connect_mail SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>logwatch_can_network_connect_mail</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="logwatch_can_network_connect_mail") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="logwatch_can_network_connect_mail") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: logwatch_can_network_connect_mail

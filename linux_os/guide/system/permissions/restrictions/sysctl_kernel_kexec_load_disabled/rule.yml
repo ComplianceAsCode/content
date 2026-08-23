@@ -1,0 +1,44 @@
+documentation_complete: true
+
+
+title: 'Disable Kernel Image Loading'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}'
+
+rationale: |
+    Disabling kexec_load allows greater control of the kernel memory.
+    It makes it impossible to load another kernel image after it has been disabled.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82500-0
+    cce@rhel8: CCE-80952-5
+    cce@rhel9: CCE-83954-8
+    cce@rhel10: CCE-89232-3
+
+references:
+    nist: CM-6
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000366-GPOS-00153
+    stigid@ol8: OL08-00-010372
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}
+
+srg_requirement: '{{{ full_name }}} must prevent the loading of a new kernel for later execution.'
+
+{{% if product == "ol8" %}}
+platform: machine and not (secure_boot and kernel_uek)
+{{% else %}}
+platform: system_with_kernel
+{{% endif %}}
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.kexec_load_disabled
+        sysctlval: '1'
+        datatype: int
+
+fixtext: |-
+    {{{ fixtext_sysctl("kernel.kexec_load_disabled", "1") | indent(4) }}}

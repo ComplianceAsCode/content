@@ -1,0 +1,63 @@
+documentation_complete: true
+{{% set sshd_sysconfig = sshd_sysconfig_file %}}
+
+# TODO: The plan is not to need this for RHEL>=8.4
+# TODO: Compliant setting is SSH_USE_STRONG_RNG set to 32 or more
+
+title: 'SSH server uses strong entropy to seed'
+
+description: |-
+    To set up SSH server to use entropy from a high-quality source, edit the <tt>{{{ sshd_sysconfig }}}</tt> file.
+    The <tt>SSH_USE_STRONG_RNG</tt> configuration value determines how many bytes of entropy to use, so
+    make sure that the file contains line
+    <pre>SSH_USE_STRONG_RNG=32</pre>
+
+rationale: |-
+    SSH implementation in {{{ full_name }}} uses the openssl library, which doesn't use
+    high-entropy sources by default. Randomness is needed to generate data-encryption keys, and as
+    plaintext padding and initialization vectors in encryption algorithms, and high-quality
+    entropy eliminates the possibility that the output of the random number generator used by SSH
+    would be known to potential attackers.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82462-3
+    cce@rhel9: CCE-88165-6
+    cce@rhel10: CCE-89656-3
+
+references:
+    srg: SRG-OS-000480-GPOS-00232,SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-010292
+
+ocil: |-
+    To determine whether the SSH service is configured to use strong entropy seed,
+    run <pre>$ sudo grep SSH_USE_STRONG_RNG {{{ sshd_sysconfig }}}</pre>
+    If a line indicating that SSH_USE_STRONG_RNG is set to 32 is returned,
+    then the option is set correctly.
+
+ocil_clause: |-
+    the SSH_USE_STRONG_RNG is not set to 32 in {{{ sshd_sysconfig }}}
+
+fixtext: |-
+    Configure the {{{ full_name }}} SSH server to use strong entropy.
+
+    Add or modify the following line in the "{{{ sshd_sysconfig }}}" file.
+
+    SSH_USE_STRONG_RNG=32
+
+    The SSH service must be restarted for changes to take effect.
+
+srg_requirement: 'The {{{ full_name }}} must ensure the SSH server uses strong entropy.'
+
+warnings:
+    - general: "This setting can cause problems on computers without the hardware random generator, because insufficient entropy causes the connection to be blocked until enough entropy is available."
+
+template:
+    name: shell_lineinfile
+    vars:
+        path: '{{{ sshd_sysconfig }}}'
+        parameter: 'SSH_USE_STRONG_RNG'
+        value: '32'
+        datatype: int
+        no_quotes: 'true'

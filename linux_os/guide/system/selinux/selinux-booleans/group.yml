@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'SELinux - Booleans'
+
+
+# Please note that the `sebool` template used in this group is a bit special.
+# The Bash remediation of the template can remediate even if selinux is totally disabled, because it uses `setsebool -P`.
+# But OVAL check and Ansible remediation will not work with disabled selinux.
+# When hardening in Imagebuilder or Bootc environment, Bash remediations are used, no checks are performed.
+# therefore, the `selinux` platform guards against running OVAL or Ansible on system with selinux disabled / not present.
+# The `osbuild` and `bootc` platform allows to run Bash remediations in these environments.
+platform: selinux or bootc or osbuild
+
+description: |-
+    Enable or Disable runtime customization of SELinux system policies
+    without having to reload or recompile the SELinux policy.

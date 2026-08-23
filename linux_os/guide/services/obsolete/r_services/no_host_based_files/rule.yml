@@ -1,0 +1,45 @@
+documentation_complete: true
+
+
+title: 'Remove Host-Based Authentication Files'
+
+description: |-
+    The <tt>shosts.equiv</tt> file lists remote hosts and users that are trusted by the local
+    system. To remove these files, run the following command to delete them from any location:
+    <pre>$ sudo rm /[path]/[to]/[file]/shosts.equiv</pre>
+
+rationale: |-
+    The shosts.equiv files are used to configure host-based authentication for the system via SSH.
+    Host-based authentication is not sufficient for preventing unauthorized access to the system,
+    as it does not require interactive identification and authentication of a connection request,
+    or for the use of two-factor authentication.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-84055-3
+    cce@rhel9: CCE-90208-0
+    cce@rhel10: CCE-89350-3
+    cce@sle12: CCE-83022-4
+    cce@sle15: CCE-85622-9
+    cce@slmicro5: CCE-93741-7
+    cce@slmicro6: CCE-95051-9
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040550
+    stigid@ol8: OL08-00-010460
+    stigid@sle12: SLES-12-010410
+
+ocil_clause: 'shosts.equiv files exist'
+
+ocil: |-
+    Verify that there are no <tt>shosts.equiv</tt> files on the system, run the following command:
+    <pre>$ find / -name shosts.equiv</pre>
+
+fixtext: |-
+    Remove any found "shosts.equiv" files from the system.
+
+    $ sudo rm  /[path]/[to]/[file]/shosts.equiv
+
+srg_requirement: 'There must be no shosts.equiv files on {{{ full_name }}}'

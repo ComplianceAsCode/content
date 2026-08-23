@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000510-CTR-001310
+  levels:
+  - medium
+  title: The container runtime must generate audit records for all container execution,
+    shutdown, restart events, and program initiations.
+  related_rules:
+  - audit_profile_set
+  rules:
+  - service_auditd_enabled
+  status: automated

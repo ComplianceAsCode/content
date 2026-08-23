@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000054-GPOS-00025
+        levels:
+            - medium
+        title:  {{{ full_name }}} must provide the capability to filter audit records
+            for events of interest based upon all audit fields within audit records.
+        rules:
+            - service_auditd_enabled
+            - package_audit_installed
+        status: automated

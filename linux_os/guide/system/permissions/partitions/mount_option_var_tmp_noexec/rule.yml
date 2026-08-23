@@ -1,0 +1,46 @@
+documentation_complete: true
+
+
+title: 'Add noexec Option to /var/tmp'
+
+description: |-
+    The <tt>noexec</tt> mount option can be used to prevent binaries
+    from being executed out of <tt>/var/tmp</tt>.
+    {{{ describe_mount(option="noexec", part="/var/tmp") }}}
+
+rationale: |-
+    Allowing users to execute binaries from world-writable directories
+    such as <tt>/var/tmp</tt> should never be necessary in normal operation and
+    can expose the system to potential compromise.
+
+{{{ complete_ocil_entry_mount_option("/var/tmp", "noexec") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82866-5
+    cce@rhel8: CCE-82151-2
+    cce@rhel9: CCE-83866-4
+    cce@rhel10: CCE-87347-1
+    cce@sle12: CCE-91592-6
+    cce@sle15: CCE-91278-2
+    cce@sle16: CCE-95723-3
+
+references:
+    cis@sle12: 1.1.12
+    cis@sle15: 1.1.12
+    srg: SRG-OS-000368-GPOS-00154
+    stigid@ol8: OL08-00-040134
+
+platform: mount[var-tmp]
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /var/tmp
+        mountoption: noexec
+
+fixtext: |-
+    {{{ fixtext_mount_option("/var/tmp", "noexec") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/var/tmp", "noexec") }}}'

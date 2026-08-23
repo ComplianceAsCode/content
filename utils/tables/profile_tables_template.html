@@ -1,0 +1,41 @@
+{{% macro format_substitutions(var_val_dict) %}}
+{{%- set substs = [] %}}
+{{%- for var, val in var_val_dict.items() %}}
+{{{- substs.append(var ~ "=" ~ val) | replace("None", "") -}}}
+{{% endfor -%}}
+{{{ "<br/>".join(substs) -}}}
+{{% endmacro -%}}
+
+{{% set title = profile.title -%}}
+
+{{% extends "tables_template_common.html" %}}
+
+{{% block table %}}
+<table>
+<thead>
+  <td>Mapping</td>
+  <td>CCE</td>
+  <td>Rule Title</td>
+  <td>Description</td>
+  <td>Rationale</td>
+  <td>Variable Setting</td>
+</thead>
+{{% for ref in sorted_refs -%}}
+{{% set rules = rules_by_shortref[ref] -%}}
+{{% for rule in rules -%}}
+<tr>
+  <td>{{{ "<br/>".join(rule.relevant_refs) }}}</td>
+  <td>{{{ rule.identifiers.get("cce", "N/A") }}}</td>
+  <td>{{{ rule.title }}}</td>
+  <td xml:lang="en-US">
+{{{ rule.description }}}
+  </td>
+  <td xml:lang="en-US">
+{{{ rule.rationale }}}
+  </td>
+  <td>{{{ format_substitutions(rule.substitutions) }}}</td>
+</tr>
+{{% endfor -%}}
+{{% endfor -%}}
+</table>
+{{% endblock %}}

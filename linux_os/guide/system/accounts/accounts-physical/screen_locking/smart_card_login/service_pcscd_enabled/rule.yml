@@ -1,0 +1,48 @@
+documentation_complete: true
+
+
+title: 'Enable the pcscd Service'
+
+description: |-
+    {{{ describe_service_enable(service="pcscd") }}}
+
+rationale: |-
+    Using an authentication device, such as a CAC or token that is separate from
+    the information system, ensures that even if the information system is
+    compromised, that compromise will not affect credentials stored on the
+    authentication device.
+    <br /><br />
+    Multifactor solutions that require devices separate from
+    information systems gaining access include, for example, hardware tokens
+    providing time-based or challenge-response authenticators and smart cards
+    or similar secure authentication devices issued by an organization or identity provider.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80881-6
+    cce@rhel9: CCE-87907-2
+    cce@rhel10: CCE-87363-8
+    cce@sle12: CCE-91646-0
+    cce@sle15: CCE-85844-9
+
+references:
+    nist: IA-2(1),IA-2(2),IA-2(3),IA-2(4),IA-2(6),IA-2(7),IA-2(11),CM-6(a)
+    pcidss: Req-8.3
+    srg: SRG-OS-000375-GPOS-00160
+
+ocil_clause: 'the pcscd service is not enabled'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="pcscd") }}}
+
+template:
+    name: service_enabled
+    vars:
+        servicename: pcscd
+        packagename: pcsc-lite
+
+fixtext: |-
+    {{{ fixtext_service_enabled("pcscd") }}}
+
+srg_requirement: '{{{ srg_requirement_service_enabled("pcscd") }}}'

@@ -1,0 +1,42 @@
+documentation_complete: true
+
+
+title: 'Ensure IPv6 is disabled through kernel boot parameter'
+
+description: |-
+    To disable IPv6 protocol support in the Linux kernel,
+    add the argument <tt>ipv6.disable=1</tt> to the default
+    GRUB2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("ipv6.disable=1") | indent(4) }}}
+
+rationale: |-
+    Any unnecessary network stacks, including IPv6, should be disabled to reduce
+    the vulnerability to exploitation.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82887-1
+    cce@sle12: CCE-91548-8
+    cce@sle15: CCE-91240-2
+    cce@slmicro5: CCE-93997-5
+
+references:
+    cis@sle12: 3.1.1
+    cis@sle15: 3.1.1
+    pcidss: Req-1.3.1,Req-1.3.2
+
+ocil_clause: 'IPv6 is not disabled'
+
+ocil: |-
+    {{{ ocil_grub2_argument("ipv6.disable=1") | indent(4) }}}
+
+platform: grub2
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: ipv6.disable
+        arg_value: '1'
+        datatype: int
+        operation: equals

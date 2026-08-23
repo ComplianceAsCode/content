@@ -1,0 +1,77 @@
+documentation_complete: true
+
+
+title: 'Verify that Shared Library Directories Have Root Group Ownership'
+
+description: |-
+    System-wide shared library files, which are linked to executables
+    during process load time or run time, are stored in the following directories
+    by default:
+    <pre>/lib
+    /lib64
+    /usr/lib
+    /usr/lib64
+    </pre>
+    {{% if product != "hummingbird" %}}
+    Kernel modules, which can be added to the kernel during runtime, are also
+    stored in <tt>/lib/modules</tt>.
+    {{% endif %}}
+    All files in these directories should be group-owned by the <tt>root</tt> group.
+    {{% if product != "hummingbird" %}}
+    If the directories are found to be owned by a group other than root correct
+    its ownership with the following command:
+    <pre>$ sudo chgrp root <i>DIR</i></pre>
+    {{% endif %}}
+
+rationale: |-
+    Files from shared library directories are loaded into the address
+    space of processes (including privileged ones) or of the kernel itself at
+    runtime. Proper ownership of library directories is necessary to protect
+    the integrity of the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85894-4
+    cce@rhel9: CCE-89858-5
+    cce@rhel10: CCE-88290-2
+    cce@sle12: CCE-83238-6
+    cce@sle15: CCE-85737-5
+    cce@slmicro5: CCE-94069-2
+    cce@slmicro6: CCE-94695-4
+
+references:
+    nist: CM-5(6),CM-5(6).1
+    srg: SRG-OS-000259-GPOS-00100
+    stigid@ol8: OL08-00-010351
+    stigid@sle12: SLES-12-010876
+
+ocil_clause: any system-wide shared library directory is returned and is not group-owned by a required system account
+
+ocil: |-
+    Verify the system-wide shared library directories are group-owned by "root" with the following command:
+
+    $ sudo find /lib /lib64 /usr/lib /usr/lib64 ! -group root -type d -exec stat -c "%n %G" '{}' \;
+
+    If any system-wide shared library directory is returned and is not group-owned by a required system account, this is a finding.
+
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        recursive: 'true'
+        gid_or_name: '0'
+
+fixtext: |-
+    Configure the system-wide shared library directories (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.
+
+    Run the following command, replacing "[DIRECTORY]" with any library directory not group-owned by "root".
+
+    $ sudo chgrp root [DIRECTORY]
+
+srg_requirement:
+    {{{ full_name }}} library directories must be group-owned by root or a system account.

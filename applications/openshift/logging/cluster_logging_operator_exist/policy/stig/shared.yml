@@ -1,0 +1,60 @@
+checktext: |-
+  Determine if cluster log forwarding is configured by performing the
+  following commands.
+
+  Verify that the cluster-logging operator is installed:
+
+  > oc get subscription/cluster-logging -n openshift-logging 
+  NAME            PACKAGE         SOURCE            CHANNEL 
+  cluster-logging cluster-logging redhat-operators  stable
+
+  If the cluster-logging operator is not present, this is a finding.
+
+fixtext: |-
+  To resolve this, the OpenShift Cluster Logging operator first needs to
+  be installed, then the Cluster Log Forwarder is configured to forward
+  logs to a centralized log aggregation service.
+
+  In order to install the OpenShift Cluster Logging operator, Run the
+  following command to apply the subscription manifests to your cluster:
+
+  > oc apply -f - << 'EOF' --- 
+  apiVersion: project.openshift.io/v1 
+  kind:Project 
+  metadata:
+    labels:
+      kubernetes.io/metadata.name: openshift-logging
+      openshift.io/cluster-monitoring: "true"
+    name: openshift-logging
+  spec: {} 
+  ...  
+  --- 
+  apiVersion: operators.coreos.com/v1 
+  kind: OperatorGroup
+  metadata:
+    name: openshift-logging 
+    namespace: openshift-logging
+  spec:
+    targetNamespaces: 
+    - openshift-logging
+  ...  
+  --- 
+  apiVersion: operators.coreos.com/v1alpha1 
+  kind: Subscription
+  metadata:
+    labels:
+      operators.coreos.com/cluster-logging.openshift-logging: ""
+    name: cluster-logging 
+    namespace: openshift-logging
+  spec:
+    channel: stable 
+    installPlanApproval: Automatic 
+    name: cluster-logging
+    source: redhat-operators 
+    sourceNamespace: openshift-marketplace
+  ...  
+  EOF
+
+srg_requirement: |-
+  The container platform must initiate session auditing upon startup.
+

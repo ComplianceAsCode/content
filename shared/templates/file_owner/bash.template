@@ -1,0 +1,51 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+newown=""
+{{%- set ns=namespace(find_users="") %}}
+{{%- set OWNERS=UID_OR_NAME.split("|") %}}
+{{%- for own in OWNERS %}}
+{{%- set ns.find_users=ns.find_users ~ " ! -user " ~ own %}}
+{{%- if loop.first %}}
+if id "{{{ own }}}" >/dev/null 2>&1; then
+  newown="{{{ own }}}"
+{{%- else %}}
+elif id "{{{ own }}}" >/dev/null 2>&1; then
+  newown="{{{ own }}}"
+{{%- endif %}}
+{{%- if loop.last %}}
+fi
+{{%- endif %}}
+{{%- endfor %}}
+
+if [[ -z "$newown" ]]; then
+  >&2 echo "{{{ UID_OR_NAME|replace("|", " and ") }}} is not a defined user on the system"
+else
+
+{{%- if RECURSIVE %}}
+{{%- set FIND_RECURSE_ARGS_DEP="" %}}
+{{%- elif FILE_REGEX %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 0" %}}
+{{%- endif %}}
+
+{{%- for path in FILEPATH %}}
+{{%- if IS_DIRECTORY %}}
+{{%- if FILE_REGEX %}}
+
+find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{{ ns.find_users }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown --no-dereference "$newown" {} \;
+{{%- else %}}
+find -P {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{{ ns.find_users }}} -exec chown --no-dereference "$newown" {} \;
+{{%- endif %}}
+{{%- else %}}
+if ! stat -c "%u %U" "{{{ path }}}" | grep -E -w -q "{{{ UID_OR_NAME }}}"; then
+    chown --no-dereference "$newown" {{{ path }}}
+fi
+{{%- endif %}}
+{{%- endfor %}}
+
+fi

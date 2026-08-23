@@ -1,0 +1,13 @@
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_sle,Oracle Linux 8
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: Configure dnf-automatic to Install Available Updates Automatically
+  community.general.ini_file:
+    dest: /etc/dnf/automatic.conf
+    section: commands
+    option: apply_updates
+    value: "yes"
+    create: True
+    mode: 0644

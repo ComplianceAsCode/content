@@ -1,0 +1,37 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+{{{ ansible_instantiate_variables("var_sssd_certificate_verification_digest_function") }}}
+
+{{% set sssd_conf = "/etc/sssd/sssd.conf" -%}}
+{{% set sssd_conf_dir = "/etc/sssd/conf.d" -%}}
+{{{ ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) }}}
+
+{{{ ansible_install_sssd_proxy(rule_title) }}}
+
+- name: Ensure that "certificate_verification" is not set in {{{ sssd_conf }}}
+  community.general.ini_file:
+      path: {{{ sssd_conf }}}
+      section: sssd
+      option: certificate_verification
+      state: absent
+      mode: 0600
+
+- name: 'Ensure that "certificate_verification" is not set in {{{ sssd_conf_dir }}}/*.conf'
+  community.general.ini_file:
+      path: {{{ sssd_conf_dir }}}/*.conf
+      section: sssd
+      option: certificate_verification
+      state: absent
+      mode: 0600
+
+- name: Ensure that "certificate_verification" is set
+  community.general.ini_file:
+      path: {{{ sssd_conf_dir }}}/certificate_verification.conf
+      section: sssd
+      option: certificate_verification
+      value: "ocsp_dgst={{ var_sssd_certificate_verification_digest_function }}"
+      state: present
+      mode: 0600

@@ -1,0 +1,13 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Restore ownership of openssh-server files"
+  ansible.builtin.command: rpm --setugids openssh-server
+  changed_when: true
+
+- name: "{{{ rule_title }}} - Restore permissions of openssh-server files"
+  ansible.builtin.command: rpm --setperms openssh-server
+  changed_when: true

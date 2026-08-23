@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the selinuxuser_postgresql_connect_enabled SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>selinuxuser_postgresql_connect_enabled</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="selinuxuser_postgresql_connect_enabled") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="selinuxuser_postgresql_connect_enabled") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: selinuxuser_postgresql_connect_enabled

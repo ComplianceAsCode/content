@@ -1,0 +1,23 @@
+documentation_complete: true
+
+
+title: 'Disable the antivirus_use_jit SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>antivirus_use_jit</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="antivirus_use_jit") }}}
+
+rationale: ""
+
+severity: medium
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="antivirus_use_jit") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: antivirus_use_jit

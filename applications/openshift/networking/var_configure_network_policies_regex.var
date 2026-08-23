@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Network Provider which provide Support for Network Policies'
+
+description: |-
+    Regular expression explicitly describing
+    which CNI plugins provide the cluster with the
+    network policies feature/capability
+    You can chose to either allow multiple providers
+    by adding them like "Provider1|Provider2" or only
+    allow one, by overwriting the value
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+  default: "OpenShiftSDN|OVN|Calico|Cilium"

@@ -1,0 +1,32 @@
+documentation_complete: true
+
+
+title: 'Add noexec Option to /boot'
+
+description: |-
+    The <tt>noexec</tt> mount option can be used to prevent binaries from being
+    executed out of <tt>/boot</tt>.
+    {{{ describe_mount(option="noexec", part="/boot") }}}
+
+rationale: |-
+    The <tt>/boot</tt> partition contains the kernel and the bootloader. No
+    binaries should be executed from this partition after the booting process
+    finishes.
+
+{{{ complete_ocil_entry_mount_option("/boot", "noexec") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83316-0
+    cce@rhel9: CCE-83892-0
+    cce@rhel10: CCE-90334-4
+    cce@sle12: CCE-91541-3
+    cce@sle15: CCE-91234-5
+    cce@sle16: CCE-96582-2
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /boot
+        mountoption: noexec

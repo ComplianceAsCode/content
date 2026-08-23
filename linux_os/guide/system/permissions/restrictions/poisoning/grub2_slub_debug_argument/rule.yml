@@ -1,0 +1,51 @@
+documentation_complete: true
+
+
+title: 'Enable SLUB/SLAB allocator poisoning'
+
+description: |-
+    To enable poisoning of SLUB/SLAB objects,
+    add the argument <tt>slub_debug={{{ xccdf_value("var_slub_debug_options") }}}</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("slub_debug=" ~ xccdf_value("var_slub_debug_options") ) | indent(4) }}}
+
+rationale: |-
+    Poisoning writes an arbitrary value to freed objects, so any modification or
+    reference to that object after being freed or before being initialized will be
+    detected and prevented.
+    This prevents many types of use-after-free vulnerabilities at little performance cost.
+    Also prevents leak of data and detection of corrupted memory.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80945-9
+    cce@rhel9: CCE-83986-0
+    cce@rhel10: CCE-86675-6
+
+references:
+    nist: CM-6(a)
+    srg: SRG-OS-000433-GPOS-00192,SRG-OS-000134-GPOS-00068
+    stigid@ol8: OL08-00-010423
+
+ocil_clause: 'SLUB/SLAB poisoning is not enabled'
+
+ocil: |-
+    {{{ ocil_grub2_argument("slub_debug=" ~ xccdf_value("var_slub_debug_options")) | indent(4) }}}
+
+platform: grub2
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: slub_debug
+        arg_variable: var_slub_debug_options
+        datatype: string
+        operation: equals
+        operation@ol8: "pattern match"
+
+fixtext: |-
+    {{{ describe_grub2_argument("slub_debug=" ~ xccdf_value("var_slub_debug_options")) | indent(4) }}}
+
+srg_requirement: |-
+    {{{ full_name }}} must clear SLUB/SLAB objects to prevent use-after-free attacks.

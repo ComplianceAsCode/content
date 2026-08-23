@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000106-GPOS-00053
+        levels:
+            - medium
+        title: {{{ full_name }}} must use multifactor authentication for network access
+            to non-privileged accounts.
+        rules:
+            - sshd_disable_empty_passwords
+            - sshd_enable_pubkey_auth
+            - var_smartcard_drivers=cac
+            - configure_opensc_card_drivers
+        status: automated

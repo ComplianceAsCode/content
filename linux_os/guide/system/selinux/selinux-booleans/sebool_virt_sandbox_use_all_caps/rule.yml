@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the virt_sandbox_use_all_caps SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>virt_sandbox_use_all_caps</tt> is enabled.
+    This setting is disabled as containers should not run with privileges.
+    {{{ describe_sebool_disable(sebool="virt_sandbox_use_all_caps") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="virt_sandbox_use_all_caps") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: virt_sandbox_use_all_caps

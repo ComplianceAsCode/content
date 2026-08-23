@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+
+
+import argparse
+
+import ssg.environment
+import ssg.templates
+
+
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument(
+        "--build-config-yaml", required=True,
+        help="YAML file with information about the build configuration. "
+        "e.g.: ~/scap-security-guide/build/build_config.yml"
+    )
+    p.add_argument(
+        "--product-yaml", required=True,
+        help="YAML file with information about the product we are building. "
+        "e.g.: ~/scap-security-guide/rhel9/product.yml"
+    )
+    p.add_argument(
+        "--resolved-rules-dir", required=True,
+        help="Directory with <rule-id>.yml resolved rule YAMLs. "
+        "e.g.: ~/scap-security-guide/build/rhel9/rules"
+    )
+    p.add_argument(
+        "--templates-dir", required=True,
+        help="Path to directory which contains content templates. "
+        "e.g.: ~/scap-security-guide/shared/templates"
+    )
+    p.add_argument(
+        "--checks-dir", required=True,
+        help="Path to which OVAL checks will be generated. "
+        "e.g.: ~/scap-security-guide/build/rhel9/checks"
+    )
+    p.add_argument(
+        "--platforms-dir", required=True,
+        help="Path to directory which contains prebuilt platforms. "
+             "e.g.: ~/scap-security-guide/build/rhel9/platforms"
+    )
+    p.add_argument(
+        "--cpe-items-dir", required=True,
+        help="Path to directory which contains compiled CPE items. "
+             "e.g.: ~/scap-security-guide/build/rhel9/cpe_items"
+    )
+    p.add_argument(
+        "--remediations-dir", required=True,
+        help="Path to which remediations will be generated. "
+        "e.g.: ~/scap-security-guide/build/rhel9/fixes_from_templates"
+    )
+    args = p.parse_args()
+    return args
+
+
+if __name__ == "__main__":
+    args = parse_args()
+
+    env_yaml = ssg.environment.open_environment(
+        args.build_config_yaml, args.product_yaml)
+    ssg.jinja.initialize(env_yaml)
+    builder = ssg.templates.Builder(
+        env_yaml, args.resolved_rules_dir, args.templates_dir,
+        args.remediations_dir, args.checks_dir, args.platforms_dir, args.cpe_items_dir)
+    builder.build()

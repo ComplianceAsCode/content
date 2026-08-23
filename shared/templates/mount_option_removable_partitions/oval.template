@@ -1,0 +1,95 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="5">
+    {{{ oval_metadata("The " + MOUNTOPTION + " option should be enabled for all removable devices mounts in /etc/fstab.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <!-- First check if specified removable partition truly exists on the system. If not, don't check /etc/fstab
+           since there's no device to check against -->
+      <extend_definition comment="Check if removable partition really exists on the system"
+      definition_ref="removable_partition_doesnt_exist" />
+      <!-- Removable device exists. Check if it's CD/DVD drive. If so, verify that at least one from all of the possible its alternative
+           names in /etc/fstab are configured with '{{{ MOUNTOPTION }}}' option -->
+      <criteria operator="AND">
+        <extend_definition comment="Check if removable partition value represents CD/DVD drive"
+        definition_ref="var_removable_partition_is_cd_dvd_drive" />
+        <criteria operator="OR">
+          <criterion test_ref="test_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive"
+            comment="Check if at least one from CD/DVD drive alternative names is using '{{{ MOUNTOPTION }}}' mount option in /etc/fstab" />
+          <extend_definition definition_ref="no_cd_dvd_drive_in_etc_fstab"
+          comment="Check if CD/DVD drive is not configured to automount in /etc/fstab" />
+        </criteria>
+      </criteria>
+      <!-- Removable device exists & isn't CD/DVD drive. Check the particular devices is configured with '{{{ MOUNTOPTION }}}' mount option in both
+           /etc/fstab -->
+      <criterion test_ref="test_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive"
+        comment="Check if removable partition is using '{{{ MOUNTOPTION }}}' mount option in /etc/fstab" />
+    </criteria>
+  </definition>
+
+  <!-- If specified removable partition represents CD / DVD drive, create a variable
+       holding also alternative names for CD / DVD block special device as used by udev -->
+  <constant_variable id="variable_cd_dvd_drive_alternative_names_{{{ MOUNTOPTION }}}" datatype="string" comment="CD/DVD drive allowed alternative names" version="1">
+    <value>/dev/cdrom</value>
+    <value>/dev/dvd</value>
+    <value>/dev/scd0</value>
+    <value>/dev/sr0</value>
+  </constant_variable>
+
+  <!-- For each of the CD / DVD drive alternative names create regular expression pattern
+       to be used in textfilecontent54_object below -->
+  <local_variable id="variable_cd_dvd_drive_regex_pattern_{{{ MOUNTOPTION }}}" datatype="string" comment="Regular expression pattern for CD / DVD drive alternative names" version="1">
+    <concat>
+      <literal_component>^[\s]*</literal_component>
+      <variable_component var_ref="variable_cd_dvd_drive_alternative_names_{{{ MOUNTOPTION }}}" />
+      <!-- Capture the mount options field (4-th column of /etc/fstab) -->
+      <literal_component>[\s]+[/\w]+[\s]+[\w]+[\s]+([^\s]+)(?:[\s]+[\d]+){2}$</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- If specified removable partition represents CD / DVD drive, use all alternative
+       names to check /etc/fstab -->
+  <ind:textfilecontent54_test id="test_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive" check_existence="any_exist" check="all" comment="'{{{ MOUNTOPTION }}}' mount option used for at least one CD / DVD drive alternative names in /etc/fstab" version="1">
+    <ind:object object_ref="object_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive" />
+    <ind:state state_ref="state_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_cd_dvd_drive_regex_pattern_{{{ MOUNTOPTION }}}" var_check="at least one" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive" version="1">
+    <ind:subexpression operation="pattern match" datatype="string">^.*,?{{{ MOUNTOPTION }}},?.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <!-- Specified removable partition exists & doesn't represent a CD/DVD drive.
+       Check if configured with '{{{ MOUNTOPTION }}}' mount option in both /etc/fstab -->
+  <ind:textfilecontent54_test id="test_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive" check="at least one" check_existence="all_exist" comment="Check if removable partition is configured with '{{{ MOUNTOPTION }}}' mount option in /etc/fstab" version="1">
+    <ind:object object_ref="object_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive" />
+    <ind:state state_ref="state_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive" />
+  </ind:textfilecontent54_test>
+
+  <!-- Create regular expression pattern for the device to be used in the
+       textfilecontent54_object below -->
+  <local_variable id="variable_not_cd_dvd_drive_regex_pattern_{{{ MOUNTOPTION }}}" datatype="string" comment="Regular expression pattern for removable block special device other than CD / DVD drive" version="1">
+    <concat>
+      <literal_component>^[\s]*</literal_component>
+      <variable_component var_ref="var_removable_partition" />
+      <!-- Capture the mount options field (4-th column of /etc/fstab) -->
+      <literal_component>[\s]+[/\w]+[\s]+[\w]+[\s]+([^\s]+)(?:[\s]+[\d]+){2}$</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_object id="object_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_not_cd_dvd_drive_regex_pattern_{{{ MOUNTOPTION }}}" var_check="at least one" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive" version="1">
+    <ind:subexpression operation="pattern match" datatype="string">^.*,?{{{ MOUNTOPTION }}},?.*</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="removable partition" datatype="string" id="var_removable_partition" version="1" />
+
+</def-group>

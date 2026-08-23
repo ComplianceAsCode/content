@@ -1,0 +1,50 @@
+documentation_complete: true
+
+
+title: 'All Interactive User Home Directories Must Have mode 0750 Or Less Permissive'
+
+description: |-
+    Change the mode of interactive users home directories to <tt>0750</tt>. To
+    change the mode of interactive users home directory, use the
+    following command:
+    <pre>$ sudo chmod 0750 /home/<i>USER</i></pre>
+
+rationale: |-
+    Excessive permissions on local interactive user home directories may allow
+    unauthorized access to user files by other users.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84038-9
+    cce@rhel9: CCE-83634-6
+    cce@rhel10: CCE-86605-3
+    cce@sle12: CCE-83076-0
+    cce@sle15: CCE-85629-4
+    cce@slmicro5: CCE-93747-4
+    cce@slmicro6: CCE-95057-6
+
+references:
+    cis@sle12: 6.2.6
+    cis@sle15: 6.2.6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-020630
+    stigid@ol8: OL08-00-010730
+    stigid@sle12: SLES-12-010740
+
+ocil_clause: 'they are more permissive'
+
+ocil: |-
+    To verify the assigned home directory of all interactive user home directories
+    have a mode of <pre>0750</pre> or less permissive, run the following command:
+    <pre>$ sudo ls -l /home</pre>
+    Inspect the output for any directories with incorrect permissions.
+
+fixtext: |-
+    Change the mode of interactive user’s home directories to "0750". To change the mode of a local interactive user’s home directory, use the following command:
+
+    Note: The example will be for the user "smithj".
+
+    $ sudo chmod 0750 /home/smithj
+
+srg_requirement: 'All {{{ full_name }}} local interactive user home directories must have mode 0750 or less permissive.'

@@ -1,0 +1,18 @@
+controls:
+    -   id: SRG-OS-000470-GPOS-00214
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records when successful/unsuccessful
+            logon attempts occur.
+        rules:
+            - audit_rules_login_events_faillock
+            - audit_rules_login_events_lastlog
+            - audit_rules_login_events_tallylog
+            - audit_rules_sudoers
+            - audit_rules_sudoers_d
+            - audit_rules_usergroup_modification_group
+            - audit_rules_usergroup_modification_gshadow
+            - audit_rules_usergroup_modification_opasswd
+            - audit_rules_usergroup_modification_passwd
+            - audit_rules_usergroup_modification_shadow
+        status: automated

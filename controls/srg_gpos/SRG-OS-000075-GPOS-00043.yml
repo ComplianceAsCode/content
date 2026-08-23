@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000075-GPOS-00043
+        title: {{{ full_name }}} must enforce 24 hours/1 day as the minimum password lifetime.
+        levels:
+            - medium
+        rules:
+            - var_accounts_minimum_age_login_defs=1
+            - accounts_minimum_age_login_defs
+            - accounts_password_set_min_life_existing
+        status: automated

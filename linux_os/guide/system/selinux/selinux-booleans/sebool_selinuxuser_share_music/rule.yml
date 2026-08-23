@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the selinuxuser_share_music SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>selinuxuser_share_music</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="selinuxuser_share_music") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="selinuxuser_share_music") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: selinuxuser_share_music

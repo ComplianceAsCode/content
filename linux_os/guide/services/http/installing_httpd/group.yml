@@ -1,0 +1,14 @@
+documentation_complete: true
+
+title: 'Install Apache if Necessary'
+
+description: |-
+    If <tt>httpd</tt> was not installed and activated, but the system
+    needs to act as a web server, then it should be installed on the system. Follow these
+    guidelines to install it defensively. The <tt>httpd</tt> package can be installed with
+    the following command:
+    <pre>$ sudo yum install httpd</pre>
+    This method of installation is recommended over installing the "Web Server"
+    package group during the system installation process. The Web Server package
+    group includes many packages which are likely extraneous, while the
+    command-line method installs only the required <tt>httpd</tt> package itself.

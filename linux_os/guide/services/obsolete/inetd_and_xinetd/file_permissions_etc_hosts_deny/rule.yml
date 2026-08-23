@@ -1,0 +1,25 @@
+documentation_complete: true
+
+
+title: 'Verify Permissions on /etc/hosts.deny'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/hosts.deny", perms="0644") }}}
+
+rationale: |-
+    The <tt>/etc/hosts.deny</tt> file is used to control access of clients to daemons in the
+    server. Insecure groupownership of this file could allow users to grant clients unrestricted
+    access or no access at all to services in the server.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/hosts.deny", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/hosts.deny", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/hosts.deny
+        filemode: '0644'

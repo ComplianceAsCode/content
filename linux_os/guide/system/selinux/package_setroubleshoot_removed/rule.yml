@@ -1,0 +1,30 @@
+documentation_complete: true
+
+
+title: 'Uninstall setroubleshoot Package'
+
+description: |-
+    The SETroubleshoot service notifies desktop users of SELinux
+    denials. The service provides information around configuration errors,
+    unauthorized intrusions, and other potential errors.
+    {{{ describe_package_remove(package="setroubleshoot") }}}
+
+rationale: |-
+    The SETroubleshoot service is an unnecessary daemon to
+    have running on a server, especially if
+    X Windows is removed or disabled.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82755-0
+    cce@rhel9: CCE-84073-6
+    cce@rhel10: CCE-89902-1
+    cce@sle12: CCE-91581-9
+    cce@sle15: CCE-91268-3
+    cce@sle16: CCE-96597-0
+
+template:
+    name: package_removed
+    vars:
+        pkgname: setroubleshoot

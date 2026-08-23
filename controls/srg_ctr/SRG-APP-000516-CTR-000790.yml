@@ -1,0 +1,16 @@
+controls:
+- id: SRG-APP-000516-CTR-000790
+  levels:
+  - medium
+  title: {{{ full_name }}} must provide the configuration for organization-identified
+    individuals or roles to change the auditing to be performed on all components,
+    based on all selectable event criteria within organization-defined time thresholds.
+  status: does not meet
+  mitigation: |-
+    A way of mitigating the control is to set a verbose audit log level, forward the logs off-cluster and then filter or correlate the log information that are needed using SIEM tools such as Elastic.
+
+    Documentation regarding how to forward cluster logs using the  Cluster Logging Operator to specific endpoints can be found at: 
+    https://docs.openshift.com/container-platform/latest/logging/cluster-logging.html
+  status_justification: |-
+    Custom audit policies are not supported. However,  the WriteRequestBodies (or even AllRequestBodies) policies should satisfy all the information the other controls ask for.
+    Red Hat OpenShift supports three different audit policies which are documented at https://docs.openshift.com/container-platform/4.7/security/audit-log-policy-config.html

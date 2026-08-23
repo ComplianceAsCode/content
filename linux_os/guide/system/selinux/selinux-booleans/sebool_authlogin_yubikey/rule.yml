@@ -1,0 +1,23 @@
+documentation_complete: true
+
+
+title: 'Disable the authlogin_yubikey SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>authlogin_yubikey</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="authlogin_yubikey") }}}
+
+rationale: ""
+
+severity: medium
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="authlogin_yubikey") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: authlogin_yubikey

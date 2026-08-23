@@ -1,0 +1,36 @@
+documentation_complete: true
+
+
+title: 'Modify the System GUI Login Banner'
+
+description: |-
+    To configure the GUI system login banner edit <tt>/etc/gdm/banner</tt>.
+    Replace the default text with a message compliant with the local site
+    policy or a legal disclaimer.
+
+rationale: |-
+    Display of a standardized and approved use notification before granting
+    access to the operating system ensures privacy and security notification
+    verbiage used is consistent with applicable federal laws, Executive Orders,
+    directives, policies, regulations, standards, and guidance.
+    <br /><br />
+    System use notifications are required only for access via login interfaces
+    with human users and are not required when such human interfaces do not
+    exist.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83183-4
+    cce@sle15: CCE-83264-2
+
+references:
+    nist: AC-8(b)
+    stigid@sle12: SLES-12-030020
+
+ocil_clause: 'it does not display the required banner'
+
+ocil: |-
+    To check if the system login banner is compliant,
+    run the following command:
+    <pre>$ cat /etc/gdm/banner</pre>

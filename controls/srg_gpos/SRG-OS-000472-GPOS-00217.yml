@@ -1,0 +1,17 @@
+controls:
+    -   id: SRG-OS-000472-GPOS-00217
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records showing starting and ending
+            time for user access to the system.
+        status: inherently met
+        status_justification: Date/time stamps in the audit log are a function of the audit subsystem and cannot be modified or removed short of recompiling the audit packages.
+        mitigation: |-
+            Linux kernel audit subsystem always adds a timestamp to each audit buffer used to contain the entire audit log data. Function kernel/audit.c:audit_log_start() calls kernel/audit.c:audit_get_stamp() to fetch the timestamp and formats the message into the audit log buffer.
+        check: |-
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
+        fixtext: The technology inherently meets this requirement. No fix is required
+        rationale: |-
+            Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+            Audit records can be generated from various components within the information system (e.g., module or policy filter).

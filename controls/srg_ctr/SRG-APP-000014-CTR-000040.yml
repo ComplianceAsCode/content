@@ -1,0 +1,12 @@
+controls:
+- id: SRG-APP-000014-CTR-000040
+  levels:
+  - medium
+  title: {{{ full_name }}} must use TLS 1.2 or greater for secure communication.
+  related_rules:
+  - fips_mode_enabled_on_all_nodes
+  rules:
+  - api_server_tls_security_profile
+  - ingress_controller_tls_security_profile
+  - kubelet_configure_tls_min_version
+  status: automated

@@ -1,0 +1,16 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_auditd_space_left_action") }}}
+
+- name: Configure auditd space_left Action on Low Disk Space
+  ansible.builtin.lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: "space_left_action = {{ var_auditd_space_left_action.split('|')[0] }}"
+    regexp: '^\s*space_left_action\s*=\s*.*$'
+    state: present
+    create: yes
+    mode: 0640
+  #notify: reload auditd

@@ -1,0 +1,44 @@
+documentation_complete: true
+
+
+title: 'Limit Access to Kubernetes Secrets'
+
+description: |-
+    The Kubernetes API stores secrets, which may be service
+    account tokens for the Kubernetes API or credentials used
+    by workloads in the cluster. Access to these secrets should
+    be restricted to the smallest possible group of users to
+    reduce the risk of privilege escalation. To restrict users from
+    secrets, remove <tt>get</tt>, <tt>list</tt>, and <tt>watch</tt>
+    access to unauthorized users to secret objects in the cluster.
+
+rationale: |-
+    Inappropriate access to secrets stored within the Kubernetes
+    cluster can allow for an attacker to gain additional access to
+    the Kubernetes cluster or external resources whose credentials
+    are stored as secrets.
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: 'Access to secrets needs review'
+
+ocil: |-
+    To review the policy rules assigned to roles in all namespaces, run
+    the following command:
+    <pre>$ for ns in $(oc get projects -ojsonpath='{.items[*].metadata.name}'); do oc describe roles -n$ns; done</pre>
+    To review the policy rules assigned to cluster roles, run the following
+    command:
+    <pre>$ for i in $(oc get clusterroles -o jsonpath='{.items[*].metadata.name}'); do oc describe clusterrole ${i}; done</pre>
+    Review the output and ensure that only authorized roles have access to the
+    secrets resource or all resources using a wildcard.
+    To filter clusterroles that have assigned access to the secrets resources for clustrroles, run:
+    <pre>$ oc get clusterroles -ojson | jq -r '.items[] | {name: .metadata.name, rules: .rules} | select(.rules[]?.resources | try contains(["secrets"])) | .name' | sort | uniq</pre>
+    and similarly to filter namespace/role pairs:
+    <pre>$ for ns in $(oc get projects -ojsonpath='{.items[*].metadata.name}'); do oc get roles -n$ns -ojson | jq -r '.items[] | {name: .metadata.name, namespace: .metadata.namespace, rules: .rules} | select(.rules[]?.resources | try contains(["secrets"])) | "\(.namespace)/\(.name)"' | sort | uniq; done</pre>
+    note that the two commands above do not show roles and/or clusterroles with wildcard access to any resources.

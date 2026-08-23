@@ -1,0 +1,18 @@
+---
+policy: WXYZ Benchmark for securing Linux systems with levels
+title: WXYZ Benchmark for securing Linux systems with levels
+id: wxyz-levels
+version: 1.2.3
+source: https://www.wxyz.com/linux.pdf
+levels:
+  - id: low
+  - id: medium
+    inherits_from:
+      - low
+  - id: high
+    inherits_from:
+      - medium
+
+controls:
+  - id: S1
+    title: Package sudo must be installed

@@ -1,0 +1,55 @@
+documentation_complete: true
+
+title: 'Enable SSH Print Last Log'
+
+description: |-
+    Ensure that SSH will display the date and time of the last successful account logon.
+    <br/>
+    The default SSH configuration enables print of the date and time of the last login.
+    The appropriate configuration is used if no value is set for <tt>PrintLastLog</tt>.
+    <br/>
+    To explicitly enable LastLog in SSH, add or correct the following line in
+    {{{ sshd_config_file() }}}
+    <pre>PrintLastLog yes</pre>
+
+rationale: |-
+    Providing users feedback on when account accesses last occurred facilitates user
+    recognition and reporting of unauthorized account use.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82281-7
+    cce@rhel9: CCE-90804-6
+    cce@rhel10: CCE-88362-9
+    cce@sle12: CCE-83083-6
+    cce@sle15: CCE-85563-5
+    cce@slmicro5: CCE-93645-0
+    cce@slmicro6: CCE-95045-1
+
+references:
+    cis-csc: 1,12,15,16
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: AC-9,AC-9(1)
+    nist-csf: PR.AC-7
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040360
+    stigid@ol8: OL08-00-020350
+    stigid@sle12: SLES-12-030130
+
+{{{ complete_ocil_entry_sshd_option(default="yes", option="PrintLastLog", value="yes") }}}
+
+fixtext: '{{{ fixtext_sshd_lineinfile("PrintLastLog", "yes","no") }}}'
+
+srg_requirement: '{{{ full_name }}} must display the date and time of the last successful account logon upon an SSH logon.'
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: PrintLastLog
+        value: 'yes'
+        datatype: string
+        is_default_value: 'true'

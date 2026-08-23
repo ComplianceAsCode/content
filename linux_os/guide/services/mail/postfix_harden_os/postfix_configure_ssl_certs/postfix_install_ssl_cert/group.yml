@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Ensure Security of Postfix SSL Certificate'
+
+description: |-
+    Create the PKI directory for mail certificates, if it does not already exist:
+    <pre>$ sudo mkdir /etc/pki/tls/mail
+    $ sudo chown root:root /etc/pki/tls/mail
+    $ sudo chmod 755 /etc/pki/tls/mail</pre>
+    Using removable media or some other secure transmission format, install the files generated in the previous
+    step onto the mail server:
+    <pre>/etc/pki/tls/mail/serverkey.pem: the private key mailserverkey.pem
+    /etc/pki/tls/mail/servercert.pem: the certificate file mailservercert.pem</pre>
+    Verify the ownership and permissions of these files:
+    <pre>$ sudo chown root:root /etc/pki/tls/mail/serverkey.pem
+    $ sudo chown root:root /etc/pki/tls/mail/servercert.pem
+    $ sudo chmod 600 /etc/pki/tls/mail/serverkey.pem
+    $ sudo chmod 644 /etc/pki/tls/mail/servercert.pem</pre>
+    Verify that the CA's public certificate file has been installed as <tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the
+    correct permissions:
+    <pre>$ sudo chown root:root /etc/pki/tls/CA/cacert.pem
+    $ sudo chmod 644 /etc/pki/tls/CA/cacert.pem</pre>

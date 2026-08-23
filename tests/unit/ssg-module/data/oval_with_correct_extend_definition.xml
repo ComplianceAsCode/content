@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<oval-def:oval_definitions xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
+  <oval-def:generator>
+    <oval:product_name>combine_ovals.py from SCAP Security Guide</oval:product_name>
+    <oval:product_version>ssg: [0, 1, 65], python: 3.10.6</oval:product_version>
+    <oval:schema_version>5.11</oval:schema_version>
+    <oval:timestamp>2022-10-04T12:06:33</oval:timestamp>
+  </oval-def:generator>
+  <oval-def:definitions>
+    <oval-def:definition class="compliance" id="oval:ssg-snmpd_use_newer_protocol:def:1" version="2">
+      <oval-def:metadata>
+        <oval-def:title>Configure SNMP Service to Use Only SNMPv3 or Newer</oval-def:title>
+        <oval-def:affected family="unix">
+          <oval-def:platform>Red Hat Enterprise Linux 9</oval-def:platform>
+        </oval-def:affected>
+        <oval-def:description>SNMP version 1 and 2c must not be enabled.</oval-def:description>
+        <oval-def:reference ref_id="CCE-87293-7" source="CCE"/>
+        <oval-def:reference ref_id="snmpd_use_newer_protocol" source="ssg"/>
+      </oval-def:metadata>
+      <oval-def:criteria operator="OR">
+        <oval-def:extend_definition comment="SNMP installed" definition_ref="oval:ssg-package_net-snmp_removed:def:1"/>
+        <oval-def:criterion comment="SNMP protocols" test_ref="oval:ssg-test_snmp_versions:tst:1"/>
+      </oval-def:criteria>
+    </oval-def:definition>
+    <oval-def:definition class="compliance" id="oval:ssg-package_net-snmp_removed:def:1" version="1">
+      <oval-def:metadata>
+        <oval-def:title>Uninstall net-snmp Package</oval-def:title>
+        <oval-def:affected family="unix">
+          <oval-def:platform>Red Hat Enterprise Linux 9</oval-def:platform>
+        </oval-def:affected>
+        <oval-def:description>The RPM package net-snmp should be removed.</oval-def:description>
+        <oval-def:reference ref_id="CCE-85981-9" source="CCE"/>
+        <oval-def:reference ref_id="package_net-snmp_removed" source="ssg"/>
+      </oval-def:metadata>
+      <oval-def:criteria>
+        <oval-def:criterion comment="package net-snmp is removed" test_ref="oval:ssg-test_package_net-snmp_removed:tst:1"/>
+      </oval-def:criteria>
+    </oval-def:definition>
+  </oval-def:definitions>
+  <oval-def:tests>
+    <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Check snmpd configuration" id="oval:ssg-test_snmp_versions:tst:1" version="1">
+      <ind:object object_ref="oval:ssg-object_snmp_versions:obj:1"/>
+    </ind:textfilecontent54_test>
+    <linux:rpminfo_test check="all" check_existence="none_exist" id="oval:ssg-test_package_net-snmp_removed:tst:1" version="1" comment="package net-snmp is removed">
+      <linux:object object_ref="oval:ssg-obj_test_package_net-snmp_removed:obj:1"/>
+    </linux:rpminfo_test>
+  </oval-def:tests>
+  <oval-def:objects>
+    <ind:textfilecontent54_object id="oval:ssg-object_snmp_versions:obj:1" version="1">
+      <ind:filepath>/etc/snmp/snmpd.conf</ind:filepath>
+      <ind:pattern operation="pattern match">^[\s]*(com2se|rocommunity|rwcommunity)</ind:pattern>
+      <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+    <linux:rpminfo_object id="oval:ssg-obj_test_package_net-snmp_removed:obj:1" version="1">
+      <linux:name>net-snmp</linux:name>
+    </linux:rpminfo_object>
+  </oval-def:objects>
+</oval-def:oval_definitions>

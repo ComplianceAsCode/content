@@ -1,0 +1,31 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_accounts_tmout") }}}
+
+{{% set system_configuration_using_etc_bashrc_expected = false %}}
+{{% if product in ["ol7"] %}}
+  {{% set system_configuration_using_etc_bashrc_expected = true %}}
+{{% endif %}}
+
+{{% if system_configuration_using_etc_bashrc_expected %}}
+- name: Correct any occurrence of TMOUT in /etc/bashrc
+  ansible.builtin.replace:
+    path: /etc/bashrc
+    regexp: '^[^#].*TMOUT=.*'
+    replace: typeset -xr TMOUT={{ var_accounts_tmout }}
+  register: bashrc_replaced
+{{% endif %}}
+
+- name: Correct any occurrence of TMOUT in /etc/profile
+  ansible.builtin.replace:
+    path: /etc/profile
+    regexp: '^[^#].*TMOUT=.*'
+    replace: typeset -xr TMOUT={{ var_accounts_tmout }}
+  register: profile_replaced
+
+{{{ ansible_lineinfile("", "/etc/profile.d/tmout.sh", mode='0644', regex='TMOUT=', insensitive=false, new_line='typeset -xr TMOUT={{ var_accounts_tmout }}',
+    create='yes', state='present', when="profile_replaced is defined and not profile_replaced.changed" + " and bashrc_replaced is defined and not bashrc_replaced.changed" if product in ["ol7"], rule_title=rule_title) }}}

@@ -1,0 +1,41 @@
+# platform = multi_platform_sle,multi_platform_slmicro
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{%- if 'sle' in product or 'slmicro' in product %}}
+  {{%- set pam_package = "pam_pkcs11" %}}
+  {{%- set pam_pkcs11_control_flag = "sufficient" %}}
+{{%- else %}}
+  {{%- set pam_package = "libpam-pkcs11" %}}
+  {{%- set pam_pkcs11_control_flag = "\u005Bsuccess=2 default=ignore\u005D" %}}
+{{% endif %}}
+
+- name: "{{{ rule_title }}} - Gather List of Packages"
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "{{{ rule_title }}} - Check to See if 'pam_pkcs11' Module Is Configured in '/etc/pam.d/common-auth'"
+  ansible.builtin.shell: grep -E '^\s*auth\s+\S+\s+pam_pkcs11\.so' /etc/pam.d/common-auth || true
+  register: check_pam_pkcs11_module_result
+  changed_when: false
+  when: '"{{{ pam_package }}}" in ansible_facts.packages'
+
+- name: "{{{ rule_title }}} - Configure 'pam_pkcs11' Module in '/etc/pam.d/common-auth'"
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/common-auth
+    line: 'auth {{{ pam_pkcs11_control_flag }}} pam_pkcs11.so'
+    insertafter: '^\s*#'
+    state: present
+  when: 
+    - '"{{{ pam_package }}}" in ansible_facts.packages'
+    - '"pam_pkcs11.so" not in check_pam_pkcs11_module_result.stdout'
+
+- name: "{{{ rule_title }}} - Ensure 'pam_pkcs11' Module Has {{{ pam_pkcs11_control_flag }}} Control Flag"
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/common-auth
+    regexp: '^(\s*auth\s+)\S+(\s+pam_pkcs11\.so.*)'
+    line: '\g<1>{{{ pam_pkcs11_control_flag }}}\g<2>'
+    backrefs: yes
+  when: '"{{{ pam_package }}}" in ansible_facts.packages'

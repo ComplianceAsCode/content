@@ -1,0 +1,57 @@
+documentation_complete: true
+
+
+title: 'Ensure PAM Enforces Password Requirements - Prevent the Use of Dictionary Words'
+
+description: |-
+    The pam_pwquality module's <tt>dictcheck</tt> check if passwords contains dictionary words. When
+    <tt>dictcheck</tt> is set to <tt>1</tt> passwords will be checked for dictionary words.
+
+rationale: |-
+    Use of a complex password helps to increase the time and resources required to compromise the password.
+    Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at
+    guessing and brute-force attacks.
+    <br /><br />
+    Password complexity is one factor of several that determines how long it takes to crack a password. The more
+    complex the password, the greater the number of possible combinations that need to be tested before the
+    password is compromised.
+    <br /><br />
+    Passwords with dictionary words may be more vulnerable to password-guessing attacks.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86233-4
+    cce@rhel9: CCE-88413-0
+    cce@rhel10: CCE-88171-4
+
+references:
+    nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
+    srg: SRG-OS-000480-GPOS-00225,SRG-OS-000072-GPOS-00040
+    stigid@ol8: OL08-00-020300
+
+ocil_clause: '"dictcheck" does not have a value other than "0", or is commented out'
+
+ocil: |-
+    Verify {{{ full_name }}} prevents the use of dictionary words for passwords with the following command:
+
+    <pre>$ sudo grep dictcheck {{{ pwquality_path }}} /etc/pwquality.conf.d/*.conf
+
+    {{{ pwquality_path }}}:dictcheck=1</pre>
+
+platform: package[libpwquality]
+
+template:
+    name: accounts_password
+    vars:
+        variable: dictcheck
+        operation: equals
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent the use of dictionary words for passwords.
+
+    Add or update the following line in the "{{{ pwquality_path }}}" file or a configuration file in the /etc/pwquality.conf.d/ directory to contain the "dictcheck" parameter:
+
+    dictcheck=1
+
+srg_requirement: '{{{ full_name }}} must prevent the use of dictionary words for passwords.'

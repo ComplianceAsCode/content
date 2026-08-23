@@ -1,0 +1,55 @@
+documentation_complete: true
+
+
+title: 'Ensure that project config references a project template'
+
+description: |-
+    The OpenShift Container Platform API server automatically provisions
+    new projects based on the project template that is identified by
+    the <tt>projectRequestTemplate</tt> parameter in the cluster’s project
+    configuration resource.
+
+    As a cluster administrator, you can modify the default project template
+    so that new projects created would satisfy the chosen compliance
+    standards.
+
+    For more information, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.12/applications/projects/configuring-project-creation.html",
+    text="the relevant documentation") }}}.
+
+rationale: |-
+    Ensuring that the project configuration references
+    a project template that sets up the required objects for new projects ensures
+    that all new projects will be set in accordance with centralized settings.
+
+severity: medium
+
+ocil_clause: 'The project configuration does not reference a project request template'
+
+ocil: |-
+    Verify that the project config named <tt>cluster</tt> references a
+    projectRequestTemplate:
+    <pre>oc get project.config.openshift.io/cluster -ojsonpath="{.spec.projectRequestTemplate.name}"</pre>
+
+references:
+    nist: AC-4,SC-5,SC-5(1)
+    srg: SRG-APP-000039-CTR-000110,SRG-APP-000246-CTR-000605,SRG-APP-000435-CTR-001070
+
+identifiers:
+      cce@ocp4: CCE-86172-4
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/projects/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/projects/cluster
+        yamlpath: ".spec.projectRequestTemplate.name"
+        check_existence: "only_one_exists"
+        values:
+          - value: ".*"
+            operation: "pattern match"
+

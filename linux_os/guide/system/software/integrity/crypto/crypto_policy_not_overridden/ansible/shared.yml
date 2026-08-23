@@ -1,0 +1,22 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_system_crypto_policy") }}}
+
+- name: "{{{ rule_title }}} - Check if crypto policy is overridden"
+  ansible.builtin.command: /usr/bin/update-crypto-policies --check
+  register: crypto_policy_check
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Ensure crypto-policies-scripts package is installed"
+  ansible.builtin.package:
+    name: crypto-policies-scripts
+    state: present
+
+- name: "{{{ rule_title }}} - Re-apply crypto policy"
+  ansible.builtin.command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+  when: crypto_policy_check.rc != 0

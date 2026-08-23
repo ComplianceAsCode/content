@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the webadm_read_user_files SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>webadm_read_user_files</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="webadm_read_user_files") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="webadm_read_user_files") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: webadm_read_user_files

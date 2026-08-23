@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable the postgresql_selinux_users_ddl SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>postgresql_selinux_users_ddl</tt> is enabled.
+    If this setting is disabled, it should be enabled as it allows Database Administrators to
+    execute Data Definition Language (DDL) statements.
+    {{{ describe_sebool_enable(sebool="postgresql_selinux_users_ddl") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="postgresql_selinux_users_ddl") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: postgresql_selinux_users_ddl

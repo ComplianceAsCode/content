@@ -1,0 +1,26 @@
+checktext: |-
+  Review the api server encryption by running the following commands:
+
+  > oc edit apiserver
+
+  EXAMPLE OUTPUT
+  spec:
+    encryption:
+      type: aescbc
+
+  If the encryption type is not aescbc then this is a finding.
+
+fixtext: |-
+  Run the following command:
+  > oc edit apiserver
+
+  Set the encryption field type to aescbc:
+  spec:
+    encryption:
+      type: aescbc
+
+  Additional details about the configuration can be found in the documentation:
+  https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html
+
+srg_requirement: |-
+  The{{{ full_name }}} keystore must implement encryption to prevent unauthorized disclosure of information at rest within the container platform.

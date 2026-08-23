@@ -1,0 +1,55 @@
+documentation_complete: true
+
+title: 'Set SSH Daemon LogLevel to VERBOSE'
+
+description: |-
+    The <tt>VERBOSE</tt> parameter configures the SSH daemon to record login and logout activity.
+    To specify the log level in
+    SSH, add or correct the following line in
+    {{{ sshd_config_file() }}}
+    <pre>LogLevel VERBOSE</pre>
+
+rationale: |-
+    SSH provides several logging levels with varying amounts of verbosity. <tt>DEBUG</tt> is specifically
+    not recommended other than strictly for debugging SSH communications since it provides
+    so much data that it is difficult to identify important security information. <tt>INFO</tt> or
+    <tt>VERBOSE</tt> level is the basic level that only records login activity of SSH users. In many
+    situations, such as Incident Response, it is important to determine when a particular user was active
+    on a system. The logout record can eliminate those users who disconnected, which helps narrow the
+    field.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82420-1
+    cce@rhel9: CCE-86923-0
+    cce@rhel10: CCE-86241-7
+    cce@sle12: CCE-83077-8
+    cce@sle15: CCE-83270-9
+    cce@sle16: CCE-95866-0
+    cce@slmicro5: CCE-93643-5
+    cce@slmicro6: CCE-94627-7
+
+references:
+    cis@sle12: 5.2.5
+    cis@sle15: 5.2.5
+    nerc-cip: CIP-007-3 R7.1
+    nist: AC-17(a),AC-17(1),CM-6(a)
+    pcidss: Req-2.2.4
+    srg: SRG-OS-000032-GPOS-00013
+    stigid@sle12: SLES-12-030110
+
+{{{ complete_ocil_entry_sshd_option(default="no", option="LogLevel", value="VERBOSE") }}}
+
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile('LogLevel', 'VERBOSE', False) }}}
+
+srg_requirement: |-
+    {{{ full_name }}} must log SSH connection attempts and failures to the server.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: LogLevel
+        value: VERBOSE
+        datatype: string

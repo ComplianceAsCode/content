@@ -1,0 +1,42 @@
+documentation_complete: true
+
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - passmass'
+
+description: |-
+    {{{ describe_arpc("/usr/bin/passmass") }}}
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have compromised system accounts,
+    is a serious and ongoing concern and can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify
+    the risk from insider and advanced persistent threats.
+    <br /><br />
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83193-3
+    cce@sle15: CCE-85599-9
+
+references:
+    nist@sle12: AU-3,AU-12(a),AU-12(c),MA-4(1)(a)
+    srg: SRG-OS-000037-GPOS-00015
+    stigid@sle12: SLES-12-020670
+
+ocil_clause: '{{{ ocil_clause_audit() }}}'
+
+ocil: |-
+    To verify that auditing of privileged command use is configured, run the
+    following command:
+    <pre>$ sudo grep passmass /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
+    It should return a relevant line in the audit rules.
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/bin/passmass

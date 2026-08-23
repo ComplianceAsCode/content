@@ -1,0 +1,22 @@
+documentation_complete: true
+
+
+title: 'Uninstall geolite2-country Package'
+
+description: |-
+    {{{ describe_package_remove(package="geolite2-country") }}}
+
+rationale: |-
+    <tt>geolite2-country</tt> is part of the GeoLite2 database packages, offering geolocation databases and tooling.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82936-6
+
+{{{ complete_ocil_entry_package_removed("geolite2-country") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: geolite2-country

@@ -1,0 +1,62 @@
+documentation_complete: true
+
+
+title: 'Enable the NodeRestriction Admission Control Plugin'
+
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '.data."config.json" | fromjson' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    To limit the <tt>Node</tt> and <tt>Pod</tt> objects that a kubelet could modify,
+    ensure that the <tt>NodeRestriction</tt> plugin on kubelets is enabled in
+    the api-server configuration by running the following command:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+
+rationale: |-
+    Using the <tt>NodeRestriction</tt> plugin ensures that the kubelet is
+    restricted to the <tt>Node</tt> and <tt>Pod</tt> objects that it could
+    modify as defined. Such kubelets will only be allowed to modify their
+    own <tt>Node</tt> API object, and only modify <tt>Pod</tt> API objects
+    that are bound to their node.
+
+identifiers:
+  cce@ocp4: CCE-83753-4
+
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: '<tt>enable-admission-plugins</tt> does not contain <tt>NodeRestriction</tt>'
+
+ocil: |-
+    Ensure that the NodeRestriction plugin is enabled in the list of enabled plugins in
+    the apiserver configuration by running the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'NodeRestriction'</pre>
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["enable-admission-plugins"][:]'
+    values:
+    - value: '^NodeRestriction$'
+      operation: "pattern match"
+      entity_check: "at least one"

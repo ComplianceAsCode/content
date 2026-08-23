@@ -1,0 +1,24 @@
+controls:
+- id: SRG-APP-000148-CTR-000345
+  levels:
+  - medium
+  title: {{{ full_name }}} must uniquely identify and authenticate processes
+    acting on behalf of the users.
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  status: inherently met
+  status_justification: |-
+    OpenShift does not execute containers with a user's account, as users
+    of OpenShift do not have accounts on the host operating system. Pods
+    are executed using UIDs that do not exist on the system and have no
+    privileges on the host system at all. It is deliberately isolated
+    further per logical namespace to allow for a mapping of UIDs to
+    applications within the context of the API, without allowing for UID
+    collision across logical namespaces.
+
+    For more background information, see: https://cloud.redhat.com/blog/a-guide-to-openshift-and-uids
+  artifact_description: |-
+    Supporting evidence is in the following documentation:
+    https://cloud.redhat.com/blog/a-guide-to-openshift-and-uids

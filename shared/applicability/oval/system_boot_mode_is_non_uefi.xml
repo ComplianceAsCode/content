@@ -1,0 +1,15 @@
+<def-group>
+  <definition class="inventory" id="system_boot_mode_is_non_uefi" version="1">
+    <metadata>
+      <title>Non-UEFI system boot mode check</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if System boot mode is non-UEFI.</description>
+      <reference ref_id="cpe:/a:non-uefi" source="CPE" />
+    </metadata>
+    <criteria>
+      <extend_definition definition_ref="system_boot_mode_is_uefi" negate="true" comment="Pass if System boot mode is non-UEFI" />
+    </criteria>
+  </definition>
+</def-group>

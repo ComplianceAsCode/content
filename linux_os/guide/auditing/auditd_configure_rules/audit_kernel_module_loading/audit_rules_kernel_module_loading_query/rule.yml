@@ -1,0 +1,40 @@
+documentation_complete: true
+
+
+title: 'Ensure auditd Collects Information on Kernel Module Loading and Unloading - query_module'
+
+description: |-
+    {{{ describe_audit_rules_kernel_module_loading("query_module") }}}
+
+rationale: |-
+    The addition/removal of kernel modules can be used to alter the behavior of
+    the kernel and potentially introduce malicious code into kernel space. It is important
+    to have an audit trail of modules that have been introduced into the kernel.
+
+severity: medium
+
+platforms:
+    - not aarch64_arch
+
+identifiers:
+    cce@rhel8: CCE-88748-9
+    cce@rhel9: CCE-88749-7
+    cce@rhel10: CCE-90015-9
+
+{{{ complete_ocil_entry_audit_syscall(syscall="query_module") }}}
+
+fixtext: |-
+    {{{ fixtext_audit_rules("query_module", "module_chng") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_command("query_module") }}}'
+
+template:
+    name: audit_rules_kernel_module_loading
+    vars:
+        name: query_module
+        syscall_grouping:
+          - create_module
+          - delete_module
+          - finit_module
+          - init_module
+          - query_module

@@ -1,0 +1,33 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable the SELinux targeted policy.
+
+vuldiscussion: |-
+    Setting the SELinux policy to "targeted" or a more specialized policy
+    ensures the system will confine processes that are likely to be
+    targeted for exploitation, such as network or system services.
+
+
+
+    Note: During the development or debugging of SELinux modules, it is common to
+    temporarily place non-production systems in "permissive" mode. In such
+    temporary cases, SELinux policies should be developed, and once work
+    is completed, the system should be reconfigured to
+    "targeted".
+
+checktext: |-
+    Verify the SELINUX on {{{ full_name }}} is using the targeted policy with the following command:
+
+    $ sestatus | grep policy
+
+    Loaded policy name:             targeted
+
+    If the loaded policy name is not "targeted", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use the targetd SELINUX policy.
+
+    Edit the file "/etc/selinux/config" and add or modify the following line:
+
+     SELINUXTYPE=targeted
+
+    A reboot is required for the changes to take effect.

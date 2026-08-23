@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that the "/etc/group-" file is group-owned by "root".
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the group of the "/etc/group-" file is set to "root" by running the following command:
+
+    $ sudo chgrp root /etc/group-
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the "/etc/group-" file is group-owned by "root" with the following command:
+
+    $ sudo stat -c "%G %n" /etc/group-
+    root /etc/group-
+
+    If the "/etc/group-" file does not have a group owner of "root", this is a finding.
+
+vuldiscussion: |-
+    The "/etc/group-" file is a backup file of "/etc/group", and as such contains information regarding groups that are configured on the system. Protection of this file is important for system security.

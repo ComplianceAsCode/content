@@ -1,0 +1,90 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "inputs": [
+      {
+      "id": "pickContainerName",
+      "description": "Select Container Name",
+      "type": "pickString",
+      "options": ["&&CONTAINER_NAME&&"],
+      "default": "&&CONTAINER_NAME&&"
+      },
+      {
+      "id": "pickProductName",
+      "description": "Select Product Name",
+      "type": "pickString",
+      "options": [
+          "debian11", "debian12",
+          "eap6",
+          "fedora",
+          "firefox",
+          "ocp4",
+          "ol7", "ol8",
+          "opensuse", "rhel8", "rhel9", "rhel10",
+          "rhosp10", "rhosp13",
+          "rhv4",
+          "sle12", "sle15",
+          "ubuntu2204"
+      ],
+      "default": "&&DEFAULT_PRODUCT&&"
+      },
+      {
+      "id": "pickRemediationType",
+      "description": "Select Remediation Type",
+      "type": "pickString",
+      "options": ["oscap", "bash", "ansible"],
+      "default": "bash"
+      }
+  ],
+  "configurations": [
+    {
+      "name": "Run Automatus using Docker backend",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "program": "${workspaceFolder}/tests/automatus.py",
+      "args": [
+          "rule",
+          "--dontclean",
+          "--debug",
+          "--docker",
+          "${input:pickContainerName}",
+          "--datastream",
+          "${workspaceFolder}/build/ssg-${input:pickProductName}-ds.xml",
+          "--remediate-using",
+          "${input:pickRemediationType}",
+          "--make-applicable-in-containers",
+          "--remove-ocp4-only",
+          "--remove-fips-certified",
+          "--remove-platforms",
+          "${command:content-navigator.getRuleId}"
+      ],
+      "env": {
+        "SSH_ADDITIONAL_OPTIONS": "-o IdentityFile=${workspaceFolder}/&&PRIVATE_KEY_FILEPATH&&"
+      }
+    },
+    {
+      "name": "Run Automatus using Docker backend (test_rule_in_container.sh)",
+      "type": "bashdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/tests/test_rule_in_container.sh",
+      "args": [
+          "--dontclean",
+          "--docker",
+          "--name",
+          "${input:pickContainerName}",
+          "--datastream",
+          "${workspaceFolder}/build/ssg-${input:pickProductName}-ds.xml",
+          "--remediate-using",
+          "${input:pickRemediationType}",
+          "${command:content-navigator.getRuleId}"
+      ],
+      "env": {
+        "ADDITIONAL_SSGTS_OPTIONS": "--debug --duplicate-templates --remove-fips-certified",
+        "SSH_ADDITIONAL_OPTIONS": "-o IdentityFile=${workspaceFolder}/&&PRIVATE_KEY_FILEPATH&&"
+      }
+    }
+  ]
+}

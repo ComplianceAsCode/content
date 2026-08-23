@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Disallow kernel profiling by unprivileged users'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}'
+
+rationale: |-
+    Kernel profiling can reveal sensitive information about kernel behaviour.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-82502-6
+    cce@rhel8: CCE-81054-9
+    cce@rhel9: CCE-83959-7
+    cce@rhel10: CCE-90142-1
+    cce@sle12: CCE-91568-6
+    cce@sle15: CCE-91258-4
+    cce@sle16: CCE-96571-5
+
+references:
+    nist: AC-6
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000132-GPOS-00067,SRG-OS-000138-GPOS-00069,SRG-APP-000243-CTR-000600
+    stigid@ol8: OL08-00-010376
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to only allow root to do kernel profiling.
+    {{{ fixtext_sysctl(sysctl="kernel.perf_event_paranoid", value="2") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must prevent kernel profiling by unprivileged users.'
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.perf_event_paranoid
+        sysctlval: '2'
+        datatype: int

@@ -1,0 +1,71 @@
+documentation_complete: true
+
+
+title: 'Configure the kubelet Certificate Authority for the API Server'
+
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | select(.apiServerArguments["kubelet-certificate-authority"]) | .apiServerArguments["kubelet-certificate-authority"][] | select(test("{{.var_apiserver_kubelet_certificate_authority}}"))]' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '[.data."config.json" | fromjson | select(.apiServerArguments["kubelet-certificate-authority"]) | .apiServerArguments["kubelet-certificate-authority"][] | select(test("/etc/kubernetes/certs/kubelet-ca/ca.crt"))]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    To ensure OpenShift verifies kubelet certificates before establishing
+    connections, follow the OpenShift documentation and setup the TLS connection
+    between the API Server and kubelets.
+
+    Edit the <tt>openshift-kube-apiserver</tt> configmap
+    and set the below parameter if it is not already configured:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "kubelet-certificate-authority":"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt",
+      ...
+    </pre>
+
+rationale: |-
+    Connections from the API Server to the kubelet are used for fetching logs
+    for pods, attaching (through kubectl) to running pods, and using the kubelet
+    port-forwarding functionality. These connections terminate at the kubelet
+    HTTPS endpoint. By default, the API Server does not verify the kubelet serving
+    certificate, which makes the connection subject to man-in-the-middle attacks,
+    and unsafe to run over untrusted and/or public networks.
+
+identifiers:
+  cce@ocp4: CCE-84196-5
+
+
+severity: high
+
+references:
+    nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1),SC-8,SC-8(1)
+    pcidss: Req-2.2,Req-2.2.3,Req-2.3
+    srg: SRG-APP-000516-CTR-001325
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: '<tt>kubelet-certificate-authority</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."kubelet-certificate-authority"'</pre>
+    The output should return a configured certificate.
+
+warnings:
+    - general: |-
+        {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(8) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "at_least_one_exists"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"

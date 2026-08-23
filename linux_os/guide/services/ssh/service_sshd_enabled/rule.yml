@@ -1,0 +1,66 @@
+documentation_complete: true
+
+
+title: 'Enable the OpenSSH Service'
+
+description: |-
+    The SSH server service, sshd, is commonly needed.
+    {{{ describe_service_enable(service="sshd") }}}
+
+rationale: |-
+    Without protection of the transmitted information, confidentiality, and
+    integrity may be compromised because unprotected communications can be
+    intercepted and either read or altered.
+    <br /><br />
+    This checklist item applies to both internal and external networks and all types
+    of information system components from which information can be transmitted (e.g., servers,
+    mobile devices, notebook computers, printers, copiers, scanners, etc). Communication paths
+    outside the physical protection of a controlled boundary are exposed to the possibility
+    of interception and modification.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82426-8
+    cce@rhel9: CCE-90822-8
+    cce@rhel10: CCE-88621-8
+    cce@sle12: CCE-83201-4
+    cce@sle15: CCE-83297-2
+    cce@slmicro5: CCE-93771-4
+    cce@slmicro6: CCE-94726-7
+
+references:
+    cis-csc: 13,14
+    cobit5: APO01.06,DSS05.02,DSS05.04,DSS05.07,DSS06.02,DSS06.06
+    cui: 3.1.13,3.5.4,3.13.8
+    isa-62443-2013: 'SR 3.1,SR 3.8,SR 4.1,SR 4.2,SR 5.2'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nist: CM-6(a),SC-8,SC-8(1),SC-8(2),SC-8(3),SC-8(4)
+    nist-csf: PR.DS-2,PR.DS-5
+    srg: SRG-OS-000423-GPOS-00187,SRG-OS-000424-GPOS-00188,SRG-OS-000425-GPOS-00189,SRG-OS-000426-GPOS-00190
+    stigid@ol7: OL07-00-040310
+    stigid@ol8: OL08-00-040160
+    stigid@sle12: SLES-12-030100
+
+ocil: |-
+    {{{ ocil_service_enabled(service="sshd") }}}
+
+ocil_clause: sshd service is disabled
+
+template:
+    name: service_enabled
+    vars:
+        servicename: sshd
+        servicename@ubuntu2204: ssh
+        servicename@ubuntu2404: ssh
+        packagename: openssh-server
+        packagename@sle12: openssh
+        packagename@sle15: openssh
+        packagename@slmicro5: openssh
+
+fixtext: |-
+    {{{ fixtext_service_enabled("sshd") }}}
+
+srg_requirement: '{{{ srg_requirement_service_enabled("sshd") }}}'
+
+platform: system_with_kernel

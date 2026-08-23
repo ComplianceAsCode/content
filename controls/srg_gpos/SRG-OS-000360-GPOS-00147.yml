@@ -1,0 +1,23 @@
+controls:
+    -   id: SRG-OS-000360-GPOS-00147
+        levels:
+            - medium
+        title: {{{ full_name }}} must enforce dual authorization for movement and/or
+            deletion of all audit information, when such movement or deletion is not part
+            of an authorized automatic process.
+        status: does not meet
+        check: |-
+            {{{ full_name }}} does not support this requirement.
+            This is an applicable-does not meet finding.
+        fixtext: |-
+            This requirement is a permanent finding and cannot be fixed.
+            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
+        mitigation:
+            The following items mitigate this risk by protecting the audit logs and tools from unauthorized access.
+
+            SRG-OS-000206-GPOS-00084
+            or mitigate with third-party software.
+
+            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+        status_justification:
+            This is a procedural-only requirement that is not enforced by the OS.

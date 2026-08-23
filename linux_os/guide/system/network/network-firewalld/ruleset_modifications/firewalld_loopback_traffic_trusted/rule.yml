@@ -1,0 +1,40 @@
+documentation_complete: true
+
+
+title: 'Configure Firewalld to Trust Loopback Traffic'
+
+description: |-
+    Assign loopback interface to the <tt>firewalld</tt> <tt>trusted</tt> zone in order to
+    explicitly allow the loopback traffic in the system.
+
+    To configure <tt>firewalld</tt> to trust loopback traffic, run the following command:
+    <pre>sudo firewall-cmd --permanent --zone=trusted --add-interface=lo</pre>
+    To ensure <tt>firewalld</tt> settings are applied in runtime, run the following command:
+    <pre>firewall-cmd --reload</pre>
+
+rationale: |-
+    Loopback traffic is generated between processes on machine and is typically critical to
+    operation of the system. The loopback interface is the only place that loopback network
+    traffic should be seen, all other interfaces should ignore traffic on this network as an
+    anti-spoofing measure.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87278-8
+    cce@rhel9: CCE-86116-1
+    cce@rhel10: CCE-90267-6
+
+ocil_clause: 'loopback traffic is not trusted'
+
+ocil: |-
+    Inspect the network interfaces assigned to the firewalld trusted zone and verify the
+    <tt>lo</tt> interface is listed by running the following command:
+
+    <pre>$ sudo firewall-cmd --list-interfaces --zone=trusted</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to explicitly trust loopback traffic using the following commands:
+
+    $ sudo firewall-cmd --permanent --zone=trusted --add-interface=lo
+    $ sudo firewall-cmd --reload

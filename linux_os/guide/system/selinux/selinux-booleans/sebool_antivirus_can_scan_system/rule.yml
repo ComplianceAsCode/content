@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Enable the antivirus_can_scan_system SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>antivirus_can_scan_system</tt> is disabled.
+    This setting should be enabled as it allows antivirus programs to read non-security
+    files on a system.
+    {{{ describe_sebool_enable(sebool="antivirus_can_scan_system") }}}
+
+rationale: ""
+
+severity: medium
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="antivirus_can_scan_system") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: antivirus_can_scan_system

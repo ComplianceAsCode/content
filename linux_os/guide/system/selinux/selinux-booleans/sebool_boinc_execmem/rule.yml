@@ -1,0 +1,26 @@
+documentation_complete: true
+
+
+title: 'Disable the boinc_execmem SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>boinc_execmem</tt> is enabled.
+    This setting should be disabled.
+    {{{ describe_sebool_disable(sebool="boinc_execmem") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83304-6
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="boinc_execmem") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: boinc_execmem

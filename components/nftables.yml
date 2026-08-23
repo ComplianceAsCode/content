@@ -1,0 +1,20 @@
+groups:
+- network-nftables
+name: nftables
+packages:
+- nftables
+rules:
+- directory_groupowner_etc_nftables
+- directory_owner_etc_nftables
+- directory_permissions_etc_nftables
+- nftables_ensure_default_deny_policy
+- nftables_rules_permanent
+- package_nftables_installed
+- package_nftables_removed
+- service_nftables_disabled
+- service_nftables_enabled
+- set_nftables_base_chain
+- set_nftables_loopback_traffic
+- set_nftables_new_connections
+- set_nftables_table
+- firewall_single_service_active

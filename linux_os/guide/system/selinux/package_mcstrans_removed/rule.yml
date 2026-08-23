@@ -1,0 +1,26 @@
+documentation_complete: true
+
+
+title: 'Uninstall mcstrans Package'
+
+description: |-
+    The <tt>mcstransd</tt> daemon provides category label information
+    to client processes requesting information. The label translations are defined
+    in <tt>/etc/selinux/targeted/setrans.conf</tt>.
+    {{{ describe_package_remove(package="mcstrans") }}}
+
+rationale: |-
+    Since this service is not used very often, disable it to reduce the
+    amount of potentially vulnerable code running on the system.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82756-8
+    cce@rhel9: CCE-84072-8
+    cce@rhel10: CCE-88183-9
+
+template:
+    name: package_removed
+    vars:
+        pkgname: mcstrans

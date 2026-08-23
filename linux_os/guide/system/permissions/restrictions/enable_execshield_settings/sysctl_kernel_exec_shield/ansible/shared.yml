@@ -1,0 +1,66 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{# products that are available also in a 32 bits form #}}
+{{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}
+
+# What architecture are we on?
+# By default, set 32bit
+- name: Set 32bit architecture for kernel exec-shield tasks
+  ansible.builtin.set_fact:
+    kexec_arch: "b32"
+
+# If needed, change to 64bit
+- name: Set 64bit architecture for kernel exec-shield tasks
+  ansible.builtin.set_fact:
+    kexec_arch: "b64"
+  when:
+  - ansible_architecture == "aarch64" or
+    ansible_architecture == "ppc64" or
+    ansible_architecture == "ppc64le" or
+    ansible_architecture == "s390x" or
+    ansible_architecture == "x86_64"
+
+- name: Ensure sysctl kernel.exec-shield is set to 1
+  ansible.posix.sysctl:
+    name: "kernel.exec-shield"
+    value: "1"
+    state: present
+    reload: yes
+  when: kexec_arch == "b32"
+
+{{% if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15', 'sle16'] %}}
+- name: Check noexec argument exists
+  ansible.builtin.command: grep '^GRUB_CMDLINE_LINUX=.*noexec=.*"' /etc/default/grub
+  failed_when: False
+  register: argcheck
+  when: kexec_arch == "b64"
+
+- name: Replace existing noexec argument
+  ansible.builtin.replace:
+      path: /etc/default/grub
+      regexp: '\(^GRUB_CMDLINE_LINUX=".*\)noexec=?[^[:space:]]*\(.*"\)'
+      replace: '\1 \2'
+  when:
+    - argcheck is not skipped
+    - argcheck.rc == 0
+    - kexec_arch == "b64"
+
+{{% endif -%}}
+
+{{% if product in ['sle12', 'sle15', 'sle16'] %}}
+- name: Update grub defaults and the bootloader menu
+  ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+  when: kexec_arch == "b64"
+{{% else %}}
+- name: Update grub defaults and the bootloader menu
+  ansible.builtin.command: /sbin/grubby --update-kernel=ALL --remove-args="noexec"
+  when: kexec_arch == "b64"
+{{% endif -%}}
+
+{{% else %}}
+{{{ ansible_grub2_bootloader_argument_absent("noexec") }}}
+{{% endif -%}}

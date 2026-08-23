@@ -1,0 +1,21 @@
+fixtext: |-
+    Configure {{{ full_name }}} to have the "cronie" package installed with the following command:
+
+    $ sudo dnf -y install cronie
+
+srg_requirement: |-
+    {{{ full_name }}} must have the "cronie" package installed.
+
+checktext: |-
+    Verify {{{ full_name }}} has the "cronie" package installed with the following command:
+
+    $ sudo dnf list --installed cronie
+    Installed Packages
+    cronie.x86_64                                           1.7.0-9.el10                                           @anaconda
+
+    If the "cronie" package is not installed, this is a finding.
+
+vuldiscussion: |-
+    The "cronie" package must be installed if it is to be available for multifactor authentication using smart cards.
+
+

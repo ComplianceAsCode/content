@@ -1,0 +1,20 @@
+{{#
+
+    Adds an OCIL, fixtex and SRG requirement to audit_privileged_command rules.
+
+:param cmd: The command to audit
+:type cmd: str
+:param path_prefix: Prefix of the command to audit
+:type path_prefix: str
+:param key: The key to use in the audit rule
+:type key: str
+
+#}}
+{{% macro ocil_fix_srg_privileged_command(cmd, path_prefix="/usr/bin/", key="") %}}
+{{{ complete_ocil_entry_audit_privileged_commands(cmd, path_prefix, key) }}}
+
+fixtext: |-
+    {{{ fixtext_audit_rules_privileged_commands(cmd, path_prefix, key) | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_command(cmd) }}}'
+{{%- endmacro %}}

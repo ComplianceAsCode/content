@@ -1,0 +1,12 @@
+apiVersion: kataconfiguration.openshift.io/v1
+kind: KataConfig
+metadata:
+  name: example-kataconfig
+spec:
+  checkNodeEligibility: false
+  enablePeerPods: false
+  kataConfigPoolSelector:
+    matchExpressions:
+      - key: node-role.kubernetes.io/worker
+        operator: Exists
+  logLevel: info

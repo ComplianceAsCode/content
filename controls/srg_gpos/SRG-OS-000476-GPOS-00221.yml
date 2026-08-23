@@ -1,0 +1,15 @@
+controls:
+    -   id: SRG-OS-000476-GPOS-00221
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records for all account creations,
+            modifications, disabling, and termination events.
+        rules:
+            - audit_rules_sudoers
+            - audit_rules_sudoers_d
+            - audit_rules_usergroup_modification_group
+            - audit_rules_usergroup_modification_gshadow
+            - audit_rules_usergroup_modification_opasswd
+            - audit_rules_usergroup_modification_passwd
+            - audit_rules_usergroup_modification_shadow
+        status: automated

@@ -1,0 +1,86 @@
+documentation_complete: true
+
+title: 'Set SSH Client Alive Interval'
+
+description: |-
+    SSH allows administrators to set a network responsiveness timeout interval.
+    After this interval has passed, the unresponsive client will be automatically logged out.
+    <br /><br />
+    To set this timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
+    follows:
+    <pre>ClientAliveInterval <b>{{{ xccdf_value("sshd_idle_timeout_value") }}}</b></pre>
+    <br/><br/>
+    The timeout <b>interval</b> is given in seconds. For example, have a timeout
+    of 10 minutes, set <b>interval</b> to 600.
+    <br /><br />
+    If a shorter timeout has already been set for the login shell, that value will
+    preempt any SSH setting made in <tt>/etc/ssh/sshd_config</tt>. Keep in mind that
+    some processes may stop SSH from correctly detecting that the user is idle.
+
+rationale: |-
+    Terminating an idle ssh session within a short time period reduces the window of
+    opportunity for unauthorized personnel to take control of a management session
+    enabled on the console or console port that has been let unattended.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82549-7
+    cce@rhel8: CCE-80906-1
+    cce@rhel9: CCE-90811-1
+    cce@rhel10: CCE-90362-5
+    cce@sle12: CCE-83027-3
+    cce@sle15: CCE-83281-6
+    cce@sle16: CCE-96381-9
+    cce@slmicro5: CCE-93692-2
+    cce@slmicro6: CCE-94681-4
+
+references:
+    cis-csc: 1,12,13,14,15,16,18,3,5,7,8
+    cis@sle12: 5.2.16
+    cis@sle15: 5.2.16
+    cjis: 5.5.6
+    cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03,DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    cui: 3.1.11
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.3
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 6.2'
+    iso27001-2013: A.12.4.1,A.12.4.3,A.14.1.1,A.14.2.1,A.14.2.5,A.18.1.4,A.6.1.2,A.6.1.5,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
+    nerc-cip: CIP-004-6 R2.2.3,CIP-007-3 R5.1,CIP-007-3 R5.2,CIP-007-3 R5.3.1,CIP-007-3 R5.3.2,CIP-007-3 R5.3.3
+    nist: CM-6(a),AC-17(a),AC-2(5),AC-12,AC-17(a),SC-10,CM-6(a)
+    nist-csf: DE.CM-1,DE.CM-3,PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7,PR.IP-2
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000126-GPOS-00066,SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109,SRG-OS-000395-GPOS-00175
+    stigid@ol7: OL07-00-040320
+    stigid@ol8: OL08-00-010201
+    stigid@sle12: SLES-12-030190
+
+requires:
+    - sshd_set_keepalive
+
+ocil_clause: 'it is commented out or not configured properly'
+
+ocil: |-
+    Run the following command to see what the timeout interval is:
+    <pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
+    If properly configured, the output should be:
+    <pre>ClientAliveInterval {{{ xccdf_value("sshd_idle_timeout_value") }}}</pre>
+
+warnings:
+    - dependency: |-
+        SSH disconnecting unresponsive clients will not have desired effect without also
+        configuring ClientAliveCountMax in the SSH service configuration.
+    - general: |-
+        Following conditions may prevent the SSH session to time out:
+        <ul>
+        <li>Remote processes on the remote machine generates output. As the output has to be transferred over the network to the client, the timeout is reset every time such transfer happens.</li>
+        <li>Any <tt>scp</tt> or <tt>sftp</tt> activity by the same user to the host resets the timeout.</li>
+        </ul>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: ClientAliveInterval
+        xccdf_variable: sshd_idle_timeout_value
+        datatype: int
+        backends:
+            oval: "off"

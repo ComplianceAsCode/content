@@ -1,0 +1,26 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Check current SELinux configuration"
+  ansible.builtin.command:
+    cmd: grep -oP '^\s*SELINUX=\K(enforcing|permissive|disabled)' /etc/selinux/config
+  register: selinux_config_state
+  check_mode: false
+  changed_when: false
+  failed_when: false
+
+- name: "{{{ rule_title }}} - Set SELinux state to permissive if disabled or not configured"
+  block:
+    {{{ ansible_selinux_config_set(parameter="SELINUX", value="permissive", rule_title=rule_title) | indent(4) }}}
+
+    - name: "{{{ rule_title }}} - Mark system to relabel SELinux on next boot"
+      ansible.builtin.file:
+        path: /.autorelabel
+        state: touch
+        access_time: preserve
+        modification_time: preserve
+        mode: 0644
+  when: selinux_config_state.stdout not in ['enforcing', 'permissive']

@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_almalinux9" version="3">
+    <metadata>
+      <title>AlmaLinux OS 9</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:almalinux:almalinux:9" source="CPE" />
+      <description>The operating system installed on the system is AlmaLinux OS 9</description>
+    </metadata>
+    <criteria comment="current OS is 9" operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="AlmaLinux OS is installed" test_ref="test_almalinux" />
+      <criterion comment="AlmaLinux OS 9 is installed" test_ref="test_almalinux9" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/almalinux-release exists" id="test_almalinux" version="1">
+    <unix:object object_ref="obj_almalinux" />
+  </unix:file_test>
+  <unix:file_object comment="check /etc/almalinux file" id="obj_almalinux" version="1">
+    <unix:filepath>/etc/almalinux-release</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check Custom OS version" id="test_almalinux9" version="1">
+    <ind:object object_ref="obj_almalinux9" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_almalinux9" version="1" comment="Check AlmaLinux OS version">
+    <ind:filepath>/etc/almalinux-release</ind:filepath>
+    <ind:pattern operation="pattern match">^AlmaLinux release 9.[0-9]+ .*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

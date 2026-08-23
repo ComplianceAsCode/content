@@ -1,0 +1,9 @@
+#!/bin/bash
+{{% if MISSING_PARAMETER_PASS %}}
+# platform = Not Applicable
+{{% endif%}}
+# packages = audit
+{{% if XCCDF_VARIABLE %}}
+# variables = {{{ XCCDF_VARIABLE }}}={{{ TEST_CORRECT_VALUE }}}
+{{% endif %}}
+echo "#{{{ PARAMETER }}} = {{{ TEST_CORRECT_VALUE }}}" > "/etc/audit/auditd.conf"

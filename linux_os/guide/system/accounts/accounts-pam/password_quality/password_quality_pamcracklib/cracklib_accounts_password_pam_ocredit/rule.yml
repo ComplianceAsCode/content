@@ -1,0 +1,57 @@
+documentation_complete: true
+
+
+title: 'Set Password Strength Minimum Special Characters'
+
+description: |-
+    The pam_cracklib module's <tt>ocredit=</tt> parameter controls requirements
+    for usage of special (or ``other'') characters in a password. When set to a
+    negative number, any password will be required to contain that many special
+    characters. When set to a positive number, pam_cracklib will grant +1
+    additional length credit for each special character.
+    Make sure the <tt>ocredit</tt> parameter for the pam_cracklib module is
+    set to less than or equal to <tt>{{{ xccdf_value("var_password_pam_ocredit") }}}</tt>. For example, <tt>ocredit={{{ xccdf_value("var_password_pam_ocredit") }}}</tt>.
+
+rationale: |-
+    Requiring a minimum number of special characters makes password guessing
+    attacks more difficult by ensuring a larger search space.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83169-3
+    cce@sle15: CCE-85574-2
+    cce@sle16: CCE-96246-4
+    cce@slmicro5: CCE-93767-2
+    cce@slmicro6: CCE-94701-0
+
+references:
+    cis@sle12: 5.3.1
+    cis@sle15: 5.3.1
+    nist: IA-5(a),IA-5(v)
+    pcidss: Req-8.2.3
+    srg: SRG-OS-000266-GPOS-00101
+    stigid@sle12: SLES-12-010180
+
+ocil_clause: 'ocredit is not found or not set to the required value'
+
+ocil: |-
+    To check how many special characters are required in a password, run the
+    following command:
+    <pre># grep pam_cracklib.so /etc/pam.d/common-password
+    password requisite pam_cracklib.so ocredit={{{ xccdf_value("var_password_pam_ocredit") }}}</pre>
+    The <tt>ocredit</tt> parameter (as a negative number) will indicate how
+    many special characters are required.
+    The profile requires at least {{{ xccdf_value("var_password_pam_ocredit") }}} special character in a password.
+    This would appear as <tt>ocredit=-{{{ xccdf_value("var_password_pam_ocredit") }}}</tt>.
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - variable: ocredit
+          operation: less than or equal

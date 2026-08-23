@@ -1,0 +1,62 @@
+documentation_complete: true
+
+title: 'Disable the uvcvideo module'
+
+description: |-
+    If the device contains a camera it should be covered or disabled when not in use.
+
+rationale: |-
+    Failing to disconnect from collaborative computing devices (i.e., cameras) can result in subsequent compromises of organizational information.
+    Providing easy methods to physically disconnect from such devices after a collaborative computing session helps to ensure participants actually carry out the disconnect activity without having to go through complex and tedious procedures.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86960-2
+    cce@rhel9: CCE-86961-0
+
+references:
+    nist: CM-7 (a),CM-7 (5) (b)
+    srg: SRG-OS-000095-GPOS-00049,SRG-OS-000370-GPOS-00155
+    stigid@ol8: OL08-00-040020
+
+platform: system_with_kernel
+
+ocil_clause: 'the command does not return any output, or the line is commented out, and the collaborative computing device has not been authorized for use'
+
+ocil: |-
+    If the device or {{{ full_name }}} does not have a camera installed, this requirement is not applicable.
+
+    This requirement is not applicable to mobile devices (smartphones and tablets), where the use of the camera is a local Authorizing Official (AO) decision.
+
+    This requirement is not applicable to dedicated VTC suites located in approved VTC locations that are centrally managed.
+
+    For an external camera, if there is not a method for the operator to manually disconnect the camera at the end of collaborative computing sessions, this is a finding.
+
+    For a built-in camera, the camera must be protected by a camera cover (e.g., laptop camera cover slide) when not in use. If the built-in camera is not protected with a camera cover, or is not physically disabled, this is a finding.
+
+    If the camera is not disconnected, covered, or physically disabled, determine if it is being disabled via software.
+
+    Verify the operating system disables the ability to load the uvcvideo kernel module and ensure that the uvcvideo protocol module is disabled with the following command:
+
+    $ sudo grep -r uvcvideo /etc/modprobe.d/
+
+    /etc/modprobe.d/uvcvideo-blacklist.conf:install uvcvideo /bin/false
+    /etc/modprobe.d/uvcvideo-blacklist.conf:blacklist uvcvideo
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the built-in or attached camera when not in use.
+
+    Add or update the following lines in the "/etc/modprobe.d/uvcvideo-blacklist.conf" file:
+
+    install uvcvideo /bin/false
+    blacklist uvcvideo
+
+    Reboot the system for the settings to take effect.
+
+srg_requirement: '{{{ full_name }}} must cover or disable the built-in or attached camera when not in use.'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: uvcvideo

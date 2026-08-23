@@ -1,0 +1,32 @@
+product: almalinux9
+full_name: AlmaLinux OS 9
+type: platform
+
+major_version_ordinal: 9
+
+benchmark_id: ALMALINUX-9
+benchmark_root: "../../linux_os/guide"
+components_root: "../../components"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - almalinux9:
+      name: "cpe:/o:almalinux:almalinux:9"
+      title: "AlmaLinux OS 9"
+      check_id: installed_OS_is_almalinux9
+
+# See https://almalinux.org/security/
+release_key_fingerprint: "BF18AC2876178908D6E71267D36CB86CB86B3716"
+oval_feed_url: "https://security.almalinux.org/oval/org.almalinux.alsa-9.xml.bz2"
+
+pkg_version: "b86b3716"
+pkg_release: "61e69f29"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/almalinuxos_linux/'

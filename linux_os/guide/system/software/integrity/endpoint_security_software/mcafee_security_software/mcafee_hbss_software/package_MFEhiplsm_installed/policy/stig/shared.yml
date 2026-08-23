@@ -1,0 +1,14 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    Without a host-based intrusion detection tool, there is no system-level defense
+    when an intruder gains access to a system or network. Additionally, a host-based
+    intrusion prevention tool can provide methods to immediately lock out detected
+    intrusion attempts.
+
+checktext: |-
+    To verify that McAfee HIPS is installed, run the following command(s):
+     $ rpm -q MFEhiplsm
+
+    If the HBSS HIPS module is not installed, then this is a finding.

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Enable the spamd_enable_home_dirs SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>spamd_enable_home_dirs</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    {{{ describe_sebool_enable(sebool="spamd_enable_home_dirs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="spamd_enable_home_dirs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: spamd_enable_home_dirs

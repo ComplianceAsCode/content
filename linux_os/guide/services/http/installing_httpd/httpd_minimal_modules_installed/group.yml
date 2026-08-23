@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Confirm Minimal Built-in Modules Installed'
+
+description: |-
+    The default <tt>httpd</tt> installation minimizes the number of
+    modules that are compiled directly into the binary (<tt>core prefork http_core
+    mod_so</tt>). This minimizes risk by limiting the capabilities allowed by the
+    web server.
+
+    Query the set of compiled-in modules using the following command:
+    <pre>$ httpd -l</pre>
+    If the number of compiled-in modules is significantly larger than the
+    aforementioned set, this guide recommends re-installing <tt>httpd</tt> with a
+    reduced configuration. Minimizing the number of modules that are compiled into
+    the <tt>httpd</tt> binary, reduces risk by limiting the capabilities allowed by
+    the webserver.

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Remove ufw Package'
+
+description: |-
+    {{{ describe_package_remove(package="ufw") }}}
+
+rationale: |-
+    Running <tt>iptables.persistent</tt> with <tt>ufw</tt> enabled may lead
+    to conflict and unexpected results.
+
+severity: medium
+
+{{{ complete_ocil_entry_package_removed("ufw") }}}
+
+platform: system_with_kernel
+
+{{%- if 'ubuntu' in product %}}
+template:
+    name: package_removed_guard_var
+    vars:
+        pkgname: ufw
+        variable: var_network_filtering_service
+        value: ufw
+{{%- else %}}
+template:
+    name: package_removed
+    vars:
+        pkgname: ufw
+{{%- endif %}}
+
+fixtext: |-
+    {{{ describe_package_remove(package="ufw") }}}

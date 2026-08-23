@@ -1,0 +1,16 @@
+controls:
+- id: SRG-APP-000390-CTR-000930
+  levels:
+  - medium
+  title: {{{ full_name }}} must require devices to reauthenticate when organization-defined
+    circumstances or situations requiring reauthentication.
+  status: not applicable
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+  status_justification: |-
+    The OpenShift Container Platform does not required a user/device to re-authenticate when changes to the RBAC policy, or permissions to a service/object change in the system.  These changes are applied and effective immediately and do not require the user/device to first logout.
+
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+

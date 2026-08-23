@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Disable Dovecot Service'
+
+description: |-
+    {{{ describe_service_disable(service="dovecot") }}}
+
+rationale: |-
+    Running an IMAP or POP3 server provides a network-based
+    avenue of attack, and should be disabled if not needed.
+
+severity: unknown
+
+identifiers:
+    cce@rhel8: CCE-82760-0
+    cce@rhel9: CCE-84242-7
+    cce@sle12: CCE-92248-4
+    cce@sle15: CCE-91368-1
+    cce@slmicro5: CCE-93915-7
+
+references:
+    cis@sle12: 2.2.12
+    cis@sle15: 2.2.12
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="dovecot") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="dovecot") }}}
+
+platform: system_with_kernel
+
+template:
+    name: service_disabled
+    vars:
+        servicename: dovecot
+        packagename@debian13: dovecot-core
+        packagename@ubuntu2404: dovecot-core

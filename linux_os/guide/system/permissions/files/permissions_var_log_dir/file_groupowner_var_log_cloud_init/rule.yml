@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns /var/log/cloud-init.log* File'
+
+description: '{{{ describe_file_group_owner(file="/var/log/cloud-init.log*", group="adm|root") }}}'
+
+rationale: |-
+    The <tt>/var/log/cloud-init.log*</tt> file contains detailed debugging information that
+    helps users troubleshoot cloud-init and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/cloud-init.log*", group="adm|root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/cloud-init.log*", group="adm|root") }}} 
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/
+        file_regex: .*cloud-init\.log.*
+        gid_or_name: 'adm|root'
+

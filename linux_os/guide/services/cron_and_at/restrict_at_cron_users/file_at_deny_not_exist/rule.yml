@@ -1,0 +1,46 @@
+documentation_complete: true
+
+
+title: 'Ensure that /etc/at.deny does not exist'
+
+description: |-
+    The file <tt>/etc/at.deny</tt> should not exist.
+    Use <tt>/etc/at.allow</tt> instead.
+
+rationale: |-
+    Access to <tt>at</tt> should be restricted.
+    It is easier to manage an allow list than a deny list.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86945-3
+    cce@rhel9: CCE-86946-1
+    cce@rhel10: CCE-89507-8
+    cce@sle12: CCE-91683-3
+    cce@sle15: CCE-91313-7
+    cce@sle16: CCE-95851-2
+    cce@slmicro5: CCE-93929-8
+
+references:
+    cis@sle12: 5.1.9
+    cis@sle15: 5.1.9
+
+ocil_clause: 'the file /etc/at.deny exists'
+
+ocil: |-
+    The file <tt>/etc/at.deny</tt> should not exist.
+    This can be checked by running the following
+    <pre>
+    stat /etc/at.deny
+    </pre>
+    and the output should be
+    <pre>
+    stat: cannot stat `/etc/at.deny': No such file or directory
+    </pre>
+
+template:
+    name: file_existence
+    vars:
+        filepath: /etc/at.deny
+        exists: false

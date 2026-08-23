@@ -1,0 +1,77 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: modeled on real VirtualMachine API objects (celctl cac scaffold format)
+  date: '2026-07-23'
+  openshift_version: 4.22.0
+  kubernetes_version: v1.35.5
+  source_api_versions:
+    vms: kubevirt.io/v1
+cases:
+  - name: no VMs -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items: []
+  - name: disk without errorPolicy -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-default
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      disks:
+                        - name: rootdisk
+  - name: disk with errorPolicy stop -> compliant
+    expect: true
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-stop
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      disks:
+                        - name: rootdisk
+                          errorPolicy: stop
+  - name: disk with errorPolicy ignore -> non-compliant
+    expect: false
+    inputs:
+      vms:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachine
+            metadata:
+              name: vm-ignore
+              namespace: default
+            spec:
+              template:
+                spec:
+                  domain:
+                    devices:
+                      disks:
+                        - name: rootdisk
+                          errorPolicy: ignore

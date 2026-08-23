@@ -1,0 +1,7 @@
+---
+# platform = multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+spec:
+  kubeletConfig:
+    tlsCipherSuites: [{{.var_kubelet_tls_cipher_suites}}]

@@ -1,0 +1,92 @@
+documentation_complete: true
+
+
+title: 'Verify Any Configured IPSec Tunnel Connections'
+
+description: |-
+    Libreswan provides an implementation of IPsec
+    and IKE, which permits the creation of secure tunnels over
+    untrusted networks. As such, IPsec can be used to circumvent certain
+    network requirements such as filtering. Verify that if any IPsec connection
+    {{% if product in ['sle15', 'sle16'] %}}
+    (<tt>conn</tt>) configured in <tt>/etc/swanctl/swanctl.conf</tt> and <tt>/etc/swanctl/conf.d/</tt>
+    {{% else %}}
+    (<tt>conn</tt>) configured in <tt>/etc/ipsec.conf</tt> and <tt>/etc/ipsec.d</tt>
+    {{% endif %}}
+    exists is an approved organizational connection.
+
+rationale: 'IP tunneling mechanisms can be used to bypass network filtering.'
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80836-0
+    cce@rhel9: CCE-90319-5
+    cce@rhel10: CCE-87382-8
+    cce@sle15: CCE-91153-7
+    cce@sle16: CCE-95793-6
+
+references:
+    cis-csc: 1,12,13,14,15,16,18,4,6,8,9
+    cobit5: APO01.06,APO13.01,DSS01.05,DSS03.01,DSS05.02,DSS05.04,DSS05.07,DSS06.02
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    isa-62443-2009: 4.2.3.4,4.3.3.4,4.4.3.3
+    isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.12.1.1,A.12.1.2,A.13.1.1,A.13.1.2,A.13.1.3,A.13.2.1,A.13.2.2,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nist: AC-17(a),MA-4(6),CM-6(a),AC-4,SC-8
+    nist-csf: DE.AE-1,ID.AM-3,PR.AC-5,PR.DS-5,PR.PT-4
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040820
+
+ocil_clause: 'the IPSec tunnels are not approved'
+
+ocil: |-
+    Verify that {{{ full_name }}} does not have unauthorized IP tunnels configured.
+
+    {{% if 'rhel' in product or 'ol' in families %}}
+    # {{{ pkg_manager }}} list installed libreswan
+    libreswan.x86-64 3.20-5.el7_4
+    {{% elif product in ['sle15', 'sle16'] %}}
+    strongswan
+    {{% endif %}}
+
+    {{% if product in ['sle15', 'sle16'] %}}
+    If "libreswan" is installed, check to see if the "IPsec" service is active with the following command:
+    {{% else %}}
+    If "libreswan" is installed, check to see if the "IPsec" service is active with the following command:
+    {{% endif %}}
+
+    {{% if product in ['sle15', 'sle16'] %}}
+    # systemctl status strongswan
+    strongswan.service - strongSwan IPsec IKEv1/IKEv2 daemon using swanctl
+    Loaded: loaded (/usr/lib/systemd/system/strongswan.service; disabled; preset: disabled)
+    Active: inactive (dead)
+    {{% else %}}
+    # systemctl status ipsec
+    ipsec.service - Internet Key Exchange (IKE) Protocol Daemon for IPsec
+    Loaded: loaded (/usr/lib/systemd/system/ipsec.service; disabled)
+    Active: inactive (dead)
+    {{% endif %}}
+
+
+    If the "IPsec" service is active, check for configured IPsec connections (<tt>conn</tt>), perform the following:
+    <pre>grep -rni conn /etc/ipsec.conf /etc/ipsec.d/</pre>
+    {{% if product in ['sle15', 'sle16'] %}}
+    Also:
+    <pre>grep -rni conn /etc/swanctl/swanctl.conf /etc/swanctl/conf.d/</pre>
+    {{% endif %}}
+
+    Verify any returned results for organizational approval.
+
+fixtext: |-
+    Remove all unapproved tunnels from the system, or document them with the ISSO.
+
+srg_requirement:
+  Any IPSec Tunnel Connections on {{{ full_name }}} must be approved.
+
+warnings:
+    - general: |-
+        Automatic remediation of this control is not available due to the unique
+        requirements of each system.
+
+platform: system_with_kernel

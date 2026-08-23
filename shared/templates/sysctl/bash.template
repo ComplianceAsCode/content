@@ -1,0 +1,76 @@
+# platform = multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+
+# Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
+{{% if product in [ "sle12", "sle15", "slmicro5", "slmicro6"] %}}
+for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /lib/sysctl.d/*.conf; do
+{{% elif product in [ "ubuntu2204", "ubuntu2404"] %}}
+for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /etc/ufw/sysctl.conf; do
+{{% elif product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10"] %}}
+for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf; do
+{{% else %}}
+for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf; do
+{{% endif %}}
+
+  # skip systemd-sysctl symlink (/etc/sysctl.d/99-sysctl.conf -> /etc/sysctl.conf)
+  if [[ "$(readlink -f "$f")" == "/etc/sysctl.conf" ]]; then continue; fi
+
+  matching_list=$(grep -P '^(?!#).*[\s]*{{{ SYSCTLVAR }}}.*$' $f | uniq )
+  if ! test -z "$matching_list"; then
+    while IFS= read -r entry; do
+      escaped_entry=$(sed -e 's|/|\\/|g' <<< "$entry")
+      # comment out "{{{ SYSCTLVAR }}}" matches to preserve user data
+      sed -i --follow-symlinks "s/^${escaped_entry}$/# &/g" $f
+    done <<< "$matching_list"
+  fi
+done
+
+#
+# Set sysctl config file which to save the desired value
+#
+{{% if sysctl_remediate_drop_in_file == "true" %}}
+SYSCONFIG_FILE='/etc/sysctl.d/{{{ SYSCTLVAR | replace(".","_") }}}.conf'
+{{% else %}}
+SYSCONFIG_FILE="/etc/sysctl.conf"
+{{% endif %}}
+
+{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
+{{{ bash_instantiate_variables("sysctl_" ~ SYSCTLID ~ "_value") }}}
+
+#
+# Set runtime for {{{ SYSCTLVAR }}}
+#
+if {{{ bash_not_bootc_build() }}} ; then
+    /sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
+fi
+
+#
+# If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
+#	else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
+#
+{{% if sysctl_remediate_drop_in_file == "true" %}}
+sed -i "/^{{{ SYSCTLVAR }}}/d" /etc/sysctl.conf
+{{% endif %}}
+{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value', cce_identifiers=cce_identifiers) }}}
+
+{{%- else %}}
+
+#
+# Set runtime for {{{ SYSCTLVAR }}}
+#
+if {{{ bash_not_bootc_build() }}} ; then
+    /sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+fi
+
+#
+# If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
+#	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
+#
+{{% if sysctl_remediate_drop_in_file == "true" %}}
+sed -i "/^{{{ SYSCTLVAR }}}/d" /etc/sysctl.conf
+{{% endif %}}
+{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , SYSCTLVAL, cce_identifiers=cce_identifiers) }}}
+{{%- endif %}}

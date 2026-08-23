@@ -1,0 +1,47 @@
+{{% if 'ubuntu' in product %}}
+{{% set gid = 'syslog' %}}
+{{% else %}}
+{{% set gid = 'root' %}}
+{{% endif %}}
+
+
+documentation_complete: true
+
+title: 'Verify Group Who Owns /var/log Directory'
+
+description: '{{{ describe_file_group_owner(file="/var/log", group=gid) }}}'
+
+rationale: |-
+    The <tt>/var/log</tt> directory contains files with logs of error
+    messages in the system and should only be accessed by authorized
+    personnel.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-90612-3
+    cce@rhel8: CCE-83659-3
+    cce@rhel9: CCE-83912-6
+    cce@rhel10: CCE-89035-0
+
+references:
+    srg: SRG-OS-000206-GPOS-00084,SRG-APP-000118-CTR-000240
+    stigid@ol8: OL08-00-010260
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log", group=gid) }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log", group=gid) }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/
+        gid_or_name: '0'
+        gid_or_name@ubuntu2204: syslog
+        gid_or_name@ubuntu2404: syslog
+
+fixtext: |-
+    {{{ describe_file_group_owner(file="/var/log", group=gid) }}}
+
+srg_requirement: '{{{ srg_requirement_directory_group_owner("/var/log", group=gid) }}}'

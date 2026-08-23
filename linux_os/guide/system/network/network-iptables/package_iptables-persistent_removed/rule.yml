@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Remove iptables-persistent Package'
+
+description: |-
+    {{{ describe_package_remove(package="iptables-persistent") }}}
+
+rationale: |-
+    Running both <tt>ufw</tt> and the services included in the
+    <tt>iptables-persistent</tt> package may lead to conflict.
+
+severity: medium
+
+platform: package[ufw]
+
+{{{ complete_ocil_entry_package_removed("iptables-persistent") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: iptables-persistent
+
+fixtext: |-
+    {{{ describe_package_remove(package="iptables-persistent") }}}

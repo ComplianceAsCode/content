@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Nftables Families'
+
+description: |-
+    Netfilter enables filtering at multiple networking levels. With iptables there 
+    is a separate tool for each level: iptables, ip6tables, arptables, ebtables. 
+    With nftables the multiple networking levels are abstracted into families, 
+    all of which are served  by the single tool nft. 
+    <tt>ip</tt>Tables of this family see IPv4 traffic/packets. 
+    <tt>ip6</tt>Tables of this family see IPv6 traffic/packets.
+    <tt>inet</tt>Tables of this family see both IPv4 and IPv6 traffic/packets, 
+    simplifying dual stack support. 
+    <tt>arp</tt>Tables of this family see ARP-level (i.e, L2) traffic, before 
+    any L3 handling is done by the kernel. 
+    <tt>bridge</tt>Tables of this family see traffic/packets traversing bridges 
+    (i.e. switching). No assumptions are made about L3 protocols. 
+    <tt>netdev</tt>The netdev family is different from the others in that it 
+    is used to create base chains attached to a single network interface. Such 
+    base chains see all network traffic on the specified interface, with no 
+    assumptions about L2 or L3 protocols. Therefore you can filter ARP traffic from here. 
+    
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: inet
+    ip: ip
+    ip6: ip6
+    inet: inet
+    arp: arp
+    bridge: bridge
+    netdev: netdev

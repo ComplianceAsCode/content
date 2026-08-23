@@ -1,0 +1,6 @@
+# platform = multi_platform_all
+
+# remove packages
+{{% for package in xwindows_packages %}}
+package --remove={{{ package }}}
+{{% endfor %}}

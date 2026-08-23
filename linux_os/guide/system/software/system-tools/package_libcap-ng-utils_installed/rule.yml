@@ -1,0 +1,28 @@
+documentation_complete: true
+
+
+title: 'Install libcap-ng-utils Package'
+
+description: |-
+    {{{ describe_package_install(package="libcap-ng-utils") }}}
+
+rationale: |-
+    <tt>libcap-ng-utils</tt> contains applications to analyze the posix
+    posix capabilities of all the programs running on a system.
+    <tt>libcap-ng-utils</tt> also lets system operators set the file
+    system based capabilities.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82979-6
+
+references:
+    srg: SRG-OS-000445-GPOS-00199
+
+{{{ complete_ocil_entry_package_installed("libcap-ng-utils") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libcap-ng-utils

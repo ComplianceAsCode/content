@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title:  'All GRUB configuration files must have mode 0600 or more restrictive'
+
+description: |-
+    The files in <tt>{{{ grub2_uefi_boot_path }}}</tt> should
+    have mode <tt>0600</tt> to prevent
+    destruction or modification of the file.
+    {{{ describe_file_permissions(file=grub2_uefi_boot_path, perms="0600") }}}
+
+rationale: |-
+    The file mode 0600 prevents unauthorized access and modifications to boot settings.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-90556-2
+
+template:
+    name: file_permissions
+    vars:
+        filepath: {{{ grub2_uefi_boot_path }}}/
+        filemode: '0600'
+        allow_stricter_permissions: "true"
+        file_regex: ^.*$

@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Record Events that Modify the System''s Network Environment - /etc/sysconfig/network-scripts'
+
+description: |-
+    {{{ describe_audit_rules_watch("/etc/sysconfig/network-scripts", "system-locale") }}}
+
+rationale: |-
+    The network environment should not be modified by anything other
+    than administrator action. Any change to network parameters should be
+    audited.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-90033-2
+    cce@rhel8: CCE-86939-6
+    cce@rhel9: CCE-86940-4
+    cce@rhel10: CCE-90731-1
+
+ocil_clause: 'the system is not configured to audit changes of the network configuration'
+
+ocil: |-
+    To determine if the system is configured to audit changes to its network configuration,
+    run the following command:
+    <pre>auditctl -l | grep -E '/etc/sysconfig/network-scripts'</pre>
+    If the system is configured to watch for network configuration changes, a line should
+    be returned and <tt>perm=wa</tt> should be indicated.
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: /etc/sysconfig/network-scripts
+        key: system-locale

@@ -1,0 +1,60 @@
+# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+{{{ ansible_instantiate_variables("var_authselect_profile") }}}
+
+- name: {{{ rule_title }}} - Check Current authselect Profile
+  ansible.builtin.command:
+    cmd: authselect current
+  register: result_authselect_current
+  changed_when: false
+  failed_when: false
+
+- name: {{{ rule_title }}} - Try to Select an authselect Profile
+  ansible.builtin.command:
+    cmd: authselect select "{{ var_authselect_profile }}"
+  register: result_authselect_select
+  # The authselect can return these exit codes:
+  # • 0: Success.
+  # • 1: Generic error.
+  # • 2: Profile or configuration was not found or the system was not configured with authselect.
+  # • 3: Current configuration is not valid, it was edited without authselect.
+  # • 4: System configuration must be overwritten to activate an authselect profile, --force parameter is needed.
+  # • 5: Executed command must be run as root.
+  # • 6: No configuration was detected.
+  changed_when: result_authselect_select.rc == 0
+  failed_when: false
+  when:
+    - result_authselect_current.rc != 0
+
+- name: {{{ rule_title }}} - Verify If pam Has Been Altered
+  ansible.builtin.command:
+    cmd: rpm -qV pam
+  register: result_altered_authselect
+  # return:
+  # - 0 if no alterations
+  # - otherwise: number of failed packages
+  #   We have 1 package here. So 1 it is.
+  changed_when: false
+  failed_when: false
+  when:
+    - result_authselect_select is not skipped
+    - result_authselect_select.rc != 0
+
+- name: {{{ rule_title }}} - Informative Message Based on authselect Integrity Check
+  ansible.builtin.assert:
+    that:
+      - result_authselect_current.rc == 0 or result_altered_authselect is skipped or result_altered_authselect.rc == 0
+    fail_msg:
+      - authselect is not used but files from the 'pam' package have been altered, so the authselect configuration won't be forced.
+
+- name: {{{ rule_title }}} - Force authselect Profile Selection
+  ansible.builtin.command:
+    cmd: authselect select --force "{{ var_authselect_profile }}"
+  when:
+    - result_authselect_current.rc != 0
+    - result_authselect_select.rc != 0
+    - result_altered_authselect.rc == 0

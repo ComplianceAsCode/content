@@ -1,0 +1,59 @@
+documentation_complete: true
+
+
+title: 'Log USBGuard daemon audit events using Linux Audit'
+
+description: |-
+    To configure USBGuard daemon to log via Linux Audit
+    (as opposed directly to a file),
+    <tt>AuditBackend</tt> option in <tt>/etc/usbguard/usbguard-daemon.conf</tt>
+    needs to be set to <tt>LinuxAudit</tt>.
+
+rationale: |-
+    Using the Linux Audit logging allows for centralized trace
+    of events.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-82538-0
+    cce@rhel8: CCE-82168-6
+    cce@rhel9: CCE-84206-2
+    cce@rhel10: CCE-87152-5
+
+references:
+    nist: AU-2,CM-8(3),IA-3
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000062-GPOS-00031,SRG-OS-000471-GPOS-00215,SRG-APP-000141-CTR-000315
+    stigid@ol8: OL08-00-030603
+
+platform: package[usbguard]
+
+ocil_clause: 'AuditBackend is not set to LinuxAudit'
+
+ocil: |-
+    To verify that Linux Audit logging is enabled for the USBGuard daemon,
+    run the following command:
+    <pre>$ sudo grep AuditBackend /etc/usbguard/usbguard-daemon.conf</pre>
+    The output should be
+    <pre>AuditBackend=LinuxAudit</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} USBGuard AuditBackend to use the audit system.
+
+    Add or edit the following line in /etc/usbguard/usbguard-daemon.conf:
+
+    AuditBackend=LinuxAudit
+
+srg_requirement: {{{ full_name }}} Must Provide Audit Record Generation Capability For Organization Defined Auditable Events For All Operating System Components
+
+template:
+    name: key_value_pair_in_file
+    vars:
+      path: '/etc/usbguard/usbguard-daemon.conf'
+      prefix_regex: '^[ \\t]*'
+      key: 'AuditBackend'
+      value: 'LinuxAudit'
+      sep: '='
+      sep_regex: '='
+      app: 'usbguard'

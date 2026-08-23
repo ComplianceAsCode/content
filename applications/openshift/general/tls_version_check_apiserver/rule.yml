@@ -1,0 +1,55 @@
+documentation_complete: true
+
+
+title: Ensure TLS v1.2 is minimum for Openshift APIServer
+
+description: |-
+  Verify tls version for the openshift APIServer.
+
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/openshift-apiserver' %}}
+{{% set hypershift_jqfilter = '.data."config.yaml"' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+rationale: |-
+  Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+  protect data. The system must implement cryptographic modules adhering to the higher
+  standards approved by the federal government since this provides assurance they have been tested
+  and validated.
+
+
+identifiers:
+  cce@ocp4: CCE-85863-9
+
+references:
+  pcidss: Req-4.1
+
+platform: not ocp4-on-hypershift-hosted
+
+ocil_clause: 'Ensure TLS version is equal to 1.2 or greater for the openshift api server'
+
+ocil: |-
+    Run the following command to check for TLS version:
+    <pre>$ oc get configmap config  -n openshift-apiserver -o json | grep -o VersionTLS[0-9]*</pre>
+    Make sure that the result has a value of VersionTLSXX where XX is 12 or greater.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath:  '.servingInfo["minTLSVersion"]'
+    values:
+    - value: 'VersionTLS1[2-9]{1}'
+      operation: "pattern match"
+      type: "string"

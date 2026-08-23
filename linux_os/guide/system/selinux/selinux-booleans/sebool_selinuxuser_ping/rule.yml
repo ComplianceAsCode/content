@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Enable the selinuxuser_ping SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>selinuxuser_ping</tt> is enabled.
+    If this setting is disabled, it should be enabled as it allows confined users
+    to use ping and traceroute which is helpful for network troubleshooting.
+    {{{ describe_sebool_enable(sebool="selinuxuser_ping") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="selinuxuser_ping") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: selinuxuser_ping

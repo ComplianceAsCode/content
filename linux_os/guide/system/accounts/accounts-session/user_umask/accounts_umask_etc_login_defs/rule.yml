@@ -1,0 +1,72 @@
+documentation_complete: true
+
+title: 'Ensure the Default Umask is Set Correctly in login.defs'
+
+description: |-
+    To ensure the default umask controlled by <tt>{{{ login_defs_path }}}</tt> is set properly,
+    add or correct the <tt>UMASK</tt> setting in <tt>{{{ login_defs_path }}}</tt> to read as follows:
+    <pre>UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+
+rationale: |-
+    The umask value influences the permissions assigned to files when they are created.
+    A misconfigured umask value could result in files with excessive permissions that can be read and
+    written to by unauthorized users.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82888-9
+    cce@rhel9: CCE-83647-8
+    cce@rhel10: CCE-89314-9
+    cce@sle12: CCE-83052-1
+    cce@sle15: CCE-85659-1
+    cce@sle16: CCE-96038-5
+    cce@slmicro5: CCE-93753-2
+    cce@slmicro6: CCE-95089-9
+
+references:
+    cis-csc: 11,18,3,9
+    cis@sle12: 5.4.5
+    cis@sle15: 5.4.5
+    cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03,BAI10.01,BAI10.02,BAI10.03,BAI10.05
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3
+    isa-62443-2013: 'SR 7.6'
+    iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.1.1,A.14.2.1,A.14.2.2,A.14.2.3,A.14.2.4,A.14.2.5,A.6.1.5
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: AC-6(1),CM-6(a)
+    nist-csf: PR.IP-1,PR.IP-2
+    srg: SRG-OS-000480-GPOS-00228
+    stigid@ol7: OL07-00-020240
+    stigid@ol8: OL08-00-020351
+    stigid@sle12: SLES-12-010620
+
+ocil_clause: 'the value for the "UMASK" parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}", or the "UMASK" parameter is missing or is commented out'
+
+ocil: |-
+    Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
+
+    <pre># grep -i umask {{{ login_defs_path }}}
+
+    UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+
+platform: package[shadow-utils] and system_with_kernel
+
+checktext: |-
+    Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
+
+    Note: If the value of the "UMASK" parameter is set to "000" in "{{{ login_defs_path }}}" file, the Severity is raised to a CAT I.
+
+    # grep -i umask {{{ login_defs_path }}}
+
+    UMASK 077
+
+    If the value for the "UMASK" parameter is not "077", or the "UMASK" parameter is missing or is commented out, this is a finding.
+
+fixtext: |-
+    Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
+
+    Add or edit the lines for the "UMASK" parameter in the "{{{ login_defs_path }}}" file to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+
+    UMASK {{{ xccdf_value("var_accounts_user_umask") }}}
+
+srg_requirement: '{{{ full_name }}} must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.'

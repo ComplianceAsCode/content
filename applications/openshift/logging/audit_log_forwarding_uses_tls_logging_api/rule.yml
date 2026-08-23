@@ -1,0 +1,55 @@
+
+title: Ensure that Audit Log Forwarding Uses TLS
+
+description: |-
+  <p>
+  OpenShift audit works at the API server level, logging all requests coming to the server.
+  Audit is on by default and the best practice is to ship audit logs off the cluster for retention
+  using a secure protocol.
+  </p>
+  <p>
+  The cluster-logging-operator is able to do this with the <pre>ClusterLogForwarders</pre> resource.
+  The forementioned resource can be configured to log to different third party systems.
+  For more information on this, please reference the official documentation:
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.16/observability/logging/log_collection_forwarding/configuring-log-forwarding.html") }}}
+  </p>
+
+rationale: |-
+  It is necessary to ensure that any configured output uses the TLS protocol to receive
+  logs in order to ensure the confidentiality, integrity and authenticity of the logs.
+
+references:
+  nerc-cip: CIP-003-8 R5.2,CIP-004-6 R3.3,CIP-007-3 R6.5
+  nist: AU-9,AU-9(2),AU-9(3),AU-10
+  srg: SRG-APP-000126-CTR-000275
+
+identifiers:
+  cce@ocp4: CCE-86560-0
+
+severity: medium
+
+ocil_clause: 'Logs are not forwarded outside the cluster using TLS'
+
+ocil: |-
+    Run the following command:
+    <pre>{{{ ocil_oc_pipe_jq_filter('clusterlogforwarders instance', 'try [.spec.outputs[].url] catch []', namespace="openshift-logging") }}}</pre>
+    The output should return a list of URL entries with <pre>https://</pre> or <pre>tls://</pre> transport.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting() | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting_suppressed({
+            "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance": 'try [.spec.outputs[].url] catch []',
+        }) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: "{{{ openshift_filtered_path('/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance', 'try [.spec.outputs[].url] catch []') }}}"
+    yamlpath: "[:]"
+    entity_check: "all"
+    values:
+    - value: "^(https|tls)://.*$"
+      entity_check: "all"
+      operation: "pattern match"

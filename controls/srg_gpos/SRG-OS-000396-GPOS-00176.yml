@@ -1,0 +1,16 @@
+controls:
+    -   id: SRG-OS-000396-GPOS-00176
+        levels:
+            - high
+        title: {{{ full_name }}} must implement NSA-approved cryptography to protect
+            classified information in accordance with applicable federal laws, Executive Orders,
+            directives, policies, regulations, and standards.
+        rules:
+            - configure_crypto_policy
+            - package_crypto-policies_installed
+            - system_booted_in_fips_mode
+            - sysctl_crypto_fips_enabled
+            - enable_fips_mode
+            - fips_crypto_subpolicy
+            - crypto_policy_not_overridden
+        status: automated

@@ -1,0 +1,12 @@
+{{% if product in ["ol7"] %}}
+{{% set audisp_conf_file = "/audispd.conf" %}}
+{{% else %}}
+{{% set audisp_conf_file = "/auditd.conf" %}}
+{{% endif %}}
+
+{{{ oval_check_config_file(
+    path=audisp_conf_path + audisp_conf_file,
+    prefix_regex="^[ \\t]*(?i)",
+    parameter="overflow_action",
+    value="(?i)(syslog|single|halt)(?-i)",
+    separator_regex="(?-i)[ \\t]*=[ \\t]*", rule_id=rule_id, rule_title=rule_title) }}}

@@ -1,0 +1,109 @@
+documentation_complete: true
+
+
+platform: ocp4-node
+
+title: 'kubelet - Set Up Sysctl to Enable Protect Kernel Defaults - Check Parameter kernel.panic'
+
+{{% set kernel_root_maxbytes_val = 25000000 %}}
+{{% set kernel_root_maxkeys_val = 1000000 %}}
+{{% set kernel_panic_val = 10 %}}
+{{% set kernel_panic_on_oops_val = 1 %}}
+{{% set vm_overcommit_memory_val = 1 %}}
+{{% set vm_panic_on_oom_val = 0 %}}
+
+description: |-
+  <p>
+  Setup required tuned kernel parameters before enabling overwritten protection. Note
+  that depending on the Linux distribution and its version that your cluster nodes are
+  running, these parameters might be already set up for you. Please refer to the rule
+  instructions for a check.
+  </p>
+
+  <p>
+  Before enabling kernel parameter overwritten protection default, 
+  it's important to check if these values are already set to the required values.
+  If not, it is necessary to first create a <tt>MachineConfig</tt>
+  object that persist the required sysctl's. The required sysctl's are the following:
+  </p>
+
+  <pre>
+  kernel.keys.root_maxbytes={{{ kernel_root_maxbytes_val }}}
+  kernel.keys.root_maxkeys={{{ kernel_root_maxkeys_val }}}
+  kernel.panic={{{ kernel_panic_val }}}
+  kernel.panic_on_oops={{{ kernel_panic_on_oops_val }}}
+  vm.overcommit_memory={{{ vm_overcommit_memory_val }}}
+  vm.panic_on_oom={{{ vm_panic_on_oom_val }}}
+  </pre>
+  
+  <p>
+  The these need to be enabled via MachineConfig since they need to be
+  available as soon as the node starts and before the Kubelet does.
+  The manifest may look as follows:
+  </p>
+
+  <pre>
+  ---
+  apiVersion: machineconfiguration.openshift.io/v1
+  kind: MachineConfig
+  metadata:
+    labels:
+      machineconfiguration.openshift.io/role: master
+    name: 75-master-kubelet-sysctls
+  spec:
+    config:
+      ignition:
+        version: 3.1.0
+      storage:
+        files:
+        - contents:
+            source: data:,vm.overcommit_memory%3D1%0Avm.panic_on_oom%3D0%0Akernel.panic%3D10%0Akernel.panic_on_oops%3D1%0Akernel.keys.root_maxkeys%3D1000000%0Akernel.keys.root_maxbytes%3D25000000%0A
+          mode: 0644
+          path: /etc/sysctl.d/90-kubelet.conf
+          overwrite: true
+  </pre>
+  
+  <p>
+  This will need to be done for each relevant <tt>MachineConfigPool</tt>
+  in the cluster.
+  </p>
+
+  <p>
+  To configure, follow the directions in
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/nodes/nodes/nodes-nodes-managing.html",
+              text="the documentation") }}}
+  </p>
+
+
+rationale: |-
+  Kernel parameters are usually tuned and hardened by the system administrators
+  before putting the systems into production. These parameters protect the
+  kernel and the system. Your kubelet kernel defaults that rely on such
+  parameters should be appropriately set to match the desired secured system
+  state. Ignoring this could potentially lead to running pods with undesired
+  kernel behavior.
+
+
+severity: medium
+
+ocil_clause: 'the kubelet can modify kernel parameters'
+
+ocil: |-
+  Run the following command on the kubelet node(s) to check parameter kernel.panic:
+  <pre>$ sysctl kernel.panic</pre>
+  The output should return {{{ kernel_panic_val }}}
+
+identifiers:
+   cce@ocp4: CCE-86124-5
+
+references:
+  nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+  nist: CM-6,CM-6(1)
+  srg: SRG-APP-000516-CTR-001325
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.panic
+        sysctlval: '10'
+        datatype: int

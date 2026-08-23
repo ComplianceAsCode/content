@@ -1,0 +1,27 @@
+documentation_complete: true
+
+
+title: 'Disable the authlogin_nsswitch_use_ldap SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>authlogin_nsswitch_use_ldap</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="authlogin_nsswitch_use_ldap") }}}
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84296-3
+    cce@rhel10: CCE-90335-1
+
+references:
+    cui: 3.7.2
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="authlogin_nsswitch_use_ldap") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: authlogin_nsswitch_use_ldap

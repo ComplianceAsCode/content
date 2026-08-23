@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Configure the httpd_enable_cgi SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_enable_cgi</tt> is enabled.
+    This setting should be disabled unless <tt>httpd</tt> is used with <tt>CGI</tt>
+    scripting.
+    {{{ describe_sebool_disable(sebool="httpd_enable_cgi") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_enable_cgi") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_enable_cgi

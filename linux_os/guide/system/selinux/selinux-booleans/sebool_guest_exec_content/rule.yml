@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the guest_exec_content SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>guest_exec_content</tt> is enabled.
+    This setting should be disabled as no guest accounts should be used.
+    {{{ describe_sebool_disable(sebool="guest_exec_content") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="guest_exec_content") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: guest_exec_content

@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="inventory" id="proc_sys_kernel_osrelease_arch_not_s390x"
+  version="1">
+    <metadata>
+      <title>Test for different architecture than s390x</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check that architecture of kernel in /proc/sys/kernel/osrelease is not s390x</description>
+    </metadata>
+    <criteria>
+      <extend_definition comment="Architecture is not s390x"
+      definition_ref="proc_sys_kernel_osrelease_arch_s390x" negate="true"/>
+    </criteria>
+  </definition>
+</def-group>

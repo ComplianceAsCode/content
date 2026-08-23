@@ -1,0 +1,64 @@
+<def-group>
+  <definition class="compliance" id="accounts_password_warn_age_login_defs" version="3">
+    {{{ oval_metadata("The password expiration warning age should be set appropriately.", rule_title=rule_title) }}}
+    {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion comment="Check PASS_WARN_AGE in {{{ login_defs_drop_in_path }}} is not set"
+            test_ref="test_pass_warn_age_logindefs_drop_in_path_not_set"/>
+        <criterion comment="Check PASS_WARN_AGE should be set appropriately in {{{ login_defs_path }}}"
+            test_ref="test_pass_warn_age"/>
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="Check PASS_WARN_AGE should be set appropriately in {{{ login_defs_drop_in_path }}}"
+          test_ref="test_pass_warn_age_logindefs_drop_in_path"/>
+      </criteria>
+    </criteria>
+    {{% else %}}
+    <criteria operator="AND">
+       <criterion test_ref="test_pass_warn_age"/>
+    </criteria>
+    {{% endif %}}
+  </definition>
+
+{{{
+oval_param_in_file_variable_test(
+    filepath=login_defs_path,
+    parameter="PASS_WARN_AGE",
+    pattern="^[\s]*(?i)(PASS_WARN_AGE[\s]+\d+)[\s]*(?:#.*)?$",
+    regex_capture="PASS_WARN_AGE\s+(\d+)",
+    variable="var_accounts_password_warn_age_login_defs",
+    operation="greater than or equal",
+    type="int",
+    test_id="test_pass_warn_age"
+)
+}}}
+{{% set login_defs_drop_in_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) %}}
+{{{
+oval_param_in_file_variable_test(
+    filepath=login_defs_drop_in_config_dir,
+    filename_regex=".*\.defs$",
+    parameter="PASS_WARN_AGE",
+    pattern="^[\s]*(?i)(PASS_WARN_AGE[\s]+\d+)[\s]*(?:#.*)?$",
+    regex_capture="PASS_WARN_AGE\s+(\d+)",
+    variable="var_accounts_password_warn_age_login_defs",
+    operation="greater than or equal",
+    type="int",
+    test_id="test_pass_warn_age_logindefs_drop_in_path"
+)
+}}}
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      comment="Check PASS_WARN_AGE in {{{ login_defs_drop_in_path }}} is not set"
+      id="test_pass_warn_age_logindefs_drop_in_path_not_set">
+    <ind:object object_ref="object_pass_warn_age_logindefs_drop_in_path_not_set" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_pass_warn_age_logindefs_drop_in_path_not_set" version="1">
+    <ind:path>{{{ login_defs_drop_in_config_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.defs$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*PASS_WARN_AGE\s*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -1,0 +1,53 @@
+{
+    "categories": [
+      {
+        "title": "### Important Highlights",
+        "labels": ["Highlight"]
+      },
+      {
+        "title": "### New Rules and Profiles",
+        "labels": ["New Rule", "New Profile"]
+      },
+      {
+        "title": "### Updated Rules and Profiles",
+        "labels": ["Update Rule", "Update Profile"]
+      },
+      {
+        "title": "### Removed Products",
+        "labels": ["product-removal"]
+      },
+      {
+        "title": "### Changes in Remediations",
+        "labels": ["Ansible", "Bash", "Blueprint", "Ignition", "Kubernetes", "Kickstart"]
+      },
+      {
+        "title": "### Changes in Checks",
+        "labels": ["OVAL", "OCIL"]
+      },
+      {
+        "title": "### Changes in the Infrastructure",
+        "labels": ["Infrastructure"]
+      },
+      {
+        "title": "### Changes in the Test Suite",
+        "labels": ["Test Suite", "Test Scenario"]
+      },
+      {
+        "title": "### Documentation",
+        "labels": ["Documentation"]
+      },
+      {
+        "title": "### Fixed Bugs",
+        "labels": ["bugfix"]
+      }
+    ],
+    "sort": {
+      "order": "ASC"
+    },
+    "template": "#{{CHANGELOG}}",
+    "pr_template": "- #{{TITLE}} (##{{NUMBER}})",
+    "empty_template": "- no changes",
+    "max_tags_to_fetch": 200,
+    "max_pull_requests": 2000,
+    "max_back_track_time_days": 240
+}

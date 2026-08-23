@@ -1,0 +1,43 @@
+documentation_complete: true
+
+
+title: 'Install rng-tools Package'
+
+description: |-
+    {{{ describe_package_install(package="rng-tools") }}}
+
+rationale: |-
+    <tt>rng-tools</tt> provides hardware random number generator tools,
+    such as those used in the formation of x509/PKI certificates.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82968-9
+    cce@rhel9: CCE-83504-1
+    cce@rhel10: CCE-88468-4
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-010472
+
+{{{ complete_ocil_entry_package_installed("rng-tools") }}}
+
+fixtext: '{{{ fixtext_package_installed("rng-tools") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("rng-tools") }}}'
+
+{{% if product == "rhel8" %}}
+platform: (os_linux[rhel]<=8.3 or (os_linux[rhel]>=8.4 and not runtime_kernel_fips_enabled) and system_with_kernel)
+warnings:
+  - general: |-
+      For RHEL versions 8.4 and above running with kernel FIPS mode enabled this rule is not applicable.
+      The in-kernel deterministic random bit generator (DRBG) is used in FIPS mode instead.
+{{% else %}}
+platform: system_with_kernel and not runtime_kernel_fips_enabled
+{{% endif %}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: rng-tools

@@ -1,0 +1,48 @@
+documentation_complete: true
+
+title: 'All Interactive User Home Directories Must Reside On a Separate Partition'
+
+description: |-
+    All interactive user home directories must be located on a file system
+    partition separate from the root (<tt>/</tt>) partition. If any interactive
+    user's home directory resides directly on the root file system, a failure
+    of that file system or a user filling it up could impact system operation.
+
+rationale: |-
+    Ensuring that interactive user home directories are on a separate
+    partition from the root file system prevents users from filling the root
+    partition, which could result in system instability or denial of service.
+    It also allows administrators to apply more restrictive mount options
+    such as <tt>noexec</tt>, <tt>nosuid</tt>, and <tt>nodev</tt> to the
+    partition containing user home directories.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-90711-3
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'any interactive user home directory is on the root partition'
+
+ocil: |-
+    Verify that all interactive user home directories are on a separate
+    file system partition with the following commands:
+
+    List interactive users and their home directories:
+    <pre>$ awk -F: '($3&gt;={{{ uid_min }}})&amp;&amp;($7 !~ /nologin/){print $1, $6}' /etc/passwd</pre>
+
+    For each home directory listed, verify it is on a separate partition:
+    <pre>$ df &lt;home_directory&gt; | tail -1 | awk '{print $6}'</pre>
+
+    If the command returns <tt>/</tt> for any interactive user home directory,
+    this is a finding.
+
+fixtext: |-
+    Migrate interactive user home directories that reside on the root
+    file system to a separate partition.
+
+srg_requirement: 'All {{{ full_name }}} interactive user home directories must reside on a file system separate from the root partition.'
+
+platform: machine

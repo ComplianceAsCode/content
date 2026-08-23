@@ -1,0 +1,26 @@
+controls:
+    -   id: SRG-OS-000298-GPOS-00116
+        levels:
+            - medium
+        title: {{{ full_name }}} must provide the capability to immediately disconnect
+            or disable remote access to the operating system.
+        status: inherently met
+        rationale: |-
+            Without the ability to immediately disconnect or disable remote access, an attack or other compromise taking place would not be immediately stopped.
+
+            {{{ full_name }}} remote access functionality must have the capability to immediately disconnect current users remotely accessing the information system and/or disable further remote access.
+            The speed of disconnect or disablement varies based on the criticality of missions functions and the need to eliminate immediate or future remote access to organizational information systems.
+
+            The remote access functionality (e.g., RDP) may implement features such as automatic disconnect (or user-initiated disconnect) in case of adverse information based on an indicator of compromise or attack.
+        check: |-
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
+        fixtext: |-
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        artifact_description: |-
+            The admin can shutdown networking to the host by port, NIC, or the entire network as desired.
+        status_justification: |-
+            The use of the "exit" command will end any communication session on the system. This is part of the kernel and cannot be removed without recompiling.
+
+            The admin can shutdown networking to the host by port, NIC, or the entire network as desired.

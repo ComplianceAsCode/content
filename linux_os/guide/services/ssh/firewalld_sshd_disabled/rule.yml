@@ -1,0 +1,22 @@
+documentation_complete: true
+
+
+title: 'Remove SSH Server firewalld Firewall exception (Unusual)'
+
+description: |-
+    By default, inbound connections to SSH's port are allowed. If
+    the SSH server is not being used, this exception should be removed from the
+    firewall configuration.
+    <br /><br />
+    {{{ describe_firewalld_prevent_service(service="ssh") }}}
+
+rationale: |-
+    If inbound SSH connections are not expected, disallowing access to the SSH port will
+    avoid possible exploitation of the port by an attacker.
+
+severity: unknown
+
+references:
+    cui: 3.1.12
+
+platform: system_with_kernel

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+
+title: 'Install dnf-automatic Package'
+
+description: |-
+    {{{ describe_package_install(package="dnf-automatic") }}}
+
+rationale: |-
+    <tt>dnf-automatic</tt> is an alternative command line interface (CLI)
+    to <tt>dnf upgrade</tt> suitable for automatic, regular execution.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82985-3
+    cce@rhel9: CCE-83454-9
+    cce@rhel10: CCE-87561-7
+    cce@sle12: CCE-91476-2
+    cce@sle15: CCE-91163-6
+
+references:
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+    srg: SRG-OS-000191-GPOS-00080
+
+{{{ complete_ocil_entry_package_installed("dnf-automatic") }}}
+
+platform: not bootc and not container
+
+template:
+    name: package_installed
+    vars:
+        pkgname: dnf-automatic

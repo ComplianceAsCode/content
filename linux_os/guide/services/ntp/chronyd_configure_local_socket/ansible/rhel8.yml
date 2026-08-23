@@ -1,0 +1,46 @@
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+# Fix chrony-wait.service to use Unix socket instead of network socket
+# RHEL 8 version without additional hardening (KCS 7064388)
+- name: "{{{ rule_title }}} - Check if chrony-wait.service exists"
+  ansible.builtin.stat:
+    path: /usr/lib/systemd/system/chrony-wait.service
+  register: chrony_wait_service
+
+- name: "{{{ rule_title }}} - Replace chrony-wait.service to use Unix socket (KCS 7064388)"
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/chrony-wait.service
+    content: |
+      [Unit]
+      Description=Wait for chrony to synchronize system clock(KCS 7064388)
+      Documentation=man:chronyc(1)
+      After=chronyd.service
+      Requires=chronyd.service
+      Before=time-sync.target
+      Wants=time-sync.target
+
+      [Service]
+      Type=oneshot
+      # Wait for chronyd to update the clock and the remaining
+      # correction to be less than 0.1 seconds
+      ExecStart=/usr/bin/chronyc waitsync 0 0.1 0.0 1
+      # Wait for at most 3 minutes
+      TimeoutStartSec=180
+      RemainAfterExit=yes
+      StandardOutput=null
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+  when: chrony_wait_service.stat.exists
+
+- name: "{{{ rule_title }}} - Reload systemd daemon and enable chrony-wait.service"
+  ansible.builtin.systemd:
+    name: chrony-wait.service
+    daemon_reload: yes
+    enabled: yes
+  when: chrony_wait_service.stat.exists

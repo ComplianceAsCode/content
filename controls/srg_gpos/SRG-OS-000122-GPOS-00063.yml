@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000122-GPOS-00063
+        levels:
+            - medium
+        title: {{{ full_name }}} must provide an audit reduction capability that supports
+            on-demand reporting requirements.
+        rules:
+            - package_audit_installed
+            - service_auditd_enabled
+        status: automated

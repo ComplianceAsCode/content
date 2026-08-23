@@ -1,0 +1,46 @@
+documentation_complete: true
+
+
+title: 'Install policycoreutils Package'
+
+description: |-
+    {{{ describe_package_install(package="policycoreutils") }}}
+
+rationale: |-
+    Security-enhanced Linux is a feature of the Linux kernel and a number of utilities
+    with enhanced security functionality designed to add mandatory access controls to Linux.
+    The Security-enhanced Linux kernel contains new architectural components originally
+    developed to improve security of the Flask operating system. These architectural components
+    provide general support for the enforcement of many kinds of mandatory access control
+    policies, including those based on the concepts of Type Enforcement, Role-based Access
+    Control, and Multi-level Security.
+
+    <tt>policycoreutils</tt> contains the policy core utilities that are required for
+    basic operation of an SELinux-enabled system. These utilities include <tt>load_policy</tt>
+    to load SELinux policies, <tt>setfiles</tt> to label filesystems, <tt>newrole</tt> to
+    switch roles, and so on.
+
+severity: low
+
+identifiers:
+    cce@rhel8: CCE-82976-2
+    cce@rhel9: CCE-84071-0
+    cce@rhel10: CCE-88996-4
+    cce@slmicro5: CCE-94097-3
+    cce@slmicro6: CCE-95093-1 
+
+references:
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000134-GPOS-00068
+    stigid@ol8: OL08-00-010171
+
+{{{ complete_ocil_entry_package_installed("policycoreutils") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: policycoreutils
+
+fixtext: '{{{ fixtext_package_installed("policycoreutils") }}}'
+
+srg_requirement:
+    {{{ full_name }}} must have policycoreutils package installed.

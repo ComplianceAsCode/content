@@ -1,0 +1,11 @@
+controls:
+- id: SRG-APP-000142-CTR-000330
+  levels:
+  - medium
+  title: {{{ full_name }}} runtime must enforce the use of ports that are non-privileged.
+  status: manual
+  rules:
+    - scc_limit_host_dir_volume_plugin
+    - scc_limit_host_ports
+    - scc_limit_network_namespace
+    - scc_limit_privileged_containers

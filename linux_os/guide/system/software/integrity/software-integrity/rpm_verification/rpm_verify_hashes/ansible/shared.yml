@@ -1,0 +1,40 @@
+# and the regex_findall does not filter out configuration files the same as bash remediation does
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_almalinux
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = medium
+- name: "Set fact: Package manager reinstall command"
+  ansible.builtin.set_fact:
+    package_manager_reinstall_cmd: {{{ pkg_manager }}} reinstall -y
+  when: ansible_distribution in [ "Fedora", "RedHat", "CentOS", "OracleLinux", "AlmaLinux" ]
+
+- name: "Set fact: Package manager reinstall command (zypper)"
+  ansible.builtin.set_fact:
+    package_manager_reinstall_cmd: zypper in -f -y
+  when: ansible_distribution == "SLES"
+
+- name: "Read files with incorrect hash"
+  ansible.builtin.command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noghost --noconfig
+  register: files_with_incorrect_hash
+  changed_when: False
+  failed_when: files_with_incorrect_hash.rc > 1
+  check_mode: False
+  when: (package_manager_reinstall_cmd is defined)
+
+- name: Create list of packages
+  ansible.builtin.command: rpm -qf "{{ item }}"
+  with_items: "{{ files_with_incorrect_hash.stdout_lines | map('regex_findall', '^[.]+[5]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
+  register: list_of_packages
+  changed_when: False
+  check_mode: False
+  when:
+    - files_with_incorrect_hash.stdout_lines is defined
+    - (files_with_incorrect_hash.stdout_lines | length > 0)
+
+- name: "Reinstall packages of files with incorrect hash"
+  ansible.builtin.command: "{{ package_manager_reinstall_cmd }} '{{ item }}'"
+  with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
+  when:
+    - files_with_incorrect_hash.stdout_lines is defined
+    - (package_manager_reinstall_cmd is defined and (files_with_incorrect_hash.stdout_lines | length > 0))

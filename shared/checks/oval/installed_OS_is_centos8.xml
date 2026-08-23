@@ -1,0 +1,47 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_centos8" version="2">
+    <metadata>
+      <title>CentOS 8</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:centos:centos:8"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      CentOS 8</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family"
+      definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="OS is CentOS" test_ref="test_centos8_name" />
+      <criterion comment="OS version is 8" test_ref="test_centos8_version" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check os-release ID" id="test_centos8_name" version="1">
+    <ind:object object_ref="obj_name_centos8" />
+    <ind:state state_ref="state_name_centos8" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_name_centos8" version="1" comment="Check os-release ID">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^ID=&quot;(\w+)&quot;$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_name_centos8" version="1">
+    <ind:subexpression>centos</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" comment="Check os-release VERSION_ID" id="test_centos8_version" version="1">
+    <ind:object object_ref="obj_version_centos8" />
+    <ind:state state_ref="state_version_centos8" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_version_centos8" version="1" comment="Check os-release VERSION_ID">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^VERSION_ID=&quot;(\d)&quot;$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_version_centos8" version="1">
+    <ind:subexpression>8</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must mount "/dev/shm" with the "noexec" option.
+
+fixtext: |-
+    Configure {{{ full_name }}} to mount "/dev/shm" with the "noexec" option.
+
+    Modify "/etc/fstab" to use the "noexec" option on the "/dev/shm" file system.
+
+    To reload all implicit mount units and update the dependency graph so that new options will apply correctly at next remount, run the following command:
+
+    $ sudo systemctl daemon-reload
+
+    Use the following command to apply the changes immediately without a reboot:
+
+    $ sudo mount -o remount /dev/shm
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that "/dev/shm" is mounted with the "noexec" option with the following command:
+
+    $ mount | grep /dev/shm
+    tmpfs on /dev/shm type tmpfs (rw,nodev,nosuid,noexec,seclabel)
+
+    If the "/dev/shm" file system is mounted without the "noexec" option, this is a finding.
+
+vuldiscussion: |-
+    The "noexec" mount option causes the system to not execute binary files. This option must be used for mounting any file system not containing approved binary files, as they may be incompatible. Executing files from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.

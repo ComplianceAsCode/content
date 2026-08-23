@@ -1,0 +1,40 @@
+{{% set title = "SRGs from General Purpose Operating System Security Requirements Guide Mapped to DISA STIG for " ~ full_name -%}}
+
+{{% extends "tables_template_common.html" %}}
+
+{{% block table %}}
+<table>
+<thead>
+  <td>CCI</td>
+  <td>SRGID</td>
+  <td>STIGID</td>
+  <td>SRG Requirement</td>
+  <td>Requirement</td>
+  <td>Rules Mapped</td>
+</thead>
+{{% for srgid, srg in srgs.items() %}}
+  <tr>
+    <td>{{{ srg["cci"] }}}</td>
+    <td>{{{ srgid }}}</td>
+    <td><i>TBD - Assigned by DISA after STIG release</i></td>
+    <td>{{{ srg["title"] }}}</td>
+    <td>{{{ srg["vuln_discussion"] }}}</td>
+{{% set rules = rules_by_srgid[srgid] %}}
+{{% if rules %}}
+    <td>
+{{% for rule in rules %}}
+      <table>
+        <tr>
+          <td>{{{ rule.title }}}</td>
+          <td>{{{ rule.description }}}</td>
+        </tr>
+      </table>
+{{% endfor %}}
+    </td>
+{{% else %}}
+    <td></td>
+{{% endif -%}}
+  </tr>
+{{% endfor -%}}
+</table>
+{{% endblock %}}

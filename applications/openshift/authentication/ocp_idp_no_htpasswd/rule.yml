@@ -1,0 +1,96 @@
+documentation_complete: true
+
+
+title: "Do Not Use htpasswd-based IdP"
+
+{{% set default_jqfilter = '.spec' %}}
+{{% set default_api_path = '/apis/config.openshift.io/v1/oauths/cluster' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/{{.hypershift_namespace_prefix}}/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_jqfilter = '.spec.configuration.oauth' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+  <p>
+  For users to interact with OpenShift Container Platform, they must first
+  authenticate to the cluster. The authentication layer identifies the user
+  associated with requests to the OpenShift Container Platform API. The
+  authorization layer then uses information about the requesting user to
+  determine if the request is allowed.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html",
+              text="Understanding authentication | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  The OpenShift Container Platform includes a built-in OAuth server for
+  token-based authentication. Developers and administrators obtain OAuth
+  access tokens to authenticate themselves to the API. It is recommended for
+  an administrator to configure OAuth to specify an identity provider after
+  the cluster is installed. User access to the cluster is managed through the
+  identity provider.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html",
+              text="Understanding identity provider configuration | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  However, not all Identity Providers supported by OpenShift provide the same
+  level of capabilities. As an example, the htpasswd Identity Provider only
+  checks the username and password match and provides no means of 2FA, account
+  lockout or notification mechanism. This rule therefore only allows a subset
+  of identity providers.
+  </p>
+
+
+rationale: |-
+  <p>
+  With any authentication mechanism the ability to revoke credentials if they
+  are compromised or no longer required, is a key control. Kubernetes client
+  certificate authentication does not allow for this due to a lack of support
+  for certificate revocation.
+  </p>
+
+  <p>
+  OpenShift's built-in OAuth server allows credential revocation by relying on
+  the Identity provider, as well as giving the administrators the ability to
+  revoke any tokens given to a specific user.
+  </p>
+
+  <p>
+  In addition, using an external Identity provider allows for setting up notifications
+  on account creation or deletion, multi-factor authentication, disabling inactive
+  accounts or other features required by different compliance standards.
+  </p>
+
+references:
+  nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.2.2,CIP-004-6 R2.2.3,CIP-004-6 R2.3,CIP-007-3 R.1.3,CIP-007-3 R5,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2,CIP-007-3 R5.1.3,CIP-007-3 R5.2,CIP-007-3 R5.2.1,CIP-007-3 R5.2.3,CIP-007-3 R5.3.1,CIP-007-3 R5.3.2,CIP-007-3 R5.3.3
+  nist: AC-2(1),AC-2(2),AC-2(3),AC-2(4),AC-2(7),AC-2(8),AC-7,IA-2,IA-2(1),IA-2(2),IA-2(3),IA-2(5),IA-2(8),IA-2(9),IA-2(12),IA-5(4),SC-12(1)
+  srg: SRG-APP-000023-CTR-000055
+
+identifiers:
+    cce@ocp4: CCE-84209-6
+
+ocil_clause: 'A compliant identity provider is not configured'
+
+ocil: |-
+    Run the following command to list the identity providers configured:
+    <pre>$ oc get oauths cluster -ojsonpath='{.spec.identityProviders}' | jq </pre>
+    Make sure that there exists at least one item referenced by the above path
+    and that the value is not <pre>HTPasswd</pre>
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+        yamlpath: ".identityProviders[:].type"
+        check_existence: "any_exist"
+        values:
+            - value: "HTPasswd"
+              operation: "not equal"

@@ -1,0 +1,30 @@
+documentation_complete: true
+
+
+title: 'Ensure that the ClusterLogging and ClusterLoggingForwarder resources are protected from unauthorized access'
+
+description: |-
+    The ClusterLogging and ClusterLoggingForwarder Custom Resources provide 
+    a way to configure the logging forwarding subsystem and view access to it
+    should be restricted to as-needed basis.
+
+    {{{ fix_openshift_logging_rbac("view") | indent(4) }}}}
+
+rationale: |-
+    Protecting audit data also includes identifying and protecting the tools used to view and
+    manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized
+    operation on audit data.
+
+severity: medium
+
+identifiers:
+  cce@ocp4: CCE-90648-7
+
+references:
+    nist: AU-9
+    srg: SRG-APP-000121-CTR-000255
+
+ocil_clause: 'view access to ClusterLogging and ClusterLoggingForwarder resources needs review'
+
+ocil: |-
+    {{{ ocil_cluster_logging_rbac_review("view") | indent(4) }}}

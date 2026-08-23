@@ -1,0 +1,35 @@
+documentation_complete: true
+
+
+title: 'Ensure /boot Located On Separate Partition'
+
+description: |-
+    It is recommended that the <tt>/boot</tt> directory resides on a separate
+    partition. This makes it easier to apply restrictions e.g. through the
+    <tt>noexec</tt> mount option. Eventually, the <tt>/boot</tt> partition can
+    be configured not to be mounted automatically with the <tt>noauto</tt> mount
+    option.
+
+rationale: |-
+    The <tt>/boot</tt> partition contains the kernel and bootloader files.
+    Access to this partition should be restricted.
+
+severity: medium
+
+
+identifiers:
+    cce@rhel8: CCE-83336-8
+    cce@rhel10: CCE-90755-0
+    cce@sle12: CCE-91484-6
+    cce@sle15: CCE-91176-8
+    cce@sle16: CCE-96430-4
+
+{{{ complete_ocil_entry_separate_partition(part="/boot") }}}
+
+template:
+    name: mount
+    vars:
+        mountpoint: /boot
+        min_size: 1073741824
+    backends:
+        kickstart: "off"

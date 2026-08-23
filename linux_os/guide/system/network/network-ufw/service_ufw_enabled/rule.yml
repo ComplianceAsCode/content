@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Verify ufw Enabled'
+
+description: |-
+    {{{ describe_service_enable(service="ufw") }}}
+
+rationale: |-
+    The ufw service must be enabled and running in order for ufw to protect the system
+
+severity: medium
+
+references:
+    srg: SRG-OS-000297-GPOS-00115
+
+ocil_clause: 'the service is not enabled'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="ufw") }}}
+
+platform: system_with_kernel and package[ufw]
+
+{{%- if 'ubuntu' in product %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: ufw
+        servicename: ufw
+        variable: var_network_filtering_service
+        value: ufw
+{{%- else %}}
+template:
+    name: service_enabled
+    vars:
+        servicename: ufw
+{{%- endif %}}

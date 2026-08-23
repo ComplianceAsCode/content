@@ -1,0 +1,52 @@
+documentation_complete: true
+
+
+title: 'Disable storing core dumps'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.core_pattern", value="|/bin/false") }}}'
+
+rationale: |-
+    A core dump includes a memory image taken at the time the operating system
+    terminates an application. The memory image could contain sensitive data and is generally useful
+    only for developers trying to debug problems.
+
+severity: medium
+
+{{% if product in ["rhel9", "rhel10"] %}}
+conflicts:
+    - sysctl_kernel_core_pattern_empty_string
+{{% endif %}}
+
+identifiers:
+    cce@rhcos4: CCE-82527-3
+    cce@rhel8: CCE-82215-5
+    cce@rhel9: CCE-83961-3
+    cce@rhel10: CCE-86714-3
+
+references:
+    nist: SC-7(10)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol8: OL08-00-010671
+
+ocil_clause:  |-
+    the returned line does not have a value of "|/bin/false", or a line is not
+    returned and the need for core dumps is not documented with the Information
+    System Security Officer (ISSO) as an operational requirement
+
+ocil: |
+    {{{ ocil_sysctl_option_value(sysctl="kernel.core_pattern", value="|/bin/false") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable storing core dumps.
+    {{{ fixtext_sysctl(sysctl="kernel.core_pattern", value="|/bin/false") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must disable the kernel.core_pattern.'
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.core_pattern
+        sysctlval: '|/bin/false'
+        datatype: string

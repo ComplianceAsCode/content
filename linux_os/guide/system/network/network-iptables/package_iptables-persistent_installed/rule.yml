@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Install iptables-persistent Package'
+
+description: |-
+    {{{ describe_package_install(package="iptables-persistent") }}}
+
+rationale: |-
+    A method of configuring and maintaining firewall rules is
+    necessary to configure a Host Based Firewall.
+
+severity: medium
+
+platform: package[iptables]
+
+{{{ complete_ocil_entry_package_installed("iptables-persistent") }}}
+
+{{%- if 'ubuntu' in product %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: iptables-persistent
+        variable: var_network_filtering_service
+        value: iptables
+{{%- else %}}
+template:
+    name: package_installed
+    vars:
+        pkgname: iptables-persistent
+{{%- endif %}}
+
+fixtext: |-
+    {{{ describe_package_install(package="iptables-persistent") }}}

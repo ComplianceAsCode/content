@@ -1,0 +1,13 @@
+srg_requirement: |-
+    The container platform registry must remove old container images after updating versions have been made available.
+
+checktext: |-
+    Ensure that the imagepruner is configured and is not in a suspended state.
+    > oc get imagepruners.imageregistry.operator.openshift.io/cluster -o jsonpath='{.spec}{"\n"}'
+    Review the settings and if suspend is set to true, this is a finding.
+
+fixtext: |-
+    Enable the image pruner automate the pruning of images from the cluster.
+    > oc patch imagepruners.imageregistry.operator.openshift.io/cluster --type=merge -p '{"spec":{"suspend":false}}'
+    For additional details on configuring the image pruner operator see the following document
+    https://docs.openshift.com/container-platform/latest/applications/pruning-objects.html#pruning-images_pruning-objects

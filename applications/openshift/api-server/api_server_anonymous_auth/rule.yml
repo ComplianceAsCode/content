@@ -1,0 +1,72 @@
+documentation_complete: true
+
+
+title: 'Ensure that anonymous requests to the API Server are authorized'
+
+description: |-
+    By default, anonymous access to the OpenShift API is enabled, but at
+    the same time, all requests must be authorized. If no authentication
+    mechanism is used, the request is assigned the <tt>system:anonymous</tt>
+    virtual user and the <tt>system:unauthenticated</tt> virtual group.
+    This allows the authorization layer to determine which requests, if any,
+    is an anonymous user authorized to make.
+
+    To verify the authorization rules for anonymous requests run the following:
+    <pre>$ oc describe clusterrolebindings</pre>
+    and inspect the bindings of the <tt>system:anonymous</tt>
+    virtual user and the <tt>system:unauthenticated</tt> virtual group.
+
+    To test that an anonymous request is authorized to access the <tt>readyz</tt>
+    endpoint, run:
+    <pre>$ oc get --as="system:anonymous" --raw='/readyz?verbose'</pre>
+    In contrast, a request to list all projects should not be authorized:
+    <pre>$ oc get --as="system:anonymous" projects</pre>
+
+rationale: |-
+    When enabled, requests that are not rejected by other configured
+    authentication methods are treated as anonymous requests. These requests
+    are then served by the API server. If you are using RBAC authorization,
+    it is generally considered reasonable to allow anonymous access to the
+    API Server for health checks and discovery purposes, and hence this
+    recommendation is not scored. However, you should consider whether
+    anonymous discovery is an acceptable risk for your purposes.
+
+severity: medium
+
+references:
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-2.2
+    srg: SRG-APP-000516-CTR-001325
+
+ocil_clause: 'anonymous requests are not authorized'
+
+ocil: |-
+    Run the following command to view the authorization rules for anonymous requests:
+    <pre>$ oc describe clusterrolebindings</pre>
+    Make sure that there exists at least one <tt>clusterrolebinding</tt> that binds
+    either the <tt>system:unauthenticated</tt> group or the <tt>system:anonymous</tt>
+    user.
+    To test that an anonymous request is authorized to access the <tt>readyz</tt>
+    endpoint, run:
+    <pre>$ oc get --as="system:anonymous" --raw='/readyz?verbose'</pre>
+    In contrast, a request to list all projects should not be authorized:
+    <pre>$ oc get --as="system:anonymous" projects</pre>
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/rbac.authorization.k8s.io/v1/clusterrolebindings") | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /apis/rbac.authorization.k8s.io/v1/clusterrolebindings
+        yamlpath: ".items[:]['subjects'][:].name"
+        check_existence: "at_least_one_exists"
+        entity_check: "at least one"
+        values:
+          - value: "system:unauthenticated"
+            entity_check: "at least one"
+            operation: "pattern match"
+            check_existence: "at_least_one_exists"

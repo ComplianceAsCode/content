@@ -1,0 +1,27 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The number of rounds for password hashing should be set correctly.", rule_title=rule_title) }}}
+    <criteria comment="Check if rounds option of pam_unix is as expected" operator="OR">
+      <criterion comment="The value of rounds is set correctly in pam_unix.so" test_ref="test_system_auth_pam_unix_rounds_is_set" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_system_auth_pam_unix_rounds_is_set" check="all" check_existence="all_exist"
+  comment="Test if rounds attribute of pam_unix.so is set correctly in /etc/pam.d/system-auth" version="1">
+    <ind:object object_ref="object_system_auth_pam_unix_rounds" />
+    <ind:state state_ref="state_system_auth_pam_unix_rounds" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_system_auth_pam_unix_rounds" version="1">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*rounds=([0-9]*).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_system_auth_pam_unix_rounds" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_password_pam_unix_rounds" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="number of passwords hashing rounds" datatype="int" id="var_password_pam_unix_rounds" version="1" />
+
+</def-group>

@@ -1,0 +1,15 @@
+controls:
+    -   id: SRG-OS-000355-GPOS-00143
+        title: '{{{ full_name }}} must, for networked systems, compare internal information
+                system clocks at least every 24 hours with an authoritative time source.'
+
+        levels:
+            - medium
+        rules:
+            - chronyd_or_ntpd_set_maxpoll
+            - chronyd_server_directive
+            - chronyd_specify_remote_server
+            - package_chrony_installed
+            - service_chronyd_enabled
+            - var_multiple_time_servers=stig
+        status: automated

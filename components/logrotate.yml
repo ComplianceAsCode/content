@@ -1,0 +1,7 @@
+name: logrotate
+packages:
+- logrotate
+rules:
+- package_logrotate_installed
+- ensure_logrotate_activated
+- timer_logrotate_enabled

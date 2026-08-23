@@ -1,0 +1,97 @@
+documentation_complete: true
+
+
+title: 'Limit Password Reuse'
+
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+{{% set configFile = "/etc/pam.d/system-auth" %}}
+{{% else %}}
+{{% set configFile = "/etc/pam.d/common-password" %}}
+{{% endif %}}
+
+description: |-
+    Do not allow users to reuse recent passwords. This can be accomplished by using the
+    <tt>remember</tt> option for the <tt>pam_unix</tt> or <tt>pam_pwhistory</tt> PAM modules.
+
+rationale: |-
+    Preventing reuse of previous passwords helps ensure that a compromised password is not
+    reused by a user.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-80666-1
+    cce@rhel9: CCE-83584-3
+    cce@rhel10: CCE-87288-7
+    cce@sle12: CCE-92217-9
+    cce@sle15: CCE-85678-1
+
+references:
+    cis-csc: 1,12,15,16,5
+    cjis: 5.6.2.1.1
+    cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    cui: 3.5.8
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1'
+    iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: IA-5(f),IA-5(1)(e)
+    nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
+    pcidss: Req-8.2.5
+    srg: SRG-OS-000077-GPOS-00045
+
+ocil_clause: 'the value of remember is not equal to or greater than the expected value'
+
+ocil: |-
+    To verify the password reuse setting is compliant, run the following command:
+    <pre>$ grep remember {{{ configFile }}}</pre>
+    The output should show the following at the end of the line:
+    <pre>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
+
+    {{% if product not in ["ol7"] %}}
+    In newer systems, the <tt>pam_pwhistory</tt> PAM module options can also be set in
+    "{{{ pwhistory_path }}}" file. Use the following command to verify:
+    <pre>$ grep remember {{{ pwhistory_path }}}
+    remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>
+
+    The pam_pwhistory <tt>remember</tt> option must be configured only in one file.
+    {{% endif %}}
+
+fixtext: |-
+    To configure the <tt>remember</tt> option for the <tt>pam_unix</tt> or <tt>pam_pwhistory</tt>
+    PAM modules, in the file <tt>{{{ configFile }}}</tt>, append <tt>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</tt>
+    to the line which refers to the <tt>pam_unix.so</tt> or <tt>pam_pwhistory.so</tt>module, as
+    shown below:
+    <ul>
+    <li>for the <tt>pam_unix.so</tt> case:
+    <pre>password sufficient pam_unix.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
+    </li>
+    <li>for the <tt>pam_pwhistory.so</tt> case:
+    <pre>password requisite pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
+    </li>
+    </ul>
+    {{% if product not in ["ol7"] %}}
+    If the <tt>pam_pwhistory.so</tt> module is used and the <tt>{{{ pwhistory_path }}}</tt>
+    file is present in the system, use it to set the "remember" option:
+    <pre>remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>
+
+    Note:
+    In newer versions of authselect, the <tt>pam_pwhistory.so</tt> module can be easily enabled
+    via authselect feature using the following command:
+    <pre>authselect enable-feature with-pwhistory</pre>
+    {{% endif %}}
+
+platform: package[libpwquality]
+
+warnings:
+    - general: |-
+       If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+       will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+       PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+       aborted in order to preserve intentional changes. In this case, an informative message will
+       be shown in the remediation report.
+    - general: |-
+       Newer versions of <tt>authselect</tt> contain an authselect feature to easily and properly
+       enable <tt>pam_pwhistory.so</tt> module. If this feature is not yet available in your
+       system, an authselect custom profile must be used to avoid integrity issues in PAM files.
+
+srg_requirement: '{{{ full_name }}} must not allow passwords to be reused for a minimum of five generations.'

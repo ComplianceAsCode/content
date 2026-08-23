@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the pppd_for_user SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>pppd_for_user</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="pppd_for_user") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="pppd_for_user") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: pppd_for_user

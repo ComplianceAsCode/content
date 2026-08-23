@@ -1,0 +1,29 @@
+name: abrt
+packages:
+- abrt
+- abrt-addon-ccpp
+- abrt-addon-kerneloops
+- abrt-addon-python
+- abrt-cli
+- abrt-libs
+- abrt-plugin-logger
+- abrt-plugin-rhtsupport
+- abrt-plugin-sosreport
+- abrt-server-info-page
+- python3-abrt-addon
+rules:
+- package_abrt-addon-ccpp_removed
+- package_abrt-addon-kerneloops_removed
+- package_abrt-addon-python_removed
+- package_abrt-cli_removed
+- package_abrt-libs_removed
+- package_abrt-plugin-logger_removed
+- package_abrt-plugin-rhtsupport_removed
+- package_abrt-plugin-sosreport_removed
+- package_abrt-server-info-page_removed
+- package_abrt_removed
+- package_python3-abrt-addon_removed
+- sebool_abrt_anon_write
+- sebool_abrt_handle_event
+- sebool_abrt_upload_watch_anon_write
+- service_abrtd_disabled

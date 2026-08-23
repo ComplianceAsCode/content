@@ -1,0 +1,30 @@
+check_type: Platform
+
+failure_reason: |-
+    The '.spec.permittedHostDevices' field in the 'kubevirt-hyperconverged'
+    resource permits one or more host devices (pciHostDevices, mediatedDevices
+    or usbHostDevices) to be used by virtualization workloads.
+
+inputs:
+  - name: hcoList
+    kubernetes_input_spec:
+      api_version: hco.kubevirt.io/v1beta1
+      resource: hyperconvergeds
+
+expression: |
+  hcoList.items.filter(h,
+      h.metadata.name == 'kubevirt-hyperconverged' &&
+      h.metadata.namespace == 'openshift-cnv'
+  ).size() == 1 &&
+  hcoList.items.filter(h,
+      h.metadata.name == 'kubevirt-hyperconverged' &&
+      h.metadata.namespace == 'openshift-cnv'
+  ).all(h,
+      !has(h.spec.permittedHostDevices) ||
+      h.spec.permittedHostDevices == null ||
+      (
+        (!has(h.spec.permittedHostDevices.pciHostDevices) || size(h.spec.permittedHostDevices.pciHostDevices) == 0) &&
+        (!has(h.spec.permittedHostDevices.mediatedDevices) || size(h.spec.permittedHostDevices.mediatedDevices) == 0) &&
+        (!has(h.spec.permittedHostDevices.usbHostDevices) || size(h.spec.permittedHostDevices.usbHostDevices) == 0)
+      )
+  )

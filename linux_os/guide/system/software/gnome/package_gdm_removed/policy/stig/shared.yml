@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have the gdm  package installed.
+
+vuldiscussion: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system.
+    A graphical environment is unnecessary for certain types of systems including a virtualization
+    hypervisor.
+
+checktext: |-
+    Verify that the gdm package is not installed with the following command:
+
+    $ dnf list --installed gdm
+
+    Error: No matching Packages to list
+
+    If the gdm  package is installed, this is a finding.
+
+fixtext: |-
+    Remove the gdm  package with the following command:
+
+    $ sudo dnf remove gdm

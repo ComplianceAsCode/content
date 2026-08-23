@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Group Owner on /etc/apt/trusted.gpg.d Directory'
+
+description: '{{{ describe_directory_group_owner(directory="/etc/apt/trusted.gpg.d", group="root") }}}'
+
+rationale: |-
+    The /etc/apt/trusted.gpg.d directory should be group-owned by root to prevent
+    unauthorized changes to APT trusted keys.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_group_owner(directory="/etc/apt/trusted.gpg.d", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_directory_group_owner(directory="/etc/apt/trusted.gpg.d", group="root") }}}
+
+fixtext: '{{{ fixtext_directory_group_owner(file="/etc/apt/trusted.gpg.d", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/apt/trusted.gpg.d/
+        gid_or_name: '0'

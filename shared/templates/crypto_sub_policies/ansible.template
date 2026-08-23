@@ -1,0 +1,49 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = low
+
+-   name: "{{{ rule_title }}} - Set the base crypto policy"
+    ansible.builtin.set_fact:
+        expected_crypto_policy: "{{{ BASE_POLICY }}}"
+
+{{% for sub_policy in SUB_POLICIES %}}
+{{% if "scope" in sub_policy %}}
+-   name: "{{{ rule_title }}} - Check That /etc/crypto-policies/back-ends/{{{ sub_policy.scope }}}.config Exists"
+    ansible.builtin.stat:
+        path: /etc/crypto-policies/back-ends/{{{ sub_policy.scope }}}.config
+    register: crypto_{{{ sub_policy.scope | replace("-", "_") }}}_scope
+{{% endif %}}
+
+-   name: "{{{ rule_title }}} - Create custom crypto policy module {{{ sub_policy.module_name }}}"
+    ansible.builtin.lineinfile:
+        path: /etc/crypto-policies/policies/modules/{{{ sub_policy.module_name }}}.pmod
+        owner: root
+        group: root
+        mode: '0644'
+        line: {{{ sub_policy.key }}} = {{{ sub_policy.value }}}
+        create: true
+        regexp: "{{{ sub_policy.key }}}"
+{{% if "scope" in sub_policy %}}
+    when: crypto_{{{ sub_policy.scope | replace("-", "_") }}}_scope.stat.exists
+{{% endif %}}
+
+-   name: "{{{ rule_title }}} - Update the expected policy"
+    ansible.builtin.set_fact:
+        expected_crypto_policy: "{{ expected_crypto_policy + ':{{{ sub_policy.module_name }}}' }}"
+{{% if "scope" in sub_policy %}}
+    when: crypto_{{{ sub_policy.scope | replace("-", "_") }}}_scope.stat.exists
+{{% endif %}}
+{{% endfor %}}
+
+-   name: "{{{ rule_title }}} - Check current crypto policy"
+    ansible.builtin.command: update-crypto-policies --show
+    register: current_crypto_policy
+    changed_when: false
+    failed_when: false
+    check_mode: false
+
+-   name: "{{{ rule_title }}} - Update crypto-policies"
+    ansible.builtin.command: update-crypto-policies --set {{ expected_crypto_policy }}
+    when: current_crypto_policy.stdout.strip() != expected_crypto_policy

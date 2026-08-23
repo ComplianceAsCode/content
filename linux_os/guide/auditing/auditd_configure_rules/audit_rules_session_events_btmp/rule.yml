@@ -1,0 +1,40 @@
+documentation_complete: true
+
+
+title: 'Record Attempts to Alter Process and Session Initiation Information btmp'
+
+description: |-
+    The audit system already collects process information for all
+    users and root.
+    {{{ describe_audit_rules_watch("/var/log/btmp", "session") }}}
+
+rationale: |-
+    Manual editing of these files may indicate nefarious activity, such
+    as an attacker attempting to remove evidence of an intrusion.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86196-3
+    cce@rhel9: CCE-86198-9
+    cce@rhel10: CCE-86190-6
+    cce@sle15: CCE-85758-1
+    cce@sle16: CCE-96330-6
+    cce@slmicro5: CCE-93725-0
+    cce@slmicro6: CCE-94734-1
+
+references:
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    nist: AU-12(c),AU-12.1(iv)
+    srg: SRG-OS-000472-GPOS-00217
+
+ocil_clause: 'Audit rule is not present'
+
+ocil: |-
+    {{{ ocil_audit_rules_watch("/var/log/btmp", "session") }}}
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: /var/log/btmp
+        key: session

@@ -1,0 +1,29 @@
+- name: Ensure SELinux State is Enforcing
+  hosts: '@@HOSTS@@'
+  become: true
+  vars:
+    var_selinux_state: enforcing
+  tags:
+  - NIST-800-171-3.1.2
+  - NIST-800-171-3.7.2
+  - NIST-800-53-AC-3
+  - NIST-800-53-AC-3(3)
+  - NIST-800-53-AC-3(4)
+  - NIST-800-53-AC-4
+  - NIST-800-53-AC-6
+  - NIST-800-53-AU-9
+  - NIST-800-53-SI-6(a)
+  - high_severity
+  - low_complexity
+  - low_disruption
+  - restrict_strategy
+  - selinux_state
+  tasks:
+  - name: '@RULE_TITLE@'
+    lineinfile:
+      path: /etc/sysconfig/selinux
+      regexp: ^SELINUX=
+      line: SELINUX={{ var_selinux_state }}
+      create: true
+    when: ansible_virtualization_role != "guest" or ansible_virtualization_type !=
+      "docker"

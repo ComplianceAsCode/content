@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Configure the OpenShift Audit Profile'
+
+description: |-
+  Audit log profiles define how to log requests that come to the OpenShift
+  API server, the Kubernetes API server, and the OAuth API server.
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+  default: "Default"
+  Default: "Default"
+  WriteRequestBodies: "WriteRequestBodies"
+  AllRequestBodies: "AllRequestBodies"

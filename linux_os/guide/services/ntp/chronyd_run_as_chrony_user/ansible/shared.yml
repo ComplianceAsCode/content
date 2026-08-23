@@ -1,0 +1,44 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{%- set ok_by_default = false %}}
+{{%- if product in ["ol7", "ol8", "ol9", "fedora", "almalinux"] or 'rhel' in product %}}
+{{%- set ok_by_default = true %}}
+{{%- endif %}}
+
+- name: "Detect if file /etc/sysconfig/chronyd is not empty or missing"
+  ansible.builtin.find:
+    path: /etc/sysconfig/
+    patterns: chronyd
+    contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
+  register: chronyd_file
+
+- name: "Remove any previous configuration of user used to run chronyd process"
+  ansible.builtin.replace:
+    path: /etc/sysconfig/chronyd
+    regexp: '\s*-u\s*\w+\s*'
+    replace: ' '
+  when: chronyd_file is defined and chronyd_file.matched > 0
+
+{{%- if not ok_by_default %}}
+- name: "Correct existing line in /etc/sysconfig/chronyd to run chronyd as chrony user"
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/chronyd
+    regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
+    line: '\1 -u chrony\2'
+    state: present
+    backrefs: True
+  when: chronyd_file is defined and chronyd_file.matched > 0
+
+- name: "Insert correct line into /etc/sysconfig/chronyd ensuring chronyd runs as chrony user"
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/chronyd
+    line: 'OPTIONS="-u chrony"'
+    state: present
+    create: True
+    mode: 0644
+  when: chronyd_file is defined and chronyd_file.matched == 0
+{{%- endif %}}

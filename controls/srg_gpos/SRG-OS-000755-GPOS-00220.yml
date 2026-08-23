@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000755-GPOS-00220
+        title: '{{{ full_name }}} must monitor the use of maintenance tools that execute
+                with increased privilege.'
+        levels:
+            - medium
+        status: automated
+        rules:
+            - audit_rules_privileged_commands_su
+            - audit_rules_privileged_commands_sudo
+            - audit_rules_privileged_commands_sudoedit
+            - audit_rules_suid_privilege_function

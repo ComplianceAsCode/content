@@ -1,0 +1,20 @@
+documentation_complete: true
+
+
+title: 'Disable the pcp_read_generic_logs SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>pcp_read_generic_logs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="pcp_read_generic_logs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="pcp_read_generic_logs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: pcp_read_generic_logs

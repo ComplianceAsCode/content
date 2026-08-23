@@ -1,0 +1,14 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+- name: Disable Ctrl-Alt-Del Burst Action
+  ansible.builtin.lineinfile:
+    dest: /etc/systemd/system.conf
+    state: present
+    regexp: ^CtrlAltDelBurstAction
+    line: "CtrlAltDelBurstAction=none"
+    create: yes
+    mode: 0644

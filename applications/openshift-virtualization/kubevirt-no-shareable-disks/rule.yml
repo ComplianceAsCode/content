@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Virtual Machine Disks Must Not Be Shareable'
+
+description: |-
+    A disk marked 'shareable: true' may be attached to multiple virtual
+    machines concurrently. Shared writable disks bypass the isolation
+    between workloads: one guest can tamper with data another guest reads,
+    and concurrent writers without cluster-aware filesystems corrupt data.
+    Disks should not be shareable unless a reviewed clustered workload
+    requires it.
+
+rationale: |-
+    Every disk with '.shareable == true' creates a data path between
+    virtual machines that circumvents network controls and namespace
+    isolation, enabling tampering and data corruption across workloads.
+
+severity: medium
+
+ocil_clause: 'a VirtualMachine disk is marked shareable'
+
+ocil: |-
+    Run the following command to list shareable disks:
+    <pre>$ oc get vm -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}: {.spec.template.spec.domain.devices.disks[?(@.shareable==true)].name}{"\n"}{end}'</pre>
+    No virtual machine should list a shareable disk.

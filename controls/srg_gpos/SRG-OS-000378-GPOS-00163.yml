@@ -1,0 +1,15 @@
+controls:
+    -   id: SRG-OS-000378-GPOS-00163
+        levels:
+            - medium
+        title: {{{ full_name }}} must authenticate peripherals before establishing a
+            connection.
+        rules:
+            - package_usbguard_installed
+            - service_usbguard_enabled
+            - usbguard_generate_policy
+            - kernel_module_usb-storage_disabled
+            - service_autofs_disabled
+            - dconf_gnome_disable_automount_open
+            - dconf_gnome_disable_autorun
+        status: automated

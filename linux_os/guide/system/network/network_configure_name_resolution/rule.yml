@@ -1,0 +1,73 @@
+documentation_complete: true
+
+
+title: 'Configure Multiple DNS Servers in /etc/resolv.conf'
+
+description: |-
+    {{% if "ol" in families or "rhel" in product %}}
+    Determine whether the system is using local or DNS name resolution with the
+    following command:
+    <pre>$ sudo grep hosts /etc/nsswitch.conf
+    hosts: files dns</pre>
+    If the DNS entry is missing from the host's line in the "/etc/nsswitch.conf"
+    file, the "/etc/resolv.conf" file must be empty.
+    Verify the "/etc/resolv.conf" file is empty with the following command:
+    <pre>$ sudo ls -al /etc/resolv.conf
+    -rw-r--r-- 1 root root 0 Aug 19 08:31 resolv.conf</pre>
+    If the DNS entry is found on the host's line of the "/etc/nsswitch.conf" file,
+    then verify the following:<br/>
+    {{% endif %}}
+    Multiple Domain Name System (DNS) Servers should be configured
+    in <tt>/etc/resolv.conf</tt>. This provides redundant name resolution services
+    in the event that a domain server crashes. To configure the system to contain
+    as least <tt>2</tt> DNS servers, add a corresponding <tt>nameserver
+    <i>ip_address</i></tt> entry in <tt>/etc/resolv.conf</tt> for each DNS
+    server where <i>ip_address</i> is the IP address of a valid DNS server.
+    For example:
+    <pre>search example.com
+    nameserver 192.168.0.1
+    nameserver 192.168.0.2</pre>
+
+rationale: |-
+    To provide availability for name resolution services, multiple redundant
+    name servers are mandated. A failure in name resolution could lead to the
+    failure of security functions requiring name resolution, which may include
+    time synchronization, centralized authentication, and remote system logging.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84049-6
+    cce@rhel9: CCE-86858-8
+    cce@rhel10: CCE-88312-4
+
+references:
+    cis-csc: 12,15,8
+    cobit5: APO13.01,DSS05.02
+    isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    iso27001-2013: A.13.1.1,A.13.2.1,A.14.1.3
+    nist: SC-20(a),CM-6(a)
+    nist-csf: PR.PT-4
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-040600
+    stigid@ol8: OL08-00-010680
+
+ocil_clause: 'less than two lines are returned that are not commented out'
+
+ocil: |-
+    Verify that DNS servers have been configured properly, perform the following:
+    <pre>$ sudo grep nameserver /etc/resolv.conf</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to use two or more name servers for DNS resolution.
+
+    By default, "NetworkManager" on {{{ full_name }}} dynamically updates the /etc/resolv.conf file with the DNS settings from active "NetworkManager" connection profiles. However, this feature can be disabled to allow manual configurations.
+
+    If manually configuring DNS, edit the "/etc/resolv.conf" file to uncomment or add the two or more "nameserver" option lines with the IP address of local authoritative name servers. If local host resolution is being performed, the "/etc/resolv.conf" file must be empty. An empty "/etc/resolv.conf" file can be created as follows:
+
+    $ sudo echo -n > /etc/resolv.conf
+
+srg_requirement: 'For {{{ full_name }}} systems using Domain Name Servers (DNS) resolution, at least two name servers must be configured.'
+
+warnings:
+  - general: This rule doesn't come with a remediation, the IP addresses of local authoritative name servers need to be added by the administrator.

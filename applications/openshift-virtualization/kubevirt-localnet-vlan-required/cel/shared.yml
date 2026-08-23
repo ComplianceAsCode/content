@@ -1,0 +1,20 @@
+check_type: Platform
+
+failure_reason: |-
+    One or more localnet NetworkAttachmentDefinitions do not declare a
+    'vlanID' in their CNI configuration, leaving virtual machine traffic on
+    the untagged provider segment.
+
+inputs:
+  - name: nads
+    kubernetes_input_spec:
+      api_version: k8s.cni.cncf.io/v1
+      resource: network-attachment-definitions
+
+expression: |
+  nads.items.all(n,
+      !has(n.spec.config) ||
+      !("topology" in parseJSON(n.spec.config)) ||
+      parseJSON(n.spec.config).topology != "localnet" ||
+      ("vlanID" in parseJSON(n.spec.config) && parseJSON(n.spec.config).vlanID > 0)
+  )

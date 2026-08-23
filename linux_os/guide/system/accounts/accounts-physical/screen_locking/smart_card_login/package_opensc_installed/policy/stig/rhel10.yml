@@ -1,0 +1,27 @@
+checktext: |-
+    Verify {{{ full_name }}} has the "opensc" package installed with the following command:
+
+    $ sudo dnf list --installed opensc
+    Installed Packages
+    opensc.x86_64                               0.26.1-1.el10                                @rhel-10-for-x86_64-baseos-rpm
+
+    If the "opensc" package is not installed, this is a finding.
+
+srg_requirement: |-
+    {{{ full_name }}} must have the "opensc" package installed.
+
+vuldiscussion: |-
+    The use of Personal Identity Verification (PIV) credentials facilitates standardization and reduces the risk of unauthorized access.
+
+    The DOD has mandated the use of the common access card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.
+
+
+
+fixtext: |-
+    Configure {{{ full_name }}} to have the "opensc" package installed with the following command:
+
+    $ sudo dnf -y install opensc
+
+
+
+

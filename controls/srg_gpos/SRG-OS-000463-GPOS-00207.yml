@@ -1,0 +1,18 @@
+controls:
+    -   id: SRG-OS-000463-GPOS-00207
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records when successful/unsuccessful
+            attempts to modify security objects occur.
+        rules:
+            - audit_rules_dac_modification_fremovexattr
+            - audit_rules_dac_modification_fsetxattr
+            - audit_rules_dac_modification_lremovexattr
+            - audit_rules_dac_modification_lsetxattr
+            - audit_rules_dac_modification_removexattr
+            - audit_rules_execution_chcon
+            - audit_rules_execution_semanage
+            - audit_rules_execution_setfiles
+            - audit_rules_execution_setsebool
+            - audit_rules_usergroup_modification_opasswd
+        status: automated

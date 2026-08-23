@@ -1,0 +1,47 @@
+documentation_complete: true
+
+title: 'Enable Kernel Parameter to Enforce DAC on Symlinks'
+
+description: '{{{ describe_sysctl_option_value(sysctl="fs.protected_symlinks", value="1") }}}'
+
+rationale: |-
+    By enabling this kernel parameter, symbolic links are permitted to be followed
+    only when outside a sticky world-writable directory, or when the UID of the
+    link and follower match, or when the directory owner matches the symlink's owner.
+    Disallowing such symlinks helps mitigate vulnerabilities based on insecure file system
+    accessed by privileged programs, avoiding an exploitation vector exploiting unsafe use of
+    <tt>open()</tt> or <tt>creat()</tt>.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82507-5
+    cce@rhel8: CCE-81030-9
+    cce@rhel9: CCE-83900-1
+    cce@rhel10: CCE-88796-8
+    cce@sle12: CCE-91560-3
+    cce@sle15: CCE-91253-5
+    cce@sle16: CCE-96456-9
+
+references:
+    nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: CM-6(a),AC-6(1)
+    srg: SRG-OS-000312-GPOS-00122,SRG-OS-000312-GPOS-00123,SRG-OS-000324-GPOS-00125
+    stigid@ol8: OL08-00-010373
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.protected_symlinks", value="1") }}}
+
+fixtext: |-
+    Verify the operating system is configured to enable DAC on symlinks with the following commands:
+    {{{ fixtext_sysctl("fs.protected_symlinks", "1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must enable kernel parameters to enforce discretionary access control on symlinks.'
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: fs.protected_symlinks
+        sysctlval: '1'
+        datatype: int
+
+platform: system_with_kernel

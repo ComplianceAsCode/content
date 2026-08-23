@@ -1,0 +1,33 @@
+documentation_complete: true
+
+
+title: 'Configure maximum number of process identifiers'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.pid_max", value="65536") }}}'
+
+rationale: |-
+    The <tt>kernel.pid_max</tt> parameter configures upper limit on process
+    identifiers (PID). If this number is not high enough, it might happen that
+    forking of new processes is not possible, because all available PIDs are
+    exhausted. Increasing this number enhances availability.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83366-5
+    cce@rhel9: CCE-83960-5
+    cce@rhel10: CCE-88134-2
+    cce@sle12: CCE-91570-2
+    cce@sle15: CCE-91260-0
+    cce@sle16: CCE-95760-5
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.pid_max", value="65536") }}}
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.pid_max
+        sysctlval: '65536'
+        datatype: int
