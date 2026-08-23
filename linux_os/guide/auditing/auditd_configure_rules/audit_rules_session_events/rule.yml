@@ -50,3 +50,10 @@ references:
     nist-csf: DE.AE-3,DE.AE-5,DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.AC-3,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4
     pcidss: Req-10.2.3
     srg: SRG-APP-000505-CTR-001285
+
+ocil_clause: 'there is not output'
+
+ocil: |-
+    {{{ ocil_audit_rules_watch("/var/run/utmp", "session") }}}
+    {{{ ocil_audit_rules_watch("/var/log/btmp", "session") }}}
+    {{{ ocil_audit_rules_watch("/var/log/wtmp", "session") }}}
