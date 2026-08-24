@@ -89,6 +89,7 @@ grub2_enable_selinux
 grub2_password
 kernel_module_usb-storage_disabled
 libreswan_approved_tunnels
+logind_session_timeout
 no_direct_root_logins
 no_empty_passwords
 no_rsh_trust_files

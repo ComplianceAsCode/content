@@ -85,6 +85,7 @@ selections:
     - '!sshd_disable_rhosts_rsa'
     - '!sshd_disable_user_known_hosts'
     - '!sshd_set_keepalive'
+    - '!logind_session_timeout'
     - '!sshd_use_approved_ciphers'
     - '!sshd_use_approved_macs'
     - '!sshd_use_directory_configuration'

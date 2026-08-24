@@ -66,3 +66,4 @@ selections:
     - '!service_rsh_disabled'
     - '!service_rexec_disabled'
     - '!configure_ssh_crypto_policy'
+    - '!sshd_set_keepalive_0'
