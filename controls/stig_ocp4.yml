@@ -539,7 +539,8 @@ controls:
           - medium
       title: OpenShift must separate user functionality (including user interface services) from information
           system management functionality.
-      rules: []
+      rules:
+          - kubevirt-restrict-vnc-access-to-workloads
       notes: >-
           Satisfies SRG-APP-000211-CTR-000530.
           We cannot have an automated check for this rule at the moment.
