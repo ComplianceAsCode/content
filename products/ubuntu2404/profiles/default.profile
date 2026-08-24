@@ -206,7 +206,6 @@ selections:
     - disable_ctrlaltdel_reboot
     - disable_host_auth
     - disable_users_coredumps
-    - display_login_attempts
     - encrypt_partitions
     - ensure_pam_wheel_group_empty
     - ensure_root_access_controlled
