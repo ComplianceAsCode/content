@@ -15,6 +15,7 @@ expression: |
   nads.items.all(n,
       !has(n.spec) ||
       !has(n.spec.config) ||
+      n.spec.config == "" ||
       !("topology" in parseJSON(n.spec.config)) ||
       parseJSON(n.spec.config).topology != "localnet" ||
       ("vlanID" in parseJSON(n.spec.config) && parseJSON(n.spec.config).vlanID > 0)

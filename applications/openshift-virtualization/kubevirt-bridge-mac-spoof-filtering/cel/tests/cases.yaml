@@ -102,3 +102,17 @@ cases:
             metadata:
               name: istio-cni
               namespace: default
+  - name: NAD with an empty-string config is compliant (regression - parseJSON(""))
+    expect: true
+    inputs:
+      nads:
+        apiVersion: v1
+        kind: List
+        items:
+          - apiVersion: k8s.cni.cncf.io/v1
+            kind: NetworkAttachmentDefinition
+            metadata:
+              name: empty-config
+              namespace: default
+            spec:
+              config: ""
