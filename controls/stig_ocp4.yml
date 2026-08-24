@@ -120,6 +120,10 @@ controls:
       title: OpenShift RBAC access controls must be enforced.
       rules:
           - rbac_least_privilege
+          - kubevirt-restrict-migration-tools-access
+          - kubevirt-nested-virtualization-disabled
+          - kubevirt-seccomp-profile-permissions
+          - kubevirt-cache-directory-permissions
       status: automated
 
     - id: CNTR-OS-000100
