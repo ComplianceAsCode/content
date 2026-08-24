@@ -1,0 +1,678 @@
+# NIST SP 800-171 Revision 3 - Protecting Controlled Unclassified Information
+#
+# Derived from the official NIST SP 800-171 Revision 3 publication, with each
+# requirement mapped to the NIST 800-53 controls it was tailored from.
+#
+# This is a single, product-agnostic control file. Each 800-171 requirement
+# does NOT list rules directly; instead it references (via the 'controls:'
+# list) the NIST 800-53 controls it was tailored from. At build time these
+# cross-policy references resolve against the *current product's* nist_800_53
+# control file, so each requirement inherits the union of rules mapped to its
+# source 800-53 controls for that product. Products without a nist_800_53
+# policy resolve to no rules.
+policy: NIST SP 800-171 Revision 3
+title: NIST Special Publication 800-171 Revision 3
+id: nist_800_171
+version: Revision 3
+source: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html
+reference_type: nist-800-171
+
+controls:
+    # 03.01
+    - id: 03.01.01
+      title: Account Management
+      status: automated
+      controls:
+          - nist_800_53:ac-2
+          - nist_800_53:ac-2.3
+          - nist_800_53:ac-2.5
+          - nist_800_53:ac-2.13
+
+    - id: 03.01.02
+      title: Access Enforcement
+      status: automated
+      controls:
+          - nist_800_53:ac-3
+
+    - id: 03.01.03
+      title: Information Flow Enforcement
+      status: automated
+      controls:
+          - nist_800_53:ac-4
+
+    - id: 03.01.04
+      title: Separation of Duties
+      status: automated
+      controls:
+          - nist_800_53:ac-5
+
+    - id: 03.01.05
+      title: Least Privilege
+      status: automated
+      controls:
+          - nist_800_53:ac-6
+          - nist_800_53:ac-6.1
+          - nist_800_53:ac-6.7
+          - nist_800_53:au-9.4
+
+    - id: 03.01.06
+      title: Least Privilege - Privileged Accounts
+      status: automated
+      controls:
+          - nist_800_53:ac-6.2
+          - nist_800_53:ac-6.5
+
+    - id: 03.01.07
+      title: Least Privilege - Privileged Functions
+      status: automated
+      controls:
+          - nist_800_53:ac-6.9
+          - nist_800_53:ac-6.10
+
+    - id: 03.01.08
+      title: Unsuccessful Logon Attempts
+      status: automated
+      controls:
+          - nist_800_53:ac-7
+
+    - id: 03.01.09
+      title: System Use Notification
+      status: automated
+      controls:
+          - nist_800_53:ac-8
+
+    - id: 03.01.10
+      title: Device Lock
+      status: automated
+      controls:
+          - nist_800_53:ac-11
+          - nist_800_53:ac-11.1
+
+    - id: 03.01.11
+      title: Session Termination
+      status: automated
+      controls:
+          - nist_800_53:ac-12
+
+    - id: 03.01.12
+      title: Remote Access
+      status: automated
+      controls:
+          - nist_800_53:ac-17
+          - nist_800_53:ac-17.3
+          - nist_800_53:ac-17.4
+
+    - id: 03.01.16
+      title: Wireless Access
+      status: automated
+      controls:
+          - nist_800_53:ac-18
+          - nist_800_53:ac-18.1
+          - nist_800_53:ac-18.3
+
+    - id: 03.01.18
+      title: Access Control for Mobile Devices
+      status: automated
+      controls:
+          - nist_800_53:ac-19
+          - nist_800_53:ac-19.5
+
+    - id: 03.01.20
+      title: Use of External Systems
+      status: automated
+      controls:
+          - nist_800_53:ac-20
+          - nist_800_53:ac-20.1
+          - nist_800_53:ac-20.2
+
+    - id: 03.01.22
+      title: Publicly Accessible Content
+      status: automated
+      controls:
+          - nist_800_53:ac-22
+
+    # 03.02
+    - id: 03.02.01
+      title: Literacy Training and Awareness
+      status: automated
+      controls:
+          - nist_800_53:at-2
+          - nist_800_53:at-2.2
+          - nist_800_53:at-2.3
+
+    - id: 03.02.02
+      title: Role-Based Training
+      status: automated
+      controls:
+          - nist_800_53:at-3
+
+    # 03.03
+    - id: 03.03.01
+      title: Event Logging
+      status: automated
+      controls:
+          - nist_800_53:au-2
+
+    - id: 03.03.02
+      title: Audit Record Content
+      status: automated
+      controls:
+          - nist_800_53:au-3
+          - nist_800_53:au-3.1
+
+    - id: 03.03.03
+      title: Audit Record Generation
+      status: automated
+      controls:
+          - nist_800_53:au-11
+          - nist_800_53:au-12
+
+    - id: 03.03.04
+      title: Response to Audit Logging Process Failures
+      status: automated
+      controls:
+          - nist_800_53:au-5
+
+    - id: 03.03.05
+      title: Audit Record Review, Analysis, and Reporting
+      status: automated
+      controls:
+          - nist_800_53:au-6
+          - nist_800_53:au-6.3
+
+    - id: 03.03.06
+      title: Audit Record Reduction and Report Generation
+      status: automated
+      controls:
+          - nist_800_53:au-7
+
+    - id: 03.03.07
+      title: Time Stamps
+      status: automated
+      controls:
+          - nist_800_53:au-8
+
+    - id: 03.03.08
+      title: Protection of Audit Information
+      status: automated
+      controls:
+          - nist_800_53:au-9
+          - nist_800_53:au-9.4
+
+    # 03.04
+    - id: 03.04.01
+      title: Baseline Configuration
+      status: automated
+      controls:
+          - nist_800_53:cm-2
+
+    - id: 03.04.02
+      title: Configuration Settings
+      status: automated
+      controls:
+          - nist_800_53:cm-6
+
+    - id: 03.04.03
+      title: Configuration Change Control
+      status: automated
+      controls:
+          - nist_800_53:cm-3
+
+    - id: 03.04.04
+      title: Impact Analyses
+      status: automated
+      controls:
+          - nist_800_53:cm-4
+          - nist_800_53:cm-4.2
+
+    - id: 03.04.05
+      title: Access Restrictions for Change
+      status: automated
+      controls:
+          - nist_800_53:cm-5
+
+    - id: 03.04.06
+      title: Least Functionality
+      status: automated
+      controls:
+          - nist_800_53:cm-7
+          - nist_800_53:cm-7.1
+
+    - id: 03.04.08
+      title: Authorized Software - Allow by Exception
+      status: automated
+      controls:
+          - nist_800_53:cm-7.5
+
+    - id: 03.04.10
+      title: System Component Inventory
+      status: automated
+      controls:
+          - nist_800_53:cm-8
+          - nist_800_53:cm-8.1
+
+    - id: 03.04.11
+      title: Information Location
+      status: automated
+      controls:
+          - nist_800_53:cm-12
+
+    - id: 03.04.12
+      title: System and Component Configuration for High-Risk Areas
+      status: automated
+      controls:
+          - nist_800_53:cm-2.7
+
+    # 03.05
+    - id: 03.05.01
+      title: User Identification and Authentication
+      status: automated
+      controls:
+          - nist_800_53:ia-2
+          - nist_800_53:ia-11
+
+    - id: 03.05.02
+      title: Device Identification and Authentication
+      status: automated
+      controls:
+          - nist_800_53:ia-3
+
+    - id: 03.05.03
+      title: Multi-Factor Authentication
+      status: automated
+      controls:
+          - nist_800_53:ia-2.1
+          - nist_800_53:ia-2.2
+
+    - id: 03.05.04
+      title: Replay-Resistant Authentication
+      status: automated
+      controls:
+          - nist_800_53:ia-2.8
+
+    - id: 03.05.05
+      title: Identifier Management
+      status: automated
+      controls:
+          - nist_800_53:ia-4
+          - nist_800_53:ia-4.4
+
+    - id: 03.05.07
+      title: Password Management
+      status: automated
+      controls:
+          - nist_800_53:ia-5.1
+
+    - id: 03.05.11
+      title: Authentication Feedback
+      status: automated
+      controls:
+          - nist_800_53:ia-6
+
+    - id: 03.05.12
+      title: Authenticator Management
+      status: automated
+      controls:
+          - nist_800_53:ia-5
+
+    # 03.06
+    - id: 03.06.01
+      title: Incident Handling
+      status: automated
+      controls:
+          - nist_800_53:ir-4
+
+    - id: 03.06.02
+      title: Incident Monitoring, Reporting, and Response Assistance
+      status: automated
+      controls:
+          - nist_800_53:ir-5
+          - nist_800_53:ir-6
+          - nist_800_53:ir-7
+
+    - id: 03.06.03
+      title: Incident Response Testing
+      status: automated
+      controls:
+          - nist_800_53:ir-3
+
+    - id: 03.06.04
+      title: Incident Response Training
+      status: automated
+      controls:
+          - nist_800_53:ir-2
+
+    - id: 03.06.05
+      title: Incident Response Plan
+      status: automated
+      controls:
+          - nist_800_53:ir-8
+
+    # 03.07
+    - id: 03.07.04
+      title: Maintenance Tools
+      status: automated
+      controls:
+          - nist_800_53:ma-3
+          - nist_800_53:ma-3.1
+          - nist_800_53:ma-3.2
+          - nist_800_53:ma-3.3
+
+    - id: 03.07.05
+      title: Nonlocal Maintenance
+      status: automated
+      controls:
+          - nist_800_53:ma-4
+
+    - id: 03.07.06
+      title: Maintenance Personnel
+      status: automated
+      controls:
+          - nist_800_53:ma-5
+
+    # 03.08
+    - id: 03.08.01
+      title: Media Storage
+      status: automated
+      controls:
+          - nist_800_53:mp-4
+
+    - id: 03.08.02
+      title: Media Access
+      status: automated
+      controls:
+          - nist_800_53:mp-2
+
+    - id: 03.08.03
+      title: Media Sanitization
+      status: automated
+      controls:
+          - nist_800_53:mp-6
+
+    - id: 03.08.04
+      title: Media Marking
+      status: automated
+      controls:
+          - nist_800_53:mp-3
+
+    - id: 03.08.05
+      title: Media Transport
+      status: automated
+      controls:
+          - nist_800_53:mp-5
+          - nist_800_53:sc-28
+
+    - id: 03.08.07
+      title: Media Use
+      status: automated
+      controls:
+          - nist_800_53:mp-7
+
+    - id: 03.08.09
+      title: System Backup - Cryptographic Protection
+      status: automated
+      controls:
+          - nist_800_53:cp-9
+          - nist_800_53:cp-9.8
+
+    # 03.09
+    - id: 03.09.01
+      title: Personnel Screening
+      status: automated
+      controls:
+          - nist_800_53:ps-3
+
+    - id: 03.09.02
+      title: Personnel Termination and Transfer
+      status: automated
+      controls:
+          - nist_800_53:ps-4
+          - nist_800_53:ps-5
+
+    # 03.10
+    - id: 03.10.01
+      title: Physical Access Authorizations
+      status: automated
+      controls:
+          - nist_800_53:pe-2
+
+    - id: 03.10.02
+      title: Monitoring Physical Access
+      status: automated
+      controls:
+          - nist_800_53:pe-6
+
+    - id: 03.10.06
+      title: Alternate Work Site
+      status: automated
+      controls:
+          - nist_800_53:pe-17
+
+    - id: 03.10.07
+      title: Physical Access Control
+      status: automated
+      controls:
+          - nist_800_53:pe-3
+          - nist_800_53:pe-5
+
+    - id: 03.10.08
+      title: Access Control for Transmission
+      status: automated
+      controls:
+          - nist_800_53:pe-4
+
+    # 03.11
+    - id: 03.11.01
+      title: Risk Assessment
+      status: automated
+      controls:
+          - nist_800_53:ra-3
+          - nist_800_53:ra-3.1
+          - nist_800_53:sr-6
+
+    - id: 03.11.02
+      title: Vulnerability Monitoring and Scanning
+      status: automated
+      controls:
+          - nist_800_53:ra-5
+          - nist_800_53:ra-5.2
+
+    - id: 03.11.04
+      title: Risk Response
+      status: automated
+      controls:
+          - nist_800_53:ra-7
+
+    # 03.12
+    - id: 03.12.01
+      title: Security Assessment
+      status: automated
+      controls:
+          - nist_800_53:ca-2
+
+    - id: 03.12.02
+      title: Plan of Action and Milestones
+      status: automated
+      controls:
+          - nist_800_53:ca-5
+
+    - id: 03.12.03
+      title: Continuous Monitoring
+      status: automated
+      controls:
+          - nist_800_53:ca-7
+
+    - id: 03.12.05
+      title: Information Exchange
+      status: automated
+      controls:
+          - nist_800_53:ca-3
+
+    # 03.13
+    - id: 03.13.01
+      title: Boundary Protection
+      status: automated
+      controls:
+          - nist_800_53:sc-7
+
+    - id: 03.13.04
+      title: Information in Shared System Resources
+      status: automated
+      controls:
+          - nist_800_53:sc-4
+
+    - id: 03.13.06
+      title: Network Communications - Deny by Default - Allow by Exception
+      status: automated
+      controls:
+          - nist_800_53:sc-7.5
+
+    - id: 03.13.08
+      title: Transmission and Storage Confidentiality
+      status: automated
+      controls:
+          - nist_800_53:sc-8
+          - nist_800_53:sc-8.1
+          - nist_800_53:sc-28
+          - nist_800_53:sc-28.1
+
+    - id: 03.13.09
+      title: Network Disconnect
+      status: automated
+      controls:
+          - nist_800_53:sc-10
+
+    - id: 03.13.10
+      title: Cryptographic Key Establishment and Management
+      status: automated
+      controls:
+          - nist_800_53:sc-12
+
+    - id: 03.13.11
+      title: Cryptographic Protection
+      status: automated
+      controls:
+          - nist_800_53:sc-13
+
+    - id: 03.13.12
+      title: Collaborative Computing Devices and Applications
+      status: automated
+      controls:
+          - nist_800_53:sc-15
+
+    - id: 03.13.13
+      title: Mobile Code
+      status: automated
+      controls:
+          - nist_800_53:sc-18
+
+    - id: 03.13.15
+      title: Session Authenticity
+      status: automated
+      controls:
+          - nist_800_53:sc-23
+
+    # 03.14
+    - id: 03.14.01
+      title: Flaw Remediation
+      status: automated
+      controls:
+          - nist_800_53:si-2
+
+    - id: 03.14.02
+      title: Malicious Code Protection
+      status: automated
+      controls:
+          - nist_800_53:si-3
+
+    - id: 03.14.03
+      title: Security Alerts, Advisories, and Directives
+      status: automated
+      controls:
+          - nist_800_53:si-5
+
+    - id: 03.14.06
+      title: System Monitoring
+      status: automated
+      controls:
+          - nist_800_53:si-4
+          - nist_800_53:si-4.4
+
+    - id: 03.14.08
+      title: Information Management and Retention
+      status: automated
+      controls:
+          - nist_800_53:si-12
+
+    # 03.15
+    - id: 03.15.01
+      title: Policy and Procedures
+      status: automated
+      controls:
+          - nist_800_53:ac-1
+          - nist_800_53:at-1
+          - nist_800_53:au-1
+          - nist_800_53:ca-1
+          - nist_800_53:cm-1
+          - nist_800_53:ia-1
+          - nist_800_53:ir-1
+          - nist_800_53:ma-1
+          - nist_800_53:mp-1
+          - nist_800_53:pe-1
+          - nist_800_53:pl-1
+          - nist_800_53:ps-1
+          - nist_800_53:ra-1
+          - nist_800_53:sa-1
+          - nist_800_53:sc-1
+          - nist_800_53:si-1
+          - nist_800_53:sr-1
+
+    - id: 03.15.02
+      title: System Security Plan
+      status: automated
+      controls:
+          - nist_800_53:pl-2
+
+    - id: 03.15.03
+      title: Rules of Behavior
+      status: automated
+      controls:
+          - nist_800_53:pl-4
+
+    # 03.16
+    - id: 03.16.01
+      title: Security Engineering Principles
+      status: automated
+      controls:
+          - nist_800_53:sa-8
+
+    - id: 03.16.02
+      title: Unsupported System Components
+      status: automated
+      controls:
+          - nist_800_53:sa-22
+
+    - id: 03.16.03
+      title: External System Services
+      status: automated
+      controls:
+          - nist_800_53:sa-9
+
+    # 03.17
+    - id: 03.17.01
+      title: Supply Chain Risk Management Plan
+      status: automated
+      controls:
+          - nist_800_53:sr-2
+
+    - id: 03.17.02
+      title: Acquisition Strategies, Tools, and Methods
+      status: automated
+      controls:
+          - nist_800_53:sr-5
+
+    - id: 03.17.03
+      title: Supply Chain Requirements and Processes
+      status: automated
+      controls:
+          - nist_800_53:sr-3
