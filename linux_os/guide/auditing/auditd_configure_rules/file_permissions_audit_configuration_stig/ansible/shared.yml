@@ -67,7 +67,7 @@
 
     # IMPORTANT: this is necessary to ensure the dropin is loaded and the permissions for /etc/audit/ and /etc/audit/rules.d/ files are set correctly.
     - name: "{{{ rule_title }}} - Restart auditd.service"
-      ansible.builtin.shell: service auditd restart
+      ansible.builtin.command: service auditd restart
       when:
         - audit_config_perms.changed or rules_dir_perms.changed
 
