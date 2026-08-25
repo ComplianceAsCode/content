@@ -35,8 +35,6 @@ restorecon /etc/systemd/system/auditd.service.d/permissions.conf
 
 systemctl daemon-reload
 # IMPORTANT: this is necessary to ensure the dropin is loaded and the permissions for /etc/audit/ and /etc/audit/rules.d/ files are set correctly.
-# Use systemctl kill + start instead of restart due to RefuseManualStart: https://access.redhat.com/solutions/2664811
-systemctl kill auditd
-systemctl start auditd
+service auditd restart
 
 fi

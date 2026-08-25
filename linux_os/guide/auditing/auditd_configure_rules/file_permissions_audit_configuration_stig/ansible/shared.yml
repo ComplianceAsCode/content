@@ -66,9 +66,8 @@
         daemon_reload: true
 
     # IMPORTANT: this is necessary to ensure the dropin is loaded and the permissions for /etc/audit/ and /etc/audit/rules.d/ files are set correctly.
-    # Use systemctl kill + start instead of restart due to RefuseManualStart: https://access.redhat.com/solutions/2664811
     - name: "{{{ rule_title }}} - Restart auditd.service"
-      ansible.builtin.shell: systemctl kill auditd && systemctl start auditd
+      ansible.builtin.shell: service auditd restart
       when:
         - audit_config_perms.changed or rules_dir_perms.changed
 
