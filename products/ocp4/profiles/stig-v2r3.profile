@@ -19,8 +19,9 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
+# Kubevirt rules were added to STIG control in V2R6 and are scanned by the stig-vm-extension CEL profile
 filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platform and "ocp4-node-on-sdn"
-    not in platform and "ocp4-node-on-ovn" not in platform'
+    not in platform and "ocp4-node-on-ovn" not in platform and "kubevirt" not in id_'
 
 selections:
     - stig_ocp4:all

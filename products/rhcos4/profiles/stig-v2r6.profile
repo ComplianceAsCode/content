@@ -15,6 +15,9 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat Enterprise Linux CoreOS 4.
 
+# Kubevirt rules are not applicable to RHCOS
+filter_rules: '"kubevirt" not in id_'
+
 selections:
     - stig_ocp4:all
     - var_sshd_set_keepalive=0
