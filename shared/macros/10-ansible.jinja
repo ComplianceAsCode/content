@@ -2156,9 +2156,9 @@ Part of the grub2_bootloader_argument_absent template.
     - authselect_current_profile is not match("custom/")
     - authselect_custom_profile is not match(authselect_current_profile)
 
-- name: '{{{ rule_title }}} - Ensure the authselect custom profile is selected'
+- name: '{{{ rule_title }}} - Ensure the authselect custom profile and features are selected'
   ansible.builtin.command:
-    cmd: authselect select {{ authselect_custom_profile }}
+    cmd: authselect select {{ authselect_custom_profile }} {{ result_authselect_features.stdout_lines | join(' ') }}
   register: result_pam_authselect_select_profile
   when:
     - result_authselect_check_cmd is success
@@ -2166,21 +2166,10 @@ Part of the grub2_bootloader_argument_absent template.
     - authselect_current_profile is not match("custom/")
     - authselect_custom_profile is not match(authselect_current_profile)
 
-- name: '{{{ rule_title }}} - Restore the authselect features in the custom profile'
-  ansible.builtin.command:
-    cmd: authselect enable-feature {{ item }}
-  loop: "{{ result_authselect_features.stdout_lines }}"
-  register: result_pam_authselect_restore_features
-  when:
-    - result_authselect_profile is not skipped
-    - result_authselect_features is not skipped
-    - result_pam_authselect_select_profile is not skipped
-
 {{{ ansible_apply_authselect_changes('after-hardening-custom-profile', rule_title=rule_title) }}}
   when:
     - result_authselect_check_cmd is success
     - result_authselect_profile is not skipped
-    - result_pam_authselect_restore_features is not skipped
 {{%- endmacro %}}
 
 

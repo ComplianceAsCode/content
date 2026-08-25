@@ -2587,10 +2587,7 @@ if [[ ! $CURRENT_PROFILE == custom/* ]]; then
     authselect create-profile hardening -b $CURRENT_PROFILE
     CURRENT_PROFILE="custom/hardening"
     {{{ bash_apply_authselect_changes('before-hardening-custom-profile') | indent(4) }}}
-    authselect select $CURRENT_PROFILE
-    for feature in $ENABLED_FEATURES; do
-        authselect enable-feature $feature;
-    done
+    authselect select $CURRENT_PROFILE $ENABLED_FEATURES
     {{{ bash_apply_authselect_changes('after-hardening-custom-profile') | indent(4) }}}
 fi
 {{%- endmacro %}}
