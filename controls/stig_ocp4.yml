@@ -771,11 +771,12 @@ controls:
       levels:
           - medium
       title: OpenShift must protect the confidentiality and integrity of transmitted information.
-      rules: []
+      rules:
+          - routes_protected_by_tls
       notes: |-
-          This item is manual and kindof vague by design as e.g. with passthrough TLS, the TLS settings
-          must be checked in the app anyway.
-      status: manual
+          The rule covers edge-terminated routes. Passthrough TLS must still be checked at the
+          application level.
+      status: partial
 
     - id: CNTR-OS-000860
       levels:
