@@ -58,8 +58,8 @@
       {{# intentionally not considered: <unix:uread datatype="boolean">true</unix:uread> #}}
       {{# intentionally not considered: <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
       <unix:uexec datatype="boolean">false</unix:uexec>
-      
-      {{% if product in ["ol9", "sle12", "sle15", "slmicro5", "slmicro6"] -%}}
+
+      {{% if product == "rhcos4" -%}}
       {{# intentionally not considered: <unix:gread datatype="boolean">true</unix:gread> #}}
       {{%- else %}}
       <unix:gread datatype="boolean">false</unix:gread>
