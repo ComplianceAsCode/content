@@ -19,4 +19,8 @@ description: |-
 
 scanner_type: CEL
 
-extends: stig-virt-v2r6
+# Exclude node kubevirt rules — those are automated in the stig-node XCCDF profile
+filter_rules: '"kubevirt" in id_ and "ocp4-node" not in platforms'
+
+selections:
+    - stig_ocp4:all
