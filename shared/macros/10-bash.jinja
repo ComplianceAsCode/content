@@ -2895,3 +2895,42 @@ fi
 {{{ bash_replace_or_append(login_defs_drop_in_path, line_regex_replace, value, '%s %s', cce_identifiers=cce_identifiers) }}}
 
 {{%- endmacro %}}
+
+{{#
+    Set the ownership and permissions of the systemd journal directories
+    in tmpfiles.d drop-in.
+
+:parameter permission: permission to set
+:type permission: str
+#}}
+
+{{%- macro bash_set_journal_tmpfiles(permission) %}}
+TMPFILES_CONF="/etc/tmpfiles.d/zzz-systemd-stig.conf"
+
+mkdir -p /etc/tmpfiles.d
+touch "$TMPFILES_CONF"
+
+# Drop any previously written journal entries so stale or conflicting settings
+# in this file cannot be applied after the hardened ones.
+sed -i --follow-symlinks -E '/^[[:space:]]*[zZ][+]*[[:space:]]+\/(run|var)\/log\/journal/d' "$TMPFILES_CONF"
+
+# A drop-in whose name sorts after this file would be applied last and would
+# undo the hardening. Comment out journal entries in the other administrator
+# drop-ins so the hardened entries below are the effective ones.
+for conf in /etc/tmpfiles.d/*.conf /run/tmpfiles.d/*.conf; do
+    if [ -f "$conf" ] && [ "$conf" != "$TMPFILES_CONF" ]; then
+        sed -i --follow-symlinks -E 's,^([[:space:]]*[zZ][+]*[[:space:]]+/(run|var)/log/journal.*),# \1,' "$conf"
+    fi
+done
+
+cat >>"$TMPFILES_CONF" <<'EOF'
+z /run/log/journal ~{{{ permission }}} root systemd-journal - -
+Z /run/log/journal ~{{{ permission }}} root systemd-journal - -
+z /run/log/journal/%m ~{{{ permission }}} root systemd-journal - -
+z /var/log/journal ~{{{ permission }}} root systemd-journal - -
+Z /var/log/journal ~{{{ permission }}} root systemd-journal - -
+z /var/log/journal/%m ~{{{ permission }}} root systemd-journal - -
+EOF
+
+systemd-tmpfiles --create
+{{%- endmacro %}}

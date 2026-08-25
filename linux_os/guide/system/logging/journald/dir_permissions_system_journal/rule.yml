@@ -19,15 +19,20 @@ severity: medium
 
 fixtext: |
     Configure the system to set the appropriate permissions to the files and directories
-    used by the systemd journal:
-    Add or modify the following lines in the "/etc/tmpfiles.d/systemd.conf" file:
+    used by the systemd journal.
+    Create a drop-in file, if it does not already exist with the following command:
+    <pre>
+    $ sudo vi /etc/tmpﬁles.d/zzz-systemd-stig.conf
+    </pre>
+    Add or modify the following lines in the "/usr/lib/tmpﬁles.d/zzz-systemd-stig.conf" ﬁle:
     <pre>
     z /run/log/journal 2750 root systemd-journal - -
     Z /run/log/journal/%m ~2750 root systemd-journal - -
     z /var/log/journal 2750 root systemd-journal - -
     z /var/log/journal/%m 2750 root systemd-journal - -
+    z /var/log/journal/%m/system.journal 2750 root systemd-journal - -
     </pre>
-    Restart the system for the changes to take effect.
+    Note: Restart the system for these settings to take eﬀect.
 
 template:
     name: file_permissions
