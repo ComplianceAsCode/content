@@ -3,9 +3,9 @@
 
 rm -rf /etc/audit/*
 mkdir -p /etc/audit/rules.d/
-export TESTFILE=/etc/audit/rules.d/test_rule.rules
-export AUDITFILE=/etc/audit/auditd.conf
-touch $TESTFILE
-touch $AUDITFILE
-chmod 0640 $TESTFILE
-chmod 0640 $AUDITFILE
+touch /etc/audit/auditd.conf
+echo '-a always,exit -F arch=b64 -S getuid -k test_execstartpost_2' > /etc/audit/rules.d/test_rule.rules
+augenrules --load
+chmod 0640 /etc/audit/audit.rules
+chmod 0640 /etc/audit/auditd.conf
+chmod 0640 /etc/audit/rules.d/test_rule.rules
