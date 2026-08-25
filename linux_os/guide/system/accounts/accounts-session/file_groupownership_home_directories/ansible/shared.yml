@@ -4,32 +4,32 @@
 # complexity = low
 # disruption = low
 
-- name: Get all local users from /etc/passwd
+- name: Get all users from getent to support remote users (LDAP, SSSD, etc.)
   ansible.builtin.getent:
     database: passwd
     split: ':'
 
-- name: Create local_users variable from the getent output
+- name: Create interactive_users variable filtering out non-interactive shells
   ansible.builtin.set_fact:
-    local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
-    # Creates a dictionary where the key is the first field of the /etc/passwd file, the username.
-    # The list of values are the next 6 fields from /etc/passwd. Example for the root entry:
-    # The "root" key would have these values: ["x", "0", "0", "root", "/root", "/bin/bash"]
+    interactive_users: '{{ ansible_facts.getent_passwd|dict2items|rejectattr("value.5", "match", ".*/sbin/nologin$")|rejectattr("value.5", "match", ".*/usr/sbin/nologin$")|rejectattr("value.5", "match", ".*/bin/false$")|rejectattr("value.5", "match", ".*/usr/bin/false$")|list }}'
+    # Creates a dictionary where the key is the username and values are fields from getent passwd.
+    # Filters out users with non-interactive shells: nologin and false.
+    # Example for the admin entry: ["x", "1000", "1000", "", "/home/admin", "/bin/bash"]
 
 - name: Test for existence of home directories to avoid creating them, but only fixing group ownership
   ansible.builtin.stat:
     path: '{{ item.value[4] }}'
   register: path_exists
-  loop: '{{ local_users }}'
+  loop: '{{ interactive_users }}'
   when:
     - item.value[1]|int >= {{{ uid_min }}}
     - item.value[1]|int != {{{ nobody_uid }}}
     - item.value[4] != "/"
 
-- name: Ensure interactive local users are the group-owners of their respective home directories
+- name: Ensure interactive users are the group-owners of their respective home directories
   ansible.builtin.file:
     path: '{{ item.0.value[4] }}'
     group: '{{ item.0.value[2] }}'
-  loop: '{{ local_users|zip(path_exists.results)|list }}'
+  loop: '{{ interactive_users|zip(path_exists.results)|list }}'
   when:
     - item.1.stat is defined and item.1.stat.exists
