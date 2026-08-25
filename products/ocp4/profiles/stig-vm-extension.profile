@@ -19,4 +19,4 @@ description: |-
 
 scanner_type: CEL
 
-extends: stig-virt-v2r6
+extends: stig-vm-extension-v2r6
