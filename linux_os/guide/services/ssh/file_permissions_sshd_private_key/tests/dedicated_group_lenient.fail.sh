@@ -7,11 +7,8 @@ if ! grep -q "{{{ dedicated_ssh_groupname }}}" /etc/group; then
     groupadd "{{{ dedicated_ssh_groupname }}}"
 fi
 
-# The default host keys ship as root:{{{ dedicated_ssh_groupname }}} with mode 0640 on RHEL,
-# which is now a finding on non-immutable systems - harden them so the whole
-# system is compliant for this pass scenario.
-chmod 0600 /etc/ssh/*_key
-
+# Keys owned by root:{{{ dedicated_ssh_groupname }}} must still be 0600 or stricter on
+# non-immutable systems - the 0640 group-owned exception only applies to rhcos4.
 FAKE_KEY=$(mktemp -p /etc/ssh/ XXXX_key)
 chown root:{{{ dedicated_ssh_groupname }}} "$FAKE_KEY"
-chmod 0600 "$FAKE_KEY"
+chmod 0640 "$FAKE_KEY"
