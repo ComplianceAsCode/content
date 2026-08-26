@@ -3,6 +3,11 @@
 
 {{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {"name": "root"}).get("name") %}}
 
+# The default host keys ship as root:{{{ dedicated_ssh_groupname }}} with mode 0640 on RHEL,
+# which is now a finding on non-immutable systems - harden them so the whole
+# system is compliant for this pass scenario.
+chmod 0600 /etc/ssh/*_key
+
 FAKE_KEY=$(mktemp -p /etc/ssh/ XXXX_key)
 chown root:{{{ dedicated_ssh_groupname }}} "$FAKE_KEY"
 chmod 0400 "$FAKE_KEY"
@@ -10,4 +15,3 @@ chmod 0400 "$FAKE_KEY"
 FAKE_KEY_ROOT=$(mktemp -p /etc/ssh/ XXXX_key)
 chown root:root "$FAKE_KEY_ROOT"
 chmod 0400 "$FAKE_KEY_ROOT"
-
