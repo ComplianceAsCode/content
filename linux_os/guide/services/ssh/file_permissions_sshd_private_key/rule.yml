@@ -16,8 +16,10 @@ title: 'Verify Permissions on SSH Server Private *_key Key Files'
 description: |-
     SSH server private keys - files that match the <code>/etc/ssh/*_key</code> glob, have to have restricted permissions.
     If those files are owned by the <code>root</code> user and the <code>root</code> group, they have to have the <code>{{{ perms_num }}}</code> permission or stricter.
-    {{% if dedicated_ssh_groupname -%}}
+    {{% if dedicated_ssh_groupname and perms_num == "0640" -%}}
     If they are owned by the <code>root</code> user, but by a dedicated group <code>{{{ dedicated_ssh_groupname }}}</code>, they can have the <code>0640</code> permission or stricter.
+    {{%- elif dedicated_ssh_groupname -%}}
+    If they are owned by the <code>root</code> user, but by a dedicated group <code>{{{ dedicated_ssh_groupname }}}</code>, they still have to have the <code>{{{ perms_num }}}</code> permission or stricter.
     {{%- endif %}}
 
 rationale: |-
