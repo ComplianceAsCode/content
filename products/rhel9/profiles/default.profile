@@ -595,3 +595,4 @@ selections:
     - accounts_user_dot_no_world_writable_programs
     - package_dnsmasq_removed
     - file_permissions_etc_audit_auditd
+    - file_permissions_etc_audit_auditd_stig
