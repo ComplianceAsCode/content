@@ -295,6 +295,7 @@ package_cron_installed
 package_cyrus-imapd_removed
 package_dhcp_removed
 package_dovecot_removed
+package_firewalld_installed
 package_ftp_removed
 package_gdm_removed
 package_httpd_removed
@@ -316,6 +317,7 @@ package_telnet_removed
 package_tftp-server_removed
 package_tftp_removed
 package_vsftpd_removed
+package_xorg-x11-server-common_removed
 partition_for_dev_shm
 partition_for_home
 partition_for_tmp
@@ -332,6 +334,7 @@ rsyslog_files_ownership
 rsyslog_files_permissions
 selinux_not_disabled
 selinux_policytype
+selinux_state
 service_auditd_enabled
 service_autofs_disabled
 service_avahi-daemon_disabled
@@ -458,3 +461,4 @@ var_sshd_set_maxstartups=10:30:60
 var_sudo_timestamp_timeout=15_minutes
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces
+xwindows_runlevel_target

@@ -323,6 +323,7 @@ package_bind_removed
 package_cron_installed
 package_cyrus-imapd_removed
 package_dovecot_removed
+package_firewalld_installed
 package_ftp_removed
 package_gdm_removed
 package_httpd_removed
@@ -361,6 +362,7 @@ rsyslog_files_ownership
 rsyslog_files_permissions
 selinux_not_disabled
 selinux_policytype
+selinux_state
 service_auditd_enabled
 service_autofs_disabled
 service_avahi-daemon_disabled
