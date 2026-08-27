@@ -120,6 +120,10 @@ controls:
       title: OpenShift RBAC access controls must be enforced.
       rules:
           - rbac_least_privilege
+          - kubevirt-restrict-migration-tools-access
+          - kubevirt-nested-virtualization-disabled
+          - kubevirt-seccomp-profile-permissions
+          - kubevirt-cache-directory-permissions
       status: automated
 
     - id: CNTR-OS-000100
@@ -130,6 +134,8 @@ controls:
       rules:
           - configure_network_policies
           - configure_network_policies_namespaces
+          - kubevirt-sriov-spoofchk-on
+          - kubevirt-bridge-mac-spoof-filtering
       status: automated
 
     - id: CNTR-OS-000110
@@ -139,6 +145,7 @@ controls:
           the container platform based on organization-defined information flow control policies.
       rules:
           - project_config_and_template_network_policy
+          - kubevirt-downward-metrics-disabled
       status: automated
 
     - id: CNTR-OS-000130
@@ -161,6 +168,7 @@ controls:
       rules:
           - audit_profile_set
           - service_auditd_enabled
+          - kubevirt-disk-error-policy-not-ignore
       status: automated
 
     - id: CNTR-OS-000160
@@ -454,6 +462,7 @@ controls:
       rules:
           - oauth_or_oauthclient_inactivity_timeout
           - sshd_disable_root_login
+          - kubevirt-nonroot-feature-gate-is-enabled
       status: automated
 
     - id: CNTR-OS-000430
@@ -530,7 +539,8 @@ controls:
           - medium
       title: OpenShift must separate user functionality (including user interface services) from information
           system management functionality.
-      rules: []
+      rules:
+          - kubevirt-restrict-vnc-access-to-workloads
       notes: >-
           Satisfies SRG-APP-000211-CTR-000530.
           We cannot have an automated check for this rule at the moment.
@@ -568,6 +578,9 @@ controls:
           - coreos_vsyscall_kernel_argument
           - sysctl_kernel_dmesg_restrict
           - sysctl_kernel_perf_event_paranoid
+          - kubevirt-persistent-reservation-disabled
+          - kubevirt-no-shareable-disks
+          - kubevirt-ksm-disabled
       status: automated
 
     - id: CNTR-OS-000570
@@ -715,6 +728,7 @@ controls:
       rules:
           - cluster_version_operator_exists
           - cluster_version_operator_verify_integrity
+          - kubevirt-no-jsonpatch-annotations
       status: automated
 
     - id: CNTR-OS-000760
@@ -1057,6 +1071,7 @@ controls:
           - service_sshd_disabled
           - service_usbguard_enabled
           - usbguard_allow_hid_and_hub
+          - kubevirt-no-permitted-host-devices
       status: automated
 
     - id: CNTR-OS-001030
