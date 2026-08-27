@@ -21,13 +21,17 @@ severity: medium
 
 fixtext: |
     Configure the system to set the appropriate ownership to the directories
-    used by the systemd journal. Add or modify the following lines in the
-    "/usr/lib/tmpfiles.d/systemd.conf" file:
+    used by the systemd journal.
+    Create a drop-in ﬁle if it does not already exist with the following command:
+    <pre>
+    $ sudo vi /etc/tmpﬁles.d/zzz-systemd-stig.conf
+    </pre>
+    Add or modify the following lines in the "/usr/lib/tmpﬁles.d/zzz-systemd-stig.conf" ﬁle:
     <pre>
     z /run/log/journal 2640 root systemd-journal - -
     z /var/log/journal 2640 root systemd-journal - -
     </pre>
-    Restart the system for the changes to take effect.
+    Note: Restart the system for the changes to take effect.
 
 template:
     name: file_groupowner
