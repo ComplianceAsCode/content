@@ -1243,7 +1243,15 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 #}}
 {{%- macro create_interactive_users_list_object(object_id, include_root=False, rule_id=None) -%}}
+  {{%- if product == "hummingbird" -%}}
+  {{# Hummingbird distroless images ship a special "container user" named 65532 whose #}}
+  {{# passwd primary group is 0 while its home directory is group-owned by 65532. It is #}}
+  {{# not a real interactive user, so exclude it to avoid false positives in the #}}
+  {{# interactive-user home directory and dotfile checks. #}}
+  {{%- set ignored_users_list="(nobody|nfsnobody|65532)" %}}
+  {{%- else -%}}
   {{%- set ignored_users_list="(nobody|nfsnobody)" %}}
+  {{%- endif -%}}
 
   <unix:password_object id="{{{ object_id }}}" version="1">
     <set>
