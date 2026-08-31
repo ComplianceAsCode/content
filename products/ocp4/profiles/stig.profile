@@ -4,13 +4,13 @@ documentation_complete: true
 platform: ocp4
 
 metadata:
-    version: V2R3
+    version: V2R6
     SMEs:
         - Vincent056
         - rhmdnd
         - yuumasato
 
-reference: https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_RH_OpenShift_Container_Platform_4-x_V2R3_STIG.zip
+reference: https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_RH_OpenShift_Container_Platform_4-x_V2R6_STIG.zip
 
 title: 'DISA STIG for Red Hat OpenShift Container Platform 4 - Platform level'
 
@@ -18,4 +18,4 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
-extends: stig-v2r3
+extends: stig-v2r6

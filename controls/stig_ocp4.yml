@@ -2,7 +2,7 @@
 policy: Red Hat OpenShift Container Platform 4.12 Security Technical Implementation Guide
 title: Red Hat OpenShift Container Platform 4.12 Security Technical Implementation Guide
 id: stig_ocp4
-version: V2R2
+version: V2R6
 source: https://www.cyber.mil/stigs/downloads/
 reference_type: stigid
 
@@ -117,7 +117,7 @@ controls:
     - id: CNTR-OS-000090
       levels:
           - high
-      title: OpenShift RBAC access controls must be enforced.
+      title: OpenShift role-based access controls (RBAC) must be enforced.
       rules:
           - rbac_least_privilege
           - kubevirt-restrict-migration-tools-access
@@ -657,7 +657,7 @@ controls:
     - id: CNTR-OS-000630
       levels:
           - medium
-      title: OpenShift must restrict individuals the ability to launch organizational-defined Denial-of-Service
+      title: OpenShift must restrict individuals' ability to launch organization-defined denial-of-service
           (DOS) attacks against other information systems by rate-limiting.
       rules:
           - project_config_and_template_resource_quota
@@ -706,10 +706,9 @@ controls:
           - medium
       title: OpenShift must configure Alert Manger Receivers to notify SA and ISSO of all audit failure
           events requiring real-time alerts.
-      rules: []
-      notes: |-
-          This needs further investigation: CMP-2437
-      status: pending
+      rules:
+          - alert_receiver_configured
+      status: manual
 
     - id: CNTR-OS-000720
       levels:
@@ -786,11 +785,12 @@ controls:
       levels:
           - medium
       title: OpenShift must protect the confidentiality and integrity of transmitted information.
-      rules: []
+      rules:
+          - routes_protected_by_tls
       notes: |-
-          This item is manual and kindof vague by design as e.g. with passthrough TLS, the TLS settings
-          must be checked in the app anyway.
-      status: manual
+          The rule covers edge-terminated routes. Passthrough TLS must still be checked at the
+          application level.
+      status: partial
 
     - id: CNTR-OS-000860
       levels:
