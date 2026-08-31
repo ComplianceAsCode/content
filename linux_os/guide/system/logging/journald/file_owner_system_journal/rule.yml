@@ -57,8 +57,8 @@ template:
     vars:
         {{%- if 'ubuntu' in product %}}
         filepath:
-          - /run/log/journal/
-          - /var/log/journal/
+            - /run/log/journal/
+            - /var/log/journal/
         recursive: 'true'
         file_regex: ^.*$
         uid_or_name: '0'
