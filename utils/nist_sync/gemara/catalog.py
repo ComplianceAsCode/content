@@ -226,3 +226,41 @@ class GemaraCatalogBuilder:
             "groups": self._groups(),
             "controls": controls,
         }
+
+    def build_by_group(self) -> Dict[str, Dict[str, Any]]:
+        """Return one ControlCatalog dict per NIST 800-53 family/group.
+
+        Mirrors the layout complytime-policies splits the combined catalog
+        into (one file per family, e.g. AC, AU, SI) for a reduced line count
+        and to keep each catalog scoped to a single 'groups' entry.
+        """
+        by_group: Dict[str, Dict[str, Any]] = {}
+        for fam_id, fam_title in NIST_FAMILIES.items():
+            fam_controls = [
+                self._build_control(ctrl)
+                for ctrl in self.policy.controls
+                if _extract_family(ctrl.id) == fam_id
+            ]
+            if not fam_controls:
+                continue
+            by_group[fam_id] = {
+                "metadata": self._metadata_for_group(fam_id),
+                "title": f"{self.policy.title} - {fam_title}",
+                "groups": [{
+                    "id": fam_id,
+                    "title": fam_title,
+                    "description": f"NIST 800-53 {fam_id.upper()} family: {fam_title}",
+                }],
+                "controls": fam_controls,
+            }
+        return by_group
+
+    def _metadata_for_group(self, fam_id: str) -> Dict[str, Any]:
+        meta = self._metadata()
+        meta["id"] = f"nist-800-53-rev5-{self.product}-{fam_id}"
+        meta["description"] = (
+            f"NIST Special Publication 800-53 Revision 5 controls for "
+            f"{self.product.upper()}, generated from ComplianceAsCode "
+            f"({fam_id.upper()} family)"
+        )
+        return meta
