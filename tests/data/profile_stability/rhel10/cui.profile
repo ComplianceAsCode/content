@@ -347,6 +347,7 @@ package_telnet_removed
 package_tftp-server_removed
 package_tftp_removed
 package_vsftpd_removed
+package_xorg-x11-server-Xwayland_removed
 partition_for_dev_shm
 partition_for_home
 partition_for_tmp
@@ -491,6 +492,7 @@ var_password_pam_remember_control_flag=requisite_or_required
 var_postfix_inet_interfaces=loopback-only
 var_screensaver_lock_delay=5_seconds
 var_selinux_policy_name=targeted
+var_selinux_state=enforcing
 var_sshd_max_sessions=10
 var_sshd_set_keepalive=1
 var_sshd_set_login_grace_time=60
