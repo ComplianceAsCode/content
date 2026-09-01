@@ -12,5 +12,5 @@
     regexp: '^\s*admin_space_left_action\s*=\s*.*$'
     state: present
     create: yes
-    mode: 0640
+    mode: 'u-x,g-wx,o-rwx'
   #notify: reload auditd

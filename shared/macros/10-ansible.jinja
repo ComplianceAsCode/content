@@ -363,7 +363,7 @@ value: :code:`Setting={{ varname1 }}`
 
 #}}
 {{%- macro ansible_auditd_set(msg='', parameter='', value='', rule_title=None) %}}
-{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*", mode="0640", rule_title=rule_title) }}}
+{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*", mode="u-x,g-wx,o-rwx", rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 {{#
