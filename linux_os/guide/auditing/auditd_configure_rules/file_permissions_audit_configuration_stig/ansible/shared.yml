@@ -1,0 +1,76 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+# Copied and modified from `file_permissions/ansible.yml` template
+#
+# Sets mode 0600 and ownership root:root on all audit config files.
+# Installs an auditd.service dropin to restore 0600 on audit.rules after augenrules
+# rewrites it to 0640 when /etc/audit/rules.d/ content changes (RHEL 8/9 only, not containers).
+
+- name: "{{{ rule_title }}} - Set /etc/audit/audit.rules and /etc/audit/auditd.conf to 0600, owned by root"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: '0600'
+    owner: root
+    group: root
+    state: file
+  loop:
+    - /etc/audit/audit.rules
+    - /etc/audit/auditd.conf
+  failed_when: false
+  register: audit_config_perms
+
+- name: "{{{ rule_title }}} - Find /etc/audit/rules.d/*.rules files"
+  ansible.builtin.find:
+    paths: /etc/audit/rules.d/
+    depth: 1
+    file_type: file
+    patterns: '*.rules'
+  register: rules_files
+
+- name: "{{{ rule_title }}} - Set /etc/audit/rules.d/*.rules files to 0600, owned by root"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: '0600'
+    owner: root
+    group: root
+    state: file
+  loop: "{{ rules_files.files }}"
+  register: rules_dir_perms
+
+- name: "{{{ rule_title }}} - Install ExecStartPost dropin on auditd.service"
+  block:
+    - name: "{{{ rule_title }}} - Create dropin directory /etc/systemd/system/auditd.service.d"
+      ansible.builtin.file:
+        path: /etc/systemd/system/auditd.service.d
+        state: directory
+        mode: '0755'
+
+    - name: "{{{ rule_title }}} - Install /etc/systemd/system/auditd.service.d/permissions.conf"
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/auditd.service.d/permissions.conf
+        content: |
+          [Service]
+          ExecStartPost=/usr/bin/chmod 0600 /etc/audit/audit.rules
+        mode: '0644'
+
+    - name: "{{{ rule_title }}} - Restore SELinux context on /etc/systemd/system/auditd.service.d/permissions.conf"
+      ansible.builtin.command: restorecon /etc/systemd/system/auditd.service.d/permissions.conf
+      changed_when: false
+
+    - name: "{{{ rule_title }}} - Reload systemd daemon to pick up permissions.conf"
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    # IMPORTANT: this is necessary to ensure the dropin is loaded and the permissions for /etc/audit/ and /etc/audit/rules.d/ files are set correctly.
+    - name: "{{{ rule_title }}} - Restart auditd.service"
+      ansible.builtin.command: service auditd restart
+      when:
+        - audit_config_perms.changed or rules_dir_perms.changed
+
+  when:
+    - '"audit" in ansible_facts.packages'
+    - '"kernel-core" in ansible_facts.packages'

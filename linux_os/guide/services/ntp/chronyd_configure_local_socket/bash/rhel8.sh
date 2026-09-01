@@ -26,6 +26,7 @@ StandardOutput=null
 [Install]
 WantedBy=multi-user.target
 EOF
+    chmod 0644 /etc/systemd/system/chrony-wait.service
     systemctl daemon-reload
     systemctl enable chrony-wait.service
 fi

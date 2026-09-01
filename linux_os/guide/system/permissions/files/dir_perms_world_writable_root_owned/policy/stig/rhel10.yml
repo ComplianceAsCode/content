@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that world-writable directories are owned by root, sys, bin, or an application user.
+
+fixtext: |-
+    Configure {{{ full_name }}} public directories to be owned by root or a system account to prevent unauthorized and unintended information transferred via shared system resources.
+
+    Use the following command template to set ownership of public directories to root or a system account:
+
+    $ sudo chown [root or system account] [Public Directory]
+
+checktext: |-
+    Verify {{{ full_name }}} world-writable directories are owned by root, a system account, or an application account with the following command:
+
+    $ sudo find / -xdev -type d -perm -0002 -uid +999 -exec stat -c "%U, %u, %A, %n" {} \; 2&gt;/dev/null
+
+    If output indicates that world-writable directories are owned by any account other than root or an approved system account, this is a finding.
+
+vuldiscussion: |-
+    If a world-writable directory is not owned by root, sys, bin, or an application user identifier (UID), unauthorized users may be able to modify files created by others.
+
+    The only authorized public directories are temporary directories supplied with the system or those designed to be temporary file repositories. The setting is normally reserved for directories used by the system and by users for temporary file storage, (e.g., /tmp), and for directories requiring global read/write access.

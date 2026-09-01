@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must enforce mode "0000" or less permissive for "/etc/shadow-" file to prevent unauthorized access.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the mode of the "/etc/shadow-" file is set to "0000" by running the following command:
+
+    $ sudo chmod 0000 /etc/shadow-
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the "/etc/shadow-" file has mode "0000" with the following command:
+
+    $ sudo stat -c "%a %n" /etc/shadow-
+    0 /etc/shadow-
+
+    If a value of "0" is not returned, this is a finding.
+
+vuldiscussion: |-
+    The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such contains the list of local system accounts and password hashes. Protection of this file is critical for system security.

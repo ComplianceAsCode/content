@@ -466,17 +466,18 @@ class NISTSplitSync:
                 # Filter rules: only include if in target product's CIS control file
                 filtered_rules = [r for r in mapped_rules if r in all_cis_items]
 
-                # Filter variables: only include the specific assignment for target product
-                filtered_vars = []
+                # Filter variables: collect into a set first to deduplicate, then sort.
+                # mapped_vars may contain both bare names ('var_x') and full assignments
+                # ('var_x=value') as separate keys; both strip to the same name, so
+                # iterating and calling extend() would add the same assignment multiple times.
+                var_assignments = set()
                 for var_name in mapped_vars:
-                    if var_name in all_cis_items_with_values:
-                        # Get all assignments for this variable
-                        assignments = all_cis_items_with_values[var_name]
-                        # Add all assignments (should only be one per product)
-                        filtered_vars.extend(sorted(assignments))
+                    stripped_name = var_name.split('=')[0] if '=' in var_name else var_name
+                    if stripped_name in all_cis_items_with_values:
+                        var_assignments.update(all_cis_items_with_values[stripped_name])
 
                 rules = sorted(filtered_rules)
-                vars = filtered_vars
+                vars = sorted(var_assignments)
             else:
                 # Legacy: include all rules/vars
                 rules = sorted(mapped_rules)
@@ -506,8 +507,11 @@ class NISTSplitSync:
             family = self.extract_family(ctrl_id)
             controls_by_family[family].append(control_entry)
 
-        # Add unmapped CIS items (items in CIS control files but not in mapping file)
-        unmapped_item_names = all_cis_items - mapped_items
+        # Add unmapped CIS items (items in CIS control files but not in mapping file).
+        # all_cis_items uses stripped names ('var_x') while mapped_items may contain
+        # full assignments ('var_x=value') for variables.  Normalise both sides.
+        mapped_names = set(item.split('=')[0] if '=' in item else item for item in mapped_items)
+        unmapped_item_names = all_cis_items - mapped_names
 
         # Build list of unmapped items WITH their values (for variables)
         unmapped_items_full = []
@@ -538,7 +542,32 @@ class NISTSplitSync:
             })
             print(f"  Added {len(unmapped_item_names)} unmapped CIS items ({len(unmapped_items_full)} total assignments) to 'other' family")
 
-        print(f"  Generated {sum(len(c) for c in controls_by_family.values())} controls across {len(controls_by_family)} families")
+        # Nest enhancements under their parent base controls
+        total_nested = 0
+        total_levels_inherited = 0
+        for family, controls_list in controls_by_family.items():
+            base_controls = []
+            enhancement_map = defaultdict(list)
+            for ctrl in controls_list:
+                if '.' in ctrl['id']:
+                    parent_id = ctrl['id'].rsplit('.', 1)[0]
+                    enhancement_map[parent_id].append(ctrl)
+                else:
+                    base_controls.append(ctrl)
+            for base in base_controls:
+                enhancements = enhancement_map.get(base['id'], [])
+                if enhancements:
+                    base_levels = base.get('levels', [])
+                    for enh in enhancements:
+                        if ('levels' not in enh or not enh['levels']) and base_levels:
+                            enh['levels'] = list(base_levels)
+                            total_levels_inherited += 1
+                    base['controls'] = enhancements
+                    total_nested += len(enhancements)
+            controls_by_family[family] = base_controls
+
+        print(f"  Generated {sum(len(c) for c in controls_by_family.values())} base controls across {len(controls_by_family)} families")
+        print(f"  Nested {total_nested} enhancements, {total_levels_inherited} levels inherited from parent")
 
         return controls_by_family
 

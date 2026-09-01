@@ -5,14 +5,14 @@
 
 # Ensure all AppArmor Profiles are enforcing
 apparmor_parser -q -r /etc/apparmor.d/
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 # Current version of apparmor-utils has issue https://gitlab.com/apparmor/apparmor/-/issues/411 and we're waiting for https://gitlab.com/apparmor/apparmor/-/merge_requests/1218 to be landed on noble
 find /etc/apparmor.d -maxdepth 1 ! -type d -exec aa-enforce "{}" \;
 {{% else %}}
 aa-enforce /etc/apparmor.d/*
 {{% endif %}}
 
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 UNCONFINED=$(aa-status | grep "processes are unconfined" | awk '{print $1;}')
 if [ $UNCONFINED -ne 0 ];
 {{% else %}}

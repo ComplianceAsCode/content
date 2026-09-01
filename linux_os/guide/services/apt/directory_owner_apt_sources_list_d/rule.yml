@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Owner on /etc/apt/sources.list.d Directory'
+
+description: '{{{ describe_directory_owner(directory="/etc/apt/sources.list.d", owner="root") }}}'
+
+rationale: |-
+    The /etc/apt/sources.list.d directory should be owned by root to prevent
+    unauthorized changes to APT repository configuration.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_owner(directory="/etc/apt/sources.list.d", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_directory_owner(directory="/etc/apt/sources.list.d", owner="root") }}}
+
+fixtext: '{{{ fixtext_directory_owner(file="/etc/apt/sources.list.d", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/apt/sources.list.d/
+        uid_or_name: '0'

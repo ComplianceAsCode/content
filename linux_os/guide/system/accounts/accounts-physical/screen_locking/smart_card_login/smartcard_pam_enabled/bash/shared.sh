@@ -9,6 +9,7 @@ Auth-Type: Primary
 Auth:
     [success=end default=ignore]	pam_pkcs11.so
 EOF
+chmod 0644 /usr/share/pam-configs/cac_pkcs11
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update --enable cac_pkcs11
 {{% else %}}

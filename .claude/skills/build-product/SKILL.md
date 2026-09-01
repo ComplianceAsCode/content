@@ -44,7 +44,7 @@ Examples:
 ```bash
 ./build_product rhel9                                          # Full build
 ./build_product --datastream-only rhel9                        # Data stream only
-./build_product --datastream-only --rule-id sshd_set_idle_timeout rhel9  # Single rule
+./build_product --rule-id sshd_set_idle_timeout rhel9          # Single rule
 ```
 
 ### Build Output

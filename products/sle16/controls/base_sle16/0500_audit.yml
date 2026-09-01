@@ -12,6 +12,7 @@ controls:
       rules:
           - sebool_selinuxuser_execmod
       status: automated
+
     - id: SLES-16-16016505
       levels:
           - hipaa
@@ -19,6 +20,7 @@ controls:
       rules:
           - service_auditd_enabled
       status: automated
+
     - id: SLES-16-16016510
       levels:
           - hipaa
@@ -26,6 +28,16 @@ controls:
       rules:
           - rsyslog_remote_loghost
       status: automated
+
+    - id: SLES-16-16016512
+      title: Configure auditd Max Log File Size
+      levels:
+          - pcidss4
+      status: automated
+      rules:
+          - auditd_data_retention_max_log_file
+          - var_auditd_max_log_file=6
+
     - id: SLES-16-16016515
       levels:
           - pcidss4
@@ -47,10 +59,14 @@ controls:
           - pcidss4
           - anssi_minimal
           - hipaa
-      title: SLE16 system should audit renameat2 syscalls
+      title: SLE16 system should audit filesystem syscalls related to delete events
       status: automated
       rules:
           - audit_rules_file_deletion_events_renameat2
+          - audit_rules_file_deletion_events_rename
+          - audit_rules_file_deletion_events_renameat
+          - audit_rules_file_deletion_events_unlink
+          - audit_rules_file_deletion_events_unlinkat
 
     - id: SLES-16-16016530
       levels:
@@ -75,10 +91,11 @@ controls:
           - pcidss4
           - anssi_minimal
           - hipaa
-      title: SLE16 system should audit fchmodat2 syscalls
+      title: SLE16 system should audit syscalls that change file access permissions
       status: automated
       rules:
           - audit_rules_dac_modification_fchmodat2
+          - audit_rules_dac_modification_chmod
 
     - id: SLES-16-16016545
       levels:

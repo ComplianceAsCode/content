@@ -178,6 +178,128 @@
         .breadcrumb a:hover {
             text-decoration: underline;
         }
+
+        /* Statement / description */
+        .statement-intro {
+            margin-bottom: 10px;
+            color: #24292e;
+            line-height: 1.6;
+        }
+
+        .statement-list {
+            padding-left: 22px;
+            margin: 0;
+        }
+
+        .statement-list li {
+            padding: 5px 0;
+            line-height: 1.65;
+            color: #24292e;
+        }
+
+        .statement-list li + li {
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .statement-list ol {
+            padding-left: 22px;
+            margin-top: 6px;
+        }
+
+        /* Guidance paragraphs */
+        .guidance-text p {
+            margin: 0 0 14px 0;
+            line-height: 1.7;
+            color: #24292e;
+        }
+
+        .guidance-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ODP — Organization-Defined Parameter placeholders */
+        .odp {
+            display: inline;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 3px;
+            padding: 1px 5px;
+            font-size: 0.92em;
+            color: #856404;
+            font-style: italic;
+            cursor: help;
+        }
+
+        /* Cross-control links inside prose */
+        .ctrl-ref {
+            color: #0366d6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .ctrl-ref:hover {
+            text-decoration: underline;
+        }
+
+        /* Rule list — clickable links */
+        .rule-list li a {
+            color: #24292e;
+            text-decoration: none;
+        }
+
+        .rule-list li a:hover {
+            color: #0366d6;
+            text-decoration: underline;
+        }
+
+        .rule-list li a::after {
+            content: ' ↗';
+            font-size: 10px;
+            color: #586069;
+        }
+
+        .component-item {
+            background: #f6f8fa;
+            border-left: 3px solid #6f42c1;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .component-item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .component-name-link {
+            font-weight: 600;
+            color: #6f42c1;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .component-name-link:hover {
+            text-decoration: underline;
+        }
+
+        .component-rules-list {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #586069;
+            line-height: 1.8;
+        }
+
+        .component-rule-code {
+            display: inline-block;
+            background: #e1e4e8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 11px;
+            margin: 2px;
+        }
     </style>
 </head>
 <body>
@@ -232,8 +354,13 @@
             const control = controls.find(c => c.id === controlId.toLowerCase());
 
             if (!control) {
-                document.getElementById('control-detail-container').innerHTML =
-                    `<div class="empty-state"><h3>Control ${controlId.toUpperCase()} not found</h3></div>`;
+                const container = document.getElementById('control-detail-container');
+                const div = document.createElement('div');
+                div.className = 'empty-state';
+                const h3 = document.createElement('h3');
+                h3.textContent = `Control ${controlId.toUpperCase()} not found`;
+                div.appendChild(h3);
+                container.replaceChildren(div);
                 return;
             }
 
@@ -273,22 +400,34 @@
                 </div>
             `;
 
-            // Description
-            if (control.description) {
+            // Statement (structured OSCAL)
+            const stmt = control.statement;
+            if (stmt && (stmt.prose || (stmt.items && stmt.items.length > 0))) {
+                function renderItems(items, tag) {
+                    if (!items || items.length === 0) return '';
+                    const inner = items.map(item => {
+                        const sub = renderItems(item.items, 'ol');
+                        return `<li>${item.prose}${sub}</li>`;
+                    }).join('');
+                    return `<${tag} class="statement-list">${inner}</${tag}>`;
+                }
                 html += `
                     <div class="card detail-section">
-                        <h3>Description</h3>
-                        <div class="detail-content">${control.description}</div>
+                        <h3>Control Statement</h3>
+                        ${stmt.prose ? `<p class="statement-intro">${stmt.prose}</p>` : ''}
+                        ${renderItems(stmt.items, 'ol')}
                     </div>
                 `;
             }
 
             // Guidance
-            if (control.guidance) {
+            if (control.guidance && control.guidance.length > 0) {
                 html += `
                     <div class="card detail-section">
                         <h3>Supplemental Guidance</h3>
-                        <div class="detail-content">${control.guidance}</div>
+                        <div class="guidance-text">
+                            ${control.guidance.map(p => `<p>${p}</p>`).join('')}
+                        </div>
                     </div>
                 `;
             }
@@ -315,12 +454,19 @@
             }
 
             // Rules
+            const ruleUrls = control.rule_urls || {};
             if (control.rules && control.rules.length > 0) {
                 html += `
                     <div class="card detail-section">
                         <h3>Mapped Rules</h3>
                         <ul class="rule-list">
-                            ${control.rules.map(rule => `<li>${rule}</li>`).join('')}
+                            ${control.rules.map(rule => {
+                                const url = ruleUrls[rule];
+                                const inner = url
+                                    ? `<a href="${url}" target="_blank" rel="noopener">${rule}</a>`
+                                    : rule;
+                                return `<li>${inner}</li>`;
+                            }).join('')}
                         </ul>
                     </div>
                 `;
@@ -334,6 +480,92 @@
                         </div>
                     </div>
                 `;
+            }
+
+            // Enhancements (for base controls)
+            if (control.enhancements && control.enhancements.length > 0) {
+                const enhControls = control.enhancements
+                    .map(eid => controls.find(c => c.id === eid))
+                    .filter(Boolean);
+                const automatedCount = enhControls.filter(e => e.is_automated).length;
+                const totalCount = enhControls.length;
+                const pct = totalCount > 0 ? Math.round(automatedCount / totalCount * 100) : 0;
+
+                html += `
+                    <div class="card detail-section">
+                        <h3>Control Enhancements (${automatedCount}/${totalCount} automated)</h3>
+                        <div style="background: #e1e4e8; border-radius: 4px; height: 8px; margin-bottom: 15px;">
+                            <div style="background: #28a745; height: 8px; border-radius: 4px; width: ${pct}%;"></div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                `;
+                enhControls.forEach(enh => {
+                    const enhStatus = enh.is_automated ? 'automated' :
+                                    enh.is_manual ? 'manual' : 'pending';
+                    const enhGap = enh.has_rules ? '' :
+                        '<span class="gap-indicator gap-full"></span>';
+                    html += `
+                        <a href="control-detail.html?id=${enh.id}" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #f6f8fa; border-left: 3px solid #0366d6; border-radius: 4px;">
+                            <div>
+                                <span style="font-weight: 600; color: #0366d6;">${enhGap}${enh.id.toUpperCase()}</span>
+                                <span style="color: #24292e; margin-left: 8px;">${enh.title}</span>
+                            </div>
+                            <span class="badge badge-${enhStatus}">${enhStatus.toUpperCase()}</span>
+                        </a>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Components
+            if (control.components && Object.keys(control.components).length > 0) {
+                const sortedComps = Object.entries(control.components)
+                    .sort((a, b) => b[1].length - a[1].length);
+                html += `
+                    <div class="card detail-section">
+                        <h3>Related Components</h3>
+                        <p style="color: #586069; margin-bottom: 15px; font-size: 13px;">
+                            Software components whose rules implement this control
+                            (<a href="components.html" style="color: #6f42c1;">view all components</a>)
+                        </p>
+                        ${sortedComps.map(([compName, rules]) => `
+                            <div class="component-item">
+                                <div class="component-item-header">
+                                    <a href="components.html?component=${compName}"
+                                       class="component-name-link">${compName}</a>
+                                    <span class="badge" style="background: #6f42c1; color: white;">${rules.length} rules</span>
+                                </div>
+                                <div class="component-rules-list">
+                                    ${rules.map(r => {
+                                        const url = ruleUrls[r];
+                                        return url
+                                            ? `<a href="${url}" target="_blank" rel="noopener" class="component-rule-code" style="background:#e1e4e8;padding:2px 6px;border-radius:3px;font-size:11px;font-family:monospace;text-decoration:none;color:#0366d6;">${r} ↗</a>`
+                                            : `<code class="component-rule-code">${r}</code>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            // Parent control link (for enhancements)
+            if (control.parent_id) {
+                const parentCtrl = controls.find(c => c.id === control.parent_id);
+                if (parentCtrl) {
+                    html += `
+                        <div class="card detail-section">
+                            <h3>Parent Control</h3>
+                            <a href="control-detail.html?id=${parentCtrl.id}" style="text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #f6f8fa; border-left: 3px solid #0366d6; border-radius: 4px;">
+                                <span style="font-weight: 600; color: #0366d6;">${parentCtrl.id.toUpperCase()}</span>
+                                <span style="color: #24292e;">${parentCtrl.title}</span>
+                            </a>
+                        </div>
+                    `;
+                }
             }
 
             // Related Controls
@@ -383,15 +615,30 @@
                 return;
             }
 
-            todoList.innerHTML = todos.map((todo, index) => `
-                <li class="todo-item ${todo.completed ? 'completed' : ''}">
-                    <input type="checkbox" ${todo.completed ? 'checked' : ''}
-                           onchange="toggleTodo(${index})">
-                    <span class="todo-text">${todo.text}</span>
-                    <button class="btn" onclick="deleteTodo(${index})"
-                            style="padding: 4px 8px; font-size: 12px;">Delete</button>
-                </li>
-            `).join('');
+            const fragment = document.createDocumentFragment();
+            todos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = todo.completed;
+                checkbox.addEventListener('change', () => toggleTodo(index));
+
+                const span = document.createElement('span');
+                span.className = 'todo-text';
+                span.textContent = todo.text;
+
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.style.cssText = 'padding: 4px 8px; font-size: 12px;';
+                btn.textContent = 'Delete';
+                btn.addEventListener('click', () => deleteTodo(index));
+
+                li.append(checkbox, span, btn);
+                fragment.appendChild(li);
+            });
+            todoList.replaceChildren(fragment);
         }
 
         function addTodo() {

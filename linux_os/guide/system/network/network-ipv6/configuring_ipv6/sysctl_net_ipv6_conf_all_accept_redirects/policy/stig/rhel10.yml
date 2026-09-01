@@ -1,0 +1,34 @@
+srg_requirement: |-
+    {{{ full_name }}} must ignore IPv6 Internet Control Message Protocol (ICMP) redirect messages.
+
+fixtext: |-
+    Configure {{{ full_name }}} to ignore Internet Protocol version 6 (IPv6) ICMP redirect messages.
+
+    Create a configuration file if it does not already exist:
+
+    $ sudo vi /etc/sysctl.d/ipv6_accept_redirects.conf
+
+    Add the following line to the file:
+
+    net.ipv6.conf.all.accept_redirects = 0
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
+
+checktext: |-
+    Note: If IPv6 is disabled on the system, this requirement is not applicable.
+
+    Verify {{{ full_name }}} ignores IPv6 ICMP redirect messages.
+
+    Check the value of the "net.ipv6.conf.all.accept_redirects" variable with the following command:
+
+    $ sysctl net.ipv6.conf.all.accept_redirects
+    net.ipv6.conf.all.accept_redirects = 0
+
+    If "net.ipv6.conf.all.accept_redirects" is not set to "0" or is missing, this is a finding.
+
+vuldiscussion: |-
+    An illicit ICMP redirect message could result in a man-in-the-middle attack.
+
+

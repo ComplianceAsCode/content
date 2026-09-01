@@ -230,6 +230,7 @@ partition_for_var_log_audit
 partition_for_var_tmp
 postfix_client_configure_mail_alias
 postfix_network_listening_disabled
+rsyslog_filecreatemode
 rsyslog_files_groupownership
 rsyslog_files_ownership
 rsyslog_files_permissions

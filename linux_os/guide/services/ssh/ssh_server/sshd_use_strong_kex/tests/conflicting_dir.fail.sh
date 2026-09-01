@@ -7,7 +7,7 @@
 # variables = sshd_strong_kex=curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
 
 
-sed -i '/^\s*KexAlgorithms\s/Id' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
-echo "KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512" >> /etc/ssh/sshd_config
+source include.sh
+echo "KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512" >> "{{{ sshd_main_config_file }}}"
 
-echo "KexAlgorithms diffie-hellman-group-exchange-sha1" >> /etc/ssh/sshd_config.d/00-test.conf
+echo "KexAlgorithms diffie-hellman-group-exchange-sha1" >> "{{{ sshd_config_dir }}}/00-test.conf"

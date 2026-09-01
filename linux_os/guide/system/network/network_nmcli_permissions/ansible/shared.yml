@@ -17,6 +17,7 @@
     value: "{{ item.value }}"
     no_extra_spaces: yes
     create: yes
+    mode: 0644
   loop:
     - { option: 'Identity', value: 'default' }
     - { option: 'Action', value: 'org.freedesktop.NetworkManager.*' }

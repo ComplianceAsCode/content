@@ -1,0 +1,16 @@
+check_type: Platform
+
+failure_reason: |-
+    One or more SriovNetwork resources do not declare a dedicated VLAN in
+    '.spec.vlan', leaving virtual machine traffic unsegmented.
+
+inputs:
+  - name: sriovnets
+    kubernetes_input_spec:
+      api_version: sriovnetwork.openshift.io/v1
+      resource: sriovnetworks
+
+expression: |
+  sriovnets.items.all(n,
+      has(n.spec.vlan) && n.spec.vlan > 0
+  )

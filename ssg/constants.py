@@ -34,6 +34,7 @@ SSG_REF_URIS = {
     'app-srg': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
     'app-srg-ctr': 'https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security',
     'stigref': 'https://www.cyber.mil/stigs/srg-stig-tools/',
+    'stigref_vulnerability_id': 'https://www.cyber.mil/stigs/srg-stig-tools#vulnerability_id',
 }
 
 product_directories = [
@@ -49,6 +50,7 @@ product_directories = [
     'fedora',
     'firefox',
     'kylinserver10',
+    'kylinsecserver6',
     'ocp4',
     'rhcos4',
     'ol7', 'ol8', 'ol9', 'ol10',
@@ -59,7 +61,7 @@ product_directories = [
     'rhv4',
     'sle12', 'sle15', 'sle16', 'slmicro5', 'slmicro6',
     'tencentos4',
-    'ubuntu2204', 'ubuntu2404'
+    'ubuntu2204', 'ubuntu2404', 'ubuntu2604'
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -224,6 +226,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Firefox": "firefox",
     "Hummingbird": "hummingbird",
     "Kylin Server 10": "kylinserver10",
+    "KylinSec Server 6": "kylinsecserver6",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
@@ -244,6 +247,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "TencentOS Server 4": "tencentos4",
     "Ubuntu 22.04": "ubuntu2204",
     "Ubuntu 24.04": "ubuntu2404",
+    "Ubuntu 26.04": "ubuntu2604",
     "OpenEmbedded": "openembedded",
     "Not Applicable": "example",
 }
@@ -292,7 +296,7 @@ REFERENCES = dict(
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
-                       "openeuler", "kylinserver", "hummingbird",
+                       "openeuler", "kylinserver", "kylinsecserver", "hummingbird",
                        "opensuse", "sle", "tencentos", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro", "almalinux"]
@@ -307,6 +311,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_fedora": ["fedora"],
     "multi_platform_hummingbird": ["hummingbird"],
     "multi_platform_kylinserver": ["kylinserver10"],
+    "multi_platform_kylinsecserver": ["kylinsecserver6"],
     "multi_platform_openeuler": ["openeuler2203"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8", "ol9", "ol10"],
@@ -317,7 +322,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_sle": ["sle12", "sle15", "sle16"],
     "multi_platform_slmicro": ["slmicro5", "slmicro6"],
     "multi_platform_tencentos": ["tencentos4"],
-    "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404"],
+    "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404", "ubuntu2604"],
     "multi_platform_openembedded": ["openembedded"],
     "multi_platform_al": ["al2023"],
 }
@@ -432,6 +437,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'firefox': 'Mozilla Firefox',
     'hummingbird': 'Hummingbird',
     'kylinserver': 'Kylin Server',
+    'kylinsecserver': 'KylinSec Server',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',

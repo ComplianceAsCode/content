@@ -1,21 +1,23 @@
 checktext: |-
-    Verify that {{{ full_name }}} has the gnutls-utils package installed with the following command:
+    Verify {{{ full_name }}} has the "gnutls-utils" package installed with the following command:
 
-    $ dnf list --installed gnutls-utils
-
-    Example output:
-
-    gnutls-utils.x86_64          3.8.9-9.el10
+    $ sudo dnf list --installed gnutls-utils
+    Installed Packages
+    gnutls-utils.x86_64                         3.8.9-9.el10_0.14                         @rhel-10-for-x86_64-appstream-rpms
 
     If the "gnutls-utils" package is not installed, this is a finding.
 
 srg_requirement: |-
-    {{{ full_name }}} must have the gnutls-utils package installed.
+    {{{ full_name }}} must have the "gnutls-utils" package installed.
 
 vuldiscussion: |-
-    GnuTLS is a secure communications library implementing the SSL, TLS and DTLS protocols and technologies around them. It provides a simple C language application programming interface (API) to access the secure communications protocols as well as APIs to parse and write X.509, PKCS #12, OpenPGP and other required structures. This package contains command line TLS client and server and certificate manipulation tools.
+    "GnuTLS" is a secure communications library implementing the Secure Sockets Layer (SSL), Transport Layer Security (TLS), and Datagram TLS (DTLS) protocols and technologies around them. It provides a simple C language application programming interface (API) to access the secure communications protocols as well as APIs to parse and write X.509, PKCS #12, OpenPGP, and other required structures. This package contains command line TLS client and server and certificate manipulation tools.
 
 fixtext: |-
-    The gnutls-utils package can be installed with the following command:
+    Configure {{{ full_name }}} to have the "gnutls-utils" package installed with the following command:
 
-    $ sudo dnf install gnutls-utils
+    $ sudo dnf -y install gnutls-utils
+
+
+
+

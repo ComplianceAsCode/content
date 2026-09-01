@@ -1,0 +1,82 @@
+documentation_complete: true
+
+title: 'Ensure Rsyslog omfwd Action Defines Explicit TLS Stream Driver'
+
+description: |-
+    Rsyslog is a system utility providing support for message logging.
+    Support for both internet and Unix domain sockets enables this utility
+    to support both local and remote logging. Coupling this utility with
+    <tt>gnutls</tt> creates a method to securely encrypt and off-load auditing.
+    When this utility is coupled with the omfwd module, it can use the
+    <tt>ossl</tt> network stream driver, which leverages the OpenSSL library
+    for Transport Layer Security (TLS) to securely encrypt and off-load auditing.
+    <br /><br />
+    The <tt>streamdriver</tt> parameter must be explicitly set to <tt>gtls</tt>
+    (GnuTLS) or <tt>ossl</tt> (OpenSSL) in each <tt>omfwd</tt> action rule.
+    The <tt>ossl</tt> driver is required for environments operating in FIPS mode.
+    <br /><br />
+    Example configuration in <tt>/etc/rsyslog.d/99-forwarding.conf</tt>:
+    <pre>action(
+      type="omfwd"
+      streamdriver="ossl"
+      target="logserver.example.com"
+      protocol="tcp"
+      port="6514"
+      tls="on"
+    )</pre>
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or
+    incidental deletion or alteration.
+
+    Off-loading is a common process in information systems with limited
+    audit storage capacity.
+
+    Without an explicitly defined TLS stream driver in the omfwd action,
+    rsyslog may not properly encrypt audit records during off-loading,
+    leaving them vulnerable to interception.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-86692-1
+
+references:
+    nist: AU-4(1)
+    srg: SRG-OS-000342-GPOS-00133,SRG-OS-000479-GPOS-00224
+
+ocil_clause: 'no StreamDriver is explicitly defined within omfwd action blocks'
+
+ocil: |-
+    Verify {{{ full_name }}} explicitly defines a TLS driver (gtls or ossl)
+    for encrypted rsyslog off-loading.
+
+    Search for an explicitly defined stream driver within "omfwd" action
+    blocks with the following command:
+
+    <pre>$ sudo grep -rE 'StreamDriver\s*=\s*"(gtls|ossl)"' /etc/rsyslog.conf /etc/rsyslog.d/</pre>
+
+    If TLS-based "omfwd" forwarding is configured, but the command above
+    returns no active configuration lines specifying either "gtls" or "ossl"
+    within the action block, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to explicitly define a TLS driver for rsyslog to use for encrypting off-loaded audit records. The "ossl" driver is required for environments operating in FIPS mode.
+
+    Add the "streamdriver" parameter to the "omfwd" action rule in its configuration file (e.g., /etc/rsyslog.d/99-forwarding.conf).
+
+    Example:
+    action(
+      type="omfwd"
+      streamdriver="ossl"
+      target="logserver.example.com"
+      protocol="tcp"
+      port="6514"
+      tls="on"
+    )
+
+    After applying the configuration, restart the rsyslog service:
+    $ sudo systemctl restart rsyslog
+
+srg_requirement: |-
+    {{{ full_name }}} must encrypt, via the gtls driver, the transfer of audit records off-loaded onto a different system or media from the system being audited via rsyslog.

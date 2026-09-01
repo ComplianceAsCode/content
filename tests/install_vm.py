@@ -171,7 +171,11 @@ def parse_args():
     return parser.parse_args()
 
 
-def wait_vm_not_running(domain):
+def virsh_cmd(libvirt, *args):
+    return ["virsh", f"--connect={libvirt}", *args]
+
+
+def wait_vm_not_running(libvirt, domain):
     timeout = 300
 
     print(f'Waiting for {domain} VM to shutdown (max. {timeout}s)')
@@ -179,8 +183,12 @@ def wait_vm_not_running(domain):
     try:
         while True:
             time.sleep(5)
-            cmd = ["virsh", "domstate", domain]
-            if subprocess.getoutput(cmd).rstrip() != "running":
+            result = subprocess.run(
+                virsh_cmd(libvirt, "domstate", domain),
+                capture_output=True,
+                text=True,
+            )
+            if result.stdout.rstrip() != "running":
                 return
             if time.time() < end_time:
                 continue
@@ -303,7 +311,7 @@ def get_virt_install_command(data):
         f'--initrd-inject={data.kickstart}',
         '--serial=pty',
         '--noautoconsole',
-        '--rng=/dev/random',
+        '--rng=/dev/urandom',
         f'--wait={data.wait_opt}',
         f'--location={data.url}',
     ]
@@ -317,7 +325,7 @@ def get_virt_install_command(data):
         # names. For more details see:
         # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
         'net.ifnames=0',
-        'console=ttyS0,115200',
+        'console=ttyS0',
     ]
 
     features_opts = []
@@ -343,8 +351,8 @@ def get_virt_install_command(data):
         command.append(f'--osinfo={data.osinfo}')
     else:
         if data.distro in UNRELEASED_DISTROS_AND_OSINFO.keys():
-            command.append("--osinfo={}".format(
-                UNRELEASED_DISTROS_AND_OSINFO.get(data.distro, "rhel9-unknown")))
+            osinfo = UNRELEASED_DISTROS_AND_OSINFO.get(data.distro, "rhel9-unknown")
+            command.append(f"--osinfo={osinfo}")
 
     command.extend(join_extented_opt("--boot", ",", boot_opts))
     command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
@@ -362,25 +370,19 @@ def run_virt_install(data, command):
 
     subprocess.call(command)
     if data.console:
-        subprocess.call(["unbuffer", "virsh", "console", data.domain])
-        wait_vm_not_running(data.domain)
-        subprocess.call(["virsh", "start", data.domain])
+        subprocess.call(["unbuffer", *virsh_cmd(data.libvirt, "console", data.domain)])
+        wait_vm_not_running(data.libvirt, data.domain)
+        subprocess.call(virsh_cmd(data.libvirt, "start", data.domain))
 
     give_info(data)
 
 
 def give_info(data):
-    if data.libvirt == "qemu:///system":
-        ip_cmd = f'sudo virsh domifaddr {data.domain}'
-    else:
-        # command evaluation in fish shell is simply surrounded by
-        # parenthesis for example: (echo foo). In other shells you
-        # need to prepend the $ symbol as: $(echo foo)
-        from os import environ
-
-        cmd_eval = "" if environ["SHELL"][-4:] == "fish" else "$"
-
-        ip_cmd = f"arp -n | grep {cmd_eval}(virsh -q domiflist {data.domain} | awk '{{print $5}}')"
+    sudo = "sudo " if data.libvirt == "qemu:///system" else ""
+    ip_cmd = (
+        f"{sudo}virsh --connect={data.libvirt} -q domifaddr --source arp "
+        f"{data.domain} | awk '{{print $4}}' | sed 's|/.*||'"
+    )
 
     print(f"""
 To determine the IP address of the {data.domain} VM use:
@@ -390,7 +392,7 @@ To connect to the {data.domain} VM use:
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP
 
 To connect to the VM serial console, use:
-  virsh console {data.domain}""")
+  virsh --connect={data.libvirt} console {data.domain}""")
 
     if data.ssh_pubkey_used:
         print(f"""

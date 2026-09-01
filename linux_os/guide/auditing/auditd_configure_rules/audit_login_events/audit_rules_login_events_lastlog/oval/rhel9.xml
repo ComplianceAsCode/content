@@ -1,0 +1,86 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_login_events_lastlog" version="1">
+    {{{ oval_metadata("Record Attempts to Alter Logon and Logout Events - lastlog", rule_title=rule_title) }}}
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+
+        <criterion comment="audit augenrules lastlog" test_ref="test_audit_rules_login_events_lastlog_augenrules_32" />
+        <criterion comment="audit augenrules lastlog" test_ref="test_audit_rules_login_events_lastlog_augenrules_64" />
+
+      </criteria>
+
+      <!-- Test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+
+        <criterion comment="audit auditctl lastlog" test_ref="test_audit_rules_login_events_lastlog_auditctl_32" />
+        <criterion comment="audit auditctl lastlog" test_ref="test_audit_rules_login_events_lastlog_auditctl_64" />
+
+      </criteria>
+
+    </criteria>
+  </definition>
+
+
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules lastlog 32" id="test_audit_rules_login_events_lastlog_augenrules_32" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_lastlog_augenrules_32" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_lastlog_augenrules_32" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="audit_rules_login_events_lastlog_path_pattern_32"/>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="audit augenrules lastlog 64" id="test_audit_rules_login_events_lastlog_augenrules_64" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_lastlog_augenrules_64" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_lastlog_augenrules_64" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="audit_rules_login_events_lastlog_path_pattern_64"/>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="audit auditctl lastlog 32" id="test_audit_rules_login_events_lastlog_auditctl_32" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_lastlog_auditctl_32" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_lastlog_auditctl_32" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="audit_rules_login_events_lastlog_path_pattern_32" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="audit auditctl lastlog 64" id="test_audit_rules_login_events_lastlog_auditctl_64" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_lastlog_auditctl_64" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_lastlog_auditctl_64" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="audit_rules_login_events_lastlog_path_pattern_64" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="audit_rules_login_events_lastlog_path_pattern_32" comment="The composite pattern used to detect if audit has been configured" datatype="string" version="1">
+    <concat>
+      <literal_component>^\-a\s+always,exit\s+\-F\s+arch=b32\s+\-F\s+path=</literal_component>
+
+      <literal_component>\/var\/log\/lastlog</literal_component>
+
+      <literal_component>\s+\-F\s+perm=\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</literal_component>
+    </concat>
+  </local_variable>
+
+
+  <local_variable id="audit_rules_login_events_lastlog_path_pattern_64" comment="The composite pattern used to detect if audit has been configured" datatype="string" version="1">
+    <concat>
+      <literal_component>^\-a\s+always,exit\s+\-F\s+arch=b64\s+\-F\s+path=</literal_component>
+
+      <literal_component>\/var\/log\/lastlog</literal_component>
+
+      <literal_component>\s+\-F\s+perm=\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</literal_component>
+    </concat>
+  </local_variable>
+
+
+
+</def-group>

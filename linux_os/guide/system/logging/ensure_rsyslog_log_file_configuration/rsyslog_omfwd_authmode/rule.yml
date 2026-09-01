@@ -1,0 +1,89 @@
+documentation_complete: true
+
+title: 'Ensure Rsyslog omfwd Action Authenticates Remote Logging Server'
+
+description: |-
+    Rsyslog is a system utility providing support for message logging.
+    Support for both internet and Unix domain sockets enables this utility
+    to support both local and remote logging. Coupling this utility with
+    <tt>gnutls</tt> creates a method to securely encrypt and off-load auditing.
+    When this utility is coupled with the omfwd module, it can use the
+    <tt>ossl</tt> network stream driver, which leverages the OpenSSL library
+    for Transport Layer Security (TLS) to securely encrypt and off-load auditing.
+    <br /><br />
+    The <tt>streamdriver.authmode="x509/name"</tt> (or <tt>tls.authmode="x509/name"</tt>)
+    parameter must be set in each <tt>omfwd</tt> action rule to authenticate
+    the remote logging server and prevent man-in-the-middle attacks.
+    Additionally, the <tt>streamdriver.permittedpeer</tt> (or
+    <tt>tls.permittedpeer</tt>) parameter should be configured with the
+    expected server name.
+    <br /><br />
+    Example configuration in <tt>/etc/rsyslog.d/99-forwarding.conf</tt>:
+    <pre>action(
+      type="omfwd"
+      target="{{{ xccdf_value("rsyslog_remote_loghost_address") }}}"
+      protocol="tcp"
+      port="6514"
+      streamdriver.authmode="x509/name"
+      streamdriver.permittedpeer="{{{ xccdf_value("rsyslog_remote_loghost_address") }}}"
+    )</pre>
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or
+    incidental deletion or alteration.
+
+    Off-loading is a common process in information systems with limited
+    audit storage capacity.
+
+    Without authenticating the remote logging server, rsyslog may
+    transmit audit records to an untrusted destination, leaving
+    them vulnerable to interception or man-in-the-middle attacks.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-86497-5
+
+references:
+    nist: AU-4(1)
+    srg: SRG-OS-000342-GPOS-00133,SRG-OS-000479-GPOS-00224
+
+ocil_clause: 'authentication mode is not set to x509/name or permittedpeer is not configured within omfwd action blocks'
+
+ocil: |-
+    Verify {{{ full_name }}} authenticates the remote logging server for
+    off-loading audit records via rsyslog using the modern "omfwd" action.
+
+    Search for active authmode and permittedpeer configurations within
+    "omfwd" action blocks with the following command:
+
+    <pre>$ sudo grep -rE 'streamdriver.authmode|streamdriver.permittedpeer|tls.authmode|tls.permittedpeer' /etc/rsyslog.conf /etc/rsyslog.d/</pre>
+
+    If an active TCP-based "omfwd" forwarding rule exists on the system
+    but the command above returns no active configuration lines with
+    a value of "x509/name" for authmode, or if all results are commented
+    out, this is a finding.
+
+    Additionally, if the permittedpeer is not specified in either of the
+    following formats, this is a finding:
+    <pre>streamdriver.permittedpeer="{{{ xccdf_value("rsyslog_remote_loghost_address") }}}"</pre>
+    <pre>tls.permittedpeer="{{{ xccdf_value("rsyslog_remote_loghost_address") }}}"</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to authenticate the remote logging server for off-loading audit records via rsyslog by setting the authmode within the "omfwd" action rule.
+
+    Edit the configuration file containing the "omfwd" rule (e.g., /etc/rsyslog.d/99-forwarding.conf) and add the streamdriver.authmode="x509/name" parameter.
+
+    Example:
+    action(
+      type="omfwd"
+      target="{{{ xccdf_value("rsyslog_remote_loghost_address") }}}"
+      protocol="tcp"
+      port="6514"
+      streamdriver.authmode="x509/name"
+      streamdriver.permittedpeer="{{{ xccdf_value("rsyslog_remote_loghost_address") }}}"
+    )
+
+
+srg_requirement: |-
+    {{{ full_name }}} must authenticate the remote logging server for off-loading audit logs via rsyslog.

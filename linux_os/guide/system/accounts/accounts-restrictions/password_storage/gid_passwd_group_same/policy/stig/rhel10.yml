@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} must assign a primary group to all interactive users.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that all GIDs referenced in "/etc/passwd" are defined in "/etc/group".
+
+    Edit the file "/etc/passwd" and ensure that every user's GID is a valid GID.
+
+checktext: |-
+    Verify {{{ full_name }}} interactive users have a valid GID.
+
+    Check that the interactive users have a valid GID with the following command:
+
+    $ sudo pwck -r
+
+    If pwck reports "no group" for any interactive user, this is a finding.
+
+vuldiscussion: |-
+    If a user is assigned the group identifier (GID) of a group that does not exist on the system, and a group with the GID is subsequently created, the user may have unintended rights to any files associated with the group.

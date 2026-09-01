@@ -85,4 +85,5 @@
     dest: /etc/rsyslog.conf
     line: 'action(type="omfwd" protocol="tcp" Target="{{ rsyslog_remote_loghost_address }}" port="6514" StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name" streamdriver.CheckExtendedKeyPurpose="on")'
     create: yes
+    mode: 0644
   when: not rsyslog_includes_with_directive.matched and not rsyslog_main_file_with_directive.matched

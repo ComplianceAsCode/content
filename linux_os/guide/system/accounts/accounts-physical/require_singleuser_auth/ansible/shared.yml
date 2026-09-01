@@ -15,6 +15,7 @@
       {{%- else -%}}
       line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
       {{%- endif %}}
+      mode: 0644
 {{% else %}}
 - name: "{{{ rule_title }}} - find files which already override Execstart of rescue.service"
   ansible.builtin.find:

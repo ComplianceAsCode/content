@@ -14,6 +14,7 @@
     path: "{{ var_nftables_master_config_file }}"
     line: 'include "/etc/nftables/{{ item }}-filter"'
     create: yes
+    mode: 0644
   loop:
     - bridge
     - arp

@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must periodically flush audit records to disk to ensure that audit records are not lost.
+
+fixtext: |-
+    Configure {{{ full_name }}} to flush audit records to disk by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
+
+    freq = 100
+
+    Restart the audit daemon with the following command for changes to take effect:
+
+    $ sudo service auditd restart
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to flush audit records to disk after every 100 records with the following command:
+
+    $ sudo grep freq /etc/audit/auditd.conf
+    freq = 100
+
+    If "freq" is not set to a value of "100" or greater, the value is missing, or the line is commented out, this is a finding.
+
+vuldiscussion: |-
+    If option "freq" is not set to a value that requires audit records to be written to disk after a threshold number is reached, audit records may be lost.

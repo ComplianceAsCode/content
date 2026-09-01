@@ -1,7 +1,12 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Checks sudoers Defaults " + OPTION + " configuration", rule_title=rule_title) }}}
-    <criteria >
+    <criteria operator="AND">
+        {{% if product in [ 'sle16', 'slmicro6' ] %}}
+        <criterion
+            comment="test if configuration file /etc/sudoers exists for {{{ rule_id }}}"
+            test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+        {{% endif %}}
         <criterion comment="{{{ OPTION }}} is configured in /etc/sudoers or /etc/sudoers.d/" test_ref="test_{{{ OPTION }}}_sudoers" />
     </criteria>
   </definition>
@@ -24,4 +29,8 @@
 
   <external_variable comment="Variable value for sudo {{{ OPTION }}} " datatype="string" id="{{{ VARIABLE_NAME }}}" version="1" />
 {{% endif %}}
+   {{% if product in [ 'sle16', 'slmicro6' ] %}}
+   {{{ oval_config_file_exists_test('/etc/sudoers', rule_id=rule_id) }}}
+   {{{ oval_config_file_exists_object('/etc/sudoers', rule_id=rule_id) }}}
+   {{% endif %}}
 </def-group>

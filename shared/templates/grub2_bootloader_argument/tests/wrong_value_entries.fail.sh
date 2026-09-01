@@ -1,20 +1,26 @@
 #!/bin/bash
 
+{{% if not ARG_VALUE and not ARG_VARIABLE %}}
+# platform = Not Applicable
+{{% else %}}
 # platform = multi_platform_fedora,multi_platform_rhel
+{{% endif %}}
 # packages = grub2,grubby
+
 {{%- if ARG_VARIABLE %}}
-# variables = {{{ ARG_VARIABLE }}}=correct_value
-{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
-{{%- set ARG_NAME_VALUE_WRONG= ARG_NAME ~ "=wrong_value" %}}
-{{%- else %}}
-{{%- set ARG_NAME_VALUE_WRONG= "wrong_variable" %}}
+# variables = {{{ ARG_VARIABLE }}}={{{ TEST_VALUE_PASS }}}
+{{#- Rules that use arg_variable have no =value in ARG_NAME_VALUE, override with dummy #}}
+{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=" ~ TEST_VALUE_PASS %}}
 {{%- endif %}}
+{{#- Wrong value: right argument name, wrong value (e.g. audit_backlog_limit=8191) #}}
+{{%- set ARG_NAME_VALUE_WRONG= ARG_NAME ~ "=" ~ TEST_VALUE_FAIL %}}
 
 source common.sh
 
+# --- Setup: populate all GRUB configs with correct value ---
 {{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) }}}
 
-# Breaks argument from kernel command line in /boot/loader/entries/*.conf
+# --- Make oscap fail: set wrong value in BLS entries ---
 for file in /boot/loader/entries/*.conf ; do
   if grep -q '^.*\<{{{ ARG_NAME }}}\>=\?.*'  "$file" ; then
       # modify the GRUB command-line if an ={{{ARG_NAME}}} arg already exists

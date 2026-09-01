@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/messages File'
 
-{{%- if product in ['ubuntu2404'] %}}
+{{%- if product in ['ubuntu2404'] or 'debian' in product %}}
 description: '{{{ describe_file_group_owner(file="/var/log/messages", group="adm|root") }}}'
 {{%- else %}}
 description: '{{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}'
@@ -23,7 +23,7 @@ references:
     srg: SRG-OS-000206-GPOS-00084
     stigid@ol8: OL08-00-010230
 
-{{%- if product in ['ubuntu2404'] %}}
+{{%- if product in ['ubuntu2404'] or 'debian' in product %}}
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="adm|root") }}}'
 
 ocil: |-

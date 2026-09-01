@@ -2,13 +2,16 @@
 
 # platform = Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10,multi_platform_fedora
 # packages = grub2,grubby
+
 {{%- if ARG_VARIABLE %}}
-# variables = {{{ ARG_VARIABLE }}}=correct_value
-{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
+# variables = {{{ ARG_VARIABLE }}}={{{ TEST_VALUE_PASS }}}
+{{#- Rules that use arg_variable have no =value in ARG_NAME_VALUE, override with dummy #}}
+{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=" ~ TEST_VALUE_PASS %}}
 {{%- endif %}}
 
 source common.sh
 
+# --- Setup: populate all GRUB configs with correct value ---
 {{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) }}}
 
 # Rule should find this file and notice it is not right

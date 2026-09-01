@@ -6,6 +6,19 @@
 
 {{{ ansible_instantiate_variables("var_sudo_timestamp_timeout") }}}
 
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults('/usr/etc/sudoers', '/etc/sudoers', rule_title=rule_title) }}}
+{{{
+    ansible_lineinfile(
+        rule_title + " - Remove /usr/etc/sudoers.d include directive from /etc/sudoers",
+        path="/etc/sudoers",
+        regex='^\s*@includedir\s+/usr/etc/sudoers.d',
+        state="absent",
+        when="not ansible_check_mode"
+    )
+}}}
+{{% endif %}}
+
 - name: "{{{ rule_title }}} - Find /etc/sudoers.d/* files containing 'Defaults timestamp_timeout'"
   ansible.builtin.find:
     path: "/etc/sudoers.d"
@@ -28,15 +41,24 @@
     validate: /usr/sbin/visudo -cf %s
     backrefs: yes
   register: edit_sudoers_timestamp_timeout_option
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+  when: not ansible_check_mode
+{{% endif %}}
 
 - name: "{{{ rule_title }}} - Enable timestamp_timeout option with correct value in /etc/sudoers"
   ansible.builtin.lineinfile: # noqa 503
     path: /etc/sudoers
     line: 'Defaults timestamp_timeout={{ var_sudo_timestamp_timeout }}'
     validate: /usr/sbin/visudo -cf %s
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+  when: >
+    not ansible_check_mode and edit_sudoers_timestamp_timeout_option is defined and
+    not edit_sudoers_timestamp_timeout_option.changed
+{{% else %}}
   when: >
     edit_sudoers_timestamp_timeout_option is defined and
     not edit_sudoers_timestamp_timeout_option.changed
+{{% endif %}}
 
 - name: "{{{ rule_title }}} - Remove timestamp_timeout wrong values in /etc/sudoers"
   ansible.builtin.lineinfile:

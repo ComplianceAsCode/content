@@ -1,0 +1,52 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Verify that the file permissions of cronie and crontabs package
+        files have not been modified from the vendor defaults.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_{{{ rule_id }}}_cronie"
+        comment="mode of cronie files matches local rpm database"/>
+      <criterion test_ref="test_{{{ rule_id }}}_crontabs"
+        comment="mode of crontabs files matches local rpm database"/>
+    </criteria>
+  </definition>
+
+  <linux:rpmverifyfile_state id="state_{{{ rule_id }}}_mode_differs" version="1">
+    <linux:mode_differs>fail</linux:mode_differs>
+  </linux:rpmverifyfile_state>
+
+  <linux:rpmverifyfile_object id="object_{{{ rule_id }}}_cronie" version="1"
+    comment="rpm verify permissions of cronie files">
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
+    <linux:name operation="equals">cronie</linux:name>
+    <linux:epoch operation="pattern match">.*</linux:epoch>
+    <linux:version operation="pattern match">.*</linux:version>
+    <linux:release operation="pattern match">.*</linux:release>
+    <linux:arch operation="pattern match">.*</linux:arch>
+    <linux:filepath operation="pattern match">.*</linux:filepath>
+    <filter action="include">state_{{{ rule_id }}}_mode_differs</filter>
+  </linux:rpmverifyfile_object>
+
+  <linux:rpmverifyfile_test id="test_{{{ rule_id }}}_cronie" version="1"
+    check="all" check_existence="none_exist"
+    comment="mode of cronie files matches local rpm database">
+    <linux:object object_ref="object_{{{ rule_id }}}_cronie"/>
+  </linux:rpmverifyfile_test>
+
+  <linux:rpmverifyfile_object id="object_{{{ rule_id }}}_crontabs" version="1"
+    comment="rpm verify permissions of crontabs files">
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
+    <linux:name operation="equals">crontabs</linux:name>
+    <linux:epoch operation="pattern match">.*</linux:epoch>
+    <linux:version operation="pattern match">.*</linux:version>
+    <linux:release operation="pattern match">.*</linux:release>
+    <linux:arch operation="pattern match">.*</linux:arch>
+    <linux:filepath operation="pattern match">.*</linux:filepath>
+    <filter action="include">state_{{{ rule_id }}}_mode_differs</filter>
+  </linux:rpmverifyfile_object>
+
+  <linux:rpmverifyfile_test id="test_{{{ rule_id }}}_crontabs" version="1"
+    check="all" check_existence="none_exist"
+    comment="mode of crontabs files matches local rpm database">
+    <linux:object object_ref="object_{{{ rule_id }}}_crontabs"/>
+  </linux:rpmverifyfile_test>
+</def-group>

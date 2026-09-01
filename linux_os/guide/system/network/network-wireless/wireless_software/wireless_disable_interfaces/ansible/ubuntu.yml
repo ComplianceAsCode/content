@@ -36,6 +36,7 @@
   ansible.builtin.blockinfile:
     path: /etc/modprobe.d/disable_wireless.conf
     create: yes
+    mode: 0644
     block: |
       {% for r in wireless_drivers.results %}
       install {{ r.stdout }} /bin/false

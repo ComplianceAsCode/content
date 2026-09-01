@@ -43,6 +43,7 @@
         line: '-a always,exit -F arch=b32 -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
         regexp: "^.* -F arch=b32 -F path={{ item | regex_escape() }} .*$"
         create: yes
+        mode: 0600
       with_items:
         - "{{ privileged_commands }}"
 
@@ -52,6 +53,7 @@
         line: '-a always,exit -F arch=b32 -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
         regexp: "^.* -F arch=b32 -F path={{ item | regex_escape() }} .*$"
         create: yes
+        mode: 0600
       with_items:
         - "{{ privileged_commands }}"
 
@@ -61,6 +63,7 @@
         line: '-a always,exit -F arch=b64 -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
         regexp: "^.* -F arch=b64 -F path={{ item | regex_escape() }} .*$"
         create: yes
+        mode: 0600
       with_items:
         - "{{ privileged_commands }}"
       when: audit_arch == "b64"
@@ -71,6 +74,7 @@
         line: '-a always,exit -F arch=b64 -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
         regexp: "^.* -F arch=b64 -F path={{ item | regex_escape() }} .*$"
         create: yes
+        mode: 0600
       with_items:
         - "{{ privileged_commands }}"
       when: audit_arch == "b64"
@@ -81,6 +85,7 @@
         line: '-a always,exit -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
         regexp: "^.*path={{ item | regex_escape() }} .*$"
         create: yes
+        mode: 0600
       with_items:
         - "{{ privileged_commands }}"
 
@@ -90,6 +95,7 @@
         line: '-a always,exit -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
         regexp: "^.*path={{ item | regex_escape() }} .*$"
         create: yes
+        mode: 0600
       with_items:
         - "{{ privileged_commands }}"
 {{% endif %}}

@@ -10,14 +10,21 @@ This script:
 """
 
 import json
+import re
 import yaml
 import argparse
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Tuple
 import sys
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
+try:
+    import ssg.components
+    _HAS_SSG_COMPONENTS = True
+except ImportError:
+    _HAS_SSG_COMPONENTS = False
 
 try:
     from ruamel.yaml import YAML
@@ -80,6 +87,23 @@ def load_oscal_catalog(data_dir: Path) -> Dict[str, Any]:
     return controls_map
 
 
+def _flatten_controls(controls_list, parent_id=None):
+    """Recursively flatten nested controls, adding parent_id and enhancements info."""
+    result = []
+    for ctrl in controls_list:
+        ctrl_copy = dict(ctrl)
+        if parent_id:
+            ctrl_copy['parent_id'] = parent_id
+        nested = ctrl_copy.pop('controls', None)
+        if nested:
+            ctrl_copy['enhancements'] = [str(c.get('id', '')) for c in nested]
+            result.append(ctrl_copy)
+            result.extend(_flatten_controls(nested, parent_id=str(ctrl.get('id', ''))))
+        else:
+            result.append(ctrl_copy)
+    return result
+
+
 def load_product_controls(product: str, repo_root: Path) -> Dict[str, Any]:
     """Load control files for a product."""
     controls_dir = repo_root / 'products' / product / 'controls' / 'nist_800_53'
@@ -94,12 +118,12 @@ def load_product_controls(product: str, repo_root: Path) -> Dict[str, Any]:
     if metadata_file.exists():
         metadata = load_yaml(metadata_file)
 
-    # Load all family files
+    # Load all family files, flattening nested enhancements
     controls = []
     for family_file in sorted(controls_dir.glob('*.yml')):
         family_data = load_yaml(family_file)
         if 'controls' in family_data:
-            controls.extend(family_data['controls'])
+            controls.extend(_flatten_controls(family_data['controls']))
 
     return {
         'product': product,
@@ -108,27 +132,97 @@ def load_product_controls(product: str, repo_root: Path) -> Dict[str, Any]:
     }
 
 
+def _build_params_map(oscal_data: Dict[str, Any]) -> Dict[str, str]:
+    """Build {param_id: label} from OSCAL params list."""
+    params = {}
+    for param in oscal_data.get('parameters', []):
+        pid = param.get('id', '')
+        label = param.get('label', pid)
+        if pid:
+            params[pid] = label
+    return params
+
+
+def _process_prose(prose: str, params_map: Dict[str, str]) -> str:
+    """Process OSCAL prose: resolve param refs and convert cross-control links.
+
+    - {{ insert: param, param_id }} -> <span class="odp" title="param_id">[label]</span>
+    - [text](#anchor) markdown links -> internal viewer links
+    """
+    if not prose:
+        return ''
+
+    def replace_param(m: re.Match) -> str:
+        param_id = m.group(1).strip()
+        label = params_map.get(param_id, param_id)
+        return f'<span class="odp" title="{param_id}">[{label}]</span>'
+
+    prose = re.sub(r'\{\{\s*insert:\s*param,\s*([^}]+?)\s*\}\}', replace_param, prose)
+
+    def replace_link(m: re.Match) -> str:
+        text = m.group(1)
+        anchor = m.group(2)
+        # Anchor examples: #ac-2.4  #ac-2_smt.a  #cm-6_gp  -> extract ctrl ID
+        ctrl_id = re.split(r'[_#]', anchor.lstrip('#'))[0]
+        return f'<a href="control-detail.html?id={ctrl_id}" class="ctrl-ref">{text}</a>'
+
+    prose = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', replace_link, prose)
+    return prose
+
+
+def _extract_statement(parts: List[Dict], params_map: Dict[str, str]) -> Dict[str, Any]:
+    """Extract control statement as structured {prose, items:[{prose, items:[...]}]}."""
+    for part in parts:
+        if part.get('name') != 'statement':
+            continue
+        top_prose = _process_prose(part.get('prose', ''), params_map)
+
+        def extract_items(container):
+            result = []
+            for sub in container.get('parts', []):
+                if sub.get('name') == 'item':
+                    result.append({
+                        'prose': _process_prose(sub.get('prose', ''), params_map),
+                        'items': extract_items(sub),
+                    })
+            return result
+
+        return {'prose': top_prose, 'items': extract_items(part)}
+    return {}
+
+
+def _extract_guidance(parts: List[Dict], params_map: Dict[str, str]) -> List[str]:
+    """Extract guidance prose as a list of paragraphs."""
+    for part in parts:
+        if part.get('name') == 'guidance':
+            prose = _process_prose(part.get('prose', ''), params_map)
+            return [p.strip() for p in prose.split('\n\n') if p.strip()]
+    return []
+
+
+def _build_params_display(oscal_data: Dict[str, Any]) -> List[Dict[str, str]]:
+    """Return list of {id, label} for display in the Parameters section."""
+    result = []
+    for param in oscal_data.get('parameters', []):
+        pid = param.get('id', '')
+        label = param.get('label', '')
+        if pid:
+            result.append({'id': pid, 'label': label})
+    return result
+
+
 def merge_control_data(product_controls: Dict[str, Any], oscal_controls: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Merge product control data with OSCAL metadata."""
     merged = []
 
     for control in product_controls.get('controls', []):
         ctrl_id = control.get('id', '').lower()
-
-        # Get OSCAL metadata
         oscal_data = oscal_controls.get(ctrl_id, {})
 
-        # Extract description from OSCAL parts
-        description = ""
-        guidance = ""
-        if oscal_data.get('parts'):
-            for part in oscal_data['parts']:
-                if part.get('name') == 'statement':
-                    description = part.get('prose', '')
-                elif part.get('name') == 'guidance':
-                    guidance = part.get('prose', '')
+        params_map = _build_params_map(oscal_data)
+        oscal_parts = oscal_data.get('parts', [])
 
-        # Extract related controls from OSCAL
+        # Extract related controls from OSCAL properties
         related_controls = []
         for prop in oscal_data.get('properties', []):
             if prop.get('name') == 'related':
@@ -141,14 +235,14 @@ def merge_control_data(product_controls: Dict[str, Any], oscal_controls: Dict[st
             'rules': control.get('rules', []),
             'status': control.get('status', 'pending'),
             'notes': control.get('notes', ''),
-            # OSCAL metadata
-            'description': description,
-            'guidance': guidance,
-            'parameters': oscal_data.get('parameters', []),
+            # OSCAL metadata — structured for rich rendering
+            'statement': _extract_statement(oscal_parts, params_map),
+            'guidance': _extract_guidance(oscal_parts, params_map),
+            'parameters': _build_params_display(oscal_data),
             'related_controls': related_controls,
             'class': oscal_data.get('class', ''),
             'parent': oscal_data.get('parent', ''),
-            # Gap analysis
+            # Gap analysis flags
             'has_rules': len(control.get('rules', [])) > 0,
             'is_automated': control.get('status') == 'automated',
             'is_manual': control.get('status') == 'manual',
@@ -158,9 +252,94 @@ def merge_control_data(product_controls: Dict[str, Any], oscal_controls: Dict[st
             'is_not_applicable': control.get('status') == 'not applicable',
         }
 
+        if control.get('parent_id'):
+            merged_control['parent_id'] = control['parent_id']
+        if control.get('enhancements'):
+            merged_control['enhancements'] = control['enhancements']
+
         merged.append(merged_control)
 
     return merged
+
+
+GITHUB_BASE = "https://github.com/ComplianceAsCode/content/tree/master"
+
+
+def _build_rule_url_map(repo_root: Path) -> Dict[str, str]:
+    """Walk the repo and build {rule_id: github_url} by finding rule.yml files."""
+    rule_map: Dict[str, str] = {}
+    for search_root in [repo_root / 'linux_os', repo_root / 'applications']:
+        if not search_root.exists():
+            continue
+        for rule_yml in search_root.rglob('rule.yml'):
+            rule_dir = rule_yml.parent
+            rule_id = rule_dir.name
+            rel = rule_dir.relative_to(repo_root)
+            rule_map[rule_id] = f"{GITHUB_BASE}/{rel}/rule.yml"
+    return rule_map
+
+
+def _load_components_data(repo_root: Path) -> Tuple[Any, Dict[str, List[str]]]:
+    """Load component definitions and return (components_dict, rule_to_components_mapping).
+
+    Returns (None, {}) if ssg.components is unavailable or the directory is missing.
+    """
+    if not _HAS_SSG_COMPONENTS:
+        print("Warning: ssg.components not available; component data will be omitted from viewer.")
+        return None, {}
+    components_dir = repo_root / 'components'
+    if not components_dir.exists():
+        print(f"Warning: Components directory not found: {components_dir}")
+        return None, {}
+    print("Loading components...")
+    components = ssg.components.load(str(components_dir))
+    rule_to_components = ssg.components.rule_component_mapping(components)
+    return components, rule_to_components
+
+
+def _enrich_controls_with_components(
+    merged: List[Dict[str, Any]],
+    rule_to_components: Dict[str, List[str]],
+) -> None:
+    """Add 'components' and 'component_count' fields to each merged control (in-place)."""
+    for control in merged:
+        comp_map: Dict[str, List[str]] = {}
+        for rule_id in control.get('rules', []):
+            if '=' in str(rule_id):
+                continue
+            for comp in rule_to_components.get(rule_id, []):
+                comp_map.setdefault(comp, []).append(rule_id)
+        control['components'] = comp_map
+        control['component_count'] = len(comp_map)
+
+
+def _build_component_stats(
+    products_data: Dict[str, Any],
+    components_dict,
+) -> Dict[str, Any]:
+    """Build per-product component summary statistics."""
+    component_stats: Dict[str, Any] = {}
+    for product, data in products_data.items():
+        comp_summary: Dict[str, Any] = {}
+        for control in data['controls']:
+            ctrl_id = control['id']
+            for comp_name, rules in control.get('components', {}).items():
+                if comp_name not in comp_summary:
+                    packages = []
+                    if components_dict and comp_name in components_dict:
+                        packages = list(components_dict[comp_name].packages)
+                    comp_summary[comp_name] = {
+                        'name': comp_name,
+                        'control_count': 0,
+                        'rule_count': 0,
+                        'controls': [],
+                        'packages': packages,
+                    }
+                comp_summary[comp_name]['control_count'] += 1
+                comp_summary[comp_name]['rule_count'] += len(rules)
+                comp_summary[comp_name]['controls'].append(ctrl_id)
+        component_stats[product] = comp_summary
+    return component_stats
 
 
 def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]:
@@ -171,6 +350,13 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
     print("Loading OSCAL catalog...")
     oscal_controls = load_oscal_catalog(data_dir)
 
+    # Load component definitions (centralized, shared across products)
+    components_dict, rule_to_components = _load_components_data(repo_root)
+
+    # Build rule → GitHub URL map
+    print("Indexing rule paths...")
+    rule_url_map = _build_rule_url_map(repo_root)
+
     # Load controls for each product
     products_data = {}
     for product in products:
@@ -179,6 +365,15 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
 
         if product_controls:
             merged = merge_control_data(product_controls, oscal_controls)
+            # Enrich each control with component information
+            _enrich_controls_with_components(merged, rule_to_components)
+            # Attach GitHub URL to each rule entry
+            for control in merged:
+                control['rule_urls'] = {
+                    r: rule_url_map[r]
+                    for r in control.get('rules', [])
+                    if '=' not in str(r) and r in rule_url_map
+                }
             products_data[product] = {
                 'metadata': product_controls.get('metadata', {}),
                 'controls': merged
@@ -188,8 +383,12 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
     stats = {}
     for product, data in products_data.items():
         controls = data['controls']
+        base = [c for c in controls if not c.get('parent_id')]
+        enhancements = [c for c in controls if c.get('parent_id')]
         stats[product] = {
             'total': len(controls),
+            'base_controls': len(base),
+            'enhancement_controls': len(enhancements),
             'automated': sum(1 for c in controls if c['is_automated']),
             'manual': sum(1 for c in controls if c['is_manual']),
             'pending': sum(1 for c in controls if c['is_pending']),
@@ -198,11 +397,19 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
             'not_applicable': sum(1 for c in controls if c['is_not_applicable']),
             'with_rules': sum(1 for c in controls if c['has_rules']),
             'without_rules': sum(1 for c in controls if not c['has_rules']),
+            'base_automated': sum(1 for c in base if c['is_automated']),
+            'base_pending': sum(1 for c in base if c['is_pending']),
+            'enh_automated': sum(1 for c in enhancements if c['is_automated']),
+            'enh_pending': sum(1 for c in enhancements if c['is_pending']),
         }
+
+    # Build component statistics per product
+    component_stats = _build_component_stats(products_data, components_dict)
 
     return {
         'products': products_data,
         'statistics': stats,
+        'component_stats': component_stats,
         'families': [
             {'id': 'ac', 'name': 'Access Control'},
             {'id': 'at', 'name': 'Awareness and Training'},
@@ -243,7 +450,8 @@ def generate_html_viewer(output_dir: Path, templates_dir: Path, viewer_data: Dic
         'control-detail.html',
         'gaps.html',
         'statistics.html',
-        'family.html'
+        'family.html',
+        'components.html',
     ]
 
     # Generate pages for each product in separate subdirectories
@@ -255,6 +463,7 @@ def generate_html_viewer(output_dir: Path, templates_dir: Path, viewer_data: Dic
         product_data = {
             'products': {product: viewer_data['products'][product]},
             'statistics': {product: viewer_data['statistics'][product]},
+            'component_stats': {product: viewer_data['component_stats'].get(product, {})},
             'families': viewer_data['families']
         }
 

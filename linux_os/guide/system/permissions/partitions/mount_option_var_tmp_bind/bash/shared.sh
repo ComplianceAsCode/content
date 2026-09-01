@@ -12,4 +12,5 @@ umount /var/tmp
 printf "%-24s%-24s%-8s%-32s%-3s\n" "/tmp" "/var/tmp" "none" "rw,nodev,noexec,nosuid,bind" "0 0" >> /etc/fstab
 
 mkdir -p /var/tmp
+chmod 1777 /var/tmp
 mount -B /tmp /var/tmp

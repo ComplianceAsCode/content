@@ -14,16 +14,10 @@
     <criteria>
       <criterion comment="Installed operating system is part of the unix family"
       test_ref="test_rhel9_unix_family" />
-      <criteria operator="OR">
-        <criteria operator="AND" comment="RHEL 9 is installed">
-          <criterion comment="RHEL 9 is installed" test_ref="test_rhel9" />
-          <!-- This prevent false positive RHEL9 in OL9 because OL9 has redhat-release package present -->
-          <extend_definition comment="Installed OS is not OL9" definition_ref="installed_OS_is_ol9" negate="true"/>
-        </criteria>
-        <criteria operator="AND" comment="Red Hat Enterprise Virtualization Host is installed">
-          <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
-          <criterion comment="Red Hat Enterprise Virtualization Host is based on RHEL 9" test_ref="test_rhevh_rhel9_version" />
-        </criteria>
+      <criteria operator="AND" comment="RHEL 9 is installed">
+        <criterion comment="RHEL 9 is installed" test_ref="test_rhel9" />
+        <!-- This prevent false positive RHEL9 in OL9 because OL9 has redhat-release package present -->
+        <extend_definition comment="Installed OS is not OL9" definition_ref="installed_OS_is_ol9" negate="true"/>
       </criteria>
     </criteria>
   </definition>
@@ -48,16 +42,4 @@
     <linux:name>redhat-release</linux:name>
   </linux:rpminfo_object>
 
-  <ind:textfilecontent54_test check="all" comment="RHEVH base RHEL is version 9" id="test_rhevh_rhel9_version" version="1">
-    <ind:object object_ref="obj_rhevh_rhel9_version" />
-    <ind:state state_ref="state_rhevh_rhel9_version" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_rhevh_rhel9_version" version="1">
-    <ind:filepath>/etc/redhat-release</ind:filepath>
-    <ind:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_state id="state_rhevh_rhel9_version" version="1">
-    <ind:subexpression operation="pattern match">9</ind:subexpression>
-  </ind:textfilecontent54_state>
 </def-group>

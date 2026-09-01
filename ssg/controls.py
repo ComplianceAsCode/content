@@ -247,6 +247,9 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.related_rules = control_dict.get('related_rules', [])  # Default to empty list if not present
         control.rules = control_dict.get('rules', [])  # Default to empty list if not present
 
+        if not isinstance(control.id, str):
+            msg = f"Control ID {control.id} isn't a string"
+            raise ValueError(msg)
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
@@ -567,6 +570,8 @@ class Policy(ssg.entities.common.XCCDFEntity):
             tree (Any): The tree structure containing controls to be parsed and saved.
         """
         for c in self._parse_controls_tree(tree):
+            if c.id in self.controls_by_id:
+                raise ValueError(f"Control '{c.id}' already exists in policy '{self.id}'")
             self.controls.append(c)
             self.controls_by_id[c.id] = c
 

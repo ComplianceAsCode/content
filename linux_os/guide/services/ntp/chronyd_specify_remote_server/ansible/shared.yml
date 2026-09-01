@@ -117,6 +117,7 @@
     line: 'server {{ item }}'
     state: present
     create: true
+    mode: 0644
   loop: '{{ var_multiple_time_servers.split(",") }}'
   when:
     - chrony_conf_has_servers.rc != 0

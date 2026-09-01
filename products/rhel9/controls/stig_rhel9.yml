@@ -3,7 +3,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://www.cyber.mil/stigs/downloads/
-version: V2R8
+version: V2R9
 reference_type: stigid
 product: rhel9
 
@@ -973,14 +973,9 @@ controls:
     - id: RHEL-09-232040
       levels:
           - medium
-      title: RHEL 9 cron configuration directories must have a mode of 0700 or less permissive.
+      title: RHEL 9 permissions of cron configuration files and directories must not be modified from the operating system defaults.
       rules:
-          - package_cron_installed
-          - file_permissions_cron_d
-          - file_permissions_cron_daily
-          - file_permissions_cron_hourly
-          - file_permissions_cron_monthly
-          - file_permissions_cron_weekly
+          - file_permissions_cron_not_modified
       status: automated
 
     - id: RHEL-09-232045
@@ -1953,7 +1948,7 @@ controls:
     - id: RHEL-09-255120
       levels:
           - medium
-      title: RHEL 9 SSH private host key files must have mode 0640 or less permissive.
+      title: RHEL 9 SSH private host key files must have mode 0600 or less permissive.
       rules:
           - file_permissions_sshd_private_key
       status: automated
@@ -1964,17 +1959,6 @@ controls:
       title: RHEL 9 SSH public host key files must have mode 0644 or less permissive.
       rules:
           - file_permissions_sshd_pub_key
-      status: automated
-
-    - id: RHEL-09-255130
-      levels:
-          - medium
-      title: RHEL 9 SSH daemon must not allow compression or must only allow compression after
-          successful
-          authentication.
-      rules:
-          - sshd_disable_compression
-          - var_sshd_disable_compression=no
       status: automated
 
     - id: RHEL-09-255135
@@ -3419,8 +3403,7 @@ controls:
           or
           roles appointed by the ISSM) to select which auditable events are to be audited.
       rules:
-          - file_permissions_audit_configuration
-          - file_permissions_etc_audit_auditd
+          - file_permissions_audit_configuration_stig
       status: automated
 
     - id: RHEL-09-653120
@@ -3627,10 +3610,8 @@ controls:
       title: RHEL 9 must audit any script or executable called by cron as root or by any privileged
           user.
       rules:
-          - audit_rules_etc_cron_d
-          - audit_rules_var_spool_cron
+          - audit_rules_cron_execution
       status: automated
-
 
     - id: RHEL-09-654100
       levels:
@@ -3983,20 +3964,12 @@ controls:
       levels:
           - medium
       title: RHEL 9 cryptographic policy must not be overridden.
-      notes: Rules for this control are intentionally not implemented. Checking whether files under
-          /etc/crypto-policies/back-ends/
-          are symlinks is not an appropriate way to verify the consistency of the system's
-          cryptographic settings.
-          The suggested fix mentioned in the STIG does not fully satisfy its own requirements, as
-          it also symlinks the nss.config file.
-          Furthermore, running sudo 'update-crypto-policies --set FIPS' is not a reliable way to
-          ensure FIPS compliance. Customers should
-          refer to the official Red Hat Documentation and use the 'fips=1' kernel option during
-          system installation to ensure the system is
-          in FIPS mode.
-          More information can be found at
-          https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening
-      status: pending
+      notes: >-
+          This rule only contains SCE (Script Check Engine) content. The package
+          openscap-engine-sce must be installed on the target system for the check to work.
+      rules:
+          - crypto_policy_not_overridden
+      status: automated
 
     - id: RHEL-09-672030
       levels:

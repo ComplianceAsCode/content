@@ -12,58 +12,74 @@ controls:
           - low
       rules: []
       status: pending
-    - id: ca-2.1
-      title: Independent Assessors
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ca-2.2
-      title: Specialized Assessments
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ca-2.3
-      title: Leveraging Results from External Organizations
-      rules: []
-      status: pending
+      controls:
+          - id: ca-2.1
+            title: Independent Assessors
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ca-2.2
+            title: Specialized Assessments
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ca-2.3
+            title: Leveraging Results from External Organizations
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ca-3
       title: Information Exchange
       levels:
           - low
       rules: []
       status: pending
-    - id: ca-3.1
-      title: Unclassified National Security System Connections
-      rules: []
-      status: pending
-    - id: ca-3.2
-      title: Classified National Security System Connections
-      rules: []
-      status: pending
-    - id: ca-3.3
-      title: Unclassified Non-national Security System Connections
-      rules: []
-      status: pending
-    - id: ca-3.4
-      title: Connections to Public Networks
-      rules: []
-      status: pending
-    - id: ca-3.5
-      title: Restrictions on External System Connections
-      rules: []
-      status: pending
-    - id: ca-3.6
-      title: Transfer Authorizations
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ca-3.7
-      title: Transitive Information Exchanges
-      rules: []
-      status: pending
+      controls:
+          - id: ca-3.1
+            title: Unclassified National Security System Connections
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-3.2
+            title: Classified National Security System Connections
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-3.3
+            title: Unclassified Non-national Security System Connections
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-3.4
+            title: Connections to Public Networks
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-3.5
+            title: Restrictions on External System Connections
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-3.6
+            title: Transfer Authorizations
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ca-3.7
+            title: Transitive Information Exchanges
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ca-4
       title: Security Certification
       rules: []
@@ -74,78 +90,100 @@ controls:
           - low
       rules: []
       status: pending
-    - id: ca-5.1
-      title: Automation Support for Accuracy and Currency
-      rules: []
-      status: pending
+      controls:
+          - id: ca-5.1
+            title: Automation Support for Accuracy and Currency
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ca-6
       title: Authorization
       levels:
           - low
       rules: []
       status: pending
-    - id: ca-6.1
-      title: Joint Authorization — Intra-organization
-      rules: []
-      status: pending
-    - id: ca-6.2
-      title: Joint Authorization — Inter-organization
-      rules: []
-      status: pending
+      controls:
+          - id: ca-6.1
+            title: Joint Authorization — Intra-organization
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-6.2
+            title: Joint Authorization — Inter-organization
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ca-7
       title: Continuous Monitoring
       levels:
           - low
       rules: []
       status: pending
-    - id: ca-7.1
-      title: Independent Assessment
-      levels:
-          - moderate
-      rules: []
-      status: pending
-    - id: ca-7.2
-      title: Types of Assessments
-      rules: []
-      status: pending
-    - id: ca-7.3
-      title: Trend Analyses
-      rules: []
-      status: pending
-    - id: ca-7.4
-      title: Risk Monitoring
-      levels:
-          - low
-      rules: []
-      status: pending
-    - id: ca-7.5
-      title: Consistency Analysis
-      rules: []
-      status: pending
-    - id: ca-7.6
-      title: Automation Support for Monitoring
-      rules: []
-      status: pending
+      controls:
+          - id: ca-7.1
+            title: Independent Assessment
+            levels:
+                - moderate
+            rules: []
+            status: pending
+          - id: ca-7.2
+            title: Types of Assessments
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-7.3
+            title: Trend Analyses
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-7.4
+            title: Risk Monitoring
+            levels:
+                - low
+            rules: []
+            status: pending
+          - id: ca-7.5
+            title: Consistency Analysis
+            rules: []
+            status: pending
+            levels:
+                - low
+          - id: ca-7.6
+            title: Automation Support for Monitoring
+            rules: []
+            status: pending
+            levels:
+                - low
     - id: ca-8
       title: Penetration Testing
       levels:
           - high
       rules: []
       status: pending
-    - id: ca-8.1
-      title: Independent Penetration Testing Agent or Team
-      levels:
-          - high
-      rules: []
-      status: pending
-    - id: ca-8.2
-      title: Red Team Exercises
-      rules: []
-      status: pending
-    - id: ca-8.3
-      title: Facility Penetration Testing
-      rules: []
-      status: pending
+      controls:
+          - id: ca-8.1
+            title: Independent Penetration Testing Agent or Team
+            levels:
+                - high
+            rules: []
+            status: pending
+          - id: ca-8.2
+            title: Red Team Exercises
+            rules: []
+            status: pending
+            levels:
+                - high
+          - id: ca-8.3
+            title: Facility Penetration Testing
+            rules: []
+            status: pending
+            levels:
+                - high
     - id: ca-9
       title: Internal System Connections
       levels:
@@ -155,7 +193,10 @@ controls:
           - firewalld_loopback_traffic_trusted
           - package_firewalld_installed
       status: automated
-    - id: ca-9.1
-      title: Compliance Checks
-      rules: []
-      status: pending
+      controls:
+          - id: ca-9.1
+            title: Compliance Checks
+            rules: []
+            status: pending
+            levels:
+                - low

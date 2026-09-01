@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="accounts_password_warn_age_login_defs" version="3">
     {{{ oval_metadata("The password expiration warning age should be set appropriately.", rule_title=rule_title) }}}
-    {{% if product in [ 'slmicro6', 'sle16' ] %}}
+    {{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
     <criteria operator="OR">
       <criteria operator="AND">
         <criterion comment="Check PASS_WARN_AGE in {{{ login_defs_drop_in_path }}} is not set"

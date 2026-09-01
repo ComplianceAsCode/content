@@ -6,7 +6,8 @@ on:
         branches: [ '*', '!stabilization*', '!stable*', '!master' ]
     pull_request:
         branches: [ 'master', 'stabilization*', 'oscal-update-*' ]
-
+permissions:
+    contents: read
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
     cancel-in-progress: true
@@ -16,7 +17,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
-                uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+                uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
             -   name: Install ruff
                 run: python3 -m pip install ruff
             -   name: Run ruff check

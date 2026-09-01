@@ -18,5 +18,6 @@
     line: 'server {{ item }}'
     state: present
     create: True
+    mode: 0644
   loop: '{{ var_multiple_time_servers.split(",") }}'
   when: ntp_servers.matched == 0

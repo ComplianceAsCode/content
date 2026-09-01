@@ -5,17 +5,23 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("var_sssd_certificate_verification_digest_function") }}}
 
-- name: Ensure that "certificate_verification" is not set in /etc/sssd/sssd.conf
+{{% set sssd_conf = "/etc/sssd/sssd.conf" -%}}
+{{% set sssd_conf_dir = "/etc/sssd/conf.d" -%}}
+{{{ ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) }}}
+
+{{{ ansible_install_sssd_proxy(rule_title) }}}
+
+- name: Ensure that "certificate_verification" is not set in {{{ sssd_conf }}}
   community.general.ini_file:
-      path: /etc/sssd/sssd.conf
+      path: {{{ sssd_conf }}}
       section: sssd
       option: certificate_verification
       state: absent
       mode: 0600
 
-- name: 'Ensure that "certificate_verification" is not set in  /etc/sssd/conf.d/*.conf'
+- name: 'Ensure that "certificate_verification" is not set in {{{ sssd_conf_dir }}}/*.conf'
   community.general.ini_file:
-      path: /etc/sssd/conf.d/*.conf
+      path: {{{ sssd_conf_dir }}}/*.conf
       section: sssd
       option: certificate_verification
       state: absent
@@ -23,7 +29,7 @@
 
 - name: Ensure that "certificate_verification" is set
   community.general.ini_file:
-      path: /etc/sssd/conf.d/certificate_verification.conf
+      path: {{{ sssd_conf_dir }}}/certificate_verification.conf
       section: sssd
       option: certificate_verification
       value: "ocsp_dgst={{ var_sssd_certificate_verification_digest_function }}"

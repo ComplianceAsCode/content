@@ -2,6 +2,10 @@ name: Release
 on:
   push:
     tags: [ 'v*.*.*' ]
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
 jobs:
   release-fedora:
     name: Release on Fedora Latest (Container)
@@ -12,7 +16,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible ansible-lint libxslt
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Install python deps
         run: pip install -r requirements-base.txt -r test-requirements.txt
       - name: Configure
@@ -30,6 +34,16 @@ jobs:
       - name: Build Package Source
         run: make -j$(nproc) package_source
         working-directory: ./build
+      - name: Attest build provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: |
+            build/scap-security-guide-*.tar.bz2
+            build/scap-security-guide-*.tar.bz2.sha512
+            build/zipfile/scap-security-guide-*.zip
+            build/zipfile/scap-security-guide-*.zip.sha512
+            build/zipfile/scap-security-guide-*.tar.gz
+            build/zipfile/scap-security-guide-*.tar.gz.sha512
       - name: Set Version
         id: set_version
         run: |-
@@ -39,13 +53,13 @@ jobs:
           GITHUB_REF: ${{ github.ref }}
       - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@348e88fab4c37338b1e803ceb2d4a7a5db6c0833 # v4
+        uses: mikepenz/release-changelog-builder-action@c9bcd8238b6f41e05561348339429d360b1c0247 # v4
         with:
           configuration: .github/workflows/release-changelog.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         with:
           draft: True
           name: Content ${{ steps.set_version.outputs.ver }}

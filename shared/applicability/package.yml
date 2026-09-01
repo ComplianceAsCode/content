@@ -75,7 +75,7 @@ args:
       pkgname: snmp
     {{% endif %}}
   networkmanager:
-    {{% if product in ["ubuntu2204", "ubuntu2404"] %}}
+    {{% if product in ["ubuntu2204", "ubuntu2404", "ubuntu2604"] %}}
     pkgname: network-manager
     {{% else %}}
     pkgname: NetworkManager
@@ -119,13 +119,12 @@ args:
     pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
-    {{% if 'sle' in product or 'slmicro' in product or product in ["kylinserver10", "openeuler2203"] %}}
+    {{% if 'sle' in product or 'slmicro' in product or product in ["kylinserver10", "kylinsecserver6", "openeuler2203"] %}}
       pkgname: shadow
+    {{% elif product in ["openembedded"] %}}
+      pkgname: shadow-base
     {{% else %}}
       pkgname: shadow-utils
-    {{% endif %}}
-    {{% if product in ["openembedded"] %}}
-      pkgname: shadow-base
     {{% endif %}}
     {{% else %}}
       pkgname: login
@@ -153,7 +152,11 @@ args:
   systemd-timesyncd:
     pkgname: systemd-timesyncd
   telnet-server:
+    {{% if product in ['debian13'] %}}
+    pkgname: inetutils-telnetd
+    {{% else %}}
     pkgname: telnet-server
+    {{% endif %}}
   tftp-server:
     pkgname: tftp-server
   tmux:

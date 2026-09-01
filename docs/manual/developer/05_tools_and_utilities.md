@@ -487,7 +487,7 @@ This script only updates STIG items that only have one rule assigned to them.
 
 To execute:
 ```bash
-$ ./utils/import_disa_stig.py --product rhel9 --control stig_rhel9 shared/references/disa-stig-rhel9-v1r2-xccdf-manual.xml
+$ ./utils/import_disa_stig.py --product rhel9 --control stig_rhel9 --output-file-name rhel9.yml shared/references/disa-stig-rhel9-v1r2-xccdf-manual.xml
 ```
 
 ## Profiling the Build System
@@ -683,6 +683,20 @@ The `PLACEHOLDER` values must be filled in later, ideally when the rules are
 provided for each control.
 
 
+### `utils/compare_controls.py` &ndash; Compare two control files
+
+This script compares controls between two YAML control files and outputs a unified diff.
+
+**NOTE: this script doesn't support nested controls.**
+
+It ignores the `rules`, `related_rules`, `notes`, and `status` fields so that you can focus on meaningful content changes such as titles, descriptions, and levels.
+
+The script exits with status 1 if differences are found, 0 otherwise.
+
+```bash
+    $ ./utils/compare_controls.py controls/stig_rhel10_v1r1.yml controls/stig_rhel10_v1r2.yml
+```
+
 ### `utils/compare_versions.py` &ndash; Compare ComplianceAsCode versions
 
 Show differences between two ComplianceAsCode versions.
@@ -703,58 +717,6 @@ $ python3 utils/compare_versions.py compare_tags v0.1.67 v0.1.68 rhel9
 
 It will internally clone the upstream project, checkout these tags, generate ComplianceAsCode JSON manifests, compare them and print the output.
 
-
-### `utils/oscal/build_cd_from_policy.py` &ndash; Build a Component Definition from a Policy
-
-This script builds an OSCAL Component Definition (cd) (version `1.0.4`) for an existing OSCAL profile from a policy. The script uses the
-[compliance-trestle](https://github.com/oscal-compass/compliance-trestle) library to build the component definition. The component definition can be used with the `compliance-trestle` CLI after generation.
-
-Some assumption made by this script:
-
-- The script maps control file statuses to valid OSCAL [statuses](https://pages.nist.gov/OSCAL-Reference/models/v1.1.1/system-security-plan/json-reference/#/system-security-plan/control-implementation/implemented-requirements/by-components/implementation-status) as follows:
-
-  * `pending` - `alternative`
-
-  * `not applicable`: `not-applicable`
-
-  * `inherently met`: `implemented`
-
-  * `documentation`: `implemented`
-
-  * `planned`: `planned`
-
-  * `partial`: `partial`
-
-  * `supported`: `implemented`
-
-  * `automated`: `implemented`
-
-  * `manual`: `alternative`
-
-  * `does not meet`: `alternative`
-
-- The script uses the "Section *letter*:" convention in the control notes to create statements under the implemented requirements.
-- The script maps parameter to rules uses the `xccdf_variable` field under `template.vars`
-- To determine what responses will mapped to the controls in the OSCAL profile the control id and label property from the resolved catalog is searched.
-
-It supports the following arguments:
-  - `-o`, `--output` &mdash; Path to write the cd to
-  - `-r`, `--root` &mdash; Root of the SSG project. Defaults to /content.
-  - `-v`, `--vendor-dir` &mdash; Path to the vendor directory with third party OSCAL artifacts
-  - `-p`, `--profile` &mdash; Main profile href, or name of the profile model in the trestle workspace
-  - `-pr`, `--product` &mdash; Product to build cd with
-  - `-c`, `--control` &mdash; Control to use as the source for control responses. To optionally filter by level, use the format <control_id>:<level>.
-  - `-j`, `--json` &mdash; Path to the rules_dir.json. Defaults to /content/build/rule_dirs.json.
-  - `-b`, `--build-config-yaml` &mdash; YAML file with information about the build configuration
-  - `-t`, `--component-definition-type` &mdash; Type of component definition to create. Defaults to service. Options are service or validation.
-
-An example of how to execute the script:
-
-```bash
-$ ./build_product ocp4
-$ ./utils/rule_dir_json.py
-$ ./utils/oscal/build_cd_from_policy.py -o build/ocp4.json -p fedramp_rev4_high -pr ocp4 -c nist_ocp4:high
-```
 
 ### `utils/ansible_playbook_to_role.py` &ndash; Generates Ansible Roles and pushes them to Github
 

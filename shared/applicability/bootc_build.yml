@@ -1,0 +1,25 @@
+name: cpe:/a:bootc_build
+title: Bootable container image being built
+# Matches:
+# - bootc (RHEL Image Mode) containers and container images
+# Does not match:
+# - running bootc (RHEL Image Mode) systems
+# - anything that cpe:/a:bootc doesn't match
+#
+# This is the subset of cpe:/a:bootc that is not yet booted, and it is what
+# "the rule can't be evaluated while the image is being built" should be
+# expressed with. Rules that describe the state of a deployed host, such as
+# how its filesystems are mounted, are unknowable at build time but perfectly
+# checkable once the image runs, so they should be excluded here rather than
+# on cpe:/a:bootc.
+#
+# A running bootc system is distinguished by /run/ostree-booted, which
+# ostree-prepare-root creates during boot.
+check_id: bootc_build
+{{% if product == "fedora" or "rhel" in product %}}
+{{% set kernel_package = "kernel-core" %}}
+{{% else %}}
+{{% set kernel_package = "kernel" %}}
+{{% endif %}}
+bash_conditional: "{ rpm --quiet -q {{{ kernel_package }}} ;} && { rpm --quiet -q bootc ;} && { ! rpm --quiet -q openshift-kubelet ;} && [ -L /ostree ] && [ ! -f /run/ostree-booted ]"
+ansible_conditional: '"{{{ kernel_package }}}" in ansible_facts.packages and "bootc" in ansible_facts.packages and not "openshift-kubelet" in ansible_facts.packages and "ostree" not in ansible_proc_cmdline'

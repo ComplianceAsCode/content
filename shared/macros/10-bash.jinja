@@ -184,7 +184,7 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
         insensitive=true,
         separator=" ",
         separator_regex="\s\+",
-        prefix_regex="^\s*", rule_id=rule_id)
+        prefix_regex="^\s*", rule_id=rule_id, mode="0600")
     }}}
 {{%- endmacro -%}}
 
@@ -221,6 +221,7 @@ done
 {{%- set hardening_config_basename = config_basename or sshd_hardening_config_basename %}}
 {{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
 mkdir -p {{{ sshd_drop_in_dir }}}
+chmod 0700 {{{ sshd_drop_in_dir }}}
 touch {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
 chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
 {{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
@@ -254,9 +255,11 @@ chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
 #}}
 {{%- macro bash_create_audit_remediation_unsuccessful_file_modification_detailed(filename) -%}}
 mkdir -p "$(dirname '{{{ filename }}}')"
+chmod 0750 "$(dirname '{{{ filename }}}')"
 cat <<EOF > "{{{ filename }}}"
 {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
 EOF
+chmod 0600 "{{{ filename }}}"
 {{%- endmacro -%}}
 
 
@@ -280,7 +283,7 @@ EOF
         insensitive=true,
         separator=" = ",
         separator_regex="\s*=\s*",
-        prefix_regex="^\s*", rule_id=rule_id)
+        prefix_regex="^\s*", rule_id=rule_id, mode="0640")
     }}}
 {{%- endmacro -%}}
 
@@ -500,7 +503,22 @@ if rpm -q --quiet "{{{ package }}}" ; then
 {{% endif %}}
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
-DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y "{{{ package }}}"
+# check wether the package is virtual: if not, remove it.
+# if the package is virtual, iterate on providers
+#  if a provider is installed, remove it
+is_virtual=`apt-cache showpkg "{{{ package }}}" | grep -Pzc 'Versions: \n\n'`
+if [ $is_virtual = 1 ]; then
+    rprovides_line=`apt-cache showpkg "{{{ package }}}" | grep -n 'Reverse Provides:' | cut -f1 -d:`
+    pkglist=`apt-cache showpkg "{{{ package }}}" | tail -n +$(($rprovides_line + 1)) | cut -f1 -d' '`
+    for package in $pkglist; do
+        not_installed=`apt-cache policy $package | grep -c 'Installed: (none)'`
+	if [ $not_installed = 0 ]; then
+	    DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y $package
+	fi
+    done
+else
+    DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=60 remove -y "{{{ package }}}"
+fi
 {{%- elif pkg_manager == "zypper" -%}}
 if rpm -q --quiet "{{{ package }}}" ; then
    zypper remove -y "{{{ package }}}"
@@ -598,6 +616,7 @@ DCONFFILE="/etc/dconf/db/{{{ db }}}/{{{ setting_file }}}"
 DBDIR="/etc/dconf/db/{{{ db }}}"
 
 mkdir -p "${DBDIR}"
+chmod 0755 "${DBDIR}"
 
 # Comment out the configurations in databases different from the target one
 if [ "${#SETTINGSFILES[@]}" -ne 0 ]
@@ -647,6 +666,7 @@ LOCKFILES=$(grep -r "^/{{{ key }}}/{{{ setting }}}$" "/etc/dconf/db/" \
 LOCKSFOLDER="/etc/dconf/db/{{{ db }}}/locks"
 
 mkdir -p "${LOCKSFOLDER}"
+chmod 0755 "${LOCKSFOLDER}"
 
 # Comment out the configurations in databases different from the target one
 if [[ ! -z "${LOCKFILES}" ]]
@@ -874,6 +894,7 @@ Auth-Type: Primary
 Auth:
     [default=die]                   pam_faillock.so authfail
 EOF
+    chmod 0644 /usr/share/pam-configs/"$conf_name"
 fi
 
 if [ ! -f /usr/share/pam-configs/"$conf_name"_notify ]; then
@@ -889,6 +910,7 @@ Account-Type: Primary
 Account:
     required                        pam_faillock.so
 EOF
+    chmod 0644 /usr/share/pam-configs/"$conf_name"_notify
 fi
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
@@ -933,6 +955,7 @@ Password-Type: Primary
 Password:
     requisite                   pam_pwquality.so
 EOF
+    chmod 0644 /usr/share/pam-configs/"$conf_name"
 fi
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
@@ -951,6 +974,7 @@ if [ ! -f "$conf_path"/"$conf_name" ]; then
     if [ -f "$conf_path"/unix ]; then
         if grep -q "$(md5sum "$conf_path"/unix | cut -d ' ' -f 1)" /var/lib/dpkg/info/libpam-runtime.md5sums;then
             cp "$conf_path"/unix "$conf_path"/"$conf_name"
+            chmod 0644 "$conf_path"/"$conf_name"
             sed -i 's/Priority: [0-9]\+/Priority: 257\
 Conflicts: unix/' "$conf_path"/"$conf_name"
             DEBIAN_FRONTEND=noninteractive pam-auth-update
@@ -1090,6 +1114,7 @@ Password-Type: Primary
 Password: {{{ control }}} pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok
 Password-Initial: {{{ control }}} pam_pwhistory.so remember=24 enforce_for_root try_first_pass
 EOF
+    chmod 0644 "$conf_path"/"$conf_name"
 fi
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
@@ -1299,7 +1324,7 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 :type sed_path_separator: char
 
 #}}
-{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/", rule_id=None) -%}}
+{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/", rule_id=None, mode="0644") -%}}
     {{%- set new_line = parameter+separator~value -%}}
     {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
     {{%- set line_regex = prefix_regex + ((parameter | replace("\\$", "$") | escape_regex) | replace("/", "\/")) + separator_regex -%}}
@@ -1308,6 +1333,7 @@ if [ -e "{{{ path }}}" ] ; then
 else
     {{%- if create %}}
     touch "{{{ path }}}"
+    chmod {{{ mode }}} "{{{ path }}}"
     {{%- else %}}
     {{{ die("Path '" + path + "' wasn't found on this system. Refusing to continue.", action="return") | indent(4) }}}
     {{%- endif %}}
@@ -1325,9 +1351,14 @@ fi
     {{% if sed_path_separator in regex %}}
     {{{ raise("regex (" + regex + ") uses sed path separator (" + sed_path_separator + ") in " + rule_id) }}}
     {{% endif %}}
-LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
-{{%- endmacro -%}}
+    {{%- if sed_path_separator != "/" -%}}
+    # non default delimiter with delete operation needs to be escaped
+    LC_ALL=C sed -i "\{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
+    {{%- else -%}}
+    LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
+    {{%- endif -%}}
 
+{{%- endmacro -%}}
 
 {{%- macro lineinfile_absent_in_directory(dirname, regex, insensitive=true, filename_glob="*") -%}}
     {{%- if insensitive -%}}
@@ -1401,6 +1432,7 @@ rm "{{{ path }}}.bak"
 cat << 'EOF' > {{{ filepath }}}
 {{{ contents }}}
 EOF
+chmod 0644 {{{ filepath }}}
 {{%- endmacro %}}
 
 
@@ -1512,6 +1544,48 @@ for SSSD_CONF_D_FILE in "${SSSD_CONF_D_FILES[@]}"; do
     sed -i "s#{{{ parameter }}}[^(\n)]*#{{{ parameter }}} = {{{ value }}}#" "$SSSD_CONF_D_FILE"
 done
 
+{{%- endmacro %}}
+
+
+{{#
+    Ensure a default domain is configured in sssd.conf so that sssd can start
+
+:param sssd_conf: main sssd configuration file
+:type sssd_conf: str
+:param sssd_conf_dir: sssd conf.d drop-in directory
+:type sssd_conf_dir: str
+#}}
+{{% macro bash_sssd_ensure_default_config(sssd_conf, sssd_conf_dir) -%}}
+mkdir -p "$(dirname "{{{ sssd_conf }}}")"
+chmod 0711 "$(dirname "{{{ sssd_conf }}}")"
+if [ ! -f "{{{ sssd_conf }}}" ]; then
+    touch "{{{ sssd_conf }}}"
+    chmod 0600 "{{{ sssd_conf }}}"
+fi
+if ! grep -qsrP '^\s*\[domain\/[^]]*]' "{{{ sssd_conf }}}" "{{{ sssd_conf_dir }}}"/*.conf 2>/dev/null; then
+    {{{ bash_ensure_ini_config(sssd_conf, "sssd", "domains", "default") }}}
+    cat >> "{{{ sssd_conf }}}" << EOF
+
+[domain/default]
+{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) -%}}
+id_provider = proxy
+proxy_lib_name = files
+local_auth_policy = only
+{{% else -%}}
+id_provider = files
+{{% endif -%}}
+EOF
+fi
+{{%- endmacro %}}
+
+
+{{#
+    Install sssd-proxy package on products that use proxy id_provider for default domain
+#}}
+{{% macro bash_install_sssd_proxy() -%}}
+{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+{{{ bash_package_install("sssd-proxy") }}}
+{{% endif %}}
 {{%- endmacro %}}
 
 
@@ -1974,14 +2048,14 @@ fi
 {{%- for grub_var in grub_vars %}}
 if grep -q '^\s*{{{ grub_var }}}=.*{{{ arg_name }}}=.*\"' '/etc/default/grub' ; then
     # modify the GRUB command-line if an {{{ arg_name }}}= arg already exists
-    sed -i 's/\(^\s*{{{ grub_var }}}=".*\){{{ arg_name }}}=[^[:space:]]\+\(.*"\)/\1{{{ arg_name_value }}}\2/' '/etc/default/grub'
+    sed -i "s/\(^\s*{{{ grub_var }}}=\".*\){{{ arg_name }}}=[^[:space:]]\+\(.*\"\)/\1{{{ arg_name_value }}}\2/" '/etc/default/grub'
 # Add to already existing parameters
 elif grep -q '^\s*{{{ grub_var }}}=' '/etc/default/grub' ; then
     # no {{{ arg_name }}}=arg is present, append it
-    sed -i 's/\(^\s*{{{ grub_var }}}=".*\)"/\1 {{{ arg_name_value }}}"/' '/etc/default/grub'
+    sed -i "s/\(^\s*{{{ grub_var }}}=\".*\)\"/\1 {{{ arg_name_value }}}\"/" '/etc/default/grub'
 # Add parameters line if completely missing
 else
-    echo '{{{ grub_var }}}="{{{ arg_name_value }}}"' >> '/etc/default/grub'
+    echo "{{{ grub_var }}}=\"{{{ arg_name_value }}}\"" >> '/etc/default/grub'
 fi
 {{%- endfor %}}
 {{%- endmacro %}}
@@ -2266,9 +2340,11 @@ Example macro invocation(s)::
 :type key: str
 :param value:   value
 :type value: str
+:param remove_wrong_entries: if true, remove entries in [section] where key has a different value
+:type remove_wrong_entries: bool
 
 #}}
-{{% macro bash_ensure_ini_config(files, section, key, value, no_quotes=true) -%}}
+{{% macro bash_ensure_ini_config(files, section, key, value, no_quotes=true, remove_wrong_entries=false) -%}}
 found=false
 
 # set value in all files if they contain section or key
@@ -2279,7 +2355,7 @@ for f in $(echo -n "{{{ files }}}"); do
 
     # find key in section and change value
     if grep -qzosP "(?m)^[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
-        if ! grep -qzosP "(?m)^[[:space:]]*{{{ key }}}[[:space:]]*=[[:space:]]*{{{ value }}}" "$f"; then
+        if ! grep -qzosP "(?m)^[[:space:]]*{{{ key }}}[[:space:]]*=[[:space:]]*{{{ value }}}"'[[:space:]]*$' "$f"; then
 {{% if no_quotes %}}
             sed -i "/^[[:space:]]*{{{ key }}}/s/\([[:blank:]]*=[[:blank:]]*\).*/\1{{{ value | replace("/", "\/") }}}/" "$f"
 {{% else %}}
@@ -2298,12 +2374,22 @@ for f in $(echo -n "{{{ files }}}"); do
 {{% endif %}}
             found=true
     fi
+
+{{% if remove_wrong_entries %}}
+    # within [{{{ section }}}], remove entries where {{{ key }}} has wrong value
+{{% if no_quotes %}}
+    sed -i "/^[[:space:]]*\[{{{ section }}}\]/,/^[[:space:]]*\[/{/^[[:space:]]*{{{ key }}}[[:blank:]]*=/{ /=[[:blank:]]*{{{ value | replace("/", "\/") }}}"'[[:space:]]*$/!d }}' "$f"
+{{% else %}}
+    sed -i '/^[[:space:]]*\[{{{ section }}}\]/,/^[[:space:]]*\[/{/^[[:space:]]*{{{ key }}}[[:blank:]]*=/{ /=[[:blank:]]*"{{{ value | replace("/", "\/") }}}"[[:space:]]*$/!d }}' "$f"
+{{% endif %}}
+{{% endif %}}
 done
 
 # if section not in any file, append section with key = value to FIRST file in files parameter
 if ! $found ; then
     file=$(echo "{{{ files }}}" | cut -f1 -d ' ')
     mkdir -p "$(dirname "$file")"
+    chmod 0755 "$(dirname "$file")"
 {{% if no_quotes %}}
     echo -e "[{{{ section }}}]\n{{{ key }}}={{{ value }}}" >> "$file"
 {{% else %}}
@@ -2726,9 +2812,11 @@ lines will be inserted at the beginning of the profile.
 {{% macro bash_enable_dconf_user_profile(profile, database) -%}}
 
 mkdir -p /etc/dconf/profile
+chmod 0755 /etc/dconf/profile
 dconf_profile_path=/etc/dconf/profile/{{{ profile }}}
 
 [[ -s "${dconf_profile_path}" ]] || echo > "${dconf_profile_path}"
+chmod 0644 "${dconf_profile_path}"
 
 if ! grep -Pzq "(?s)^\s*user-db:user.*\n\s*system-db:{{{ database }}}" "${dconf_profile_path}"; then
     sed -i --follow-symlinks "1s/^/user-db:user\nsystem-db:{{{ database }}}\n/" "${dconf_profile_path}"
@@ -2736,6 +2824,7 @@ fi
 
 # Make sure the corresponding directories exist
 mkdir -p /etc/dconf/db/{{{ database }}}.d
+chmod 0755 /etc/dconf/db/{{{ database }}}.d
 
 # Make sure permissions allow regular users to read dconf settings.
 # Also define the umask to avoid `dconf update` changing permissions.
@@ -2749,7 +2838,7 @@ if the remediation is performed during a build of a bootable container image.
 #}}
 {{%- macro bash_bootc_build() -%}}
 {{%- if pkg_system == "rpm" -%}}
-{ rpm --quiet -q kernel rpm-ostree bootc && ! rpm --quiet -q openshift-kubelet && { [ -f "/run/.containerenv" ] || [ -f "/.containerenv" ]; }; }
+{ rpm --quiet -q kernel bootc && ! rpm --quiet -q openshift-kubelet && { [ -f "/run/.containerenv" ] || [ -f "/.containerenv" ]; }; }
 {{%- else -%}}
 /bin/false
 {{%- endif -%}}
@@ -2773,58 +2862,6 @@ This macro creates a Bash conditional which checks the system architecture in /p
 {{%- macro bash_arch_conditional(arch) -%}}
 ( grep -sqE "^.*\.{{{ arch }}}$" /proc/sys/kernel/osrelease || grep -sqE "^{{{ arch }}}$" /proc/sys/kernel/arch; )
 {{%- endmacro -%}}
-
-
-{{#
-    Set a sshd configuration parameter to a value for system with default configuration in /usr subdir
-
-:parameter parameter: Parameter to set
-:type parameter: str
-:parameter value: The value to set
-:type value: str
-:param copy_defaults: If true default sshd configuration in /usr/etc/ssh/sshd_config will be
-copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
-:type copy_defaults: bool
-:parameter config_basename: drop-in filename of sshd configuration file
-:type config_basename: str
-
-#}}
-{{% macro bash_sshd_remediation_usr(parameter, value, copy_defaults="true", config_basename="00-complianceascode-hardening.conf", rule_id=None) -%}}
-{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
-{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
-{{%- set sshd_usr_config_path = "/usr/etc/ssh/sshd_config" %}}
-{{%- set sshd_usr_config_dir = "/usr/etc/ssh/sshd_config.d" -%}}
-{{%- set prefix_regex = "^\s*" -%}}
-{{%- set separator_regex = "\s\+" -%}}
-{{%- set hardening_config_basename = config_basename %}}
-{{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
-
-if ! [ -e "{{{ sshd_config_path }}}" ] ; then
-    cp "{{{ sshd_usr_config_path }}}" "{{{ sshd_config_path }}}"
-fi
-
-mkdir -p {{{ sshd_config_dir }}}
-touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
-chmod 0600 {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
-{{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
-{{{ lineinfile_absent_in_directory(sshd_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
-{{{ lineinfile_absent(sshd_usr_config_path, line_regex, insensitive=true, rule_id=rule_id) }}}
-{{{ lineinfile_absent_in_directory(sshd_usr_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
-{{{ set_config_file(
-        path=sshd_config_dir ~ "/" ~ hardening_config_basename,
-        parameter=parameter,
-        value=value,
-        create=true,
-        insert_after="",
-        insert_before="BOF",
-        insensitive=true,
-        separator=" ",
-        separator_regex=separator_regex,
-        prefix_regex=prefix_regex, rule_id=rule_id)
-    }}}
-{{%- endmacro %}}
-
-
 
 {{#
     copy source file to destination file if destination

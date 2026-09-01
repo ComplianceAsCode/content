@@ -146,7 +146,8 @@ and keep these guidelines in mind when writing new code.
     * Have words separated by an underscore
     * Have a total path length less than 250 characters
 * Shall not use "smart quotes" or curved quotes
-* Maximum line length should be 99 characters
+* Maximum line length of 99 characters is preferred but not enforced.
+    * YAML content in this project often contains URLs, HTML tags, and Jinja macros that are impractical to split. For new plain-text content, try to stay under 99 characters.
 
 ### Jinja
 

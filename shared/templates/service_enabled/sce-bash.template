@@ -1,6 +1,14 @@
 #!/bin/bash
 # check-import = stdout
-if [[ $(systemctl is-enabled {{{ DAEMONNAME }}}.service) == "enabled" ]] ; then
+state=$(systemctl is-enabled {{{ DAEMONNAME }}}.service 2>/dev/null)
+active=$(systemctl is-active {{{ DAEMONNAME }}}.service 2>/dev/null)
+if [[ ("$state" == "enabled" || "$state" == "indirect" || "$state" == "static") && "$active" == "active" ]] ; then
+    exit "$XCCDF_RESULT_PASS"
+fi
+# Also check the socket unit for socket-activated services
+state=$(systemctl is-enabled {{{ DAEMONNAME }}}.socket 2>/dev/null)
+active=$(systemctl is-active {{{ DAEMONNAME }}}.socket 2>/dev/null)
+if [[ ("$state" == "enabled" || "$state" == "indirect" || "$state" == "static") && "$active" == "active" ]] ; then
     exit "$XCCDF_RESULT_PASS"
 fi
 exit "$XCCDF_RESULT_FAIL"

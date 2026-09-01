@@ -65,15 +65,3 @@ template:
             - value: '\"audit-log-path\"\s*:\s*\[\s*\".+\"\s*\]'
               type: "string"
               operation: "pattern match"
-template:
-    name: yamlfile_value
-    vars:
-        ocp_data: "true"
-        filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-        yamlpath: '.apiServerArguments[:]'
-        check_existence: "none_exist"
-        values:
-            - key: 'basic-auth-file'
-              type: "string"
-              operation: "pattern match"
-

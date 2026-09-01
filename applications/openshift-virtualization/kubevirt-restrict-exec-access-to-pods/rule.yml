@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Restrict Exec Access to Pods'
+
+description: |-
+    Because the set of authorized subjects varies by organization, this rule
+    requires manual verification. Consider creating a CustomRule with a CEL
+    expression that inspects ClusterRoleBindings and RoleBindings for subjects
+    granted the <tt>pods/exec</tt> permission, asserting that only your
+    approved administrators appear in the results.
+
+rationale: |-
+    Exec access to pods provides an interactive channel into the
+    container runtime environment. In an OpenShift Virtualization
+    context, this means direct access to the processes backing a
+    running virtual machine. Granting this capability to unauthorized
+    subjects increases the risk of data exfiltration, workload
+    tampering, and privilege escalation. Restricting exec access
+    ensures that only approved administrators can interact with
+    running pods.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects can exec into pods'
+
+ocil: |-
+    Run the following command to check which subjects can exec into pods:
+    <pre>$ oc adm policy who-can exec pod</pre>
+    Verify that only authorized subjects are listed in the output.

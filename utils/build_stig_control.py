@@ -136,7 +136,11 @@ def get_rules_for_control(stig_id, known_rules, srgs, srg_controls):
     # Let's also add any rule selected in the SRG control file
     if srg_controls:
         for srg in srgs:
-            rule_set.update(srg_controls.get_control(srg).rules)
+            try:
+                rules = srg_controls.get_control(srg).rules
+                rule_set.update(rules)
+            except ValueError as e:
+                sys.stderr.write("Cannot add rules for %s: %s\n" % (stig_id, str(e)))
 
     return sorted(list(rule_set))
 

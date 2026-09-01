@@ -24,6 +24,7 @@
     dest: "{{{ pwquality_path }}}"
     regexp: '^\s*retry'
     line: "retry = {{ var_password_pam_retry }}"
+    mode: 0644
 {{% for cfile in configuration_files %}}
 {{{ ansible_remove_pam_module_option_configuration(pam_file='/etc/pam.d/' ~ cfile,
                                                    group='password',

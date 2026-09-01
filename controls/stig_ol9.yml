@@ -3,7 +3,7 @@ policy: 'Oracle Linux 9 Security Technical Implementation Guide'
 title: 'Oracle Linux 9 Security Technical Implementation Guide'
 id: stig_ol9
 source: https://www.cyber.mil/stigs/downloads/
-version: V1R5
+version: V1R6
 reference_type: stigid
 product: ol9
 
@@ -1702,16 +1702,6 @@ controls:
           - sshd_set_loglevel_verbose
       status: automated
 
-    - id: OL09-00-002355
-      levels:
-          - medium
-      title: OL 9 SSH daemon must not allow compression or must only allow compression after successful
-          authentication.
-      rules:
-          - sshd_disable_compression
-          - var_sshd_disable_compression=no
-      status: automated
-
     - id: OL09-00-002359
       levels:
           - medium
@@ -2479,6 +2469,12 @@ controls:
       rules:
           - selinux_policytype
           - var_selinux_policy_name=targeted
+      status: automated
+
+    - id: OL09-00-000066
+      title: OL 9 must elevate the SELinux context when an administrator calls the sudo command.
+      rules:
+          - selinux_context_elevation_for_sudo
       status: automated
 
     - id: OL09-00-003010
@@ -3800,10 +3796,14 @@ controls:
       levels:
           - high
       title: OL 9 crypto policy must not be overridden.
-      rules:
-          - fips_crypto_policy_symlinks
-          - fips_crypto_policy_symlinks.severity=high
-      status: automated
+      notes: Rules for this control are intentionally not implemented. Checking whether files under /etc/crypto-policies/back-ends/
+        are symlinks is not an appropriate way to verify the consistency of the system's cryptographic settings.
+        The suggested fix mentioned in the STIG does not fully satisfy its own requirements, as it also symlinks the nss.config file.
+        Furthermore, running sudo 'update-crypto-policies --set FIPS' is not a reliable way to ensure FIPS compliance. Customers should
+        refer to the official Oracle Linux Documentation and use the 'fips=1' kernel option during system installation to ensure the system is
+        in FIPS mode.
+        More information https://docs.oracle.com/en/operating-systems/oracle-linux/9/security/configuring_fips_mode.html
+      status: pending
 
     - id: OL09-00-000241
       levels:

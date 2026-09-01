@@ -1,0 +1,46 @@
+documentation_complete: true
+
+title: 'Audit Configuration Files Permissions are 600 or More Restrictive'
+
+description: |-
+    All audit configuration files permissions must be 600 or more restrictive.
+    <pre>chmod 0600 /etc/audit/audit*.{rules,conf} /etc/audit/rules.d/*</pre>
+
+rationale: |-
+    Without the capability to restrict which roles and individuals can
+    select which events are audited, unauthorized personnel may be able
+    to prevent the auditing of critical events.
+    Misconfigured audits may degrade the system's performance by
+    overwhelming the audit log. Misconfigured audits may also make it more
+    difficult to establish, correlate, and investigate the events relating
+    to an incident or identify those responsible for one.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89815-5
+    cce@rhel9: CCE-88792-7
+
+references:
+    nist: AU-12 b
+    srg: SRG-OS-000063-GPOS-00032
+
+ocil: |-
+    {{{ describe_file_permissions(file="/etc/audit/", perms="0600") }}}
+    {{{ describe_file_permissions(file="/etc/audit/rules.d/", perms="0600") }}}
+
+warnings:
+    - general: |-
+        <tt>augenrules --load</tt> resets permissions of <tt>/etc/audit/audit.rules</tt> to <tt>0640</tt>, undoing remediation (<tt>0600</tt>). Fix: A systemd dropin for <tt>audit</tt> service is installed at <tt>/etc/systemd/system/auditd.service.d/permissions.conf</tt>with <tt>ExecStartPost=/usr/bin/chmod 0600 /etc/audit/audit.rules</tt>. This dropin is necessary to restore <tt>0600</tt> permissions after <tt>augenrules</tt> runs and rewrites the <tt>/etc/audit/audit.rules</tt> file. systemd runs both commands in order, restoring <tt>0600</tt>. Use <tt>service auditd restart</tt> to reload and apply the drop-in when remediating manually.
+
+template:
+    name: file_permissions
+    vars:
+        filepath:
+            - /etc/audit/
+            - /etc/audit/rules.d/
+        file_regex:
+            - ^.*audit(\.rules|d\.conf)$
+            - ^.*\.rules$
+        allow_stricter_permissions: "true"
+        filemode: '0600'

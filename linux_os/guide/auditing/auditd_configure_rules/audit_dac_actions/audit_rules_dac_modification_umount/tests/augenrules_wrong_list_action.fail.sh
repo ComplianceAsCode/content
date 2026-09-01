@@ -1,0 +1,7 @@
+#!/bin/bash
+# packages = audit
+
+rm -f /etc/audit/rules.d/*
+> /etc/audit/audit.rules
+
+echo "-a never,exit -F arch=b32 -S umount -F auid>={{{ uid_min }}} -F auid!=unset -F key=perm_mod" >> /etc/audit/rules.d/perm_mod.rules

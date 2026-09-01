@@ -15,21 +15,22 @@ def add_replacement_to_result(replacement, result):
     return result
 
 
-def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
-    path = create_output(rule_dir['dir'])
+def replace_yaml_section(section: str, replacement: str, rule_dir: dict,
+                         output_filename: str = "shared.yml") -> None:
+    path = create_output(rule_dir['dir'], output_filename)
 
     lines = read_file_list(path)
     replacement = replacement.replace('<', '&lt;').replace('>', '&gt;')
     replacement = re.sub(r'Satisfies: SRG-OS.+', '', replacement)
+    replacement = replacement.rstrip('\n')
     section_ranges = find_section_lines(lines, section)
     if section_ranges:
         result = lines[:section_ranges[0].start]
         result = (*result, f"{section}: |-")
         result = add_replacement_to_result(replacement, result)
-        end_line = section_ranges[0].end
+        end_line = section_ranges[0].end + 1
         for line in lines[end_line:]:
             result = [*result, line]
-        result = [*result, '\n']
     else:
         result = lines
         result = (*result, f"\n{section}: |-")
@@ -47,7 +48,7 @@ def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
     if section_ranges:
         result = lines.contents[:section_ranges[0].start]
         result = (*result, replacement_line)
-        end_line = section_ranges[0].end
+        end_line = section_ranges[0].end + 1
         for line in lines.contents[end_line:]:
             result = (*result, line)
     else:
@@ -59,17 +60,18 @@ def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
             f.write(line.rstrip())
 
 
-def update_row(changed: str, current: str, rule_dir_json: dict, section: str) -> None:
+def update_row(changed: str, current: str, rule_dir_json: dict, section: str,
+               output_filename: str = "shared.yml") -> None:
     if changed != current and changed:
-        replace_yaml_section(section, changed, rule_dir_json)
+        replace_yaml_section(section, changed, rule_dir_json, output_filename)
 
 
-def create_output(rule_dir: str) -> str:
+def create_output(rule_dir: str, output_filename: str = "shared.yml") -> str:
     path_dir_parent = os.path.join(rule_dir, "policy")
     mkdir_p(path_dir_parent)
     path_dir = os.path.join(path_dir_parent, "stig")
     mkdir_p(path_dir)
-    path = os.path.join(path_dir, 'shared.yml')
+    path = os.path.join(path_dir, output_filename)
     Path(path).touch()
     return path
 

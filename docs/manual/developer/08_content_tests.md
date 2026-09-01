@@ -99,3 +99,8 @@ You should replace `0.1.76` with the latest release of the project.
 1. `./build_product rhel10 rhel8 rhel9`
 1. `cd build`
 1. `ctest -R  rule-removal --output-on-failure`
+
+## STIG rules in SRG GPOS
+
+The test `test_stig_rules_in_srg_gpos.py` ensures that all rules selected in RHEL 10 STIG profile are also selected in SRG GPOS control files.
+The test prevents data inconsistencies and verifies that the STIG profile remains based on SRG GPOS controls.

@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that all local files and directories have a valid group owner.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that all local files and directories have a valid group owner.
+
+    Either remove all files and directories from {{{ full_name }}} that do not have a valid group, or assign a valid group to all files and directories on the system with the "chgrp" command:
+
+    $ sudo chgrp &lt;group&gt; &lt;file&gt;
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that all local files and directories have a valid group with the following command:
+
+    $ df --local -P | awk {'if (NR!=1) print $6'} | sudo xargs -I '{}' find '{}' -xdev -nogroup
+
+    If any files on the system do not have an assigned group, this is a finding.
+
+vuldiscussion: |-
+    Files without a valid group owner may be unintentionally inherited if a group is assigned the same group identifier (GID) as the GID of the files without a valid group owner.

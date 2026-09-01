@@ -6,14 +6,14 @@
 
 {{{ ansible_instantiate_variables("var_password_hashing_algorithm") }}}
 
-{{% if product in [ 'slmicro6', 'sle16' ] %}}
-{{% set cce_cce_identifier = cce_identifiers['cce'] %}}
+{{% if product in [ 'slmicro6', 'sle15', 'sle16' ] %}}
+{{% set password_hashing_algorithm_logindefs_cce_identifier = cce_identifiers['cce'] %}}
 {{{
     ansible_login_defs(
       parameter='ENCRYPT_METHOD',
       value='{{ var_password_hashing_algorithm.split("|")[0] }}',
       rule_title=rule_title,
-      cce=cce_cce_identifier
+      cce=password_hashing_algorithm_logindefs_cce_identifier
     )
 }}}
 {{% else %}}
@@ -24,4 +24,5 @@
       line: ENCRYPT_METHOD {{ var_password_hashing_algorithm.split('|')[0] }}
       state: present
       create: yes
+      mode: 0644
 {{% endif %}}

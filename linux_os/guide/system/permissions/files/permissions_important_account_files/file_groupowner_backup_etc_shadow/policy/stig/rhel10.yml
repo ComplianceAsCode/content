@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that the "/etc/shadow-" file is group-owned by "root".
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the group of the "/etc/shadow-" file is set to "root" by running the following command:
+
+    $ sudo chgrp root /etc/shadow-
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the "/etc/shadow-" file is group-owned by "root" with the following command:
+
+    $ sudo stat -c "%G %n" /etc/shadow-
+    root /etc/shadow-
+
+    If the "/etc/shadow-" file does not have a group owner of "root", this is a finding.
+
+vuldiscussion: |-
+    The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such contains the list of local system accounts and password hashes. Protection of this file is critical for system security.

@@ -24,6 +24,7 @@
   when:
     - item.value[1]|int >= {{{ uid_min }}}
     - item.value[1]|int != {{{ nobody_uid }}}
+    - item.value[4] != "/"
 
 - name: Ensure interactive local users are the owners of their respective home directories
   ansible.builtin.file:

@@ -1,0 +1,56 @@
+srg_requirement: |-
+    {{{ full_name }}} cryptographic policy must not be overridden.
+
+fixtext: |-
+    Configure {{{ full_name }}} to correctly implement the systemwide cryptographic policies by reinstalling the crypto-policies package contents.
+
+    Reinstall crypto-policies with the following command:
+
+    $ sudo dnf -y reinstall crypto-policies
+
+    Set the crypto-policy to FIPS with the following command:
+
+    $ sudo update-crypto-policies --set FIPS
+    Setting system policy to FIPS
+
+    Note: Systemwide crypto policies are applied on application startup. It is recommended to restart the system for the change of policies to fully take place.
+
+checktext: |-
+    Verify {{{ full_name }}} cryptographic policies are not overridden.
+
+    Verify the configured policy matches the generated policy with the following command:
+
+    $ sudo update-crypto-policies --check
+    The configured policy matches the generated policy
+
+    If the returned message does not match the above, but instead matches the following, this is a finding:
+
+    The configured policy does NOT match the generated policy
+
+    List all of the crypto backends configured on the system with the following command:
+
+    $ ls -l /etc/crypto-policies/back-ends/
+    lrwxrwxrwx. 1 root root  40 Nov 13 16:29 bind.config -&gt; /usr/share/crypto-policies/FIPS/bind.txt
+    lrwxrwxrwx. 1 root root  42 Nov 13 16:29 gnutls.config -&gt; /usr/share/crypto-policies/FIPS/gnutls.txt
+    lrwxrwxrwx. 1 root root  40 Nov 13 16:29 java.config -&gt; /usr/share/crypto-policies/FIPS/java.txt
+    lrwxrwxrwx. 1 root root  46 Nov 13 16:29 javasystem.config -&gt; /usr/share/crypto-policies/FIPS/javasystem.txt
+    lrwxrwxrwx. 1 root root  40 Nov 13 16:29 krb5.config -&gt; /usr/share/crypto-policies/FIPS/krb5.txt
+    lrwxrwxrwx. 1 root root  45 Nov 13 16:29 libreswan.config -&gt; /usr/share/crypto-policies/FIPS/libreswan.txt
+    lrwxrwxrwx. 1 root root  42 Nov 13 16:29 libssh.config -&gt; /usr/share/crypto-policies/FIPS/libssh.txt
+    -rw-r--r--. 1 root root 398 Nov 13 16:29 nss.config
+    lrwxrwxrwx. 1 root root  43 Nov 13 16:29 openssh.config -&gt; /usr/share/crypto-policies/FIPS/openssh.txt
+    lrwxrwxrwx. 1 root root  49 Nov 13 16:29 opensshserver.config -&gt; /usr/share/crypto-policies/FIPS/opensshserver.txt
+    lrwxrwxrwx. 1 root root  46 Nov 13 16:29 opensslcnf.config -&gt; /usr/share/crypto-policies/FIPS/opensslcnf.txt
+    lrwxrwxrwx. 1 root root  43 Nov 13 16:29 openssl.config -&gt; /usr/share/crypto-policies/FIPS/openssl.txt
+    lrwxrwxrwx. 1 root root  48 Nov 13 16:29 openssl_fips.config -&gt; /usr/share/crypto-policies/FIPS/openssl_fips.txt
+
+    If the paths do not point to the respective files under "/usr/share/crypto-policies/FIPS" path, this is a finding.
+
+    Note: nss.config should not be symlinked.
+
+    Note: If there is an operational need to use a subpolicy that causes the links to the crypto backends to break, this is a finding, and exceptions must be made by the authorizing official and documented with the information system security officer.
+
+vuldiscussion: |-
+    Centralized cryptographic policies simplify applying secure ciphers across an operating system and the applications that run on that operating system. Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data.
+
+

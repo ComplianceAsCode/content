@@ -4,6 +4,7 @@
 PAM_FAILLOCK_DEFAULTS_FILE_NAME="/usr/etc/security/faillock.conf"
 if ! [ -e "{{{ pam_faillock_conf_path }}}" ] ; then
     cp "${PAM_FAILLOCK_DEFAULTS_FILE_NAME}" "{{{ pam_faillock_conf_path }}}"
+    chmod 0644 "{{{ pam_faillock_conf_path }}}"
 fi
 {{% endif %}}
 

@@ -35,6 +35,7 @@
     value: '''{{ dconf_login_banner_contents }}'''
     create: yes
     no_extra_spaces: yes
+    mode: 0644
   register: result_ini
 
 - name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
@@ -44,6 +45,7 @@
     line: '/org/gnome/login-screen/banner-message-text'
     create: yes
     state: present
+    mode: 0644
   register: result_lineinfile
 
 - name: Dconf Update

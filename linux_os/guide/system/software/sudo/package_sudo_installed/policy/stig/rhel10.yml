@@ -1,21 +1,23 @@
 checktext: |-
-    Verify that {{{ full_name }}} sudo package is installed with the following command:
+    Verify {{{ full_name }}} has the "sudo" package installed with the following command:
 
-    $ dnf list --installed sudo
-
-    Example output:
-
-    sudo.x86_64          1.9.15-8.p5.el10
+    $ sudo dnf list --installed sudo
+    Installed Packages
+    sudo.x86_64                             1.9.15-8.p5.el10_0.2                             @rhel-10-for-x86_64-baseos-rpms
 
     If the "sudo" package is not installed, this is a finding.
 
 srg_requirement: |-
-    {{{ full_name }}} must have the sudo package installed.
+    {{{ full_name }}} must have the "sudo" package installed.
 
 vuldiscussion: |-
-    "sudo" is a program designed to allow a system administrator to give limited root privileges to users and log root activity. The basic philosophy is to give as few privileges as possible but still allow system users to get their work done.
+    The "sudo" package is a program designed to allow a system administrator to give limited root privileges to users and log root activity. The basic philosophy is to give as few privileges as possible but still allow system users to complete their work.
 
 fixtext: |-
-    The  sudo  package can be installed with the following command:
+    Configure {{{ full_name }}} to have the "sudo" package installed with the following command:
 
-    $ sudo dnf install sudo
+    $ sudo dnf -y install sudo
+
+
+
+

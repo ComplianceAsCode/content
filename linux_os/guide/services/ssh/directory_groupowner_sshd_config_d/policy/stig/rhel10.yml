@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that the Secure Shell (SSH) server configuration file is group-owned by "root".
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the "/etc/ssh/sshd_config" file and the contents of "/etc/ssh/sshd_config.d" are group-owned by "root" with the following command:
+
+    $ sudo chgrp root /etc/ssh/sshd_config /etc/ssh/sshd_config.d
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the "/etc/ssh/sshd_config" file and the contents of "/etc/ssh/sshd_config.d" are group-owned by "root" with the following command:
+
+    $ sudo find /etc/ssh/sshd_config /etc/ssh/sshd_config.d -exec stat -c "%G %n" {} \;
+    root /etc/ssh/sshd_config
+    root /etc/ssh/sshd_config.d
+    root /etc/ssh/sshd_config.d/50-cloud-init.conf
+    root /etc/ssh/sshd_config.d/50-redhat.conf
+
+    If the "/etc/ssh/sshd_config" file or "/etc/ssh/sshd_config.d" or any files in the "sshd_config.d" directory do not have a group owner of "root", this is a finding.
+
+vuldiscussion: |-
+    Service configuration files enable or disable features of their respective services, which if configured incorrectly can lead to insecure and vulnerable configurations. Therefore, service configuration files must be owned by the correct group to prevent unauthorized changes.

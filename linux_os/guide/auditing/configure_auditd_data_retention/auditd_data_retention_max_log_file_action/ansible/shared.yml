@@ -12,4 +12,5 @@
     regexp: '^\s*max_log_file_action\s*=\s*.*$'
     state: present
     create: yes
+    mode: 'u-x,g-wx,o-rwx'
   #notify: reload auditd

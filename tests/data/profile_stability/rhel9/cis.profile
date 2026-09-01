@@ -136,6 +136,7 @@ disable_host_auth
 enable_authselect
 ensure_gpgcheck_globally_activated
 ensure_gpgcheck_never_disabled
+ensure_journald_and_rsyslog_not_active_together
 ensure_pam_wheel_group_empty
 ensure_redhat_gpgkey_installed
 ensure_root_password_configured
@@ -329,6 +330,7 @@ partition_for_var_tmp
 postfix_network_listening_disabled
 root_path_all_dirs
 root_path_no_dot
+rsyslog_filecreatemode
 rsyslog_files_groupownership
 rsyslog_files_ownership
 rsyslog_files_permissions

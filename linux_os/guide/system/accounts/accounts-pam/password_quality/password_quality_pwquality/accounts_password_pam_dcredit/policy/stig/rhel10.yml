@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must enforce password complexity by requiring that at least one numeric character be used.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce password complexity by requiring that at least one numeric character be used by setting the "dcredit" option.
+
+    Add or update the following line in the "/etc/security/pwquality.conf" file or a configuration file in the "/etc/security/pwquality.conf.d/" directory to contain the "dcredit" parameter:
+
+    dcredit = -1
+
+checktext: |-
+    Verify {{{ full_name }}} enforces password complexity by requiring that at least one numeric character be used.
+
+    Check the value for "dcredit" with the following command:
+
+    $ sudo grep -s dcredit /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+    /etc/security/pwquality.conf:dcredit = -1
+
+    If the value of "dcredit" is a positive number or is commented out, this is a finding.
+
+vuldiscussion: |-
+    Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
+
+    Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password is, the greater the number of possible combinations that must be tested before the password is compromised.
+
+    Requiring digits makes password guessing attacks more difficult by ensuring a larger search space.

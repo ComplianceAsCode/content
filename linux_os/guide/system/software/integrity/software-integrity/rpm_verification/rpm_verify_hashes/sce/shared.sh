@@ -2,7 +2,7 @@
 # platform = multi_platform_fedora,multi_platform_rhel
 # check-import = stdout
 
-readarray -t FILES_WITH_INCORRECT_HASHES < <(rpm -Va --noconfig | grep -E '^..5' | awk '{print $NF}' )
+readarray -t FILES_WITH_INCORRECT_HASHES < <(rpm -Va --noconfig --noghost | grep -E '^..5' | awk '{print $NF}' )
 
 if (( ${#FILES_WITH_INCORRECT_HASHES[@]} > 0 )); then
     echo "Files with incorrect hashes:"

@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that the "/etc/passwd" file is owned by "root".
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the owner of the "/etc/passwd" file is set to "root" by running the following command:
+
+    $ sudo chown root /etc/passwd
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the "/etc/passwd" file is owned by "root" with the following command:
+
+    $ sudo stat -c "%U %n" /etc/passwd
+    root /etc/passwd
+
+    If the "/etc/passwd" file does not have an owner of "root", this is a finding.
+
+vuldiscussion: |-
+    The "/etc/passwd" file contains information about the users that are configured on the system. Protection of this file is critical for system security.

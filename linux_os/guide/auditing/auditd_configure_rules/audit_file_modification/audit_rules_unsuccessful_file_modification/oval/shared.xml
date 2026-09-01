@@ -2,13 +2,25 @@
   <definition class="compliance" id="audit_rules_unsuccessful_file_modification" version="1">
     {{{ oval_metadata("Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.", rule_title=rule_title) }}}
 
-    <criteria operator="AND">
-      <extend_definition comment="audit creat" definition_ref="audit_rules_unsuccessful_file_modification_creat" />
-      <extend_definition comment="audit ftruncate" definition_ref="audit_rules_unsuccessful_file_modification_ftruncate" />
-      <extend_definition comment="audit openat" definition_ref="audit_rules_unsuccessful_file_modification_openat" />
-      <extend_definition comment="audit open_by_handle_at" definition_ref="audit_rules_unsuccessful_file_modification_open_by_handle_at" />
-      <extend_definition comment="audit open" definition_ref="audit_rules_unsuccessful_file_modification_open" />
-      <extend_definition comment="audit truncate" definition_ref="audit_rules_unsuccessful_file_modification_truncate" />
+    <criteria operator="OR">
+      <!-- aarch64: only openat, open_by_handle_at, truncate, ftruncate exist -->
+      <criteria operator="AND">
+        <extend_definition comment="aarch64 architecture" definition_ref="system_info_architecture_aarch_64" />
+        <extend_definition comment="audit ftruncate" definition_ref="audit_rules_unsuccessful_file_modification_ftruncate" />
+        <extend_definition comment="audit openat" definition_ref="audit_rules_unsuccessful_file_modification_openat" />
+        <extend_definition comment="audit open_by_handle_at" definition_ref="audit_rules_unsuccessful_file_modification_open_by_handle_at" />
+        <extend_definition comment="audit truncate" definition_ref="audit_rules_unsuccessful_file_modification_truncate" />
+      </criteria>
+      <!-- other architectures: all syscalls including creat, open -->
+      <criteria operator="AND">
+        <extend_definition comment="aarch64 architecture" definition_ref="system_info_architecture_aarch_64" negate="true" />
+        <extend_definition comment="audit creat" definition_ref="audit_rules_unsuccessful_file_modification_creat" />
+        <extend_definition comment="audit ftruncate" definition_ref="audit_rules_unsuccessful_file_modification_ftruncate" />
+        <extend_definition comment="audit openat" definition_ref="audit_rules_unsuccessful_file_modification_openat" />
+        <extend_definition comment="audit open_by_handle_at" definition_ref="audit_rules_unsuccessful_file_modification_open_by_handle_at" />
+        <extend_definition comment="audit open" definition_ref="audit_rules_unsuccessful_file_modification_open" />
+        <extend_definition comment="audit truncate" definition_ref="audit_rules_unsuccessful_file_modification_truncate" />
+      </criteria>
     </criteria>
   </definition>
 

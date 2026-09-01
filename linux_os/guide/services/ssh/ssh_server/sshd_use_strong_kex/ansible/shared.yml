@@ -6,22 +6,27 @@
 
 {{{ ansible_instantiate_variables("sshd_strong_kex") }}}
 
-{{%- if product == 'sle16' -%}}
-    {{{
-        ansible_sshd_set_usr(
-                parameter="KexAlgorithms",
-                value="{{ sshd_strong_kex }}",
-                copy_defaults='true',
-                rule_title=rule_title
-            )
-    }}}
-{{%- else -%}}
-    {{{
-        ansible_sshd_set(
-          parameter="KexAlgorithms",
-          value="{{ sshd_strong_kex }}",
-          config_is_distributed=sshd_distributed_config,
-          rule_title=rule_title
-        )
-    }}}
-{{%- endif -%}}
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults("/usr/etc/ssh/sshd_config", sshd_main_config_file, rule_title=rule_title) }}}
+- name: Check if SSH {{{ sshd_main_config_file }}} configuration file exists
+  ansible.builtin.stat:
+    path: {{{ sshd_main_config_file }}}
+  register: sshd_main_config_file_{{{ rule_id }}}
+{{{
+    ansible_lineinfile(
+        rule_title + ' - Remove /usr/etc/ssh/sshd_config.d/*.conf include directive from ' + sshd_main_config_file,
+        path=sshd_main_config_file,
+        regex='^\s*Include\s+\/usr\/etc\/ssh\/sshd_config\.d/\*\.conf',
+        state='absent',
+        when='sshd_main_config_file_' + rule_id + '.stat.exists'
+    )
+}}}
+{{% endif %}}
+{{{
+    ansible_sshd_set(
+        parameter="KexAlgorithms",
+        value="{{ sshd_strong_kex }}",
+        config_is_distributed=sshd_distributed_config,
+        rule_title=rule_title
+    )
+}}}

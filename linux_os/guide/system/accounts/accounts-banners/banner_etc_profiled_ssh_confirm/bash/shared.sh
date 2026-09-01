@@ -19,5 +19,6 @@ umask u=rw,go=r
 cat <<EOF >/etc/profile.d/ssh_confirm.sh
 $formatted
 EOF
+chmod 0644 /etc/profile.d/ssh_confirm.sh
 
 umask $OLD_UMASK

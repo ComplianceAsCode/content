@@ -11,6 +11,7 @@
     value: "false"
     create: yes
     no_extra_spaces: yes
+    mode: 0644
   register: result_ini1
 
 - name: "Disable Geolocation in GNOME3 - clock location tracking"
@@ -20,6 +21,7 @@
     option: gelocation
     value: "false"
     create: yes
+    mode: 0644
   register: result_ini2
 
 - name: "Prevent user modification of GNOME geolocation - location tracking"
@@ -28,6 +30,7 @@
     regexp: '^/org/gnome/system/location/enabled$'
     line: '/org/gnome/system/location/enabled'
     create: yes
+    mode: 0644
   register: result_lineinfile1
 
 - name: "Prevent user modification of GNOME geolocation - clock location tracking"
@@ -36,6 +39,7 @@
     regexp: '^/org/gnome/clocks/geolocation$'
     line: '/org/gnome/clocks/geolocation'
     create: yes
+    mode: 0644
   register: result_lineinfile2
 
 - name: Dconf Update

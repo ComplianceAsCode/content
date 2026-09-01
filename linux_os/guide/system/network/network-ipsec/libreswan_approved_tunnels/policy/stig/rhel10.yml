@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have unauthorized IP tunnels configured.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not have unauthorized IP tunnels configured.
+
+    Remove all unapproved tunnels from the system, or document them with the ISSO.
+
+checktext: |-
+    Verify {{{ full_name }}} does not have unauthorized IP tunnels configured.
+
+    Determine if the IPsec service is active with the following command:
+
+    $ systemctl is-active ipsec
+    Inactive
+
+    If the IPsec service is active, check for configured IPsec connections ("conn"), with the following command:
+
+    $ sudo grep -rni conn /etc/ipsec.conf /etc/ipsec.d/
+
+    Verify any returned results are documented with the ISSO.
+
+    If the IPsec tunnels are active and not approved, this is a finding.
+
+vuldiscussion: |-
+    IP tunneling mechanisms can be used to bypass network filtering. If tunneling is required, it must be documented with the information system security officer (ISSO).

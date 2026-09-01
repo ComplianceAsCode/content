@@ -1,0 +1,7 @@
+#!/bin/bash
+# platform = Red Hat Enterprise Linux 9
+# packages = audit
+
+# This test should pass because the auid filters are optional from the OVAL point of view
+echo "-a always,exit -F arch=b32 -F path=/var/log/lastlog -F perm=wa -k logins" >> /etc/audit/rules.d/logins.rules
+echo "-a always,exit -F arch=b64 -F path=/var/log/lastlog -F perm=wa -k logins" >> /etc/audit/rules.d/logins.rules

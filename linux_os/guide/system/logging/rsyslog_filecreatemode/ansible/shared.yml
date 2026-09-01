@@ -39,6 +39,7 @@
     line: '$FileCreateMode 0640'
     mode: 0640
     create: true
+  register: result_rsyslog_filecreatemode_added
   when:
     - rsyslog_filecreatemode_files | length == 0 or result_rsyslog_filecreatemode_removed is not skipped
 
@@ -48,5 +49,15 @@
     regexp: '^\$FileCreateMode'
     line: $FileCreateMode 0640
   loop: "{{ rsyslog_filecreatemode_files }}"
+  register: result_rsyslog_filecreatemode_updated
   when:
     - rsyslog_filecreatemode_files | length == 1
+
+- name: "{{{ rule_title }}} - Restart rsyslog to Apply New $FileCreateMode Setting"
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted
+  when:
+    - result_rsyslog_filecreatemode_removed is changed
+      or result_rsyslog_filecreatemode_added is changed
+      or result_rsyslog_filecreatemode_updated is changed

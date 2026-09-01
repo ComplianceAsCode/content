@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Enable kernel.apparmor_restrict_unprivileged_unconfined'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.apparmor_restrict_unprivileged_unconfined", value="1") }}}'
+
+rationale: |-
+    Restricting unprivileged unconfined processes with AppArmor reduces the
+    attack surface available to local users and helps enforce additional
+    kernel-level hardening.
+
+severity: medium
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.apparmor_restrict_unprivileged_unconfined", value="1") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable AppArmor restrictions for
+    unprivileged unconfined processes.
+    {{{ fixtext_sysctl("kernel.apparmor_restrict_unprivileged_unconfined", "1") | indent(4) }}}
+
+platform: system_with_kernel
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.apparmor_restrict_unprivileged_unconfined
+        datatype: int

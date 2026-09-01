@@ -3,4 +3,5 @@
 # variables = var_sshd_set_maxstartups=10:30:60
 source include.sh
 
-echo "MaxStartups 10:30:60" >> /etc/ssh/sshd_config.d/01-complianceascode.conf
+touch "{{{ sshd_main_config_file }}}"
+echo "MaxStartups 10:30:60" >> "{{{ sshd_config_dir }}}/01-complianceascode.conf"

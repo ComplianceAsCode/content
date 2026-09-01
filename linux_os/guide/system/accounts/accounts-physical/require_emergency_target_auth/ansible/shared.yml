@@ -4,11 +4,12 @@
 # complexity = low
 # disruption = low
 
-{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product == 'slmicro5'  or 'ol' in families %}}
+{{% if 'sle' in product or 'rhel' in product or product == 'fedora' or product.startswith('slmicro')  or 'ol' in families %}}
 - name: Require emergency mode password
   ansible.builtin.blockinfile:
       create: yes
       dest: /etc/systemd/system/emergency.service.d/10-oscap.conf
+      mode: '0644'
       block: |
         [Service]
         ExecStart=
@@ -24,4 +25,5 @@
       {{%- else -%}}
       line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
       {{%- endif %}}
+      mode: '0644'
 {{% endif %}}

@@ -179,7 +179,7 @@ The header consists of comments (starting by `#`). Possible keys are:
   restricted. Use this only if the scenario makes sense only in a specific
   profile. Typically, a rule doesn't depend on a profile and behaves the same
   way regardless the profile it's a part of. If the rule is parametrized by
-  variables (XCCDF Values), use the `variables` key instead. This key is
+  variables (XCCDF `<Value>` elements), use the `variables` key instead. This key is
   intended to be used in regression testing of bugs in profiles, it isn't
   intended for casual use.
 - `check` is a string specifying one of the available check engine types
@@ -193,11 +193,16 @@ The header consists of comments (starting by `#`). Possible keys are:
   scenario would break test runs, because OpenSCAP generates reports into the
   /tmp directory).
 - `templates` has no effect at the moment.
-- `variables` is a comma-separated list of XCCDF values that sets a different
-  default value for XCCDF variables in a form `<variable name>=<value>`.
-  Typically, you use only one of `profile` or `variables` in scenario metadata -
-  default values are effective only if the variable is not defined using a
-  selector, which is exactly what profiles do.
+- `variables` overrides the default value of XCCDF `<Value>` elements
+  in the data stream:
+  - Comma-separated, in the form `<variable name>=<value>`
+  - The variable must already exist as a `<Value>` element in the
+    data stream
+  - Use the actual value (e.g. `no|delayed`), not the option name
+    from the `.var` file (e.g. `stig`)
+  - Do not combine with `profile` in the same scenario -- the profile
+    selects variable values on its own, overriding the `variables`
+    directive
 
 Examples of test scenario:
 

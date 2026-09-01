@@ -1,0 +1,35 @@
+srg_requirement: |-
+    {{{ full_name }}} must use a Linux Security Module configured to enforce limits on system services.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce correct operation of security functions.
+
+    Edit the file "/etc/selinux/config" and add or modify the following line:
+
+     SELINUX=enforcing
+
+    A reboot is required for the changes to take effect.
+
+checktext: |-
+    Verify {{{ full_name }}} enforces correct operation of security functions through the use of SELinux with the following command:
+
+    $ getenforce
+    Enforcing
+
+    If SELINUX is not set to "Enforcing", this is a finding.
+
+    Verify SELinux is configured to be enforcing at boot.
+
+    $ sudo grep "SELINUX=" /etc/selinux/config | grep -v '#'
+    SELINUX=enforcing
+
+    If an uncommented SELinux line is missing or not set to "enforcing", this is a finding.
+
+vuldiscussion: |-
+    Without verification of the security functions, security functions may not operate correctly and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based.
+
+    Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.
+
+    This requirement applies to operating systems performing security function verification/testing and/or systems and environments that require this functionality.
+
+

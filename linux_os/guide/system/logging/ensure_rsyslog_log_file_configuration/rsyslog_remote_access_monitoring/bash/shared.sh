@@ -6,6 +6,7 @@ declare -A LOCATIONS=( ['auth.*']='/var/log/secure' ['authpriv.*']='/var/log/sec
 if [[ ! -f /etc/rsyslog.conf ]]; then
 	# Something is not right, create the file
 	touch /etc/rsyslog.conf
+	chmod 0644 /etc/rsyslog.conf
 fi
 
 

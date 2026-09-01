@@ -232,11 +232,24 @@
                 return;
             }
 
-            container.innerHTML = gaps.map(control => {
+            // Group gaps: base controls with their enhancement gaps
+            const baseGaps = gaps.filter(c => !c.parent_id);
+            const enhGapsByParent = {};
+            gaps.forEach(c => {
+                if (c.parent_id) {
+                    if (!enhGapsByParent[c.parent_id]) enhGapsByParent[c.parent_id] = [];
+                    enhGapsByParent[c.parent_id].push(c);
+                }
+            });
+
+            let html = '';
+
+            baseGaps.forEach(control => {
                 const levels = (control.levels || []).join(', ').toUpperCase();
                 const familyName = getFamilyName(control.id);
+                const childGaps = enhGapsByParent[control.id] || [];
 
-                return `
+                html += `
                     <div class="gap-item" onclick="window.location.href='control-detail.html?id=${control.id}'">
                         <div class="gap-item-header">
                             <div>
@@ -245,11 +258,48 @@
                             </div>
                         </div>
                         <div style="font-size: 12px; color: #586069; margin-top: 8px;">
-                            📁 ${familyName} • 📊 Baselines: ${levels}
+                            ${familyName} | Baselines: ${levels}
+                            ${childGaps.length > 0 ? ` | ${childGaps.length} enhancement gap${childGaps.length > 1 ? 's' : ''}` : ''}
                         </div>
                     </div>
                 `;
-            }).join('');
+
+                if (childGaps.length > 0) {
+                    html += '<div style="margin-left: 20px; border-left: 2px solid #e1e4e8; padding-left: 12px;">';
+                    childGaps.forEach(enh => {
+                        html += `
+                            <div class="gap-item" style="padding: 8px 12px; margin-bottom: 4px;" onclick="window.location.href='control-detail.html?id=${enh.id}'">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="gap-id" style="font-size: 13px;">${enh.id.toUpperCase()}</span>
+                                    <span style="font-size: 13px; color: #24292e;">${enh.title}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                }
+            });
+
+            // Orphan enhancement gaps (parent not in this gap list)
+            const orphanEnhGaps = gaps.filter(c => c.parent_id && !baseGaps.find(b => b.id === c.parent_id));
+            orphanEnhGaps.forEach(control => {
+                const levels = (control.levels || []).join(', ').toUpperCase();
+                html += `
+                    <div class="gap-item" onclick="window.location.href='control-detail.html?id=${control.id}'">
+                        <div class="gap-item-header">
+                            <div>
+                                <div class="gap-id">${control.id.toUpperCase()}</div>
+                                <div class="gap-title">${control.title}</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: #586069; margin-top: 8px;">
+                            Baselines: ${levels} | Enhancement of ${control.parent_id.toUpperCase()}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
         }
 
         function renderFamilyBreakdown(gaps) {

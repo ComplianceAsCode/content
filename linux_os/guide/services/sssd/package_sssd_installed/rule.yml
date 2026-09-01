@@ -7,7 +7,16 @@ description: |-
     The <tt>sssd</tt> package should be installed.
     {{{ describe_package_install(package="sssd") }}}
 
-rationale: ""
+rationale: |-
+    The System Security Services Daemon <tt>sssd</tt> provides
+    authentication mechanisms for remote directories.
+    Remote directories allow administrators to manage
+    access across many systems.
+
+    This package is needed so that authentication from
+    remote directories is possible. Without this package
+    the system will be unable to use many centralized
+    authentication systems.
 
 severity: medium
 

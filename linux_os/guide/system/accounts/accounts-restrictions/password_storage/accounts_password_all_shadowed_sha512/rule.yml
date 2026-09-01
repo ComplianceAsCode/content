@@ -9,8 +9,8 @@ description: |-
     cryptographic hash.
     Check that the interactive user account passwords are using a strong
     password hash with the following command:
-    <pre>$ sudo cut -d: -f2 /etc/shadow
-    $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
+    <pre>$ sudo cut -d: -f1,2 /etc/shadow
+    nsauser:$6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
     Password hashes <tt>!</tt> or <tt>*</tt> indicate inactive accounts not
     available for logon and are not evaluated.
     If any interactive user password hash does not begin with <tt>$6</tt>,
@@ -36,10 +36,9 @@ references:
     cis@sle12: 5.4.1.1
     cis@sle15: 5.4.1.1
     nist: IA-5(1)(c),IA-5(1).1(v),IA-7,IA-7.1
-    srg:  SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
+    srg: SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
     stigid@ol8: OL08-00-010120
     stigid@sle12: SLES-12-010220
-    stigid@sle15: SLES-15-020180
 
 ocil_clause: 'any interactive user password hash does not begin with "$6"'
 
@@ -47,9 +46,9 @@ ocil: |-
     Verify that the interactive user account passwords are using a strong
     password hash with the following command:
 
-    <pre>$ sudo cut -d: -f2 /etc/shadow
+    <pre>$ sudo cut -d: -f1,2 /etc/shadow
 
-    $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
+    nsauser:$6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
 
     Password hashes <tt>!</tt> or <tt>*</tt> indicate inactive accounts not
     available for logon and are not evaluated.
@@ -58,4 +57,4 @@ fixtext: |-
     Lock all interactive user accounts not using SHA-512 hashing until the passwords can be regenerated with SHA-512.
 
 srg_requirement: |-
-    {{{ full_name }}} must employ FIPS 140-3 approved cryptographic hashing algorithms for all stored passwords.
+    {{{ full_name }}} must employ FIPS 140-3-approved cryptographic hashing algorithms for all stored passwords.

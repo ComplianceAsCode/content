@@ -1,0 +1,21 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Restore ownership of cronie files"
+  ansible.builtin.command: rpm --setugids cronie
+  changed_when: true
+
+- name: "{{{ rule_title }}} - Restore permissions of cronie files"
+  ansible.builtin.command: rpm --setperms cronie
+  changed_when: true
+
+- name: "{{{ rule_title }}} - Restore ownership of crontabs files"
+  ansible.builtin.command: rpm --setugids crontabs
+  changed_when: true
+
+- name: "{{{ rule_title }}} - Restore permissions of crontabs files"
+  ansible.builtin.command: rpm --setperms crontabs
+  changed_when: true

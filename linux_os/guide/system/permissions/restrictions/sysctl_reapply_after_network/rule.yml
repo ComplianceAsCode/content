@@ -1,0 +1,47 @@
+documentation_complete: true
+
+title: 'Ensure sysctl network settings are re-applied after network interfaces come up'
+
+description: |-
+    On Debian systems, the kernel resets certain network sysctl values when a
+    network interface is brought up, overriding hardened settings applied at
+    early boot by <tt>systemd-sysctl.service</tt>.
+    <br/><br/>
+    Create a systemd oneshot service
+    <tt>/etc/systemd/system/sysctl-reapply-network.service</tt>:
+    <pre>[Unit]
+    Description=Re-apply sysctl hardening after network interfaces come up
+    After=networking.service systemd-networkd.service
+    DefaultDependencies=no
+
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/sysctl --system
+    RemainAfterExit=yes
+
+    [Install]
+    WantedBy=multi-user.target</pre>
+    Then reload the systemd daemon and enable the service:
+    <pre>$ sudo systemctl daemon-reload
+    $ sudo systemctl enable sysctl-reapply-network.service</pre>
+
+rationale: |-
+    When a network interface is initialized, the Linux kernel may reset interface-level
+    and global sysctl values to their defaults. Running <tt>sysctl --system</tt> after
+    network interfaces are up ensures the hardened values from <tt>/etc/sysctl.conf</tt>
+    and <tt>/etc/sysctl.d/</tt> are the final values in effect at runtime.
+    <br/><br/>
+    Using <tt>DefaultDependencies=no</tt> prevents the ordering cycle that would arise
+    from modifying <tt>systemd-sysctl.service</tt> itself to depend on
+    <tt>network-online.target</tt>.
+
+severity: medium
+
+platform: machine
+
+ocil_clause: 'the sysctl-reapply-network service does not exist or is not enabled'
+
+ocil: |-
+    Verify that the <tt>sysctl-reapply-network.service</tt> unit is enabled:
+    <pre>$ systemctl is-enabled sysctl-reapply-network.service</pre>
+    The output should be <tt>enabled</tt>.

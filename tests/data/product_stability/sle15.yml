@@ -1,7 +1,13 @@
-aide_also_checks_audispd: "yes"
-aide_also_checks_rsyslog: "no"
 aide_bin_path: /usr/bin/aide
 aide_conf_path: /etc/aide.conf
+aide_audit_binaries:
+  - auditctl
+  - auditd
+  - ausearch
+  - aureport
+  - autrace
+  - audispd
+  - augenrules
 audisp_conf_path: /etc/audit
 audit_binaries:
   - /usr/sbin/auditctl
@@ -108,6 +114,7 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
+  stigref_vulnerability_id: https://www.cyber.mil/stigs/srg-stig-tools#vulnerability_id
   suse-general: not_publicly_available
 release_key_fingerprint: FEAB502539D846DB2C0961CA70AF9E8139DB7C82
 rsyslog_cafile: /etc/pki/tls/cert.pem

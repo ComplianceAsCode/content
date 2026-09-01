@@ -2,7 +2,9 @@
 
 if [ ! -f /etc/rsyslog.d/50-default.conf ]; then
     mkdir -p /etc/rsyslog.d/
+    chmod 0755 /etc/rsyslog.d/
     touch /etc/rsyslog.d/50-default.conf
+    chmod 0644 /etc/rsyslog.d/50-default.conf
 fi
 
 # Check to see if auth exists

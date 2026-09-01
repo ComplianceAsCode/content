@@ -14,19 +14,18 @@ macro(ssg_python_unit_tests PYTHON_COMPONENT_ID RELATIVE_PYTHONPATH IGNORE_SUBDI
         COMMAND ${TEST_COMMAND}
     )
     set_tests_properties("python-unit-${PYTHON_COMPONENT_ID}" PROPERTIES ENVIRONMENT
-        "PYTHONPATH=${CMAKE_SOURCE_DIR}/${RELATIVE_PYTHONPATH}:$ENV{PYTHONPATH}"
+        "PYTHONPATH=${CMAKE_SOURCE_DIR}/${RELATIVE_PYTHONPATH}:$ENV{PYTHONPATH};COVERAGE_FILE=${CMAKE_CURRENT_BINARY_DIR}/.coverage.${PYTHON_COMPONENT_ID}"
         LABELS quick
     )
 endmacro()
 
 if(PY_PYTEST)
-    ssg_python_unit_tests("utils" "utils" "oscal/")
+    ssg_python_unit_tests("utils" "utils" "")
     ssg_python_unit_tests("ssg-module" "." "")
     ssg_python_unit_tests("build-scripts" "." "")
     ssg_python_unit_tests("ssg_test_suite" "tests" "")
-    if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
-        ssg_python_unit_tests("utils/oscal" "utils/oscal" "")
-    endif()
+    # CEL rule fixtures evaluated via celctl (skips itself when celctl is absent)
+    ssg_python_unit_tests("kubernetes" "." "")
 endif()
 
 add_test(
@@ -111,10 +110,6 @@ mypy_test("tests/cces-removed.py" "normal")
 mypy_test("utils/build_control_from_reference.py" "skip")
 mypy_test("tests/rule_removal.py" "skip")
 mypy_test("ssg" "skip")
-
-if(Python_VERSION_MAJOR GREATER 2 AND Python_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
-    mypy_test("utils/oscal/" "skip")
-endif()
 
 if(Python_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(
@@ -390,6 +385,12 @@ macro(check_for_rule_removal PRODUCT)
     endif()
 endmacro()
 
+add_test(
+    NAME "profile-variables"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_variables.py" "--build-dir" "${CMAKE_BINARY_DIR}"
+)
+set_tests_properties("profile-variables" PROPERTIES LABELS quick)
+
 if(SSG_PRODUCT_RHEL8)
     check_for_rule_removal("rhel8")
 endif()
@@ -407,4 +408,13 @@ add_test(
     NAME "import_srg_spreadsheet-sanity"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/import_srg_spreadsheet.py" "-h"
 )
+endif()
+
+if(SSG_PRODUCT_RHEL10)
+    add_test(
+        NAME "stig-rules-srg-gpos"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_stig_rules_in_srg_gpos.py"  --root "${CMAKE_SOURCE_DIR}" --product "rhel10"
+    )
+    set_tests_properties("stig-rules-srg-gpos" PROPERTIES LABELS quick)
+    mypy_test("tests/test_stig_rules_in_srg_gpos.py" "normal")
 endif()

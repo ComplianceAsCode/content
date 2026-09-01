@@ -8,20 +8,21 @@
   ansible.builtin.set_fact:
       conf_files: [ '/etc/rsyslog.d/50-default.conf' ]
       remote_methods:
-        - selector: 'auth.*'
-          regexp: ^.*auth\.\*.*$
-          log_path_name: secure
-        - selector: 'authpriv.*'
-          regexp: ^.*authpriv\.\*.*$
-          log_path_name: secure
-        - selector: 'daemon.*'
-          regexp: ^.*daemon\.\*.*$
-          log_path_name: messages
+          - selector: 'auth.*'
+            regexp: ^.*auth\.\*.*$
+            log_path_name: secure
+          - selector: 'authpriv.*'
+            regexp: ^.*authpriv\.\*.*$
+            log_path_name: secure
+          - selector: 'daemon.*'
+            regexp: ^.*daemon\.\*.*$
+            log_path_name: messages
 
 - name: "{{{ rule_title }}} - Ensure /etc/rsyslog.d/50-default.conf Exists"
   ansible.builtin.file:
       path: "{{ conf_files.0 }}"
       state: touch
+      mode: 0644
 
 - name: "{{{ rule_title }}} - Check for Existing Values in Conf Files"
   ansible.builtin.lineinfile:
@@ -39,5 +40,6 @@
       line: "{{ item.item.0.selector }} /var/log/{{ item.item.0.log_path_name }}"
       insertafter: ^.*\/var\/log\/secure.*$
       create: yes
+      mode: 0644
   loop: '{{ remote_method_values.results }}'
   when: item.found == 0

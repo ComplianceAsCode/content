@@ -17,6 +17,7 @@
     line: 'server {{ item }}'
     state: present
     create: True
+    mode: 0644
   loop: '{{ var_multiple_time_servers.split(",") }}'
   when: chrony_server_config.matched == 1
 
@@ -33,5 +34,6 @@
     line: 'pool {{ item }}'
     state: present
     create: True
+    mode: 0644
   loop: '{{ var_multiple_time_servers.split(",") }}'
   when: ntp_server_config.matched == 1

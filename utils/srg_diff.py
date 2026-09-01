@@ -150,7 +150,8 @@ def get_missing_in(in_set: set, cce_rule_id_dict: dict) -> list:
     result = list()
     for cce in in_set:
         cce = cce.replace('\n', '').strip()
-        result.append(f"{cce} - {cce_rule_id_dict[cce]}")
+        rid = cce_rule_id_dict.get(cce, "UNKNOWN")
+        result.append(f"{cce} - {rid}")
     return result
 
 
@@ -158,8 +159,8 @@ def main():
     args = _parse_args()
     base_path = args.base
     target_path = args.target
-    target_sheet = get_worksheet(base_path)
-    base_sheet = get_worksheet(target_path)
+    base_sheet = get_worksheet(base_path)
+    target_sheet = get_worksheet(target_path)
     base_set = get_stigid_set(base_sheet, args.end_row)
     target_set = get_stigid_set(target_sheet, args.end_row)
     full_name = get_full_name(args.root, args.product)

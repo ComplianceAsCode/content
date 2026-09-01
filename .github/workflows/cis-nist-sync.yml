@@ -8,7 +8,9 @@ on:
     # Run every Sunday at 2:00 PM UTC
     - cron: '0 14 * * 0'
   workflow_dispatch: # Allow manual trigger
-
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   generate-and-validate:
     name: Generate CIS-NIST Control File and Profiles
@@ -39,7 +41,7 @@ jobs:
             gh
 
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0

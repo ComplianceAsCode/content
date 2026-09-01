@@ -3,6 +3,10 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
+
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults("/usr/etc/zypp/zypp.conf", pkg_manager_config_file, rule_title=rule_title) }}}
+{{% endif %}}
 - name: Ensure GPG check is globally activated
   community.general.ini_file:
     dest: {{{ pkg_manager_config_file }}}
@@ -10,4 +14,8 @@
     option: gpgcheck
     value: 1
     no_extra_spaces: yes
+{{% if product in ['sle16', 'slmicro6'] %}}
+    create: True
+{{% else %}}
     create: False
+{{% endif %}}

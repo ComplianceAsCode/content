@@ -1,0 +1,58 @@
+# CEL rule unit-test fixtures. Evaluated by tests/unit/kubernetes/test_cel_rules.py
+# via celctl (cel-go, the Compliance Operator scanner engine).
+# Seeded from real API objects; see provenance. Versions only, nothing cluster-identifiable.
+provenance:
+  fetched_with: celctl cac scaffold --from-cluster
+  date: '2026-07-23'
+  openshift_version: 4.22.0
+  kubernetes_version: v1.35.5
+  source_api_versions:
+    hco: hco.kubevirt.io/v1beta1
+cases:
+  - name: no storageImport block is compliant
+    expect: true
+    inputs:
+      hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
+        metadata:
+          name: kubevirt-hyperconverged
+          namespace: openshift-cnv
+        spec: {}
+  - name: storageImport without an insecureRegistries key is compliant
+    expect: true
+    inputs:
+      hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
+        metadata:
+          name: kubevirt-hyperconverged
+          namespace: openshift-cnv
+        spec:
+          storageImport:
+            importProxy: {}
+  - name: hyperconverged with empty insecureRegistries is compliant
+    expect: true
+    inputs:
+      hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
+        metadata:
+          name: kubevirt-hyperconverged
+          namespace: openshift-cnv
+        spec:
+          storageImport:
+            insecureRegistries: []
+  - name: hyperconverged with insecureRegistries entries is non-compliant
+    expect: false
+    inputs:
+      hco:
+        apiVersion: hco.kubevirt.io/v1beta1
+        kind: HyperConverged
+        metadata:
+          name: kubevirt-hyperconverged
+          namespace: openshift-cnv
+        spec:
+          storageImport:
+            insecureRegistries:
+              - registry.internal:5000

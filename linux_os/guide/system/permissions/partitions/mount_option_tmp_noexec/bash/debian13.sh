@@ -21,10 +21,12 @@ option_check=$(echo $current_options | grep $mount_option | wc -l)
 # add systemd drop in to add missing option
 if [ $option_check == "0" ]; then
     mkdir -p /etc/systemd/system/$unit.d
+    chmod 0755 /etc/systemd/system/$unit.d
     cat > /etc/systemd/system/$unit.d/mount_options.conf <<EOF
 [Mount]
 Options=$current_options,$mount_option
 EOF
+    chmod 0644 /etc/systemd/system/$unit.d/mount_options.conf
 
     # unit changed on disk. reload.
     systemctl daemon-reload

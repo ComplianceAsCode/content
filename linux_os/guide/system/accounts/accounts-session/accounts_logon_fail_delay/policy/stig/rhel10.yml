@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must enforce a delay of at least four seconds between login prompts following a failed login attempt.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce a delay of at least four seconds between login prompts following a failed console login attempt.
+
+    Modify the "/etc/login.defs" file to set the "FAIL_DELAY" parameter to "4" or greater:
+
+    FAIL_DELAY 4
+
+checktext: |-
+    Verify {{{ full_name }}} enforces a delay of at least four seconds between console login prompts following a failed login attempt with the following command:
+
+    $ sudo grep -i fail_delay /etc/login.defs
+    FAIL_DELAY 4
+
+    If the value of "FAIL_DELAY" is not set to "4" or greater, or the line is commented out, this is a finding.
+
+vuldiscussion: |-
+    Increasing the time between a failed authentication attempt and reprompting to enter credentials helps to slow a single-threaded brute-force attack.

@@ -180,6 +180,10 @@ value: :code:`Setting={{ varname1 }}`
     - {{{ config_dir }}}
     contains: {{{ line_regex }}}
   register: _config_dir_has_parameter
+- name: {{{ rule_title }}} - Check if {{{ config_file }}} exists
+  ansible.builtin.stat:
+    path: {{{ config_file }}}
+  register: _config_file_exists
 - name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in {{{ config_file }}}
   ansible.builtin.lineinfile:
     path: {{{ config_file }}}
@@ -188,6 +192,7 @@ value: :code:`Setting={{ varname1 }}`
   check_mode: true
   changed_when: false
   register: _config_file_correctly
+  when: _config_file_exists.stat.exists
 - name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in {{{ config_dir }}}
   ansible.builtin.find:
     paths:
@@ -201,7 +206,9 @@ value: :code:`Setting={{ varname1 }}`
     {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
     {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, insensitive=insensitive, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
     {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, regex=line_regex, insensitive=insensitive, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
-  when: (_config_file_correctly.found == 0 and _config_dir_correctly.matched == 0) or ((_config_file_has_parameter.found | int) + (_config_dir_has_parameter.matched | int)) != 1
+  when:
+    - _config_file_correctly is not skipped
+    - (_config_file_correctly.found == 0 and _config_dir_correctly.matched == 0) or ((_config_file_has_parameter.found | int) + (_config_dir_has_parameter.matched | int)) != 1
 {{%- endmacro %}}
 
 
@@ -258,7 +265,7 @@ value: :code:`Setting={{ varname1 }}`
     modification_time: preserve
     access_time: preserve
 {{%- else %}}
-{{{ ansible_set_config_file(msg, sshd_main_config, parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", rule_title=rule_title) }}}
+{{{ ansible_set_config_file(msg, sshd_main_config, parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF", mode="0600", rule_title=rule_title) }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
@@ -356,7 +363,7 @@ value: :code:`Setting={{ varname1 }}`
 
 #}}
 {{%- macro ansible_auditd_set(msg='', parameter='', value='', rule_title=None) %}}
-{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*", rule_title=rule_title) }}}
+{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*", mode="u-x,g-wx,o-rwx", rule_title=rule_title) }}}
 {{%- endmacro %}}
 
 {{#
@@ -391,6 +398,7 @@ value: :code:`Setting={{ varname1 }}`
     content: |+
         {{{ contents|indent(8) }}}
     force: yes
+    mode: 0644
 {{%- endmacro %}}
 
 
@@ -806,6 +814,78 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- endmacro %}}
 
 
+{{#
+    Ensure a default domain is configured in sssd.conf so that sssd can start
+
+:param sssd_conf: Path to the main sssd configuration file
+:type sssd_conf: str
+:param sssd_conf_dir: Path to the sssd conf.d drop-in directory
+:type sssd_conf_dir: str
+:param rule_title: Rule title used as prefix in Ansible task names
+:type rule_title: str
+#}}
+{{% macro ansible_sssd_ensure_default_config(sssd_conf, sssd_conf_dir, rule_title) -%}}
+- name: "{{{ rule_title }}} - Ensure sssd config directory exists"
+  ansible.builtin.file:
+    path: "{{{ sssd_conf_dir }}}"
+    state: directory
+    mode: '0711'
+
+- name: "{{{ rule_title }}} - Test for domain group in main config"
+  ansible.builtin.command: grep '^\s*\[domain\/[^]]*]' {{{ sssd_conf }}}
+  register: test_grep_domain
+  failed_when: false
+  changed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Test for domain group in conf.d"
+  ansible.builtin.shell: grep -rs '^\s*\[domain\/[^]]*]' {{{ sssd_conf_dir }}}/*.conf 2>/dev/null
+  register: test_grep_domain_conf_d
+  failed_when: false
+  changed_when: false
+  check_mode: false
+
+- name: "{{{ rule_title }}} - Add default domain group (if no domain there)"
+  community.general.ini_file:
+    path: {{{ sssd_conf }}}
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    create: true
+    mode: 0600
+  with_items:
+    - { section: sssd, option: domains, value: default}
+{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+    - { section: domain/default, option: id_provider, value: proxy }
+    - { section: domain/default, option: proxy_lib_name, value: files }
+    - { section: domain/default, option: local_auth_policy, value: only }
+{{% else %}}
+    - { section: domain/default, option: id_provider, value: files }
+{{% endif %}}
+  when:
+    - test_grep_domain.stdout is defined
+    - test_grep_domain.stdout | length < 1
+    - test_grep_domain_conf_d.stdout is defined
+    - test_grep_domain_conf_d.stdout | length < 1
+{{%- endmacro %}}
+
+
+{{#
+    Install sssd-proxy package on products that use proxy id_provider for default domain
+
+:param rule_title: Rule title used as prefix in Ansible task names
+:type rule_title: str
+#}}
+{{% macro ansible_install_sssd_proxy(rule_title) -%}}
+{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+- name: "{{{ rule_title }}} - Install sssd-proxy for default domain"
+  ansible.builtin.package:
+    name: sssd-proxy
+    state: present
+{{% endif %}}
+{{%- endmacro %}}
+
+
 {{% macro ansible_ini_file_set(filename, section, key, value, description="", no_extra_spaces=False) -%}}
 - name: "{{{ description if description else ("Set '" + key + "' to '" + value + "' in the [" + section + "] section of '" + filename + "'") }}}"
   community.general.ini_file:
@@ -847,6 +927,9 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   with_items:
     - { path: /etc/sudoers }
     - "{{ sudoers.files }}"
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+  when: not ansible_check_mode
+{{% endif %}}
 {{%- endmacro -%}}
 
 
@@ -871,7 +954,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- if ver -%}}
 {{# For RPM packages, Ansible splits the package version into "epoch", "version" and "release" keys. For DEB packages, Ansible provides only "version" key. We don't take the "release" part into account. #}}
 {{%- if pkg_system == "rpm" -%}}
-"{{{ package }}}" in ansible_facts.packages and (((((ansible_facts.packages["{{{ package }}}"] | last)["epoch"]) != None) | ternary((ansible_facts.packages["{{{ package }}}"] | last)["epoch"] ~ ":", "0:")) + ((ansible_facts.packages["{{{ package }}}"] | last)["version"] | split("-") | first)) is version("{{{ ver }}}", "{{{ op }}}")
+"{{{ package }}}" in ansible_facts.packages and (((((ansible_facts.packages["{{{ package }}}"] | last)["epoch"]) | default(0) | int) | ternary((ansible_facts.packages["{{{ package }}}"] | last)["epoch"] ~ ":", "0:")) + ((ansible_facts.packages["{{{ package }}}"] | last)["version"] | split("-") | first)) is version("{{{ ver }}}", "{{{ op }}}")
 {{%- else -%}}
 "{{{ package }}}" in ansible_facts.packages and ((ansible_facts.packages["{{{ package }}}"] | last)["version"] | split("-") | first) is version("{{{ ver }}}", "{{{ op }}}")
 {{%- endif -%}}
@@ -1408,6 +1491,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
             [default=die]                   pam_faillock.so authfail
             sufficient                      pam_faillock.so authsucc
         force: yes
+        mode: 0644
       when: not faillock_file_stat.stat.exists
 
     - name: {{{ rule_title }}} - Put the content into cac_faillock_notify if it does not exist
@@ -1425,6 +1509,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
           Account:
             required                        pam_faillock.so
         force: yes
+        mode: 0644
       when: not faillock_notify_file_stat.stat.exists
 
     {{{ ansible_apply_pam_auth_update_changes('cac_faillock') | indent(4) }}}
@@ -1595,6 +1680,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
           Password:
             requisite           pam_pwquality.so retry=3
         force: yes
+        mode: 0644
       when: not pwquality_file_stat.stat.exists
 
     {{{ ansible_apply_pam_auth_update_changes('cac_pwquality', rule_title=rule_title) | indent(4) }}}
@@ -2328,6 +2414,7 @@ Part of the grub2_bootloader_argument_absent template.
     ansible.builtin.file:
         path: /etc/rsyslog.conf
         state: touch
+        mode: 0644
         modification_time: preserve
         access_time: preserve
 
@@ -2335,6 +2422,7 @@ Part of the grub2_bootloader_argument_absent template.
     ansible.builtin.file:
         path: /etc/rsyslog.d
         state: directory
+        mode: 0755
 {{%- endmacro -%}}
 
 
@@ -2410,6 +2498,7 @@ lines will be inserted at the beginning of the profile.
     path: "/etc/dconf/profile/{{{ profile }}}"
     line: "{{ item }}"
     create: yes
+    mode: 0644
     state: present
   loop:
     - "user-db:user"
@@ -2420,124 +2509,6 @@ lines will be inserted at the beginning of the profile.
   ansible.builtin.command: dconf update
   when: dconf_user_profile_blockinfile is changed
 {{%- endmacro -%}}
-
-
-{{#
-
-    Set a sshd configuration parameter to a value for system with /usr - located default config
-
-:parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
-:type msg: str
-:parameter parameter: Parameter to set
-:type parameter: str
-:parameter value: The value to set
-:type value: str
-:param copy_defaults: If true default sshd configuration in /usr/etc/ssh/sshd_config will be
-copied onto /etc/ssh/sshd_config, if /etc/ssh/sshd_config does not exist
-:type copy_defaults: bool
-:parameter config_basename: drop-in filename of sshd configuration file
-:type config_basename: str
-
-#}}
-{{%- macro ansible_sshd_set_usr(msg='', parameter='', value='', copy_defaults=true, config_basename="00-complianceascode-hardening.conf", rule_title=None) %}}
-{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
-{{%- set sshd_usr_config_path = "/usr/etc/ssh/sshd_config" %}}
-{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
-{{%- set sshd_usr_config_dir = "/usr/etc/ssh/sshd_config.d" -%}}
-{{%- set ssh_paths = ['/etc/ssh/sshd_config.d', '/usr/etc/ssh/sshd_config.d'] -%}}
-{{%- set config_file = "/etc/ssh/sshd_config.d/" ~ config_basename -%}}
-{{%- set new_line = parameter + ' ' + value -%}}
-{{%- set line_regex = "(?i)^\s*" + "{{ \"" + parameter + "\"| regex_escape }}" + "\s+" -%}}
-{{%- set dir_parameter = "sshd_config_d_has_parameter" -%}}
-{{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
-
-- name: {{{ rule_title }}} - Copy default {{{ sshd_usr_config_path }}} to {{{ sshd_config_path }}}
-  ansible.builtin.copy:
-    src: {{{ sshd_usr_config_path }}}
-    dest: {{{ sshd_config_path }}}
-    force: no
-    mode: '0600'
-- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured in sshd configuration(s)
-  ansible.builtin.find:
-    paths:
-    - '/etc/ssh'
-    - '/usr/etc/ssh'
-    - {{{ sshd_config_dir }}}
-    - {{{ sshd_usr_config_dir }}}
-    contains: {{{ line_regex }}}
-    patterns:
-    - '*.conf'
-    - 'sshd_config'
-  register: _sshd_config_has_parameter
-- name: {{{ rule_title }}} - Check if the parameter {{{ parameter }}} is configured correctly in sshd configuration(s)
-  ansible.builtin.find:
-    paths:
-    - '/etc/ssh'
-    - '/usr/etc/ssh'
-    - {{{ sshd_config_dir }}}
-    - {{{ sshd_usr_config_dir }}}
-    contains: {{{ line_regex ~ value ~ "$" }}}
-    patterns:
-    - '*.conf'
-    - 'sshd_config'
-  register: _sshd_config_correctly
-- name: '{{{ msg or rule_title }}}'
-  block:
-    {{{ ansible_lineinfile(
-            "Deduplicate values from " + sshd_config_path,
-            sshd_config_path,
-            regex=line_regex,
-            insensitive='false',
-            create='no',
-            state='absent')|indent }}}
-    {{{ ansible_lineinfile(
-            "Deduplicate values from " + sshd_usr_config_path,
-            sshd_usr_config_path,
-            regex=line_regex,
-            insensitive='false',
-            create='no',
-            state='absent')|indent }}}
-    - name: "{{{ rule_title }}} - Check if the parameter {{{ parameter }}} is present in {{{ sshd_config_dir }}} and in {{{ sshd_usr_config_dir }}}"
-      ansible.builtin.find:
-        paths: {{{ ssh_paths }}}
-        recurse: 'yes'
-        follow: 'no'
-        contains: '(?i)^\s*{{ "{{{ parameter }}}"| regex_escape }}\s+'
-      register: {{{ dir_parameter }}}
-    {{{ ansible_lineinfile(
-            "Remove parameter from files in " + sshd_config_dir,
-            path="{{ item.path }}",
-            regex=line_regex,
-            state="absent",
-            with_items=lineinfile_items)|indent}}}
-    {{{ ansible_lineinfile(
-            "Remove parameter from files in " + sshd_usr_config_dir,
-            path="{{ item.path }}",
-            regex=line_regex,
-            state="absent",
-            with_items=lineinfile_items)|indent }}}
-    {{{ ansible_lineinfile(
-            "Insert correct line to " + config_file,
-            config_file,
-            regex=line_regex,
-            insensitive='false',
-            new_line=new_line,
-            create='yes',
-            state='present',
-            validate='/usr/sbin/sshd -t -f %s',
-            insert_after='',
-            insert_before="BOF" )|indent }}}
-  when: _sshd_config_correctly.matched == 0 or _sshd_config_has_parameter.matched != 1
-
-- name: {{{ rule_title }}} - set file mode for {{{ config_file }}}
-  ansible.builtin.file:
-    path: {{{ config_file }}}
-    mode: '0600'
-    state: touch
-    modification_time: preserve
-    access_time: preserve
-{{%- endmacro %}}
-
 
 {{#
     copy source file to destination file if destination

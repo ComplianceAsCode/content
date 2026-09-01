@@ -326,7 +326,9 @@ rules:
 - file_ownership_var_log_audit
 - file_ownership_var_log_audit_stig
 - file_permissions_audit_configuration
+- file_permissions_audit_configuration_stig
 - file_permissions_etc_audit_auditd
+- file_permissions_etc_audit_auditd_stig
 - file_permissions_etc_audit_rulesd
 - file_permissions_etc_audit_rules
 - file_permissions_var_log_audit
@@ -338,6 +340,7 @@ rules:
 - package_audit-libs_installed
 - package_audit_installed
 - service_auditd_enabled
+- audit_rules_cron_execution
 - audit_rules_etc_cron_d
 - audit_rules_var_spool_cron
 templates:

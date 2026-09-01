@@ -12,7 +12,10 @@
       {{% endif %}}
       <criteria operator="AND">
         <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
-        <criterion comment="NX is supported and is not disabled" test_ref="test_nx_disabled_grub" />
+        <criterion comment="NX is not disabled in boot entries" test_ref="test_nx_disabled_grub" />
+        {{% if product in ["rhel8", "ol8"] %}}
+        <criterion comment="NX is not disabled in grubenv" test_ref="test_nx_disabled_grubenv" />
+        {{% endif %}}
       </criteria>
     </criteria>
   </definition>
@@ -47,12 +50,25 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_nx_disabled_grub" version="1">
-    {{% if product in ['ol9'] %}}
-    <ind:filepath>/etc/default/grub</ind:filepath>
+    {{% if 'rhel' in product or product in ["fedora", "ol8", "ol9"] %}}
+    <ind:path>/boot/loader/entries</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{% else %}}
     <ind:filepath>{{{ grub2_boot_path }}}/grub.cfg</ind:filepath>
     {{% endif %}}
     <ind:pattern operation="pattern match">[\s]*noexec[\s]*=[\s]*off</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product in ["rhel8", "ol8"] %}}
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="NX is not disabled in grubenv" id="test_nx_disabled_grubenv" version="1">
+    <ind:object object_ref="object_nx_disabled_grubenv" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_nx_disabled_grubenv" version="1">
+    <ind:filepath>{{{ grub2_boot_path }}}/grubenv</ind:filepath>
+    <ind:pattern operation="pattern match">[\s]*noexec[\s]*=[\s]*off</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
 </def-group>

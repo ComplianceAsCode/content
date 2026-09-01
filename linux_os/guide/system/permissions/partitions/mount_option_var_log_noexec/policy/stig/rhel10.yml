@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must mount "/var/log" with the "noexec" option.
+
+fixtext: |-
+    Configure {{{ full_name }}} to mount "/var/log" with the "noexec" option.
+
+    Modify "/etc/fstab" to use the "noexec" option on the "/var/log" directory.
+
+    To reload all implicit mount units and update the dependency graph so that new options will apply correctly at next remount, run the following command:
+
+    $ sudo systemctl daemon-reload
+
+    Use the following command to apply the changes immediately without a reboot:
+
+    $ sudo mount -o remount /var/log
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that "/var/log" is mounted with the "noexec" option:
+
+    $ mount | grep /var/log
+    /dev/mapper/luks-c651f493-9fdc-4c6e-a711-0a4f03149661 on /var/log type xfs (rw,nosuid,nodev,noexec,relatime,seclabel,attr2)
+
+    If the "/var/log" file system is mounted without the "noexec" option, this is a finding.
+
+vuldiscussion: |-
+    The "noexec" mount option causes the system to not execute binary files. This option must be used for mounting any file system not containing approved binary files, as they may be incompatible. Executing files from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.

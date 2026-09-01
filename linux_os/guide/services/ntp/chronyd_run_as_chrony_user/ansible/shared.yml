@@ -39,5 +39,6 @@
     line: 'OPTIONS="-u chrony"'
     state: present
     create: True
+    mode: 0644
   when: chronyd_file is defined and chronyd_file.matched == 0
 {{%- endif %}}

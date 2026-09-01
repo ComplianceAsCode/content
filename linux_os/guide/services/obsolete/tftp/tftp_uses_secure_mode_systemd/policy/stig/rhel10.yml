@@ -1,0 +1,39 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured to operate in secure mode if the Trivial File Transfer Protocol (TFTP) server service is required.
+
+fixtext: |-
+    Configure {{{ full_name }}} TFTP to operate in secure mode with the following command:
+
+    $ sudo systemctl edit tftp.service
+
+    In the editor, enter the following:
+
+    [Service]
+    ExecStart=/usr/sbin/in.tftpd -s /var/lib/tftpboot
+
+    After making changes, reload the systemd daemon and restart the TFTP service as follows:
+
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart tftp.service
+
+checktext: |-
+    Note: If a TFTP server is not installed, this rule is not applicable.
+
+    Verify {{{ full_name }}} is configured to operate in secure mode if the TFTP server service is required.
+
+    Determine if the TFTP server is installed with the following command:
+
+    $ sudo dnf list installed | grep tftp-server
+    tftp-server.x86_64                                   5.2-48.el10                     @rhel-10-for-x86_64-appstream-rpms
+
+    Verify that the TFTP daemon, if "tftp.server" is installed, is configured to operate in secure mode with the following command:
+
+    $ systemctl cat tftp.service | grep -i execstart
+    ExecStart=/usr/sbin/in.tftpd -s /var/lib/tftpboot
+
+    Note: The "-s" option ensures that the TFTP server serves only files from the specified directory, which is a security measure to prevent unauthorized access to other parts of the file system.
+
+    If the TFTP server is installed, but the TFTP daemon is not configured to operate in secure mode, and tftp is not documented as critical to the mission with the information system security officer, this is a finding.
+
+vuldiscussion: |-
+    Restricting TFTP to a specific directory prevents remote users from copying, transferring, or overwriting system files.

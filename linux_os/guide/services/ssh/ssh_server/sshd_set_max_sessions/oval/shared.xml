@@ -33,11 +33,19 @@
         <criterion comment="Check MaxSessions in /etc/ssh/sshd_config.d if any"
         test_ref="test_sshd_set_max_sessions_config_dir" />
         {{% endif %}}
+        {{% if product in [ 'sle16', 'slmicro6' ] %}}
+        <criterion comment="test if SSH main configuration {{{ sshd_main_config_file }}} exists for {{{ rule_id }}}"
+            test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+        {{% endif %}}
         <criterion comment="the configuration exists" test_ref="test_MaxSessions_present_sshd_set_max_sessions" />
       </criteria>
     </criteria>
   </definition>
 
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test(sshd_main_config_file, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(sshd_main_config_file, rule_id=rule_id) }}}
+  {{% endif %}}
   <ind:textfilecontent54_test check="all" check_existence="any_exist"
   comment="MaxSessions is configured" id="test_sshd_max_sessions" version="1">
     <ind:object object_ref="object_sshd_max_sessions" />

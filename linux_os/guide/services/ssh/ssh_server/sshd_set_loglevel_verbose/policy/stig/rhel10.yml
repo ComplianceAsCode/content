@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must log Secure Shell (SSH) connection attempts and failures to the server.
+
+fixtext: |-
+    Configure {{{ full_name }}} to log connection attempts by adding or modifying the following line in "/etc/ssh/sshd_config" or in a file in "/etc/ssh/sshd_config.d":
+
+    LogLevel VERBOSE
+
+    Restart the SSH daemon with the following command for the settings to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+checktext: |-
+    Verify {{{ full_name }}} logs SSH connection attempts and failures to the server with the following command:
+
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*loglevel'
+    /etc/ssh/sshd_config.d/90-sshd.conf:LogLevel VERBOSE
+
+    If a value of "VERBOSE" is not returned, or the line is commented out or missing, this is a finding.
+
+vuldiscussion: |-
+    SSH provides several logging levels with varying amounts of verbosity. "DEBUG" is specifically not recommended other than strictly for debugging SSH communications because it provides so much data that it is difficult to identify important security information. "INFO" or "VERBOSE" level is the basic level that only records login activity of SSH users. In many situations, such as incident response, it is important to determine when a particular user was active on a system. The logout record can eliminate users who disconnected, which helps narrow the field.

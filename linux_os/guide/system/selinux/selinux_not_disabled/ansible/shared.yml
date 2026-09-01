@@ -22,4 +22,5 @@
         state: touch
         access_time: preserve
         modification_time: preserve
+        mode: 0644
   when: selinux_config_state.stdout not in ['enforcing', 'permissive']

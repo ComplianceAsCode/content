@@ -1,11 +1,11 @@
 ---
 name: draft-pr
-description: Draft a PR description based on branch changes and the project PR template
+description: Open a pull request in the browser with prefilled title, description, and labels
 ---
 
-# Draft Pull Request Description
+# Open Pull Request
 
-Generate a pull request description for the current branch by analyzing commits since the branching point from master, following the project's PR template format.
+Analyze the current branch, generate a PR title/description/labels, push to the user's fork, and open the GitHub PR creation page in the browser with everything prefilled.
 
 ## Tool Strategy
 
@@ -13,24 +13,29 @@ This skill uses `mcp__content-agent__*` tools when available (preferred — dete
 
 ## Phase 1: Gather Branch Data
 
-1. **Get current branch and branching point**:
+1. **Derive upstream repo identifier**:
+   ```bash
+   UPSTREAM_REPO=$(git remote get-url origin | sed -n 's|.*[:/]\([^/]*/[^/]*\)\.git$|\1|p; s|.*[:/]\([^/]*/[^/]*\)$|\1|p')
+   ```
+
+2. **Get current branch and branching point**:
    ```bash
    git branch --show-current
    git merge-base HEAD master
    ```
 
-2. **Abort if not on a feature branch**:
+3. **Abort if not on a feature branch**:
    - If on `master`, or if `merge-base` equals `HEAD` (no diverging commits), inform the user:
      "No diverging commits found. Please switch to your feature branch first."
    - Stop execution.
 
-3. **Collect commit history** (all commits since branching point):
+4. **Collect commit history** (all commits since branching point):
    ```bash
    MERGE_BASE=$(git merge-base HEAD master)
    git log --no-merges --format="%H %s%n%b---" ${MERGE_BASE}..HEAD
    ```
 
-4. **Collect diff information**:
+5. **Collect diff information**:
    ```bash
    MERGE_BASE=$(git merge-base HEAD master)
    git diff --stat ${MERGE_BASE}..HEAD
@@ -80,16 +85,25 @@ For significant changed files, use MCP functions to get structured metadata:
 
 Scan commit messages for patterns like `Fixes #N`, `Resolves #N`, `Closes #N`, or bare `#N` references.
 
-## Phase 3: Draft PR Description
+## Phase 3: Generate PR Content
 
-Read the PR template:
+### 3.1 PR Title
+
+Generate a PR title following project conventions:
+- Under 70 characters
+- Imperative mood ("Add", "Fix", "Update")
+- Useful for changelog
+
+### 3.2 PR Body
+
+Read the PR template for reference:
 ```bash
 cat .github/pull_request_template.md
 ```
 
 Draft all three sections following the template format exactly:
 
-### 3.1 Description Section
+#### Description Section
 
 Auto-generate from analysis:
 
@@ -99,7 +113,7 @@ Auto-generate from analysis:
 - **Template changes**: "Modify template `<template_name>` to <what changed>."
 - **Multi-change PRs**: List each major change as a separate bullet point.
 
-### 3.2 Rationale Section
+#### Rationale Section
 
 Attempt to infer from:
 - Commit message bodies (look for explanations of "why")
@@ -111,7 +125,7 @@ If rationale cannot be fully inferred, include what was found and mark gaps for 
 
 Include issue reference if detected in commit messages, otherwise leave a placeholder.
 
-### 3.3 Review Hints Section
+#### Review Hints Section
 
 Auto-generate:
 - **Affected products** with build commands: `./build_product --datastream-only <product>`
@@ -124,58 +138,113 @@ Auto-generate:
 - **Review approach**: suggest reviewing all commits together or in sequence, based on how related the commits are
 - **Related issues/PRs**: include any references found in commit messages
 
-## Phase 4: Write Output File
+Write the body to `$TMPDIR/pr_body.md`. Do NOT write `PR_DESCRIPTION.md` to the repo root.
 
-### 4.1 Write PR_DESCRIPTION.md
+### 3.3 Infer Labels
 
-Write the final description to `PR_DESCRIPTION.md` in the repository root. If the file already exists, inform the user and ask whether to overwrite.
+1. Fetch available labels from the repository:
+   ```bash
+   gh label list -R ${UPSTREAM_REPO} --limit 200 --json name --jq '.[].name'
+   ```
 
-The file must begin with the suggested PR title on the first line, followed by a blank line, then the PR template sections:
+2. If `gh label list` fails (e.g., auth issue), skip label inference and tell the user why. Continue to Phase 4 without labels.
 
+3. Match available labels against the PR content using these heuristics:
+   - **Product labels**: If changed files or CCE refs mention a product (rhel8, rhel9, rhel10, fedora, ocp4, etc.), look for a matching label
+   - **New rule**: If new `rule.yml` files were added, look for a "new rule" or similar label
+   - **Bug fix**: If commit messages indicate a fix (commit message starts with "fix", "Fix", contains "bug", etc.), look for a "bug fix" or "bug" label
+   - **Profile changes**: If `.profile` files changed, look for a "profiles" label
+   - **Control changes**: If `controls/` files changed, look for a "controls" label
+   - **Template changes**: If `shared/templates/` files changed, look for a "templates" label
+   - **Test changes**: If test scenarios were added/modified, look for a "tests" label
+   - **Documentation**: If docs were changed, look for a "documentation" label
+
+   Only select labels that actually exist in the fetched label list. Be conservative — pick labels that clearly apply rather than guessing.
+
+### 3.4 Resolve Milestone
+
+1. Fetch open milestones that look like version numbers:
+   ```bash
+   gh api repos/${UPSTREAM_REPO}/milestones --jq '[.[] | select(.title | test("^[0-9]+\\."))] | sort_by(.title) | reverse'
+   ```
+
+2. Apply selection logic:
+   - **Exactly one match**: use it automatically. Note the milestone title for Phase 4.
+   - **Zero matches**: warn the user ("No release milestone found — creating PR without one") and continue without a milestone.
+   - **Multiple matches**: list the milestone titles and ask the user to pick one, or skip.
+
+3. Store the resolved milestone title (or none) for use in Phase 4.
+
+## Phase 4: Push & Open in Browser
+
+### 4.1 Push to Fork
+
+1. **Verify the `fork` remote exists**:
+   ```bash
+   git remote get-url fork
+   ```
+   If this fails, tell the user: "No `fork` remote found. Add it with: `git remote add fork <your-fork-url>`" and stop.
+
+2. **Push the branch**:
+   ```bash
+   BRANCH=$(git branch --show-current)
+   git push fork "${BRANCH}"
+   ```
+
+3. **If the push fails with a non-fast-forward error** (e.g., branch was rebased), retry with `--force-with-lease`:
+   ```bash
+   git push --force-with-lease fork "${BRANCH}"
+   ```
+   `--force-with-lease` is safe — it refuses to overwrite remote commits that you haven't seen locally, preventing accidental data loss while still allowing rebased branches to be pushed.
+
+### 4.2 Open PR Creation Page
+
+Construct and run the `gh pr create --web` command with all prefilled metadata:
+
+```bash
+BRANCH=$(git branch --show-current)
+FORK_OWNER=$(git remote get-url fork | sed -n 's|.*[:/]\([^/]*\)/[^/]*\(\.git\)\{0,1\}$|\1|p')
+gh pr create --web \
+  --repo ${UPSTREAM_REPO} \
+  --head "${FORK_OWNER}:${BRANCH}" \
+  --base master \
+  --title "<generated title>" \
+  --body-file "$TMPDIR/pr_body.md" \
+  --label "<label1>" --label "<label2>" \
+  --milestone "<resolved milestone title>"
 ```
-<suggested PR title>
 
-#### Description:
+Determine `FORK_OWNER` by parsing the `fork` remote URL (extract the GitHub username from the URL).
 
-- <description content>
+- If no labels were inferred, omit the `--label` flags.
+- If no milestone was resolved, omit the `--milestone` flag.
+- If `--web` combined with other flags fails, fall back to:
+  1. Create the PR directly (remove `--web`).
+  2. Open the resulting PR URL in the browser: `xdg-open <pr_url>`.
 
-#### Rationale:
+### 4.3 Clean Up
 
-- <rationale content>
-
-- Fixes #<number> (only if user provided one, otherwise omit this line)
-
-#### Review Hints:
-
-- <review hints content>
+Remove the temporary body file:
+```bash
+rm -f "$TMPDIR/pr_body.md"
 ```
 
-### 4.2 PR Title
-
-Generate a PR title following project conventions:
-- Under 70 characters
-- Imperative mood ("Add", "Fix", "Update")
-- Useful for changelog
-
-The title is included at the top of `PR_DESCRIPTION.md` so the user can edit it alongside the body.
-
-### 4.3 Report Next Steps
+### 4.4 Report
 
 Tell the user:
-- Path to the output file (`PR_DESCRIPTION.md`)
-- Suggested PR title
-- Commands to create the PR:
-  ```bash
-  git push -u origin <current_branch>
-  gh pr create --title "<suggested title>" --body-file PR_DESCRIPTION.md
-  ```
-- Reminder: do not commit `PR_DESCRIPTION.md` to the repository
+- The PR title that was used
+- The labels that were applied (or note if labels were skipped)
+- The milestone that was set (or note if no milestone was found)
+- That the browser should have opened to the PR creation page
+- If fallback was used, mention the PR was created directly and the URL
 
 ## Important Notes
 
-- **Do NOT push or create the PR** — only draft the description file
-- **Match the PR template format exactly** — the output must be drop-in compatible with `.github/pull_request_template.md`
+- **Run all `gh` and `git push` commands with `dangerouslyDisableSandbox: true`** — `gh` credentials may be stored in the system keyring, which the sandbox blocks, causing silent 401 auth failures.
 - **Analyze ALL commits** in the branch, not just the latest one
 - **Use `--no-merges`** when reading commit log to skip merge commits
 - **Be specific about products** — use actual product names (rhel8, rhel9, rhel10)
 - **Handle large diffs gracefully** — for branches with many changes, summarize by category rather than listing every file
+- **Match the PR template format exactly** — the body must follow `.github/pull_request_template.md`
+- The fork remote is `fork`, upstream is `origin` — determine the upstream repo from `git remote get-url origin`
+- Derive the fork owner from the `fork` remote URL — never hardcode a GitHub username

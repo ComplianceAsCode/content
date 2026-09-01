@@ -499,6 +499,15 @@ cat << EOF >  shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 EOF
 ```
 
+9. Ensure that product is built at-least once in CI
+
+
+All products should be built in CI to ensure a smooth release process.
+
+
+Review `.github/workflows/gate.yml` and `.github/workflows/gate_fedora.yml` to find proper place to add your product.
+If you are struggling to find place to add your new product add it to `.github/workflows/gate_fedora.yml`.
+
 
 ## Profiles
 

@@ -43,7 +43,6 @@ references:
     srg: SRG-OS-000278-GPOS-00108
     stigid@ol8: OL08-00-030650
     stigid@sle12: SLES-12-010540
-    stigid@sle15: SLES-15-030630
 
 ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
 
@@ -53,7 +52,7 @@ ocil: |-
 
     <pre># sudo cat {{{ aide_conf_path }}} | grep /usr/sbin/au
 
-    {{{ aide_files() }}}
+    {{{ aide_config_file_lines() }}}
     </pre>
     If AIDE is configured properly to protect the integrity of the audit tools,
     all lines listed above will be returned from the command.
@@ -64,7 +63,7 @@ fixtext: |-
     Add or update the following lines to {{{ aide_conf_path }}}, to protect the integrity of the audit tools.
 
     <pre>
-    {{{ aide_files() }}}
+    {{{ aide_config_file_lines() }}}
     </pre>
 
 srg_requirement:

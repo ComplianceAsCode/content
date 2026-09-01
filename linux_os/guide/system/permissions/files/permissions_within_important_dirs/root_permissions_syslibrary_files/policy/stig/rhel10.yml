@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that library files are group-owned by "root" or a system account.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that the systemwide shared library files (/lib, /lib64, /usr/lib, and /usr/lib64) are protected from unauthorized access.
+
+    Run the following command, replacing "[FILE]" with any library file not group-owned by "root".
+
+    $ sudo chgrp root [FILE]
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that the systemwide shared library files are group-owned by "root"  or a system account with the following command:
+
+    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 ! -group root ! -type d -exec stat -L -c "%G %n" {} \;
+
+    If any systemwide shared library file is returned and is not group-owned by "root" or a required system account, this is a finding.
+
+vuldiscussion: |-
+    If {{{ full_name }}} allowed any user to make changes to software libraries, those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.
+
+    This requirement applies to {{{ full_name }}} with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs that execute with escalated privileges.

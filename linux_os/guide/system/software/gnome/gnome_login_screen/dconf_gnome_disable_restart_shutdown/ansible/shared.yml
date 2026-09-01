@@ -11,6 +11,7 @@
     value: "true"
     create: yes
     no_extra_spaces: yes
+    mode: 0644
   register: result_ini
 
 - name: "Prevent user modification of GNOME disablement of Login Restart and Shutdown Buttons"
@@ -19,6 +20,7 @@
     regexp: '^/org/gnome/login-screen/disable-restart-buttons'
     line: '/org/gnome/login-screen/disable-restart-buttons'
     create: yes
+    mode: 0644
   register: result_lineinfile
 
 - name: Dconf Update

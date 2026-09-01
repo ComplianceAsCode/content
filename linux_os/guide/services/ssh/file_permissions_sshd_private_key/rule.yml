@@ -4,7 +4,7 @@ title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
 {{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name") %}}
 
-{{% if product in ["ol9", "rhcos4", "sle12", "sle15", "slmicro5", "slmicro6"] %}}
+{{% if product == "rhcos4" %}}
 {{# CoreOS is special - it is immutable, so it is more predictable, and it uses the dedicated group as key owner by default #}}
 {{% set perms = "-rw-r-----" %}}
 {{% set perms_num = "0640" %}}
@@ -16,8 +16,10 @@ title: 'Verify Permissions on SSH Server Private *_key Key Files'
 description: |-
     SSH server private keys - files that match the <code>/etc/ssh/*_key</code> glob, have to have restricted permissions.
     If those files are owned by the <code>root</code> user and the <code>root</code> group, they have to have the <code>{{{ perms_num }}}</code> permission or stricter.
-    {{% if dedicated_ssh_groupname -%}}
+    {{% if dedicated_ssh_groupname and perms_num == "0640" -%}}
     If they are owned by the <code>root</code> user, but by a dedicated group <code>{{{ dedicated_ssh_groupname }}}</code>, they can have the <code>0640</code> permission or stricter.
+    {{%- elif dedicated_ssh_groupname -%}}
+    If they are owned by the <code>root</code> user, but by a dedicated group <code>{{{ dedicated_ssh_groupname }}}</code>, they still have to have the <code>{{{ perms_num }}}</code> permission or stricter.
     {{%- endif %}}
 
 rationale: |-
@@ -34,7 +36,7 @@ identifiers:
     cce@sle15: CCE-85644-3
     cce@sle16: CCE-96360-3
     cce@slmicro5: CCE-93751-6
-    cce@slmicro6: CCE-95070-9 
+    cce@slmicro6: CCE-95070-9
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
@@ -53,7 +55,6 @@ references:
     stigid@ol7: OL07-00-040420
     stigid@ol8: OL08-00-010490
     stigid@sle12: SLES-12-030220
-    stigid@sle15: SLES-15-040250
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms=perms) }}}'
 

@@ -5,7 +5,7 @@
 # disruption = medium
 
 -  name: "{{{ rule_title }}} - Set group ownership of directories that contain system commands to root"
-   ansible.builtin.file: 
+   ansible.builtin.file:
      path: "{{ item }}"
      group: "root"
      recurse: "yes"

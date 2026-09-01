@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Kernel Samepage Merging (KSM) Must Be Disabled'
+
+description: |-
+    Kernel Samepage Merging (KSM) deduplicates identical memory pages across
+    virtual machines on a node. While it saves memory, KSM is a well-known
+    side-channel vector: co-located guests can infer each other's memory
+    contents through page-deduplication timing attacks. KSM is disabled by
+    default and should stay disabled on hosts running untrusted or
+    multi-tenant workloads.
+
+    The HyperConverged operator serves an empty
+    <tt>.spec.ksmConfiguration</tt> (<tt>{}</tt>) by default, which does NOT
+    enable KSM (verified against the node's
+    <tt>/sys/kernel/mm/ksm/run</tt>). KSM is enabled by configuring a
+    <tt>nodeLabelSelector</tt>; this check fails only when a node selector is
+    configured.
+
+rationale: |-
+    Memory deduplication across tenant boundaries allows an attacker in one
+    virtual machine to detect, via write-timing differences, whether a page
+    with known content exists in another virtual machine on the same node -
+    breaking confidentiality between workloads.
+
+severity: medium
+
+ocil_clause: 'ksmConfiguration enables KSM on one or more nodes'
+
+ocil: |-
+    Run the following command to check the KSM configuration:
+    <pre>$ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o jsonpath='{.spec.ksmConfiguration}'</pre>
+    The output should be empty or <tt>{}</tt> (no nodeLabelSelector
+    configured).

@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Verify Permissions on Files in /etc/apt/sources.list.d'
+
+description: '{{{ describe_file_permissions(file="/etc/apt/sources.list.d/*", perms="0644") }}}'
+
+rationale: |-
+    Files in /etc/apt/sources.list.d contain APT repository configuration. They
+    should not be writable by non-root users.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/apt/sources.list.d/*", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/apt/sources.list.d/*", perms="-rw-r--r--") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/apt/sources.list.d/*", mode="0644") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/apt/sources.list.d/
+        file_regex: ^.*$
+        filemode: '0644'

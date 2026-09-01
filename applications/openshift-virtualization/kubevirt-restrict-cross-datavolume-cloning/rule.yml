@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Restrict Access to Cross DataVolume Cloning'
+
+description: |-
+    Because the set of authorized subjects and namespaces is specific to each
+    cluster, this rule cannot be evaluated automatically and is reported as
+    manual. Organizations can create a CustomRule with a CEL expression that
+    lists RoleBindings referencing the <tt>datavolume-cloner</tt> ClusterRole
+    and verifies that only approved subjects and destination namespaces are
+    bound.
+
+rationale: |-
+    Cross-namespace DataVolume cloning copies disk image data between
+    namespaces. If the rolebindings that grant cloning permissions are
+    too broad, unauthorized users in destination namespaces can clone
+    disks containing sensitive data from source namespaces. Reviewing
+    and restricting these rolebindings ensures that only intended
+    namespaces and subjects can perform cross-namespace disk cloning
+    operations.
+
+severity: medium
+
+ocil_clause: 'unauthorized subjects have cross-namespace datavolume cloning access'
+
+ocil: |-
+    Run the following command to review rolebindings that grant
+    cross-namespace DataVolume cloning permissions in the source
+    namespace:
+    <pre>$ oc get rolebinding -n &lt;source-namespace&gt; &lt;allow-clone-to-user&gt; -oyaml</pre>
+    Review rolebindings binding a <tt>datavolume-cloner</tt>-style
+    ClusterRole to service accounts in other namespaces. Verify that
+    destination namespaces are intended and only authorized subjects
+    are bound.

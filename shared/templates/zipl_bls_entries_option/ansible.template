@@ -40,6 +40,7 @@
         create: yes
         path: "/etc/kernel/cmdline"
         line: '{{{ ARG_NAME }}}={{{ ARG_VALUE }}}'
+        mode: 0644
       when: cmdline_stat is defined and not cmdline_stat.stat.exists
 
     - name: "Append /etc/kernel/cmdline contains {{{ ARG_NAME }}}={{{ ARG_VALUE }}}"

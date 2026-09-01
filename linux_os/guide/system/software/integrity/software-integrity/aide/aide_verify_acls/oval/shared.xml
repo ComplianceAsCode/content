@@ -3,12 +3,13 @@
     {{{ oval_metadata("AIDE should be configured to verify Access Control Lists (ACLs).", rule_title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
-      <criterion comment="acl is set in {{{ aide_conf_path }}}" test_ref="test_aide_verify_acls" />
+      <criterion comment="acl is set in group definitions in {{{ aide_conf_path }}}" test_ref="test_aide_verify_acls" />
+      <criterion comment="acl is set in selection lines in {{{ aide_conf_path }}}" test_ref="test_aide_verify_acls_selection_lines" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test id="test_aide_verify_acls"
-  comment="acl is set in {{{ aide_conf_path }}}" check="all"
+  comment="acl is set in group definitions in {{{ aide_conf_path }}}" check="all"
   check_existence="all_exist" version="1">
     <ind:object object_ref="object_aide_verify_acls" />
     <ind:state state_ref="state_aide_verify_acls" />
@@ -21,6 +22,19 @@
     {{% else %}}
     <ind:pattern operation="pattern match">^(?!ALLXTRAHASHES)[A-Z][a-zA-Z_]*[\s]*=[\s]*([a-zA-Z0-9\+]*)$</ind:pattern>
     {{% endif %}}
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_aide_verify_acls_selection_lines"
+  comment="acl is set in selection lines in {{{ aide_conf_path }}}" check="all"
+  check_existence="any_exist" version="1">
+    <ind:object object_ref="object_aide_verify_acls_selection_lines" />
+    <ind:state state_ref="state_aide_verify_acls" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_verify_acls_selection_lines"
+  version="1">
+    <ind:filepath>{{{ aide_conf_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^/\S+\s+([a-z][a-zA-Z0-9\+]*)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 

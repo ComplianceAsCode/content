@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /etc/apt/trusted.gpg.d Directory'
+
+description: '{{{ describe_directory_permissions(directory="/etc/apt/trusted.gpg.d", perms="0755") }}}'
+
+rationale: |-
+    A non-privileged user with write access to /etc/apt/trusted.gpg.d can
+    compromise the APT chain of trust by adding trusted keys.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_directory_permissions(directory="/etc/apt/trusted.gpg.d", perms="drwxr-xr-x") }}}'
+
+ocil: |-
+    {{{ ocil_directory_permissions(directory="/etc/apt/trusted.gpg.d", perms="drwxr-xr-x") }}}
+
+fixtext: '{{{ fixtext_directory_permissions(file="/etc/apt/trusted.gpg.d", mode="0755") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/apt/trusted.gpg.d/
+        filemode: '0755'

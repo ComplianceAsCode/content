@@ -396,9 +396,9 @@ If the rule has static content (files in `oval/`, `bash/`, `ansible/` subdirecto
 
 ### 5.4 Build and Test
 
-1. Build the product to verify the template generates correctly:
+1. Build the single-rule data stream to verify the template generates correctly:
    ```bash
-   ./build_product <product> --datastream --rule-id <rule_id>
+   ./build_product <product> --rule-id <rule_id>
    ```
 
 2. Verify correct template expansion in the rendered output:

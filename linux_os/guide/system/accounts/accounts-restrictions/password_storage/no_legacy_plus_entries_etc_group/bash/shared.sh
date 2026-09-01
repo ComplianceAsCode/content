@@ -3,5 +3,6 @@
 if grep -q '^\+' /etc/group; then
 # backup old file to /etc/group-
 	cp /etc/group /etc/group-
+	chmod 0644 /etc/group-
 	sed -i '/^\+.*$/d' /etc/group
 fi

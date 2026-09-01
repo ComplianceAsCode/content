@@ -1,0 +1,31 @@
+srg_requirement: |-
+    {{{ full_name }}} must not allow users to override Secure Shell (SSH) environment variables.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable unattended or automatic login via SSH.
+
+    In "/etc/ssh/sshd_config.d", create a drop file that will lexicographically precede 50-redhat.conf and add the following line:
+
+    PermitUserEnvironment no
+
+    Restart the SSH daemon with the following command for the setting to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+checktext: |-
+    Verify {{{ full_name }}} disables unattended or automatic login via SSH with the following command:
+
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*permituserenvironment'
+    /etc/ssh/sshd_config.d/10-stig.conf:PermitUserEnvironment no
+
+    Verify the runtime setting with the following command:
+
+    $ sudo sshd -T | grep -i permituserenvironment
+    permituserenvironment no
+
+    If the "PermitUserEnvironment" keyword is not set to "no" in a drop-in that lexicographically precedes 50-redhat.conf, or if no output is returned, this is a finding.
+
+vuldiscussion: |-
+    SSH environment options potentially allow users to bypass access restriction in some configurations.
+
+    OpenSSH uses the first occurrence of a keyword it sees, and drop-in files are read in lexicographical order at the start of the configuration. Red Hat recommends using drop-in files rather than changing base configuration files.

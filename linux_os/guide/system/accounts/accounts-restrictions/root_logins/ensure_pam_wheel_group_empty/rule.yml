@@ -30,8 +30,6 @@ references:
     cis@sle12: '5.6'
     cis@sle15: '5.6'
 
-platform: package[pam]
-
 ocil_clause: 'group {{{ var_pam_wheel_group_for_su }}} exists and has no user members'
 
 ocil: |-
@@ -53,4 +51,4 @@ warnings:
         configure <tt>pam_wheel.so</tt> module. The <tt>pam_wheel.so</tt> module configuration is
         accomplished by <tt>use_pam_wheel_group_for_su</tt> rule.
 
-platform: system_with_kernel
+platform: package[pam] and system_with_kernel

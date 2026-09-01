@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured to disable USB mass storage.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent the usb-storage kernel module from being loaded.
+
+    Add the following lines to the file "/etc/modprobe.d/usb-storage.conf" (or create "usb-storage.conf" if it does not exist):
+
+    $ sudo vi /etc/modprobe.d/usb-storage.conf
+
+    install usb-storage /bin/false
+    blacklist usb-storage
+
+checktext: |-
+    Verify {{{ full_name }}} disables the ability to load the USB Storage kernel module with the following command:
+
+    $ sudo grep -rs usb-storage /etc/modprobe.conf /etc/modprobe.d/*
+    /etc/modprobe.d/usb-storage.conf:install usb-storage /bin/false
+    /etc/modprobe.d/usb-storage.conf:blacklist usb-storage
+
+    If the command does not return any output, or either line is commented out, and use of USB Storage is not documented with the information system security officer as an operational requirement, this is a finding.
+
+vuldiscussion: |-
+    USB mass storage permits easy introduction of unknown devices, thereby facilitating malicious activity.
+
+

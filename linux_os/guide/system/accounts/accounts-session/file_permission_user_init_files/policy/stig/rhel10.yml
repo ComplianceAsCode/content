@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must enforce mode "0740" or less permissive for local initialization files.
+
+fixtext: |-
+    Configure {{{ full_name }}} so that all local initialization files have a mode of "0740" or less permissive with the following command:
+
+    Note: The example will be for the "disauser" user, who has a home directory of "/home/disauser".
+
+    $ sudo chmod 0740 /home/disauser/.&lt;INIT_FILE&gt;
+
+checktext: |-
+    Verify {{{ full_name }}} is configured so that all local initialization files have a mode of "0740" or less permissive with the following command:
+
+    Note: The example will be for the "disauser" user, who has a home directory of "/home/disauser".
+
+    $ sudo find /home -maxdepth 2 -type f -name ".*" -exec stat -c "%n %a" {} \; | awk '$2 &gt; 740'
+    /home/disauser/.bash_profile 770
+
+    If any local initialization files are returned, this indicates a mode more permissive than "0740", and this is a finding.
+
+vuldiscussion: |-
+    Local initialization files are used to configure the user's shell environment upon login. Malicious modification of these files could compromise accounts upon login.

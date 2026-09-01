@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must check the GNU Privacy Guard (GPG) signature of software packages originating from external software repositories before installation.
+
+fixtext: |-
+    Configure {{{ full_name }}} dnf to always check the GPG signature of software packages originating from external software repositories before installation.
+
+    Add or update the following line in the [main] section of the "/etc/dnf/dnf.conf" file:
+
+    gpgcheck=1
+
+checktext: |-
+    Verify {{{ full_name }}} dnf always checks the GPG signature of software packages originating from external software repositories before installation with the following command:
+
+    $ sudo grep -w gpgcheck /etc/dnf/dnf.conf
+    gpgcheck=1
+
+    If "gpgcheck" is not set to "1", or if the option is missing or commented out, ask the system administrator how the GPG signatures of software packages are being verified.
+
+    If no process to verify GPG signatures has been approved by the organization, this is a finding.
+
+vuldiscussion: |-
+    Changes to any software components can have significant effects on the overall security of the operating system. This requirement ensures the software has not been tampered with and has been provided by a trusted vendor.
+
+    All software packages must be signed with a cryptographic key recognized and approved by the organization.
+
+    Verifying the authenticity of software prior to installation validates the integrity of the software package received from a vendor.

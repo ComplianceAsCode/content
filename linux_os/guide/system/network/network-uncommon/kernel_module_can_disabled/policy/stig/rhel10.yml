@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured to disable the Controller Area Network (CAN) kernel module.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the ability to load the CAN kernel module.
+
+    Create a drop-in if it does not already exist:
+
+    $ sudo vi /etc/modprobe.d/can.conf
+
+    Add the following lines to the file:
+
+    install can /bin/false
+    blacklist can
+
+checktext: |-
+    Verify {{{ full_name }}} disables the ability to load the CAN kernel module with the following command:
+
+    $ sudo grep -rs can /etc/modprobe.conf /etc/modprobe.d/* | grep -v '#'
+    /etc/modprobe.d/can.conf:install can /bin/false
+    /etc/modprobe.d/can.conf:blacklist can
+
+    If the command does not return any output, or the lines are commented out, and use of CAN is not documented with the information system security officer as an operational requirement, this is a finding.
+
+vuldiscussion: |-
+    Disabling CAN protects the system against exploitation of any flaws in its implementation.

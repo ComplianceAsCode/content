@@ -423,7 +423,7 @@ Common selection patterns:
 ./build_product --cel-content=ocp4,rhel9
 
 # Build with only specific rules (fastest, for testing individual rules)
-./build_product ocp4 --datastream --rule-id api_server_tls_security_profile
+./build_product ocp4 --rule-id api_server_tls_security_profile
 ```
 
 Build output goes to `build/`. The data stream file is at:

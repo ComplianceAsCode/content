@@ -9,8 +9,13 @@
 {{{ ansible_set_config_file(file='/etc/profile.d/autologout.sh', parameter='readonly', separator=' ', value='TMOUT', create='yes', rule_title=rule_title) }}}
 {{{ ansible_set_config_file(file='/etc/profile.d/autologout.sh', parameter='export', separator=' ', value='TMOUT', create='yes', rule_title=rule_title) }}}
 
+- name: Check if /etc/profile.d/autologout.sh exists
+  ansible.builtin.stat:
+    path: /etc/profile.d/autologout.sh
+  register: autologout_file
+
 - name: Set the permission for /etc/profile.d/autologout.sh
   ansible.builtin.file:
     path: /etc/profile.d/autologout.sh
     mode: '0755'
-  when: lookup('ansible.builtin.file', '/etc/profile.d/autologout.sh', errors='warn')
+  when: autologout_file.stat.exists

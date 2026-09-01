@@ -1,26 +1,31 @@
 
 srg_requirement: |-
-    {{{ full_name }}} pam_unix.so module must be configured in the system-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
+    {{{ full_name }}} must be configured to use a FIPS 140-3-approved cryptographic hashing algorithm for system authentication by ensuring that the pam_unix.so module is configured in the "system-auth" file.
 
 vuldiscussion: |-
-    Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.
+    Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied on to provide confidentiality or integrity, and DOD data may be compromised.
 
-    {{{ full_name }}} systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.
+    {{{ full_name }}} systems using encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.
 
-    FIPS 140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DoD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general-purpose computing system.
+    FIPS 140-3 is the current standard for validating that mechanisms used to access cryptographic modules use authentication that meets DOD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general-purpose computing system.
+
+
 
 checktext: |-
-    Verify that the pam_unix.so module is configured to use yescrypt in /etc/pam.d/system-auth with the following command:
+    Verify {{{ full_name }}} is configured to use a FIPS 140-3-approved cryptographic hashing algorithm in "/etc/pam.d/system-auth" via the pam_unix.so module with the following command:
 
-    $ grep "^password.*pam_unix.so.*yescrypt" /etc/pam.d/system-auth
+    $ sudo grep "^password.*pam_unix.so.*sha512" /etc/pam.d/system-auth
+    password sufficient pam_unix.so sha512
 
-    password sufficient pam_unix.so yescrypt
-
-    If "yescrypt" is missing, or the line is commented out, this is a finding.
+    If "sha512" is missing, or the line is commented out, this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
+    Configure {{{ full_name }}} to use a FIPS 140-3-approved cryptographic hashing algorithm for system authentication in "/etc/pam.d/system-auth" via the "pam_unix.so" module.
 
-    Edit/modify the following line in the "/etc/pam.d/system-auth" file to include the yescrypt option for pam_unix.so:
+    Edit/modify the following line in the "/etc/pam.d/system-auth" file to include the sha512 option for pam_unix.so:
 
-    password sufficient pam_unix.so yescrypt
+    password sufficient pam_unix.so sha512
+
+
+
+

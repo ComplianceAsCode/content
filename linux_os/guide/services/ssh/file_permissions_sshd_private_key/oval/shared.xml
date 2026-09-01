@@ -58,8 +58,8 @@
       {{# intentionally not considered: <unix:uread datatype="boolean">true</unix:uread> #}}
       {{# intentionally not considered: <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
       <unix:uexec datatype="boolean">false</unix:uexec>
-      
-      {{% if product in ["ol9", "sle12", "sle15", "slmicro5", "slmicro6"] -%}}
+
+      {{% if product == "rhcos4" -%}}
       {{# intentionally not considered: <unix:gread datatype="boolean">true</unix:gread> #}}
       {{%- else %}}
       <unix:gread datatype="boolean">false</unix:gread>
@@ -85,7 +85,11 @@
       {{# intentionally not considered: <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
       <unix:uexec datatype="boolean">false</unix:uexec>
 
+      {{% if product == "rhcos4" -%}}
       {{# intentionally not considered: <unix:gread datatype="boolean">true</unix:gread> #}}
+      {{%- else %}}
+      <unix:gread datatype="boolean">false</unix:gread>
+      {{%- endif %}}
       <unix:gwrite datatype="boolean">false</unix:gwrite>
       <unix:gexec datatype="boolean">false</unix:gexec>
 
@@ -101,7 +105,7 @@
         {{# CoreOS doesn't list all groups in /etc/group - that's probably related to the FS immutability #}}
 	<ind:filepath>/usr/lib/group</ind:filepath>
       {{%- endif %}}
-        <ind:pattern operation="pattern match">^{{{ dedicated_ssh_groupname }}}:\w+:(\w+):.*</ind:pattern>
+        <ind:pattern operation="pattern match">^{{{ dedicated_ssh_groupname }}}:[^:]*:([0-9]+):([a-z_][a-z0-9_-]*(\$,?)?)*$</ind:pattern>
         <ind:instance datatype="int" operation="equals">1</ind:instance>
     </ind:textfilecontent54_object>
 

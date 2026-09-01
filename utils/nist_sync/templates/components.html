@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer - Components</title>
+    <!-- SHARED_STYLES_PLACEHOLDER -->
+    <style>
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .component-card {
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-left: 4px solid #6f42c1;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .component-card:hover {
+            box-shadow: 0 2px 8px rgba(111, 66, 193, 0.15);
+            border-color: #6f42c1;
+        }
+
+        .component-card-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6f42c1;
+            margin-bottom: 8px;
+        }
+
+        .component-card-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: #586069;
+            margin-bottom: 8px;
+        }
+
+        .component-card-packages {
+            font-size: 11px;
+            color: #586069;
+            font-family: monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .detail-view {
+            display: none;
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-back-btn {
+            color: #6f42c1;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .detail-back-btn:hover {
+            text-decoration: underline;
+        }
+
+        .controls-by-family {
+            margin-top: 20px;
+        }
+
+        .family-group {
+            margin-bottom: 25px;
+        }
+
+        .family-group-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #24292e;
+            border-bottom: 2px solid #e1e4e8;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .control-entry {
+            background: #f6f8fa;
+            border-left: 3px solid #0366d6;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .control-entry-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .control-entry-id {
+            font-weight: 600;
+            color: #0366d6;
+            font-size: 14px;
+        }
+
+        .control-entry-title {
+            color: #586069;
+            font-size: 13px;
+        }
+
+        .control-entry-rules {
+            font-size: 11px;
+            color: #586069;
+            line-height: 1.8;
+        }
+
+        .rule-code {
+            display: inline-block;
+            background: #e1e4e8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 11px;
+            margin: 2px;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .package-badge {
+            display: inline-block;
+            background: #f1e8ff;
+            color: #6f42c1;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-family: monospace;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- SHARED_HEADER_PLACEHOLDER -->
+
+    <div class="container">
+        <!-- Grid View -->
+        <div id="grid-view">
+            <div class="page-header">
+                <h2>Components</h2>
+                <p>Software components and their NIST 800-53 control relationships</p>
+            </div>
+
+            <input type="text" id="component-search" class="search-bar" placeholder="Search components...">
+
+            <div id="component-grid" class="component-grid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Detail View -->
+        <div id="detail-view" class="detail-view">
+            <div class="detail-header">
+                <button class="detail-back-btn" onclick="showGridView()">← Back to Components</button>
+            </div>
+            <div id="detail-content">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+        function getQueryParam(param) {
+            return new URLSearchParams(window.location.search).get(param);
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function showGridView() {
+            document.getElementById('grid-view').style.display = 'block';
+            document.getElementById('detail-view').style.display = 'none';
+            history.pushState({}, '', 'components.html');
+        }
+
+        function showDetailView(compName) {
+            document.getElementById('grid-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
+            history.pushState({}, '', `components.html?component=${compName}`);
+            renderComponentDetail(compName);
+        }
+
+        function getFamilyName(familyId) {
+            const family = EMBEDDED_DATA.families.find(f => f.id === familyId);
+            return family ? family.name : familyId.toUpperCase();
+        }
+
+        function renderComponentGrid(filter) {
+            const compStats = (EMBEDDED_DATA.component_stats || {})[CURRENT_PRODUCT] || {};
+            const grid = document.getElementById('component-grid');
+            const entries = Object.entries(compStats)
+                .filter(([name]) => !filter || name.toLowerCase().includes(filter.toLowerCase()))
+                .sort((a, b) => b[1].control_count - a[1].control_count);
+
+            if (entries.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><h3>No components found</h3></div>';
+                return;
+            }
+
+            grid.innerHTML = entries.map(([compName, data]) => {
+                const pkgPreview = (data.packages || []).slice(0, 3).join(', ');
+                const morePkgs = (data.packages || []).length > 3 ?
+                    ` +${(data.packages || []).length - 3} more` : '';
+                return `
+                    <div class="component-card" onclick="showDetailView('${compName}')">
+                        <div class="component-card-name">${compName}</div>
+                        <div class="component-card-meta">
+                            <span>📋 ${data.control_count} controls</span>
+                            <span>📦 ${data.rule_count} rule refs</span>
+                        </div>
+                        <div class="component-card-packages">${pkgPreview}${morePkgs}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderComponentDetail(compName) {
+            const compStats = (EMBEDDED_DATA.component_stats || {})[CURRENT_PRODUCT] || {};
+            const data = compStats[compName];
+            const controls = EMBEDDED_DATA.products[CURRENT_PRODUCT]?.controls || [];
+
+            if (!data) {
+                const el = document.getElementById('detail-content');
+                const div = document.createElement('div');
+                div.className = 'empty-state';
+                const h3 = document.createElement('h3');
+                h3.textContent = `Component '${compName}' not found`;
+                div.appendChild(h3);
+                el.replaceChildren(div);
+                return;
+            }
+
+            // Gather control data for this component
+            const controlsForComp = controls.filter(c => c.components && c.components[compName]);
+
+            // Group by family
+            const byFamily = {};
+            controlsForComp.forEach(c => {
+                const familyId = c.id.split('-')[0];
+                byFamily[familyId] = byFamily[familyId] || [];
+                byFamily[familyId].push(c);
+            });
+
+            const packagesHtml = (data.packages || [])
+                .map(p => `<span class="package-badge">${p}</span>`)
+                .join('');
+
+            let html = `
+                <div class="page-header">
+                    <h2>${escapeHtml(compName)}</h2>
+                    <p>Software component — NIST 800-53 control relationships</p>
+                </div>
+
+                <div class="card" style="margin-bottom: 20px;">
+                    <h3>Overview</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 15px; margin-bottom: 15px;">
+                        <div style="background: #f6f8fa; padding: 12px; border-radius: 4px;">
+                            <div style="font-size: 12px; font-weight: 600; color: #586069; text-transform: uppercase; margin-bottom: 5px;">Controls</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #6f42c1;">${data.control_count}</div>
+                        </div>
+                        <div style="background: #f6f8fa; padding: 12px; border-radius: 4px;">
+                            <div style="font-size: 12px; font-weight: 600; color: #586069; text-transform: uppercase; margin-bottom: 5px;">Rule References</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #6f42c1;">${data.rule_count}</div>
+                        </div>
+                        <div style="background: #f6f8fa; padding: 12px; border-radius: 4px;">
+                            <div style="font-size: 12px; font-weight: 600; color: #586069; text-transform: uppercase; margin-bottom: 5px;">Families</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #6f42c1;">${Object.keys(byFamily).length}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: #586069; text-transform: uppercase; margin-bottom: 8px;">Packages</div>
+                        <div>${packagesHtml || '<span style="color: #586069;">none</span>'}</div>
+                    </div>
+                </div>
+
+                <div class="card controls-by-family">
+                    <h3>Controls by Family</h3>
+            `;
+
+            Object.entries(byFamily)
+                .sort((a, b) => b[1].length - a[1].length)
+                .forEach(([familyId, familyControls]) => {
+                    html += `
+                        <div class="family-group">
+                            <div class="family-group-title">${getFamilyName(familyId)} (${familyControls.length})</div>
+                    `;
+                    familyControls.forEach(c => {
+                        const rules = c.components[compName] || [];
+                        html += `
+                            <div class="control-entry">
+                                <div class="control-entry-header">
+                                    <a href="control-detail.html?id=${c.id}" class="control-entry-id">${c.id.toUpperCase()}</a>
+                                    <span class="control-entry-title">${c.title}</span>
+                                    <span class="badge" style="background:#6f42c1;color:white;margin-left:auto;">${rules.length} rules</span>
+                                </div>
+                                <div class="control-entry-rules">
+                                    ${rules.map(r => {
+                                        const url = (c.rule_urls || {})[r];
+                                        return url
+                                            ? `<a href="${url}" target="_blank" rel="noopener" class="rule-code" style="text-decoration:none;">${r} ↗</a>`
+                                            : `<code class="rule-code">${r}</code>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                });
+
+            html += '</div>';
+            document.getElementById('detail-content').innerHTML = html;
+        }
+
+        function initComponents() {
+            const compParam = getQueryParam('component');
+            if (compParam) {
+                showDetailView(compParam);
+            } else {
+                renderComponentGrid('');
+            }
+
+            document.getElementById('component-search').addEventListener('input', function() {
+                renderComponentGrid(this.value);
+            });
+        }
+
+        window.addEventListener('popstate', function() {
+            const compParam = getQueryParam('component');
+            if (compParam) {
+                document.getElementById('grid-view').style.display = 'none';
+                document.getElementById('detail-view').style.display = 'block';
+                renderComponentDetail(compParam);
+            } else {
+                document.getElementById('grid-view').style.display = 'block';
+                document.getElementById('detail-view').style.display = 'none';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', initComponents);
+    </script>
+</body>
+</html>

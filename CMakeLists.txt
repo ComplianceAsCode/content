@@ -33,7 +33,7 @@ include(SSGCommon)
 # Define Version values
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 81)
+set(SSG_PATCH_VERSION 82)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -41,6 +41,7 @@ set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 # Define Install Directories, where built content will be stored.
 set(SSG_ANSIBLE_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/ansible")
 set(SSG_ANSIBLE_PER_RULE_PLAYBOOKS_INSTALL_DIR "${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks")
+set(SSG_ANSIBLE_COLLECTION_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/ansible/collections")
 set(SSG_BASH_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/bash")
 set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
 set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")
@@ -58,6 +59,8 @@ set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
 # Content Generation Opetions
 option(SSG_ANSIBLE_PLAYBOOKS_ENABLED "If enabled, Ansible Playbooks for each profile will be built and installed." TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for each rule will be built and installed." FALSE)
+cmake_dependent_option(SSG_ANSIBLE_ROLES_ENABLED "If enabled, Ansible Roles will be built." FALSE "SSG_ANSIBLE_PLAYBOOKS_ENABLED" FALSE)
+cmake_dependent_option(SSG_ANSIBLE_COLLECTION_ENABLED "If enabled, an Ansible Collection bundling all built roles will be generated." FALSE "SSG_ANSIBLE_ROLES_ENABLED" FALSE)
 option(SSG_BASH_SCRIPTS_ENABLED "If enabled, Bash remediation scripts for each profile will be built and installed." TRUE)
 option(SSG_BUILD_DISA_DELTA_FILES "If enabled, If the product has automated content from DISA for its STIG a tailoring file will be created with rules not covered by DISA's content enabled." TRUE)
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
@@ -98,6 +101,7 @@ option(SSG_PRODUCT_FEDORA "If enabled, the Fedora SCAP content will be built" ${
 option(SSG_PRODUCT_FIREFOX "If enabled, the Firefox SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_HUMMINGBIRD "If enabled, the Hummingbird SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_KYLINSERVER10 "If enabled, the Kylin Server V10 content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_KYLINSECSERVER6 "If enabled, the KylinSec Server V6 content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OCP4 "If enabled, the OCP4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OL7 "If enabled, the Oracle Linux 7 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OL8 "If enabled, the Oracle Linux 8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -119,6 +123,7 @@ option(SSG_PRODUCT_SLMICRO6 "If enabled, the SLE Micro 6 SCAP content will be bu
 option(SSG_PRODUCT_TENCENTOS4 "If enabled, the TencentOS Server 4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2404 "If enabled, the Ubuntu 24.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_UBUNTU2604 "If enabled, the Ubuntu 26.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 # Products derivatives
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 
@@ -184,10 +189,7 @@ endif()
 # prometheus_metrics requirements
 find_python_module(prometheus_client)
 
-# compliance-trestle requirements
 find_python_module(requests)
-find_python_module(trestle)
-
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support it.
 # See also: https://github.com/ComplianceAsCode/content/issues/6798
@@ -231,7 +233,6 @@ message(STATUS "python: ${Python_EXECUTABLE} (version: ${Python_VERSION})")
 message(STATUS "python yaml module: ${PY_YAML}")
 message(STATUS "python jinja2 module: ${PY_JINJA2}")
 # Optional Python Tools
-message(STATUS "python compliance-trestle module (optional): ${PY_TRESTLE}")
 message(STATUS "python cmakelint module (optional): ${PY_CMAKELINT}")
 message(STATUS "python github (PyGitHub) module (optional): ${PY_GITHUB}")
 message(STATUS "python json2html module (optional): ${PY_JSON2HTML}")
@@ -277,6 +278,8 @@ message(STATUS "SSG vendor string: ${SSG_VENDOR}")
 message(STATUS "Logging: ${SSG_LOG}")
 message(STATUS "Ansible Playbooks: ${SSG_ANSIBLE_PLAYBOOKS_ENABLED}")
 message(STATUS "Ansible Playbooks Per Rule: ${SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED}")
+message(STATUS "Ansible Roles: ${SSG_ANSIBLE_ROLES_ENABLED}")
+message(STATUS "Ansible Collection: ${SSG_ANSIBLE_COLLECTION_ENABLED}")
 message(STATUS "Bash scripts: ${SSG_BASH_SCRIPTS_ENABLED}")
 message(STATUS "Build SCE Content: ${SSG_SCE_ENABLED}")
 message(STATUS "Build SRG XLSX Export: ${SSG_SRG_XLSX_EXPORT}")
@@ -336,6 +339,7 @@ message(STATUS "Fedora: ${SSG_PRODUCT_FEDORA}")
 message(STATUS "Firefox: ${SSG_PRODUCT_FIREFOX}")
 message(STATUS "Hummingbird: ${SSG_PRODUCT_HUMMINGBIRD}")
 message(STATUS "Kylin Server V10: ${SSG_PRODUCT_KYLINSERVER10}")
+message(STATUS "KylinSec Server 6: ${SSG_PRODUCT_KYLINSECSERVER6}")
 message(STATUS "OCP4: ${SSG_PRODUCT_OCP4}")
 message(STATUS "RHCOS4: ${SSG_PRODUCT_RHCOS4}")
 message(STATUS "Oracle Linux 7: ${SSG_PRODUCT_OL7}")
@@ -357,6 +361,7 @@ message(STATUS "SLE Micro 6: ${SSG_PRODUCT_SLMICRO6}")
 message(STATUS "TencentOS Server 4: ${SSG_PRODUCT_TENCENTOS4}")
 message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Ubuntu 24.04: ${SSG_PRODUCT_UBUNTU2404}")
+message(STATUS "Ubuntu 26.04: ${SSG_PRODUCT_UBUNTU2604}")
 message(STATUS " ")
 
 # Remove this option when we would like to run ansible-lint and yamllint against our playbooks by
@@ -429,6 +434,9 @@ endif()
 if(SSG_PRODUCT_KYLINSERVER10)
     add_subdirectory("products/kylinserver10" "kylinserver10")
 endif()
+if(SSG_PRODUCT_KYLINSECSERVER6)
+    add_subdirectory("products/kylinsecserver6" "kylinsecserver6")
+endif()
 if(SSG_PRODUCT_OCP4)
     add_subdirectory("products/ocp4" "ocp4")
 endif()
@@ -492,10 +500,17 @@ endif()
 if(SSG_PRODUCT_UBUNTU2404)
     add_subdirectory("products/ubuntu2404" "ubuntu2404")
 endif()
+if(SSG_PRODUCT_UBUNTU2604)
+    add_subdirectory("products/ubuntu2604" "ubuntu2604")
+endif()
 
 # ZIP only contains source datastreams and kickstarts.
 # People who want sources to build from should get the tarball instead.
 ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+
+if(SSG_ANSIBLE_COLLECTION_ENABLED)
+    ssg_build_ansible_collection("${SSG_VERSION}")
+endif()
 
 ssg_define_guide_and_table_tests()
 

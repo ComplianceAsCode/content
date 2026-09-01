@@ -17,7 +17,7 @@ def set_variables_for_test_scenarios(data):
                 data["wrong_value"] = "30:10:110"
                 data["correct_value"] = "10:30:60"
             elif data["xccdf_variable"] == "var_sshd_disable_compression":
-                data["wrong_value"] = "delayed"
+                data["wrong_value"] = "yes"
                 data["correct_value"] = "no"
             else:
                 data["wrong_value"] = "wrong_value"

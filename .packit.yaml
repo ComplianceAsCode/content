@@ -56,3 +56,8 @@ jobs:
   identifier: fedora-cis
   targets:
     fedora-all: {}
+
+- job: propose_downstream
+  trigger: release
+  dist_git_branches:
+    - fedora-all

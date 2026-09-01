@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable the "fapolicy" module.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable "fapolicyd" with the following command:
+
+    $ systemctl enable --now fapolicyd
+
+checktext: |-
+    Verify {{{ full_name }}} "fapolicyd" is active with the following command:
+
+    $ systemctl is-active fapolicyd
+    active
+
+    If the "fapolicyd" module is not active, this is a finding.
+
+vuldiscussion: |-
+    The organization must identify authorized software programs and permit execution of authorized software. The process used to identify software programs that are authorized to execute on organizational information systems is commonly referred to as allowlisting.
+
+    Using an allowlist provides a configuration management method for allowing the execution of only authorized software. Using only authorized software decreases risk by limiting the number of potential vulnerabilities. Verification of allowlisted software occurs prior to execution or at system startup.
+
+    User home directories/folders may contain information of a sensitive nature. Nonprivileged users should coordinate any sharing of information with a system administrator through shared resources.
+
+    {{{ full_name }}} ships with many optional packages. One such package is a file access policy daemon called "fapolicyd". The "fapolicyd" is a userspace daemon that determines access rights to files based on attributes of the process and file. It can be used to either blocklist or allowlist processes or file access.
+
+    Proceed with caution with enforcing the use of this daemon. Improper configuration may render the system nonfunctional. The "fapolicyd" application programming interface (API) is not namespace aware and can cause issues when launching or running containers.
+
+

@@ -192,11 +192,14 @@ def test_idtranslator_translate_oval_xmldiff(idtranslator, oval_tree):
         value='oval:ssg-obj_kerberos_disable_no_keytab:obj:1')
     assert uaftoref in diff
     diff.remove(uaftoref)
-    utfofilter = xmldiff_actions.UpdateTextIn(
+    utfofilter_args = dict(
         node=(
             '/{o}:oval_definitions/{o}:objects/{ou}:file_object/'
             '{o}:filter[1]'.format(o=o, ou=ou)),
         text='oval:ssg-filter_ssh_key_owner_root:ste:1')
+    if 'oldtext' in xmldiff_actions.UpdateTextIn._fields:
+        utfofilter_args['oldtext'] = 'filter_ssh_key_owner_root'
+    utfofilter = xmldiff_actions.UpdateTextIn(**utfofilter_args)
     assert utfofilter in diff
     diff.remove(utfofilter)
     uacrittref = xmldiff_actions.UpdateAttrib(

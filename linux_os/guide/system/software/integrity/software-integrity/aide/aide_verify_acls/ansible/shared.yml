@@ -22,5 +22,12 @@
     path: /etc/aide.conf
     regexp: (^\s*{{ item }}\s*=\s*)(?!.*acl)([^\s]*)
     replace: \g<1>\g<2>+acl
-  when: find_rules_groups_results is not skipped and "'aide' in ansible_facts.packages"
+  when: "find_rules_groups_results is not skipped and 'aide' in ansible_facts.packages"
   with_items: "{{ find_rules_groups_results.stdout_lines | map('trim') | list }}"
+
+- name: Ensure the acl attribute is present on selection lines with direct attributes
+  ansible.builtin.replace:
+    path: /etc/aide.conf
+    regexp: ^(\/\S+\s+)(?!.*acl)([a-z][a-zA-Z0-9+]*)
+    replace: \g<1>\g<2>+acl
+  when: "'aide' in ansible_facts.packages"

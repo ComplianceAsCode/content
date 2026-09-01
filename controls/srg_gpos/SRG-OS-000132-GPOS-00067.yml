@@ -25,3 +25,5 @@ controls:
             {{{ full_name }}} management functionality must be executed by the administrator user, which is only accessible through the sudo command (with a proper authentication request). The sudo manpage has more information.
         status_justification:
             The UNIX permissions construct separates user and privileged user (the {{{ full_name }}} operating system accounts) access.
+        rules:
+            - sysctl_kernel_kptr_restrict

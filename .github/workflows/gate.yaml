@@ -6,12 +6,14 @@ on:
     branches: ['*', '!stabilization*', '!stable*', '!master' ]
   pull_request:
     branches: [ 'master', 'stabilization*', 'oscal-update-*' ]
+permissions:
+  contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
 jobs:
   validate-sle:
-    name: Build, Test on SLE 15 (Container)
+    name: Build, Test on SLE Latest (Container)
     runs-on: ubuntu-latest
     container:
       image: registry.suse.com/bci/bci-base:latest
@@ -33,9 +35,9 @@ jobs:
       - name: Install deps python
         run: pip install pytest pytest-cov
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Build
-        run: ./build_product sle12 sle15
+        run: ./build_product sle12 sle15 sle16 slmicro5 slmicro6
       - name: Test
         run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -49,7 +51,7 @@ jobs:
       - name: Install Deps
         run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Build
         run: ./build_product opensuse
         env:
@@ -69,7 +71,7 @@ jobs:
       - name: Install Deps
         run: apt-get install -y ansible-lint bats check cmake openscap-scanner openscap-utils libxml2-utils ninja-build python3-pip xsltproc libxslt1-dev libxml2-dev zlib1g-dev python3.11-venv
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Upgrade pip python
         run: pip install --upgrade pip --break-system-packages
       - name: Install deps python
@@ -90,7 +92,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install -y cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
@@ -109,7 +111,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install -y cmake ninja-build openscap-utils libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
@@ -120,6 +122,25 @@ jobs:
       - name: Test
         run: ctest -j$(nproc) --output-on-failure -E unique-stigids
         working-directory: ./build
+
+  validate-ubuntu-26-04:
+    name: Build, Test on Ubuntu 26.04
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Deps
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build openscap-utils libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
+      - name: Install deps python
+        run: pip3 install -r requirements.txt -r test-requirements.txt
+      - name: Build
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+        run: |-
+          ./build_product ubuntu2604
+      - name: Test
+        run: ctest -j$(nproc) --output-on-failure -E unique-stigids
+        working-directory: ./build        
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
@@ -132,7 +153,7 @@ jobs:
       -   name: Install Deps
           run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel python3-setuptools gawk
       -   name: Checkout
-          uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+          uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       -   name: Install deps python
           run: pip install -r requirements-base.txt -r test-requirements.txt
       -   name: Build

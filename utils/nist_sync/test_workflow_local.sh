@@ -11,6 +11,44 @@ echo ""
 
 PRODUCTS="rhel8 rhel9 rhel10"
 
+# Recursively count controls (base + nested enhancements) and rule
+# selections across all family files in a directory. Uses ruamel.yaml
+# instead of indentation-sensitive grep since enhancements are nested
+# under their base control at varying indentation depths.
+count_stats() {
+    python3 - "$1" <<'PYEOF'
+import glob
+import sys
+
+import ruamel.yaml
+
+yaml = ruamel.yaml.YAML(typ="safe")
+
+
+def count(controls):
+    controls_n = 0
+    rules_n = 0
+    for control in controls:
+        controls_n += 1
+        rules_n += len(control.get("rules") or [])
+        sub_controls, sub_rules = count(control.get("controls") or [])
+        controls_n += sub_controls
+        rules_n += sub_rules
+    return controls_n, rules_n
+
+
+total_controls = 0
+total_rules = 0
+for path in sorted(glob.glob(f"{sys.argv[1]}/*.yml")):
+    data = yaml.load(open(path)) or {}
+    controls, rules = count(data.get("controls") or [])
+    total_controls += controls
+    total_rules += rules
+
+print(f"{total_controls} {total_rules}")
+PYEOF
+}
+
 # Step 1: Run the complete workflow
 echo "Step 1: Running CIS-NIST workflow..."
 cd utils/nist_sync
@@ -92,26 +130,12 @@ for product in $PRODUCTS; do
     echo ""
     echo "Product: $product"
     echo "  Reference files (nist_800_53_cis_reference_${product}):"
-    TOTAL_CONTROLS=0
-    TOTAL_RULES=0
-    for family in "shared/references/controls/nist_800_53_cis_reference_${product}/"*.yml; do
-        CONTROLS=$(grep -c '^  - id:' "$family" || true)
-        RULES=$(grep -c '^      -' "$family" || true)
-        TOTAL_CONTROLS=$((TOTAL_CONTROLS + CONTROLS))
-        TOTAL_RULES=$((TOTAL_RULES + RULES))
-    done
+    read -r TOTAL_CONTROLS TOTAL_RULES < <(count_stats "shared/references/controls/nist_800_53_cis_reference_${product}")
     echo "    Total controls: $TOTAL_CONTROLS"
     echo "    Total rule selections: $TOTAL_RULES"
 
     echo "  Product control files (products/${product}/controls/nist_800_53):"
-    TOTAL_CONTROLS=0
-    TOTAL_RULES=0
-    for family in "products/${product}/controls/nist_800_53/"*.yml; do
-        CONTROLS=$(grep -c '^  - id:' "$family" || true)
-        RULES=$(grep -c '^      -' "$family" || true)
-        TOTAL_CONTROLS=$((TOTAL_CONTROLS + CONTROLS))
-        TOTAL_RULES=$((TOTAL_RULES + RULES))
-    done
+    read -r TOTAL_CONTROLS TOTAL_RULES < <(count_stats "products/${product}/controls/nist_800_53")
     echo "    Total controls: $TOTAL_CONTROLS"
     echo "    Total rule selections: $TOTAL_RULES"
 done

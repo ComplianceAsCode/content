@@ -111,7 +111,7 @@
   </local_variable>
 
   <!-- Perform the test if all rsyslog system log files have appropriate attribute -->
-  <unix:file_test id="test_{{{ _RULE_ID }}}" check="all" check_existence="all_exist" version="1"
+  <unix:file_test id="test_{{{ _RULE_ID }}}" check="all" check_existence="any_exist" version="1"
     comment="System log files have appropriate {{{ ATTRIBUTE }}} set">
     <unix:object object_ref="object_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}" />
     <unix:state state_ref="state_{{{ _RULE_ID }}}" />

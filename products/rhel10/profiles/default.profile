@@ -12,6 +12,9 @@ description: |-
     this profile is to keep a rule in the product's XCCDF Benchmark.
 
 selections:
+    - rsyslog_encrypt_offload_defaultnetstreamdriver
+    - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+    - rsyslog_encrypt_offload_actionsendstreamdrivermode
     - sshd_use_strong_kex
     - grub2_nousb_argument
     - audit_rules_kernel_module_loading_create
@@ -47,3 +50,16 @@ selections:
     - configure_ssh_crypto_policy
     - package_dnsmasq_removed
     - chrony_set_nts
+    - audit_rules_privileged_commands_pkexec
+    - sshd_include_crypto_policy
+    - file_permission_user_init_files_root
+    - mount_option_nodev_removable_partitions
+    - mount_option_noexec_removable_partitions
+    - audit_rules_privileged_commands_mount
+    - fips_crypto_subpolicy
+    - mount_option_nosuid_removable_partitions
+    - sysctl_net_ipv4_tcp_invalid_ratelimit
+    - set_password_hashing_min_rounds_logindefs
+    - directory_group_ownership_var_log_audit
+    - file_sshd_50_redhat_exists
+    - journald_forward_to_syslog

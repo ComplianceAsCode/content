@@ -6,6 +6,8 @@ on:
     branches: ['master', 'oscal-update-*']
   merge_group:
     branches: ['master']
+permissions:
+  contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
@@ -27,7 +29,7 @@ jobs:
       - name: Install deps python
         run: pip3 install json2html prometheus_client
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Build
@@ -65,7 +67,7 @@ jobs:
           ${{ github.event_name == 'push' &&
           github.repository == 'ComplianceAsCode/content' &&
           github.ref == 'refs/heads/master' }}
-        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.

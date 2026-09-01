@@ -1,0 +1,32 @@
+srg_requirement: |-
+    {{{ full_name }}} must not enable Internet Protocol version 4 (IPv4) packet forwarding unless the system is a router.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not allow IPv4 packet forwarding unless the system is a router.
+
+    Create a configuration file if it does not already exist:
+
+    $ sudo vi /etc/sysctl.d/ipv4_forwarding.conf
+
+    Add the following line to the file:
+
+    net.ipv4.conf.all.forwarding = 0
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
+
+checktext: |-
+    Verify {{{ full_name }}} is not performing IPv4 packet forwarding unless the system is a router.
+
+    Check that "net.ipv4.conf.all.forwarding" is disabled using the following command:
+
+    $ sudo sysctl net.ipv4.conf.all.forwarding
+    net.ipv4.conf.all.forwarding = 0
+
+    If "net.ipv4.conf.all.forwarding" is not set to "0" and is not documented with the information system security officer as an operational requirement or is missing, this is a finding.
+
+vuldiscussion: |-
+    Routing protocol daemons are typically used on routers to exchange network topology information with other routers. If this capability is used when not required, system network information may be transmitted unnecessarily across the network.
+
+

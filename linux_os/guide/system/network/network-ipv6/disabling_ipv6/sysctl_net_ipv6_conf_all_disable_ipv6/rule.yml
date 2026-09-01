@@ -20,7 +20,9 @@ identifiers:
     cce@rhel9: CCE-86215-1
     cce@sle12: CCE-92359-9
     cce@sle15: CCE-92496-9
+    cce@sle16: CCE-96474-2
     cce@slmicro5: CCE-93996-7
+    cce@slmicro6: CCE-94899-2
 
 references:
     cis-csc: 11,14,3,9
@@ -49,7 +51,7 @@ ocil: |-
     files in <tt>/etc/sysctl.d</tt>:
     <pre>$ grep -r ipv6 /etc/sysctl.d</pre>
 
-{{% if product in ["sle12", "sle15", "slmicro5"] %}}
+{{% if product.startswith('sle') or product.startswith('slmicro') %}}
 platform: ipv6[enabled]
 {{% else %}}
 platform: system_with_kernel

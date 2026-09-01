@@ -17,6 +17,10 @@ description: |-
     system, or having two lines for both b32 and b64 in case your system is 64-bit:
     <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat2 -S renameat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
 
+    If the system is aarch64, the 64-bit syscall table does not include
+    <tt>rmdir</tt>, <tt>unlink</tt>, and <tt>rename</tt> syscalls. They are replaced by
+    <tt>unlinkat</tt>, <tt>renameat</tt>, and <tt>renameat2</tt>, respectively.
+
 rationale: |-
     Auditing file deletions will create an audit trail for files that are removed
     from the system. The audit trail could aid in system troubleshooting, as well as, detecting

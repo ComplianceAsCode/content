@@ -19,6 +19,7 @@
     regexp: ^(\/\/)?\\s*{{ item }}.*$
     line: '{{ item }} "true";'
     create: true
+    mode: 0644
   with_items:
   - Unattended-Upgrade::Remove-Unused-Dependencies
   - Unattended-Upgrade::Remove-Unused-Kernel-Packages
@@ -30,4 +31,5 @@
     line: clean_requirements_on_remove=1
     insertafter: '\[main\]'
     create: yes
+    mode: 0644
 {{% endif %}}

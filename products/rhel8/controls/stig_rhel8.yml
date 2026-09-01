@@ -2,7 +2,7 @@
 policy: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 title: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 id: stig_rhel8
-version: V2R7
+version: V2R8
 source: https://www.cyber.mil/stigs/downloads
 reference_type: stigid
 product: rhel8
@@ -1146,9 +1146,10 @@ controls:
     - id: RHEL-08-020060
       levels:
           - medium
-      title: RHEL 8 must automatically lock graphical user sessions after 15 minutes of inactivity.
+      title: RHEL 8 must automatically lock graphical user sessions after 10 minutes of inactivity.
       rules:
           - dconf_gnome_screensaver_idle_delay
+          - inactivity_timeout_value=10_minutes
       status: automated
 
     - id: RHEL-08-020080
@@ -1405,7 +1406,7 @@ controls:
           - accounts_umask_etc_profile
       status: automated
 
-    - id: RHEL-08-020353
+    - id: RHEL-08-020360
       levels:
           - medium
       title: RHEL 8 must automatically exit interactive command shell user sessions after 10 minutes of inactivity.
@@ -1980,8 +1981,7 @@ controls:
       title: RHEL 8 must allow only the Information System Security Manager (ISSM) (or individuals or
           roles appointed by the ISSM) to select which auditable events are to be audited.
       rules:
-          - file_permissions_etc_audit_auditd
-          - file_permissions_etc_audit_rulesd
+          - file_permissions_audit_configuration_stig
       status: automated
 
     - id: RHEL-08-030620
@@ -2517,6 +2517,22 @@ controls:
           - sysctl_net_ipv4_conf_all_send_redirects
       status: automated
 
+    - id: RHEL-08-040221
+      levels:
+          - medium
+      title: RHEL 8 must log IPv4 packets with impossible addresses.
+      rules:
+          - sysctl_net_ipv4_conf_all_log_martians
+      status: automated
+
+    - id: RHEL-08-040222
+      levels:
+          - medium
+      title: RHEL 8 must log IPv4 packets with impossible addresses by default.
+      rules:
+          - sysctl_net_ipv4_conf_default_log_martians
+      status: automated
+
     - id: RHEL-08-040230
       levels:
           - medium
@@ -3028,6 +3044,14 @@ controls:
       title: RHEL 8 must enable hardening for the Berkeley Packet Filter Just-in-time compiler.
       rules:
           - sysctl_net_core_bpf_jit_harden
+      status: automated
+
+    - id: RHEL-08-040287
+      levels:
+          - medium
+      title: RHEL 8 must use a reverse-path filter for IPv4 network traffic, when possible, by default.
+      rules:
+          - sysctl_net_ipv4_conf_default_rp_filter
       status: automated
 
     - id: RHEL-08-020027

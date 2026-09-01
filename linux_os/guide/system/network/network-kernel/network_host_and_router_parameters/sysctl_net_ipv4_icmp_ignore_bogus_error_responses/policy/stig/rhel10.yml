@@ -1,0 +1,32 @@
+srg_requirement: |-
+    {{{ full_name }}} must limit the number of bogus Internet Control Message Protocol (ICMP) response errors logs.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not log bogus ICMP errors.
+
+    Create a configuration file if it does not already exist:
+
+    $ sudo vi /etc/sysctl.d/ipv4_icmp_ignore_bogus_error_responses.conf
+
+    Add the following line to the file:
+
+    net.ipv4.icmp_ignore_bogus_error_responses = 1
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
+
+checktext: |-
+    Verify {{{ full_name }}} limits the number of bogus ICMP response errors logs.
+
+    Check the value of the "net.ipv4.icmp_ignore_bogus_error_response" variables with the following command:
+
+    $ sudo sysctl net.ipv4.icmp_ignore_bogus_error_responses
+    net.ipv4.icmp_ignore_bogus_error_responses = 1
+
+    If "net.ipv4.icmp_ignore_bogus_error_response" is not set to "1" or is missing, this is a finding.
+
+vuldiscussion: |-
+    Some routers will send responses to broadcast frames that violate RFC-1122, which fills up a log file system with many useless error messages. An attacker may take advantage of this and attempt to flood the logs with bogus error logs. Ignoring bogus ICMP error responses reduces log size, although some activity would not be logged.
+
+

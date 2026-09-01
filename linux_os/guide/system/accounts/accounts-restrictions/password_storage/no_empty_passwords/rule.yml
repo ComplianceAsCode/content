@@ -24,8 +24,6 @@ rationale: |-
 
 severity: high
 
-platform: system_with_kernel
-
 identifiers:
     cce@rhcos4: CCE-82553-9
     cce@rhel8: CCE-80841-0
@@ -54,7 +52,6 @@ references:
     stigid@ol7: OL07-00-010290
     stigid@ol8: OL08-00-020331,OL08-00-020332
     stigid@sle12: SLES-12-010231
-    stigid@sle15: SLES-15-020300
 
 ocil_clause: 'NULL passwords can be used'
 
@@ -102,4 +99,6 @@ warnings:
 
 {{% if 'ubuntu' in product %}}
 platform: package[pam]
+{{% else %}}
+platform: system_with_kernel
 {{% endif %}}

@@ -12,6 +12,7 @@ ExecStart={{{ aide_bin_path }}} --check
 [Install]
 WantedBy=multi-user.target
 EOF
+chmod 0644 /etc/systemd/system/aidecheck.service
 
 # create unit file for the aide check timer
 cat > /etc/systemd/system/aidecheck.timer <<EOF

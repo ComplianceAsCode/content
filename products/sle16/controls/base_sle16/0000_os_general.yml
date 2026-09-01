@@ -22,3 +22,25 @@ controls:
       rules:
           - restrict_serial_port_logins
       status: automated
+
+    - id: SLES-16-16016012
+      title: Restrict direct and virtual console Root Logins
+      levels:
+          - hipaa
+          - pcidss4
+          - anssi_intermediary
+      status: automated
+      rules:
+          - no_direct_root_logins
+          - securetty_root_login_console_only
+
+    - id: SLES-15-16016015
+      title: Disable DHCP Service
+      levels:
+          - pcidss4
+      status: automated
+      rules:
+          - package_kea_removed
+          - package_dhcp_client_removed
+          - service_kea_dhcp4_server_disabled
+          - service_kea_dhcp6_server_disabled

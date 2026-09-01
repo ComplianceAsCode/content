@@ -10,6 +10,7 @@
     dest: "/etc/modprobe.d/ipv6.conf"
     regexp: "^options\\s+ipv6\\s+disable=\\d"
     line: "options ipv6 disable=1"
+    mode: 0644
 
 - name: Ensure disable_ipv6 (all and default) is set to 1
   ansible.posix.sysctl:

@@ -25,5 +25,6 @@ controls:
             {{% if 'almalinux' in product %}}
             - ensure_almalinux_gpgkey_installed
             {{% endif %}}
+            - enable_gpgcheck_for_all_repositories
 
         status: automated

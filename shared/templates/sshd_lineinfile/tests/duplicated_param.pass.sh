@@ -1,12 +1,8 @@
 #!/bin/bash
 
-declare -a SSHD_PATHS=("/etc/ssh/sshd_config" /etc/ssh/sshd_config.d/*)
-{{% if product == 'sle16' %}}
-SSHD_PATHS+=("/usr/etc/ssh/sshd_config" /usr/etc/ssh/sshd_config.d/*)
-{{% endif %}}
-
-mkdir -p /etc/ssh/sshd_config.d
-touch /etc/ssh/sshd_config.d/nothing
+mkdir -p "{{{ sshd_config_dir }}}"
+touch "{{{ sshd_config_dir }}}/nothing"
+declare -a SSHD_PATHS=({{{ sshd_main_config_file }}} {{{ sshd_config_dir }}}/*)
 
 if grep -q "^\s*{{{ PARAMETER }}}" "${SSHD_PATHS[@]}" ; then
     sed -i "/^\s*{{{ PARAMETER }}}.*/Id" "${SSHD_PATHS[@]}"

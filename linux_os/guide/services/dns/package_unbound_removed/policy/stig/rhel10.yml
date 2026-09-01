@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have the unbound package installed.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not have the unbound package installed with the following command:
+
+    $ sudo dnf -y remove unbound
+
+checktext: |-
+    Verify {{{ full_name }}} does not have a DNS package installed with the following command:
+
+    $ sudo dnf list --installed unbound
+    Error: No matching Packages to list
+
+    If the "unbound" package is installed, and the information system security officer lacks a documented requirement for a DNS, this is a finding.
+
+vuldiscussion: |-
+    If the system is not a Domain Name Server (DNS), it should not have a DNS server package installed to decrease the attack surface of the system.

@@ -17,7 +17,7 @@ severity: medium
 
 platform: package[systemd-timesyncd]
 
-{{%- if 'ubuntu' in product %}}
+{{%- if 'ubuntu' in product or 'debian' in product %}}
 template:
     name: service_disabled_guard_var
     vars:
