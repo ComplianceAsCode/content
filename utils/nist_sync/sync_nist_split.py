@@ -70,6 +70,27 @@ class NISTSplitSync:
         'other': 'CIS Items Without NIST Mapping',
     }
 
+    # Per-product rules to always exclude from the generated mapping, even if
+    # the static CIS-to-NIST crosswalk (data/cis_nist_mappings.json) and the
+    # product's CIS control file's *control* structure both still list them.
+    #
+    # rhel9's cis.profile (and cis_server_l1/cis_workstation_l1/l2) explicitly
+    # unselect these three rules via '!rule_id', with the profile comment
+    # "Following rules once had a prodtype incompatible with the rhel9
+    # product". That exclusion lives at the profile level, not in
+    # cis_rhel9.yml's control structure, so load_all_cis_items_from_control_files()
+    # (which only reads the control structure) still reports them as
+    # "selected by CIS" and a plain sync would keep re-adding them here.
+    # rhel8/rhel10 have no such exclusion and legitimately select all three,
+    # so this is scoped to rhel9 only.
+    PRODUCT_RULE_EXCEPTIONS = {
+        'rhel9': {
+            'file_owner_at_allow',
+            'file_ownership_home_directories',
+            'group_unique_name',
+        },
+    }
+
     def __init__(self, repo_root: Path, product: str = None, mode='reference', flat_structure=False):
         """
         Initialize syncer.
@@ -463,8 +484,15 @@ class NISTSplitSync:
             # For product-specific mode: only include rules present in target product
             # For non-product mode: include all rules (legacy behavior)
             if self.product:
-                # Filter rules: only include if in target product's CIS control file
-                filtered_rules = [r for r in mapped_rules if r in all_cis_items]
+                excepted_rules = self.PRODUCT_RULE_EXCEPTIONS.get(self.product, set())
+
+                # Filter rules: only include if in target product's CIS control file,
+                # and not explicitly excepted for this product (see
+                # PRODUCT_RULE_EXCEPTIONS above)
+                filtered_rules = [
+                    r for r in mapped_rules
+                    if r in all_cis_items and r not in excepted_rules
+                ]
 
                 # Filter variables: collect into a set first to deduplicate, then sort.
                 # mapped_vars may contain both bare names ('var_x') and full assignments
