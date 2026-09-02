@@ -2900,11 +2900,34 @@ fi
     Set the ownership and permissions of the systemd journal directories
     in tmpfiles.d drop-in.
 
-:parameter permission: permission to set
+    The directory entries have to keep the executable bits, otherwise the
+    journal directories cannot be traversed. The journal files must not be
+    executable, so they need their own entries: the tilde only masks bits away,
+    so a recursive Z carrying the directory mode leaves an already executable
+    journal file executable, and the file rule then reports a finding that the
+    remediation cannot fix.
+
+    The file entries match one directory level, which is where journald keeps
+    the journal files. They match %m* rather than %m because a journal
+    namespace stores its files in /var/log/journal/MACHINE_ID.NAMESPACE, and
+    those files would otherwise only be covered by the recursive directory
+    entry and stay executable. tmpfiles.d cannot express more than one level:
+    the glob is matched one path component at a time, so there is no recursive
+    form, and the recursion of Z applies to directories as well, which would
+    strip the     executable bits the journal directories need. A journal file that sits at a
+    greater depth or under an unexpected name is therefore corrected by a find
+    pass instead, because the check scans the trees recursively and would
+    otherwise report a finding that the remediation cannot fix. The tmpfiles.d
+    entries keep the ordinary layout correct across reboots, the find pass
+    repairs whatever else is already on disk.
+
+:parameter permission: permission to set on the journal directories
 :type permission: str
+:parameter file_permission: permission to set on the journal files
+:type file_permission: str
 #}}
 
-{{%- macro bash_set_journal_tmpfiles(permission) %}}
+{{%- macro bash_set_journal_tmpfiles(permission, file_permission='0640') %}}
 TMPFILES_CONF="/etc/tmpfiles.d/zzz-systemd-stig.conf"
 
 mkdir -p /etc/tmpfiles.d
@@ -2912,14 +2935,14 @@ touch "$TMPFILES_CONF"
 
 # Drop any previously written journal entries so stale or conflicting settings
 # in this file cannot be applied after the hardened ones.
-sed -i --follow-symlinks -E '/^[[:space:]]*[zZ][+]*[[:space:]]+\/(run|var)\/log\/journal/d' "$TMPFILES_CONF"
+sed -i --follow-symlinks -E '/^\s*[zZ][+]*\s+\/(run|var)\/log\/journal/d' "$TMPFILES_CONF"
 
 # A drop-in whose name sorts after this file would be applied last and would
 # undo the hardening. Comment out journal entries in the other administrator
 # drop-ins so the hardened entries below are the effective ones.
 for conf in /etc/tmpfiles.d/*.conf /run/tmpfiles.d/*.conf; do
     if [ -f "$conf" ] && [ "$conf" != "$TMPFILES_CONF" ]; then
-        sed -i --follow-symlinks -E 's,^([[:space:]]*[zZ][+]*[[:space:]]+/(run|var)/log/journal.*),# \1,' "$conf"
+        sed -i --follow-symlinks -E 's,^(\s*[zZ][+]*\s+/(run|var)/log/journal.*),# \1,' "$conf"
     fi
 done
 
@@ -2930,7 +2953,11 @@ z /run/log/journal/%m ~{{{ permission }}} root systemd-journal - -
 z /var/log/journal ~{{{ permission }}} root systemd-journal - -
 Z /var/log/journal ~{{{ permission }}} root systemd-journal - -
 z /var/log/journal/%m ~{{{ permission }}} root systemd-journal - -
+Z /run/log/journal/%m*/*.journal* ~{{{ file_permission }}} root systemd-journal - -
+Z /var/log/journal/%m*/*.journal* ~{{{ file_permission }}} root systemd-journal - -
 EOF
 
 systemd-tmpfiles --create
+
+find /run/log/journal /var/log/journal -type f -exec chmod u-x,g-wx,o-rwx {} +
 {{%- endmacro %}}
