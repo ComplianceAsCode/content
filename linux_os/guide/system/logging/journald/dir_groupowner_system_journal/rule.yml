@@ -26,10 +26,10 @@ fixtext: |
     <pre>
     $ sudo vi /etc/tmpﬁles.d/zzz-systemd-stig.conf
     </pre>
-    Add or modify the following lines in the "/usr/lib/tmpﬁles.d/zzz-systemd-stig.conf" ﬁle:
+    Add or modify the following lines in the "/etc/tmpﬁles.d/zzz-systemd-stig.conf" ﬁle:
     <pre>
-    z /run/log/journal 2640 root systemd-journal - -
-    z /var/log/journal 2640 root systemd-journal - -
+    z /run/log/journal 0640 root systemd-journal - -
+    z /var/log/journal 0640 root systemd-journal - -
     </pre>
     Note: Restart the system for the changes to take effect.
 
