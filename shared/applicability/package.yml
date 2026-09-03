@@ -98,7 +98,11 @@ args:
   openssh:
     pkgname: openssh
   openssh-clients:
+    {{% if pkg_system == "dpkg" %}}
+    pkgname: openssh-client
+    {{% else %}}
     pkgname: openssh-clients
+    {{% endif %}}
   openssh-server:
     pkgname: openssh-server
   openssl:
