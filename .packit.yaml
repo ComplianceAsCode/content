@@ -14,15 +14,29 @@ jobs:
 - &build
   job: copr_build
   trigger: pull_request
+  identifier: main
   targets:
   - fedora-all-x86_64
   - centos-stream-8-x86_64
   - centos-stream-9-x86_64
   - centos-stream-10-x86_64
 
+
 - <<: *build
   trigger: commit
   branch: "gh-readonly-queue/.*"
+
+-  job: copr_build
+   trigger: pull_request
+   identifier: mock
+   targets:
+   - fedora-all-x86_64
+   actions:
+     post-upstream-clone:
+       - bash -c "cp tests/scap-security-guide_fedora.spec.in scap-security-guide.spec"
+       # There can only be one spec file or copr gets mad. So we do quick change out to
+       # a production-like spec file for the mock build.
+
 
 - &contest-oscap
   job: tests
