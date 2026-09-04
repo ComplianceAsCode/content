@@ -7,7 +7,13 @@ rules:
 - apt_conf_disallow_unauthenticated
 - apt_conf_disable_recommends
 - apt_conf_disable_suggests
+- apt_configure_allow_downgrade_to_insecure_repositories
+- apt_configure_allow_insecure_repositories
+- apt_configure_allow_weak_repositories
+- apt_configure_check_date
 - apt_disable_weak_dependencies
+- apt_sources_list_d_https
+- apt_sources_list_https
 - apt_sources_list_official
 - directory_groupowner_apt_auth_conf_d
 - directory_groupowner_apt_sources_list_d
@@ -30,4 +36,3 @@ rules:
 - file_permissions_apt_auth_conf_d
 - file_permissions_apt_gpg_keys
 - file_permissions_apt_sources_list_d
-
