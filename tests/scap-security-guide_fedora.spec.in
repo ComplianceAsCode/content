@@ -1,0 +1,96 @@
+# SSG build system and tests count with build directory name `build`.
+# For more details see:
+# https://fedoraproject.org/wiki/Changes/CMake_to_do_out-of-source_builds
+%global _vpath_builddir build
+
+Name:		scap-security-guide
+Version:	0.1.82
+Release:	1%{?dist}
+Summary:	Security guidance and baselines in SCAP formats
+License:	BSD-3-Clause
+URL:		https://github.com/ComplianceAsCode/content/
+Source0:	https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
+BuildArch:	noarch
+
+BuildRequires:	libxslt
+BuildRequires:	openscap-scanner >= 1.2.5
+BuildRequires:	cmake >= 2.8
+BuildRequires:	python%{python3_pkgversion}
+BuildRequires:	python%{python3_pkgversion}-jinja2
+BuildRequires:	python%{python3_pkgversion}-PyYAML
+BuildRequires:	python%{python3_pkgversion}-setuptools
+Requires:	xml-common, openscap-scanner >= 1.2.5
+
+%description
+The scap-security-guide project provides a guide for configuration of the
+system from the final system's security point of view. The guidance is specified
+in the Security Content Automation Protocol (SCAP) format and constitutes
+a catalog of practical hardening advice, linked to government requirements
+where applicable. The project bridges the gap between generalized policy
+requirements and specific implementation guidelines. The system
+administrator can use the oscap CLI tool from openscap-scanner package, or the
+scap-workbench GUI tool from scap-workbench package to verify that the system
+conforms to provided guideline. Refer to scap-security-guide(8) manual page for
+further information.
+
+%package	doc
+Summary:	HTML formatted security guides generated from XCCDF benchmarks
+Requires:	%{name} = %{version}-%{release}
+
+%description	doc
+The %{name}-doc package contains HTML formatted documents containing
+hardening guidances that have been generated from XCCDF benchmarks
+present in %{name} package.
+
+%if ( %{defined rhel} && (! %{defined centos}) && (! %{defined eln}) )
+%package	rule-playbooks
+Summary:	Ansible playbooks per each rule.
+Group:		System Environment/Base
+Requires:	%{name} = %{version}-%{release}
+
+%description	rule-playbooks
+The %{name}-rule-playbooks package contains individual ansible playbooks per rule.
+%endif
+
+%prep
+%autosetup -p1
+
+%define cmake_defines_common -DSSG_SEPARATE_SCAP_FILES_ENABLED=OFF -DSSG_BASH_SCRIPTS_ENABLED=OFF -DSSG_BUILD_SCAP_12_DS=OFF
+%define cmake_defines_specific %{nil}
+%if 0%{?rhel} && ! %{defined eln}
+%define cmake_defines_specific -DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE -DSSG_PRODUCT_RHEL%{rhel}:BOOLEAN=TRUE -DSSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED:BOOL=OFF -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=OFF -DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON
+%endif
+%if 0%{?centos}
+%define cmake_defines_specific -DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE -DSSG_PRODUCT_RHEL%{centos}:BOOLEAN=TRUE -DSSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED:BOOL=OFF -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=ON
+%endif
+
+mkdir -p build
+%build
+%cmake %{cmake_defines_common} %{cmake_defines_specific}
+%cmake_build
+
+%install
+%cmake_install
+rm %{buildroot}/%{_docdir}/%{name}/README.md
+rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
+
+%files
+%{_datadir}/xml/scap/ssg/content
+%{_datadir}/%{name}/kickstart
+%{_datadir}/%{name}/ansible/*.yml
+%{_datadir}/%{name}/tailoring
+%lang(en) %{_mandir}/man8/scap-security-guide.8.*
+%doc %{_docdir}/%{name}/LICENSE
+%if ( %{defined rhel} && (! %{defined centos}) && (! %{defined eln}) )
+%exclude %{_datadir}/%{name}/ansible/rule_playbooks
+%endif
+
+%files doc
+%doc %{_docdir}/%{name}/guides/*.html
+%doc %{_docdir}/%{name}/tables/*.html
+
+%if ( %{defined rhel} && (! %{defined centos}) && (! %{defined eln}) )
+%files rule-playbooks
+%defattr(-,root,root,-)
+%{_datadir}/%{name}/ansible/rule_playbooks
+%endif
