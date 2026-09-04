@@ -1,4 +1,5 @@
 {{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 <def-group>
   <definition class="compliance" id="sshd_use_approved_ciphers" version="1">
     {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.", rule_title=rule_title) }}}
@@ -15,14 +16,29 @@
         definition_ref="sshd_required_or_unset" />
         <extend_definition comment="rpm package openssh-server installed"
         definition_ref="package_openssh-server_installed" />
-        <criterion comment="Check the Ciphers list in /etc/ssh/sshd_config"
+        {{% if product in [ 'sle16', 'slmicro6' ] %}}
+        <criterion comment="test if SSH main configuration {{{ sshd_main_config }}} exists for {{{ rule_id }}}"
+            test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+        {{% endif %}}
+        <criterion comment="Check the Ciphers list in {{{ sshd_main_config }}}"
         test_ref="test_sshd_use_approved_ciphers" />
+        {{%- if sshd_distributed_config == "true" %}}
+        <criterion comment="Check the Ciphers list in {{{ sshd_config_dir }}}"
+            test_ref="test_sshd_use_approved_ciphers_config_dir" />
+        {{%- endif %}}
+        <criterion comment="the configuration exists"
+            test_ref="test_sshd_ciphers_exists" />
       </criteria>
     </criteria>
   </definition>
 
-  <ind:variable_test check="all" check_existence="all_exist"
-  comment="tests the value of Ciphers setting in the /etc/ssh/sshd_config file"
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test(sshd_main_config, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(sshd_main_config, rule_id=rule_id) }}}
+  {{% endif %}}
+
+  <ind:variable_test check="all" check_existence="any_exist"
+  comment="tests the value of Ciphers setting in the {{{ sshd_main_config }}} file"
   id="test_sshd_use_approved_ciphers" version="1">
     <ind:object object_ref="obj_sshd_use_approved_ciphers" />
     <ind:state state_ref="ste_sshd_use_approved_ciphers" />
@@ -32,8 +48,8 @@
     <ind:var_ref>var_sshd_config_ciphers</ind:var_ref>
   </ind:variable_object>
 
-  <ind:variable_state comment="approved ciphers" id="ste_sshd_use_approved_ciphers" version="1">
-    <ind:value operation="equals" datatype="string" var_ref="var_sshd_approved_ciphers" var_check="at least one" />
+  <ind:variable_state comment="approved ciphers list" id="ste_sshd_use_approved_ciphers" version="1">
+    <ind:value operation="equals" datatype="string" var_ref="var_sshd_approved_ciphers" var_check="at least one"/>
   </ind:variable_state>
 
   <ind:textfilecontent54_object id="obj_sshd_config_ciphers" version="1">
@@ -47,6 +63,50 @@
       <object_component item_field="subexpression" object_ref="obj_sshd_config_ciphers" />
     </split>
   </local_variable>
+
+  {{%- if sshd_distributed_config == "true" %}}
+  <ind:variable_test check="all" check_existence="any_exist"
+  comment="tests the value of Ciphers setting in {{{ sshd_drop_in_dir }}}"
+  id="test_sshd_use_approved_ciphers_config_dir" version="1">
+    <ind:object object_ref="obj_sshd_use_approved_ciphers_config_dir" />
+    <ind:state state_ref="ste_sshd_use_approved_ciphers_config_dir" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_sshd_use_approved_ciphers_config_dir" version="1">
+    <ind:var_ref>var_sshd_config_ciphers_config_dir</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state comment="approved ciphers list" id="ste_sshd_use_approved_ciphers_config_dir" version="1">
+    <ind:value operation="equals" datatype="string" var_ref="var_sshd_approved_ciphers" var_check="at least one" />
+  </ind:variable_state>
+
+  <ind:textfilecontent54_object id="obj_sshd_config_ciphers_config_dir" version="1">
+    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_sshd_config_ciphers_config_dir" datatype="string" version="1" comment="Ciphers values split on comma">
+    <split delimiter=",">
+      <object_component item_field="subexpression" object_ref="obj_sshd_config_ciphers_config_dir" />
+    </split>
+  </local_variable>
+  {{%- endif %}}
+
+  <ind:textfilecontent54_test id="test_sshd_ciphers_exists" version="1" check="all" check_existence="at_least_one_exists"
+    comment="Verify that the value of Ciphers is present">
+    <ind:object object_ref="obj_sshd_ciphers_all_configs" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_sshd_ciphers_all_configs" version="1">
+    <set>
+      <object_reference>obj_sshd_config_ciphers</object_reference>
+      {{% if sshd_distributed_config == "true" %}}
+      <object_reference>obj_sshd_config_ciphers_config_dir</object_reference>
+      {{% endif %}}
+    </set>
+  </ind:textfilecontent54_object>
 
   <local_variable id="var_sshd_approved_ciphers" datatype="string" version="1" comment="approved ciphers values split on comma">
     <split delimiter=",">

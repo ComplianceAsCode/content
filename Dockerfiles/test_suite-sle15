@@ -5,7 +5,7 @@ ENV AUTH_KEYS=/root/.ssh/authorized_keys
 ARG CLIENT_PUBLIC_KEY
 ARG ADDITIONAL_PACKAGES
 
-RUN zypper ar --no-gpgcheck http://download.opensuse.org/distribution/leap/15.5/repo/oss/ oss
+RUN zypper ar --no-gpgcheck http://download.opensuse.org/distribution/leap/15.6/repo/oss/ oss
 RUN zypper refresh
 
 RUN true \
