@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_almalinux
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu,multi_platform_almalinux,multi_platform_rhcos
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -9,6 +9,13 @@
 {{%- set pam_config_paths = "['/etc/pam.d/system-auth', '/etc/pam.d/password-auth']" -%}}
 {{% endif %}}
 
+{{% if 'rhcos' in product %}}
+- name: '{{{ rule_title }}} - Remove nullok from PAM files'
+  ansible.builtin.replace:
+    dest: "{{ item }}"
+    regexp: 'nullok'
+  loop: {{{ pam_config_paths }}}
+{{% else %}}
 - name: '{{{ rule_title }}} - Check if system relies on authselect'
   ansible.builtin.stat:
     path: /usr/bin/authselect
@@ -27,3 +34,4 @@
   loop: {{{ pam_config_paths }}}
   when:
     - not result_authselect_present.stat.exists
+{{% endif %}}
