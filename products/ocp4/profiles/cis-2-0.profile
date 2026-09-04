@@ -5,18 +5,16 @@ title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 platform: ocp4
 
-status: deprecated
-
 metadata:
     SMEs:
         - rhmdnd
         - Vincent056
         - yuumasato
-    version: 1.7.0
+    version: 2.0.0
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
-    Red Hat OpenShift Container Platform 4 Benchmark™, V1.7.
+    Red Hat OpenShift Container Platform 4 Benchmark™, V2.0.0.
 
     This profile includes Center for Internet Security®
     Red Hat OpenShift Container Platform 4 CIS Benchmarks™ content.
@@ -30,7 +28,7 @@ filter_rules: '"ocp4-node" not in platform and "ocp4-master-node" not in platfor
     not in platform and "ocp4-node-on-ovn" not in platform'
 
 selections:
-    - cis_ocp:all
+    - cis_ocp_200:all
     ### Variables
     - var_openshift_audit_profile=WriteRequestBodies
     ### Helper Rules
