@@ -10,6 +10,7 @@ metadata:
         - rhmdnd
         - Vincent056
         - yuumasato
+        - abushkin-redhat
     version: 2.0.0
 
 description: |-
