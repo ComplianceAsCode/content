@@ -37,3 +37,19 @@ references:
     nist: SC-13,CM-6(a)
     nist-csf: PR.DS-1,PR.DS-6,PR.DS-8,PR.IP-1
     pcidss: Req-11.5
+
+ocil_clause: 'the prelink package is installed and prelinking is not disabled'
+
+ocil: |-
+    Verify that prelinking is disabled on {{{ full_name }}}.
+
+    First determine whether the <tt>prelink</tt> package is installed:
+    <pre>$ rpm -q prelink</pre>
+
+    If the package is not installed, prelinking cannot be in use and the requirement is met.
+
+    If the package is installed, verify that prelinking is disabled:
+    <pre>$ grep -i PRELINKING /etc/sysconfig/prelink</pre>
+
+    The output must be:
+    <pre>PRELINKING=no</pre>
