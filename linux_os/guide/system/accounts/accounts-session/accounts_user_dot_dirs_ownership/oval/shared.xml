@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Interactive user dot directories have valid owners.", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="Dot directories are owned by an interactive user"
+        test_ref="test_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+  {{%- set home_dirs_object = "object_" ~ rule_id ~ "_home_dirs" -%}}
+  {{{ create_local_interactive_users_home_dirs_list_object(home_dirs_object) }}}
+  {{%- set uids_object = "object_" ~ rule_id ~ "_uids" -%}}
+  {{{ create_local_interactive_users_uids_list_object(uids_object) }}}
+  <local_variable id="var_{{{ rule_id }}}_home_dirs" datatype="string" version="1"
+    comment="Home directories of local interactive users">
+    <object_component item_field="subexpression" object_ref="{{{ home_dirs_object }}}" />
+  </local_variable>
+  <local_variable id="var_{{{ rule_id }}}_uids" datatype="int" version="1"
+    comment="User IDs of local interactive users">
+    <object_component item_field="subexpression" object_ref="{{{ uids_object }}}" />
+  </local_variable>
+  <unix:file_test check="all" check_existence="any_exist" id="test_{{{ rule_id }}}"
+    version="1" comment="Dot directory owners are valid">
+    <unix:object object_ref="obj_{{{ rule_id }}}_dot_dirs" />
+    <unix:state state_ref="state_{{{ rule_id }}}_owners" />
+  </unix:file_test>
+  <unix:file_object id="obj_{{{ rule_id }}}_dot_dirs" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="local" />
+    <unix:path var_ref="var_{{{ rule_id }}}_home_dirs" var_check="at least one" />
+    <unix:filename operation="pattern match">^\..*</unix:filename>
+    <filter action="include">state_{{{ rule_id }}}_directory</filter>
+  </unix:file_object>
+  <unix:file_state id="state_{{{ rule_id }}}_directory" version="1">
+    <unix:type>directory</unix:type>
+  </unix:file_state>
+  <unix:file_state id="state_{{{ rule_id }}}_owners" version="1">
+    <unix:user_id datatype="int" var_check="only one" var_ref="var_{{{ rule_id }}}_uids" />
+  </unix:file_state>
+</def-group>

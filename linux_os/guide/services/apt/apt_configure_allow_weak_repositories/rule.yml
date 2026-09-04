@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Disable APT AllowWeakRepositories'
+
+description: |-
+    Configure APT with <tt>Acquire::AllowWeakRepositories "0";</tt>.
+
+rationale: |-
+    Weak repositories use package metadata authentication that does not meet
+    current cryptographic requirements.
+
+severity: high
