@@ -1,0 +1,17 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("APT date checking is not explicitly disabled.", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="No disabling setting exists" test_ref="test_{{{ rule_id }}}_no_disabled" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    id="test_{{{ rule_id }}}_no_disabled" version="1" comment="No false or 0 value exists">
+    <ind:object object_ref="obj_{{{ rule_id }}}_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_disabled" version="1">
+    <ind:filepath operation="pattern match">/etc/apt/apt\.conf(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)Acquire::Check-Date(?-i)[\s]+&quot;?(?i)(0|false|no|without|off)(?-i)&quot;?[\s]*;[\s]*(#.*)?$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

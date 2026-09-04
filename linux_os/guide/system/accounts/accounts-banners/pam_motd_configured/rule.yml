@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Configure Explicit pam_motd Message Files'
+
+description: |-
+    PAM login services using <tt>pam_motd.so</tt> must specify message files
+    with an explicit <tt>motd=</tt> argument. Referenced message files must not
+    disclose the operating-system release or contain system-information escape
+    sequences.
+
+rationale: |-
+    Explicit message paths make login banner content auditable and prevent
+    unintended system information disclosure.
+
+severity: medium
+
+platform: package[pam]
+
+ocil_clause: 'pam_motd has no explicit message file or a referenced file discloses system information'
+
+ocil: |-
+    Review active <tt>pam_motd.so</tt> entries in the sshd, login, su, and
+    gdm-password PAM services. At least one entry must use <tt>motd=PATH</tt>,
+    and referenced files must not contain <tt>\v</tt>, <tt>\r</tt>,
+    <tt>\m</tt>, <tt>\s</tt>, or distribution-identifying text.

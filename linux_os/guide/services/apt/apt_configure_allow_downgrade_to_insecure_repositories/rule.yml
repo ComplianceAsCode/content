@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Disable APT AllowDowngradeToInsecureRepositories'
+
+description: |-
+    Configure APT with
+    <tt>Acquire::AllowDowngradeToInsecureRepositories "0";</tt>.
+
+rationale: |-
+    A repository that loses authentication must not silently remain usable.
+
+severity: high
