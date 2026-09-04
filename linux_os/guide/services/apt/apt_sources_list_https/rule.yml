@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Use HTTPS for Repositories in /etc/apt/sources.list'
+
+description: |-
+    Active APT repository entries in <tt>/etc/apt/sources.list</tt>, including
+    <tt>deb-src</tt> entries and entries carrying an options block such as
+    <tt>[signed-by=...]</tt>, must use HTTPS rather than HTTP.
+
+rationale: |-
+    HTTPS protects repository metadata and package downloads from network
+    observation and modification in transit.
+
+severity: high
+
+ocil_clause: 'an active repository entry uses HTTP'
+
+ocil: |-
+    Run <tt>grep -Pi '^\h*deb(-src)?\h+(\[[^\]]*\]\h+)?http://' /etc/apt/sources.list</tt>.
+    The command must not produce output.
