@@ -17,10 +17,10 @@ RUN find . -name "default\.profile" -exec sed -i 's/\(documentation_complete: \)
 RUN sed -i 's/\(documentation_complete: \).*/\1true/' \
     products/ocp4/profiles/cis-node.profile \
     products/ocp4/profiles/cis.profile \
-    products/ocp4/profiles/cis-node-1-7.profile \
-    products/ocp4/profiles/cis-1-7.profile \
     products/ocp4/profiles/cis-node-1-9.profile \
     products/ocp4/profiles/cis-1-9.profile \
+    products/ocp4/profiles/cis-node-2-0.profile \
+    products/ocp4/profiles/cis-2-0.profile \
     products/ocp4/profiles/moderate-node.profile \
     products/ocp4/profiles/moderate.profile \
     products/ocp4/profiles/moderate-node-rev-4.profile \
