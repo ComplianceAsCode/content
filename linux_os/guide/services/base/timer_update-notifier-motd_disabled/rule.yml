@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable and Mask update-notifier-motd Timer'
+
+description: |-
+    The update-notifier-motd.timer unit must be stopped, disabled, and masked
+    when the update-notifier-common package is installed.
+
+rationale: |-
+    Disabling the timer prevents periodic regeneration of dynamic login
+    message content.
+
+severity: medium
+
+platform: system_with_kernel
+
+ocil_clause: 'update-notifier-motd.timer is active or is not masked'
+
+ocil: |-
+    Run <tt>systemctl is-active update-notifier-motd.timer</tt> and
+    <tt>systemctl is-enabled update-notifier-motd.timer</tt>. The timer must be
+    inactive and masked, or the update-notifier-common package must be absent.
