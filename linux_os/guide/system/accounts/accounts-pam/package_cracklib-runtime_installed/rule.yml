@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Install cracklib-runtime Package'
+
+description: |-
+    {{{ describe_package_install(package="cracklib-runtime") }}}
+
+rationale: |-
+    The cracklib-runtime package supplies the password dictionary tools used by
+    PAM password-quality controls.
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: cracklib-runtime

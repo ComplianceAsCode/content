@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Disable and Mask update-notifier-motd Service'
+
+description: |-
+    The update-notifier-motd service generates dynamic message-of-the-day
+    content. {{{ describe_service_disable(service="update-notifier-motd") }}}
+
+rationale: |-
+    Disabling dynamic MOTD updates prevents unaudited network and system data
+    from being added to login banners.
+
+severity: medium
+
+platform: system_with_kernel

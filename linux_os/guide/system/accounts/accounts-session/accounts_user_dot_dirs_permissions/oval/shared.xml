@@ -1,0 +1,62 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Interactive user dot directories have restrictive permissions.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="Dot directories are mode 0750 or more restrictive"
+        test_ref="test_{{{ rule_id }}}_dot_dirs" />
+      <criterion comment="SSH directories are mode 0700 or more restrictive"
+        test_ref="test_{{{ rule_id }}}_ssh_dirs" />
+    </criteria>
+  </definition>
+
+  {{%- set home_dirs_object = "object_" ~ rule_id ~ "_home_dirs" -%}}
+  {{{ create_local_interactive_users_home_dirs_list_object(home_dirs_object) }}}
+  <local_variable id="var_{{{ rule_id }}}_home_dirs" datatype="string" version="1"
+    comment="Home directories of local interactive users">
+    <object_component item_field="subexpression" object_ref="{{{ home_dirs_object }}}" />
+  </local_variable>
+
+  <unix:file_test check="all" check_existence="any_exist"
+    id="test_{{{ rule_id }}}_dot_dirs" version="1" comment="Secure dot directory modes">
+    <unix:object object_ref="obj_{{{ rule_id }}}_dot_dirs" />
+    <unix:state state_ref="state_{{{ rule_id }}}_max_0750" />
+  </unix:file_test>
+  <unix:file_object id="obj_{{{ rule_id }}}_dot_dirs" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="local" />
+    <unix:path var_ref="var_{{{ rule_id }}}_home_dirs" var_check="at least one" />
+    <unix:filename operation="pattern match">^\..*</unix:filename>
+    <filter action="include">state_{{{ rule_id }}}_directory</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist"
+    id="test_{{{ rule_id }}}_ssh_dirs" version="1" comment="Secure .ssh directory modes">
+    <unix:object object_ref="obj_{{{ rule_id }}}_ssh_dirs" />
+    <unix:state state_ref="state_{{{ rule_id }}}_max_0700" />
+  </unix:file_test>
+  <unix:file_object id="obj_{{{ rule_id }}}_ssh_dirs" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="local" />
+    <unix:path var_ref="var_{{{ rule_id }}}_home_dirs" var_check="at least one" />
+    <unix:filename>.ssh</unix:filename>
+    <filter action="include">state_{{{ rule_id }}}_directory</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_{{{ rule_id }}}_directory" version="1">
+    <unix:type>directory</unix:type>
+  </unix:file_state>
+  <unix:file_state id="state_{{{ rule_id }}}_max_0750" version="1">
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+  <unix:file_state id="state_{{{ rule_id }}}_max_0700" version="1">
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>
