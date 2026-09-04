@@ -19,7 +19,7 @@ spec:
             Before=kubelet.service
             [Service]
             Type=oneshot
-            ExecStart=update-crypto-policies --set {{.var_system_crypto_policy}}
+            ExecStart=/bin/bash -c 'source /etc/os-release; policy="{{.var_system_crypto_policy}}"; if [ "${VERSION_ID%%.*}" -ge 10 ]; then policy="${policy%%:NO-SHA1}"; fi; update-crypto-policies --set "$policy"'
             RemainAfterExit=yes
             [Install]
             WantedBy=multi-user.target
