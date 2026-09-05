@@ -1,0 +1,11 @@
+# platform = Ubuntu 26.04
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+
+- name: Install the latest cracklib-runtime package
+  ansible.builtin.apt:
+    name: cracklib-runtime
+    state: latest
+    update_cache: false
