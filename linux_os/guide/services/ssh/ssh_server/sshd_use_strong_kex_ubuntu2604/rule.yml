@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Disable SSH Key Exchange Algorithms Prohibited by CIS Ubuntu 26.04'
+
+description: |-
+    The effective SSH key-exchange list must not contain
+    <tt>diffie-hellman-group1-sha1</tt>,
+    <tt>diffie-hellman-group14-sha1</tt>, or
+    <tt>diffie-hellman-group-exchange-sha1</tt>.
+
+rationale: |-
+    SHA-1 key-exchange algorithms do not provide adequate protection against
+    modern cryptographic attacks.
+
+severity: medium
+
+platform: package[openssh-server]
+
+ocil_clause: 'the effective SSH key-exchange list contains a prohibited algorithm'
+
+ocil: |-
+    Run <tt>sshd -T | grep kexalgorithms</tt>. The effective list must not
+    contain any of the three prohibited SHA-1 algorithms.
