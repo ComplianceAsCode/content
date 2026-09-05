@@ -6,7 +6,12 @@ title: 'Add noexec Option to /tmp'
 description: |-
     The <tt>noexec</tt> mount option can be used to prevent binaries
     from being executed out of <tt>/tmp</tt>.
+    {{% if product == "ubuntu2604" %}}
+    Add <tt>noexec</tt> to the <tt>Options</tt> setting in a
+    <tt>tmp.mount</tt> systemd drop-in.
+    {{% else %}}
     {{{ describe_mount(option="noexec", part="/tmp") }}}
+    {{% endif %}}
 
 rationale: |-
     Allowing users to execute binaries from world-writable directories
@@ -55,7 +60,14 @@ template:
         mountoption: noexec
 # Note that /tmp on RHEL systems is not tmpfs
 
+{{% if product == "ubuntu2604" %}}
+fixtext: |-
+    Create a systemd drop-in for <tt>tmp.mount</tt> that preserves the active
+    mount options and adds <tt>noexec</tt>. Reload systemd and remount
+    <tt>/tmp</tt> with <tt>noexec</tt>.
+{{% else %}}
 fixtext: |-
     {{{ fixtext_mount_option("/tmp", "noexec") }}}
+{{% endif %}}
 
 srg_requirement: '{{{ srg_requirement_mount_option("/tmp", "noexec") }}}'
