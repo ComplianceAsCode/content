@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Ensure Sudo Events Are Logged'
+
+description: |-
+    Sudo events must be captured in a durable log. <tt>sudo-rs</tt> sends
+    events to the <tt>authpriv</tt> syslog facility and does not support the
+    classic sudo <tt>Defaults logfile=</tt> option.
+
+rationale: |-
+    A durable record of privilege escalation supports auditing and incident
+    investigation.
+
+severity: low
+
+platform: package[sudo]
+
+ocil_clause: 'sudo events are not present in the journal or a persistent log'
+
+ocil: |-
+    Run <tt>journalctl -t sudo -t sudo-rs</tt> and inspect
+    <tt>/var/log/auth.log</tt>. At least one location must contain sudo events.
+    Classic sudo may instead use a valid <tt>Defaults logfile=</tt> setting.
