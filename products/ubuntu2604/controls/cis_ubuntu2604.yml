@@ -600,7 +600,6 @@ controls:
       title: Ensure update-notifier-motd.timer is not in use (Automated)
       levels:
           - l1_server
-          - l1_workstation
       rules:
           - timer_update-notifier-motd_disabled
       status: automated
@@ -1446,7 +1445,7 @@ controls:
           - sshd_idle_timeout_value=5_minutes
           - var_sshd_set_keepalive=3
           - sshd_set_idle_timeout
-          - sshd_set_keepalive
+          - sshd_set_keepalive_positive
       status: partial
     - id: 5.1.9
       title: Ensure sshd DisableForwarding is enabled (Automated)
@@ -1486,8 +1485,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - sshd_strong_kex=cis_ubuntu2604
-          - sshd_use_strong_kex
+          - sshd_use_strong_kex_ubuntu2604
       status: automated
     - id: 5.1.14
       title: Ensure sshd post-quantum key exchange algorithms are configured (Manual)
@@ -1552,7 +1550,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - sshd_disable_empty_passwords
+          - sshd_disable_empty_passwords_default
       status: automated
     - id: 5.1.22
       title: Ensure sshd PermitRootLogin is disabled (Automated)
