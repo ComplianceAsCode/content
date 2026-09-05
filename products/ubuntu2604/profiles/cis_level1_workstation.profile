@@ -3,6 +3,10 @@ documentation_complete: true
 
 metadata:
     version: 1.0.0
+    SMEs:
+        - mpurg
+        - dodys
+        - alanmcanonical
 
 reference: https://www.cisecurity.org/benchmark/ubuntu_linux
 
