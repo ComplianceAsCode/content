@@ -55,7 +55,11 @@ references:
     stigid@sle12: SLES-12-030190
 
 requires:
+{{% if product == "ubuntu2604" %}}
+    - sshd_set_keepalive_positive
+{{% else %}}
     - sshd_set_keepalive
+{{% endif %}}
 
 ocil_clause: 'it is commented out or not configured properly'
 
