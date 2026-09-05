@@ -3,8 +3,8 @@ documentation_complete: true
 title: 'Configure Local Interactive User Dot Directory Ownership'
 
 description: |-
-    Dot directories below local interactive user home directories must be owned
-    by a local interactive user.
+    Dot directories below each local interactive user's home directory must be
+    owned by that user.
 
 rationale: |-
     Unexpected ownership can allow one account to control another account's
@@ -16,7 +16,7 @@ platform: system_with_kernel
 
 ocil_clause: 'a dot directory has an unexpected owner'
 
-warnings:
-    - general: |-
-        Due to an OVAL limitation, swapped ownership between two interactive
-        users can produce a false negative.
+ocil: |-
+    For each local interactive user, recursively inspect dot directories on the
+    local filesystem below that user's home directory. Every directory must be
+    owned by that user.
