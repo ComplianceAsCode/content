@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Set SSH Client Alive Count Max Greater Than Zero'
+
+description: |-
+    The effective <tt>ClientAliveCountMax</tt> value must be greater than zero.
+    An omitted directive is compliant because the OpenSSH default is 3.
+
+rationale: |-
+    A positive count allows the SSH daemon to terminate an unresponsive
+    connection after the configured client-alive interval.
+
+severity: medium
+
+platform: package[openssh-server]
+
+requires:
+    - sshd_set_idle_timeout
+
+ocil_clause: 'the effective ClientAliveCountMax value is zero'
+
+ocil: |-
+    Run <tt>sshd -T | grep clientalivecountmax</tt> and verify the value is
+    greater than zero.
