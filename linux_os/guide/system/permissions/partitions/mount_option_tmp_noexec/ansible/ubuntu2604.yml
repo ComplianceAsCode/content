@@ -1,0 +1,51 @@
+# platform = Ubuntu 26.04
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: Read the active tmp.mount options
+  ansible.builtin.command:
+    cmd: systemctl show tmp.mount --property=Options --value
+  register: tmp_mount_options
+  changed_when: false
+  check_mode: false
+
+- name: Require an active systemd mount definition for /tmp
+  ansible.builtin.assert:
+    that:
+      - tmp_mount_options.rc == 0
+      - tmp_mount_options.stdout | trim | length > 0
+    fail_msg: tmp.mount does not report its mount options.
+
+- name: Create the tmp.mount drop-in directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/tmp.mount.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  when: "'noexec' not in (tmp_mount_options.stdout | trim).split(',')"
+
+- name: Add noexec to the tmp.mount options
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/tmp.mount.d/99-cis-noexec.conf
+    content: |-
+      [Mount]
+      Options={{ tmp_mount_options.stdout | trim }},noexec
+    owner: root
+    group: root
+    mode: '0644'
+  register: tmp_mount_drop_in
+  when: "'noexec' not in (tmp_mount_options.stdout | trim).split(',')"
+
+- name: Reload systemd after changing tmp.mount
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  when: tmp_mount_drop_in is changed
+
+- name: Remount /tmp with noexec
+  ansible.builtin.command:
+    cmd: mount --options remount,noexec --target /tmp
+  changed_when: true
+  when: tmp_mount_drop_in is changed
