@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Disable SSH Access Through Empty Passwords, Including the Secure Default'
+
+description: |-
+    The effective SSH daemon configuration must set
+    <tt>PermitEmptyPasswords</tt> to <tt>no</tt>. An omitted directive is
+    compliant because the OpenSSH default is <tt>no</tt>.
+
+rationale: |-
+    Accounts with empty passwords must not be usable for remote SSH access.
+
+severity: high
+
+platform: package[openssh-server]
+
+ocil_clause: 'the effective PermitEmptyPasswords value is not no'
+
+ocil: |-
+    Run <tt>sshd -T | grep permitemptypasswords</tt> and verify the result is
+    <tt>permitemptypasswords no</tt>.

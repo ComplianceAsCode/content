@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Use HTTPS for Repositories in /etc/apt/sources.list.d'
+
+description: |-
+    Active legacy and deb822 APT repository entries below
+    <tt>/etc/apt/sources.list.d</tt> must use HTTPS rather than HTTP.
+
+rationale: |-
+    HTTPS protects repository metadata and package downloads from network
+    observation and modification in transit.
+
+severity: high
+
+warnings:
+    - general: |-
+        Ubuntu ships <tt>/etc/apt/sources.list.d/ubuntu.sources</tt> using
+        <tt>http://archive.ubuntu.com</tt> and <tt>http://security.ubuntu.com</tt>,
+        so this rule fails on a default installation. The remediation rewrites
+        every active <tt>http://</tt> entry to <tt>https://</tt>, including entries
+        for third-party repositories. A repository that does not serve HTTPS will
+        become unreachable and <tt>apt</tt> operations will fail until the entry is
+        corrected by hand. Review the repositories in use before remediating.
+
+ocil_clause: 'an active repository entry uses HTTP'
+
+ocil: |-
+    Search <tt>*.list</tt> files for active <tt>deb http://</tt> entries and
+    <tt>*.sources</tt> files for active <tt>URIs: http://</tt> entries. Neither
+    search may produce output.
