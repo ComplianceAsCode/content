@@ -4,15 +4,29 @@
 # complexity = low
 # disruption = low
 
+{{% if product == "ubuntu2604" %}}
+{{% set aide_database_option = "database_in" %}}
+{{% else %}}
+{{% set aide_database_option = "database" %}}
+{{% endif %}}
+
 - name: "{{{ rule_title }}} - Ensure AIDE Is Installed"
   ansible.builtin.apt:
     name: aide
     state: present
 
+{{% if product == "ubuntu2604" %}}
+- name: "{{{ rule_title }}} - Remove Obsolete AIDE Database Option"
+  ansible.builtin.lineinfile:
+    path: /etc/aide/aide.conf
+    regexp: ^\s*database\s*=
+    state: absent
+{{% endif %}}
+
 - name: "{{{ rule_title }}} - Check if DB Path in /etc/aide/aide.conf Is Already Set"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
-    regexp: ^#?(\s*)(database=)(.*)$
+    regexp: ^#?(\s*)({{{ aide_database_option }}}=)(.*)$
     state: absent
   check_mode: true
   changed_when: false
@@ -30,7 +44,7 @@
 - name: "{{{ rule_title }}} - Fix DB Path in Config File if Necessary"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
-    regexp: ^#?(\s*)(database)(\s*)=(\s*)(.*)$
+    regexp: ^#?(\s*)({{{ aide_database_option }}})(\s*)=(\s*)(.*)$
     line: \2\3=\4file:/var/lib/aide/aide.db
     backrefs: true
   when: database_replace.found > 0
@@ -46,7 +60,7 @@
 - name: "{{{ rule_title }}} - Ensure the Default DB Path is Added"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
-    line: database=file:/var/lib/aide/aide.db
+    line: {{{ aide_database_option }}}=file:/var/lib/aide/aide.db
     create: true
     mode: 0644
   when: database_replace.found == 0
