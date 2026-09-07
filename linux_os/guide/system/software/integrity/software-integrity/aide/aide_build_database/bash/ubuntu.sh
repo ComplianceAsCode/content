@@ -11,6 +11,10 @@ DEFAULT_DB_PATH=/var/lib/aide/aide.db
 {{%- set aide_db_key = 'database_in' %}}
 {{% endif %}}
 
+{{% if product == 'ubuntu2604' %}}
+# aide 0.19 removed the database option, and it rejects a config that still has it.
+sed -ri '/^#?[[:space:]]*database[[:space:]]*=/d' "${AIDE_CONFIG}"
+{{% endif %}}
 if ! grep -q '^database\(_in\)\?=file:' ${AIDE_CONFIG}; then
     # replace_or_append gets confused by 'database=file' as a key, so should not be used.
     #replace_or_append "${AIDE_CONFIG}" '^database=file' "${DEFAULT_DB_PATH}" '@CCENUM@' '%s:%s'

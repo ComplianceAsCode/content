@@ -9,6 +9,14 @@
     name: aide
     state: present
 
+{{% if product == "ubuntu2604" %}}
+- name: "{{{ rule_title }}} - Remove Obsolete AIDE Database Option"
+  ansible.builtin.lineinfile:
+    path: /etc/aide/aide.conf
+    regexp: ^#?\s*database\s*=
+    state: absent
+{{% endif %}}
+
 - name: "{{{ rule_title }}} - Check if DB Path in /etc/aide/aide.conf Is Already Set"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
