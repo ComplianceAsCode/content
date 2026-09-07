@@ -741,13 +741,12 @@ fi
 
 #}}
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
-if ! grep -q '#[[:space:]]*server' "{{{ config_file }}}" ; then
-  for server in $(echo "{{{ servers_list }}}" | tr ',' '\n') ; do
-    printf '\nserver %s' "$server" >> "{{{ config_file }}}"
-  done
-else
-  sed -i 's/#[ \t]*server/server/g' "{{{ config_file }}}"
-fi
+IFS="," read -a SERVERS <<< {{{ servers_list }}}
+for server in "${SERVERS[@]}" ; do
+    if ! grep -qs "^[[:space:]]*server[[:space:]]\+${server}\([[:space:]]\|$\)" "{{{ config_file }}}" ; then
+        printf '\nserver %s' "$server" >> "{{{ config_file }}}"
+    fi
+done
 {{{ bash_ensure_nl_at_eof(config_file) }}}
 {{%- endmacro -%}}
 
