@@ -16,7 +16,7 @@ DB_CONF=/etc/aide.conf
 
 cp "$DB_PATH/$DB_NAME_NEW" "$DB_PATH/$DB_NAME"
 
-{{% if product in [ 'ol10', 'rhel10', 'fedora' ] %}}
+{{% if product in [ 'ol10', 'rhel10', 'fedora', 'ubuntu2604' ] %}}
 sed -i "s#^database_in=file:.*#database_in=file:@@{DBDIR}/$DB_NAME#" $DB_CONF
 {{% else %}}
 sed -i "s#^database=file:.*#database=file:@@{DBDIR}/$DB_NAME#" $DB_CONF
