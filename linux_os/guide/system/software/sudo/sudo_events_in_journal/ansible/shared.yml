@@ -4,12 +4,12 @@
 # complexity = low
 # disruption = low
 
-- name: Install rsyslog for sudo event logging
+- name: "{{{ rule_title }}} - Install rsyslog for sudo event logging"
   ansible.builtin.package:
     name: rsyslog
     state: present
 
-- name: Enable rsyslog for sudo event logging
+- name: "{{{ rule_title }}} - Enable rsyslog for sudo event logging"
   ansible.builtin.systemd_service:
     name: rsyslog.service
     enabled: true

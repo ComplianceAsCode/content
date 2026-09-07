@@ -5,7 +5,6 @@
 # disruption = low
 
 config_file=/etc/apt/apt.conf.d/99-cis-repository-security
-option='Acquire::AllowWeakRepositories'
 option_pattern='(Acquire::)?AllowWeakRepositories'
 setting='Acquire::AllowWeakRepositories "0";'
 
