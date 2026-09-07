@@ -5,7 +5,6 @@
 # disruption = low
 
 config_file=/etc/apt/apt.conf.d/99-cis-repository-security
-option='Acquire::AllowInsecureRepositories'
 option_pattern='(Acquire::)?AllowInsecureRepositories'
 setting='Acquire::AllowInsecureRepositories "0";'
 
