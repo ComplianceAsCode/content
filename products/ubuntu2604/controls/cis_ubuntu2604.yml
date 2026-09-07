@@ -269,7 +269,7 @@ controls:
       status: automated
     - id: 1.2.1.4
       title: Ensure access to /etc/apt/trusted.gpg.d directory is configured (Automated)
-      levels: &l1_both
+      levels:
           - l1_server
           - l1_workstation
       rules:
@@ -279,7 +279,9 @@ controls:
       status: automated
     - id: 1.2.1.5
       title: Ensure access to /etc/apt/auth.conf.d directory is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - directory_groupowner_apt_auth_conf_d
           - directory_owner_apt_auth_conf_d
@@ -287,7 +289,9 @@ controls:
       status: automated
     - id: 1.2.1.6
       title: Ensure access to files in /etc/apt/auth.conf.d is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - file_groupowner_apt_auth_conf_d
           - file_owner_apt_auth_conf_d
@@ -295,7 +299,9 @@ controls:
       status: automated
     - id: 1.2.1.7
       title: Ensure access to /usr/share/keyrings directory is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - directory_groupowner_usr_share_keyrings
           - directory_owner_usr_share_keyrings
@@ -303,7 +309,9 @@ controls:
       status: automated
     - id: 1.2.1.8
       title: Ensure access to /etc/apt/sources.list.d directory is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - directory_groupowner_apt_sources_list_d
           - directory_owner_apt_sources_list_d
@@ -311,7 +319,9 @@ controls:
       status: automated
     - id: 1.2.1.9
       title: Ensure access to files in /etc/apt/sources.list.d is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - file_groupowner_apt_sources_list_d
           - file_owner_apt_sources_list_d
@@ -319,13 +329,17 @@ controls:
       status: automated
     - id: 1.2.1.10
       title: Ensure repositories are configured to use HTTPS in /etc/apt/sources.list (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - apt_sources_list_https
       status: automated
     - id: 1.2.1.11
       title: Ensure repositories are configured to use HTTPS in /etc/apt/sources.list.d (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - apt_sources_list_d_https
       status: automated
@@ -347,7 +361,9 @@ controls:
       status: automated
     - id: 1.2.1.14
       title: Ensure AllowDowngradeToInsecureRepositories is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - apt_configure_allow_downgrade_to_insecure_repositories
       status: automated
@@ -361,7 +377,9 @@ controls:
       status: automated
     - id: 1.2.2.1
       title: Ensure updates, patches, and additional security software are installed (Manual)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       status: manual
     - id: 1.3.1.1
       title: Ensure apparmor packages are installed (Automated)
@@ -382,7 +400,9 @@ controls:
       status: automated
     - id: 1.3.1.4
       title: Ensure kernel.apparmor_restrict_unprivileged_unconfined is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_kernel_apparmor_restrict_unprivileged_unconfined
       status: automated
@@ -844,7 +864,9 @@ controls:
       status: automated
     - id: 2.1.22
       title: Ensure mail transfer agents are configured for local-only mode (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - has_nonlocal_mta
           - var_postfix_inet_interfaces=loopback-only
@@ -852,7 +874,9 @@ controls:
       status: automated
     - id: 2.1.23
       title: Ensure only approved services are listening on a network interface (Manual)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       status: manual
     - id: 2.2.1
       title: Ensure nis client is not installed (Automated)
@@ -924,7 +948,9 @@ controls:
         profile variable var_timesync_service.
     - id: 2.3.2.1
       title: Ensure systemd-timesyncd is configured with authorized timeserver (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - var_multiple_time_servers=ubuntu
           - service_timesyncd_configured
@@ -1146,7 +1172,9 @@ controls:
       status: automated
     - id: 3.2.7
       title: Ensure unneeded network protocols are not available (Manual)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       status: manual
     - id: 3.3.1.1
       title: Ensure net.ipv4.ip_forward is configured (Automated)
@@ -1190,13 +1218,17 @@ controls:
       status: automated
     - id: 3.3.1.6
       title: Ensure net.ipv4.icmp_ignore_bogus_error_responses is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
       status: automated
     - id: 3.3.1.7
       title: Ensure net.ipv4.icmp_echo_ignore_broadcasts is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
       status: automated
@@ -1210,7 +1242,9 @@ controls:
       status: automated
     - id: 3.3.1.9
       title: Ensure net.ipv4.conf.default.accept_redirects is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_default_accept_redirects
       status: automated
@@ -1224,7 +1258,9 @@ controls:
       status: automated
     - id: 3.3.1.11
       title: Ensure net.ipv4.conf.default.secure_redirects is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_default_secure_redirects
       status: automated
@@ -1246,13 +1282,17 @@ controls:
       status: automated
     - id: 3.3.1.14
       title: Ensure net.ipv4.conf.all.accept_source_route is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_all_accept_source_route
       status: automated
     - id: 3.3.1.15
       title: Ensure net.ipv4.conf.default.accept_source_route is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv4_conf_default_accept_source_route
       status: automated
@@ -1315,19 +1355,25 @@ controls:
       status: automated
     - id: 3.3.2.4
       title: Ensure net.ipv6.conf.default.accept_redirects is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv6_conf_default_accept_redirects
       status: automated
     - id: 3.3.2.5
       title: Ensure net.ipv6.conf.all.accept_source_route is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv6_conf_all_accept_source_route
       status: automated
     - id: 3.3.2.6
       title: Ensure net.ipv6.conf.default.accept_source_route is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sysctl_net_ipv6_conf_default_accept_source_route
       status: automated
@@ -1392,7 +1438,9 @@ controls:
       status: automated
     - id: 5.1.2
       title: Ensure access to /etc/ssh/sshd_config.d is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - directory_groupowner_sshd_config_d
           - directory_owner_sshd_config_d
@@ -1440,7 +1488,9 @@ controls:
       status: automated
     - id: 5.1.8
       title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sshd_idle_timeout_value=5_minutes
           - var_sshd_set_keepalive=3
@@ -1489,7 +1539,9 @@ controls:
       status: automated
     - id: 5.1.14
       title: Ensure sshd post-quantum key exchange algorithms are configured (Manual)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       status: manual
     - id: 5.1.15
       title: Ensure sshd LoginGraceTime is configured (Automated)
@@ -1598,11 +1650,13 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - sudo_logging_ubuntu2604
+          - sudo_events_in_journal
       status: automated
     - id: 5.2.5
       title: Ensure users must provide a password for privilege escalation (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - sudo_remove_no_authenticate
       status: automated
@@ -1712,7 +1766,9 @@ controls:
       status: automated
     - id: 5.3.3.2.1
       title: Ensure password number of changed characters is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - var_password_pam_difok=2
           - accounts_password_pam_difok
@@ -1745,14 +1801,18 @@ controls:
       status: automated
     - id: 5.3.3.2.4
       title: Ensure password same consecutive characters is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - var_password_pam_maxrepeat=3
           - accounts_password_pam_maxrepeat
       status: automated
     - id: 5.3.3.2.5
       title: Ensure password maximum sequential characters is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - accounts_password_pam_maxsequence
       status: automated
@@ -1825,7 +1885,9 @@ controls:
       status: automated
     - id: 5.3.3.4.3
       title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - var_password_hashing_algorithm_pam=yescrypt
           - set_password_hashing_algorithm_systemauth
@@ -2068,13 +2130,17 @@ controls:
       status: manual
     - id: 6.1.2.5
       title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       related_rules:
           - rsyslog_remote_loghost
       status: manual
     - id: 6.1.2.6
       title: Ensure rsyslog is not configured to receive logs from a remote client (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - rsyslog_nolisten
       status: automated
@@ -2126,7 +2192,6 @@ controls:
           - file_permissions_var_log_gdm
           - file_permissions_var_log_gdm3
           - file_permissions_var_log_lastlog
-          - file_permissions_var_log_cloud-init
           - file_permissions_var_log_localmessages
           - file_permissions_var_log_messages
           - file_permissions_var_log_secure
@@ -2268,7 +2333,9 @@ controls:
       status: automated
     - id: 7.1.12
       title: Ensure no files or directories without an owner and a group exist (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - no_files_unowned_by_user
           - file_permissions_ungroupowned
@@ -2345,7 +2412,9 @@ controls:
       status: automated
     - id: 7.2.9
       title: Ensure local interactive user home directories are configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - accounts_user_interactive_home_directory_exists
           - file_groupownership_home_directories
@@ -2369,7 +2438,9 @@ controls:
       status: automated
     - id: 7.2.11
       title: Ensure local interactive user dot directories access is configured (Automated)
-      levels: *l1_both
+      levels:
+          - l1_server
+          - l1_workstation
       rules:
           - accounts_user_dot_dirs_permissions
           - accounts_user_dot_dirs_ownership

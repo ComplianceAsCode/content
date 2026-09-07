@@ -5,7 +5,6 @@
 # disruption = low
 
 config_file=/etc/apt/apt.conf.d/99-cis-repository-security
-option='Acquire::Check-Date'
 option_pattern='(Acquire::)?Check-Date'
 setting='Acquire::Check-Date "true";'
 

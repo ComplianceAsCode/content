@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 
-while IFS=: read -r user _ _ gid _ home shell; do
+while IFS=: read -r _ _ _ gid _ home shell; do
     grep -qxF "$shell" /etc/shells 2>/dev/null || continue
     [[ "$shell" == */nologin || "$shell" == */false || ! -d "$home" ]] && continue
     case $(findmnt -no FSTYPE --target "$home" 2>/dev/null) in
