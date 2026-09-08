@@ -742,6 +742,21 @@ fi
 #}}
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
 IFS="," read -r -a SERVERS <<< "{{{ servers_list }}}"
+
+valid_pattern=""
+for server in "${SERVERS[@]}"; do
+    escaped_server="${server//./\\.}"
+    if [ -z "$valid_pattern" ]; then
+        valid_pattern="${escaped_server}"
+    else
+        valid_pattern="${valid_pattern}|${escaped_server}"
+    fi
+done
+
+if [ -n "$valid_pattern" ]; then
+    sed -i -E "/^[[:space:]]*server[[:space:]]/ { /^[[:space:]]*server[[:space:]]+(${valid_pattern})([[:space:]]|$)/! s/^[[:space:]]*server/# server/ }" "{{{ config_file }}}"
+fi
+
 for server in "${SERVERS[@]}" ; do
     escaped_server="${server//./\\.}"
     if ! grep -q "^[[:space:]]*server[[:space:]]\+${escaped_server}\([[:space:]]\|$\)" "{{{ config_file }}}" ; then
