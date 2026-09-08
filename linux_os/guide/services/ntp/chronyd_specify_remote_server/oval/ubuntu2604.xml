@@ -21,7 +21,7 @@
   <ind:textfilecontent54_object id="obj_chronyd_server_in_main_conf" version="1"
     comment="Check main chrony.conf for server/pool directives">
     <ind:filepath>{{{ chrony_conf_path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?:server|pool)[\s]+.+$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*(?:server|pool)[ \t]+\S+.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -57,7 +57,7 @@
     comment="Check .sources files in sourcedir for server/pool directives">
     <ind:filepath operation="pattern match" var_ref="var_sourcedir_file_paths_regex"
       var_check="at least one"/>
-    <ind:pattern operation="pattern match">^[\s]*(?:server|pool)[\s]+.+$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*(?:server|pool)[ \t]+\S+.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -93,7 +93,7 @@
     comment="Check .conf files in confdir for server/pool directives">
     <ind:filepath operation="pattern match" var_ref="var_confdir_file_paths_regex"
       var_check="at least one"/>
-    <ind:pattern operation="pattern match">^[\s]*(?:server|pool)[\s]+.+$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*(?:server|pool)[ \t]+\S+.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = chrony
-# platform = multi_platform_ubuntu
+# platform = Ubuntu 22.04,Ubuntu 24.04
 # remediation = None
 
 rm -rf /etc/chrony/conf.d
