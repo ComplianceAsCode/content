@@ -136,11 +136,17 @@
       when: not oras_stat.stat.exists
 
     # -------------------------------------------------------------------------
-    # SCAP data stream — always copy the repo-built version.
-    # The system RPM (scap-security-guide) predates the nist_800_53 profile
-    # commit and will not contain that profile.  The built data stream must
-    # be deployed even if the RPM is already installed.
+    # SCAP data stream — always copy the repo-built version. We never rely on
+    # a packaged scap-security-guide data stream (it would predate in-progress
+    # profiles like nist_800_53), so ensure the destination directory exists
+    # ourselves rather than depending on that package as a side effect.
     # -------------------------------------------------------------------------
+    - name: Ensure SCAP content directory exists
+      ansible.builtin.file:
+        path: "{{ ds_dest | dirname }}"
+        state: directory
+        mode: "0755"
+
     - name: "Copy built data stream from host"
       ansible.builtin.copy:
         src: "{{ repo_root }}/build/ssg-fedora-ds.xml"

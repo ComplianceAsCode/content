@@ -39,17 +39,15 @@ Vagrant.configure("2") do |config|
     v.cpus   = 2
   end
 
-  # Install OS-level dependencies for OpenSCAP scanning
+  # Install OS-level dependencies for OpenSCAP scanning.
+  # Not installing scap-security-guide here: setup_fedora.yml always deploys
+  # the locally built data stream (it would predate in-progress profiles like
+  # nist_800_53 anyway), so there's nothing for that package to contribute.
   config.vm.provision "shell", name: "base-packages", inline: <<~SHELL
     set -euo pipefail
 
     echo "=== Installing base packages ==="
-    # Fedora ships with openscap-scanner and scap-security-guide in the repos
     dnf install -y openscap-scanner openscap-engine-sce 2>&1 | tail -5
-
-    # scap-security-guide provides /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
-    dnf install -y scap-security-guide 2>&1 | tail -5 || \
-      echo "  [WARN] scap-security-guide unavailable; Ansible will copy the built data stream."
 
     echo "=== Base provisioning complete ==="
   SHELL
