@@ -10,7 +10,7 @@ title: 'Verify Permissions on shadow File'
     {{% set target_perms="----------" %}}
 {{% endif %}}
 
-description:  |-
+description: |-
     {{{ describe_file_permissions(file="/etc/shadow", perms=target_perms_octal) }}}
 
 rationale: |-
@@ -54,11 +54,13 @@ ocil: |-
 
 fixtext: '{{{ fixtext_file_permissions(file="/etc/shadow", mode=target_perms_octal) }}}'
 
+# yamllint disable rule:key-duplicates
 {{% if target_perms_octal == "0000" %}}
 srg_requirement: 'The {{{ full_name }}} /etc/shadow file must have a mode of 0000 to prevent unauthorized access.'
 {{% else %}}
 srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/shadow", mode=target_perms_octal) }}}'
 {{% endif %}}
+# yamllint enable rule:key-duplicates
 
 template:
     name: file_permissions
