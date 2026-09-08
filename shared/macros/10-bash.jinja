@@ -743,7 +743,8 @@ fi
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
 IFS="," read -a SERVERS <<< {{{ servers_list }}}
 for server in "${SERVERS[@]}" ; do
-    if ! grep -q "^[[:space:]]*server[[:space:]]\+${server}\([[:space:]]\|$\)" "{{{ config_file }}}" ; then
+    escaped_server="${server//./\\.}"
+    if ! grep -q "^[[:space:]]*server[[:space:]]\+${escaped_server}\([[:space:]]\|$\)" "{{{ config_file }}}" ; then
         printf '\nserver %s' "$server" >> "{{{ config_file }}}"
     fi
 done
