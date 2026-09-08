@@ -46,11 +46,13 @@ references:
     srg: SRG-OS-000368-GPOS-00154
     stigid@ol8: OL08-00-040125
 
+# yamllint disable rule:key-duplicates
 {{% if product == 'sle16' or 'slmicro' in product %}}
 platform: system_with_kernel
 {{% else %}}
 platform: mount[tmp]
 {{% endif %}}
+# yamllint enable rule:key-duplicates
 
 
 {{% if product != 'sle16' and 'slmicro' not in product %}}
@@ -62,6 +64,7 @@ template:
 # Note that /tmp on RHEL systems is not tmpfs
 {{% endif %}}
 
+# yamllint disable rule:key-duplicates
 {{% if product == "ubuntu2604" %}}
 fixtext: |-
     Create a systemd drop-in for <tt>tmp.mount</tt> that preserves the active
@@ -71,5 +74,6 @@ fixtext: |-
 fixtext: |-
     {{{ fixtext_mount_option("/tmp", "noexec") }}}
 {{% endif %}}
+# yamllint enable rule:key-duplicates
 
 srg_requirement: '{{{ srg_requirement_mount_option("/tmp", "noexec") }}}'
