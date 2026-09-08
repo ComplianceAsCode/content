@@ -741,7 +741,7 @@ fi
 
 #}}
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
-IFS="," read -a SERVERS <<< {{{ servers_list }}}
+IFS="," read -r -a SERVERS <<< "{{{ servers_list }}}"
 for server in "${SERVERS[@]}" ; do
     escaped_server="${server//./\\.}"
     if ! grep -q "^[[:space:]]*server[[:space:]]\+${escaped_server}\([[:space:]]\|$\)" "{{{ config_file }}}" ; then
