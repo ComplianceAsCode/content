@@ -1,6 +1,10 @@
 ---
 # One-time setup of the Fedora scanner VM.
 #
+# complyctl_bin and provider_bin must already exist on the host before running
+# this playbook. See docs/manual/developer/16_nist_800_53_gemara_testing.md
+# (§4 complyctl binary, §5 complyctl-provider-openscap) for how to obtain them.
+#
 # Usage (from utils/nist_sync/):
 #   ansible-playbook -i ansible/inventory.ini ansible/setup_fedora.yml \
 #     -e complyctl_bin=/tmp/complyctl \

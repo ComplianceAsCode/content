@@ -27,6 +27,18 @@
       - high
 
   tasks:
+    - name: Check complyctl is installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/complyctl
+      register: complyctl_bin_stat
+
+    - name: Fail early if complyctl is missing
+      ansible.builtin.fail:
+        msg: >-
+          /usr/local/bin/complyctl not found on {{ inventory_hostname }}.
+          Run ansible/setup_fedora.yml first.
+      when: not complyctl_bin_stat.stat.exists
+
     - name: Ensure complytime directories exist (XDG layout)
       ansible.builtin.file:
         path: "{{ item }}"
