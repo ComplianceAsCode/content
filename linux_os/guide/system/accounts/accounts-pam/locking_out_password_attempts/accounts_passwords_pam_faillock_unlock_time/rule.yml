@@ -108,3 +108,6 @@ template:
     ext_variable: var_accounts_passwords_pam_faillock_unlock_time
     description: The unlock time after number of failed logins should be set correctly.
     variable_lower_bound: use_ext_variable
+{{% if product == 'ubuntu2404' %}}
+    variable_upper_bound: use_ext_variable
+{{% endif %}}
