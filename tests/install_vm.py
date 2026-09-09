@@ -14,23 +14,24 @@ KNOWN_DISTROS = [
     "centos9",
     "rhel8",
     "rhel9",
+    "rhel10",
 ]
 
 # put here any unreleased distro in development that needs to be tested
 # and any working osinfo known to be used by default when installating it
 UNRELEASED_DISTROS_AND_OSINFO = {
-    "rhel10": "rhel9-unknown"
 }
 
 DISTRO_URL = {
     "fedora":
         "https://download.fedoraproject.org/pub/fedora/linux/releases/42/Everything/x86_64/os",
-    "centos8": "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/",
     "centos9": "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/",
+    "centos10": "http://mirror.centos.org/centos/10-stream/BaseOS/x86_64/os/",
+
 }
 DISTRO_EXTRA_REPO = {
-    "centos8": "http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/",
-    "centos9": "http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/",
+    "centos9": "http://mirror.centos.org/centos/9-stream/AppStream/x86_64/os/",
+    "centos10": "http://mirror.stream.centos.org/10-stream/AppStream/x86_64/os/",
 }
 
 
