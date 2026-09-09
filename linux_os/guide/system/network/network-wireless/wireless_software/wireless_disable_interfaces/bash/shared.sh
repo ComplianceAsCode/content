@@ -8,7 +8,7 @@ fi
 
 if command -v wicked >/dev/null 2>&1 && systemctl is-active wickedd >/dev/null 2>&1; then
   if [ -n "$(find /sys/class/net/*/ -type d -name wireless)" ]; then
-    interfaces=$(find /sys/class/net/*/wireless -type d -name wireless | xargs -0 dirname | xargs basename)
+    interfaces=$(find /sys/class/net/*/wireless -type d -name wireless -print0 | xargs -0 dirname | xargs basename)
     for iface in $interfaces; do
       wicked ifdown $iface
       sed -i 's/STARTMODE=.*/STARTMODE=off/' /etc/sysconfig/network/ifcfg-$iface
