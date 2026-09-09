@@ -42,10 +42,14 @@ def path_from_tests(path):
 
 def parse_args():
     import textwrap
-    osinfo_epilog = textwrap.dedent(r"""
-        --osinfo details: 'For unreleased distros, these are the following
-        default data used as input {}.
-    """.format(UNRELEASED_DISTROS_AND_OSINFO))
+    osinfo_epilog = "Run 'virt-install --osinfo list' to get a list of available options."
+    if UNRELEASED_DISTROS_AND_OSINFO:
+        osinfo_epilog = textwrap.dedent(f"""
+            --osinfo details: The following OSInfo values are used by default for
+            unreleased distros: {UNRELEASED_DISTROS_AND_OSINFO}
+
+            Run 'virt-install --osinfo list' to get a list of available options.
+        """)
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,
         epilog=osinfo_epilog,
@@ -86,7 +90,7 @@ def parse_args():
         "--disk-size",
         dest="disk_size",
         default=20,
-        help="Size of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified).",
+        help="Size (in GiB) of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified).",
     )
     parser.add_argument(
         "--disk",
@@ -98,7 +102,7 @@ def parse_args():
         dest="ram",
         default=3072,
         type=int,
-        help="Amount of RAM configured for the VM.",
+        help="Amount of RAM (in MiB) configured for the VM, default is 3072 MiB.",
     )
     parser.add_argument(
         "--cpu",
