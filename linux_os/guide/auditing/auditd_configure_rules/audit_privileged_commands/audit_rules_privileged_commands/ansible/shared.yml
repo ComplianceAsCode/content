@@ -10,7 +10,7 @@
 
 - name: {{{ rule_title }}} - Search for Privileged Commands in Eligible Mount Points
   ansible.builtin.shell:
-    cmd: find {{ item }} -xdev -perm /6000 -type f 2>/dev/null
+    cmd: find {{ item }} -xdev -perm /6000 -type f -not -path "/var/tmp/dracut*" 2>/dev/null
   register: result_privileged_commands_search
   changed_when: false
   failed_when: false
@@ -21,6 +21,22 @@
     privileged_commands: "{{ privileged_commands | default([]) + item.stdout_lines }}"
   loop: "{{ result_privileged_commands_search.results }}"
   when: item is not skipped
+
+- name: {{{ rule_title }}} - Fallback search when mount enumeration found nothing
+  ansible.builtin.shell:
+    cmd: find / -xdev -perm /6000 -type f -not -path "/sysroot/*" -not -path "/var/tmp/dracut*" 2>/dev/null
+  register: result_privileged_commands_fallback
+  changed_when: false
+  failed_when: false
+  when: privileged_commands | default([]) | length == 0
+
+- name: {{{ rule_title }}} - Use fallback privileged command list
+  ansible.builtin.set_fact:
+    privileged_commands: "{{ result_privileged_commands_fallback.stdout_lines }}"
+  when:
+    - privileged_commands | default([]) | length == 0
+    - result_privileged_commands_fallback.stdout is defined
+    - result_privileged_commands_fallback.stdout | trim | length > 0
 
 {{% if product in ["fedora", "rhel10"] %}}
 - name: {{{ rule_title }}} - Set architecture for audit {{{ PATH }}}
