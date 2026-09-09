@@ -227,6 +227,7 @@ controls:
           - rsyslog_files_permissions
           - selinux_not_disabled
           - selinux_policytype
+          - selinux_state
           - sshd_limit_user_access
           - sysctl_fs_protected_hardlinks
           - sysctl_fs_protected_symlinks
@@ -234,6 +235,7 @@ controls:
           - var_accounts_user_umask=027
           - var_pam_wheel_group_for_su=cis
           - var_selinux_policy_name=targeted
+          - var_selinux_state=enforcing
       status: automated
       controls:
           - id: ac-3.1

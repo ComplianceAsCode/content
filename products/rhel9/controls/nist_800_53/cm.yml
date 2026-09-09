@@ -21,7 +21,6 @@ controls:
           - file_permission_user_init_files
           - gid_passwd_group_same
           - group_unique_id
-          - group_unique_name
           - groups_no_zero_gid_except_root
           - no_dirs_unowned_by_root
           - no_forward_files
@@ -269,7 +268,6 @@ controls:
           - file_groupownership_sshd_pub_key
           - file_owner_grub2_cfg
           - file_owner_user_cfg
-          - file_ownership_home_directories
           - file_ownership_sshd_private_key
           - file_ownership_sshd_pub_key
           - file_permissions_grub2_cfg
@@ -405,6 +403,7 @@ controls:
           - package_tftp-server_removed
           - package_tftp_removed
           - package_vsftpd_removed
+          - package_xorg-x11-server-common_removed
           - partition_for_dev_shm
           - partition_for_home
           - partition_for_tmp
@@ -419,6 +418,7 @@ controls:
           - service_nftables_disabled
           - sshd_disable_forwarding
           - wireless_disable_interfaces
+          - xwindows_runlevel_target
           - var_postfix_inet_interfaces=loopback-only
       status: automated
       controls:

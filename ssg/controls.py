@@ -935,7 +935,21 @@ class ControlsManager:
             policy_id = pid
             if ":" in sub_name:
                 policy_id, req = sub_name.split(":", 1)
-                subcontrols = self._get_foreign_subcontrols(policy_id, req)
+                # A cross-policy reference targets a control in a different
+                # policy (e.g. a derived framework like NIST 800-171 pulling
+                # rules from a product's NIST 800-53 controls). That target
+                # policy or control may not be loaded for the product being
+                # built - in which case the reference simply contributes no
+                # rules rather than breaking the build. Same-policy references
+                # are still resolved strictly so typos are caught.
+                try:
+                    subcontrols = self._get_foreign_subcontrols(policy_id, req)
+                except ValueError as exc:
+                    print(
+                        "Skipping cross-policy reference '%s' in control '%s': %s"
+                        % (sub_name, control.id, exc),
+                        file=sys.stderr)
+                    continue
             else:
                 subcontrols = [self.get_control(policy_id, sub_name)]
 
