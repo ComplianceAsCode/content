@@ -85,7 +85,7 @@ def parse_args():
         "--disk-size",
         dest="disk_size",
         default=20,
-        help="Size of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified).",
+        help="Size (in GiB) of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified).",
     )
     parser.add_argument(
         "--disk",
@@ -97,7 +97,7 @@ def parse_args():
         dest="ram",
         default=3072,
         type=int,
-        help="Amount of RAM configured for the VM.",
+        help="Amount of RAM (in MiB) configured for the VM, default is 3072 MiB.",
     )
     parser.add_argument(
         "--cpu",
