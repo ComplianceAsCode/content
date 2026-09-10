@@ -2,6 +2,6 @@ default:
   pwhistory_path: "/etc/security/pwhistory.conf"
 
 overrides:
-{{% if product == 'sle16' %}}
+{{% if product in ['opensuse16', 'sle16'] %}}
   pwhistory_path: "/usr/etc/security/pwhistory.conf"
 {{% endif %}}

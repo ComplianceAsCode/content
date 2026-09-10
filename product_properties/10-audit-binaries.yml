@@ -29,3 +29,14 @@ overrides:
     - /usr/sbin/augenrules
     - /usr/sbin/audisp-syslog
 {{% endif %}}
+{{% if product in ['opensuse16', 'sle16'] %}}
+  audit_binaries:
+    - /usr/sbin/auditctl
+    - /usr/sbin/aureport
+    - /usr/sbin/ausearch
+    - /usr/sbin/auditd
+    - /usr/sbin/augenrules
+    - /usr/sbin/audisp-syslog
+    - /usr/sbin/audisp-remote
+    - /usr/sbin/audispd-zos-remote
+{{% endif %}}
