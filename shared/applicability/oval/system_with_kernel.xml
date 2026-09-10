@@ -6,7 +6,7 @@
       {{% if "ol" in families %}}
       <criterion comment="kernel-uek is installed" test_ref="inventory_test_kernel_uek_installed" />
       {{% endif %}}
-      {{% if 'sle' in product or 'slmicro' in product %}}
+      {{% if 'suse' in families %}}
       <criterion comment="kernel-default-base is installed" test_ref="inventory_test_kernel_default_base_installed" />
       <criterion comment="kernel-azure is installed" test_ref="inventory_test_kernel_azure_installed" />
       {{% endif %}}
@@ -14,7 +14,7 @@
   </definition>
 {{% if 'debian' in product or 'ubuntu' in product %}}
 {{{ oval_test_package_installed(package="linux-base", test_id="inventory_test_kernel_installed") }}}
-{{% elif 'sle' in product or 'slmicro' in product %}}
+{{% elif 'suse' in families %}}
 {{{ oval_test_package_installed(package="kernel-default", test_id="inventory_test_kernel_installed") }}}
 {{{ oval_test_package_installed(package="kernel-default-base", test_id="inventory_test_kernel_default_base_installed") }}}
 {{{ oval_test_package_installed(package="kernel-azure", test_id="inventory_test_kernel_azure_installed") }}}
