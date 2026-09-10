@@ -31,9 +31,9 @@ on:
   workflow_dispatch:
     inputs:
       products:
-        description: 'Comma-separated list of products to sync (default: rhel8,rhel9,rhel10)'
+        description: 'Comma-separated list of products to sync (default: rhel8,rhel9,rhel10,fedora)'
         required: false
-        default: 'rhel8,rhel9,rhel10'
+        default: 'rhel8,rhel9,rhel10,fedora'
 
 jobs:
   update-policies:
@@ -56,7 +56,7 @@ jobs:
             python3-setuptools
 
       - name: Checkout ComplianceAsCode/content
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: content
 
@@ -73,7 +73,7 @@ jobs:
              [ -n "${{ inputs.products }}" ]; then
             PRODUCTS="${{ inputs.products }}"
           else
-            PRODUCTS="rhel8,rhel9,rhel10"
+            PRODUCTS="rhel8,rhel9,rhel10,fedora"
           fi
           echo "products=${PRODUCTS}" >> "$GITHUB_OUTPUT"
 
