@@ -9,7 +9,7 @@ description: |-
     The following line in <tt>{{{ sshc_main_config }}}</tt>
     demonstrates use of FIPS-approved MACs:
 
-    <pre>MACs {{{ ssh_approved_macs }}}</pre>
+    <pre>MACs {{{ xccdf_value("ssh_approved_macs") }}}</pre>
     If this line does not contain these MACs in exact order,
     is commented out, or is missing, this is a finding.
 
