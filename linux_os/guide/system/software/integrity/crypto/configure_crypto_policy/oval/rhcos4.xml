@@ -1,0 +1,135 @@
+<def-group>
+  <definition class="compliance" id="configure_crypto_policy" version="1">
+    {{{ oval_metadata("Ensure crypto policy is correctly configured in /etc/crypto-policies/config, and the policy is current. On RHEL10-based RHCOS the :NO-SHA1 subpolicy no longer exists and is dropped, so the base policy is expected instead.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criteria operator="AND" comment="RHEL8/9 based RHCOS - expect the exact configured crypto policy">
+        <extend_definition comment="RHCOS is not RHEL10 based" definition_ref="installed_OS_is_rhcos4_rhel10" negate="true" />
+        <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/config"
+        test_ref="test_configure_crypto_policy" />
+        <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/state/current"
+        test_ref="test_configure_crypto_policy_current" />
+        <criterion comment="Check if update-crypto-policies has been run after config update" test_ref="test_crypto_policies_updated" />
+        <criterion comment="Check if /etc/crypto-policies/back-ends/nss.config exists" test_ref="test_crypto_policy_nss_config" />
+      </criteria>
+      <criteria operator="AND" comment="RHEL10 based RHCOS - :NO-SHA1 subpolicy dropped, expect the base policy">
+        <extend_definition comment="RHCOS is RHEL10 based" definition_ref="installed_OS_is_rhcos4_rhel10" />
+        <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/config"
+        test_ref="test_configure_crypto_policy_el10" />
+        <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/state/current"
+        test_ref="test_configure_crypto_policy_current_el10" />
+        <criterion comment="Check if update-crypto-policies has been run after config update" test_ref="test_crypto_policies_updated" />
+        <criterion comment="Check if /etc/crypto-policies/back-ends/nss.config exists" test_ref="test_crypto_policy_nss_config" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_object id="crypto_policies_current_file" comment="crypto-policies current state" version="1">
+    <unix:filepath>/etc/crypto-policies/state/current</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_object id="crypto_policies_config_file" comment="crypto-policies config state" version="1">
+    <unix:filepath datatype="string">/etc/crypto-policies/config</unix:filepath>
+  </unix:file_object>
+
+  <local_variable id="variable_crypto_policies_current_file_timestamp" version="1" comment="Age of /etc/crypto-policies/state/current" datatype="int">
+    <object_component object_ref="crypto_policies_current_file" item_field="m_time"/>
+  </local_variable>
+
+  <local_variable id="variable_crypto_policies_config_file_timestamp" version="1" comment="Age of /etc/crypto-policies/config" datatype="int">
+    <object_component object_ref="crypto_policies_config_file" item_field="m_time"/>
+  </local_variable>
+
+  <ind:variable_test check="all" check_existence="all_exist" id="test_crypto_policies_updated" version="1" comment="Check if update-crypto-policies has been run">
+    <ind:object object_ref="object_crypto_policies_config_file_modified_time" />
+    <ind:state state_ref="state_crypto_current_file_newer_than_config_file" />
+  </ind:variable_test>
+
+  <ind:variable_object comment="Crypto policy current file timestamp"
+id="object_crypto_policies_config_file_modified_time" version="1">
+     <ind:var_ref>variable_crypto_policies_config_file_timestamp</ind:var_ref>
+   </ind:variable_object>
+
+  <ind:variable_state id="state_crypto_current_file_newer_than_config_file" version="1">
+    <ind:value datatype="int" operation="less than or equal" var_check="all"
+    var_ref="variable_crypto_policies_current_file_timestamp" />
+  </ind:variable_state>
+
+  <ind:textfilecontent54_test id="test_configure_crypto_policy"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/config"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_configure_crypto_policy" />
+    <ind:state state_ref="state_configure_crypto_policy" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_configure_crypto_policy" version="1">
+    <ind:filepath>/etc/crypto-policies/config</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(\S+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_configure_crypto_policy" version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_system_crypto_policy" />
+  </ind:textfilecontent54_state>
+
+    <ind:textfilecontent54_test id="test_configure_crypto_policy_current"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/state/current"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_configure_crypto_policy_current" />
+    <ind:state state_ref="state_configure_crypto_policy_current" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_configure_crypto_policy_current" version="1">
+    <ind:filepath>/etc/crypto-policies/state/current</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(\S+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_configure_crypto_policy_current" version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_system_crypto_policy" />
+  </ind:textfilecontent54_state>
+
+  <!-- RHEL10-based RHCOS: the :NO-SHA1 subpolicy no longer exists, so the effective
+       expected value is the base policy with a trailing :NO-SHA1 stripped. -->
+  <local_variable id="var_effective_crypto_policy" datatype="string" version="1"
+  comment="var_system_crypto_policy with a trailing :NO-SHA1 subpolicy stripped (RHEL10)">
+    <regex_capture pattern="^(.+?)(?::NO-SHA1)?$">
+      <variable_component var_ref="var_system_crypto_policy" />
+    </regex_capture>
+  </local_variable>
+
+  <ind:textfilecontent54_test id="test_configure_crypto_policy_el10"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/config on RHEL10"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_configure_crypto_policy" />
+    <ind:state state_ref="state_configure_crypto_policy_el10" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_configure_crypto_policy_el10" version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_effective_crypto_policy" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test id="test_configure_crypto_policy_current_el10"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/state/current on RHEL10"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_configure_crypto_policy_current" />
+    <ind:state state_ref="state_configure_crypto_policy_current_el10" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_configure_crypto_policy_current_el10" version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_effective_crypto_policy" />
+  </ind:textfilecontent54_state>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /etc/crypto-policies/back-ends/nss.config exists" id="test_crypto_policy_nss_config" version="1">
+    <unix:object object_ref="object_crypto_policy_nss_config" />
+  </unix:file_test>
+  <unix:file_object id="object_crypto_policy_nss_config" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/nss.config</unix:filepath>
+  </unix:file_object>
+
+  <external_variable comment="defined crypto policy" datatype="string" id="var_system_crypto_policy" version="1" />
+
+</def-group>
