@@ -55,6 +55,11 @@ Requirement,HTML diff URL,STDOUT from compare_ds.py,Changes,Action Required,note
 
 ## Hard rules
 
+- **Never infer inputs or scope.** Before starting any phase, ask the user to provide the work
+  root, product list, old and new manual XML paths for each product, the requested phase, and the
+  HTML review base URL when assessment artifacts are requested. Do not derive these values from
+  repository files, existing work folders, branch names, profile versions, or duplicate files.
+  If any required value is missing, stop and ask for it.
 - **Diffs are copied verbatim, never from memory.** Every diff embedded in a report, analysis,
   or comment must be the exact text `compare_ds.py` produced. If a diff looks wrong, re-run
   `compare_ds.py`; don't hand-patch or reconstruct it from a prior read.

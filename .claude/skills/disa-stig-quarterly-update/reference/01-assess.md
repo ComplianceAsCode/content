@@ -1,24 +1,36 @@
 # Phase 1: assess a new DISA STIG release
 
-## 1. Locate the manually downloaded inputs
+## 1. Request the assessment inputs
 
-The user downloads the DISA manual XML files before invoking this skill. Use the configured input
-root under the project work folder. Search recursively for the manual XML belonging to each old
-and new release. Do not use the SCAP XML.
+Before inspecting files, ask the user to provide all of the following explicitly:
+
+- Work root for the retained product packages.
+- Products and old/new release versions in scope.
+- Exactly one old and one new manual XML path for every product.
+- File-server directory URL for the generated HTML links.
+
+Never infer any of these values from repository references, profile metadata, existing work
+folders, branch names, or duplicate files. If a value is missing, stop and ask the user.
+
+## 2. Validate the manually downloaded inputs
+
+The user downloads the DISA manual XML files before invoking this skill. Validate only the paths
+the user provided. Do not use the SCAP XML.
 
 Require exactly one old and one new manual file for every product in scope. If discovery finds
-zero or multiple candidates, stop and report the candidates instead of guessing.
+zero or multiple candidates for a provided path, stop and report the candidates instead of
+guessing.
 
 Keep the discovered source paths in the product work package so the comparison can be rerun.
 
-## 2. Note the current and target versions
+## 3. Note the current and target versions
 
 Check the current version in `products/<product>/profiles/stig.profile` (`metadata.version`)
 against the latest release on https://www.cyber.mil/stigs/downloads. Do this for every product
 in scope for the update (e.g. rhel8, rhel9, rhel10 are updated together when their release
 windows overlap).
 
-## 3. Obtain the new STIG files
+## 4. Obtain the new STIG files
 
 The user owns downloading the files. Use the `*-xccdf-manual.xml` file, not
 `*-xccdf-scap.xml`:
@@ -27,7 +39,7 @@ The user owns downloading the files. Use the `*-xccdf-manual.xml` file, not
 - `*-xccdf-scap.xml` - automated subset DISA ships with OVAL checks, not always published.
   Used later for the Contest `disa-alignment` test, not for diffing.
 
-## 4. Diff the previous and new manual XML with `compare_ds.py`
+## 5. Diff the previous and new manual XML with `compare_ds.py`
 
 ```bash
 # Create the retained per-product comparison directory before running the tool.
@@ -48,7 +60,7 @@ This produces one unified diff file per changed STIG ID, in the `[fieldname]: va
 described in `reference/xccdf-format.md`. A STIG ID with no behavioral or prose change produces
 no diff file at all - `compare_ds.py` only emits a file when something changed.
 
-## 5. Build the retained review artifacts
+## 6. Build the retained review artifacts
 
 The CSV is the primary review result. Generate it using the normalized columns documented in the
 skill. Use a file-server directory URL supplied by the user for the HTML links; do not invent a
@@ -84,7 +96,7 @@ regenerate the derived artifacts.
 Retain all artifacts even when assessment or implementation stops. Commit the completed review
 package to the product branch after the user approves the action table.
 
-## 6. How to assess each changed rule
+## 7. How to assess each changed rule
 
 For every STIG ID in the report, in priority order:
 
