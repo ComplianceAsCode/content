@@ -5,10 +5,15 @@ description: Assess, implement, and describe a DISA STIG quarterly benchmark upd
 
 # DISA STIG quarterly update
 
+This skill produces a reviewable, pushed update branch for each RHEL product in scope. The MVP
+expects the user to download the DISA manual XML files. The model runs the comparison tools,
+retains every intermediate artifact, implements approved changes commit by commit, pushes the
+branches, and writes Markdown PR drafts. It does not open GitHub PRs automatically.
+
 Three phases: **assess** the new release, **implement** the changes, **describe** them in the
 PR. Each phase has its own reference doc; read only the one you're on.
 
-- `reference/01-assess.md` - download, diff with `compare_ds.py`, build the diff report
+- `reference/01-assess.md` - locate inputs, diff with `compare_ds.py`, build review artifacts
 - `reference/02-classify-diffs.md` - prose vs OVAL vs new-rule vs removal vs control-file
 - `reference/03-implement.md` - commits, branches, PR, shared-file cross-PR pattern
 - `reference/04-pr-description.md` - PR description template and style
@@ -18,6 +23,35 @@ PR. Each phase has its own reference doc; read only the one you're on.
   constraint
 - `reference/observations.md` - daemons resetting file modes on reboot, SELinux inotify denials,
   Contest ansible/bash asymmetry, container guards
+
+## MVP result layout
+
+Keep a separate work package for each product. Do not delete a work package when a later step
+fails; partial results are useful for review and debugging.
+
+```text
+<work-root>/
+  rhel8-v2r7-to-v2r8/
+    compare_ds/
+      stdout.txt
+      diffs/
+    html_diffs/
+    csv/
+      review.csv
+    assessment/
+      diff_report.md
+      action_table.md
+    pr/
+      description.md
+  rhel9-v2r8-to-v2r9/
+    ...
+```
+
+The normalized CSV is the primary human-review result for the MVP. It uses these review columns:
+
+```text
+Requirement,HTML diff URL,STDOUT from compare_ds.py,Changes,Action Required,notes,Assignee,Status,Link,Pull request,model-proposed-changes
+```
 
 ## Hard rules
 
@@ -34,25 +68,34 @@ PR. Each phase has its own reference doc; read only the one you're on.
   (`products/<product>/controls/*.yml`). Never add `stigid@<product>:` to `rule.yml` there -
   that's for Oracle Linux and SLE.
 - **One `*-xccdf-manual.xml` per product** in `shared/references/`. Swap it with `git rm` +
-  `git add` as the first commit, not two files coexisting.
+  `git add` as the final implementation commit, not two files coexisting.
 - **No pending-work sections in PR descriptions.** Describe only what the PR implements.
+- **Do not open GitHub PRs automatically.** Push the branches and write `pr/description.md`;
+  opening the PR is a separate user action.
 
-## The diff report replaces spreadsheet tracking and file-server hosting
+## Assessment artifacts
 
-The old process for this copy-pasted changed STIG IDs into a shared spreadsheet and `scp`'d
-`diff2html` output to an internal file server, linking back to it from the spreadsheet. Neither
-belongs to a change that lives entirely in this repo - a spreadsheet needs someone to have an
-account and keep tabs and links in sync by hand, and a file-server upload is invisible to anyone
-reviewing the PR itself.
+The MVP keeps the existing spreadsheet and HTML-review workflow, but makes every input and output
+reproducible in the work package. The CSV is the spreadsheet upload. The HTML files are retained
+for publication on the review host. Markdown is retained as the detailed local assessment.
 
-`scripts/build_diff_report.py` replaces both: it turns raw `compare_ds.py --disa-content
---rule-diffs` output into one markdown file per product, with every raw diff embedded verbatim
-in a collapsible section, ready to read (and review) inside the PR:
+`scripts/build_diff_report.py` turns raw `compare_ds.py --disa-content --rule-diffs` output into
+one Markdown report per product, with every raw diff embedded verbatim in a collapsible section:
 
 ```bash
 python3 .claude/skills/disa-stig-quarterly-update/scripts/build_diff_report.py \
     <compare_ds_diffs_dir> <output_report.md> \
     --product rhel9 --from-version v2r8 --to-version v2r9
+```
+
+Generate the retained HTML and normalized CSV beside it:
+
+```bash
+python3 .claude/skills/disa-stig-quarterly-update/scripts/build_html_diffs.py \
+    <compare_ds_diffs_dir> <html_output_dir>
+python3 .claude/skills/disa-stig-quarterly-update/scripts/build_review_csv.py \
+    <compare_ds_diffs_dir> <compare_stdout.txt> <review.csv> \
+    --html-base-url <review-host-directory-url>
 ```
 
 Output shape (one section per STIG ID):
@@ -77,12 +120,12 @@ Classification: `TODO`  <!-- prose | oval | new-rule | removal | control-file | 
 Action: TODO
 ```
 
-GitHub and GitLab both render fenced ` ```diff ` blocks with the same red/green coloring
-`diff2html` produced - nothing is lost by dropping the HTML step. Fill in `CaC rule:`,
-`Classification:` (`reference/02-classify-diffs.md`), and `Action:` by hand once you've read
-each diff; never edit the text inside the fence. Commit the report to the feature branch so it
-travels with the PR - git history is the tracking record, there's no sheet tab or external link
-to keep in sync.
+Fill in the CSV review fields and the report's `CaC rule:`, `Classification:`, and `Action:` by
+reading each embedded diff. In `model-proposed-changes`, state the concrete CaC change proposed
+from the raw diff and current implementation, or `No change`. This is a model proposal, not human
+approval. Never edit the diff text itself; if a diff looks wrong, rerun `compare_ds.py` and
+regenerate all derived artifacts. Commit the completed assessment artifacts to the product branch
+after the user approves the action table.
 
 ## Delegate to neighboring skills, don't duplicate them
 
@@ -99,9 +142,8 @@ implementation phase, use the skill that already owns it:
   for a changed or new rule.
 - **`build-product`** - rebuild the product's data stream to sanity-check an OVAL or template
   change.
-- **`draft-pr`** - push the branch and open the PR with a prefilled title/labels/milestone. Its
-  generic Description/Rationale/Review-Hints body should be replaced with the STIG-specific
-  content from `reference/04-pr-description.md`.
+- **`draft-pr`** - optional follow-up after this skill writes the Markdown PR draft. Do not invoke
+  it automatically; this MVP pushes branches but does not open GitHub PRs.
 
 ## Testing this skill cheaply
 
@@ -109,6 +151,6 @@ Don't spend a full quarterly release cycle to sanity-check the pipeline. `test-f
 pair of one-rule benchmark files - built from a real rule lifted out of
 `shared/references/disa-stig-rhel9-v2r9-xccdf-manual.xml` - that differ by exactly one character
 (a hyphen removed from one rule's title), plus the real, regeneratable `compare_ds.py` output for
-that pair. This exercises the full assess pipeline, including `build_diff_report.py`'s output
-shape and the `no-action` (punctuation-only) classification path, in under a second and without
-touching a real release. See `test-fixtures/README.md`.
+that pair. This exercises the assessment pipeline, including the Markdown report and normalized
+CSV, in under a second and without touching a real release. HTML generation additionally requires
+the external `diff2html` command. See `test-fixtures/README.md`.

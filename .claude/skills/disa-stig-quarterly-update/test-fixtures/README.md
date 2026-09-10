@@ -21,10 +21,11 @@ multi-thousand-rule benchmark.
 From the repo root:
 
 ```bash
-python3 utils/compare_ds.py --disa-content --rule-diffs \
+PYTHONPATH=. python3 utils/compare_ds.py --disa-content --rule-diffs \
     --output-dir .claude/skills/disa-stig-quarterly-update/test-fixtures/compare_ds_diffs_sample \
     .claude/skills/disa-stig-quarterly-update/test-fixtures/disa-stig-rhel9-test-v1-xccdf-manual.xml \
-    .claude/skills/disa-stig-quarterly-update/test-fixtures/disa-stig-rhel9-test-v2-xccdf-manual.xml
+    .claude/skills/disa-stig-quarterly-update/test-fixtures/disa-stig-rhel9-test-v2-xccdf-manual.xml \
+    > /tmp/compare_ds_stdout.txt 2>&1
 ```
 
 Expect exactly one output file, `RHEL-09-211010`, with a one-line diff in `[title]`.
@@ -38,10 +39,20 @@ python3 .claude/skills/disa-stig-quarterly-update/scripts/build_diff_report.py \
     --product rhel9-test --from-version v1 --to-version v2
 ```
 
-This is the whole Phase 1 output pipeline in about a second, with no need for a real STIG
-release, a full-size XML parse, or network access. Add a second rule with a real (not
-punctuation-only) change to the fixture pair if you need to test the `oval`/`new-rule`/`removal`
-classification paths as cheaply.
+This is the whole Phase 1 comparison and report pipeline in about a second, with no need for a
+real STIG release, a full-size XML parse, or network access. Build the normalized review CSV from
+the same fixture artifacts:
+
+```bash
+python3 .claude/skills/disa-stig-quarterly-update/scripts/build_review_csv.py \
+    .claude/skills/disa-stig-quarterly-update/test-fixtures/compare_ds_diffs_sample \
+    /tmp/compare_ds_stdout.txt \
+    /tmp/test-review.csv \
+    --html-base-url https://review.example.invalid/stig
+```
+
+Add a second rule with a real (not punctuation-only) change to the fixture pair if you need to
+test the `oval`/`new-rule`/`removal` classification paths as cheaply.
 
 These fixtures are test-only: they never touch `shared/references/`, aren't wired into any
 product build, and don't affect real STIG IDs.

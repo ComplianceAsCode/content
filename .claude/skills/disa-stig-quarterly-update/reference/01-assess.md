@@ -1,31 +1,43 @@
 # Phase 1: assess a new DISA STIG release
 
-## 1. Note the current and target versions
+## 1. Locate the manually downloaded inputs
+
+The user downloads the DISA manual XML files before invoking this skill. Use the configured input
+root under the project work folder. Search recursively for the manual XML belonging to each old
+and new release. Do not use the SCAP XML.
+
+Require exactly one old and one new manual file for every product in scope. If discovery finds
+zero or multiple candidates, stop and report the candidates instead of guessing.
+
+Keep the discovered source paths in the product work package so the comparison can be rerun.
+
+## 2. Note the current and target versions
 
 Check the current version in `products/<product>/profiles/stig.profile` (`metadata.version`)
 against the latest release on https://www.cyber.mil/stigs/downloads. Do this for every product
 in scope for the update (e.g. rhel8, rhel9, rhel10 are updated together when their release
 windows overlap).
 
-## 2. Obtain the new STIG files
+## 3. Obtain the new STIG files
 
-Download from https://www.cyber.mil/stigs/downloads. Use the `*-xccdf-manual.xml` file, not
+The user owns downloading the files. Use the `*-xccdf-manual.xml` file, not
 `*-xccdf-scap.xml`:
 
 - `*-xccdf-manual.xml` - complete requirements with human-readable procedures. Source of truth.
 - `*-xccdf-scap.xml` - automated subset DISA ships with OVAL checks, not always published.
   Used later for the Contest `disa-alignment` test, not for diffing.
 
-## 3. Diff the previous and new manual XML with `compare_ds.py`
+## 4. Diff the previous and new manual XML with `compare_ds.py`
 
 ```bash
-mkdir -p /tmp/<product>-<old>-to-<new>-diffs
-python3 utils/compare_ds.py \
+# Create the retained per-product comparison directory before running the tool.
+mkdir -p <work-root>/<product>-<old>-to-<new>/compare_ds/diffs
+PYTHONPATH=. python3 utils/compare_ds.py \
     --disa-content --rule-diffs \
-    --output-dir /tmp/<product>-<old>-to-<new>-diffs \
+    --output-dir <work-root>/<product>-<old>-to-<new>/compare_ds/diffs \
     <path_to_previous_version>/<old>-xccdf-manual.xml \
-    shared/references/<new>-xccdf-manual.xml \
-    > /tmp/<product>-<old>-to-<new>-stdout.txt 2>&1
+    <path_to_new_version>/<new>-xccdf-manual.xml \
+    > <work-root>/<product>-<old>-to-<new>/compare_ds/stdout.txt 2>&1
 ```
 
 Keep the stdout capture - it lists rules that were added or removed outright (`"X was added in
@@ -36,46 +48,43 @@ This produces one unified diff file per changed STIG ID, in the `[fieldname]: va
 described in `reference/xccdf-format.md`. A STIG ID with no behavioral or prose change produces
 no diff file at all - `compare_ds.py` only emits a file when something changed.
 
-## 4. Build the diff report (no spreadsheet, no file-server upload)
+## 5. Build the retained review artifacts
 
-The previous version of this process copy-pasted changed STIG IDs into a shared spreadsheet
-tab and `scp`'d `diff2html` output to an internal file server, linking back to it from the
-spreadsheet. Both are external dependencies that don't belong to a change that lives entirely
-in this git repo. Replace both with one markdown file, generated straight from the diffs:
+The CSV is the primary review result. Generate it using the normalized columns documented in the
+skill. Use a file-server directory URL supplied by the user for the HTML links; do not invent a
+user name or upload destination.
 
 ```bash
 python3 .claude/skills/disa-stig-quarterly-update/scripts/build_diff_report.py \
-    /tmp/<product>-<old>-to-<new>-diffs \
-    <product>-<old>-to-<new>-diff-report.md \
+    <work-root>/<product>-<old>-to-<new>/compare_ds/diffs \
+    <work-root>/<product>-<old>-to-<new>/assessment/diff_report.md \
     --product <product> --from-version <old> --to-version <new>
+python3 .claude/skills/disa-stig-quarterly-update/scripts/build_html_diffs.py \
+    <work-root>/<product>-<old>-to-<new>/compare_ds/diffs \
+    <work-root>/<product>-<old>-to-<new>/html_diffs
+python3 .claude/skills/disa-stig-quarterly-update/scripts/build_review_csv.py \
+    <work-root>/<product>-<old>-to-<new>/compare_ds/diffs \
+    <work-root>/<product>-<old>-to-<new>/compare_ds/stdout.txt \
+    <work-root>/<product>-<old>-to-<new>/csv/review.csv \
+    --html-base-url <review-host-directory-url>
 ```
 
-This writes one `## STIG-ID` section per changed rule, each with a `CaC rule:` /
-`Classification:` placeholder and the raw diff embedded verbatim inside a collapsible
-`<details>` block (see the skill's `SKILL.md` for the exact shape). GitHub and GitLab both
-render fenced ` ```diff ` blocks with the same red/green coloring `diff2html` produced, so the
-report is just as readable while being a single file that lives and travels with the PR.
+The report writes one `## STIG-ID` section per changed rule, with the raw diff embedded verbatim
+inside a collapsible `<details>` block. The HTML directory contains one uploadable file per
+changed STIG ID. The CSV includes changed and added/removed STIG IDs from both the diff files and
+the comparison stdout.
 
-Fill in `CaC rule:`, `Classification:` (see `reference/02-classify-diffs.md`), and `Action:` by
-reading each embedded diff. Never edit the diff text itself - if a diff looks wrong, re-run
-`compare_ds.py` and regenerate the report, don't hand-patch the fenced block.
+Fill in `Changes`, `Action Required`, `notes`, and the other review fields in the CSV, as well as
+`CaC rule:`, `Classification:` (see `reference/02-classify-diffs.md`), and `Action:` in the
+Markdown report. Fill `model-proposed-changes` with the concrete CaC change proposed from the raw
+diff and current implementation, or `No change`. This model proposal does not replace human
+approval. Never edit the diff text itself - if a diff looks wrong, rerun `compare_ds.py` and
+regenerate the derived artifacts.
 
-Commit the report to the feature branch (repo root or wherever the team keeps working notes) so
-reviewers can see the full reasoning in the PR diff. There is no sheet tab to duplicate and no
-external link to keep in sync - git history is the record.
+Retain all artifacts even when assessment or implementation stops. Commit the completed review
+package to the product branch after the user approves the action table.
 
-## 5. Update the reference XML files (once assessment is approved)
-
-```bash
-git rm shared/references/<old>-xccdf-manual.xml
-git add shared/references/<new>-xccdf-manual.xml
-```
-
-Do this as the first commit on the branch - see `reference/03-implement.md`. If DISA published a
-new `*-xccdf-scap.xml`, swap that too; if not, the Contest `disa-alignment` test simply won't run
-for this release, which is expected.
-
-## How to assess each changed rule
+## 6. How to assess each changed rule
 
 For every STIG ID in the report, in priority order:
 

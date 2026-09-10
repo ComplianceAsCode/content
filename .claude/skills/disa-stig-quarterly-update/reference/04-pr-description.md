@@ -70,7 +70,7 @@ DISA published STIG <VERSION> for <Product>; this PR brings the ComplianceAsCode
 - Line-by-line diff content - that's what the diff report from Phase 1 is for.
 - Pending or future work.
 
-## Jira and internal IDs
+## Private tracker identifiers
 
-Never include an internal issue ID (`OPENSCAP-1234`, `RHEL-12345`, or similar) in the PR title,
-body, commits, or comments. This is a public, upstream repository.
+Never include private tracker identifiers or other repository-external metadata in public PR
+titles, bodies, commits, or comments.

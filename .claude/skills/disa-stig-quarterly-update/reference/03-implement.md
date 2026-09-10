@@ -1,6 +1,28 @@
 # Phase 2: implement the changes
 
-## Step 0: swap the reference XML files first
+## Step 0: create the product branch
+
+Create each product branch from the upstream default branch. Refuse to reuse an existing branch or
+overwrite unrelated local changes.
+
+```bash
+git fetch origin master
+git switch --create disa-stig-rhel8-v2r8 origin/master
+```
+
+Use `disa-stig-rhel9-v2r9` for the RHEL 9 branch. If either branch already exists, stop and ask
+the user whether to continue with an explicitly chosen branch. Do not delete or reset it.
+
+## Step 1: implement the approved changes
+
+Read the completed CSV and action table. Implement only approved `oval`, `new-rule`, `removal`,
+and `control-file` actions. Do not implement `prose`, `no-action`, or `ocil` entries unless the
+user explicitly approves them.
+
+Use the existing project skills for rule mapping, variables, tests, and builds. Preserve the
+assessment artifacts after every step so a failed implementation can resume.
+
+## Step 2: update the reference XML files last
 
 ```bash
 git rm shared/references/<old>-xccdf-manual.xml
@@ -8,17 +30,19 @@ git add shared/references/<new>-xccdf-manual.xml
 ```
 
 Only one `*-xccdf-manual.xml` per product is allowed in `shared/references/` - the build globs
-on `disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-manual.xml`, and two matching files break it. Do
-this swap as the very first commit on the branch, before any other change.
+on `disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-manual.xml`, and two matching files break it. Keep
+the existing reference until the approved rule changes are complete because other automation may
+consume it during the update. Make the replacement and profile metadata bump the final
+implementation commit.
 
 If DISA published a new `*-xccdf-scap.xml`, swap that too (needed for the Contest
 `disa-alignment` test). If DISA didn't publish one for this release, skip it - the test simply
 won't run.
 
 Also bump the version string in `products/<product>/profiles/stig.profile` and
-`stig_gui.profile` (`metadata.version`).
+`stig_gui.profile` (`metadata.version`) in that final commit.
 
-## One commit per STIG ID
+## Step 3: commit in reviewable units
 
 ```
 {product}: DISA STIG {version}, {STIG-ID} - {short description}
@@ -33,6 +57,19 @@ For prose-only changes, use "prose update" as the description:
 - `rhel9: DISA STIG v2r9, RHEL-09-671015 - prose update`
 
 No parentheses, no before/after values in the message unless essential to disambiguate.
+
+Default to one STIG ID per commit. Group multiple IDs only when one shared implementation makes
+the change and splitting it would leave an incomplete or misleading commit. Examples include a
+single product-level variable change satisfying several STIG IDs, or one shared rule change used
+by RHEL 8 and RHEL 9. Name every affected STIG ID in the commit message when grouping is needed.
+
+After each commit, run the narrowest relevant verification and push the branch. Never amend a
+published commit; fix a problem in a new commit.
+
+```bash
+git push --set-upstream fork disa-stig-rhel9-v2r9
+git push fork disa-stig-rhel9-v2r9
+```
 
 ## Before hardcoding a changed value, check for an XCCDF variable
 
@@ -54,16 +91,13 @@ edit:
 Use the `resolve-rule-variables` skill to look up which variables a rule depends on and pick the
 right value key.
 
-## Branch and PR
+## Step 4: push the branch and write the PR draft
 
-- One branch per product (or per product+version if multiple are in flight at once).
-- Open the PR as a draft immediately, before all commits land, so reviewers can follow along and
-  comment early.
-- Use `draft-pr` to open it once there's at least one commit - it derives the title, categorizes
-  changes, and prefills the PR body from `.github/pull_request_template.md`. Its generic
-  Description/Rationale/Review-Hints sections should be replaced with the STIG-specific content
-  from `reference/04-pr-description.md` - `draft-pr` doesn't know about STIG IDs or DISA
-  requirements, this skill does.
+- Push one branch per product to the user's fork after the first commit and after subsequent
+  commits.
+- Write the completed PR body to the product work package at `pr/description.md`.
+- Do not open the GitHub PR automatically in this MVP. The user can review the Markdown and invoke
+  `draft-pr` separately when ready.
 
 ## Shared files (`linux_os/guide/`) go in one PR only
 
@@ -80,7 +114,8 @@ notes "prose fix for RHEL-08-010120 covered by PR #N" and links to it.
 
 ## Verifying a change
 
-- `build-product` to rebuild the affected product's data stream after an OVAL or template change.
+- `build-product` to rebuild the affected product's data stream after an OVAL or template change,
+  and once more after the final reference/profile update.
 - `test-rule` / `run-tests` for rule-level and ctest validation before pushing.
 - Contest and CI catch anything a local build/test pass misses; if a Contest failure only
   reproduces on CentOS Stream and not on RHEL, that doesn't block STIG compliance work - the STIG
