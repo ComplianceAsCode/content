@@ -30,18 +30,27 @@ function add_audit_rule()
 
 }
 
+PRIV_CMD_DRACUT_EXCLUSION=(-not -path "/var/tmp/dracut*")
+PRIV_CMD_SYSROOT_EXCLUSION=(-not -path "/sysroot/*")
+
 if {{{ bash_bootc_build() }}} ; then
-  PRIV_CMDS=$(find / -perm /6000 -type f -not -path "/sysroot/*" 2>/dev/null)
-  for PRIV_CMD in $PRIV_CMDS; do
-    add_audit_rule $PRIV_CMD
-  done
+  priv_cmds=$(find / -xdev -perm /6000 -type f \
+    "${PRIV_CMD_SYSROOT_EXCLUSION[@]}" "${PRIV_CMD_DRACUT_EXCLUSION[@]}" 2>/dev/null)
 else
+  priv_cmds=""
   FILTER_NODEV=$(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)
   PARTITIONS=$(findmnt -n -l -k -it "$FILTER_NODEV" | grep -Pv "noexec|nosuid|/proc($|/.*$)" | awk '{ print $1 }')
   for PARTITION in $PARTITIONS; do
-    PRIV_CMDS=$(find "${PARTITION}" -xdev -perm /6000 -type f 2>/dev/null)
-    for PRIV_CMD in $PRIV_CMDS; do
-      add_audit_rule $PRIV_CMD
-    done
+    priv_cmds+=$'\n'"$(find "${PARTITION}" -xdev -perm /6000 -type f \
+      "${PRIV_CMD_DRACUT_EXCLUSION[@]}" 2>/dev/null)"
   done
+  # Offline/image-build fallback: the live mount table isn't the image's.
+  if [ -z "$(printf '%s' "$priv_cmds" | tr -d '[:space:]')" ]; then
+    priv_cmds=$(find / -xdev -perm /6000 -type f \
+      "${PRIV_CMD_SYSROOT_EXCLUSION[@]}" "${PRIV_CMD_DRACUT_EXCLUSION[@]}" 2>/dev/null)
+  fi
 fi
+
+for PRIV_CMD in $priv_cmds; do
+  [ -n "$PRIV_CMD" ] && add_audit_rule "$PRIV_CMD"
+done
