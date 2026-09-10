@@ -3,7 +3,9 @@
 # packages = audit
 
 sed -i "/^\s*log_file.*/d" /etc/audit/auditd.conf
+
 useradd testuser_123
+mkdir -p /var/log/audit
 touch "/var/log/audit/audit2.log"
 touch "/var/log/audit/audit.log"
 
