@@ -129,8 +129,15 @@ python3 .claude/skills/disa-stig-quarterly-update/scripts/build_html_diffs.py \
     <compare_ds_diffs_dir> <html_output_dir>
 python3 .claude/skills/disa-stig-quarterly-update/scripts/build_review_csv.py \
     <compare_ds_diffs_dir> <compare_stdout.txt> <review.csv> \
-    --html-base-url <review-host-directory-url>
+    --html-base-url <review-host-directory-url> \
+    --review-data <review-data.json>
 ```
+
+Before running the CSV builder, create `review-data.json` with one object per changed STIG ID. Each
+object must contain non-empty `Changes`, `Action Required`, `notes`, `Status`, and
+`model-proposed-changes` fields. The builder fails if an ID or required field is missing, so the
+uploaded CSV cannot silently contain blank proposals. Use `No change` when the raw diff does not
+require a CaC change, and describe follow-up work explicitly when it is outside the current update.
 
 Output shape (one section per STIG ID):
 
@@ -154,13 +161,13 @@ Classification: `TODO`  <!-- prose | oval | new-rule | removal | control-file | 
 Action: TODO
 ```
 
-Fill in the CSV review fields and the report's `CaC rule:`, `Classification:`, and `Action:` by
-reading each embedded diff. In `model-proposed-changes`, state the concrete CaC change proposed
-from the raw diff and current implementation, or `No change`. This is a model proposal, not human
-approval. Never edit the diff text itself; if a diff looks wrong, rerun `compare_ds.py` and
-regenerate all derived artifacts. Retain and commit the completed assessment artifacts to the
-product branch without waiting for a separate action-table approval. The report and CSV remain the
-record of the model's classification and proposed changes.
+Fill the JSON review data and the report's `CaC rule:`, `Classification:`, and `Action:` by reading
+each embedded diff. In `model-proposed-changes`, state the concrete CaC change proposed from the
+raw diff and current implementation, or `No change`. This is a model proposal, not human approval.
+Never edit the diff text itself; if a diff looks wrong, rerun `compare_ds.py` and regenerate all
+derived artifacts. Retain and commit the completed assessment artifacts to the product branch
+without waiting for a separate action-table approval. The report, JSON review data, and CSV remain
+the record of the model's classification and proposed changes.
 
 ## Delegate to neighboring skills, don't duplicate them
 

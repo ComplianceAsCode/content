@@ -48,7 +48,8 @@ python3 .claude/skills/disa-stig-quarterly-update/scripts/build_review_csv.py \
     .claude/skills/disa-stig-quarterly-update/test-fixtures/compare_ds_diffs_sample \
     /tmp/compare_ds_stdout.txt \
     /tmp/test-review.csv \
-    --html-base-url https://review.example.invalid/stig
+    --html-base-url https://review.example.invalid/stig \
+    --review-data .claude/skills/disa-stig-quarterly-update/test-fixtures/review-data.json
 ```
 
 Add a second rule with a real (not punctuation-only) change to the fixture pair if you need to

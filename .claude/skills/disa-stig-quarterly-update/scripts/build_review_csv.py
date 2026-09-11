@@ -3,9 +3,10 @@
 
 import argparse
 import csv
+import json
 import re
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Mapping
 
 
 HEADERS = [
@@ -23,6 +24,13 @@ HEADERS = [
 ]
 
 STIG_ID = re.compile(r"\bRHEL-\d{2}-\d{6}\b")
+REVIEW_FIELDS = (
+    "Changes",
+    "Action Required",
+    "notes",
+    "Status",
+    "model-proposed-changes",
+)
 
 
 def read_rule_messages(stdout_file: Path) -> Dict[str, str]:
@@ -36,20 +44,42 @@ def read_rule_messages(stdout_file: Path) -> Dict[str, str]:
     return {rule_id: "\n".join(lines) for rule_id, lines in messages.items()}
 
 
+def read_review_data(review_data_file: Path) -> Dict[str, Mapping[str, str]]:
+    """Read and validate the model's required review fields."""
+    data = json.loads(review_data_file.read_text())
+    if not isinstance(data, dict):
+        raise ValueError("review data must be a JSON object keyed by STIG ID")
+
+    review_data: Dict[str, Mapping[str, str]] = {}
+    for rule_id, values in data.items():
+        if STIG_ID.fullmatch(rule_id) is None or not isinstance(values, dict):
+            raise ValueError(f"invalid review data entry for {rule_id!r}")
+        missing = [field for field in REVIEW_FIELDS if not values.get(field)]
+        if missing:
+            raise ValueError(f"{rule_id} is missing required fields: {', '.join(missing)}")
+        review_data[rule_id] = values
+    return review_data
+
+
 def build(
     diffs_dir: Path,
     stdout_file: Path,
     output_file: Path,
     html_base_url: str,
+    review_data_file: Path,
 ) -> int:
     """Write one review row for every changed, added, or removed STIG ID."""
     diff_files = sorted(
         path for path in diffs_dir.iterdir() if path.is_file() and STIG_ID.fullmatch(path.name)
     )
     messages = read_rule_messages(stdout_file)
+    review_data = read_review_data(review_data_file)
     rule_ids = sorted(set(messages) | {path.name for path in diff_files})
     if not rule_ids:
         raise SystemExit("no changed STIG IDs found in diff files or comparison stdout")
+    missing_review_data = sorted(set(rule_ids) - set(review_data))
+    if missing_review_data:
+        raise ValueError("review data is missing STIG IDs: " + ", ".join(missing_review_data))
 
     diff_ids = {path.name for path in diff_files}
     base_url = html_base_url.rstrip("/")
@@ -64,14 +94,14 @@ def build(
                     rule_id,
                     html_url if rule_id in diff_ids else "",
                     messages.get(rule_id, ""),
+                    review_data[rule_id]["Changes"],
+                    review_data[rule_id]["Action Required"],
+                    review_data[rule_id]["notes"],
+                    "",
+                    review_data[rule_id]["Status"],
                     "",
                     "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
+                    review_data[rule_id]["model-proposed-changes"],
                 ]
             )
     return len(rule_ids)
@@ -88,8 +118,20 @@ def main() -> None:
         default="",
         help="directory URL used to build HTML links, without a trailing slash",
     )
+    parser.add_argument(
+        "--review-data",
+        type=Path,
+        required=True,
+        help="JSON file containing required per-STIG review fields",
+    )
     args = parser.parse_args()
-    count = build(args.diffs_dir, args.stdout_file, args.output, args.html_base_url)
+    count = build(
+        args.diffs_dir,
+        args.stdout_file,
+        args.output,
+        args.html_base_url,
+        args.review_data,
+    )
     print(f"wrote {args.output} ({count} STIG IDs)")
 
 

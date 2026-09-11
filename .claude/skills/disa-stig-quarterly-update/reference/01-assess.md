@@ -81,7 +81,8 @@ python3 .claude/skills/disa-stig-quarterly-update/scripts/build_review_csv.py \
     <work-root>/<product>-<old>-to-<new>/compare_ds/diffs \
     <work-root>/<product>-<old>-to-<new>/compare_ds/stdout.txt \
     <work-root>/<product>-<old>-to-<new>/csv/review.csv \
-    --html-base-url <review-host-directory-url>
+    --html-base-url <review-host-directory-url> \
+    --review-data <work-root>/<product>-<old>-to-<new>/assessment/review-data.json
 ```
 
 The report writes one `## STIG-ID` section per changed rule, with the raw diff embedded verbatim
@@ -89,12 +90,13 @@ inside a collapsible `<details>` block. The HTML directory contains one uploadab
 changed STIG ID. The CSV includes changed and added/removed STIG IDs from both the diff files and
 the comparison stdout.
 
-Fill in `Changes`, `Action Required`, `notes`, and the other review fields in the CSV, as well as
-`CaC rule:`, `Classification:` (see `reference/02-classify-diffs.md`), and `Action:` in the
-Markdown report. Fill `model-proposed-changes` with the concrete CaC change proposed from the raw
-diff and current implementation, or `No change`. This proposal is not a separate approval gate.
-Never edit the diff text itself - if a diff looks wrong, rerun `compare_ds.py` and regenerate the
-derived artifacts.
+Create `assessment/review-data.json` with one entry per changed STIG ID. Each entry must contain
+non-empty `Changes`, `Action Required`, `notes`, `Status`, and `model-proposed-changes` values. Use
+`No change` when the implementation already satisfies the requirement. The CSV builder validates
+this file and fails if any STIG ID or required proposal field is missing. Also fill the report's
+`CaC rule:`, `Classification:` (see `reference/02-classify-diffs.md`), and `Action:` fields in the
+Markdown report. Never edit the diff text itself - if a diff looks wrong, rerun `compare_ds.py` and
+regenerate the derived artifacts.
 
 Retain all artifacts even when assessment or implementation stops. Commit the completed review
 package to the product branch without waiting for a separate action-table approval. The report and
