@@ -2863,7 +2863,7 @@ This macro creates a Bash conditional which checks the system architecture in /p
 #}}
 {{% macro bash_copy_distro_defaults(source, destination) -%}}
 
-{{% if product in ["sle16", "slmicro6"] %}}
+{{% if product in ["opensuse16", "sle16", "slmicro6"] %}}
 if ! [ -e "{{{ destination }}}" ] ; then
     cp -p "{{{ source }}}" "{{{ destination }}}"
 fi
@@ -2887,7 +2887,7 @@ fi
 {{%- set line_regex_replace = "^" + parameter -%}}
 {{%- set login_defs_d_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) -%}}
 
-{{% if product in [ 'slmicro6', 'sle16' ] %}}
+{{% if product in ['opensuse16', 'sle16', 'slmicro6'] %}}
 {{{ bash_copy_distro_defaults(login_defs_defaults_path, login_defs_path) }}}
 {{% endif %}}
 

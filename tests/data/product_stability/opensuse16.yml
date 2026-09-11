@@ -1,11 +1,10 @@
-aide_bin_path: /usr/sbin/aide
+aide_bin_path: /usr/bin/aide
 aide_conf_path: /etc/aide.conf
 aide_audit_binaries:
   - auditctl
   - auditd
   - ausearch
   - aureport
-  - autrace
   - audispd
   - augenrules
 audisp_conf_path: /etc/audit
@@ -13,67 +12,69 @@ audit_binaries:
   - /sbin/auditctl
   - /sbin/aureport
   - /sbin/ausearch
-  - /sbin/autrace
   - /sbin/auditd
-  - /sbin/audispd
   - /sbin/augenrules
+  - /sbin/audisp-syslog
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
-benchmark_id: OPENSUSE
+benchmark_id: OPENSUSE-16
 benchmark_root: ../../linux_os/guide
 bootable_containers_supported: 'false'
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-  - opensuse-15:
-      check_id: installed_OS_is_opensuse_leap15
-      name: cpe:/o:opensuse:leap:15
-      title: openSUSE Leap 15
-  - opensuse-tumbleweed:
-      check_id: installed_OS_is_opensuse
-      name: cpe:/o:opensuse:tumbleweed
-      title: openSUSE Tumbleweed
+  - opensuse16:
+      check_id: installed_OS_is_opensuse_leap16
+      name: cpe:/o:opensuse:leap:16
+      title: openSUSE Leap 16
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
 faillock_path: /var/run/faillock
-full_name: openSUSE
+families:
+  - suse
+full_name: openSUSE Leap 16
 gid_min: 1000
 groups: {}
 grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/grub2
-grub_helper_executable: grubby
+grub_helper_executable: grub2-mkconfig
 init_system: systemd
+journald_conf_dir_path: /etc/systemd/journal.d
 login_defs_defaults_path: /usr/etc/login.defs
 login_defs_drop_in_path: /etc/login.defs.d/oscap.login.defs
 login_defs_path: /etc/login.defs
+major_version_ordinal: 16
 nobody_gid: 65534
 nobody_uid: 65534
 openssh_client_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh.config
 openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/opensshserver.config
 pam_faillock_conf_path: /etc/security/faillock.conf
 pkg_manager: zypper
-pkg_manager_config_file: /etc/zypp/zypper.conf
+pkg_manager_config_file: /etc/zypp/zypp.conf
 pkg_system: rpm
 platform_package_overrides:
   aarch64_arch: null
-  grub2: grub2-common
-  login_defs: login
+  crontabs: cronie
+  dhcp-client: dhcpcd
+  grub2: grub2
+  login_defs: shadow
   no_ovirt: null
   non-uefi: null
   not_aarch64_arch: null
   not_s390x_arch: null
   ovirt: null
+  passwd: shadow
   s390x_arch: null
-  sssd: sssd-common
+  sssd: sssd
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: opensuse
+product: opensuse16
 profiles_root: ./profiles
-pwhistory_path: /etc/security/pwhistory.conf
+pwhistory_path: /usr/etc/security/pwhistory.conf
 pwquality_path: /etc/security/pwquality.conf
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
@@ -83,7 +84,7 @@ reference_uris:
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cobit5: https://www.isaca.org/resources/cobit
-  cui: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html
+  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
   dcid: not_officially_available
   disa: https://www.cyber.mil/stigs/cci/
   hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
@@ -104,14 +105,14 @@ reference_uris:
 rsyslog_cafile: /etc/pki/tls/cert.pem
 ssh_client_config_dir: /etc/ssh/ssh_config.d
 ssh_client_main_config_file: /etc/ssh/ssh_config
-sshd_config_base_dir: /etc/ssh
+sshd_config_base_dir: /usr/etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
-sshd_distributed_config: 'false'
+sshd_distributed_config: 'true'
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
-sshd_main_config_file: /etc/ssh/sshd_config
+sshd_main_config_file: /usr/etc/ssh/sshd_config
 sshd_runtime_check: 'false'
 sshd_sysconfig_file: /etc/sysconfig/sshd
-sysctl_remediate_drop_in_file: 'false'
+sysctl_remediate_drop_in_file: 'true'
 target_oval_version:
   - 5
   - 11
@@ -119,7 +120,4 @@ target_oval_version_str: '5.11'
 type: platform
 uid_min: 1000
 xwindows_packages:
-  - xorg-x11-server-Xorg
-  - xorg-x11-server-common
-  - xorg-x11-server-utils
-  - xorg-x11-server-Xwayland
+  - xwayland
