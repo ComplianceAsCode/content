@@ -6,11 +6,14 @@ Before inspecting files, ask the user to provide all of the following explicitly
 
 - Work root for the retained product packages.
 - Products and old/new release versions in scope.
+- Pre-update baseline repository to inspect for the existing implementation.
+- Target repository that contains the new reference and will receive implementation changes.
 - Exactly one old and one new manual XML path for every product.
 - File-server directory URL for the generated HTML links.
 
 Never infer any of these values from repository references, profile metadata, existing work
-folders, branch names, or duplicate files. If a value is missing, stop and ask the user.
+folders, branch names, or duplicate files. During a test run, use only the supplied baseline for
+implementation analysis and never modify it. If a value is missing, stop and ask the user.
 
 ## 2. Validate the manually downloaded inputs
 

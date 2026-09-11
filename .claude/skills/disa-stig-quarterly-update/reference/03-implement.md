@@ -1,6 +1,12 @@
 # Phase 2: implement the changes
 
-## Step 0: create the product branch
+## Step 0: select the run mode
+
+For a normal run, create each product branch from the upstream default branch. For a test run,
+do not create or switch branches, commit changes, push, or open a pull request. Modify only the
+explicit target repository and retain all results in the work package.
+
+## Step 1: create the product branch for a normal run
 
 Create each product branch from the upstream default branch. Refuse to reuse an existing branch or
 overwrite unrelated local changes.
@@ -13,7 +19,7 @@ git switch --create disa-stig-rhel8-v2r8 origin/master
 Use `disa-stig-rhel9-v2r9` for the RHEL 9 branch. If either branch already exists, stop and ask
 the user whether to continue with an explicitly chosen branch. Do not delete or reset it.
 
-## Step 1: implement the classified changes
+## Step 2: implement the classified changes
 
 Read the completed CSV and classification report. Implement `oval`, `new-rule`, `removal`, and
 `control-file` actions. Do not implement `prose`, `no-action`, or `ocil` entries unless the user
@@ -24,7 +30,7 @@ rule testing, product builds, and validation. Invoke the owning skill for each a
 and preserve the assessment and verification artifacts after every step so a failed implementation
 can resume.
 
-## Step 2: update the reference XML files last
+## Step 3: update the reference XML files last
 
 ```bash
 git rm shared/references/<old>-xccdf-manual.xml
@@ -44,7 +50,7 @@ won't run.
 Also bump the version string in `products/<product>/profiles/stig.profile` and
 `stig_gui.profile` (`metadata.version`) in that final commit.
 
-## Step 3: commit in reviewable units
+## Step 4: commit in reviewable units for a normal run
 
 ```
 {product}: DISA STIG {version}, {STIG-ID} - {short description}
@@ -93,7 +99,7 @@ edit:
 Use the `resolve-rule-variables` skill to look up which variables a rule depends on and pick the
 right value key.
 
-## Step 4: push the branch and write the PR draft
+## Step 5: push the branch and write the PR draft for a normal run
 
 - Push one branch per product to the user's fork after the first commit and after subsequent
   commits.
@@ -119,6 +125,8 @@ notes "prose fix for RHEL-08-010120 covered by PR #N" and links to it.
 - `build-product` after every relevant rule, remediation, template, variable, control, profile, or
   reference change. Use a datastream-only build for intermediate checks and a full product build for
   final validation.
+- In a test run, invoke `build-product --datastream-only <product>` after each related implementation
+  group, retain the result, and stop on a failure until the implementation is corrected.
 - `test-rule` for changed or new rule behavior, and `run-tests` for final ctest validation before
   pushing.
 - Store every build and test command, exit status, output, warnings, artifact list, and summary in

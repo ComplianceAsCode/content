@@ -1,16 +1,16 @@
 ---
 name: disa-stig-quarterly-update
-description: Assess, implement, and describe a DISA STIG quarterly benchmark update for a product in this repo. Use when a new DISA STIG release drops for a product already covered here, when diffing two xccdf-manual.xml versions with compare_ds.py, when classifying STIG diff changes (prose vs OVAL vs new rule vs removal), or when writing a DISA STIG update PR description.
+description: Assess, implement, and describe a DISA STIG quarterly benchmark update for a product in this repo. Use when a new DISA STIG release drops for a product already covered here, when diffing two xccdf-manual.xml versions with compare_ds.py, when classifying STIG diff changes (prose vs OVAL vs new rule vs removal), or when writing a DISA STIG update PR description. Supports explicit test runs against a pre-update baseline and a separate target checkout.
 ---
 
 # DISA STIG quarterly update
 
-This skill produces a reviewable, pushed update branch for each RHEL product in scope. The MVP
-expects the user to download the DISA manual XML files. The model runs the comparison tools,
-retains every intermediate artifact, implements classified changes commit by commit, pushes the
-branches, and writes Markdown PR drafts. It delegates rule discovery, mapping, rule creation,
-variable resolution, testing, and product builds to the owning skills. It does not open GitHub PRs
-automatically.
+This skill produces a reviewable update package for each RHEL product in scope. The MVP expects the
+user to download the DISA manual XML files. The model runs the comparison tools, retains every
+intermediate artifact, delegates rule discovery, mapping, rule creation, variable resolution,
+testing, and product builds to the owning skills, implements classified changes, and writes
+Markdown PR drafts. A normal run may create a branch and push it; a test run never commits, pushes,
+or opens a PR.
 
 Three phases: **assess** the new release, **implement** the changes, **describe** them in the
 PR. Each phase has its own reference doc; read only the one you're on.
@@ -61,10 +61,18 @@ Requirement,HTML diff URL,STDOUT from compare_ds.py,Changes,Action Required,note
 ## Hard rules
 
 - **Never infer inputs or scope.** Before starting any phase, ask the user to provide the work
-  root, product list, old and new manual XML paths for each product, the requested phase, and the
-  HTML review base URL when assessment artifacts are requested. Do not derive these values from
-  repository files, existing work folders, branch names, profile versions, or duplicate files.
+  root, product list, pre-update baseline repository, target repository, old and new manual XML
+  paths for each product, the requested phase, and the run mode. Ask for the HTML review base URL
+  when assessment artifacts are requested. Do not derive these values from repository files,
+  existing work folders, branch names, profile versions, or duplicate files.
   If any required value is missing, stop and ask for it.
+- **Use the explicit baseline for analysis.** During a test run, inspect controls, rules, policies,
+  remediations, and tests in the supplied pre-update baseline repository. Do not use the target
+  repository's already-updated files to conclude that a change is unnecessary. Use the target
+  repository only for the new reference input and the implementation under test.
+- **Test runs do not publish changes.** A test run must not create commits, push branches, open PRs,
+  or modify the baseline repository. It may modify the supplied target repository and the retained
+  work package.
 - **Diffs are copied verbatim, never from memory.** Every diff embedded in a report, analysis,
   or comment must be the exact text `compare_ds.py` produced. If a diff looks wrong, re-run
   `compare_ds.py`; don't hand-patch or reconstruct it from a prior read.
@@ -95,6 +103,9 @@ Requirement,HTML diff URL,STDOUT from compare_ds.py,Changes,Action Required,note
 - **Retain verification results.** Store each build and test command, exit status, output,
   warnings, produced artifact list, and summary under the product work package. Never discard
   failed results.
+- **Build iteratively.** After each related implementation group, invoke `build-product
+  --datastream-only rhel9` and retain the result before continuing. Run a full `build-product rhel9`
+  after the implementation groups and again after the final reference/profile update.
 
 ## Assessment artifacts
 
