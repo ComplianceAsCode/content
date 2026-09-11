@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Configure Local Interactive User Dot Directory Permissions'
+
+description: |-
+    Dot directories below local interactive user home directories must be mode
+    0750 or more restrictive. The <tt>.ssh</tt> directory must be mode 0700 or
+    more restrictive.
+
+rationale: |-
+    Restrictive dot-directory permissions protect private user configuration
+    and authentication material.
+
+severity: medium
+
+platform: system_with_kernel
+
+ocil_clause: 'a dot directory is too permissive'
+
+ocil: |-
+    Find dot directories below every local interactive user home. No directory
+    may grant group write or any access to other users, and <tt>.ssh</tt> may not
+    grant any group access.

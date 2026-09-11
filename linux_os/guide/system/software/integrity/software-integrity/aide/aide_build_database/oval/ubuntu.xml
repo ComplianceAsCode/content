@@ -12,6 +12,9 @@
         <criterion test_ref="test_aide_operational_database_absolute_path" />
         <criterion test_ref="test_aide_operational_database_absolute_path_no_dbdir" />
       </criteria>
+      {{% if product == "ubuntu2604" %}}
+      <criterion test_ref="test_aide_obsolete_database_option_absent" />
+      {{% endif %}}
       <!-- configuration for new database is also just checked as an absolute path, just like
            the paths for the operational database -->
       <criteria operator="OR">
@@ -39,11 +42,28 @@
   <!-- OVAL object to collect filename for Aide build database -->
   <ind:textfilecontent54_object id="object_aide_operational_database_filepath" version="1">
     <ind:filepath>/etc/aide/aide.conf</ind:filepath>
+    {{% if product == "ubuntu2604" %}}
+    <ind:pattern operation="pattern match">^database_in=file:(?:@@{DBDIR}/)?([a-z./]+)$</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^database=file:(?:@@{DBDIR}/)?([a-z./]+)$</ind:pattern>
+    {{% endif %}}
     <!-- From aide.conf(5) - "If there are multiple database lines, then the first one is used" =>
                   therefore we will retrieve only the first instance -->
     <ind:instance operation="equals" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product == "ubuntu2604" %}}
+  <ind:textfilecontent54_test id="test_aide_obsolete_database_option_absent" version="1"
+  check="all" check_existence="none_exist" comment="The obsolete database option is absent">
+    <ind:object object_ref="object_aide_obsolete_database_option" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_aide_obsolete_database_option" version="1">
+    <ind:filepath>/etc/aide/aide.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*database[\s]*=.*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
 
    <!-- OVAL variable to concatenate directory path and filename of operational Aide build database file into final absolute path -->
   <local_variable id="variable_aide_operational_database_absolute_path" datatype="string" comment="Absolute path of Aide build database file" version="1">

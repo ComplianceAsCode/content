@@ -10,7 +10,7 @@ documentation_complete: true
 
 title: 'Verify Permissions on Backup shadow File'
 
-description:  |-
+description: |-
     {{{ describe_file_permissions(file="/etc/shadow-", perms=target_perms_octal) }}}
 
 rationale: |-
@@ -55,6 +55,7 @@ template:
         filemode@debian12: '0640'
         filemode@ubuntu2204: '0640'
         filemode@ubuntu2404: '0640'
+        filemode@ubuntu2604: '0640'
         filemode@sle12: '0640'
         filemode@sle15: '0640'
         filemode@sle16: '0640'
