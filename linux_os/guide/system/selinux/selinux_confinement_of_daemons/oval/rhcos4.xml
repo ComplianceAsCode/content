@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="selinux_confinement_of_daemons" version="2">
+    {{{ oval_metadata("All pids in /proc should be assigned an SELinux security context other than 'unconfined_service_t' (kubelet excluded).", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criterion comment="no unconfined_service_t processes exist" test_ref="test_no_unconfined_service_t_processes" />
+      <criterion comment="at most one unconfined_service_t process" test_ref="test_at_most_one_unconfined_process" />
+    </criteria>
+  </definition>
+
+  <!-- Test 1: Check if NO processes have unconfined_service_t -->
+  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist"
+    comment="no processes with unconfined_service_t" id="test_no_unconfined_service_t_processes" version="1">
+    <linux:object object_ref="object_selinux_confinement_of_daemons" />
+    <linux:state state_ref="state_unconfined_service_t" />
+  </linux:selinuxsecuritycontext_test>
+
+  <!-- Test 2: Check that at most one process has unconfined_service_t (assumed to be kubelet) -->
+  <linux:selinuxsecuritycontext_test check="all" check_existence="only_one_exists"
+    comment="at most one process with unconfined_service_t" id="test_at_most_one_unconfined_process" version="1">
+    <linux:object object_ref="object_selinux_confinement_of_daemons" />
+    <linux:state state_ref="state_unconfined_service_t" />
+  </linux:selinuxsecuritycontext_test>
+
+  <!-- Object: Find all processes in /proc -->
+  <linux:selinuxsecuritycontext_object comment="find all processes in /proc" id="object_selinux_confinement_of_daemons" version="2">
+    <linux:behaviors max_depth="1" recurse_direction="down" />
+    <linux:path>/proc</linux:path>
+    <linux:filename operation="pattern match">^[0-9]+$</linux:filename>
+  </linux:selinuxsecuritycontext_object>
+
+  <!-- State: Match unconfined_service_t type -->
+  <linux:selinuxsecuritycontext_state comment="state unconfined_service_t" id="state_unconfined_service_t" version="1">
+    <linux:type datatype="string" operation="equals">unconfined_service_t</linux:type>
+  </linux:selinuxsecuritycontext_state>
+</def-group>
