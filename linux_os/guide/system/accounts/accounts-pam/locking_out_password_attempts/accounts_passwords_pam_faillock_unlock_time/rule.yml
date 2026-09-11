@@ -9,7 +9,11 @@ description: |-
 
     Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
     <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where
+{{% if product == 'ubuntu2404' %}}
+    <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt>.
+{{% else %}}
     <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+{{% endif %}}
 
     pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
     defined to work as expected. In order to avoid any errors when manually editing these files,
@@ -107,3 +111,6 @@ template:
     ext_variable: var_accounts_passwords_pam_faillock_unlock_time
     description: The unlock time after number of failed logins should be set correctly.
     variable_lower_bound: use_ext_variable
+{{% if product == 'ubuntu2404' %}}
+    variable_upper_bound: use_ext_variable
+{{% endif %}}
