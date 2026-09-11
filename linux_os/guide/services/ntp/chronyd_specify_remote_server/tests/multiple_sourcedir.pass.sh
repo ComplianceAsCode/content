@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = chrony
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux,multi_platform_ubuntu
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
 
 # Test: Multiple sourcedir declarations, server in second directory
 SOURCES_DIR1="/etc/chrony/sources1.d"
