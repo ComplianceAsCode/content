@@ -89,12 +89,17 @@ the comparison stdout.
 Fill in `Changes`, `Action Required`, `notes`, and the other review fields in the CSV, as well as
 `CaC rule:`, `Classification:` (see `reference/02-classify-diffs.md`), and `Action:` in the
 Markdown report. Fill `model-proposed-changes` with the concrete CaC change proposed from the raw
-diff and current implementation, or `No change`. This model proposal does not replace human
-approval. Never edit the diff text itself - if a diff looks wrong, rerun `compare_ds.py` and
-regenerate the derived artifacts.
+diff and current implementation, or `No change`. This proposal is not a separate approval gate.
+Never edit the diff text itself - if a diff looks wrong, rerun `compare_ds.py` and regenerate the
+derived artifacts.
 
 Retain all artifacts even when assessment or implementation stops. Commit the completed review
-package to the product branch after the user approves the action table.
+package to the product branch without waiting for a separate action-table approval. The report and
+CSV remain the record of the model's classification and proposed changes.
+
+Record the command, exit status, output, and generated file list for each report, HTML, and CSV
+command under the product work package. A failed command must produce a retained failure record
+before the phase stops.
 
 ## 7. How to assess each changed rule
 

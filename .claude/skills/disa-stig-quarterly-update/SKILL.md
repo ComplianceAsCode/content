@@ -7,8 +7,10 @@ description: Assess, implement, and describe a DISA STIG quarterly benchmark upd
 
 This skill produces a reviewable, pushed update branch for each RHEL product in scope. The MVP
 expects the user to download the DISA manual XML files. The model runs the comparison tools,
-retains every intermediate artifact, implements approved changes commit by commit, pushes the
-branches, and writes Markdown PR drafts. It does not open GitHub PRs automatically.
+retains every intermediate artifact, implements classified changes commit by commit, pushes the
+branches, and writes Markdown PR drafts. It delegates rule discovery, mapping, rule creation,
+variable resolution, testing, and product builds to the owning skills. It does not open GitHub PRs
+automatically.
 
 Three phases: **assess** the new release, **implement** the changes, **describe** them in the
 PR. Each phase has its own reference doc; read only the one you're on.
@@ -43,6 +45,9 @@ fails; partial results are useful for review and debugging.
       action_table.md
     pr/
       description.md
+    verification/
+      build/
+      tests/
   rhel9-v2r8-to-v2r9/
     ...
 ```
@@ -77,6 +82,19 @@ Requirement,HTML diff URL,STDOUT from compare_ds.py,Changes,Action Required,note
 - **No pending-work sections in PR descriptions.** Describe only what the PR implements.
 - **Do not open GitHub PRs automatically.** Push the branches and write `pr/description.md`;
   opening the PR is a separate user action.
+- **Delegation is mandatory.** For every changed or added STIG requirement, invoke the owning
+  skill before implementing it: `find-rule` or `map-requirement`/`map-controls` for mapping,
+  `create-rule` for confirmed new rules, `resolve-rule-variables` for variable-backed values,
+  `create-test-scenarios` for missing coverage, `test-rule` for rule tests, `build-product` after
+  relevant content changes, and `run-tests` for validation. Do not reproduce those workflows
+  locally.
+- **Build after relevant content changes.** Invoke `build-product` after changes to `rule.yml`,
+  OVAL, Bash, Ansible, templates, variables, controls, profiles, or reference files that affect
+  the product. Use the full product build for final validation; a datastream-only build is
+  acceptable for intermediate checks.
+- **Retain verification results.** Store each build and test command, exit status, output,
+  warnings, produced artifact list, and summary under the product work package. Never discard
+  failed results.
 
 ## Assessment artifacts
 
@@ -129,14 +147,28 @@ Fill in the CSV review fields and the report's `CaC rule:`, `Classification:`, a
 reading each embedded diff. In `model-proposed-changes`, state the concrete CaC change proposed
 from the raw diff and current implementation, or `No change`. This is a model proposal, not human
 approval. Never edit the diff text itself; if a diff looks wrong, rerun `compare_ds.py` and
-regenerate all derived artifacts. Commit the completed assessment artifacts to the product branch
-after the user approves the action table.
+regenerate all derived artifacts. Retain and commit the completed assessment artifacts to the
+product branch without waiting for a separate action-table approval. The report and CSV remain the
+record of the model's classification and proposed changes.
 
 ## Delegate to neighboring skills, don't duplicate them
 
 This skill owns the DISA-specific parts: obtaining and diffing STIG releases, classifying the
-changes, and writing the STIG-specific parts of the PR description. For everything else in the
-implementation phase, use the skill that already owns it:
+changes, and writing the STIG-specific parts of the PR description. For everything else, invoke
+the skill that already owns it.
+
+For each actionable STIG entry:
+
+1. Invoke `find-rule` or `map-requirement`/`map-controls` to identify the existing rule or mapping.
+2. Invoke `resolve-rule-variables` before hardcoding any changed XCCDF value.
+3. Invoke `create-rule` only after confirming that no existing rule covers a genuine new rule.
+4. Invoke `create-test-scenarios` when the changed or new rule lacks required scenarios.
+5. Invoke `test-rule` for changed or new rule behavior.
+6. Invoke `build-product` after each relevant content change and retain the result.
+7. Invoke `run-tests` after the product build and retain the result.
+
+A delegated skill may stop for an author decision required by its own workflow. This skill does
+not add a separate action-table approval gate.
 
 - **`find-rule`** / **`map-requirement`** / **`map-controls`** - check whether an existing rule
   already covers a STIG ID before treating it as a new rule.
@@ -145,8 +177,8 @@ implementation phase, use the skill that already owns it:
   instead of hardcoding a changed value.
 - **`create-test-scenarios`** / **`test-rule`** / **`run-tests`** - test coverage and validation
   for a changed or new rule.
-- **`build-product`** - rebuild the product's data stream to sanity-check an OVAL or template
-  change.
+- **`build-product`** - mandatory after relevant rule, remediation, template, variable, control,
+  profile, or reference changes; retain every result.
 - **`draft-pr`** - optional follow-up after this skill writes the Markdown PR draft. Do not invoke
   it automatically; this MVP pushes branches but does not open GitHub PRs.
 

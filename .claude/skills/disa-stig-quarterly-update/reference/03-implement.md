@@ -13,14 +13,16 @@ git switch --create disa-stig-rhel8-v2r8 origin/master
 Use `disa-stig-rhel9-v2r9` for the RHEL 9 branch. If either branch already exists, stop and ask
 the user whether to continue with an explicitly chosen branch. Do not delete or reset it.
 
-## Step 1: implement the approved changes
+## Step 1: implement the classified changes
 
-Read the completed CSV and action table. Implement only approved `oval`, `new-rule`, `removal`,
-and `control-file` actions. Do not implement `prose`, `no-action`, or `ocil` entries unless the
-user explicitly approves them.
+Read the completed CSV and classification report. Implement `oval`, `new-rule`, `removal`, and
+`control-file` actions. Do not implement `prose`, `no-action`, or `ocil` entries unless the user
+explicitly requests an exception. Do not wait for a separate action-table approval gate.
 
-Use the existing project skills for rule mapping, variables, tests, and builds. Preserve the
-assessment artifacts after every step so a failed implementation can resume.
+Mandatory delegation applies to rule mapping, variable resolution, rule creation, test creation,
+rule testing, product builds, and validation. Invoke the owning skill for each applicable operation
+and preserve the assessment and verification artifacts after every step so a failed implementation
+can resume.
 
 ## Step 2: update the reference XML files last
 
@@ -114,9 +116,15 @@ notes "prose fix for RHEL-08-010120 covered by PR #N" and links to it.
 
 ## Verifying a change
 
-- `build-product` to rebuild the affected product's data stream after an OVAL or template change,
-  and once more after the final reference/profile update.
-- `test-rule` / `run-tests` for rule-level and ctest validation before pushing.
+- `build-product` after every relevant rule, remediation, template, variable, control, profile, or
+  reference change. Use a datastream-only build for intermediate checks and a full product build for
+  final validation.
+- `test-rule` for changed or new rule behavior, and `run-tests` for final ctest validation before
+  pushing.
+- Store every build and test command, exit status, output, warnings, artifact list, and summary in
+  a new directory under the product work package. Never overwrite an earlier result.
+- After the final reference and profile update, invoke `build-product` again and run `run-tests`
+  against that final build before pushing the branch.
 - Contest and CI catch anything a local build/test pass misses; if a Contest failure only
   reproduces on CentOS Stream and not on RHEL, that doesn't block STIG compliance work - the STIG
   applies to RHEL, and a CentOS-only failure with a known cause can be waived separately (file a
