@@ -27,6 +27,7 @@ selections:
     - var_sudo_dedicated_group=root
     - accounts_password_pam_pwhistory_remember
     - set_password_hashing_min_rounds_logindefs
+    - '!aide_verify_ext_attributes'
     - '!cracklib_accounts_password_pam_dcredit'
     - '!cracklib_accounts_password_pam_lcredit'
     - '!cracklib_accounts_password_pam_minlen'
