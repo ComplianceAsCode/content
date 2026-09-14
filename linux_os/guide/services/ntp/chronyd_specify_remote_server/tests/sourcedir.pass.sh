@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = chrony
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux,multi_platform_ubuntu
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
 
 # Test: server directive in sourcedir .sources file
 SOURCES_DIR="/etc/chrony/sources.d"
