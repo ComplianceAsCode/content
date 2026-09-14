@@ -51,14 +51,18 @@ srg_requirement: '{{{ full_name }}} audit tools must have a mode of 0755 or less
 template:
     name: file_permissions
     vars:
+        {{% if 'suse' in families %}}
+        filepath: {{{ audit_binaries }}}
+        {{% else %}}
         filepath:
             - /sbin/auditctl
             - /sbin/aureport
             - /sbin/ausearch
-            {{% if product not in ['rhel10', 'ol10', 'sle16', 'fedora'] %}}
+            {{% if product not in ['rhel10', 'ol10', 'fedora'] %}}
             - /sbin/autrace
             {{% endif %}}
             - /sbin/auditd
             - /sbin/rsyslogd
             - /sbin/augenrules
+        {{% endif %}}
         filemode: '0755'
