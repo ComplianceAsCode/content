@@ -1,4 +1,4 @@
-# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_opensuse,multi_platform_rhel,multi_platform_sle
 # reboot = false
 # strategy = unknown
 # complexity = low
@@ -6,7 +6,7 @@
 - name: "Prevent user modification of GNOME lock-delay"
   ansible.builtin.lineinfile:
     mode: 0644
-{{% if product in ['sle15', 'sle16'] %}}
+{{% if product in ['opensuse16', 'sle15', 'sle16'] %}}
     path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
 {{% else %}}
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
@@ -20,6 +20,6 @@
   ansible.builtin.command: dconf update
   when: result_lineinfile is changed
 
-{{% if product in ['sle15', 'sle16'] %}}
+{{% if product in ['opensuse16', 'sle15', 'sle16'] %}}
 {{{ ansible_enable_dconf_user_profile(profile="gdm", database="gdm") }}}
 {{% endif %}}

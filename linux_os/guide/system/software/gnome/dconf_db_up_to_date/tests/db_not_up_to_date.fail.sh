@@ -14,9 +14,10 @@ clean_dconf_settings
 add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "{{{ dconf_db }}}" "00-security-settings"
 add_dconf_lock "org/gnome/login-screen" "banner-message-enable" "{{{ dconf_db }}}" "00-security-settings-lock"
 
+{{% if 'suse' not in families %}}
 add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "local.d" "00-security-settings"
 add_dconf_lock "org/gnome/login-screen" "banner-message-enable" "local.d" "00-security-settings-lock"
-
+{{% endif %}}
 dconf update
 
 # ensure that the modification happens a reasonable amount of time after running dconf update
@@ -24,4 +25,6 @@ sleep 5
 
 # make static keyfiles newer than the database
 add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "{{{ dconf_db }}}" "00-security-settings"
+{{% if 'suse' not in families %}}
 add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "local.d" "00-security-settings"
+{{% endif %}}
