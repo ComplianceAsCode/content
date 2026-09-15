@@ -5,4 +5,4 @@ if LC_ALL=C grep -iqE '^[[:space:]]*log_file\b' /etc/audit/auditd.conf; then
 fi
 
 FILE=${FILE:-/var/log/audit/audit.log}
-chown root "$(dirname "$FILE")"/*
+chown root "$(dirname "$FILE")"/"${FILE}"*
