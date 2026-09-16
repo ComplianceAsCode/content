@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Ensure Zabbix Agent Reports To A Designated Server'
+
+description: |-
+    The Zabbix agent must be configured to report to the Zabbix server
+    corresponding to the network segment the host is on, by editing
+    <tt>Server</tt> and <tt>ServerActive</tt> in
+    <tt>/etc/zabbix/zabbix_agentd.conf</tt>:
+    <pre>Server=&lt;zabbix_server_address&gt;
+    ServerActive=&lt;zabbix_server_address&gt;</pre>
+
+rationale: |-
+    Leaving the agent at its packaged default (<tt>127.0.0.1</tt>) means it
+    is not actually reporting to any monitoring server, defeating the
+    purpose of having it installed.
+
+severity: medium
+
+warnings:
+    - general: |-
+        This rule doesn't come with a remediation; the correct Zabbix server
+        address depends on the network segment the host is on and needs to
+        be set by the administrator.
+
+ocil_clause: 'Server or ServerActive is missing or left at the packaged default'
+
+ocil: |-
+    Run the following command:
+    <pre># grep -E '^(Server|ServerActive)=' /etc/zabbix/zabbix_agentd.conf</pre>
+    Both <tt>Server</tt> and <tt>ServerActive</tt> should be present and set
+    to the Zabbix server address for this network segment, not left at the
+    packaged default of <tt>127.0.0.1</tt>.
+
+fixtext: |-
+    Edit <tt>/etc/zabbix/zabbix_agentd.conf</tt> and set <tt>Server</tt> and
+    <tt>ServerActive</tt> to the Zabbix server address for this network
+    segment. Restart the service:
+    <pre># systemctl restart zabbix-agent.service</pre>
