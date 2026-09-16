@@ -5,9 +5,9 @@ title: 'Configure Periodic Execution of Tripwire'
 description: |-
     Tripwire should run at least weekly. The Debian <tt>tripwire</tt> package
     installs <tt>/etc/cron.daily/tripwire</tt> by default, which runs
-    <tt>tripwire --check</tt> once a day and mails the report to root. If
-    daily checks are too frequent, the script can instead be moved to
-    <tt>/etc/cron.weekly</tt> or <tt>/etc/cron.hourly</tt>.
+    <tt>tripwire --check</tt> once a day and mails the report to root. The
+    script can instead be moved to <tt>/etc/cron.weekly</tt> if weekly checks
+    are preferred.
 
 rationale: |-
     By default, integrity checking tools do not run themselves periodically.
@@ -23,5 +23,5 @@ ocil_clause: 'Tripwire is not configured to run periodically'
 
 ocil: |-
     Run the following command to check for a scheduled Tripwire run:
-    <pre>$ ls -l /etc/cron.daily/tripwire /etc/cron.weekly/tripwire /etc/cron.hourly/tripwire 2>/dev/null</pre>
+    <pre>$ ls -l /etc/cron.daily/tripwire /etc/cron.weekly/tripwire 2>/dev/null</pre>
     A script invoking <tt>tripwire --check</tt> should be present.
