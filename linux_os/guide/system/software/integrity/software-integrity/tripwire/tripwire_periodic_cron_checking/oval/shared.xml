@@ -3,11 +3,7 @@
     {{{ oval_metadata("Tripwire must run on a schedule so unexpected file changes are revealed promptly.", rule_title=rule_title) }}}
     <criteria operator="AND">
       <extend_definition comment="tripwire is installed" definition_ref="package_tripwire_installed" />
-      <criteria operator="OR">
-        <criterion test_ref="test_tripwire_cron_periodic" comment="tripwire check scheduled in /etc/cron.{daily,weekly,hourly}" />
-        <criterion test_ref="test_tripwire_cron_d" comment="tripwire check scheduled in /etc/cron.d" />
-        <criterion test_ref="test_tripwire_crontab" comment="tripwire check scheduled in /etc/crontab" />
-      </criteria>
+      <criterion test_ref="test_tripwire_cron_periodic" comment="tripwire check scheduled in /etc/cron.{daily,weekly,hourly}" />
     </criteria>
   </definition>
 
@@ -19,27 +15,6 @@
   <ind:textfilecontent54_object id="object_tripwire_cron_periodic" version="1">
     <ind:path operation="pattern match">^/etc/cron\.(daily|weekly|hourly)$</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">tripwire[^\n]*(?:--check|-m\s+c)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
-  id="test_tripwire_cron_d" version="1" comment="tripwire check scheduled via /etc/cron.d">
-    <ind:object object_ref="object_tripwire_cron_d" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_tripwire_cron_d" version="1">
-    <ind:path>/etc/cron.d</ind:path>
-    <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">tripwire[^\n]*(?:--check|-m\s+c)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
-  id="test_tripwire_crontab" version="1" comment="tripwire check scheduled via /etc/crontab">
-    <ind:object object_ref="object_tripwire_crontab" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_tripwire_crontab" version="1">
-    <ind:filepath>/etc/crontab</ind:filepath>
     <ind:pattern operation="pattern match">tripwire[^\n]*(?:--check|-m\s+c)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
