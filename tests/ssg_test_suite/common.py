@@ -516,22 +516,66 @@ INSTALL_COMMANDS = dict(
     debian=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )
 
+# Commands that ask the repositories of the tested system about a package.
+# Each prints what offers the package, prints nothing when the repositories
+# lack it, and fails when it can't read them. zypper search exits 104 when
+# nothing matches, and apt-cache reads local indexes, so the apt commands
+# fail on a system without any.
+QUERY_COMMANDS = dict(
+    fedora="dnf -q repoquery --whatprovides {package}",
+    ol8="yum -q repoquery --whatprovides {package}",
+    ol9="yum -q repoquery --whatprovides {package}",
+    ol10="dnf -q repoquery --whatprovides {package}",
+    rhel8="yum -q repoquery --whatprovides {package}",
+    rhel9="yum -q repoquery --whatprovides {package}",
+    rhel10="dnf -q repoquery --whatprovides {package}",
+    sles=("zypper -n -q search --match-exact --provides {package} >/dev/null; "
+          "case $? in 0) echo {package} ;; 104) ;; *) exit 1 ;; esac"),
+    ubuntu="apt-cache policy | grep -q ' Packages$' && apt-cache policy {package}",
+    debian="apt-cache policy | grep -q ' Packages$' && apt-cache policy {package}",
+)
+
 
 def install_packages(test_env, packages):
+    """
+    Installs packages on the tested system and returns the ones its
+    repositories lack. One missing package fails the whole install command,
+    so on failure the packages are installed one at a time, and the
+    repositories are asked about each one that fails. A package they offer
+    that fails to install raises RuntimeError, as does a failure to ask them,
+    or any failure on a platform without a query command.
+    """
     log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
 
     with open(log_file_name, "a") as log_file:
         platform_cpe = get_cpe_of_tested_os(test_env, log_file)
     platform = cpes_to_platform([platform_cpe])
-
-    command_str = " ".join(INSTALL_COMMANDS[platform] + tuple(packages))
+    install_command = INSTALL_COMMANDS[platform]
+    error_msg = "Couldn't install required packages: {packages}"
 
     with open(log_file_name, 'a') as log_file:
         print("Installing packages", file=log_file)
         log_file.flush()
-        test_env.execute_ssh_command(
-            command_str, log_file,
-            "Couldn't install required packages: {packages}".format(packages=",".join(packages)))
+        try:
+            test_env.execute_ssh_command(
+                " ".join(install_command + tuple(packages)), log_file)
+            return set()
+        except RuntimeError:
+            if platform not in QUERY_COMMANDS:
+                raise RuntimeError(error_msg.format(packages=",".join(packages)))
+
+        unavailable = set()
+        for package in sorted(packages):
+            try:
+                test_env.execute_ssh_command(
+                    " ".join(install_command + (package,)), log_file)
+            except RuntimeError:
+                offered = test_env.execute_ssh_command(
+                    QUERY_COMMANDS[platform].format(package=package), log_file)
+                if offered.strip():
+                    raise RuntimeError(error_msg.format(packages=package))
+                unavailable.add(package)
+        return unavailable
 
 
 def _match_rhel_version(cpe):

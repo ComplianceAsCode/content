@@ -1,6 +1,6 @@
 import os
 
-from tests.ssg_test_suite.rule import Scenario
+from tests.ssg_test_suite.rule import RuleChecker, RuleTestContent, Scenario
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
@@ -67,3 +67,44 @@ def test_scenario_defaults():
     s.override_profile("xccdf_org.ssgproject.content_profile_cis")
     assert "xccdf_org.ssgproject.content_profile_cis" in \
         s.script_params["profiles"]
+
+
+class PackagelessTestEnv:
+    """Stands in for a test environment, offering only the product ID that
+    package replacement and the skip message read"""
+    def __init__(self, product="rhel8"):
+        self.product = product
+
+
+def load_scenario(file_name):
+    file_contents = open(os.path.join(DATADIR, file_name)).read()
+    return Scenario(file_name, file_contents)
+
+
+def test_drop_scenarios_needing():
+    needs_packages = load_scenario("correct.pass.sh")
+    needs_nothing = load_scenario("correct_defaults.pass.sh")
+    checker = RuleChecker(PackagelessTestEnv())
+    content = {"rule": RuleTestContent([needs_packages, needs_nothing], dict())}
+
+    checker._drop_scenarios_needing(content, set())
+    assert content["rule"].scenarios == [needs_packages, needs_nothing]
+
+    checker._drop_scenarios_needing(content, {"vim"})
+    assert content["rule"].scenarios == [needs_packages, needs_nothing]
+
+    checker._drop_scenarios_needing(content, {"authselect"})
+    assert content["rule"].scenarios == [needs_nothing]
+
+
+def test_drop_scenarios_needing_renamed_package():
+    """ A scenario asks for 'pam', which on Ubuntu means libpam-runtime """
+    needs_pam = Scenario("pam.pass.sh", "#!/bin/bash\n# packages = pam\n")
+    checker = RuleChecker(PackagelessTestEnv("ubuntu2404"))
+    content = {"rule": RuleTestContent([needs_pam], dict())}
+
+    checker._drop_scenarios_needing(content, {"pam"})
+    assert content["rule"].scenarios == [needs_pam]
+
+    checker._drop_scenarios_needing(content, {"libpam-runtime"})
+    assert content["rule"].scenarios == []
