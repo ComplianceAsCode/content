@@ -12,25 +12,27 @@ KNOWN_DISTROS = [
     "fedora",
     "centos8",
     "centos9",
+    "centos10",
     "rhel8",
     "rhel9",
+    "rhel10",
 ]
 
 # put here any unreleased distro in development that needs to be tested
 # and any working osinfo known to be used by default when installating it
 UNRELEASED_DISTROS_AND_OSINFO = {
-    "rhel10": "rhel9-unknown"
 }
 
 DISTRO_URL = {
     "fedora":
         "https://download.fedoraproject.org/pub/fedora/linux/releases/42/Everything/x86_64/os",
-    "centos8": "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/",
     "centos9": "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/",
+    "centos10": "https://mirror.stream.centos.org/10-stream/BaseOS/x86_64/os/",
+
 }
 DISTRO_EXTRA_REPO = {
-    "centos8": "http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/",
-    "centos9": "http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/",
+    "centos9": "https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/",
+    "centos10": "http://mirror.stream.centos.org/10-stream/AppStream/x86_64/os/",
 }
 
 
@@ -40,10 +42,14 @@ def path_from_tests(path):
 
 def parse_args():
     import textwrap
-    osinfo_epilog = textwrap.dedent(r"""
-        --osinfo details: 'For unreleased distros, these are the following
-        default data used as input {}.
-    """.format(UNRELEASED_DISTROS_AND_OSINFO))
+    osinfo_epilog = "Run 'virt-install --osinfo list' to get a list of available options."
+    if UNRELEASED_DISTROS_AND_OSINFO:
+        osinfo_epilog = textwrap.dedent(f"""
+            --osinfo details: The following OSInfo values are used by default for
+            unreleased distros: {UNRELEASED_DISTROS_AND_OSINFO}
+
+            Run 'virt-install --osinfo list' to get a list of available options.
+        """)
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,
         epilog=osinfo_epilog,
@@ -84,7 +90,7 @@ def parse_args():
         "--disk-size",
         dest="disk_size",
         default=20,
-        help="Size of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified).",
+        help="Size (in GiB) of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified).",
     )
     parser.add_argument(
         "--disk",
@@ -96,7 +102,7 @@ def parse_args():
         dest="ram",
         default=3072,
         type=int,
-        help="Amount of RAM configured for the VM.",
+        help="Amount of RAM (in MiB) configured for the VM, default is 3072 MiB.",
     )
     parser.add_argument(
         "--cpu",
