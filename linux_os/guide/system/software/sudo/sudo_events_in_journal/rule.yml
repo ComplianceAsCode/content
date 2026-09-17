@@ -6,6 +6,9 @@ description: |-
     Sudo events must be captured in a durable log. <tt>sudo-rs</tt> sends
     events to the <tt>authpriv</tt> syslog facility and does not support the
     classic sudo <tt>Defaults logfile=</tt> option.
+    Configure persistent journal storage or an active rsyslog service that
+    captures <tt>authpriv.*</tt> in a file under <tt>/var/log</tt>.
+    Existing log messages are not evidence that logging remains configured.
 
 rationale: |-
     A durable record of privilege escalation supports auditing and incident
@@ -15,9 +18,30 @@ severity: low
 
 platform: package[sudo]
 
-ocil_clause: 'sudo events are not present in the journal or a persistent log'
+ocil_clause: 'durable sudo logging is not configured'
 
 ocil: |-
-    Run <tt>journalctl -t sudo -t sudo-rs</tt> and inspect
-    <tt>/var/log/auth.log</tt>. At least one location must contain sudo events.
+    Use <tt>systemd-analyze cat-config systemd/journald.conf</tt> to inspect
+    the journal configuration and its drop-ins. Verify that
+    <tt>systemd-journald.service</tt> is active and storage is persistent,
+    or uses <tt>auto</tt> with <tt>/var/log/journal</tt> present on writable,
+    non-volatile storage. The storage log level must retain notice-level events.
+    Alternatively, verify that <tt>rsyslog.service</tt> is active and enabled,
+    journald forwards notice-level events to syslog, and the loaded rsyslog
+    configuration captures <tt>authpriv.*</tt> in a persistent log file.
+    Run <tt>rsyslogd -N1 -o /dev/stdout</tt> to validate the configuration
+    and inspect its loaded includes. An empty log file is acceptable.
     Classic sudo may instead use a valid <tt>Defaults logfile=</tt> setting.
+
+warnings:
+    - general: |-
+        The rsyslog check recognizes traditional <tt>authpriv.*</tt> file
+        selectors with the Ubuntu <tt>imuxsock</tt> input. Custom RainerScript
+        filters, rulesets or other inputs require manual verification.
+        The remediation uses <tt>syslog:adm</tt> ownership for
+        <tt>/var/log/sudo.log</tt> rather than the <tt>root:adm</tt> shown in
+        the benchmark, because Ubuntu rsyslog drops privileges to the
+        <tt>syslog</tt> account and cannot write a root-owned 0640 file.
+        The check accepts journal and forwarding levels of <tt>notice</tt>
+        or looser, since sudo and sudo-rs report command use at
+        <tt>authpriv.notice</tt>.
