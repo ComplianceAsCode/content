@@ -5,7 +5,7 @@
 # Matches the /etc/cron.daily/tripwire script shipped by the Debian
 # tripwire package, written explicitly instead of relying on the
 # package's post-install state so this scenario stays deterministic
-# across package versions.
+# across package versions. Expected result: PASS.
 mkdir -p /etc/cron.daily
 cat > /etc/cron.daily/tripwire <<EOF
 #!/bin/sh -e

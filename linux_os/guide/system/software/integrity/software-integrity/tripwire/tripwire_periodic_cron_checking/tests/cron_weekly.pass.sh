@@ -4,6 +4,7 @@
 
 # The Debian package's default script may be relocated to a less
 # frequent cron directory if daily checks are too frequent.
+# Expected result: PASS.
 rm -f /etc/cron.daily/tripwire
 mkdir -p /etc/cron.weekly
 cat > /etc/cron.weekly/tripwire <<EOF
