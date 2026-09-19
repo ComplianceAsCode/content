@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Ensure Zabbix Agent Is Installed'
+
+description: |-
+    {{{ describe_package_install(package="zabbix-agent") }}}
+
+rationale: |-
+    The zabbix-agent package provides the Zabbix monitoring agent, which
+    reports system status and performance metrics to a central Zabbix
+    monitoring server.
+
+severity: medium
+
+{{{ complete_ocil_entry_package_installed("zabbix-agent") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: zabbix-agent
