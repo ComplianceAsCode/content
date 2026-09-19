@@ -19,5 +19,7 @@ sleep 5
 add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "{{{ dconf_db }}}" "00-security-settings"
 add_dconf_lock "org/gnome/login-screen" "banner-message-enable" "{{{ dconf_db }}}" "00-security-settings-lock"
 
+{{% if 'suse' not in families %}}
 add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "local.d" "00-security-settings"
 add_dconf_lock "org/gnome/login-screen" "banner-message-enable" "local.d" "00-security-settings-lock"
+{{% endif %}}

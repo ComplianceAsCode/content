@@ -7,14 +7,19 @@ aide_audit_binaries:
   - aureport
   - audispd
   - augenrules
+  - audisp-syslog
+  - audisp-remote
+  - audispd-zos-remote
 audisp_conf_path: /etc/audit
 audit_binaries:
-  - /sbin/auditctl
-  - /sbin/aureport
-  - /sbin/ausearch
-  - /sbin/auditd
-  - /sbin/augenrules
-  - /sbin/audisp-syslog
+  - /usr/sbin/auditctl
+  - /usr/sbin/aureport
+  - /usr/sbin/ausearch
+  - /usr/sbin/auditd
+  - /usr/sbin/augenrules
+  - /usr/sbin/audisp-syslog
+  - /usr/sbin/audisp-remote
+  - /usr/sbin/audispd-zos-remote
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
