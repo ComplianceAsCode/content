@@ -1,0 +1,20 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The Tripwire database must be initialized to provide a known-good baseline for integrity checks.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <extend_definition comment="tripwire is installed" definition_ref="package_tripwire_installed" />
+      <criterion test_ref="test_tripwire_database_initialized" comment="Tripwire operational database file exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_tripwire_database_initialized" check="all"
+  check_existence="at_least_one_exists" version="1"
+  comment="Testing existence of the Tripwire operational database file">
+    <unix:object object_ref="object_tripwire_database_file" />
+  </unix:file_test>
+
+  <unix:file_object id="object_tripwire_database_file" version="1">
+    <unix:path>/var/lib/tripwire</unix:path>
+    <unix:filename operation="pattern match">^.*\.twd$</unix:filename>
+  </unix:file_object>
+</def-group>
