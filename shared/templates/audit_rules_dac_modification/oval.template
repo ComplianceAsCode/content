@@ -12,14 +12,15 @@
 {{% endif %}}
 
         <criteria operator="OR">
-          <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ ATTR }}} audit DAC rule -->
-          <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
-          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ ATTR }}} audit DAC rule -->
-          <criterion comment="audit augenrules 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_augenrules" />
+            <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ ATTR }}} audit DAC rule -->
+            <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
+            <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ ATTR }}} audit DAC rule -->
+            <criteria operator="AND">
+                <criterion comment="audit augenrules 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_augenrules" />
 {{% if CHECK_ROOT_USER %}}
-          <criterion comment="audit augenrules 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_augenrules_auid_0" />
+                <criterion comment="audit augenrules 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_augenrules_auid_0" />
 {{% endif %}}
-
+            </criteria>
         </criteria>
       </criteria>
 
@@ -34,10 +35,12 @@
           <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ ATTR }}} audit DAC rule -->
           <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
           <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ ATTR }}} audit DAC rule -->
-          <criterion comment="audit auditctl 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_auditctl" />
+            <criteria operator="AND">
+                <criterion comment="audit auditctl 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_auditctl" />
 {{% if CHECK_ROOT_USER %}}
-          <criterion comment="audit auditctl 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_auditctl_auid_0" />
+                <criterion comment="audit auditctl 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_auditctl_auid_0" />
 {{% endif %}}
+            </criteria>
         </criteria>
       </criteria>
 
@@ -49,7 +52,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_ardm_{{{ ATTR }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ ATTR }}}[\s]+|([\s]+|[,]){{{ ATTR }}}([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ ATTR }}}[\s]+|([\s]+|[,]){{{ ATTR }}}([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset|-1)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -58,7 +61,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_ardm_{{{ ATTR }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ ATTR }}}[\s]+|([\s]+|[,]){{{ ATTR }}}([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ ATTR }}}[\s]+|([\s]+|[,]){{{ ATTR }}}([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset|-1)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -67,7 +70,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_ardm_{{{ ATTR }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ ATTR }}}[\s]+|([\s]+|[,]){{{ ATTR }}}([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ ATTR }}}[\s]+|([\s]+|[,]){{{ ATTR }}}([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset|-1)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -76,7 +79,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_ardm_{{{ ATTR }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ ATTR }}}[\s]+|([\s]+|[,]){{{ ATTR }}}([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ ATTR }}}[\s]+|([\s]+|[,]){{{ ATTR }}}([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset|-1)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
