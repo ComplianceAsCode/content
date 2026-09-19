@@ -61,14 +61,18 @@ srg_requirement: '{{{ full_name }}} audit tools must be owned by root.'
 template:
     name: file_owner
     vars:
+        {{% if 'suse' in families %}}
+        filepath: {{{ audit_binaries }}}
+        {{% else %}}
         filepath:
             - /sbin/auditctl
             - /sbin/aureport
             - /sbin/ausearch
-            {{% if product not in ['rhel10', 'ol10', 'sle16', 'fedora'] %}}
+            {{% if product not in ['rhel10', 'ol10', 'fedora'] %}}
             - /sbin/autrace
             {{% endif %}}
             - /sbin/auditd
             - /sbin/rsyslogd
             - /sbin/augenrules
+        {{% endif %}}
         uid_or_name: '0'

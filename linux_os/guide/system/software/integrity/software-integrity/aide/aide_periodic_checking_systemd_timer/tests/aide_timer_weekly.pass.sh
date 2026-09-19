@@ -2,8 +2,14 @@
 # platform = multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
 # packages = aide
 
+{{% set aide_service = 'aide.service' %}}
+{{% set aide_timer = 'aide.timer' %}}
+
+{{% if product in ["sle16"] %}}
+ln -s /usr/lib/systemd/system/{{{ aide_service }}} /etc/systemd/system/multi-user.target.wants/{{{ aide_service }}}
+{{% else %}}
 # create unit file for periodic aide database check
-cat > /etc/systemd/system/aidecheck.service <<EOF
+cat > /etc/systemd/system/{{{ aide_service }}} <<EOF
 [Unit]
 Description=Aide Check
 [Service]
@@ -14,21 +20,22 @@ WantedBy=multi-user.target
 EOF
 
 # create unit file for the aide check timer
-cat > /etc/systemd/system/aidecheck.timer <<EOF
+cat > /etc/systemd/system/{{{ aide_timer }}} <<EOF
 [Unit]
 Description=Aide check every Monday
 [Timer]
 OnCalendar=Mon *-*-* 05:00:00
-Unit=aidecheck.service
+Unit={{{ aide_service }}}
 [Install]
 WantedBy=multi-user.target
 EOF
 
 #  setup service unit files attributes
-chown root:root /etc/systemd/system/aidecheck.*
-chmod 0644 /etc/systemd/system/aidecheck.*
+chown root:root /etc/systemd/system/aide.*
+chmod 0644 /etc/systemd/system/aide.*
+{{% endif %}}
 
 # enable the aide related services
 systemctl daemon-reload
-systemctl enable aidecheck.service
-systemctl --now enable aidecheck.timer
+systemctl enable {{{ aide_service }}}
+systemctl --now enable {{{ aide_timer }}}
