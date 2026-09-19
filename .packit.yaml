@@ -24,13 +24,19 @@ jobs:
   trigger: commit
   branch: "gh-readonly-queue/.*"
 
-- &contest-oscap
+# Contest-based /hardening/host-os testing
+# - this is a minimal set of tests that can run directly on the reserved OS
+#   by remediating + scanning it
+# - let Packit handle it natively by installing built scap-security-guide RPM
+#   and calling Contest to test that OS-installed RPM content
+
+- &contest-host-os-oscap
   job: tests
   trigger: pull_request
   fmf_url: https://github.com/RHSecurityCompliance/contest.git
   fmf_ref: main
   tmt_plan: /plans/upstream-parallel/oscap
-  identifier: contest-oscap
+  identifier: contest-host-os-oscap
   targets:
     centos-stream-8: {}
     centos-stream-9: {}
@@ -40,15 +46,37 @@ jobs:
       pipeline:
         parallel-limit: 32
 
-- <<: *contest-oscap
+- <<: *contest-host-os-oscap
   tmt_plan: /plans/upstream-parallel/ansible
-  identifier: contest-ansible
+  identifier: contest-host-os-ansible
 
-- <<: *contest-oscap
+- <<: *contest-host-os-oscap
   tmt_plan: /plans/upstream-parallel/other
-  identifier: contest-other
+  identifier: contest-host-os-other
 
-# when modifying anything below, modify also tests/tmt/
+# Contest-based testing where the contest-atex-testingfarm is run via Packit
+# on a huge VM host, setting up many containers/VMs to parallelize the testing,
+# also allowing it to run tests that require VMs
+# - this effectively allows full Contest suite execution (all tests that make
+#   sense for PR testing here)
+
+- job: tests
+  trigger: pull_request
+  fmf_url: https://github.com/RHSecurityCompliance/contest-atex-testingfarm.git
+  fmf_ref: main
+  identifier: contest-all
+  targets: [fedora-latest-stable]
+  manual_trigger: true
+  skip_build: true
+  tf_extra_params:
+    # increase default, per README.md of the above repo
+    # - this includes time spent waiting in queued
+    settings:
+      pipeline:
+        timeout: 1200
+
+# tests present locally in this repo, under tests/
+# - when modifying these, modify also tests/tmt/
 
 - job: tests
   trigger: pull_request
