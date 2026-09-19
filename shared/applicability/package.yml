@@ -51,15 +51,19 @@ args:
   iptables:
     pkgname: iptables
   krb5-libs:
+    {{% if 'suse' in families %}}
+    pkgname: krb5
+    {{% else %}}
     pkgname: krb5-libs
+    {{% endif %}}
   libpwquality:
-    {{% if 'debian' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
+    {{% if 'debian' in product or 'suse' in families or 'ubuntu' in product %}}
     pkgname: libpwquality1
     {{% else %}}
     pkgname: libpwquality
     {{% endif %}}
   libreswan:
-    {{% if product in  ["sle15", "sle16"] %}}
+    {{% if product in  ["opensuse16", "sle15", "sle16"] %}}
     pkgname: strongswan-ipsec
     {{% else %}}
     pkgname: libreswan
@@ -123,7 +127,7 @@ args:
     pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
-    {{% if 'sle' in product or 'slmicro' in product or product in ["kylinserver10", "kylinsecserver6", "openeuler2203"] %}}
+    {{% if 'suse' in families or product in ["kylinserver10", "kylinsecserver6", "openeuler2203"] %}}
       pkgname: shadow
     {{% elif product in ["openembedded"] %}}
       pkgname: shadow-base
