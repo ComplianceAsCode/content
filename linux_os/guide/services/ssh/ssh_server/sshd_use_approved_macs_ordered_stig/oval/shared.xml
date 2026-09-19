@@ -1,4 +1,9 @@
 {{%- set sshd_main_config = sshd_main_config_file -%}}
+{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{% set sufix_conf="(\s.*)?" %}}
+{{% set prefix_conf="^\s*MACs\s*" %}}
+{{% set macs=["hmac-sha2-512","hmac-sha2-256"] %}}
+{{% set macs_regex=prefix_conf ~ "(?=[\w-])" "(\\b" ~ macs|join("\\b,?)?(\\b") ~ ")?" ~ sufix_conf ~ "[\\s]*(?:#.*)?$" %}}
 <def-group>
   <definition class="compliance" id="sshd_use_approved_macs_ordered_stig" version="1">
     {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.", rule_title=rule_title) }}}
@@ -15,22 +20,72 @@
         definition_ref="sshd_required_or_unset" />
         <extend_definition comment="rpm package openssh-server installed"
         definition_ref="package_openssh-server_installed" />
-        <criterion comment="Check MACs in /etc/ssh/sshd_config"
+        {{% if product in [ 'sle16', 'slmicro6' ] %}}
+        <criterion comment="test if SSH main configuration {{{ sshd_main_config }}} exists for {{{ rule_id }}}"
+            test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+        {{% endif %}}
+        {{%- if sshd_distributed_config == "true" %}}
+        <criterion comment="Check the MACs list in {{{ sshd_drop_in_dir }}}"
+            test_ref="test_sshd_use_approved_macs_ordered_stig_config_dir" />
+        {{%- endif %}}
+        <criterion comment="Check MACs in {{{ sshd_main_config }}}"
         test_ref="test_sshd_use_approved_macs_ordered_stig" />
+        <criterion comment="the configuration exists"
+            test_ref="test_MACs_present_sshd_use_approved_macs_ordered_stig" />
       </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="tests the value of MACs setting in the /etc/ssh/sshd_config file"
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test(sshd_main_config, rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object(sshd_main_config, rule_id=rule_id) }}}
+  {{% endif %}}
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="tests the value of MACs setting in {{{ sshd_main_config }}} config"
   id="test_sshd_use_approved_macs_ordered_stig" version="1">
     <ind:object object_ref="obj_sshd_use_approved_macs_ordered_stig" />
+    <ind:state state_ref="state_sshd_use_approved_macs_ordered_stig" />
   </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_sshd_use_approved_macs_ordered_stig" version="1">
+    <ind:text operation="pattern match">{{{ macs_regex }}}</ind:text>
+  </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_object id="obj_sshd_use_approved_macs_ordered_stig" version="1">
     <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+(?=[\w]+)(hmac-sha2-512(?=[\w,]+|$),?)?(hmac-sha2-256)?[\s]*(?:#.*)?$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">{{{ prefix_conf }}}.*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
   </ind:textfilecontent54_object>
 
+  {{%- if sshd_distributed_config == "true" %}}
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="tests the value of MACs setting in {{{ sshd_drop_in_dir }}} configs"
+  id="test_sshd_use_approved_macs_ordered_stig_config_dir" version="1">
+    <ind:object object_ref="obj_sshd_use_approved_macs_ordered_stig_config_dir" />
+    <ind:state state_ref="state_sshd_use_approved_macs_ordered_stig" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sshd_use_approved_macs_ordered_stig_config_dir" version="1">
+    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">{{{ prefix_conf }}}.*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{%- endif %}}
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_sshd_use_approved_macs_ordered_stig" version="1">
+    <set>
+      <object_reference>obj_sshd_use_approved_macs_ordered_stig</object_reference>
+      {{%- if sshd_distributed_config == "true" %}}
+      <object_reference>obj_sshd_use_approved_macs_ordered_stig_config_dir</object_reference>
+      {{%- endif %}}
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_MACs_present_sshd_use_approved_macs_ordered_stig" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Verify that the value of MACs is present">
+    <ind:object object_ref="obj_collection_obj_sshd_use_approved_macs_ordered_stig" />
+  </ind:textfilecontent54_test>
 </def-group>
