@@ -2,8 +2,13 @@
 
 {{{ bash_package_install("aide") }}}
 
+{{% if 'suse' in families %}}
 {{% set aide_service = 'aide.service' %}}
 {{% set aide_timer = 'aide.timer' %}}
+{{% else %}}
+{{% set aide_service = 'aidecheck.service' %}}
+{{% set aide_timer = 'aidecheck.timer' %}}
+{{% endif %}}
 
 {{% if product in ["sle16"] %}}
 cat > /etc/aide_service.conf <<EOF

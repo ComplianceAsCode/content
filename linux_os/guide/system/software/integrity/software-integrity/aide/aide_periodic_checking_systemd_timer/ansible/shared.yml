@@ -4,8 +4,13 @@
 # complexity = low
 # disruption = low
 
+{{% if 'suse' in families %}}
 {{% set aide_service = 'aide.service' %}}
 {{% set aide_timer = 'aide.timer' %}}
+{{% else %}}
+{{% set aide_service = 'aidecheck.service' %}}
+{{% set aide_timer = 'aidecheck.timer' %}}
+{{% endif %}}
 
 {{% if product in ["sle16"] %}}
 - name: "{{{ rule_title }}} - Make sure AIDE Check Service is including /etc/aide.conf"
@@ -15,7 +20,7 @@
       group: root
       mode: 0600
       content: |-
-        "@@include /etc/aide.conf"
+        @@include /etc/aide.conf
 
 - name: "{{{ rule_title }}} - Make sure AIDE Check Service is in enabled state"
   ansible.builtin.file:
