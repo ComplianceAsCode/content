@@ -4,9 +4,18 @@
     <criteria operator="AND">
       <criterion comment="!authenticate does not exist in /etc/sudoers" test_ref="test_no_authenticate_etc_sudoers" />
       <criterion comment="!authenticate does not exist in /etc/sudoers.d" test_ref="test_no_authenticate_etc_sudoers_d" />
+      {{% if product in [ 'sle16', 'slmicro6' ] %}}
+      <criterion
+          comment="test if configuration file /etc/sudoers exists for {{{ rule_id }}}"
+          test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+      {{% endif %}}
     </criteria>
   </definition>
 
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test('/etc/sudoers', rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object('/etc/sudoers', rule_id=rule_id) }}}
+  {{% endif %}}
   <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="!authenticate does not exist in /etc/sudoers" id="test_no_authenticate_etc_sudoers" version="1">
     <ind:object object_ref="object_no_authenticate_etc_sudoers" />
   </ind:textfilecontent54_test>
