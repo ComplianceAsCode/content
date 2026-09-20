@@ -2,8 +2,13 @@
 # platform = multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
 # packages = aide
 
+{{% if 'suse' in families %}}
 {{% set aide_service = 'aide.service' %}}
 {{% set aide_timer = 'aide.timer' %}}
+{{% else %}}
+{{% set aide_service = 'aidecheck.service' %}}
+{{% set aide_timer = 'aidecheck.timer' %}}
+{{% endif %}}
 
 {{% if product in ["sle16"] %}}
 ln -s /usr/lib/systemd/system/{{{ aide_service }}} /etc/systemd/system/multi-user.target.wants/{{{ aide_service }}}
