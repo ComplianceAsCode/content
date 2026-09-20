@@ -8,13 +8,6 @@
 {{% set aide_service = 'aide.service' %}}
 {{% set aide_notify_service = 'aidecheck-notify.service' %}}
 
-- name: "{{{ rule_title }}} - Ensure AIDE is installed"
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - aide
-
 {{% if product in ["sle16"] %}}
 - name: "{{{ rule_title }}} - Ensure report_url is set to file:/var/log/aide-report.log in /etc/aide.conf"
   ansible.builtin.lineinfile:

@@ -9,7 +9,8 @@
 {{% if product in ["sle16"] %}}
 {{% set aide_service_unit = "/usr/lib/systemd/system/" ~ aide_service %}}
 {{% set aide_notify_unit = "/usr/lib/systemd/system/" ~ aide_notify_service %}}
-{{{ lineinfile_present('/etc/aide.conf','report_url=file:/var/log/aide-report.log') }}}
+{{{ lineinfile_absent('/etc/aide.conf', 'report_url=file:/var/log/aide-report.log', sed_path_separator="#") }}}
+{{{ lineinfile_present('/etc/aide.conf', 'report_url=file:/var/log/aide-report.log') }}}
 {{% else %}}
 {{% set aide_service_unit = "/etc/systemd/system/" ~ aide_service %}}
 {{% set aide_notify_unit = "/etc/systemd/system/" ~ aide_notify_service %}}
