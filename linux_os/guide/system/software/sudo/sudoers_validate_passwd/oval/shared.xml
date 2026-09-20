@@ -8,8 +8,18 @@
       <criterion comment="Check Defaults targetpw is not defined in /etc/sudoers file" test_ref="test_sudoers_targetpw_not_defined" />
       <criterion comment="Check Defaults rootpw is not defined in /etc/sudoers file" test_ref="test_sudoers_rootpw_not_defined" />
       <criterion comment="Check Defaults runaspw is not defined in /etc/sudoers file" test_ref="test_sudoers_runaspw_not_defined" />
+      {{% if product in [ 'sle16', 'slmicro6' ] %}}
+      <criterion
+          comment="test if configuration file /etc/sudoers exists for {{{ rule_id }}}"
+          test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+      {{% endif %}}
       </criteria>
   </definition>
+
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test('/etc/sudoers', rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object('/etc/sudoers', rule_id=rule_id) }}}
+  {{% endif %}}
 
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
   id="test_sudoers_targetpw_config" version="1">
