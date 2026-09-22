@@ -15,6 +15,8 @@ multi-thousand-rule benchmark.
 - `compare_ds_diffs_sample/RHEL-09-211010` - the real, unmodified output of running
   `utils/compare_ds.py --disa-content --rule-diffs` against the two files above. Not
   hand-authored - regenerate it any time with the command below to confirm it still matches.
+- `review-data.json` - the model review fields required by `build_review_csv.py`. The fixture
+  change is punctuation-only, so it is classified as `No change`.
 
 ## Reproduce it
 
