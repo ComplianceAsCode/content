@@ -30,6 +30,19 @@
   register: sudoers_file_defaults
 {{%- endmacro %}}
 
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults('/usr/etc/sudoers', '/etc/sudoers', rule_title=rule_title) }}}
+{{{
+    ansible_lineinfile(
+        rule_title + " - Remove /usr/etc/sudoers.d include directive from /etc/sudoers",
+        path="/etc/sudoers",
+        regex='^\s*@includedir\s+/usr/etc/sudoers.d',
+        state="absent",
+        when="not ansible_check_mode"
+    )
+}}}
+{{% endif %}}
+
 {{{- delete_line_in_sudoers_d("Defaults targetpw") }}}
 {{{- delete_line_in_sudoers_d("Defaults rootpw") }}}
 {{{- delete_line_in_sudoers_d("Defaults runaspw") }}}
