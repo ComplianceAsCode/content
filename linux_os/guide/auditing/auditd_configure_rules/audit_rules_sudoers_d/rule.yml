@@ -6,7 +6,7 @@ title: 'Ensure auditd Collects System Administrator Actions - /etc/sudoers.d/'
 description: |-
     At a minimum, the audit system should collect administrator actions
     for all users and root.
-    {{{ describe_audit_rules_watch("/etc/sudoers.d/", "actions") }}}
+    {{{ describe_audit_rules_watch("/etc/sudoers.d", "actions") }}}
 
 rationale: |-
     The actions taken by system administrators should be audited to keep a record
@@ -30,14 +30,14 @@ references:
 ocil_clause: 'the command does not return a line, or the line is commented out'
 
 ocil: |-
-    {{{ ocil_audit_rules_watch("/etc/sudoers.d/", "actions") }}}
+    {{{ ocil_audit_rules_watch("/etc/sudoers.d", "actions") }}}
 
-fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/sudoers.d/", "identity", "/etc/audit/rules.d/audit.rules") }}}'
+fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/sudoers.d", "identity", "/etc/audit/rules.d/audit.rules") }}}'
 
-srg_requirement: '{{{ srg_requirement_audit_file_watch_rule("/etc/sudoers.d/") }}}'
+srg_requirement: '{{{ srg_requirement_audit_file_watch_rule("/etc/sudoers.d") }}}'
 
 template:
     name: audit_rules_watch
     vars:
-        path: /etc/sudoers.d/
+        path: /etc/sudoers.d
         key: actions
