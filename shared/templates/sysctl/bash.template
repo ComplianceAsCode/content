@@ -1,11 +1,11 @@
-# platform = multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_almalinux,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
+# platform = multi_platform_almalinux,multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_opensuse,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 # reboot = true
 # strategy = disable
 # complexity = low
 # disruption = medium
 
 # Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
-{{% if product in [ "sle12", "sle15", "slmicro5", "slmicro6"] %}}
+{{% if 'suse' in families %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /lib/sysctl.d/*.conf; do
 {{% elif product in [ "ubuntu2204", "ubuntu2404"] %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /etc/ufw/sysctl.conf; do
