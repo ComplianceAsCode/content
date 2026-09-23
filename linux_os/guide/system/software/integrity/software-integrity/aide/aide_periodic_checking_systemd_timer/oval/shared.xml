@@ -1,3 +1,10 @@
+{{% if 'suse' in families %}}
+{{% set aide_service = 'aide.service' %}}
+{{% set aide_timer = 'aide.timer' %}}
+{{% else %}}
+{{% set aide_service = 'aidecheck.service' %}}
+{{% set aide_timer = 'aidecheck.timer' %}}
+{{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
     {{{ oval_metadata("Make sure systemd timer is defined to run perodic AIDE check.", rule_title=rule_title) }}}
@@ -5,25 +12,25 @@
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed"/>
       <criteria operator="AND">
         <criterion test_ref="tst_aidecheck-service_enabled"
-          comment="systemd aidecheck.service enabled"/>
+          comment="systemd {{{ aide_service }}} enabled"/>
         <criterion test_ref="tst_aidecheck-timer_enabled"
           comment="systemd aidecheck.timer enabled"/>
         <criterion test_ref="tst_aidecheck-timer_active"
-          comment="systemd aidecheck.timer active"/>
+          comment="systemd {{{ aide_timer }}} active"/>
       </criteria>
     </criteria>
   </definition>
 
   <linux:systemdunitproperty_object id="obj_aidecheck-service_unitfilestate" version="1">
-    <linux:unit>aidecheck.service</linux:unit>
+    <linux:unit>{{{ aide_service }}}</linux:unit>
     <linux:property>UnitFileState</linux:property>
   </linux:systemdunitproperty_object>
   <linux:systemdunitproperty_object id="obj_aidecheck-timer_unitfilestate" version="1">
-    <linux:unit>aidecheck.timer</linux:unit>
+    <linux:unit>{{{ aide_timer }}}</linux:unit>
     <linux:property>UnitFileState</linux:property>
   </linux:systemdunitproperty_object>
   <linux:systemdunitproperty_object id="obj_aidecheck-timer_activestate" version="1">
-    <linux:unit>aidecheck.timer</linux:unit>
+    <linux:unit>{{{ aide_timer }}}</linux:unit>
     <linux:property>ActiveState</linux:property>
   </linux:systemdunitproperty_object>
   <linux:systemdunitproperty_state id="ste_aide_is_enabled" version="1">
@@ -34,7 +41,7 @@
   </linux:systemdunitproperty_state>
 
   <linux:systemdunitproperty_test check="all" id="tst_aidecheck-service_enabled" version="1"
-    comment="systemd aidecheck.service enabled">
+    comment="systemd {{{ aide_service }}} enabled">
     <linux:object object_ref="obj_aidecheck-service_unitfilestate" />
     <linux:state state_ref="ste_aide_is_enabled" />
   </linux:systemdunitproperty_test>
@@ -44,7 +51,7 @@
     <linux:state state_ref="ste_aide_is_enabled" />
   </linux:systemdunitproperty_test>
   <linux:systemdunitproperty_test check="all" id="tst_aidecheck-timer_active" version="1"
-    comment="systemd aidecheck.timer active">
+    comment="systemd {{{ aide_timer }}} active">
     <linux:object object_ref="obj_aidecheck-timer_activestate" />
     <linux:state state_ref="ste_aide_is_active" />
   </linux:systemdunitproperty_test>

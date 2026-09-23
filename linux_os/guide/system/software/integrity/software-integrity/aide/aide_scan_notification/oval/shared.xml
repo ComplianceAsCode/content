@@ -1,3 +1,6 @@
+{{% set aide_service = 'aide.service' %}}
+{{% set aide_notify_service = 'aidecheck-notify.service' %}}
+
 <def-group>
   <definition class="compliance" id="aide_scan_notification" version="1">
     {{{ oval_metadata("AIDE should notify appropriate personnel of the details
@@ -11,7 +14,7 @@
           test_ref="test_aide_var_cron_notification" />
         <criterion comment="notify personnel when aide completes in cron.(d|daily|weekly|monthly)"
           test_ref="test_aide_crontabs_notification" />
-{{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
+{{% if product in ["sle15", "sle16", "slmicro5", "slmicro6"] %}}
         <criteria operator="AND">
           <criterion comment="notification started after check"
             test_ref="test_aidecheck_systemd_scan_before_notification"/>
@@ -19,6 +22,10 @@
             test_ref="test_aidecheck_systemd_scan_wants_notification"/>
           <criterion comment="systemd aidecheck scan notification test"
             test_ref="test_aidecheck_systemd_scan_report"/>
+          {{% if product in [ "sle16" ] %}}
+          <criterion comment="report url set to /var/log/aide-report.log"
+            test_ref="test_report_url_in_aide_conf"/>
+          {{% endif %}}
         </criteria>
 {{% endif %}}
       </criteria>
@@ -52,7 +59,7 @@
     <ind:pattern operation="pattern match">^.*{{{ aide_bin_path }}}[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
+{{% if product in ["sle15", "sle16", "slmicro5", "slmicro6"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     id="test_aidecheck_systemd_scan_report" version="1"
     comment="report results of aide check, when started by systemd">
@@ -60,8 +67,13 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_aidecheck_systemd_report" version="1"
     comment="run aide check with output to a report file">
-    <ind:filepath>/etc/systemd/system/aidecheck.service</ind:filepath>
+    {{% if product in ["sle16"] %}}
+    <ind:filepath>/usr/lib/systemd/system/{{{ aide_service }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^.*ExecStart\=.*/usr/bin/aide[\s]*\-\-check.*$</ind:pattern>
+    {{% else %}}
+    <ind:filepath>/etc/systemd/system/{{{ aide_service }}}</ind:filepath>
     <ind:pattern operation="pattern match">^.*ExecStart\=.*/usr/bin/aide[\s]*\-\-check.*\-r\s*file:\/w*.*$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -71,8 +83,12 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_aidecheck_systemd_before_notification" version="1"
     comment="run aide check before notification">
-    <ind:filepath>/etc/systemd/system/aidecheck.service</ind:filepath>
-    <ind:pattern operation="pattern match">^.*Before\=.*aidecheck-notify.service.*$</ind:pattern>
+    {{% if product in ["sle16"] %}}
+    <ind:filepath>/usr/lib/systemd/system/{{{ aide_service }}}</ind:filepath>
+    {{% else %}}
+    <ind:filepath>/etc/systemd/system/{{{ aide_service }}}</ind:filepath>
+    {{% endif %}}
+    <ind:pattern operation="pattern match">^.*Before\=.*{{{ aide_notify_service }}}.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="any_exist"
@@ -82,9 +98,26 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_aidecheck_for_notification_enabled" version="1"
     comment="list of dependencies should include aidecheck.service">
-    <ind:filepath>/etc/systemd/system/aidecheck.service</ind:filepath>
-    <ind:pattern operation="pattern match">^.*Wants\=.*aidecheck-notify.service.*$</ind:pattern>
+    {{% if product in ["sle16"] %}}
+    <ind:filepath>/usr/lib/systemd/system/{{{ aide_service }}}</ind:filepath>
+    {{% else %}}
+    <ind:filepath>/etc/systemd/system/{{{ aide_service }}}</ind:filepath>
+    {{% endif %}}
+    <ind:pattern operation="pattern match">^.*Wants\=.*{{{ aide_notify_service }}}.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="check for client report_url = file:/var/log/aide-report.log in /etc/aide.conf"
+  id="test_report_url_in_aide_conf" version="1">
+    <ind:object object_ref="obj_report_url_in_aide_conf" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_report_url_in_aide_conf" version="1">
+    <ind:filepath>/etc/aide.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*report_url[\s]*=[\s]*file:/var/log/aide-report.log</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 {{% endif %}}
 </def-group>

@@ -4,14 +4,37 @@
 # complexity = low
 # disruption = low
 
-- name: "{{{ rule_title }}} - Define AIDE Periodic Check Service"
-  ansible.builtin.blockinfile:
-      create: yes
-      dest: /etc/systemd/system/aidecheck.service
+{{% if 'suse' in families %}}
+{{% set aide_service = 'aide.service' %}}
+{{% set aide_timer = 'aide.timer' %}}
+{{% else %}}
+{{% set aide_service = 'aidecheck.service' %}}
+{{% set aide_timer = 'aidecheck.timer' %}}
+{{% endif %}}
+
+{{% if product in ["sle16"] %}}
+- name: "{{{ rule_title }}} - Make sure AIDE Check Service is including /etc/aide.conf"
+  ansible.builtin.copy:
+      dest: /etc/aide_service.conf
       owner: root
       group: root
-      mode: '0644'
-      block: |
+      mode: 0600
+      content: |-
+        @@include /etc/aide.conf
+
+- name: "{{{ rule_title }}} - Make sure AIDE Check Service is in enabled state"
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/{{{ aide_service }}}
+    path: /etc/systemd/system/multi-user.target.wants/{{{ aide_service }}}
+    state: link
+{{% else %}}
+- name: "{{{ rule_title }}} - Define AIDE Periodic Check Service {{{ aide_service }}}"
+  ansible.builtin.copy:
+      dest: /etc/systemd/system/{{{ aide_service }}}
+      owner: root
+      group: root
+      mode: 0644
+      content: |-
         [Unit]
         Description=Aide Check
         [Service]
@@ -20,35 +43,35 @@
         [Install]
         WantedBy=multi-user.target
 
-- name: "{{{ rule_title }}} - Define AIDE Periodic Check Service Timer"
-  ansible.builtin.blockinfile:
-      create: yes
-      dest: /etc/systemd/system/aidecheck.timer
+- name: "{{{ rule_title }}} - Define AIDE Periodic Check Service Timer {{{ aide_timer }}}"
+  ansible.builtin.copy:
+      dest: /etc/systemd/system/{{{ aide_timer }}}
       owner: root
       group: root
-      mode: '0644'
-      block: |
+      mode: 0644
+      content: |-
         [Unit]
         Description=Aide check every day at 5AM
         [Timer]
         OnCalendar=*-*-* 05:00:00
-        Unit=aidecheck.service
+        Unit={{{ aide_service }}}
         [Install]
         WantedBy=multi-user.target
 
-- name: "{{{ rule_title }}} - Ensure AIDE Service is Enabled"
+{{% endif %}}
+- name: "{{{ rule_title }}} - Ensure AIDE Service {{{ aide_service }}} is enabled"
   ansible.builtin.systemd:
-    name: aidecheck.service
+    name: {{{ aide_service }}}
     enabled: true
     daemon_reload: true
     masked: false
   when: not ansible_check_mode
 
-- name: "{{{ rule_title }}} - Ensure AIDE Service Timer is Enabled"
+- name: "{{{ rule_title }}} - Ensure AIDE Service Timer {{{ aide_timer }}} is enabled"
   ansible.builtin.systemd:
-    name: aidecheck.timer
-    state: started
+    name: {{{ aide_timer }}}
     enabled: true
     daemon_reload: true
+    state: started
     masked: false
   when: not ansible_check_mode

@@ -5,47 +5,102 @@
 # disruption = low
 - (xccdf-var var_aide_scan_notification_email)
 
-- name: "{{{ rule_title }}} - Ensure AIDE is installed"
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - aide
+{{% set aide_service = 'aide.service' %}}
+{{% set aide_notify_service = 'aidecheck-notify.service' %}}
+
+{{% if product in ["sle16"] %}}
+- name: "{{{ rule_title }}} - Ensure report_url is set to file:/var/log/aide-report.log in /etc/aide.conf"
+  ansible.builtin.lineinfile:
+    path: /etc/aide.conf
+    line: "report_url=file:/var/log/aide-report.log"
+  when:
+    - '"packages" in ansible_facts'
+    - '"aide" in ansible_facts["packages"]'
+{{% endif %}}
+
+{{% if 'suse' in families and product != 'sle12' %}}
+{{% if product in ["sle16"] %}}
+{{% set aide_service_unit = "/usr/lib/systemd/system/" ~ aide_service %}}
+{{% set aide_notify_unit = "/usr/lib/systemd/system/" ~ aide_notify_service %}}
+{{% else %}}
+{{% set aide_service_unit = "/etc/systemd/system/" ~ aide_service %}}
+{{% set aide_notify_unit = "/etc/systemd/system/" ~ aide_notify_service %}}
+{{% endif %}}
+- name: "{{{ rule_title }}} - Gather Service facts"
+  ansible.builtin.service_facts:
+
+- name: "{{{ rule_title }}} - Add Before={{{ aide_notify_service }}} in Unit section on AIDE Check Service {{{ aide_service }}}"
+  community.general.ini_file:
+    dest: {{{ aide_service_unit }}}
+    section: Unit
+    option: Before
+    value: "{{{ aide_notify_service }}}"
+    no_extra_spaces: true
+  when:
+    - '"services" in ansible_facts'
+    - '"{{{ aide_service }}}" in ansible_facts["services"]'
+
+- name: "{{{ rule_title }}} - Add Wants {{{ aide_notify_service }}} in Unit section on AIDE Check Service {{{ aide_service }}}"
+  community.general.ini_file:
+    dest: {{{ aide_service_unit }}}
+    section: Unit
+    option: Wants
+    value: "{{{ aide_notify_service }}}"
+    no_extra_spaces: true
+  when:
+    - '"services" in ansible_facts'
+    - '"{{{ aide_service }}}" in ansible_facts["services"]'
 
 {{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
-- name: "{{{ rule_title }}} - Check Service"
-  ansible.builtin.blockinfile:
-      create: yes
-      dest: /etc/systemd/system/aidecheck.service
+- name: "{{{ rule_title }}} - Add report url in AIDE Check Service {{{ aide_service }}}"
+  community.general.ini_file:
+    dest: {{{ aide_service_unit }}}
+    section: Service
+    option: ExecStart
+    value: {{{ aide_bin_path }}} --check -r file:/var/log/aide-report.log
+    no_extra_spaces: true
+  when:
+    - '"services" in ansible_facts'
+    - '"{{{ aide_service }}}" in ansible_facts["services"]'
+{{% endif %}}
+
+- name: "{{{ rule_title }}} - Create AIDE Check Service {{{ aide_service }}}"
+  ansible.builtin.copy:
+      dest: {{{ aide_service_unit }}}
       owner: root
       group: root
-      mode: '0644'
-      block: |
+      mode: 0644
+      content: |-
         [Unit]
         Description=Aide Check
-        Before=aidecheck-notify.service
-        Wants=aidecheck-notify.service
+        Before={{{ aide_notify_service }}}
+        Wants={{{ aide_notify_service }}}
         [Service]
         Type=forking
-        ExecStart={{{ aide_bin_path }}} --check -r file:/tmp/aide-report.log
+        ExecStart={{{ aide_bin_path }}} --check -r file:/var/log/aide-report.log
         [Install]
         WantedBy=multi-user.target
+  when:
+    - '"services" in ansible_facts'
+    - '"{{{ aide_service }}}" not in ansible_facts["services"]'
 
-- name: "{{{ rule_title }}} - Notify Service"
-  ansible.builtin.blockinfile:
-      create: yes
-      dest: /etc/systemd/system/aidecheck-notify.service
+- name: "{{{ rule_title }}} - AIDE Notify Service {{{ aide_notify_service }}} "
+  ansible.builtin.copy:
+      dest: {{{ aide_notify_unit }}}
       owner: root
       group: root
-      mode: '0644'
-      block: |
+      mode: 0644
+      content: |-
         [Unit]
         Description=Status email for AIDE check result
-        After=aidecheck.service
+        After={{{ aide_service }}}
         [Service]
         Type=forking
-        ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  {{ var_aide_scan_notification_email }}'
+        ExecStart=/bin/sh -c 'cat /var/log/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  {{ var_aide_scan_notification_email }}'
 
+- name: "{{{ rule_title }}} - systemd reload config"
+  ansible.builtin.systemd:
+    daemon_reload: true
 {{% else %}}
 - name: "{{{ rule_title }}} - Setup Cron Tab"
   ansible.builtin.cron:
