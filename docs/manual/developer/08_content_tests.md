@@ -104,3 +104,31 @@ You should replace `0.1.76` with the latest release of the project.
 
 The test `test_stig_rules_in_srg_gpos.py` ensures that all rules selected in RHEL 10 STIG profile are also selected in SRG GPOS control files.
 The test prevents data inconsistencies and verifies that the STIG profile remains based on SRG GPOS controls.
+
+## Packit (on Github)
+
+On Github, this project uses [Packit](https://packit.dev/) to build content as a scratch `scap-security-guide` RPM and run additional tests, all configured via `.packit.yaml` in the root of the repository.
+
+Some of these tests execute [Contest](https://github.com/RHSecurityCompliance/contest), an extensive test suite for RHEL / CentOS Stream. Simple test sets are run automatically on a Pull Request push, but bigger runs require manual triggering.
+
+To trigger a full set of Contest tests, write a comment that **begins with**:
+
+```
+/packit test -i contest-all
+```
+
+You can also parametrize it further with:
+
+- `PLAN` to override the default `/plans/daily` (tmt plan in Contest)
+- `TESTS` as comma-separated test name fmf-style expressions
+- `RERUNS` to override the default 1 automatic rerun of every failed test
+- `CONTEST_PR` to test a specific Contest PR instead of the `main` branch
+- `NO_EXCLUDES=1` to run even tests normally incompatible with containers or unsuitable for PR CI
+
+For example, to test all CIS profile variants (incl. non-daily):
+
+```
+/packit test -i contest-all --env RERUNS=0 --env PLAN=/plans/weekly --env TESTS=/cis$,/cis_server,/cis_workstation
+```
+
+Please **use this test sparingly** as it uses a LOT of resources and will take several hours to run, ideally run it only on a final version of a Pull Request, not on every small change. Limiting by `TESTS` helps only slightly - the bulk of the runtime is spent setting up the testing environment (a constant cost).
