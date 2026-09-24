@@ -50,7 +50,6 @@ _UTILS_DIR = os.path.dirname(os.path.abspath(__file__))
 if _UTILS_DIR not in sys.path:
     sys.path.insert(0, _UTILS_DIR)
 from ansible_playbook_to_role import PRODUCT_ALLOWLIST, PROFILE_DENYLIST
-from ssg.constants import min_ansible_version
 
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -72,16 +71,20 @@ SSG_VERSION = _get_ssg_version()
 
 COLLECTION_NAMESPACE = "redhatofficial"
 COLLECTION_NAME = "rhel_hardening_roles"
-COLLECTION_AUTHORS = [
-    "ComplianceAsCode development team"
-]
+COLLECTION_AUTHOR = "ComplianceAsCode development team"
+COLLECTION_AUTHORS = [COLLECTION_AUTHOR]
 COLLECTION_DESCRIPTION = (
     "Ansible roles for RHEL system hardening, generated from ComplianceAsCode content."
 )
 COLLECTION_LICENSE = ["BSD-3-Clause"]
+COLLECTION_LICENSE_NAME = COLLECTION_LICENSE[0]
 COLLECTION_REPOSITORY = "https://github.com/ComplianceAsCode/content"
 COLLECTION_HOMEPAGE = "https://github.com/ComplianceAsCode/content"
+COLLECTION_DOCUMENTATION = None
 COLLECTION_ISSUES = "https://github.com/ComplianceAsCode/content/issues"
+COLLECTION_INSTALL_SERVER = "https://galaxy.ansible.com/"
+COLLECTION_MIN_ANSIBLE_VERSION = "2.16"
+COLLECTION_MIN_PYTHON_VERSION = "3.12"
 COLLECTION_TAGS = [
     "security", "compliance", "hardening", "rhel", "scap", "openscap", "complianceascode"
 ]
@@ -160,13 +163,53 @@ generated from [ComplianceAsCode/content](https://github.com/ComplianceAsCode/co
     - {namespace}.{collection_name}.rhel9_stig
 ```
 
+## Requirements
+
+- `ansible-core >= {min_ansible_version}`
+- `Python >= {min_python_version}`
+
+## Installation
+
+Install with:
+
+```console
+ansible-galaxy collection install \
+  --server {installation_server} \
+  {namespace}.{collection_name}
+```
+
+For an offline installation, install the generated
+`{namespace}-{collection_name}-{version}.tar.gz` artifact.
+
+## Changelog
+
+See `CHANGELOG.md` for release notes.
+
+## Support
+
+Report issues at {issues}.
+
 ## License
 
-BSD-3-Clause
+{license_name}
 
 ## Author
 
-ComplianceAsCode development team
+{author}
+"""
+
+CHANGELOG_TEMPLATE = """\
+# Changelog
+
+## {version}
+
+- Generated collection containing hardening roles for supported Red Hat Enterprise Linux releases.
+"""
+
+CHANGELOGS_README = """\
+# Changelogs
+
+See `../CHANGELOG.md` for the collection release notes.
 """
 
 
@@ -258,7 +301,7 @@ def parse_args():
     )
     parser.add_argument(
         "--documentation",
-        default=None,
+        default=COLLECTION_DOCUMENTATION,
         metavar="URL",
         help="Documentation URL written into galaxy.yml."
     )
@@ -273,6 +316,23 @@ def parse_args():
         default=COLLECTION_ISSUES,
         metavar="URL",
         help=f"Issue tracker URL. Defaults to '{COLLECTION_ISSUES}'."
+    )
+    parser.add_argument(
+        "--author",
+        default=COLLECTION_AUTHOR,
+        help=f"Collection author written into galaxy.yml and README.md. Defaults to '{COLLECTION_AUTHOR}'."
+    )
+    parser.add_argument(
+        "--license",
+        dest="license_name",
+        default=COLLECTION_LICENSE_NAME,
+        help=f"Collection license written into galaxy.yml and README.md. Defaults to '{COLLECTION_LICENSE_NAME}'."
+    )
+    parser.add_argument(
+        "--installation-server",
+        default=COLLECTION_INSTALL_SERVER,
+        metavar="URL",
+        help=f"Collection installation server written into README.md. Defaults to '{COLLECTION_INSTALL_SERVER}'."
     )
     return parser.parse_args()
 
@@ -349,7 +409,7 @@ def create_collection_dirs(output_dir, namespace, collection_name):
 
 def generate_runtime_yml(collection_dir):
     """Write meta/runtime.yml declaring the minimum required Ansible version."""
-    runtime_data = {"requires_ansible": ">=%s" % min_ansible_version}
+    runtime_data = {"requires_ansible": ">=%s" % COLLECTION_MIN_ANSIBLE_VERSION}
     runtime_yml_path = os.path.join(collection_dir, "meta", "runtime.yml")
     with open(runtime_yml_path, "w", encoding="utf-8") as f:
         yaml.dump(runtime_data, f, default_flow_style=False, allow_unicode=True)
@@ -358,8 +418,9 @@ def generate_runtime_yml(collection_dir):
 
 def generate_galaxy_yml(
     collection_dir, namespace, collection_name, version,
-    description=COLLECTION_DESCRIPTION, documentation=None,
-    homepage=COLLECTION_HOMEPAGE, issues=COLLECTION_ISSUES,
+    description=COLLECTION_DESCRIPTION, documentation=COLLECTION_DOCUMENTATION,
+    homepage=COLLECTION_HOMEPAGE, issues=COLLECTION_ISSUES, authors=COLLECTION_AUTHORS,
+    licenses=COLLECTION_LICENSE,
 ):
     """Write the galaxy.yml manifest for the collection."""
     galaxy_data = {
@@ -367,9 +428,9 @@ def generate_galaxy_yml(
         "name": collection_name,
         "version": version,
         "readme": "README.md",
-        "authors": COLLECTION_AUTHORS,
+        "authors": authors,
         "description": description,
-        "license": COLLECTION_LICENSE,
+        "license": licenses,
         "tags": COLLECTION_TAGS,
         "repository": COLLECTION_REPOSITORY,
         "homepage": homepage,
@@ -384,18 +445,54 @@ def generate_galaxy_yml(
     print("Generated galaxy.yml")
 
 
-def generate_readme(collection_dir, namespace, collection_name, roles):
+def generate_readme(
+    collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+    license_name=COLLECTION_LICENSE_NAME,
+):
     """Write the collection README.md."""
     roles_list = "\n".join(f"- `{namespace}.{collection_name}.{r}`" for r in sorted(roles))
     content = README_TEMPLATE.format(
         namespace=namespace,
         collection_name=collection_name,
+        version=version,
         roles_list=roles_list,
+        issues=issues,
+        installation_server=installation_server,
+        min_ansible_version=COLLECTION_MIN_ANSIBLE_VERSION,
+        min_python_version=COLLECTION_MIN_PYTHON_VERSION,
+        author=author,
+        license_name=license_name,
     )
     readme_path = os.path.join(collection_dir, "README.md")
     with open(readme_path, "w", encoding="utf-8") as f:
         f.write(content)
     print("Generated README.md")
+
+
+def generate_collection_docs(
+    collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+    license_name=COLLECTION_LICENSE_NAME,
+):
+    """Write collection documentation and the license file."""
+    generate_readme(
+        collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+        license_name,
+    )
+
+    changelog_path = os.path.join(collection_dir, "CHANGELOG.md")
+    with open(changelog_path, "w", encoding="utf-8") as f:
+        f.write(CHANGELOG_TEMPLATE.format(version=version))
+    print("Generated CHANGELOG.md")
+
+    changelogs_dir = os.path.join(collection_dir, "changelogs")
+    os.makedirs(changelogs_dir, exist_ok=True)
+    changelogs_readme_path = os.path.join(changelogs_dir, "README.md")
+    with open(changelogs_readme_path, "w", encoding="utf-8") as f:
+        f.write(CHANGELOGS_README)
+    print("Generated changelogs/README.md")
+
+    shutil.copy2(os.path.join(SSG_ROOT, "LICENSE"), collection_dir)
+    print("Copied LICENSE")
 
 
 def _remove_bundled_collection_deps(meta_path, bundled_collections):
@@ -701,9 +798,21 @@ def main():
             documentation=args.documentation,
             homepage=args.homepage,
             issues=args.issues,
+            authors=[args.author],
+            licenses=[args.license_name],
         )
         generate_runtime_yml(collection_dir)
-        generate_readme(collection_dir, args.namespace, args.collection, roles)
+        generate_collection_docs(
+            collection_dir,
+            args.namespace,
+            args.collection,
+            args.version,
+            roles,
+            args.issues,
+            args.installation_server,
+            args.author,
+            args.license_name,
+        )
 
     artifact_path = None
     if args.build or args.galaxy_token:

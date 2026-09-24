@@ -452,7 +452,27 @@ the collection is published as a tarball uploaded directly to Ansible Galaxy.
 This will:
 1. Download and vendor modules from `community.general` and `ansible.posix`.
 2. Bundle all roles for the allowed products into the `redhatofficial.rhel_hardening_roles` collection.
-3. Build the collection tarball in the `./ansible-collections-tarball` folder.
+3. Generate the collection README, changelog, license, and Galaxy metadata.
+4. Build the collection tarball in the `./ansible-collections-tarball` folder.
+
+The default metadata and installation instructions target public Ansible Galaxy. For an
+Automation Hub collection, override the collection-specific metadata and installation server:
+
+```bash
+python3 utils/ansible_roles_to_collection.py \
+    --roles-dir $OUTPUT_DIR/rhel8/ansible_roles \
+    --roles-dir $OUTPUT_DIR/rhel9/ansible_roles \
+    --roles-dir $OUTPUT_DIR/rhel10/ansible_roles \
+    --output-dir $OUTPUT_DIR/ansible-collections-tarball \
+     --namespace redhat \
+     --author "Red Hat" \
+     --license BSD-3-Clause \
+     --description "Ansible collection providing hardening roles for Red Hat Enterprise Linux." \
+    --documentation https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/security_hardening/scanning-the-system-for-configuration-compliance#remediating-the-system-to-align-with-a-specific-baseline-using-an-ssg-ansible-playbook \
+    --issues "https://redhat.atlassian.net/secure/CreateIssueDetails!init.jspa?pid=10390&issuetype=10016&components=18915" \
+    --installation-server https://cloud.redhat.com/api/automation-hub/ \
+    --build
+```
 
 > **_NOTE:_** The collection version is read automatically from `CMakeLists.txt` at the
 > checked-out tag, so it will match the release version without needing to be specified manually.
