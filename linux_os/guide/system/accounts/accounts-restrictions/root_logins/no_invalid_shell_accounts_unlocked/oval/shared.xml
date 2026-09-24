@@ -51,7 +51,7 @@
   <!-- OVAL object to collect user names of local interactive users -->
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_local_interactive_users" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-    <ind:pattern operation="pattern match">^([^:]*):[^:]*:\d+:(?:[^:]*:){3}(?!(\/usr)?(\/sbin\/nologin|\/bin\/false))[^:]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^([^:]+):[^:]*:\d+:(?:[^:]*:){3}(?!(?:/usr)?/(?:sbin/nologin|bin/false)$)[^:\n\r]+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_{{{ rule_id }}}_users_ignored</filter>
     <filter action="exclude">state_{{{ rule_id }}}_locked_accounts</filter>
