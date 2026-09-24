@@ -1,6 +1,5 @@
-{{% if "sle12" in product or "debian" in product or "ubuntu" in product %}}
+{{% if "debian" in product or "ubuntu" in product %}}
 {{%- set accounts_password_pam_file = '/etc/pam.d/common-password' -%}}
-{{% endif %}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
@@ -56,3 +55,4 @@
   </ind:textfilecontent54_object>
 
 </def-group>
+{{% endif %}}
