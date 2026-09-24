@@ -1,4 +1,3 @@
-
 title: Ensure that Audit Log Webhook Is Configured
 
 {{% set default_jqfilter = '.items[].spec' %}}
@@ -43,6 +42,7 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: 'true'
+    check_existence: "at_least_one_exists"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: ".auditWebhook"
     entity_check: "at least one"
