@@ -1,44 +1,49 @@
 documentation_complete: true
 
 
-title: "Verify that 'use_mappers' is set to 'pwent' in PAM"
+title: 'Ensure PAM Enforces Password Requirements - Enforce for Local Accounts Only'
 
 description: |-
-    The operating system must map the authenticated identity to the user or
-    group account for PKI-based authentication.
-
-    Verify that <tt>use_mappers</tt> is set to <tt>pwent</tt> in
-    <tt>/etc/pam_pkcs11/pam_pkcs11.conf</tt> file with the following command:
-
-    <pre>$ grep ^use_mappers /etc/pam_pkcs11/pam_pkcs11.conf
-
-    use_mappers = pwent</pre>
+    The pam_pwquality module's <tt>local_users_only</tt> parameter controls requirements for
+    enforcing password complexity by pam_pwquality only for local user accounts and ignoring
+    centralized user account management password complexity configurations. Enable the <tt>local_users_only</tt>
+    setting in <tt>{{{ pwquality_path }}}</tt> to require password complexity enforcement
+    for only local user accounts.
 
 rationale: |-
-    Without mapping the certificate used to authenticate to the user account,
-    the ability to determine the identity of the individual user or group will
-    not be available for forensic analysis.
+    The operating system must provide automated mechanisms for supporting account management
+    functions. Enterprise environments make application account management challenging and
+    complex. A manual process for account management functions adds the risk of a potential
+    oversight or other error.
 
-severity: low
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83364-0
 
 references:
-    srg: SRG-OS-000068-GPOS-00036
+    nist: AC-2(1)
+    srg: SRG-OS-000001-GPOS-00001
 
-ocil_clause: 'use_mappers is not uncommented or configured correctly'
+ocil_clause: 'local_users_only is not uncommented or configured correctly'
 
 ocil: |-
-    Verify that <tt>use_mappers</tt> is set to <tt>pwent</tt> in
-    <tt>/etc/pam_pkcs11/pam_pkcs11.conf</tt> file with the following command:
+    To verify if password complexities are only enforce on local users, run the following command:
+    <pre>$ grep local_users_only {{{ pwquality_path }}}</pre>
+    The output should return <tt>local_users_only</tt> uncommented.
 
-    <pre>$ grep ^use_mappers /etc/pam_pkcs11/pam_pkcs11.conf
+platform: package[libpwquality]
 
-    use_mappers = pwent</pre>
+warnings:
+    - management: |-
+        Using this rule bypasses pam_faillock's functionality and should be used in cases
+        where centralized management such as LDAP or Active Directory is in use.
 
 template:
-    name: lineinfile
+    name: "lineinfile"
     vars:
-        text: "use_mappers = pwent"
-        regex: '^[\s]*use_mappers[\s]*=[\s]*pwent\b'
-        path: /etc/pam_pkcs11/pam_pkcs11.conf
-        oval_extended_definitions:
-            smartcard_configure_cert_checking
+        text: "local_users_only"
+        regex: '^[\s]*local_users_only\b'
+        path: "{{{ pwquality_path }}}"
+        oval_extend_definitions:
+            - accounts_password_pam_pwquality
