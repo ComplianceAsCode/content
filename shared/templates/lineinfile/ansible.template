@@ -3,6 +3,4 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-
-{{{ ansible_lineinfile(msg='', path=PATH, new_line=TEXT, create='yes', state='present', insert_after='', insert_before='', rule_title=rule_title) -}}}
-
+{{{ ansible_lineinfile(msg='', path=PATH, new_line=TEXT, regex=REGEX, create='yes', state='present', insert_after='', insert_before='', rule_title=rule_title) -}}}
