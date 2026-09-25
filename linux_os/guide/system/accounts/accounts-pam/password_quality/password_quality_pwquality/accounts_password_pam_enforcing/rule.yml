@@ -1,70 +1,62 @@
 documentation_complete: true
 
 
-
-
-title: 'Ensure PAM Enforces Password Requirements - Enforcing'
-
+title: 'Ensure PAM Enforces Password Requirements - Enforce for root User'
 
 description: |-
-    Verify that the operating system uses "pwquality" to enforce the
-    password complexity rules.
-
-
-    Verify the pwquality module is being enforced by operating system by
-    running the following command:
-    <pre>
-    $ grep -i enforcing {{{ pwquality_path }}}
-    enforcing = 1
-    </pre>
-
-
-    If the value of "enforcing" is not "1" or the line is commented out,
-    this is a finding.
-
+    The pam_pwquality module's <tt>enforce_for_root</tt> parameter controls requirements for
+    enforcing password complexity for the root user. Enable the <tt>enforce_for_root</tt>
+    setting in <tt>{{{ pwquality_path }}}</tt> to require the <tt>root</tt> user
+    to use complex passwords.
 
 rationale: |-
-    Use of a complex password helps to increase the time and resources
-    required to compromise the password. Password complexity, or strength,
-    is a measure of the effectiveness of a password in resisting attempts at
-    guessing and brute-force attacks. Using enforcing=1 ensures "pwquality"
-    enforces complex password construction configuration and has the ability
-    to limit brute-force attacks on the system.
+    Use of a complex password helps to increase the time and resources required to compromise
+    the password. Password complexity, or strength, is a measure of the effectiveness of a
+    password in resisting attempts at guessing and brute-force attacks.
 
+    Password complexity is one factor of several that determines how long it takes to crack a
+    password. The more complex the password, the greater the number of possible combinations
+    that need to be tested before the password is compromised.
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-83377-2
+    cce@rhel9: CCE-86356-3
+    cce@rhel10: CCE-90134-8
 
 references:
-    srg: SRG-OS-000480-GPOS-00225
+    nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
+    srg: SRG-OS-000072-GPOS-00040,SRG-OS-000071-GPOS-00039,SRG-OS-000070-GPOS-00038,SRG-OS-000266-GPOS-00101,SRG-OS-000078-GPOS-00046,SRG-OS-000480-GPOS-00225,SRG-OS-000069-GPOS-00037
 
-
-ocil_clause: 'enforcing is not uncommented or configured correctly'
-
+ocil_clause: '"enforce_for_root" is commented or missing'
 
 ocil: |-
-    To verify that enforcing is correctly applied, run the following command:
-    <pre>$ grep -i enforcing {{{ pwquality_path }}}</pre>
-    The output should return <tt>enforcing = 1</tt> uncommented.
+    Verify that {{{ full_name }}} enforces password complexity rules for the root account.
 
+    Check if root user is required to use complex passwords with the following command:
+
+    <pre>$ grep enforce_for_root {{{ pwquality_path }}} /etc/security/pwquality.conf.d/*.conf
+
+    {{{ pwquality_path }}}:enforce_for_root</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce password complexity on the root account.
+
+    Add or update the following line in {{{ pwquality_path }}}:
+
+    enforce_for_root
+
+srg_requirement: |-
+    {{{ full_name }}} must enforce password complexity rules for the root account.
 
 platform: package[libpwquality]
 
-
-{{% if product == "ubuntu2404" %}}
-template:
-    name: accounts_password
-    vars:
-        variable: enforcing
-        operation: equals
-{{% else %}}
 template:
     name: "lineinfile"
     vars:
-        text: "enforcing = 1"
-        regex: '^[\s]*enforcing[\s]*=[\s]*1\b'
+        text: "enforce_for_root"
+        regex: '^[\s]*enforce_for_root\b'
         path: "{{{ pwquality_path }}}"
-    oval_extend_definitions:
-        - accounts_password_pam_pwquality
-{{% endif %}}
-
+    backends:
+        oval: off
