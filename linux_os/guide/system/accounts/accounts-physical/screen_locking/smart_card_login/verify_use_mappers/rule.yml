@@ -1,28 +1,44 @@
 documentation_complete: true
 
-title: Ensure Password History Is Enforced for the Root User
+
+title: "Verify that 'use_mappers' is set to 'pwent' in PAM"
 
 description: |-
-    The <tt>enforce_for_root</tt> option enforces password history for the root user.
-    Enable the <tt>enforce_for_root</tt> setting in <tt>/etc/security/pwhistory.conf</tt>
-    to require the <tt>root</tt> user to use a password that has not been used recently.
+    The operating system must map the authenticated identity to the user or
+    group account for PKI-based authentication.
+
+    Verify that <tt>use_mappers</tt> is set to <tt>pwent</tt> in
+    <tt>/etc/pam_pkcs11/pam_pkcs11.conf</tt> file with the following command:
+
+    <pre>$ grep ^use_mappers /etc/pam_pkcs11/pam_pkcs11.conf
+
+    use_mappers = pwent</pre>
 
 rationale: |-
-    Requiring users not to reuse their passwords make it less likely that an attacker will be
-    able to guess the password or use a compromised password.
+    Without mapping the certificate used to authenticate to the user account,
+    the ability to determine the identity of the individual user or group will
+    not be available for forensic analysis.
 
-identifiers:
-    cce@rhel8: CCE-86734-1
-    cce@rhel9: CCE-86742-4
-    cce@rhel10: CCE-87591-4
+severity: low
 
-severity: medium
+references:
+    srg: SRG-OS-000068-GPOS-00036
 
-platform: package[pam]
+ocil_clause: 'use_mappers is not uncommented or configured correctly'
+
+ocil: |-
+    Verify that <tt>use_mappers</tt> is set to <tt>pwent</tt> in
+    <tt>/etc/pam_pkcs11/pam_pkcs11.conf</tt> file with the following command:
+
+    <pre>$ grep ^use_mappers /etc/pam_pkcs11/pam_pkcs11.conf
+
+    use_mappers = pwent</pre>
 
 template:
     name: lineinfile
     vars:
-        text: "enforce_for_root"
-        regex: '^[\s]*enforce_for_root\b'
-        path: "/etc/security/pwhistory.conf"
+        text: "use_mappers = pwent"
+        regex: '^[\s]*use_mappers[\s]*=[\s]*pwent\b'
+        path: /etc/pam_pkcs11/pam_pkcs11.conf
+        oval_extended_definitions:
+            smartcard_configure_cert_checking
