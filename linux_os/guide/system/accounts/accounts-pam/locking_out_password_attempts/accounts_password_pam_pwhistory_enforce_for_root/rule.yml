@@ -1,49 +1,28 @@
 documentation_complete: true
 
-
-title: 'Ensure PAM Enforces Password Requirements - Enforce for Local Accounts Only'
+title: Ensure Password History Is Enforced for the Root User
 
 description: |-
-    The pam_pwquality module's <tt>local_users_only</tt> parameter controls requirements for
-    enforcing password complexity by pam_pwquality only for local user accounts and ignoring
-    centralized user account management password complexity configurations. Enable the <tt>local_users_only</tt>
-    setting in <tt>{{{ pwquality_path }}}</tt> to require password complexity enforcement
-    for only local user accounts.
+    The <tt>enforce_for_root</tt> option enforces password history for the root user.
+    Enable the <tt>enforce_for_root</tt> setting in <tt>/etc/security/pwhistory.conf</tt>
+    to require the <tt>root</tt> user to use a password that has not been used recently.
 
 rationale: |-
-    The operating system must provide automated mechanisms for supporting account management
-    functions. Enterprise environments make application account management challenging and
-    complex. A manual process for account management functions adds the risk of a potential
-    oversight or other error.
+    Requiring users not to reuse their passwords make it less likely that an attacker will be
+    able to guess the password or use a compromised password.
+
+identifiers:
+    cce@rhel8: CCE-86734-1
+    cce@rhel9: CCE-86742-4
+    cce@rhel10: CCE-87591-4
 
 severity: medium
 
-identifiers:
-    cce@rhel8: CCE-83364-0
-
-references:
-    nist: AC-2(1)
-    srg: SRG-OS-000001-GPOS-00001
-
-ocil_clause: 'local_users_only is not uncommented or configured correctly'
-
-ocil: |-
-    To verify if password complexities are only enforce on local users, run the following command:
-    <pre>$ grep local_users_only {{{ pwquality_path }}}</pre>
-    The output should return <tt>local_users_only</tt> uncommented.
-
-platform: package[libpwquality]
-
-warnings:
-    - management: |-
-        Using this rule bypasses pam_faillock's functionality and should be used in cases
-        where centralized management such as LDAP or Active Directory is in use.
+platform: package[pam]
 
 template:
-    name: "lineinfile"
+    name: lineinfile
     vars:
-        text: "local_users_only"
-        regex: '^[\s]*local_users_only\b'
-        path: "{{{ pwquality_path }}}"
-        oval_extend_definitions:
-            - accounts_password_pam_pwquality
+        text: "enforce_for_root"
+        regex: '^[\s]*enforce_for_root\b'
+        path: "/etc/security/pwhistory.conf"
