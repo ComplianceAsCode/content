@@ -1,0 +1,34 @@
+#
+# A group of rules regarding verifying operating system security when it comes to AAA (Authentication, Authorization and Accounting)
+#
+# SLES-16 ids allocated for this group from SLES-16-16016300 till SLES-16-16016399
+#
+
+controls:
+    - id: SLES-16-16016300
+      levels:
+          - stig
+      title: SLE16 must require users to reauthenticate, when changing
+        authenticators, roles, or escalate priviliges.
+      status: automated
+      rules:
+           - sudo_require_authentication
+           - sudo_remove_nopasswd
+           - sudo_remove_no_authenticate
+
+    - id: SLES-16-16016305
+      levels:
+          - stig
+      title: SLE16 must require the invoking user's password for privilege
+        escalation when using "sudo".
+      status: automated
+      rules:
+           - sudoers_validate_passwd
+
+    - id: SLES-16-16016310
+      levels:
+          - stig
+      title: SLE16 must restrict privilege elevation to authorized personnel.
+      status: automated
+      rules:
+           - sudo_restrict_privilege_elevation_to_authorized
