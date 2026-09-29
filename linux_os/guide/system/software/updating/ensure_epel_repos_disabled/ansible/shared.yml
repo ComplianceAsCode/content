@@ -33,7 +33,7 @@
     {% else %}
     yum-config-manager --set-disabled {{ item.1 }}
     {% endif %}
-  loop: "{{ epel_repo_ids.results | subelements('stdout_lines', skip_missing=True) }}"
+  loop: "{{ epel_repo_ids.results | default([]) | subelements('stdout_lines', skip_missing=True) }}"
   when:
     - epel_repo_ids.results is defined
     - item.1 | length > 0
