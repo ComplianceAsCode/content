@@ -28,6 +28,7 @@
   ansible.builtin.file:
     path: "{{ item.1.path }}"
     mode: u-s,g-wxs,o=
+    follow: false
   loop: "{{ q('ansible.builtin.subelements',
               found_init_files.results,
               'files',
