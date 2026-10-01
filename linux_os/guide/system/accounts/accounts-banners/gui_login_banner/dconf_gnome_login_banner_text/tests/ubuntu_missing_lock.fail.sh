@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 22.04,Ubuntu 24.04
+# platform = Ubuntu 26.04
 # packages = gdm3
 # variables = dconf_login_banner_text=TestBanner,dconf_login_banner_contents=TestBanner
 
@@ -9,9 +9,8 @@ add_dconf_profiles
 
 banner="TestBanner"
 
-cat >/etc/gdm3/greeter.dconf-defaults <<EOF
-[org/gnome/login-screen]
-banner-message-text='$banner'
-EOF
+echo > "/etc/gdm3/greeter.dconf-defaults"
+
+add_dconf_setting "org/gnome/login-screen" "banner-message-text" "'$banner'" "{{{ dconf_gdm_dir }}}" "00-security-settings"
 
 dconf update

@@ -2804,12 +2804,19 @@ system-db:<DATABASE>
 If the profile exists but does not contain the above lines, the
 lines will be inserted at the beginning of the profile.
 
+On Ubuntu 26.04 the macro leaves the gdm profile alone, because gdm3
+ships it in /usr/share/dconf/profile/gdm.
+
 :param profile: name of dconf profile (e.g. user, gdm)
 :type profile: str
 :param database: name of dconf database (e.g. local, gdm)
 :type database: str
 #}}
 {{% macro bash_enable_dconf_user_profile(profile, database) -%}}
+{{%- if product == "ubuntu2604" and profile == "gdm" -%}}
+# gdm3 on Ubuntu 26.04 ships its gdm profile as /usr/share/dconf/profile/gdm.
+# A file at /etc/dconf/profile/gdm would replace it and drop the greeter defaults it loads.
+{{%- else -%}}
 
 mkdir -p /etc/dconf/profile
 chmod 0755 /etc/dconf/profile
@@ -2830,6 +2837,7 @@ chmod 0755 /etc/dconf/db/{{{ database }}}.d
 # Also define the umask to avoid `dconf update` changing permissions.
 chmod -R u=rwX,go=rX /etc/dconf/profile
 (umask 0022 && dconf update)
+{{%- endif %}}
 {{%- endmacro -%}}
 
 {{#
