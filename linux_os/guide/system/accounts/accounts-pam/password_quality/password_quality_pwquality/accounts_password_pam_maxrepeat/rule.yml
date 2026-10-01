@@ -56,7 +56,7 @@ template:
     vars:
         variable: maxrepeat
         operation: less than or equal
-{{%- if product == "ubuntu2404" %}}
+{{%- if product in ["ubuntu2404", "ubuntu2604"] %}}
         zero_comparison_operation: greater than
 {{%- endif %}}
 
