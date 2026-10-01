@@ -1,8 +1,15 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_all
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = medium
+{{% if 'debian' in product or 'ubuntu' in product or 'sle' in product or 'slmicro' in product %}}
+- name: '{{{ rule_title }}} - Ensure pam_pwhistory.so includes use_authtok'
+  ansible.builtin.replace:
+    path: "/etc/pam.d/common-password"
+    regexp: '(^\s*password\s+(requisite|required|sufficient)\s+pam_pwhistory\.so\s+.*)$'
+    replace: '\1 use_authtok'
+{{% else %}}
 {{{ ansible_check_authselect_presence(rule_title=rule_title) }}}
 
 - name: '{{{ rule_title }}} - Ensure authselect custom profile is used if authselect is present'
@@ -92,3 +99,4 @@
     - >-
       (result_pam_pwhistory_password_auth_add is defined and result_pam_pwhistory_password_auth_add.changed)
        or (result_pam_pwhistory_system_auth_add is defined and result_pam_pwhistory_system_auth_add.changed)
+{{% endif %}}

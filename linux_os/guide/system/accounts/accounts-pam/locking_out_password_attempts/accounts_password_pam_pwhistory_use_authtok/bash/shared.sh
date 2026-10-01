@@ -1,5 +1,8 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_all
 
+{{% if 'debian' in product or 'ubuntu' in product or 'sle' in product or 'slmicro' in product %}}
+{{{ bash_pam_pwhistory_parameter_value("/etc/pam.d/common-password", "use_authtok") }}}
+{{% else %}}
 {{{ bash_ensure_authselect_custom_profile() }}}
 pam_profile="$(head -1 /etc/authselect/authselect.conf)"
 if grep -Pq -- '^custom\/' <<< "$pam_profile"; then
@@ -15,3 +18,4 @@ for authselect_file in "$pam_profile_path"/password-auth "$pam_profile_path"/sys
 done
 
 authselect apply-changes
+{{% endif %}}
