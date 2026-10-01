@@ -829,10 +829,10 @@ authselect enable-feature {{{ feature }}}
 
 #}}
 {{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
-{{% if 'debian' in product or product in ['sle15', 'sle16'] %}}
+{{% if 'debian' in product or product in ['sle15', 'sle16', 'slmicro6'] %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
-    {{% if  product in ['sle15', 'sle16'] %}}
+    {{% if  product in ['sle15', 'sle16', 'slmicro6'] %}}
     # insert before pam_unix.so
     sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
     {{% else %}}
@@ -864,7 +864,7 @@ fi
 
 pam_file="/etc/pam.d/common-account"
 if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
-    {{% if  product in ['sle15', 'sle16'] %}}
+    {{% if  product in ['sle15', 'sle16', 'slmicro6'] %}}
     # insert before pam_unix.so(so only consecutive authentication failures are lock)
     sed -i --follow-symlinks '/^account.*required.*pam_unix\.so.*/i account   required     pam_faillock.so' "$pam_file"
     {{% else %}}
@@ -872,7 +872,7 @@ if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
     {{% endif %}}
 fi
 
-{{% if  product in ['sle15', 'sle16'] %}}
+{{% if  product in ['sle15', 'sle16', 'slmicro6'] %}}
 {{{
     bash_ensure_pam_module_configuration(
     '/etc/pam.d/common-auth',
@@ -2075,7 +2075,7 @@ Part of the grub2_bootloader_argument template.
 
 #}}
 {{% macro grub2_bootloader_argument_remediation(arg_name, arg_name_value) %}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'sle16', 'slmicro5'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or 'sle' in product or 'slmicro' in product or product == 'ol7' %}}
 {{{ update_etc_default_grub_manually(arg_name, arg_name_value) }}}
 {{% endif -%}}
 {{{ grub_command("add", arg_name_value) }}}
