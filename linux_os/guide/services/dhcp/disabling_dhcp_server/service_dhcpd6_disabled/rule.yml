@@ -5,7 +5,7 @@ title: 'Disable DHCPD6 Service'
 description: |-
     The <tt>dhcp6</tt> service should be disabled on
     any system that does not need to act as a DHCP server.
-    {{% if product in ['ubuntu2404'] %}}
+    {{% if product in ['ubuntu2404', 'ubuntu2604'] %}}
     {{{ describe_service_disable(service="isc-dhcp-server6") }}}
     {{% else %}}
     {{{ describe_service_disable(service="dhcpd6") }}}
@@ -25,7 +25,9 @@ template:
     vars:
         servicename: dhcpd6
         servicename@ubuntu2404: isc-dhcp-server6
+        servicename@ubuntu2604: isc-dhcp-server6
         packagename: dhcp
         packagename@rhel8: dhcp-server
         packagename@rhel9: dhcp-server
         packagename@ubuntu2404: isc-dhcp-server
+        packagename@ubuntu2604: isc-dhcp-server
