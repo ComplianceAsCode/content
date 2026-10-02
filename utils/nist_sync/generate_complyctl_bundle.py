@@ -51,6 +51,7 @@ _REPO_ROOT = _SCRIPT_DIR.parent.parent
 
 sys.path.insert(0, str(_SCRIPT_DIR))
 from gemara.policy import RuleEntry, extract_rules_from_catalog, generate_policy  # noqa: E402
+from gemara.yaml_output import configure_yaml  # noqa: E402
 
 # OCI media types for complyctl v1.0.0-alpha.0 (go-gemara v0.0.1 split-layer format)
 _MEDIA_TYPE_POLICY = "application/vnd.gemara.policy.v1+yaml"
@@ -63,11 +64,7 @@ def _now_iso() -> str:
 
 
 def _yaml() -> YAML:
-    y = YAML()
-    y.default_flow_style = False
-    y.allow_unicode = True
-    y.width = 120
-    return y
+    return configure_yaml(YAML())
 
 
 def load_yaml(path: Path) -> Any:
