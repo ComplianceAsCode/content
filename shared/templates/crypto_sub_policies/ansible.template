@@ -46,4 +46,5 @@
 
 -   name: "{{{ rule_title }}} - Update crypto-policies"
     ansible.builtin.command: update-crypto-policies --set {{ expected_crypto_policy }}
+    changed_when: true
     when: current_crypto_policy.stdout.strip() != expected_crypto_policy

@@ -20,6 +20,7 @@
   - name: Create USBGuard Policy configuration
     ansible.builtin.command: usbguard generate-policy
     register: policy
+    changed_when: true
     when: not policy_file.stat.exists or policy_file.stat.size == 0
 
   - name: Copy the Generated Policy configuration to a persistent file

@@ -13,6 +13,7 @@
 
 - name: "{{{ rule_title }}} - Reinstall packages of files with incorrect hash"
   ansible.builtin.command: "{{{ pkg_manager }}} reinstall -y crypto-policies"
+  changed_when: true
   when:
     - files_with_incorrect_hash.stdout_lines is defined
     - (files_with_incorrect_hash.stdout_lines | length > 0)

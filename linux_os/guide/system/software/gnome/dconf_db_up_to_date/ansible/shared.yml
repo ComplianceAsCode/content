@@ -18,6 +18,7 @@
 - name: "{{{ rule_title }}} - Run dconf update for {{{ db_name }}}"
   ansible.builtin.command:
     cmd: dconf update
+  changed_when: true
   when: "not {{{ db_name }}}_db.stat.exists or {{{ db_name }}}_keyfiles.files | length > 0 and {{{ db_name }}}_keyfiles.files | map(attribute='mtime') | max > {{{ db_name }}}_db.stat.mtime"
 {{% endmacro %}}
 
