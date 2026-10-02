@@ -14,11 +14,10 @@ RUN true \
         $ADDITIONAL_PACKAGES \
 && true
 RUN pip install ansible && ansible-galaxy collection install ansible.posix
-
+RUN sed -i 's/mlkem768x25519-sha256,//g' /etc/crypto-policies/back-ends/opensshserver.config
 RUN true \
         && for key_type in rsa ecdsa; do ssh-keygen -N '' -t $key_type -f /etc/ssh/ssh_host_${key_type}_key; done \
         && mkdir -p /root/.ssh \
         && printf "%s\n" "$CLIENT_PUBLIC_KEY" >> "$AUTH_KEYS" \
         && chmod og-rw /root/.ssh "$AUTH_KEYS" \
 && true
-
