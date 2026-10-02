@@ -5,18 +5,17 @@ Generate an Ansible collection from ComplianceAsCode Ansible roles.
 Takes Ansible roles (generated from profile playbooks via ansible_playbook_to_role.py)
 and bundles them into an Ansible collection for publishing to Ansible Galaxy.
 
-Modules from community.general and ansible.posix that are used in the roles are
-vendored into the collection to eliminate external runtime dependencies.
+Modules from community.general that are used in the roles are vendored into the
+collection. Other collection requirements are declared in galaxy.yml.
 
 Usage:
   python3 utils/ansible_roles_to_collection.py \\
       --roles-dir build/ansible_roles \\
       --output-dir /tmp/collection \\
       [--version 0.1.82]  # defaults to the SSG project version from CMakeLists.txt \\
-      [--namespace redhatofficial] \\
+       [--target galaxy|hub] \\
       [--collection rhel_hardening_roles] \\
       [--community-general community-general-X.Y.Z.tar.gz] \\
-      [--ansible-posix ansible-posix-X.Y.Z.tar.gz] \\
       [--build]
 
   # Multiple --roles-dir flags merge roles from several builds before packaging:
@@ -70,21 +69,57 @@ def _get_ssg_version():
 
 SSG_VERSION = _get_ssg_version()
 
-COLLECTION_NAMESPACE = "redhatofficial"
 COLLECTION_NAME = "rhel_hardening_roles"
-COLLECTION_AUTHORS = [
-    "ComplianceAsCode development team"
-]
-COLLECTION_DESCRIPTION = (
-    "Ansible roles for RHEL system hardening, generated from ComplianceAsCode content."
-)
-COLLECTION_LICENSE = ["BSD-3-Clause"]
+COLLECTION_DEPENDENCIES = {"ansible.posix": ">=2.2.0"}
 COLLECTION_REPOSITORY = "https://github.com/ComplianceAsCode/content"
 COLLECTION_HOMEPAGE = "https://github.com/ComplianceAsCode/content"
-COLLECTION_ISSUES = "https://github.com/ComplianceAsCode/content/issues"
+COLLECTION_MIN_PYTHON_VERSION = "3.12"
 COLLECTION_TAGS = [
     "security", "compliance", "hardening", "rhel", "scap", "openscap", "complianceascode"
 ]
+
+# Target-specific metadata used by the collection registries. Keeping these values together
+# avoids requiring release commands to pass URLs containing shell metacharacters such as '!'.
+COLLECTION_TARGETS = {
+    "galaxy": {
+        "namespace": "redhatofficial",
+        "author": "ComplianceAsCode development team",
+        "description": "Ansible roles for RHEL system hardening, generated from ComplianceAsCode content.",
+        "documentation": None,
+        "homepage": COLLECTION_HOMEPAGE,
+        "issues": "https://github.com/ComplianceAsCode/content/issues",
+        "installation_server": "https://galaxy.ansible.com/",
+        "license_name": "BSD-3-Clause",
+    },
+    "hub": {
+        "namespace": "redhat",
+        "author": "Red Hat",
+        "description": "Ansible collection providing hardening roles for Red Hat Enterprise Linux.",
+        "documentation": (
+            "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/"
+            "security_hardening/scanning-the-system-for-configuration-compliance"
+            "#remediating-the-system-to-align-with-a-specific-baseline-using-an-ssg-ansible-playbook"
+        ),
+        "homepage": COLLECTION_HOMEPAGE,
+        "issues": (
+            "https://redhat.atlassian.net/secure/CreateIssueDetails!init.jspa?pid=10390"
+            "&issuetype=10016&components=18915"
+        ),
+        "installation_server": "https://console.redhat.com/api/automation-hub/",
+        "license_name": "BSD-3-Clause",
+    },
+}
+
+# Generic constants retain the public defaults used by the generation helpers.
+COLLECTION_NAMESPACE = COLLECTION_TARGETS["galaxy"]["namespace"]
+COLLECTION_AUTHOR = COLLECTION_TARGETS["galaxy"]["author"]
+COLLECTION_AUTHORS = [COLLECTION_AUTHOR]
+COLLECTION_DESCRIPTION = COLLECTION_TARGETS["galaxy"]["description"]
+COLLECTION_DOCUMENTATION = COLLECTION_TARGETS["galaxy"]["documentation"]
+COLLECTION_ISSUES = COLLECTION_TARGETS["galaxy"]["issues"]
+COLLECTION_INSTALL_SERVER = COLLECTION_TARGETS["galaxy"]["installation_server"]
+COLLECTION_LICENSE_NAME = COLLECTION_TARGETS["galaxy"]["license_name"]
+COLLECTION_LICENSE = [COLLECTION_LICENSE_NAME]
 
 # Ansible Galaxy API endpoint for querying latest versions
 GALAXY_VERSIONS_URL = (
@@ -97,11 +132,9 @@ GALAXY_ARTIFACT_URL = (
 )
 
 # Collections whose modules will be vendored when found in the roles.
-# Adding a collection here is enough — the script auto-detects which modules
-# from it are actually referenced and only downloads those.
+# Collections used by the roles but not listed here remain external dependencies.
 COLLECTIONS_TO_VENDOR = [
     "community.general",
-    "ansible.posix",
 ]
 
 def detect_modules_to_bundle(roles_dirs, collections_to_vendor):
@@ -109,7 +142,7 @@ def detect_modules_to_bundle(roles_dirs, collections_to_vendor):
     Scan role YAML files across one or more role directories and return which
     modules from each vendored collection are actually referenced.
 
-    Returns a dict: {"community.general": ["ini_file", ...], "ansible.posix": [...]}
+    Returns a dict: {"community.general": ["ini_file", ...]}
     """
     fqcn_re = re.compile(
         r"(?:" + "|".join(re.escape(c) for c in collections_to_vendor) + r")\.\w+"
@@ -160,13 +193,63 @@ generated from [ComplianceAsCode/content](https://github.com/ComplianceAsCode/co
     - {namespace}.{collection_name}.rhel9_stig
 ```
 
+## Requirements
+
+- `ansible-core >= {min_ansible_version}`
+- `Python >= {min_python_version}`
+- `{ansible_posix_requirement}`
+
+## Installation
+
+Install this collection from [Red Hat Ansible Automation Hub](https://console.redhat.com/ansible/automation-hub):
+
+```console
+ansible-galaxy collection install \
+  --server {installation_server} \
+  {namespace}.{collection_name}
+```
+
+For an offline installation, install the generated
+`{namespace}-{collection_name}-{version}.tar.gz` artifact.
+
+## Changelog
+
+See the [ComplianceAsCode release notes](https://github.com/ComplianceAsCode/content/releases).
+
+## Support
+
+This collection is maintained by Red Hat RHEL Security Content.
+
+As Red Hat Ansible Certified Content, this collection is entitled to support
+through Ansible Automation Platform (AAP) using the Create issue button on the
+top right corner of Automation Hub. If a support case cannot be opened with
+Red Hat and the collection has been obtained either from Galaxy or GitHub,
+there may be community help available on the Ansible Forum
+(https://forum.ansible.com/).
+
+For project issues, use the [collection issue tracker]({issues}).
+
 ## License
 
-BSD-3-Clause
+{license_name}
 
 ## Author
 
-ComplianceAsCode development team
+{author}
+"""
+
+CHANGELOG_TEMPLATE = """\
+# Changelog
+
+## {version}
+
+- Generated collection containing hardening roles for supported Red Hat Enterprise Linux releases.
+"""
+
+CHANGELOGS_README = """\
+# Changelogs
+
+See the [ComplianceAsCode release notes](https://github.com/ComplianceAsCode/content/releases) for the collection release notes.
 """
 
 
@@ -190,9 +273,10 @@ def parse_args():
         help="Destination directory for the generated collection structure."
     )
     parser.add_argument(
-        "--namespace", "-n",
-        default=COLLECTION_NAMESPACE,
-        help=f"Collection namespace. Defaults to '{COLLECTION_NAMESPACE}'."
+        "--target",
+        choices=COLLECTION_TARGETS,
+        default="galaxy",
+        help="Collection registry target. Selects the namespace, metadata, and installation server."
     )
     parser.add_argument(
         "--collection", "-c",
@@ -212,25 +296,11 @@ def parse_args():
              "Downloaded from Ansible Galaxy if not provided."
     )
     parser.add_argument(
-        "--ansible-posix",
-        metavar="TARBALL",
-        dest="ansible_posix",
-        help="Path to an ansible.posix collection tarball. "
-             "Downloaded from Ansible Galaxy if not provided."
-    )
-    parser.add_argument(
         "--community-general-version",
         default="latest",
         dest="community_general_version",
         metavar="VERSION",
         help="Version of community.general to download when --community-general is not provided."
-    )
-    parser.add_argument(
-        "--ansible-posix-version",
-        default="latest",
-        dest="ansible_posix_version",
-        metavar="VERSION",
-        help="Version of ansible.posix to download when --ansible-posix is not provided."
     )
     parser.add_argument(
         "--build",
@@ -251,30 +321,10 @@ def parse_args():
         metavar="URL",
         help="Ansible Galaxy server URL. Defaults to https://galaxy.ansible.com/."
     )
-    parser.add_argument(
-        "--description",
-        default=COLLECTION_DESCRIPTION,
-        help="Collection description written into galaxy.yml."
-    )
-    parser.add_argument(
-        "--documentation",
-        default=None,
-        metavar="URL",
-        help="Documentation URL written into galaxy.yml."
-    )
-    parser.add_argument(
-        "--homepage",
-        default=COLLECTION_HOMEPAGE,
-        metavar="URL",
-        help=f"Collection homepage URL. Defaults to '{COLLECTION_HOMEPAGE}'."
-    )
-    parser.add_argument(
-        "--issues",
-        default=COLLECTION_ISSUES,
-        metavar="URL",
-        help=f"Issue tracker URL. Defaults to '{COLLECTION_ISSUES}'."
-    )
-    return parser.parse_args()
+    args = parser.parse_args()
+    for name, value in COLLECTION_TARGETS[args.target].items():
+        setattr(args, name, value)
+    return args
 
 
 def _get_latest_collection_version(namespace, name):
@@ -332,9 +382,46 @@ def extract_modules_from_collection(tarball_path, namespace, name, module_names,
             dest_path = os.path.join(dest_dir, f"{module_name}.py")
             with open(dest_path, "wb") as out:
                 out.write(f.read())
+            _make_vendored_module_self_contained(module_name, dest_path)
             extracted[module_name] = dest_path
             print(f"  Extracted {namespace}.{name}.{module_name}")
     return extracted
+
+
+def _make_vendored_module_self_contained(module_name, module_path):
+    """Inline documentation from external fragments used by vendored modules."""
+    with open(module_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    fragment_reference = "  - community.general.attributes\n"
+    if fragment_reference not in content:
+        return
+    if module_name != "ini_file":
+        raise ValueError(
+            f"Unsupported external documentation fragment in vendored module {module_name}"
+        )
+
+    content = content.replace(fragment_reference, "", 1)
+    fragment_fields = """  check_mode:
+    support: full
+  diff_mode:
+    support: full
+"""
+    inline_fields = """  check_mode:
+    description:
+      - Can run in C(check_mode) and return changed status prediction without modifying target.
+    support: full
+  diff_mode:
+    description:
+      - Returns details on what has changed (or possibly needs changing in C(check_mode)), when in diff mode.
+    support: full
+"""
+    if fragment_fields not in content:
+        raise ValueError(f"Unexpected documentation layout in vendored module {module_name}")
+    content = content.replace(fragment_fields, inline_fields, 1)
+
+    with open(module_path, "w", encoding="utf-8") as f:
+        f.write(content)
 
 
 def create_collection_dirs(output_dir, namespace, collection_name):
@@ -347,9 +434,23 @@ def create_collection_dirs(output_dir, namespace, collection_name):
     return collection_dir
 
 
+def _collection_ansible_requirement():
+    """Return a PEP 440 ``requires_ansible`` specifier with an explicit patch level.
+
+    Ansible partner certification tooling expects the lower bound to be a full
+    ``X.Y.Z`` version (for example ``>=2.16.0``). ``min_ansible_version`` is kept
+    as ``X.Y`` for the role metadata and the runtime pre-task check, so pad it to
+    three components when generating the collection runtime metadata.
+    """
+    parts = min_ansible_version.split(".")
+    while len(parts) < 3:
+        parts.append("0")
+    return ">=%s" % ".".join(parts)
+
+
 def generate_runtime_yml(collection_dir):
     """Write meta/runtime.yml declaring the minimum required Ansible version."""
-    runtime_data = {"requires_ansible": ">=%s" % min_ansible_version}
+    runtime_data = {"requires_ansible": _collection_ansible_requirement()}
     runtime_yml_path = os.path.join(collection_dir, "meta", "runtime.yml")
     with open(runtime_yml_path, "w", encoding="utf-8") as f:
         yaml.dump(runtime_data, f, default_flow_style=False, allow_unicode=True)
@@ -358,8 +459,9 @@ def generate_runtime_yml(collection_dir):
 
 def generate_galaxy_yml(
     collection_dir, namespace, collection_name, version,
-    description=COLLECTION_DESCRIPTION, documentation=None,
-    homepage=COLLECTION_HOMEPAGE, issues=COLLECTION_ISSUES,
+    description=COLLECTION_DESCRIPTION, documentation=COLLECTION_DOCUMENTATION,
+    homepage=COLLECTION_HOMEPAGE, issues=COLLECTION_ISSUES, authors=COLLECTION_AUTHORS,
+    licenses=COLLECTION_LICENSE, dependencies=COLLECTION_DEPENDENCIES,
 ):
     """Write the galaxy.yml manifest for the collection."""
     galaxy_data = {
@@ -367,9 +469,10 @@ def generate_galaxy_yml(
         "name": collection_name,
         "version": version,
         "readme": "README.md",
-        "authors": COLLECTION_AUTHORS,
+        "authors": authors,
         "description": description,
-        "license": COLLECTION_LICENSE,
+        "license": licenses,
+        "dependencies": dependencies,
         "tags": COLLECTION_TAGS,
         "repository": COLLECTION_REPOSITORY,
         "homepage": homepage,
@@ -384,18 +487,59 @@ def generate_galaxy_yml(
     print("Generated galaxy.yml")
 
 
-def generate_readme(collection_dir, namespace, collection_name, roles):
+def generate_readme(
+    collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+    license_name=COLLECTION_LICENSE_NAME,
+):
     """Write the collection README.md."""
     roles_list = "\n".join(f"- `{namespace}.{collection_name}.{r}`" for r in sorted(roles))
+    # Keep the documented runtime dependency in sync with the declared galaxy.yml
+    # dependency so the README never drifts from what the collection requires.
+    posix_version = COLLECTION_DEPENDENCIES["ansible.posix"].replace(">=", ">= ")
+    ansible_posix_requirement = f"ansible.posix {posix_version}"
     content = README_TEMPLATE.format(
         namespace=namespace,
         collection_name=collection_name,
+        version=version,
         roles_list=roles_list,
+        issues=issues,
+        installation_server=installation_server,
+        min_ansible_version=min_ansible_version,
+        min_python_version=COLLECTION_MIN_PYTHON_VERSION,
+        ansible_posix_requirement=ansible_posix_requirement,
+        author=author,
+        license_name=license_name,
     )
     readme_path = os.path.join(collection_dir, "README.md")
     with open(readme_path, "w", encoding="utf-8") as f:
         f.write(content)
     print("Generated README.md")
+
+
+def generate_collection_docs(
+    collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+    license_name=COLLECTION_LICENSE_NAME,
+):
+    """Write collection documentation and the license file."""
+    generate_readme(
+        collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+        license_name,
+    )
+
+    changelog_path = os.path.join(collection_dir, "CHANGELOG.md")
+    with open(changelog_path, "w", encoding="utf-8") as f:
+        f.write(CHANGELOG_TEMPLATE.format(version=version))
+    print("Generated CHANGELOG.md")
+
+    changelogs_dir = os.path.join(collection_dir, "changelogs")
+    os.makedirs(changelogs_dir, exist_ok=True)
+    changelogs_readme_path = os.path.join(changelogs_dir, "README.md")
+    with open(changelogs_readme_path, "w", encoding="utf-8") as f:
+        f.write(CHANGELOGS_README)
+    print("Generated changelogs/README.md")
+
+    shutil.copy2(os.path.join(SSG_ROOT, "LICENSE"), collection_dir)
+    print("Copied LICENSE")
 
 
 def _remove_bundled_collection_deps(meta_path, bundled_collections):
@@ -642,18 +786,15 @@ def main():
         # Map collection FQCN to (namespace, name) for downloading
         collection_coords = {
             "community.general": ("community", "general"),
-            "ansible.posix": ("ansible", "posix"),
         }
 
         # Resolve or download only the collection tarballs we actually need
         collection_tarballs = {}
         tarball_overrides = {
             "community.general": args.community_general,
-            "ansible.posix": args.ansible_posix,
         }
         tarball_versions = {
             "community.general": args.community_general_version,
-            "ansible.posix": args.ansible_posix_version,
         }
         for collection_fqcn in modules_to_bundle:
             ns, name = collection_coords[collection_fqcn]
@@ -701,9 +842,21 @@ def main():
             documentation=args.documentation,
             homepage=args.homepage,
             issues=args.issues,
+            authors=[args.author],
+            licenses=[args.license_name],
         )
         generate_runtime_yml(collection_dir)
-        generate_readme(collection_dir, args.namespace, args.collection, roles)
+        generate_collection_docs(
+            collection_dir,
+            args.namespace,
+            args.collection,
+            args.version,
+            roles,
+            args.issues,
+            args.installation_server,
+            args.author,
+            args.license_name,
+        )
 
     artifact_path = None
     if args.build or args.galaxy_token:
