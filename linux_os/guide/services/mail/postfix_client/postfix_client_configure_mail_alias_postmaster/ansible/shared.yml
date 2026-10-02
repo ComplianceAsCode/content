@@ -21,6 +21,7 @@
 - name: {{{ rule_title }}} - Update postfix aliases
   ansible.builtin.command:
     cmd: newaliases
+  changed_when: true
   when:
     - result_newaliases_present.stat.exists
     - aliases_postmaster_changed is changed

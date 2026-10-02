@@ -13,5 +13,6 @@
 - name: Lock users with no password
   ansible.builtin.command: >
     passwd -l {{ item }}
+  changed_when: true
   with_items: "{{ users_nopasswd.stdout_lines }}"
   when: users_nopasswd is not skipped and users_nopasswd.stdout_lines | length > 0
