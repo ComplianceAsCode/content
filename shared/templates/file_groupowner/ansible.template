@@ -53,6 +53,9 @@
     follow: false
     group: "{{ {{{ _RULE_ID }}}_newgroup }}"
     state: file
+{{%- if FILEMODE %}}
+    mode: "{{{ FILEMODE }}}"
+{{%- endif %}}
   with_items:
     - "{{ files_found.stdout_lines }}"
 
@@ -67,6 +70,9 @@
     recurse: yes
 {{% endif %}}
     group: "{{ {{{ _RULE_ID }}}_newgroup }}"
+{{%- if FILEMODE %}}
+    mode: "{{{ FILEMODE }}}"
+{{%- endif %}}
 
 {{% endif %}}
 {{% else %}}
@@ -81,6 +87,9 @@
     path: "{{{ path }}}"
     follow: false
     group: "{{ {{{ _RULE_ID }}}_newgroup }}"
+{{%- if FILEMODE %}}
+    mode: "{{{ FILEMODE }}}"
+{{%- endif %}}
   when: file_exists.stat is defined and file_exists.stat.exists
 
 {{% endif %}}
