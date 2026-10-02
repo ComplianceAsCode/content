@@ -519,6 +519,192 @@ def bundle_modules(extracted_modules, collection_dir):
     print(f"Bundled {len(extracted_modules)} modules into plugins/modules/.")
 
 
+# Custom modules shipped with this repository (not vendored from Galaxy). These
+# encapsulate the few hardening steps that otherwise require a raw command/shell
+# task so the generated collection never shells out for them.
+LOCAL_MODULES_DIR = os.path.join(_UTILS_DIR, "ansible_modules")
+
+
+def bundle_local_modules(collection_dir):
+    """Copy repository-local custom modules into plugins/modules/."""
+    if not os.path.isdir(LOCAL_MODULES_DIR):
+        return []
+    modules_dest = os.path.join(collection_dir, "plugins", "modules")
+    bundled = []
+    for filename in sorted(os.listdir(LOCAL_MODULES_DIR)):
+        if not filename.endswith(".py") or filename.startswith("_"):
+            continue
+        shutil.copy2(
+            os.path.join(LOCAL_MODULES_DIR, filename),
+            os.path.join(modules_dest, filename),
+        )
+        bundled.append(filename[:-3])
+    print(f"Bundled {len(bundled)} local module(s) into plugins/modules/: "
+          f"{', '.join(bundled)}")
+    return bundled
+
+
+# --- Rewrite raw command/shell tasks to the vendored ssg_hardening module -----
+
+_COMMAND_KEYS = (
+    "ansible.builtin.command", "command", "ansible.builtin.shell", "shell",
+)
+
+_SERVICE_RE = re.compile(r"^(?:/usr/sbin/)?service (\S+) restart$")
+_RPM_VA_RE = re.compile(r"^rpm -Va\b\s*(.*)$")
+_RPM_QF_RE = re.compile(r"^rpm -qf (.+)$")
+_RPM_QV_RE = re.compile(r"^rpm -qV (.+)$")
+_RPM_RESTORE_RE = re.compile(r"^rpm --restore (.+)$")
+_RPM_SETPERMS_RE = re.compile(r"^rpm --setperms (.+)$")
+_RPM_SETUGIDS_RE = re.compile(r"^rpm --setugids (.+)$")
+# rsyslog range deletion ('/^start/,/end/d'), single file and *.conf glob.
+_RSYSLOG_RANGE_FILE_RE = re.compile(r"^sed -i '/\^(.+?)/,/(.+?)/d' (\S+)$")
+_RSYSLOG_RANGE_GLOB_RE = re.compile(
+    r"^find (\S+) -type f -name \"\*\.conf\" -exec sed -i "
+    r"'/\^(.+?)/,/(.+?)/d' \{\} \+$")
+# rsyslog conditional block deletion, single file and *.conf glob.
+_RSYSLOG_BLOCK_FILE_RE = re.compile(
+    r"^sed -i '/\^\[\[:space:\]\]\*(\w+)\(/ \{ :a; N; /\)/!ba; /(.+?)/d \}' (\S+)$")
+_RSYSLOG_BLOCK_GLOB_RE = re.compile(
+    r"^find (\S+) -type f -name \"\*\.conf\" -exec sed -i "
+    r"'/\^\[\[:space:\]\]\*(\w+)\(/ \{ :a; N; /\)/!ba; /(.+?)/d \}' \{\} \+$")
+
+
+def _unquote(token):
+    """Strip one layer of matching surrounding quotes from a shell argument."""
+    token = token.strip()
+    if len(token) >= 2 and token[0] == token[-1] and token[0] in "\"'":
+        return token[1:-1]
+    return token
+
+
+def _match_command_to_ssg(cmd):
+    """Map a normalized command/shell string to ssg_hardening module args, or
+    None if the task should be left as-is."""
+    m = _SERVICE_RE.match(cmd)
+    if m:
+        return {"operation": "service_restart", "name": m.group(1)}
+    m = _RPM_VA_RE.match(cmd)
+    if m:
+        args = {"operation": "rpm_verify_all"}
+        flags = m.group(1).split()
+        if flags:
+            args["flags"] = flags
+        return args
+    m = _RPM_QV_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_verify_package", "name": _unquote(m.group(1))}
+    m = _RPM_QF_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_query_file", "path": _unquote(m.group(1))}
+    m = _RPM_RESTORE_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_restore", "path": _unquote(m.group(1))}
+    m = _RPM_SETPERMS_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_setperms", "name": _unquote(m.group(1))}
+    m = _RPM_SETUGIDS_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_setugids", "name": _unquote(m.group(1))}
+    m = _RSYSLOG_RANGE_FILE_RE.match(cmd)
+    if m:
+        return {"operation": "rsyslog_remove", "mode": "range",
+                "start": "^" + m.group(1), "end": m.group(2), "path": m.group(3)}
+    m = _RSYSLOG_RANGE_GLOB_RE.match(cmd)
+    if m:
+        return {"operation": "rsyslog_remove", "mode": "range",
+                "start": "^" + m.group(2), "end": m.group(3),
+                "paths_glob": m.group(1).rstrip("/") + "/*.conf"}
+    m = _RSYSLOG_BLOCK_FILE_RE.match(cmd)
+    if m:
+        return {"operation": "rsyslog_remove", "mode": "block",
+                "block_type": m.group(1), "pattern": m.group(2), "path": m.group(3)}
+    m = _RSYSLOG_BLOCK_GLOB_RE.match(cmd)
+    if m:
+        return {"operation": "rsyslog_remove", "mode": "block",
+                "block_type": m.group(2), "pattern": m.group(3),
+                "paths_glob": m.group(1).rstrip("/") + "/*.conf"}
+    return None
+
+
+def _rewrite_task(task, module_fqcn):
+    """Rewrite a single task in place if it is a flagged command/shell task.
+    Returns True when the task was rewritten."""
+    for key in _COMMAND_KEYS:
+        if key not in task:
+            continue
+        value = task[key]
+        if isinstance(value, dict):
+            cmd = value.get("cmd") or " ".join(value.get("argv", []))
+        else:
+            cmd = value
+        if not isinstance(cmd, str):
+            return False
+        cmd = " ".join(cmd.split())
+        module_args = _match_command_to_ssg(cmd)
+        if module_args is None:
+            return False
+        # Replace the command/shell key with the module call, keeping it in the
+        # same position and preserving all sibling keys (register, when, loop,
+        # changed_when, failed_when, check_mode, ...).
+        new_task = {}
+        for k, v in task.items():
+            if k == key:
+                new_task[module_fqcn + ".ssg_hardening"] = module_args
+            else:
+                new_task[k] = v
+        task.clear()
+        task.update(new_task)
+        return True
+    return False
+
+
+def _rewrite_task_list(tasks, module_fqcn):
+    count = 0
+    for task in tasks or []:
+        if not isinstance(task, dict):
+            continue
+        if _rewrite_task(task, module_fqcn):
+            count += 1
+            continue
+        # Recurse into block/rescue/always structures.
+        for nested in ("block", "rescue", "always"):
+            if isinstance(task.get(nested), list):
+                count += _rewrite_task_list(task[nested], module_fqcn)
+    return count
+
+
+def rewrite_command_tasks_to_module(collection_dir, module_fqcn):
+    """Replace flagged command/shell tasks in the collection's roles with calls
+    to the vendored ssg_hardening module."""
+    roles_dir = os.path.join(collection_dir, "roles")
+    total = 0
+    files_changed = 0
+    for root, _dirs, files in os.walk(roles_dir):
+        if os.path.basename(root) not in ("tasks", "handlers"):
+            continue
+        for filename in files:
+            if not filename.endswith((".yml", ".yaml")):
+                continue
+            filepath = os.path.join(root, filename)
+            with open(filepath, "r", encoding="utf-8") as f:
+                tasks = yaml.safe_load(f)
+            if not isinstance(tasks, list):
+                continue
+            changed = _rewrite_task_list(tasks, module_fqcn)
+            if changed:
+                with open(filepath, "w", encoding="utf-8") as f:
+                    yaml.safe_dump(
+                        tasks, f, sort_keys=False, default_flow_style=False,
+                        width=4096, allow_unicode=True,
+                    )
+                total += changed
+                files_changed += 1
+    print(f"Rewrote {total} command/shell task(s) to {module_fqcn}.ssg_hardening "
+          f"across {files_changed} file(s).")
+    return total
+
+
 def _rewrite_file_fqcns(filepath, fqcn_map):
     """Rewrite FQCN module references in a single file (YAML or Python)."""
     with open(filepath, "r", encoding="utf-8") as f:
@@ -689,10 +875,18 @@ def main():
         # Copy vendored modules into plugins/modules/
         bundle_modules(extracted_modules, collection_dir)
 
+        # Copy repository-local custom modules into plugins/modules/
+        bundle_local_modules(collection_dir)
+
         # Build the FQCN rewrite map: old prefix -> new FQCN for this collection
         new_fqcn = f"{args.namespace}.{args.collection}"
         fqcn_map = {source: new_fqcn for source in modules_to_bundle}
         rewrite_fqcns(collection_dir, fqcn_map)
+
+        # Replace the remaining raw command/shell remediations that have no stock
+        # module equivalent with calls to the vendored ssg_hardening module, so
+        # the collection carries no command-instead-of-module violations.
+        rewrite_command_tasks_to_module(collection_dir, new_fqcn)
 
         # Generate collection metadata
         generate_galaxy_yml(
