@@ -32,7 +32,7 @@ Password-Initial:
 	[success=end default=ignore]	pam_unix.so obscure yescrypt nullok
 EOF
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update --enable tmp_unix
+DEBIAN_FRONTEND=noninteractive pam-auth-update --enable tmp_unix --disable unix
 
 rm "$config_file"
 {{% else %}}
