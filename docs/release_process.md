@@ -432,8 +432,10 @@ the collection is published as a tarball uploaded directly to Ansible Galaxy.
             --roles-dir $OUTPUT_DIR/$version/ansible_roles \
             --output-dir $OUTPUT_DIR/$version \
 
-        # 3. Verify no unrewritten FQCNs remain in the bundled roles
-        grep -r "community\.c\.\|ansible\.posix\." \
+        # 3. Verify no unrewritten FQCNs remain in the bundled roles.
+        #    Only the vendored collection (community.general) must be rewritten;
+        #    ansible.posix is a declared dependency and is intentionally kept.
+        grep -r "community\.general\." \
             $OUTPUT_DIR/$version/ansible_collections/redhatofficial/rhel_hardening_roles/roles/ \
             && echo FAIL || echo OK
     done
