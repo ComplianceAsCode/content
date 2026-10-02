@@ -50,4 +50,5 @@
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  changed_when: true
   when: result_ini is changed or result_lineinfile is changed

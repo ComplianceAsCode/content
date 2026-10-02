@@ -21,6 +21,7 @@
 
     - name: "Update boot entries options"
       ansible.builtin.command: grubby --update-kernel=ALL --args="{{{ ARG_NAME }}}={{{ ARG_VALUE }}}"
+      changed_when: true
       when: n_entries is defined and n_entries_options is defined and n_entries.matched != n_entries_options.matched
 
     - name: "Check if /etc/kernel/cmdline exists"
