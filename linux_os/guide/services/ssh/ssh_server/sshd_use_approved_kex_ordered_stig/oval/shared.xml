@@ -7,9 +7,8 @@
              "diffie-hellman-group18-sha512"] %}}
 {{% set sufix_conf="(\s.*)?'" %}}
 {{% elif product in ['ol7', 'sle12', 'sle15', 'slmicro5', 'slmicro6'] %}}
-{{% set path=sshd_main_config_file %}}
-{{%- set sshd_main_config = sshd_main_config_file -%}}
-{{%- set sshd_drop_in_dir = sshd_config_dir -%}}
+{{% set sshd_main_config = sshd_main_config_file %}}
+{{% set sshd_drop_in_dir = sshd_config_dir %}}
 {{% set prefix_conf="^\s*KexAlgorithms\s*" %}}
 {{% set kex_algos=["ecdh-sha2-nistp256","ecdh-sha2-nistp384","ecdh-sha2-nistp521",
              "diffie-hellman-group-exchange-sha256"]  %}}
@@ -26,7 +25,7 @@
       <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
           definition_ref="sshd_not_required_or_unset" />
-        {{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
+        {{% if product in ['sle12'] %}}
         <extend_definition comment="package openssh removed"
           definition_ref="package_openssh_removed" />
         {{% else %}}
@@ -37,7 +36,7 @@
       <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
           definition_ref="sshd_required_or_unset" />
-        {{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
+        {{% if product in ['sle12'] %}}
         <extend_definition comment="package openssh installed"
           definition_ref="package_openssh_installed" />
         {{% else %}}
@@ -49,10 +48,10 @@
             test_ref="test_sshd_use_approved_kex_ordered_stig_config_dir" />
         {{%- endif %}}
 
-        <criterion comment="Check Kex list in {{{ path }}}"
+        <criterion comment="Check Kex list in {{{ sshd_main_config }}}"
                    test_ref="test_{{{ rule_id }}}_main_config" />
-        
-        <criterion comment="Check Kex in {{{ path }}} and {{{ sshd_drop_in_dir }}}"
+
+        <criterion comment="Check Kex in {{{ sshd_main_config }}} and {{{ sshd_drop_in_dir }}}"
                    test_ref="test_{{{ rule_id }}}" />
       </criteria>
     </criteria>
@@ -75,14 +74,14 @@
   {{%- endif %}}
 
   <ind:textfilecontent54_test check="all" check_existence="any_exist"
-    comment="tests the value of Kex algorithms setting in the {{{ path }}} file"
+    comment="tests the value of Kex algorithms setting in the {{{ sshd_main_config }}} file"
     id="test_{{{ rule_id }}}_main_config" version="1">
     <ind:object object_ref="obj_{{{ rule_id }}}_main_config" />
     <ind:state state_ref="state_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_main_config" version="1">
-    <ind:filepath>{{{ path }}}</ind:filepath>
+    <ind:filepath>{{{ sshd_main_config }}}</ind:filepath>
     <ind:pattern operation="pattern match">{{{ prefix_conf }}}.*</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
   </ind:textfilecontent54_object>
@@ -91,7 +90,7 @@
     <ind:text operation="pattern match">{{{ kex_algos_regex }}}</ind:text>
   </ind:textfilecontent54_state>
 
-  
+
   <ind:textfilecontent54_object comment="All confs collection"
                                 id="obj_collection_obj_{{{ rule_id }}}" version="1">
     <set>
