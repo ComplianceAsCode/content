@@ -1,0 +1,55 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Zabbix agent should report to a designated server, not the packaged default", rule_title=rule_title) }}}
+        <criteria operator="AND">
+            <criterion test_ref="test_zabbix_server_set" comment="Server directive is configured" />
+            <criterion test_ref="test_zabbix_server_not_default" comment="Server directive is not left at 127.0.0.1" />
+            <criterion test_ref="test_zabbix_serveractive_set" comment="ServerActive directive is configured" />
+            <criterion test_ref="test_zabbix_serveractive_not_default" comment="ServerActive directive is not left at 127.0.0.1" />
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test id="test_zabbix_server_set" version="1"
+        check="all" check_existence="at_least_one_exists"
+        comment="Server directive is present in zabbix_agentd.conf">
+        <ind:object object_ref="object_zabbix_server_set"/>
+    </ind:textfilecontent54_test>
+    <ind:textfilecontent54_object id="object_zabbix_server_set" version="1">
+        <ind:filepath>/etc/zabbix/zabbix_agentd.conf</ind:filepath>
+        <ind:pattern operation="pattern match">^Server=\S+</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test id="test_zabbix_server_not_default" version="1"
+        check="all" check_existence="none_exist"
+        comment="Server directive is not left at 127.0.0.1">
+        <ind:object object_ref="object_zabbix_server_not_default"/>
+    </ind:textfilecontent54_test>
+    <ind:textfilecontent54_object id="object_zabbix_server_not_default" version="1">
+        <ind:filepath>/etc/zabbix/zabbix_agentd.conf</ind:filepath>
+        <ind:pattern operation="pattern match">^Server=127\.0\.0\.1\s*$</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test id="test_zabbix_serveractive_set" version="1"
+        check="all" check_existence="at_least_one_exists"
+        comment="ServerActive directive is present in zabbix_agentd.conf">
+        <ind:object object_ref="object_zabbix_serveractive_set"/>
+    </ind:textfilecontent54_test>
+    <ind:textfilecontent54_object id="object_zabbix_serveractive_set" version="1">
+        <ind:filepath>/etc/zabbix/zabbix_agentd.conf</ind:filepath>
+        <ind:pattern operation="pattern match">^ServerActive=\S+</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test id="test_zabbix_serveractive_not_default" version="1"
+        check="all" check_existence="none_exist"
+        comment="ServerActive directive is not left at 127.0.0.1">
+        <ind:object object_ref="object_zabbix_serveractive_not_default"/>
+    </ind:textfilecontent54_test>
+    <ind:textfilecontent54_object id="object_zabbix_serveractive_not_default" version="1">
+        <ind:filepath>/etc/zabbix/zabbix_agentd.conf</ind:filepath>
+        <ind:pattern operation="pattern match">^ServerActive=127\.0\.0\.1\s*$</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+</def-group>
