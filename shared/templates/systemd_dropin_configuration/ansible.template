@@ -40,6 +40,7 @@
 {{% endif %}}
     state: present
     no_extra_spaces: true
+    mode: 0644
   when: count_of_systemd_dropin_files_with_section | int > 0
   loop: "{{systemd_dropin_files_with_section.results | sum(attribute='files', start=[]) | map(attribute='path') | list }}"
 

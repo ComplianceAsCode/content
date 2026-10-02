@@ -32,5 +32,8 @@ def preprocess(data, lang):
     if "variable_datatype" not in data:
         data["variable_datatype"] = "string"
 
+    if "filemode" not in data:
+        data["filemode"] = ""
+
     data = set_variables_for_test_scenarios(data)
     return data

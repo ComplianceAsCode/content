@@ -15,5 +15,7 @@
   when: pkcs11switch.stat.exists
 
 - name: "{{{ rule_title }}} - Select opensc Module"
-  ansible.builtin.shell: echo -e "\n" | /usr/bin/pkcs11-switch opensc
+  ansible.builtin.shell: |-
+    set -o pipefail
+    echo -e "\n" | /usr/bin/pkcs11-switch opensc
   when: pkcs11switch.stat.exists and pkcsw_output.stdout != "opensc"

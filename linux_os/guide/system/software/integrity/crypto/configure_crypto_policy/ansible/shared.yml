@@ -46,6 +46,7 @@
 
 - name: "{{{ rule_title }}} - Verify that Crypto Policy is Set (runtime)"
   ansible.builtin.command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+  changed_when: true
   when: >
     (current_crypto_policy.stdout.strip() != var_system_crypto_policy) or
     (config_file_stat.stat.exists and current_file_stat.stat.exists and config_file_stat.stat.mtime > current_file_stat.stat.mtime) or

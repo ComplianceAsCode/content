@@ -22,6 +22,7 @@
     option: gpgcheck
     value: '1'
     no_extra_spaces: True
+    mode: '0644'
   # regex filters grep output for files ending in .repo and matching section names.
   loop: "{{ repo_grep_results.stdout |regex_findall( '(.+\\.repo):\\[(.+)\\]\\n?' ) if repo_grep_results is not skipped else [] }}"
   when: repo_grep_results is not skipped
