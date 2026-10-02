@@ -43,6 +43,7 @@
     values:
       - ""
       - "-/usr/lib/systemd/systemd-sulogin-shell rescue"
+    mode: '0644'
   loop: "{{ rescue_service_remediation_target_file }}"
 
 {{% endif %}}
