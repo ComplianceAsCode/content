@@ -30,4 +30,4 @@ jobs:
       - name: Set git safe directory
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Lint Ansible Roles
-        run: ansible-lint -x 204 -x experimental -x command-instead-of-module ./build/ansible_roles/*
+        run: ansible-lint -x 204 -x experimental ./build/ansible_roles/*
