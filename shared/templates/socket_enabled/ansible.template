@@ -5,11 +5,15 @@
 # disruption = low
 
 - name: "{{{ rule_title }}} - Collect systemd Socket Units Present in the System"
-  ansible.builtin.command:
-    cmd: systemctl -q list-unit-files --type socket
+  ansible.builtin.find:
+    paths:
+      - /etc/systemd/system
+      - /run/systemd/system
+      - /usr/lib/systemd/system
+      - /usr/local/lib/systemd/system
+    patterns: "{{{ SOCKETNAME }}}.socket"
+    file_type: any
   register: result_systemd_unit_files
-  changed_when: false
-  failed_when: result_systemd_unit_files.rc not in [0, 1]
   check_mode: false
 
 - name: "{{{ rule_title }}} - Ensure {{{ SOCKETNAME }}}.socket is Enabled"
@@ -19,4 +23,4 @@
     enabled: true
     masked: false
   when:
-    - result_systemd_unit_files.stdout_lines is search("{{{ SOCKETNAME }}}.socket")
+    - result_systemd_unit_files.matched > 0
