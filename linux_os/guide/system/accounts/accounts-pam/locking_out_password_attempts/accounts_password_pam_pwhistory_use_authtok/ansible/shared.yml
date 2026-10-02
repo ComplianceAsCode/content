@@ -15,7 +15,9 @@
 
 - name: '{{{ rule_title }}} - Get authselect current profile'
   ansible.builtin.shell:
-    cmd: authselect current -r | awk '{ print $1 }'
+    cmd: |-
+      set -o pipefail
+      authselect current -r | awk '{ print $1 }'
   register: result_authselect_profile
   changed_when: false
   when:
