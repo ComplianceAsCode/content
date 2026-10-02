@@ -1,22 +1,56 @@
-skip_list:
-    - fqcn-builtins # We should be using fqcn
-    - key-order[task]
-    - no-free-form
-    - risky-file-permissions
-    - no-changed-when
-    - var-naming
-    - ignore-errors
-    - schema[meta]
-    - yaml[indentation]  # Violations reported by yamllint.
-    - jinja[spacing]  # Rule that looks inside jinja2 templates.
-    - name[template]  # Rule for checking task and play names.
-    - fqcn[action]  # Use FQCN for builtin actions.
+---
+# Ansible-lint configuration aligned with the Red Hat Automation Hub partner
+# certification requirements:
+#   https://docs.ansible.com/projects/partner-certification-requirements/static-analysis/
+#
+# Certification runs the "production" profile. A fixed set of rules "cannot be
+# skipped" and must stay enforced; every other rule listed there is allowed to
+# be skipped for machine-generated collections past version 1.0.0. This config
+# therefore skips only the allowed rules and leaves the non-skippable ones
+# active, so that `ansible-lint` run bare (auto-discovering this file) against
+# the generated Ansible roles reports exactly the certification backlog.
+#
+# NOTE: content's own CI lints generated playbooks with an explicit
+# `-c tests/ansible-lint_config.yml` (see cmake/SSGCommon.cmake), so this file
+# does NOT change that gate; it is picked up only by bare `ansible-lint` runs,
+# i.e. when measuring the generated collection against the certification bar.
+profile: production
 
+exclude_paths:
+  - changelogs
+  - .ansible
+  - .github
+
+# Rules the certification explicitly allows to be skipped. SCAP variable names
+# are not role-prefixed and do not follow Ansible's var naming pattern; yamllint
+# is run separately upstream; the generated set_fact/command tasks use free-form.
+skip_list:
+  - yaml                        # yamllint is run separately upstream
+  - no-free-form               # generated set_fact/command use free-form
+  - jinja[spacing]
+  - key-order[task]
+  - fqcn[action-core]
+  - name[template]
+  - no-tabs
+  - var-naming[no-role-prefix] # SCAP variable names are not role-prefixed
+  - var-naming[pattern]        # SCAP variable names
+  - ignore-errors
+  # A handful of remediations must call a binary directly because no Ansible
+  # module provides the behavior: `service auditd restart` (auditd sets
+  # RefuseManualStop=yes, so the service/systemd modules cannot restart it),
+  # and `rpm -Va`/`rpm -qf`/`rpm -qV`/`rpm --restore`/`rpm --setperms`/
+  # `rpm --setugids` (the package module has no verify/query-owner/restore
+  # semantics). These tasks carry an inline `# noqa command-instead-of-module`
+  # in the rule source playbooks, but the build re-serializes YAML and strips
+  # comments before the collection is assembled, so a global skip is required.
+  - command-instead-of-module
+
+# Required by the certification to be set to warn (not skip).
 warn_list:
-    - name[missing]  # Rule for checking task and play names.
-    - template-instead-of-copy  # Templated files should use template instead of copy
-    - yaml[empty-lines]  # Violations reported by yamllint.
-    - yaml[line-length]  # Violations reported by yamllint.
-    - name[casing]  # Rule for checking task and play names.
-    - no-handler # Style choice, skipping for now
-    - risky-shell-pipe # Skipping for now due to authselect rules
+  - no-log-password
+
+# Rules that "cannot be skipped" per the certification and are intentionally
+# NOT in skip_list -- these constitute the remediation backlog:
+#   risky-shell-pipe, command-instead-of-shell, meta-no-info, package-latest,
+#   no-handler, meta-runtime[unsupported-version], no-changed-when,
+#   risky-file-permissions, unnamed-task
