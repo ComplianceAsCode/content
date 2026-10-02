@@ -2428,7 +2428,11 @@ Part of the grub2_bootloader_argument_absent template.
   :type pattern: str
 #}}
 {{%- macro ansible_remove_rainerscript_block_entries(rule_title, block_type, pattern) -%}}
--   name: "{{{ rule_title }}} - Remove RainerScript {{{ block_type }}}() entries with {{{ pattern }}} from rsyslog.conf"
+# noqa command-instead-of-module: this deletes a multilined RainerScript block only when it
+# contains a given directive (sed hold-space loop). The replace/lineinfile modules cannot
+# express "delete the whole block if it contains X" without a fragile DOTALL/lookahead regex,
+# and the companion /etc/rsyslog.d/*.conf task must iterate a file glob, so sed is required.
+-   name: "{{{ rule_title }}} - Remove RainerScript {{{ block_type }}}() entries with {{{ pattern }}} from rsyslog.conf"  # noqa: command-instead-of-module
     ansible.builtin.shell: |
       sed -i '/^[[:space:]]*{{{ block_type }}}(/ { :a; N; /)/!ba; /{{{ pattern }}}/d }' /etc/rsyslog.conf
     changed_when: true
@@ -2455,7 +2459,11 @@ Part of the grub2_bootloader_argument_absent template.
   :type description: str
 #}}
 {{%- macro ansible_remove_rainerscript_range_entries(rule_title, start_pattern, end_pattern, description) -%}}
--   name: "{{{ rule_title }}} - Remove multilined {{{ description }}} entries from rsyslog.conf"
+# noqa command-instead-of-module: this deletes a multilined range between two patterns
+# (sed '/start/,/end/d'). The replace/lineinfile modules cannot delete a line range without a
+# fragile DOTALL regex, and the companion /etc/rsyslog.d/*.conf task must iterate a file glob,
+# so sed is required.
+-   name: "{{{ rule_title }}} - Remove multilined {{{ description }}} entries from rsyslog.conf"  # noqa: command-instead-of-module
     ansible.builtin.shell: sed -i '/^{{{ start_pattern }}}/,/{{{ end_pattern }}}/d' /etc/rsyslog.conf
     changed_when: true
 
