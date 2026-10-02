@@ -138,7 +138,7 @@ args:
       pkgname: login
     {{% endif %}}
   snmpd:
-    {{% if 'debian' in product %}}
+    {{% if 'debian' in product or product == 'ubuntu2604' %}}
     pkgname: snmpd
     {{% else %}}
     pkgname: net-snmp

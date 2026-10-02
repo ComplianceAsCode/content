@@ -34,6 +34,10 @@ rationale: |-
 
 severity: unknown
 
+{{% if product == "ubuntu2604" %}}
+platform: package[openssh-server]
+{{% endif %}}
+
 ocil_clause: 'sshd does not limit the users who can log in'
 
 ocil: |-

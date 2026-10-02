@@ -42,7 +42,7 @@ template:
     name: sysctl
     vars:
         sysctlvar: kernel.yama.ptrace_scope
-        {{% if product in ['ubuntu2404'] %}}
+        {{% if product in ['ubuntu2404', 'ubuntu2604'] %}}
         sysctlval:
           - '1'
           - '2'
