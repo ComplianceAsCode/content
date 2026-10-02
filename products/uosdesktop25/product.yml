@@ -1,0 +1,45 @@
+product: uosdesktop25
+full_name: UOS Desktop 25
+type: platform
+
+families:
+  - uosdesktop
+
+major_version_ordinal: 25
+
+benchmark_id: UOSDESKTOP25
+benchmark_root: "../../linux_os/guide"
+components_root: "../../components"
+
+profiles_root: "./profiles"
+
+pkg_manager: "apt_get"
+
+init_system: "systemd"
+
+aide_conf_path: "/etc/aide/aide.conf"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - uosdesktop25:
+      name: "cpe:/o:uniontech:uos_desktop:25:ga:desktop"
+      title: "UOS Desktop 25"
+      check_id: installed_OS_is_uosdesktop25
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  gdm: gdm3
+  grub2: grub2-common
+  net-snmp: snmp
+  nss-pam-ldapd: libpam-ldap
+  pam: libpam-runtime
+  shadow: passwd
+  sssd: sssd-common
+  audit: auditd
+  usbguard: usbguard
+  sudo: sudo
+  chrony: chrony
+  polkit: policykit-1
+
+reference_uris:
+  cis: 'https://www.uniontech.com/'
