@@ -30,7 +30,9 @@
   when:
     - result_authselect_current.rc != 0
 
-- name: {{{ rule_title }}} - Verify If pam Has Been Altered
+# noqa command-instead-of-module: the package module has no verify (rpm -qV) capability,
+# so rpm must be called directly to detect alterations to the pam package files.
+- name: {{{ rule_title }}} - Verify If pam Has Been Altered  # noqa: command-instead-of-module
   ansible.builtin.command:
     cmd: rpm -qV pam
   register: result_altered_authselect
@@ -54,6 +56,7 @@
 - name: {{{ rule_title }}} - Force authselect Profile Selection
   ansible.builtin.command:
     cmd: authselect select --force "{{ var_authselect_profile }}"
+  changed_when: true
   when:
     - result_authselect_current.rc != 0
     - result_authselect_select.rc != 0

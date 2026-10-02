@@ -14,7 +14,9 @@
     package_manager_reinstall_cmd: zypper in -f -y
   when: ansible_distribution == "SLES"
 
-- name: "Read files with incorrect hash"
+# noqa command-instead-of-module: the package module cannot verify installed files (rpm -Va)
+# or query the owning package of a file (rpm -qf); rpm is required for these read-only probes.
+- name: "Read files with incorrect hash"  # noqa: command-instead-of-module
   ansible.builtin.command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noghost --noconfig
   register: files_with_incorrect_hash
   changed_when: False
@@ -22,7 +24,7 @@
   check_mode: False
   when: (package_manager_reinstall_cmd is defined)
 
-- name: Create list of packages
+- name: Create list of packages  # noqa: command-instead-of-module
   ansible.builtin.command: rpm -qf "{{ item }}"
   with_items: "{{ files_with_incorrect_hash.stdout_lines | map('regex_findall', '^[.]+[5]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
   register: list_of_packages
@@ -34,6 +36,7 @@
 
 - name: "Reinstall packages of files with incorrect hash"
   ansible.builtin.command: "{{ package_manager_reinstall_cmd }} '{{ item }}'"
+  changed_when: true
   with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
   when:
     - files_with_incorrect_hash.stdout_lines is defined
