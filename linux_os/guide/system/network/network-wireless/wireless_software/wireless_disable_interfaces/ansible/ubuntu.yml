@@ -10,6 +10,7 @@
     file_type: directory
     patterns: "wireless"
     recurse: yes
+    follow: true
   register: wireless_paths
 
 - name: "{{{ rule_title }}} - Extract interface names from directory paths"
