@@ -1,4 +1,3 @@
-
 title: Ensure that Audit Log Forwarding Uses TLS
 
 description: |-
@@ -46,6 +45,7 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
+    check_existence: "at_least_one_exists"
     # A list of clusterlogforwarders is available at https://docs.openshift.com/container-platform/4.16/observability/logging/logging-6.0/log6x-clf.html#outputs
     # The log forwarder outputs consist of an object and two strings (name and type).
     # The url is part of the object and its name will vary depending on its type.
