@@ -8,7 +8,7 @@
 {{% set aide_service = 'aide.service' %}}
 {{% set aide_notify_service = 'aidecheck-notify.service' %}}
 
-{{% if product in ["sle16"] %}}
+{{% if product not in ['sle12', 'sle15', 'slmicro5', 'slmicro6'] %}}
 - name: "{{{ rule_title }}} - Ensure report_url is set to file:/var/log/aide-report.log in /etc/aide.conf"
   ansible.builtin.lineinfile:
     path: /etc/aide.conf
@@ -19,12 +19,12 @@
 {{% endif %}}
 
 {{% if 'suse' in families and product != 'sle12' %}}
-{{% if product in ["sle16"] %}}
-{{% set aide_service_unit = "/usr/lib/systemd/system/" ~ aide_service %}}
-{{% set aide_notify_unit = "/usr/lib/systemd/system/" ~ aide_notify_service %}}
-{{% else %}}
+{{% if product in ['sle15', 'slmicro5', 'slmicro6'] %}}
 {{% set aide_service_unit = "/etc/systemd/system/" ~ aide_service %}}
 {{% set aide_notify_unit = "/etc/systemd/system/" ~ aide_notify_service %}}
+{{% else %}}
+{{% set aide_service_unit = "/usr/lib/systemd/system/" ~ aide_service %}}
+{{% set aide_notify_unit = "/usr/lib/systemd/system/" ~ aide_notify_service %}}
 {{% endif %}}
 - name: "{{{ rule_title }}} - Gather Service facts"
   ansible.builtin.service_facts:
