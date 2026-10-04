@@ -38,6 +38,7 @@ WantedBy=multi-user.target
 CHECKEOF
 
 chmod 0644 {{{ aide_service_unit }}}
+chown root:root {{{ aide_service_unit }}}
 fi
 
 cat > {{{ aide_notify_unit }}} <<NOTIFYEOF
@@ -50,6 +51,7 @@ ExecStart=/bin/sh -c 'cat /var/log/aide-report.log | /bin/mail -s "$(hostname) -
 NOTIFYEOF
 
 chmod 0644 {{{ aide_notify_unit }}}
+chown root:root {{{ aide_notify_unit }}}
 systemctl daemon-reload
 
 {{% else %}}
