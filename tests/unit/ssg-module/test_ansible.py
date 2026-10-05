@@ -258,6 +258,36 @@ class TestAnsibleSnippetsProcessor:
         assert "ansible.builtin.service_facts" in tasks[3]  # Service facts task
         assert "copy" in tasks[4]  # Other task
 
+    def test_get_ansible_tasks_service_facts_before_service_blocks(self):
+        """Service facts must be gathered before special_service_block tasks.
+
+        The special_service_block tasks rely on ansible_facts.services, so the
+        service_facts task has to be emitted before them.
+        """
+        snippet = """
+        - name: Disable service debug-shell
+          block:
+            - name: Ensure debug-shell.service is masked
+              ansible.builtin.systemd:
+                name: debug-shell.service
+                masked: true
+              when: '"debug-shell.service" in ansible_facts.services'
+          tags:
+            - special_service_block
+        """
+
+        processor = ssg.ansible.AnsibleSnippetsProcessor([snippet])
+        processor.process_snippets()
+
+        tasks = processor.get_ansible_tasks()
+
+        # package_facts_task + package_facts_task + service_facts_task + service_block
+        assert len(tasks) == 4
+        assert tasks[0] == ssg.ansible.package_facts_task
+        assert tasks[1] == ssg.ansible.package_facts_task
+        assert tasks[2] == ssg.ansible.service_facts_task  # Before the service block
+        assert "special_service_block" in tasks[3]["tags"]
+
     def test_get_ansible_tasks_no_package_tasks(self):
         """Test getting ansible tasks when there are no package tasks."""
         snippet = """
