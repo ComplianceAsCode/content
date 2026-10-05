@@ -281,12 +281,50 @@ class TestAnsibleSnippetsProcessor:
 
         tasks = processor.get_ansible_tasks()
 
-        # package_facts_task + package_facts_task + service_facts_task + service_block
-        assert len(tasks) == 4
+        # package_facts + package_facts + service_facts + service_block + service_facts
+        assert len(tasks) == 5
         assert tasks[0] == ssg.ansible.package_facts_task
         assert tasks[1] == ssg.ansible.package_facts_task
         assert tasks[2] == ssg.ansible.service_facts_task  # Before the service block
         assert "special_service_block" in tasks[3]["tags"]
+        assert tasks[4] == ssg.ansible.service_facts_task  # After the service block
+
+    def test_get_ansible_tasks_service_facts_regathered_after_service_blocks(self):
+        """Service facts must be re-gathered after special_service_block tasks.
+
+        A special_service_block may change a service's state (for example start
+        firewalld). Later tasks that assert on ansible_facts.services must see a
+        fresh snapshot, so a second service_facts task is emitted after the
+        service blocks and before the remaining tasks.
+        """
+        snippet = """
+        - name: Enable service firewalld
+          block:
+            - name: Ensure firewalld is started
+              ansible.builtin.systemd:
+                name: firewalld.service
+                state: started
+              when: '"firewalld.service" in ansible_facts.services'
+          tags:
+            - special_service_block
+        - name: Assert firewalld is running
+          ansible.builtin.assert:
+            that:
+              - "'firewalld.service' in ansible_facts.services"
+        """
+
+        processor = ssg.ansible.AnsibleSnippetsProcessor([snippet])
+        processor.process_snippets()
+
+        tasks = processor.get_ansible_tasks()
+
+        # package_facts + package_facts + service_facts + service_block
+        #   + service_facts + assert
+        assert len(tasks) == 6
+        assert tasks[2] == ssg.ansible.service_facts_task  # Before the service block
+        assert "special_service_block" in tasks[3]["tags"]
+        assert tasks[4] == ssg.ansible.service_facts_task  # Re-gathered after
+        assert "ansible.builtin.assert" in tasks[5]  # Sees the fresh facts
 
     def test_get_ansible_tasks_no_package_tasks(self):
         """Test getting ansible tasks when there are no package tasks."""
