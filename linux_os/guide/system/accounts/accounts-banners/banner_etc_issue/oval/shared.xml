@@ -1,10 +1,19 @@
 <def-group>
-  <definition class="compliance" id="banner_etc_issue" version="2">
+  <definition class="compliance" id="banner_etc_issue" version="3">
     {{{ oval_metadata("The system login banner text should be set correctly.", rule_title=rule_title) }}}
-    <criteria>
+    <criteria operator="OR">
+      <criterion comment="/etc/issue is absent" test_ref="test_banner_etc_issue_exists" negate="true"/>
       <criterion comment="/etc/issue is set appropriately" test_ref="test_banner_etc_issue" />
     </criteria>
   </definition>
+
+  <unix:file_test version="1" id="test_banner_etc_issue_exists" check="all" check_existence="all_exist" comment="/etc/issue exists">
+      <unix:object object_ref="object_banner_etc_issue_exists" />
+  </unix:file_test>
+
+  <unix:file_object version="1" id="object_banner_etc_issue_exists">
+      <unix:filepath>/etc/issue</unix:filepath>
+  </unix:file_object>
 
   <ind:textfilecontent54_test check="at least one" check_existence="at_least_one_exists" comment="correct banner in /etc/issue" id="test_banner_etc_issue" version="1">
     <ind:object object_ref="object_banner_etc_issue" />
