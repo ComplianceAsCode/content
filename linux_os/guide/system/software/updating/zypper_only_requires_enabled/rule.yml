@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable Installation of Weak Dependencies in Zypper'
+
+description: |-
+    To disable weak dependencies, set the <tt>solver.onlyRequires</tt> option to <tt>true</tt> in the <tt>/etc/zypp/zypp.conf</tt> file.
+
+rationale: |-
+    Weak dependencies (such as recommended packages) can introduce unneeded software components on the system, increasing the attack surface. Disabling them ensures that only packages strictly required for operations are installed.
+
+severity: medium
+
+platform: package[zypper]
+
+template:
+    name: key_value_pair_in_file
+    vars:
+      path: '/etc/zypp/zypp.conf'
+      prefix_regex: '^\s*'
+      key: 'solver.onlyRequires'
+      value: 'true'
+      sep: '='
+      sep_regex: '='
+      app: 'zypper'
+      test_correct_value: 'true'
+      test_wrong_value: 'false'
