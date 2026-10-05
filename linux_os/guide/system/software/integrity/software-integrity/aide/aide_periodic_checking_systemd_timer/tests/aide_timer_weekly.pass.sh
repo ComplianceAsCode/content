@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro,multi_platform_almalinux
+# platform = multi_platform_almalinux,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro
 # packages = aide
 
 {{% if 'suse' in families %}}
@@ -43,4 +43,7 @@ chmod 0644 /etc/systemd/system/aide.*
 # enable the aide related services
 systemctl daemon-reload
 systemctl enable {{{ aide_service }}}
-systemctl --now enable {{{ aide_timer }}}
+systemctl enable {{{ aide_timer }}}
+if [[ $(systemctl is-system-running) != "offline" ]]; then
+    systemctl start {{{ aide_timer }}}
+fi
