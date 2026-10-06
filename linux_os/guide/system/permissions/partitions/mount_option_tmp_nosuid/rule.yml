@@ -46,12 +46,14 @@ platform: system_with_kernel
 platform: mount[tmp]
 {{% endif %}}
 
+{{% if product != 'sle16' and 'slmicro' not in product %}}
 template:
     name: mount_option
     vars:
         mountpoint: /tmp
         mountoption: nosuid
 # Note that /tmp on RHEL systems is not tmpfs
+{{% endif %}}
 
 fixtext: |-
     {{{ fixtext_mount_option("/tmp", "nosuid") }}}

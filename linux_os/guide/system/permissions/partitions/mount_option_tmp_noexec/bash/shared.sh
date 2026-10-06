@@ -1,4 +1,4 @@
-# platform = SUSE Linux Enterprise Micro 6
+# platform = SUSE Linux Enterprise 16,SUSE Linux Enterprise Micro 5,SUSE Linux Enterprise Micro 6
 # reboot = true
 # strategy = configure
 # complexity = low
