@@ -181,7 +181,6 @@ selections:
     - kernel_module_hfsplus_disabled
     - kernel_module_jffs2_disabled
     - kernel_module_squashfs_disabled
-    - kernel_module_udf_disabled
     - sshd_set_max_auth_tries
     - sshd_max_auth_tries_value=4
     - aide_periodic_checking_systemd_timer
