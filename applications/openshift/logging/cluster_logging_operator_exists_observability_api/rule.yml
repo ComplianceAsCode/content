@@ -1,4 +1,3 @@
-
 title: Ensure that OpenShift Logging Operator is scanning the cluster
 
 description: |-
@@ -38,10 +37,10 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
+    check_existence: "at_least_one_exists"
     filepath: /apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders
     yamlpath: ".items[].metadata.name"
     entity_check: "at least one"
     values:
       - value: ".*"
         operation: "pattern match"
-
