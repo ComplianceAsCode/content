@@ -31,6 +31,13 @@ references:
     cis@sle12: 5.2.13
     cis@sle15: 5.2.13
 
+{{%- if 'rhel' in families %}}
+warnings:
+    - functionality: |-
+        This rule is a legacy rule and it is recommended to use system-wide cryptographic policies. 
+        Use rule <tt>configure_crypto_policy</tt> to configure the system-wide cryptographic policy.
+{{%- endif %}}
+
 ocil_clause: 'ciphers are not configured or not using strong ciphers'
 
 ocil: |-
