@@ -13,7 +13,7 @@ Usage:
       --roles-dir build/ansible_roles \\
       --output-dir /tmp/collection \\
       [--version 0.1.82]  # defaults to the SSG project version from CMakeLists.txt \\
-       [--target galaxy|hub] \\
+      [--target galaxy|hub] \\
       [--collection rhel_hardening_roles] \\
       [--community-general community-general-X.Y.Z.tar.gz] \\
       [--build]
@@ -217,8 +217,6 @@ For an offline installation, install the generated
 See the [ComplianceAsCode release notes](https://github.com/ComplianceAsCode/content/releases).
 
 ## Support
-
-This collection is maintained by Red Hat RHEL Security Content.
 
 As Red Hat Ansible Certified Content, this collection is entitled to support
 through Ansible Automation Platform (AAP) using the Create issue button on the
