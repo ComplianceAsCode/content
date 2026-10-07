@@ -5,7 +5,7 @@ title: 'Disable DHCP Service'
 description: |-
     The <tt>dhcpd</tt> service should be disabled on
     any system that does not need to act as a DHCP server.
-    {{% if product in ['ubuntu2404'] %}}
+    {{% if product in ['debian12', 'ubuntu2404'] %}}
     {{{ describe_service_disable(service="isc-dhcp-server") }}}
     {{% else %}}
     {{{ describe_service_disable(service="dhcpd") }}}

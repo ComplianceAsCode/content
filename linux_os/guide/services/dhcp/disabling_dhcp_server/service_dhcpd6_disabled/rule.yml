@@ -7,6 +7,8 @@ description: |-
     any system that does not need to act as a DHCP server.
     {{% if product in ['ubuntu2404'] %}}
     {{{ describe_service_disable(service="isc-dhcp-server6") }}}
+    {{% elif product == 'debian12' %}}
+    {{{ describe_service_disable(service="isc-dhcp-server") }}}
     {{% else %}}
     {{{ describe_service_disable(service="dhcpd6") }}}
     {{% endif %}}
