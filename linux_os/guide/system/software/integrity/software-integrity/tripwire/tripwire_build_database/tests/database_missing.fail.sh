@@ -1,6 +1,5 @@
 #!/bin/bash
 # packages = tripwire,linux-base
-# platform = multi_platform_debian
 # remediation = none
 
 # No .twd database file exists yet, so the Tripwire database hasn't been

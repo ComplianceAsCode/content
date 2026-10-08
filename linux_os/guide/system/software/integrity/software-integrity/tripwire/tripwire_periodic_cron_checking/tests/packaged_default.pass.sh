@@ -1,11 +1,13 @@
 #!/bin/bash
 # packages = tripwire,linux-base
-# platform = multi_platform_debian
 
 # Matches the /etc/cron.daily/tripwire script shipped by the Debian
-# tripwire package, written explicitly instead of relying on the
-# package's post-install state so this scenario stays deterministic
-# across package versions. Expected result: PASS.
+# tripwire package. Other distributions ship an equivalent script under
+# a different filename (e.g. Fedora's /etc/cron.daily/tripwire-check),
+# which the check also matches since it doesn't depend on the filename.
+# Written explicitly here instead of relying on the packaged file so
+# this scenario stays deterministic across package versions and
+# distributions. Expected result: PASS.
 mkdir -p /etc/cron.daily
 cat > /etc/cron.daily/tripwire <<EOF
 #!/bin/sh -e
