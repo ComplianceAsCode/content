@@ -28,6 +28,13 @@
   ansible.builtin.set_fact:
     count_of_systemd_dropin_files_with_section: "{{systemd_dropin_files_with_section.results | map(attribute='matched') | list | map('int') | sum}}"
 
+- name: "{{{ rule_title }}} - Collect current permissions of existing drop-in files"
+  ansible.builtin.stat:
+    path: "{{item}}"
+  register: systemd_dropin_existing_modes
+  when: count_of_systemd_dropin_files_with_section | int > 0
+  loop: "{{systemd_dropin_files_with_section.results | sum(attribute='files', start=[]) | map(attribute='path') | list }}"
+
 - name: "{{{ rule_title   }}} - Add missing configuration to correct section"
   community.general.ini_file:
     path: "{{item}}"
@@ -40,7 +47,7 @@
 {{% endif %}}
     state: present
     no_extra_spaces: true
-    mode: 0644
+    mode: "{{ (systemd_dropin_existing_modes.results | selectattr('item', 'equalto', item) | map(attribute='stat.mode') | first) | default('0644', true) }}"
   when: count_of_systemd_dropin_files_with_section | int > 0
   loop: "{{systemd_dropin_files_with_section.results | sum(attribute='files', start=[]) | map(attribute='path') | list }}"
 
@@ -57,5 +64,5 @@
     state: present
     no_extra_spaces: true
     create: true
-    mode: 0644
+    mode: '0644'
   when: count_of_systemd_dropin_files_with_section | int == 0

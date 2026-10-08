@@ -61,6 +61,13 @@
 
 {{% else %}}
 
+{{%- if FILEMODE %}}
+- name: Test for existence {{{ path }}}
+  ansible.builtin.stat:
+    path: "{{{ path }}}"
+  register: file_exists
+{{%- endif %}}
+
 - name: Ensure group owner on {{{ path }}}{{% if RECURSIVE %}} recursively{{% endif %}}
   ansible.builtin.file:
     path: "{{{ path }}}"
@@ -71,7 +78,7 @@
 {{% endif %}}
     group: "{{ {{{ _RULE_ID }}}_newgroup }}"
 {{%- if FILEMODE %}}
-    mode: "{{{ FILEMODE }}}"
+    mode: "{{ file_exists.stat.mode if file_exists.stat.exists else '{{{ FILEMODE }}}' }}"
 {{%- endif %}}
 
 {{% endif %}}
@@ -88,7 +95,7 @@
     follow: false
     group: "{{ {{{ _RULE_ID }}}_newgroup }}"
 {{%- if FILEMODE %}}
-    mode: "{{{ FILEMODE }}}"
+    mode: "{{ file_exists.stat.mode }}"
 {{%- endif %}}
   when: file_exists.stat is defined and file_exists.stat.exists
 

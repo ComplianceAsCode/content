@@ -39,7 +39,7 @@ value: :code:`Setting={{ varname1 }}`
     regexp: '{{{ regex }}}'
     {{%- endif %}}
     {{%- if mode %}}
-    mode: '{{{ mode }}}'
+    mode: "{{{ mode }}}"
     {{%- endif %}}
     {{%- if state == 'present' %}}
     line: '{{{ new_line }}}'
