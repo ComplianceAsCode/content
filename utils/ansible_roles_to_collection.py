@@ -557,6 +557,7 @@ _RPM_QV_RE = re.compile(r"^rpm -qV (.+)$")
 _RPM_RESTORE_RE = re.compile(r"^rpm --restore (.+)$")
 _RPM_SETPERMS_RE = re.compile(r"^rpm --setperms (.+)$")
 _RPM_SETUGIDS_RE = re.compile(r"^rpm --setugids (.+)$")
+_RPM_IMPORT_RE = re.compile(r"^rpm --import (.+)$")
 # rsyslog range deletion ('/^start/,/end/d'), single file and *.conf glob.
 _RSYSLOG_RANGE_FILE_RE = re.compile(r"^sed -i '/\^(.+?)/,/(.+?)/d' (\S+)$")
 _RSYSLOG_RANGE_GLOB_RE = re.compile(
@@ -606,6 +607,9 @@ def _match_command_to_ssg(cmd):
     m = _RPM_SETUGIDS_RE.match(cmd)
     if m:
         return {"operation": "rpm_setugids", "name": _unquote(m.group(1))}
+    m = _RPM_IMPORT_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_import", "path": _unquote(m.group(1))}
     m = _RSYSLOG_RANGE_FILE_RE.match(cmd)
     if m:
         return {"operation": "rsyslog_remove", "mode": "range",
