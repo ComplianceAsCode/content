@@ -31,6 +31,7 @@
     cmd: |
       set -o pipefail
       find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*.*$'
+    executable: /bin/bash
   register: find_all_values
   check_mode: false
   changed_when: false
@@ -47,6 +48,7 @@
       set -o pipefail
       find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{{ SYSCTLVAL | escape_regex }}}$'
 {{%- endif %}}
+    executable: /bin/bash
   register: find_correct_value
   check_mode: false
   changed_when: false

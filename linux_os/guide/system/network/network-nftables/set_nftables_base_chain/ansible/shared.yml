@@ -24,6 +24,7 @@
     cmd: |-
       set -o pipefail
       nft list tables | grep '{{ var_nftables_family }} {{ var_nftables_table }}'
+    executable: /bin/bash
   register: existing_nftables
   changed_when: false
   failed_when: false
