@@ -13,6 +13,8 @@ call a binary directly because no stock Ansible module provides the behavior:
 * ``rpm -Va`` / ``rpm -qV`` / ``rpm -qf`` / ``rpm --restore`` /
   ``rpm --setperms`` / ``rpm --setugids`` -- the ``package`` module has no
   verify, query-owner or restore semantics.
+* ``rpm --import`` -- the ``rpm_key`` module cannot import post-quantum (PQC)
+  keys, so the key format introduced for RHEL requires ``rpm --import``.
 * multiline RainerScript block/range removal from the rsyslog configuration --
   ``replace``/``lineinfile`` cannot delete a block conditionally on its content
   or a pattern range across a file glob.
@@ -48,6 +50,7 @@ options:
       - rpm_restore
       - rpm_setperms
       - rpm_setugids
+      - rpm_import
       - rsyslog_remove
   name:
     description:
@@ -56,8 +59,8 @@ options:
     type: str
   path:
     description:
-      - File path argument for C(rpm_query_file) and C(rpm_restore), or the
-        single rsyslog file to edit for C(rsyslog_remove).
+      - File path argument for C(rpm_query_file), C(rpm_restore) and
+        C(rpm_import), or the single rsyslog file to edit for C(rsyslog_remove).
     type: str
   flags:
     description: Extra flags passed to C(rpm -Va) for C(rpm_verify_all).
@@ -308,6 +311,7 @@ def main():
                     "rpm_restore",
                     "rpm_setperms",
                     "rpm_setugids",
+                    "rpm_import",
                     "rsyslog_remove",
                 ],
             ),
@@ -328,6 +332,7 @@ def main():
             ("operation", "rpm_setugids", ("name",)),
             ("operation", "rpm_query_file", ("path",)),
             ("operation", "rpm_restore", ("path",)),
+            ("operation", "rpm_import", ("path",)),
             ("operation", "rsyslog_remove", ("mode",)),
         ],
         supports_check_mode=True,
@@ -354,6 +359,8 @@ def main():
         argv = ["rpm", "--setperms", p["name"]]
     elif op == "rpm_setugids":
         argv = ["rpm", "--setugids", p["name"]]
+    elif op == "rpm_import":
+        argv = ["rpm", "--import", p["path"]]
     else:  # pragma: no cover - guarded by choices
         module.fail_json(msg="unsupported operation %s" % op)
 
