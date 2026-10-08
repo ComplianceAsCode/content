@@ -239,10 +239,12 @@ value: :code:`Setting={{ varname1 }}`
 {{%- set sshd_base_dir = sshd_config_base_dir -%}}
 {{% if product in ["ol8", "ol9"] %}}
 - name: "Find sshd_config included files"
-  ansible.builtin.shell: |-
-    set -o pipefail
-    included_files=$(grep -oP "^\s*(?i)include.*" {{{ sshd_main_config }}} | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|{{{ sshd_base_dir }}}/&|')
-    [[ -n $included_files ]] && ls $included_files || true
+  ansible.builtin.shell:
+    cmd: |-
+      set -o pipefail
+      included_files=$(grep -oP "^\s*(?i)include.*" {{{ sshd_main_config }}} | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|{{{ sshd_base_dir }}}/&|')
+      [[ -n $included_files ]] && ls $included_files || true
+    executable: /bin/bash
   register: sshd_config_included_files
 
 - name: "Comment conf from included files"
@@ -1073,6 +1075,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: |-
       set -o pipefail
       authselect current | tail -n+3 | awk '{ print $2 }'
+    executable: /bin/bash
   register: result_authselect_features
   changed_when: false
   check_mode: false
@@ -1108,6 +1111,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: |-
       set -o pipefail
       authselect current | tail -n+3 | awk '{ print $2 }'
+    executable: /bin/bash
   register: result_authselect_features
   changed_when: false
   check_mode: false
@@ -2109,6 +2113,7 @@ Part of the grub2_bootloader_argument_absent template.
     cmd: |-
       set -o pipefail
       authselect current -r | awk '{ print $1 }'
+    executable: /bin/bash
   register: result_authselect_profile
   changed_when: false
   when:
@@ -2135,6 +2140,7 @@ Part of the grub2_bootloader_argument_absent template.
     cmd: |-
       set -o pipefail
       authselect current | tail -n+3 | awk '{ print $2 }'
+    executable: /bin/bash
   register: result_authselect_features
   changed_when: false
   check_mode: false

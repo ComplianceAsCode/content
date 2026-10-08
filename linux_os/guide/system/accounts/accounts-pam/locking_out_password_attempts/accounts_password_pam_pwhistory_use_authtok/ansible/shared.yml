@@ -18,6 +18,7 @@
     cmd: |-
       set -o pipefail
       authselect current -r | awk '{ print $1 }'
+    executable: /bin/bash
   register: result_authselect_profile
   changed_when: false
   when:

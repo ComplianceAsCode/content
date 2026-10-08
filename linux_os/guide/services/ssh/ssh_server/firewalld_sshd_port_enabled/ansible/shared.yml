@@ -25,6 +25,7 @@
         cmd: |-
           set -o pipefail
           nmcli -g UUID,TYPE con | grep -v loopback | awk -F ':' '{ print $1 }'
+        executable: /bin/bash
       register: result_nmcli_cmd_connections_names
       check_mode: false
       changed_when: false
@@ -35,6 +36,7 @@
         cmd: |-
           set -o pipefail
           nmcli -f connection.zone connection show {{ item | trim }} | awk '{ print $2}'
+        executable: /bin/bash
       register: result_nmcli_cmd_connections_zones
       changed_when: false
       failed_when: false
@@ -72,6 +74,7 @@
         cmd: |-
           set -o pipefail
           firewall-cmd --get-active-zones | grep -v "^ " | cut -d " " -f 1
+        executable: /bin/bash
       register: result_firewall_cmd_zones_names
       changed_when: false
       failed_when: false

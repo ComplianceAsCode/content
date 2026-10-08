@@ -16,6 +16,7 @@
     cmd: |-
       set -o pipefail
       find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*kernel.core_pattern\s*=\s*.*$'
+    executable: /bin/bash
   register: find_all_values
   check_mode: false
   changed_when: false
@@ -26,6 +27,7 @@
     cmd: |-
       set -o pipefail
       find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*kernel.core_pattern\s*=\s*$'
+    executable: /bin/bash
   register: find_correct_value
   check_mode: false
   changed_when: false
