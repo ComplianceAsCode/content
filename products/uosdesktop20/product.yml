@@ -1,0 +1,38 @@
+product: uosdesktop20
+full_name: UOS Desktop 20
+type: platform
+
+families:
+  - uosdesktop
+
+major_version_ordinal: 20
+
+benchmark_id: UOSDESKTOP20
+benchmark_root: "../../linux_os/guide"
+components_root: "../../components"
+
+profiles_root: "./profiles"
+
+pkg_manager: "apt_get"
+
+init_system: "systemd"
+
+aide_conf_path: "/etc/aide/aide.conf"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - uosdesktop20:
+      name: "cpe:/o:uniontech:uos_desktop:20:ga:desktop"
+      title: "UOS Desktop 20"
+      check_id: installed_OS_is_uosdesktop20
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  grub2: grub2-common
+  pam: libpam-runtime
+  shadow: passwd
+  audit: auditd
+  polkit: policykit-1
+
+reference_uris:
+  cis: 'https://www.uniontech.com/'

@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Permissions on gshadow File'
 
-{{% if "ubuntu" in product or "debian" in product %}}
+{{% if "ubuntu" in product or "debian" in product or "uosdesktop" in product %}}
     {{% set target_perms_octal="0640" %}}
     {{% set target_perms="-rw-r-----" %}}
 {{% else %}}
@@ -61,3 +61,4 @@ template:
         filemode@debian13: '0640'
         filemode@ubuntu2204: '0640'
         filemode@ubuntu2404: '0640'
+        filemode@uosdesktop20: '0640'
