@@ -251,6 +251,46 @@ See the [ComplianceAsCode release notes](https://github.com/ComplianceAsCode/con
 """
 
 
+# Ansible Lint configuration bundled into the collection root so that it travels
+# inside the built tarball. ansible-lint auto-discovers a .ansible-lint in the
+# collection directory, so this makes the waivers apply both to the GitHub
+# partner-certification-checker and to galaxy-importer when the tarball is
+# uploaded directly to Red Hat Automation Hub.
+ANSIBLE_LINT_CONFIG = """\
+---
+# Ansible Lint configuration for the generated hardening collection.
+#
+# This file is emitted by utils/ansible_roles_to_collection.py so it is bundled
+# inside the collection tarball; do not edit it in the published collection, edit
+# ANSIBLE_LINT_CONFIG in that script instead.
+#
+# Automation Hub certification requires the "production" profile. The roles are
+# machine-generated from the SCAP remediations in ComplianceAsCode/content, so
+# the waivers below are inherent to that generation, not authored defects.
+profile: production
+
+# Generated collection metadata that should not be linted as playbook content.
+exclude_paths:
+  - changelogs
+  - .ansible
+  - .github
+
+skip_list:
+  # Waived upstream in ComplianceAsCode/content CI:
+  - yaml                       # yamllint is run separately upstream
+  - no-free-form               # generated set_fact/command use free-form
+  - jinja[spacing]
+  - key-order[task]
+  - fqcn[action-core]
+  - name[template]
+  - no-tabs
+  # Enforced under the production profile; tripped by generated content:
+  - var-naming[no-role-prefix] # SCAP variable names are not role-prefixed
+  - var-naming[pattern]        # SCAP variable names
+  - ignore-errors
+"""
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Bundle Ansible roles into an Ansible collection for Ansible Galaxy publishing."
@@ -514,6 +554,14 @@ def generate_readme(
     print("Generated README.md")
 
 
+def generate_ansible_lint(collection_dir):
+    """Write .ansible-lint into the collection root so it ships in the tarball."""
+    ansible_lint_path = os.path.join(collection_dir, ".ansible-lint")
+    with open(ansible_lint_path, "w", encoding="utf-8") as f:
+        f.write(ANSIBLE_LINT_CONFIG)
+    print("Generated .ansible-lint")
+
+
 def generate_collection_docs(
     collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
     license_name=COLLECTION_LICENSE_NAME,
@@ -535,6 +583,8 @@ def generate_collection_docs(
     with open(changelogs_readme_path, "w", encoding="utf-8") as f:
         f.write(CHANGELOGS_README)
     print("Generated changelogs/README.md")
+
+    generate_ansible_lint(collection_dir)
 
     shutil.copy2(os.path.join(SSG_ROOT, "LICENSE"), collection_dir)
     print("Copied LICENSE")
