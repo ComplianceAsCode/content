@@ -12,7 +12,7 @@
 
 - name: Check if IPv6 is Disabled in grub Configuration
   ansible.builtin.shell:
-    cmd: |
+    cmd: |-
       set -o pipefail
       [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ]
     executable: /bin/bash
