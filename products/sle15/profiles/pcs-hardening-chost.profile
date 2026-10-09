@@ -110,7 +110,6 @@ selections:
     - disable_ctrlaltdel_burstaction
     - display_login_attempts
     - ensure_gpgcheck_globally_activated
-    - file_etc_security_opasswd
     - file_groupownership_system_commands_dirs
     - file_permissions_home_directories
     - inactivity_timeout_value=15_minutes
