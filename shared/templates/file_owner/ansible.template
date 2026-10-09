@@ -60,10 +60,20 @@
     follow: false
     owner: "{{ {{{ _RULE_ID }}}_newown }}"
     state: file
+{{%- if FILEMODE %}}
+    mode: "{{{ FILEMODE }}}"
+{{%- endif %}}
   with_items:
     - "{{ files_found.stdout_lines }}"
 
 {{% else %}}
+
+{{%- if FILEMODE %}}
+- name: Test for existence {{{ path }}}
+  ansible.builtin.stat:
+    path: "{{{ path }}}"
+  register: file_exists
+{{%- endif %}}
 
 - name: Ensure owner on directory {{{ path }}}{{% if RECURSIVE %}} recursively{{% endif %}}
   ansible.builtin.file:
@@ -74,6 +84,9 @@
     recurse: yes
 {{% endif %}}
     owner: "{{ {{{ _RULE_ID }}}_newown }}"
+{{%- if FILEMODE %}}
+    mode: "{{ file_exists.stat.mode if file_exists.stat.exists else '{{{ FILEMODE }}}' }}"
+{{%- endif %}}
 
 {{% endif %}}
 {{% else %}}
@@ -88,6 +101,9 @@
     path: "{{{ path }}}"
     follow: false
     owner: "{{ {{{ _RULE_ID }}}_newown }}"
+{{%- if FILEMODE %}}
+    mode: "{{ file_exists.stat.mode }}"
+{{%- endif %}}
   when: file_exists.stat is defined and file_exists.stat.exists
 
 {{% endif %}}

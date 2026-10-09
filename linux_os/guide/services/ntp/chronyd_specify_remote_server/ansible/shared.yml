@@ -14,7 +14,10 @@
 
 - name: "Extract sourcedir paths from chrony configuration"
   ansible.builtin.shell:
-    cmd: grep '^[[:space:]]*sourcedir[[:space:]]\+' {{{ chrony_conf_path }}} | awk '{print $2}'
+    cmd: |-
+      set -o pipefail
+      grep '^[[:space:]]*sourcedir[[:space:]]\+' {{{ chrony_conf_path }}} | awk '{print $2}'
+    executable: /bin/bash
   register: chrony_sourcedir_paths
   changed_when: false
   failed_when: false
@@ -25,7 +28,7 @@
     cmd: |
       for dir in {{ chrony_sourcedir_paths.stdout_lines | join(' ') }}; do
         if [ -d "$dir" ]; then
-          grep -q '^[[:space:]]*\(server\|pool\)[[:space:]]\+[[:graph:]]\+' "$dir"/*.sources 2>/dev/null && exit 0
+          grep -q -e '^[[:space:]]*server[[:space:]]\+[[:graph:]]\+' -e '^[[:space:]]*pool[[:space:]]\+[[:graph:]]\+' "$dir"/*.sources 2>/dev/null && exit 0
         fi
       done
       exit 1
@@ -38,7 +41,10 @@
 
 - name: "Extract confdir paths from chrony configuration"
   ansible.builtin.shell:
-    cmd: grep '^[[:space:]]*confdir[[:space:]]\+' {{{ chrony_conf_path }}} | awk '{print $2}'
+    cmd: |-
+      set -o pipefail
+      grep '^[[:space:]]*confdir[[:space:]]\+' {{{ chrony_conf_path }}} | awk '{print $2}'
+    executable: /bin/bash
   register: chrony_confdir_paths
   changed_when: false
   failed_when: false
@@ -51,7 +57,7 @@
     cmd: |
       for dir in {{ chrony_confdir_paths.stdout_lines | join(' ') }}; do
         if [ -d "$dir" ]; then
-          grep -q '^[[:space:]]*\(server\|pool\)[[:space:]]\+[[:graph:]]\+' "$dir"/*.conf 2>/dev/null && exit 0
+          grep -q -e '^[[:space:]]*server[[:space:]]\+[[:graph:]]\+' -e '^[[:space:]]*pool[[:space:]]\+[[:graph:]]\+' "$dir"/*.conf 2>/dev/null && exit 0
         fi
       done
       exit 1

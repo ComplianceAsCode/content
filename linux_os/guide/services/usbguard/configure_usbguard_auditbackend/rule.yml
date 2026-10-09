@@ -51,6 +51,7 @@ template:
     name: key_value_pair_in_file
     vars:
       path: '/etc/usbguard/usbguard-daemon.conf'
+      filemode: '0600'
       prefix_regex: '^[ \\t]*'
       key: 'AuditBackend'
       value: 'LinuxAudit'

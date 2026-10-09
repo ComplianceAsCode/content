@@ -15,5 +15,6 @@
 - name: {{{ rule_title }}} - Ensure the Number of Days of Warning Before Password Expires
   ansible.builtin.command:
     cmd: chage --warndays {{ var_accounts_password_warn_age_login_defs }} {{ item }}
+  changed_when: true
   with_items: '{{ result_pass_warn_age_user_names.stdout_lines }}'
   when: result_pass_warn_age_user_names is not skipped and result_pass_warn_age_user_names.stdout_lines | length > 0

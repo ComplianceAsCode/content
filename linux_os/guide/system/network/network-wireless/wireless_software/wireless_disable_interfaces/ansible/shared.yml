@@ -11,6 +11,7 @@
 
 - name: "{{{ rule_title }}} - Wicked Deactivate Wireless Network Interfaces"
   ansible.builtin.command: wicked ifdown {{ item }}
+  changed_when: true
   loop: '{{ ansible_facts.interfaces }}'
   when:
     - ('wickedd.service' in ansible_facts.services and
@@ -40,6 +41,7 @@
 
 - name: "{{{ rule_title }}} - NetworkManager Deactivate Wireless Network Interfaces"
   ansible.builtin.command: nmcli radio wifi off
+  changed_when: true
   when:
     - "'NetworkManager' in ansible_facts.packages"
     - ('NetworkManager.service' in ansible_facts.services and

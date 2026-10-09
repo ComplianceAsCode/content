@@ -20,6 +20,9 @@ def preprocess(data, lang):
         if any(element.isnumeric() for element in groups):
             raise ValueError("gid_or_name list cannot contain gids when there are multiple groups")
 
+    if "filemode" not in data:
+        data["filemode"] = ""
+
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
     return data

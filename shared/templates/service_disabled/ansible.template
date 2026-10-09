@@ -9,10 +9,7 @@
 - name: "{{{ rule_title }}} - Disable service {{{ SERVICENAME }}}"
   block:
   - name: "{{{ rule_title }}} - Collect systemd Services Present in the System"
-    ansible.builtin.command: systemctl -q list-unit-files --type service
-    register: service_exists
-    changed_when: false
-    failed_when: service_exists.rc not in [0, 1]
+    ansible.builtin.service_facts:
     check_mode: false
 
   - name: "{{{ rule_title }}} - Ensure {{{ DAEMONNAME }}}.service is Masked"
@@ -21,13 +18,18 @@
       state: "stopped"
       enabled: false
       masked: true
-    when: 'service_exists.stdout_lines is search("{{{ SERVICENAME }}}.service", multiline=True)'
+    when: '"{{{ SERVICENAME }}}.service" in ansible_facts.services'
 
   - name: "Unit Socket Exists - {{{ DAEMONNAME }}}.socket"
-    ansible.builtin.command: systemctl -q list-unit-files {{{ DAEMONNAME }}}.socket
+    ansible.builtin.find:
+      paths:
+        - /etc/systemd/system
+        - /run/systemd/system
+        - /usr/lib/systemd/system
+        - /usr/local/lib/systemd/system
+      patterns: "{{{ DAEMONNAME }}}.socket"
+      file_type: any
     register: socket_file_exists
-    changed_when: false
-    failed_when: socket_file_exists.rc not in [0, 1]
     check_mode: false
 
   - name: "{{{ rule_title }}} - Disable Socket {{{ SERVICENAME }}}"
@@ -36,7 +38,7 @@
       enabled: false
       state: "stopped"
       masked: true
-    when: 'socket_file_exists.stdout_lines is search("{{{ DAEMONNAME }}}.socket", multiline=True)'
+    when: socket_file_exists.matched > 0
 {{%- else %}}
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
 {{%- endif %}}

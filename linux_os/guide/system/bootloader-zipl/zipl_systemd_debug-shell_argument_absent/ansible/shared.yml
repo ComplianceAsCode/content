@@ -15,6 +15,7 @@
 
     - name: "Remove systemd.debug-shell from boot entries"
       ansible.builtin.command: grubby --update-kernel=ALL --remove-args="systemd.debug-shell"
+      changed_when: true
       when: n_entries is defined and n_entries.matched >= 1
 
     - name: "Check if /etc/kernel/cmdline exists"

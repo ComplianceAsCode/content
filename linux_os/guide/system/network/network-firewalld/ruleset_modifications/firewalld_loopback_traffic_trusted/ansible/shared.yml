@@ -17,18 +17,12 @@
 - name: '{{{ rule_title }}} - Remediation is Applicable if firewalld Service is Running'
   block:
     - name: '{{{ rule_title }}} - Ensure firewalld trusted Zone Includes lo Interface'
-      ansible.builtin.command:
-        cmd: firewall-cmd --permanent --zone=trusted --add-interface=lo
-      register: result_lo_interface_assignment
-      changed_when:
-        - "'ALREADY_ENABLED' not in result_lo_interface_assignment.stderr"
-
-    - name: '{{{ rule_title }}} - Ensure firewalld Changes are Applied'
-      ansible.builtin.service:
-        name: firewalld
-        state: reloaded
-      when:
-        - result_lo_interface_assignment is changed
+      ansible.posix.firewalld:
+        zone: trusted
+        interface: lo
+        permanent: true
+        immediate: true
+        state: enabled
   when:
     - ('firewalld.service' in ansible_facts.services and
        ansible_facts.services['firewalld.service'].state == 'running')

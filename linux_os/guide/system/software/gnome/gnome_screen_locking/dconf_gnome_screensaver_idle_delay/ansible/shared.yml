@@ -37,6 +37,7 @@
 
 - name: Dconf Update
   ansible.builtin.command: dconf update
+  changed_when: true
 {{% if 'ubuntu' in product or product in ["sle15", "sle16"] %}}
   when: result_ini is changed or result_lineinfile is changed
 {{% else %}}

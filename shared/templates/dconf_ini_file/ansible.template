@@ -61,4 +61,5 @@
 
 - name: "Dconf Update - {{{ PARAMETER }}}"
   ansible.builtin.command: dconf update
+  changed_when: true
   when: default_file is changed or existing_files is changed

@@ -5,4 +5,5 @@ def preprocess(data, lang):
     data["escape_text"] = parse_template_boolean_value(data,
                                                      parameter="escape_text",
                                                      default_value=True)
+    data["filemode"] = data.get("filemode", "")
     return data
