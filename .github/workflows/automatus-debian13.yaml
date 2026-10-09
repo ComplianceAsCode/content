@@ -72,7 +72,7 @@ jobs:
           echo "CTF_OUTPUT_SIZE=$(stat --printf="%s"
           output.json)" >> $GITHUB_OUTPUT
         id: ctf
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: output.json
@@ -102,7 +102,7 @@ jobs:
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product debian13
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ${{ env.DATASTREAM }}
@@ -264,7 +264,7 @@ jobs:
           ${{steps.bash.outputs.prop == 'True'
           && steps.check_results_bash.outcome == 'success'
           && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4
         with:
           name: logs_bash
           path: logs_bash/
@@ -298,7 +298,7 @@ jobs:
           ${{ steps.ansible.outputs.prop == 'True'
           && steps.check_results_ansible.outcome == 'success'
           && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4
         with:
           name: logs_ansible
           path: logs_ansible/
