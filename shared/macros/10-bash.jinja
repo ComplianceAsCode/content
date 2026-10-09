@@ -956,7 +956,7 @@ Priority: 1025
 Conflicts: cracklib, pwquality
 Password-Type: Primary
 Password:
-    requisite                   pam_pwquality.so
+    requisite                   pam_pwquality.so retry=3
 EOF
     chmod 0644 /usr/share/pam-configs/"$conf_name"
 fi
