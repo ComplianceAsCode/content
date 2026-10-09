@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# packages = sudo
 echo "%wheel        ALL=(ALL)       NOPASSWD:  /bin/systemctl, /bin/lsof, /bin/date" >> /etc/sudoers
 chmod 440 /etc/sudoers
 
