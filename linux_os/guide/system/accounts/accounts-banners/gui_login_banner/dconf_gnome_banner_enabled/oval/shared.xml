@@ -8,7 +8,7 @@
         <criterion comment="Enable GUI banner" test_ref="test_banner_gui_enabled" />
         <criterion comment="Prevent user from disabling banner" test_ref="test_prevent_user_banner_gui_enabled_change" />
       </criteria>
-      {{%- if 'ubuntu' in product %}}
+      {{%- if 'ubuntu' in product and product != "ubuntu2604" %}}
       <criterion comment="Enable GUI banner in /etc/gdm3/greeter.dconf-defaults" test_ref="test_banner_gui_enabled_dconf_defaults" />
       {{%- endif %}}
     </criteria>

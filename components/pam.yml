@@ -1,189 +1,191 @@
 groups:
-- account_expiration
-- accounts
-- accounts-banners
-- password_expiration
-- password_quality
-- password_quality_pamcracklib
+  - account_expiration
+  - accounts
+  - accounts-banners
+  - password_expiration
+  - password_quality
+  - password_quality_pamcracklib
 name: pam
 packages:
-- pam
-- pam_apparmor
-- libnss-sss
-- libpam-runtime
-- libpam-modules
-- libpam-sss
+  - pam
+  - pam_apparmor
+  - libnss-sss
+  - libpam-runtime
+  - libpam-modules
+  - libpam-sss
 rules:
-- account_disable_inactivity_password_auth
-- account_disable_inactivity_system_auth
-- account_disable_post_pw_expiration
-- account_emergency_admin
-- account_emergency_expire_date
-- account_password_pam_faillock_password_auth
-- account_password_pam_faillock_system_auth
-- account_password_selinux_faillock_dir
-- account_passwords_pam_faillock_audit
-- account_passwords_pam_faillock_dir
-- accounts_passwords_pam_tally2_file
-- accounts_passwords_pam_tally2_file_selinux
-- account_temp_expire_date
-- account_unique_id
-- account_unique_name
-- account_use_centralized_automated_auth
-- accounts_logon_fail_delay
-- accounts_max_concurrent_login_sessions
-- accounts_maximum_age_login_defs
-- accounts_minimum_age_login_defs
-- accounts_no_uid_except_zero
-- accounts_password_all_shadowed
-- accounts_password_all_shadowed_sha512
-- accounts_password_last_change_is_in_past
-- accounts_password_minlen_login_defs
-- accounts_password_pam_modules_in_authselect_profile
-- accounts_password_pam_pwhistory_enabled
-- accounts_password_pam_pwhistory_enforce_root
-- accounts_password_pam_pwhistory_enforce_for_root
-- accounts_password_pam_pwhistory_remember
-- accounts_password_pam_pwhistory_remember_password_auth
-- accounts_password_pam_pwhistory_remember_system_auth
-- accounts_password_pam_pwhistory_use_authtok
-- accounts_password_pam_pwquality_retry
-- accounts_password_pam_pwquality_enabled
-- accounts_password_pam_unix_enabled
-- accounts_password_pam_unix_no_remember
-- accounts_password_pam_unix_authtok
-- accounts_password_pam_unix_rounds_password_auth
-- accounts_password_pam_unix_rounds_system_auth
-- accounts_password_set_max_life_existing
-- accounts_password_set_max_life_root
-- accounts_password_set_min_life_existing
-- accounts_password_set_warn_age_existing
-- accounts_password_warn_age_login_defs
-- accounts_passwords_pam_faildelay_delay
-- accounts_passwords_pam_faillock_audit
-- accounts_passwords_pam_faillock_deny
-- accounts_passwords_pam_faillock_deny_root
-- accounts_passwords_pam_faillock_dir
-- accounts_passwords_pam_faillock_even_deny_root_or_root_unlock_time
-- accounts_passwords_pam_faillock_enforce_local
-- accounts_passwords_pam_faillock_interval
-- accounts_passwords_pam_faillock_silent
-- accounts_passwords_pam_faillock_root_unlock_time
-- accounts_passwords_pam_faillock_unlock_time
-- accounts_passwords_pam_faillock_unlock_time_with_zero
-- accounts_passwords_pam_faillock_enabled
-- accounts_passwords_pam_tally2
-- accounts_passwords_pam_tally2_deny_root
-- accounts_passwords_pam_tally2_unlock_time
-- accounts_polyinstantiated_tmp
-- accounts_polyinstantiated_var_tmp
-- accounts_root_gid_zero
-- accounts_root_path_dirs_no_write
-- accounts_set_post_pw_existing
-- accounts_umask_etc_login_defs
-- accounts_umask_interactive_users
-- accounts_umask_root
-- accounts_users_netrc_file_permissions
-- accounts_users_own_home_directories
-- audit_rules_privileged_commands_pam_timestamp_check
-- authconfig_config_files_symlinks
-- banner_etc_gdm_banner
-- banner_etc_issue
-- banner_etc_issue_cis
-- banner_etc_issue_net
-- banner_etc_issue_net_cis
-- banner_etc_motd
-- banner_etc_motd_cis
-- banner_etc_profiled_ssh_confirm
-- coreos_disable_interactive_boot
-- cracklib_accounts_password_pam_dcredit
-- cracklib_accounts_password_pam_difok
-- cracklib_accounts_password_pam_lcredit
-- cracklib_accounts_password_pam_minlen
-- cracklib_accounts_password_pam_ocredit
-- cracklib_accounts_password_pam_retry
-- cracklib_accounts_password_pam_ucredit
-- disable_users_coredumps
-- disallow_bypass_password_sudo
-- display_login_attempts
-- enable_authselect
-- enable_pam_namespace
-- ensure_pam_wheel_group_empty
-- ensure_root_access_controlled
-- ensure_root_password_configured
-- ensure_shadow_group_empty
-- ensure_sudo_group_restricted
-- file_etc_security_opasswd
-- file_groupowner_etc_issue
-- file_groupowner_etc_issue_net
-- file_groupowner_etc_motd
-- file_groupownership_lastlog
-- file_owner_etc_issue
-- file_owner_etc_issue_net
-- file_owner_etc_motd
-- file_ownership_home_directories
-- file_ownership_lastlog
-- file_permissions_etc_issue
-- file_permissions_etc_issue_net
-- file_permissions_etc_motd
-- file_permissions_lastlog
-- group_unique_id
-- group_unique_name
-- groups_no_zero_gid_except_root
-- gui_login_dod_acknowledgement
-- install_smartcard_packages
-- no_direct_root_logins
-- no_dirs_unowned_by_root
-- no_duplicate_uids
-- no_empty_passwords
-- no_empty_passwords_unix
-- no_invalid_shell_accounts_unlocked
-- no_legacy_plus_entries_etc_group
-- no_legacy_plus_entries_etc_passwd
-- no_legacy_plus_entries_etc_shadow
-- no_netrc_files
-- no_nologin_in_shells
-- no_password_auth_for_systemaccounts
-- no_rhost_files
-- no_root_webbrowsing
-- no_shelllogin_for_systemaccounts
-- package_nss_sss_installed
-- package_pam_installed
-- package_pam_apparmor_installed
-- package_pam_modules_installed
-- package_pam_pwquality_installed
-- package_pam_runtime_installed
-- package_pam_sss_installed
-- package_pcsc-lite_installed
-- package_screen_installed
-- pam_disable_automatic_configuration
-- passwd_system-auth_substack
-- policy_temp_passwords_immediate_change
-- prevent_direct_root_logins
-- require_singleuser_auth
-- restrict_serial_port_logins
-- root_path_all_dirs
-- root_path_default
-- sebool_httpd_mod_auth_pam
-- securetty_root_login_console_only
-- service_pcscd_enabled
-- set_password_hashing_algorithm_auth_stig
-- set_password_hashing_algorithm_commonauth
-- set_password_hashing_algorithm_logindefs
-- set_password_hashing_algorithm_passwordauth
-- set_password_hashing_algorithm_systemauth
-- set_password_hashing_min_rounds_logindefs
-- set_password_hashing_yescrypt_cost_factor_logindefs
-- smartcard_auth
-- smartcard_configure_ca
-- smartcard_configure_cert_checking
-- smartcard_configure_crl
-- smartcard_pam_enabled
-- sshd_enable_pam
-- sssd_enable_pam_services
-- use_pam_wheel_for_su
-- use_pam_wheel_group_for_su
-- verify_use_mappers
-- vlock_installed
+  - account_disable_inactivity_password_auth
+  - account_disable_inactivity_system_auth
+  - account_disable_post_pw_expiration
+  - account_emergency_admin
+  - account_emergency_expire_date
+  - account_password_pam_faillock_password_auth
+  - account_password_pam_faillock_system_auth
+  - account_password_selinux_faillock_dir
+  - account_passwords_pam_faillock_audit
+  - account_passwords_pam_faillock_dir
+  - accounts_passwords_pam_tally2_file
+  - accounts_passwords_pam_tally2_file_selinux
+  - account_temp_expire_date
+  - account_unique_id
+  - account_unique_name
+  - account_use_centralized_automated_auth
+  - accounts_logon_fail_delay
+  - accounts_max_concurrent_login_sessions
+  - accounts_maximum_age_login_defs
+  - accounts_minimum_age_login_defs
+  - accounts_no_uid_except_zero
+  - accounts_password_all_shadowed
+  - accounts_password_all_shadowed_sha512
+  - accounts_password_last_change_is_in_past
+  - accounts_password_minlen_login_defs
+  - accounts_password_pam_modules_in_authselect_profile
+  - accounts_password_pam_pwhistory_enabled
+  - accounts_password_pam_pwhistory_enforce_root
+  - accounts_password_pam_pwhistory_enforce_for_root
+  - accounts_password_pam_pwhistory_remember
+  - accounts_password_pam_pwhistory_remember_password_auth
+  - accounts_password_pam_pwhistory_remember_system_auth
+  - accounts_password_pam_pwhistory_use_authtok
+  - accounts_password_pam_pwquality_retry
+  - accounts_password_pam_pwquality_enabled
+  - accounts_password_pam_unix_enabled
+  - accounts_password_pam_unix_no_remember
+  - accounts_password_pam_unix_authtok
+  - accounts_password_pam_unix_rounds_password_auth
+  - accounts_password_pam_unix_rounds_system_auth
+  - accounts_password_set_max_life_existing
+  - accounts_password_set_max_life_root
+  - accounts_password_set_min_life_existing
+  - accounts_password_set_warn_age_existing
+  - accounts_password_warn_age_login_defs
+  - accounts_passwords_pam_faildelay_delay
+  - accounts_passwords_pam_faillock_audit
+  - accounts_passwords_pam_faillock_deny
+  - accounts_passwords_pam_faillock_deny_root
+  - accounts_passwords_pam_faillock_dir
+  - accounts_passwords_pam_faillock_even_deny_root_or_root_unlock_time
+  - accounts_passwords_pam_faillock_enforce_local
+  - accounts_passwords_pam_faillock_interval
+  - accounts_passwords_pam_faillock_silent
+  - accounts_passwords_pam_faillock_root_unlock_time
+  - accounts_passwords_pam_faillock_unlock_time
+  - accounts_passwords_pam_faillock_unlock_time_with_zero
+  - accounts_passwords_pam_faillock_enabled
+  - accounts_passwords_pam_tally2
+  - accounts_passwords_pam_tally2_deny_root
+  - accounts_passwords_pam_tally2_unlock_time
+  - accounts_polyinstantiated_tmp
+  - accounts_polyinstantiated_var_tmp
+  - accounts_root_gid_zero
+  - accounts_root_path_dirs_no_write
+  - accounts_set_post_pw_existing
+  - accounts_umask_etc_login_defs
+  - accounts_umask_interactive_users
+  - accounts_umask_root
+  - accounts_users_netrc_file_permissions
+  - accounts_users_own_home_directories
+  - audit_rules_privileged_commands_pam_timestamp_check
+  - authconfig_config_files_symlinks
+  - banner_etc_gdm_banner
+  - banner_etc_issue
+  - banner_etc_issue_cis
+  - banner_etc_issue_net
+  - banner_etc_issue_net_cis
+  - banner_etc_motd
+  - banner_etc_motd_cis
+  - banner_etc_profiled_ssh_confirm
+  - coreos_disable_interactive_boot
+  - cracklib_accounts_password_pam_dcredit
+  - cracklib_accounts_password_pam_difok
+  - cracklib_accounts_password_pam_lcredit
+  - cracklib_accounts_password_pam_minlen
+  - cracklib_accounts_password_pam_ocredit
+  - cracklib_accounts_password_pam_retry
+  - cracklib_accounts_password_pam_ucredit
+  - disable_users_coredumps
+  - disallow_bypass_password_sudo
+  - display_login_attempts
+  - enable_authselect
+  - enable_pam_namespace
+  - ensure_pam_wheel_group_empty
+  - ensure_root_access_controlled
+  - ensure_root_password_configured
+  - ensure_shadow_group_empty
+  - ensure_sudo_group_restricted
+  - file_etc_security_opasswd
+  - file_groupowner_etc_issue
+  - file_groupowner_etc_issue_net
+  - file_groupowner_etc_motd
+  - file_groupownership_lastlog
+  - file_owner_etc_issue
+  - file_owner_etc_issue_net
+  - file_owner_etc_motd
+  - file_ownership_home_directories
+  - file_ownership_lastlog
+  - file_permissions_etc_issue
+  - file_permissions_etc_issue_net
+  - file_permissions_etc_motd
+  - file_permissions_pam_motd
+  - file_permissions_lastlog
+  - group_unique_id
+  - group_unique_name
+  - groups_no_zero_gid_except_root
+  - gui_login_dod_acknowledgement
+  - install_smartcard_packages
+  - no_direct_root_logins
+  - no_dirs_unowned_by_root
+  - no_duplicate_uids
+  - no_empty_passwords
+  - no_empty_passwords_unix
+  - no_invalid_shell_accounts_unlocked
+  - no_legacy_plus_entries_etc_group
+  - no_legacy_plus_entries_etc_passwd
+  - no_legacy_plus_entries_etc_shadow
+  - no_netrc_files
+  - no_nologin_in_shells
+  - no_password_auth_for_systemaccounts
+  - no_rhost_files
+  - no_root_webbrowsing
+  - no_shelllogin_for_systemaccounts
+  - package_nss_sss_installed
+  - package_pam_installed
+  - package_pam_apparmor_installed
+  - package_pam_modules_installed
+  - package_pam_pwquality_installed
+  - package_pam_runtime_installed
+  - package_pam_sss_installed
+  - package_pcsc-lite_installed
+  - package_screen_installed
+  - pam_disable_automatic_configuration
+  - pam_motd_configured
+  - passwd_system-auth_substack
+  - policy_temp_passwords_immediate_change
+  - prevent_direct_root_logins
+  - require_singleuser_auth
+  - restrict_serial_port_logins
+  - root_path_all_dirs
+  - root_path_default
+  - sebool_httpd_mod_auth_pam
+  - securetty_root_login_console_only
+  - service_pcscd_enabled
+  - set_password_hashing_algorithm_auth_stig
+  - set_password_hashing_algorithm_commonauth
+  - set_password_hashing_algorithm_logindefs
+  - set_password_hashing_algorithm_passwordauth
+  - set_password_hashing_algorithm_systemauth
+  - set_password_hashing_min_rounds_logindefs
+  - set_password_hashing_yescrypt_cost_factor_logindefs
+  - smartcard_auth
+  - smartcard_configure_ca
+  - smartcard_configure_cert_checking
+  - smartcard_configure_crl
+  - smartcard_pam_enabled
+  - sshd_enable_pam
+  - sssd_enable_pam_services
+  - use_pam_wheel_for_su
+  - use_pam_wheel_group_for_su
+  - verify_use_mappers
+  - vlock_installed
 templates:
-- pam_options
+  - pam_options

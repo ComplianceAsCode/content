@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Disable and Mask update-notifier-motd Service'
+
+description: |-
+    The update-notifier-motd service generates dynamic message-of-the-day
+    content. {{{ describe_service_disable(service="update-notifier-motd") }}}
+
+rationale: |-
+    Disabling dynamic MOTD updates prevents unaudited network and system data
+    from being added to login banners.
+
+severity: medium
+
+platform: system_with_kernel
+
+warnings:
+    - general: |-
+        update-notifier-motd.service is a static, oneshot unit triggered by
+        update-notifier-motd.timer. A static unit cannot be enabled, and a oneshot
+        unit is inactive except while it runs, so this check reports the same result
+        whether or not the unit has been masked. The timer rule is what detects the
+        MOTD updates actually being in use.

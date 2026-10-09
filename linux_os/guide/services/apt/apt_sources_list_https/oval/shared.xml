@@ -1,0 +1,20 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("APT repositories in /etc/apt/sources.list use HTTPS.", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="No active HTTP repository is configured"
+        test_ref="test_{{{ rule_id }}}_no_http" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    id="test_{{{ rule_id }}}_no_http" version="1"
+    comment="No active deb entry uses HTTP">
+    <ind:object object_ref="obj_{{{ rule_id }}}_http" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_http" version="1">
+    <ind:filepath>/etc/apt/sources.list</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*deb(-src)?[\s]+(\[[^\]]*\][\s]+)?http://.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

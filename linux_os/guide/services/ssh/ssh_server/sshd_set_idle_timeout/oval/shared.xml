@@ -29,6 +29,10 @@
         definition_ref="package_openssh-server_installed" />
         {{% endif %}}
         <criteria comment="ClientAliveInterval is configured correctly" operator="AND">
+          {{%- if product == "ubuntu2604" %}}
+          <criterion comment="Check ClientAliveInterval across the SSH configuration"
+          test_ref="test_sshd_idle_timeout_all_config" />
+          {{%- else %}}
           {{%- if product in ["sle16", "slmicro6"] %}}
           <criterion comment="test if configuration file {{{ sshd_main_config }}} exists for {{{ rule_id }}}"
               test_ref="test_{{{ rule_id }}}_config_file_exists"/>
@@ -44,8 +48,9 @@
           <criterion comment="Check ClientAliveInterval in included files"
           test_ref="test_sshd_idle_timeout_included_files"/>
           {{%- endif %}}
+          {{%- endif %}}
         </criteria>
-        {{%- if product not in ["ol8", "ol9"] and "rhel" not in product %}}
+        {{%- if product != "ubuntu2604" and product not in ["ol8", "ol9"] and "rhel" not in product %}}
         <extend_definition comment="The SSH ClientAliveCountMax is set to zero" definition_ref="sshd_set_keepalive" />
         {{% endif %}}
       </criteria>
@@ -146,6 +151,15 @@
     </set>
   </ind:textfilecontent54_object>
 
+  {{%- if product == "ubuntu2604" %}}
+  <ind:textfilecontent54_test id="test_sshd_idle_timeout_all_config" version="1"
+    check="all" check_existence="at_least_one_exists" state_operator="AND"
+    comment="Verify ClientAliveInterval across the SSH configuration">
+    <ind:object object_ref="obj_collection_obj_sshd_set_idle_timeout" />
+    <ind:state state_ref="state_timeout_value_upper_bound" />
+    <ind:state state_ref="state_timeout_value_lower_bound" />
+  </ind:textfilecontent54_test>
+  {{%- endif %}}
 
   <external_variable comment="timeout value" datatype="int"
   id="sshd_idle_timeout_value" version="1" />
