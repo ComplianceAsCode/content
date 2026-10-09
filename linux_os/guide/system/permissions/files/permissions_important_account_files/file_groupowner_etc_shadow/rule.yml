@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns shadow File'
 
-{{% if "ubuntu" in product or "debian" in product or "sle" in product %}}
+{{% if "ubuntu" in product or "debian" in product or "sle" in product or "uosdesktop" in product %}}
     {{% set target_group="shadow" %}}
 {{% else %}}
     {{% set target_group="root" %}}
@@ -56,7 +56,7 @@ template:
         filepath: /etc/shadow
 {{% if "sle" in product %}}
         gid_or_name: '15'
-{{% elif "ubuntu" in product or "debian" in product %}}
+{{% elif "ubuntu" in product or "debian" in product or "uosdesktop" in product %}}
         gid_or_name: '42'
 {{% else %}}
         gid_or_name: '0'
