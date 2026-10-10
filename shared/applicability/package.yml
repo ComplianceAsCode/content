@@ -127,7 +127,7 @@ args:
     pkgname: rsh-server
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
-    {{% if 'suse' in families or product in ["kylinserver10", "kylinsecserver6", "openeuler2203"] %}}
+    {{% if 'suse' in families or product in ["kylinserver10", "kylinsecserver6", "openeuler2203", "uosserver25"] %}}
       pkgname: shadow
     {{% elif product in ["openembedded"] %}}
       pkgname: shadow-base
