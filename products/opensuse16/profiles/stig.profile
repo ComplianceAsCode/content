@@ -10,6 +10,7 @@ description: |-
 selections:
     - srg_gpos:all
     - package_audit-audispd-plugins_installed
+    - enable_dconf_user_profile
     - '!aide_periodic_cron_checking'
     - '!aide_verify_ext_attributes'
     - '!enable_fips_mode'
