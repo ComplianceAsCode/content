@@ -1,20 +1,20 @@
 <def-group>
-  <definition class="compliance" id="banner_etc_issue" version="2">
+  <definition class="compliance" id="banner_etc_issue" version="4">
     {{{ oval_metadata("The system login banner text should be set correctly.", rule_title=rule_title) }}}
     <criteria>
-      <criterion comment="/etc/issue is set appropriately" test_ref="test_banner_etc_issue" />
+      <criterion comment="correct banner in /etc/issue" test_ref="test_banner_etc_issue" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="at least one" check_existence="at_least_one_exists" comment="correct banner in /etc/issue" id="test_banner_etc_issue" version="1">
+  <ind:textfilecontent54_test check="at least one" check_existence="at_least_one_exists" comment="correct banner in /etc/issue" id="test_banner_etc_issue" version="2">
     <ind:object object_ref="object_banner_etc_issue" />
     <ind:state state_ref="state_banner_etc_issue" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_banner_etc_issue" version="1">
+  <ind:textfilecontent54_object id="object_banner_etc_issue" version="2">
     <ind:behaviors singleline="true" multiline="false" />
     <ind:filepath operation="pattern match">^/etc/issue(\.d/.*)?$</ind:filepath>
-    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+    <ind:pattern operation="pattern match">^(.+)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
