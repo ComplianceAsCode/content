@@ -14,6 +14,7 @@ jobs:
 - &build
   job: copr_build
   trigger: pull_request
+  identifier: main
   targets:
   - fedora-all-x86_64
   - centos-stream-8-x86_64
@@ -31,6 +32,20 @@ jobs:
 #   and calling Contest to test that OS-installed RPM content
 
 - &contest-host-os-oscap
+   job: copr_build
+   trigger: pull_request
+   identifier: mock
+   targets:
+   - fedora-all-x86_64
+   actions:
+     get-current-version:
+      - bash utils/version.sh
+     post-upstream-clone:
+       - bash -c "cp tests/scap-security-guide_fedora.spec.in scap-security-guide.spec"
+       # There can only be one spec file or copr gets mad. So we do a quick change out to
+       # a production-like spec file for the mock build.
+
+- &contest-oscap
   job: tests
   trigger: pull_request
   fmf_url: https://github.com/RHSecurityCompliance/contest.git
