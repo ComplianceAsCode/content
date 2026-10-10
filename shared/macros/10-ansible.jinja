@@ -1343,7 +1343,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: {{{ rule_title }}} - Remediation where authselect tool is not present
   block:
-{{% if  product in ['sle15', 'sle16'] %}}
+{{% if  product in ['sle15', 'sle16', 'slmicro6'] %}}
     - name: {{{ rule_title }}} - Check if pam_faillock.so preauth is already enabled in /etc/pam.d/common-auth
       ansible.builtin.lineinfile:
         path: /etc/pam.d/common-auth
@@ -1560,7 +1560,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when:
     - result_faillock_conf_check.stat.exists
 
-{{% if product not in ['sle15', 'sle16'] %}}
+{{% if product not in ['sle15', 'sle16', 'slmicro6'] %}}
 - name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter not in PAM files
   block:
     {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth','auth','','pam_faillock.so',parameter, rule_title=rule_title) | indent(4) }}}
@@ -1704,7 +1704,7 @@ Part of the grub2_bootloader_argument template.
 
 #}}
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value, arg_variable) -%}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'sle16', 'slmicro5'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or 'sle' in product or 'slmicro' in product or product == 'ol7' %}}
 
 {{%- if 'ubuntu' in product %}}
 {{%- set grub_vars = ['GRUB_CMDLINE_LINUX', 'GRUB_CMDLINE_LINUX_DEFAULT'] -%}}
@@ -1753,7 +1753,7 @@ Part of the grub2_bootloader_argument template.
 
 {{% endif -%}}
 
-{{% if product in ['sle12', 'sle15', 'sle16', 'slmicro5'] %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product or 'ubuntu' in product %}}
@@ -1792,7 +1792,7 @@ Part of the grub2_bootloader_argument_absent template.
 
 #}}
 {{%- macro ansible_grub2_bootloader_argument_absent(arg_name) -%}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'sle16'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or 'sle' in product or 'slmicro' in product or product == 'ol7' %}}
 - name: Check {{{ arg_name }}} argument exists
   ansible.builtin.command: grep -E '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=?.*"' /etc/default/grub
   check_mode: False
@@ -1809,7 +1809,7 @@ Part of the grub2_bootloader_argument_absent template.
 
 {{% endif -%}}
 
-{{% if product in ['sle12', 'sle15', 'sle16'] %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
 - name: Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product %}}
