@@ -23,6 +23,10 @@ CONF_PREFIX_REGEX="^\s*KexAlgorithms"
 CONF_SUFIX=""
 {{% endif %}}
 
-sed -iE "/${CONF_PREFIX_REGEX}/Id" "${FILE_PATH}"
+for config_file in ${FILE_PATH} ${FILE_PATH_CONFIGDIR}/*
+do 
+    [[ -f "${config_file}" ]] || continue
+    sed -iE "/${CONF_PREFIX_REGEX}/Id" "${config_file}"
+done
 
 CONF="${CONF_PREFIX}${KEX_ALGOS}${CONF_SUFIX}"
