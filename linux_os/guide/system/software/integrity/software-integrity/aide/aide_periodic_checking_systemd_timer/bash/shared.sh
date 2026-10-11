@@ -12,7 +12,7 @@
 
 {{% if product in ["sle16"] %}}
 cat > /etc/aide_service.conf <<EOF
-@@include /etc/aide.conf
+@@include {{{ aide_conf_path }}}
 EOF
 ln -s /usr/lib/systemd/system/{{{ aide_service }}} /etc/systemd/system/multi-user.target.wants/{{{ aide_service }}}
 {{% else %}}

@@ -3,7 +3,7 @@
 # platform = Red Hat Virtualization 4,multi_platform_almalinux,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 
 
-cat >/etc/aide.conf <<EOL
+cat >{{{ aide_conf_path }}} <<EOL
 All = p+i+n+u+g+s+m+S+sha512+xattrs+selinux
 option = yes
 /bin All # apply the custom rule to the files in bin

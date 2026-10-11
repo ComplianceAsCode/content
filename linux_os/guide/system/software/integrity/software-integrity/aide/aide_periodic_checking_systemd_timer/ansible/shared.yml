@@ -13,14 +13,14 @@
 {{% endif %}}
 
 {{% if product in ["sle16"] %}}
-- name: "{{{ rule_title }}} - Make sure AIDE Check Service is including /etc/aide.conf"
+- name: "{{{ rule_title }}} - Make sure AIDE Check Service is including {{{ aide_conf_path }}}"
   ansible.builtin.copy:
       dest: /etc/aide_service.conf
       owner: root
       group: root
       mode: '0600'
       content: |-
-        @@include /etc/aide.conf
+        @@include {{{ aide_conf_path }}}
 
 - name: "{{{ rule_title }}} - Make sure AIDE Check Service is in enabled state"
   ansible.builtin.file:

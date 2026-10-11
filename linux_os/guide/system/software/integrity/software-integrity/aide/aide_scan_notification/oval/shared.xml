@@ -108,13 +108,13 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
-  comment="check for client report_url = file:/var/log/aide-report.log in /etc/aide.conf"
+   comment="check for client report_url = file:/var/log/aide-report.log in {{{ aide_conf_path }}}"
   id="test_report_url_in_aide_conf" version="1">
     <ind:object object_ref="obj_report_url_in_aide_conf" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_report_url_in_aide_conf" version="1">
-    <ind:filepath>/etc/aide.conf</ind:filepath>
+    <ind:filepath>{{{ aide_conf_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[ \t]*report_url[\s]*=[\s]*file:/var/log/aide-report.log</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
