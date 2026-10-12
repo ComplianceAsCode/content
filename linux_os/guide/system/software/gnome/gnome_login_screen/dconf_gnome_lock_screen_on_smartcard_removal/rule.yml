@@ -55,4 +55,8 @@ template:
         parameter: removal-action
         value: "'lock-screen'"
         section: "org/gnome/settings-daemon/peripherals/smartcard"
+        {{% if product in ['opensuse16', 'sle15', 'sle16'] %}}
+        path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/
+        {{% else %}}
         path: /etc/dconf/db/local.d/
+        {{% endif %}}

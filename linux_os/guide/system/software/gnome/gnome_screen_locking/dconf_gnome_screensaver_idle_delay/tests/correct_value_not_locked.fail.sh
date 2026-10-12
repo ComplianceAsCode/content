@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_opensuse,multi_platform_sle,multi_platform_ubuntu
 # packages = dconf,gdm
 # variables = inactivity_timeout_value=900
 
@@ -8,4 +8,8 @@
 clean_dconf_settings
 
 add_dconf_profiles
+{{% if product in ['opensuse16', 'sle15', 'sle16'] %}}
+add_dconf_setting "org/gnome/desktop/session" "idle-delay" "uint32 900" "{{{ dconf_gdm_dir }}}" "00-security-settings"
+{{% else %}}
 add_dconf_setting "org/gnome/desktop/session" "idle-delay" "uint32 900" "local.d" "00-security-settings"
+{{% endif %}}

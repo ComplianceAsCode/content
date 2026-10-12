@@ -20,7 +20,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_dconf_gnome_disable_autorun"
   version="1">
-{{% if product in ['sle15', 'sle16'] %}}
+{{% if product in ['opensuse16', 'sle15', 'sle16'] %}}
     <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/</ind:path>
 {{% else %}}
     <ind:path>/etc/dconf/db/local.d/</ind:path>
@@ -37,7 +37,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_prevent_user_gnome_autorun"
   version="1">
-{{% if product in ['sle15', 'sle16'] %}}
+{{% if product in ['opensuse16', 'sle15', 'sle16'] %}}
     <ind:path>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/</ind:path>
 {{% else %}}
     <ind:path>/etc/dconf/db/local.d/locks/</ind:path>

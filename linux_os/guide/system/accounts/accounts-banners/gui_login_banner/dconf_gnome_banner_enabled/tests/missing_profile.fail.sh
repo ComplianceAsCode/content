@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_opensuse,multi_platform_ubuntu
 # packages = dconf,gdm
 
 source $SHARED/dconf_test_functions.sh
