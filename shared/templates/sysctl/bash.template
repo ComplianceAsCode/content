@@ -4,6 +4,15 @@
 # complexity = low
 # disruption = medium
 
+#
+# Set sysctl config file which to save the desired value
+#
+{{% if sysctl_remediate_drop_in_file == "true" %}}
+SYSCONFIG_FILE='/etc/sysctl.d/{{{ SYSCTLVAR | replace(".","_") }}}.conf'
+{{% else %}}
+SYSCONFIG_FILE="/etc/sysctl.conf"
+{{% endif %}}
+
 # Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
 {{% if 'suse' in families %}}
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /lib/sysctl.d/*.conf; do
@@ -18,7 +27,13 @@ for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.con
   # skip systemd-sysctl symlink (/etc/sysctl.d/99-sysctl.conf -> /etc/sysctl.conf)
   if [[ "$(readlink -f "$f")" == "/etc/sysctl.conf" ]]; then continue; fi
 
-  matching_list=$(grep -P '^(?!#).*[\s]*{{{ SYSCTLVAR }}}.*$' $f | uniq )
+  if [[ "$(readlink -f "$f")" == "$(readlink -f "${SYSCONFIG_FILE}")" ]]; then
+    # entries starting with {{{ SYSCTLVAR }}} in the file this remediation writes to
+    # are replaced in place below, commenting them out would make the remediation non-idempotent
+    matching_list=$(grep -P '^(?!#)(?!{{{ SYSCTLVAR }}}\b).*[\s]*{{{ SYSCTLVAR }}}.*$' $f | uniq )
+  else
+    matching_list=$(grep -P '^(?!#).*[\s]*{{{ SYSCTLVAR }}}.*$' $f | uniq )
+  fi
   if ! test -z "$matching_list"; then
     while IFS= read -r entry; do
       escaped_entry=$(sed -e 's|/|\\/|g' <<< "$entry")
@@ -28,14 +43,6 @@ for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.con
   fi
 done
 
-#
-# Set sysctl config file which to save the desired value
-#
-{{% if sysctl_remediate_drop_in_file == "true" %}}
-SYSCONFIG_FILE='/etc/sysctl.d/{{{ SYSCTLVAR | replace(".","_") }}}.conf'
-{{% else %}}
-SYSCONFIG_FILE="/etc/sysctl.conf"
-{{% endif %}}
 
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
 {{{ bash_instantiate_variables("sysctl_" ~ SYSCTLID ~ "_value") }}}
