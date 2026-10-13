@@ -2,10 +2,10 @@
 # packages = zabbix-agent
 # platform = multi_platform_debian
 
-# Both Server and ServerActive point to a real monitoring server instead of
-# the packaged 127.0.0.1 default. Expected result: PASS.
+# ServerActive points to a real monitoring server; Server is irrelevant to
+# this rule and left at its packaged default. Expected result: PASS.
 mkdir -p /etc/zabbix
 cat > /etc/zabbix/zabbix_agentd.conf <<EOF
-Server=192.168.1.10
+Server=127.0.0.1
 ServerActive=192.168.1.10
 EOF
