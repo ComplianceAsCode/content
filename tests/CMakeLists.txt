@@ -35,6 +35,12 @@ add_test(
 set_tests_properties("max-path-len" PROPERTIES LABELS quick)
 
 add_test(
+    NAME "bash-remediations-no-exit"
+    COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/ensure_bash_remediations_do_not_exit.py"
+)
+set_tests_properties("bash-remediations-no-exit" PROPERTIES LABELS quick)
+
+add_test(
     NAME "test-rule-dir-json"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
 )
