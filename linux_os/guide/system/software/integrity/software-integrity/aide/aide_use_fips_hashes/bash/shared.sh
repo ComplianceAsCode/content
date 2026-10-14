@@ -1,8 +1,8 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel,multi_platform_ol,multi_platform_almalinux
+# platform = Red Hat Virtualization 4,multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel
 
 {{{ bash_package_install("aide") }}}
 
-aide_conf="/etc/aide.conf"
+aide_conf="{{{ aide_conf_path }}}"
 forbidden_hashes=(sha1 rmd160 sha256 whirlpool tiger haval gost crc32)
 
 groups=$(LC_ALL=C grep "^[A-Z][A-Za-z_]*" $aide_conf | cut -f1 -d ' ' | tr -d ' ' | sort -u)

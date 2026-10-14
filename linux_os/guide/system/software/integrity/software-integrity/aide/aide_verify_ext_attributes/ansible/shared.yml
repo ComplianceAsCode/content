@@ -11,7 +11,7 @@
 - name: Get rules groups
   ansible.builtin.shell: |
     set -o pipefail
-    LC_ALL=C grep "^[A-Z][A-Za-z_]*" /etc/aide.conf | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u || true
+    LC_ALL=C grep "^[A-Z][A-Za-z_]*" {{{ aide_conf_path }}} | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u || true
   when: "'aide' in ansible_facts.packages"
   register: find_rules_groups_results
   changed_when: false
@@ -19,7 +19,7 @@
 
 - name: Ensure the xattrs rule is present when aide is installed.
   ansible.builtin.replace:
-    path: /etc/aide.conf
+    path: {{{ aide_conf_path }}}
     regexp: (^\s*{{ item }}\s*=\s*)(?!.*xattrs)([^\s]*)
     replace: \g<1>\g<2>+xattrs
   when: "find_rules_groups_results is not skipped and 'aide' in ansible_facts.packages"
@@ -27,7 +27,7 @@
 
 - name: Ensure the xattrs attribute is present on selection lines with direct attributes
   ansible.builtin.replace:
-    path: /etc/aide.conf
+    path: {{{ aide_conf_path }}}
     regexp: ^(\/\S+\s+)(?!.*xattrs)([a-z][a-zA-Z0-9+]*)
     replace: \g<1>\g<2>+xattrs
   when: "'aide' in ansible_facts.packages"
