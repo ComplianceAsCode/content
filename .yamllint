@@ -7,6 +7,12 @@ yaml-files:
   - "*.fmf"
   - "*.profile"
 
+# The Ansible role metadata template is filled by string substitution of
+# @PLACEHOLDER@ tokens (including structural ones like @GALAXY_TAGS@), so it is
+# not valid standalone YAML and cannot be linted.
+ignore: |
+  utils/ansible_galaxy_meta_template.yml
+
 # https://yamllint.readthedocs.io/en/stable/rules.html
 rules:
   truthy: disable # do not check for strict true / false boolean values

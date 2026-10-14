@@ -432,8 +432,10 @@ the collection is published as a tarball uploaded directly to Ansible Galaxy.
             --roles-dir $OUTPUT_DIR/$version/ansible_roles \
             --output-dir $OUTPUT_DIR/$version \
 
-        # 3. Verify no unrewritten FQCNs remain in the bundled roles
-        grep -r "community\.c\.\|ansible\.posix\." \
+        # 3. Verify no unrewritten FQCNs remain in the bundled roles.
+        #    Only the vendored collection (community.general) must be rewritten;
+        #    ansible.posix is a declared dependency and is intentionally kept.
+        grep -r "community\.general\." \
             $OUTPUT_DIR/$version/ansible_collections/redhatofficial/rhel_hardening_roles/roles/ \
             && echo FAIL || echo OK
     done
@@ -450,9 +452,24 @@ the collection is published as a tarball uploaded directly to Ansible Galaxy.
     ```
 
 This will:
-1. Download and vendor modules from `community.general` and `ansible.posix`.
+1. Download and vendor modules from `community.general`; declare `ansible.posix` as a collection dependency.
 2. Bundle all roles for the allowed products into the `redhatofficial.rhel_hardening_roles` collection.
-3. Build the collection tarball in the `./ansible-collections-tarball` folder.
+3. Generate the collection README, changelog, license, and Galaxy metadata.
+4. Build the collection tarball in the `./ansible-collections-tarball` folder.
+
+The default metadata and installation instructions target public Ansible Galaxy. To generate an
+Automation Hub collection, select the `hub` target. This supplies the Red Hat namespace,
+documentation, issue tracker, author, and installation server automatically:
+
+```bash
+python3 utils/ansible_roles_to_collection.py \
+    --roles-dir $OUTPUT_DIR/rhel8/ansible_roles \
+    --roles-dir $OUTPUT_DIR/rhel9/ansible_roles \
+    --roles-dir $OUTPUT_DIR/rhel10/ansible_roles \
+    --output-dir $OUTPUT_DIR/ansible-collections-tarball \
+    --target hub \
+    --build
+```
 
 > **_NOTE:_** The collection version is read automatically from `CMakeLists.txt` at the
 > checked-out tag, so it will match the release version without needing to be specified manually.
