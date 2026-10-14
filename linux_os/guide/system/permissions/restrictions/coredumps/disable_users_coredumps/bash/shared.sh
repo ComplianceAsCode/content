@@ -8,15 +8,17 @@ REGEX_CORRECT_VALUE="^\s*\*\s+hard\s+core\s+0\s*$"
 if [ -d "$DROPIN_DIR" ]; then
     for override in "$DROPIN_DIR"/*.conf; do
         if [ -f "$override" ] && ! grep -qE "$REGEX_CORRECT_VALUE" "$override"; then
-            sed -ir -E '/^[[:space:]]*\*[[:space:]]+hard[[:space:]]+core[[:space:]]+/ s/^/#/' "$override"
+            sed -i -E '/^[[:space:]]*\*[[:space:]]+hard[[:space:]]+core[[:space:]]+/ s/^/#/' "$override"
         fi
     done
 fi
 
+# This code runs inside the profile remediation script, so it must not exit:
+# that would skip the remediation of every rule after this one.
 if [ -d "$DROPIN_DIR" ] && grep -qEr "$REGEX_CORRECT_VALUE" "$DROPIN_DIR"; then
-    exit 0
+    :  # already configured in a drop-in file
 elif [ ! -d "$DROPIN_DIR" ] && grep -qE "$REGEX_CORRECT_VALUE" "$SECURITY_LIMITS_FILE"; then
-    exit 0
+    :  # already configured in limits.conf
 else
     mkdir -p "$DROPIN_DIR"
     chmod 0755 "$DROPIN_DIR"
