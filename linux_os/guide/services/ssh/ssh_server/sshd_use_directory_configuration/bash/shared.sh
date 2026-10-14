@@ -1,5 +1,8 @@
 # platform = multi_platform_all
 
+{{% if 'suse' in families and product != 'sle12' %}}
+    {{{ set_config_file(path=sshd_main_config_file, parameter='Include', value=sshd_config_dir ~ "/*.conf", rule_id=rule_id) }}}
+{{% else %}}
 {{% set base_config = sshd_main_config_file -%}}
 {{% set config_dir = sshd_config_dir -%}}
 {{% set target_file = config_dir ~ "/sshd_config_original.conf" -%}}
@@ -21,3 +24,4 @@ cat > {{{ base_config }}} << EOF
 EOF
 chmod 0600 {{{ base_config }}}
 fi
+{{% endif %}}

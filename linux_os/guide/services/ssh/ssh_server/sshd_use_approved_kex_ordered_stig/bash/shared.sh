@@ -6,8 +6,4 @@ KEX_ALGOS="ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellm
 KEX_ALGOS="ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256"
 {{%- endif %}}
 
-{{%- if 'ubuntu' in product %}}
 {{{ bash_sshd_remediation(parameter="KexAlgorithms", value="$KEX_ALGOS", config_is_distributed=sshd_distributed_config, rule_id=rule_id) }}}
-{{%- else %}}
-{{{ bash_sshd_remediation(parameter="KexAlgorithms", value="$KEX_ALGOS", config_is_distributed=sshd_distributed_config, rule_id=rule_id) }}}
-{{%- endif %}}

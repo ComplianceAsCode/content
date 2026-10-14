@@ -604,8 +604,8 @@ controls:
   title: The SUSE operating system must not have unnecessary accounts.
   rules:
   - accounts_authorized_local_users
-  # NOTE: must configure "var_accounts_authorized_local_users_regex" 
-  # when the rule "accounts_authorized_local_users" is enabled 
+  # NOTE: must configure "var_accounts_authorized_local_users_regex"
+  # when the rule "accounts_authorized_local_users" is enabled
   # - var_accounts_authorized_local_users_regex=<authorized local user accounts>
   - var_accounts_authorized_local_users_regex=sle15
   status: automated
@@ -1242,7 +1242,7 @@ controls:
     the SUSE operating system being audited.
   rules:
   - auditd_audispd_configure_remote_server
-  # NOTE: must configure "var_audispd_remote_server" when the 
+  # NOTE: must configure "var_audispd_remote_server" when the
   # rule "auditd_audispd_configure_remote_server" is enabled
   # - var_audispd_remote_server=<remote audit server name/IP>
   status: automated
@@ -1744,6 +1744,14 @@ controls:
     key exchange algorithms.
   rules:
   - sshd_use_approved_kex_ordered_stig
+  status: automated
+- id: SLES-15-040460
+  levels:
+  - medium
+  title: The SUSE operating system must distribute the SSH Server configuration to multiple
+    files in a config directory
+  rules:
+  - sshd_use_directory_configuration
   status: automated
 - id: SLES-15-010375
   levels:
