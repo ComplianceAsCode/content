@@ -6,14 +6,13 @@
 
 tmp_mount_file="/usr/lib/systemd/system/tmp.mount"
 
-# if already set, skip
+# This code runs inside the profile remediation script, so it must not exit:
+# that would skip the remediation of every rule after this one.
 if grep -qE '^[\s]*Options=[\s]*.*noexec.*$' ${tmp_mount_file}; then
+    # already set, skip
     echo "noexec option already present, skipping remediation"
-    exit 0
-fi
-
-# no options set, add it
-if ! grep -qE '^[\s]*Options=[\s]*.*$' ${tmp_mount_file}; then
+elif ! grep -qE '^[\s]*Options=[\s]*.*$' ${tmp_mount_file}; then
+    # no options set, add it
     echo "Options=noexec" >> ${tmp_mount_file}
 else
   # collect currently set options
