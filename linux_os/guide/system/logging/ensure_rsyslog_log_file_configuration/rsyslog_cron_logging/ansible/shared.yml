@@ -16,12 +16,12 @@
 }}}
 
 -   name: "{{{ rule_title }}} - Remove *.* entries pointing to /var/log/cron from rsyslog.d/*.conf"
-    ansible.builtin.shell: find /etc/rsyslog.d -type f -name "*.conf" -exec sed -i '\|^\s*\*\.\*\s\+/var/log/cron\s*$|d' {} +
+    ansible.builtin.shell: find /etc/rsyslog.d -type f -name "*.conf" -exec sed -i '\#^\s*\*\.\*\s\+/var/log/cron\s*$#d' {} +
     changed_when: true
 
 {{{ ansible_set_config_file_dir(msg, "/etc/rsyslog.conf", "/etc/rsyslog.d", "/etc/rsyslog.d/cron.conf",
                                 "cron.*", separator=' ', separator_regex='',
-                                value="/var/log/cron", create='yes', rule_title=rule_title)
+                                value="/var/log/cron", create='yes', mode='0644', rule_title=rule_title)
 }}}
 
 -   name: "{{{ rule_title }}} - Restart the rsyslog service now"

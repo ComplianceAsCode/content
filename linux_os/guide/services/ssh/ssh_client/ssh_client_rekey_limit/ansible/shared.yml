@@ -24,4 +24,4 @@
     state: "absent"
   loop: "{{ ssh_config_include_files.files }}"
 
-{{{ ansible_lineinfile(msg='Ensure that rekey limit is set to {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }} in ' ~ sshc_rekey_config, path=sshc_rekey_config, regex='^\s*RekeyLimit.*$', insensitive=false, new_line='RekeyLimit {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }}', create='yes', state='present', rule_title=rule_title) }}}
+{{{ ansible_lineinfile(msg='Ensure that rekey limit is set to {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }} in ' ~ sshc_rekey_config, path=sshc_rekey_config, regex='^\s*RekeyLimit.*$', insensitive=false, new_line='RekeyLimit {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }}', create='yes', mode='0644', state='present', rule_title=rule_title) }}}

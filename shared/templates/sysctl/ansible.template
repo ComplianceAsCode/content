@@ -28,7 +28,10 @@
 
 - name: {{{ rule_title }}} - Find all files that contain {{{ SYSCTLVAR }}}
   ansible.builtin.shell:
-    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*.*$'
+    cmd: |-
+      set -o pipefail
+      find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*.*$'
+    executable: /bin/bash
   register: find_all_values
   check_mode: false
   changed_when: false
@@ -37,10 +40,15 @@
 - name: {{{ rule_title }}} - Find all files that set {{{ SYSCTLVAR }}} to correct value
   ansible.builtin.shell:
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
-    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{ sysctl_{{{ SYSCTLID }}}_value }}$'
+    cmd: |-
+      set -o pipefail
+      find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{ sysctl_{{{ SYSCTLID }}}_value }}$'
 {{%- else %}}
-    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{{ SYSCTLVAL | escape_regex }}}$'
+    cmd: |-
+      set -o pipefail
+      find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*{{{ SYSCTLVAR }}}\s*=\s*{{{ SYSCTLVAL | escape_regex }}}$'
 {{%- endif %}}
+    executable: /bin/bash
   register: find_correct_value
   check_mode: false
   changed_when: false

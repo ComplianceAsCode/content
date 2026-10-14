@@ -10,5 +10,5 @@
 
 {{{ ansible_set_config_file_dir(msg, "/etc/rsyslog.conf", "/etc/rsyslog.d", "/etc/rsyslog.conf", 
                                 "$ActionSendStreamDriverAuthMode", separator=' ',
-                                value="x509/name", create='yes', rule_title=rule_title)
+                                value="x509/name", create='yes', mode='0644', rule_title=rule_title)
 }}}

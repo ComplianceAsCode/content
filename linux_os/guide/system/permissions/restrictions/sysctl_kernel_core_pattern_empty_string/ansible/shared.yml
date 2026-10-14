@@ -13,7 +13,10 @@
 
 - name: "{{{ rule_title }}} - Find all files that contain kernel.core_pattern"
   ansible.builtin.shell:
-    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*kernel.core_pattern\s*=\s*.*$'
+    cmd: |-
+      set -o pipefail
+      find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*kernel.core_pattern\s*=\s*.*$'
+    executable: /bin/bash
   register: find_all_values
   check_mode: false
   changed_when: false
@@ -21,7 +24,10 @@
 
 - name: "{{{ rule_title }}} - Find all files that set kernel.core_pattern to correct value"
   ansible.builtin.shell:
-    cmd: find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*kernel.core_pattern\s*=\s*$'
+    cmd: |-
+      set -o pipefail
+      find -L {{ sysctl_paths | join(" ") }} -type f -name '*.conf' | xargs grep -HP '^\s*kernel.core_pattern\s*=\s*$'
+    executable: /bin/bash
   register: find_correct_value
   check_mode: false
   changed_when: false

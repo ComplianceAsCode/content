@@ -11,8 +11,11 @@
   ansible.builtin.command: nft add rule inet filter input ip saddr 127.0.0.0/8 counter drop
 
 - name: Check if IPv6 is Disabled in grub Configuration
-  ansible.builtin.shell: |
-    [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ]
+  ansible.builtin.shell:
+    cmd: |-
+      set -o pipefail
+      [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ]
+    executable: /bin/bash
   register: ipv6_status
   changed_when: false
   check_mode: false
