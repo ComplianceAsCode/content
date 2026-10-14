@@ -2,7 +2,7 @@
 
 {{% if product == "rhel9" -%}}
 dnf install -y bind9.18 || dnf install -y bind
-{{% elif 'ubuntu' in product -%}}
+{{% elif 'ubuntu' in product or product in ['debian12', 'debian13'] -%}}
 {{{ bash_package_install("bind9") }}}
 {{% else -%}}
 {{{ bash_package_install("bind") }}}

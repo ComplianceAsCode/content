@@ -4,7 +4,7 @@
 dnf install -y bind9.18 || dnf install -y bind
 dnf remove -y bind9.18
 dnf -y remove bind
-{{% elif 'ubuntu' in product -%}}
+{{% elif 'ubuntu' in product or product in ['debian12', 'debian13'] -%}}
 {{{ bash_package_install("bind9") }}}
 {{{ bash_package_remove("bind9") }}}
 {{% else -%}}
