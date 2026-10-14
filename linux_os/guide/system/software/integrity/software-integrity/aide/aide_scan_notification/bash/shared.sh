@@ -27,14 +27,14 @@ else
 # create unit file for periodic aide database check
 cat > {{{ aide_service_unit }}} <<CHECKEOF
 [Unit]
-        Description=Aide Check
+Description=Aide Check
 Before={{{ aide_notify_service }}}
 Wants={{{ aide_notify_service }}}
-        [Service]
-        Type=forking
+[Service]
+Type=forking
 ExecStart={{{ aide_bin_path }}} --check -r file:/var/log/aide-report.log
-        [Install]
-        WantedBy=multi-user.target
+[Install]
+WantedBy=multi-user.target
 CHECKEOF
 
 chmod 0644 {{{ aide_service_unit }}}
@@ -43,10 +43,10 @@ fi
 
 cat > {{{ aide_notify_unit }}} <<NOTIFYEOF
 [Unit]
-        Description=Status email for AIDE check result
+Description=Status email for AIDE check result
 After={{{ aide_service }}}
-        [Service]
-        Type=forking
+[Service]
+Type=forking
 ExecStart=/bin/sh -c 'cat /var/log/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  $var_aide_scan_notification_email'
 NOTIFYEOF
 
