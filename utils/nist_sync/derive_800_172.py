@@ -7,14 +7,21 @@ NIST 800-53 source-control mapping published in SP 800-172r3 (final, May
 2026), Appendix C "Summary of Enhanced Security Requirements" (Table 2).
 
 Why hardcoded Table 2 data instead of an OSCAL download (contrast with
-download_oscal.py, which fetches the 800-53 catalog live): as of this
-writing, usnistgov/oscal-content has no published OSCAL dataset for SP
-800-172r3 (it is a very recent publication). The Table 2 mapping below was
-transcribed from the official PDF
-(https://csrc.nist.gov/pubs/sp/800/172/r3/final) and should be the first
-thing updated here if/when NIST publishes a machine-readable 800-172r3
-mapping - swap REQUIREMENTS for a loader over that dataset, following the
-same pattern as download_oscal.py, and keep everything downstream the same.
+download_oscal.py, which fetches the 800-53 catalog live): NIST *does*
+publish an OSCAL catalog for SP 800-172r3
+(usnistgov/oscal-content/nist.gov/SP800-172/rev3/), but it is a requirement
+*catalog* only, not a ready-made crosswalk - each requirement's source
+800-53 control is an opaque `links: [{rel: "external_reference", href:
+"#<uuid>"}]` pointing into the catalog's own `back-matter.resources`, not a
+plain "SC-5"-style string. Extracting Table 2 from it means resolving those
+UUIDs, which is strictly more parsing work than using NIST's own
+already-human-readable rendering of the exact same crosswalk (Appendix C,
+Table 2, in the official PDF: https://csrc.nist.gov/pubs/sp/800/172/r3/final).
+The Table 2 mapping below was transcribed from that PDF. If resolving the
+OSCAL back-matter links is ever worth doing (e.g. to track future catalog
+revisions automatically), swap REQUIREMENTS for a loader over that dataset,
+following the same pattern as download_oscal.py, and keep everything
+downstream the same.
 
 800-172's enhanced requirements supplement NIST SP 800-171 rather than
 restate it (SP 800-172r3 Sec. 2.1 / p.10: implemented "in addition to"
@@ -87,6 +94,18 @@ HEADER = """\
 # 'status: pending' (same convention nist_800_53.yml itself uses for
 # not-yet-automated controls), while the few that do resolve to rules are
 # marked 'status: automated'.
+#
+# reference_type is 'cui_enhanced', deliberately NOT 'cui' (what
+# nist_800_171.yml uses): SSG_REF_URIS['cui'] is hardcoded repo-wide to the
+# 800-171r3 URL (ssg/constants.py). Reusing it here would make every
+# 800-172-derived citation hyperlink to the 800-171 page instead of
+# https://csrc.nist.gov/pubs/sp/800/172/r3/final. 'cui_enhanced' is its own
+# entry in SSG_REF_URIS/REF_PREFIX_MAP/REFERENCES pointing at the correct
+# 800-172r3 URL, labeled 'NIST-800-172'. A rule selected by both policies
+# (e.g. via sc-5) ends up with two separate reference entries - one 'cui'
+# (e.g. '03.01.01'), one 'cui_enhanced' (e.g. '03.13.12E') - which coexist
+# fine (ssg/build_yaml.py's add_control_reference appends per reference
+# type rather than overwriting).
 """
 
 # Requirement -> source 800-53 control(s), transcribed from SP 800-172r3
@@ -271,7 +290,7 @@ def render(policies):
         "id: nist_800_172",
         "version: Revision 3",
         "source: https://csrc.nist.gov/pubs/sp/800/172/r3/final",
-        "reference_type: cui",
+        "reference_type: cui_enhanced",
         "",
         "controls:",
     ]

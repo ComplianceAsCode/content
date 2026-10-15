@@ -30,13 +30,25 @@
 # 'status: pending' (same convention nist_800_53.yml itself uses for
 # not-yet-automated controls), while the few that do resolve to rules are
 # marked 'status: automated'.
+#
+# reference_type is 'cui_enhanced', deliberately NOT 'cui' (what
+# nist_800_171.yml uses): SSG_REF_URIS['cui'] is hardcoded repo-wide to the
+# 800-171r3 URL (ssg/constants.py). Reusing it here would make every
+# 800-172-derived citation hyperlink to the 800-171 page instead of
+# https://csrc.nist.gov/pubs/sp/800/172/r3/final. 'cui_enhanced' is its own
+# entry in SSG_REF_URIS/REF_PREFIX_MAP/REFERENCES pointing at the correct
+# 800-172r3 URL, labeled 'NIST-800-172'. A rule selected by both policies
+# (e.g. via sc-5) ends up with two separate reference entries - one 'cui'
+# (e.g. '03.01.01'), one 'cui_enhanced' (e.g. '03.13.12E') - which coexist
+# fine (ssg/build_yaml.py's add_control_reference appends per reference
+# type rather than overwriting).
 
 policy: NIST SP 800-172 Revision 3
 title: NIST Special Publication 800-172 Revision 3 (Enhanced Security Requirements for Protecting CUI)
 id: nist_800_172
 version: Revision 3
 source: https://csrc.nist.gov/pubs/sp/800/172/r3/final
-reference_type: cui
+reference_type: cui_enhanced
 
 controls:
     # 03.01 Access Control
