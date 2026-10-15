@@ -1,0 +1,677 @@
+# NIST SP 800-172 Revision 3 - Enhanced Security Requirements for Protecting CUI
+#
+# Derived from the official NIST SP 800-172 Revision 3 publication (final,
+# May 2026), Appendix C "Summary of Enhanced Security Requirements" (Table 2),
+# with each enhanced requirement mapped to the NIST 800-53 control it is
+# sourced from.
+#
+# IMPORTANT: 800-172's enhanced requirements supplement NIST SP 800-171 - they
+# are implemented IN ADDITION TO the 800-171 baseline, and SP 800-172 assumes
+# 800-171 is already satisfied (SP 800-172r3 Sec. 2.1 / p.10). This file
+# therefore contains ONLY the enhanced ("E") requirements; it does not
+# duplicate 800-171's foundational requirements (see controls/nist_800_171.yml).
+# A deployable profile is expected to select both policies together.
+#
+# Enhanced requirements that NIST marked "Withdrawn" in Table 2 are omitted.
+#
+# This is a single, product-agnostic control file, following the same pattern
+# as nist_800_171.yml. Each requirement does NOT list rules directly; instead
+# it references (via the 'controls:' list) the NIST 800-53 control it was
+# sourced from. At build time these cross-policy references resolve against
+# the *current product's* nist_800_53 control file, so each requirement
+# inherits the rules mapped to its source 800-53 control for that product.
+# Products without a nist_800_53 policy resolve to no rules.
+#
+# Most enhanced requirements address organizational, procedural, or
+# architectural safeguards (e.g. dual authorization, threat hunting, SOC,
+# decoys, supply chain) rather than host configuration, so their source
+# 800-53 control(s) carry no RHEL rules today; those requirements are marked
+# 'status: pending' (same convention nist_800_53.yml itself uses for
+# not-yet-automated controls), while the few that do resolve to rules are
+# marked 'status: automated'.
+policy: NIST SP 800-172 Revision 3
+title: NIST Special Publication 800-172 Revision 3 (Enhanced Security Requirements for Protecting CUI)
+id: nist_800_172
+version: Revision 3
+source: https://csrc.nist.gov/pubs/sp/800/172/r3/final
+reference_type: cui
+
+controls:
+    # 03.01 Access Control
+    - id: 03.01.01E
+      title: Dual Authorization
+      status: pending
+      controls:
+          - nist_800_53:ac-3.2
+
+    - id: 03.01.02E
+      title: Non-Organizationally Owned Systems - Restricted Use
+      status: pending
+      controls:
+          - nist_800_53:ac-20.3
+
+    - id: 03.01.04E
+      title: Concurrent Session Control
+      status: pending
+      controls:
+          - nist_800_53:ac-10
+
+    - id: 03.01.05E
+      title: Automated Monitoring and Control for Remote Access
+      status: pending
+      controls:
+          - nist_800_53:ac-17.1
+
+    - id: 03.01.06E
+      title: Protection of Remote Access Mechanism Information
+      status: pending
+      controls:
+          - nist_800_53:ac-17.6
+
+    - id: 03.01.07E
+      title: Automated Audit Actions for Account Management
+      status: pending
+      controls:
+          - nist_800_53:ac-2.4
+
+    - id: 03.01.08E
+      title: Account Monitoring for Atypical Usage
+      status: pending
+      controls:
+          - nist_800_53:ac-2.12
+
+    - id: 03.01.09E
+      title: Attribute-Based Access Control
+      status: pending
+      controls:
+          - nist_800_53:ac-3.13
+
+    - id: 03.01.10E
+      title: Object Security Attributes
+      status: pending
+      controls:
+          - nist_800_53:ac-4.1
+
+    - id: 03.01.11E
+      title: Role-Based Access Control
+      status: pending
+      controls:
+          - nist_800_53:ac-3.7
+
+    - id: 03.01.12E
+      title: Physical or Logical Separation of CUI Flows
+      status: pending
+      controls:
+          - nist_800_53:ac-4.21
+
+    - id: 03.01.13E
+      title: Metadata
+      status: pending
+      controls:
+          - nist_800_53:ac-4.6
+
+    - id: 03.01.14E
+      title: Security Policy Filters
+      status: pending
+      controls:
+          - nist_800_53:ac-4.8
+
+    - id: 03.01.15E
+      title: Data Type Identifiers
+      status: pending
+      controls:
+          - nist_800_53:ac-4.12
+
+    - id: 03.01.16E
+      title: Decomposition into Policy-Relevant Subcomponents
+      status: pending
+      controls:
+          - nist_800_53:ac-4.13
+
+    - id: 03.01.17E
+      title: Detection of Unsanctioned CUI
+      status: pending
+      controls:
+          - nist_800_53:ac-4.15
+
+    # 03.02 Awareness and Training
+    - id: 03.02.01E
+      title: Advanced Literacy and Awareness Training
+      status: pending
+      controls:
+          - nist_800_53:at-2.4
+          - nist_800_53:at-2.5
+          - nist_800_53:at-2.6
+
+    - id: 03.02.02E
+      title: Literacy and Awareness Training Practical Exercises
+      status: pending
+      controls:
+          - nist_800_53:at-2.1
+
+    - id: 03.02.03E
+      title: Literacy and Awareness Training Feedback
+      status: pending
+      controls:
+          - nist_800_53:at-6
+
+    - id: 03.02.04E
+      title: Anti-Counterfeit Training
+      status: pending
+      controls:
+          - nist_800_53:sr-11.1
+
+    # 03.03 Audit and Accountability
+    - id: 03.03.01E
+      title: Protection of Audit Record Storage in Separate Physical Systems or Components
+      status: pending
+      controls:
+          - nist_800_53:au-9.2
+
+    - id: 03.03.02E
+      title: Real-Time Alerts for Audit Processing Failures
+      status: pending
+      controls:
+          - nist_800_53:au-5.2
+
+    - id: 03.03.03E
+      title: Dual Authorization for Audit Information and Actions
+      status: pending
+      controls:
+          - nist_800_53:au-9.5
+
+    - id: 03.03.04E
+      title: Integrated Analysis of Audit Records
+      status: pending
+      controls:
+          - nist_800_53:au-6.5
+
+    # 03.04 Configuration Management
+    - id: 03.04.02E
+      title: Automated Unauthorized Component Detection
+      status: pending
+      controls:
+          - nist_800_53:cm-6.1
+          - nist_800_53:cm-6.2
+          - nist_800_53:cm-8.3
+
+    - id: 03.04.03E
+      title: Automation Maintenance of System Component Inventory
+      status: pending
+      controls:
+          - nist_800_53:cm-8.2
+
+    - id: 03.04.04E
+      title: Automation Support for Baseline Configuration
+      status: pending
+      controls:
+          - nist_800_53:cm-2.2
+
+    - id: 03.04.05E
+      title: Dual Authorization for System Changes
+      status: pending
+      controls:
+          - nist_800_53:cm-5.4
+
+    - id: 03.04.06E
+      title: Retention of Previous Configurations
+      status: pending
+      controls:
+          - nist_800_53:cm-2.3
+
+    - id: 03.04.07E
+      title: Testing, Validation, and Documentation of Changes
+      status: pending
+      controls:
+          - nist_800_53:cm-3.2
+
+    - id: 03.04.08E
+      title: Centralized Repository
+      status: pending
+      controls:
+          - nist_800_53:cm-8.7
+
+    # 03.05 Identification and Authentication
+    - id: 03.05.01E
+      title: Cryptographic Bidirectional Authentication
+      status: pending
+      controls:
+          - nist_800_53:ia-3.1
+
+    - id: 03.05.02E
+      title: Password Managers
+      status: pending
+      controls:
+          - nist_800_53:ia-5.18
+
+    - id: 03.05.03E
+      title: Device Attestation
+      status: pending
+      controls:
+          - nist_800_53:ia-3.4
+
+    - id: 03.05.04E
+      title: No Embedded Unencrypted Static Authenticators
+      status: pending
+      controls:
+          - nist_800_53:ia-5.7
+
+    - id: 03.05.05E
+      title: Expiration of Cached Authenticators
+      status: pending
+      controls:
+          - nist_800_53:ia-5.13
+
+    - id: 03.05.06E
+      title: Identity Proofing
+      status: pending
+      controls:
+          - nist_800_53:ia-12
+
+    - id: 03.05.07E
+      title: Identity Providers and Authorization Servers
+      status: pending
+      controls:
+          - nist_800_53:ia-13
+
+    # 03.06 Incident Response
+    - id: 03.06.01E
+      title: Security Operations Center
+      status: pending
+      controls:
+          - nist_800_53:ir-4.14
+
+    - id: 03.06.02E
+      title: Integrated Incident Response Team
+      status: pending
+      controls:
+          - nist_800_53:ir-4.11
+
+    - id: 03.06.03E
+      title: Behavior Analysis
+      status: pending
+      controls:
+          - nist_800_53:ir-4.13
+
+    - id: 03.06.04E
+      title: Automated Tracking, Data Collection, and Analysis for Incident Monitoring
+      status: pending
+      controls:
+          - nist_800_53:ir-5.1
+
+    # 03.07 Maintenance
+    - id: 03.07.01E
+      title: Software Updates and Patches for Maintenance Tools
+      status: pending
+      controls:
+          - nist_800_53:ma-3.6
+
+    # 03.08 Media Protection
+    - id: 03.08.01E
+      title: Dual Authorization for Media Sanitization
+      status: pending
+      controls:
+          - nist_800_53:mp-6.7
+
+    - id: 03.08.02E
+      title: Dual Authorization for System Backup Deletion and Destruction
+      status: pending
+      controls:
+          - nist_800_53:cp-9.7
+
+    - id: 03.08.03E
+      title: Testing System Backups for Reliability and Integrity
+      status: pending
+      controls:
+          - nist_800_53:cp-9.1
+
+    - id: 03.08.04E
+      title: System Recovery and Reconstitution
+      status: pending
+      controls:
+          - nist_800_53:cp-10
+
+    # 03.09 Personnel Security
+    - id: 03.09.03E
+      title: Access Agreements
+      status: pending
+      controls:
+          - nist_800_53:ps-6
+
+    - id: 03.09.04E
+      title: Citizenship Requirements
+      status: pending
+      controls:
+          - nist_800_53:ps-3.4
+
+    # 03.10 Physical Protection
+    - id: 03.10.01E
+      title: Intrusion Alarms and Surveillance Equipment
+      status: pending
+      controls:
+          - nist_800_53:pe-6.1
+
+    - id: 03.10.02E
+      title: Delivery and Removal of System Components
+      status: pending
+      controls:
+          - nist_800_53:pe-16
+
+    # 03.11 Risk Assessment
+    - id: 03.11.01E
+      title: Threat Awareness Program
+      status: pending
+      controls:
+          - nist_800_53:pm-16
+
+    - id: 03.11.02E
+      title: Threat Hunting
+      status: pending
+      controls:
+          - nist_800_53:ra-10
+
+    - id: 03.11.03E
+      title: Predictive Cyber Analytics
+      status: pending
+      controls:
+          - nist_800_53:ra-3.4
+
+    - id: 03.11.08E
+      title: Dynamic Threat Awareness
+      status: pending
+      controls:
+          - nist_800_53:ra-3.3
+
+    - id: 03.11.09E
+      title: Indicators of Compromise
+      status: pending
+      controls:
+          - nist_800_53:si-4.24
+
+    - id: 03.11.10E
+      title: Criticality Analysis
+      status: pending
+      controls:
+          - nist_800_53:ra-9
+
+    - id: 03.11.11E
+      title: Discoverable Information
+      status: pending
+      controls:
+          - nist_800_53:ra-5.4
+
+    - id: 03.11.12E
+      title: Automated Means for Sharing Threat Intelligence
+      status: pending
+      controls:
+          - nist_800_53:pm-16.1
+
+    # 03.12 Security Assessment and Monitoring
+    - id: 03.12.01E
+      title: Penetration Testing
+      status: pending
+      controls:
+          - nist_800_53:ca-8
+
+    - id: 03.12.02E
+      title: Independent Assessors
+      status: pending
+      controls:
+          - nist_800_53:ca-2.1
+
+    - id: 03.12.03E
+      title: Risk Monitoring
+      status: pending
+      controls:
+          - nist_800_53:ca-7.4
+
+    - id: 03.12.04E
+      title: Internal System Connections
+      status: automated
+      controls:
+          - nist_800_53:ca-9
+
+    # 03.13 System and Communications Protection
+    - id: 03.13.01E
+      title: Heterogeneity
+      status: pending
+      controls:
+          - nist_800_53:sc-29
+
+    - id: 03.13.02E
+      title: Randomness
+      status: pending
+      controls:
+          - nist_800_53:sc-30.2
+
+    - id: 03.13.03E
+      title: Concealment and Misdirection
+      status: pending
+      controls:
+          - nist_800_53:sc-30
+
+    - id: 03.13.04E
+      title: Isolation of System Components
+      status: pending
+      controls:
+          - nist_800_53:sc-7.21
+
+    - id: 03.13.05E
+      title: Change Processing and Storage Locations
+      status: pending
+      controls:
+          - nist_800_53:sc-30.3
+
+    - id: 03.13.06E
+      title: Platform-Independent Applications
+      status: pending
+      controls:
+          - nist_800_53:sc-27
+
+    - id: 03.13.07E
+      title: Virtualization Techniques
+      status: pending
+      controls:
+          - nist_800_53:sc-29.1
+
+    - id: 03.13.08E
+      title: Decoys
+      status: pending
+      controls:
+          - nist_800_53:sc-26
+
+    - id: 03.13.09E
+      title: Isolation of Security Tool, Mechanism, and Support Component
+      status: pending
+      controls:
+          - nist_800_53:sc-7.13
+
+    - id: 03.13.10E
+      title: Separate Subnetworks
+      status: pending
+      controls:
+          - nist_800_53:sc-7.22
+
+    - id: 03.13.11E
+      title: Thin Nodes
+      status: pending
+      controls:
+          - nist_800_53:sc-25
+
+    - id: 03.13.12E
+      title: Denial-of-Service Protection
+      status: automated
+      controls:
+          - nist_800_53:sc-5
+
+    - id: 03.13.13E
+      title: Port and Input/Output Device Access
+      status: pending
+      controls:
+          - nist_800_53:sc-41
+
+    - id: 03.13.14E
+      title: Detonation Chambers
+      status: pending
+      controls:
+          - nist_800_53:sc-44
+
+    - id: 03.13.15E
+      title: Separate Subnets to Isolate System Components and Functions
+      status: pending
+      controls:
+          - nist_800_53:sc-7.29
+
+    - id: 03.13.16E
+      title: System Partitioning
+      status: pending
+      controls:
+          - nist_800_53:sc-32
+
+    # 03.14 System and Information Integrity
+    - id: 03.14.01E
+      title: Software, Firmware, and Information Integrity
+      status: pending
+      controls:
+          - nist_800_53:si-7
+
+    - id: 03.14.04E
+      title: Refresh from Trusted Sources
+      status: pending
+      controls:
+          - nist_800_53:si-14.1
+
+    - id: 03.14.05E
+      title: Non-Persistent Information
+      status: pending
+      controls:
+          - nist_800_53:si-14.2
+
+    - id: 03.14.08E
+      title: Integrity Checks
+      status: pending
+      controls:
+          - nist_800_53:si-7.1
+
+    - id: 03.14.09E
+      title: Cryptographic Protection
+      status: pending
+      controls:
+          - nist_800_53:si-7.6
+
+    - id: 03.14.10E
+      title: Protection of Boot Firmware
+      status: pending
+      controls:
+          - nist_800_53:si-7.10
+
+    - id: 03.14.11E
+      title: Integration of Detection and Response
+      status: pending
+      controls:
+          - nist_800_53:si-7.7
+
+    - id: 03.14.12E
+      title: Information Input Validation
+      status: pending
+      controls:
+          - nist_800_53:si-10
+
+    - id: 03.14.13E
+      title: Error Handling
+      status: pending
+      controls:
+          - nist_800_53:si-11
+
+    - id: 03.14.14E
+      title: Memory Protection
+      status: automated
+      controls:
+          - nist_800_53:si-16
+
+    - id: 03.14.15E
+      title: Non-Persistent System Components and Services
+      status: pending
+      controls:
+          - nist_800_53:si-14
+
+    - id: 03.14.16E
+      title: Tainting
+      status: pending
+      controls:
+          - nist_800_53:si-20
+
+    - id: 03.14.17E
+      title: System-Generated Alerts
+      status: pending
+      controls:
+          - nist_800_53:si-4.5
+
+    - id: 03.14.18E
+      title: Automated Organization-Generated Alerts
+      status: pending
+      controls:
+          - nist_800_53:si-4.12
+
+    - id: 03.14.19E
+      title: Wireless Intrusion Detection
+      status: pending
+      controls:
+          - nist_800_53:si-4.14
+
+    # 03.15 Planning
+    - id: 03.15.01E
+      title: Security Architecture
+      status: pending
+      controls:
+          - nist_800_53:pl-8
+
+    - id: 03.15.02E
+      title: Defense In Depth
+      status: pending
+      controls:
+          - nist_800_53:pl-8.1
+
+    - id: 03.15.03E
+      title: Supplier Diversity
+      status: pending
+      controls:
+          - nist_800_53:pl-8.2
+
+    # 03.16 System and Services Acquisition
+    - id: 03.16.01E
+      title: Specialization
+      status: pending
+      controls:
+          - nist_800_53:sa-23
+
+    # 03.17 Supply Chain Risk Management
+    - id: 03.17.01E
+      title: Notification Agreements
+      status: pending
+      controls:
+          - nist_800_53:sr-8
+
+    - id: 03.17.02E
+      title: Inspection of Systems or Components
+      status: pending
+      controls:
+          - nist_800_53:sr-10
+
+    - id: 03.17.03E
+      title: Component Authenticity
+      status: pending
+      controls:
+          - nist_800_53:sr-11
+
+    - id: 03.17.04E
+      title: Provenance
+      status: pending
+      controls:
+          - nist_800_53:sr-4
+
+    - id: 03.17.05E
+      title: Supply Chain Integrity - Pedigree
+      status: pending
+      controls:
+          - nist_800_53:sr-4.4
