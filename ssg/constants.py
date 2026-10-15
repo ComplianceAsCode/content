@@ -20,6 +20,7 @@ SSG_REF_URIS = {
     'cis-csc': 'https://www.cisecurity.org/controls/',
     'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
     'cui': 'https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html',
+    'cui_enhanced': 'https://csrc.nist.gov/pubs/sp/800/172/r3/final',
     'dcid': 'not_officially_available',
     'disa': 'https://www.cyber.mil/stigs/cci/',
     'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
@@ -101,6 +102,7 @@ anssi_ns = "https://cyber.gouv.fr/sites/default/files/document/linux_configurati
 ospp_ns = "https://www.niap-ccevs.org/Profile/PP.cfm"
 pcidss4_ns = "https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf"
 cui_ns = 'https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html'
+cui_enhanced_ns = 'https://csrc.nist.gov/pubs/sp/800/172/r3/final'
 stig_refs = 'https://www.cyber.mil/stigs/'
 disa_cciuri = "https://www.cyber.mil/stigs/cci/"
 ssg_version_uri = \
@@ -256,6 +258,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 REF_PREFIX_MAP = {
     "nist": "NIST-800-53",
     "cui": "NIST-800-171",
+    "cui_enhanced": "NIST-800-172",
     "pcidss": "PCI-DSS",
     "pcidss4": "PCI-DSSv4",
     "cjis": "CJIS",
@@ -276,6 +279,9 @@ REFERENCES = dict(
         regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     cui=Reference(
         id="cui", name=REF_PREFIX_MAP["cui"], url=cui_ns,
+        regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    cui_enhanced=Reference(
+        id="cui_enhanced", name=REF_PREFIX_MAP["cui_enhanced"], url=cui_enhanced_ns,
         regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     nist=Reference(
         id="nist", name=REF_PREFIX_MAP["nist"], url="",
