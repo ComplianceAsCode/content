@@ -1079,6 +1079,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   register: result_authselect_features
   changed_when: false
   check_mode: false
+  failed_when: false
   when:
     - result_authselect_check_cmd is success
 
@@ -1115,6 +1116,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   register: result_authselect_features
   changed_when: false
   check_mode: false
+  failed_when: false
   when:
     - result_authselect_check_cmd is success
 
@@ -2144,6 +2146,7 @@ Part of the grub2_bootloader_argument_absent template.
   register: result_authselect_features
   changed_when: false
   check_mode: false
+  failed_when: false
   when:
     - result_authselect_profile is not skipped
     - authselect_current_profile is not match("custom/")
