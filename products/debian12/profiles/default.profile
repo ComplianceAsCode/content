@@ -57,7 +57,7 @@ selections:
     - sudoers_no_root_target
     - auditd_write_logs
     - coredump_disable_backtraces
-    - disable_host_auth
+    - sshd_disable_host_auth
     - file_owner_backup_etc_gshadow
     - auditd_data_retention_action_mail_acct
     - sshd_do_not_permit_user_env

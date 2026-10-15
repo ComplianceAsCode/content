@@ -12,7 +12,7 @@ accounts_password_warn_age_login_defs
 accounts_passwords_pam_faillock_deny
 configure_crypto_policy
 configure_ssh_crypto_policy
-disable_host_auth
+sshd_disable_host_auth
 enable_authselect
 ensure_gpgcheck_globally_activated
 ensure_gpgcheck_never_disabled

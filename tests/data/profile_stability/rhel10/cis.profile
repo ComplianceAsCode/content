@@ -148,7 +148,7 @@ directory_groupowner_sshd_config_d
 directory_owner_sshd_config_d
 directory_permissions_sshd_config_d
 directory_permissions_var_log_audit
-disable_host_auth
+sshd_disable_host_auth
 disable_users_coredumps
 disable_weak_deps
 ensure_gpgcheck_globally_activated

@@ -34,7 +34,7 @@ selections:
     - accounts_umask_etc_profile
     - sshd_set_max_sessions
     - sudoers_no_root_target
-    - disable_host_auth
+    - sshd_disable_host_auth
     - file_owner_backup_etc_gshadow
     - kernel_config_kexec
     - file_owner_backup_etc_passwd

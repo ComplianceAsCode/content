@@ -94,7 +94,7 @@ configure_crypto_policy
 dconf_db_up_to_date
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
-disable_host_auth
+sshd_disable_host_auth
 encrypt_partitions
 ensure_gpgcheck_globally_activated
 ensure_gpgcheck_local_packages

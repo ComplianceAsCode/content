@@ -69,7 +69,7 @@ selections:
     # AC-17(a)
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_disable_compression
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth

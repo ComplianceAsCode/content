@@ -206,7 +206,7 @@ selections:
     - service_xinetd_disabled
     - service_zebra_disabled
     - use_kerberos_security_all_exports
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_disable_compression
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth

@@ -94,7 +94,7 @@ selections:
 
     ## 1.16-ensure-ssh-hostbasedauthentication-is-disabled
     ### Level 1
-    - disable_host_auth
+    - sshd_disable_host_auth
 
     ## 1.17-ensure-ssh-root-login-is-disabled
     ### Level 1

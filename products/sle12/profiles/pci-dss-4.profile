@@ -19,7 +19,7 @@ selections:
     -  account_unique_id
     -  coredump_disable_backtraces
     -  coredump_disable_storage
-    -  disable_host_auth
+    -  sshd_disable_host_auth
     -  disable_prelink
     -  disable_users_coredumps
     -  ensure_pam_wheel_group_empty

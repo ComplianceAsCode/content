@@ -53,7 +53,7 @@ coredump_disable_backtraces
 coredump_disable_storage
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
-disable_host_auth
+sshd_disable_host_auth
 disable_users_coredumps
 dnf-automatic_apply_updates
 dnf-automatic_security_updates_only

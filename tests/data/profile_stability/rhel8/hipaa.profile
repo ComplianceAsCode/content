@@ -75,7 +75,7 @@ dconf_gnome_remote_access_credential_prompt
 dconf_gnome_remote_access_encryption
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
-disable_host_auth
+sshd_disable_host_auth
 enable_authselect
 encrypt_partitions
 ensure_gpgcheck_globally_activated

@@ -78,7 +78,7 @@ selections:
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
     - sssd_run_as_sssd_user
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
     - var_accounts_passwords_pam_faillock_deny=3

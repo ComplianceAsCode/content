@@ -65,7 +65,7 @@ configure_firewalld_ports
 configure_kerberos_crypto_policy
 configure_opensc_card_drivers
 dir_perms_world_writable_sticky_bits
-disable_host_auth
+sshd_disable_host_auth
 dnf-automatic_apply_updates
 dnf-automatic_security_updates_only
 enable_fips_mode

@@ -94,7 +94,7 @@ selections:
     - auditd_write_logs
     - grub2_mce_argument
     - audit_rules_time_stime
-    - disable_host_auth
+    - sshd_disable_host_auth
     - dir_perms_world_writable_sticky_bits
     - coredump_disable_backtraces
     - file_owner_backup_etc_gshadow

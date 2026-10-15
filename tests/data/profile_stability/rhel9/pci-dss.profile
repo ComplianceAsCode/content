@@ -85,7 +85,7 @@ dconf_gnome_screensaver_mode_blank
 dconf_gnome_session_idle_user_locks
 dir_perms_world_writable_sticky_bits
 directory_access_var_log_audit
-disable_host_auth
+sshd_disable_host_auth
 disable_users_coredumps
 display_login_attempts
 enable_authselect
