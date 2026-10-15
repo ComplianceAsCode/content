@@ -138,15 +138,6 @@ controls:
       rules:
           - package_tuned_removed
       status: automated
-    - id: RHEL-10-200050
-      levels:
-          - medium
-      title: RHEL 10 must not have a Trivial File Transfer Protocol (TFTP) server package installed unless
-          it is required by the mission, and if required, the TFTP daemon must be configured to operate
-          in secure mode.
-      rules:
-          - package_tftp-server_removed
-      status: automated
     - id: RHEL-10-200060
       levels:
           - medium
