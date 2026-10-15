@@ -22,7 +22,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_nopasswd_etc_sudoers" version="1">
     <ind:filepath>/etc/sudoers</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!#).*[\s]+NOPASSWD[\s]*\:.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!#).*[\s,=):]NOPASSWD[\s]*\:.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -32,7 +32,7 @@
   <ind:textfilecontent54_object id="object_nopasswd_etc_sudoers_d" version="1">
     <ind:path>/etc/sudoers.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^(?!#).*[\s]+NOPASSWD[\s]*\:.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!#).*[\s,=):]NOPASSWD[\s]*\:.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

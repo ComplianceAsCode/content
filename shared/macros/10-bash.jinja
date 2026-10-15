@@ -1503,12 +1503,12 @@ for f in /etc/sudoers /etc/sudoers.d/* ; do
   if [ ! -e "$f" ] ; then
     continue
   fi
-  matching_list=$(grep -P '^(?!#).*[\s]+{{{ pattern }}}.*$' $f | uniq )
-  if ! test -z "$matching_list"; then
-    while IFS= read -r entry; do
+  matching_lines=$(grep -nP '^(?!#).*[\s,=):]{{{ pattern }}}.*$' "$f" | cut -d: -f1)
+  if ! test -z "$matching_lines"; then
+    for line_number in $matching_lines; do
       # comment out "{{{ parameter }}}" matches to preserve user data
-      sed -i "s|^${entry}$|# &|g" $f
-    done <<< "$matching_list"
+      sed -i "${line_number}s/^/# /" "$f"
+    done
 
     /usr/sbin/visudo -cf $f &> /dev/null || echo "Fail to validate $f with visudo"
   fi
