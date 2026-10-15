@@ -1,10 +1,10 @@
 controls:
     -   id: SRG-OS-000439-GPOS-00195
         levels:
-            - medium
+            - high
         title: {{{ full_name }}} must install security-relevant software updates within
-            the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and
-            STIGs).
+            30 days unless the time period is directed by an authoritative source (e.g., IAVM,
+            CTOs, DTMs, STIGs).
         status: automated
         rules:
             - dnf-automatic_apply_updates
