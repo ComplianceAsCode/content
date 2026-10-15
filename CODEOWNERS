@@ -14,6 +14,7 @@
 /tests/data/product_stability/ol*.yml @ComplianceAsCode/oracle-maintainers
 /tests/data/product_stability/sle*.yml @ComplianceAsCode/suse-maintainers
 /tests/data/product_stability/ubuntu*.yml @ComplianceAsCode/ubuntu-maintainers
+/tests/data/product_stability/almalinux*.yml @sej7278
 
 # Product Specific Profiles
 
@@ -21,10 +22,13 @@
 /products/ol*/profiles/ @ComplianceAsCode/oracle-maintainers
 /products/sle*/profiles/ @ComplianceAsCode/suse-maintainers
 /products/ubuntu*/profiles/ @ComplianceAsCode/ubuntu-maintainers
+/products/almalinux*/profiles/ @sej7278
 
 # Product Specific Control Files
 
 /products/rhel*/controls/ @ComplianceAsCode/red-hatters
+/products/almalinux*/controls/ @sej7278
+/controls/cis_almalinux9.yml @sej7278
 /controls/stig_ol9.yml  @ComplianceAsCode/oracle-maintainers
 /controls/cis_rhel8.yml @ComplianceAsCode/red-hatters
 /controls/cis_rhel10.yml @ComplianceAsCode/red-hatters

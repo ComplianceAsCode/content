@@ -1,0 +1,58 @@
+documentation_complete: true
+
+
+title: 'Ensure the Default Umask is Set Through pam_umask'
+
+description: |-
+    The <tt>pam_umask.so</tt> module sets the file mode creation mask for
+    every session opened through PAM. Add the following line to the top of
+    <tt>/etc/pam.d/postlogin</tt>:
+    <pre>session     optional     pam_umask.so silent umask=0077</pre>
+    When the <tt>umask</tt> argument is omitted the module uses the
+    <tt>UMASK</tt> value from <tt>/etc/login.defs</tt>. If it is set, it must
+    be <tt>0077</tt>.
+
+rationale: |-
+    Setting the most restrictive default permissions ensures that when new
+    files are created, only the owner can read and modify them. Enforcing the
+    umask through PAM covers every session type, including sessions that do not
+    source the shell initialization files.
+
+severity: medium
+
+references:
+    srg: SRG-OS-000480-GPOS-00228
+
+ocil_clause: 'the pam_umask.so line is missing, or the umask argument is set to a value other than 0077'
+
+ocil: |-
+    Verify that the <tt>pam_umask</tt> module is enabled with the following command:
+    <pre>$ grep -i umask /etc/pam.d/*
+
+    /etc/pam.d/postlogin:session optional pam_umask.so silent umask=0077</pre>
+    If a <tt>pam_umask.so</tt> line is not returned, this is a finding.
+    If the <tt>umask</tt> argument is set to anything other than <tt>0077</tt>, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to define default permissions for all authenticated users so the user can only read and modify their own files.
+
+    Add or edit the following line at the top of /etc/pam.d/postlogin:
+
+    session     optional     pam_umask.so silent umask=0077
+
+srg_requirement: '{{{ full_name }}} must define default permissions for PAM users.'
+
+checktext: |-
+    Verify that the "pam_umask" module is enabled with the following command:
+
+    $ grep -i umask /etc/pam.d/*
+
+    /etc/pam.d/postlogin:session optional pam_umask.so silent umask=0077
+
+    If a "pam_umask.so" line is not returned, this is a finding.
+
+    If the "umask" setting is set to anything other than "0077", this is a finding.
+
+    Note: If the "umask" setting is not found, it will use the default UMASK entry in /etc/login.defs.
+
+platform: package[pam]

@@ -1,0 +1,27 @@
+# platform = multi_platform_almalinux
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: '{{{ rule_title }}} - Find repository files defining the tuxcare-esu repository'
+  ansible.builtin.shell: |
+    set -o pipefail
+    grep -l -E '^\[tuxcare-esu\]\s*$' /etc/yum.repos.d/*.repo || true
+  register: tuxcare_esu_repo_files
+  changed_when: false
+
+- name: '{{{ rule_title }}} - Enable the tuxcare-esu repository'
+  community.general.ini_file:
+    path: "{{ item }}"
+    section: tuxcare-esu
+    option: enabled
+    value: '1'
+    no_extra_spaces: true
+    mode: '0644'
+  loop: "{{ tuxcare_esu_repo_files.stdout_lines }}"
+  when: tuxcare_esu_repo_files.stdout_lines | length > 0
+
+- name: '{{{ rule_title }}} - Warn when the tuxcare-esu repository is not configured'
+  ansible.builtin.debug:
+    msg: 'The tuxcare-esu repository is not configured. Install tuxcare-release and register the ESU license key with tuxctl.'
+  when: tuxcare_esu_repo_files.stdout_lines | length == 0

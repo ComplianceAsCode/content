@@ -1,0 +1,41 @@
+documentation_complete: true
+
+
+title: 'Suppress Boot Messages via Bootloader Configuration'
+
+description: |-
+    Without the <tt>quiet</tt> kernel argument, hardware and service information
+    is printed to the console during boot and sometimes afterwards. This
+    information could be useful for attackers with physical access to the
+    console, or so-called "shoulder surfers". To suppress these messages,
+    add the argument <tt>quiet</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("quiet") | indent(4) }}}
+
+rationale: |-
+    Boot messages can disclose hardware details, service names and other
+    information about the system to anybody who can see the console. Boot
+    failures are still shown, as is the LUKS passphrase prompt.
+
+severity: medium
+
+references:
+    srg: SRG-OS-000206-GPOS-00084
+
+platform: grub2
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: quiet
+
+ocil_clause: 'boot messages are not suppressed'
+
+ocil: |-
+    {{{ ocil_grub2_argument("quiet") | indent(4) }}}
+
+fixtext: |-
+    {{{ describe_grub2_argument("quiet") | indent(4) }}}
+
+srg_requirement:
+  {{{ full_name }}} must not show boot up messages.
