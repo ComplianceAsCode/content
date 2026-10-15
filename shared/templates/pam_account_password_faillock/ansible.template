@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if product == 'sle16' %}}
+{{% if product in ['sle16', 'slmicro6'] %}}
 - name: Copy faillock defaults /usr/etc/security/faillock.conf to {{{ pam_faillock_conf_path }}}
   ansible.builtin.copy:
     src: /usr/etc/security/faillock.conf

@@ -149,11 +149,42 @@ class SLE16CCEFile(CCEFile):
     def absolute_path(self):
         return os.path.join(self.project_root, "shared", "references", "cce-sle16-avail.txt")
 
+
+class SLMicro5CCEFile(CCEFile):
+    """
+    SLMicro5CCEFile is a subclass of CCEFile that represents a file containing
+    SLMicro5 Common Configuration Enumeration (CCE) data.
+
+    Properties:
+        absolute_path (str): The absolute path to the SLMicro5 CCE file, which is located in the
+                             "shared/references" directory.
+    """
+    @property
+    def absolute_path(self):
+        return os.path.join(self.project_root, "shared", "references", "cce-slmicro5-avail.txt")
+
+
+class SLMicro6CCEFile(CCEFile):
+    """
+    SLMicro6CCEFile is a subclass of CCEFile that represents a file containing
+    SLMicro6 Common Configuration Enumeration (CCE) data.
+
+    Properties:
+        absolute_path (str): The absolute path to the SLMicro6 CCE file, which is located in the
+                             "shared/references" directory.
+    """
+    @property
+    def absolute_path(self):
+        return os.path.join(self.project_root, "shared", "references", "cce-slmicro6-avail.txt")
+
+
 CCE_POOLS: Dict[str, Type[CCEFile]] = {}
 CCE_POOLS["redhat"] = RedhatCCEFile
 CCE_POOLS["sle12"] = SLE12CCEFile
 CCE_POOLS["sle15"] = SLE15CCEFile
 CCE_POOLS["sle16"] = SLE16CCEFile
+CCE_POOLS["slmicro5"] = SLMicro5CCEFile
+CCE_POOLS["slmicro6"] = SLMicro6CCEFile
 
 def is_cce_format_valid(cceid):
     """
