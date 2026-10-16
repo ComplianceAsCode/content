@@ -425,12 +425,12 @@ the collection is published as a tarball uploaded directly to Ansible Galaxy.
         ninja -C build generate-$version-ansible-roles
         
         mkdir -p "$OUTPUT_DIR/$version/ansible_roles"
-        cp -r build/ansible_roles $OUTPUT_DIR/$version/ansible_roles
+        cp -r build/ansible_roles $OUTPUT_DIR/$version
 
         # 2. Generate and build the individual collections
         python3 utils/ansible_roles_to_collection.py \
             --roles-dir $OUTPUT_DIR/$version/ansible_roles \
-            --output-dir $OUTPUT_DIR/$version \
+            --output-dir $OUTPUT_DIR/$version
 
         # 3. Verify no unrewritten FQCNs remain in the bundled roles.
         #    Only the vendored collection (community.general) must be rewritten;
