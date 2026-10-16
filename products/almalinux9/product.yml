@@ -2,6 +2,10 @@ product: almalinux9
 full_name: AlmaLinux OS 9
 type: platform
 
+families:
+  - rhel
+  - rhel-like
+
 major_version_ordinal: 9
 
 benchmark_id: ALMALINUX-9
@@ -13,6 +17,26 @@ profiles_root: "./profiles"
 pkg_manager: "dnf"
 
 init_system: "systemd"
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
+sshd_distributed_config: "true"
+
+dconf_gdm_dir: "distro.d"
+
+faillock_path: "/var/log/faillock"
+
+journald_conf_dir_path: /etc/systemd/journald.conf.d
+
+sysctl_remediate_drop_in_file: true
+
+# We need to update the STIG audit_watches_style from the default "legacy" to "modern" ready for CIS v3.0.0
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
 
 cpes_root: "../../shared/applicability"
 cpes:

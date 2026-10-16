@@ -1,0 +1,3691 @@
+---
+policy: 'Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide'
+title: 'Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide'
+id: stig_almalinux9
+source: https://www.cyber.mil/stigs/downloads/
+version: V1R8
+reference_type: stigid
+product: almalinux9
+
+levels:
+    - id: high
+    - id: medium
+    - id: low
+
+controls:
+    - id: needed_rules
+      levels:
+          - medium
+      rules:
+          - enable_authselect
+          - var_authselect_profile=sssd
+
+    - id: ALMA-09-001010
+      levels:
+          - low
+      title: AlmaLinux OS 9 must limit the number of concurrent sessions to ten for all accounts and/or account types.
+      rules:
+          - accounts_max_concurrent_login_sessions
+          - var_accounts_max_concurrent_login_sessions=10
+      status: automated
+
+    - id: ALMA-09-001120
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must automatically lock graphical user sessions after 10 minutes of inactivity.
+      rules:
+          - dconf_gnome_screensaver_idle_delay
+          - inactivity_timeout_value=10_minutes
+      status: automated
+
+    - id: ALMA-09-001230
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must conceal, via the session lock, information previously visible on the display with a publicly viewable image.
+      rules:
+          - dconf_gnome_screensaver_mode_blank
+      status: automated
+
+    - id: ALMA-09-001340
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent a user from overriding the session idle-delay setting for the graphical user interface.
+      rules:
+          - dconf_gnome_session_idle_user_locks
+      status: automated
+
+    - id: ALMA-09-001450
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must initiate a session lock for graphical user interfaces when the screensaver is activated.
+      rules:
+          - dconf_gnome_screensaver_lock_delay
+          - var_screensaver_lock_delay=5_seconds
+      status: automated
+
+    - id: ALMA-09-001560
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent a user from overriding the session lock-delay setting for the graphical user interface.
+      rules:
+          - dconf_gnome_screensaver_user_locks
+      status: automated
+
+    - id: ALMA-09-001890
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must automatically exit interactive command shell user sessions after 10 minutes of inactivity.
+      rules:
+          - accounts_tmout
+          - var_accounts_tmout=10_min
+      status: automated
+
+    - id: ALMA-09-002000
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be able to directly initiate a session lock for all connection types using smart card when the smart card is removed.
+      rules:
+          - dconf_gnome_lock_screen_on_smartcard_removal
+      status: automated
+
+    - id: ALMA-09-002110
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent a user from overriding the disabling of the graphical user smart card removal action.
+      rules:
+          - dconf_gnome_lock_screen_on_smartcard_removal
+      status: automated
+
+    - id: ALMA-09-002770
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must log SSH connection attempts and failures to the server.
+      rules:
+          - sshd_set_loglevel_verbose
+      status: automated
+
+    - id: ALMA-09-002880
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 remote access methods must be monitored.
+      rules:
+          - rsyslog_remote_access_monitoring
+      status: automated
+
+    - id: ALMA-09-002990
+      levels:
+          - high
+      title: AlmaLinux OS 9 SSH client must be configured to use only encryption ciphers employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
+      rules:
+          - harden_sshd_ciphers_openssh_conf_crypto_policy
+          - sshd_approved_ciphers=stig_almalinux9
+      status: automated
+
+    - id: ALMA-09-003210
+      levels:
+          - high
+      title: AlmaLinux OS 9 SSH client must be configured to use only Message Authentication Codes (MACs) employing FIPS 140-3-validated cryptographic hash algorithms.
+      rules:
+          - harden_sshd_macs_openssh_conf_crypto_policy
+          - sshd_approved_macs=stig_almalinux9
+      status: automated
+
+    - id: ALMA-09-003320
+      levels:
+          - high
+      title: The AlmaLinux 9 SSH server must be configured to use only DoW-approved encryption ciphers employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH server connections.
+      rules:
+          - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+          - sshd_approved_ciphers=stig_almalinux9
+      status: automated
+
+    - id: ALMA-09-003430
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must implement DoW-approved systemwide cryptographic policies to protect the confidentiality of SSH server connections.
+      rules:
+          - sshd_include_crypto_policy
+          - file_sshd_50_redhat_exists
+      status: automated
+
+    - id: ALMA-09-003540
+      levels:
+          - high
+      title: The AlmaLinux OS 9 SSH server must be configured to use only Message Authentication Codes (MACs) employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH server connections.
+      rules:
+          - harden_sshd_macs_opensshserver_conf_crypto_policy
+          - sshd_approved_macs=stig_almalinux9
+      status: automated
+
+    - id: ALMA-09-003650
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must force a frequent session key renegotiation for SSH connections to the server.
+      rules:
+          - sshd_rekey_limit
+          - var_rekey_limit_size=1G
+          - var_rekey_limit_time=1hour
+      status: automated
+
+    - id: ALMA-09-003870
+      levels:
+          - high
+      title: AlmaLinux OS 9 IP tunnels must use FIPS 140-3 approved cryptographic algorithms.
+      rules:
+          - configure_libreswan_crypto_policy
+      status: automated
+
+    - id: ALMA-09-004310
+      levels:
+          - high
+      title: AlmaLinux OS 9 must use the TuxCare ESU repository.
+      notes: The remediation only enables an already configured tuxcare-esu repository. Installing tuxcare-release and registering the ESU license key must be done manually.
+      rules:
+          - ensure_tuxcare_esu_repo_enabled
+      status: automated
+
+    - id: ALMA-09-004320
+      levels:
+          - high
+      title: AlmaLinux OS 9 must use the TuxCare FIPS packages and not the default encryption packages.
+      notes: The remediation upgrades the packages from the configured repositories and only yields the TuxCare builds when the ESU repository is configured and licensed. Old default kernels must be removed manually after reboot.
+      rules:
+          - ensure_tuxcare_fips_packages_installed
+      status: automated
+
+    - id: ALMA-09-004420
+      levels:
+          - high
+      title: AlmaLinux OS 9 must enable FIPS mode.
+      notes: The STIG expects the FIPS-validated packages to come from the TuxCare ESU repository; the rules only verify and enable FIPS mode itself.
+      rules:
+          - enable_fips_mode
+          - sysctl_crypto_fips_enabled
+          - enable_dracut_fips_module
+          - configure_crypto_policy
+          - var_system_crypto_policy=fips
+      status: automated
+
+    - id: ALMA-09-004750
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must automatically expire temporary accounts within 72 hours.
+      rules:
+          - account_temp_expire_date
+      status: manual
+
+    - id: ALMA-09-004970
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/sudoers.
+      rules:
+          - audit_rules_sudoers
+      status: automated
+
+    - id: ALMA-09-005080
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/group.
+      rules:
+          - audit_rules_usergroup_modification_group
+      status: automated
+
+    - id: ALMA-09-005190
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/gshadow.
+      rules:
+          - audit_rules_usergroup_modification_gshadow
+      status: automated
+
+    - id: ALMA-09-005300
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/security/opasswd.
+      rules:
+          - audit_rules_usergroup_modification_opasswd
+      status: automated
+
+    - id: ALMA-09-005410
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.
+      rules:
+          - audit_rules_usergroup_modification_passwd
+      status: automated
+
+    - id: ALMA-09-005960
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/shadow.
+      rules:
+          - audit_rules_usergroup_modification_shadow
+      status: automated
+
+    - id: ALMA-09-006070
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect the files within /etc/sudoers.d/
+      rules:
+          - audit_rules_sudoers_d
+      status: automated
+
+    - id: ALMA-09-006180
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require authentication to access emergency mode.
+      rules:
+          - require_emergency_target_auth
+      status: automated
+
+    - id: ALMA-09-006290
+      levels:
+          - medium
+      title: ALMA 9 must require authentication upon booting into single-user and maintenance modes.
+      rules:
+          - grub2_password
+      status: automated
+
+    - id: ALMA-09-006400
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require a unique superuser's name upon booting into single-user and maintenance modes.
+      rules:
+          - grub2_admin_username
+      status: automated
+
+    - id: ALMA-09-006510
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require authentication to access single-user mode.
+      rules:
+          - require_singleuser_auth
+      status: automated
+
+    - id: ALMA-09-006620
+      levels:
+          - high
+      title: The systemd Ctrl-Alt-Delete burst key sequence in AlmaLinux OS 9 must be disabled.
+      rules:
+          - disable_ctrlaltdel_burstaction
+      status: automated
+
+    - id: ALMA-09-006730
+      levels:
+          - high
+      title: The Ctrl-Alt-Delete key sequence must be disabled on AlmaLinux OS 9.
+      rules:
+          - disable_ctrlaltdel_reboot
+      status: automated
+
+    - id: ALMA-09-006840
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the sudo package installed.
+      rules:
+          - package_sudo_installed
+      status: automated
+
+    - id: ALMA-09-006950
+      levels:
+          - medium
+      title: The AlmaLinux OS 9 debug-shell systemd service must be disabled.
+      rules:
+          - service_debug-shell_disabled
+      status: automated
+
+    - id: ALMA-09-007060
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable kernel parameters to enforce discretionary access control on hardlinks.
+      rules:
+          - sysctl_fs_protected_hardlinks
+      status: automated
+
+    - id: ALMA-09-007170
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable kernel parameters to enforce discretionary access control (DAC) on symlinks.
+      rules:
+          - sysctl_fs_protected_symlinks
+      status: automated
+
+    - id: ALMA-09-007280
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must audit uses of the "execve" system call.
+      rules:
+          - audit_rules_suid_privilege_function
+      status: automated
+
+    - id: ALMA-09-007500
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must automatically lock an account when three unsuccessful logon attempts occur.
+      rules:
+          - accounts_passwords_pam_faillock_deny
+          - var_accounts_passwords_pam_faillock_deny=3
+      status: automated
+
+    - id: ALMA-09-007610
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must automatically lock the root account until the root account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.
+      rules:
+          - accounts_passwords_pam_faillock_deny_root
+      status: automated
+
+    - id: ALMA-09-007720
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period.
+      rules:
+          - accounts_passwords_pam_faillock_interval
+          - var_accounts_passwords_pam_faillock_fail_interval=900
+      status: automated
+
+    - id: ALMA-09-007830
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must configure the use of the pam_faillock.so module in the /etc/pam.d/system-auth file.
+      rules:
+          - account_password_pam_faillock_system_auth
+      status: automated
+
+    - id: ALMA-09-007940
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.
+      rules:
+          - account_password_pam_faillock_password_auth
+      status: automated
+
+    - id: ALMA-09-008050
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must log username information when unsuccessful logon attempts occur.
+      rules:
+          - accounts_passwords_pam_faillock_audit
+      status: automated
+
+    - id: ALMA-09-008160
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must maintain an account lock until the locked account is manually released by an administrator; and not automatically after a set time.
+      rules:
+          - accounts_passwords_pam_faillock_unlock_time
+          - var_accounts_passwords_pam_faillock_unlock_time=never
+      status: automated
+
+    - id: ALMA-09-008270
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must ensure account locks persist across reboots.
+      rules:
+          - accounts_passwords_pam_faillock_dir
+      status: automated
+
+    - id: ALMA-09-008380
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must configure the appropriate SELinux context on the nondefault faillock tally directory.
+      rules:
+          - account_password_selinux_faillock_dir
+      status: automated
+
+    - id: ALMA-09-008490
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent users from disabling the Standard Mandatory DoW Notice and Consent Banner for graphical user interfaces.
+      rules:
+          - dconf_gnome_banner_enabled
+      status: automated
+
+    - id: ALMA-09-008600
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must display the Standard Mandatory DoW Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.
+      rules:
+          - dconf_gnome_banner_enabled
+          - dconf_gnome_login_banner_text
+          - dconf_login_banner_text=dod_banners
+          - dconf_login_banner_contents=dod_default
+      status: automated
+
+    - id: ALMA-09-008710
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must display the Standard Mandatory DoW Notice and Consent Banner before granting local or remote access to the system via a command line user logon.
+      rules:
+          - banner_etc_issue
+          - login_banner_text=dod_banners
+          - login_banner_contents=dod_default
+      status: automated
+
+    - id: ALMA-09-008820
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must display the Standard Mandatory DoW Notice and Consent Banner before granting local or remote access to the system via an SSH user logon.
+      rules:
+          - banner_etc_issue_net
+          - sshd_enable_warning_banner_net
+          - login_banner_text=dod_banners
+          - login_banner_contents=dod_default
+      status: automated
+
+    - id: ALMA-09-009260
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the s-nail package installed.
+      rules:
+          - package_s-nail_installed
+      status: automated
+
+    - id: ALMA-09-009370
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH daemon must not allow Generic Security Service Application Program Interface (GSSAPI) authentication.
+      rules:
+          - sshd_disable_gssapi_auth
+      status: automated
+
+    - id: ALMA-09-009480
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH daemon must not allow Kerberos authentication.
+      rules:
+          - sshd_disable_kerb_auth
+      status: automated
+
+    - id: ALMA-09-009590
+      levels:
+          - high
+      title: AlmaLinux OS 9 must check the GPG signature of software packages originating from external software repositories before installation.
+      rules:
+          - ensure_gpgcheck_globally_activated
+      status: automated
+
+    - id: ALMA-09-009700
+      levels:
+          - high
+      title: AlmaLinux OS 9 must ensure cryptographic verification of vendor software packages.
+      notes: Only the AlmaLinux OS 9 package-signing key is verified. The TuxCare package-signing key also required by the STIG is not checked by any rule yet.
+      rules:
+          - ensure_almalinux_gpgkey_installed
+      status: automated
+
+    - id: ALMA-09-009810
+      levels:
+          - high
+      title: AlmaLinux OS 9 must check the GPG signature of locally installed software packages before installation.
+      rules:
+          - ensure_gpgcheck_local_packages
+      status: automated
+
+    - id: ALMA-09-009920
+      levels:
+          - high
+      title: AlmaLinux OS 9 must check the GPG signature of repository metadata before package installation.
+      rules:
+          - ensure_gpgcheck_repo_metadata
+      status: automated
+
+    - id: ALMA-09-010030
+      levels:
+          - high
+      title: AlmaLinux OS 9 must have GPG signature verification enabled for all software repositories.
+      rules:
+          - ensure_gpgcheck_never_disabled
+      status: automated
+
+    - id: ALMA-09-010140
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent the loading of a new kernel for later execution.
+      rules:
+          - sysctl_kernel_kexec_load_disabled
+      status: automated
+
+    - id: ALMA-09-010250
+      levels:
+          - medium
+      title: AlmaLinux OS 9 system commands must be group-owned by root or a system account.
+      rules:
+          - file_groupownership_system_commands_dirs
+      status: automated
+
+    - id: ALMA-09-010360
+      levels:
+          - medium
+      title: AlmaLinux OS 9 system commands must be owned by root.
+      rules:
+          - file_ownership_binary_dirs
+      status: automated
+
+    - id: ALMA-09-010470
+      levels:
+          - medium
+      title: AlmaLinux OS 9 system commands must have mode 755 or less permissive.
+      rules:
+          - file_permissions_binary_dirs
+      status: automated
+
+    - id: ALMA-09-010580
+      levels:
+          - medium
+      title: AlmaLinux OS 9 library directories must be group-owned by root or a system account.
+      rules:
+          - dir_group_ownership_library_dirs
+      status: automated
+
+    - id: ALMA-09-010690
+      levels:
+          - medium
+      title: AlmaLinux OS 9 library directories must be owned by root.
+      rules:
+          - dir_ownership_library_dirs
+      status: automated
+
+    - id: ALMA-09-010800
+      levels:
+          - medium
+      title: AlmaLinux OS 9 library directories must have mode 755 or less permissive.
+      rules:
+          - dir_permissions_library_dirs
+      status: automated
+
+    - id: ALMA-09-010910
+      levels:
+          - medium
+      title: AlmaLinux OS 9 library files must be group-owned by root or a system account.
+      rules:
+          - root_permissions_syslibrary_files
+      status: automated
+
+    - id: ALMA-09-011020
+      levels:
+          - medium
+      title: AlmaLinux OS 9 library files must be owned by root.
+      rules:
+          - file_ownership_library_dirs
+      status: automated
+
+    - id: ALMA-09-011130
+      levels:
+          - medium
+      title: AlmaLinux OS 9 library files must have mode 755 or less permissive.
+      rules:
+          - file_permissions_library_dirs
+      status: automated
+
+    - id: ALMA-09-011240
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable core dumps for all users.
+      rules:
+          - disable_users_coredumps
+      status: automated
+
+    - id: ALMA-09-011350
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable acquiring, saving, and processing core dumps.
+      rules:
+          - service_systemd-coredump_disabled
+      status: automated
+
+    - id: ALMA-09-011460
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable storing core dumps.
+      rules:
+          - coredump_disable_storage
+      status: automated
+
+    - id: ALMA-09-011570
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable core dump backtraces.
+      rules:
+          - coredump_disable_backtraces
+      status: automated
+
+    - id: ALMA-09-011680
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the kernel.core_pattern.
+      rules:
+          - sysctl_kernel_core_pattern
+      status: automated
+
+    - id: ALMA-09-011790
+      levels:
+          - medium
+      title: AlmaLinux OS 9 cron configuration files directory must be group-owned by root.
+      rules:
+          - file_groupowner_cron_d
+          - file_groupowner_cron_daily
+          - file_groupowner_cron_hourly
+          - file_groupowner_cron_monthly
+          - file_groupowner_cron_weekly
+          - file_groupowner_crontab
+          - file_groupowner_cron_deny
+      status: automated
+
+    - id: ALMA-09-011900
+      levels:
+          - medium
+      title: AlmaLinux OS 9 cron configuration files directory must be owned by root.
+      rules:
+          - file_owner_cron_d
+          - file_owner_cron_daily
+          - file_owner_cron_hourly
+          - file_owner_cron_monthly
+          - file_owner_cron_weekly
+          - file_owner_crontab
+          - file_owner_cron_deny
+      status: automated
+
+    - id: ALMA-09-012010
+      levels:
+          - medium
+      title: AlmaLinux OS 9 cron configuration directories must have a mode of 0700 or less permissive.
+      rules:
+          - file_permissions_cron_d
+          - file_permissions_cron_daily
+          - file_permissions_cron_hourly
+          - file_permissions_cron_monthly
+          - file_permissions_cron_weekly
+      status: automated
+
+    - id: ALMA-09-012120
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/crontab file must have mode 0600.
+      rules:
+          - file_permissions_crontab
+      status: automated
+
+    - id: ALMA-09-012230
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the ability of a user to accidentally press Ctrl-Alt-Del and cause a system to shut down or reboot.
+      rules:
+          - dconf_gnome_disable_ctrlaltdel_reboot
+      status: automated
+
+    - id: ALMA-09-012340
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent a user from overriding the Ctrl-Alt-Del sequence settings for the graphical user interface.
+      rules:
+          - dconf_gnome_disable_ctrlaltdel_reboot
+      status: automated
+
+    - id: ALMA-09-012450
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 local files and directories must have a valid group owner.
+      rules:
+          - file_permissions_ungroupowned
+      status: automated
+
+    - id: ALMA-09-012560
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 local files and directories must have a valid owner.
+      rules:
+          - no_files_unowned_by_user
+      status: automated
+
+    - id: ALMA-09-012670
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/group- file must be group owned by root.
+      rules:
+          - file_groupowner_backup_etc_group
+      status: automated
+
+    - id: ALMA-09-012780
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/group- file must be owned by root.
+      rules:
+          - file_owner_backup_etc_group
+      status: automated
+
+    - id: ALMA-09-012890
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/group- file must have mode 0644 or less permissive to prevent unauthorized access.
+      rules:
+          - file_permissions_backup_etc_group
+      status: automated
+
+    - id: ALMA-09-013000
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/group file must be group owned by root.
+      rules:
+          - file_groupowner_etc_group
+      status: automated
+
+    - id: ALMA-09-013110
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/group file must be owned by root.
+      rules:
+          - file_owner_etc_group
+      status: automated
+
+    - id: ALMA-09-013220
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/group file must have mode 0644 or less permissive to prevent unauthorized access.
+      rules:
+          - file_permissions_etc_group
+      status: automated
+
+    - id: ALMA-09-013330
+      levels:
+          - medium
+      title: The /boot/grub2/grub.cfg file must be group-owned by root.
+      rules:
+          - file_groupowner_grub2_cfg
+      status: automated
+
+    - id: ALMA-09-013440
+      levels:
+          - medium
+      title: The /boot/grub2/grub.cfg file must be owned by root.
+      rules:
+          - file_owner_grub2_cfg
+      status: automated
+
+    - id: ALMA-09-013550
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the ability of systemd to spawn an interactive boot process.
+      rules:
+          - grub2_disable_interactive_boot
+      status: automated
+
+    - id: ALMA-09-013660
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/gshadow- file must be group-owned by root.
+      rules:
+          - file_groupowner_backup_etc_gshadow
+      status: automated
+
+    - id: ALMA-09-013770
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/gshadow- file must be owned by root.
+      rules:
+          - file_owner_backup_etc_gshadow
+      status: automated
+
+    - id: ALMA-09-013880
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/gshadow- file must have mode 0000 or less permissive to prevent unauthorized access.
+      rules:
+          - file_permissions_backup_etc_gshadow
+      status: automated
+
+    - id: ALMA-09-013990
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/gshadow file must be group-owned by root.
+      rules:
+          - file_groupowner_etc_gshadow
+      status: automated
+
+    - id: ALMA-09-014100
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/gshadow file must be owned by root.
+      rules:
+          - file_owner_etc_gshadow
+      status: automated
+
+    - id: ALMA-09-014210
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/gshadow file must have mode 0000 or less permissive to prevent unauthorized access.
+      rules:
+          - file_permissions_etc_gshadow
+      status: automated
+
+    - id: ALMA-09-014320
+      levels:
+          - medium
+      title: The graphical display manager must not be the default target on AlmaLinux OS 9 unless approved.
+      rules:
+          - xwindows_runlevel_target
+      status: automated
+
+    - id: ALMA-09-014430
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the user list at logon for graphical user interfaces.
+      rules:
+          - dconf_gnome_disable_user_list
+      status: automated
+
+    - id: ALMA-09-014540
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 local interactive user accounts must be assigned a home directory upon creation.
+      rules:
+          - accounts_have_homedir_login_defs
+      status: automated
+
+    - id: ALMA-09-014650
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 local interactive user home directories defined in the /etc/passwd file must exist.
+      rules:
+          - accounts_user_interactive_home_directory_exists
+      status: automated
+
+    - id: ALMA-09-014760
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 local interactive user home directories must be group-owned by the home directory owner's primary group.
+      rules:
+          - file_groupownership_home_directories
+      status: automated
+
+    - id: ALMA-09-014870
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent code from being executed on file systems that contain user home directories.
+      rules:
+          - mount_option_home_noexec
+      status: automated
+
+    - id: ALMA-09-014980
+      levels:
+          - medium
+      title: A separate file system must be used for user home directories (such as /home or an equivalent).
+      rules:
+          - partition_for_home
+      status: automated
+
+    - id: ALMA-09-015090
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 local interactive users must have a home directory assigned in the /etc/passwd file.
+      rules:
+          - accounts_user_interactive_home_directory_defined
+      status: automated
+
+    - id: ALMA-09-015200
+      levels:
+          - medium
+      title: Executable search paths within the initialization files of all local interactive AlmaLinux OS 9 users must only contain paths that resolve to the system default or the users home directory.
+      rules:
+          - accounts_user_home_paths_only
+      status: automated
+
+    - id: ALMA-09-015310
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 local interactive user home directories must have mode 0750 or less permissive.
+      rules:
+          - file_permissions_home_directories
+      status: automated
+
+    - id: ALMA-09-015420
+      levels:
+          - high
+      title: AlmaLinux OS 9 must not allow unattended or automatic logon via the graphical user interface.
+      rules:
+          - gnome_gdm_disable_automatic_login
+      status: automated
+
+    - id: ALMA-09-015640
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enforce a delay of at least four seconds between logon prompts following a failed logon attempt.
+      rules:
+          - accounts_logon_fail_delay
+          - var_accounts_fail_delay=4
+      status: automated
+
+    - id: ALMA-09-015750
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not allow blank or null passwords.
+      rules:
+          - no_empty_passwords
+      status: automated
+
+    - id: ALMA-09-015860
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have accounts configured with blank or null passwords.
+      rules:
+          - no_empty_passwords_etc_shadow
+      status: automated
+
+    - id: ALMA-09-015970
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/passwd- file must be group-owned by root.
+      rules:
+          - file_groupowner_backup_etc_passwd
+      status: automated
+
+    - id: ALMA-09-016080
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/passwd- file must be owned by root.
+      rules:
+          - file_owner_backup_etc_passwd
+      status: automated
+
+    - id: ALMA-09-016190
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/passwd- file must have mode 0644 or less permissive to prevent unauthorized access.
+      rules:
+          - file_permissions_backup_etc_passwd
+      status: automated
+
+    - id: ALMA-09-016300
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/passwd file must be group-owned by root.
+      rules:
+          - file_groupowner_etc_passwd
+      status: automated
+
+    - id: ALMA-09-016410
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/passwd file must be owned by root.
+      rules:
+          - file_owner_etc_passwd
+      status: automated
+
+    - id: ALMA-09-016520
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/passwd file must have mode 0644 or less permissive to prevent unauthorized access.
+      rules:
+          - file_permissions_etc_passwd
+      status: automated
+
+    - id: ALMA-09-016630
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/shadow- file must be group-owned by root.
+      rules:
+          - file_groupowner_backup_etc_shadow
+      status: automated
+
+    - id: ALMA-09-016740
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/shadow- file must be owned by root.
+      rules:
+          - file_owner_backup_etc_shadow
+      status: automated
+
+    - id: ALMA-09-016850
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/shadow- file must have mode 0000 or less permissive to prevent unauthorized access.
+      rules:
+          - file_permissions_backup_etc_shadow
+      status: automated
+
+    - id: ALMA-09-016960
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/shadow file must be group-owned by root.
+      rules:
+          - file_groupowner_etc_shadow
+      status: automated
+
+    - id: ALMA-09-017070
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/shadow file must be owned by root.
+      rules:
+          - file_owner_etc_shadow
+      status: automated
+
+    - id: ALMA-09-017180
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/shadow file must have mode 0000 to prevent unauthorized access.
+      rules:
+          - file_permissions_etc_shadow
+      status: automated
+
+    - id: ALMA-09-017290
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must restrict privilege elevation to authorized personnel.
+      rules:
+          - sudo_restrict_privilege_elevation_to_authorized
+      status: automated
+
+    - id: ALMA-09-017400
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use the invoking user's password for privilege escalation when using "sudo".
+      rules:
+          - sudoers_validate_passwd
+      status: automated
+
+    - id: ALMA-09-017510
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must set the umask value to 077 for all local interactive user accounts.
+      rules:
+          - accounts_umask_interactive_users
+          - var_accounts_user_umask=077
+      status: automated
+
+    - id: ALMA-09-017620
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
+      rules:
+          - accounts_umask_etc_login_defs
+          - var_accounts_user_umask=077
+      status: automated
+
+    - id: ALMA-09-017730
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must define default permissions for PAM users.
+      rules:
+          - accounts_umask_pam_postlogin
+      status: automated
+
+    - id: ALMA-09-017840
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must define default permissions for logon and nonlogon shells.
+      rules:
+          - accounts_umask_etc_bashrc
+          - accounts_umask_etc_csh_cshrc
+          - accounts_umask_etc_profile
+          - var_accounts_user_umask=077
+      status: automated
+
+    - id: ALMA-09-017950
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have unauthorized accounts.
+      rules:
+          - accounts_authorized_local_users
+          - var_accounts_authorized_local_users_regex=almalinux9
+      status: automated
+
+    - id: ALMA-09-018060
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured so that the file integrity tool verifies Access Control Lists (ACLs).
+      rules:
+          - aide_verify_acls
+      status: automated
+
+    - id: ALMA-09-018170
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use a file integrity tool that is configured to use FIPS 140-3-approved cryptographic hashes for validating file contents and directories.
+      rules:
+          - aide_use_fips_hashes
+      status: automated
+
+    - id: ALMA-09-018280
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured so that the file integrity tool verifies extended attributes.
+      rules:
+          - aide_verify_ext_attributes
+      status: automated
+
+    - id: ALMA-09-018390
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent the use of dictionary words for passwords.
+      rules:
+          - accounts_password_pam_dictcheck
+          - var_password_pam_dictcheck=1
+      status: automated
+
+    - id: ALMA-09-018500
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not accept router advertisements on all IPv6 interfaces.
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_ra
+          - sysctl_net_ipv6_conf_default_accept_ra
+      status: automated
+
+    - id: ALMA-09-018610
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must ignore Internet Control Message Protocol (ICMP) redirect messages.
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_redirects
+          - sysctl_net_ipv4_conf_default_accept_redirects
+          - sysctl_net_ipv6_conf_all_accept_redirects
+          - sysctl_net_ipv6_conf_default_accept_redirects
+      status: automated
+
+    - id: ALMA-09-018720
+      levels:
+          - medium
+      title: The firewalld service on AlmaLinux OS 9 must be active.
+      rules:
+          - service_firewalld_enabled
+      status: automated
+
+    - id: ALMA-09-018830
+      levels:
+          - medium
+      title: AlmaLinux OS 9 firewall must employ a deny-all, allow-by-exception policy for allowing connections to other systems.
+      rules:
+          - configured_firewalld_default_deny
+      status: automated
+
+    - id: ALMA-09-018940
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must limit the number of bogus Internet Control Message Protocol (ICMP) response errors logs.
+      rules:
+          - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      status: automated
+
+    - id: ALMA-09-019050
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not respond to Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.
+      rules:
+          - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      status: automated
+
+    - id: ALMA-09-019160
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not enable IP packet forwarding unless the system is a router.
+      rules:
+          - sysctl_net_ipv4_conf_all_forwarding
+          - sysctl_net_ipv4_conf_default_forwarding
+          - sysctl_net_ipv6_conf_all_forwarding
+          - sysctl_net_ipv6_conf_default_forwarding
+      status: automated
+
+    - id: ALMA-09-019270
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have unauthorized IP tunnels configured.
+      rules:
+          - libreswan_approved_tunnels
+      status: automated
+
+    - id: ALMA-09-019380
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must log packets with impossible addresses.
+      rules:
+          - sysctl_net_ipv4_conf_all_log_martians
+          - sysctl_net_ipv4_conf_default_log_martians
+      status: automated
+
+    - id: ALMA-09-019490
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured to prevent unrestricted mail relaying.
+      rules:
+          - postfix_prevent_unrestricted_relay
+      status: automated
+
+    - id: ALMA-09-019600
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the nss-tools package installed.
+      notes: The rule verifies that nss-tools is installed but not that it is the TuxCare FIPS-validated build.
+      rules:
+          - package_nss-tools_installed
+      status: automated
+
+    - id: ALMA-09-019710
+      levels:
+          - medium
+      title: AlmaLinux OS 9 network interfaces must not be in promiscuous mode.
+      rules:
+          - network_sniffer_disabled
+      status: automated
+
+    - id: ALMA-09-019820
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use reverse path filtering on all IP interfaces.
+      rules:
+          - sysctl_net_ipv4_conf_all_rp_filter
+          - sysctl_net_ipv4_conf_default_rp_filter
+      status: automated
+
+    - id: ALMA-09-019930
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not send Internet Control Message Protocol (ICMP) redirects.
+      rules:
+          - sysctl_net_ipv4_conf_all_send_redirects
+          - sysctl_net_ipv4_conf_default_send_redirects
+      status: automated
+
+    - id: ALMA-09-020040
+      levels:
+          - medium
+      title: There must be no .shosts files on AlmaLinux OS 9.
+      rules:
+          - no_user_host_based_files
+      status: automated
+
+    - id: ALMA-09-020150
+      levels:
+          - medium
+      title: There must be no shosts.equiv files on AlmaLinux OS 9.
+      rules:
+          - no_host_based_files
+      status: automated
+
+    - id: ALMA-09-020260
+      levels:
+          - medium
+      title: Alma Linux OS 9 must not accept IPv4 source-routed packets by default.
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_source_route
+          - sysctl_net_ipv4_conf_default_accept_source_route
+          - sysctl_net_ipv6_conf_all_accept_source_route
+          - sysctl_net_ipv6_conf_default_accept_source_route
+      status: automated
+
+    - id: ALMA-09-020480
+      levels:
+          - medium
+      title: The AlmaLinux OS 9 SSH server configuration file must be group-owned by root.
+      rules:
+          - file_groupowner_sshd_config
+          - directory_groupowner_sshd_config_d
+          - file_groupowner_sshd_drop_in_config
+      status: automated
+
+    - id: ALMA-09-020590
+      levels:
+          - medium
+      title: The AlmaLinux OS 9 SSH server configuration file must be owned by root.
+      rules:
+          - file_owner_sshd_config
+          - directory_owner_sshd_config_d
+          - file_owner_sshd_drop_in_config
+      status: automated
+
+    - id: ALMA-09-020700
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH server configuration files must have mode 0600 or less permissive.
+      rules:
+          - file_permissions_sshd_config
+          - directory_permissions_sshd_config_d
+          - file_permissions_sshd_drop_in_config
+      status: automated
+
+    - id: ALMA-09-020810
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not allow a noncertificate trusted host SSH logon to the system.
+      rules:
+          - disable_host_auth
+      status: automated
+
+    - id: ALMA-09-020920
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH private host key files must have mode 0600 or less permissive.
+      rules:
+          - file_permissions_sshd_private_key
+      status: automated
+
+    - id: ALMA-09-021030
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH public host key files must have mode 0644 or less permissive.
+      rules:
+          - file_permissions_sshd_pub_key
+      status: automated
+
+    - id: ALMA-09-021140
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH daemon must not allow known hosts authentication.
+      rules:
+          - sshd_disable_user_known_hosts
+      status: automated
+
+    - id: ALMA-09-021250
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH daemon must display the date and time of the last successful account logon upon an SSH logon.
+      rules:
+          - sshd_print_last_log
+      status: automated
+
+    - id: ALMA-09-021360
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH daemon must not allow rhosts authentication.
+      rules:
+          - sshd_disable_rhosts
+      status: automated
+
+    - id: ALMA-09-021470
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH daemon must disable remote X connections for interactive users.
+      rules:
+          - sshd_disable_x11_forwarding
+      status: automated
+
+    - id: ALMA-09-021580
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSH daemon must prevent remote hosts from connecting to the proxy display.
+      rules:
+          - sshd_x11_use_localhost
+      status: automated
+
+    - id: ALMA-09-021690
+      levels:
+          - medium
+      title: If the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon must be configured to operate in secure mode.
+      rules:
+          - tftp_uses_secure_mode_systemd
+      status: automated
+
+    - id: ALMA-09-021800
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable hardening for the Berkeley Packet Filter (BPF) just-in-time (JIT) compiler.
+      rules:
+          - sysctl_net_core_bpf_jit_harden
+      status: automated
+
+    - id: ALMA-09-021910
+      levels:
+          - medium
+      title: AlmaLinux OS 9 effective dconf policy must match the policy keyfiles.
+      rules:
+          - dconf_db_up_to_date
+      status: automated
+
+    - id: ALMA-09-022020
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured so that all system device files are correctly labeled to prevent unauthorized modification.
+      rules:
+          - selinux_all_devicefiles_labeled
+      status: automated
+
+    - id: ALMA-09-022130
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 local initialization files must have mode 0740 or less permissive.
+      rules:
+          - file_permission_user_init_files_root
+          - var_user_initialization_files_regex=all_dotfiles
+          - rootfiles_configured
+      status: automated
+
+    - id: ALMA-09-022240
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the gnutls-utils package installed.
+      notes: The rule verifies that gnutls-utils is installed but not that it is the TuxCare FIPS-validated build.
+      rules:
+          - package_gnutls-utils_installed
+      status: automated
+
+    - id: ALMA-09-022350
+      levels:
+          - medium
+      title: The kdump service on AlmaLinux OS 9 must be disabled.
+      rules:
+          - service_kdump_disabled
+      status: automated
+
+    - id: ALMA-09-022460
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the ability of a user to restart the system from the login screen.
+      rules:
+          - dconf_gnome_disable_restart_shutdown
+      status: automated
+
+    - id: ALMA-09-022570
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent a user from overriding the disable-restart-buttons setting for the graphical user interface.
+      rules:
+          - dconf_gnome_disable_restart_shutdown
+      status: automated
+
+    - id: ALMA-09-022680
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent special devices on file systems that are used with removable media.
+      rules:
+          - mount_option_nodev_removable_partitions
+      status: automated
+
+    - id: ALMA-09-022790
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent code from being executed on file systems that are used with removable media.
+      rules:
+          - mount_option_noexec_removable_partitions
+      status: automated
+
+    - id: ALMA-09-022900
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent files with the setuid and setgid bit set from being executed on file systems that are used with removable media.
+      rules:
+          - mount_option_nosuid_removable_partitions
+      status: automated
+
+    - id: ALMA-09-023010
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the use of user namespaces.
+      rules:
+          - sysctl_user_max_user_namespaces_no_remediation
+      status: automated
+
+    - id: ALMA-09-023120
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent special devices on file systems that are imported via Network File System (NFS).
+      rules:
+          - mount_option_nodev_remote_filesystems
+      status: automated
+
+    - id: ALMA-09-023230
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent code execution on file systems that are imported via Network File System (NFS).
+      rules:
+          - mount_option_noexec_remote_filesystems
+      status: automated
+
+    - id: ALMA-09-023450
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent files with the setuid and setgid bit set from being executed on file systems that are imported via Network File System (NFS).
+      rules:
+          - mount_option_nosuid_remote_filesystems
+      status: automated
+
+    - id: ALMA-09-023560
+      levels:
+          - medium
+      title: AlmaLinux OS  9 must configure a DNS processing mode in Network Manager.
+      rules:
+          - networkmanager_dns_mode
+          - var_networkmanager_dns_mode=none
+      status: automated # title updated to match scheduled update
+
+    - id: ALMA-09-023670
+      levels:
+          - medium
+      title: AlmaLinux OS 9 systems using Domain Name Servers (DNS) resolution must have at least two name servers configured.
+      rules:
+          - network_configure_name_resolution
+      status: automated
+
+    - id: ALMA-09-023780
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent special devices on nonroot local partitions.
+      rules:
+          - mount_option_nodev_nonroot_local_partitions
+      status: automated
+
+    - id: ALMA-09-023890
+      levels:
+          - medium
+      title: The root account must be the only account having unrestricted access to an AlmaLinux OS 9 system.
+      rules:
+          - accounts_no_uid_except_zero
+      status: automated
+
+    - id: ALMA-09-024000
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured so that the cryptographic hashes of system files match vendor values.
+      rules:
+          - rpm_verify_hashes
+      status: automated
+
+    - id: ALMA-09-024110
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must clear the page allocator to prevent use-after-free attacks.
+      rules:
+          - grub2_page_poison_argument
+      status: automated
+
+    - id: ALMA-09-024330
+      levels:
+          - medium
+      title: AlmaLinux OS 9 security patches and updates must be installed and up to date.
+      rules:
+          - security_patches_up_to_date
+      status: automated
+
+    - id: ALMA-09-024440
+      levels:
+          - medium
+      title: AlmaLinux OS 9 policycoreutils-python-utils package must be installed.
+      rules:
+          - package_policycoreutils-python-utils_installed
+      status: automated
+
+    - id: ALMA-09-024550
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable the hardware random number generator entropy gatherer service.
+      notes: Not applicable when FIPS mode is enabled. The service_rngd_enabled rule is not selected because it causes test failures, see https://github.com/ComplianceAsCode/content/pull/10153.
+      related_rules:
+          - service_rngd_enabled
+      status: pending
+
+    - id: ALMA-09-024660
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the rng-tools package installed.
+      rules:
+          - package_rng-tools_installed
+      status: automated
+
+    - id: ALMA-09-024770
+      levels:
+          - medium
+      title: The SSH daemon must perform strict mode checking of home directory configuration files.
+      rules:
+          - sshd_enable_strictmodes
+      status: automated
+
+    - id: ALMA-09-024990
+      levels:
+          - medium
+      title: AlmaLinux OS 9 system accounts must not have an interactive login shell.
+      rules:
+          - no_shelllogin_for_systemaccounts
+      status: automated
+
+    - id: ALMA-09-025100
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use a separate file system for /tmp.
+      rules:
+          - partition_for_tmp
+      status: automated
+
+    - id: ALMA-09-025320
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use a separate file system for /var/log.
+      rules:
+          - partition_for_var_log
+      status: automated
+
+    - id: ALMA-09-025430
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use a separate file system for /var.
+      rules:
+          - partition_for_var
+      status: automated
+
+    - id: ALMA-09-025540
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use a separate file system for /var/tmp.
+      rules:
+          - partition_for_var_tmp
+      status: automated
+
+    - id: ALMA-09-025650
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable virtual system calls.
+      rules:
+          - grub2_vsyscall_argument
+      status: automated
+
+    - id: ALMA-09-025760
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use cron logging.
+      rules:
+          - rsyslog_cron_logging
+      status: automated
+
+    - id: ALMA-09-025870
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.
+      rules:
+          - rsyslog_nolisten
+      status: automated
+
+    - id: ALMA-09-025980
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent files with the setuid and setgid bit set from being executed on file systems that contain user home directories.
+      rules:
+          - mount_option_home_nosuid
+      status: automated
+
+    - id: ALMA-09-026090
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent device files from being interpreted on file systems that contain user home directories.
+      rules:
+          - mount_option_home_nodev
+      status: automated
+
+    - id: ALMA-09-026200
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent files with the setuid and setgid bit set from being executed on the /boot/efi directory.
+      rules:
+          - mount_option_boot_efi_nosuid
+      status: automated
+
+    - id: ALMA-09-026310
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /boot with the nodev option.
+      rules:
+          - mount_option_boot_nodev
+      status: automated
+
+    - id: ALMA-09-026420
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent files with the setuid and setgid bit set from being executed on the /boot directory.
+      rules:
+          - mount_option_boot_nosuid
+      status: automated
+
+    - id: ALMA-09-026530
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /dev/shm with the nodev option.
+      rules:
+          - mount_option_dev_shm_nodev
+      status: automated
+
+    - id: ALMA-09-026640
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /dev/shm with the noexec option.
+      rules:
+          - mount_option_dev_shm_noexec
+      status: automated
+
+    - id: ALMA-09-026750
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /dev/shm with the nosuid option.
+      rules:
+          - mount_option_dev_shm_nosuid
+      status: automated
+
+    - id: ALMA-09-026860
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /tmp with the nodev option.
+      rules:
+          - mount_option_tmp_nodev
+      status: automated
+
+    - id: ALMA-09-026970
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /tmp with the noexec option.
+      rules:
+          - mount_option_tmp_noexec
+      status: automated
+
+    - id: ALMA-09-027080
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /tmp with the nosuid option.
+      rules:
+          - mount_option_tmp_nosuid
+      status: automated
+
+    - id: ALMA-09-027190
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/log/audit with the nodev option.
+      rules:
+          - mount_option_var_log_audit_nodev
+      status: automated
+
+    - id: ALMA-09-027300
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/log/audit with the noexec option.
+      rules:
+          - mount_option_var_log_audit_noexec
+      status: automated
+
+    - id: ALMA-09-027410
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/log/audit with the nosuid option.
+      rules:
+          - mount_option_var_log_audit_nosuid
+      status: automated
+
+    - id: ALMA-09-027520
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/log with the nodev option.
+      rules:
+          - mount_option_var_log_nodev
+      status: automated
+
+    - id: ALMA-09-027630
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/log with the noexec option.
+      rules:
+          - mount_option_var_log_noexec
+      status: automated
+
+    - id: ALMA-09-027740
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/log with the nosuid option.
+      rules:
+          - mount_option_var_log_nosuid
+      status: automated
+
+    - id: ALMA-09-027850
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var with the nodev option.
+      rules:
+          - mount_option_var_nodev
+      status: automated
+
+    - id: ALMA-09-027960
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/tmp with the nodev option.
+      rules:
+          - mount_option_var_tmp_nodev
+      status: automated
+
+    - id: ALMA-09-028070
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/tmp with the noexec option.
+      rules:
+          - mount_option_var_tmp_noexec
+      status: automated
+
+    - id: ALMA-09-028180
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must mount /var/tmp with the nosuid option.
+      rules:
+          - mount_option_var_tmp_nosuid
+      status: automated
+
+    - id: ALMA-09-028290
+      levels:
+          - medium
+      title: AlmaLinux OS 9 fapolicy module must be enabled.
+      rules:
+          - service_fapolicyd_enabled
+      status: automated
+
+    - id: ALMA-09-028400
+      levels:
+          - medium
+      title: AlmaLinux OS 9 fapolicy module must be installed.
+      rules:
+          - package_fapolicyd_installed
+      status: automated
+
+    - id: ALMA-09-028510
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable remote management of the chrony daemon.
+      rules:
+          - chronyd_no_chronyc_network
+          - chronyd_configure_local_socket
+      status: automated
+
+    - id: ALMA-09-028620
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent the chrony daemon from acting as a server.
+      rules:
+          - chronyd_client_only
+      status: automated
+
+    - id: ALMA-09-028730
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the iprutils package installed.
+      rules:
+          - package_iprutils_removed
+      status: automated
+
+    - id: ALMA-09-028840
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the quagga package installed.
+      notes: The quagga package is not shipped with AlmaLinux OS 9.
+      related_rules:
+          - package_quagga_removed
+      status: not applicable # there is no quagga package, rule to be removed
+
+    - id: ALMA-09-028950
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the sendmail package installed.
+      rules:
+          - package_sendmail_removed
+      status: automated
+
+    - id: ALMA-09-029170
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have a Trivial File Transfer Protocol (TFTP) client package installed.
+      rules:
+          - package_tftp_removed
+      status: automated
+
+    - id: ALMA-09-029390
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the cups package installed.
+      rules:
+          - package_cups_removed
+      status: automated
+
+    - id: ALMA-09-029500
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the gssproxy package installed.
+      rules:
+          - package_gssproxy_removed
+      status: automated
+
+    - id: ALMA-09-029610
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the Asynchronous Transfer Mode (ATM) kernel module.
+      rules:
+          - kernel_module_atm_disabled
+      status: automated
+
+    - id: ALMA-09-029720
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured to disable Bluetooth.
+      rules:
+          - kernel_module_bluetooth_disabled
+      status: automated
+
+    - id: ALMA-09-029830
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the Controller Area Network (CAN) kernel module.
+      rules:
+          - kernel_module_can_disabled
+      status: automated
+
+    - id: ALMA-09-029940
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable mounting of cramfs.
+      rules:
+          - kernel_module_cramfs_disabled
+      status: automated
+
+    - id: ALMA-09-030050
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the Stream Control Transmission Protocol (SCTP) kernel module.
+      rules:
+          - kernel_module_sctp_disabled
+      status: automated
+
+    - id: ALMA-09-030160
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable mounting of squashfs.
+      rules:
+          - kernel_module_squashfs_disabled
+      status: automated
+
+    - id: ALMA-09-030270
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the Transparent Inter Process Communication (TIPC) kernel module.
+      rules:
+          - kernel_module_tipc_disabled
+      status: automated
+
+    - id: ALMA-09-030380
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable mounting of udf.
+      rules:
+          - kernel_module_udf_disabled
+      status: automated
+
+    - id: ALMA-09-030490
+      levels:
+          - medium
+      title: Cameras must be disabled or covered when not in use.
+      rules:
+          - kernel_module_uvcvideo_disabled
+      status: automated
+
+    - id: ALMA-09-030600
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the nfs-utils package installed.
+      rules:
+          - package_nfs-utils_removed
+      status: automated
+
+    - id: ALMA-09-030710
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the rsh package installed.
+      rules:
+          - package_rsh_removed
+      status: automated
+
+    - id: ALMA-09-030820
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not install packages from the Extra Packages for Enterprise Linux (EPEL) repository.
+      rules:
+          - ensure_epel_repos_disabled
+      status: automated
+
+    - id: ALMA-09-030930
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the tuned package installed.
+      rules:
+          - package_tuned_removed
+      status: automated
+
+    - id: ALMA-09-031040
+      levels:
+          - medium
+      title: A graphical display manager must not be installed on AlmaLinux OS 9 unless approved.
+      rules:
+          - xwindows_remove_packages
+      status: automated
+
+    - id: ALMA-09-031150
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the ypserv package installed.
+      notes: The ypserv package is not shipped with AlmaLinux OS 9.
+      related_rules:
+          - package_ypserv_removed
+      status: not applicable # there is no ypserv package, rule to be removed
+
+    - id: ALMA-09-031260
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the avahi package installed.
+      rules:
+          - package_avahi_removed
+      status: automated
+
+    - id: ALMA-09-031370
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured to disable USB mass storage.
+      rules:
+          - kernel_module_usb-storage_disabled
+      status: automated
+
+    - id: ALMA-09-031700
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the firewalld package installed.
+      rules:
+          - package_firewalld_installed
+      status: automated
+
+    - id: ALMA-09-031920
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require users to provide authentication for privilege escalation.
+      rules:
+          - sudo_remove_no_authenticate
+      status: automated
+
+    - id: ALMA-09-032030
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require users to provide a password for privilege escalation.
+      rules:
+          - sudo_remove_nopasswd
+      status: automated
+
+    - id: ALMA-09-032140
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not be configured to bypass password requirements for privilege escalation.
+      rules:
+          - disallow_bypass_password_sudo
+      status: automated
+
+    - id: ALMA-09-032250
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require reauthentication when using the "sudo" command.
+      rules:
+          - sudo_require_reauthentication
+          - var_sudo_timestamp_timeout=always_prompt
+      status: automated
+
+    - id: ALMA-09-032470
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must restrict the use of the "su" command.
+      rules:
+          - use_pam_wheel_for_su
+      status: automated
+
+    - id: ALMA-09-032910
+      levels:
+          - medium
+      title: Groups must have unique Group IDs (GIDs).
+      rules:
+          - group_unique_id
+      status: automated
+
+    - id: ALMA-09-033020
+      levels:
+          - medium
+      title: Duplicate User IDs (UIDs) must not exist for interactive users.
+      rules:
+          - account_unique_id
+      status: automated
+
+    - id: ALMA-09-033130
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 interactive users must have a primary group that exists.
+      rules:
+          - gid_passwd_group_same
+      status: automated
+
+    - id: ALMA-09-033240
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSHD must accept public key authentication.
+      rules:
+          - sshd_enable_pubkey_auth
+      status: automated
+
+    - id: ALMA-09-033350
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the opensc package installed.
+      rules:
+          - package_opensc_installed
+      status: automated
+
+    - id: ALMA-09-033460
+      levels:
+          - medium
+      title: The pcscd socket on AlmaLinux OS 9 must be active.
+      rules:
+          - socket_pcscd_enabled
+      status: automated
+
+    - id: ALMA-09-033570
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the pcsc-lite package installed.
+      rules:
+          - package_pcsc-lite_installed
+      status: automated
+
+    - id: ALMA-09-033680
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must implement certificate status checking for multifactor authentication.
+      rules:
+          - sssd_certificate_verification
+          - var_sssd_certificate_verification_digest_function=sha512
+      status: automated
+
+    - id: ALMA-09-033790
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable certificate based smart card authentication.
+      rules:
+          - sssd_enable_smartcards
+      status: automated
+
+    - id: ALMA-09-034010
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the openssl-pkcs11 package installed.
+      rules:
+          - install_smartcard_packages
+      status: automated
+
+    - id: ALMA-09-034120
+      levels:
+          - medium
+      title: AlmaLinux OS 9 SSHD must not allow blank passwords.
+      rules:
+          - sshd_disable_empty_passwords
+      status: automated
+
+    - id: ALMA-09-034340
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use the CAC smart card driver.
+      rules:
+          - configure_opensc_card_drivers
+          - var_smartcard_drivers=cac
+      status: automated
+
+    - id: ALMA-09-034780
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not permit direct logons to the root account using remote access via SSH.
+      rules:
+          - sshd_disable_root_login
+      status: automated
+
+    - id: ALMA-09-034890
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable the graphical user interface automount function unless required.
+      rules:
+          - dconf_gnome_disable_automount_open
+      status: automated
+
+    - id: ALMA-09-035000
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent a user from overriding the disabling of the graphical user interface automount function.
+      rules:
+          - dconf_gnome_disable_automount_open
+      status: automated
+
+    - id: ALMA-09-035110
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent a user from overriding the disabling of the graphical user interface autorun function.
+      rules:
+          - dconf_gnome_disable_autorun
+      status: automated
+
+    - id: ALMA-09-035210
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the USBGuard package installed.
+      rules:
+          - package_usbguard_installed
+      status: automated
+
+    - id: ALMA-09-035220
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the USBGuard package enabled.
+      rules:
+          - service_usbguard_enabled
+      status: automated
+
+    - id: ALMA-09-035440
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must block unauthorized peripherals before establishing a connection.
+      rules:
+          - usbguard_generate_policy
+      status: automated
+
+    - id: ALMA-09-035550
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not have the autofs package installed.
+      rules:
+          - package_autofs_removed
+      status: automated
+
+    - id: ALMA-09-035660
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.
+      rules:
+          - account_disable_post_pw_expiration
+          - var_account_disable_post_pw_expiration=35
+      status: automated
+
+    - id: ALMA-09-035770
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enforce password complexity by requiring that at least one lowercase character be used.
+      rules:
+          - accounts_password_pam_lcredit
+          - var_password_pam_lcredit=1
+      status: automated
+
+    - id: ALMA-09-035880
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must ensure the password complexity module is enabled in the password-auth file.
+      rules:
+          - accounts_password_pam_pwquality_password_auth
+          - accounts_password_pam_pwquality_system_auth
+      status: automated
+
+    - id: ALMA-09-035990
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must ensure the password complexity module in the system-auth file is configured for three retries or less.
+      rules:
+          - accounts_password_pam_pwquality_retry
+          - var_password_pam_retry=3
+      status: automated
+
+    - id: ALMA-09-036100
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enforce password complexity rules for the root account.
+      rules:
+          - accounts_password_pam_enforce_root
+      status: automated
+
+    - id: ALMA-09-036210
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enforce password complexity by requiring that at least one uppercase character be used.
+      rules:
+          - accounts_password_pam_ucredit
+          - var_password_pam_ucredit=1
+      status: automated
+
+    - id: ALMA-09-036320
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enforce password complexity by requiring that at least one special character be used.
+      rules:
+          - accounts_password_pam_ocredit
+          - var_password_pam_ocredit=1
+      status: automated
+
+    - id: ALMA-09-036540
+      levels:
+          - medium
+      title: AlmaLinux OS 9 passwords must be created with a minimum of 15 characters.
+      rules:
+          - accounts_password_pam_minlen
+          - var_password_pam_minlen=15
+      status: automated
+
+    - id: ALMA-09-036650
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enforce password complexity by requiring that at least one numeric character be used.
+      rules:
+          - accounts_password_pam_dcredit
+          - var_password_pam_dcredit=1
+      status: automated
+
+    - id: ALMA-09-036760
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require the change of at least four character classes when passwords are changed.
+      rules:
+          - accounts_password_pam_minclass
+          - var_password_pam_minclass=4
+      status: automated
+
+    - id: ALMA-09-036870
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require the maximum number of repeating characters be limited to three when passwords are changed.
+      rules:
+          - accounts_password_pam_maxrepeat
+          - var_password_pam_maxrepeat=3
+      status: automated
+
+    - id: ALMA-09-036980
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require the maximum number of repeating characters of the same character class be limited to four when passwords are changed.
+      rules:
+          - accounts_password_pam_maxclassrepeat
+          - var_password_pam_maxclassrepeat=4
+      status: automated
+
+    - id: ALMA-09-037090
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must require the change of at least eight characters when passwords are changed.
+      rules:
+          - accounts_password_pam_difok
+          - var_password_pam_difok=8
+      status: automated
+
+    - id: ALMA-09-037200
+      levels:
+          - high
+      title: AlmaLinux OS 9 PAM must be configured to use a sufficient number of password hashing rounds.
+      rules:
+          - accounts_password_pam_unix_rounds_password_auth
+          - accounts_password_pam_unix_rounds_system_auth
+          - var_password_pam_unix_rounds=100000
+      status: automated
+
+    - id: ALMA-09-037310
+      levels:
+          - high
+      title: AlmaLinux OS 9 must be configured so that libuser is configured to store only encrypted representations of passwords.
+      rules:
+          - set_password_hashing_algorithm_libuserconf
+          - var_password_hashing_algorithm_pam=sha512
+      status: automated
+
+    - id: ALMA-09-037420
+      levels:
+          - high
+      title: AlmaLinux OS 9 must be configured so that the system's shadow file is configured to store only encrypted representations of passwords.
+      rules:
+          - set_password_hashing_algorithm_logindefs
+          - var_password_hashing_algorithm=SHA512
+      status: automated
+
+    - id: ALMA-09-037530
+      levels:
+          - high
+      title: AlmaLinux OS 9 must be configured so that the Pluggable Authentication Module is configured to store only encrypted representations of passwords.
+      rules:
+          - set_password_hashing_algorithm_passwordauth
+          - var_password_hashing_algorithm_pam=sha512
+      status: automated
+
+    - id: ALMA-09-037640
+      levels:
+          - high
+      title: AlmaLinux OS 9 must be configured so that interactive user account passwords are using strong password hashes.
+      rules:
+          - accounts_password_all_shadowed_sha512
+      status: automated
+
+    - id: ALMA-09-037750
+      levels:
+          - high
+      title: AlmaLinux OS 9 must not have any File Transfer Protocol (FTP) packages installed.
+      rules:
+          - package_vsftpd_removed
+          - package_ftp_removed
+      status: automated
+
+    - id: ALMA-09-037860
+      levels:
+          - high
+      title: AlmaLinux OS 9 must not have any telnet packages installed.
+      rules:
+          - package_telnet-server_removed
+          - package_telnet_removed
+      status: automated
+
+    - id: ALMA-09-037970
+      levels:
+          - medium
+      title: Passwords for existing users must have a 180-day maximum password lifetime restriction in /etc/shadow.
+      rules:
+          - accounts_password_set_max_life_existing
+          - var_accounts_maximum_age_login_defs=180
+      status: automated
+
+    - id: ALMA-09-038080
+      levels:
+          - medium
+      title: Passwords for new users or password changes must have a 180-day maximum password lifetime restriction in /etc/login.defs.
+      rules:
+          - accounts_maximum_age_login_defs
+          - var_accounts_maximum_age_login_defs=180
+      status: automated
+
+    - id: ALMA-09-038190
+      levels:
+          - medium
+      title: Passwords for existing users must have a 24-hour minimum password lifetime restriction in /etc/shadow.
+      rules:
+          - accounts_password_set_min_life_existing
+          - var_accounts_minimum_age_login_defs=1
+      status: automated
+
+    - id: ALMA-09-038300
+      levels:
+          - medium
+      title: Passwords for new users or password changes must have a 24-hour minimum password lifetime restriction in /etc/login.defs.
+      rules:
+          - accounts_minimum_age_login_defs
+          - var_accounts_minimum_age_login_defs=1
+      status: automated
+
+    - id: ALMA-09-038630
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prohibit the use of cached authenticators after one day.
+      rules:
+          - sssd_offline_cred_expiration
+      status: automated
+
+    - id: ALMA-09-038850
+      levels:
+          - medium
+      title: For PKI-based authentication, AlmaLinux OS 9 must enforce authorized access to the corresponding private key.
+      rules:
+          - ssh_keys_passphrase_protected
+      status: automated
+
+    - id: ALMA-09-038960
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must map the authenticated identity to the user or group account for PKI-based authentication.
+      rules:
+          - sssd_enable_certmap
+      status: automated
+
+    - id: ALMA-09-039070
+      levels:
+          - medium
+      title: AlmaLinux OS 9, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
+      rules:
+          - sssd_has_trust_anchor
+      status: automated
+
+    - id: ALMA-09-039510
+      levels:
+          - medium
+      title: The libreswan package must be installed.
+      rules:
+          - package_libreswan_installed
+      status: automated
+
+    - id: ALMA-09-039620
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the packages required for encrypting offloaded audit logs installed.
+      rules:
+          - package_rsyslog-gnutls_installed
+      status: automated
+
+    - id: ALMA-09-040170
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured so that all network connections associated with SSH traffic are terminated after 10 minutes of becoming unresponsive.
+      rules:
+          - sshd_set_idle_timeout
+          - sshd_idle_timeout_value=10_minutes
+          - sshd_set_keepalive
+          - var_sshd_set_keepalive=1
+      status: automated
+
+    - id: ALMA-09-040390
+      levels:
+          - high
+      title: AlmaLinux OS 9 must enable the Pluggable Authentication Module (PAM) interface for SSHD.
+      rules:
+          - sshd_enable_pam
+      status: automated
+
+    - id: ALMA-09-040500
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must terminate idle user sessions.
+      rules:
+          - logind_session_timeout
+          - var_logind_session_timeout=10_minutes
+      status: automated
+
+    - id: ALMA-09-040720
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must disable access to network bpf system call from nonprivileged processes.
+      rules:
+          - sysctl_kernel_unprivileged_bpf_disabled
+      status: automated
+
+    - id: ALMA-09-040830
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must restrict exposed kernel pointer addresses access.
+      rules:
+          - sysctl_kernel_kptr_restrict
+      status: automated
+
+    - id: ALMA-09-040940
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must restrict usage of ptrace to descendant processes.
+      rules:
+          - sysctl_kernel_yama_ptrace_scope
+      status: automated
+
+    - id: ALMA-09-041050
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must restrict access to the kernel message buffer.
+      rules:
+          - sysctl_kernel_dmesg_restrict
+      status: automated
+
+    - id: ALMA-09-041160
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must prevent kernel profiling by nonprivileged users.
+      rules:
+          - sysctl_kernel_perf_event_paranoid
+      status: automated
+
+    - id: ALMA-09-041270
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must only allow the use of DoW PKI-established certificate authorities for authentication in the establishment of protected sessions to the operating system.
+      rules:
+          - only_allow_dod_certs
+      status: manual
+
+    - id: ALMA-09-041490
+      levels:
+          - medium
+      title: AlmaLinux OS 9 systemd-journald service must be enabled.
+      rules:
+          - service_systemd-journald_enabled
+      status: automated
+
+    - id: ALMA-09-041600
+      levels:
+          - high
+      title: AlmaLinux OS 9 local disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at rest protection.
+      rules:
+          - encrypt_partitions
+      status: automated
+
+    - id: ALMA-09-041930
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use a Linux Security Module configured to enforce limits on system services.
+      rules:
+          - selinux_state
+          - var_selinux_state=enforcing
+          - grub2_enable_selinux
+      status: automated
+
+    - id: ALMA-09-042040
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the policycoreutils package installed.
+      rules:
+          - package_policycoreutils_installed
+      status: automated
+
+    - id: ALMA-09-042150
+      levels:
+          - medium
+      title: Any AlmaLinux OS 9 world-writable directories must be owned by root, sys, bin, or an application user.
+      rules:
+          - dir_perms_world_writable_system_owned
+      status: automated
+
+    - id: ALMA-09-042260
+      levels:
+          - medium
+      title: A sticky bit must be set on all AlmaLinux OS 9 public directories.
+      rules:
+          - dir_perms_world_writable_sticky_bits
+      status: automated
+
+    - id: ALMA-09-042370
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must protect against or limit the effects of denial-of-service (DoS) attacks by ensuring rate-limiting measures on impacted network interfaces are implemented.
+      rules:
+          - firewalld-backend
+      status: automated
+
+    - id: ALMA-09-042480
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured to use TCP syncookies.
+      rules:
+          - sysctl_net_ipv4_tcp_syncookies
+      status: automated
+
+    - id: ALMA-09-042700
+      levels:
+          - high
+      title: All AlmaLinux OS 9 networked systems must have the OpenSSH client package installed.
+      rules:
+          - package_openssh-clients_installed
+      status: automated
+
+    - id: ALMA-09-042810
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 networked systems must implement SSH to protect the confidentiality and integrity of transmitted and received information, including information being prepared for transmission.
+      rules:
+          - service_sshd_enabled
+      status: automated
+
+    - id: ALMA-09-042920
+      levels:
+          - medium
+      title: All AlmaLinux OS 9 networked systems must have the OpenSSH server installed.
+      rules:
+          - package_openssh-server_installed
+      status: automated
+
+    - id: ALMA-09-043030
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not allow users to override SSH environment variables.
+      rules:
+          - sshd_do_not_permit_user_env
+      status: automated
+
+    - id: ALMA-09-043250
+      levels:
+          - medium
+      title: AlmaLinux OS 9 wireless network adapters must be disabled.
+      rules:
+          - wireless_disable_interfaces
+      status: automated
+
+    - id: ALMA-09-043800
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must not show boot up messages.
+      rules:
+          - grub2_quiet_argument
+      status: automated
+
+    - id: ALMA-09-043910
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /var/log directory must be group-owned by root.
+      rules:
+          - file_groupowner_var_log
+      status: automated
+
+    - id: ALMA-09-044020
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /var/log/messages file must be group-owned by root.
+      rules:
+          - file_groupowner_var_log_messages
+      status: automated
+
+    - id: ALMA-09-044130
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /var/log/messages file must be owned by root.
+      rules:
+          - file_owner_var_log_messages
+      status: automated
+
+    - id: ALMA-09-044240
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /var/log/messages file must have mode 0640 or less permissive.
+      rules:
+          - file_permissions_var_log_messages
+      status: automated
+
+    - id: ALMA-09-044350
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /var/log directory must be owned by root.
+      rules:
+          - file_owner_var_log
+      status: automated
+
+    - id: ALMA-09-044460
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /var/log directory must have mode 0755 or less permissive.
+      rules:
+          - file_permissions_var_log
+      status: automated
+
+    - id: ALMA-09-044570
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must implement nonexecutable data to protect its memory from unauthorized code execution.
+      rules:
+          - sysctl_kernel_exec_shield
+      status: automated
+
+    - id: ALMA-09-044680
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable mitigations against processor-based vulnerabilities.
+      rules:
+          - grub2_pti_argument
+      status: automated
+
+    - id: ALMA-09-044790
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must clear memory when it is freed to prevent use-after-free attacks.
+      rules:
+          - grub2_init_on_free
+      status: automated
+
+    - id: ALMA-09-044900
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must implement address space layout randomization (ASLR) to protect its memory from unauthorized code execution.
+      rules:
+          - sysctl_kernel_randomize_va_space
+      status: automated
+
+    - id: ALMA-09-045120
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must remove all software components after updated versions have been installed.
+      rules:
+          - clean_components_post_updating
+      status: automated
+
+    - id: ALMA-09-045125
+      levels:
+          - high
+      title: AlmaLinux OS 9 must be a supported release.
+      rules:
+          - installed_OS_is_vendor_supported
+      status: automated
+
+    - id: ALMA-09-045230
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable the SELinux targeted policy.
+      rules:
+          - selinux_policytype
+          - var_selinux_policy_name=targeted
+      status: automated
+
+    - id: ALMA-09-045340
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the Advanced Intrusion Detection Environment (AIDE) package installed.
+      rules:
+          - package_aide_installed
+          - aide_build_database
+      status: automated
+
+    - id: ALMA-09-045450
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must routinely check the baseline configuration for unauthorized changes and notify the system administrator when anomalies in the operation of any security functions are discovered.
+      rules:
+          - aide_scan_notification
+      status: automated
+
+    - id: ALMA-09-045670
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit system must audit local events.
+      rules:
+          - auditd_local_events
+      status: automated
+
+    - id: ALMA-09-045780
+      levels:
+          - medium
+      title: AlmaLinux OS 9 /etc/audit/auditd.conf file must have 0640 or less permissive to prevent unauthorized access.
+      rules:
+          - file_permissions_etc_audit_auditd
+      status: automated
+
+    - id: ALMA-09-045890
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must allow only the information system security manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.
+      rules:
+          - file_permissions_audit_configuration_stig
+      status: automated
+
+    - id: ALMA-09-046000
+      levels:
+          - medium
+      title: Successful/unsuccessful uses of the init command in AlmaLinux OS 9 must generate an audit record.
+      rules:
+          - audit_privileged_commands_init
+      status: automated
+
+    - id: ALMA-09-046220
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "poweroff" command.
+      rules:
+          - audit_privileged_commands_poweroff
+      status: automated
+
+    - id: ALMA-09-046330
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "reboot" command.
+      rules:
+          - audit_privileged_commands_reboot
+      status: automated
+
+    - id: ALMA-09-046440
+      levels:
+          - medium
+      title: AlmaLinux must generate audit records for any use of the "shutdown" command.
+      rules:
+          - audit_privileged_commands_shutdown
+      status: automated
+
+    - id: ALMA-09-046550
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable Linux audit logging for the USBGuard daemon.
+      rules:
+          - configure_usbguard_auditbackend
+      status: automated
+
+    - id: ALMA-09-046660
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must audit all uses of the delete_module, init_module and finit_module system calls.
+      rules:
+          - audit_rules_kernel_module_loading_delete
+          - audit_rules_kernel_module_loading_finit
+          - audit_rules_kernel_module_loading_init
+      status: automated
+
+    - id: ALMA-09-046770
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /var/log/tallylog.
+      rules:
+          - audit_rules_login_events_tallylog
+      status: automated
+
+    - id: ALMA-09-046880
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must produce audit records containing information to establish the identity of any individual or process associated with the event.
+      rules:
+          - auditd_log_format
+      status: automated
+
+    - id: ALMA-09-047100
+      levels:
+          - medium
+      title: The audit package must be installed on AlmaLinux OS 9.
+      rules:
+          - package_audit_installed
+      status: automated
+
+    - id: ALMA-09-047540
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /var/log/lastlog.
+      rules:
+          - audit_rules_login_events_lastlog
+      status: automated
+
+    - id: ALMA-09-047650
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "mount" command.
+      rules:
+          - audit_rules_privileged_commands_mount
+      status: automated
+
+    - id: ALMA-09-047760
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "umount" command.
+      rules:
+          - audit_rules_privileged_commands_umount
+      status: automated
+
+    - id: ALMA-09-047870
+      levels:
+          - medium
+      title: Successful/unsuccessful uses of the umount2 system call in AlmaLinux OS 9 must generate an audit record.
+      rules:
+          - audit_rules_dac_modification_umount2
+      status: automated
+
+    - id: ALMA-09-047980
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must enable auditing of processes that start prior to the audit daemon.
+      rules:
+          - grub2_audit_argument
+      status: automated
+
+    - id: ALMA-09-048090
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must audit all uses of the truncate, ftruncate, creat, open, openat, and open_by_handle_at system calls.
+      rules:
+          - audit_rules_unsuccessful_file_modification_creat
+          - audit_rules_unsuccessful_file_modification_ftruncate
+          - audit_rules_unsuccessful_file_modification_open
+          - audit_rules_unsuccessful_file_modification_open_by_handle_at
+          - audit_rules_unsuccessful_file_modification_openat
+          - audit_rules_unsuccessful_file_modification_truncate
+      status: automated
+
+    - id: ALMA-09-048200
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "chacl" command.
+      rules:
+          - audit_rules_execution_chacl
+      status: automated
+
+    - id: ALMA-09-048310
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "chage" command.
+      rules:
+          - audit_rules_privileged_commands_chage
+      status: automated
+
+    - id: ALMA-09-048420
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "chcon" command.
+      rules:
+          - audit_rules_execution_chcon
+      status: automated
+
+    - id: ALMA-09-048530
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must audit all uses of the chmod, fchmod, and fchmodat system calls.
+      rules:
+          - audit_rules_dac_modification_chmod
+          - audit_rules_dac_modification_fchmod
+          - audit_rules_dac_modification_fchmodat
+      status: automated
+
+    - id: ALMA-09-048640
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must audit all uses of the chown, fchown, fchownat, and lchown system calls.
+      rules:
+          - audit_rules_dac_modification_chown
+          - audit_rules_dac_modification_fchown
+          - audit_rules_dac_modification_fchownat
+          - audit_rules_dac_modification_lchown
+      status: automated
+
+    - id: ALMA-09-048750
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "chsh" command.
+      rules:
+          - audit_rules_privileged_commands_chsh
+      status: automated
+
+    - id: ALMA-09-048860
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "crontab" command.
+      rules:
+          - audit_rules_privileged_commands_crontab
+      status: automated
+
+    - id: ALMA-09-048970
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must audit all uses of the rename, unlink, rmdir, renameat, and unlinkat system calls.
+      rules:
+          - audit_rules_file_deletion_events_rename
+          - audit_rules_file_deletion_events_renameat
+          - audit_rules_file_deletion_events_rmdir
+          - audit_rules_file_deletion_events_unlink
+          - audit_rules_file_deletion_events_unlinkat
+      status: automated
+
+    - id: ALMA-09-049080
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for all account creations, modifications, disabling, and termination events that affect /var/log/faillock.
+      rules:
+          - audit_rules_login_events_faillock
+      status: automated
+
+    - id: ALMA-09-049190
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "gpasswd" command.
+      rules:
+          - audit_rules_privileged_commands_gpasswd
+      status: automated
+
+    - id: ALMA-09-049300
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must audit all uses of the kmod command.
+      rules:
+          - audit_rules_privileged_commands_kmod
+      status: automated
+
+    - id: ALMA-09-049410
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "newgrp" command.
+      rules:
+          - audit_rules_privileged_commands_newgrp
+      status: automated
+
+    - id: ALMA-09-049520
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "passwd" command.
+      rules:
+          - audit_rules_privileged_commands_passwd
+      status: automated
+
+    - id: ALMA-09-049630
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "postdrop" command.
+      rules:
+          - audit_rules_privileged_commands_postdrop
+      status: automated
+
+    - id: ALMA-09-049740
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "postqueue" command.
+      rules:
+          - audit_rules_privileged_commands_postqueue
+      status: automated
+
+    - id: ALMA-09-049850
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "su" command.
+      rules:
+          - audit_rules_privileged_commands_su
+      status: automated
+
+    - id: ALMA-09-049960
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "sudo" command.
+      rules:
+          - audit_rules_privileged_commands_sudo
+      status: automated
+
+    - id: ALMA-09-050070
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "semanage" command.
+      rules:
+          - audit_rules_execution_semanage
+      status: automated
+
+    - id: ALMA-09-050180
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "setfacl" command.
+      rules:
+          - audit_rules_execution_setfacl
+      status: automated
+
+    - id: ALMA-09-050290
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "setfiles" command.
+      rules:
+          - audit_rules_execution_setfiles
+      status: automated
+
+    - id: ALMA-09-050400
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "setsebool" command.
+      rules:
+          - audit_rules_execution_setsebool
+      status: automated
+
+    - id: ALMA-09-050510
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "ssh-agent" command.
+      rules:
+          - audit_rules_privileged_commands_ssh_agent
+      status: automated
+
+    - id: ALMA-09-050620
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "ssh-keysign" command.
+      rules:
+          - audit_rules_privileged_commands_ssh_keysign
+      status: automated
+
+    - id: ALMA-09-050730
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "sudoedit" command.
+      rules:
+          - audit_rules_privileged_commands_sudoedit
+      status: automated
+
+    - id: ALMA-09-050840
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "pam_timestamp_check" command.
+      rules:
+          - audit_rules_privileged_commands_pam_timestamp_check
+      status: automated
+
+    - id: ALMA-09-050950
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "unix_chkpwd" command.
+      rules:
+          - audit_rules_privileged_commands_unix_chkpwd
+      status: automated
+
+    - id: ALMA-09-051060
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "unix_update" command.
+      rules:
+          - audit_rules_privileged_commands_unix_update
+      status: automated
+
+    - id: ALMA-09-051170
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "userhelper" command.
+      rules:
+          - audit_rules_privileged_commands_userhelper
+      status: automated
+
+    - id: ALMA-09-051280
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "usermod" command.
+      rules:
+          - audit_rules_privileged_commands_usermod
+      status: automated
+
+    - id: ALMA-09-051390
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must audit all uses of the setxattr, fsetxattr, lsetxattr, removexattr, fremovexattr, and lremovexattr system calls.
+      rules:
+          - audit_rules_dac_modification_fremovexattr
+          - audit_rules_dac_modification_fsetxattr
+          - audit_rules_dac_modification_lremovexattr
+          - audit_rules_dac_modification_lsetxattr
+          - audit_rules_dac_modification_removexattr
+          - audit_rules_dac_modification_setxattr
+      status: automated
+
+    - id: ALMA-09-051830
+      levels:
+          - low
+      title: AlmaLinux OS 9 must allocate an audit_backlog_limit of sufficient size to capture processes that start prior to the audit daemon.
+      rules:
+          - grub2_audit_backlog_limit_argument
+          - var_audit_backlog_limit=8192
+      status: automated
+
+    - id: ALMA-09-051940
+      levels:
+          - low
+      title: AlmaLinux OS 9 must use a separate file system for the system audit data path.
+      rules:
+          - partition_for_var_log_audit
+      status: automated
+
+    - id: ALMA-09-052050
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must allocate audit record storage capacity to store at least one week's worth of audit records.
+      rules:
+          - auditd_audispd_configure_sufficiently_large_partition
+      status: automated
+
+    - id: ALMA-09-052160
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audispd-plugins package must be installed.
+      rules:
+          - package_audispd-plugins_installed
+      status: automated
+
+    - id: ALMA-09-052270
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must label all offloaded audit logs before sending them to the central log server.
+      rules:
+          - auditd_name_format
+          - var_auditd_name_format=stig
+      status: automated
+
+    - id: ALMA-09-052380
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must take appropriate action when the internal event queue is full.
+      rules:
+          - auditd_overflow_action
+      status: automated
+
+    - id: ALMA-09-052490
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must be configured to offload audit records onto a different system from the system being audited via syslog.
+      rules:
+          - auditd_audispd_syslog_plugin_activated
+      status: automated
+
+    - id: ALMA-09-052600
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must authenticate the remote logging server for offloading audit logs via rsyslog.
+      rules:
+          - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+      status: automated
+
+    - id: ALMA-09-052710
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must encrypt the transfer of audit records offloaded onto a different system or media from the system being audited via rsyslog.
+      rules:
+          - rsyslog_encrypt_offload_actionsendstreamdrivermode
+      status: automated
+
+    - id: ALMA-09-052820
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must encrypt, via the gtls driver, the transfer of audit records offloaded onto a different system or media from the system being audited via rsyslog.
+      rules:
+          - rsyslog_encrypt_offload_defaultnetstreamdriver
+      status: automated
+
+    - id: ALMA-09-052930
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the rsyslog package installed.
+      rules:
+          - package_rsyslog_installed
+      status: automated
+
+    - id: ALMA-09-053040
+      levels:
+          - low
+      title: AlmaLinux OS 9 must be configured to forward audit records via TCP to a different system or media from the system being audited via rsyslog.
+      rules:
+          - rsyslog_remote_loghost
+      status: automated
+
+    - id: ALMA-09-053150
+      levels:
+          - medium
+      title: The rsyslog service on AlmaLinux OS 9 must be active.
+      rules:
+          - service_rsyslog_enabled
+      status: automated
+
+    - id: ALMA-09-053260
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must take action when allocated audit record storage volume reaches 95 percent of the audit record storage capacity.
+      rules:
+          - auditd_data_retention_admin_space_left_percentage
+          - var_auditd_admin_space_left_percentage=5pc
+      status: automated
+
+    - id: ALMA-09-053370
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must take action when allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity.
+      rules:
+          - auditd_data_retention_admin_space_left_action
+          - var_auditd_admin_space_left_action=single
+      status: automated
+
+    - id: ALMA-09-053480
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must take action when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.
+      rules:
+          - auditd_data_retention_space_left_percentage
+          - var_auditd_space_left_percentage=25pc
+      status: automated
+
+    - id: ALMA-09-053590
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must notify the system administrator (SA) and information system security officer (ISSO) (at a minimum) when allocated audit record storage volume reaches 75 percent usage.
+      rules:
+          - auditd_data_retention_space_left_action
+          - var_auditd_space_left_action=email
+      status: automated
+
+    - id: ALMA-09-053810
+      levels:
+          - medium
+      title: AlmaLinux OS 9 System Administrator (SA) and/or information system security officer (ISSO) (at a minimum) must be alerted of an audit processing failure event.
+      rules:
+          - auditd_data_retention_action_mail_acct
+          - var_auditd_action_mail_acct=root
+      status: automated
+
+    - id: ALMA-09-053920
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have mail aliases to notify the information system security officer (ISSO) and system administrator (SA) (at a minimum) in the event of an audit processing failure.
+      rules:
+          - postfix_client_configure_mail_alias
+      status: automated
+
+    - id: ALMA-09-054030
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit system must take appropriate action when an error writing to the audit storage volume occurs.
+      rules:
+          - auditd_data_disk_error_action_stig
+          - var_auditd_disk_error_action=halt
+      status: automated
+
+    - id: ALMA-09-054140
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit system must take appropriate action when the audit storage volume is full.
+      rules:
+          - auditd_data_disk_full_action_stig
+          - var_auditd_disk_full_action=halt
+      status: automated
+
+    - id: ALMA-09-054250
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must take appropriate action when a critical audit processing failure occurs.
+      rules:
+          - audit_rules_system_shutdown
+      status: automated
+
+    - id: ALMA-09-054360
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit system must make full use of the audit storage space.
+      rules:
+          - auditd_data_retention_max_log_file
+          - var_auditd_max_log_file=8
+      status: automated
+
+    - id: ALMA-09-054470
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit system must take appropriate action when the audit files have reached maximum size.
+      rules:
+          - auditd_data_retention_max_log_file_action_stig
+          - var_auditd_max_log_file_action=rotate
+      status: automated
+
+    - id: ALMA-09-054580
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit system must retain an optimal number of audit records.
+      rules:
+          - auditd_data_retention_num_logs
+          - var_auditd_num_logs=5
+      status: automated
+
+    - id: ALMA-09-054690
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must periodically flush audit records to disk to prevent the loss of audit records.
+      rules:
+          - auditd_freq
+          - var_auditd_freq=100
+      status: automated
+
+    - id: ALMA-09-054910
+      levels:
+          - medium
+      title: The auditd service must be enabled on AlmaLinux OS 9.
+      rules:
+          - service_auditd_enabled
+      status: automated
+
+    - id: ALMA-09-055130
+      levels:
+          - medium
+      title: The chronyd service must be enabled.
+      rules:
+          - service_chronyd_enabled
+      status: automated
+
+    - id: ALMA-09-055240
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the chrony package installed.
+      rules:
+          - package_chrony_installed
+      status: automated
+
+    - id: ALMA-09-055350
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must securely compare internal information system clocks at least every 24 hours.
+      rules:
+          - chronyd_or_ntpd_set_maxpoll
+          - chronyd_server_directive
+          - chronyd_specify_remote_server
+          - var_multiple_time_servers=stig
+          - var_time_service_set_maxpoll=18_hours
+      status: automated
+
+    - id: ALMA-09-055680
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit log directory must be owned by root to prevent unauthorized read access.
+      rules:
+          - directory_ownership_var_log_audit
+          - directory_group_ownership_var_log_audit
+      status: automated
+
+    - id: ALMA-09-055790
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit log directory must have 0700 permissions to prevent unauthorized read access.
+      rules:
+          - directory_permissions_var_log_audit
+      status: automated
+
+    - id: ALMA-09-055900
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit logs must be owned by the root group to prevent unauthorized read access.
+      rules:
+          - file_group_ownership_var_log_audit_stig
+      status: automated
+
+    - id: ALMA-09-056010
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit logs must be owned by root to prevent unauthorized read access.
+      rules:
+          - file_ownership_var_log_audit_stig
+      status: automated
+
+    - id: ALMA-09-056120
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit logs must have 0600 permissions to prevent unauthorized read access.
+      rules:
+          - file_permissions_var_log_audit
+      status: automated
+
+    - id: ALMA-09-056230
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit tools must be group-owned by root.
+      rules:
+          - file_audit_tools_group_ownership
+      status: automated
+
+    - id: ALMA-09-056340
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit tools must be owned by root.
+      rules:
+          - file_audit_tools_ownership
+      status: automated
+
+    - id: ALMA-09-056560
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit tools must have a mode of 0755 or less permissive.
+      rules:
+          - file_audit_tools_permissions
+      status: automated
+
+    - id: ALMA-09-056780
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit system must protect logon UIDs from unauthorized change.
+      rules:
+          - audit_rules_immutable_login_uids
+      status: automated
+
+    - id: ALMA-09-056890
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must use cryptographic mechanisms to protect the integrity of audit tools.
+      rules:
+          - aide_check_audit_tools
+      status: automated
+
+    - id: ALMA-09-057110
+      levels:
+          - medium
+      title: AlmaLinux OS 9 audit system must protect auditing rules from unauthorized change.
+      rules:
+          - audit_rules_immutable
+      status: automated
+
+    - id: ALMA-09-006845
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must have the postfix package installed.
+      rules:
+          - package_postfix_installed
+      status: automated
+
+    - id: ALMA-09-048865
+      levels:
+          - medium
+      title: AlmaLinux OS 9  must audit any script or executable called by cron as root or by any privileged user.
+      rules:
+          - audit_rules_cron_execution
+      status: automated
+
+    - id: ALMA-09-039290
+      levels:
+          - high
+      title: AlmaLinux 9 cryptographic policy must not be overridden.
+      notes: This rule only contains SCE (Script Check Engine) content. The package openscap-engine-sce must be installed on the target system for the check to work.
+      rules:
+          - crypto_policy_not_overridden
+      status: automated
+
+    - id: ALMA-09-039840
+      levels:
+          - high
+      title: AlmaLinux OS 9 must have the crypto-policies package installed.
+      rules:
+          - package_crypto-policies_installed
+      status: automated
+
+    - id: ALMA-09-040060
+      levels:
+          - high
+      title: AlmaLinux OS 9 must implement a FIPS 140-3-compliant systemwide cryptographic policy.
+      rules:
+          - configure_crypto_policy
+          - var_system_crypto_policy=fips
+      status: automated
+
+    - id: ALMA-09-043140
+      levels:
+          - high
+      title: AlmaLinux OS 9 must implement DoW-approved encryption in the bind package.
+      rules:
+          - configure_bind_crypto_policy
+      status: automated
+
+    - id: ALMA-09-003100
+      levels:
+          - high
+      title: AlmaLinux OS 9 must implement DoW-approved encryption ciphers to protect the confidentiality of SSH connections.
+      rules:
+          - sshd_include_crypto_policy
+          - file_sshd_50_redhat_exists
+      status: automated
+
+    - id: ALMA-09-003980
+      levels:
+          - high
+      title: AlmaLinux OS 9 must implement DoW-approved encryption in the OpenSSL package.
+      rules:
+          - configure_openssl_crypto_policy
+      status: automated
+
+    - id: ALMA-09-051285
+      levels:
+          - medium
+      title: AlmaLinux OS 9 must generate audit records for any use of the "useradd" command.
+      rules:
+          - audit_rules_privileged_commands_useradd
+      status: automated
