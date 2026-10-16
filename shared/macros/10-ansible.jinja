@@ -923,7 +923,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: "Remove lines containing {{{ parameter }}} from sudoers files"
   ansible.builtin.replace:
-    regexp: '(^(?!#).*[\s]+{{{ pattern }}}.*$)'
+    regexp: '(^(?!#).*[\s,=):]{{{ pattern }}}.*$)'
     replace: '# \g<1>'
     path: "{{ item.path }}"
     validate: /usr/sbin/visudo -cf %s
