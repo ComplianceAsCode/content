@@ -25,6 +25,10 @@ bash_conditional: >-
 bash_conditional: "( rpm --quiet -q kernel || rpm --quiet -q kernel-uek )"
 {{% elif product == "fedora" or "rhel" in product %}}
 bash_conditional: "rpm --quiet -q kernel-core"
+{{% elif product == "al2023" %}}
+bash_conditional: >-
+    ( rpm --quiet -q kernel ||
+    rpm -qa --queryformat '%{NAME}\n' | grep -qE '^kernel[0-9]+\.[0-9]+$' )
 {{% else %}}
 bash_conditional: "rpm --quiet -q kernel"
 {{% endif %}}
@@ -50,6 +54,10 @@ ansible_conditional: >-
 ansible_conditional: '("kernel" in ansible_facts.packages or "kernel-uek" in ansible_facts.packages)'
 {{% elif product == "fedora" or "rhel" in product %}}
 ansible_conditional: '"kernel-core" in ansible_facts.packages'
+{{% elif product == "al2023" %}}
+ansible_conditional: >-
+    ("kernel" in ansible_facts.packages or
+    ansible_facts.packages.keys() | select("match", "^kernel[0-9]+\\.[0-9]+$") | list | length > 0)
 {{% else %}}
 ansible_conditional: '"kernel" in ansible_facts.packages'
 {{% endif %}}
