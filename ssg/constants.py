@@ -59,6 +59,7 @@ product_directories = [
     'openembedded',
     'rhel8', 'rhel9', 'rhel10',
     'rhv4',
+    'uosserver25',
     'sle12', 'sle15', 'sle16', 'slmicro5', 'slmicro6',
     'tencentos4',
     'ubuntu2204', 'ubuntu2404', 'ubuntu2604'
@@ -234,6 +235,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Oracle Linux 9": "ol9",
     "Oracle Linux 10": "ol10",
     "openEuler 2203": "openeuler2203",
+    "UOS Server 25": "uosserver25",
     "openSUSE": "opensuse",
     "openSUSE 16": "opensuse16",
     "Red Hat Enterprise Linux 8": "rhel8",
@@ -298,6 +300,7 @@ REFERENCES = dict(
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler", "kylinserver", "kylinsecserver", "hummingbird",
+                       "uosserver",
                        "opensuse", "sle", "tencentos", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro", "almalinux"]
@@ -314,6 +317,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_kylinserver": ["kylinserver10"],
     "multi_platform_kylinsecserver": ["kylinsecserver6"],
     "multi_platform_openeuler": ["openeuler2203"],
+    "multi_platform_uosserver": ["uosserver25"],
     "multi_platform_opensuse": ["opensuse", "opensuse16"],
     "multi_platform_ol": ["ol7", "ol8", "ol9", "ol10"],
     "multi_platform_ocp": ["ocp4"],
@@ -446,6 +450,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
     'openeuler': 'openEuler',
+    'uosserver': 'UOS Server',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
     'slmicro': 'SUSE Linux Enterprise Micro',
