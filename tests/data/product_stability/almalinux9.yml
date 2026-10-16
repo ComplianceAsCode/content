@@ -30,17 +30,23 @@ cpes:
     name: cpe:/o:almalinux:almalinux:9
     title: AlmaLinux OS 9
 cpes_root: ../../shared/applicability
-dconf_gdm_dir: gdm.d
+dconf_gdm_dir: distro.d
 dynamic_uid_max: 65519
 dynamic_uid_min: 61184
-faillock_path: /var/run/faillock
+faillock_path: /var/log/faillock
+families:
+- rhel
+- rhel-like
 full_name: AlmaLinux OS 9
 gid_min: 1000
-groups: {}
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
 grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/grub2
 grub_helper_executable: grubby
 init_system: systemd
+journald_conf_dir_path: /etc/systemd/journald.conf.d
 login_defs_defaults_path: /usr/etc/login.defs
 login_defs_drop_in_path: /etc/login.defs.d/oscap.login.defs
 login_defs_path: /etc/login.defs
@@ -59,7 +65,7 @@ pkg_version: b86b3716
 platform_package_overrides:
   aarch64_arch: null
   grub2: grub2-common
-  login_defs: login
+  login_defs: shadow-utils
   no_ovirt: null
   non-uefi: null
   not_aarch64_arch: null
@@ -71,7 +77,6 @@ platform_package_overrides:
   uefi: null
   zipl: s390utils-base
 product: almalinux9
-product_dir: /home/mburket/Developer/github.com/ComplianceAsCode/content/products/almalinux9
 profiles_root: ./profiles
 pwhistory_path: /etc/security/pwhistory.conf
 pwquality_path: /etc/security/pwquality.conf
@@ -108,12 +113,12 @@ ssh_client_config_dir: /etc/ssh/ssh_config.d
 ssh_client_main_config_file: /etc/ssh/ssh_config
 sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
-sshd_distributed_config: 'false'
+sshd_distributed_config: 'true'
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
 sshd_main_config_file: /etc/ssh/sshd_config
 sshd_runtime_check: 'false'
 sshd_sysconfig_file: /etc/sysconfig/sshd
-sysctl_remediate_drop_in_file: 'false'
+sysctl_remediate_drop_in_file: 'true'
 target_oval_version:
 - 5
 - 11
