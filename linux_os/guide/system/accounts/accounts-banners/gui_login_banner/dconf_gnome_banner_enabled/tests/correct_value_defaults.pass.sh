@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = Ubuntu 22.04,Ubuntu 24.04
 # packages = dconf,gdm
 
 clean_dconf_settings
