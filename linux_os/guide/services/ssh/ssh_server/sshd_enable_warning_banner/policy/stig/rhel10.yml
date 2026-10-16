@@ -1,8 +1,8 @@
 srg_requirement: |-
-    {{{ full_name }}} must display the Standard Mandatory DOD Notice and Consent Banner before granting local or remote access to the system via a Secure Shell (SSH) login.
+    {{{ full_name }}} must display the Standard Mandatory DoW Notice and Consent Banner before granting local or remote access to the system via a Secure Shell (SSH) login.
 
 fixtext: |-
-    Configure {{{ full_name }}} to display the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via SSH.
+    Configure {{{ full_name }}} to display the Standard Mandatory DoW Notice and Consent Banner before granting access to the system via SSH.
 
     Edit a file in "/etc/ssh/sshd_config.d" to uncomment or add the banner keyword and configure it to point to a file that will contain the login banner (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor).
 
@@ -11,7 +11,7 @@ fixtext: |-
     Banner /etc/issue
 
 checktext: |-
-    Verify {{{ full_name }}} is configured so that any SSH connection to the operating system displays the Standard Mandatory DOD Notice and Consent Banner before granting access to the system.
+    Verify {{{ full_name }}} is configured so that any SSH connection to the operating system displays the Standard Mandatory DoW Notice and Consent Banner before granting access to the system.
 
     Check for the location of the banner file currently being used with the following command:
 
