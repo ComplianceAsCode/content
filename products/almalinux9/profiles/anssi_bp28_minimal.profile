@@ -19,33 +19,33 @@ description: |-
     https://cyber.gouv.fr/publications/configuration-recommendations-gnulinux-system
 
 selections:
-  - anssi:all:minimal
-  - var_password_hashing_algorithm=SHA512
-  - var_password_pam_unix_rounds=65536
-  - '!cracklib_accounts_password_pam_minlen'
-  - '!accounts_passwords_pam_tally2_deny_root'
-  - '!accounts_passwords_pam_tally2'
-  - '!cracklib_accounts_password_pam_ucredit'
-  - '!cracklib_accounts_password_pam_dcredit'
-  - '!cracklib_accounts_password_pam_lcredit'
-  - '!cracklib_accounts_password_pam_ocredit'
-  - '!accounts_passwords_pam_tally2_unlock_time'
-  - '!ensure_oracle_gpgkey_installed'
-  - '!ensure_redhat_gpgkey_installed'
-  - '!package_sequoia-sq_installed'
-  - '!package_kea_removed'
+    - anssi:all:minimal
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
+    - '!cracklib_accounts_password_pam_minlen'
+    - '!accounts_passwords_pam_tally2_deny_root'
+    - '!accounts_passwords_pam_tally2'
+    - '!cracklib_accounts_password_pam_ucredit'
+    - '!cracklib_accounts_password_pam_dcredit'
+    - '!cracklib_accounts_password_pam_lcredit'
+    - '!cracklib_accounts_password_pam_ocredit'
+    - '!accounts_passwords_pam_tally2_unlock_time'
+    - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
+    - '!package_kea_removed'
 
-  # Match RHEL 9: hide other users' processes in /proc
-  - var_mount_option_proc_hidepid=invisible
+    # Match RHEL 9: hide other users' processes in /proc
+    - var_mount_option_proc_hidepid=invisible
 
-  # The following packages were never shipped with AlmaLinux OS 9, as with RHEL 9
-  - '!package_rsh-server_removed'
-  - '!package_rsh_removed'
-  - '!package_talk_removed'
-  - '!package_talk-server_removed'
-  - '!package_xinetd_removed'
-  - '!package_ypbind_removed'
-  - '!package_ypserv_removed'
+    # The following packages were never shipped with AlmaLinux OS 9, as with RHEL 9
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_xinetd_removed'
+    - '!package_ypbind_removed'
+    - '!package_ypserv_removed'
 
-  # Match RHEL 9: this rule is excluded from the ANSSI profiles
-  - '!audit_rules_mac_modification_etc_selinux'
+    # Match RHEL 9: this rule is excluded from the ANSSI profiles
+    - '!audit_rules_mac_modification_etc_selinux'
