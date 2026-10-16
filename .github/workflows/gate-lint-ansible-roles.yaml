@@ -4,6 +4,9 @@ on:
     branches: [ 'master' ]
 permissions:
   contents: read
+env:
+  COLLECTION_NAMESPACE: redhat
+  COLLECTION_NAME: rhel_hardening_roles
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
@@ -30,4 +33,16 @@ jobs:
       - name: Set git safe directory
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Lint Ansible Roles
-        run: ansible-lint -x 204 -x experimental -x command-instead-of-module ./build/ansible_roles/*
+        run: ansible-lint -x 204 -x experimental ./build/ansible_roles/*
+      - name: Build Ansible Collection (as published downstream)
+        run: PYTHONPATH=. python3 utils/ansible_roles_to_collection.py --roles-dir ./build/ansible_roles --output-dir ./build/ansible_collection --namespace ${{ env.COLLECTION_NAMESPACE }} --collection ${{ env.COLLECTION_NAME }}
+      # The published collection enforces ansible-lint's command-instead-of-module
+      # rule for Automation Hub certification. Every command/shell remediation
+      # with a module equivalent is rewritten to the vendored ssg_hardening module
+      # at assembly time; a new upstream remediation whose command is not mapped
+      # would regress certification. Lint the assembled collection with just that
+      # rule so the regression fails this pull request instead of surfacing only
+      # at publishing time.
+      - name: Gate collection on command-instead-of-module (Automation Hub cert rule)
+        run: ANSIBLE_COLLECTIONS_PATH="$GITHUB_WORKSPACE/build/ansible_collection" ansible-lint --nocolor --tags command-instead-of-module roles/
+        working-directory: ./build/ansible_collection/ansible_collections/${{ env.COLLECTION_NAMESPACE }}/${{ env.COLLECTION_NAME }}
