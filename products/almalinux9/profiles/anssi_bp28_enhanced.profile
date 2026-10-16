@@ -68,3 +68,19 @@ selections:
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
+
+    # Match RHEL 9: hide other users' processes in /proc
+    - var_mount_option_proc_hidepid=invisible
+
+    # The following packages were never shipped with AlmaLinux OS 9, as with RHEL 9
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_xinetd_removed'
+    - '!package_ypbind_removed'
+    - '!package_ypserv_removed'
+
+    # AlmaLinux OS 9, like RHEL 9, unified the GRUB 2 configuration path to /boot/grub2, so the
+    # UEFI-specific duplicate of grub2_password must not be used
+    - '!grub2_uefi_password'

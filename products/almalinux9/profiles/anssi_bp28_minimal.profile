@@ -34,3 +34,18 @@ selections:
   - '!ensure_redhat_gpgkey_installed'
   - '!package_sequoia-sq_installed'
   - '!package_kea_removed'
+
+  # Match RHEL 9: hide other users' processes in /proc
+  - var_mount_option_proc_hidepid=invisible
+
+  # The following packages were never shipped with AlmaLinux OS 9, as with RHEL 9
+  - '!package_rsh-server_removed'
+  - '!package_rsh_removed'
+  - '!package_talk_removed'
+  - '!package_talk-server_removed'
+  - '!package_xinetd_removed'
+  - '!package_ypbind_removed'
+  - '!package_ypserv_removed'
+
+  # Match RHEL 9: this rule is excluded from the ANSSI profiles
+  - '!audit_rules_mac_modification_etc_selinux'
