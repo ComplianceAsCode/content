@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Ensure Zabbix Agent Server Directive Is Configured'
+
+description: |-
+    The Zabbix agent must be configured to accept passive checks only
+    from the Zabbix server corresponding to the network segment the host
+    is on, by editing <tt>Server</tt> in
+    <tt>/etc/zabbix/zabbix_agentd.conf</tt>:
+    <pre>Server=&lt;zabbix_server_address&gt;</pre>
+
+rationale: |-
+    Leaving <tt>Server</tt> at its packaged default (<tt>127.0.0.1</tt>)
+    means the agent will reject passive checks from the real Zabbix
+    server, defeating the purpose of having it installed.
+
+severity: medium
+
+warnings:
+    - general: |-
+        This rule doesn't come with a remediation; the correct Zabbix
+        server address depends on the network segment the host is on and
+        needs to be set by the administrator.
+
+ocil_clause: 'Server is missing or left at the packaged default'
+
+ocil: |-
+    Run the following command:
+    <pre># grep -E '^Server=' /etc/zabbix/zabbix_agentd.conf</pre>
+    <tt>Server</tt> should be present and set to the Zabbix server
+    address for this network segment, not left at the packaged default of
+    <tt>127.0.0.1</tt>.
+
+fixtext: |-
+    Edit <tt>/etc/zabbix/zabbix_agentd.conf</tt> and set <tt>Server</tt>
+    to the Zabbix server address for this network segment. Restart the
+    service:
+    <pre># systemctl restart zabbix-agent.service</pre>
