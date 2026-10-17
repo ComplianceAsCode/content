@@ -132,7 +132,7 @@ dconf_login_banner_contents=cis_default
 dconf_login_banner_text=cis_banners
 dir_perms_world_writable_sticky_bits
 directory_permissions_var_log_audit
-disable_host_auth
+sshd_disable_host_auth
 enable_authselect
 ensure_gpgcheck_globally_activated
 ensure_gpgcheck_never_disabled

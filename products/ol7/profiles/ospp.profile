@@ -36,7 +36,7 @@ selections:
     # sshd
     - sshd_disable_root_login
     - sshd_enable_strictmodes
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth

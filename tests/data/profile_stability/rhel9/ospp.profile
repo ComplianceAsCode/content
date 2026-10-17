@@ -65,7 +65,7 @@ configure_openssl_crypto_policy
 configure_usbguard_auditbackend
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
-disable_host_auth
+sshd_disable_host_auth
 dnf-automatic_apply_updates
 enable_authselect
 enable_dracut_fips_module

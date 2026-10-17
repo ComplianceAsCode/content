@@ -46,7 +46,7 @@ selections:
     - sshd_max_auth_tries_value=4
     - sshd_set_max_auth_tries
     - sshd_disable_rhosts
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
     - sshd_do_not_permit_user_env

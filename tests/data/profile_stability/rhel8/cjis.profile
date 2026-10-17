@@ -54,7 +54,7 @@ dconf_gnome_screensaver_idle_delay
 dconf_gnome_screensaver_lock_enabled
 dconf_gnome_screensaver_mode_blank
 dconf_gnome_session_idle_user_locks
-disable_host_auth
+sshd_disable_host_auth
 display_login_attempts
 enable_authselect
 ensure_gpgcheck_globally_activated

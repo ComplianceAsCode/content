@@ -131,7 +131,7 @@ selections:
     - package_rpcbind_removed
     - package_net-snmp_removed
     - sshd_set_keepalive
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_disable_empty_passwords
     - sshd_disable_rhosts
     - sshd_do_not_permit_user_env

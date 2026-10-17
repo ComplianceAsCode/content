@@ -17,4 +17,4 @@ spec:
         path: /etc/ssh/sshd_config
         overwrite: true
 ---
-{{{ kubernetes_sshd_dropin('HostbasedAuthentication no', config_basename='00-complianceascode-disable_host_auth.conf') }}}
+{{{ kubernetes_sshd_dropin('HostbasedAuthentication no', config_basename='00-complianceascode-sshd_disable_host_auth.conf') }}}

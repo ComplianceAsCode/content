@@ -66,7 +66,7 @@ dconf_gnome_session_idle_user_locks
 dconf_login_banner_contents=cis_default
 dconf_login_banner_text=cis_banners
 dir_perms_world_writable_sticky_bits
-disable_host_auth
+sshd_disable_host_auth
 disable_users_coredumps
 enable_authselect
 ensure_gpgcheck_globally_activated

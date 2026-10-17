@@ -251,7 +251,7 @@ selections:
     - sssd_offline_cred_expiration
     - sssd_memcache_timeout
     - var_sssd_memcache_timeout=1_day
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
     - sshd_disable_rhosts_rsa

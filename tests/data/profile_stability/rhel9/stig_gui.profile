@@ -185,7 +185,7 @@ directory_ownership_var_log_audit
 directory_permissions_sshd_config_d
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
-disable_host_auth
+sshd_disable_host_auth
 disable_users_coredumps
 disallow_bypass_password_sudo
 enable_authselect

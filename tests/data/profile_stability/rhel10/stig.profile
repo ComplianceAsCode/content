@@ -185,7 +185,7 @@ directory_ownership_var_log_audit
 directory_permissions_var_log_audit
 disable_ctrlaltdel_burstaction
 disable_ctrlaltdel_reboot
-disable_host_auth
+sshd_disable_host_auth
 disable_users_coredumps
 disallow_bypass_password_sudo
 enable_gpgcheck_for_all_repositories

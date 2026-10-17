@@ -229,7 +229,7 @@ selections:
     - service_ypbind_disabled
     - service_zebra_disabled
     - use_kerberos_security_all_exports
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_allow_only_protocol2
     - sshd_disable_compression
     - sshd_disable_gssapi_auth

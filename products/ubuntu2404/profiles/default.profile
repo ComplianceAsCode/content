@@ -204,7 +204,7 @@ selections:
     - dir_permissions_system_journal
     - dir_perms_world_writable_sticky_bits
     - disable_ctrlaltdel_reboot
-    - disable_host_auth
+    - sshd_disable_host_auth
     - disable_users_coredumps
     - encrypt_partitions
     - ensure_pam_wheel_group_empty

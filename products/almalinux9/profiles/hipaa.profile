@@ -52,7 +52,7 @@ selections:
     - use_kerberos_security_all_exports
     - var_authselect_profile=sssd
     - enable_authselect
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_allow_only_protocol2
     - sshd_disable_compression
     - sshd_disable_gssapi_auth

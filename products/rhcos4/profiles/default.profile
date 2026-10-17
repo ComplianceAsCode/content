@@ -73,7 +73,7 @@ selections:
     - sshd_set_max_sessions
     - sudoers_no_root_target
     - package_inetutils-telnetd_removed
-    - disable_host_auth
+    - sshd_disable_host_auth
     - package_tmux_installed
     - file_owner_backup_etc_gshadow
     - service_ntpd_enabled

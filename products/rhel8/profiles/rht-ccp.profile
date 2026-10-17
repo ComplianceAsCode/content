@@ -95,7 +95,7 @@ selections:
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=1
     - sshd_set_keepalive_0
-    - disable_host_auth
+    - sshd_disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
     - sshd_enable_warning_banner
