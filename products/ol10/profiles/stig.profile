@@ -10,9 +10,4 @@ description: |-
     the release.
 
 selections:
-    - srg_gpos:all
-    - var_accounts_authorized_local_users_regex=ol9
-    - '!enable_dracut_fips_module'
-    # Package not available in OL10
-    - '!package_subscription-manager_installed'
-    - var_authselect_profile=local
+    - stig_ol10:all
