@@ -1,3 +1,7 @@
+{{#- modprobe reads "-" and "_" in module names as the same character,
+    /bin/false is /usr/bin/false where /usr is merged, and the shell that
+    runs an install command skips a trailing comment. -#}}
+{{%- set KERNMODULE_REGEX = KERNMODULE | replace("-", "_") | replace("_", "[-_]") -%}}
 <def-group>
   <definition class="compliance"
   id="{{{ _RULE_ID }}}" version="1">
@@ -30,7 +34,7 @@
   version="1" comment="kernel module {{{ KERNMODULE }}} disabled">
     <ind:path var_ref="var_kernel_module_{{{ KERNMODULE }}}_paths" var_check="at least one" />
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE_REGEX }}}\s+(/usr)?/bin/(false|true)(\s+#.*)?\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -54,7 +58,7 @@
   version="1" comment="kernel module {{{ KERNMODULE }}} blacklisted">
     <ind:path var_ref="var_kernel_module_{{{ KERNMODULE }}}_paths" var_check="at least one" />
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^blacklist\s+{{{ KERNMODULE }}}$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*blacklist\s+{{{ KERNMODULE_REGEX }}}(\s+#.*)?\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% endif %}}
@@ -68,7 +72,7 @@
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf"
   version="1" comment="Check deprecated /etc/modprobe.conf for disablement of {{{ KERNMODULE }}}">
     <ind:filepath>/etc/modprobe.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE_REGEX }}}\s+(/usr)?/bin/(false|true)(\s+#.*)?\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% endif %}}
