@@ -16,7 +16,7 @@ description: |-
     {{% else %}}
     <tt>/var/lib/aide/aide.db.new.gz</tt>.
     {{% endif %}}
-    Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
+    Storing the database, the configuration file <tt>{{{ aide_conf_path }}}</tt>, and the binary
     <tt>{{{ aide_bin_path }}}</tt>
     (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
     The newly-generated database can be installed as follows:

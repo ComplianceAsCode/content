@@ -10,26 +10,26 @@
   </definition>
 
   <ind:textfilecontent54_test id="test_aide_non_fips_hashes"
-  comment="Verify non-FIPS hashes are not configured in /etc/aide.conf" check="all"
+  comment="Verify non-FIPS hashes are not configured in {{{ aide_conf_path }}}" check="all"
   check_existence="none_exist" version="1">
     <ind:object object_ref="object_aide_non_fips_hashes" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_aide_non_fips_hashes"
   version="1">
-    <ind:filepath>/etc/aide.conf</ind:filepath>
+    <ind:filepath>{{{ aide_conf_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[A-Z][a-zA-Z_]*[\s]*=[\s]*.*(sha1|rmd160|sha256|whirlpool|tiger|haval|gost|crc32).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">0</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test id="test_aide_use_fips_hashes"
-  comment="Verify FIPS hashes are configured in /etc/aide.conf" check="all"
+  comment="Verify FIPS hashes are configured in {{{ aide_conf_path }}}" check="all"
   check_existence="all_exist" version="1">
     <ind:object object_ref="object_aide_use_fips_hashes" />
     <ind:state state_ref="state_aide_use_fips_hashes" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_aide_use_fips_hashes"
   version="1">
-    <ind:filepath>/etc/aide.conf</ind:filepath>
+    <ind:filepath>{{{ aide_conf_path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^[A-Z][A-Za-z_]*[\s]*=[\s]*([a-zA-Z0-9\+]*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
