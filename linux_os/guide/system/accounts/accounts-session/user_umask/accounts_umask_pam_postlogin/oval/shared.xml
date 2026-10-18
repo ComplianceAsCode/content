@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The pam_umask.so module must be enabled in /etc/pam.d/postlogin and any umask argument must be 0077.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="pam_umask.so is configured as a session module in /etc/pam.d/postlogin"
+      test_ref="test_{{{ rule_id }}}_module_present" />
+      <criterion comment="No pam_umask.so line sets a umask other than 0077"
+      test_ref="test_{{{ rule_id }}}_umask_value" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="pam_umask.so session line exists in /etc/pam.d/postlogin"
+  id="test_{{{ rule_id }}}_module_present" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_module_present" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_module_present" version="1">
+    <ind:filepath>/etc/pam.d/postlogin</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*session\s+\S+\s+pam_umask\.so(\s.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- A umask argument may be absent (login.defs UMASK is used), but when
+       present it must be 077 or 0077. -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="pam_umask.so line with a umask argument other than 0077"
+  id="test_{{{ rule_id }}}_umask_value" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_umask_value" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_umask_value" version="1">
+    <ind:filepath>/etc/pam.d/postlogin</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*session\s+\S+\s+pam_umask\.so.*\sumask=(?!0?077(\s|$))\S+</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

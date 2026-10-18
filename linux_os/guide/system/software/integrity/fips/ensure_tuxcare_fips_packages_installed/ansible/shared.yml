@@ -1,0 +1,15 @@
+# platform = multi_platform_almalinux
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = high
+- name: '{{{ rule_title }}} - Upgrade the cryptographic packages and the kernel to the TuxCare builds'
+  ansible.builtin.dnf:
+    name:
+      - gnutls
+      - nettle
+      - nss
+      - openssl
+      - libgcrypt
+      - kernel
+    state: latest
