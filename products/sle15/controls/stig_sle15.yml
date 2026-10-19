@@ -19,6 +19,7 @@ controls:
       rules:
           - installed_OS_is_vendor_supported
       status: automated
+
     - id: SLES-15-010010
       levels:
           - medium
@@ -28,6 +29,7 @@ controls:
       rules:
           - security_patches_up_to_date
       status: automated
+
     - id: SLES-15-010020
       levels:
           - medium
@@ -39,6 +41,7 @@ controls:
           - login_banner_text=dod_banners
           - login_banner_contents=dod_default
       status: automated
+
     - id: SLES-15-010030
       levels:
           - high
@@ -48,6 +51,15 @@ controls:
       rules:
           - package_vsftpd_removed
       status: automated
+
+    - id: SLES-15-010035
+      levels:
+          - medium
+      title: The SUSE operating system must have the crypto-policies package installed.
+      rules:
+          - package_crypto-policies_installed
+      status: automated
+
     - id: SLES-15-010040
       levels:
           - medium
@@ -57,6 +69,7 @@ controls:
       rules:
           - sshd_enable_warning_banner
       status: automated
+
     - id: SLES-15-010050
       levels:
           - medium
@@ -67,6 +80,7 @@ controls:
       rules:
           - gui_login_dod_acknowledgement
       status: automated
+
     - id: SLES-15-010060
       levels:
           - medium
@@ -76,6 +90,7 @@ controls:
       rules:
           - banner_etc_gdm_banner
       status: automated
+
     - id: SLES-15-010080
       levels:
           - medium
@@ -85,6 +100,7 @@ controls:
       rules:
           - dconf_gnome_banner_enabled
       status: automated
+
     - id: SLES-15-010090
       levels:
           - medium
@@ -98,6 +114,7 @@ controls:
           - dconf_login_banner_text=dod_banners
           - dconf_login_banner_contents=dod_default
       status: automated
+
     - id: SLES-15-010100
       levels:
           - medium
@@ -107,6 +124,7 @@ controls:
       rules:
           - dconf_gnome_screensaver_lock_enabled
       status: automated
+
     - id: SLES-15-010110
       levels:
           - low
@@ -114,6 +132,7 @@ controls:
       rules:
           - vlock_installed
       status: automated
+
     - id: SLES-15-010120
       levels:
           - medium
@@ -125,6 +144,7 @@ controls:
           - inactivity_timeout_value=15_minutes
           - dconf_gnome_session_idle_user_locks
       status: automated
+
     - id: SLES-15-010130
       levels:
           - medium
@@ -135,6 +155,7 @@ controls:
           - accounts_tmout
           - var_accounts_tmout=10_min
       status: automated
+
     - id: SLES-15-010140
       levels:
           - low
@@ -145,6 +166,7 @@ controls:
       rules:
           - dconf_gnome_screensaver_mode_blank
       status: automated
+
     - id: SLES-15-010150
       levels:
           - medium
@@ -154,6 +176,7 @@ controls:
       rules:
           - sshd_set_loglevel_verbose
       status: automated
+
     - id: SLES-15-010160
       levels:
           - medium
@@ -164,6 +187,7 @@ controls:
           - sshd_use_approved_ciphers
           - sshd_use_approved_ciphers_ordered_stig
       status: automated
+
     - id: SLES-15-010170
       levels:
           - medium
@@ -174,6 +198,7 @@ controls:
       rules:
           - smartcard_configure_ca
       status: automated
+
     - id: SLES-15-010180
       levels:
           - high
@@ -181,6 +206,7 @@ controls:
       rules:
           - package_telnet-server_removed
       status: automated
+
     - id: SLES-15-010190
       levels:
           - high
@@ -190,6 +216,7 @@ controls:
       rules:
           - grub2_password
       status: automated
+
     - id: SLES-15-010200
       levels:
           - high
@@ -200,6 +227,7 @@ controls:
       rules:
           - grub2_uefi_password
       status: automated
+
     - id: SLES-15-010220
       levels:
           - medium
@@ -212,6 +240,7 @@ controls:
           - package_firewalld_installed
           - service_firewalld_enabled
       status: automated
+
     - id: SLES-15-010230
       levels:
           - medium
@@ -221,6 +250,7 @@ controls:
       rules:
           - account_unique_id
       status: automated
+
     - id: SLES-15-010240
       levels:
           - medium
@@ -228,6 +258,7 @@ controls:
       rules:
           - service_autofs_disabled
       status: automated
+
     - id: SLES-15-010260
       levels:
           - medium
@@ -237,6 +268,7 @@ controls:
       rules:
           - set_password_hashing_algorithm_logindefs
       status: automated
+
     - id: SLES-15-010270
       levels:
           - medium
@@ -247,6 +279,7 @@ controls:
           - sshd_use_approved_macs
           - sshd_use_approved_macs_ordered_stig
       status: automated
+
     - id: SLES-15-010280
       levels:
           - medium
@@ -255,6 +288,7 @@ controls:
           - sshd_set_idle_timeout
           - sshd_idle_timeout_value=10_minutes
       status: automated
+
     - id: SLES-15-010300
       levels:
           - medium
@@ -262,6 +296,7 @@ controls:
       rules:
           - dir_perms_world_writable_sticky_bits
       status: automated
+
     - id: SLES-15-010310
       levels:
           - medium
@@ -269,6 +304,7 @@ controls:
       rules:
           - sysctl_net_ipv4_tcp_syncookies
       status: automated
+
     - id: SLES-15-010320
       levels:
           - medium
@@ -281,6 +317,7 @@ controls:
           - var_sshd_set_keepalive=1
           - sshd_set_keepalive_0
       status: automated
+
     - id: SLES-15-010330
       levels:
           - high
@@ -291,6 +328,7 @@ controls:
       rules:
           - encrypt_partitions
       status: automated
+
     - id: SLES-15-010340
       levels:
           - medium
@@ -301,6 +339,7 @@ controls:
       rules:
           - permissions_local_var_log
       status: automated
+
     - id: SLES-15-010350
       levels:
           - medium
@@ -310,6 +349,7 @@ controls:
       rules:
           - file_permissions_local_var_log_messages
       status: automated
+
     - id: SLES-15-010351
       levels:
           - medium
@@ -317,6 +357,7 @@ controls:
       rules:
           - file_permissions_library_dirs
       status: automated
+
     - id: SLES-15-010352
       levels:
           - medium
@@ -326,6 +367,7 @@ controls:
       rules:
           - dir_permissions_library_dirs
       status: automated
+
     - id: SLES-15-010353
       levels:
           - medium
@@ -333,6 +375,7 @@ controls:
       rules:
           - file_ownership_library_dirs
       status: automated
+
     - id: SLES-15-010354
       levels:
           - medium
@@ -340,6 +383,7 @@ controls:
       rules:
           - dir_ownership_library_dirs
       status: automated
+
     - id: SLES-15-010355
       levels:
           - medium
@@ -347,6 +391,7 @@ controls:
       rules:
           - root_permissions_syslibrary_files
       status: automated
+
     - id: SLES-15-010356
       levels:
           - medium
@@ -354,6 +399,7 @@ controls:
       rules:
           - dir_group_ownership_library_dirs
       status: automated
+
     - id: SLES-15-010357
       levels:
           - medium
@@ -363,6 +409,7 @@ controls:
       rules:
           - file_permissions_system_commands_dirs
       status: automated
+
     - id: SLES-15-010358
       levels:
           - medium
@@ -372,6 +419,7 @@ controls:
       rules:
           - file_permissions_binary_dirs
       status: automated
+
     - id: SLES-15-010359
       levels:
           - medium
@@ -379,6 +427,7 @@ controls:
       rules:
           - file_ownership_binary_dirs
       status: automated
+
     - id: SLES-15-010360
       levels:
           - medium
@@ -388,6 +437,7 @@ controls:
       rules:
           - dir_system_commands_root_owned
       status: automated
+
     - id: SLES-15-010361
       levels:
           - medium
@@ -397,6 +447,7 @@ controls:
       rules:
           - file_groupownership_system_commands_dirs
       status: automated
+
     - id: SLES-15-010362
       levels:
           - medium
@@ -406,6 +457,7 @@ controls:
       rules:
           - dir_system_commands_group_root_owned
       status: automated
+
     - id: SLES-15-010370
       levels:
           - medium
@@ -414,6 +466,7 @@ controls:
           disconnect or disable remote access to the whole operating system.
       rules: []
       status: pending
+
     - id: SLES-15-010380
       levels:
           - medium
@@ -423,6 +476,7 @@ controls:
       rules:
           - wireless_disable_interfaces
       status: automated
+
     - id: SLES-15-010390
       levels:
           - medium
@@ -433,6 +487,7 @@ controls:
           - apparmor_configured
           - package_pam_apparmor_installed
       status: automated
+
     - id: SLES-15-010400
       levels:
           - medium
@@ -443,6 +498,7 @@ controls:
           - chronyd_or_ntpd_set_maxpoll
           - var_time_service_set_maxpoll=18_hours
       status: automated
+
     - id: SLES-15-010410
       levels:
           - low
@@ -452,6 +508,7 @@ controls:
       rules:
           - ensure_rtc_utc_configuration
       status: automated
+
     - id: SLES-15-010420
       levels:
           - medium
@@ -461,6 +518,7 @@ controls:
       rules:
           - aide_periodic_cron_checking
       status: automated
+
     - id: SLES-15-010430
       levels:
           - high
@@ -468,6 +526,7 @@ controls:
       rules:
           - ensure_gpgcheck_globally_activated
       status: automated
+
     - id: SLES-15-010450
       levels:
           - high
@@ -479,6 +538,7 @@ controls:
           - sudo_remove_nopasswd
           - sudo_require_authentication
       status: automated
+
     - id: SLES-15-010460
       levels:
           - medium
@@ -488,6 +548,7 @@ controls:
       rules:
           - install_smartcard_packages
       status: automated
+
     - id: SLES-15-010470
       levels:
           - medium
@@ -497,6 +558,7 @@ controls:
       rules:
           - smartcard_configure_cert_checking
       status: automated
+
     - id: SLES-15-010480
       levels:
           - medium
@@ -504,6 +566,7 @@ controls:
       rules:
           - kernel_module_usb-storage_disabled
       status: automated
+
     - id: SLES-15-010490
       levels:
           - medium
@@ -514,6 +577,7 @@ controls:
           - sssd_memcache_timeout
           - var_sssd_memcache_timeout=1_day
       status: automated
+
     - id: SLES-15-010500
       levels:
           - medium
@@ -524,6 +588,7 @@ controls:
       rules:
           - sssd_offline_cred_expiration
       status: automated
+
     - id: SLES-15-010510
       levels:
           - high
@@ -531,6 +596,7 @@ controls:
       rules:
           - is_fips_mode_enabled
       status: automated
+
     - id: SLES-15-010530
       levels:
           - high
@@ -541,6 +607,7 @@ controls:
       rules:
           - service_sshd_enabled
       status: automated
+
     - id: SLES-15-010540
       levels:
           - medium
@@ -550,6 +617,7 @@ controls:
       rules:
           - sysctl_kernel_kptr_restrict
       status: automated
+
     - id: SLES-15-010550
       levels:
           - medium
@@ -559,6 +627,7 @@ controls:
       rules:
           - sysctl_kernel_randomize_va_space
       status: automated
+
     - id: SLES-15-010560
       levels:
           - medium
@@ -568,6 +637,7 @@ controls:
       rules:
           - clean_components_post_updating
       status: automated
+
     - id: SLES-15-010570
       levels:
           - medium
@@ -579,6 +649,7 @@ controls:
           - aide_periodic_checking_systemd_timer
           - aide_scan_notification
       status: automated
+
     - id: SLES-15-010580
       levels:
           - medium
@@ -588,6 +659,7 @@ controls:
       rules:
           - rsyslog_remote_loghost
       status: automated
+
     - id: SLES-15-020000
       levels:
           - medium
@@ -596,6 +668,7 @@ controls:
           date for 72 hours.
       rules: []
       status: pending
+
     - id: SLES-15-020010
       levels:
           - medium
@@ -606,6 +679,7 @@ controls:
           - accounts_passwords_pam_tally2
           - var_password_pam_tally2=3
       status: automated
+
     - id: SLES-15-020020
       levels:
           - low
@@ -616,6 +690,7 @@ controls:
           - accounts_max_concurrent_login_sessions
           - var_accounts_max_concurrent_login_sessions=10
       status: automated
+
     - id: SLES-15-020030
       levels:
           - medium
@@ -625,6 +700,7 @@ controls:
       rules:
           - smartcard_pam_enabled
       status: automated
+
     - id: SLES-15-020040
       levels:
           - medium
@@ -634,6 +710,7 @@ controls:
       rules:
           - sshd_disable_root_login
       status: automated
+
     - id: SLES-15-020050
       levels:
           - medium
@@ -644,6 +721,7 @@ controls:
           - account_disable_post_pw_expiration
           - var_account_disable_post_pw_expiration=35
       status: automated
+
     - id: SLES-15-020060
       levels:
           - medium
@@ -653,6 +731,7 @@ controls:
       rules:
           - account_emergency_admin
       status: manual
+
     - id: SLES-15-020090
       levels:
           - medium
@@ -664,6 +743,7 @@ controls:
           # - var_accounts_authorized_local_users_regex=<authorized local user accounts>
           - var_accounts_authorized_local_users_regex=sle15
       status: automated
+
     - id: SLES-15-020091
       levels:
           - medium
@@ -671,6 +751,7 @@ controls:
       rules:
           - no_shelllogin_for_systemaccounts
       status: automated
+
     - id: SLES-15-020100
       levels:
           - high
@@ -680,6 +761,7 @@ controls:
       rules:
           - accounts_no_uid_except_zero
       status: automated
+
     - id: SLES-15-020101
       levels:
           - medium
@@ -689,6 +771,7 @@ controls:
       rules:
           - sudo_restrict_privilege_elevation_to_authorized
       status: automated
+
     - id: SLES-15-020102
       levels:
           - medium
@@ -699,6 +782,7 @@ controls:
           - sudo_require_reauthentication
           - var_sudo_timestamp_timeout=always_prompt
       status: automated
+
     - id: SLES-15-020103
       levels:
           - medium
@@ -708,6 +792,7 @@ controls:
       rules:
           - sudoers_validate_passwd
       status: automated
+
     - id: SLES-15-020110
       levels:
           - medium
@@ -717,6 +802,7 @@ controls:
       rules:
           - accounts_have_homedir_login_defs
       status: automated
+
     - id: SLES-15-020120
       levels:
           - medium
@@ -726,6 +812,7 @@ controls:
       rules:
           - sshd_print_last_log
       status: automated
+
     - id: SLES-15-020130
       levels:
           - medium
@@ -736,6 +823,7 @@ controls:
           - cracklib_accounts_password_pam_ucredit
           - var_password_pam_ucredit=1
       status: automated
+
     - id: SLES-15-020140
       levels:
           - medium
@@ -746,6 +834,7 @@ controls:
           - cracklib_accounts_password_pam_lcredit
           - var_password_pam_lcredit=1
       status: automated
+
     - id: SLES-15-020150
       levels:
           - medium
@@ -756,6 +845,7 @@ controls:
           - cracklib_accounts_password_pam_dcredit
           - var_password_pam_dcredit=1
       status: automated
+
     - id: SLES-15-020160
       levels:
           - medium
@@ -765,6 +855,7 @@ controls:
       rules:
           - cracklib_accounts_password_pam_difok
       status: automated
+
     - id: SLES-15-020170
       levels:
           - medium
@@ -774,6 +865,7 @@ controls:
       rules:
           - set_password_hashing_algorithm_systemauth
       status: automated
+
     - id: SLES-15-020180
       levels:
           - medium
@@ -783,6 +875,7 @@ controls:
       rules:
           - accounts_password_all_shadowed_sha512
       status: automated
+
     - id: SLES-15-020190
       levels:
           - medium
@@ -793,6 +886,7 @@ controls:
           - set_password_hashing_min_rounds_logindefs
           - var_password_hashing_min_rounds_login_defs=100000
       status: automated
+
     - id: SLES-15-020200
       levels:
           - medium
@@ -803,6 +897,7 @@ controls:
           - accounts_minimum_age_login_defs
           - var_accounts_minimum_age_login_defs=7
       status: automated
+
     - id: SLES-15-020210
       levels:
           - medium
@@ -812,6 +907,7 @@ controls:
       rules:
           - accounts_password_set_min_life_existing
       status: automated
+
     - id: SLES-15-020220
       levels:
           - medium
@@ -822,6 +918,7 @@ controls:
           - accounts_maximum_age_login_defs
           - var_accounts_maximum_age_login_defs=60
       status: automated
+
     - id: SLES-15-020230
       levels:
           - medium
@@ -831,6 +928,7 @@ controls:
       rules:
           - accounts_password_set_max_life_existing
       status: automated
+
     - id: SLES-15-020260
       levels:
           - medium
@@ -839,6 +937,7 @@ controls:
           - cracklib_accounts_password_pam_minlen
           - var_password_pam_minlen=15
       status: automated
+
     - id: SLES-15-020270
       levels:
           - medium
@@ -849,6 +948,7 @@ controls:
           - cracklib_accounts_password_pam_ocredit
           - var_password_pam_ocredit=1
       status: automated
+
     - id: SLES-15-020290
       levels:
           - medium
@@ -856,6 +956,7 @@ controls:
       rules:
           - cracklib_accounts_password_pam_retry
       status: automated
+
     - id: SLES-15-020300
       levels:
           - high
@@ -863,6 +964,7 @@ controls:
       rules:
           - no_empty_passwords
       status: automated
+
     - id: SLES-15-030000
       levels:
           - medium
@@ -872,6 +974,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_passwd
       status: automated
+
     - id: SLES-15-030010
       levels:
           - medium
@@ -881,6 +984,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_group
       status: automated
+
     - id: SLES-15-030020
       levels:
           - medium
@@ -890,6 +994,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_shadow
       status: automated
+
     - id: SLES-15-030030
       levels:
           - medium
@@ -899,6 +1004,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_opasswd
       status: automated
+
     - id: SLES-15-030040
       levels:
           - medium
@@ -908,6 +1014,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_gshadow
       status: automated
+
     - id: SLES-15-030050
       levels:
           - medium
@@ -918,6 +1025,7 @@ controls:
       rules:
           - service_auditd_enabled
       status: automated
+
     - id: SLES-15-030060
       levels:
           - low
@@ -927,6 +1035,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_ssh_keysign
       status: automated
+
     - id: SLES-15-030070
       levels:
           - medium
@@ -936,6 +1045,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_passwd
       status: automated
+
     - id: SLES-15-030080
       levels:
           - low
@@ -945,6 +1055,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_gpasswd
       status: automated
+
     - id: SLES-15-030090
       levels:
           - low
@@ -954,6 +1065,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_newgrp
       status: automated
+
     - id: SLES-15-030100
       levels:
           - low
@@ -963,6 +1075,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_chsh
       status: automated
+
     - id: SLES-15-030110
       levels:
           - medium
@@ -973,6 +1086,7 @@ controls:
           - audit_rules_privileged_commands_unix2_chkpwd
           - audit_rules_privileged_commands_unix_chkpwd
       status: automated
+
     - id: SLES-15-030120
       levels:
           - medium
@@ -982,6 +1096,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_chage
       status: automated
+
     - id: SLES-15-030130
       levels:
           - medium
@@ -991,6 +1106,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_crontab
       status: automated
+
     - id: SLES-15-030140
       levels:
           - medium
@@ -1000,6 +1116,7 @@ controls:
       rules:
           - audit_rules_sysadmin_actions
       status: automated
+
     - id: SLES-15-030150
       levels:
           - medium
@@ -1014,6 +1131,7 @@ controls:
           - audit_rules_unsuccessful_file_modification_openat
           - audit_rules_unsuccessful_file_modification_truncate
       status: automated
+
     - id: SLES-15-030190
       levels:
           - medium
@@ -1029,6 +1147,7 @@ controls:
           - audit_rules_dac_modification_removexattr
           - audit_rules_dac_modification_setxattr
       status: automated
+
     - id: SLES-15-030250
       levels:
           - medium
@@ -1041,6 +1160,7 @@ controls:
           - audit_rules_dac_modification_fchownat
           - audit_rules_dac_modification_lchown
       status: automated
+
     - id: SLES-15-030290
       levels:
           - medium
@@ -1052,6 +1172,7 @@ controls:
           - audit_rules_dac_modification_fchmod
           - audit_rules_dac_modification_fchmodat
       status: automated
+
     - id: SLES-15-030330
       levels:
           - medium
@@ -1061,6 +1182,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_sudoedit
       status: automated
+
     - id: SLES-15-030340
       levels:
           - low
@@ -1070,6 +1192,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_chfn
       status: automated
+
     - id: SLES-15-030350
       levels:
           - low
@@ -1079,6 +1202,7 @@ controls:
       rules:
           - audit_rules_media_export
       status: automated
+
     - id: SLES-15-030360
       levels:
           - low
@@ -1089,6 +1213,7 @@ controls:
           - audit_rules_dac_modification_umount
           - audit_rules_dac_modification_umount2
       status: automated
+
     - id: SLES-15-030370
       levels:
           - low
@@ -1098,6 +1223,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_ssh_agent
       status: automated
+
     - id: SLES-15-030380
       levels:
           - medium
@@ -1107,6 +1233,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_insmod
       status: automated
+
     - id: SLES-15-030390
       levels:
           - medium
@@ -1116,6 +1243,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_rmmod
       status: automated
+
     - id: SLES-15-030400
       levels:
           - medium
@@ -1125,6 +1253,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_modprobe
       status: automated
+
     - id: SLES-15-030410
       levels:
           - medium
@@ -1134,6 +1263,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_kmod
       status: automated
+
     - id: SLES-15-030420
       levels:
           - medium
@@ -1143,6 +1273,7 @@ controls:
       rules:
           - audit_rules_execution_chmod
       status: automated
+
     - id: SLES-15-030430
       levels:
           - medium
@@ -1152,6 +1283,7 @@ controls:
       rules:
           - audit_rules_execution_setfacl
       status: automated
+
     - id: SLES-15-030440
       levels:
           - medium
@@ -1161,6 +1293,7 @@ controls:
       rules:
           - audit_rules_execution_chacl
       status: automated
+
     - id: SLES-15-030450
       levels:
           - medium
@@ -1170,6 +1303,7 @@ controls:
       rules:
           - audit_rules_execution_chcon
       status: automated
+
     - id: SLES-15-030460
       levels:
           - medium
@@ -1179,6 +1313,7 @@ controls:
       rules:
           - audit_rules_execution_rm
       status: automated
+
     - id: SLES-15-030470
       levels:
           - medium
@@ -1188,6 +1323,7 @@ controls:
       rules:
           - audit_rules_login_events_tallylog
       status: automated
+
     - id: SLES-15-030480
       levels:
           - medium
@@ -1197,6 +1333,7 @@ controls:
       rules:
           - audit_rules_login_events_lastlog
       status: automated
+
     - id: SLES-15-030490
       levels:
           - medium
@@ -1206,6 +1343,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_passmass
       status: automated
+
     - id: SLES-15-030500
       levels:
           - medium
@@ -1215,6 +1353,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_usermod
       status: automated
+
     - id: SLES-15-030510
       levels:
           - medium
@@ -1224,6 +1363,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_pam_timestamp_check
       status: automated
+
     - id: SLES-15-030520
       levels:
           - medium
@@ -1233,6 +1373,7 @@ controls:
       rules:
           - audit_rules_kernel_module_loading_delete
       status: automated
+
     - id: SLES-15-030530
       levels:
           - medium
@@ -1243,6 +1384,7 @@ controls:
           - audit_rules_kernel_module_loading_finit
           - audit_rules_kernel_module_loading_init
       status: automated
+
     - id: SLES-15-030550
       levels:
           - medium
@@ -1252,6 +1394,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_su
       status: automated
+
     - id: SLES-15-030560
       levels:
           - low
@@ -1261,6 +1404,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_sudo
       status: automated
+
     - id: SLES-15-030570
       levels:
           - medium
@@ -1271,6 +1415,7 @@ controls:
       rules:
           - auditd_data_retention_action_mail_acct
       status: automated
+
     - id: SLES-15-030580
       levels:
           - medium
@@ -1281,6 +1426,7 @@ controls:
       rules:
           - postfix_client_configure_mail_alias
       status: automated
+
     - id: SLES-15-030590
       levels:
           - medium
@@ -1291,6 +1437,7 @@ controls:
           - auditd_data_disk_full_action
           - var_auditd_disk_full_action=syslog
       status: automated
+
     - id: SLES-15-030600
       levels:
           - medium
@@ -1298,6 +1445,7 @@ controls:
       rules:
           - permissions_local_var_log_audit
       status: automated
+
     - id: SLES-15-030620
       levels:
           - medium
@@ -1307,6 +1455,7 @@ controls:
       rules:
           - permissions_local_audit_binaries
       status: automated
+
     - id: SLES-15-030630
       levels:
           - medium
@@ -1316,6 +1465,7 @@ controls:
       rules:
           - aide_check_audit_tools
       status: automated
+
     - id: SLES-15-030640
       levels:
           - low
@@ -1325,6 +1475,7 @@ controls:
       rules:
           - audit_rules_suid_privilege_function
       status: automated
+
     - id: SLES-15-030650
       levels:
           - medium
@@ -1332,6 +1483,7 @@ controls:
       rules:
           - package_audit_installed
       status: automated
+
     - id: SLES-15-030660
       levels:
           - medium
@@ -1342,6 +1494,7 @@ controls:
       rules:
           - auditd_audispd_configure_sufficiently_large_partition
       status: manual
+
     - id: SLES-15-030670
       levels:
           - medium
@@ -1349,6 +1502,7 @@ controls:
       rules:
           - package_audit-audispd-plugins_installed
       status: automated
+
     - id: SLES-15-030680
       levels:
           - low
@@ -1358,6 +1512,7 @@ controls:
       rules:
           - auditd_audispd_encrypt_sent_records
       status: automated
+
     - id: SLES-15-030690
       levels:
           - low
@@ -1370,6 +1525,7 @@ controls:
       # rule "auditd_audispd_configure_remote_server" is enabled
       # - var_audispd_remote_server=<remote audit server name/IP>
       status: automated
+
     - id: SLES-15-030700
       levels:
           - medium
@@ -1380,6 +1536,7 @@ controls:
       rules:
           - auditd_data_retention_space_left
       status: automated
+
     - id: SLES-15-030740
       levels:
           - medium
@@ -1393,6 +1550,7 @@ controls:
           - audit_rules_unsuccessful_file_modification_unlink
           - audit_rules_unsuccessful_file_modification_unlinkat
       status: automated
+
     - id: SLES-15-030760
       levels:
           - medium
@@ -1400,6 +1558,7 @@ controls:
       rules:
           - audit_rules_session_events_utmp
       status: automated
+
     - id: SLES-15-030770
       levels:
           - medium
@@ -1409,6 +1568,7 @@ controls:
       rules:
           - audit_rules_session_events_wtmp
       status: automated
+
     - id: SLES-15-030780
       levels:
           - medium
@@ -1418,6 +1578,7 @@ controls:
       rules:
           - audit_rules_session_events_btmp
       status: automated
+
     - id: SLES-15-030790
       levels:
           - medium
@@ -1427,6 +1588,7 @@ controls:
       rules:
           - auditd_audispd_network_failure_action
       status: automated
+
     - id: SLES-15-030800
       levels:
           - medium
@@ -1436,6 +1598,7 @@ controls:
       rules:
           - auditd_audispd_disk_full_action
       status: automated
+
     - id: SLES-15-030810
       levels:
           - low
@@ -1445,6 +1608,7 @@ controls:
       rules:
           - partition_for_var_log_audit
       status: automated
+
     - id: SLES-15-030820
       levels:
           - medium
@@ -1452,6 +1616,7 @@ controls:
       rules:
           - audit_rules_enable_syscall_auditing
       status: automated
+
     - id: SLES-15-040000
       levels:
           - medium
@@ -1460,6 +1625,7 @@ controls:
           logon prompts following a failed logon attempt.
       rules: []
       status: pending
+
     - id: SLES-15-040010
       levels:
           - medium
@@ -1471,6 +1637,7 @@ controls:
           - var_accounts_fail_delay=4
           - var_password_pam_delay=4000000
       status: automated
+
     - id: SLES-15-040020
       levels:
           - high
@@ -1478,6 +1645,7 @@ controls:
       rules:
           - no_user_host_based_files
       status: automated
+
     - id: SLES-15-040030
       levels:
           - high
@@ -1485,6 +1653,7 @@ controls:
       rules:
           - no_host_based_files
       status: automated
+
     - id: SLES-15-040040
       levels:
           - low
@@ -1494,6 +1663,7 @@ controls:
       rules:
           - aide_verify_acls
       status: automated
+
     - id: SLES-15-040050
       levels:
           - low
@@ -1503,6 +1673,7 @@ controls:
       rules:
           - aide_verify_ext_attributes
       status: automated
+
     - id: SLES-15-040060
       levels:
           - high
@@ -1510,6 +1681,7 @@ controls:
       rules:
           - disable_ctrlaltdel_reboot
       status: automated
+
     - id: SLES-15-040061
       levels:
           - high
@@ -1519,6 +1691,7 @@ controls:
       rules:
           - enable_dconf_user_profile
       status: automated
+
     - id: SLES-15-040062
       levels:
           - high
@@ -1528,6 +1701,7 @@ controls:
       rules:
           - disable_ctrlaltdel_burstaction
       status: automated
+
     - id: SLES-15-040070
       levels:
           - medium
@@ -1537,6 +1711,7 @@ controls:
       rules:
           - accounts_user_interactive_home_directory_defined
       status: automated
+
     - id: SLES-15-040080
       levels:
           - medium
@@ -1546,6 +1721,7 @@ controls:
       rules:
           - accounts_user_interactive_home_directory_exists
       status: automated
+
     - id: SLES-15-040090
       levels:
           - medium
@@ -1555,6 +1731,7 @@ controls:
       rules:
           - file_permissions_home_directories
       status: automated
+
     - id: SLES-15-040100
       levels:
           - medium
@@ -1564,6 +1741,7 @@ controls:
       rules:
           - file_groupownership_home_directories
       status: automated
+
     - id: SLES-15-040110
       levels:
           - medium
@@ -1573,6 +1751,7 @@ controls:
       rules:
           - file_permission_user_init_files
       status: automated
+
     - id: SLES-15-040120
       levels:
           - medium
@@ -1582,6 +1761,7 @@ controls:
       rules:
           - accounts_user_home_paths_only
       status: manual
+
     - id: SLES-15-040130
       levels:
           - medium
@@ -1591,6 +1771,7 @@ controls:
       rules:
           - accounts_user_dot_no_world_writable_programs
       status: automated
+
     - id: SLES-15-040140
       levels:
           - medium
@@ -1600,6 +1781,7 @@ controls:
       rules:
           - mount_option_home_nosuid
       status: automated
+
     - id: SLES-15-040150
       levels:
           - medium
@@ -1610,6 +1792,7 @@ controls:
           - mount_option_nosuid_removable_partitions
           - var_removable_partition=dev_cdrom
       status: automated
+
     - id: SLES-15-040160
       levels:
           - medium
@@ -1620,6 +1803,7 @@ controls:
       rules:
           - mount_option_nosuid_remote_filesystems
       status: automated
+
     - id: SLES-15-040170
       levels:
           - medium
@@ -1629,6 +1813,7 @@ controls:
       rules:
           - mount_option_noexec_remote_filesystems
       status: automated
+
     - id: SLES-15-040180
       levels:
           - medium
@@ -1638,6 +1823,7 @@ controls:
       rules:
           - dir_perms_world_writable_system_owned_group
       status: automated
+
     - id: SLES-15-040190
       levels:
           - medium
@@ -1645,6 +1831,7 @@ controls:
       rules:
           - service_kdump_disabled
       status: automated
+
     - id: SLES-15-040200
       levels:
           - low
@@ -1654,6 +1841,7 @@ controls:
       rules:
           - partition_for_home
       status: automated
+
     - id: SLES-15-040210
       levels:
           - low
@@ -1661,6 +1849,7 @@ controls:
       rules:
           - partition_for_var
       status: automated
+
     - id: SLES-15-040220
       levels:
           - medium
@@ -1670,6 +1859,7 @@ controls:
       rules:
           - pam_disable_automatic_configuration
       status: automated
+
     - id: SLES-15-040230
       levels:
           - medium
@@ -1679,6 +1869,7 @@ controls:
       rules:
           - sshd_disable_user_known_hosts
       status: automated
+
     - id: SLES-15-040240
       levels:
           - medium
@@ -1688,6 +1879,7 @@ controls:
       rules:
           - file_permissions_sshd_pub_key
       status: automated
+
     - id: SLES-15-040250
       levels:
           - medium
@@ -1697,6 +1889,7 @@ controls:
       rules:
           - file_permissions_sshd_private_key
       status: automated
+
     - id: SLES-15-040260
       levels:
           - medium
@@ -1706,6 +1899,7 @@ controls:
       rules:
           - sshd_enable_strictmodes
       status: automated
+
     - id: SLES-15-040290
       levels:
           - medium
@@ -1715,6 +1909,7 @@ controls:
       rules:
           - sshd_disable_x11_forwarding
       status: automated
+
     - id: SLES-15-040300
       levels:
           - medium
@@ -1724,6 +1919,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_accept_source_route
       status: automated
+
     - id: SLES-15-040310
       levels:
           - medium
@@ -1733,6 +1929,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_all_accept_source_route
       status: automated
+
     - id: SLES-15-040320
       levels:
           - medium
@@ -1742,6 +1939,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_default_accept_source_route
       status: automated
+
     - id: SLES-15-040321
       levels:
           - medium
@@ -1751,6 +1949,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_default_accept_source_route
       status: automated
+
     - id: SLES-15-040330
       levels:
           - medium
@@ -1760,6 +1959,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_accept_redirects
       status: automated
+
     - id: SLES-15-040340
       levels:
           - medium
@@ -1770,6 +1970,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_default_accept_redirects
       status: automated
+
     - id: SLES-15-040341
       levels:
           - medium
@@ -1779,6 +1980,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_all_accept_redirects
       status: automated
+
     - id: SLES-15-040350
       levels:
           - medium
@@ -1789,6 +1991,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_default_accept_redirects
       status: automated
+
     - id: SLES-15-040360
       levels:
           - medium
@@ -1799,6 +2002,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_default_send_redirects
       status: automated
+
     - id: SLES-15-040370
       levels:
           - medium
@@ -1808,6 +2012,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_send_redirects
       status: automated
+
     - id: SLES-15-040380
       levels:
           - medium
@@ -1817,6 +2022,7 @@ controls:
       rules:
           - sysctl_net_ipv4_ip_forward
       status: automated
+
     - id: SLES-15-040381
       levels:
           - medium
@@ -1826,6 +2032,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_all_forwarding
       status: automated
+
     - id: SLES-15-040382
       levels:
           - medium
@@ -1835,6 +2042,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_default_forwarding
       status: automated
+
     - id: SLES-15-040390
       levels:
           - medium
@@ -1844,6 +2052,7 @@ controls:
       rules:
           - network_sniffer_disabled
       status: automated
+
     - id: SLES-15-040400
       levels:
           - medium
@@ -1851,6 +2060,7 @@ controls:
       rules:
           - no_files_unowned_by_user
       status: automated
+
     - id: SLES-15-040410
       levels:
           - medium
@@ -1858,6 +2068,7 @@ controls:
       rules:
           - file_permissions_ungroupowned
       status: automated
+
     - id: SLES-15-040420
       levels:
           - medium
@@ -1867,6 +2078,7 @@ controls:
       rules:
           - accounts_umask_etc_login_defs
       status: automated
+
     - id: SLES-15-040430
       levels:
           - high
@@ -1876,6 +2088,7 @@ controls:
       rules:
           - gnome_gdm_disable_unattended_automatic_login
       status: automated
+
     - id: SLES-15-040440
       levels:
           - high
@@ -1886,6 +2099,7 @@ controls:
           - sshd_disable_empty_passwords
           - sshd_do_not_permit_user_env
       status: automated
+
     - id: SLES-15-020099
       levels:
           - medium
@@ -1895,6 +2109,7 @@ controls:
       rules:
           - sudoers_default_includedir
       status: automated
+
     - id: SLES-15-020104
       levels:
           - medium
@@ -1904,6 +2119,7 @@ controls:
       rules:
           - disallow_bypass_password_sudo
       status: automated
+
     - id: SLES-15-020181
       levels:
           - high
@@ -1913,6 +2129,7 @@ controls:
       rules:
           - no_empty_passwords_etc_shadow
       status: automated
+
     - id: SLES-15-040450
       levels:
           - medium
@@ -1922,6 +2139,7 @@ controls:
       rules:
           - sshd_use_approved_kex_ordered_stig
       status: automated
+
     - id: SLES-15-040460
       levels:
           - medium
@@ -1931,6 +2149,7 @@ controls:
       rules:
           - sshd_use_directory_configuration
       status: automated
+
     - id: SLES-15-010375
       levels:
           - low
@@ -1938,6 +2157,7 @@ controls:
       rules:
           - sysctl_kernel_dmesg_restrict
       status: automated
+
     - id: SLES-15-010419
       levels:
           - medium
@@ -1948,6 +2168,7 @@ controls:
           - aide_build_database
           - package_aide_installed
       status: automated
+
     - id: SLES-15-010418
       levels:
           - medium
@@ -1957,6 +2178,7 @@ controls:
       rules:
           - package_mailx_installed
       status: automated
+
     - id: SLES-15-030015
       levels:
           - medium
