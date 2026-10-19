@@ -8,7 +8,7 @@
 {{% set aide_service = 'aide.service' %}}
 {{% set aide_notify_service = 'aidecheck-notify.service' %}}
 
-{{% if product not in ['sle12', 'sle15', 'slmicro5', 'slmicro6'] %}}
+{{% if product in ['sle16'] %}}
 - name: "{{{ rule_title }}} - Ensure report_url is set to file:/var/log/aide-report.log in {{{ aide_conf_path }}}"
   ansible.builtin.lineinfile:
     path: {{{ aide_conf_path }}}
@@ -77,7 +77,11 @@
         Wants={{{ aide_notify_service }}}
         [Service]
         Type=forking
+{{% if product in ["sle15", "slmicro5", "slmicro6"] %}}
         ExecStart={{{ aide_bin_path }}} --check -r file:/var/log/aide-report.log
+{{% else %}}
+        ExecStart=/bin/sh -c "/usr/bin/aide --check --config=/etc/aide_service.conf; exit 0" 
+{{% endif %}}
         [Install]
         WantedBy=multi-user.target
   when:
