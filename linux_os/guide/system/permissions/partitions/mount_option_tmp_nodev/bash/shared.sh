@@ -9,11 +9,8 @@ tmp_mount_file="/usr/lib/systemd/system/tmp.mount"
 # if already set, skip
 if grep -qE '^[\s]*Options=[\s]*.*nodev.*$' ${tmp_mount_file}; then
     echo "nodev option already present, skipping remediation"
-    exit 0
-fi
-
 # no options set, add it
-if ! grep -qE '^[\s]*Options=[\s]*.*$' ${tmp_mount_file}; then
+elif ! grep -qE '^[\s]*Options=[\s]*.*$' ${tmp_mount_file}; then
     echo "Options=nodev" >> ${tmp_mount_file}
 else
   # collect currently set options
