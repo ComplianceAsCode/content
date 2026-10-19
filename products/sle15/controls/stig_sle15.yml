@@ -60,6 +60,14 @@ controls:
           - package_crypto-policies_installed
       status: automated
 
+    - id: SLES-15-010036
+      levels:
+          - high
+      title: The SUSE operating system must use FIPS 140-3-approved cryptographic algorithms for IP tunnels.
+      rules:
+          - configure_libreswan_crypto_policy
+      status: automated
+
     - id: SLES-15-010040
       levels:
           - medium
