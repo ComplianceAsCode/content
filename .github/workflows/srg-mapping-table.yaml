@@ -1,11 +1,11 @@
 name: SRG Mapping Table
 on:
   push:
-    branches: [ 'master' ]
+    branches: ['master']
   pull_request:
-    branches: [ 'master', 'stabilization*', 'oscal-update-*' ]
+    branches: ['master', 'stabilization*', 'oscal-update-*']
   merge_group:
-    branches: [ 'master' ]
+    branches: ['master']
 permissions:
   contents: read
 concurrency:
@@ -27,7 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-            persist-credentials: false
+          persist-credentials: false
       - name: Setup Build
         run: cmake .. -G Ninja
         working-directory: ./build
