@@ -4,9 +4,12 @@
 # complexity = low
 # disruption = low
 
-find /etc/rsyslog.d/ -name '*.conf' -exec sed -i '/^\s*\$FileCreateMode/d' {} +
-
 changes_made=false
+if [[ -n "$(find /etc/rsyslog.d/ -name '*.conf' -exec grep -lE '^\s*\$FileCreateMode' {} +)" ]]; then
+    find /etc/rsyslog.d/ -name '*.conf' -exec sed -i '/^\s*\$FileCreateMode/d' {} +
+    changes_made=true
+fi
+
 if ! grep -qE '^\s*\$FileCreateMode\s+0640' /etc/rsyslog.conf; then
     if grep -qE '^\s*\$FileCreateMode' /etc/rsyslog.conf; then
         sed -i '/^\s*\$FileCreateMode/ s/^/#/' /etc/rsyslog.conf
