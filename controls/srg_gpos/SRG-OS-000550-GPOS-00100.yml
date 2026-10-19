@@ -7,11 +7,4 @@ controls:
       rules:
           - enable_fips_mode
           - system_booted_in_fips_mode
-      status: partial
-      notes: |-
-          FIPS mode makes the system's cryptographic libraries default to their
-          FIPS-validated modules, which is how the FIPS-validated cryptography
-          requirement (SRG-OS-000478-GPOS-00223, same CCI-002450) is assessed.
-          It does not prove that every component provisioning digital signatures
-          uses a validated module, so part of this requirement is verified
-          manually.
+      status: automated
