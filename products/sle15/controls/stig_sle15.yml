@@ -947,10 +947,10 @@ controls:
           - medium
       title:
           The SUSE operating system must be configured to create or update passwords
-          with a maximum lifetime of 60 days.
+          with a maximum lifetime of 180 days.
       rules:
           - accounts_maximum_age_login_defs
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
       status: automated
 
     - id: SLES-15-020230
@@ -958,9 +958,10 @@ controls:
           - medium
       title:
           The SUSE operating system must employ user passwords with a maximum lifetime
-          of 60 days.
+          of 180 days.
       rules:
           - accounts_password_set_max_life_existing
+          - var_accounts_maximum_age_login_defs=180
       status: automated
 
     - id: SLES-15-020260
