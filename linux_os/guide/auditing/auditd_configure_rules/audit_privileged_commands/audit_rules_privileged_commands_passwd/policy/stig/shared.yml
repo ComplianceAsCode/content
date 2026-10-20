@@ -11,17 +11,19 @@ vuldiscussion: |-
     The system call rules are loaded into a matching engine that intercepts each system call made by all programs on the system. Therefore, it is very important to use system call rules only when absolutely necessary since these affect performance. The more rules, the bigger the performance hit. The performance can be helped, however, by combining system calls into one rule whenever possible.
 
 checktext: |-
-    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/gshadow" with the following command:
+    Verify {{{ full_name }}} generates audit records for all uses of the "passwd" command with the following command:
 
     $ sudo auditctl -l | egrep '(/usr/bin/passwd)'
 
-    -a always,exit -S all -F path=/usr/bin/passwd -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-passwd
+    -a always,exit -F arch=b32 -F path=/usr/bin/passwd -F perm=x -k identity
+    -a always,exit -F arch=b64 -F path=/usr/bin/passwd -F perm=x -k identity
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "passwd" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
 
-    -a always,exit -F path=/usr/bin/passwd -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-passwd
+    -a always,exit -F arch=b32 -F path=/usr/bin/passwd -F perm=x -k identity
+    -a always,exit -F arch=b64 -F path=/usr/bin/passwd -F perm=x -k identity
 
     The audit daemon must be restarted for the changes to take effect.
