@@ -204,13 +204,13 @@ controls:
 
     - id: SLES-15-010160
       levels:
-          - medium
+          - high
       title:
-          The SUSE operating system must implement DOD-approved encryption to protect
+          The SUSE operating system must implement DoW-approved encryption to protect
           the confidentiality of SSH remote connections.
       rules:
-          - sshd_use_approved_ciphers
-          - sshd_use_approved_ciphers_ordered_stig
+          - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+          - sshd_approved_ciphers=stig_sle15
       status: automated
 
     - id: SLES-15-010170
