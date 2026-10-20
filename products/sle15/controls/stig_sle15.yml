@@ -78,6 +78,23 @@ controls:
           - sshd_enable_warning_banner
       status: automated
 
+    - id: SLES-15-010045
+      levels:
+          - high
+      title: The SUSE operating system must implement a FIPS 140-3-compliant systemwide cryptographic policy.
+      rules:
+          - configure_crypto_policy
+          - var_system_crypto_policy=fips
+      status: automated
+
+    - id: SLES-15-010046
+      levels:
+          - high
+      title: SUSE operating system cryptographic policy must not be overridden.
+      rules:
+          - crypto_policy_not_overridden
+      status: automated
+
     - id: SLES-15-010050
       levels:
           - medium
