@@ -1762,7 +1762,7 @@ controls:
       levels:
           - medium
       title: RHEL 10 must generate audit records for all account creations, modifications, disabling,
-          and termination events that affect "/etc/opasswd".
+          and termination events that affect "/etc/security/opasswd".
       rules:
           - audit_rules_usergroup_modification_opasswd
       status: automated
@@ -2834,7 +2834,7 @@ controls:
     - id: RHEL-10-700920
       levels:
           - medium
-      title: RHEL 10 must automatically exit interactive command shell user sessions after 15 minutes
+      title: RHEL 10 must automatically exit interactive command shell user sessions after 10 minutes
           of inactivity.
       rules:
           - accounts_tmout
@@ -3034,7 +3034,7 @@ controls:
     - id: RHEL-10-701210
       levels:
           - medium
-      title: RHEL 10 must disable file system automount function unless required.
+      title: RHEL 10 must disable file system automount function.
       rules:
           - service_autofs_disabled
       status: automated
