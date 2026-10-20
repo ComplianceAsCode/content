@@ -264,7 +264,29 @@ class RuleChecker(oscap.Checker):
                 packages_required.update(scenario_packages)
         if packages_required:
             packages_to_install = self._replace_platform_specific_packages(packages_required)
-            common.install_packages(self.test_env, packages_to_install)
+            unavailable = common.install_packages(self.test_env, packages_to_install)
+            self._drop_scenarios_needing(test_content_by_rule_id, unavailable)
+
+    def _drop_scenarios_needing(self, test_content_by_rule_id, unavailable):
+        """ Keeps the scenarios the tested system can run, setting aside the
+            ones that ask for a package among `unavailable` """
+        if not unavailable:
+            return
+
+        for rule_test_content in test_content_by_rule_id.values():
+            runnable = []
+            for s in rule_test_content.scenarios:
+                packages = self._replace_platform_specific_packages(
+                    s.script_params["packages"])
+                needed = packages & unavailable
+                if needed:
+                    logging.warning(
+                        "Script '%s' is not applicable on '%s' target because "
+                        "the package(s) '%s' it requires are unavailable there"
+                        % (s.script, self.test_env.product, ", ".join(sorted(needed))))
+                else:
+                    runnable.append(s)
+            rule_test_content.scenarios[:] = runnable
 
     def _prepare_environment(self, test_content_by_rule_id):
         try:
