@@ -1,0 +1,35 @@
+srg_requirement: |-
+    {{{ full_name }}} must use cron logging.
+
+vuldiscussion: |-
+    Cron logging can be used to trace the successful or unsuccessful execution of cron jobs. It can also be used to spot intrusions into the use of the cron facility by unauthorized and malicious users.
+
+checktext: |-
+    Verify rsyslog is configured to log cron events with the following command:
+
+    Note: If another logging package is used, substitute the utility configuration file for "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files.
+
+    $ grep -s "cron.*" /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+    /etc/rsyslog.d/99-cron-stig.conf:cron.* action(type="omfile" file="/var/log/cron")
+
+    If the command does not return a line demonstrating logging to "/var/log/cron", perform a functional cron test.
+
+    Inject a message into the cron logging facility with the following command:
+
+    $ logger -p cron.info "STIG-TEST-CRON-LOGGING"
+
+    Check if it successfully wrote to the dedicated log file with the following command:
+
+    $ sudo grep "STIG-TEST-CRON-LOGGING" /var/log/cron
+    Jul 16 11:33:00 RHEL10Sim pdosadmin[33692]: STIG-TEST-CRON-LOGGING
+
+    If "rsyslog" is not logging messages for the cron facility or all facilities, this is a finding.
+
+fixtext: |-
+    Configure "rsyslog" to log all cron messages by adding or updating the following line to "/etc/rsyslog.conf" or a configuration file in the "/etc/rsyslog.d/" directory:
+
+    cron.* /var/log/cron
+
+    Restart the rsyslog daemon for the changes to take effect:
+
+    $ sudo systemctl restart rsyslog.service
