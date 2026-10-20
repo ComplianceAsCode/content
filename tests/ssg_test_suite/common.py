@@ -560,20 +560,20 @@ def install_packages(test_env, packages):
             test_env.execute_ssh_command(
                 " ".join(install_command + tuple(packages)), log_file)
             return set()
-        except RuntimeError:
+        except RuntimeError as exec:
             if platform not in QUERY_COMMANDS:
-                raise RuntimeError(error_msg.format(packages=",".join(packages)))
+                raise RuntimeError(error_msg.format(packages=",".join(packages))) from exec
 
         unavailable = set()
         for package in sorted(packages):
             try:
                 test_env.execute_ssh_command(
                     " ".join(install_command + (package,)), log_file)
-            except RuntimeError:
+            except RuntimeError as exec:
                 offered = test_env.execute_ssh_command(
                     QUERY_COMMANDS[platform].format(package=package), log_file)
                 if offered.strip():
-                    raise RuntimeError(error_msg.format(packages=package))
+                    raise RuntimeError(error_msg.format(packages=package)) from exec
                 unavailable.add(package)
         return unavailable
 
