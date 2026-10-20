@@ -1,11 +1,11 @@
 checktext: |-
-    Verify {{{ full_name }}} has the "rsyslogd" package installed with the following command:
+    Verify {{{ full_name }}} has the "rsyslog" package installed with the following command:
 
     $ sudo dnf list --installed rsyslog
     Installed Packages
     rsyslog.x86_64                                        8.2412.0-1.el10                                         @AppStream
 
-    If the "rsyslogd" package is not installed, this is a finding.
+    If the "rsyslog" package is not installed, this is a finding.
 
 srg_requirement: |-
     {{{ full_name }}} must have the "rsyslog" package installed.
@@ -16,9 +16,9 @@ vuldiscussion: |-
 
 
 fixtext: |-
-    Configure {{{ full_name }}} to have the "rsyslogd" package installed with the following command:
+    Configure {{{ full_name }}} to have the "rsyslog" package installed with the following command:
 
-    $ sudo dnf -y install rsyslogd
+    $ sudo dnf -y install rsyslog
 
 
 
