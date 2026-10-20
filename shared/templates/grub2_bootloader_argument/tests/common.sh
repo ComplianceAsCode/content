@@ -30,7 +30,7 @@ rm -f /etc/default/grub
 		echo 'GRUB_TIMEOUT=30'
 	} > /etc/default/grub
 
-{{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] -%}}
+{{% if product in ["almalinux9", "fedora", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] -%}}
 mkdir -p /boot/loader/entries
 shopt -s nullglob
 rm -f /boot/loader/entries/*.conf

@@ -1,0 +1,30 @@
+{{% set tuxcare_packages = ["gnutls", "nettle", "nss", "openssl", "libgcrypt", "kernel"] %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Every installed build of the cryptographic packages and the kernel must be the TuxCare FIPS-validated build.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+    {{% for pkg in tuxcare_packages %}}
+      <criterion comment="All installed {{{ pkg }}} packages are TuxCare builds"
+      test_ref="test_{{{ rule_id }}}_{{{ pkg }}}" />
+    {{% endfor %}}
+    </criteria>
+  </definition>
+
+  <!-- A package that is not installed at all is not a finding, hence any_exist.
+       Every installed instance (e.g. multiple kernels) must match the state. -->
+  <linux:rpminfo_state id="state_{{{ rule_id }}}_tuxcare_release" version="1">
+    <linux:release operation="pattern match">tuxcare</linux:release>
+  </linux:rpminfo_state>
+
+{{% for pkg in tuxcare_packages %}}
+  <linux:rpminfo_test check="all" check_existence="any_exist"
+  comment="All installed {{{ pkg }}} packages carry tuxcare in the release"
+  id="test_{{{ rule_id }}}_{{{ pkg }}}" version="1">
+    <linux:object object_ref="obj_{{{ rule_id }}}_{{{ pkg }}}" />
+    <linux:state state_ref="state_{{{ rule_id }}}_tuxcare_release" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_{{{ rule_id }}}_{{{ pkg }}}" version="1">
+    <linux:name>{{{ pkg }}}</linux:name>
+  </linux:rpminfo_object>
+{{% endfor %}}
+</def-group>

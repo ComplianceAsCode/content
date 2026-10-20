@@ -19,28 +19,47 @@ description: |-
     https://cyber.gouv.fr/publications/configuration-recommendations-gnulinux-system
 
 selections:
-  - anssi:all:intermediary
-  - var_password_hashing_algorithm=SHA512
-  - var_password_pam_unix_rounds=65536
-  - '!partition_for_opt'
-  - '!cracklib_accounts_password_pam_minlen'
-  - '!accounts_passwords_pam_tally2_deny_root'
-  - '!accounts_passwords_pam_tally2'
-  - '!cracklib_accounts_password_pam_ucredit'
-  - '!cracklib_accounts_password_pam_dcredit'
-  - '!cracklib_accounts_password_pam_lcredit'
-  - '!partition_for_usr'
-  - '!partition_for_boot'
-  - '!cracklib_accounts_password_pam_ocredit'
-  - '!enable_pam_namespace'
-  - '!accounts_passwords_pam_tally2_unlock_time'
-  - '!sudo_add_umask'
-  - '!sudo_add_ignore_dot'
-  - '!sudo_add_env_reset'
-  - '!ensure_oracle_gpgkey_installed'
-  - '!ensure_redhat_gpgkey_installed'
-  - '!package_sequoia-sq_installed'
-  - '!package_kea_removed'
-  - '!ldap_client_tls_cacertpath'
-  - '!ldap_client_start_tls'
-  - '!no_nis_in_nsswitch'
+    - anssi:all:intermediary
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
+    - '!partition_for_opt'
+    - '!cracklib_accounts_password_pam_minlen'
+    - '!accounts_passwords_pam_tally2_deny_root'
+    - '!accounts_passwords_pam_tally2'
+    - '!cracklib_accounts_password_pam_ucredit'
+    - '!cracklib_accounts_password_pam_dcredit'
+    - '!cracklib_accounts_password_pam_lcredit'
+    - '!partition_for_usr'
+    - '!partition_for_boot'
+    - '!cracklib_accounts_password_pam_ocredit'
+    - '!enable_pam_namespace'
+    - '!accounts_passwords_pam_tally2_unlock_time'
+    - '!sudo_add_umask'
+    - '!sudo_add_ignore_dot'
+    - '!sudo_add_env_reset'
+    - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!package_sequoia-sq_installed'
+    - '!package_kea_removed'
+    - '!ldap_client_tls_cacertpath'
+    - '!ldap_client_start_tls'
+    - '!no_nis_in_nsswitch'
+
+    # Match RHEL 9: hide other users' processes in /proc
+    - var_mount_option_proc_hidepid=invisible
+
+    # The following packages were never shipped with AlmaLinux OS 9, as with RHEL 9
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_xinetd_removed'
+    - '!package_ypbind_removed'
+    - '!package_ypserv_removed'
+
+    # AlmaLinux OS 9, like RHEL 9, unified the GRUB 2 configuration path to /boot/grub2, so the
+    # UEFI-specific duplicate of grub2_password must not be used
+    - '!grub2_uefi_password'
+
+    # Match RHEL 9: this rule is excluded from the ANSSI profiles
+    - '!audit_rules_mac_modification_etc_selinux'

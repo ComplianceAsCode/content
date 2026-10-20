@@ -28,7 +28,6 @@ selections:
     - '!rpm_verify_permissions'
     # these rules do not apply to AlmaLinux but they have to keep the prodtype for historical reasons
     # most of these packages are no longer available in EL9 distributions
-    - '!package_audit-audispd-plugins_installed'
     - '!service_ntp_enabled'
     - '!ntpd_specify_remote_server'
     - '!ntpd_specify_multiple_servers'
@@ -71,3 +70,9 @@ selections:
     - '!service_timesyncd_enabled'
     - '!audit_rules_file_deletion_events_renameat2'
     - '!audit_rules_dac_modification_fchmodat2'
+
+    # audit_rules_mac_modification_etc_selinux is excluded on RHEL 9 and AlmaLinux OS 9 alike
+    - '!audit_rules_mac_modification_etc_selinux'
+    # sshd no longer honours the CRYPTO_POLICY variable on EL9; crypto policies are applied
+    # through the Include directive instead, so this rule is obsolete
+    - '!configure_ssh_crypto_policy'
