@@ -315,6 +315,14 @@ controls:
           - sshd_idle_timeout_value=10_minutes
       status: automated
 
+    - id: SLES-15-010290
+      levels:
+          - medium
+      title: The SUSE operating system must not assign an interactive login shell for system accounts.
+      rules:
+          - no_shelllogin_for_systemaccounts
+      status: automated
+
     - id: SLES-15-010300
       levels:
           - medium
