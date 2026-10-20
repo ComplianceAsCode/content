@@ -1389,6 +1389,16 @@ controls:
           - audit_rules_privileged_commands_usermod
       status: automated
 
+    - id: SLES-15-030505
+      levels:
+          - medium
+      title:
+          The SUSE operating system must generate audit records for all uses of the
+          useradd command.
+      rules:
+          - audit_rules_privileged_commands_useradd
+      status: automated
+
     - id: SLES-15-030510
       levels:
           - medium
