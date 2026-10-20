@@ -162,11 +162,11 @@ controls:
       levels:
           - medium
       title:
-          The SUSE operating system must initiate a session lock after a 15-minute
+          The SUSE operating system must initiate a session lock after a 10-minute
           period of inactivity for the graphical user interface (GUI).
       rules:
           - dconf_gnome_screensaver_idle_delay
-          - inactivity_timeout_value=15_minutes
+          - inactivity_timeout_value=10_minutes
           - dconf_gnome_session_idle_user_locks
       status: automated
 
