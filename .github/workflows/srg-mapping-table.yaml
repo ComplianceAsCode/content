@@ -1,11 +1,11 @@
 name: SRG Mapping Table
 on:
   push:
-    branches: [ 'master' ]
+    branches: ['master']
   pull_request:
-    branches: [ 'master', 'stabilization*', 'oscal-update-*' ]
+    branches: ['master', 'stabilization*', 'oscal-update-*']
   merge_group:
-    branches: [ 'master' ]
+    branches: ['master']
 permissions:
   contents: read
 concurrency:
@@ -27,7 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-            persist-credentials: false
+          persist-credentials: false
       - name: Setup Build
         run: cmake .. -G Ninja
         working-directory: ./build
@@ -49,19 +49,19 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL9
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r2.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r4.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL9
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r2.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r4.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL10
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r2.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel10.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r4.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel10.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL10
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r2.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel10.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r4.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel10.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4
