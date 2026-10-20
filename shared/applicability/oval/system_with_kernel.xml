@@ -20,6 +20,15 @@
 {{{ oval_test_package_installed(package="kernel-azure", test_id="inventory_test_kernel_azure_installed") }}}
 {{% elif product == "fedora" or "rhel" in product %}}
 {{{ oval_test_package_installed(package="kernel-core", test_id="inventory_test_kernel_installed") }}}
+{{% elif product == "al2023" %}}
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
+  id="inventory_test_kernel_installed" version="1"
+  comment="package kernel or kernelX.Y is installed">
+    <linux:object object_ref="obj_inventory_test_kernel_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_inventory_test_kernel_installed" version="1">
+    <linux:name operation="pattern match">^kernel([0-9]+\.[0-9]+)?$</linux:name>
+  </linux:rpminfo_object>
 {{% else %}}
 {{{ oval_test_package_installed(package="kernel", test_id="inventory_test_kernel_installed") }}}
 {{% endif %}}
