@@ -62,7 +62,7 @@ references:
     stigid@ol8: OL08-00-040110
     stigid@sle12: SLES-12-030450
 
-ocil_clause: 'a wireless interface is configured and has not been documented and approved by the Information System Security Officer (ISSO)'
+ocil_clause: 'a wireless interface is configured and has not been documented and approved by the information system security officer (ISSO)'
 
 ocil: |-
     Verify that there are no wireless interfaces configured on the system
@@ -89,7 +89,7 @@ ocil: |-
     state <tt>up</tt>.
 
     If a wireless interface is configured it must be documented and approved by
-    the local Authorizing Official.
+    the local authorizing official.
     {{% elif 'ubuntu' in product %}}
     <pre>$ ls -L -d /sys/class/net/*/wireless | xargs dirname | xargs basename -a</pre>
     Note: This requirement is Not Applicable for systems that do not have physical wireless network radios.
