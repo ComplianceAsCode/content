@@ -1856,19 +1856,19 @@ controls:
     - id: RHEL-10-600100
       levels:
           - medium
-      title: RHEL 10 must, for new users or password changes, have a 60-day maximum password lifetime
-          restriction for user account passwords in "/etc/login.defs".
+      title: RHEL 10 user account passwords for new users or password changes must have a 180-day maximum
+          password lifetime restriction in /etc/login.defs.
       rules:
           - accounts_maximum_age_login_defs
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
       status: automated
     - id: RHEL-10-600110
       levels:
           - medium
-      title: RHEL 10 must, for user account passwords, have a 60-day maximum password lifetime restriction.
+      title: RHEL 10 must, for user account passwords, have a 180-day maximum password lifetime restriction
       rules:
           - accounts_password_set_max_life_existing
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
       status: automated
     - id: RHEL-10-600120
       levels:
