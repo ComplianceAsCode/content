@@ -1,19 +1,35 @@
 <def-group>
-  <definition class="compliance" id="audit_rules_immutable" version="1">
+  <definition class="compliance" id="audit_rules_immutable" version="2">
     {{{ oval_metadata("Force a reboot to change audit rules is enabled", rule_title=rule_title) }}}
 
+    <!--
+      Both rule loaders honour only the last '-e' directive they process:
+      * augenrules(8) concatenates /etc/audit/rules.d/*.rules in version sort
+        order, keeps the last '-e' directive it sees and emits it as the last
+        line of the generated /etc/audit/audit.rules. A later file carrying
+        '-e 0' or '-e 1' therefore silently overrides an earlier '-e 2'.
+      * auditctl(8) -R processes /etc/audit/audit.rules line by line; once
+        '-e 2' is reached the kernel is locked and every directive that follows
+        fails to load, so '-e 2' has to be the last directive of the file.
+      OVAL cannot sort file names, so for the augenrules case the check is
+      conservative: '-e 2' must be present and no '*.rules' file may carry any
+      other '-e' directive.
+    -->
     <criteria operator="OR">
 
       <!-- Test the augenrules case -->
       <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
         <criterion comment="audit augenrules configuration locked" test_ref="test_ari_locked_augenrules" />
+        <criterion comment="no other -e directive in /etc/audit/rules.d/*.rules can override -e 2" test_ref="test_ari_no_other_e_augenrules" />
       </criteria>
 
       <!-- Test the auditctl case -->
       <criteria operator="AND">
         <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
         <criterion comment="audit auditctl configuration locked" test_ref="test_ari_locked_auditctl" />
+        <criterion comment="no other -e directive in /etc/audit/audit.rules" test_ref="test_ari_no_other_e_auditctl" />
+        <criterion comment="no directive follows -e 2 in /etc/audit/audit.rules" test_ref="test_ari_e2_is_last_auditctl" />
       </criteria>
 
     </criteria>
@@ -24,8 +40,17 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_ari_locked_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^\-e\s+2\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*-e[ \t]+2[ \t]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="no -e directive other than -e 2 in /etc/audit/rules.d/*.rules" id="test_ari_no_other_e_augenrules" version="1">
+    <ind:object object_ref="object_ari_no_other_e_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ari_no_other_e_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*-e[ \t]+(?!2[ \t]*$).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" comment="audit auditctl configuration locked" id="test_ari_locked_auditctl" version="1">
@@ -33,8 +58,27 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_ari_locked_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-e\s+2\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*-e[ \t]+2[ \t]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="no -e directive other than -e 2 in /etc/audit/audit.rules" id="test_ari_no_other_e_auditctl" version="1">
+    <ind:object object_ref="object_ari_no_other_e_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ari_no_other_e_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*-e[ \t]+(?!2[ \t]*$).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Matches when a non-comment, non-blank line follows the '-e 2' line. -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="no directive follows -e 2 in /etc/audit/audit.rules" id="test_ari_e2_is_last_auditctl" version="1">
+    <ind:object object_ref="object_ari_e2_is_last_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ari_e2_is_last_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*-e[ \t]+2[ \t]*\n(?:[ \t]*(?:#[^\n]*)?\n)*[ \t]*[^#\s]</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
 </def-group>

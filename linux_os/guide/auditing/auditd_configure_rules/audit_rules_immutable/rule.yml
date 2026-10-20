@@ -15,6 +15,12 @@ description: |-
     immutable:
     <pre>-e 2</pre>
     With this setting, a reboot will be required to change any audit rules.
+    Both <tt>augenrules</tt> and <tt>auditctl</tt> honour only the last
+    <tt>-e</tt> directive they process, and <tt>auditctl</tt> refuses to load
+    any directive that follows <tt>-e 2</tt>. The <tt>-e 2</tt> line must
+    therefore be the last non-comment line of the file, and no other
+    <tt>.rules</tt> file may contain an <tt>-e</tt> directive that would
+    override it.
 
 rationale: |-
     Making the audit configuration immutable prevents accidental as
