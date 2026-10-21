@@ -562,7 +562,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
   ansible.builtin.find:
     paths: "/etc/audit/"
 {{% if style == 'modern' %}}
-    contains: '^\s*-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perms={{{ permissions }}}(\s|$)+'
+    contains: '^\s*-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perm={{{ permissions }}}(\s|$)+'
 {{% else %}}
     contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
 {{% endif %}}
