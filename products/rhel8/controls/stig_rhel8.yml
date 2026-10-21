@@ -355,6 +355,14 @@ controls:
           - configure_libreswan_crypto_policy
       status: automated
 
+    - id: RHEL-08-010287
+      levels:
+          - high
+      title: The RHEL 8 SSH daemon must be configured to use systemwide crypto policies.
+      rules:
+          - configure_ssh_crypto_policy
+      status: automated
+
     - id: RHEL-08-010290
       levels:
           - medium
