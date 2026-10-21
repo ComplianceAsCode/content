@@ -72,6 +72,10 @@ references:
 ocil_clause: 'it does not produce any output'
 
 ocil: |-
+    {{% if product == "rhel10" %}}
+    Check that the GRUB2 password is set in <tt>/boot/grub2/user.cfg</tt> with the following command:
+    <pre>$ sudo grep '^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$' /boot/grub2/user.cfg</pre>
+    {{% else %}}
     First, check whether the password is defined in either {{{ grub2_boot_path }}}/user.cfg or
     {{{ grub2_boot_path }}}/grub.cfg.
     Run the following commands:
@@ -81,6 +85,7 @@ ocil: |-
 
     Second, check that a superuser is defined in {{{ grub2_boot_path }}}/grub.cfg.
     <pre>$ sudo grep '^[\s]*set[\s]+superusers=("?)[a-zA-Z_]+\1$'  {{{ grub2_boot_path }}}/grub.cfg</pre>
+    {{% endif %}}
 
 warnings:
     - general: |-
