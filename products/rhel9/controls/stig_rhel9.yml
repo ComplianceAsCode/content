@@ -2279,21 +2279,22 @@ controls:
     - id: RHEL-09-411010
       levels:
           - medium
-      title: RHEL 9 user account passwords for new users or password changes must have a 60-day
+      title: RHEL 9 user account passwords for new users or password changes must have a 180-day
           maximum
           password lifetime restriction in /etc/login.defs.
       rules:
           - accounts_maximum_age_login_defs
+          - var_accounts_maximum_age_login_defs=180
       status: automated
 
     - id: RHEL-09-411015
       levels:
           - medium
-      title: RHEL 9 user account passwords must have a 60-day maximum password lifetime
+      title: RHEL 9 user account passwords must have a 180-day maximum password lifetime
           restriction.
       rules:
           - accounts_password_set_max_life_existing
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
       status: automated
 
     - id: RHEL-09-411020
