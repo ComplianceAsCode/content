@@ -12,14 +12,7 @@
     owner: root
     mode: '0755'
 
-- name: Disable Ctrl-Alt-Del Burst Action
-  ansible.builtin.copy:
-    dest: /etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf
-    content: |
-      [Manager]
-      CtrlAltDelBurstAction=none
-    owner: root
-    mode: '0644'
+{{{ ansible_ini_file_set("/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf", "Manager", "CtrlAltDelBurstAction", "none", no_extra_spaces=True, description="Disable Ctrl-Alt-Del Burst Action") }}}
 
 - name: Reload systemd configuration
   ansible.builtin.systemd:
