@@ -3,7 +3,7 @@ policy: SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation G
 title: SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide
 id: stig_slmicro5
 source: https://www.cyber.mil/stigs/downloads/
-version: V1R3
+version: V1R5
 reference_type: stigid
 product: slmicro5
 
@@ -24,7 +24,7 @@ controls:
   - id: SLEM-05-211020
     levels:
       - medium
-    title: SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
+    title: SLEM 5 must display the Standard Mandatory DoW Notice and Consent Banner
       before granting any local or remote connection to the system.
     rules:
       - banner_etc_issue
@@ -209,9 +209,17 @@ controls:
   - id: SLEM-05-231050
     levels:
       - medium
-    title: SLEM 5 must disable the file system automounter unless required.
+    title: SLEM 5 must disable the file system automounter.
     rules:
       - service_autofs_disabled
+    status: automated
+
+  - id: SLEM-05-231055
+    levels:
+      - medium
+    title: SLEM 5 must not assign an interactive login shell for system accounts.
+    rules:
+      - no_shelllogin_for_systemaccounts
     status: automated
 
   - id: SLEM-05-232010
@@ -424,7 +432,7 @@ controls:
     levels:
       - medium
     title: SLEM 5 clock must, for networked systems, be synchronized to an
-      authoritative DOD time source at least every 24 hours.
+      authoritative DoW time source at least every 24 hours.
     rules:
       - chronyd_or_ntpd_set_maxpoll
       - chronyd_specify_remote_server
@@ -590,7 +598,7 @@ controls:
   - id: SLEM-05-255020
     levels:
       - medium
-    title: SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
+    title: SLEM 5 must display the Standard Mandatory DoW Notice and Consent Banner
       before granting access via SSH.
     rules:
       - sshd_enable_warning_banner
@@ -638,7 +646,7 @@ controls:
   - id: SLEM-05-255045
     levels:
       - high
-    title: SLEM 5 must implement DOD-approved encryption to protect the
+    title: SLEM 5 must implement DoW-approved encryption to protect the
       confidentiality of SSH remote connections.
     rules:
       - sshd_use_approved_ciphers_ordered_stig
@@ -1115,10 +1123,10 @@ controls:
   - id: SLEM-05-611070
     levels:
       - medium
-    title: SLEM 5 must employ user passwords with a maximum lifetime of 60 days.
+    title: SLEM 5 must employ user passwords with a maximum lifetime of 180 days.
     rules:
       - accounts_password_set_max_life_existing
-      - var_accounts_maximum_age_login_defs=60
+      - var_accounts_maximum_age_login_defs=180
     status: automated
 
   - id: SLEM-05-611075
@@ -1171,9 +1179,10 @@ controls:
     levels:
       - medium
     title: SLEM 5 must be configured to create or update passwords with a maximum
-      lifetime of 60 days.
+      lifetime of 180 days.
     rules:
       - accounts_maximum_age_login_defs
+      - var_accounts_maximum_age_login_defs=180
     status: automated
 
   - id: SLEM-05-612010
@@ -1639,6 +1648,14 @@ controls:
     title: SLEM 5 must generate audit records for all uses of the "usermod" command.
     rules:
       - audit_rules_privileged_commands_usermod
+    status: automated
+
+  - id: SLEM-05-654126
+    levels:
+      - medium
+    title: SLEM 5 must generate audit records for all uses of the "useradd" command.
+    rules:
+      - audit_rules_privileged_commands_useradd
     status: automated
 
   - id: SLEM-05-654130
