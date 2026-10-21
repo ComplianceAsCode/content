@@ -73,6 +73,7 @@ def load_oscal_catalog(data_dir: Path) -> Dict[str, Any]:
                 'parts': control.get('parts', []),
                 'properties': control.get('props', []),
                 'parameters': control.get('params', []),
+                'links': control.get('links', []),
                 'parent': parent_id
             }
 
@@ -272,11 +273,16 @@ def merge_control_data(product_controls: Dict[str, Any], oscal_controls: Dict[st
         params_map = _build_params_map(oscal_data)
         oscal_parts = oscal_data.get('parts', [])
 
-        # Extract related controls from OSCAL properties
+        # Related controls are OSCAL links with rel="related" (href="#cp-9"),
+        # not props - the previous props[name=related] lookup never matched
+        # anything in the rev5 catalog. rel="required" is the parent control,
+        # already carried separately as 'parent'/'parent_id'.
         related_controls = []
-        for prop in oscal_data.get('properties', []):
-            if prop.get('name') == 'related':
-                related_controls.append(prop.get('value', ''))
+        for link in oscal_data.get('links', []):
+            if link.get('rel') == 'related':
+                related = link.get('href', '').lstrip('#').lower()
+                if related and related not in related_controls:
+                    related_controls.append(related)
 
         merged_control = {
             'id': ctrl_id,
