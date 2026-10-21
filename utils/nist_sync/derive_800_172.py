@@ -254,24 +254,35 @@ def load_product_policies():
     return policies
 
 
-def requirement_status(source_controls, policies):
+def requirement_status(req_id, source_controls, policies):
     """
     'automated' if any mapped 800-53 control carries rules in any product's
     nist_800_53 policy, else 'pending' (matching how nist_800_53.yml itself
     marks not-yet-automated leaf controls).
+
+    Raises ValueError if a source control resolves in NO product - that means
+    a bad control id (typically a transcription error in REQUIREMENTS), which
+    must fail loudly rather than silently degrade to 'pending' (indistinguishable
+    from a legitimately unmapped requirement). A control present in some products
+    but not others is fine (not every enhancement exists in every product).
     """
-    for product, policy in policies.items():
-        for control_id in source_controls:
+    status = "pending"
+    for control_id in source_controls:
+        resolved_anywhere = False
+        for policy in policies.values():
             try:
                 control = policy.get_control(control_id)
             except ValueError:
-                print(
-                    f"warning: {control_id} not found in {product}'s nist_800_53 policy",
-                    file=sys.stderr)
                 continue
+            resolved_anywhere = True
             if control.rules:
-                return "automated"
-    return "pending"
+                status = "automated"
+        if not resolved_anywhere:
+            raise ValueError(
+                f"{req_id}: source control '{control_id}' not found in any of "
+                f"{', '.join(policies)} - likely a transcription error in "
+                f"REQUIREMENTS")
+    return status
 
 
 def render_entry(req_id, title, status, source_controls):
@@ -297,7 +308,7 @@ def render(policies):
     for req_id, title, family_comment, source_controls in REQUIREMENTS:
         if family_comment:
             parts.append(f"    # {family_comment}")
-        status = requirement_status(source_controls, policies)
+        status = requirement_status(req_id, source_controls, policies)
         parts.append(render_entry(req_id, title, status, source_controls))
         parts.append("")
     return "\n".join(parts).rstrip("\n") + "\n"
