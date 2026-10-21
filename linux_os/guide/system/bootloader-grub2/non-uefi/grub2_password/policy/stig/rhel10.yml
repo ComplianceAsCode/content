@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must require a boot loader superuser password.
+    {{{ full_name }}} must require authentication upon booting into single-user and maintenance modes.
 
 fixtext: |-
     Configure {{{ full_name }}} to require a grub bootloader password for the grub superuser account.
@@ -11,20 +11,14 @@ fixtext: |-
     Confirm password:
 
 checktext: |-
-    Verify {{{ full_name }}} requires a boot loader superuser password with the following command:
+    Verify that {{{ full_name }}} requires a password for the GRUB 2 bootloader to prevent unauthorized modifications to boot parameters.
 
-    $ sudo grep password_pbkdf2 /etc/grub2.cfg
-         password_pbkdf2  &lt;superusers-accountname&gt;   ${GRUB2_PASSWORD}
+    Check the unified configuration file where the GRUB 2 password is stored:
 
-    To verify the boot loader superuser account password has been set and the password encrypted, run the following command:
+    $ sudo grep -iw "GRUB2_PASSWORD" /boot/grub2/user.cfg
+    GRUB2_PASSWORD=grub.pbkdf2.sha512.[password_hash]
 
-    $ sudo cat /boot/grub2/user.cfg
-    GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC
-    2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0
-    916F7AB46E0D.1302284FCCC52CD73BA3671C6C12C26FF50BA873293B24EE2A96EE3B57963E6D7
-    0C83964B473EC8F93B07FE749AA6710269E904A9B08A6BBACB00A2D242AD828
-
-    If a "GRUB2_PASSWORD" is not set, this is a finding.
+    If the "GRUB2_PASSWORD" entry does not exist, is commented out, or if the hash does not begin with "grub.pbkdf2.sha512", this is a finding.
 
 vuldiscussion: |-
     To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access.
