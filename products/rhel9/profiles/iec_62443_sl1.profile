@@ -1,5 +1,5 @@
 ---
-documentation_complete: false
+documentation_complete: true
 
 title: 'IEC 62443-4-2 for Red Hat Enterprise Linux 9 - Security Level 1 (SL1)'
 
