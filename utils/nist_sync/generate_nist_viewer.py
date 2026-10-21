@@ -6,7 +6,9 @@ This script:
 1. Loads NIST 800-53 control files for each product
 2. Loads OSCAL catalog data for NIST 800-53 Rev 5
 3. Merges control data with OSCAL metadata
-4. Generates interactive HTML viewer with gap analysis
+4. Loads the derived frameworks (NIST 800-171, NIST 800-172) and resolves their
+   requirements against each product's merged 800-53 controls
+5. Generates interactive HTML viewer with gap analysis
 """
 
 import json
@@ -390,6 +392,67 @@ def _build_component_stats(
     return component_stats
 
 
+# Derived frameworks are flat, product-agnostic policy files under controls/ -
+# unlike nist_800_53, which is split per-product under products/<product>/controls/.
+# Each requirement's 'controls:' list holds cross-policy references
+# (nist_800_53:<id>) instead of a direct 'rules:' list (see ADR-0005).
+DERIVED_FRAMEWORK_FILES = {
+    'nist_800_171': 'nist_800_171.yml',
+    'nist_800_172': 'nist_800_172.yml',
+}
+
+
+def load_derived_framework_yaml(framework_file: Path) -> Dict[str, Any]:
+    """Load a derived-framework control file (nist_800_171.yml, nist_800_172.yml).
+
+    Returns {} if the file doesn't exist, so a product/repo missing a given
+    derived framework simply omits it rather than erroring.
+    """
+    if not framework_file.exists():
+        return {}
+    return load_yaml(framework_file)
+
+
+def resolve_derived_framework(
+    framework_data: Dict[str, Any],
+    nist53_by_id: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Resolve a derived framework's requirements against one product's merged 800-53 controls.
+
+    Each requirement's 'controls:' list holds nist_800_53:<id> cross-references;
+    its resolved rule set is the union of those 800-53 controls' own rules for
+    this product. 'has_rules' mirrors gaps.html's own gap definition for NIST
+    800-53 (an empty resolved rule set) rather than trusting the requirement's
+    authored 'status:' - 'status_mismatch' flags where those two disagree
+    (status says automated, but nothing actually resolved), the same class of
+    bug found and fixed in nist_800_171.yml.
+    """
+    resolved = []
+    for req in framework_data.get('controls', []):
+        source_controls = [
+            ref.split(':', 1)[1] for ref in req.get('controls', []) if ':' in ref
+        ]
+        rules = set()
+        for source_id in source_controls:
+            source_control = nist53_by_id.get(source_id.lower())
+            if source_control:
+                rules.update(
+                    r for r in source_control.get('rules', []) if '=' not in str(r)
+                )
+        status = req.get('status', 'pending')
+        has_rules = len(rules) > 0
+        resolved.append({
+            'id': req.get('id', ''),
+            'title': req.get('title', ''),
+            'status': status,
+            'source_controls': source_controls,
+            'rules': sorted(rules),
+            'has_rules': has_rules,
+            'status_mismatch': status == 'automated' and not has_rules,
+        })
+    return resolved
+
+
 def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]:
     """Generate complete data structure for the viewer."""
     data_dir = repo_root / 'utils' / 'nist_sync' / 'data'
@@ -405,8 +468,17 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
     print("Indexing rule paths...")
     rule_url_map = _build_rule_url_map(repo_root)
 
+    # Load derived-framework YAML once (product-agnostic; resolution against
+    # each product's own 800-53 controls happens per-product below)
+    print("Loading derived frameworks (NIST 800-171, NIST 800-172)...")
+    derived_framework_raw = {
+        fw_id: load_derived_framework_yaml(repo_root / 'controls' / filename)
+        for fw_id, filename in DERIVED_FRAMEWORK_FILES.items()
+    }
+
     # Load controls for each product
     products_data = {}
+    derived_frameworks_data = {}
     for product in products:
         print(f"Loading controls for {product}...")
         product_controls = load_product_controls(product, repo_root)
@@ -426,6 +498,42 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
                 'metadata': product_controls.get('metadata', {}),
                 'controls': merged
             }
+
+            # Resolve derived frameworks against this product's merged 800-53 controls
+            nist53_by_id = {c['id']: c for c in merged}
+            derived_frameworks_data[product] = {
+                fw_id: resolve_derived_framework(fw_data, nist53_by_id)
+                for fw_id, fw_data in derived_framework_raw.items()
+                if fw_data
+            }
+
+    # For NIST 800-172, flag which requirements' rules aren't already covered
+    # by NIST 800-171 - the "does this enhanced requirement actually add
+    # anything beyond CUI" question (see cui_enhanced.profile / ADR-0005).
+    for frameworks in derived_frameworks_data.values():
+        rules_171 = set()
+        for req in frameworks.get('nist_800_171', []):
+            rules_171.update(req['rules'])
+        for req in frameworks.get('nist_800_172', []):
+            req['net_new'] = sorted(set(req['rules']) - rules_171)
+
+    # Per-framework, per-product summary stats
+    derived_framework_stats = {}
+    for product, frameworks in derived_frameworks_data.items():
+        derived_framework_stats[product] = {
+            fw_id: {
+                'total': len(reqs),
+                'with_rules': sum(1 for r in reqs if r['has_rules']),
+                'without_rules': sum(1 for r in reqs if not r['has_rules']),
+                'status_mismatch': sum(1 for r in reqs if r['status_mismatch']),
+            }
+            for fw_id, reqs in frameworks.items()
+        }
+
+    derived_framework_meta = {
+        fw_id: {'title': fw_data.get('title', ''), 'id': fw_data.get('id', fw_id)}
+        for fw_id, fw_data in derived_framework_raw.items() if fw_data
+    }
 
     # Calculate statistics
     stats = {}
@@ -458,6 +566,9 @@ def generate_viewer_data(products: List[str], repo_root: Path) -> Dict[str, Any]
         'products': products_data,
         'statistics': stats,
         'component_stats': component_stats,
+        'derived_frameworks': derived_frameworks_data,
+        'derived_framework_stats': derived_framework_stats,
+        'derived_framework_meta': derived_framework_meta,
         'families': [
             {'id': 'ac', 'name': 'Access Control'},
             {'id': 'at', 'name': 'Awareness and Training'},
@@ -497,6 +608,7 @@ def generate_html_viewer(output_dir: Path, templates_dir: Path, viewer_data: Dic
         'controls.html',
         'control-detail.html',
         'gaps.html',
+        'derived-frameworks.html',
         'statistics.html',
         'family.html',
         'components.html',
@@ -512,6 +624,11 @@ def generate_html_viewer(output_dir: Path, templates_dir: Path, viewer_data: Dic
             'products': {product: viewer_data['products'][product]},
             'statistics': {product: viewer_data['statistics'][product]},
             'component_stats': {product: viewer_data['component_stats'].get(product, {})},
+            'derived_frameworks': {product: viewer_data['derived_frameworks'].get(product, {})},
+            'derived_framework_stats': {
+                product: viewer_data['derived_framework_stats'].get(product, {})
+            },
+            'derived_framework_meta': viewer_data['derived_framework_meta'],
             'families': viewer_data['families']
         }
 
