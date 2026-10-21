@@ -17,7 +17,7 @@ from .constants import anaconda_system as anaconda_rem_system
 from .constants import cce_uri
 from .constants import ssg_version_uri
 from .constants import stig_ns, cis_ns, hipaa_ns, anssi_ns
-from .constants import ospp_ns, cui_ns, xslt_ns, ccn_ns, pcidss4_ns
+from .constants import ospp_ns, cui_ns, cui_enhanced_ns, xslt_ns, ccn_ns, pcidss4_ns
 from .constants import OSCAP_PROFILE
 from .constants import SSG_REF_URIS
 from .yaml import DocumentationNotComplete
@@ -79,6 +79,8 @@ class RuleStats(object):
             './{%s}reference[@href="%s"]' % (XCCDF12_NS, pcidss4_ns)
         )
         self.cui_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, cui_ns))
+        self.cui_enhanced_ref = rule.find(
+            './{%s}reference[@href="%s"]' % (XCCDF12_NS, cui_enhanced_ns))
 
         self.check = None
         if self.oval is not None:
@@ -366,7 +368,15 @@ class XCCDFBenchmark(object):
                 [x.id for x in rule_stats if x.pcidss4_ref is None]
 
         profile_stats['missing_cui_refs'] = []
-        if 'cui' in profile_stats['profile_id']:
+        if 'cui_enhanced' in profile_stats['profile_id']:
+            # cui_enhanced is a combined 800-171 + 800-172 profile: a rule
+            # only lacks CUI-family coverage if it has neither a cui (171)
+            # nor a cui_enhanced (172) reference. Rules pulled in solely by
+            # 800-172 legitimately have no 171 ref and must not be flagged.
+            profile_stats['missing_cui_refs'] = \
+                [x.id for x in rule_stats
+                 if x.cui_ref is None and x.cui_enhanced_ref is None]
+        elif 'cui' in profile_stats['profile_id']:
             profile_stats['missing_cui_refs'] = \
                 [x.id for x in rule_stats if x.cui_ref is None]
 
