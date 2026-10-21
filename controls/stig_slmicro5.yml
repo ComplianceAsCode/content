@@ -1123,10 +1123,10 @@ controls:
   - id: SLEM-05-611070
     levels:
       - medium
-    title: SLEM 5 must employ user passwords with a maximum lifetime of 60 days.
+    title: SLEM 5 must employ user passwords with a maximum lifetime of 180 days.
     rules:
       - accounts_password_set_max_life_existing
-      - var_accounts_maximum_age_login_defs=60
+      - var_accounts_maximum_age_login_defs=180
     status: automated
 
   - id: SLEM-05-611075
@@ -1179,9 +1179,10 @@ controls:
     levels:
       - medium
     title: SLEM 5 must be configured to create or update passwords with a maximum
-      lifetime of 60 days.
+      lifetime of 180 days.
     rules:
       - accounts_maximum_age_login_defs
+      - var_accounts_maximum_age_login_defs=180
     status: automated
 
   - id: SLEM-05-612010
