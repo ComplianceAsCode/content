@@ -742,4 +742,5 @@ selections:
     - file_permissions_etc_audit_rulesd
     - file_permissions_etc_audit_auditd
     - file_permissions_etc_audit_auditd_stig
+    - fips_custom_stig_sub_policy
     - service_rngd_enabled
