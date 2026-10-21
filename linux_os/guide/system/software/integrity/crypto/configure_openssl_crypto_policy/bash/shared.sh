@@ -2,12 +2,16 @@
 
 OPENSSL_CRYPTO_POLICY_SECTION='[ crypto_policy ]'
 OPENSSL_CRYPTO_POLICY_SECTION_REGEX='\[\s*crypto_policy\s*\]'
-{{% if product in ["fedora", "ol9", "rhel9"] %}}
+{{% if product in ["fedora", "ol9", "rhel8", "rhel9"] %}}
 OPENSSL_CRYPTO_POLICY_INCLUSION='.include = /etc/crypto-policies/back-ends/opensslcnf.config'
 {{% else %}}
 OPENSSL_CRYPTO_POLICY_INCLUSION='.include /etc/crypto-policies/back-ends/opensslcnf.config'
 {{%endif %}}
+{{% if product in ["rhel8", "rhel9"] %}}
+OPENSSL_CRYPTO_POLICY_INCLUSION_REGEX='^\s*\.include\s*=\s*/etc/crypto-policies/back-ends/opensslcnf.config$'
+{{% else %}}
 OPENSSL_CRYPTO_POLICY_INCLUSION_REGEX='^\s*\.include\s*(?:=\s*)?/etc/crypto-policies/back-ends/opensslcnf.config$'
+{{% endif %}}
 
 
 {{% if 'sle' in product %}}
