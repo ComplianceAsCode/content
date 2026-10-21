@@ -360,12 +360,12 @@ controls:
           - medium
       title: The RHEL 8 SSH server must be configured to use only Message Authentication Codes (MACs)
           employing FIPS 140-3 validated cryptographic hash algorithms.
-      notes: This is implemented by a special STIG subpolicy.
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010291
@@ -373,12 +373,12 @@ controls:
           - medium
       title: The RHEL 8 operating system must implement DOD-approved encryption to protect the confidentiality
           of SSH server connections.
-      notes: This is implemented by a special STIG subpolicy.
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010292
@@ -3214,24 +3214,24 @@ controls:
       levels:
           - medium
       title: The RHEL 8 SSH client must be configured to use only DOD-approved Message Authentication Codes (MACs) employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
-      notes: This is implemented by a special STIG subpolicy.
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010297
       levels:
           - medium
       title: The RHEL 8 SSH client must be configured to use only DOD-approved encryption ciphers employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
-      notes: This is implemented by a special STIG subpolicy.
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010455
