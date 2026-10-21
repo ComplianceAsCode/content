@@ -54,7 +54,7 @@ ocil: |-
     <pre>{{{ openssl_cnf_path }}}</pre> contains the <pre>[ crypto_policy ]</pre> section with the
     <pre>{{{ include_directive }}}</pre> directive:
 
-    {{% if product == "rhel8" %}}
+    {{% if product in ["rhel8", "rhel9"] %}}
     <pre>$ sudo grep '\.include\s*=\s*/etc/crypto-policies/back-ends/opensslcnf.config$' {{{ openssl_cnf_path }}}</pre>.
     {{% else %}}
     <pre>$ sudo grep '\.include\s* /etc/crypto-policies/back-ends/opensslcnf.config$' {{{ openssl_cnf_path }}}</pre>.
