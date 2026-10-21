@@ -1,11 +1,21 @@
-import ssg.utils
 import os
+
+import ssg.utils
+from ssg.utils import parse_template_boolean_value
 
 
 def preprocess(data, lang):
     path = data["path"]
     name = ssg.utils.escape_id(os.path.basename(path))
     data["name"] = name
+    if "key" not in data:
+        data["key"] = "privileged"
+    data["require_key"] = parse_template_boolean_value(
+        data, parameter="require_key", default_value=False)
+    data["rhel9_stig_arch_mode"] = parse_template_boolean_value(
+        data, parameter="rhel9_stig_arch_mode", default_value=False)
+    data["rhel9_stig_execve"] = parse_template_boolean_value(
+        data, parameter="rhel9_stig_execve", default_value=False)
     if lang == "oval":
         data["id"] = data["_rule_id"]
         data["title"] = "Record Any Attempts to Run " + name
