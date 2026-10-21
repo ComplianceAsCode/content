@@ -59,8 +59,9 @@ All pages share:
 ### Gap Analysis (gaps.html)
 - **Gap Summary**: Total gaps broken down by baseline level (high, moderate, low)
 - **Priority Sections**: Gaps organized by baseline priority
+- **Inline Control Metadata**: Each gap item expands to show its OSCAL control statement, supplemental guidance, related controls (linked into control-detail.html), and parameters (ODPs), so gaps can be assessed without navigating away
 - **Family Breakdown**: Which control families have the most gaps
-- **Quick Navigation**: Click any gap to view control details
+- **Quick Navigation**: Each gap has an explicit "Open control" link to its detail page
 
 ### Derived Frameworks (derived-frameworks.html)
 - **Framework Tabs**: Side-by-side views of NIST 800-171 (CUI) and NIST 800-172 (Enhanced Security Requirements)
