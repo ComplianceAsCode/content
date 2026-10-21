@@ -23,12 +23,12 @@ description: |-
 
     The enhanced security requirements are implemented in addition to the
     security requirements in NIST SP 800-171, since those requirements are not
-    designed to address the APT. This profile configures Red Hat Enterprise
-    Linux 10 to the combined set of NIST SP 800-171 security requirements and
-    NIST SP 800-172 enhanced security requirements for securing Controlled
-    Unclassified Information (CUI) associated with a critical program or high
-    value asset.
+    designed to address the APT. This profile extends the cui profile (NIST
+    SP 800-171) with the NIST SP 800-172 enhanced security requirements, for
+    securing Controlled Unclassified Information (CUI) associated with a
+    critical program or high value asset.
+
+extends: cui
 
 selections:
-    - nist_800_171:all
     - nist_800_172:all
