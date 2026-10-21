@@ -1,0 +1,35 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Enforce Approved Authorizations For Logical Access To Information And System Resources In Accordance With Applicable Access Control Policies.
+
+vuldiscussion: |-
+    Having a non-default grub superuser username makes password-guessing attacks less effective.
+
+checktext: |-
+    To verify the boot loader superuser account has been set, run the following command:
+
+     $ sudo grep -iw "superusers" /boot/grub2/grub.cfg
+
+    The output should show the following:
+
+     set superusers="<b>superusers-account</b>"
+     export superusers
+
+    where superusers-account is the actual account name and is not root, admin, administrator, superuser, unlock, or any other existing user name.
+
+    If {{{ full_name }}} is an older deployment where /boot/grub2/grub.cfg is absent, run the following command:
+
+     $ sudo grep -iw "superusers" /boot/efi/EFI/redhat/grub.cfg
+
+    If "superusers" is not defined, or is set to root, admin, administrator, superuser, unlock, or an existing user name, this is a finding.
+
+fixtext: |-
+    Configure a unique boot loader superuser account name that is not root, admin, administrator, superuser, unlock, or any existing user name.
+
+    Set the account in the grub configuration with the following lines:
+
+     set superusers="<unique user ID>"
+     export superusers
+
+    Update the grub.cfg file by running:
+
+     $ sudo grub2-mkconfig -o /boot/grub2/grub.cfg
