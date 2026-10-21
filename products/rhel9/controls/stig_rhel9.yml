@@ -3978,3 +3978,11 @@ controls:
       rules:
           - configure_bind_crypto_policy
       status: automated
+
+    - id: RHEL-09-672055
+      levels:
+          - high
+      title: RHEL 9 must implement DOD-approved encryption in the OpenSSL package.
+      rules:
+          - configure_openssl_crypto_policy
+      status: automated
