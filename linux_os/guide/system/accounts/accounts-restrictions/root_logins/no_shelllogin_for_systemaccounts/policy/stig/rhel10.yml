@@ -4,29 +4,20 @@ srg_requirement: |-
 fixtext: |-
     Configure {{{ full_name }}} so that all noninteractive accounts on the system do not have an interactive shell assigned to them.
 
-    If the system account needs a shell assigned for mission operations, document the need with the ISSO.
+    If the system account needs a shell assigned for mission operations, document the need with the information system security officer (ISSO).
 
     Run the following command to disable the interactive shell for a specific noninteractive user account:
 
-    Replace &lt;user&gt; with the user that has a login shell.
-
-    $ sudo usermod --shell /sbin/nologin &lt;user&gt;
-
-    Do not perform the steps in this section on the root account. Doing so will cause the system to become inaccessible.
+    $ sudo usermod --shell /usr/sbin/nologin &lt;user&gt;
 
 checktext: |-
-    Verify {{{ full_name }}} system accounts do not have an interactive login shell with the following command:
+    Verify that {{{ full_name }}} system accounts do not have an interactive login shell.
 
-    $ awk -F: '($3&lt;1000){print $1 ":" $3 ":" $7}' /etc/passwd
-    root:0:/bin/bash
-    bin:1:/sbin/nologin
-    daemon:2:/sbin/nologin
-    adm:3:/sbin/nologin
-    lp:4:/sbin/nologin
+    Run the following command to list any system account (UID &lt; 1000) that has an interactive shell, excluding authorized system utility accounts (root, sync, shutdown, halt):
 
-    Identify the listed system accounts that have a shell other than nologin.
+    $ awk -F: '(($3 &gt; 0 &amp;&amp; $3 &lt; 1000) &amp;&amp; $1 !~ /^(halt|sync|shutdown)$/ &amp;&amp; $7 !~ /(nologin|false)$/) {print $1 ":" $3 ":" $7}' /etc/passwd
 
-    If any system account (other than the root account) has a login shell and it is not documented with the information system security officer (ISSO), this is a finding.
+    If the command returns any output, this is a finding.
 
 vuldiscussion: |-
     Ensuring shells are not given to system accounts upon login makes it more difficult for attackers to use system accounts.
