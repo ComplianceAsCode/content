@@ -1667,7 +1667,7 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 
   :param name: Name of the service to be checked
 #}}
-{{%- macro oval_test_service_disabled_criteria(name='', rule_id=None) -%}}
+{{%- macro oval_test_service_disabled_criteria(name='', rule_id=None, allow_disabled=false) -%}}
 {{%- if init_system == "systemd" %}}
   {{%- if target_oval_version >= [5, 11] %}}
   {{# we are using systemd and our target OVAL version does support the systemd related tests #}}
@@ -1675,8 +1675,13 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
         <criteria operator="AND" comment="service {{{ name }}} is not configured to start">
           <criterion test_ref="test_service_not_running_{{{ rule_id }}}_{{{ name }}}"
             comment="{{{ name }}} is not running"/>
+{{% if allow_disabled %}}
+          <criterion test_ref="test_service_unitfilestate_is_disabled_or_masked_{{{ rule_id }}}_{{{ name }}}"
+            comment="UnitFileState of service {{{ name }}} is disabled or masked"/>
+{{% else %}}
           <criterion test_ref="test_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"
             comment="Property LoadState of service {{{ name }}} is masked"/>
+{{% endif %}}
         </criteria>
         <criterion test_ref="test_service_not_found_{{{ rule_id }}}_{{{ name }}}"
           comment="{{{ name }}} is not found"/>
@@ -1700,7 +1705,7 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 
   :param name: Name of the service to be checked
 #}}
-{{%- macro oval_test_service_disabled_tests(name='', rule_id=None) -%}}
+{{%- macro oval_test_service_disabled_tests(name='', rule_id=None, allow_disabled=false) -%}}
 {{%- if init_system == "systemd" %}}
   {{%- if target_oval_version >= [5, 11] %}}
   {{# we are using systemd and our target OVAL version does support the systemd related tests #}}
@@ -1722,6 +1727,33 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
       <linux:value operation="pattern match">inactive|failed</linux:value>
     </linux:systemdunitproperty_state>
 
+{{% if allow_disabled %}}
+    <linux:systemdunitproperty_test check="all" check_existence="any_exist"
+      id="test_service_unitfilestate_is_disabled_or_masked_{{{ rule_id }}}_{{{ name }}}"
+      comment="Test that UnitFileState from the service {{{ name }}} is disabled or masked"
+      version="1">
+      <linux:object object_ref="obj_service_unitfilestate_{{{ rule_id }}}_{{{ name }}}"/>
+      <linux:state state_ref="state_service_unitfilestate_is_disabled_or_masked_{{{ rule_id }}}_{{{ name }}}"/>
+    </linux:systemdunitproperty_test>
+
+    <linux:systemdunitproperty_object comment="Retrieve the UnitFileState property of {{{ name }}}"
+      version="1" id="obj_service_unitfilestate_{{{ rule_id }}}_{{{ name }}}">
+      <linux:unit operation="pattern match">^{{{ name }}}\.(service|socket)$</linux:unit>
+      <linux:property>UnitFileState</linux:property>
+    </linux:systemdunitproperty_object>
+
+    <linux:systemdunitproperty_state comment="UnitFileState is disabled or masked"
+      id="state_service_unitfilestate_is_disabled_or_masked_{{{ rule_id }}}_{{{ name }}}"
+      version="1">
+      <linux:value operation="pattern match">^(disabled|masked)$</linux:value>
+    </linux:systemdunitproperty_state>
+
+    <linux:systemdunitproperty_object comment="Retrieve the LoadState property of {{{ name }}}"
+      version="1" id="obj_service_loadstate_{{{ rule_id }}}_{{{ name }}}">
+      <linux:unit operation="pattern match">^{{{ name }}}\.(service|socket)$</linux:unit>
+      <linux:property>LoadState</linux:property>
+    </linux:systemdunitproperty_object>
+{{% else %}}
     <linux:systemdunitproperty_test check="all" check_existence="any_exist"
       id="test_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"
       comment="Test that the property LoadState from the service {{{ name }}} is masked"
@@ -1730,7 +1762,7 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
       <linux:state state_ref="state_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"/>
     </linux:systemdunitproperty_test>
 
-    <linux:systemdunitproperty_object  comment="Retrieve the LoadState property of {{{ name }}}"
+    <linux:systemdunitproperty_object comment="Retrieve the LoadState property of {{{ name }}}"
       version="1" id="obj_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}">
       <linux:unit operation="pattern match">^{{{ name }}}\.(service|socket)$</linux:unit>
       <linux:property>LoadState</linux:property>
@@ -1741,13 +1773,18 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
       version="1">
       <linux:value>masked</linux:value>
     </linux:systemdunitproperty_state>
+{{% endif %}}
 
 
     <linux:systemdunitproperty_test check="all" check_existence="any_exist"
       id="test_service_not_found_{{{ rule_id }}}_{{{ name }}}"
       comment="Test that the service {{{ name }}} is not found"
       version="1">
+{{% if allow_disabled %}}
+      <linux:object object_ref="obj_service_loadstate_{{{ rule_id }}}_{{{ name }}}"/>
+{{% else %}}
       <linux:object object_ref="obj_service_loadstate_is_masked_{{{ rule_id }}}_{{{ name }}}"/>
+{{% endif %}}
       <linux:state state_ref="state_service_is_not_found_{{{ rule_id }}}_{{{ name }}}"/>
     </linux:systemdunitproperty_test>
 
