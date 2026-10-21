@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = audit
+# Writes the exact audit rules the check requires; the scan must pass.
 source common.sh
 
 {{{ setup_auditctl_environment() }}}

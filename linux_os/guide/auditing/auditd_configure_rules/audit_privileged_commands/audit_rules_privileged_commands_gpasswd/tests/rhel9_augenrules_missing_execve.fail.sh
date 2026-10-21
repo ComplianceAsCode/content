@@ -1,6 +1,7 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 9
 # packages = audit
+# Writes the identity-keyed rules without the '-S execve' filter the RHEL 9 checktext requires; the scan must fail and the remediation must add execve.
 
 rm -f /etc/audit/rules.d/*.rules
 truncate -s 0 /etc/audit/audit.rules

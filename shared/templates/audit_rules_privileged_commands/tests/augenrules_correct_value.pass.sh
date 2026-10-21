@@ -1,4 +1,5 @@
 #!/bin/bash
+# Writes the exact audit rules the check requires; the scan must pass.
 
 source common.sh
 
