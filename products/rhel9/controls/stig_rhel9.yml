@@ -455,14 +455,6 @@ controls:
           - package_nfs-utils_removed
       status: automated
 
-    - id: RHEL-09-215030
-      levels:
-          - medium
-      title: RHEL 9 must not have the ypserv package installed.
-      related_rules:
-          - package_ypserv_removed
-      status: not applicable  # The ypserv package is not available in RHEL 9
-
     - id: RHEL-09-215035
       levels:
           - medium
@@ -511,14 +503,6 @@ controls:
       rules:
           - package_tftp-server_removed
       status: automated
-
-    - id: RHEL-09-215065
-      levels:
-          - medium
-      title: RHEL 9 must not have the quagga package installed.
-      related_rules:
-          - package_quagga_removed
-      status: not applicable  # The quagga package is not available in RHEL 9
 
     - id: RHEL-09-215070
       levels:
