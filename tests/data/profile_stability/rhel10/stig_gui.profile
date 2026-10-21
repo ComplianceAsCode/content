@@ -152,6 +152,7 @@ configure_crypto_policy
 configure_firewalld_ports
 configure_libreswan_crypto_policy
 configure_opensc_card_drivers
+configure_openssl_crypto_policy
 configure_usbguard_auditbackend
 configured_firewalld_default_deny
 coredump_disable_backtraces
@@ -360,7 +361,6 @@ package_sequoia-sq_installed
 package_subscription-manager_installed
 package_sudo_installed
 package_telnet-server_removed
-package_tftp-server_removed
 package_tftp_removed
 package_tuned_removed
 package_unbound_removed
@@ -480,7 +480,7 @@ var_account_disable_post_pw_expiration=35
 var_accounts_authorized_local_users_regex=rhel10
 var_accounts_fail_delay=4
 var_accounts_max_concurrent_login_sessions=10
-var_accounts_maximum_age_login_defs=60
+var_accounts_maximum_age_login_defs=180
 var_accounts_minimum_age_login_defs=1
 var_accounts_passwords_pam_faillock_deny=3
 var_accounts_passwords_pam_faillock_fail_interval=900
