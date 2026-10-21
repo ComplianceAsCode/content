@@ -15,7 +15,7 @@
   <!-- Define 1st test for sudo timestamp. -->
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="check correct configuration in /etc/sudoers" id="test_sudo_timestamp_timeout" version="2">
     <ind:object object_ref="obj_sudo_timestamp_timeout"/>
-    {{% if product == "rhel8" %}}
+    {{% if product in ["rhel8", "rhel9"] %}}
     <ind:state state_ref="state_sudo_timestamp_timeout"/>
     {{% endif %}}
   </ind:textfilecontent54_test>
@@ -31,7 +31,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product == "rhel8" %}}
+  {{% if product in ["rhel8", "rhel9"] %}}
   <ind:textfilecontent54_state id="state_sudo_timestamp_timeout" version="1">
     <ind:subexpression datatype="string" operation="equals" var_ref="var_sudo_timestamp_timeout"/>
   </ind:textfilecontent54_state>
@@ -46,7 +46,7 @@
   {{{ oval_config_file_exists_test('/etc/sudoers', rule_id=rule_id) }}}
   {{{ oval_config_file_exists_object('/etc/sudoers', rule_id=rule_id) }}}
   {{% endif %}}
-  {{% if product == "rhel8" %}}
+  {{% if product in ["rhel8", "rhel9"] %}}
   <external_variable id="var_sudo_timestamp_timeout" datatype="string" version="1"
     comment="Expected sudo timestamp_timeout value"/>
   {{% endif %}}
