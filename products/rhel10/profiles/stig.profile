@@ -2,7 +2,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R2
+    version: V1R3
     SMEs:
         - mab879
 
@@ -12,7 +12,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 10'
 
 description: >-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 10 V1R2.
+    DISA STIG for Red Hat Enterprise Linux 10 V1R3.
 
     In addition to being applicable to Red Hat Enterprise Linux 10, this
     configuration baseline is applicable to the operating system tier of
