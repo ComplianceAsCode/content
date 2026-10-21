@@ -1650,6 +1650,14 @@ controls:
       - audit_rules_privileged_commands_usermod
     status: automated
 
+  - id: SLEM-05-654126
+    levels:
+      - medium
+    title: SLEM 5 must generate audit records for all uses of the "useradd" command.
+    rules:
+      - audit_rules_privileged_commands_useradd
+    status: automated
+
   - id: SLEM-05-654130
     levels:
       - medium
