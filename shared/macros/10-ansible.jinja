@@ -499,9 +499,9 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
   ansible.builtin.find:
     paths: "/etc/audit/rules.d"
 {{% if style == "modern" %}}
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch={{{ arch }}}\s+-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perm={{{ permissions }}}(\s|$)+'
+    contains: '^(?=.*(?:-F\s+key=|-k\s+){{{ key }}}(?:\s|$))\s*-a\s+always,exit\s+-F\s+arch={{{ arch }}}\s+-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perm={{{ permissions }}}(\s|$)+'
 {{% else %}}
-    contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
+    contains: '^(?=.*(?:-k\s+|-F\s+key=){{{ key }}}(?:\s|$))\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
 {{% endif %}}
     patterns: "*.rules"
   register: find_existing_watch_rules_d
@@ -562,9 +562,9 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
   ansible.builtin.find:
     paths: "/etc/audit/"
 {{% if style == 'modern' %}}
-    contains: '^\s*-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perms={{{ permissions }}}(\s|$)+'
+    contains: '^(?=.*(?:-F\s+key=|-k\s+){{{ key }}}(?:\s|$))\s*-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perm={{{ permissions }}}(\s|$)+'
 {{% else %}}
-    contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
+    contains: '^(?=.*(?:-k\s+|-F\s+key=){{{ key }}}(?:\s|$))\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
 {{% endif %}}
     patterns: "audit.rules"
   register: find_existing_watch_audit_rules
