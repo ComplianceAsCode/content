@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 9
+# platform = Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10
 # packages = audit
 # Writes the rules with the '-S execve' filter the checktext does not prescribe; the scan must fail and the remediation must rewrite them into the plain form.
 
