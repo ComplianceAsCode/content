@@ -214,6 +214,14 @@ controls:
       - service_autofs_disabled
     status: automated
 
+  - id: SLEM-05-231055
+    levels:
+      - medium
+    title: SLEM 5 must not assign an interactive login shell for system accounts.
+    rules:
+      - no_shelllogin_for_systemaccounts
+    status: automated
+
   - id: SLEM-05-232010
     levels:
       - medium
