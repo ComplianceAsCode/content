@@ -2899,7 +2899,10 @@ fi
 {{%- set line_regex_absent = "^\s*" + parameter + "\s\+" -%}}
 {{%- set line_regex_replace = "^" + parameter -%}}
 {{%- set login_defs_d_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) -%}}
-
+if ! [ -d "{{{ login_defs_d_config_dir }}}" ]; then
+    mkdir -p {{{ login_defs_d_config_dir }}}
+    chmod 0755 {{{ login_defs_d_config_dir }}}
+fi
 {{% if product in ['opensuse16', 'sle16', 'slmicro6'] %}}
 {{{ bash_copy_distro_defaults(login_defs_defaults_path, login_defs_path) }}}
 {{% endif %}}
