@@ -624,20 +624,16 @@ controls:
           - no_user_host_based_files
       status: automated
 
-    - id: RHEL-08-010471
-      levels:
-          - low
-      title: RHEL 8 must enable the hardware random number generator entropy gatherer service.
-      rules:
-          - service_rngd_enabled
-      status: automated
-
     - id: RHEL-08-010480
       levels:
           - medium
       title: The RHEL 8 SSH public host key files must have mode 0644 or less permissive.
       rules:
           - file_permissions_sshd_pub_key
+      related_rules:
+          - service_rngd_enabled
+          # Retained in the repository and kept in the data stream by the
+          # default profile after the RHEL-08-010471 removal.
       status: automated
 
     - id: RHEL-08-010490
