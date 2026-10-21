@@ -742,3 +742,4 @@ selections:
     - file_permissions_etc_audit_rulesd
     - file_permissions_etc_audit_auditd
     - file_permissions_etc_audit_auditd_stig
+    - service_rngd_enabled
