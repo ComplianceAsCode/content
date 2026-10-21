@@ -646,6 +646,13 @@ controls:
       rules:
           - configure_bind_crypto_policy
       status: automated
+    - id: RHEL-10-300085
+      levels:
+          - high
+      title: RHEL 10 must implement DOD-approved encryption in the OpenSSL package.
+      rules:
+          - configure_openssl_crypto_policy
+      status: automated
     - id: RHEL-10-300090
       levels:
           - high
