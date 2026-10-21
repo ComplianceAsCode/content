@@ -59,7 +59,7 @@ controls:
           - var_account_disable_post_pw_expiration=35
           - var_auditd_action_mail_acct=root
           - var_time_service_set_maxpoll=18_hours
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
           - var_auditd_space_left_percentage=25pc
           - var_auditd_space_left_action=email
           - var_auditd_disk_error_action=rhel8
@@ -1253,7 +1253,7 @@ controls:
     - id: RHEL-08-020200
       levels:
           - medium
-      title: RHEL 8 user account passwords must have a 60-day maximum password lifetime restriction.
+      title: RHEL 8 user account passwords must have a 180-day maximum password lifetime restriction.
       rules:
           - accounts_maximum_age_login_defs
       status: automated
@@ -1262,7 +1262,7 @@ controls:
       levels:
           - medium
       title: RHEL 8 user account passwords must be configured so that existing passwords are restricted
-          to a 60-day maximum lifetime.
+          to a 180-day maximum lifetime.
       rules:
           - accounts_password_set_max_life_existing
       status: automated
