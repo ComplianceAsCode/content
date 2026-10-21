@@ -10,8 +10,13 @@ description: |-
     To maximize the protection, select a password-protected superuser account with unique name, and modify the
     <tt>/etc/grub.d/01_users</tt> configuration file to reflect the account name change.
     <br /><br />
+    {{% if product == "rhel8" %}}
+    For RHEL 8, do not use the standard administrative account names root, admin,
+    administrator, superuser, or unlock for the grub2 superuser account.
+    {{% else %}}
     It is highly suggested not to use common administrator account names like root,
     admin, or administrator for the grub2 superuser account.
+    {{% endif %}}
     <br /><br />
     Change the superuser to a different username (The default is 'root').
     <pre>$ sed -i 's/\(set superusers=\).*/\1"&lt;unique user ID&gt;"/g' /etc/grub.d/01_users</pre>
@@ -53,9 +58,24 @@ references:
     stigid@ol7: OL07-00-010492
     stigid@ol8: OL08-00-010141
 
-ocil_clause: 'superuser account is not set or is set to an existing name or to a common name'
+ocil_clause: '{{% if product == "rhel8" %}}superuser account is not set or is set to root, admin, administrator, superuser, unlock, or an existing user name{{% else %}}superuser account is not set or is set to an existing name or to a common name{{% endif %}}'
 
 ocil: |-
+    {{% if product == "rhel8" %}}
+    To verify the boot loader superuser account has been set, run the following command:
+    <pre># grep -iw "superusers" /boot/grub2/grub.cfg</pre>
+    The output should show the following:
+    <pre>set superusers="<b>superusers-account</b>"
+    export superusers</pre>
+    where superusers-account is the actual account name and is not root, admin, administrator,
+    superuser, unlock, or any other existing user name.
+
+    If <tt>/boot/grub2/grub.cfg</tt> is absent on an older RHEL 8 deployment, run:
+    <pre># grep -iw "superusers" /boot/efi/EFI/redhat/grub.cfg</pre>
+
+    If <tt>superusers</tt> is not defined or is set to root, admin, administrator, superuser,
+    unlock, or an existing user name, this is a finding.
+    {{% else %}}
     To verify the boot loader superuser account has been set, run the following
     command:
     <pre>sudo grep -A1 "superusers" {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
@@ -64,6 +84,7 @@ ocil: |-
     export superusers</pre>
     where superusers-account is the actual account name different from common names like root,
     admin, or administrator and different from any other existing user name.
+    {{% endif %}}
 
 warnings:
     - general: |-
@@ -75,6 +96,29 @@ warnings:
 
 
 fixtext: |-
+    {{% if product == "rhel8" %}}
+    Configure {{{ full_name }}} to have a unique username for the GRUB 2 superusers account.
+
+    Edit the <tt>/etc/grub.d/01_users</tt> file to declare the custom superuser name:
+
+    <pre># pfedit /etc/grub.d/01_users</pre>
+
+    Ensure the following lines exist or are modified:
+
+    <pre>set superusers="superusers-account"
+    export superusers
+    password_pbkdf2 superusers-account ${GRUB2_PASSWORD}</pre>
+
+    Replace <tt>superusers-account</tt> with a unique name that does not match any existing OS user account name.
+
+    Regenerate the GRUB 2 configuration with the following command:
+
+    <pre># grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+
+    On an older RHEL 8 deployment where <tt>/boot/grub2/grub.cfg</tt> is absent, use the legacy path:
+
+    <pre># grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre>
+    {{% else %}}
     Configure {{{ full_name }}} to have a unique username for the grub superuser account.
 
     Select a password-protected superuser account with unique name, and modify the
@@ -92,5 +136,6 @@ fixtext: |-
     {{%- else %}}
     <pre>{{{ grub_command("update") }}}</pre>
     {{%- endif %}}
+    {{% endif %}}
 
 srg_requirement: '{{{ full_name }}} systems booted with United Extensible Firmware Interface (UEFI) must require a unique superusers name upon booting into single-user mode and maintenance.'
