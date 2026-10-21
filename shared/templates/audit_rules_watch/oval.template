@@ -7,7 +7,12 @@
   {{% else %}}
       <literal_component>{{{ PATH_ESCAPED }}}</literal_component>
   {{% endif %}}
-      <literal_component>\s+\-F\s+perm=\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</literal_component>
+      <literal_component>\s+\-F\s+perm=\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b</literal_component>
+{{% if REQUIRE_KEY %}}
+      <literal_component>\s+(?:-k\s+|-F\s+key=){{{ KEY }}}\s*$</literal_component>
+{{% else %}}
+      <literal_component>.*$</literal_component>
+{{% endif %}}
     </concat>
   </local_variable>
 {{% endmacro %}}
