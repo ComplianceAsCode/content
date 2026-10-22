@@ -6,8 +6,8 @@ fixtext: |-
 
     Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
 
-    -a always,exit -F arch=b32 -F path=/etc/sudoers.d/ -F perm=wa -F key=identity
-    -a always,exit -F arch=b64 -F path=/etc/sudoers.d/ -F perm=wa -F key=identity
+    -a always,exit -F arch=b32 -F path=/etc/sudoers.d -F perm=wa -F key=identity
+    -a always,exit -F arch=b64 -F path=/etc/sudoers.d -F perm=wa -F key=identity
 
     Restart the audit daemon with the following command for the changes to take effect:
 
@@ -17,8 +17,8 @@ checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers.d/" with the following command:
 
     $ sudo auditctl -l | grep /etc/sudoers.d
-    -a always,exit -F arch=b32 -F path=/etc/sudoers.d/ -F perm=wa -F key=identity
-    -a always,exit -F arch=b64 -F path=/etc/sudoers.d/ -F perm=wa -F key=identity
+    -a always,exit -F arch=b32 -F path=/etc/sudoers.d -F perm=wa -F key=identity
+    -a always,exit -F arch=b64 -F path=/etc/sudoers.d -F perm=wa -F key=identity
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
