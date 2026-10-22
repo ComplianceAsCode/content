@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} user account passwords for new users or password changes must have a 180-day maximum password lifetime restriction in /etc/login.defs.
+
+vuldiscussion: |-
+    Any password, no matter how complex, can eventually be cracked; therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.
+
+    Setting the password maximum age ensures users are required to periodically change their passwords. Requiring shorter password lifetimes increases the risk of users writing down the password in a convenient location subject to physical compromise.
+
+checktext: |-
+    Verify that {{{ full_name }}} is configured to create or update passwords with a maximum password age of 180 days or less.
+
+    Check that {{{ full_name }}} enforces 180 days or less as the maximum password age with the following command:
+
+    $ grep '^PASS_MAX_DAYS' {{{ login_defs_path }}}
+
+    The DoW requirement is "180" days or less (greater than zero, as zero days will lock the account immediately).
+
+    If no output is produced, or if "PASS_MAX_DAYS" is not set to "180" days or less, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce a maximum password age of 180 days or less.
+
+    Edit the file "{{{ login_defs_path }}}" and add or correct the following line:
+
+    PASS_MAX_DAYS 180
