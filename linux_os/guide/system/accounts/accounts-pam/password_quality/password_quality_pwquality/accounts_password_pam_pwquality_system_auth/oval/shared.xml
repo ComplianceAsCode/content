@@ -1,4 +1,13 @@
 <def-group>
+{{% if product == "rhel8" %}}
+  {{% set pam_pwquality_control = "required" %}}
+{{% elif product == "rhel9" %}}
+  {{% set pam_pwquality_control = "required" %}}
+{{% elif product == "rhel10" %}}
+  {{% set pam_pwquality_control = "requisite" %}}
+{{% else %}}
+  {{% set pam_pwquality_control = "requisite" %}}
+{{% endif %}}
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("The PAM module pam_pwquality is used in system-auth", rule_title=rule_title) }}}
     <criteria comment="Condition for pam_pwquality in system-auth is satisfied">
@@ -9,7 +18,7 @@
 
   <ind:textfilecontent54_object id="object_accounts_password_pam_pwquality_system_auth" version="1">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^password[\s]*requisite[\s]*pam_pwquality\.so</ind:pattern>
+    <ind:pattern operation="pattern match">^password[\s]*{{{ pam_pwquality_control }}}[\s]*pam_pwquality\.so</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
