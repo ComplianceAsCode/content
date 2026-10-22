@@ -1915,6 +1915,14 @@ controls:
           - audit_rules_privileged_commands_usermod
       status: automated
 
+    - id: RHEL-08-030565
+      levels:
+          - medium
+      title: RHEL 8 must audit all uses of the useradd command.
+      rules:
+          - audit_rules_privileged_commands_useradd
+      status: automated
+
     - id: RHEL-08-030570
       levels:
           - medium
