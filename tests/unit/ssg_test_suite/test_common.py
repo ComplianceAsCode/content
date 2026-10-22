@@ -1,3 +1,6 @@
+import os
+import subprocess
+
 import pytest
 
 from tests.ssg_test_suite import common
@@ -78,3 +81,55 @@ def test_install_packages_without_query_command():
     test_env = RecordingTestEnv({"authselect"}, cpe=OL7_CPE)
     with pytest.raises(RuntimeError, match="authselect"):
         common.install_packages(test_env, {"authselect", "pam"})
+
+
+FAKE_APT_CACHE = r"""#!/bin/sh
+# Answers like apt-cache on a Debian 12 system whose indexes are present
+# unless NO_INDEXES is set. dconf is only mentioned by dconf-cli.
+if [ "$#" -eq 1 ]; then
+    echo "Package files:"
+    if [ -z "$NO_INDEXES" ]; then
+        echo " 500 http://deb.debian.org/debian bookworm/main amd64 Packages"
+    fi
+    exit 0
+fi
+case "$2" in
+    dconf)
+        printf 'dconf:\n  Installed: (none)\n  Candidate: (none)\n  Version table:\n' ;;
+    dconf-cli)
+        printf 'dconf-cli:\n  Installed: (none)\n  Candidate: 0.40.0-4\n  Version table:\n' ;;
+esac
+"""
+
+
+def run_apt_query(tmp_path, platform, package, no_indexes=False):
+    fake = tmp_path / "apt-cache"
+    fake.write_text(FAKE_APT_CACHE)
+    fake.chmod(0o755)
+    env = dict(os.environ, PATH="%s:%s" % (tmp_path, os.environ["PATH"]))
+    if no_indexes:
+        env["NO_INDEXES"] = "1"
+    command = common.QUERY_COMMANDS[platform].format(package=package)
+    return subprocess.run(["sh", "-c", command], env=env,
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          universal_newlines=True)
+
+
+@pytest.mark.parametrize("platform", ["debian", "ubuntu"])
+def test_apt_query_skips_a_name_without_candidate(tmp_path, platform):
+    result = run_apt_query(tmp_path, platform, "dconf")
+    assert result.returncode == 0
+    assert result.stdout.strip() == ""
+
+
+@pytest.mark.parametrize("platform", ["debian", "ubuntu"])
+def test_apt_query_reports_a_package_with_candidate(tmp_path, platform):
+    result = run_apt_query(tmp_path, platform, "dconf-cli")
+    assert result.returncode == 0
+    assert "Candidate: 0.40.0-4" in result.stdout
+
+
+@pytest.mark.parametrize("platform", ["debian", "ubuntu"])
+def test_apt_query_fails_without_indexes(tmp_path, platform):
+    result = run_apt_query(tmp_path, platform, "dconf-cli", no_indexes=True)
+    assert result.returncode != 0
