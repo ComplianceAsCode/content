@@ -53,9 +53,11 @@ ls "${COLLECTION_DIR}/plugins/modules/"
 
 echo ""
 echo "--- FQCN rewrite check ---"
+STATUS=0
 if grep -rq "community\.general\.\|ansible\.posix\." "${COLLECTION_DIR}/roles/" 2>/dev/null; then
     echo "FAIL: unrewritten FQCNs found:"
     grep -rn "community\.general\.\|ansible\.posix\." "${COLLECTION_DIR}/roles/"
+    STATUS=1
 else
     echo "OK: no unrewritten FQCNs in roles"
 fi
@@ -73,3 +75,4 @@ print('  version:  ', d['version'])
 echo ""
 echo "=== Done ==="
 echo "Artifact: $(ls "${OUTPUT_DIR}"/"${NAMESPACE}"-rhel_hardening_roles-*.tar.gz 2>/dev/null || echo 'not found')"
+exit "${STATUS}"

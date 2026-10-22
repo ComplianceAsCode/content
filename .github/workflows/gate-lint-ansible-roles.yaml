@@ -45,6 +45,12 @@ jobs:
       # would regress certification. Lint the assembled collection with just that
       # rule so the regression fails this pull request instead of surfacing only
       # at publishing time.
+      # --offline keeps the lint hermetic: the collection is already available via
+      # ANSIBLE_COLLECTIONS_PATH, so ansible-lint has nothing to install. Without
+      # it, ansible-lint installs a copy of the collection being linted into its
+      # cache and then reports "Another version of 'redhat.rhel_hardening_roles'
+      # ... was found installed", because the same collection is also on the
+      # collections path it was given.
       - name: Gate collection on command-instead-of-module (Automation Hub cert rule)
-        run: ANSIBLE_COLLECTIONS_PATH="$GITHUB_WORKSPACE/build/ansible_collection" ansible-lint --nocolor --tags command-instead-of-module roles/
+        run: ANSIBLE_COLLECTIONS_PATH="$GITHUB_WORKSPACE/build/ansible_collection" ansible-lint --offline --nocolor --tags command-instead-of-module roles/
         working-directory: ./build/ansible_collection/ansible_collections/${{ env.COLLECTION_NAMESPACE }}/${{ env.COLLECTION_NAME }}
