@@ -1894,10 +1894,10 @@ read -a syscall_grouping <<< {{{ syscall_groupings }}}
 auid_filter="{{{ auid_filters }}}"
 {{% if require_key %}}
 # The audit key is required by the check, so only the exact key makes a rule compliant
-key_regex="-F key={{{ key }}}|-k {{{ key }}}"
+key_regex="-F key={{{ key }}}([[:space:]]|$)|-k {{{ key }}}([[:space:]]|$)"
 {{% else %}}
 # Any audit key is accepted
-key_regex="-F key=\w+|-k \w+"
+key_regex="-F key=[[:alnum:]_-]+|-k [[:alnum:]_-]+"
 {{% endif %}}
 
 # Create a list of audit *.rules files that should be inspected for presence and correctness
@@ -1975,7 +1975,7 @@ do
             else
                 extra_fields=$(sed -E -e "s/^{{{ action_arch_filters }}}//" -e "s#{{{ other_filters }}}##" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/$key_regex//" <<< "$s_rule")
             fi
-            grep -q -- "-F" <<< "$extra_fields" || candidate_rules+=("$s_rule")
+            grep -qE -- "-F|-k" <<< "$extra_fields" || candidate_rules+=("$s_rule")
         else
             # The required rule contains no '-S' syscall specification, so any '-S' field
             # in an existing rule makes it more specific than the required scope
@@ -1984,7 +1984,7 @@ do
             else
                 extra_fields=$(sed -E -e "s/^{{{ action_arch_filters }}}//" -e "s#{{{ other_filters }}}##" -e "s/$key_regex//" <<< "$s_rule")
             fi
-            grep -qE -- "-F|-S" <<< "$extra_fields" || candidate_rules+=("$s_rule")
+            grep -qE -- "-F|-S|-k" <<< "$extra_fields" || candidate_rules+=("$s_rule")
         fi
     done
 
