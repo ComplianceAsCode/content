@@ -20,13 +20,14 @@ controls:
           - enable_authselect
           - var_authselect_profile=sssd
 
-    - id: RHEL-09-171011
+    - id: RHEL-09-271011
       levels:
           - medium
       rules:
           - dconf_gnome_login_banner_text
           - dconf_login_banner_text=dod_banners
           - dconf_login_banner_contents=dod_default
+      status: automated
     - id: RHEL-09-211010
       levels:
           - high
@@ -2015,7 +2016,7 @@ controls:
     - id: RHEL-09-271010
       levels:
           - medium
-      title: RHEL 9 must display the Standard Mandatory DOD Notice and Consent Banner before
+      title: RHEL 9 must enable the Standard Mandatory DOD Notice and Consent Banner before
           granting
           local or remote access to the system via a graphical user logon.
       rules:
