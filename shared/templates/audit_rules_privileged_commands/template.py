@@ -10,10 +10,10 @@ def preprocess(data, lang):
     data["name"] = name
     if "key" not in data:
         data["key"] = "privileged"
+    data["rhel10_stig_single_rule"] = parse_template_boolean_value(
+        data, parameter="rhel10_stig_single_rule", default_value=False)
     data["rhel10_stig_arch_mode"] = parse_template_boolean_value(
         data, parameter="rhel10_stig_arch_mode", default_value=False)
-    data["rhel10_stig_execve"] = parse_template_boolean_value(
-        data, parameter="rhel10_stig_execve", default_value=False)
     if lang == "oval":
         data["id"] = data["_rule_id"]
         data["title"] = "Record Any Attempts to Run " + name
