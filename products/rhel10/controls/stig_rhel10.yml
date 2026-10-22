@@ -1662,6 +1662,14 @@ controls:
       rules:
           - audit_rules_privileged_commands_usermod
       status: automated
+    - id: RHEL-10-500605
+      levels:
+          - medium
+      title: RHEL 10 must generate audit records for successful and unsuccessful uses of the "useradd"
+          command.
+      rules:
+          - audit_rules_privileged_commands_useradd
+      status: automated
     - id: RHEL-10-500610
       levels:
           - medium
