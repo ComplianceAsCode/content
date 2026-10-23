@@ -1,0 +1,81 @@
+# platform = Ubuntu 26.04
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Install rsyslog for sudo event logging"
+  ansible.builtin.package:
+    name: rsyslog
+    state: present
+
+- name: "{{{ rule_title }}} - Create logging configuration directories"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - /etc/rsyslog.d
+    - /etc/systemd/journald.conf.d
+
+- name: "{{{ rule_title }}} - Route authpriv events to a persistent file"
+  ansible.builtin.copy:
+    dest: /etc/rsyslog.d/30-sudo.conf
+    content: "authpriv.*    /var/log/sudo.log\n"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "{{{ rule_title }}} - Create the sudo log without truncating existing events"
+  ansible.builtin.file:
+    path: /var/log/sudo.log
+    state: touch
+    owner: syslog
+    group: adm
+    mode: '0640'
+    access_time: preserve
+    modification_time: preserve
+
+- name: "{{{ rule_title }}} - Find local journal drop-ins"
+  ansible.builtin.find:
+    paths: /etc/systemd/journald.conf.d
+    patterns: '*.conf'
+  register: sudo_journal_dropins
+
+- name: "{{{ rule_title }}} - Forward journal messages to rsyslog"
+  community.general.ini_file:
+    path: "{{ item }}"
+    section: Journal
+    option: ForwardToSyslog
+    value: 'yes'
+    no_extra_spaces: true
+    mode: '0644'
+  loop: "{{ ['/etc/systemd/journald.conf', '/etc/systemd/journald.conf.d/60-sudo-syslog.conf'] + (sudo_journal_dropins.files | map(attribute='path') | list) }}"
+
+- name: "{{{ rule_title }}} - Include informational sudo events in forwarding"
+  community.general.ini_file:
+    path: "{{ item }}"
+    section: Journal
+    option: MaxLevelSyslog
+    value: debug
+    no_extra_spaces: true
+    mode: '0644'
+  loop: "{{ ['/etc/systemd/journald.conf', '/etc/systemd/journald.conf.d/60-sudo-syslog.conf'] + (sudo_journal_dropins.files | map(attribute='path') | list) }}"
+
+- name: "{{{ rule_title }}} - Validate rsyslog configuration"
+  ansible.builtin.command: rsyslogd -N1
+  changed_when: false
+
+- name: "{{{ rule_title }}} - Apply journal forwarding configuration"
+  ansible.builtin.systemd_service:
+    name: systemd-journald.service
+    state: restarted
+
+- name: "{{{ rule_title }}} - Enable and restart rsyslog for sudo event logging"
+  ansible.builtin.systemd_service:
+    name: rsyslog.service
+    masked: false
+    enabled: true
+    state: restarted
