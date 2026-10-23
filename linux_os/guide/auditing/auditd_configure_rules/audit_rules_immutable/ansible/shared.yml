@@ -4,11 +4,25 @@
 # complexity = low
 # disruption = low
 
+# Both rule loaders honour only the last '-e' directive they process:
+# augenrules(8) emits the last '-e' directive found in /etc/audit/rules.d/*.rules
+# (version sort order) as the last line of the generated audit.rules, and
+# auditctl(8) -R refuses to load anything that follows '-e 2'. So '-e 2' has to
+# be the only '-e' directive and the last non-comment line of the target files,
+# and no other rules.d file may carry an '-e' directive.
+
 - name: {{{ rule_title }}} - Collect all files from /etc/audit/rules.d with .rules extension
   ansible.builtin.find:
     paths: "/etc/audit/rules.d/"
     patterns: "*.rules"
   register: find_rules_d
+
+- name: {{{ rule_title }}} - Remove any -e option from the other Audit rules files so it cannot override -e 2
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    regexp: '^\s*-e\s+.*$'
+    state: absent
+  loop: "{{ find_rules_d.files | map(attribute='path') | reject('equalto', '/etc/audit/rules.d/immutable.rules') | list }}"
 
 - name: {{{ rule_title }}} - Check if target files exist and get their content
   ansible.builtin.stat:
@@ -25,7 +39,7 @@
   loop: "{{ audit_files_stat.results }}"
   when: item.stat.exists
 
-- name: {{{ rule_title }}} - Check if -e 2 is already correctly set in target files
+- name: {{{ rule_title }}} - Check if -e 2 is already the only -e option and the last directive in target files
   ansible.builtin.set_fact:
     immutable_correctly_set: >-
       {{
@@ -33,17 +47,22 @@
         | selectattr('content', 'defined')
         | map(attribute='content')
         | map('b64decode')
-        | select('search', '^-e 2$', multiline=True)
+        | select('regex', '^[ \t]*-e[ \t]+2[ \t]*(?:\n[ \t]*(?:#[^\n]*)?)*\n?\Z', multiline=True)
+        | map('regex_findall', '^[ \t]*-e[ \t]+', multiline=True)
+        | map('length')
+        | select('equalto', 1)
         | list
         | length == 2
       }}
 
-- name: {{{ rule_title }}} - Remove any existing -e option from all Audit config files
+- name: {{{ rule_title }}} - Remove any existing -e option from the target Audit config files
   ansible.builtin.lineinfile:
     path: "{{ item }}"
     regexp: '^\s*-e\s+.*$'
     state: absent
-  loop: "{{ find_rules_d.files | map(attribute='path') | list + ['/etc/audit/audit.rules'] }}"
+  loop:
+    - "/etc/audit/audit.rules"
+    - "/etc/audit/rules.d/immutable.rules"
   when: not immutable_correctly_set
 
 - name: {{{ rule_title }}} - Ensure target directories exist
@@ -56,12 +75,12 @@
     - "/etc/audit/rules.d/immutable.rules"
   when: not immutable_correctly_set
 
-- name: {{{ rule_title }}} - Add Audit -e 2 option to make rules immutable
+- name: {{{ rule_title }}} - Add Audit -e 2 option as the last line to make rules immutable
   ansible.builtin.lineinfile:
     path: "{{ item }}"
     create: True
     line: "-e 2"
-    regexp: '^\s*-e\s+.*$'
+    insertafter: EOF
     mode: g-rwx,o-rwx
   loop:
     - "/etc/audit/audit.rules"
