@@ -2,7 +2,14 @@
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="6">
     {{{ oval_metadata(DESCRIPTION, rule_title=rule_title) }}}
 
-    {{% if 'debian' in product or 'ubuntu' in product or product in ['sle15', 'sle16'] %}}
+    {{% if product in ['sle16', 'slmicro6'] %}}
+
+    <criteria operator="AND" comment="Check expected value for pam_faillock.so {{{ PRM_NAME }}} parameter in {{{ pam_faillock_conf_path }}}">
+      <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"
+                 comment="Ensure the {{{ PRM_NAME }}} parameter is present in {{{ pam_faillock_conf_path }}}"/>
+    </criteria>
+
+    {{% elif 'debian' in product or 'ubuntu' in product or product in ['sle15', 'slmicro5'] %}}
 
     <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
       <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
@@ -126,7 +133,7 @@
       id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_auth_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entries in auth section of pam files">
-    {{% if 'debian' in product or product in ['sle15', 'sle16'] %}}
+    {{% if 'debian' in product or product in ['sle15', 'sle16', 'slmicro5', 'slmicro6'] %}}
     <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
     {{% elif 'ubuntu' in product %}}
     <value>^\s*auth\s+(requisite|required)\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail</value>
@@ -141,7 +148,7 @@
       id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_account_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entry in account section of pam files">
-    {{% if 'debian' in product or 'ubuntu' in product or product in ['sle15', 'sle16'] %}}
+    {{% if 'debian' in product or 'ubuntu' in product or product in ['sle15', 'sle16', 'slmicro5', 'slmicro6'] %}}
     <value>^\s*account\s+required\s+pam_faillock\.so\s*(#.*)?$</value>
     {{% elif 'openeuler' in product or 'kylinserver' in product or 'kylinsecserver' in product %}}
     <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so</value>
@@ -202,9 +209,13 @@
   </ind:textfilecontent54_object>
   {{% endmacro %}}
 
+  {{% if product in ['sle16', 'slmicro6'] %}}
+  {{% elif 'debian' in product or 'ubuntu' in product or product in ['sle15', 'slmicro5'] %}}
+  {{{ generate_test_faillock_enabled (file_stem="common")   }}}
+  {{% else %}}
   {{{ generate_test_faillock_enabled (file_stem="system")   }}}
   {{{ generate_test_faillock_enabled (file_stem="password") }}}
-  {{{ generate_test_faillock_enabled (file_stem="common")   }}}
+  {{% endif %}}
 
   {{% macro generate_test_faillock_account(file_stem, file) %}}
   <!-- Check common definition of pam_faillock.so in {{{ file_stem }}}-account -->
@@ -227,9 +238,13 @@
   </ind:textfilecontent54_object>
   {{% endmacro %}}
 
+  {{% if product in ['sle16', 'slmicro6'] %}}
+  {{% elif 'debian' in product or 'ubuntu' in product or product in ['sle15', 'slmicro5'] %}}
+  {{{ generate_test_faillock_account (file_stem="common",   file="common-account") }}}
+  {{% else %}}
   {{{ generate_test_faillock_account (file_stem="system",   file="system-auth")    }}}
   {{{ generate_test_faillock_account (file_stem="password", file="password-auth")  }}}
-  {{{ generate_test_faillock_account (file_stem="common",   file="common-account") }}}
+  {{% endif %}}
 
   {{% macro generate_check_parameter_in_pam_file(file_stem) %}}
   <!-- Check absence of {{{ PRM_NAME }}} parameter in {{{ file_stem }}}-auth -->
@@ -296,9 +311,13 @@
   </ind:textfilecontent54_state>
   {{% endif %}}
 
+  {{% if product in ['sle16', 'slmicro6'] %}}
+  {{% elif 'debian' in product or 'ubuntu' in product or product in ['sle15', 'slmicro5'] %}}
+  {{{ generate_check_parameter_in_pam_file (file_stem="common")   }}}
+  {{% else %}}
   {{{ generate_check_parameter_in_pam_file (file_stem="system")   }}}
   {{{ generate_check_parameter_in_pam_file (file_stem="password") }}}
-  {{{ generate_check_parameter_in_pam_file (file_stem="common")   }}}
+  {{% endif %}}
 
   <!-- Check expected value of {{{ PRM_NAME }}} parameter in {{{ pam_faillock_conf_path }}} -->
   <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
