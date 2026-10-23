@@ -5,7 +5,7 @@ Common functions for processing CCE (Common Configuration Enumeration) in SSG
 import re
 import random
 import os
-from typing import Dict, Type
+from typing import Dict, Tuple, Type
 
 
 class CCEFile:
@@ -88,103 +88,83 @@ class CCEFile:
         return cces[0].strip()
 
 
-class RedhatCCEFile(CCEFile):
+CCE_POOL_FILES: Dict[str, Tuple[str, str]] = {
+    "redhat": ("RedhatCCEFile", "cce-redhat-avail.txt"),
+    "sle12": ("SLE12CCEFile", "cce-sle12-avail.txt"),
+    "sle15": ("SLE15CCEFile", "cce-sle15-avail.txt"),
+    "sle16": ("SLE16CCEFile", "cce-sle16-avail.txt"),
+    "slmicro5": ("SLMicro5CCEFile", "cce-slmicro5-avail.txt"),
+    "slmicro6": ("SLMICRO6CCEFile", "cce-slmicro6-avail.txt"),
+}
+"""
+Static definition of the available CCE pools.
+
+Each key is the pool name accepted by ``utils/fix_rules.py add-cce --cce-pool``.
+Each value is a tuple of:
+    class_name (str): The name of the generated CCEFile subclass, exported
+                      from this module under that name.
+    filename (str): The name of the file with available CCEs, located in the
+                    "shared/references" directory within the project root.
+
+To support a new product, add a row here; the CCEFile subclass and the
+CCE_POOLS entry are generated from it.
+"""
+
+
+def _cce_pool_class(pool_name, class_name, filename):
     """
-    RedhatCCEFile is a subclass of CCEFile that represents a file containing
-    Red Hat Common Configuration Enumeration (CCE) data.
+    Creates a CCEFile subclass that reads available CCEs from the given file.
+
+    Args:
+        pool_name (str): The pool name, used in the generated class docstring.
+        class_name (str): The name assigned to the generated class.
+        filename (str): The name of the file with available CCEs, located in the
+                        "shared/references" directory within the project root.
+
+    Returns:
+        type: A subclass of CCEFile whose absolute_path property points to the
+              given file.
+    """
+    references = os.path.join("shared", "references", filename)
+
+    class PoolCCEFile(CCEFile):
+        @property
+        def absolute_path(self):
+            """
+            The absolute path to the file with available CCEs for this pool.
+
+            Returns:
+                str: The path to the file in the "shared/references" directory
+                     within the project root.
+            """
+            return os.path.join(self.project_root, references)
+
+    PoolCCEFile.__name__ = class_name
+    PoolCCEFile.__qualname__ = class_name
+    PoolCCEFile.__doc__ = (
+        """
+    {class_name} is a subclass of CCEFile that represents a file containing
+    {pool_name} Common Configuration Enumeration (CCE) data.
 
     Properties:
-        absolute_path (str): The absolute path to the Red Hat CCE file, which is located in the
-                             "shared/references" directory within the project root and named "cce-redhat-avail.txt".
-    """
-    @property
-    def absolute_path(self):
-        return os.path.join(self.project_root, "shared", "references", "cce-redhat-avail.txt")
-
-
-class SLE12CCEFile(CCEFile):
-    """
-    SLE12CCEFile is a subclass of CCEFile that represents a file containing
-    SLE12 Common Configuration Enumeration (CCE) data.
-
-    This class provides a property to get the absolute path of the SLE12 CCE file.
-
-    Properties:
-        absolute_path (str): The absolute path to the SLE12 CCE file, which is located in the
-                             "shared/references" directory.
-    """
-    @property
-    def absolute_path(self):
-        return os.path.join(self.project_root, "shared", "references", "cce-sle12-avail.txt")
-
-
-class SLE15CCEFile(CCEFile):
-    """
-    SLE15CCEFile is a subclass of CCEFile that represents a file containing
-    SLE15 Common Configuration Enumeration (CCE) data.
-
-    This class provides a property to get the absolute path of the SLE12 CCE file.
-
-    Properties:
-        absolute_path (str): The absolute path to the SLE15 CCE file, which is located in the
-                             "shared/references" directory.
-    """
-    @property
-    def absolute_path(self):
-        return os.path.join(self.project_root, "shared", "references", "cce-sle15-avail.txt")
-
-
-class SLE16CCEFile(CCEFile):
-    """
-    SLE16CCEFile is a subclass of CCEFile that represents a file containing
-    SLE16 Common Configuration Enumeration (CCE) data.
-
-    This class provides a property to get the absolute path of the SLE12 CCE file.
-
-    Properties:
-        absolute_path (str): The absolute path to the SLE15 CCE file, which is located in the
-                             "shared/references" directory.
-    """
-    @property
-    def absolute_path(self):
-        return os.path.join(self.project_root, "shared", "references", "cce-sle16-avail.txt")
-
-
-class SLMicro5CCEFile(CCEFile):
-    """
-    SLMicro5CCEFile is a subclass of CCEFile that represents a file containing
-    SLMicro5 Common Configuration Enumeration (CCE) data.
-
-    Properties:
-        absolute_path (str): The absolute path to the SLMicro5 CCE file, which is located in the
-                             "shared/references" directory.
-    """
-    @property
-    def absolute_path(self):
-        return os.path.join(self.project_root, "shared", "references", "cce-slmicro5-avail.txt")
-
-
-class SLMicro6CCEFile(CCEFile):
-    """
-    SLMicro6CCEFile is a subclass of CCEFile that represents a file containing
-    SLMicro6 Common Configuration Enumeration (CCE) data.
-
-    Properties:
-        absolute_path (str): The absolute path to the SLMicro6 CCE file, which is located in the
-                             "shared/references" directory.
-    """
-    @property
-    def absolute_path(self):
-        return os.path.join(self.project_root, "shared", "references", "cce-slmicro6-avail.txt")
+        absolute_path (str): The absolute path to the {pool_name} CCE file, which is located in
+                             the "shared/references" directory within the project root and
+                             named "{filename}".
+    """.format(class_name=class_name, pool_name=pool_name, filename=filename))
+    return PoolCCEFile
 
 
 CCE_POOLS: Dict[str, Type[CCEFile]] = {}
-CCE_POOLS["redhat"] = RedhatCCEFile
-CCE_POOLS["sle12"] = SLE12CCEFile
-CCE_POOLS["sle15"] = SLE15CCEFile
-CCE_POOLS["sle16"] = SLE16CCEFile
-CCE_POOLS["slmicro5"] = SLMicro5CCEFile
-CCE_POOLS["slmicro6"] = SLMicro6CCEFile
+"""
+Mapping of pool name to the generated CCEFile subclass for that pool.
+
+Used by ``utils/fix_rules.py add-cce`` to look up the pool given by ``--cce-pool``.
+"""
+
+for _pool_name, (_class_name, _filename) in CCE_POOL_FILES.items():
+    CCE_POOLS[_pool_name] = _cce_pool_class(_pool_name, _class_name, _filename)
+    globals()[_class_name] = CCE_POOLS[_pool_name]
+del _pool_name, _class_name, _filename
 
 def is_cce_format_valid(cceid):
     """
