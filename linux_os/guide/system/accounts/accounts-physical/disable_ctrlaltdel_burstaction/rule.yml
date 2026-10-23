@@ -8,7 +8,12 @@ description: |-
     key sequence is pressed Ctrl-Alt-Delete more than 7 times in 2 seconds.
     <br /><br />
     To configure the system to ignore the <tt>CtrlAltDelBurstAction</tt>
-    {{% if product != "rhcos4" %}}
+    {{% if product in ["rhel8", "rhel9", "rhel10"] %}}
+    setting, create the <tt>/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf</tt>
+    file with the following content:
+    <pre>[Manager]
+    CtrlAltDelBurstAction=none</pre>
+    {{% elif product != "rhcos4" %}}
     setting, add or modify the following to <tt>/etc/systemd/system.conf</tt>:
     <pre>CtrlAltDelBurstAction=none</pre>
     {{% else %}}
@@ -74,16 +79,52 @@ references:
 ocil_clause: 'the system is configured to reboot when Ctrl-Alt-Del is pressed more than 7 times in 2 seconds.'
 
 ocil: |-
+    {{% if product == "rhel10" %}}
+    To ensure the system is configured to ignore the Ctrl-Alt-Del setting, enter the following command:
+    <pre>$ sudo grep -iR CtrlAltDelBurstAction /etc/systemd/system*</pre>
+    The output should return:
+    <pre>/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf:CtrlAltDelBurstAction=none</pre>
+    {{% elif product == "rhel8" or product == "rhel9" %}}
+    To ensure the system is configured to ignore the Ctrl-Alt-Del setting,
+    enter the following command:
+    <pre>$ sudo grep -iR CtrlAltDelBurstAction /etc/systemd/system.conf /etc/systemd/system.conf.d/*.conf</pre>
+    The output should return:
+    <pre>/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf:CtrlAltDelBurstAction=none</pre>
+    Verify that the setting occurs in a <tt>[Manager]</tt> section.
+    {{% else %}}
     To ensure the system is configured to ignore the Ctrl-Alt-Del setting,
     enter the following command:
     <pre>$ sudo grep -i ctrlaltdelburstaction /etc/systemd/system.conf</pre>
     The output should return:
     <pre>CtrlAltDelBurstAction=none</pre>
+    {{% endif %}}
 
 fixtext: |-
+    {{% if product == "rhel10" %}}
+    Configure {{{ full_name }}} to disable the "CtrlAltDelBurstAction" by adding it to a drop-in file in the "/etc/systemd/system.conf.d/" directory:
+
+    If no drop-in file exists, create one with the following command:
+
+    <pre>$ sudo mkdir -p /etc/systemd/system.conf.d &amp;&amp; sudo vi /etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf</pre>
+
+    Edit the file to contain the following text:
+
+    <pre>[Manager]
+    CtrlAltDelBurstAction=none</pre>
+
+    Reload the daemon for this change to take effect:
+
+    <pre>$ sudo systemctl daemon-reload</pre>
+    {{% elif product == "rhel8" or product == "rhel9" %}}
+    Create the <tt>/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf</tt> drop-in with the following content:
+
+    <pre>[Manager]
+    CtrlAltDelBurstAction=none</pre>
+    {{% else %}}
     Edit "/etc/systemd/system.conf" and add or edit the following line:
 
     CtrlAltDelBurstAction=none
+    {{% endif %}}
 
 srg_requirement: 'The systemd Ctrl-Alt-Delete burst key sequence in {{{ full_name }}} must be disabled.'
 

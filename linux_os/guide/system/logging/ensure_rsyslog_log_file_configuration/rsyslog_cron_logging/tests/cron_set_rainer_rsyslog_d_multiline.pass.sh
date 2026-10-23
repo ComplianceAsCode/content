@@ -12,3 +12,6 @@ cron.* action(
     file="/var/log/cron"
 )
 EOF
+{{% if product == "rhel10" %}}
+systemctl restart rsyslog.service
+{{% endif %}}

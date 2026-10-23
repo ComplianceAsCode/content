@@ -1861,7 +1861,7 @@ Notes:
 :type key: str
 
 #}}
-{{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key) -%}}
+{{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key, require_key=False) -%}}
 
 unset syscall_a
 unset syscall_grouping
@@ -1872,11 +1872,21 @@ unset rule_to_edit
 unset rule_syscalls_to_edit
 unset other_string
 unset auid_string
+unset auid_filter
 unset full_rule
+unset key_regex
 
 # Load macro arguments into arrays
 read -a syscall_a <<< {{{ syscall }}}
 read -a syscall_grouping <<< {{{ syscall_groupings }}}
+auid_filter="{{{ auid_filters }}}"
+{{% if require_key %}}
+# The audit key is required by the check, so only the exact key makes a rule compliant
+key_regex="-F key={{{ key }}}|-k {{{ key }}}"
+{{% else %}}
+# Any audit key is accepted
+key_regex="-F key=\w+|-k \w+"
+{{% endif %}}
 
 # Create a list of audit *.rules files that should be inspected for presence and correctness
 # of a particular audit rule. The scheme is as follows:
@@ -1904,7 +1914,11 @@ files_to_inspect+=('/etc/audit/audit.rules' )
 default_file="/etc/audit/rules.d/{{{ key }}}.rules"
 # As other_filters may include paths, lets use a different delimiter for it
 # The "F" script expression tells sed to print the filenames where the expressions matched
-readarray -t files_to_inspect < <(sed -s -n -e "/^{{{ action_arch_filters }}}/!d" -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" -e "F" /etc/audit/rules.d/*.rules)
+if [[ $auid_filter ]]; then
+    readarray -t files_to_inspect < <(sed -s -n -e "/^{{{ action_arch_filters }}}/!d" -e "\#{{{ other_filters }}}#!d" -e "/$auid_filter/!d" -e "F" /etc/audit/rules.d/*.rules)
+else
+    readarray -t files_to_inspect < <(sed -s -n -e "/^{{{ action_arch_filters }}}/!d" -e "\#{{{ other_filters }}}#!d" -e "F" /etc/audit/rules.d/*.rules)
+fi
 # Case when particular rule isn't defined in /etc/audit/rules.d/*.rules yet
 if [ ${#files_to_inspect[@]} -eq "0" ]
 then
@@ -1928,7 +1942,11 @@ do
     # * the action, list and arch, (2-nd argument)
     # * the other filters, (3-rd argument)
     # * the auid filters, (4-rd argument)
-    readarray -t similar_rules < <(sed -e "/^{{{ action_arch_filters }}}/!d"  -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" "$audit_file")
+    if [[ $auid_filter ]]; then
+        readarray -t similar_rules < <(sed -e "/^{{{ action_arch_filters }}}/!d"  -e "\#{{{ other_filters }}}#!d" -e "/$auid_filter/!d" "$audit_file")
+    else
+        readarray -t similar_rules < <(sed -e "/^{{{ action_arch_filters }}}/!d"  -e "\#{{{ other_filters }}}#!d" "$audit_file")
+    fi
 
     candidate_rules=()
     # Filter out rules that have more fields then required. This will remove rules more specific than the required scope
@@ -1936,8 +1954,26 @@ do
     do
         # Strip all the options and fields we know of,
         # than check if there was any field left over
-        extra_fields=$(sed -E -e "s/^{{{ action_arch_filters }}}//"  -e "s#{{{ other_filters }}}##" -e "s/{{{ auid_filters }}}//" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/-F key=\w+|-k \w+//"<<< "$s_rule")
-        grep -q -- "-F" <<< "$extra_fields" || candidate_rules+=("$s_rule")
+        if [[ ${#syscall_a[@]} -ge 1 ]]
+        then
+            # The required rule contains '-S' syscall specifications, so existing '-S' fields
+            # are stripped here and their content is validated by the syscall check below
+            if [[ $auid_filter ]]; then
+                extra_fields=$(sed -E -e "s/^{{{ action_arch_filters }}}//" -e "s#{{{ other_filters }}}##" -e "s/$auid_filter//" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/$key_regex//" <<< "$s_rule")
+            else
+                extra_fields=$(sed -E -e "s/^{{{ action_arch_filters }}}//" -e "s#{{{ other_filters }}}##" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/$key_regex//" <<< "$s_rule")
+            fi
+            grep -q -- "-F" <<< "$extra_fields" || candidate_rules+=("$s_rule")
+        else
+            # The required rule contains no '-S' syscall specification, so any '-S' field
+            # in an existing rule makes it more specific than the required scope
+            if [[ $auid_filter ]]; then
+                extra_fields=$(sed -E -e "s/^{{{ action_arch_filters }}}//" -e "s#{{{ other_filters }}}##" -e "s/$auid_filter//" -e "s/$key_regex//" <<< "$s_rule")
+            else
+                extra_fields=$(sed -E -e "s/^{{{ action_arch_filters }}}//" -e "s#{{{ other_filters }}}##" -e "s/$key_regex//" <<< "$s_rule")
+            fi
+            grep -qE -- "-F|-S" <<< "$extra_fields" || candidate_rules+=("$s_rule")
+        fi
     done
 
     if [[ ${#syscall_a[@]} -ge 1 ]]
@@ -2003,7 +2039,7 @@ if [ "$skip" -ne 0 ]; then
             done
         fi
         other_string=$([[ {{{ other_filters }}} ]] && echo " {{{ other_filters }}}") || /bin/true
-        auid_string=$([[ {{{ auid_filters }}} ]] && echo " {{{ auid_filters }}}") || /bin/true
+        auid_string=$([[ $auid_filter ]] && echo " $auid_filter") || /bin/true
         full_rule="{{{ action_arch_filters }}}${syscall_string}${other_string}${auid_string} -F key={{{ key }}}" || /bin/true
         echo "$full_rule" >> "$default_file"
         chmod 0600 ${default_file}
