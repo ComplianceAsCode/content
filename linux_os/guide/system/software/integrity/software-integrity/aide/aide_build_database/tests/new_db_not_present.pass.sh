@@ -3,15 +3,14 @@
 
 # This TS is a regression test for https://bugzilla.redhat.com/show_bug.cgi?id=2175684
 
-{{% if 'ubuntu' in product or 'sle' in product or 'slmicro' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product or 'sle' in product or 'slmicro' in product %}}
 DB_NEW=/var/lib/aide/aide.db.new
 DB=/var/lib/aide/aide.db
-DB_CONF=/etc/aide/aide.conf
 {{% else %}}
 DB_NEW=/var/lib/aide/aide.db.new.gz
 DB=/var/lib/aide/aide.db.gz
-DB_CONF=/etc/aide.conf
 {{% endif %}}
+DB_CONF={{{ aide_conf_path }}}
 
 {{% if 'ubuntu' in product or 'debian' in product %}}
 aideinit -y -f

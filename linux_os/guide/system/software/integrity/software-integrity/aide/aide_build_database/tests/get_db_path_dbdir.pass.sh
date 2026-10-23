@@ -1,17 +1,17 @@
 #!/bin/bash
 # packages = aide
+# platform = multi_platform_almalinux,multi_platform_debian,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_ubuntu
 
 DB_PATH=/var/lib/aide
 
-{{% if 'ubuntu' in product or 'sle' in product or 'slmicro' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product or 'sle' in product or 'slmicro' in product %}}
 DB_NAME=aide.db
 DB_NAME_NEW=aide.db.new
-DB_CONF=/etc/aide/aide.conf
 {{% else %}}
 DB_NAME=aide.db.gz
 DB_NAME_NEW=aide.db.new.gz
-DB_CONF=/etc/aide.conf
 {{% endif %}}
+DB_CONF={{{ aide_conf_path }}}
 
 {{% if 'ubuntu' in product or 'debian' in product %}}
 aideinit -y -f

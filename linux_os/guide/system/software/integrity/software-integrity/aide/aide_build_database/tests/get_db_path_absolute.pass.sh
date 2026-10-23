@@ -3,15 +3,14 @@
 
 DB_PATH=/var/lib/aide
 
-{{% if 'ubuntu' in product or 'sle' in product or 'slmicro' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product or 'sle' in product or 'slmicro' in product %}}
 DB_NAME=aide.db
 DB_NAME_NEW=aide.db.new
-DB_CONF=/etc/aide/aide.conf
 {{% else %}}
 DB_NAME=aide.db.gz
 DB_NAME_NEW=aide.db.new.gz
-DB_CONF=/etc/aide.conf
 {{% endif %}}
+DB_CONF={{{ aide_conf_path }}}
 
 {{% if 'ubuntu' in product or 'debian' in product %}}
 # On Debian derivatives aide has no compiled-in configuration file location, so
