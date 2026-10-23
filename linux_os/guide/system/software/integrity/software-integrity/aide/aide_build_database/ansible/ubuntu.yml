@@ -12,7 +12,7 @@
 - name: "{{{ rule_title }}} - Check if DB Path in /etc/aide/aide.conf Is Already Set"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
-    regexp: ^#?(\s*)(database=)(.*)$
+    regexp: ^#?(\s*)(database(?:_in)?=)(.*)$
     state: absent
   check_mode: true
   changed_when: false
@@ -30,7 +30,7 @@
 - name: "{{{ rule_title }}} - Fix DB Path in Config File if Necessary"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
-    regexp: ^#?(\s*)(database)(\s*)=(\s*)(.*)$
+    regexp: ^#?(\s*)(database(?:_in)?)(\s*)=(\s*)(.*)$
     line: \2\3=\4file:/var/lib/aide/aide.db
     backrefs: true
   when: database_replace.found > 0
@@ -46,7 +46,11 @@
 - name: "{{{ rule_title }}} - Ensure the Default DB Path is Added"
   ansible.builtin.lineinfile:
     path: /etc/aide/aide.conf
+{{% if product == 'ubuntu2204' %}}
     line: database=file:/var/lib/aide/aide.db
+{{% else %}}
+    line: database_in=file:/var/lib/aide/aide.db
+{{% endif %}}
     create: true
     mode: 0644
   when: database_replace.found == 0
