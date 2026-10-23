@@ -51,3 +51,6 @@ template:
     name: audit_rules_privileged_commands
     vars:
         path: /usr/bin/gpasswd
+        key@rhel9: identity
+        rhel9_stig_arch_mode@rhel9: 'true'
+        rhel9_stig_execve@rhel9: 'true'

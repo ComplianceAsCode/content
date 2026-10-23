@@ -9,8 +9,15 @@ description: |-
     <br /><br />
     To configure the system to ignore the <tt>CtrlAltDelBurstAction</tt>
     {{% if product != "rhcos4" %}}
+    {{% if product == "rhel8" or product == "rhel9" %}}
+    setting, create <tt>/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf</tt>
+    with the following content:
+    <pre>[Manager]
+    CtrlAltDelBurstAction=none</pre>
+    {{% else %}}
     setting, add or modify the following to <tt>/etc/systemd/system.conf</tt>:
     <pre>CtrlAltDelBurstAction=none</pre>
+    {{% endif %}}
     {{% else %}}
     setting, create a <tt>MachineConfig</tt> similar to the following:
     <pre>
@@ -74,16 +81,32 @@ references:
 ocil_clause: 'the system is configured to reboot when Ctrl-Alt-Del is pressed more than 7 times in 2 seconds.'
 
 ocil: |-
+    {{% if product == "rhel8" or product == "rhel9" %}}
+    To ensure the system is configured to ignore the Ctrl-Alt-Del setting,
+    enter the following command:
+    <pre>$ sudo grep -iR CtrlAltDelBurstAction /etc/systemd/system.conf /etc/systemd/system.conf.d/*.conf</pre>
+    The output should return:
+    <pre>/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf:CtrlAltDelBurstAction=none</pre>
+    Verify that the setting occurs in a <tt>[Manager]</tt> section.
+    {{% else %}}
     To ensure the system is configured to ignore the Ctrl-Alt-Del setting,
     enter the following command:
     <pre>$ sudo grep -i ctrlaltdelburstaction /etc/systemd/system.conf</pre>
     The output should return:
     <pre>CtrlAltDelBurstAction=none</pre>
+    {{% endif %}}
 
 fixtext: |-
+    {{% if product == "rhel8" or product == "rhel9" %}}
+    Create the <tt>/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf</tt> drop-in with the following content:
+
+    <pre>[Manager]
+    CtrlAltDelBurstAction=none</pre>
+    {{% else %}}
     Edit "/etc/systemd/system.conf" and add or edit the following line:
 
     CtrlAltDelBurstAction=none
+    {{% endif %}}
 
 srg_requirement: 'The systemd Ctrl-Alt-Delete burst key sequence in {{{ full_name }}} must be disabled.'
 

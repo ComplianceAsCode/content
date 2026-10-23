@@ -5,6 +5,12 @@
     <criteria operator="OR">
       {{% if product in ["ol7", "ol8", "ol9", "rhel8"] %}}
       <criterion comment="make sure a password is defined in {{{ grub2_boot_path }}}/user.cfg" test_ref="test_grub2_password_usercfg" />
+      {{% elif product == "rhel9" %}}
+      <criterion comment="make sure a password is defined in /boot/grub2/user.cfg" test_ref="test_grub2_password_usercfg" />
+      <criteria operator="AND">
+        <criterion comment="/boot/grub2/user.cfg does not exist" test_ref="test_grub2_password_usercfg_absent" />
+        <criterion comment="make sure a password is defined in /boot/efi/EFI/redhat/user.cfg" test_ref="test_grub2_password_efi_usercfg" />
+      </criteria>
       {{% else %}}
       <criteria operator="AND">
         <criteria comment="check both files to account for procedure change in documentation" operator="OR">
@@ -36,6 +42,24 @@
     <ind:pattern operation="pattern match">^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product == "rhel9" %}}
+  <unix:file_test check="all" check_existence="none_exist" comment="/boot/grub2/user.cfg does not exist" id="test_grub2_password_usercfg_absent" version="1">
+    <unix:object object_ref="object_grub2_password_usercfg_file" />
+  </unix:file_test>
+  <unix:file_object id="object_grub2_password_usercfg_file" version="1">
+    <unix:filepath>/boot/grub2/user.cfg</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="make sure a password is defined in /boot/efi/EFI/redhat/user.cfg" id="test_grub2_password_efi_usercfg" version="1">
+    <ind:object object_ref="object_grub2_password_efi_usercfg" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_grub2_password_efi_usercfg" version="1">
+    <ind:filepath>/boot/efi/EFI/redhat/user.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
 
   {{% if product not in ["ol7", "ol8", "ol9", "rhel8"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="make sure a password is defined in {{{ grub2_boot_path }}}/grub.cfg" id="test_grub2_password_grubcfg" version="1">

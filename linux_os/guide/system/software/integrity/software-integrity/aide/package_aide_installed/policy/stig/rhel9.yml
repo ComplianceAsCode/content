@@ -1,0 +1,83 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the AIDE package installed.
+
+vuldiscussion: |-
+    Without verification of the security functions, security functions may not operate correctly, and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.
+
+checktext: |-
+    Verify that {{{ full_name }}} has the Advanced Intrusion Detection Environment (AIDE) package installed with the following command:
+
+    $ sudo dnf list --installed aide
+
+    Example output:
+
+    aide.x86_64          0.16.100.el9
+
+    If AIDE is not installed, ask the system administrator (SA) how file integrity checks are performed on the system.
+
+    If there is no application installed to perform integrity checks, this is a finding.
+
+    If AIDE is installed, check if it has been initialized with the following command:
+
+    $ sudo /usr/sbin/aide --check
+
+    If the output is "Couldn't open file /var/lib/aide/aide.db.gz for reading", this is a finding.
+
+fixtext: |-
+    Install AIDE, initialize it, and perform a manual check.
+
+    Install AIDE:
+
+    $ sudo dnf install aide
+
+    Initialize AIDE:
+
+    $ sudo /usr/sbin/aide --init
+
+    Example output:
+
+    Start timestamp: 2026-07-13 11:49:19 -0400 (AIDE 0.19.2)
+    AIDE successfully initialized database.
+    New AIDE database written to /var/lib/aide/aide.db.new.gz
+
+    Number of entries:      186298
+
+    ---------------------------------------------------
+    The attributes of the (uncompressed) database(s):
+    ---------------------------------------------------
+
+    /var/lib/aide/aide.db.new.gz
+     SHA256    : StfQ7hBYTf83ZEBRy7I+ufhA4Ewhdpsg
+                 0LOAvlSGddY=
+     SHA512    : Vo8jkWTpcRoBfjf3TFcYqANkbpMaol16
+                 2SjE+6gnWFd5qqM6tQYUZu4TiKCIOqnd
+                 SM6thAjSZbsKluqI7aHDNQ==
+     STRIBOG256: VEslFSImVozED21UckdDaw2hmgVJawCC
+                 FT+rBRof3GA=
+     STRIBOG512: GCm3WUKXA2YRo/zAbFK8gsQBxecLgUlT
+                 bTlkcEUOP8OKQhFlh4ipbVQhwh9jf/fc
+                 fidl+HNDHFid62mM/ETmcg==
+     SHA512/256: cR1SOYUC3oN1R2e4UQlLW/juiZceL5E7
+                 xDbRpCSK+DI=
+     SHA3-256  : GyR262apcKopWo9TOe3zLIfP9YDq7N3/
+                 26ZIUpe1xt4=
+     SHA3-512  : r5xi/0GmfLv1SCZ0vb8GDWPNUicp42X7
+                 ZVZD8xffjLPl7XgyefAg5VTy2qFTnbuu
+                 kq83J3d3cu6eRiAzmcj6zg==
+
+    End timestamp: 2026-07-13 11:49:50 -0400 (run time: 0m 31s)
+
+    The new database will need to be renamed to be read by AIDE:
+
+    $ sudo mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+    Perform a manual check:
+
+    $ sudo /usr/sbin/aide --check
+
+    Example output:
+
+    Start timestamp: 2026-07-13 11:53:34 -0400 (AIDE 0.19.2)
+    AIDE found NO differences between database and filesystem. Looks okay!!
+
+    ...
