@@ -516,6 +516,12 @@ INSTALL_COMMANDS = dict(
     debian=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )
 
+# apt-cache policy prints a stanza even for a name that only another package
+# mentions, such as dconf on Debian, which dconf-cli refers to. So the apt
+# query prints the candidate version, and nothing when there is none.
+_APT_QUERY = ("apt-cache policy | grep -q ' Packages$' && "
+              "(apt-cache policy {package} | grep 'Candidate:' | grep -v '(none)' || true)")
+
 # Commands that ask the repositories of the tested system about a package.
 # Each prints what offers the package, prints nothing when the repositories
 # lack it, and fails when it can't read them. zypper search exits 104 when
@@ -531,8 +537,8 @@ QUERY_COMMANDS = dict(
     rhel10="dnf -q repoquery --whatprovides {package}",
     sles=("zypper -n -q search --match-exact --provides {package} >/dev/null; "
           "case $? in 0) echo {package} ;; 104) ;; *) exit 1 ;; esac"),
-    ubuntu="apt-cache policy | grep -q ' Packages$' && apt-cache policy {package}",
-    debian="apt-cache policy | grep -q ' Packages$' && apt-cache policy {package}",
+    ubuntu=_APT_QUERY,
+    debian=_APT_QUERY,
 )
 
 
