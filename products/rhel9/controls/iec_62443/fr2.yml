@@ -1,0 +1,132 @@
+---
+# IEC 62443-4-2 FR 2: Use control
+controls:
+    - id: CR 2.1
+      title: Authorization enforcement
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-3
+          - id: CR 2.1 RE(1+2)
+            title: Authorization enforcement for all users and permission mapping to roles
+            levels:
+                - sl2
+            status: automated
+            rules: []
+            controls:
+                - nist_800_53:ac-6
+                - nist_800_53:ac-3.7
+
+    - id: CR 2.2
+      title: Wireless use control
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-18
+
+    - id: HDR 2.4
+      title: Mobile code
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:si-3
+          - nist_800_53:cm-7
+          - nist_800_53:sc-18
+          - id: HDR 2.4 RE(1)
+            title: Mobile code authenticity check
+            levels:
+                - sl2
+            status: pending
+            rules: []
+            controls:
+                - nist_800_53:si-7
+
+    - id: CR 2.5
+      title: Session lock
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-11
+
+    - id: CR 2.6
+      title: Remote session termination
+      levels:
+          - sl2
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-12
+          - nist_800_53:ac-17
+
+    - id: CR 2.8
+      title: Auditable events
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:au-2
+          - nist_800_53:au-3
+          - nist_800_53:au-12
+
+    - id: CR 2.9
+      title: Audit storage capacity
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:au-4
+
+    - id: CR 2.10
+      title: Response to audit processing failures
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:au-5
+
+    - id: CR 2.11
+      title: Timestamps
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:au-8
+          - id: CR 2.11 RE(1)
+            title: Time synchronization
+            levels:
+                - sl2
+            status: pending
+            rules: []
+            controls:
+                - nist_800_53:au-8.1
+
+    - id: CR 2.12
+      title: Non-repudiation
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:au-10
+
+    - id: HDR 2.13
+      title: Use of physical diagnostic and test interfaces
+      levels:
+          - sl2
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-3
+          - nist_800_53:cm-7

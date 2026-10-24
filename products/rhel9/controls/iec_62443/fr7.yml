@@ -1,0 +1,83 @@
+---
+# IEC 62443-4-2 FR 7: Resource availability (RA)
+controls:
+    - id: CR 7.1
+      title: Denial of service protection
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:sc-5
+          - id: CR 7.1 RE(1)
+            title: Manage communication load from component
+            levels:
+                - sl2
+            status: pending
+            rules: []
+            controls:
+                - nist_800_53:sc-5.2
+
+    - id: CR 7.2
+      title: Resource management
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:sc-6
+
+    - id: CR 7.3
+      title: Control system backup
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:cp-9
+          - id: CR 7.3 RE(1)
+            title: Backup integrity verification
+            levels:
+                - sl2
+            status: pending
+            rules: []
+            controls:
+                - nist_800_53:cp-9.1
+
+    - id: CR 7.4
+      title: Control system recovery and reconstitution
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:cp-10
+
+    - id: CR 7.6
+      title: Network and security configuration settings
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:cm-2
+          - nist_800_53:cm-6
+
+    - id: CR 7.7
+      title: Least functionality
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:cm-7
+
+    - id: CR 7.8
+      title: Control system component inventory
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:cm-8
+          - nist_800_53:cm-8.1

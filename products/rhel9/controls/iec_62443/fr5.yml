@@ -1,0 +1,39 @@
+---
+# IEC 62443-4-2 FR 5: Restricted data flow (RDF)
+controls:
+    - id: CR 5.1
+      title: Network segmentation
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:sc-7
+          - nist_800_53:ac-4
+
+    - id: NDR 5.2
+      title: Zone boundary protection
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:sc-7
+          - id: NDR 5.2 RE(1)
+            title: Deny all, permit by exception
+            levels:
+                - sl2
+            status: pending
+            rules: []
+            controls:
+                - nist_800_53:sc-7.5
+
+    - id: NDR 5.3
+      title: General purpose, person-to-person communication restrictions
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:sc-7
+          - nist_800_53:ac-4

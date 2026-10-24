@@ -1,0 +1,152 @@
+---
+# IEC 62443-4-2 FR 1: Identification and authentication control
+controls:
+    - id: CR 1.1
+      title: Human user identification and authentication
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ia-2
+          - id: CR 1.1 RE(1)
+            title: Unique identification and authentication
+            levels:
+                - sl2
+            status: automated
+            rules: []
+            controls:
+                - nist_800_53:ia-4
+
+    - id: CR 1.2
+      title: Software process and device identification and authentication
+      levels:
+          - sl2
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ia-3
+
+    - id: CR 1.3
+      title: Account management
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-2
+
+    - id: CR 1.4
+      title: Identifier management
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ia-4
+
+    - id: CR 1.5
+      title: Authenticator management
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ia-5
+
+    - id: NDR 1.6
+      title: Wireless access management
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-18
+          - id: NDR 1.6 RE(1)
+            title: Unique identification and authentication
+            levels:
+                - sl2
+            status: pending
+            rules: []
+            controls:
+                - nist_800_53:ac-18.1
+                - nist_800_53:ia-3.1
+
+    - id: CR 1.7
+      title: Strength of password-based authentication
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ia-5
+          - nist_800_53:ia-5.1
+
+    - id: CR 1.8
+      title: Public key infrastructure certificates
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:ia-5.2
+          - nist_800_53:sc-17
+
+    - id: CR 1.9
+      title: Strength of public key-based authentication
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:ia-5.2
+          - nist_800_53:ia-7
+          - nist_800_53:sc-12
+          - nist_800_53:sc-13
+
+    - id: CR 1.10
+      title: Authenticator feedback
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:ia-6
+
+    - id: CR 1.11
+      title: Unsuccessful login attempts
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-7
+
+    - id: CR 1.12
+      title: System use notification
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-8
+
+    - id: NDR 1.13
+      title: Access via untrusted networks
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:ac-17
+          - nist_800_53:sc-7
+
+    - id: CR 1.14
+      title: Strength of symmetric key-based authentication
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:sc-12
+          - nist_800_53:sc-13
