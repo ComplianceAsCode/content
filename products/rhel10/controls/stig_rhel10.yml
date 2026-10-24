@@ -138,15 +138,6 @@ controls:
       rules:
           - package_tuned_removed
       status: automated
-    - id: RHEL-10-200050
-      levels:
-          - medium
-      title: RHEL 10 must not have a Trivial File Transfer Protocol (TFTP) server package installed unless
-          it is required by the mission, and if required, the TFTP daemon must be configured to operate
-          in secure mode.
-      rules:
-          - package_tftp-server_removed
-      status: automated
     - id: RHEL-10-200060
       levels:
           - medium
@@ -595,7 +586,7 @@ controls:
     - id: RHEL-10-300030
       levels:
           - high
-      title: RHEL 10 must be configured so that Secure Shell (SSH) clients use only DOD-approved encryption
+      title: RHEL 10 must be configured so that Secure Shell (SSH) clients use only DoW-approved encryption
           ciphers employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality
           of SSH client connections.
       rules:
@@ -605,7 +596,7 @@ controls:
     - id: RHEL-10-300040
       levels:
           - high
-      title: RHEL 10 must be configured so that Secure Shell (SSH) servers use only DOD-approved encryption
+      title: RHEL 10 must be configured so that Secure Shell (SSH) servers use only DoW-approved encryption
           ciphers employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality
           of SSH server connections.
       rules:
@@ -615,7 +606,7 @@ controls:
     - id: RHEL-10-300050
       levels:
           - high
-      title: RHEL 10 must be configured so that Secure Shell (SSH) clients use only DOD-approved Message
+      title: RHEL 10 must be configured so that Secure Shell (SSH) clients use only DoW-approved Message
           Authentication Codes (MACs) employing FIPS 140-3-validated cryptographic hash algorithms to
           protect the confidentiality of SSH client connections.
       rules:
@@ -625,7 +616,7 @@ controls:
     - id: RHEL-10-300060
       levels:
           - high
-      title: RHEL 10 must be configured so that Secure Shell (SSH) servers use only DOD-approved Message
+      title: RHEL 10 must be configured so that Secure Shell (SSH) servers use only DoW-approved Message
           Authentication Codes (MACs) employing FIPS 140-3-validated cryptographic hash algorithms to
           protect the confidentiality of SSH server connections.
       rules:
@@ -642,7 +633,7 @@ controls:
     - id: RHEL-10-300080
       levels:
           - high
-      title: RHEL 10 must implement DOD-approved encryption in the bind package.
+      title: RHEL 10 must implement DoW-approved encryption in the bind package.
       rules:
           - configure_bind_crypto_policy
       status: automated
@@ -1762,7 +1753,7 @@ controls:
       levels:
           - medium
       title: RHEL 10 must generate audit records for all account creations, modifications, disabling,
-          and termination events that affect "/etc/opasswd".
+          and termination events that affect "/etc/security/opasswd".
       rules:
           - audit_rules_usergroup_modification_opasswd
       status: automated
@@ -1836,7 +1827,7 @@ controls:
     - id: RHEL-10-600000
       levels:
           - medium
-      title: RHEL 10 must require a boot loader superuser password.
+      title: RHEL 10 must require authentication upon booting into single-user and maintenance modes.
       rules:
           - grub2_password
       status: automated
@@ -1858,19 +1849,19 @@ controls:
     - id: RHEL-10-600100
       levels:
           - medium
-      title: RHEL 10 must, for new users or password changes, have a 60-day maximum password lifetime
-          restriction for user account passwords in "/etc/login.defs".
+      title: RHEL 10 user account passwords for new users or password changes must have a 180-day maximum
+          password lifetime restriction in /etc/login.defs.
       rules:
           - accounts_maximum_age_login_defs
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
       status: automated
     - id: RHEL-10-600110
       levels:
           - medium
-      title: RHEL 10 must, for user account passwords, have a 60-day maximum password lifetime restriction.
+      title: RHEL 10 must, for user account passwords, have a 180-day maximum password lifetime restriction
       rules:
           - accounts_password_set_max_life_existing
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
       status: automated
     - id: RHEL-10-600120
       levels:
@@ -2299,7 +2290,7 @@ controls:
     - id: RHEL-10-700010
       levels:
           - medium
-      title: RHEL 10 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+      title: RHEL 10 must display the Standard Mandatory DoW Notice and Consent Banner before granting
           local or remote access to the system via a Secure Shell (SSH) login.
       rules:
           - sshd_enable_warning_banner
@@ -2307,7 +2298,7 @@ controls:
     - id: RHEL-10-700020
       levels:
           - medium
-      title: RHEL 10 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+      title: RHEL 10 must display the Standard Mandatory DoW Notice and Consent Banner before granting
           local or remote access to the system via a graphical user login.
       rules:
           - dconf_gnome_login_banner_text
@@ -2325,7 +2316,7 @@ controls:
     - id: RHEL-10-700040
       levels:
           - medium
-      title: RHEL 10 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+      title: RHEL 10 must display the Standard Mandatory DoW Notice and Consent Banner before granting
           local or remote access to the system via a command line user login.
       rules:
           - banner_etc_issue
@@ -2834,7 +2825,7 @@ controls:
     - id: RHEL-10-700920
       levels:
           - medium
-      title: RHEL 10 must automatically exit interactive command shell user sessions after 15 minutes
+      title: RHEL 10 must automatically exit interactive command shell user sessions after 10 minutes
           of inactivity.
       rules:
           - accounts_tmout
@@ -3034,7 +3025,7 @@ controls:
     - id: RHEL-10-701210
       levels:
           - medium
-      title: RHEL 10 must disable file system automount function unless required.
+      title: RHEL 10 must disable file system automount function.
       rules:
           - service_autofs_disabled
       status: automated
