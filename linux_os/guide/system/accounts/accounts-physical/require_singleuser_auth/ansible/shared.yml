@@ -5,17 +5,18 @@
 # disruption = low
 
 {{% if 'rhel' not in product and product != 'fedora' and 'ol' not in families and 'suse' not in families and 'debian' not in product %}}
+{{% if 'ol' in families -%}}
+{{% set rescue_execstart = "ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue" %}}
+{{%- else -%}}
+{{% set rescue_execstart = 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' %}}
+{{%- endif %}}
 - name: "{{{ rule_title }}} - Require single user mode password"
   ansible.builtin.lineinfile:
-      create: yes
-      dest: /usr/lib/systemd/system/rescue.service
-      regexp: "^#?ExecStart="
-      {{% if 'ol' in families -%}}
-      line: "ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue"
-      {{%- else -%}}
-      line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
-      {{%- endif %}}
-      mode: 0644
+    create: yes
+    dest: /usr/lib/systemd/system/rescue.service
+    regexp: "^#?ExecStart="
+    line: '{{{ rescue_execstart }}}'
+    mode: 0644
 {{% else %}}
 - name: "{{{ rule_title }}} - find files which already override Execstart of rescue.service"
   ansible.builtin.find:
@@ -45,5 +46,4 @@
       - "-{{% if 'debian' in product %}}/lib{{% else %}}/usr/lib{{% endif %}}/systemd/systemd-sulogin-shell rescue"
     mode: '0644'
   loop: "{{ rescue_service_remediation_target_file }}"
-
 {{% endif %}}
