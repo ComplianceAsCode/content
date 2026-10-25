@@ -1,13 +1,19 @@
+{{%- if 'ubuntu' in product or 'debian' in product %}}
+  {{%- set package = "tftp-hpa" %}}
+{{%- else %}}
+  {{%- set package = "tftp" %}}
+{{%- endif %}}
+
 documentation_complete: true
 
 
-title: 'Remove tftp Daemon'
+title: 'Remove {{{ package }}} Daemon'
 
 description: |-
     Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol,
     typically used to automatically transfer configuration or boot files between systems.
     TFTP does not support authentication and can be easily hacked. The package
-    <tt>tftp</tt> is a client program that allows for connections to a <tt>tftp</tt> server.
+    <tt>{{{ package }}}</tt> is a client program that allows for connections to a <tt>{{{ package }}}</tt> server.
 
 rationale: |-
     It is recommended that TFTP be removed, unless there is a specific need
@@ -28,9 +34,9 @@ references:
     srg: SRG-OS-000074-GPOS-00042
 
 
-ocil: '{{{ describe_package_remove(package="tftp") }}}'
+ocil: '{{{ describe_package_remove(package=package) }}}'
 
 template:
     name: package_removed
     vars:
-        pkgname: tftp
+        pkgname: {{{ package }}}
