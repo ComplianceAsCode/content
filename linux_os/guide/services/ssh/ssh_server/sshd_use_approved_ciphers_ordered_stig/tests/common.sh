@@ -1,6 +1,6 @@
 #!/bin/bash
 
-{{%- if product == 'ubuntu2404' %}}
+{{%- if product == 'ubuntu2404' or 'debian' in product %}}
 sshd_approved_ciphers="aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr"
 sshd_scrambled_ciphers="aes128-gcm@openssh.com,aes256-gcm@openssh.com,aes256-ctr,aes128-ctr"
 {{%- elif product == "ubuntu2204" %}}

@@ -2,7 +2,11 @@
 {{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 {{% set sufix_conf="(\s.*)?" %}}
 {{% set prefix_conf="^\s*Ciphers\s*" %}}
+{{% if 'debian' in product %}}
+{{% set ciphers=["aes256-gcm@openssh.com","aes128-gcm@openssh.com","aes256-ctr","aes128-ctr"] %}}
+{{% else %}}
 {{% set ciphers=["aes256-ctr","aes192-ctr","aes128-ctr"] %}}
+{{% endif %}}
 {{% set ciphers_regex=prefix_conf ~ "(?=[\w-])" "(\\b" ~ ciphers|join("\\b,?)?(\\b") ~ ")?" ~ sufix_conf ~ "[\\s]*(?:#.*)?$" %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">

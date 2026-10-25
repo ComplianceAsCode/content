@@ -2,7 +2,11 @@
 {{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 {{% set sufix_conf="(\s.*)?" %}}
 {{% set prefix_conf="^\s*MACs\s*" %}}
+{{% if 'debian' in product %}}
+{{% set macs=["hmac-sha2-512-etm@openssh.com","hmac-sha2-256-etm@openssh.com","hmac-sha2-512","hmac-sha2-256"] %}}
+{{% else %}}
 {{% set macs=["hmac-sha2-512","hmac-sha2-256"] %}}
+{{% endif %}}
 {{% set macs_regex=prefix_conf ~ "(?=[\w-])" "(\\b" ~ macs|join("\\b,?)?(\\b") ~ ")?" ~ sufix_conf ~ "[\\s]*(?:#.*)?$" %}}
 <def-group>
   <definition class="compliance" id="sshd_use_approved_macs_ordered_stig" version="1">
