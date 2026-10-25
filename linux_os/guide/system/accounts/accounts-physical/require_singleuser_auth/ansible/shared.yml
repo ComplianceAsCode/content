@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if 'rhel' not in product and product != 'fedora' and 'ol' not in families and 'suse' not in families %}}
+{{% if 'rhel' not in product and product != 'fedora' and 'ol' not in families and 'suse' not in families and 'debian' not in product %}}
 - name: "{{{ rule_title }}} - Require single user mode password"
   ansible.builtin.lineinfile:
       create: yes
@@ -42,7 +42,7 @@
     option: "ExecStart"
     values:
       - ""
-      - "-/usr/lib/systemd/systemd-sulogin-shell rescue"
+      - "-{{% if 'debian' in product %}}/lib{{% else %}}/usr/lib{{% endif %}}/systemd/systemd-sulogin-shell rescue"
     mode: '0644'
   loop: "{{ rescue_service_remediation_target_file }}"
 
