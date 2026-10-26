@@ -1,10 +1,16 @@
+{{%- if 'ubuntu' in product or 'debian' in product %}}
+  {{%- set package = "telnetd" %}}
+{{%- else %}}
+  {{%- set package = "telnet-server" %}}
+{{%- endif %}}
+
 documentation_complete: true
 
 
-title: 'Uninstall telnet-server Package'
+title: 'Uninstall {{{ package }}} Package'
 
 description: |-
-    {{{ describe_package_remove(package="telnet-server") }}}
+    {{{ describe_package_remove(package=package) }}}
 
 rationale: |-
     It is detrimental for operating systems to provide, or install by default,
@@ -18,7 +24,7 @@ rationale: |-
     remote session. If a privileged user were to login using this service, the
     privileged user password could be compromised.
     <br />
-    Removing the <tt>telnet-server</tt> package decreases the risk of the
+    Removing the <tt>{{{ package }}}</tt> package decreases the risk of the
     telnet service's accidental (or intentional) activation.
 
 severity: high
@@ -50,13 +56,13 @@ references:
     stigid@ol8: OL08-00-040000
     stigid@sle12: SLES-12-030000
 
-{{{ complete_ocil_entry_package_removed("telnet-server") }}}
+{{{ complete_ocil_entry_package_removed(package) }}}
 
-srg_requirement: '{{{ srg_requirement_package_removed("telnet-server") }}}'
+srg_requirement: '{{{ srg_requirement_package_removed(package) }}}'
 
-fixtext: '{{{ fixtext_package_removed("telnet-server") }}}'
+fixtext: '{{{ fixtext_package_removed(package) }}}'
 
 template:
     name: package_removed
     vars:
-        pkgname: telnet-server
+        pkgname: {{{ package }}}

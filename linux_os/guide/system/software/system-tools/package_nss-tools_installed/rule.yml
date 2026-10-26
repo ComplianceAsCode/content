@@ -1,14 +1,20 @@
+{{%- if 'ubuntu' in product or 'debian' in product %}}
+  {{%- set package = "libnss3-tools" %}}
+{{%- else %}}
+  {{%- set package = "nss-tools" %}}
+{{%- endif %}}
+
 documentation_complete: true
 
-title: 'Ensure nss-tools is installed'
+title: 'Ensure {{{ package }}} is installed'
 
 description: |-
-    {{{ describe_package_install(package="nss-tools") }}}
+    {{{ describe_package_install(package=package) }}}
 
 rationale: |-
     Network Security Services (NSS) is a set of libraries designed to
     support cross-platform development of security-enabled client and
-    server applications. Install the <tt>nss-tools</tt> package
+    server applications. Install the <tt>{{{ package }}}</tt> package
     to install command-line tools to manipulate the NSS certificate
     and key database.
 
@@ -23,16 +29,16 @@ references:
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000480-GPOS-00227
 
-{{{ complete_ocil_entry_package_installed("nss-tools") }}}
+{{{ complete_ocil_entry_package_installed(package) }}}
 
-fixtext: '{{{ fixtext_package_installed("nss-tools") }}}'
+fixtext: '{{{ fixtext_package_installed(package) }}}'
 
-srg_requirement: '{{{ srg_requirement_package_installed("nss-tools") }}}'
+srg_requirement: '{{{ srg_requirement_package_installed(package) }}}'
 
 
 template:
     name: package_installed
     vars:
-        pkgname: nss-tools
+        pkgname: {{{ package }}}
 
 platform: system_with_kernel

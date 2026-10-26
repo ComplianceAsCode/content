@@ -1,9 +1,15 @@
+{{%- if 'ubuntu' in product or 'debian' in product %}}
+  {{%- set package = "gnutls-bin" %}}
+{{%- else %}}
+  {{%- set package = "gnutls-utils" %}}
+{{%- endif %}}
+
 documentation_complete: true
 
-title: 'Ensure gnutls-utils is installed'
+title: 'Ensure {{{ package }}} is installed'
 
 description: |-
-    {{{ describe_package_install(package="gnutls-utils") }}}
+    {{{ describe_package_install(package=package) }}}
 
 rationale: |-
     GnuTLS is a secure communications library implementing the SSL, TLS and DTLS
@@ -25,15 +31,15 @@ references:
     ospp: FIA_X509_EXT.1,FIA_X509_EXT.1.1,FIA_X509_EXT.2
     srg: SRG-OS-000480-GPOS-00227
 
-{{{ complete_ocil_entry_package_installed("gnutls-utils") }}}
+{{{ complete_ocil_entry_package_installed(package) }}}
 
-fixtext: '{{{ fixtext_package_installed("gnutls-utils") }}}'
+fixtext: '{{{ fixtext_package_installed(package) }}}'
 
-srg_requirement: '{{{ srg_requirement_package_installed("gnutls-utils") }}}'
+srg_requirement: '{{{ srg_requirement_package_installed(package) }}}'
 
 template:
     name: package_installed
     vars:
-        pkgname: gnutls-utils
+        pkgname: {{{ package }}}
 
 platform: system_with_kernel
