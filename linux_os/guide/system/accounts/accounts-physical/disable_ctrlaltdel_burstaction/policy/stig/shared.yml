@@ -7,7 +7,7 @@ vuldiscussion: |-
 
 
 checktext: |-
-    {{% if product == "rhel8" or product == "rhel9" %}}
+    {{% if product in ["rhel8", "rhel9"] %}}
     Verify {{{ full_name }}} is configured to not reboot the system when Ctrl-Alt-Delete is pressed seven times within two seconds with the following command:
 
     $ sudo grep -iR CtrlAltDelBurstAction /etc/systemd/system.conf /etc/systemd/system.conf.d/*.conf
@@ -26,7 +26,7 @@ checktext: |-
     {{% endif %}}
 
 fixtext: |-
-    {{% if product == "rhel8" or product == "rhel9" %}}
+    {{% if product in ["rhel8", "rhel9"] %}}
     Configure the system to disable the CtrlAltDelBurstAction by creating the "/etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf" drop-in with the following content:
 
     [Manager]

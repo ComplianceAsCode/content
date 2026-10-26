@@ -4,13 +4,13 @@
 # complexity = low
 # disruption = low
 
-{{% if product in ["rhel8", "rhel9", "rhel10"] %}}
+{{% if "rhel" in families %}}
 - name: Create the systemd configuration drop-in directory
   ansible.builtin.file:
     path: /etc/systemd/system.conf.d
     state: directory
     owner: root
-    mode: u=rwx,g=rx,o=rx
+    mode: '0755'
 
 - name: Disable Ctrl-Alt-Del Burst Action
   ansible.builtin.copy:
@@ -19,7 +19,7 @@
       [Manager]
       CtrlAltDelBurstAction=none
     owner: root
-    mode: u=rw,g=r,o=r
+    mode: '0644'
 
 - name: Reload systemd configuration
   ansible.builtin.systemd:

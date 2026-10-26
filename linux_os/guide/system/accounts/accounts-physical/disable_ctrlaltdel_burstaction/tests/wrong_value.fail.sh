@@ -1,6 +1,6 @@
 #!/bin/bash
 
-{{% if product in ["rhel8", "rhel9", "rhel10"] %}}
+{{% if "rhel" in families %}}
 mkdir -p /etc/systemd/system.conf.d
 cat << EOF > /etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf
 [Manager]
