@@ -7,12 +7,8 @@ CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
 
 CUSTOM_SYSTEM_AUTH="/etc/authselect/$CUSTOM_PROFILE/system-auth"
-{{% if "rhel" in families %}}
-{{% set pam_pwquality_control = "required" %}}
-{{% else %}}
-{{% set pam_pwquality_control = "requisite" %}}
-{{% endif %}}
-if [ $(grep -c "^\s*password.*{{{ pam_pwquality_control }}}.*pam_pwquality\.so" $CUSTOM_SYSTEM_AUTH) -eq 0 ]; then
-    sed -i --follow-symlinks '0,/^password.*/s/^password.*/password     {{{ pam_pwquality_control }}}   pam_pwquality.so\n&/' $CUSTOM_SYSTEM_AUTH
+PAM_CONTROL_FLAG="{{{ "required" if "rhel" in families else "requisite" }}}"
+if [ $(grep -c "^\s*password.*$PAM_CONTROL_FLAG.*pam_pwquality\.so" $CUSTOM_SYSTEM_AUTH) -eq 0 ]; then
+    sed -i --follow-symlinks "0,/^password.*/s/^password.*/password     $PAM_CONTROL_FLAG   pam_pwquality.so\n&/" $CUSTOM_SYSTEM_AUTH
 fi
 authselect apply-changes -b

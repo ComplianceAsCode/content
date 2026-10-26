@@ -6,8 +6,5 @@
 SYSTEM_AUTH_FILE="/etc/pam.d/system-auth"
 
 # This modification will break the integrity checks done by authselect.
-{{% if "rhel" in families %}}
-sed -i --follow-symlinks -e '/^password\s*required\s*pam_pwquality\.so/ s/^#*/#/g' $SYSTEM_AUTH_FILE
-{{% else %}}
-sed -i --follow-symlinks -e '/^password\s*requisite\s*pam_pwquality\.so/ s/^#*/#/g' $SYSTEM_AUTH_FILE
-{{% endif %}}
+PAM_CONTROL_FLAG="{{{ "required" if "rhel" in families else "requisite" }}}"
+sed -i --follow-symlinks -e "/^password\s*$PAM_CONTROL_FLAG\s*pam_pwquality\.so/ s/^#*/#/g" $SYSTEM_AUTH_FILE
