@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10
-# packages = bootc,kernel-core
+# packages = bootc,kernel
 # remediation = bash
 
 # Look like a bootable container image being built: the remediation takes
