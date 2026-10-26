@@ -944,11 +944,7 @@ class ControlsManager:
                 # are still resolved strictly so typos are caught.
                 try:
                     subcontrols = self._get_foreign_subcontrols(policy_id, req)
-                except ValueError as exc:
-                    print(
-                        "Skipping cross-policy reference '%s' in control '%s': %s"
-                        % (sub_name, control.id, exc),
-                        file=sys.stderr)
+                except ValueError:
                     continue
             else:
                 subcontrols = [self.get_control(policy_id, sub_name)]
