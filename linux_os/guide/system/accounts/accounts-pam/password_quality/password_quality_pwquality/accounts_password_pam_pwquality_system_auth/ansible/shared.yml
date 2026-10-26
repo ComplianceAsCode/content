@@ -4,12 +4,5 @@
 # complexity = low
 # disruption = medium
 
-{{% if product == "rhel8" %}}
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'required', 'pam_pwquality.so', '', '', '^account.*required.*pam_permit\.so', rule_id=rule_id, rule_title=rule_title) }}}
-{{% elif product == "rhel9" %}}
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'required', 'pam_pwquality.so', '', '', '^account.*required.*pam_permit\.so', rule_id=rule_id, rule_title=rule_title) }}}
-{{% elif product == "rhel10" %}}
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'requisite', 'pam_pwquality.so', '', '', '^account.*required.*pam_permit\.so', rule_id=rule_id, rule_title=rule_title) }}}
-{{% else %}}
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'requisite', 'pam_pwquality.so', '', '', '^account.*required.*pam_permit\.so', rule_id=rule_id, rule_title=rule_title) }}}
-{{% endif %}}
+{{% set pam_pwquality_control = "required" if "rhel" in families else "requisite" %}}
+{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', pam_pwquality_control, 'pam_pwquality.so', '', '', '^account.*required.*pam_permit\.so', rule_id=rule_id, rule_title=rule_title) }}}

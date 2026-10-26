@@ -7,7 +7,7 @@ CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
 
 CUSTOM_SYSTEM_AUTH="/etc/authselect/$CUSTOM_PROFILE/system-auth"
-{{% if product == "rhel8" or product == "rhel9" %}}
+{{% if "rhel" in families %}}
 sed -i --follow-symlinks -e '/^password\s*required\s*pam_pwquality\.so/ s/^#*/#/g' $CUSTOM_SYSTEM_AUTH
 {{% else %}}
 sed -i --follow-symlinks -e '/^password\s*requisite\s*pam_pwquality\.so/ s/^#*/#/g' $CUSTOM_SYSTEM_AUTH

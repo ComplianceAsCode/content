@@ -3,7 +3,7 @@
 {{%- else %}}
   {{%- set openssl_cnf_path="/etc/pki/tls/openssl.cnf" %}}
 {{%- endif %}}
-{{% if product in ["rhel8", "rhel9"] %}}
+{{% if "rhel" in families %}}
   {{% set openssl_include_pattern="\\s*\\.include\\s*=\\s*/etc/crypto-policies/back-ends/opensslcnf.config\\s*$" %}}
 {{% else %}}
   {{% set openssl_include_pattern="\\s*\\.include\\s*(?:=\\s*)?/etc/crypto-policies/back-ends/opensslcnf.config\\s*$" %}}

@@ -1,13 +1,5 @@
 <def-group>
-{{% if product == "rhel8" %}}
-  {{% set pam_pwquality_control = "required" %}}
-{{% elif product == "rhel9" %}}
-  {{% set pam_pwquality_control = "required" %}}
-{{% elif product == "rhel10" %}}
-  {{% set pam_pwquality_control = "requisite" %}}
-{{% else %}}
-  {{% set pam_pwquality_control = "requisite" %}}
-{{% endif %}}
+{{% set pam_pwquality_control = "required" if "rhel" in families else "requisite" %}}
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("The PAM module pam_pwquality is used in system-auth", rule_title=rule_title) }}}
     <criteria comment="Condition for pam_pwquality in system-auth is satisfied">
