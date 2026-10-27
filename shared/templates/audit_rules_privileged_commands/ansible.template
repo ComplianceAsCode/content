@@ -76,6 +76,7 @@
       syscalls=["execve"],
       key=KEY,
       syscall_grouping=[],
+      require_key=True,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b32",
@@ -84,6 +85,7 @@
       syscalls=["execve"],
       key=KEY,
       syscall_grouping=[],
+      require_key=True,
       )|indent(4) }}}
 - name: {{{ rule_title }}} - Perform RHEL 9 remediation of Audit rules for {{{ PATH }}} 64 bit
   block:
@@ -94,6 +96,7 @@
       syscalls=["execve"],
       key=KEY,
       syscall_grouping=[],
+      require_key=True,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b64",
@@ -102,6 +105,7 @@
       syscalls=["execve"],
       key=KEY,
       syscall_grouping=[],
+      require_key=True,
       )|indent(4) }}}
   when: audit_arch == "b64"
 {{% else %}}
