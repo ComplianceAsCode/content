@@ -47,6 +47,9 @@ products/rhel10/controls/
 
 Each control file contains:
 - **Product-specific rules**: Only rules available for that product
+- **Flat control list**: Enhancements are top-level controls that reference
+  their base requirement with `controls: [<base id>]`. A base control does not
+  include its enhancements, but an enhancement cannot be selected without its base.
 - **NO Jinja2 guards**: Clean, simple YAML
 - **NO OSCAL metadata**: Lean files (OSCAL data retrieved separately when needed)
 - **Baseline levels**: Low, moderate, high applicability

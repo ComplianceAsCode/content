@@ -179,6 +179,12 @@
             return urlParams.get(param);
         }
 
+        // Natural sort for control IDs: ac-6.2 before ac-6.10.
+        const controlIdCollator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+        function compareControlIds(a, b) {
+            return controlIdCollator.compare(a.id, b.id);
+        }
+
 
         function initializeFamilyPage() {
             if (!EMBEDDED_DATA || !EMBEDDED_DATA.products) {
@@ -347,7 +353,7 @@
             const controlsContainer = document.getElementById('controls-in-family');
             controlsContainer.innerHTML = '';
 
-            const baseControls = familyControls.filter(c => !c.parent_id).sort((a, b) => a.id.localeCompare(b.id));
+            const baseControls = familyControls.filter(c => !c.parent_id).sort(compareControlIds);
             const enhByParent = {};
             familyControls.filter(c => c.parent_id).forEach(c => {
                 if (!enhByParent[c.parent_id]) enhByParent[c.parent_id] = [];
@@ -361,7 +367,7 @@
                               control.is_does_not_meet ? 'does_not_meet' :
                               control.is_not_applicable ? 'not_applicable' : 'pending';
                 const gapClass = control.has_rules ? '' : 'gap';
-                const enhancements = (enhByParent[control.id] || []).sort((a, b) => a.id.localeCompare(b.id));
+                const enhancements = (enhByParent[control.id] || []).sort(compareControlIds);
                 const enhAutoCount = enhancements.filter(e => e.is_automated).length;
 
                 const item = document.createElement('div');

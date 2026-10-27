@@ -88,20 +88,67 @@ def load_oscal_catalog(data_dir: Path) -> Dict[str, Any]:
 
 
 def _flatten_controls(controls_list, parent_id=None):
-    """Recursively flatten nested controls, adding parent_id and enhancements info."""
+    """Flatten controls, deriving parent_id from explicit base references.
+
+    Controls are stored flat: an enhancement carries ``controls: [<base id>]``
+    instead of being nested under its base. Nested dicts are still supported for
+    older control files.
+    """
     result = []
     for ctrl in controls_list:
         ctrl_copy = dict(ctrl)
+        refs = ctrl_copy.pop('controls', None) or []
+        nested = [c for c in refs if isinstance(c, dict)]
+        string_refs = [c for c in refs if isinstance(c, str)]
         if parent_id:
             ctrl_copy['parent_id'] = parent_id
-        nested = ctrl_copy.pop('controls', None)
+        elif string_refs:
+            ctrl_copy['parent_id'] = string_refs[0]
         if nested:
             ctrl_copy['enhancements'] = [str(c.get('id', '')) for c in nested]
-            result.append(ctrl_copy)
+        result.append(ctrl_copy)
+        if nested:
             result.extend(_flatten_controls(nested, parent_id=str(ctrl.get('id', ''))))
-        else:
-            result.append(ctrl_copy)
     return result
+
+
+def _control_id_sort_key(control_id):
+    """Natural sort key for control IDs (ac-6.2 before ac-6.10)."""
+    return [
+        (0, int(part)) if part.isdigit() else (1, part)
+        for part in re.split(r'(\d+)', control_id)
+    ]
+
+
+def _build_control_hierarchy(controls):
+    """Rebuild parent/child links from control references and IDs.
+
+    Flat control files link an enhancement to its base via
+    ``controls: [<base id>]``, which ``_flatten_controls`` exposes as
+    ``parent_id``. Derive any missing parent from the ID (``ac-6.2`` ->
+    ``ac-6``) and populate each base control's ``enhancements`` list, which
+    the control detail page uses.
+    """
+    controls_by_id = {c.get('id', '').lower(): c for c in controls}
+    children = {}
+    for ctrl in controls:
+        ctrl_id = ctrl.get('id', '').lower()
+        parent_id = (ctrl.get('parent_id') or '').lower() or None
+        if not parent_id and '.' in ctrl_id:
+            candidate = ctrl_id.rsplit('.', 1)[0]
+            if candidate in controls_by_id:
+                parent_id = candidate
+        if parent_id:
+            ctrl['parent_id'] = parent_id
+            children.setdefault(parent_id, []).append(ctrl_id)
+
+    for ctrl in controls:
+        ctrl_id = ctrl.get('id', '').lower()
+        existing = {str(e).lower() for e in (ctrl.get('enhancements') or [])}
+        direct = set(children.get(ctrl_id, []))
+        if existing or direct:
+            ctrl['enhancements'] = sorted(existing | direct, key=_control_id_sort_key)
+    return controls
 
 
 def load_product_controls(product: str, repo_root: Path) -> Dict[str, Any]:
@@ -124,6 +171,7 @@ def load_product_controls(product: str, repo_root: Path) -> Dict[str, Any]:
         family_data = load_yaml(family_file)
         if 'controls' in family_data:
             controls.extend(_flatten_controls(family_data['controls']))
+    controls = _build_control_hierarchy(controls)
 
     return {
         'product': product,

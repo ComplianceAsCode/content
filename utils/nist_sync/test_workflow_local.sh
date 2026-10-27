@@ -11,10 +11,10 @@ echo ""
 
 PRODUCTS="rhel8 rhel9 rhel10 fedora"
 
-# Recursively count controls (base + nested enhancements) and rule
-# selections across all family files in a directory. Uses ruamel.yaml
-# instead of indentation-sensitive grep since enhancements are nested
-# under their base control at varying indentation depths.
+# Count controls and rule selections across all family files in a directory.
+# Control files are flat: enhancement-to-base links are string references
+# under 'controls:', so only dict entries are counted recursively (legacy
+# nested files are still handled).
 count_stats() {
     python3 - "$1" <<'PYEOF'
 import glob
@@ -29,9 +29,13 @@ def count(controls):
     controls_n = 0
     rules_n = 0
     for control in controls:
+        # Flat control files store enhancement-to-base links as strings.
+        if not isinstance(control, dict):
+            continue
         controls_n += 1
         rules_n += len(control.get("rules") or [])
-        sub_controls, sub_rules = count(control.get("controls") or [])
+        nested = [c for c in (control.get("controls") or []) if isinstance(c, dict)]
+        sub_controls, sub_rules = count(nested)
         controls_n += sub_controls
         rules_n += sub_rules
     return controls_n, rules_n
