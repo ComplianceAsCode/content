@@ -196,7 +196,9 @@ class AnsibleSnippetsProcessor:
         """
         Get the final list of processed Ansible tasks.
 
-        Package facts tasks are added at the beginning and end of package tasks.
+        Package facts tasks are added at the beginning and end of package tasks,
+        and the service facts are gathered before the package tasks too, since
+        their platform conditions may read ansible_facts.services.
 
         When there are special_service_block tasks, the service facts are
         gathered both before and after them: before, so the blocks can rely on
@@ -211,6 +213,8 @@ class AnsibleSnippetsProcessor:
         """
         tasks = [package_facts_task, *self.package_tasks,
                  copy.deepcopy(package_facts_task)]
+        if self.package_tasks:
+            tasks.insert(1, copy.deepcopy(service_facts_task))
         if self.service_tasks:
             tasks += [service_facts_task, *self.service_tasks,
                       copy.deepcopy(service_facts_task)]
