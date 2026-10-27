@@ -2,7 +2,7 @@
   {{%- set ssh_keysign_path="/usr/lib/ssh/ssh-keysign" %}}
 {{%- elif product in ["sle16", "slmicro6"] %}}
   {{%- set ssh_keysign_path="/usr/libexec/ssh/ssh-keysign" %}}
-{{%- elif 'ubuntu' in product %}}
+{{%- elif 'ubuntu' in product or 'debian' in product %}}
   {{%- set ssh_keysign_path="/usr/lib/openssh/ssh-keysign" %}}
 {{%- else %}}
   {{%- set ssh_keysign_path="/usr/libexec/openssh/ssh-keysign" %}}
