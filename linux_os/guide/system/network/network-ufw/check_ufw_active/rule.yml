@@ -22,4 +22,10 @@ fixtext: |-
     Enable the ufw by using the following command:  
     <pre>$ sudo ufw enable</pre>
 
+warnings:
+    - general: |-
+        Enabling ufw while connected over the network can lock you out of the
+        system. When the default incoming policy is deny, add a rule that allows
+        SSH, for example "ufw allow OpenSSH", before enabling ufw.
+
 platform: system_with_kernel and package[ufw]
