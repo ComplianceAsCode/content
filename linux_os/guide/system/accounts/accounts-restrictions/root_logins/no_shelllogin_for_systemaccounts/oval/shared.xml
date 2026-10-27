@@ -7,6 +7,11 @@
       <criterion comment="Test shell defined for RHEL 9 system UIDs"
       test_ref="test_shell_defined_rhel9_uid_range" />
     </criteria>
+{{% elif product == "rhel10" %}}
+    <criteria>
+      <criterion comment="Test shell defined for RHEL 10 system UIDs"
+      test_ref="test_shell_defined_rhel10_uid_range" />
+    </criteria>
 {{% else %}}
     <criteria operator="OR">
       <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs or drop-in files
@@ -137,7 +142,7 @@
   <!-- Get all /etc/passwd entries having shell defined as OVAL object -->
   <ind:textfilecontent54_object id="object_etc_passwd_entries" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-{{% if product == "rhel9" %}}
+{{% if product in ["rhel9", "rhel10"] %}}
     <ind:pattern operation="pattern match">^(?!(?:root|halt|sync|shutdown):).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?![^:]*?(?:nologin|false)$).*$</ind:pattern>
 {{% elif "ubuntu" in product or "sle" in product or "slmicro" in product %}}
     <ind:pattern operation="pattern match">^(?!root).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?!\/usr\/sbin\/nologin|\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt|\/bin\/false|\/usr\/bin\/false).*$</ind:pattern>
@@ -161,6 +166,22 @@
     <ind:subexpression datatype="int" operation="less than or equal">0</ind:subexpression>
   </ind:textfilecontent54_state>
   <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_1000_rhel9" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal">1000</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% elif product == "rhel10" %}}
+  <!-- RHEL 10 defines system accounts as nonexempt accounts with UIDs 1 through 999. -->
+  <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_rhel10_uid_range"
+  check="all" check_existence="any_exist" comment="RHEL 10 system UIDs having shell set"
+  version="1">
+    <ind:object object_ref="object_etc_passwd_entries" />
+    <ind:state state_ref="state_uid_less_than_or_equal_zero_rhel10" />
+    <ind:state state_ref="state_uid_greater_than_or_equal_1000_rhel10" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_uid_less_than_or_equal_zero_rhel10" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_1000_rhel10" version="1">
     <ind:subexpression datatype="int" operation="greater than or equal">1000</ind:subexpression>
   </ind:textfilecontent54_state>
 {{% endif %}}

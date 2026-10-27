@@ -19,15 +19,15 @@
 - name: {{{ rule_title }}} -  Disable Login Shell for System Accounts
   ansible.builtin.user:
     name: '{{ item.key }}'
-    shell: '{{{ "/usr/sbin/nologin" if product == "rhel9" else "/sbin/nologin" }}}'
+    shell: '{{{ "/usr/sbin/nologin" if product in ["rhel9", "rhel10"] else "/sbin/nologin" }}}'
   loop: '{{ local_users }}'
   when:
-{{% if product == "rhel9" %}}
+{{% if product in ["rhel9", "rhel10"] %}}
     - item.key not in ['root', 'halt', 'sync', 'shutdown']
 {{% else %}}
     - item.key not in ['root']
 {{% endif %}}
-{{% if product == "rhel9" %}}
+{{% if product in ["rhel9", "rhel10"] %}}
     - item.value[1]|int > 0
     - item.value[1]|int < 1000
     - "item.value[5] is not match('.*(nologin|false)$')"

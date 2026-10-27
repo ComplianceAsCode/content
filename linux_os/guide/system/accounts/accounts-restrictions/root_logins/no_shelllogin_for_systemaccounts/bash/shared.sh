@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 
-{{% if product == "rhel9" %}}
+{{% if product in ["rhel9", "rhel10"] %}}
 readarray -t systemaccounts < <(awk -F: '($3 > 0 && $3 < 1000 && \
   $1 !~ /^(root|halt|sync|shutdown)$/ && \
   $7 !~ /(nologin|false)$/) \
@@ -16,7 +16,7 @@ readarray -t systemaccounts < <(awk -F: '($3 < {{{ uid_min }}} && $1 != "root" \
 {{% endif %}}
 
 for systemaccount in "${systemaccounts[@]}"; do
-{{% if product == "rhel9" %}}
+{{% if product in ["rhel9", "rhel10"] %}}
     usermod -s /usr/sbin/nologin "$systemaccount"
 {{% else %}}
     usermod -s /sbin/nologin "$systemaccount"

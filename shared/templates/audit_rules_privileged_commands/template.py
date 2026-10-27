@@ -16,6 +16,10 @@ def preprocess(data, lang):
         data, parameter="rhel9_stig_arch_mode", default_value=False)
     data["rhel9_stig_execve"] = parse_template_boolean_value(
         data, parameter="rhel9_stig_execve", default_value=False)
+    data["rhel10_stig_arch_mode"] = parse_template_boolean_value(
+        data, parameter="rhel10_stig_arch_mode", default_value=False)
+    data["rhel10_stig_execve"] = parse_template_boolean_value(
+        data, parameter="rhel10_stig_execve", default_value=False)
     if lang == "oval":
         data["id"] = data["_rule_id"]
         data["title"] = "Record Any Attempts to Run " + name

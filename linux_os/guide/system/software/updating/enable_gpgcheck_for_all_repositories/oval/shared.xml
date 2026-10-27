@@ -1,5 +1,5 @@
 <def-group>
-{{% if product == "rhel9" %}}
+{{% if product in ["rhel9", "rhel10"] %}}
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("Ensure gpgcheck Is Enabled for All Package Repositories", rule_title=rule_title) }}}
     <criteria comment="Ensure every configured repository has gpgcheck enabled" operator="OR">

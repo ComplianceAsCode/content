@@ -15,7 +15,7 @@
       <!-- Test the {{{ audit_tool }}} case -->
       <criteria operator="AND">
         <extend_definition comment="audit {{{ audit_tool }}}" definition_ref="audit_rules_{{{ audit_tool }}}" />
-{{% if product in ["fedora", "rhel10"] or (product == "rhel9" and RHEL9_STIG_ARCH_MODE) %}}
+{{% if (product in ["fedora", "rhel10"] and not REQUIRE_KEY) or (product == "rhel9" and RHEL9_STIG_ARCH_MODE) %}}
         <criterion comment="audit {{{ audit_tool }}} 32-bit {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_{{{ audit_tool }}}_32bit" />
         <criteria operator="OR">
           <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ NAME }}} audit rule -->
@@ -50,6 +50,8 @@
     <ind:filepath operation="pattern match">{{{ filepath }}}</ind:filepath>
 {{% if product == "rhel9" and RHEL9_STIG_ARCH_MODE %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+{{{ arch_regex }}}{{% if RHEL9_STIG_EXECVE %}}-S[\s]+execve[\s]+{{% endif %}}-F[\s]+path={{{ PATH }}}{{{ perm_x }}}[\s]+(?:-k[\s]+|-F[\s]+key=){{{ KEY }}}[\s]*$</ind:pattern>
+{{% elif product == "rhel10" and RHEL10_STIG_ARCH_MODE %}}
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+{{{ arch_regex }}}{{% if RHEL10_STIG_EXECVE %}}-S[\s]+execve[\s]+{{% endif %}}-F[\s]+path={{{ PATH }}}{{{ perm_x }}}[\s]+(?:-k[\s]+|-F[\s]+key=){{{ KEY }}}[\s]*$</ind:pattern>
 {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+{{{ arch_regex }}}-F[\s]+path={{{ PATH }}}{{{ perm_x }}}[\s]+-F[\s]+auid>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset|-1)[\s]+{{{ key_pattern }}}</ind:pattern>
 {{% endif %}}
@@ -58,7 +60,7 @@
 {{% endmacro %}}
 
 {{% for audit_tool in ["augenrules", "auditctl"] %}}
-{{% if product in ["fedora", "rhel10"] or (product == "rhel9" and RHEL9_STIG_ARCH_MODE) %}}
+{{% if (product in ["fedora", "rhel10"] and not REQUIRE_KEY) or (product == "rhel9" and RHEL9_STIG_ARCH_MODE) %}}
 {{{ arpc_tftst(audit_tool, "32") }}}
 {{{ arpc_tftst(audit_tool, "64") }}}
 {{% else %}}

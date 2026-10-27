@@ -22,7 +22,7 @@
   
   <ind:textfilecontent54_object id="object_ensure_gpgcheck_globally_activated" comment="gpgcheck set in {{{ pkg_manager_config_file }}}" version="1">
     <ind:filepath>{{{ pkg_manager_config_file }}}</ind:filepath>
-{{% if product == "rhel9" %}}
+{{% if product in ["rhel9", "rhel10"] %}}
     <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*(?:1|(?i)(?:true|yes)(?-i))\s*$</ind:pattern>
 {{% else %}}
     <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*(1|True|yes)\s*$</ind:pattern>

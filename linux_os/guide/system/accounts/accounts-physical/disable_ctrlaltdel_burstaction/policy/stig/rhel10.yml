@@ -2,12 +2,15 @@ srg_requirement: |-
     {{{ full_name }}} must disable the systemd Ctrl-Alt-Delete burst key sequence.
 
 fixtext: |-
-    Configure {{{ full_name }}} to disable the "CtrlAltDelBurstAction".
+    Configure {{{ full_name }}} to disable the CtrlAltDelBurstAction by adding it to a drop-in file in a "/etc/systemd/system.conf.d/" configuration file:
 
-    Update the "/etc/systemd/system.conf" configuration file as follows:
+    If no drop-in file exists, create one with the following command:
 
-    $ sudo vi /etc/systemd/system.conf
+    $ sudo mkdir -p /etc/systemd/system.conf.d && sudo vi /etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf
 
+    Edit the file to contain the setting by adding the following text:
+
+    [Manager]
     CtrlAltDelBurstAction=none
 
     Reload the daemon for this change to take effect:
@@ -17,8 +20,8 @@ fixtext: |-
 checktext: |-
     Verify {{{ full_name }}} is configured to not reboot the system when Ctrl-Alt-Delete is pressed seven times within two seconds with the following command:
 
-    $ grep -iR CtrlAltDelBurstAction /etc/systemd/
-    /etc/systemd/system.conf:CtrlAltDelBurstAction=none
+    $ sudo grep -iR CtrlAltDelBurstAction /etc/systemd/system*
+    /etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf:CtrlAltDelBurstAction=none
 
     If the "CtrlAltDelBurstAction" is not set to "none", is commented out, or is missing, this is a finding.
 

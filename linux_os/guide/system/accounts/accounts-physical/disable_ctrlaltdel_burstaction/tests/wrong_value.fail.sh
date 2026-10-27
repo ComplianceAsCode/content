@@ -7,6 +7,7 @@ cat << EOF > /etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf
 CtrlAltDelBurstAction=poweroff-immediate
 EOF
 {{% else %}}
+# make sure the file exist
 touch /etc/systemd/system.conf
 
 if grep -q "^CtrlAltDelBurstAction=" /etc/systemd/system.conf; then

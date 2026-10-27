@@ -11,6 +11,8 @@
         <criterion comment="/boot/grub2/user.cfg does not exist" test_ref="test_grub2_password_usercfg_absent" />
         <criterion comment="make sure a password is defined in /boot/efi/EFI/redhat/user.cfg" test_ref="test_grub2_password_efi_usercfg" />
       </criteria>
+      {{% elif product == "rhel10" %}}
+      <criterion comment="make sure a password is defined in /boot/grub2/user.cfg" test_ref="test_grub2_password_usercfg" />
       {{% else %}}
       <criteria operator="AND">
         <criteria comment="check both files to account for procedure change in documentation" operator="OR">

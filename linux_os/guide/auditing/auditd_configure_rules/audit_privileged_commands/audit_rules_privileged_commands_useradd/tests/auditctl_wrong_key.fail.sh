@@ -1,6 +1,6 @@
 #!/bin/bash
+# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10
 # packages = audit
-# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 # Writes the required rule shape but with a wrong audit key in the '-F key' spelling; the scan must fail and the remediation must write the rules with the required key.
 
 {{{ setup_auditctl_environment() }}}
