@@ -32,7 +32,7 @@ references:
     nist: AC-17(a),AC-17(2),CM-6(a),MA-4(6),SC-13
     ospp: FCS_SSH_EXT.1,FCS_SSHS_EXT.1,FCS_SSHC_EXT.1
     pcidss: Req-2.2
-    srg: SRG-OS-000250-GPOS-00093
+    srg: SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174,SRG-OS-000125-GPOS-00065
 
 ocil_clause: 'the CRYPTO_POLICY variable is set or is not commented out in {{{ sshd_sysconfig }}}'
 
@@ -47,10 +47,20 @@ ocil: |-
     $ sudo grep CRYPTO_POLICY {{{ sshd_sysconfig }}}
 
 fixtext: |-
+{{% if product == "rhel8" %}}
+    Configure the {{{ full_name }}} SSH daemon to use systemwide crypto policies by adding the following line to {{{ sshd_sysconfig }}}:
+
+    # CRYPTO_POLICY=
+
+    Restart the sshd service:
+
+    $ sudo systemctl restart sshd
+{{% else %}}
     Configure OpenSSH to not ignore the system wide cryptographic policy.
     Run the following command:
 
     $ sudo sed -i "/^\s*CRYPTO_POLICY.*$/Id" {{{ sshd_sysconfig }}}
+{{% endif %}}
 
 srg_requirement: |-
     {{{ full_name }}} must implement approved encryption in the OpenSSH package.

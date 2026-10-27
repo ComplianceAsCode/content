@@ -103,6 +103,7 @@ audit_rules_privileged_commands_sudo
 audit_rules_privileged_commands_umount
 audit_rules_privileged_commands_unix_chkpwd
 audit_rules_privileged_commands_unix_update
+audit_rules_privileged_commands_useradd
 audit_rules_privileged_commands_userhelper
 audit_rules_privileged_commands_usermod
 audit_rules_sudoers
@@ -143,6 +144,8 @@ configure_bind_crypto_policy
 configure_crypto_policy
 configure_firewalld_ports
 configure_libreswan_crypto_policy
+configure_openssl_crypto_policy
+configure_ssh_crypto_policy
 configure_usbguard_auditbackend
 configured_firewalld_default_deny
 coredump_disable_backtraces
@@ -205,7 +208,6 @@ file_permissions_var_log
 file_permissions_var_log_audit
 file_permissions_var_log_messages
 fips_crypto_subpolicy
-fips_custom_stig_sub_policy
 firewalld-backend
 gnome_gdm_disable_automatic_login
 grub2_admin_username
@@ -325,7 +327,6 @@ service_debug-shell_disabled
 service_fapolicyd_enabled
 service_firewalld_enabled
 service_kdump_disabled
-service_rngd_enabled
 service_rsyslog_enabled
 service_sshd_enabled
 service_systemd-coredump_disabled
@@ -402,7 +403,7 @@ var_account_disable_post_pw_expiration=35
 var_accounts_authorized_local_users_regex=rhel8
 var_accounts_fail_delay=4
 var_accounts_max_concurrent_login_sessions=10
-var_accounts_maximum_age_login_defs=60
+var_accounts_maximum_age_login_defs=180
 var_accounts_minimum_age_login_defs=1
 var_accounts_passwords_pam_faillock_deny=3
 var_accounts_passwords_pam_faillock_fail_interval=900
@@ -446,7 +447,7 @@ var_ssh_client_rekey_limit_time=1hour
 var_sshd_set_keepalive=1
 var_sssd_certificate_verification_digest_function=sha1
 var_sudo_timestamp_timeout=always_prompt
-var_system_crypto_policy=fips_stig
+var_system_crypto_policy=fips
 var_time_service_set_maxpoll=18_hours
 var_user_initialization_files_regex=all_dotfiles
 wireless_disable_interfaces

@@ -3,7 +3,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://www.cyber.mil/stigs/downloads/
-version: V2R9
+version: V2R10
 reference_type: stigid
 product: rhel9
 
@@ -20,13 +20,14 @@ controls:
           - enable_authselect
           - var_authselect_profile=sssd
 
-    - id: RHEL-09-171011
+    - id: RHEL-09-271011
       levels:
           - medium
       rules:
           - dconf_gnome_login_banner_text
           - dconf_login_banner_text=dod_banners
           - dconf_login_banner_contents=dod_default
+      status: automated
     - id: RHEL-09-211010
       levels:
           - high
@@ -110,7 +111,7 @@ controls:
     - id: RHEL-09-212010
       levels:
           - medium
-      title: RHEL 9 must require a boot loader superuser password.
+      title: RHEL 9 must require authentication upon booting into single-user and maintenance modes.
       rules:
           - grub2_password
       status: automated
@@ -402,7 +403,7 @@ controls:
           - high
       title: RHEL 9 must have GPG signature verification enabled for all software repositories.
       rules:
-          - ensure_gpgcheck_never_disabled
+          - enable_gpgcheck_for_all_repositories
       status: automated
 
     - id: RHEL-09-214030
@@ -455,14 +456,6 @@ controls:
           - package_nfs-utils_removed
       status: automated
 
-    - id: RHEL-09-215030
-      levels:
-          - medium
-      title: RHEL 9 must not have the ypserv package installed.
-      related_rules:
-          - package_ypserv_removed
-      status: not applicable  # The ypserv package is not available in RHEL 9
-
     - id: RHEL-09-215035
       levels:
           - medium
@@ -511,14 +504,6 @@ controls:
       rules:
           - package_tftp-server_removed
       status: automated
-
-    - id: RHEL-09-215065
-      levels:
-          - medium
-      title: RHEL 9 must not have the quagga package installed.
-      related_rules:
-          - package_quagga_removed
-      status: not applicable  # The quagga package is not available in RHEL 9
 
     - id: RHEL-09-215070
       levels:
@@ -590,9 +575,10 @@ controls:
       title: RHEL 9 must implement a FIPS 140-3 compliant systemwide cryptographic policy.
       rules:
           - configure_crypto_policy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_crypto_subpolicy
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-09-231010
@@ -648,7 +634,7 @@ controls:
     - id: RHEL-09-231040
       levels:
           - medium
-      title: RHEL 9 file system automount function must be disabled unless required.
+      title: The RHEL 9 file system automounter must be disabled.
       rules:
           - service_autofs_disabled
       status: automated
@@ -2031,7 +2017,7 @@ controls:
     - id: RHEL-09-271010
       levels:
           - medium
-      title: RHEL 9 must display the Standard Mandatory DOD Notice and Consent Banner before
+      title: RHEL 9 must enable the Standard Mandatory DOD Notice and Consent Banner before
           granting
           local or remote access to the system via a graphical user logon.
       rules:
@@ -2294,21 +2280,22 @@ controls:
     - id: RHEL-09-411010
       levels:
           - medium
-      title: RHEL 9 user account passwords for new users or password changes must have a 60-day
+      title: RHEL 9 user account passwords for new users or password changes must have a 180-day
           maximum
           password lifetime restriction in /etc/login.defs.
       rules:
           - accounts_maximum_age_login_defs
+          - var_accounts_maximum_age_login_defs=180
       status: automated
 
     - id: RHEL-09-411015
       levels:
           - medium
-      title: RHEL 9 user account passwords must have a 60-day maximum password lifetime
+      title: RHEL 9 user account passwords must have a 180-day maximum password lifetime
           restriction.
       rules:
           - accounts_password_set_max_life_existing
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
       status: automated
 
     - id: RHEL-09-411020
@@ -3741,6 +3728,14 @@ controls:
           - audit_rules_privileged_commands_usermod
       status: automated
 
+    - id: RHEL-09-654176
+      levels:
+          - medium
+      title: RHEL 9 must audit all uses of the useradd command.
+      rules:
+          - audit_rules_privileged_commands_useradd
+      status: automated
+
     - id: RHEL-09-654180
       levels:
           - medium
@@ -3850,7 +3845,7 @@ controls:
           - medium
       title: RHEL 9 must generate audit records for all account creations, modifications,
           disabling,
-          and termination events that affect /etc/opasswd.
+          and termination events that affect /etc/security/opasswd.
       rules:
           - audit_rules_usergroup_modification_opasswd
       status: automated
@@ -3985,4 +3980,12 @@ controls:
       title: RHEL 9 must implement DOD-approved encryption in the bind package.
       rules:
           - configure_bind_crypto_policy
+      status: automated
+
+    - id: RHEL-09-672055
+      levels:
+          - high
+      title: RHEL 9 must implement DOD-approved encryption in the OpenSSL package.
+      rules:
+          - configure_openssl_crypto_policy
       status: automated

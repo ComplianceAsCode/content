@@ -1,7 +1,18 @@
 <def-group>
-  <definition class="compliance" id="no_shelllogin_for_systemaccounts" version="2">
+  <definition class="compliance" id="no_shelllogin_for_systemaccounts" version="3">
     {{{ oval_metadata("The root account is the only system account that should have
       a login shell.", rule_title=rule_title) }}}
+{{% if product == "rhel9" %}}
+    <criteria>
+      <criterion comment="Test shell defined for RHEL 9 system UIDs"
+      test_ref="test_shell_defined_rhel9_uid_range" />
+    </criteria>
+{{% elif product == "rhel10" %}}
+    <criteria>
+      <criterion comment="Test shell defined for RHEL 10 system UIDs"
+      test_ref="test_shell_defined_rhel10_uid_range" />
+    </criteria>
+{{% else %}}
     <criteria operator="OR">
       <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs or drop-in files
            perform the check that any /etc/passwd entry with shell defined
@@ -69,6 +80,7 @@
       </criteria>
       {{% endif %}}
     </criteria>
+{{% endif %}}
   </definition>
 
   <!-- First define OVAL entities used by both criteria above -->
@@ -130,13 +142,49 @@
   <!-- Get all /etc/passwd entries having shell defined as OVAL object -->
   <ind:textfilecontent54_object id="object_etc_passwd_entries" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-{{% if "ubuntu" in product or "sle" in product or "slmicro" in product %}}
+{{% if product in ["rhel9", "rhel10"] %}}
+    <ind:pattern operation="pattern match">^(?!(?:root|halt|sync|shutdown):).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?![^:]*?(?:nologin|false)$).*$</ind:pattern>
+{{% elif "ubuntu" in product or "sle" in product or "slmicro" in product %}}
     <ind:pattern operation="pattern match">^(?!root).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?!\/usr\/sbin\/nologin|\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt|\/bin\/false|\/usr\/bin\/false).*$</ind:pattern>
 {{% else %}}
     <ind:pattern operation="pattern match">^(?!root).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?!\/usr\/sbin\/nologin|\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt).*$</ind:pattern>
 {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+{{% if product == "rhel9" %}}
+  <!-- RHEL 9 defines system accounts as nonexempt accounts with UIDs 1 through 999. -->
+  <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_rhel9_uid_range"
+  check="all" check_existence="any_exist" comment="RHEL 9 system UIDs having shell set"
+  version="1">
+    <ind:object object_ref="object_etc_passwd_entries" />
+    <ind:state state_ref="state_uid_less_than_or_equal_zero_rhel9" />
+    <ind:state state_ref="state_uid_greater_than_or_equal_1000_rhel9" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_uid_less_than_or_equal_zero_rhel9" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_1000_rhel9" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal">1000</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% elif product == "rhel10" %}}
+  <!-- RHEL 10 defines system accounts as nonexempt accounts with UIDs 1 through 999. -->
+  <ind:textfilecontent54_test state_operator="OR" id="test_shell_defined_rhel10_uid_range"
+  check="all" check_existence="any_exist" comment="RHEL 10 system UIDs having shell set"
+  version="1">
+    <ind:object object_ref="object_etc_passwd_entries" />
+    <ind:state state_ref="state_uid_less_than_or_equal_zero_rhel10" />
+    <ind:state state_ref="state_uid_greater_than_or_equal_1000_rhel10" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_uid_less_than_or_equal_zero_rhel10" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_1000_rhel10" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal">1000</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% endif %}}
 
   <!-- FIRST CRITERION -->
   <!-- If both SYS_UID_MIN and SYS_UID_MAX aren't defined in /etc/login.defs or drop-in files

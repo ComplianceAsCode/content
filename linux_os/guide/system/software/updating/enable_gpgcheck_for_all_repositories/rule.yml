@@ -20,6 +20,7 @@ severity: high
 
 identifiers:
     cce@rhel8: CCE-86187-2
+    cce@rhel9: CCE-86500-6
     cce@rhel10: CCE-86484-3
 
 references:
@@ -53,6 +54,6 @@ checktext: |-
     /etc/yum.repos.d/baseos.repo:[baseos]
     /etc/yum.repos.d/baseos.repo:gpgcheck=1
 
-    If "gpgcheck" is not set to "1", or if options are missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
+    If "gpgcheck" is not set to "1", or if options are missing or commented out, ask the {{{ "system administrator" if product == "rhel8" else "System Administrator" }}} how the certificates for patches and other operating system components are verified.
 
     If there is no process to validate certificates that is approved by the organization, this is a finding.

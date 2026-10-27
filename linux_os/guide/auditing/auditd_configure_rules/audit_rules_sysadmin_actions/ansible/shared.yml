@@ -4,18 +4,21 @@
 # complexity = low
 # disruption = low
 
+{{% set watch_key = "identity" if product == "rhel10" else "actions" %}}
 {{% if audit_watches_style == "modern" %}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b32', filter_type='path', rule_title=rule_title) }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b64', filter_type='path', rule_title=rule_title) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b32', filter_type='path', rule_title=rule_title) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', style='modern', arch='b64', filter_type='path', rule_title=rule_title) }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b32', filter_type='dir', rule_title=rule_title) }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b64', filter_type='dir', rule_title=rule_title) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b32', filter_type='dir', rule_title=rule_title) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', style='modern', arch='b64', filter_type='dir', rule_title=rule_title) }}}
+{{% set sudoers_d_path = "/etc/sudoers.d" if product == "rhel10" else "/etc/sudoers.d/" %}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key=watch_key, style='modern', arch='b32', filter_type='path', rule_title=rule_title) }}}
+{{% set sudoers_d_filter = "path" if product == "rhel10" else "dir" %}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key=watch_key, style='modern', arch='b64', filter_type='path', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key=watch_key, style='modern', arch='b32', filter_type='path', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key=watch_key, style='modern', arch='b64', filter_type='path', rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path=sudoers_d_path, permissions='wa', key=watch_key, style='modern', arch='b32', filter_type=sudoers_d_filter, rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path=sudoers_d_path, permissions='wa', key=watch_key, style='modern', arch='b64', filter_type=sudoers_d_filter, rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=sudoers_d_path, permissions='wa', key=watch_key, style='modern', arch='b32', filter_type=sudoers_d_filter, rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=sudoers_d_path, permissions='wa', key=watch_key, style='modern', arch='b64', filter_type=sudoers_d_filter, rule_title=rule_title) }}}
 {{% else %}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', rule_title=rule_title) }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key='actions', rule_title=rule_title) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', rule_title=rule_title) }}}
-{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key='actions', rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers', permissions='wa', key=watch_key, rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers', permissions='wa', key=watch_key, rule_title=rule_title) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key=watch_key, rule_title=rule_title) }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sudoers.d/', permissions='wa', key=watch_key, rule_title=rule_title) }}}
 {{% endif %}}

@@ -2,7 +2,7 @@
 policy: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 title: Red Hat Enterprise Linux 8 Security Technical Implementation Guide
 id: stig_rhel8
-version: V2R8
+version: V2R9
 source: https://www.cyber.mil/stigs/downloads
 reference_type: stigid
 product: rhel8
@@ -59,7 +59,7 @@ controls:
           - var_account_disable_post_pw_expiration=35
           - var_auditd_action_mail_acct=root
           - var_time_service_set_maxpoll=18_hours
-          - var_accounts_maximum_age_login_defs=60
+          - var_accounts_maximum_age_login_defs=180
           - var_auditd_space_left_percentage=25pc
           - var_auditd_space_left_action=email
           - var_auditd_disk_error_action=rhel8
@@ -107,8 +107,7 @@ controls:
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
-          - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
+          - var_system_crypto_policy=fips
       status: automated
 
     - id: RHEL-08-010030
@@ -356,17 +355,25 @@ controls:
           - configure_libreswan_crypto_policy
       status: automated
 
+    - id: RHEL-08-010287
+      levels:
+          - high
+      title: The RHEL 8 SSH daemon must be configured to use systemwide crypto policies.
+      rules:
+          - configure_ssh_crypto_policy
+      status: automated
+
     - id: RHEL-08-010290
       levels:
           - medium
       title: The RHEL 8 SSH server must be configured to use only Message Authentication Codes (MACs)
           employing FIPS 140-3 validated cryptographic hash algorithms.
-      notes: This is implemented by a special STIG subpolicy.
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010291
@@ -374,12 +381,12 @@ controls:
           - medium
       title: The RHEL 8 operating system must implement DOD-approved encryption to protect the confidentiality
           of SSH server connections.
-      notes: This is implemented by a special STIG subpolicy.
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010292
@@ -388,6 +395,14 @@ controls:
       title: RHEL 8 must ensure the SSH server uses strong entropy.
       rules:
           - sshd_use_strong_rng
+      status: automated
+
+    - id: RHEL-08-010293
+      levels:
+          - high
+      title: RHEL 8 must implement DOD-approved encryption in the OpenSSL package.
+      rules:
+          - configure_openssl_crypto_policy
       status: automated
 
     - id: RHEL-08-010300
@@ -624,20 +639,16 @@ controls:
           - no_user_host_based_files
       status: automated
 
-    - id: RHEL-08-010471
-      levels:
-          - low
-      title: RHEL 8 must enable the hardware random number generator entropy gatherer service.
-      rules:
-          - service_rngd_enabled
-      status: automated
-
     - id: RHEL-08-010480
       levels:
           - medium
       title: The RHEL 8 SSH public host key files must have mode 0644 or less permissive.
       rules:
           - file_permissions_sshd_pub_key
+      related_rules:
+          - service_rngd_enabled
+          # Retained in the repository and kept in the data stream by the
+          # default profile after the RHEL-08-010471 removal.
       status: automated
 
     - id: RHEL-08-010490
@@ -1258,7 +1269,7 @@ controls:
     - id: RHEL-08-020200
       levels:
           - medium
-      title: RHEL 8 user account passwords must have a 60-day maximum password lifetime restriction.
+      title: RHEL 8 user account passwords must have a 180-day maximum password lifetime restriction.
       rules:
           - accounts_maximum_age_login_defs
       status: automated
@@ -1267,7 +1278,7 @@ controls:
       levels:
           - medium
       title: RHEL 8 user account passwords must be configured so that existing passwords are restricted
-          to a 60-day maximum lifetime.
+          to a 180-day maximum lifetime.
       rules:
           - accounts_password_set_max_life_existing
       status: automated
@@ -1913,6 +1924,14 @@ controls:
       title: Successful/unsuccessful uses of the usermod command in RHEL 8 must generate an audit record.
       rules:
           - audit_rules_privileged_commands_usermod
+      status: automated
+
+    - id: RHEL-08-030565
+      levels:
+          - medium
+      title: RHEL 8 must audit all uses of the useradd command.
+      rules:
+          - audit_rules_privileged_commands_useradd
       status: automated
 
     - id: RHEL-08-030570
@@ -3211,24 +3230,24 @@ controls:
       levels:
           - medium
       title: The RHEL 8 SSH client must be configured to use only DOD-approved Message Authentication Codes (MACs) employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
-      notes: This is implemented by a special STIG subpolicy.
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010297
       levels:
           - medium
       title: The RHEL 8 SSH client must be configured to use only DOD-approved encryption ciphers employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
-      notes: This is implemented by a special STIG subpolicy.
       rules:
           - configure_crypto_policy
           - fips_crypto_subpolicy
+          - var_system_crypto_policy=fips
+      related_rules:
           - fips_custom_stig_sub_policy
-          - var_system_crypto_policy=fips_stig
       status: automated
 
     - id: RHEL-08-010455

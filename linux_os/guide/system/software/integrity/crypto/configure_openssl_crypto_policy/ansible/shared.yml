@@ -11,10 +11,15 @@
   {{%- set openssl_cnf_dir="/etc/pki/tls" %}}
 {{% endif %}}
 
-{{% if product in ["fedora", "ol9", "rhel9"] %}}
+{{% if "rhel" in families or product in ["fedora", "ol9"] %}}
     {{% set ansible_openssl_include_directive = ".include = /etc/crypto-policies/back-ends/opensslcnf.config" %}}
 {{% else %}}
     {{% set ansible_openssl_include_directive = ".include /etc/crypto-policies/back-ends/opensslcnf.config" %}}
+{{% endif %}}
+{{% if "rhel" in families %}}
+    {{% set ansible_openssl_include_directive_regex = '^\s*\.include\s*=\s*/etc/crypto-policies/back-ends/opensslcnf.config$' %}}
+{{% else %}}
+    {{% set ansible_openssl_include_directive_regex = '^\s*\.include\s*(?:=\s*)?/etc/crypto-policies/back-ends/opensslcnf.config$' %}}
 {{% endif %}}
 {{% set full_config_section = "[crypto_policy]\n" + ansible_openssl_include_directive %}}
 
@@ -30,7 +35,7 @@
   ansible.builtin.find:
     paths: "{{{ openssl_cnf_dir }}}"
     patterns: "{{{ openssl_cnf_file }}}"
-    contains: '^\s*\.include\s*(?:=\s*)?/etc/crypto-policies/back-ends/opensslcnf.config$'
+    contains: '{{{ ansible_openssl_include_directive_regex }}}'
   register: test_crypto_policy_include_directive
 
 - name: "{{{ rule_title }}} - Add .include Line for opensslcnf.config File in crypto_policy Section"
