@@ -1,5 +1,9 @@
 #!/bin/bash
+{{% if product in [ 'opensuse16', 'sle16' ] %}}
+# packages = gdm,displaymanager-sysconfig
+{{% else %}}
 # packages = gdm
+{{% endif %}}
 
 if (sed -n '/^DISPLAYMANAGER_AUTOLOGIN=\"\"/p' /etc/sysconfig/displaymanager)
 then
