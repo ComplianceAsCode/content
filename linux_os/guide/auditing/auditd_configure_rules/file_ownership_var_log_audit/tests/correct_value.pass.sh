@@ -1,9 +1,7 @@
 #!/bin/bash
 # packages = audit
 
-if LC_ALL=C grep -iw ^log_group /etc/audit/auditd.conf; then
-  sed -i '/^log_group.*$/d' /etc/audit/auditd.conf
-fi
+source common.sh
 
 touch "/var/log/audit/audit.log"
 chgrp root -R "/var/log/audit/"
