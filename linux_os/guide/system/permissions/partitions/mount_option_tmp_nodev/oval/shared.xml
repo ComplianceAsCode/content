@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="mount_option_tmp_nodev" version="1">
-    {{{ oval_metadata("ensure tmp.mount services has nodev option configured.") }}}
+    {{{ oval_metadata("ensure tmp.mount services has nodev option configured.", affected_platforms=["SUSE Linux Enterprise 16", "multi_platform_slmicro"]) }}}
     <criteria>
         <criterion comment="check nodev is set in Options in /usr/lib/systemd/system/tmp.mount" test_ref="test_tmp_mount_nodev_option" />
     </criteria>
