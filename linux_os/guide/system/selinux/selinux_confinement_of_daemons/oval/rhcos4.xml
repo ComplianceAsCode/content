@@ -21,11 +21,13 @@
     <linux:state state_ref="state_unconfined_service_t" />
   </linux:selinuxsecuritycontext_test>
 
-  <!-- Object: Find all processes in /proc -->
-  <linux:selinuxsecuritycontext_object comment="find all processes in /proc" id="object_selinux_confinement_of_daemons" version="2">
-    <linux:behaviors max_depth="1" recurse_direction="down" />
-    <linux:path>/proc</linux:path>
-    <linux:filename operation="pattern match">^[0-9]+$</linux:filename>
+  <!-- Object: the /proc/PID directory of each process with unconfined_service_t, one item per process.
+       A path of /proc with a filename pattern would match files inside the /proc/PID directories
+       instead, so it must be a path pattern with a nil filename. -->
+  <linux:selinuxsecuritycontext_object comment="find /proc/PID of processes with unconfined_service_t" id="object_selinux_confinement_of_daemons" version="3">
+    <linux:path operation="pattern match">^/proc/[0-9]+$</linux:path>
+    <linux:filename xsi:nil="true" />
+    <filter action="include">state_unconfined_service_t</filter>
   </linux:selinuxsecuritycontext_object>
 
   <!-- State: Match unconfined_service_t type -->
