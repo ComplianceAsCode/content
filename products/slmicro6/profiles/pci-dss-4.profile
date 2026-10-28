@@ -44,6 +44,8 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!cracklib_accounts_password_pam_lcredit'
     - '!cracklib_accounts_password_pam_minlen'
+    - accounts_passwords_pam_faillock_unlock_time_with_zero
+    - '!accounts_passwords_pam_faillock_unlock_time'
     - '!accounts_password_pam_unix_remember'
     - '!accounts_password_pam_pwhistory_remember_system_auth'
     - '!accounts_password_pam_pwhistory_remember_password_auth'
@@ -120,5 +122,6 @@ selections:
     - '!network_nmcli_permissions'
     - '!package_cryptsetup-luks_installed'
     - '!package_libreswan_installed'
+    - '!package_postfix_installed'
     - '!ensure_root_password_configured'
     - '!no_password_auth_for_systemaccounts'
