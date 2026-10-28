@@ -45,7 +45,18 @@ references:
 ocil_clause: 'logrotate is not configured to run daily'
 
 ocil: |-
+{{%- if product.startswith('sle') or product.startswith('slmicro') or product in ["ol9", "rhcos4", "rhel9", "rhel10"] %}}
+    To determine the frequency of logrotate, run the following command:
+    <pre>$ sudo grep -E '^\s*(daily|weekly|monthly|yearly)' /etc/logrotate.conf</pre>
+    If logrotate is configured properly, the output should contain only <tt>daily</tt>.
+    To determine whether logrotate runs periodically, run the following command:
+    <pre>$ sudo systemctl is-enabled logrotate.timer</pre>
+    If logrotate is run by its systemd timer, the output should be <tt>enabled</tt>.
+    Alternatively, logrotate can be run by cron, in which case the file
+    <tt>/etc/cron.daily/logrotate</tt> must exist and run <tt>/usr/sbin/logrotate</tt>.
+{{%- else %}}
     To determine the status and frequency of logrotate, run the following command:
     <pre>$ sudo grep logrotate /var/log/cron*</pre>
     If logrotate is configured properly, output should include references to
     <tt>/etc/cron.daily</tt>.
+{{%- endif %}}
