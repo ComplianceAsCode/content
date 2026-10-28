@@ -26,7 +26,8 @@ while [[ "$has_remote_source" == false ]] && read -r directive location _; do
 done < "$config_file"
 
 if [[ "$has_remote_source" == false ]]; then
-  sourcedir=$(awk '$1 == "sourcedir" { print $2; exit }' "$config_file")
+  # Skip the sourcedirs under /run, a tmpfs that starts empty at boot.
+  sourcedir=$(awk '$1 == "sourcedir" && $2 !~ /^\/(var\/)?run\// { print $2; exit }' "$config_file")
   if [[ -n "$sourcedir" ]]; then
     mkdir -p "$sourcedir"
     config_file="$sourcedir/60-cis.sources"
