@@ -4,6 +4,16 @@ documentation_complete: true
 title: 'Configure AIDE to Use FIPS 140-2 for Validating Hashes'
 
 description: |-
+{{%- if 'debian' in product or 'ubuntu' in product %}}
+    AIDE computes file content hashes through the <tt>Checksums</tt> group in
+    <tt>{{{ aide_conf_path }}}</tt>; the other groups that check file contents
+    (such as <tt>StaticFile</tt> and <tt>VarTime</tt>) include it, and the remaining
+    groups deliberately carry no hash. By default <tt>Checksums</tt> uses every hash
+    compiled into AIDE. Set it to <tt>sha512</tt> only:
+    <pre>Checksums = sha512</pre>
+    and make sure no group names a hash other than <tt>sha512</tt>, such as
+    <tt>sha256</tt>, <tt>rmd160</tt>, <tt>tiger</tt> or <tt>crc32</tt>.
+{{%- else %}}
     By default, the <tt>sha512</tt> option is added to the <tt>NORMAL</tt> ruleset in AIDE.
     If using a custom ruleset or the <tt>sha512</tt> option is missing, add <tt>sha512</tt>
     to the appropriate ruleset.
@@ -11,10 +21,15 @@ description: |-
     <pre>NORMAL = FIPSR+sha512</pre>
     AIDE rules can be configured in multiple ways; this is merely one example that is already
     configured by default.
+{{%- endif %}}
 
 rationale: |-
     File integrity tools use cryptographic hashes for verifying file contents and directories
     have not been altered. These hashes must be FIPS 140-2 approved cryptographic hashes.
+{{%- if 'debian' in product or 'ubuntu' in product %}}
+    Adding <tt>sha512</tt> to every group instead would make AIDE hash files that are
+    expected to change, such as logs, and report them as modified on every check.
+{{%- endif %}}
 
 severity: medium
 
@@ -38,8 +53,14 @@ ocil_clause: 'the sha512 option is missing or not added to the correct ruleset'
 
 ocil: |-
     To determine that AIDE is configured for FIPS 140-2 file hashing, run the following command:
+{{%- if 'debian' in product or 'ubuntu' in product %}}
+    <pre>$ grep -E '^[A-Z][A-Za-z_]*\s*=' {{{ aide_conf_path }}}</pre>
+    Verify that the <tt>Checksums</tt> line is <tt>Checksums = sha512</tt> and that no
+    line names another hash.
+{{%- else %}}
     <pre>$ grep sha512 /etc/aide.conf</pre>
     Verify that the <tt>sha512</tt> option is added to the correct ruleset.
+{{%- endif %}}
 
 warnings:
     - regulatory: |-
