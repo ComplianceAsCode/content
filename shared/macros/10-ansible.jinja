@@ -1285,8 +1285,9 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file, rule_title=rule_title) | indent(4) }}}
     {{{ ansible_ensure_pam_module_line('{{ pam_file_path }}', 'password', control, 'pam_pwhistory.so', after_match, rule_title=rule_title) | indent(4) }}}
   when: >
-    (result_authselect_available_features.stdout is defined and result_authselect_available_features.stdout is not search("with-pwhistory"))
-    or result_authselect_available_features is not defined
+    result_authselect_available_features is not defined
+    or result_authselect_available_features is skipped
+    or result_authselect_available_features.stdout is not search("with-pwhistory")
 {{%- endmacro -%}}
 
 
@@ -1336,7 +1337,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{{ ansible_apply_authselect_changes(rule_title=rule_title) | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
-        - (result_pam_{{{ parameter }}}_add is defined and result_pam_{{{ parameter }}}_add.changed) or (result_pam_{{{ parameter }}}_edit is defined and result_pam_{{{ parameter }}}_edit.changed)
+        - (result_pam_{{{ rule_id }}}_add is defined and result_pam_{{{ rule_id }}}_add.changed) or (result_pam_{{{ rule_id }}}_edit is defined and result_pam_{{{ rule_id }}}_edit.changed)
   when:
     - not result_pwhistory_conf_check.stat.exists
 {{%- endmacro -%}}
