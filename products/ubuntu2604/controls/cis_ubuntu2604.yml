@@ -1719,6 +1719,9 @@ controls:
       rules:
           - package_cracklib-runtime_installed
       status: automated
+      notes: |-
+          The rule checks that cracklib-runtime is installed and not that it
+          is the latest version as the title suggests.
     - id: 5.3.2.1
       title: Ensure pam_unix module is enabled (Automated)
       levels:
