@@ -26,6 +26,18 @@
   ansible.builtin.package_facts:
     manager: auto
 
+{{% if 'debian' in product or 'ubuntu' in product %}}
+{{#- A group that hashes with a forbidden hash keeps hashing, with sha512,
+    instead of being left empty; groups without a hash stay without one. #}}
+- name: "{{{ rule_title }}} - Use sha512 in groups that hash with a forbidden hash"
+  ansible.builtin.replace:
+    path: "{{ aide_conf }}"
+    regexp: '^(\s*[A-Z][A-Za-z_]*\s*=(?!.*\bsha512\b).*?)\b(?:{{ forbidden_hashes | join("|") }})\b'
+    replace: '\1sha512'
+  when:
+    - '"aide" in ansible_facts.packages'
+
+{{% endif %}}
 - name: "{{{ rule_title }}} - Remove forbidden hashes"
   ansible.builtin.replace:
     path: "{{ aide_conf }}"
@@ -36,8 +48,8 @@
   loop: "{{ forbidden_hashes }}"
 
 {{% if 'debian' in product or 'ubuntu' in product %}}
-{{#- Debian and Ubuntu hash files through the Checksums group; the other groups
-    deliberately carry no hash, so only Checksums gets sha512. #}}
+{{#- Debian and Ubuntu hash files through the Checksums group, which the content
+    groups include; set it to sha512 only. #}}
 - name: "{{{ rule_title }}} - Set Checksums to sha512"
   ansible.builtin.lineinfile:
     path: "{{ aide_conf }}"

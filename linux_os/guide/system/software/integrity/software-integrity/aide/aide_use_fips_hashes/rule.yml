@@ -12,7 +12,9 @@ description: |-
     compiled into AIDE. Set it to <tt>sha512</tt> only:
     <pre>Checksums = sha512</pre>
     and make sure no group names a hash other than <tt>sha512</tt>, such as
-    <tt>sha256</tt>, <tt>rmd160</tt>, <tt>tiger</tt> or <tt>crc32</tt>.
+    <tt>sha256</tt>, <tt>rmd160</tt>, <tt>tiger</tt> or <tt>crc32</tt>. In a group
+    that names one, replace it with <tt>sha512</tt> rather than removing it, so the
+    group keeps hashing file contents.
 {{%- else %}}
     By default, the <tt>sha512</tt> option is added to the <tt>NORMAL</tt> ruleset in AIDE.
     If using a custom ruleset or the <tt>sha512</tt> option is missing, add <tt>sha512</tt>

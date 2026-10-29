@@ -11,7 +11,19 @@ for group in $groups
 do
 	config=$(grep "^$group\s*=" $aide_conf | cut -f2 -d '=' | tr -d ' ')
 
-{{%- if 'debian' not in product and 'ubuntu' not in product %}}
+{{%- if 'debian' in product or 'ubuntu' in product %}}
+
+	# A group that hashes with a forbidden hash keeps hashing, with sha512;
+	# groups without a hash stay without one.
+	hashes_content=false
+	for hash in "${forbidden_hashes[@]}"
+	do
+		if [[ $config = *$hash* ]]
+		then
+			hashes_content=true
+		fi
+	done
+{{%- else %}}
 
 	if ! [[ $config = *sha512* ]]
 	then
@@ -27,12 +39,19 @@ do
 	config=$(echo $config | sed "s/^\+*//")
 	config=$(echo $config | sed "s/\+\++/+/")
 	config=$(echo $config | sed "s/\+$//")
+{{%- if 'debian' in product or 'ubuntu' in product %}}
+
+	if $hashes_content && ! [[ $config = *sha512* ]]
+	then
+		config="${config:+$config+}sha512"
+	fi
+{{%- endif %}}
 
 	sed -i "s/^$group\s*=.*/$group = $config/g" $aide_conf
 done
 {{%- if 'debian' in product or 'ubuntu' in product %}}
 
-# Debian and Ubuntu hash files through the Checksums group; the other groups
-# deliberately carry no hash, so only Checksums gets sha512.
+# Debian and Ubuntu hash files through the Checksums group, which the content
+# groups include; set it to sha512 only.
 {{{ bash_replace_or_append(aide_conf_path, '^Checksums', 'sha512', '%s = %s', cce_identifiers=cce_identifiers) }}}
 {{%- endif %}}
