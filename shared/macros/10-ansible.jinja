@@ -905,31 +905,78 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- endmacro %}}
 
 {{#
-    This macro comments out a given line of the sudoers and then validates it before saving.
+    Comment out the entries of /etc/sudoers and of the files of /etc/sudoers.d
+    that hold the parameter, each with the lines that a trailing backslash
+    continues it on. A file changes only when visudo accepts the result. The
+    script is a copy of the one of bash_sudo_remove_config, since the macros
+    of 10-bash.jinja load after this file.
 
 :param parameter: The parameter to remove
 :type parameter: str
-:param pattern: The pattern to remove
+:param pattern: The Perl-compatible regular expression of the parameter, for grep -P
 :type pattern: str
 
 #}}
 {{%- macro ansible_sudo_remove_config(parameter, pattern) -%}}
 
-- name: Find /etc/sudoers.d/ files
-  ansible.builtin.find:
-    paths:
-      - /etc/sudoers.d/
-  register: sudoers
-
-- name: "Remove lines containing {{{ parameter }}} from sudoers files"
-  ansible.builtin.replace:
-    regexp: '(^(?!#).*[\s,=):]{{{ pattern }}}.*$)'
-    replace: '# \g<1>'
-    path: "{{ item.path }}"
-    validate: /usr/sbin/visudo -cf %s
-  with_items:
-    - { path: /etc/sudoers }
-    - "{{ sudoers.files }}"
+- name: "Comment out the sudoers entries that hold {{{ parameter }}}"
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      rejected=0
+      for f in /etc/sudoers /etc/sudoers.d/* ; do
+        if [ ! -f "$f" ] ; then
+          continue
+        fi
+        # The entries that hold "{{{ parameter }}}", as first:last line numbers,
+        # read as sudo reads them: a backslash followed only by blanks continues
+        # the entry, another backslash escapes the next character, a double quote
+        # opens or closes a string in a Defaults entry (a command reads it as an
+        # ordinary character), and outside a string a # that starts no user or
+        # group ID begins a comment, which ends the entry at its line.
+        entries=$(awk 'function continues(line, defaults,  i, ch) {
+              for (i = 1; i <= length(line); i++) {
+                ch = substr(line, i, 1)
+                if (ch == "\\") {
+                  if (substr(line, i + 1) ~ /^[ \t]*$/)
+                    return 1
+                  i++
+                } else if (ch == "\"" && defaults) {
+                  q = !q
+                } else if (ch == "#" && !q && substr(line, i + 1) !~ /^-?[0-9]/) {
+                  return 0
+                }
+              }
+              return 0
+            }
+            {
+              if (c) { t = t " " $0 } else { s = NR; t = $0; q = 0; d = ($0 ~ /^[ \t]*Defaults([ \t:@!>]|$)/) }
+              c = continues($0, d)
+              if (c) { sub(/\\[ \t]*$/, "", t) } else { print s ":" NR ":" t }
+            } END { if (c) print s ":" NR ":" t }' "$f" |
+          grep -P '^\d+:\d+:(?!#).*[\s,=):]{{{ pattern }}}' | cut -d: -f1,2)
+        if [ -z "$entries" ] ; then
+          continue
+        fi
+        # The copy sits beside the file, so visudo resolves relative includes.
+        tmp=$(mktemp "$f.XXXXXX")
+        cat "$f" > "$tmp"
+        for range in $entries; do
+          sed -i "${range%:*},${range#*:}s/^/# /" "$tmp"
+        done
+        if /usr/sbin/visudo -cf "$tmp" > /dev/null 2>&1; then
+          cat "$tmp" > "$f"
+          echo "Commented out {{{ parameter }}} in $f"
+        else
+          echo "Fail to validate $f with visudo" >&2
+          rejected=1
+        fi
+        rm -f "$tmp"
+      done
+      exit "$rejected"
+    executable: /bin/bash
+  register: result_sudo_remove_config
+  changed_when: result_sudo_remove_config.stdout != ""
 {{% if product in [ 'sle16', 'slmicro6' ] %}}
   when: not ansible_check_mode
 {{% endif %}}
