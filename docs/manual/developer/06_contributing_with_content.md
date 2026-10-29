@@ -1249,6 +1249,41 @@ the following to `rule.yml`:
 
 you can see reference of all available templates [here](../../templates/template_reference.md#available-templates).
 
+### Static content and templated content
+
+A rule can provide content both as static files in its rule directory
+(`bash/shared.sh`, `oval/shared.xml`, ...) and through the `template:` key.
+When both are available and applicable for the product being built, the static
+content is used and the templated content is ignored for that rule.
+
+Applicability is decided by metadata, not by the filename:
+
+- Bash and Ansible remediations are filtered by the `# platform =` comment at
+  the top of the file. The build tries candidates in this order: a file named
+  after the full product ID (`bash/rhel9.sh`), a file named after the product
+  family (`bash/rhel.sh`), `bash/shared.sh`, and finally the templated
+  remediation. A candidate whose platform list does not include the product
+  being built is skipped, and the next candidate is tried. In particular, a
+  `shared.*` file that excludes the product no longer prevents the templated
+  remediation from being used.
+- OVAL definitions are filtered by the affected platforms declared in their
+  metadata. `oval_metadata()` reports the product being built by default, so a
+  static definition is considered applicable and shadows the templated one.
+  A static definition that is meant only for some products must restrict
+  itself, for example:
+
+      {{{ oval_metadata("Ensure tmp.mount has the nosuid option.",
+                        affected_platforms=["SUSE Linux Enterprise 16", "multi_platform_slmicro"]) }}}
+
+Products outside the `affected_platforms` list then fall back to the templated
+OVAL, while the listed products keep the static definition.
+
+As a consequence, a `shared.*` file is not implicitly applicable to every
+product. If it targets a subset of products, declare that subset in the
+`# platform =` metadata (remediations) or in `affected_platforms` (OVAL);
+otherwise it silently replaces the templated content for every product that
+builds the rule.
+
 ## Applicability of content
 
 All profiles and rules included in a products' data stream are applicable
