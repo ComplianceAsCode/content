@@ -7,7 +7,7 @@
 OTHER_FILTERS="-F path={{{ PATH }}}{{{ perm_x }}}"
 AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
 SYSCALL=""
-KEY="privileged"
+KEY="{{{ KEY }}}"
 SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"
 
 {{% if product in ["fedora", "rhel10"] %}}
@@ -17,11 +17,28 @@ do
   ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
   # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
   {{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
-  {{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
+{{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
+done
+{{% elif product == "rhel9" and RHEL9_STIG_ARCH_MODE %}}
+[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
+{{% if RHEL9_STIG_EXECVE %}}
+SYSCALL="execve"
+{{% else %}}
+SYSCALL=""
+{{% endif %}}
+SYSCALL_GROUPING=""
+KEY="{{{ KEY }}}"
+for ARCH in "${RULE_ARCHS[@]}"
+do
+  ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+  AUID_FILTERS=""
+  # RHEL 9 STIG rules use architecture-specific audit rules without AUID filters.
+  {{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY", require_key=True) }}}
+  {{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY", require_key=True) }}}
 done
 {{% else %}}
 ACTION_ARCH_FILTERS="-a always,exit"
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-{{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
-{{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}
+{{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY", require_key=REQUIRE_KEY) }}}
+{{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY", require_key=REQUIRE_KEY) }}}
 {{% endif %}}

@@ -4,6 +4,27 @@
 # complexity = low
 # disruption = low
 
+{{% if "rhel" in families %}}
+- name: Create the systemd configuration drop-in directory
+  ansible.builtin.file:
+    path: /etc/systemd/system.conf.d
+    state: directory
+    owner: root
+    mode: '0755'
+
+- name: Disable Ctrl-Alt-Del Burst Action
+  ansible.builtin.copy:
+    dest: /etc/systemd/system.conf.d/55-CtrlAltDel-BurstAction.conf
+    content: |
+      [Manager]
+      CtrlAltDelBurstAction=none
+    owner: root
+    mode: '0644'
+
+- name: Reload systemd configuration
+  ansible.builtin.systemd:
+    daemon_reload: true
+{{% else %}}
 - name: Disable Ctrl-Alt-Del Burst Action
   ansible.builtin.lineinfile:
     dest: /etc/systemd/system.conf
@@ -12,3 +33,4 @@
     line: "CtrlAltDelBurstAction=none"
     create: yes
     mode: 0644
+{{% endif %}}
