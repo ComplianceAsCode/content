@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 26.04
+# platform = multi_platform_ubuntu
 
 USER1="cac_user1"
 USER2="cac_user2"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 26.04
+# platform = multi_platform_ubuntu
 
 USER="cac_user"
 useradd -m $USER

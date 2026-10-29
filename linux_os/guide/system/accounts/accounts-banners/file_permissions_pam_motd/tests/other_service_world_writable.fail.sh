@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 26.04
+# platform = multi_platform_ubuntu
 
 for f in /etc/pam.d/*; do
     [[ -f "$f" ]] && sed -ri '/pam_motd\.so/d' "$f"
