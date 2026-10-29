@@ -1,8 +1,16 @@
-# platform = Ubuntu 26.04
+# platform = multi_platform_ubuntu
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = medium
+
+- name: Check whether tmp.mount is active
+  ansible.builtin.command:
+    cmd: systemctl is-active tmp.mount
+  register: tmp_mount_active
+  changed_when: false
+  failed_when: false
+  check_mode: false
 
 - name: Read the active tmp.mount options
   ansible.builtin.command:
@@ -10,13 +18,7 @@
   register: tmp_mount_options
   changed_when: false
   check_mode: false
-
-- name: Require an active systemd mount definition for /tmp
-  ansible.builtin.assert:
-    that:
-      - tmp_mount_options.rc == 0
-      - tmp_mount_options.stdout | trim | length > 0
-    fail_msg: tmp.mount does not report its mount options.
+  when: tmp_mount_active.stdout == "active"
 
 - name: Create the tmp.mount drop-in directory
   ansible.builtin.file:
@@ -25,7 +27,10 @@
     owner: root
     group: root
     mode: '0755'
-  when: "'noexec' not in (tmp_mount_options.stdout | trim).split(',')"
+  when:
+    - tmp_mount_active.stdout == "active"
+    - tmp_mount_options.stdout | default('') | trim | length > 0
+    - "'noexec' not in (tmp_mount_options.stdout | trim).split(',')"
 
 - name: Add noexec to the tmp.mount options
   ansible.builtin.copy:
@@ -37,7 +42,10 @@
     group: root
     mode: '0644'
   register: tmp_mount_drop_in
-  when: "'noexec' not in (tmp_mount_options.stdout | trim).split(',')"
+  when:
+    - tmp_mount_active.stdout == "active"
+    - tmp_mount_options.stdout | default('') | trim | length > 0
+    - "'noexec' not in (tmp_mount_options.stdout | trim).split(',')"
 
 - name: Reload systemd after changing tmp.mount
   ansible.builtin.systemd_service:
