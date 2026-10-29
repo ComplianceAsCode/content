@@ -1495,8 +1495,12 @@ controls:
           - sshd_idle_timeout_value=5_minutes
           - var_sshd_set_keepalive=3
           - sshd_set_idle_timeout
-          - sshd_set_keepalive_positive
+          - sshd_set_keepalive
       status: partial
+      notes: |
+          The current implementation imposes an upper boundary on the
+          values. The CIS benchmark requires only that the values
+          are greater than 0.
     - id: 5.1.9
       title: Ensure sshd DisableForwarding is enabled (Automated)
       levels:
@@ -1603,7 +1607,7 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - sshd_disable_empty_passwords_default
+          - sshd_disable_empty_passwords
       status: automated
     - id: 5.1.22
       title: Ensure sshd PermitRootLogin is disabled (Automated)
