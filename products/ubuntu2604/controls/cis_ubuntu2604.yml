@@ -1538,7 +1538,8 @@ controls:
           - l1_server
           - l1_workstation
       rules:
-          - sshd_use_strong_kex_ubuntu2604
+          - sshd_strong_kex=cis_ubuntu2604
+          - sshd_use_strong_kex
       status: automated
     - id: 5.1.14
       title: Ensure sshd post-quantum key exchange algorithms are configured (Manual)
