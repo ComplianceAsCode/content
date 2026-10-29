@@ -31,3 +31,15 @@
       path: "{{ log_file_path }}"
       state: file
       mode: "{{ '0600' if log_group == 'root' else '0640' }}"
+
+- name: "{{{ rule_title }}} - Find the rotated audit log files"
+  ansible.builtin.find:
+      paths: "{{ log_file_path | dirname }}"
+      patterns: "{{ log_file_path | basename }}.*"
+  register: rotated_log_files
+
+- name: "{{{ rule_title }}} - Set rotated audit log file permissions"
+  ansible.builtin.file:
+      path: "{{ item.path }}"
+      mode: "{{ '0600' if log_group == 'root' else '0640' }}"
+  loop: "{{ rotated_log_files.files }}"
