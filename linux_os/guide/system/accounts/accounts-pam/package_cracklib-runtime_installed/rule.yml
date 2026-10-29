@@ -11,8 +11,9 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: 'cracklib-runtime is not installed or an upgrade is available'
+{{{ complete_ocil_entry_package_installed(package="cracklib-runtime") }}}
 
-ocil: |-
-    Verify <tt>dpkg-query -s cracklib-runtime</tt> succeeds and
-    <tt>apt list --upgradable</tt> does not list <tt>cracklib-runtime</tt>.
+template:
+    name: package_installed
+    vars:
+        pkgname: cracklib-runtime
