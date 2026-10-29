@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 26.04
+# platform = multi_platform_ubuntu
 # check-import = stdout
 
 if ! dpkg-query -W -f='${db:Status-Status}\n' cracklib-runtime 2>/dev/null | grep -qx installed; then

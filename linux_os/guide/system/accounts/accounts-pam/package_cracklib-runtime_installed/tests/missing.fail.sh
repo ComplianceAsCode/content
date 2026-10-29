@@ -1,4 +1,4 @@
 #!/bin/bash
-# platform = Ubuntu 26.04
+# platform = multi_platform_ubuntu
 
 {{{ bash_package_remove("cracklib-runtime") }}}

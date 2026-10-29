@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 26.04
+# platform = multi_platform_ubuntu
 # packages = update-notifier-common
 
 systemctl stop update-notifier-motd.timer 2>/dev/null || true
