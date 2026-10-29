@@ -14,6 +14,7 @@ permissions:
 jobs:
   generate-and-validate:
     name: Generate CIS-NIST Control File and Profiles
+    if: github.repository == 'ComplianceAsCode/content'
     runs-on: ubuntu-latest
     container:
       image: fedora:latest
