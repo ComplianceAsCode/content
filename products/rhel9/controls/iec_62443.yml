@@ -1,0 +1,16 @@
+---
+policy: IEC 62443-4-2 (ANSI/ISA-62443-4-2-2018)
+title: 'Security for industrial automation and control systems - Part 4-2: Technical security requirements for IACS components'
+id: iec_62443_rhel9
+version: '2018'
+source: https://www.isa.org/products/ansi-isa-62443-4-2-2018-security-for-industrial-au
+
+levels:
+    - id: sl1
+    - id: sl2
+      inherits_from:
+          - sl1
+
+reference_type: iec_62443
+product: rhel9
+controls_dir: iec_62443

@@ -1,0 +1,32 @@
+---
+# IEC 62443-4-2 FR 4: Data confidentiality (DC)
+controls:
+    - id: CR 4.1
+      title: Information confidentiality
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:sc-8
+          - nist_800_53:sc-28
+
+    - id: CR 4.2
+      title: Information persistence
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:mp-6
+
+    - id: CR 4.3
+      title: Use of cryptography
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:sc-8
+          - nist_800_53:sc-12
+          - nist_800_53:sc-13
