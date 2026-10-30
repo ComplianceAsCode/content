@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Ensure Zabbix Agent Is Enabled'
+
+description: |-
+    {{{ describe_service_enable(service="zabbix-agent") }}}
+
+rationale: |-
+    If the Zabbix agent is not running, the server cannot be monitored,
+    delaying detection of outages or performance issues.
+
+severity: medium
+
+ocil_clause: 'the zabbix-agent process is not running'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="zabbix-agent") }}}
+
+fixtext: '{{{ fixtext_service_enabled(service="zabbix-agent") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        servicename: zabbix-agent
+        packagename: zabbix-agent
