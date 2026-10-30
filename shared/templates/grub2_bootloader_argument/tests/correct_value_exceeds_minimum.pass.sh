@@ -2,7 +2,7 @@
 
 {{% if OPERATION == "greater than or equal" %}}
 # platform = multi_platform_all
-{{%- if 'ubuntu' in product %}}
+{{%- if 'ubuntu' in product or 'suse' in families %}}
 # packages = grub2
 {{%- else %}}
 # packages = grub2,grubby
