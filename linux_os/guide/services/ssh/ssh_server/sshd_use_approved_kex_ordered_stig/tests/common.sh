@@ -14,7 +14,7 @@ KEX_ALGOS="ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellm
 CONF_PREFIX_REGEX="^\s*KexAlgorithms"
 CONF_SUFIX=""
 
-{{% elif product in ['ubuntu2404'] %}}
+{{% elif product in ['ubuntu2404'] or 'debian' in product %}}
 FILE_PATH='/etc/ssh/sshd_config'
 FILE_PATH_CONFIGDIR='/etc/ssh/sshd_config.d'
 CONF_PREFIX="KexAlgorithms "

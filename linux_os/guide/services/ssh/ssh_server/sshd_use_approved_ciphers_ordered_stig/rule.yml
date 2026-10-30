@@ -1,5 +1,7 @@
 {{%- if product == 'ubuntu2204' %}}
 {{%- set sshd_approved_ciphers = "aes256-ctr,aes256-gcm@openssh.com,aes128-ctr,aes128-gcm@openssh.com" %}}
+{{%- elif 'debian' in product %}}
+{{%- set sshd_approved_ciphers = "aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr" %}}
 {{%- else %}}
 {{%- set sshd_approved_ciphers = "aes256-ctr,aes192-ctr,aes128-ctr" %}}
 {{%- endif %}}
@@ -16,7 +18,7 @@ description: |-
     If this line does not contain these ciphers in exact order,
     is commented out, or is missing, this is a finding.
     {{%- else %}}
-    <pre>Ciphers aes256-ctr,aes192-ctr,aes128-ctr</pre>
+    <pre>Ciphers {{{ sshd_approved_ciphers }}}</pre>
     This rule ensures that there are configured ciphers mentioned
     above (or their subset), keeping the given order of algorithms.
     {{%- endif %}}
@@ -50,7 +52,7 @@ ocil: |-
     ciphers are in use, run the following command:
     <pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
     The output should contain only following ciphers (or a subset) in the exact order:
-    <pre>aes256-ctr,aes192-ctr,aes128-ctr</pre>
+    <pre>{{{ sshd_approved_ciphers }}}</pre>
 
 warnings:
     - general: |-

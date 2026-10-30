@@ -1,6 +1,6 @@
-# platform = Oracle Linux 7,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
+# platform = Oracle Linux 7,multi_platform_debian,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 
-{{%- if product == 'ubuntu2404' %}}
+{{%- if product == 'ubuntu2404' or 'debian' in product %}}
 KEX_ALGOS="ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group14-sha256"
 {{%- else %}}
 KEX_ALGOS="ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256"

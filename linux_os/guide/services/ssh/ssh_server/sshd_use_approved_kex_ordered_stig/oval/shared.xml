@@ -12,6 +12,13 @@
 {{% set prefix_conf="^\s*KexAlgorithms\s*" %}}
 {{% set kex_algos=["ecdh-sha2-nistp256","ecdh-sha2-nistp384","ecdh-sha2-nistp521",
              "diffie-hellman-group-exchange-sha256"]  %}}
+{{% elif 'debian' in product %}}
+{{% set sshd_main_config = sshd_main_config_file %}}
+{{% set sshd_drop_in_dir = sshd_config_dir %}}
+{{% set prefix_conf="^\s*KexAlgorithms\s*" %}}
+{{% set kex_algos=["ecdh-sha2-nistp521","ecdh-sha2-nistp384","ecdh-sha2-nistp256",
+             "diffie-hellman-group-exchange-sha256","diffie-hellman-group16-sha512",
+             "diffie-hellman-group14-sha256"]  %}}
 {{% endif %}}
 
 {{% set kex_algos_regex=prefix_conf ~ "(?=[\w-])" "(\\b" ~ kex_algos|join("\\b,?)?(\\b") ~ ")?" ~

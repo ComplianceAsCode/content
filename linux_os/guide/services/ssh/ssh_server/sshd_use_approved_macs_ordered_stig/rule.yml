@@ -1,4 +1,4 @@
-{{%- if product == 'ubuntu2404' %}}
+{{%- if product == 'ubuntu2404' or 'debian' in product %}}
 {{%- set sshd_approved_macs = "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256" %}}
 {{%- elif product == 'ubuntu2204' %}}
 {{%- set sshd_approved_macs = "hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com" %}}
@@ -18,7 +18,7 @@ description: |-
     If this line does not contain these MACs in exact order,
     is commented out, or is missing, this is a finding.
     {{%- else %}}
-    <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
+    <pre>MACs {{{ sshd_approved_macs }}}</pre>
     This rule ensures that there are configured MACs mentioned
     above (or their subset), keeping the given order of algorithms.
     {{%- endif %}}
