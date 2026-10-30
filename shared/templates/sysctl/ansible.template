@@ -71,13 +71,17 @@
 {{% endif %}}
 
 {{% if sysctl_remediate_drop_in_file == "true" %}}
+- name: {{{ rule_title }}} - Check if /etc/sysctl.conf exists
+  ansible.builtin.stat:
+    path: /etc/sysctl.conf
+  register: sysctl_conf_stat
+
 - name: {{{ rule_title }}} - Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
   ansible.builtin.replace:
-    path: "{{ item }}"
+    path: /etc/sysctl.conf
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'
     replace: '#{{{ SYSCTLVAR }}}'
-  with_fileglob:
-    - "/etc/sysctl.conf"
+  when: sysctl_conf_stat.stat.exists
 {{% endif %}}
 
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
