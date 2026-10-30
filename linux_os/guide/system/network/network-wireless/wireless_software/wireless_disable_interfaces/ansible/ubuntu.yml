@@ -11,6 +11,7 @@
     patterns: "wireless"
     recurse: yes
     follow: true
+    depth: 2
   register: wireless_paths
 
 - name: "{{{ rule_title }}} - Extract interface names from directory paths"
@@ -24,9 +25,9 @@
   with_items: "{{ wireless_interfaces }}"
   when: wireless_interfaces | length > 0
 
-- name: "{{{ rule_title }}} - Get driver name for each interface"
+- name: "{{{ rule_title }}} - Get driver path for each interface"
   ansible.builtin.command:
-    cmd: "basename $(readlink -f /sys/class/net/{{ item }}/device/driver)"
+    cmd: "readlink -f /sys/class/net/{{ item }}/device/driver"
   register: wireless_drivers
   with_items: "{{ wireless_interfaces }}"
   changed_when: false
@@ -40,12 +41,12 @@
     mode: 0644
     block: |
       {% for r in wireless_drivers.results %}
-      install {{ r.stdout }} /bin/false
+      install {{ r.stdout | basename }} /bin/false
       {% endfor %}
   when: wireless_interfaces | length > 0
 
 - name: "{{{ rule_title }}} - Unload wireless kernel modules"
   ansible.builtin.command:
-    cmd: "modprobe -r {{ item.stdout }}"
+    cmd: "modprobe -r {{ item.stdout | basename }}"
   with_items: "{{ wireless_drivers.results }}"
   when: wireless_interfaces | length > 0
