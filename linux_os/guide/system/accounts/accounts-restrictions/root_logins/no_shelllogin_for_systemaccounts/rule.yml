@@ -12,7 +12,11 @@ description: |-
     <tt>/etc/passwd</tt>. System accounts are those user accounts with a user ID less than
     <tt>{{{ uid_min }}}</tt>. The user ID is stored in the third field. If any system account
     other than <tt>root</tt> has a login shell, disable it with the command:
+    {{% if product == "rhel10" %}}
+    <pre>$ sudo usermod -s /usr/sbin/nologin <i>account</i></pre>
+    {{% else %}}
     <pre>$ sudo usermod -s /sbin/nologin <i>account</i></pre>
+    {{% endif %}}
 
 rationale: |-
     Ensuring shells are not given to system accounts upon login makes it more difficult for
@@ -55,11 +59,17 @@ ocil: |-
 fixtext: |-
     Configure {{{ full_name }}} so that all non-interactive accounts on the system have no interactive shell assigned to them.
 
+    If the system account needs a shell assigned for mission operations, document the need with the information system security officer (ISSO).
+
     Run the following command to disable the interactive shell for a specific non-interactive user account:
 
+    {{% if product == "rhel10" %}}
+    $ sudo usermod --shell /usr/sbin/nologin account
+    {{% else %}}
     $ sudo usermod --shell /sbin/nologin account
+    {{% endif %}}
 
-srg_requirement: '{{{ full_name }}} system accounts must not have have login shell.'
+srg_requirement: '{{{ full_name }}} system accounts must not have an interactive login shell.'
 
 warnings:
     - functionality: |-
