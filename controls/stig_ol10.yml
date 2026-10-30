@@ -1,0 +1,3499 @@
+---
+policy: 'Oracle Linux 10 Security Technical Implementation Guide'
+title: 'Oracle Linux 10 Security Technical Implementation Guide'
+id: stig_ol10
+source: https://www.cyber.mil/stigs/downloads/
+version: DRAFT
+reference_type: stigid
+product: ol10
+
+levels:
+    - id: high
+    - id: medium
+    - id: low
+
+controls:
+    - id: OL10-DRAFT-00219
+      levels:
+          - medium
+      title: OL10 debug-shell systemd service must be disabled.
+      rules:
+          - service_debug-shell_disabled
+      status: automated
+    - id: OL10-DRAFT-00254
+      levels:
+          - medium
+      title: OL10 must ensure cryptographic verification of vendor software packages.
+      rules:
+          - ensure_oracle_gpgkey_installed
+          - package_sequoia-sq_installed
+      status: automated
+    - id: OL10-DRAFT-00252
+      levels:
+          - high
+      title: OL10 must check the GPG signature of software packages originating from external
+          software repositories before installation.
+      rules:
+          - ensure_gpgcheck_globally_activated
+      status: automated
+    - id: OL10-DRAFT-00251
+      levels:
+          - high
+      title: OL10 must check the GPG signature of locally installed software packages before
+          installation.
+      rules:
+          - ensure_gpgcheck_local_packages
+      status: automated
+    - id: OL10-DRAFT-00253
+      levels:
+          - high
+      title: OL10 must have GPG signature verification enabled for all software repositories.
+      rules:
+          - enable_gpgcheck_for_all_repositories
+      status: automated
+    - id: OL10-DRAFT-00184
+      levels:
+          - high
+      title: OL10 local disk partitions must implement cryptographic mechanisms to prevent
+          unauthorized disclosure or modification of all information that requires at rest
+          protection.
+      rules:
+          - encrypt_partitions
+      status: automated
+    - id: OL10-DRAFT-00230
+      levels:
+          - low
+      title: OL10 must use a separate file system for the system audit data path.
+      rules:
+          - partition_for_var_log_audit
+      status: automated
+    - id: OL10-DRAFT-00326
+      levels:
+          - medium
+      title: OL10 must be configured so that a separate file system must be used for user home
+          directories (such as /home or an equivalent).
+      rules:
+          - partition_for_home
+      status: automated
+    - id: OL10-DRAFT-00327
+      levels:
+          - medium
+      title: OL10 must use a separate file system for /tmp.
+      rules:
+          - partition_for_tmp
+      status: automated
+    - id: OL10-DRAFT-00328
+      levels:
+          - medium
+      title: OL10 must use a separate file system for /var.
+      rules:
+          - partition_for_var
+      status: automated
+    - id: OL10-DRAFT-00329
+      levels:
+          - medium
+      title: OL10 must use a separate file system for /var/log.
+      rules:
+          - partition_for_var_log
+      status: automated
+    - id: OL10-DRAFT-00330
+      levels:
+          - medium
+      title: OL10 must use a separate file system for /var/tmp.
+      rules:
+          - partition_for_var_tmp
+      status: automated
+    - id: OL10-DRAFT-00312
+      levels:
+          - medium
+      title: OL10 must remove all software components after updated versions have been installed.
+      rules:
+          - clean_components_post_updating
+      status: automated
+    - id: OL10-DRAFT-00138
+      levels:
+          - medium
+      title: OL10 must not have the nfs-utils package installed.
+      rules:
+          - package_nfs-utils_removed
+      status: automated
+    - id: OL10-DRAFT-00139
+      levels:
+          - high
+      title: OL10 must not have the telnet-server package installed.
+      rules:
+          - package_telnet-server_removed
+      status: automated
+    - id: OL10-DRAFT-00140
+      levels:
+          - medium
+      title: OL10 must not have the gssproxy package installed.
+      rules:
+          - package_gssproxy_removed
+      status: automated
+    - id: OL10-DRAFT-00141
+      levels:
+          - medium
+      title: OL10 must not have the tuned package installed.
+      rules:
+          - package_tuned_removed
+      status: automated
+    - id: OL10-DRAFT-00121
+      levels:
+          - high
+      title: OL10 must not have a File Transfer Protocol (FTP) server package installed.
+      rules:
+          - package_vsftpd_removed
+      status: automated
+    - id: OL10-DRAFT-00348
+      levels:
+          - medium
+      title: OL10 must have the nss-tools package installed.
+      rules:
+          - package_nss-tools_installed
+      status: automated
+    - id: OL10-DRAFT-00246
+      levels:
+          - medium
+      title: OL10 must have the s-nail package installed.
+      rules:
+          - package_s-nail_installed
+      status: automated
+    - id: OL10-DRAFT-00144
+      levels:
+          - medium
+      title: OL10 must have the firewalld package installed.
+      rules:
+          - package_firewalld_installed
+      status: automated
+    - id: OL10-DRAFT-00145
+      levels:
+          - medium
+      title: OL10 must be configured so that the firewalld service is active.
+      rules:
+          - service_firewalld_enabled
+      status: automated
+    - id: OL10-DRAFT-00337
+      levels:
+          - medium
+      title: OL10 must be configured so that the firewall employs a deny-all, allow-by-exception
+          policy for allowing connections to other systems.
+      rules:
+          - configured_firewalld_default_deny
+      related_rules:
+          - set_firewalld_default_zone
+      status: automated
+    - id: OL10-DRAFT-00243
+      levels:
+          - medium
+      title: OL10 must have the chrony package installed.
+      rules:
+          - package_chrony_installed
+      status: automated
+    - id: OL10-DRAFT-00244
+      levels:
+          - medium
+      title: OL10 must enable the chronyd service.
+      rules:
+          - service_chronyd_enabled
+      status: automated
+    - id: OL10-DRAFT-00148
+      levels:
+          - medium
+      title: OL10 must disable the chrony daemon from acting as a server.
+      rules:
+          - chronyd_client_only
+      status: automated
+    - id: OL10-DRAFT-00149
+      levels:
+          - medium
+      title: OL10 must disable network management of the chrony daemon.
+      rules:
+          - chronyd_no_chronyc_network
+      status: automated
+    - id: OL10-DRAFT-00291
+      levels:
+          - medium
+      title: OL10 must have the USBGuard package installed.
+      rules:
+          - package_usbguard_installed
+      status: automated
+    - id: OL10-DRAFT-00292
+      levels:
+          - medium
+      title: OL10 must enable the USBGuard package.
+      rules:
+          - service_usbguard_enabled
+      status: automated
+    - id: OL10-DRAFT-00293
+      levels:
+          - medium
+      title: OL10 must block unauthorized peripherals before establishing a connection.
+      rules:
+          - usbguard_generate_policy
+      status: automated
+    - id: OL10-DRAFT-00093
+      levels:
+          - medium
+      title: OL10 must enable Linux audit logging for the USBGuard daemon.
+      rules:
+          - configure_usbguard_auditbackend
+      status: automated
+    - id: OL10-DRAFT-00176
+      levels:
+          - medium
+      title: OL10 must have policycoreutils package installed.
+      rules:
+          - package_policycoreutils_installed
+      status: automated
+    - id: OL10-DRAFT-00336
+      levels:
+          - medium
+      title: OL10 policycoreutils-python-utils package must be installed.
+      rules:
+          - package_policycoreutils-python-utils_installed
+      status: automated
+    - id: OL10-DRAFT-00218
+      levels:
+          - medium
+      title: OL10 must have the sudo package installed.
+      rules:
+          - package_sudo_installed
+      status: automated
+    - id: OL10-DRAFT-00278
+      levels:
+          - medium
+      title: OL10 must have the fapolicy module installed.
+      rules:
+          - package_fapolicyd_installed
+      status: automated
+    - id: OL10-DRAFT-00279
+      levels:
+          - medium
+      title: OL10 must enable the fapolicy module.
+      rules:
+          - service_fapolicyd_enabled
+      status: automated
+    - id: OL10-DRAFT-00280
+      levels:
+          - medium
+      title: The OL10 fapolicy module must be configured to employ a deny-all, permit-by-exception
+          policy to allow the execution of authorized software programs.
+      rules:
+          - fapolicy_default_deny
+      status: automated
+    - id: OL10-DRAFT-00286
+      levels:
+          - medium
+      title: OL10 must have the pcsc-lite package installed.
+      rules:
+          - package_pcsc-lite_installed
+      status: automated
+    - id: OL10-DRAFT-00288
+      levels:
+          - medium
+      title: OL10 must be configured so that the pcscd service is active.
+      rules:
+          - service_pcscd_enabled
+      status: automated
+    - id: OL10-DRAFT-00287
+      levels:
+          - medium
+      title: OL10 must have the opensc package installed.
+      rules:
+          - package_opensc_installed
+      status: automated
+    - id: OL10-DRAFT-00150
+      levels:
+          - medium
+      title: OL10 must use the CAC smart card driver.
+      rules:
+          - configure_opensc_card_drivers
+          - var_smartcard_drivers=cac
+      status: automated
+    - id: OL10-DRAFT-00247
+      levels:
+          - medium
+      title: OL10 must have the Advanced Intrusion Detection Environment (AIDE) package installed.
+      rules:
+          - package_aide_installed
+          - aide_build_database
+      status: automated
+    - id: OL10-DRAFT-00198
+      levels:
+          - high
+      title: OL10 must use cryptographic mechanisms to protect the integrity of audit tools.
+      rules:
+          - aide_check_audit_tools
+      status: automated
+    - id: OL10-DRAFT-00342
+      levels:
+          - medium
+      title: OL10 must use a file integrity tool that is configured to use FIPS 140-3-approved
+          cryptographic hashes for validating file contents and directories.
+      rules:
+          - aide_use_fips_hashes
+      status: automated
+    - id: OL10-DRAFT-00248
+      levels:
+          - medium
+      title: OL10 must routinely check the baseline configuration for unauthorized changes and
+          notify the system administrator (SA) when anomalies in the operation of any security
+          functions are discovered.
+      rules:
+          - aide_scan_notification
+      status: automated
+    - id: OL10-DRAFT-00343
+      levels:
+          - medium
+      title: OL10 must be configured so that the file integrity tool verifies Access Control Lists
+          (ACLs).
+      rules:
+          - aide_verify_acls
+      status: automated
+    - id: OL10-DRAFT-00344
+      levels:
+          - medium
+      title: OL10 must be configured so that the file integrity tool verifies extended attributes.
+      rules:
+          - aide_verify_ext_attributes
+      status: automated
+    - id: OL10-DRAFT-00231
+      levels:
+          - medium
+      title: OL10 must have the rsyslog package installed.
+      rules:
+          - package_rsyslog_installed
+      status: automated
+    - id: OL10-DRAFT-00345
+      levels:
+          - medium
+      title: OL10 must be configured so that the rsyslog service is active.
+      rules:
+          - service_rsyslog_enabled
+      status: automated
+    - id: OL10-DRAFT-00235
+      levels:
+          - medium
+      title: OL10 must be configured to forward audit records via TCP to a different system or
+          media from the system being audited via rsyslog.
+      rules:
+          - rsyslog_remote_loghost
+      status: automated
+    - id: OL10-DRAFT-00443
+      levels:
+          - medium
+      title: OL10 must be configured so that the rsyslog daemon does not accept log messages from
+          other servers unless the server is being used for log aggregation.
+      rules:
+          - rsyslog_nolisten
+      status: automated
+    - id: OL10-DRAFT-00236
+      levels:
+          - medium
+      title: OL10 must authenticate the remote logging server for offloading audit logs via rsyslog.
+      rules:
+          - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+      status: automated
+    - id: OL10-DRAFT-00237
+      levels:
+          - medium
+      title: OL10 must encrypt the transfer of audit records offloaded onto a different system or
+          media from the system being audited via rsyslog.
+      rules:
+          - rsyslog_encrypt_offload_actionsendstreamdrivermode
+      status: automated
+    - id: OL10-DRAFT-00238
+      levels:
+          - medium
+      title: OL10 must encrypt via the gtls driver the transfer of audit records offloaded onto a
+          different system or media from the system being audited via rsyslog.
+      rules:
+          - rsyslog_encrypt_offload_defaultnetstreamdriver
+      status: automated
+    - id: OL10-DRAFT-00030
+      levels:
+          - medium
+      title: OL10 must monitor remote access methods.
+      rules:
+          - rsyslog_remote_access_monitoring
+      status: automated
+    - id: OL10-DRAFT-00442
+      levels:
+          - medium
+      title: OL10 must use cron logging.
+      rules:
+          - rsyslog_cron_logging
+      status: automated
+    - id: OL10-DRAFT-00165
+      levels:
+          - medium
+      title: OL10 must have the packages required for encrypting offloaded audit logs installed.
+      rules:
+          - package_rsyslog-gnutls_installed
+      status: automated
+    - id: OL10-DRAFT-00087
+      levels:
+          - medium
+      title: OL10 must have the audit package installed.
+      rules:
+          - package_audit_installed
+      status: automated
+    - id: OL10-DRAFT-00088
+      levels:
+          - medium
+      title: OL10 audit service must be enabled.
+      rules:
+          - service_auditd_enabled
+      status: automated
+    - id: OL10-DRAFT-00232
+      levels:
+          - low
+      title: OL10 must have the audispd-plugins package installed.
+      rules:
+          - package_audispd-plugins_installed
+      status: automated
+    - id: OL10-DRAFT-00166
+      levels:
+          - medium
+      title: OL10 must have the libreswan package installed.
+      rules:
+          - package_libreswan_installed
+      status: automated
+    - id: OL10-DRAFT-00081
+      levels:
+          - medium
+      title: OL10 must have mail aliases to notify the information system security officer (ISSO)
+          and system administrator (SA) (at a minimum) in the event of an audit processing failure.
+      rules:
+          - postfix_client_configure_mail_alias
+      status: automated
+    - id: OL10-DRAFT-00389
+      levels:
+          - medium
+      title: OL10 must be configured to prevent unrestricted mail relaying.
+      rules:
+          - postfix_prevent_unrestricted_relay
+      status: automated
+    - id: OL10-DRAFT-00306
+      levels:
+          - high
+      title: OL10 networked systems must have SSH installed.
+      rules:
+          - package_openssh-server_installed
+      status: automated
+    - id: OL10-DRAFT-00307
+      levels:
+          - medium
+      title: OL10 networked systems must have and implement SSH to protect the confidentiality and
+          integrity of transmitted and received information, as well as information during
+          preparation for transmission.
+      rules:
+          - service_sshd_enabled
+      status: automated
+    - id: OL10-DRAFT-00341
+      levels:
+          - medium
+      title: OL10 must have the openssh-clients package installed.
+      rules:
+          - package_openssh-clients_installed
+      status: automated
+    - id: OL10-DRAFT-00154
+      levels:
+          - medium
+      title: OL10 must have the pkcs11-provider package installed.
+      rules:
+          - install_smartcard_packages
+      status: automated
+    - id: OL10-DRAFT-00349
+      levels:
+          - medium
+      title: OL10 must have the gnutls-utils package installed.
+      rules:
+          - package_gnutls-utils_installed
+      status: automated
+    - id: OL10-DRAFT-00297
+      levels:
+          - high
+      title: OL10 must have the crypto-policies package installed.
+      rules:
+          - package_crypto-policies_installed
+      status: automated
+    - id: OL10-DRAFT-00298
+      levels:
+          - high
+      title: OL10 must implement a FIPS 140-3 compliant system-wide cryptographic policy.
+      rules:
+          - configure_crypto_policy
+          - var_system_crypto_policy=fips
+      status: automated
+    - id: OL10-DRAFT-00032
+      levels:
+          - high
+      title: OL10 must be installed with kernel parameter "fips=1" at initial installation time to
+          enable FIPS mode.
+      rules:
+          - sysctl_crypto_fips_enabled
+      status: automated
+    - id: OL10-DRAFT-00194
+      levels:
+          - high
+      title: OL10 SSH client must be configured to use only DOD-approved encryption ciphers
+          employing FIPS 140-3 validated cryptographic hash algorithms to protect the
+          confidentiality of SSH client connections.
+      rules:
+          - harden_sshd_ciphers_openssh_conf_crypto_policy
+          - sshd_approved_ciphers=stig_ol10
+      status: automated
+    - id: OL10-DRAFT-00192
+      levels:
+          - high
+      title: OL10 SSH server must be configured to use only ciphers employing FIPS 140-3 validated
+          cryptographic hash algorithms to protect the confidentiality of SSH server connections.
+      rules:
+          - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+          - sshd_approved_ciphers=stig_ol10
+      status: automated
+    - id: OL10-DRAFT-00195
+      levels:
+          - high
+      title: OL10 SSH client must be configured to use only DOD-approved Message Authentication
+          Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms to protect the
+          confidentiality of SSH client connections.
+      rules:
+          - harden_sshd_macs_openssh_conf_crypto_policy
+          - sshd_approved_macs=stig_ol10
+      status: automated
+    - id: OL10-DRAFT-00193
+      levels:
+          - high
+      title: OL10 SSH server must be configured to use only Message Authentication Codes (MACs)
+          employing FIPS 140-3 validated cryptographic hash algorithms to protect the
+          confidentiality of SSH server connections.
+      rules:
+          - harden_sshd_macs_opensshserver_conf_crypto_policy
+          - sshd_approved_macs=stig_ol10
+      status: automated
+    - id: OL10-DRAFT-00033
+      levels:
+          - high
+      title: OL10 IP tunnels must use 140-3 approved cryptographic algorithms.
+      rules:
+          - configure_libreswan_crypto_policy
+      status: automated
+    - id: OL10-DRAFT-00309
+      levels:
+          - high
+      title: OL10 must implement DOD-approved encryption in the bind package.
+      rules:
+          - configure_bind_crypto_policy
+      status: automated
+    - id: OL10-DRAFT-00300
+      levels:
+          - high
+      title: OL10 must not allow the cryptographic policy to be overridden.
+      notes: >-
+          This rule only contains SCE (Script Check Engine) content. The package
+          openscap-engine-sce must be installed on the target system for the check to work.
+      rules:
+          - crypto_policy_not_overridden
+      status: automated
+    - id: OL10-DRAFT-00409
+      levels:
+          - medium
+      title: OL10 /etc/group file must be owned by root.
+      rules:
+          - file_owner_etc_group
+      status: automated
+    - id: OL10-DRAFT-00407
+      levels:
+          - medium
+      title: OL10 /etc/group file must be group-owned by root.
+      rules:
+          - file_groupowner_etc_group
+      status: automated
+    - id: OL10-DRAFT-00410
+      levels:
+          - medium
+      title: OL10 /etc/group- file must be owned by root.
+      rules:
+          - file_owner_backup_etc_group
+      status: automated
+    - id: OL10-DRAFT-00408
+      levels:
+          - medium
+      title: OL10 /etc/group- file must be group-owned by root.
+      rules:
+          - file_groupowner_backup_etc_group
+      status: automated
+    - id: OL10-DRAFT-00415
+      levels:
+          - medium
+      title: OL10 /etc/gshadow file must be owned by root.
+      rules:
+          - file_owner_etc_gshadow
+      status: automated
+    - id: OL10-DRAFT-00413
+      levels:
+          - medium
+      title: OL10 /etc/gshadow file must be group-owned by root.
+      rules:
+          - file_groupowner_etc_gshadow
+      status: automated
+    - id: OL10-DRAFT-00416
+      levels:
+          - medium
+      title: OL10 /etc/gshadow- file must be owned by root.
+      rules:
+          - file_owner_backup_etc_gshadow
+      status: automated
+    - id: OL10-DRAFT-00414
+      levels:
+          - medium
+      title: OL10 /etc/gshadow- file must be group-owned by root.
+      rules:
+          - file_groupowner_backup_etc_gshadow
+      status: automated
+    - id: OL10-DRAFT-00421
+      levels:
+          - medium
+      title: OL10 /etc/passwd file must be owned by root.
+      rules:
+          - file_owner_etc_passwd
+      status: automated
+    - id: OL10-DRAFT-00419
+      levels:
+          - medium
+      title: OL10 /etc/passwd file must be group-owned by root.
+      rules:
+          - file_groupowner_etc_passwd
+      status: automated
+    - id: OL10-DRAFT-00422
+      levels:
+          - medium
+      title: OL10 /etc/passwd- file must be owned by root.
+      rules:
+          - file_owner_backup_etc_passwd
+      status: automated
+    - id: OL10-DRAFT-00420
+      levels:
+          - medium
+      title: OL10 /etc/passwd- file must be group-owned by root.
+      rules:
+          - file_groupowner_backup_etc_passwd
+      status: automated
+    - id: OL10-DRAFT-00427
+      levels:
+          - medium
+      title: OL10 /etc/shadow file must be owned by root.
+      rules:
+          - file_owner_etc_shadow
+      status: automated
+    - id: OL10-DRAFT-00425
+      levels:
+          - medium
+      title: OL10 /etc/shadow file must be group-owned by root.
+      rules:
+          - file_groupowner_etc_shadow
+      status: automated
+    - id: OL10-DRAFT-00428
+      levels:
+          - medium
+      title: OL10 /etc/shadow- file must be owned by root.
+      rules:
+          - file_owner_backup_etc_shadow
+      status: automated
+    - id: OL10-DRAFT-00426
+      levels:
+          - medium
+      title: OL10 /etc/shadow- file must be group-owned by root.
+      rules:
+          - file_groupowner_backup_etc_shadow
+      status: automated
+    - id: OL10-DRAFT-00186
+      levels:
+          - medium
+      title: OL10 /var/log directory must be owned by root.
+      rules:
+          - file_owner_var_log
+      status: automated
+    - id: OL10-DRAFT-00185
+      levels:
+          - medium
+      title: OL10 /var/log directory must be group-owned by root.
+      rules:
+          - file_groupowner_var_log
+      status: automated
+    - id: OL10-DRAFT-00189
+      levels:
+          - medium
+      title: OL10 /var/log/messages file must be owned by root.
+      rules:
+          - file_owner_var_log_messages
+      status: automated
+    - id: OL10-DRAFT-00188
+      levels:
+          - medium
+      title: OL10 /var/log/messages file must be group-owned by root.
+      rules:
+          - file_groupowner_var_log_messages
+      status: automated
+    - id: OL10-DRAFT-00205
+      levels:
+          - medium
+      title: OL10 system commands must be owned by root.
+      rules:
+          - file_ownership_binary_dirs
+      status: automated
+    - id: OL10-DRAFT-00204
+      levels:
+          - medium
+      title: OL10 system commands must be group-owned by root or a system account.
+      rules:
+          - file_groupownership_system_commands_dirs
+      status: automated
+    - id: OL10-DRAFT-00211
+      levels:
+          - medium
+      title: OL10 library files must be owned by root.
+      rules:
+          - file_ownership_library_dirs
+      status: automated
+    - id: OL10-DRAFT-00210
+      levels:
+          - medium
+      title: OL10 library files must be group-owned by root or a system account.
+      rules:
+          - root_permissions_syslibrary_files
+      status: automated
+    - id: OL10-DRAFT-00208
+      levels:
+          - medium
+      title: OL10 library directories must be owned by root.
+      rules:
+          - dir_ownership_library_dirs
+      status: automated
+    - id: OL10-DRAFT-00207
+      levels:
+          - medium
+      title: OL10 library directories must be group-owned by root or a system account.
+      rules:
+          - dir_group_ownership_library_dirs
+      status: automated
+    - id: OL10-DRAFT-00433
+      levels:
+          - medium
+      title: OL10 cron configuration files directory must be owned by root.
+      rules:
+          - file_owner_cron_d
+          - file_owner_cron_daily
+          - file_owner_cron_hourly
+          - file_owner_cron_monthly
+          - file_owner_cron_weekly
+          - file_owner_crontab
+          - file_owner_cron_deny
+      status: automated
+    - id: OL10-DRAFT-00432
+      levels:
+          - medium
+      title: OL10 cron configuration files directory must be group-owned by root.
+      rules:
+          - file_groupowner_cron_d
+          - file_groupowner_cron_daily
+          - file_groupowner_cron_hourly
+          - file_groupowner_cron_monthly
+          - file_groupowner_cron_weekly
+          - file_groupowner_crontab
+          - file_groupowner_cron_deny
+      status: automated
+    - id: OL10-DRAFT-00180
+      levels:
+          - medium
+      title: OL10 world-writable directories must be owned by root, sys, bin, or an application
+          user.
+      rules:
+          - dir_perms_world_writable_system_owned
+      status: automated
+    - id: OL10-DRAFT-00393
+      levels:
+          - medium
+      title: OL10 must be configured so that all system device files are correctly labeled to
+          prevent unauthorized modification.
+      rules:
+          - selinux_all_devicefiles_labeled
+      status: automated
+    - id: OL10-DRAFT-00397
+      levels:
+          - medium
+      title: OL10 SSH server configuration file must be group-owned by root.
+      rules:
+          - file_groupowner_sshd_config
+          - directory_groupowner_sshd_config_d
+          - file_groupowner_sshd_drop_in_config
+      status: automated
+    - id: OL10-DRAFT-00398
+      levels:
+          - medium
+      title: OL10 SSH server configuration file must be owned by root.
+      rules:
+          - file_owner_sshd_config
+          - directory_owner_sshd_config_d
+          - file_owner_sshd_drop_in_config
+      status: automated
+    - id: OL10-DRAFT-00403
+      levels:
+          - medium
+      title: OL10 local interactive user home directories must be group-owned by the home directory
+          owner's primary group.
+      rules:
+          - file_groupownership_home_directories
+      status: automated
+    - id: OL10-DRAFT-00083
+      levels:
+          - medium
+      title: OL10 audit logs must be group-owned by root or by a restricted logging group to
+          prevent unauthorized read access.
+      rules:
+          - file_group_ownership_var_log_audit
+      status: automated
+    - id: OL10-DRAFT-00084
+      levels:
+          - medium
+      title: OL10 audit log directory must be owned by root to prevent unauthorized read access.
+      rules:
+          - directory_ownership_var_log_audit
+      status: automated
+    - id: OL10-DRAFT-00085
+      levels:
+          - medium
+      title: OL10 audit logs file must have mode 0600 or less permissive to prevent unauthorized
+          access to the audit log.
+      rules:
+          - file_permissions_var_log_audit
+      status: automated
+    - id: OL10-DRAFT-00206
+      levels:
+          - medium
+      title: OL10 system commands must have mode 755 or less permissive.
+      rules:
+          - file_permissions_binary_dirs
+      status: automated
+    - id: OL10-DRAFT-00209
+      levels:
+          - medium
+      title: OL10 library directories must have mode 755 or less permissive.
+      rules:
+          - dir_permissions_library_dirs
+      status: automated
+    - id: OL10-DRAFT-00212
+      levels:
+          - medium
+      title: OL10 library files must have mode 755 or less permissive.
+      rules:
+          - file_permissions_library_dirs
+      status: automated
+    - id: OL10-DRAFT-00187
+      levels:
+          - medium
+      title: OL10 /var/log directory must have mode 0755 or less permissive.
+      rules:
+          - file_permissions_var_log
+      status: automated
+    - id: OL10-DRAFT-00190
+      levels:
+          - medium
+      title: OL10 /var/log/messages file must have mode 0640 or less permissive.
+      rules:
+          - file_permissions_var_log_messages
+      status: automated
+    - id: OL10-DRAFT-00402
+      levels:
+          - medium
+      title: OL10 local initialization files must have mode 0740 or less permissive.
+      rules:
+          - file_permission_user_init_files_root
+          - rootfiles_configured
+      status: automated
+    - id: OL10-DRAFT-00404
+      levels:
+          - medium
+      title: OL10 local interactive user home directories must have mode 0750 or less permissive.
+      rules:
+          - file_permissions_home_directories
+      status: automated
+    - id: OL10-DRAFT-00411
+      levels:
+          - medium
+      title: OL10 /etc/group file must have mode 0644 or less permissive to prevent unauthorized
+          access.
+      rules:
+          - file_permissions_etc_group
+      status: automated
+    - id: OL10-DRAFT-00412
+      levels:
+          - medium
+      title: OL10 /etc/group- file must have mode 0644 or less permissive to prevent unauthorized
+          access.
+      rules:
+          - file_permissions_backup_etc_group
+      status: automated
+    - id: OL10-DRAFT-00417
+      levels:
+          - medium
+      title: OL10 /etc/gshadow file must have mode 0000 or less permissive to prevent unauthorized
+          access.
+      rules:
+          - file_permissions_etc_gshadow
+      status: automated
+    - id: OL10-DRAFT-00418
+      levels:
+          - medium
+      title: OL10 /etc/gshadow- file must have mode 0000 or less permissive to prevent unauthorized
+          access.
+      rules:
+          - file_permissions_backup_etc_gshadow
+      status: automated
+    - id: OL10-DRAFT-00423
+      levels:
+          - medium
+      title: OL10 /etc/passwd file must have mode 0644 or less permissive to prevent unauthorized
+          access.
+      rules:
+          - file_permissions_etc_passwd
+      status: automated
+    - id: OL10-DRAFT-00424
+      levels:
+          - medium
+      title: OL10 /etc/passwd- file must have mode 0644 or less permissive to prevent unauthorized
+          access.
+      rules:
+          - file_permissions_backup_etc_passwd
+      status: automated
+    - id: OL10-DRAFT-00429
+      levels:
+          - medium
+      title: OL10 /etc/shadow- file must have mode 0000 or less permissive to prevent unauthorized
+          access.
+      rules:
+          - file_permissions_backup_etc_shadow
+      status: automated
+    - id: OL10-DRAFT-00179
+      levels:
+          - medium
+      title: OL10 must be configured so that a sticky bit must be set on all public directories.
+      rules:
+          - dir_perms_world_writable_sticky_bits
+      status: automated
+    - id: OL10-DRAFT-00400
+      levels:
+          - medium
+      title: OL10 local files and directories must have a valid group owner.
+      rules:
+          - file_permissions_ungroupowned
+      status: automated
+    - id: OL10-DRAFT-00401
+      levels:
+          - medium
+      title: OL10 local files and directories must have a valid owner.
+      rules:
+          - no_files_unowned_by_user
+      status: automated
+    - id: OL10-DRAFT-00430
+      levels:
+          - medium
+      title: OL10 /etc/shadow file must have mode 0000 to prevent unauthorized access.
+      rules:
+          - file_permissions_etc_shadow
+      status: automated
+    - id: OL10-DRAFT-00200
+      levels:
+          - medium
+      title: OL10 audit tools must be owned by root.
+      rules:
+          - file_audit_tools_ownership
+      status: automated
+    - id: OL10-DRAFT-00199
+      levels:
+          - medium
+      title: OL10 audit tools must be group-owned by root.
+      rules:
+          - file_audit_tools_group_ownership
+      status: automated
+    - id: OL10-DRAFT-00441
+      levels:
+          - medium
+      title: OL10 must set the umask value to 077 for all local interactive user accounts.
+      rules:
+          - accounts_umask_interactive_users
+          - var_accounts_user_umask=077
+      status: automated
+    - id: OL10-DRAFT-00369
+      levels:
+          - medium
+      title: OL10 must define default permissions for the bash shell.
+      rules:
+          - accounts_umask_etc_bashrc
+          - var_accounts_user_umask=077
+      status: automated
+    - id: OL10-DRAFT-00370
+      levels:
+          - medium
+      title: OL10 must define default permissions for the c shell.
+      rules:
+          - accounts_umask_etc_csh_cshrc
+          - var_accounts_user_umask=077
+      status: automated
+    - id: OL10-DRAFT-00468
+      levels:
+          - medium
+      title: OL10 must define default permissions for all authenticated users in such a way that
+          the user can only read and modify their own files.
+      rules:
+          - accounts_umask_etc_login_defs
+          - var_accounts_user_umask=077
+      status: automated
+    - id: OL10-DRAFT-00371
+      levels:
+          - medium
+      title: OL10 must define default permissions for the system default profile.
+      rules:
+          - accounts_umask_etc_profile
+          - var_accounts_user_umask=077
+      status: automated
+    - id: OL10-DRAFT-00399
+      levels:
+          - medium
+      title: OL10 SSH server configuration file must have mode 0600 or less permissive.
+      rules:
+          - file_permissions_sshd_config
+          - directory_permissions_sshd_config_d
+          - file_permissions_sshd_drop_in_config
+      status: automated
+    - id: OL10-DRAFT-00395
+      levels:
+          - medium
+      title: OL10 SSH private host key files must have mode 0640 or less permissive.
+      rules:
+          - file_permissions_sshd_private_key
+      status: automated
+    - id: OL10-DRAFT-00405
+      levels:
+          - medium
+      title: OL10 /boot/grub2/grub.cfg file must be group-owned by root.
+      rules:
+          - file_groupowner_grub2_cfg
+      status: automated
+    - id: OL10-DRAFT-00275
+      levels:
+          - medium
+      title: OL10 must prevent device files from being interpreted on file systems that contain
+          user home directories.
+      rules:
+          - mount_option_home_nodev
+      status: automated
+    - id: OL10-DRAFT-00276
+      levels:
+          - medium
+      title: OL10 must prevent files with the setuid and setgid bit set from being executed on file
+          systems that contain user home directories.
+      rules:
+          - mount_option_home_nosuid
+      status: automated
+    - id: OL10-DRAFT-00361
+      levels:
+          - medium
+      title: OL10 must prevent code from being executed on file systems that contain user home
+          directories.
+      rules:
+          - mount_option_home_noexec
+      status: automated
+    - id: OL10-DRAFT-00269
+      levels:
+          - medium
+      title: OL10 must mount /var/log/audit with the nodev option.
+      rules:
+          - mount_option_var_log_audit_nodev
+      status: automated
+    - id: OL10-DRAFT-00270
+      levels:
+          - medium
+      title: OL10 must mount /var/log/audit with the noexec option.
+      rules:
+          - mount_option_var_log_audit_noexec
+      status: automated
+    - id: OL10-DRAFT-00271
+      levels:
+          - medium
+      title: OL10 must mount /var/log/audit with the nosuid option.
+      rules:
+          - mount_option_var_log_audit_nosuid
+      status: automated
+    - id: OL10-DRAFT-00201
+      levels:
+          - medium
+      title: OL10 audit tools must have a mode of 0755 or less permissive.
+      rules:
+          - file_audit_tools_permissions
+      status: automated
+    - id: OL10-DRAFT-00391
+      levels:
+          - medium
+      title: OL10 must be configured so that local initialization files do not execute
+          world-writable programs.
+      rules:
+          - accounts_user_dot_no_world_writable_programs
+      status: automated
+    - id: OL10-DRAFT-00214
+      levels:
+          - medium
+      title: OL10 systemd-journald service must be enabled.
+      rules:
+          - service_systemd-journald_enabled
+      status: automated
+    - id: OL10-DRAFT-00069
+      levels:
+          - medium
+      title: OL10 must enable auditing of processes that start prior to the audit daemon.
+      rules:
+          - grub2_audit_argument
+      status: automated
+    - id: OL10-DRAFT-00092
+      levels:
+          - medium
+      title: OL10 audit system must audit local events.
+      rules:
+          - auditd_local_events
+      status: automated
+    - id: OL10-DRAFT-00350
+      levels:
+          - medium
+      title: OL10 must write audit records to disk.
+      rules:
+          - auditd_write_logs
+      status: automated
+    - id: OL10-DRAFT-00013
+      levels:
+          - medium
+      title: OL10 must log username information when unsuccessful logon attempts occur.
+      rules:
+          - accounts_passwords_pam_faillock_audit
+      status: automated
+    - id: OL10-DRAFT-00094
+      levels:
+          - medium
+      title: OL10 must allow only the information system security manager (ISSM) (or individuals or
+          roles appointed by the ISSM) to select which auditable events are to be audited.
+      rules:
+          - file_permissions_etc_audit_auditd
+          - file_permissions_etc_audit_rulesd
+      status: automated
+    - id: OL10-DRAFT-00196
+      levels:
+          - medium
+      title: OL10 must allocate an audit_backlog_limit of sufficient size to capture processes that
+          start prior to the audit daemon.
+      rules:
+          - grub2_audit_backlog_limit_argument
+          - var_audit_backlog_limit=8192
+      status: automated
+    - id: OL10-DRAFT-00079
+      levels:
+          - medium
+      title: OL10 must take appropriate action when a critical audit processing failure occurs.
+      rules:
+          - audit_rules_system_shutdown
+          - var_audit_failure_mode=panic
+      status: automated
+    - id: OL10-DRAFT-00239
+      levels:
+          - medium
+      title: OL10 must take action when allocated audit record storage volume reaches 75 percent of
+          the repository maximum audit record storage capacity.
+      rules:
+          - auditd_data_retention_space_left_percentage
+          - var_auditd_space_left_percentage=25pc
+      status: automated
+    - id: OL10-DRAFT-00073
+      levels:
+          - medium
+      title: OL10 must label all offloaded audit logs before sending them to the central log server.
+      rules:
+          - auditd_name_format
+          - var_auditd_name_format=stig
+      status: automated
+    - id: OL10-DRAFT-00241
+      levels:
+          - medium
+      title: OL10 must take action when allocated audit record storage volume reaches 95 percent of
+          the audit record storage capacity.
+      rules:
+          - auditd_data_retention_admin_space_left_percentage
+          - var_auditd_admin_space_left_percentage=5pc
+      status: automated
+    - id: OL10-DRAFT-00242
+      levels:
+          - medium
+      title: OL10 must act when allocated audit record storage volume reaches 95 percent of the
+          repository maximum audit record storage capacity.
+      rules:
+          - auditd_data_retention_admin_space_left_action
+          - var_auditd_admin_space_left_action=single
+      status: automated
+    - id: OL10-DRAFT-00234
+      levels:
+          - medium
+      title: OL10 must take appropriate action when the internal event queue is full.
+      rules:
+          - auditd_overflow_action
+      status: automated
+    - id: OL10-DRAFT-00197
+      levels:
+          - medium
+      title: OL10 must produce audit records containing information to establish the identity of
+          any individual or process associated with the event.
+      rules:
+          - auditd_log_format
+      status: automated
+    - id: OL10-DRAFT-00082
+      levels:
+          - medium
+      title: OL10 must periodically flush audit records to disk to prevent the loss of audit
+          records.
+      rules:
+          - auditd_freq
+          - var_auditd_freq=100
+      status: automated
+    - id: OL10-DRAFT-00240
+      levels:
+          - medium
+      title: OL10 must notify the system administrator (SA) and information system security officer
+          (ISSO) (at a minimum) when allocated audit record storage volume 75 percent utilization.
+      rules:
+          - auditd_data_retention_space_left_action
+          - var_auditd_space_left_action=email
+      status: automated
+    - id: OL10-DRAFT-00080
+      levels:
+          - medium
+      title: The OL10 system administrator (SA) and/or information system security officer (ISSO)
+          (at a minimum) must be alerted of an audit processing failure event.
+      rules:
+          - auditd_data_retention_action_mail_acct
+          - var_auditd_action_mail_acct=root
+      status: automated
+    - id: OL10-DRAFT-00031
+      levels:
+          - medium
+      title: OL10 must log SSH connection attempts and failures to the server.
+      rules:
+          - sshd_set_loglevel_verbose
+      status: automated
+    - id: OL10-DRAFT-00222
+      levels:
+          - medium
+      title: OL10 must audit uses of the execve system call.
+      rules:
+          - audit_rules_suid_privilege_function
+      status: automated
+    - id: OL10-DRAFT-00036
+      levels:
+          - medium
+      title: OL10 must audit all uses of the setxattr, fsetxattr, lsetxattr, removexattr,
+          fremovexattr, and lremovexattr system calls.
+      rules:
+          - audit_rules_dac_modification_setxattr
+          - audit_rules_dac_modification_fsetxattr
+          - audit_rules_dac_modification_lsetxattr
+          - audit_rules_dac_modification_removexattr
+          - audit_rules_dac_modification_fremovexattr
+          - audit_rules_dac_modification_lremovexattr
+      status: automated
+    - id: OL10-DRAFT-00068
+      levels:
+          - medium
+      title: OL10 must audit all uses of umount system calls.
+      rules:
+          - audit_rules_privileged_commands_umount
+      status: automated
+    - id: OL10-DRAFT-00060
+      levels:
+          - medium
+      title: OL10 must audit all uses of the chacl command.
+      rules:
+          - audit_rules_execution_chacl
+      status: automated
+    - id: OL10-DRAFT-00039
+      levels:
+          - medium
+      title: OL10 must audit all uses of the setfacl command.
+      rules:
+          - audit_rules_execution_setfacl
+      status: automated
+    - id: OL10-DRAFT-00038
+      levels:
+          - medium
+      title: OL10 must audit all uses of the chcon command.
+      rules:
+          - audit_rules_execution_chcon
+      status: automated
+    - id: OL10-DRAFT-00057
+      levels:
+          - medium
+      title: OL10 must audit all uses of the semanage command.
+      rules:
+          - audit_rules_execution_semanage
+      status: automated
+    - id: OL10-DRAFT-00058
+      levels:
+          - medium
+      title: OL10 must audit all uses of the setfiles command.
+      rules:
+          - audit_rules_execution_setfiles
+      status: automated
+    - id: OL10-DRAFT-00059
+      levels:
+          - medium
+      title: OL10 must audit all uses of the setsebool command.
+      rules:
+          - audit_rules_execution_setsebool
+      status: automated
+    - id: OL10-DRAFT-00054
+      levels:
+          - medium
+      title: OL10 must audit all uses of the truncate, ftruncate, creat, open, openat, and
+          open_by_handle_at system calls.
+      rules:
+          - audit_rules_unsuccessful_file_modification_truncate
+          - audit_rules_unsuccessful_file_modification_ftruncate
+          - audit_rules_unsuccessful_file_modification_creat
+          - audit_rules_unsuccessful_file_modification_open
+          - audit_rules_unsuccessful_file_modification_openat
+          - audit_rules_unsuccessful_file_modification_open_by_handle_at
+      status: automated
+    - id: OL10-DRAFT-00064
+      levels:
+          - medium
+      title: OL10 must audit all uses of the delete_module system call.
+      rules:
+          - audit_rules_kernel_module_loading_delete
+      status: automated
+    - id: OL10-DRAFT-00065
+      levels:
+          - medium
+      title: OL10 must audit all uses of the init_module and finit_module system calls.
+      rules:
+          - audit_rules_kernel_module_loading_init
+          - audit_rules_kernel_module_loading_finit
+      status: automated
+    - id: OL10-DRAFT-00037
+      levels:
+          - medium
+      title: OL10 must audit all uses of the chage command.
+      rules:
+          - audit_rules_privileged_commands_chage
+      status: automated
+    - id: OL10-DRAFT-00040
+      levels:
+          - medium
+      title: OL10 must audit all uses of the chsh command.
+      rules:
+          - audit_rules_privileged_commands_chsh
+      status: automated
+    - id: OL10-DRAFT-00041
+      levels:
+          - medium
+      title: OL10 must audit all uses of the crontab command.
+      rules:
+          - audit_rules_privileged_commands_crontab
+      status: automated
+    - id: OL10-DRAFT-00042
+      levels:
+          - medium
+      title: OL10 must audit all uses of the gpasswd command.
+      rules:
+          - audit_rules_privileged_commands_gpasswd
+      status: automated
+    - id: OL10-DRAFT-00066
+      levels:
+          - medium
+      title: OL10 must audit all uses of the kmod command.
+      rules:
+          - audit_rules_privileged_commands_kmod
+      status: automated
+    - id: OL10-DRAFT-00043
+      levels:
+          - medium
+      title: OL10 must audit all uses of the newgrp command.
+      rules:
+          - audit_rules_privileged_commands_newgrp
+      status: automated
+    - id: OL10-DRAFT-00044
+      levels:
+          - medium
+      title: OL10 must audit all uses of the pam_timestamp_check command.
+      rules:
+          - audit_rules_privileged_commands_pam_timestamp_check
+      status: automated
+    - id: OL10-DRAFT-00045
+      levels:
+          - medium
+      title: OL10 must audit all uses of the passwd command.
+      rules:
+          - audit_rules_privileged_commands_passwd
+      status: automated
+    - id: OL10-DRAFT-00046
+      levels:
+          - medium
+      title: OL10 must audit all uses of the postdrop command.
+      rules:
+          - audit_rules_privileged_commands_postdrop
+      status: automated
+    - id: OL10-DRAFT-00047
+      levels:
+          - medium
+      title: OL10 must audit all uses of the postqueue command.
+      rules:
+          - audit_rules_privileged_commands_postqueue
+      status: automated
+    - id: OL10-DRAFT-00048
+      levels:
+          - medium
+      title: OL10 must audit all uses of the ssh-agent command.
+      rules:
+          - audit_rules_privileged_commands_ssh_agent
+      status: automated
+    - id: OL10-DRAFT-00049
+      levels:
+          - medium
+      title: OL10 must audit all uses of the ssh-keysign command.
+      rules:
+          - audit_rules_privileged_commands_ssh_keysign
+      status: automated
+    - id: OL10-DRAFT-00035
+      levels:
+          - medium
+      title: OL10 must audit all uses of the su command.
+      rules:
+          - audit_rules_privileged_commands_su
+      status: automated
+    - id: OL10-DRAFT-00061
+      levels:
+          - medium
+      title: OL10 must audit all uses of the sudo command.
+      rules:
+          - audit_rules_privileged_commands_sudo
+      status: automated
+    - id: OL10-DRAFT-00050
+      levels:
+          - medium
+      title: OL10 must audit all uses of the sudoedit command.
+      rules:
+          - audit_rules_privileged_commands_sudoedit
+      status: automated
+    - id: OL10-DRAFT-00051
+      levels:
+          - medium
+      title: OL10 must audit all uses of the unix_chkpwd command.
+      rules:
+          - audit_rules_privileged_commands_unix_chkpwd
+      status: automated
+    - id: OL10-DRAFT-00034
+      levels:
+          - medium
+      title: OL10 must audit all uses of the unix_update command.
+      rules:
+          - audit_rules_privileged_commands_unix_update
+      status: automated
+    - id: OL10-DRAFT-00052
+      levels:
+          - medium
+      title: OL10 must audit all uses of the userhelper command.
+      rules:
+          - audit_rules_privileged_commands_userhelper
+      status: automated
+    - id: OL10-DRAFT-00062
+      levels:
+          - medium
+      title: OL10 must audit all uses of the usermod command.
+      rules:
+          - audit_rules_privileged_commands_usermod
+      status: automated
+    - id: OL10-DRAFT-00053
+      levels:
+          - medium
+      title: OL10 must audit all uses of the mount command.
+      rules:
+          - audit_rules_media_export
+      notes: >
+          Confusing requirement, probably a bug in the DISA STIG - title mentions the
+          "mount" command but the example audit rule in the check and fixtext isn't
+          an audit rule watching a command, instead it watches the mount syscall.
+          The selected rule audit_rules_media_export watches the syscall. If the
+          command should be watched, the rule audit_rules_privileged_commands_mount
+          should be selected instead.
+      status: automated
+    - id: OL10-DRAFT-00096
+      levels:
+          - medium
+      title: OL10 must be configured so that successful/unsuccessful uses of the init command
+          generate an audit record.
+      rules:
+          - audit_privileged_commands_init
+      status: automated
+    - id: OL10-DRAFT-00097
+      levels:
+          - medium
+      title: OL10 must be configured so that successful/unsuccessful uses of the poweroff command
+          generate an audit record.
+      rules:
+          - audit_privileged_commands_poweroff
+      status: automated
+    - id: OL10-DRAFT-00098
+      levels:
+          - medium
+      title: OL10 must be configured so that successful/unsuccessful uses of the reboot command
+          generate an audit record.
+      rules:
+          - audit_privileged_commands_reboot
+      status: automated
+    - id: OL10-DRAFT-00099
+      levels:
+          - medium
+      title: OL10 must be configured so that successful/unsuccessful uses of the shutdown command
+          generate an audit record.
+      rules:
+          - audit_privileged_commands_shutdown
+      status: automated
+    - id: OL10-DRAFT-00070
+      levels:
+          - medium
+      title: OL10 must be configured so that successful/unsuccessful uses of the umount system call
+          generate an audit record.
+      rules:
+          - audit_rules_dac_modification_umount
+      status: automated
+    - id: OL10-DRAFT-00071
+      levels:
+          - medium
+      title: OL10 must be configured so that successful/unsuccessful uses of the umount2 system
+          call generate an audit record.
+      rules:
+          - audit_rules_dac_modification_umount2
+      status: automated
+    - id: OL10-DRAFT-00002
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /etc/sudoers.
+      rules:
+          - audit_rules_sudoers
+      status: automated
+    - id: OL10-DRAFT-00003
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /etc/sudoers.d/ directory.
+      rules:
+          - audit_rules_sudoers_d
+      status: automated
+    - id: OL10-DRAFT-00004
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /etc/group.
+      rules:
+          - audit_rules_usergroup_modification_group
+      status: automated
+    - id: OL10-DRAFT-00005
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /etc/gshadow.
+      rules:
+          - audit_rules_usergroup_modification_gshadow
+      status: automated
+    - id: OL10-DRAFT-00006
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /etc/opasswd.
+      rules:
+          - audit_rules_usergroup_modification_opasswd
+      status: automated
+    - id: OL10-DRAFT-00007
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /etc/passwd.
+      rules:
+          - audit_rules_usergroup_modification_passwd
+      status: automated
+    - id: OL10-DRAFT-00008
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /etc/shadow.
+      rules:
+          - audit_rules_usergroup_modification_shadow
+      status: automated
+    - id: OL10-DRAFT-00295
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /var/log/faillock.
+      rules:
+          - audit_rules_login_events_faillock
+      status: automated
+    - id: OL10-DRAFT-00067
+      levels:
+          - medium
+      title: OL10 must generate audit records for all account creations, modifications, disabling,
+          and termination events that affect /var/log/lastlog.
+      rules:
+          - audit_rules_login_events_lastlog
+      status: automated
+    - id: OL10-DRAFT-00055
+      levels:
+          - medium
+      title: OL10 must audit all uses of the chmod, fchmod, and fchmodat system calls.
+      rules:
+          - audit_rules_dac_modification_chmod
+          - audit_rules_dac_modification_fchmod
+          - audit_rules_dac_modification_fchmodat
+          - audit_rules_dac_modification_fchmodat2
+      status: automated
+    - id: OL10-DRAFT-00056
+      levels:
+          - medium
+      title: OL10 must audit all uses of the chown, fchown, fchownat, and lchown system calls.
+      rules:
+          - audit_rules_dac_modification_chown
+          - audit_rules_dac_modification_fchown
+          - audit_rules_dac_modification_fchownat
+          - audit_rules_dac_modification_lchown
+      status: automated
+    - id: OL10-DRAFT-00063
+      levels:
+          - medium
+      title: OL10 must audit all uses of the rename, unlink, rmdir, renameat, and unlinkat system
+          calls.
+      rules:
+          - audit_rules_file_deletion_events_rename
+          - audit_rules_file_deletion_events_unlink
+          - audit_rules_file_deletion_events_rmdir
+          - audit_rules_file_deletion_events_renameat
+          - audit_rules_file_deletion_events_renameat2
+          - audit_rules_file_deletion_events_unlinkat
+      status: automated
+    - id: OL10-DRAFT-00130
+      levels:
+          - medium
+      title: OL10 must require a boot loader superuser password.
+      rules:
+          - grub2_password
+      status: automated
+    - id: OL10-DRAFT-00129
+      levels:
+          - medium
+      title: OL10 must require a unique superuser's name upon booting into single-user and
+          maintenance modes.
+      rules:
+          - grub2_admin_username
+      status: automated
+    - id: OL10-DRAFT-00438
+      levels:
+          - medium
+      title: OL10 system accounts must not have an interactive login shell.
+      rules:
+          - no_shelllogin_for_systemaccounts
+      status: automated
+    - id: OL10-DRAFT-00124
+      levels:
+          - medium
+      title: OL10 user account passwords for new users or password changes must have a 60-day
+          maximum password lifetime restriction in /etc/login.defs.
+      rules:
+          - accounts_maximum_age_login_defs
+          - var_accounts_maximum_age_login_defs=60
+      status: automated
+    - id: OL10-DRAFT-00125
+      levels:
+          - medium
+      title: OL10 user account passwords must have a 60-day maximum password lifetime restriction.
+      rules:
+          - accounts_password_set_max_life_existing
+          - var_accounts_maximum_age_login_defs=60
+      status: automated
+    - id: OL10-DRAFT-00439
+      levels:
+          - medium
+      title: OL10 local interactive user accounts must be assigned a home directory upon creation.
+      rules:
+          - accounts_have_homedir_login_defs
+      status: automated
+    - id: OL10-DRAFT-00151
+      levels:
+          - medium
+      title: OL10 duplicate User IDs (UIDs) must not exist for interactive users.
+      rules:
+          - account_unique_id
+      status: automated
+    - id: OL10-DRAFT-00001
+      levels:
+          - medium
+      title: OL10 system must automatically remove or disable temporary user accounts after 72
+          hours.
+      rules:
+          - account_temp_expire_date
+      status: automated
+    - id: OL10-DRAFT-00152
+      levels:
+          - medium
+      title: OL10 interactive users must have a primary group that exists.
+      rules:
+          - gid_passwd_group_same
+      status: automated
+    - id: OL10-DRAFT-00164
+      levels:
+          - medium
+      title: OL10 must disable account identifiers (individuals, groups, roles, and devices) after
+          35 days of inactivity.
+      rules:
+          - account_disable_post_pw_expiration
+          - var_account_disable_post_pw_expiration=35
+      status: automated
+    - id: OL10-DRAFT-00440
+      levels:
+          - medium
+      title: OL10 must be configured so that executable search paths within the initialization
+          files of all local interactive users must only contain paths that resolve to the system
+          default or the users home directory.
+      rules:
+          - accounts_user_home_paths_only
+      status: automated
+    - id: OL10-DRAFT-00436
+      levels:
+          - medium
+      title: OL10 local interactive users must have a home directory assigned in the /etc/passwd
+          file.
+      rules:
+          - accounts_user_interactive_home_directory_defined
+      status: automated
+    - id: OL10-DRAFT-00437
+      levels:
+          - medium
+      title: OL10 local interactive user home directories defined in the /etc/passwd file must
+          exist.
+      rules:
+          - accounts_user_interactive_home_directory_exists
+      status: automated
+    - id: OL10-DRAFT-00325
+      levels:
+          - medium
+      title: OL10 must enforce a delay of at least four seconds between logon prompts following a
+          failed logon attempt.
+      rules:
+          - accounts_logon_fail_delay
+          - var_accounts_fail_delay=4
+      status: automated
+    - id: OL10-DRAFT-00122
+      levels:
+          - medium
+      title: OL10 passwords for new users or password changes must have a 24-hour minimum password
+          lifetime restriction in /etc/login.defs.
+      rules:
+          - accounts_minimum_age_login_defs
+          - var_accounts_minimum_age_login_defs=1
+      status: automated
+    - id: OL10-DRAFT-00126
+      levels:
+          - medium
+      title: OL10 passwords must be created with a minimum of 15 characters.
+      rules:
+          - accounts_password_pam_minlen
+          - var_password_pam_minlen=15
+      status: automated
+    - id: OL10-DRAFT-00213
+      levels:
+          - medium
+      title: OL10 must enforce password complexity by requiring that at least one special character
+          be used.
+      rules:
+          - accounts_password_pam_ocredit
+          - var_password_pam_ocredit=1
+      status: automated
+    - id: OL10-DRAFT-00107
+      levels:
+          - medium
+      title: OL10 must enforce password complexity by requiring that at least one lowercase
+          character be used.
+      rules:
+          - accounts_password_pam_lcredit
+          - var_password_pam_lcredit=1
+      status: automated
+    - id: OL10-DRAFT-00104
+      levels:
+          - medium
+      title: OL10 must enforce password complexity by requiring that at least one uppercase
+          character be used.
+      rules:
+          - accounts_password_pam_ucredit
+          - var_password_pam_ucredit=1
+      status: automated
+    - id: OL10-DRAFT-00109
+      levels:
+          - medium
+      title: OL10 must require the change of at least eight characters when passwords are changed.
+      rules:
+          - accounts_password_pam_difok
+          - var_password_pam_difok=8
+      status: automated
+    - id: OL10-DRAFT-00123
+      levels:
+          - medium
+      title: OL10 passwords must have a 24-hour minimum password lifetime restriction in
+          /etc/shadow.
+      rules:
+          - accounts_password_set_min_life_existing
+          - var_accounts_minimum_age_login_defs=1
+      status: automated
+    - id: OL10-DRAFT-00110
+      levels:
+          - medium
+      title: OL10 must require the maximum number of repeating characters of the same character
+          class be limited to four when passwords are changed.
+      rules:
+          - accounts_password_pam_maxclassrepeat
+          - var_password_pam_maxclassrepeat=4
+      status: automated
+    - id: OL10-DRAFT-00111
+      levels:
+          - medium
+      title: OL10 must require the maximum number of repeating characters be limited to three when
+          passwords are changed.
+      rules:
+          - accounts_password_pam_maxrepeat
+          - var_password_pam_maxrepeat=3
+      status: automated
+    - id: OL10-DRAFT-00112
+      levels:
+          - medium
+      title: OL10 must require the change of at least four character classes when passwords are
+          changed.
+      rules:
+          - accounts_password_pam_minclass
+          - var_password_pam_minclass=4
+      status: automated
+    - id: OL10-DRAFT-00108
+      levels:
+          - medium
+      title: OL10 must enforce password complexity by requiring that at least one numeric character
+          be used.
+      rules:
+          - accounts_password_pam_dcredit
+          - var_password_pam_dcredit=1
+      status: automated
+    - id: OL10-DRAFT-00324
+      levels:
+          - medium
+      title: OL10 must prevent the use of dictionary words for passwords.
+      rules:
+          - accounts_password_pam_dictcheck
+      status: automated
+    - id: OL10-DRAFT-00435
+      levels:
+          - medium
+      title: OL10 must be configured so that the root account is the only account having
+          unrestricted access to the system.
+      rules:
+          - accounts_no_uid_except_zero
+      status: automated
+    - id: OL10-DRAFT-00113
+      levels:
+          - medium
+      title: OL10 must enforce password complexity rules for the root account.
+      rules:
+          - accounts_password_pam_enforce_root
+      status: automated
+    - id: OL10-DRAFT-00228
+      levels:
+          - medium
+      title: OL10 must automatically lock an account when three unsuccessful logon attempts occur.
+      rules:
+          - accounts_passwords_pam_faillock_deny
+          - var_accounts_passwords_pam_faillock_deny=3
+      status: automated
+    - id: OL10-DRAFT-00229
+      levels:
+          - medium
+      title: OL10 must automatically lock the root account until the root account is released by an
+          administrator when three unsuccessful logon attempts occur during a 15-minute time
+          period.
+      rules:
+          - accounts_passwords_pam_faillock_deny_root
+      status: automated
+    - id: OL10-DRAFT-00009
+      levels:
+          - medium
+      title: OL10 system must enforce the limit of three consecutive invalid logon attempts by a
+          user during a 15-minute time period.
+      rules:
+          - accounts_passwords_pam_faillock_interval
+          - var_accounts_passwords_pam_faillock_fail_interval=900
+          - accounts_passwords_pam_faillock_deny
+          - var_accounts_passwords_pam_faillock_deny=3
+      status: automated
+    - id: OL10-DRAFT-00227
+      levels:
+          - medium
+      title: OL10 must maintain an account lock until the locked account is released by an
+          administrator.
+      rules:
+          - accounts_passwords_pam_faillock_unlock_time
+          - var_accounts_passwords_pam_faillock_unlock_time=never
+      status: automated
+    - id: OL10-DRAFT-00014
+      levels:
+          - medium
+      title: OL10 must ensure account lockouts persist.
+      rules:
+          - accounts_passwords_pam_faillock_dir
+      status: automated
+    - id: OL10-DRAFT-00394
+      levels:
+          - medium
+      title: OL10 must not have unauthorized accounts.
+      rules:
+          - accounts_authorized_local_users
+          - var_accounts_authorized_local_users_regex=ol9
+      status: automated
+      notes: >
+          TODO: create a OL 10 option in the var_accounts_authorized_local_users_regex variable
+    - id: OL10-DRAFT-00352
+      levels:
+          - medium
+      title: OL10 must not allow blank or null passwords.
+      rules:
+          - no_empty_passwords
+      status: automated
+    - id: OL10-DRAFT-00353
+      levels:
+          - medium
+      title: OL10 must not have accounts configured with blank or null passwords.
+      rules:
+          - no_empty_passwords_etc_shadow
+      status: automated
+    - id: OL10-DRAFT-00153
+      levels:
+          - medium
+      title: OL10 groups must have unique Group ID (GID).
+      rules:
+          - group_unique_id
+      status: automated
+    - id: OL10-DRAFT-00020
+      levels:
+          - low
+      title: OL10 must limit the number of concurrent sessions to ten for all accounts and/or
+          account types.
+      rules:
+          - accounts_max_concurrent_login_sessions
+          - var_accounts_max_concurrent_login_sessions=10
+      status: automated
+    - id: OL10-DRAFT-00105
+      levels:
+          - medium
+      title: OL10 must ensure the password complexity module in the system-auth file is configured
+          for three retries or less.
+      rules:
+          - accounts_password_pam_pwquality_retry
+          - var_password_pam_retry=3
+      status: automated
+    - id: OL10-DRAFT-00217
+      levels:
+          - medium
+      title: OL10 must restrict the use of the su command.
+      rules:
+          - use_pam_wheel_for_su
+      status: automated
+    - id: OL10-DRAFT-00225
+      levels:
+          - medium
+      title: OL10 must not be configured to bypass password requirements for privilege escalation.
+      rules:
+          - disallow_bypass_password_sudo
+      status: automated
+    - id: OL10-DRAFT-00339
+      levels:
+          - medium
+      title: OL10 must restrict privilege elevation to authorized personnel.
+      rules:
+          - sudo_restrict_privilege_elevation_to_authorized
+      status: automated
+    - id: OL10-DRAFT-00223
+      levels:
+          - medium
+      title: OL10 must require users to reauthenticate for privilege escalation.
+      rules:
+          - sudo_remove_no_authenticate
+      status: automated
+    - id: OL10-DRAFT-00281
+      levels:
+          - medium
+      title: OL10 must require reauthentication when using the "sudo" command.
+      rules:
+          - sudo_require_reauthentication
+          - var_sudo_timestamp_timeout=always_prompt
+      status: automated
+    - id: OL10-DRAFT-00338
+      levels:
+          - medium
+      title: OL10 must use the invoking user's password for privilege escalation when using sudo.
+      rules:
+          - sudoers_validate_passwd
+      status: automated
+    - id: OL10-DRAFT-00224
+      levels:
+          - high
+      title: OL10 must require users to provide a password for privilege escalation.
+      rules:
+          - sudo_remove_nopasswd
+      status: automated
+    - id: OL10-DRAFT-00011
+      levels:
+          - medium
+      title: OL10 must configure the use of the pam_faillock.so module in the
+          /etc/pam.d/system-auth file.
+      rules:
+          - account_password_pam_faillock_system_auth
+      status: automated
+    - id: OL10-DRAFT-00012
+      levels:
+          - medium
+      title: OL10 must configure the use of the pam_faillock.so module in the
+          /etc/pam.d/password-auth file.
+      rules:
+          - account_password_pam_faillock_password_auth
+      status: automated
+    - id: OL10-DRAFT-00106
+      levels:
+          - medium
+      title: OL10 must ensure the password complexity module is enabled in the password-auth file.
+      rules:
+          - accounts_password_pam_pwquality_password_auth
+      status: automated
+    - id: OL10-DRAFT-00351
+      levels:
+          - medium
+      title: OL10 must ensure the password complexity module is enabled in the system-auth file.
+      rules:
+          - accounts_password_pam_pwquality_system_auth
+      status: automated
+    - id: OL10-DRAFT-00170
+      levels:
+          - high
+      title: OL10 must enable the Pluggable Authentication Module (PAM) interface for SSHD.
+      rules:
+          - sshd_enable_pam
+      status: automated
+    - id: OL10-DRAFT-00116
+      levels:
+          - medium
+      title: OL10 pam_unix.so module must be configured in the password-auth file to use a FIPS
+          140-3 approved cryptographic hashing algorithm for system authentication.
+      rules:
+          - set_password_hashing_algorithm_passwordauth
+          - var_password_hashing_algorithm_pam=sha512
+      status: automated
+    - id: OL10-DRAFT-00119
+      levels:
+          - medium
+      title: OL10 shadow password suite must be configured to use a sufficient number of hashing
+          rounds.
+      rules:
+          - set_password_hashing_min_rounds_logindefs
+          - var_password_hashing_min_rounds_login_defs=100000
+      status: automated
+    - id: OL10-DRAFT-00117
+      levels:
+          - medium
+      title: OL10 password-auth must be configured to use a sufficient number of hashing rounds.
+      rules:
+          - accounts_password_pam_unix_rounds_password_auth
+          - var_password_pam_unix_rounds=100000
+      status: automated
+    - id: OL10-DRAFT-00120
+      levels:
+          - high
+      title: OL10 must employ FIPS 140-3 approved cryptographic hashing algorithms for all stored
+          passwords.
+      rules:
+          - accounts_password_all_shadowed_sha512
+      status: automated
+    - id: OL10-DRAFT-00114
+      levels:
+          - high
+      title: OL10 must be configured to use the shadow file to store only encrypted representations
+          of passwords.
+      rules:
+          - set_password_hashing_algorithm_logindefs
+          - var_password_hashing_algorithm=SHA512
+      status: automated
+    - id: OL10-DRAFT-00016
+      levels:
+          - medium
+      title: OL10 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+          local or remote access to the system via a SSH logon.
+      rules:
+          - sshd_enable_warning_banner
+      status: automated
+    - id: OL10-DRAFT-00019
+      levels:
+          - medium
+      title: OL10 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+          local or remote access to the system via a graphical user logon.
+      rules:
+          - dconf_gnome_login_banner_text
+          - dconf_login_banner_text=dod_default
+          - dconf_login_banner_contents=dod_default
+      status: automated
+    - id: OL10-DRAFT-00017
+      levels:
+          - medium
+      title: OL10 must prevent a user from overriding the banner-message-enable setting for the
+          graphical user interface.
+      rules:
+          - dconf_gnome_banner_enabled
+      status: automated
+    - id: OL10-DRAFT-00015
+      levels:
+          - medium
+      title: OL10 must display the Standard Mandatory DOD Notice and Consent Banner before granting
+          local or remote access to the system via a command line user logon.
+      rules:
+          - banner_etc_issue
+          - login_banner_text=dod_default
+          - login_banner_contents=dod_default
+      status: automated
+    - id: OL10-DRAFT-00355
+      levels:
+          - medium
+      title: OL10 must prevent special devices on file systems that are imported via Network File
+          System (NFS).
+      rules:
+          - mount_option_nodev_remote_filesystems
+      status: automated
+    - id: OL10-DRAFT-00356
+      levels:
+          - medium
+      title: OL10 must prevent code from being executed on file systems that are imported via
+          Network File System (NFS).
+      rules:
+          - mount_option_noexec_remote_filesystems
+      status: automated
+    - id: OL10-DRAFT-00357
+      levels:
+          - medium
+      title: OL10 must prevent files with the setuid and setgid bit set from being executed on file
+          systems that are imported via Network File System (NFS).
+      rules:
+          - mount_option_nosuid_remote_filesystems
+      status: automated
+    - id: OL10-DRAFT-00354
+      levels:
+          - medium
+      title: OL10 must be configured so that the Network File System (NFS) is configured to use
+          RPCSEC_GSS.
+      rules:
+          - mount_option_krb_sec_remote_filesystems
+      status: automated
+    - id: OL10-DRAFT-00256
+      levels:
+          - medium
+      title: OL10 must mount /boot with the nodev option.
+      rules:
+          - mount_option_boot_nodev
+      status: automated
+    - id: OL10-DRAFT-00257
+      levels:
+          - medium
+      title: OL10 must prevent files with the setuid and setgid bit set from being executed on the
+          /boot directory.
+      rules:
+          - mount_option_boot_nosuid
+      status: automated
+    - id: OL10-DRAFT-00258
+      levels:
+          - medium
+      title: OL10 must prevent files with the setuid and setgid bit set from being executed on the
+          /boot/efi directory.
+      rules:
+          - mount_option_boot_efi_nosuid
+      status: automated
+    - id: OL10-DRAFT-00259
+      levels:
+          - medium
+      title: OL10 must mount /dev/shm with the nodev option.
+      rules:
+          - mount_option_dev_shm_nodev
+      status: automated
+    - id: OL10-DRAFT-00260
+      levels:
+          - medium
+      title: OL10 must mount /dev/shm with the noexec option.
+      rules:
+          - mount_option_dev_shm_noexec
+      status: automated
+    - id: OL10-DRAFT-00261
+      levels:
+          - medium
+      title: OL10 must mount /dev/shm with the nosuid option.
+      rules:
+          - mount_option_dev_shm_nosuid
+      status: automated
+    - id: OL10-DRAFT-00262
+      levels:
+          - medium
+      title: OL10 must mount /tmp with the nodev option.
+      rules:
+          - mount_option_tmp_nodev
+      status: automated
+    - id: OL10-DRAFT-00263
+      levels:
+          - medium
+      title: OL10 must mount /tmp with the noexec option.
+      rules:
+          - mount_option_tmp_noexec
+      status: automated
+    - id: OL10-DRAFT-00264
+      levels:
+          - medium
+      title: OL10 must mount /tmp with the nosuid option.
+      rules:
+          - mount_option_tmp_nosuid
+      status: automated
+    - id: OL10-DRAFT-00265
+      levels:
+          - medium
+      title: OL10 must mount /var with the nodev option.
+      rules:
+          - mount_option_var_nodev
+      status: automated
+    - id: OL10-DRAFT-00266
+      levels:
+          - medium
+      title: OL10 must mount /var/log with the nodev option.
+      rules:
+          - mount_option_var_log_nodev
+      status: automated
+    - id: OL10-DRAFT-00267
+      levels:
+          - medium
+      title: OL10 must mount /var/log with the noexec option.
+      rules:
+          - mount_option_var_log_noexec
+      status: automated
+    - id: OL10-DRAFT-00268
+      levels:
+          - medium
+      title: OL10 must mount /var/log with the nosuid option.
+      rules:
+          - mount_option_var_log_nosuid
+      status: automated
+    - id: OL10-DRAFT-00272
+      levels:
+          - medium
+      title: OL10 must mount /var/tmp with the nodev option.
+      rules:
+          - mount_option_var_tmp_nodev
+      status: automated
+    - id: OL10-DRAFT-00273
+      levels:
+          - medium
+      title: OL10 must mount /var/tmp with the noexec option.
+      rules:
+          - mount_option_var_tmp_noexec
+      status: automated
+    - id: OL10-DRAFT-00274
+      levels:
+          - medium
+      title: OL10 must mount /var/tmp with the nosuid option.
+      rules:
+          - mount_option_var_tmp_nosuid
+      status: automated
+    - id: OL10-DRAFT-00362
+      levels:
+          - medium
+      title: OL10 must prevent special devices on nonroot local partitions.
+      rules:
+          - mount_option_nodev_nonroot_local_partitions
+      status: automated
+    - id: OL10-DRAFT-00315
+      levels:
+          - medium
+      title: OL10 must enable the SELinux targeted policy.
+      rules:
+          - selinux_policytype
+          - var_selinux_policy_name=targeted
+      status: automated
+    - id: OL10-DRAFT-00314
+      levels:
+          - medium
+      title: OL10 must use a Linux Security Module configured to enforce limits on system services.
+      rules:
+          - selinux_state
+          - var_selinux_state=enforcing
+      status: automated
+    - id: OL10-DRAFT-00010
+      levels:
+          - medium
+      title: OL10 must configure SELinux context type to allow the use of a nondefault faillock
+          tally directory.
+      rules:
+          - account_password_selinux_faillock_dir
+      status: automated
+    - id: OL10-DRAFT-00396
+      levels:
+          - medium
+      title: OL10 SSH public host key files must have mode 0644 or less permissive.
+      rules:
+          - file_permissions_sshd_pub_key
+      status: automated
+    - id: OL10-DRAFT-00249
+      levels:
+          - medium
+      title: OL10 SSH daemon must not allow Generic Security Service Application Program Interface
+          (GSSAPI) authentication.
+      rules:
+          - sshd_disable_gssapi_auth
+      status: automated
+    - id: OL10-DRAFT-00250
+      levels:
+          - medium
+      title: OL10 SSH daemon must not allow Kerberos authentication.
+      rules:
+          - sshd_disable_kerb_auth
+      status: automated
+    - id: OL10-DRAFT-00372
+      levels:
+          - medium
+      title: OL10 SSH daemon must not allow rhosts authentication.
+      rules:
+          - sshd_disable_rhosts
+      status: automated
+    - id: OL10-DRAFT-00373
+      levels:
+          - medium
+      title: OL10 SSH daemon must not allow known hosts authentication.
+      rules:
+          - sshd_disable_user_known_hosts
+      status: automated
+    - id: OL10-DRAFT-00374
+      levels:
+          - medium
+      title: OL10 SSH daemon must disable remote X connections for interactive users.
+      rules:
+          - sshd_disable_x11_forwarding
+      status: automated
+    - id: OL10-DRAFT-00375
+      levels:
+          - medium
+      title: OL10 SSH daemon must perform strict mode checking of home directory configuration
+          files.
+      rules:
+          - sshd_enable_strictmodes
+      status: automated
+    - id: OL10-DRAFT-00376
+      levels:
+          - medium
+      title: OL10 SSH daemon must display the date and time of the last successful account logon
+          upon an SSH logon.
+      rules:
+          - sshd_print_last_log
+      status: automated
+    - id: OL10-DRAFT-00377
+      levels:
+          - medium
+      title: OL10 SSH daemon must prevent remote hosts from connecting to the proxy display.
+      rules:
+          - sshd_x11_use_localhost
+      status: automated
+    - id: OL10-DRAFT-00155
+      levels:
+          - medium
+      title: OL10 SSHD must accept public key authentication.
+      rules:
+          - sshd_enable_pubkey_auth
+      status: automated
+    - id: OL10-DRAFT-00156
+      levels:
+          - medium
+      title: OL10 SSHD must not allow blank passwords.
+      rules:
+          - sshd_disable_empty_passwords
+      status: automated
+    - id: OL10-DRAFT-00158
+      levels:
+          - medium
+      title: OL10 must not permit direct logons to the root account using remote access via SSH.
+      rules:
+          - sshd_disable_root_login
+      status: automated
+    - id: OL10-DRAFT-00470
+      levels:
+          - medium
+      title: OL10 must not allow a noncertificate trusted host SSH logon to the system.
+      rules:
+          - disable_host_auth
+      status: automated
+    - id: OL10-DRAFT-00471
+      levels:
+          - high
+      title: OL10 must not allow users to override SSH environment variables.
+      rules:
+          - sshd_do_not_permit_user_env
+      status: automated
+    - id: OL10-DRAFT-00308
+      levels:
+          - high
+      title: OL10 must force a frequent session key renegotiation for SSH connections to the server.
+      rules:
+          - sshd_rekey_limit
+          - var_rekey_limit_size=1G
+          - var_rekey_limit_time=1hour
+      status: automated
+    - id: OL10-DRAFT-00181
+      levels:
+          - medium
+      title: OL10 must be configured so that all network connections associated with SSH traffic
+          terminate after becoming unresponsive.
+      rules:
+          - sshd_set_keepalive
+          - var_sshd_set_keepalive=1
+      status: automated
+    - id: OL10-DRAFT-00078
+      levels:
+          - medium
+      title: OL10 must forward mail from postmaster to the root account using a postfix alias.
+      rules:
+          - postfix_client_configure_mail_alias_postmaster
+      status: automated
+    - id: OL10-DRAFT-00387
+      levels:
+          - medium
+      title: OL10 file systems must not contain shosts.equiv files.
+      rules:
+          - no_host_based_files
+      status: automated
+    - id: OL10-DRAFT-00388
+      levels:
+          - medium
+      title: OL10 file systems must not contain .shosts files.
+      rules:
+          - no_user_host_based_files
+      status: automated
+    - id: OL10-DRAFT-00162
+      levels:
+          - medium
+      title: OL10 must prevent a user from overriding the disabling of the graphical user interface
+          automount function.
+      rules:
+          - dconf_gnome_disable_automount_open
+      status: automated
+    - id: OL10-DRAFT-00469
+      levels:
+          - high
+      title: OL10 must not allow unattended or automatic logon via the graphical user interface.
+      rules:
+          - gnome_gdm_disable_automatic_login
+      status: automated
+    - id: OL10-DRAFT-00022
+      levels:
+          - medium
+      title: OL10 must prevent a user from overriding the disabling of the graphical user smart
+          card removal action.
+      rules:
+          - dconf_gnome_lock_screen_on_smartcard_removal
+      status: automated
+    - id: OL10-DRAFT-00021
+      levels:
+          - medium
+      title: OL10 must prevent a user from overriding the screensaver lock-enabled setting for the
+          graphical user interface.
+      rules:
+          - dconf_gnome_screensaver_lock_enabled
+          - dconf_gnome_screensaver_lock_locked
+      status: automated
+    - id: OL10-DRAFT-00025
+      levels:
+          - medium
+      title: OL10 must automatically lock graphical user sessions after 15 minutes of inactivity.
+      rules:
+          - dconf_gnome_screensaver_idle_delay
+          - inactivity_timeout_value=15_minutes
+      status: automated
+    - id: OL10-DRAFT-00026
+      levels:
+          - medium
+      title: OL10 must prevent a user from overriding the session idle-delay setting for the
+          graphical user interface.
+      rules:
+          - dconf_gnome_session_idle_user_locks
+      status: automated
+    - id: OL10-DRAFT-00024
+      levels:
+          - medium
+      title: OL10 must initiate a session lock for graphical user interfaces when the screensaver
+          is activated.
+      rules:
+          - dconf_gnome_screensaver_lock_delay
+          - var_screensaver_lock_delay=5_seconds
+      status: automated
+    - id: OL10-DRAFT-00027
+      levels:
+          - medium
+      title: OL10 must prevent a user from overriding the session lock-delay setting for the
+          graphical user interface.
+      rules:
+          - dconf_gnome_screensaver_user_locks
+      status: automated
+    - id: OL10-DRAFT-00028
+      levels:
+          - medium
+      title: OL10 must conceal, via the session lock, information previously visible on the display
+          with a publicly viewable image.
+      rules:
+          - dconf_gnome_screensaver_mode_blank
+      status: automated
+    - id: OL10-DRAFT-00368
+      levels:
+          - medium
+      title: OL10 effective dconf policy must match the policy keyfiles.
+      rules:
+          - dconf_db_up_to_date
+      status: automated
+    - id: OL10-DRAFT-00366
+      levels:
+          - medium
+      title: OL10 must prevent a user from overriding the disable-restart-buttons setting for the
+          graphical user interface.
+      rules:
+          - dconf_gnome_disable_restart_shutdown
+      status: automated
+    - id: OL10-DRAFT-00367
+      levels:
+          - medium
+      title: OL10 must prevent a user from overriding the Ctrl-Alt-Del sequence settings for the
+          graphical user interface.
+      rules:
+          - dconf_gnome_disable_ctrlaltdel_reboot
+      status: automated
+    - id: OL10-DRAFT-00364
+      levels:
+          - medium
+      title: OL10 must disable the ability of a user to accidentally press Ctrl-Alt-Del and cause a
+          system to shut down or reboot.
+      rules:
+          - dconf_gnome_disable_ctrlaltdel_reboot
+      status: automated
+    - id: OL10-DRAFT-00363
+      levels:
+          - medium
+      title: OL10 must disable the user list at logon for graphical user interfaces.
+      rules:
+          - dconf_gnome_disable_user_list
+      status: automated
+    - id: OL10-DRAFT-00159
+      levels:
+          - medium
+      title: OL10 must be configured to disable USB mass storage.
+      rules:
+          - kernel_module_usb-storage_disabled
+      status: automated
+    - id: OL10-DRAFT-00137
+      levels:
+          - medium
+      title: OL10 Bluetooth must be disabled.
+      rules:
+          - kernel_module_bluetooth_disabled
+      status: automated
+    - id: OL10-DRAFT-00216
+      levels:
+          - medium
+      title: OL10 wireless network adapters must be disabled.
+      rules:
+          - wireless_disable_interfaces
+      status: automated
+    - id: OL10-DRAFT-00161
+      levels:
+          - medium
+      title: OL10 must disable the graphical user interface automount function unless required.
+      rules:
+          - dconf_gnome_disable_automount_open
+      status: automated
+    - id: OL10-DRAFT-00277
+      levels:
+          - low
+      title: OL10 must disable the graphical user interface autorun function unless required.
+      rules:
+          - dconf_gnome_disable_autorun
+      status: automated
+    - id: OL10-DRAFT-00183
+      levels:
+          - medium
+      title: OL10 must automatically exit interactive command shell user sessions after 10 minutes
+          of inactivity.
+      rules:
+          - accounts_tmout
+          - var_accounts_tmout=10_min
+      status: automated
+    - id: OL10-DRAFT-00332
+      levels:
+          - medium
+      title: OL10 must be configured so that the graphical display manager is not the default
+          target unless approved.
+      rules:
+          - xwindows_runlevel_target
+      status: automated
+    - id: OL10-DRAFT-00220
+      levels:
+          - high
+      title: OL10 must be configured so that the systemd Ctrl-Alt-Delete burst key sequence is
+          disabled.
+      rules:
+          - disable_ctrlaltdel_burstaction
+      status: automated
+    - id: OL10-DRAFT-00221
+      levels:
+          - high
+      title: OL10 must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled.
+      rules:
+          - disable_ctrlaltdel_reboot
+      status: automated
+    - id: OL10-DRAFT-00386
+      levels:
+          - medium
+      title: OL10 must disable the ability of systemd to spawn an interactive boot process.
+      rules:
+          - grub2_disable_interactive_boot
+      status: automated
+    - id: OL10-DRAFT-00177
+      levels:
+          - medium
+      title: OL10 must disable virtual system calls.
+      rules:
+          - grub2_vsyscall_argument
+      status: automated
+    - id: OL10-DRAFT-00178
+      levels:
+          - medium
+      title: OL10 must clear the page allocator to prevent use-after-free attacks.
+      rules:
+          - grub2_page_poison_argument
+      status: automated
+    - id: OL10-DRAFT-00171
+      levels:
+          - medium
+      title: OL10 must restrict access to the kernel message buffer.
+      rules:
+          - sysctl_kernel_dmesg_restrict
+      status: automated
+    - id: OL10-DRAFT-00172
+      levels:
+          - medium
+      title: OL10 must prevent kernel profiling by nonprivileged users.
+      rules:
+          - sysctl_kernel_perf_event_paranoid
+      status: automated
+    - id: OL10-DRAFT-00255
+      levels:
+          - high
+      title: OL10 must prevent the loading of a new kernel for later execution.
+      rules:
+          - sysctl_kernel_kexec_load_disabled
+      status: automated
+    - id: OL10-DRAFT-00173
+      levels:
+          - medium
+      title: OL10 must restrict exposed kernel pointer addresses access.
+      rules:
+          - sysctl_kernel_kptr_restrict
+      status: automated
+    - id: OL10-DRAFT-00380
+      levels:
+          - medium
+      title: OL10 must disable the kernel.core_pattern.
+      rules:
+          - sysctl_kernel_core_pattern
+      status: automated
+    - id: OL10-DRAFT-00132
+      levels:
+          - medium
+      title: OL10 must be configured to disable the Controller Area Network (CAN) kernel module.
+      rules:
+          - kernel_module_can_disabled
+      status: automated
+    - id: OL10-DRAFT-00134
+      levels:
+          - medium
+      title: OL10 must disable the Stream Control Transmission Protocol (SCTP) kernel module.
+      rules:
+          - kernel_module_sctp_disabled
+      status: automated
+    - id: OL10-DRAFT-00135
+      levels:
+          - medium
+      title: OL10 must disable the Transparent Inter Process Communication (TIPC) kernel module.
+      rules:
+          - kernel_module_tipc_disabled
+      status: automated
+    - id: OL10-DRAFT-00175
+      levels:
+          - medium
+      title: OL10 must restrict usage of ptrace to descendant processes.
+      rules:
+          - sysctl_kernel_yama_ptrace_scope
+      status: automated
+    - id: OL10-DRAFT-00381
+      levels:
+          - medium
+      title: OL10 must disable core dump backtraces.
+      rules:
+          - coredump_disable_backtraces
+      status: automated
+    - id: OL10-DRAFT-00382
+      levels:
+          - medium
+      title: OL10 must disable storing core dumps.
+      rules:
+          - coredump_disable_storage
+      status: automated
+    - id: OL10-DRAFT-00383
+      levels:
+          - medium
+      title: OL10 must disable core dumps for all users.
+      rules:
+          - disable_users_coredumps
+      status: automated
+    - id: OL10-DRAFT-00384
+      levels:
+          - medium
+      title: OL10 must disable acquiring, saving, and processing core dumps.
+      rules:
+          - service_systemd-coredump_disabled
+      status: automated
+    - id: OL10-DRAFT-00311
+      levels:
+          - medium
+      title: OL10 must implement nonexecutable data to protect its memory from unauthorized code
+          execution.
+      rules:
+          - sysctl_kernel_exec_shield
+          - bios_enable_execution_restrictions
+      status: automated
+    - id: OL10-DRAFT-00385
+      levels:
+          - medium
+      title: OL10 must be configured so that the kdump service is disabled.
+      rules:
+          - service_kdump_disabled
+      status: automated
+    - id: OL10-DRAFT-00160
+      levels:
+          - medium
+      title: OL10 file system automount function must be disabled unless required.
+      rules:
+          - service_autofs_disabled
+      status: automated
+    - id: OL10-DRAFT-00289
+      levels:
+          - medium
+      title: OL10 must enable certificate-based smart card authentication.
+      rules:
+          - sssd_enable_smartcards
+      status: automated
+    - id: OL10-DRAFT-00290
+      levels:
+          - medium
+      title: OL10 must implement certificate status checking for multifactor authentication (MFA).
+      rules:
+          - sssd_certificate_verification
+          - var_sssd_certificate_verification_digest_function=sha512
+      status: automated
+    - id: OL10-DRAFT-00102
+      levels:
+          - medium
+      title: For OL10, for PKI-based authentication, must enforce authorized access to the
+          corresponding private key.
+      rules:
+          - ssh_keys_passphrase_protected
+      status: automated
+    - id: OL10-DRAFT-00127
+      levels:
+          - medium
+      title: OL10 must require authentication to access emergency mode.
+      rules:
+          - require_emergency_target_auth
+      status: automated
+    - id: OL10-DRAFT-00128
+      levels:
+          - medium
+      title: OL10 must require authentication to access single-user mode.
+      rules:
+          - require_singleuser_auth
+      status: automated
+    - id: OL10-DRAFT-00101
+      levels:
+          - medium
+      title: OL10 , for PKI-based authentication, must validate certificates by constructing a
+          certification path (which includes status information) to an accepted trust anchor.
+      rules:
+          - sssd_has_trust_anchor
+      status: manual
+    - id: OL10-DRAFT-00103
+      levels:
+          - medium
+      title: OL10 must map the authenticated identity to the user or group account for PKI-based
+          authentication.
+      rules:
+          - sssd_enable_certmap
+      status: automated
+    - id: OL10-DRAFT-00294
+      levels:
+          - medium
+      title: OL10 must prohibit the use of cached authenticators after one day.
+      rules:
+          - sssd_offline_cred_expiration
+      status: automated
+    - id: OL10-DRAFT-00147
+      levels:
+          - medium
+      title: OL10 must control remote access methods.
+      rules:
+          - configure_firewalld_ports
+      status: automated
+    - id: OL10-DRAFT-00146
+      levels:
+          - medium
+      title: OL10 must be configured to prohibit or restrict the use of functions, ports,
+          protocols, and/or services, as defined in the Ports, Protocols, and Services Management
+          (PPSM) Category Assignments List (CAL) and vulnerability assessments.
+      rules:
+          - firewalld_sshd_port_enabled
+      status: automated
+    - id: OL10-DRAFT-00446
+      levels:
+          - medium
+      title: OL10 network interfaces must not be in promiscuous mode.
+      rules:
+          - network_sniffer_disabled
+      status: automated
+    - id: OL10-DRAFT-00174
+      levels:
+          - medium
+      title: OL10 must disable access to network bpf system call from nonprivileged processes.
+      rules:
+          - sysctl_kernel_unprivileged_bpf_disabled
+      status: automated
+    - id: OL10-DRAFT-00245
+      levels:
+          - medium
+      title: OL10 must securely compare internal information system clocks at least every 24 hours.
+      rules:
+          - chronyd_or_ntpd_set_maxpoll
+          - chronyd_server_directive
+          - chronyd_specify_remote_server
+          - var_multiple_time_servers=stig
+          - var_time_service_set_maxpoll=18_hours
+      status: automated
+    - id: OL10-DRAFT-00392
+      levels:
+          - medium
+      title: OL10 must enable hardening for the Berkeley Packet Filter (BPF) just-in-time compiler.
+      rules:
+          - sysctl_net_core_bpf_jit_harden
+      status: automated
+    - id: OL10-DRAFT-00445
+      levels:
+          - medium
+      title: OL10 systems using Domain Name Servers (DNS) resolution must have at least two name
+          servers configured.
+      rules:
+          - network_configure_name_resolution
+      status: automated
+    - id: OL10-DRAFT-00447
+      levels:
+          - medium
+      title: OL10 must not have unauthorized IP tunnels configured.
+      rules:
+          - libreswan_approved_tunnels
+      status: automated
+    - id: OL10-DRAFT-00305
+      levels:
+          - medium
+      title: OL10 must be configured to use TCP syncookies.
+      rules:
+          - sysctl_net_ipv4_tcp_syncookies
+      status: automated
+    - id: OL10-DRAFT-00448
+      levels:
+          - medium
+      title: OL10 must ignore Internet Protocol version 4 (IPv4) Internet Control Message Protocol
+          (ICMP) redirect messages.
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_redirects
+      status: automated
+    - id: OL10-DRAFT-00449
+      levels:
+          - medium
+      title: OL10 must not forward Internet Protocol version 4 (IPv4) source-routed packets.
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_source_route
+      status: automated
+    - id: OL10-DRAFT-00450
+      levels:
+          - medium
+      title: OL10 must log IPv4 packets with impossible addresses.
+      rules:
+          - sysctl_net_ipv4_conf_all_log_martians
+      status: automated
+    - id: OL10-DRAFT-00451
+      levels:
+          - medium
+      title: OL10 must log IPv4 packets with impossible addresses by default.
+      rules:
+          - sysctl_net_ipv4_conf_default_log_martians
+      status: automated
+    - id: OL10-DRAFT-00452
+      levels:
+          - medium
+      title: OL10 must use reverse path filtering on all IPv4 interfaces.
+      rules:
+          - sysctl_net_ipv4_conf_all_rp_filter
+      status: automated
+    - id: OL10-DRAFT-00453
+      levels:
+          - medium
+      title: OL10 must prevent IPv4 Internet Control Message Protocol (ICMP) redirect messages from
+          being accepted.
+      rules:
+          - sysctl_net_ipv4_conf_default_accept_redirects
+      status: automated
+    - id: OL10-DRAFT-00454
+      levels:
+          - medium
+      title: OL10 must not forward IPv4 source-routed packets by default.
+      rules:
+          - sysctl_net_ipv4_conf_default_accept_source_route
+      status: automated
+    - id: OL10-DRAFT-00455
+      levels:
+          - medium
+      title: OL10 must use a reverse-path filter for IPv4 network traffic, when possible, by
+          default.
+      rules:
+          - sysctl_net_ipv4_conf_default_rp_filter
+      status: automated
+    - id: OL10-DRAFT-00457
+      levels:
+          - medium
+      title: OL10 must not respond to Internet Control Message Protocol (ICMP) echoes sent to a
+          broadcast address.
+      rules:
+          - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      status: automated
+    - id: OL10-DRAFT-00458
+      levels:
+          - medium
+      title: OL10 must limit the number of bogus Internet Control Message Protocol (ICMP) response
+          errors logs.
+      rules:
+          - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      status: automated
+    - id: OL10-DRAFT-00459
+      levels:
+          - medium
+      title: OL10 must not send Internet Control Message Protocol (ICMP) redirects.
+      rules:
+          - sysctl_net_ipv4_conf_all_send_redirects
+      status: automated
+    - id: OL10-DRAFT-00460
+      levels:
+          - medium
+      title: OL10 must not allow interfaces to perform Internet Control Message Protocol (ICMP)
+          redirects by default.
+      rules:
+          - sysctl_net_ipv4_conf_default_send_redirects
+      status: automated
+    - id: OL10-DRAFT-00456
+      levels:
+          - medium
+      title: OL10 must not enable IPv4 packet forwarding unless the system is a router.
+      rules:
+          - sysctl_net_ipv4_conf_all_forwarding
+      status: automated
+    - id: OL10-DRAFT-00461
+      levels:
+          - medium
+      title: OL10 must not accept router advertisements on all IPv6 interfaces.
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_ra
+      status: automated
+    - id: OL10-DRAFT-00462
+      levels:
+          - medium
+      title: OL10 must ignore IPv6 Internet Control Message Protocol (ICMP) redirect messages.
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_redirects
+      status: automated
+    - id: OL10-DRAFT-00463
+      levels:
+          - medium
+      title: OL10 must not forward IPv6 source-routed packets.
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_source_route
+      status: automated
+    - id: OL10-DRAFT-00464
+      levels:
+          - medium
+      title: OL10 must not enable IPv6 packet forwarding unless the system is a router.
+      rules:
+          - sysctl_net_ipv6_conf_all_forwarding
+      status: automated
+    - id: OL10-DRAFT-00465
+      levels:
+          - medium
+      title: OL10 must not accept router advertisements on all IPv6 interfaces by default.
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_ra
+      status: automated
+    - id: OL10-DRAFT-00466
+      levels:
+          - medium
+      title: OL10 must prevent IPv6 Internet Control Message Protocol (ICMP) redirect messages from
+          being accepted.
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_redirects
+      status: automated
+    - id: OL10-DRAFT-00467
+      levels:
+          - medium
+      title: OL10 must not forward IPv6 source-routed packets by default.
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_source_route
+      status: automated
+    - id: OL10-DRAFT-00304
+      levels:
+          - medium
+      title: OL10 must protect against or limit the effects of denial-of-service (DoS) attacks by
+          ensuring rate-limiting measures on impacted network interfaces are implemented.
+      rules:
+          - firewalld-backend
+      notes: >
+          Establish rate-limiting rules based on organization-defined types of DoS attacks on impacted network interfaces.
+          You can use firewalld rich rules or advanced per-ip limiting in nftables configuration to rate-limit incoming connections to specific services.
+          The selected rule doesn't configure any rate-limiting, this has to be configured individually.
+      status: partial
+    - id: OL10-DRAFT-00444
+      levels:
+          - medium
+      title: OL10 must configure a DNS processing mode set be Network Manager.
+      rules:
+          - networkmanager_dns_mode
+          - var_networkmanager_dns_mode=none
+      status: automated
+    - id: OL10-DRAFT-00390
+      levels:
+          - medium
+      title: OL10 Trivial File Transfer Protocol (TFTP) daemon must be configured to operate in
+          secure mode if the TFTP server is required.
+      rules:
+          - tftp_uses_secure_mode_systemd
+      status: automated
+    - id: OL10-DRAFT-00095
+      levels:
+          - medium
+      title: OL10 /etc/audit/auditd.conf file must have 0640 or less permissive to prevent
+          unauthorized access.
+      rules:
+          - file_permissions_etc_audit_auditd
+      status: automated
+    - id: OL10-DRAFT-00086
+      levels:
+          - medium
+      title: OL10 audit system must protect auditing rules from unauthorized change.
+      rules:
+          - audit_rules_immutable
+      status: automated
+    - id: OL10-DRAFT-00313
+      levels:
+          - high
+      title: OL10 must be a vendor supported release.
+      rules:
+          - installed_OS_is_vendor_supported
+      status: automated
+    - id: OL10-DRAFT-00018
+      levels:
+          - medium
+      title: OL10 must be configured to enable the display of the Standard Mandatory DOD Notice and
+          Consent Banner before granting local or remote access to the system via a graphical user
+          logon.
+      rules:
+          - dconf_gnome_banner_enabled
+      status: automated
+    - id: OL10-DRAFT-00023
+      levels:
+          - medium
+      title: OL10 must be able to directly initiate a session lock for all connection types using
+          smart card when the smart card is removed.
+      rules:
+          - dconf_gnome_lock_screen_on_smartcard_removal
+      status: automated
+    - id: OL10-DRAFT-00029
+      levels:
+          - medium
+      title: OL10 must conceal, via the session lock, information previously visible on the display
+          with a publicly viewable image. The session lock mustbe set to to prevent from being
+          modified by users.
+      rules:
+          - dconf_gnome_screensaver_mode_blank
+      status: automated
+    - id: OL10-DRAFT-00072
+      levels:
+          - medium
+      title: OL10 must produce audit records containing information to establish when (date and
+          time) the events occurred.
+      rules:
+          - auditd_log_format
+      status: automated
+    - id: OL10-DRAFT-00074
+      levels:
+          - medium
+      title: OL10 must produce audit records containing information to establish the source of the
+          events.
+      rules:
+          - auditd_log_format
+      status: automated
+    - id: OL10-DRAFT-00075
+      levels:
+          - medium
+      title: OL10 must produce audit records containing information to establish the outcome of the
+          events.
+      rules:
+          - auditd_log_format
+      status: automated
+    - id: OL10-DRAFT-00076
+      levels:
+          - medium
+      title: OL10 must generate audit records containing the full-text recording of privileged
+          commands.
+      rules:
+          - auditd_log_format
+      status: automated
+    - id: OL10-DRAFT-00077
+      levels:
+          - medium
+      title: OL10 must produce audit records containing the individual identities of group account
+          users.
+      rules:
+          - auditd_log_format
+      status: automated
+    - id: OL10-DRAFT-00089
+      levels:
+          - medium
+      title: OL10 audit system must take appropriate action when an error writing to the audit
+          storage volume occurs.
+      rules:
+          - auditd_data_disk_error_action_stig
+          - var_auditd_disk_error_action=halt
+      status: automated
+    - id: OL10-DRAFT-00090
+      levels:
+          - medium
+      title: OL10 audit system must take appropriate action when the audit storage volume is full.
+      rules:
+          - auditd_overflow_action
+      status: automated
+    - id: OL10-DRAFT-00091
+      levels:
+          - medium
+      title: OL10 audit system must take appropriate action when the audit files have reached
+          maximum size.
+      rules:
+          - auditd_data_retention_max_log_file_action_stig
+          - var_auditd_max_log_file_action=rotate
+      status: automated
+    - id: OL10-DRAFT-00100
+      levels:
+          - medium
+      title: OL10 audit system must protect logon UIDs from unauthorized change.
+      rules:
+          - audit_rules_immutable_login_uids
+      status: automated
+    - id: OL10-DRAFT-00118
+      levels:
+          - high
+      title: OL10 system-auth must be configured to use a sufficient number of hashing rounds.
+      rules:
+          - accounts_password_pam_unix_rounds_password_auth
+          - var_password_pam_unix_rounds=100000
+      status: automated
+    - id: OL10-DRAFT-00131
+      levels:
+          - medium
+      title: OL10 must be configured to disable the Asynchronous Transfer Mode (ATM) kernel module.
+      rules:
+          - kernel_module_atm_disabled
+      status: automated
+    - id: OL10-DRAFT-00136
+      levels:
+          - medium
+      title: OL10 must disable mounting of cramfs.
+      rules:
+          - kernel_module_cramfs_disabled
+      status: automated
+    - id: OL10-DRAFT-00142
+      levels:
+          - medium
+      title: OL10 must not have the sendmail package installed.
+      rules:
+          - package_sendmail_removed
+      status: automated
+    - id: OL10-DRAFT-00143
+      levels:
+          - medium
+      title: OL10 must not have a graphical display manager installed unless approved.
+      rules:
+          - xwindows_remove_packages
+      status: automated
+    - id: OL10-DRAFT-00157
+      levels:
+          - medium
+      title: OL10 must implement multifactor authentication for access to interactive accounts.
+      rules:
+          - sssd_enable_smartcards
+      status: automated
+    - id: OL10-DRAFT-00167
+      levels:
+          - medium
+      title: OL10 must use mechanisms meeting the requirements of applicable federal laws, executive
+          orders, directives, policies, regulations, standards, and guidance for authentication to a
+          cryptographic module.
+      rules:
+          - configure_kerberos_crypto_policy
+      status: automated
+    - id: OL10-DRAFT-00168
+      levels:
+          - medium
+      title: OL10 must prevent system daemons from using Kerberos for authentication.
+      rules:
+          - kerberos_disable_no_keytab
+      status: automated
+    - id: OL10-DRAFT-00182
+      levels:
+          - medium
+      title: OL10 must be configured so that all network connections associated with SSH traffic are
+          terminated after 10 minutes of becoming unresponsive.
+      rules:
+          - sshd_set_idle_timeout
+          - sshd_idle_timeout_value=10_minutes
+      status: automated
+    - id: OL10-DRAFT-00191
+      levels:
+          - high
+      title: OL10 SSH daemon must be configured to use system-wide cryptographic policies.
+      rules:
+          - sshd_include_crypto_policy
+      status: automated
+    - id: OL10-DRAFT-00226
+      levels:
+          - medium
+      title: OL10 must automatically lock an account when three unsuccessful logon attempts occur
+          during a 10-minute time period.
+      rules:
+          - accounts_passwords_pam_faillock_interval
+          - var_accounts_passwords_pam_faillock_fail_interval=600
+      status: automated
+    - id: OL10-DRAFT-00233
+      levels:
+          - medium
+      title: OL10 must be configured to offload audit records onto a different system from the
+          system being audited via syslog.
+      rules:
+          - auditd_audispd_syslog_plugin_activated
+      status: automated
+    - id: OL10-DRAFT-00299
+      levels:
+          - high
+      title: OL10 must implement FIPS 140-3 compliant hash algorithms.
+      rules:
+          - configure_crypto_policy
+          - var_system_crypto_policy=fips
+      status: automated
+    - id: OL10-DRAFT-00301
+      levels:
+          - high
+      title: OL10 must configure crypto policies to utilize FIPS 140-3 backends.
+      rules:
+          - crypto_policy_not_overridden
+      status: automated
+    - id: OL10-DRAFT-00302
+      levels:
+          - medium
+      title: OL10 must only allow the use of DOD PKI-established certificate authorities for
+          authentication in the establishment of protected sessions to OL10.
+      rules:
+          - only_allow_dod_certs
+      status: supported
+    - id: OL10-DRAFT-00310
+      levels:
+          - medium
+      title: OL10 must clear SLUB/SLAB objects to prevent use-after-free attacks.
+      rules:
+          - grub2_slub_debug_argument
+      status: automated
+    - id: OL10-DRAFT-00321
+      levels:
+          - high
+      title: OL10 cryptographic policy files must match files shipped with the operating system.
+      rules:
+          - rpm_verify_crypto_policies
+      status: automated
+    - id: OL10-DRAFT-00331
+      levels:
+          - medium
+      title: OL10 vendor packaged system security patches and updates must be installed and up to
+          date.
+      rules:
+          - security_patches_up_to_date
+      status: automated
+    - id: OL10-DRAFT-00333
+      levels:
+          - medium
+      title: OL10 must not have a Trivial File Transfer Protocol (TFTP) server package installed.
+      rules:
+          - package_tftp-server_removed
+      status: automated
+    - id: OL10-DRAFT-00340
+      levels:
+          - medium
+      title: OL10 must be configured so that the cryptographic hashes of system files match vendor
+          values.
+      rules:
+          - rpm_verify_hashes
+      status: automated
+    - id: OL10-DRAFT-00346
+      levels:
+          - medium
+      title: OL10 must enable the hardware random number generator entropy gatherer service.
+      rules:
+          - service_rngd_enabled # This rule is causing test failures, See https://github.com/ComplianceAsCode/content/pull/10153
+      status: pending
+    - id: OL10-DRAFT-00347
+      levels:
+          - medium
+      title: OL10 must have the rng-tools package installed.
+      rules:
+          - package_rng-tools_installed
+      status: automated
+    - id: OL10-DRAFT-00358
+      levels:
+          - medium
+      title: OL10 must prevent code from being executed on file systems that are used with removable
+          media.
+      rules:
+          - mount_option_noexec_removable_partitions
+      status: automated
+    - id: OL10-DRAFT-00359
+      levels:
+          - medium
+      title: OL10 must prevent special devices on file systems that are used with removable media.
+      rules:
+          - mount_option_nodev_removable_partitions
+      status: automated
+    - id: OL10-DRAFT-00360
+      levels:
+          - medium
+      title: OL10 must prevent files with the setuid and setgid bit set from being executed on file
+          systems that are used with removable media.
+      rules:
+          - mount_option_nosuid_removable_partitions
+      status: automated
+    - id: OL10-DRAFT-00365
+      levels:
+          - medium
+      title: OL10 must disable the ability of a user to restart the system from the login screen.
+      rules:
+          - dconf_gnome_disable_restart_shutdown
+      status: automated
+    - id: OL10-DRAFT-00379
+      levels:
+          - medium
+      title: OL10 must disable the use of user namespaces.
+      rules:
+          - sysctl_user_max_user_namespaces_no_remediation
+      status: automated
+    - id: OL10-DRAFT-00406
+      levels:
+          - medium
+      title: OL10 /boot/grub2/grub.cfg file must be owned by root.
+      rules:
+          - file_owner_etc_group
+      status: automated
+    - id: OL10-DRAFT-00431
+      levels:
+          - medium
+      title: OL10 cron configuration directories must have a mode of 0700 or less permissive.
+      rules:
+          - package_cron_installed
+          - file_permissions_cron_d
+          - file_permissions_cron_daily
+          - file_permissions_cron_hourly
+          - file_permissions_cron_monthly
+          - file_permissions_cron_weekly
+      status: automated
+    - id: OL10-DRAFT-00434
+      levels:
+          - medium
+      title: OL10 /etc/crontab file must have mode 0600.
+      rules:
+          - file_permissions_crontab
+      status: automated
+    - id: OL10-DRAFT-00472
+      levels:
+          - medium
+      title: OL10 must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.
+      rules:
+          - kernel_module_usb-storage_disabled
+      status: automated
+    - id: OL10-DRAFT-00473
+      levels:
+          - medium
+      title: OL10 must implement multifactor authentication for remote access to privileged accounts
+          in such a way that one of the factors is provided by a device separate from the system
+          gaining access.
+      rules:
+          - install_smartcard_packages
+      status: automated
+    - id: OL10-DRAFT-00474
+      levels:
+          - medium
+      title: OL10 must have the SSSD package installed.
+      rules:
+          - package_sssd_installed
+      status: automated
+    - id: OL10-DRAFT-00475
+      levels:
+          - medium
+      title: OL10 must use the SSSD package for multifactor authentication services.
+      rules:
+          - service_sssd_enabled
+      status: automated
+    - id: OL10-DRAFT-00476
+      levels:
+          - medium
+      title: OL10 must verify that user-created or modified passwords are not found on a list of
+          commonly-used, expected, or compromised passwords.
+      rules:
+          - accounts_password_pam_dictcheck
+          - var_password_pam_dictcheck=1
+      status: automated

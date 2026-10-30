@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = authselect,sssd
-# platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,multi_platform_rhel
+# platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Oracle Linux 10,multi_platform_rhel
 
 SSSD_FILE="/etc/sssd/sssd.conf"
 echo "[pam]" > $SSSD_FILE

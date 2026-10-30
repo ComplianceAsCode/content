@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# platform = multi_platform_rhel,multi_platform_fedora,Oracle Linux 8,Oracle Linux 9
+# platform = multi_platform_rhel,multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Oracle Linux 10
 # check-import = stdout
 
 update-crypto-policies --check

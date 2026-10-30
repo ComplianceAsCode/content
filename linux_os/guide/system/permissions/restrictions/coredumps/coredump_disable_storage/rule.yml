@@ -64,7 +64,7 @@ warnings:
 
 platform: package[systemd]
 
-{{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
+{{% if product in ["ol8", "ol9","ol10", "rhel8", "rhel9", "rhel10"] %}}
 conflicts:
     - sysctl_kernel_core_pattern
 {{% endif %}}

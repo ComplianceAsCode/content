@@ -3,7 +3,7 @@
 {{% if not ARG_VALUE and not ARG_VARIABLE %}}
 # platform = Not Applicable
 {{% else %}}
-# platform = multi_platform_fedora,multi_platform_rhel
+# platform = multi_platform_fedora,multi_platform_rhel,Oracle Linux 10
 {{% endif %}}
 # packages = grub2,grubby
 

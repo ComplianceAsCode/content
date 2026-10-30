@@ -5,14 +5,7 @@ reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-syst
 title: 'DRAFT - STIG for Oracle Linux 10'
 
 description: |-
-    This is a draft profile for experimental purposes.
-    It is not based on the DISA STIG for OL 10, because it was not available at time of
-    the release.
+    This profile contains configuration checks that align to the [DRAFT] DISA STIG for Oracle Linux 10.
 
 selections:
-    - srg_gpos:all
-    - var_accounts_authorized_local_users_regex=ol9
-    - '!enable_dracut_fips_module'
-    # Package not available in OL10
-    - '!package_subscription-manager_installed'
-    - var_authselect_profile=local
+    - stig_ol10:all

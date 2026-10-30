@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10,multi_platform_fedora,Oracle Linux 10
 # packages = grub2,grubby
 
 {{%- if ARG_VARIABLE %}}

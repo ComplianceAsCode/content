@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = multi_platform_fedora,multi_platform_rhel
+# platform = multi_platform_fedora,multi_platform_rhel,Oracle Linux 10
 # packages = grub2,grubby
 
 {{%- if ARG_VARIABLE %}}
