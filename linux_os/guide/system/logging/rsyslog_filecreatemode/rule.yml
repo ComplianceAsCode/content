@@ -38,4 +38,6 @@ fixtext: |-
 
 {{% if product in ['ubuntu2404'] %}}
 platform: not service_disabled[rsyslog]
+{{% elif 'rhel' in families %}}
+platform: package[rsyslog]
 {{% endif %}}
