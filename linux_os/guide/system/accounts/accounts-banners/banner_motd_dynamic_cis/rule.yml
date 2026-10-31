@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Ensure pam_motd Does Not Disclose Operating System Information'
+
+description: |-
+    pam_motd displays the contents of <tt>/run/motd.dynamic</tt> after a successful
+    login. This file is regenerated at login time by the scripts in
+    <tt>/etc/update-motd.d/</tt>; review those scripts (e.g. <tt>10-uname</tt>) and
+    disable or edit any that print operating system, kernel, release, or patch
+    level information.
+
+rationale: |-
+    Warning messages inform users who are attempting to login to the system of their legal
+    status regarding the system and must include the name of the organization that owns
+    the system and any monitoring policies that are in place. Displaying OS and patch level
+    information in login banners also has the side effect of providing detailed system
+    information to attackers attempting to target specific exploits of a system. Authorized
+    users can easily get this information by running the <tt>uname -a</tt> command once they
+    have logged in.
+
+severity: medium
+
+{{{ ocil_cis_banner("/run/motd.dynamic") }}}
+
+template:
+    name: cis_banner
+    vars:
+        filepath: /run/motd.dynamic
+        banner_must_be_set: "false"
