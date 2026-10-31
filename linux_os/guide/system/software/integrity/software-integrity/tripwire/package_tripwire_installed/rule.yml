@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Install Tripwire'
+
+description: |-
+    {{{ describe_package_install(package="tripwire") }}}
+
+rationale: |-
+    The tripwire package provides the Tripwire file and directory integrity
+    checker, a common alternative to AIDE. It must be installed for any
+    integrity checking to be possible.
+
+severity: medium
+
+references:
+    nist: CM-6(a)
+
+{{{ complete_ocil_entry_package_installed("tripwire") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: tripwire
