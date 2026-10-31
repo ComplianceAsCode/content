@@ -30,8 +30,6 @@ selections:
     - var_multiple_time_servers=suse
     - var_multiple_time_pools=suse
     - sshd_strong_kex=pcidss
-    - sshd_approved_ciphers=slmicro6
-    - sshd_approved_macs=slmicro6
     - '!use_pam_wheel_for_su'
     - '!ensure_redhat_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
@@ -49,16 +47,24 @@ selections:
     - '!accounts_password_pam_unix_remember'
     - '!accounts_password_pam_pwhistory_remember_system_auth'
     - '!accounts_password_pam_pwhistory_remember_password_auth'
+    - audit_rules_enable_syscall_auditing
     - '!service_ntp_enabled'
     - '!service_ntpd_enabled'
     - '!service_timesyncd_enabled'
+    - '!sshd_use_approved_ciphers'
+    - '!sshd_use_approved_macs'
     - '!ntpd_specify_remote_server'
     - '!ntpd_specify_multiple_servers'
     - '!aide_periodic_cron_checking'
     - '!package_cron_installed'
+    - '!file_at_deny_not_exist'
     - '!file_cron_deny_not_exist'
+    - '!file_groupowner_at_allow'
     - '!file_groupowner_cron_allow'
+    - '!file_owner_at_allow'
     - '!file_owner_cron_allow'
+    - '!file_permissions_at_allow'
+    - '!file_group_ownership_var_log_audit'
     - '!file_permissions_cron_allow'
     - '!file_groupowner_crontab'
     - '!file_owner_crontab'
@@ -113,6 +119,9 @@ selections:
     - '!package_ypserv_removed'
     - '!install_PAE_kernel_on_x86-32'
     - '!rpm_verify_permissions'
+    - '!rsyslog_files_groupownership'
+    - '!rsyslog_files_ownership'
+    - '!rsyslog_files_permissions'
     - '!package_audispd-plugins_installed'
     - '!audit_rules_dac_modification_fchmodat2'
     - '!sysctl_kernel_core_pattern'
