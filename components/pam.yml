@@ -13,6 +13,7 @@ packages:
 - libpam-runtime
 - libpam-modules
 - libpam-sss
+- cracklib-runtime
 rules:
 - account_disable_inactivity_password_auth
 - account_disable_inactivity_system_auth
@@ -148,6 +149,7 @@ rules:
 - no_rhost_files
 - no_root_webbrowsing
 - no_shelllogin_for_systemaccounts
+- package_cracklib-runtime_installed
 - package_nss_sss_installed
 - package_pam_installed
 - package_pam_apparmor_installed

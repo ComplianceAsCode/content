@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: "Install cracklib-runtime Package"
+
+description: |-
+    {{{ describe_package_install(package="cracklib-runtime") }}}
+
+rationale: |-
+    cracklib-runtime provides runtime support for the password checker
+    library cracklib2. Strong passwords reduce the risk of systems being
+    hacked through brute force methods, and older versions of the
+    cracklib-runtime package may not include the latest security and
+    feature patches and updates.
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: cracklib-runtime
