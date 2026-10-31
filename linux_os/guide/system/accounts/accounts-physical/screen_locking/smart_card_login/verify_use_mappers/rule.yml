@@ -38,6 +38,7 @@ template:
     name: lineinfile
     vars:
         text: "use_mappers = pwent"
+        regex: '^[\s]*use_mappers[\s]*=[\s]*pwent\b'
         path: /etc/pam_pkcs11/pam_pkcs11.conf
         oval_extended_definitions:
             smartcard_configure_cert_checking

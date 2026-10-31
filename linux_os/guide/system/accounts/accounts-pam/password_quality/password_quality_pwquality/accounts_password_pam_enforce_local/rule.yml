@@ -43,6 +43,7 @@ template:
     name: "lineinfile"
     vars:
         text: "local_users_only"
+        regex: '^[\s]*local_users_only\b'
         path: "{{{ pwquality_path }}}"
         oval_extend_definitions:
             - accounts_password_pam_pwquality
