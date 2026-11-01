@@ -200,9 +200,11 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 :type config_is_distributed: str
 :parameter config_basename: Filename of configuration file when using distributed configuration
 :type config_basename: str
+:parameter reload_service: If true, reload a running sshd so that the change takes effect, see bash_sshd_reload
+:type reload_service: bool
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="", rule_id=None) -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="", rule_id=None, reload_service=true) -%}}
 {{%- set sshd_config_path = sshd_main_config_file %}}
 {{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 {{%- set sshd_base_dir = sshd_config_base_dir -%}}
@@ -240,6 +242,31 @@ chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
     }}}
 {{%- else %}}
 {{{ bash_sshd_config_set(parameter=parameter, value=value, rule_id=rule_id) }}}
+{{%- endif %}}
+{{%- if reload_service %}}
+{{{ bash_sshd_reload() }}}
+{{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    Reload the SSH server so that a running sshd uses the changed configuration.
+    Nothing is done when the service is not active, for example when the system
+    is offline, in a container or during an image build. The service is not
+    reloaded when the configuration does not pass "sshd -t", so that a broken
+    configuration is never loaded.
+
+#}}
+{{%- macro bash_sshd_reload() -%}}
+{{%- if init_system == "systemd" %}}
+{{%- set sshd_service = "ssh" if "debian-like" in families else "sshd" %}}
+if [ "$(systemctl is-active {{{ sshd_service }}} 2>/dev/null)" = "active" ]; then
+    if /usr/sbin/sshd -t; then
+        systemctl reload {{{ sshd_service }}}
+    else
+        echo "The sshd configuration is not valid, {{{ sshd_service }}} was not reloaded." >&2
+    fi
+fi
 {{%- endif %}}
 {{%- endmacro %}}
 
