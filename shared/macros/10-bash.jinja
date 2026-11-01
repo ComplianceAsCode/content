@@ -254,17 +254,17 @@ chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
     Nothing is done when the service is not active, for example when the system
     is offline, in a container or during an image build. The service is not
     reloaded when the configuration does not pass "sshd -t", so that a broken
-    configuration is never loaded.
+    configuration is never loaded. The service name comes from the
+    sshd_service_name product property.
 
 #}}
 {{%- macro bash_sshd_reload() -%}}
 {{%- if init_system == "systemd" %}}
-{{%- set sshd_service = "ssh" if "debian-like" in families else "sshd" %}}
-if [ "$(systemctl is-active {{{ sshd_service }}} 2>/dev/null)" = "active" ]; then
+if [ "$(systemctl is-active {{{ sshd_service_name }}} 2>/dev/null)" = "active" ]; then
     if /usr/sbin/sshd -t; then
-        systemctl reload {{{ sshd_service }}}
+        systemctl reload {{{ sshd_service_name }}}
     else
-        echo "The sshd configuration is not valid, {{{ sshd_service }}} was not reloaded." >&2
+        echo "The sshd configuration is not valid, {{{ sshd_service_name }}} was not reloaded." >&2
     fi
 fi
 {{%- endif %}}
