@@ -5,5 +5,11 @@ if ! [ -f "/etc/grub2.cfg" ]; then
 fi
 
 rm -f /etc/default/grub
-sed -i --follow-symlinks "s/selinux=0//gI" /etc/grub2.cfg /etc/grub.d/*
-sed -i --follow-symlinks "s/enforcing=0//gI" /etc/grub2.cfg /etc/grub.d/*
+GRUB_FILES=(/etc/grub2.cfg )
+GRUB_FILES+=($(ls /etc/grub.d/* 2>/dev/null))
+for file in "${GRUB_FILES[@]}"; do
+    if [[ -f "$file" ]]; then
+        sed -i --follow-symlinks "s/selinux=0//gI" "$file"
+        sed -i --follow-symlinks "s/enforcing=0//gI" "$file"
+    fi
+done
