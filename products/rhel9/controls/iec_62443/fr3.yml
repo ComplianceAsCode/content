@@ -1,0 +1,183 @@
+---
+# IEC 62443-4-2 FR 3: System integrity (SI)
+controls:
+    - id: CR 3.1
+      title: Communication integrity
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:sc-8
+
+    - id: CR 3.1 RE(1)
+      title: Communication authentication
+      levels:
+          - sl2
+      status: automated
+      rules: []
+      controls:
+          - CR 3.1
+          - nist_800_53:sc-8.1
+
+    - id: HDR 3.2
+      title: Protection from malicious code
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:si-3
+
+    - id: HDR 3.2 RE(1)
+      title: Report version of code protection
+      levels:
+          - sl2
+      status: automated
+      rules: []
+      controls:
+          - HDR 3.2
+          - nist_800_53:au-2
+
+    - id: CR 3.3
+      title: Security functionality verification
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:si-6
+
+    - id: CR 3.4
+      title: Software and information integrity
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:si-7
+
+    - id: CR 3.4 RE(1)
+      title: Authenticity of software and information
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - CR 3.4
+
+    - id: CR 3.5
+      title: Input validation
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:si-10
+
+    - id: CR 3.6
+      title: Deterministic output
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:sc-24
+
+    - id: CR 3.7
+      title: Error handling
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:si-11
+
+    - id: CR 3.8
+      title: Session integrity
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:sc-23
+
+    - id: CR 3.9
+      title: Protection of audit information
+      levels:
+          - sl2
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:au-9
+          - nist_800_53:au-9.4
+
+    - id: HDR 3.10
+      title: Support for updates
+      levels:
+          - sl1
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:si-2
+
+    - id: HDR 3.10 RE(1)
+      title: Update authenticity and integrity
+      levels:
+          - sl2
+      status: automated
+      rules: []
+      controls:
+          - HDR 3.10
+          - nist_800_53:si-7
+          - nist_800_53:sc-13.4
+
+    - id: HDR 3.11
+      title: Physical tamper resistance and detection
+      levels:
+          - sl2
+      status: automated
+      rules: []
+      controls:
+          - nist_800_53:pe-3
+          - nist_800_53:pe-6
+          - nist_800_53:si-4
+
+    - id: HDR 3.12
+      title: Provisioning product supplier roots of trust
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:sc-12
+          - nist_800_53:sc-17
+
+    - id: HDR 3.13
+      title: Provisioning asset owner roots of trust
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:sc-12
+          - nist_800_53:sc-17
+
+    - id: HDR 3.14
+      title: Integrity of the boot process
+      levels:
+          - sl1
+      status: pending
+      rules: []
+      controls:
+          - nist_800_53:si-7
+
+    - id: HDR 3.14 RE(1)
+      title: Authenticity of the boot process
+      levels:
+          - sl2
+      status: pending
+      rules: []
+      controls:
+          - HDR 3.14
+          - nist_800_53:sc-13.4
