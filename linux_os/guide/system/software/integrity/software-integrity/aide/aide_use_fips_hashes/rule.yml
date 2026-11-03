@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Configure AIDE to Use FIPS 140-2 for Validating Hashes'
 
 description: |-
@@ -19,7 +18,7 @@ description: |-
     By default, the <tt>sha512</tt> option is added to the <tt>NORMAL</tt> ruleset in AIDE.
     If using a custom ruleset or the <tt>sha512</tt> option is missing, add <tt>sha512</tt>
     to the appropriate ruleset.
-    For example, add <tt>sha512</tt> to the following line in <tt>/etc/aide.conf</tt>:
+    For example, add <tt>sha512</tt> to the following line in <tt>{{{ aide_conf_path }}}</tt>:
     <pre>NORMAL = FIPSR+sha512</pre>
     AIDE rules can be configured in multiple ways; this is merely one example that is already
     configured by default.
@@ -60,7 +59,7 @@ ocil: |-
     Verify that the <tt>Checksums</tt> line is <tt>Checksums = sha512</tt> and that no
     line names another hash.
 {{%- else %}}
-    <pre>$ grep sha512 /etc/aide.conf</pre>
+    <pre>$ grep sha512 {{{ aide_conf_path }}}</pre>
     Verify that the <tt>sha512</tt> option is added to the correct ruleset.
 {{%- endif %}}
 
