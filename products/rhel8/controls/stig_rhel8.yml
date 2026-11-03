@@ -106,7 +106,6 @@ controls:
       title: RHEL 8 must implement a FIPS 140-3-compliant systemwide cryptographic policy.
       rules:
           - configure_crypto_policy
-          - fips_crypto_subpolicy
           - var_system_crypto_policy=fips
       status: automated
 
@@ -370,7 +369,6 @@ controls:
           employing FIPS 140-3 validated cryptographic hash algorithms.
       rules:
           - configure_crypto_policy
-          - fips_crypto_subpolicy
           - var_system_crypto_policy=fips
       related_rules:
           - fips_custom_stig_sub_policy
@@ -383,7 +381,6 @@ controls:
           of SSH server connections.
       rules:
           - configure_crypto_policy
-          - fips_crypto_subpolicy
           - var_system_crypto_policy=fips
       related_rules:
           - fips_custom_stig_sub_policy
@@ -3232,7 +3229,6 @@ controls:
       title: The RHEL 8 SSH client must be configured to use only DOD-approved Message Authentication Codes (MACs) employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
       rules:
           - configure_crypto_policy
-          - fips_crypto_subpolicy
           - var_system_crypto_policy=fips
       related_rules:
           - fips_custom_stig_sub_policy
@@ -3244,7 +3240,6 @@ controls:
       title: The RHEL 8 SSH client must be configured to use only DOD-approved encryption ciphers employing FIPS 140-3-validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
       rules:
           - configure_crypto_policy
-          - fips_crypto_subpolicy
           - var_system_crypto_policy=fips
       related_rules:
           - fips_custom_stig_sub_policy
