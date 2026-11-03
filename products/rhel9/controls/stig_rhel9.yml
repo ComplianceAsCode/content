@@ -3725,6 +3725,14 @@ controls:
           - audit_rules_privileged_commands_usermod
       status: automated
 
+    - id: RHEL-09-654176
+      levels:
+          - medium
+      title: RHEL 9 must audit all uses of the useradd command.
+      rules:
+          - audit_rules_privileged_commands_useradd
+      status: automated
+
     - id: RHEL-09-654180
       levels:
           - medium

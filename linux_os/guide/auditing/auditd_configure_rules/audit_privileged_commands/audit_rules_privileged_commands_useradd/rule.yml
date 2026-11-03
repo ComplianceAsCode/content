@@ -20,6 +20,7 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel9: CCE-86499-1
     cce@sle15: CCE-92614-7
     cce@slmicro5: CCE-93661-7
 
@@ -32,3 +33,4 @@ template:
     name: audit_rules_privileged_commands
     vars:
         path: /usr/sbin/useradd
+        key@rhel9: privileged-useradd
