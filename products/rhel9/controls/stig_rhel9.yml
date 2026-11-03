@@ -403,7 +403,7 @@ controls:
           - high
       title: RHEL 9 must have GPG signature verification enabled for all software repositories.
       rules:
-          - ensure_gpgcheck_never_disabled
+          - enable_gpgcheck_for_all_repositories
       status: automated
 
     - id: RHEL-09-214030
