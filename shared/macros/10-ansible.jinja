@@ -35,7 +35,7 @@ value: :code:`Setting={{ varname1 }}`
     create: {{{ create }}}
     {{%- if regex and insensitive %}}
     regexp: '(?i){{{ regex }}}'
-    {{%- else %}}
+    {{%- elif regex %}}
     regexp: '{{{ regex }}}'
     {{%- endif %}}
     {{%- if mode %}}
