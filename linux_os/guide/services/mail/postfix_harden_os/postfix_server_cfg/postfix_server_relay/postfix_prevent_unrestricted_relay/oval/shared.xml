@@ -3,7 +3,7 @@ oval_check_config_file(
 	"/etc/postfix/main.cf",
 	prefix_regex="^[ \\t]*",
 	parameter="smtpd_client_restrictions",
-	separator_regex=' = ',
+	separator_regex='[ \\t]*=[ \\t]*',
 	value="permit_mynetworks[ \\t]*[, \\t][ \\t]*reject",
 	missing_parameter_pass=false,
 	application="mail",
