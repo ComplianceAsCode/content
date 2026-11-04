@@ -1,6 +1,3 @@
-aide_bin_path: /usr/bin/aide
-aide_conf_path: /etc/aide/aide.conf
-aide_default_path: /etc/default/aide
 aide_audit_binaries:
   - auditctl
   - auditd
@@ -8,6 +5,9 @@ aide_audit_binaries:
   - aureport
   - autrace
   - augenrules
+aide_bin_path: /usr/bin/aide
+aide_conf_path: /etc/aide/aide.conf
+aide_default_path: /etc/default/aide
 audisp_conf_path: /etc/audit
 audit_binaries:
   - /sbin/auditctl
@@ -82,6 +82,8 @@ platform_package_overrides:
   openssl-pkcs11: libpam-pkcs11
   ovirt: null
   pam: libpam-runtime
+  rsh-client: rsh-redone-client
+  rsh-server: rsh-redone-server
   s390x_arch: null
   shadow: login
   sssd: sssd-common
