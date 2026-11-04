@@ -16,7 +16,11 @@
   <ind:textfilecontent54_object id="object_set_password_hashing_algorithm_libuserconf" version="2"
     comment="only one hashing algorithm option for pam_unix.so is found in /etc/libuser.conf">
     <ind:filepath>/etc/libuser.conf</ind:filepath>
+{{% if product == "rhel10" %}}
+    <ind:pattern operation="pattern match">^[\s]*\[defaults\][\s]*\n(?:[^[]*\n)*?[\s]*crypt_style[\s]*=[\s]*(\w*)[\s]*$</ind:pattern>
+{{% else %}}
     <ind:pattern operation="pattern match">^[\s]*crypt_style[\s]*=[\s]*(\w*)[\s]*$</ind:pattern>
+{{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

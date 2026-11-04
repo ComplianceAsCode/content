@@ -7,7 +7,51 @@
 # complexity = low
 # disruption = low
 
-{{% if product in ["fedora", "rhel10", "ol10"] %}}
+{{% if product == "rhel10" and RHEL10_STIG_ARCH_MODE %}}
+- name: {{{ rule_title }}} - Set architecture for audit {{{ PATH }}}
+  ansible.builtin.set_fact:
+    audit_arch: "b64"
+  when:
+  - ansible_architecture == "aarch64" or
+    ansible_architecture == "ppc64" or
+    ansible_architecture == "ppc64le" or
+    ansible_architecture == "s390x" or
+    ansible_architecture == "x86_64"
+
+- name: {{{ rule_title }}} - Configure an augenrules audit rule for {{{ PATH }}} 32 bit
+  ansible.builtin.lineinfile:
+    path: /etc/audit/rules.d/{{{ KEY }}}.rules
+    line: '-a always,exit -F arch=b32 -F path={{{ PATH }}}{{{ perm_x }}} -k {{{ KEY }}}'
+    create: true
+    mode: g-rwx,o-rwx
+    state: present
+
+- name: {{{ rule_title }}} - Configure an auditctl audit rule for {{{ PATH }}} 32 bit
+  ansible.builtin.lineinfile:
+    path: /etc/audit/audit.rules
+    line: '-a always,exit -F arch=b32 -F path={{{ PATH }}}{{{ perm_x }}} -k {{{ KEY }}}'
+    create: true
+    mode: g-rwx,o-rwx
+    state: present
+
+- name: {{{ rule_title }}} - Configure an augenrules audit rule for {{{ PATH }}} 64 bit
+  ansible.builtin.lineinfile:
+    path: /etc/audit/rules.d/{{{ KEY }}}.rules
+    line: '-a always,exit -F arch=b64 -F path={{{ PATH }}}{{{ perm_x }}} -k {{{ KEY }}}'
+    create: true
+    mode: g-rwx,o-rwx
+    state: present
+  when: audit_arch == "b64"
+
+- name: {{{ rule_title }}} - Configure an auditctl audit rule for {{{ PATH }}} 64 bit
+  ansible.builtin.lineinfile:
+    path: /etc/audit/audit.rules
+    line: '-a always,exit -F arch=b64 -F path={{{ PATH }}}{{{ perm_x }}} -k {{{ KEY }}}'
+    create: true
+    mode: g-rwx,o-rwx
+    state: present
+  when: audit_arch == "b64"
+{{% elif product in ["fedora", "rhel10", "ol10"] and not RHEL10_STIG_SINGLE_RULE %}}
 - name: {{{ rule_title }}} - Set architecture for audit {{{ PATH }}}
   ansible.builtin.set_fact:
     audit_arch: "b64"
@@ -25,7 +69,7 @@
       other_filters="-F path="~PATH~perm_x,
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=SYSCALL,
-      key="privileged",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -33,7 +77,7 @@
       other_filters="-F path="~PATH~perm_x,
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=SYSCALL,
-      key="privileged",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
 - name: {{{ rule_title }}} - Perform remediation of Audit rules for {{{ PATH }}} 64 bit
@@ -43,7 +87,7 @@
       other_filters="-F path="~PATH~perm_x,
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=SYSCALL,
-      key="privileged",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -51,7 +95,7 @@
       other_filters="-F path="~PATH~perm_x,
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=SYSCALL,
-      key="privileged",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
   when: audit_arch == "b64"
@@ -63,7 +107,7 @@
       other_filters="-F path="~PATH~perm_x,
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=SYSCALL,
-      key="privileged",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -71,7 +115,7 @@
       other_filters="-F path="~PATH~perm_x,
       auid_filters="-F auid>="~auid~" -F auid!=unset",
       syscalls=SYSCALL,
-      key="privileged",
+      key=KEY,
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
 {{% endif %}}

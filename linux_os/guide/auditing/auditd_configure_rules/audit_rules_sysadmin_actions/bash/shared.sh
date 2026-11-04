@@ -2,18 +2,21 @@
 
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 
+{{% set watch_key = "identity" if product == "rhel10" else "actions" %}}
 {{% if audit_watches_style == "modern" %}}
-{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", "actions", "modern", "b32", "path") }}}
-{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", "actions", "modern", "b64", "path") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", "actions", "modern", "b32", "path") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", "actions", "modern", "b64", "path") }}}
-{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers.d/", "wa", "actions", "modern", "b32", "dir") }}}
-{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers.d/", "wa", "actions", "modern", "b64", "dir") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers.d/", "wa", "actions", "modern", "b32", "dir") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers.d/", "wa", "actions", "modern", "b64", "dir") }}}
+{{% set sudoers_d_path = "/etc/sudoers.d" if product == "rhel10" else "/etc/sudoers.d/" %}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", watch_key, "modern", "b32", "path") }}}
+{{% set sudoers_d_filter = "path" if product == "rhel10" else "dir" %}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", watch_key, "modern", "b64", "path") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", watch_key, "modern", "b32", "path") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", watch_key, "modern", "b64", "path") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", sudoers_d_path, "wa", watch_key, "modern", "b32", sudoers_d_filter) }}}
+{{{ bash_fix_audit_watch_rule("auditctl", sudoers_d_path, "wa", watch_key, "modern", "b64", sudoers_d_filter) }}}
+{{{ bash_fix_audit_watch_rule("augenrules", sudoers_d_path, "wa", watch_key, "modern", "b32", sudoers_d_filter) }}}
+{{{ bash_fix_audit_watch_rule("augenrules", sudoers_d_path, "wa", watch_key, "modern", "b64", sudoers_d_filter) }}}
 {{% else %}}
-{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", "actions") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", "actions") }}}
-{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers.d/", "wa", "actions") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers.d/", "wa", "actions") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", watch_key) }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", watch_key) }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers.d/", "wa", watch_key) }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers.d/", "wa", watch_key) }}}
 {{% endif %}}
