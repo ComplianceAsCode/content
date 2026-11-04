@@ -6,7 +6,7 @@
 
 {{{ bash_instantiate_variables("var_system_crypto_policy") }}}
 
-{{% if product == "sle15" %}}
+{{% if product in ["sle15", "sle16", "slmicro6"] %}}
 {{{ bash_package_install("crypto-policies-scripts") }}}
 {{% endif %}}
 
