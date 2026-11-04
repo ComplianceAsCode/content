@@ -1,6 +1,6 @@
 #!/bin/bash
 
 echo "install {{{ KERNMODULE }}} /bin/false" > /etc/modprobe.d/{{{ KERNMODULE }}}.conf
-{{% if "ol" in families or 'rhel' in product or 'ubuntu' in product %}}
+{{% if "ol" in families or 'rhel' in product or 'ubuntu' in product or 'suse' in families %}}
 echo "blacklist {{{ KERNMODULE }}}" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 {{% endif %}}

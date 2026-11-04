@@ -5,6 +5,6 @@ if [[ ! -d /run/modules-load.d ]]; then
 fi
 
 echo "install {{{ KERNMODULE }}} /bin/true" > /run/modules-load.d/{{{ KERNMODULE }}}.conf
-{{% if "ol" in families or 'rhel' in product or 'ubuntu' in product %}}
+{{% if "ol" in families or 'rhel' in product or 'ubuntu' in product or 'suse' in families %}}
 echo "blacklist {{{ KERNMODULE }}}" >> /run/modules-load.d/{{{ KERNMODULE }}}.conf
 {{% endif %}}
