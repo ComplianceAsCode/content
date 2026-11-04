@@ -45,15 +45,19 @@ fixtext: |-
 
     {{{ package_install("firewalld") }}}
 
-{{%- set firewalld_template = "package_installed_guard_var" if product in [ "sle12", "sle15" ] else "package_installed" %}}
+{{%- if product in [ "sle12", "sle15" ] %}}
 template:
-    name: '{{{ firewalld_template }}}'
+    name: package_installed_guard_var
     vars:
         pkgname: firewalld
-{{% if product in [ "sle12", "sle15" ] %}}
         variable: var_network_filtering_service
         value: firewalld
-{{% endif %}}
+{{%- else %}}
+template:
+    name: package_installed
+    vars:
+        pkgname: firewalld
+{{%- endif %}}
 
 
 srg_requirement:
