@@ -22,6 +22,10 @@ oval_feed_url: "https://security-metadata.canonical.com/oval/com.ubuntu.resolute
 
 sshd_distributed_config: "true"
 
+# systemd-sysctl on Ubuntu 26.04 no longer reads /etc/sysctl.conf, so sysctl
+# remediations have to write to /etc/sysctl.d to survive a reboot.
+sysctl_remediate_drop_in_file: "true"
+
 aide_bin_path: "/usr/bin/aide"
 aide_conf_path: "/etc/aide/aide.conf"
 aide_default_path: "/etc/default/aide"
