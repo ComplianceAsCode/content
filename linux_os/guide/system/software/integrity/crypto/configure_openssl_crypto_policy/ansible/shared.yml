@@ -11,14 +11,11 @@
   {{%- set openssl_cnf_dir="/etc/pki/tls" %}}
 {{% endif %}}
 
-{{% if "rhel" in families or product in ["fedora", "ol9"] %}}
+{{% if product in ["fedora", "ol9", "rhel8", "rhel9"] %}}
     {{% set ansible_openssl_include_directive = ".include = /etc/crypto-policies/back-ends/opensslcnf.config" %}}
-{{% else %}}
-    {{% set ansible_openssl_include_directive = ".include /etc/crypto-policies/back-ends/opensslcnf.config" %}}
-{{% endif %}}
-{{% if "rhel" in families %}}
     {{% set ansible_openssl_include_directive_regex = '^\s*\.include\s*=\s*/etc/crypto-policies/back-ends/opensslcnf.config$' %}}
 {{% else %}}
+    {{% set ansible_openssl_include_directive = ".include /etc/crypto-policies/back-ends/opensslcnf.config" %}}
     {{% set ansible_openssl_include_directive_regex = '^\s*\.include\s*(?:=\s*)?/etc/crypto-policies/back-ends/opensslcnf.config$' %}}
 {{% endif %}}
 {{% set full_config_section = "[crypto_policy]\n" + ansible_openssl_include_directive %}}
