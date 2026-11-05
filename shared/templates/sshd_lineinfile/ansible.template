@@ -28,7 +28,8 @@
             parameter=PARAMETER,
             value="{{ "+XCCDF_VARIABLE+" }}",
             config_is_distributed=sshd_distributed_config,
-            config_basename=CONFIG_BASENAME, rule_title=rule_title)
+            config_basename=CONFIG_BASENAME, rule_title=rule_title,
+            fallback_to_main_config=true)
     }}}
 {{% else %}}
     {{{
@@ -36,6 +37,7 @@
             parameter=PARAMETER,
             value=VALUE,
             config_is_distributed=sshd_distributed_config,
-            config_basename=CONFIG_BASENAME, rule_title=rule_title)
+            config_basename=CONFIG_BASENAME, rule_title=rule_title,
+            fallback_to_main_config=true)
     }}}
  {{% endif %}}
