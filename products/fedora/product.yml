@@ -70,8 +70,9 @@ rawhide_release_fingerprint: "D924B10D3E810DABDD8B56B596E7E91491211FCE"
 #   https://getfedora.org/keys/
 rawhide_pkg_version: "91211fce"
 # The pkg_release can be derived as follows:
-#   rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-x86_64
+#   rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-primary
 #   rpm -q gpg-pubkey --qf '%{VERSION}-%{RELEASE}-%{SUMMARY}\n' | grep -i <pkg_version> | cut -f 2 -d -
+# rpm 4 sets the package's version to pkg_version, rpm 6 to the fingerprint in lower case.
 rawhide_pkg_release: "697c9899"
 
 future_version: 45
