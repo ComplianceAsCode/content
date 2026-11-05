@@ -20,10 +20,12 @@ rationale: |-
 
 severity: medium
 
-{{{ ocil_cis_banner("/run/motd.dynamic") }}}
+ocil_clause: 'the <tt>/etc/update-motd.d/10-uname</tt> script is executable'
 
-template:
-    name: cis_banner
-    vars:
-        filepath: /run/motd.dynamic
-        banner_must_be_set: "false"
+ocil: |-
+    To verify that <tt>/etc/update-motd.d/10-uname</tt>, the script that discloses OS and
+    kernel information through <tt>/run/motd.dynamic</tt>, is disabled, run the following
+    command:
+    <pre>$ stat -c '%A' /etc/update-motd.d/10-uname</pre>
+    The output should show no execute permission (<tt>x</tt>) for owner, group, or others,
+    or the file should not exist.
