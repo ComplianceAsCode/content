@@ -4,12 +4,15 @@
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria operator="AND">
+        {{%- if product != "ubuntu2604" %}}
         <criterion comment="dconf gdm profile exists" test_ref="test_dconf_gdm_profile" />
+        {{%- endif %}}
         <criterion comment="dconf user profile exists" test_ref="test_dconf_user_profile" />
       </criteria>
     </criteria>
   </definition>
 
+  {{%- if product != "ubuntu2604" %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
       comment="dconf gdm profile exists and uses gdm.d database"
       id="test_dconf_gdm_profile" version="1">
@@ -21,6 +24,7 @@
     <ind:pattern operation="pattern match">(?ms)^\s*user-db:user\s*.*\n\s*system-db:gdm\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{%- endif %}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
       comment="dconf user profile exists and uses local.d database"

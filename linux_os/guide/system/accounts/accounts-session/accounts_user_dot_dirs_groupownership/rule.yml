@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Configure Local Interactive User Dot Directory Group Ownership'
+
+description: |-
+    Dot directories below each local interactive user's home directory must be
+    group-owned by that user's primary group.
+
+rationale: |-
+    Unexpected group ownership can expose private user configuration and
+    authentication data.
+
+severity: medium
+
+platform: system_with_kernel
+
+ocil_clause: 'a dot directory has an unexpected group owner'
+
+ocil: |-
+    For each local interactive user, recursively inspect dot directories on the
+    local filesystem below that user's home directory. Every directory must be
+    group-owned by that user's primary group.
