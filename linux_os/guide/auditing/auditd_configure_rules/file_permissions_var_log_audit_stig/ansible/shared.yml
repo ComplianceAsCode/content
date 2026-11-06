@@ -1,0 +1,40 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Check if /etc/audit/auditd.conf Exists"
+  ansible.builtin.stat:
+      path: /etc/audit/auditd.conf
+  register: auditd_conf_stat
+
+- name: "{{{ rule_title }}} - Read /etc/audit/auditd.conf"
+  ansible.builtin.slurp:
+      src: /etc/audit/auditd.conf
+  register: auditd_conf_read
+  when: auditd_conf_stat.stat.exists
+
+- name: "{{{ rule_title }}} - Set Audit Log Directory Fact"
+  ansible.builtin.set_fact:
+      audit_log_dir: >-
+          {{ ((auditd_conf_read.content | b64decode
+          | regex_findall('(?im)^[ \t]*log_file[ \t]*=[ \t]*(\S+)')
+          | default(['/var/log/audit/audit.log'], true) | last)
+          if (auditd_conf_stat.stat.exists and auditd_conf_read is not skipped
+          and auditd_conf_read.content is defined)
+          else '/var/log/audit/audit.log') | dirname }}
+
+- name: "{{{ rule_title }}} - Find All Files in Audit Log Directory"
+  ansible.builtin.find:
+      paths: "{{ audit_log_dir }}"
+      file_type: file
+      hidden: true
+  register: audit_log_dir_files
+
+- name: "{{{ rule_title }}} - Ensure Audit Log Files Have Mode 0600 or Less Permissive"
+  ansible.builtin.file:
+      path: "{{ item.path }}"
+      mode: "u-xs,g-rwxs,o-rwxt"
+      state: file
+  loop: "{{ audit_log_dir_files.files }}"
