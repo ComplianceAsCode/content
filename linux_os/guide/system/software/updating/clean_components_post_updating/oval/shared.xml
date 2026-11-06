@@ -11,7 +11,11 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_yum_clean_components_post_updating" comment="clean_requirements_on_remove set in {{{ pkg_manager_config_file }}}" version="1">
     <ind:filepath>{{{ pkg_manager_config_file }}}</ind:filepath>
+{{% if product == "rhel9" %}}
+    <ind:pattern operation="pattern match">^\s*clean_requirements_on_remove\s*=\s*(?:1|(?i)(?:true|yes)(?-i))\s*$</ind:pattern>
+{{% else %}}
     <ind:pattern operation="pattern match">^\s*clean_requirements_on_remove\s*=\s*(1|True|yes)\s*$</ind:pattern>
+{{% endif %}}
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 

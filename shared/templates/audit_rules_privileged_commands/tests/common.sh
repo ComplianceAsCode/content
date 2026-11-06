@@ -3,6 +3,10 @@
 perm_x="-F perm=x"
 {{%- endif %}}
 
+# Reset the audit rules and set the default augenrules environment.
+# Scenarios that test the auditctl case override this with
+# 'setup_auditctl_environment' after sourcing this file.
+{{{ setup_augenrules_environment() }}}
 
 rm -f /etc/audit/rules.d/*.rules
 truncate -s 0 /etc/audit/audit.rules

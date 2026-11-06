@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = sudo
+# variables = var_sudo_timestamp_timeout=3
 
 {{% if product in [ 'sle16', 'slmicro6' ] %}}
 touch /etc/sudoers

@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = sudo
+# variables = var_sudo_timestamp_timeout=3
 
 # Set Defaults timestamp_timeout in /etc/sudoers 
 if grep -q 'timestamp_timeout' /etc/sudoers; then
