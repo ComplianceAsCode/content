@@ -17,7 +17,7 @@
       audit_log_file_path: >-
           {{ (auditd_conf_read.content | b64decode
           | regex_findall('(?im)^[ \t]*log_file[ \t]*=[ \t]*(\S+)')
-          | default(['/var/log/audit/audit.log'], true) | first)
+          | default(['/var/log/audit/audit.log'], true) | last)
           if not ansible_check_mode else '/var/log/audit/audit.log' }}
 
 - name: "{{{ rule_title }}} - Find Audit Log Files"
