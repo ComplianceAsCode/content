@@ -1,0 +1,38 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_auditd_set(parameter="log_group", value="root", rule_title=rule_title) }}}
+
+- name: "{{{ rule_title }}} - Read /etc/audit/auditd.conf"
+  ansible.builtin.slurp:
+      src: /etc/audit/auditd.conf
+  register: auditd_conf_read
+  when: not ansible_check_mode
+
+- name: "{{{ rule_title }}} - Set Audit Log File Path Fact"
+  ansible.builtin.set_fact:
+      audit_log_file_path: >-
+          {{ (auditd_conf_read.content | b64decode
+          | regex_findall('(?im)^[ \t]*log_file[ \t]*=[ \t]*(\S+)')
+          | default(['/var/log/audit/audit.log'], true) | first)
+          if not ansible_check_mode else '/var/log/audit/audit.log' }}
+
+- name: "{{{ rule_title }}} - Find Audit Log Files"
+  ansible.builtin.find:
+      paths: "{{ audit_log_file_path | dirname }}"
+      patterns:
+          - "{{ audit_log_file_path | basename }}"
+          - "{{ audit_log_file_path | basename }}.*"
+      file_type: file
+      hidden: true
+  register: audit_log_files
+
+- name: "{{{ rule_title }}} - Ensure Audit Log Files Are Group Owned by Root"
+  ansible.builtin.file:
+      path: "{{ item.path }}"
+      group: root
+      state: file
+  loop: "{{ audit_log_files.files }}"
