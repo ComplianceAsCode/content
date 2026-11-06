@@ -4,8 +4,33 @@
 # complexity = low
 # disruption = medium
 
+{{% if product == "rhel8" %}}
+- name: Service facts
+  ansible.builtin.service_facts:
+
+- name: "{{{ rule_title }}}"
+  ansible.builtin.lineinfile:
+    dest: '{{{ sshd_sysconfig_file }}}'
+    state: absent
+    regexp: '(?i)^\s*CRYPTO_POLICY\s*=.*$'
+
+- name: "{{{ rule_title }}} - Add the Commented CRYPTO_POLICY Directive"
+  ansible.builtin.lineinfile:
+    dest: '{{{ sshd_sysconfig_file }}}'
+    state: present
+    create: true
+    mode: '0644'
+    line: '# CRYPTO_POLICY='
+
+- name: "{{{ rule_title }}} - Restart the SSH Daemon"
+  ansible.builtin.systemd:
+    name: sshd.service
+    state: restarted
+  when: ('sshd.service' in ansible_facts.services)
+{{% else %}}
 - name: "{{{ rule_title }}}"
   ansible.builtin.lineinfile:
     dest: '{{{ sshd_sysconfig_file }}}'
     state: absent
     regexp: (?i)^\s*CRYPTO_POLICY.*$
+{{% endif %}}
