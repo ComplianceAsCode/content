@@ -260,6 +260,7 @@ cat <<EOF > "{{{ filename }}}"
 {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
 EOF
 chmod 0600 "{{{ filename }}}"
+{{{ bash_audit_load_rules("augenrules") }}}
 {{%- endmacro -%}}
 
 
@@ -309,6 +310,48 @@ chmod 0600 "{{{ filename }}}"
         separator_regex="=",
         prefix_regex="^", rule_id=rule_id)
     }}}
+{{%- endmacro -%}}
+
+
+{{#
+    Load the audit rules into the running kernel after a remediation changed the
+    audit rules files, so the rules are in effect without waiting for a reboot.
+
+    Nothing is done when:
+    * auditctl is not available or the audit status cannot be read (e.g. in a container),
+    * auditing is not enabled in the kernel ("enabled 0"),
+    * the rules are already locked ("enabled 2", "-e 2"); then only a reboot loads them,
+    * the system loads its audit rules with a different tool than the one given.
+
+    A "-e 2" line is left out of the load, so the rules are not locked in the middle
+    of a remediation run; the lock is applied at the next boot as before.
+
+:param tool: tool whose rules file was edited, either 'auditctl' or 'augenrules'
+:type tool: str
+
+#}}
+{{%- macro bash_audit_load_rules(tool) -%}}
+if command -v auditctl >/dev/null 2>&1 && \
+    [ "$(auditctl -s 2>/dev/null | awk '$1 == "enabled" { print $2 }')" = "1" ]; then
+    audit_rules_loader=""
+    if grep -qsE '^(ExecStart(Post)?=-?(/usr)?/s?bin/augenrules|Requires=augenrules\.service)' \
+        /usr/lib/systemd/system/auditd.service /usr/lib/systemd/system/audit-rules.service; then
+        audit_rules_loader="augenrules"
+    elif grep -qsE '^ExecStart(Post)?=-?(/usr)?/s?bin/auditctl[[:space:]]+-R' \
+        /usr/lib/systemd/system/auditd.service /usr/lib/systemd/system/audit-rules.service; then
+        audit_rules_loader="auditctl"
+    fi
+    if [ "$audit_rules_loader" = "{{{ tool }}}" ]; then
+{{%- if tool == "augenrules" %}}
+        augenrules >/dev/null
+{{%- endif %}}
+        audit_rules_to_load=$(mktemp)
+        grep -vE '^[[:space:]]*-e[[:space:]]+2([[:space:]]|$)' /etc/audit/audit.rules > "$audit_rules_to_load"
+        auditctl -R "$audit_rules_to_load" >/dev/null || \
+            echo "Loading the audit rules failed, they will be loaded at the next boot" >&2
+        rm -f "$audit_rules_to_load"
+    fi
+fi
 {{%- endmacro -%}}
 
 
@@ -446,6 +489,7 @@ do
 {{% endif %}}
     fi
 done
+{{{ bash_audit_load_rules(tool) }}}
 {{%- endmacro -%}}
 
 
@@ -2043,6 +2087,7 @@ if [ "$skip" -ne 0 ]; then
         sed -i -e "\#${rule_to_edit}#s#${rule_syscalls_to_edit}#${new_grouped_syscalls}#" "$file_to_edit"
     fi
 fi
+{{{ bash_audit_load_rules(tool) }}}
 {{%- endmacro %}}
 
 
