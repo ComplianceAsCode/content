@@ -4,18 +4,18 @@ documentation_complete: true
 platform: ocp4
 
 metadata:
-    version: 3.2.1
+    version: 4.0.0
     SMEs:
         - JAORMX
         - jhrozek
         - mrogers950
 
-reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
+reference: https://www.pcisecuritystandards.org/document_library/
 
-title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat OpenShift Container Platform 4'
+title: 'PCI-DSS v4.0.0 Control Baseline for Red Hat OpenShift Container Platform 4'
 
 description: |-
-    Ensures PCI-DSS v3.2.1 security configuration settings are applied.
+    Ensures PCI-DSS v4.0.0 security configuration settings are applied.
 
 # Req-2.2
 extends: pci-dss-4-0
