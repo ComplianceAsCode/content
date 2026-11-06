@@ -65,6 +65,15 @@ add_test(
 )
 set_tests_properties("stable-profiles" PROPERTIES LABELS quick)
 
+# Reads profile sources rather than ${CMAKE_BINARY_DIR}: this checks the
+# 'extends' pointer of each unversioned profile, which the build resolves away.
+# Scoped to the OpenShift products, which are the ones using the convention.
+add_test(
+    NAME "profile-version-pointers"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_version_pointers.py" "${CMAKE_SOURCE_DIR}/products" --product ocp4 --product rhcos4
+)
+set_tests_properties("profile-version-pointers" PROPERTIES LABELS quick)
+
 add_test(
     NAME "stable-products"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_product_stability.py" "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/data/product_stability"
