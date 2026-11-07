@@ -1,4 +1,9 @@
 {{%- set config_path = sshd_main_config_file %}}
+{{%- set moved_config_file = sshd_config_dir ~ "/sshd_config_original.conf" %}}
+{{#- Include directive with sshd_config_dir/*.conf or sshd_config_dir/* among its arguments, keyword in any case and
+    path absolute or relative to sshd_config_base_dir. In moved_config_file, it makes the file include itself. #}}
+{{%- set config_dir_regex = "(?:" ~ (sshd_config_base_dir | replace(".", "\\.")) ~ "/)?" ~ (sshd_config_dir | replace(sshd_config_base_dir ~ "/", "", 1) | replace(".", "\\.")) %}}
+{{%- set self_include_regex = "^[ \\t]*(?i:include)(?:[ \\t]*=[ \\t]*|[ \\t]+)(?:[^#\\s]\\S*[ \\t]+)*\"?" ~ config_dir_regex ~ "/\\*(?:\\.conf)?\"?(?:[ \\t]|$)" %}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
@@ -19,10 +24,22 @@
           <extend_definition comment="sshd includes config files from its .d directory"
             definition_ref="sshd_includes_config_files" />
           {{{- oval_line_in_file_criterion(config_path, "match", missing_parameter_pass=true, rule_id=rule_id) | indent(8) }}}
+          <criterion comment="{{{ moved_config_file }}} does not include {{{ sshd_config_dir }}} again"
+            test_ref="test_{{{ rule_id }}}_no_self_include" />
         </criteria>
       </criteria>
     </criteria>
   </definition>
   {{{ oval_line_in_file_test(config_path, "match", missing_parameter_pass=true, rule_id=rule_id) | indent (2) }}}
   {{{ oval_line_in_file_object(config_path, parameter="match", missing_parameter_pass=true, prefix_regex="^[ \\t]*(?i)", separator_regex="(?-i)\s+\S+", rule_id=rule_id) | indent (2) }}}
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="{{{ moved_config_file }}} does not include files from {{{ sshd_config_dir }}}"
+    id="test_{{{ rule_id }}}_no_self_include" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_no_self_include" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_no_self_include" version="1">
+    <ind:filepath>{{{ moved_config_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ self_include_regex }}}</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
 </def-group>
