@@ -60,6 +60,8 @@
   </ind:textfilecontent54_object>
 
 {{% if sshd_distributed_config == "true" %}}
+  {{{ sshd_oval_included_config_dir_variable(rule_id) | indent(2) }}}
+
   <ind:textfilecontent54_test check="all" check_existence="any_exist"
     comment="tests the value of LoginGraceTime setting in the /etc/ssh/sshd_config.d file"
     id="test_sshd_set_login_grace_time_config_dir" version="1">
@@ -69,7 +71,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_sshd_set_login_grace_time_config_dir" version="1">
-    <ind:path>{{{ sshd_drop_in_dir }}}</ind:path>
+    <ind:path var_ref="var_{{{ rule_id }}}_sshd_included_config_dir" var_check="at least one" />
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[ \t]*(?i)LoginGraceTime(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
