@@ -271,14 +271,14 @@
   version="1">
     <ind:object object_ref="object_etc_passwd_entries" />
     <ind:state state_ref="state_uid_less_than_sys_uid_min" />
-    <ind:state state_ref="state_uid_greater_than_or_equal_sys_uid_max" />
+    <ind:state state_ref="state_uid_greater_than_sys_uid_max" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_state id="state_uid_less_than_sys_uid_min" version="1">
     <ind:subexpression datatype="int" operation="less than" var_ref="variable_sys_uid_min_value" />
   </ind:textfilecontent54_state>
-  <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_sys_uid_max" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="variable_sys_uid_max_value" />
+  <ind:textfilecontent54_state id="state_uid_greater_than_sys_uid_max" version="1">
+    <ind:subexpression datatype="int" operation="greater than" var_ref="variable_sys_uid_max_value" />
   </ind:textfilecontent54_state>
 
   <!-- Perform the reserved UID range <0, SYS_UID_MIN> test itself -->
@@ -304,14 +304,14 @@
   version="1">
     <ind:object object_ref="object_etc_passwd_entries" />
     <ind:state state_ref="state_uid_less_than_sys_uid_min_drop_in" />
-    <ind:state state_ref="state_uid_greater_than_or_equal_sys_uid_max_drop_in" />
+    <ind:state state_ref="state_uid_greater_than_sys_uid_max_drop_in" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_state id="state_uid_less_than_sys_uid_min_drop_in" version="1">
     <ind:subexpression datatype="int" operation="less than" var_ref="variable_sys_uid_min_value_drop_in" />
   </ind:textfilecontent54_state>
-  <ind:textfilecontent54_state id="state_uid_greater_than_or_equal_sys_uid_max_drop_in" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="variable_sys_uid_max_value_drop_in" />
+  <ind:textfilecontent54_state id="state_uid_greater_than_sys_uid_max_drop_in" version="1">
+    <ind:subexpression datatype="int" operation="greater than" var_ref="variable_sys_uid_max_value_drop_in" />
   </ind:textfilecontent54_state>
 
 </def-group>
