@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must disable file system automount function unless required.
+    {{{ full_name }}} must disable file system automount function.
 
 fixtext: |-
     Configure {{{ full_name }}} to disable the ability to automount devices.
@@ -14,11 +14,12 @@ checktext: |-
     Verify {{{ full_name }}} is configured so that the file system automount function has been disabled with the following command:
 
     $ systemctl is-enabled  autofs
-    masked
+    not-found
 
-    If the returned value is not "masked", "disabled", or "not-found" and is not documented as an operational requirement with the information system security officer, this is a finding.
+    If the returned value is not "masked", "disabled", or "not-found", this is a finding.
 
 vuldiscussion: |-
-    An authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message.
+    Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.
 
+    Peripherals include, but are not limited to, such devices as flash drives, external storage, and printers.
 

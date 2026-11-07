@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must implement DOD-approved encryption in the bind package.
+    {{{ full_name }}} must implement DoW-approved encryption in the bind package.
 
 fixtext: |-
     Configure {{{ full_name }}} BIND to use the systemwide cryptographic policy.
@@ -24,5 +24,4 @@ vuldiscussion: |-
     Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
 
     {{{ full_name }}} incorporates systemwide crypto policies by default. The employed algorithms can be viewed in the "/etc/crypto-policies/back-ends/" directory.
-
 
