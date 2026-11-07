@@ -1,4 +1,5 @@
 #!/bin/bash
+# remediation = none
 {{% if 'sle' in product or 'slmicro' in product %}}
 # packages = libselinux1
 {{% else %}}
