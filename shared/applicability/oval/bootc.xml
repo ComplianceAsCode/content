@@ -7,6 +7,7 @@
       <criteria operator="OR">
         <criterion comment="/run/ostree-booted exists, suggesting that we are in a running bootc environment" test_ref="bootc_platform_test_run_ostree_booted_exists" />
         <criterion comment="/ostree symlink exists, suggesting that we are in a bootc environment being built and hardened" test_ref="bootc_platform_test_ostree_symlink_exists" />
+        <criterion comment="/ostree symlink with an existing target exists, suggesting that we are in a bootc environment being built and hardened" test_ref="bootc_platform_test_ostree_symlink_with_target_exists" />
       </criteria>
       <criterion comment="openshift-kubelet is not installed" test_ref="bootc_platform_test_openshift_kubelet_removed" />
     </criteria>
@@ -41,5 +42,17 @@
     <unix:filepath operation="equals">/ostree</unix:filepath>
 <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
+
+  <!-- The file probe reports the target of a symlink, not the link itself:
+       when /sysroot/ostree exists, as in the bootc base images, the file
+       test above finds a directory and fails. The symlink probe reads the
+       link, but fails when its target doesn't exist: both tests are needed. -->
+  <unix:symlink_test id="bootc_platform_test_ostree_symlink_with_target_exists" check="all" check_existence="all_exist" comment="The file /ostree is a symlink to an existing target" version="1">
+    <unix:object object_ref="bootc_platform_obj_ostree_symlink_with_target_exists" />
+  </unix:symlink_test>
+
+  <unix:symlink_object id="bootc_platform_obj_ostree_symlink_with_target_exists" comment="The symlink /ostree" version="1">
+    <unix:filepath>/ostree</unix:filepath>
+  </unix:symlink_object>
 
 </def-group>
