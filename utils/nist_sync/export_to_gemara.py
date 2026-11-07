@@ -224,7 +224,10 @@ def cue_validate(
     if not cue_bin:
         return None, "cue binary not found on PATH"
 
-    cmd = [cue_bin, "vet", "-d", schema_expr, "-E", ".", str(yaml_path)]
+    # cue rejects an absolute package path, so it has to run with cwd set to
+    # schema_dir. Resolve the artifact path first, otherwise a relative
+    # --output-dir is looked up inside the schema clone and never found.
+    cmd = [cue_bin, "vet", "-d", schema_expr, "-E", ".", str(yaml_path.resolve())]
     try:
         result = subprocess.run(
             cmd,

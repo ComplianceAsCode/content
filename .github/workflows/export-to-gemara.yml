@@ -63,7 +63,26 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install ruamel.yaml
+          pip install -r utils/nist_sync/requirements.txt
+
+      - name: Validate nist_sync scripts import
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          # Fail fast when a script references a module that was never committed.
+          # Regression from #15115: gemara/yaml_output.py was missing, so the
+          # export below died with ModuleNotFoundError only after the checkout.
+          for script in \
+            utils/nist_sync/export_to_gemara.py \
+            utils/nist_sync/generate_complyctl_bundle.py \
+            utils/nist_sync/generate_policies_pr.py \
+            utils/nist_sync/test_gemara_export.py; do
+            echo "Importing ${script}"
+            python3 "${script}" --help >/dev/null
+          done
+
+      - name: Download OSCAL catalog
+        run: python3 utils/nist_sync/download_oscal.py
 
       - name: Install CUE binary
         run: |
