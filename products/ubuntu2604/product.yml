@@ -21,6 +21,7 @@ init_system: "systemd"
 oval_feed_url: "https://security-metadata.canonical.com/oval/com.ubuntu.resolute.usn.oval.xml.bz2"
 
 sshd_distributed_config: "true"
+sshd_service_name: "ssh"
 
 # systemd-sysctl on Ubuntu 26.04 no longer reads /etc/sysctl.conf, so sysctl
 # remediations have to write to /etc/sysctl.d to survive a reboot.
