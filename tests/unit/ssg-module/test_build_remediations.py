@@ -212,3 +212,30 @@ def test_bash_remediation_wraps_platform_conditionals_with_operators(cpe_platfor
     for i, wrapped_cond in enumerate(wrapped_simple):
         assert wrapped_cond == simple_conditionals[i], \
             f"Simple conditional {i} should not be wrapped: {wrapped_cond}"
+
+
+def test_ansible_inject_service_facts_task():
+    remediation = sbr.AnsibleRemediation("snippet.yml")
+    when = '("nftables" in ansible_facts.packages and ' \
+        '(ansible_facts.services | default({}))["nftables.service"] is defined)'
+    tasks = [{"name": "Enable nftables", "ansible.builtin.systemd": {"name": "nftables"},
+              "when": [when]}]
+    remediation.inject_service_facts_task(tasks)
+    assert len(tasks) == 2
+    assert "ansible.builtin.service_facts" in tasks[0]
+
+    remediation.inject_service_facts_task(tasks)
+    assert len(tasks) == 2
+
+    in_block = [{"name": "Disable nftables", "block": [
+        {"name": "Collect services", "ansible.builtin.service_facts": None},
+        {"name": "Mask nftables", "ansible.builtin.systemd": {"name": "nftables"}}],
+        "when": when}]
+    remediation.inject_service_facts_task(in_block)
+    assert len(in_block) == 2
+    assert "ansible.builtin.service_facts" in in_block[0]
+
+    no_services = [{"name": "Install nftables", "ansible.builtin.package": {"name": "nftables"},
+                    "when": '"nftables" in ansible_facts.packages'}]
+    remediation.inject_service_facts_task(no_services)
+    assert len(no_services) == 1

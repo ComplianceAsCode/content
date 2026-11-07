@@ -250,13 +250,37 @@ class TestAnsibleSnippetsProcessor:
 
         tasks = processor.get_ansible_tasks()
 
-        # Should have: package_facts_task + package_task + package_facts_task + service_facts_task + other_task
-        assert len(tasks) == 5
+        # Should have: package_facts_task + service_facts_task + package_task
+        #   + package_facts_task + service_facts_task + other_task
+        assert len(tasks) == 6
         assert tasks[0] == ssg.ansible.package_facts_task  # First package facts task
-        assert "ansible.builtin.package" in tasks[1]  # Package task
-        assert tasks[2] == ssg.ansible.package_facts_task  # Second package facts task
-        assert "ansible.builtin.service_facts" in tasks[3]  # Service facts task
-        assert "copy" in tasks[4]  # Other task
+        assert tasks[1] == ssg.ansible.service_facts_task  # Service facts for the package tasks
+        assert "ansible.builtin.package" in tasks[2]  # Package task
+        assert tasks[3] == ssg.ansible.package_facts_task  # Second package facts task
+        assert "ansible.builtin.service_facts" in tasks[4]  # Service facts task
+        assert "copy" in tasks[5]  # Other task
+
+    def test_get_ansible_tasks_service_facts_before_package_tasks(self):
+        """Service facts must be gathered before the package tasks.
+
+        The platform condition of a package task may read ansible_facts.services,
+        as the service_disabled platform does, so a service_facts task has to
+        come before the package tasks.
+        """
+        snippet = """
+        - name: Install nftables
+          ansible.builtin.package:
+            name: nftables
+          when: ((ansible_facts.services | default({}))["ufw.service"] | default({})).state | default("") != "running"
+        """
+
+        processor = ssg.ansible.AnsibleSnippetsProcessor([snippet])
+        processor.process_snippets()
+
+        tasks = processor.get_ansible_tasks()
+
+        first_package = next(i for i, t in enumerate(tasks) if "ansible.builtin.package" in t)
+        assert ssg.ansible.service_facts_task in tasks[:first_package]
 
     def test_get_ansible_tasks_service_facts_before_service_blocks(self):
         """Service facts must be gathered before special_service_block tasks.
