@@ -2,10 +2,11 @@
 
 import re
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import ssg.controls
 
+from .frameworks import Framework, NistFramework
 from .schema import GEMARA_VERSION
 from .status_map import (
     has_mapping,
@@ -16,7 +17,6 @@ from .status_map import (
 
 _VAR_ASSIGN_RE = re.compile(r'^[a-z][a-z0-9_]*=[^\s]+$')
 
-_CATALOG_REF_ID = "cac-nist-800-53-control-catalog"
 _RULES_REF_ID = "cac-rules"
 
 
@@ -31,10 +31,20 @@ def _now_iso() -> str:
 class GemaraMappingBuilder:
     """Builds a Gemara MappingDocument from CaC policy controls."""
 
-    def __init__(self, product: str, catalog_id: str, policy: ssg.controls.Policy) -> None:
+    def __init__(
+        self,
+        product: str,
+        catalog_id: str,
+        policy: ssg.controls.Policy,
+        framework: Optional[Framework] = None,
+        version: Optional[str] = None,
+    ) -> None:
         self.product = product
         self.catalog_id = catalog_id
         self.policy = policy
+        self.framework = framework or NistFramework()
+        self.version = version or self.framework.version_label
+        self._catalog_ref_id = self.framework.mapping_catalog_ref_id()
 
     def _metadata(self) -> Dict[str, Any]:
         mapping_id = f"{self.catalog_id}-rules-mapping"
@@ -42,23 +52,15 @@ class GemaraMappingBuilder:
             "id": mapping_id,
             "type": "MappingDocument",
             "gemara-version": GEMARA_VERSION,
-            "description": (
-                f"Mapping from NIST 800-53 Rev 5 controls to ComplianceAsCode "
-                f"rules for {self.product.upper()}"
-            ),
-            "author": {
-                "id": "complianceascode",
-                "name": "ComplianceAsCode Project",
-                "type": "Software",
-                "uri": "https://github.com/ComplianceAsCode/content",
-            },
+            "description": self.framework.mapping_description(self.product),
+            "author": dict(self.framework.author),
             "date": _now_iso(),
             # #MappingReference requires id, title, version (version is required)
             "mapping-references": [
                 {
-                    "id": _CATALOG_REF_ID,
-                    "title": f"ComplianceAsCode NIST 800-53 Rev 5 Control Catalog for {self.product.upper()}",
-                    "version": "Revision 5",
+                    "id": self._catalog_ref_id,
+                    "title": self.framework.mapping_catalog_ref_title(self.product),
+                    "version": self.version,
                     "url": "https://github.com/ComplianceAsCode/content",
                 },
                 {
@@ -120,10 +122,10 @@ class GemaraMappingBuilder:
 
         return {
             "metadata": self._metadata(),
-            "title": f"ComplianceAsCode Rules to NIST 800-53 for {self.product.upper()}",
+            "title": self.framework.mapping_title(self.product),
             # source-reference uses reference-id pointing to a mapping-reference
             "source-reference": {
-                "reference-id": _CATALOG_REF_ID,
+                "reference-id": self._catalog_ref_id,
                 # #EntryType: Guideline|Statement|Control|AssessmentRequirement|...
                 "entry-type": "Control",
             },

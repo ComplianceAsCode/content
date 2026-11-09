@@ -15,7 +15,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
+import ssg.controls
+
 from .catalog import NIST_FAMILIES
+from .frameworks import Framework
 from .schema import GEMARA_VERSION
 
 BASELINES = ["low", "moderate", "high"]
@@ -260,5 +263,80 @@ class GemaraGuidanceCatalogBuilder:
             "title": "NIST Special Publication 800-53 Revision 5",
             "type": "Standard",
             "groups": self._groups(),
+            "guidelines": guidelines,
+        }
+
+
+class GenericGuidanceCatalogBuilder:
+    """Synthesize a GuidanceCatalog for a non-NIST framework from a CaC Policy.
+
+    Frameworks other than NIST have no external guidance source (OSCAL), so the
+    abstract "what should be" layer is derived directly from the control file:
+    one guideline per control, grouped exactly like the ControlCatalog.  This
+    keeps every framework's bundle a full three-layer artifact (guidance +
+    catalog + policy).
+    """
+
+    def __init__(
+        self,
+        policy: ssg.controls.Policy,
+        framework: Framework,
+        guidance_id: Optional[str] = None,
+        version: Optional[str] = None,
+    ) -> None:
+        self.policy = policy
+        self.framework = framework
+        self.guidance_id = guidance_id or framework.guidance_id()
+        self.version = version or framework.version_label
+        self._levels = [
+            (lv.id, list(lv.inherits_from or [])) for lv in policy.levels
+        ] or [("all", [])]
+
+    def _metadata(self) -> Dict[str, Any]:
+        return {
+            "id": self.guidance_id,
+            "type": "GuidanceCatalog",
+            "gemara-version": GEMARA_VERSION,
+            "description": (
+                f"{self.framework.long_name} guidance, derived from the "
+                "ComplianceAsCode control file. Provides the abstract "
+                "'what should be' layer: one guideline per control."
+            ),
+            "author": dict(self.framework.author),
+            "version": self.version,
+            "date": _now_iso(),
+            "applicability-groups": [
+                {
+                    "id": level_id,
+                    "title": f"{level_id.capitalize()} Baseline",
+                    "description": f"{self.framework.short_name} {level_id.capitalize()} level",
+                }
+                for level_id, _ in self._levels
+            ],
+        }
+
+    def build(self) -> Dict[str, Any]:
+        guidelines: List[Dict[str, Any]] = []
+        seen = set()
+        for ctrl in self.policy.controls:
+            if ctrl.id in seen:
+                continue
+            seen.add(ctrl.id)
+            guideline = {
+                "id": ctrl.id,
+                "title": ctrl.title,
+                "objective": ctrl.title,
+                "group": self.framework.group_for(ctrl.id),
+                "state": "Active",
+            }
+            if ctrl.levels:
+                guideline["applicability"] = list(dict.fromkeys(ctrl.levels))
+            guidelines.append(guideline)
+
+        return {
+            "metadata": self._metadata(),
+            "title": self.framework.long_name,
+            "type": "Standard",
+            "groups": self.framework.groups(),
             "guidelines": guidelines,
         }
