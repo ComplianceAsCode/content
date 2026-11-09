@@ -56,6 +56,17 @@ for partition_record in "${partitions_records[@]}"; do
         fi
     done
 
+    # findmnt shows bind mounts and other mounts of a file system subtree,
+    # such as btrfs subvolumes, as DEVICE[PATH]. That is not a device which
+    # can be written to /etc/fstab, so such a mount is only remediated when
+    # it already has an entry in /etc/fstab.
+    if [[ "$device" == *\[*\] ]]; then
+        fstab_entry_regexp="$(printf "^[[:space:]]*[^#].*[[:space:]]%s[[:space:]]" "$mount_point")"
+        if ! grep -q "$fstab_entry_regexp" /etc/fstab; then
+            continue
+        fi
+    fi
+
     # If we reach here, it's a local, non-root partition that isn't excluded.
     {{{ bash_ensure_mount_option_in_fstab("$mount_point",
                                           "$MOUNT_OPTION",
