@@ -5,17 +5,26 @@ controls:
       title: Audit log accessibility
       levels:
           - sl1
-      status: automated
+      status: pending
+      notes: |-
+          AU-9(6) inherits audit-rule immutability and audit-tool/configuration
+          ownership checks. These assess audit-data and tool protection; the
+          ausearch/aureport reader workflow is not selected or exercised.
       rules: []
       controls:
-          - nist_800_53:au-9
           - nist_800_53:au-9.6
 
     - id: CR 6.2
       title: Continuous monitoring
       levels:
           - sl2
-      status: automated
-      rules: []
-      controls:
-          - nist_800_53:si-4
+      status: partial
+      notes: |-
+          The package is selected through CR 2.8/AU-2; the systemd-journal-upload
+          service check supports an outgoing feed from the profile's journald
+          architecture. The check assesses service enablement, not collector setup,
+          authenticated delivery, ingestion, or response.
+      rules:
+          # Enable an outgoing feed for the profile's existing journald architecture.
+          - service_systemd-journal-upload_enabled
+      controls: []

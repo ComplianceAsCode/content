@@ -5,7 +5,11 @@ controls:
       title: Authorization enforcement
       levels:
           - sl1
-      status: automated
+      status: partial
+      notes: |-
+          AC-3 supplies DAC, SELinux, and selected access-control settings.
+          Its bundle also includes ownership/permission, mount-hardening, and
+          log-protection checks shared with other IEC requirements.
       rules: []
       controls:
           - nist_800_53:ac-3
@@ -14,8 +18,15 @@ controls:
       title: Authorization enforcement for all users and permission mapping to roles
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          Runtime daemon-confinement checking complements inherited DAC, SELinux,
+          and sudo controls.
+          AC-3(7) inherits AC-3; AC-6 adds selected SSH-root-login and sudo
+          restrictions alongside the inherited CR 2.1 baseline.
+      rules:
+          # Detect running daemons outside a defined SELinux service domain.
+          - selinux_confinement_of_daemons
       controls:
           - CR 2.1
           - nist_800_53:ac-3.7
@@ -25,38 +36,70 @@ controls:
       title: Wireless use control
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          OS wireless disabling, Bluetooth module restrictions, and the manual
+          firmware check support the restricted-wireless host baseline.
+          AC-18(3) inherits the wireless-interface disabling check from AC-18.
+      rules:
+          # Could extend NIST AC-18(3): manual firmware wireless-disable check.
+          - wireless_disable_in_bios
+          - kernel_module_bluetooth_disabled
       controls:
-          - nist_800_53:ac-18
+          - nist_800_53:ac-18.3
 
     - id: HDR 2.4
       title: Mobile code
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          The fapolicyd package, service, and enforcing default-deny policy support
+          default-deny execution control. Temporary/shared-memory mount-hardening
+          checks are selected through CR 2.1 and CR 7.7 and support this baseline.
+      rules:
+          # Could extend NIST CM-7(5)/SC-18: enforce deny-by-default execution policy.
+          # The approved mobile-code allowlist still needs site-specific review.
+          - fapolicy_default_deny
+          # Could extend NIST CM-7(5)/SC-18: install execution-control support.
+          - package_fapolicyd_installed
+          # Could extend NIST CM-7(5)/SC-18: enable the execution-control mechanism.
+          - service_fapolicyd_enabled
       controls:
-          - nist_800_53:si-3
-          - nist_800_53:cm-7
           - nist_800_53:sc-18
 
     - id: HDR 2.4 RE(1)
       title: Mobile code authenticity check
       levels:
           - sl2
-      status: automated
+      status: partial
+      notes: |-
+          IEC 62443-4-2, 14.2.3 requires an authenticity check before mobile-code
+          execution. NIST SC-18(4)'s pre-execution actions must include that check.
+          The selected fapolicyd checks are inherited from HDR 2.4.
+          RPM signature checks in HDR 3.10 and CR 3.4 RE(1) support trusted
+          installation.
       rules: []
       controls:
           - HDR 2.4
-          - nist_800_53:si-7
+          - nist_800_53:sc-18.4
 
     - id: CR 2.5
       title: Session lock
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          A 15-minute shell prompt timeout limits unattended console and applicable
+          SSH shell access at SL1 and is inherited at SL2.
+          AC-11 adds GNOME session-lock checks with a five-second delay where GDM
+          is installed.
+          Shell logout is not session locking and does not monitor activity
+          inside running applications. SSH liveness checks are selected in CR 2.6
+          from SL2 onward.
+      rules:
+          - accounts_tmout
+          - var_accounts_tmout=15_min
       controls:
           - nist_800_53:ac-11
 
@@ -64,18 +107,45 @@ controls:
       title: Remote session termination
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          SSH client-alive probes every 300 seconds with a count of 3 disconnect
+          unresponsive clients after approximately 900 seconds. A zero count is
+          not selected because modern OpenSSH disables this timeout at zero;
+          client responsiveness does not measure human inactivity.
+          CR 2.5 supplies the shared SL1 shell prompt timeout; the client-alive
+          checks apply from SL2. LoginGraceTime=60 is shared through CR 7.6/CM-6
+          and limits unauthenticated connections, not established sessions.
+      rules:
+          # Could extend NIST SC-10: probe unresponsive SSH clients.
+          # ClientAlive settings do not detect all human inactivity.
+          - sshd_set_idle_timeout
+          - sshd_idle_timeout_value=5_minutes
+          # Could extend NIST SC-10: disconnect after unanswered SSH probes.
+          - sshd_set_keepalive
+          - var_sshd_set_keepalive=3
       controls:
           - nist_800_53:ac-12
-          - nist_800_53:ac-17
+          - nist_800_53:sc-10
 
     - id: CR 2.8
       title: Auditable events
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          AU-2 supplies audit-package, backlog, event-rule, and related audit/journal
+          selections. AU-3/AU-12 add audit-record content and generation checks.
+          Direct rules add enriched records, on-disk logging, and PAM failure
+          auditing. The imported NIST bundles also include AIDE, disk-space
+          response, Chrony, SSH, remote-journal, and audit-protection selections.
+      rules:
+          # Could extend NIST AU-3: resolve identities and enrich audit records.
+          - auditd_log_format
+          # Ensure auditd writes records rather than only processing them.
+          - auditd_write_logs
+          # Record username information for unsuccessful PAM authentication.
+          - accounts_passwords_pam_faillock_audit
       controls:
           - nist_800_53:au-2
           - nist_800_53:au-3
@@ -85,16 +155,35 @@ controls:
       title: Audit storage capacity
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          The selected checks set num_logs to 5, max_log_file to 6 MB, and
+          max_log_file_action to rotate; this makes num_logs an effective
+          retention cap. space_left uses its default 100 MB threshold.
+          Disk-error and disk-full action checks are selected in CR 2.10.
+      rules:
+          # Could extend NIST AU-4/AU-11: retain files when rotation is enabled.
+          - auditd_data_retention_num_logs
+          - var_auditd_num_logs=5
+          - auditd_data_retention_space_left
+          - auditd_data_retention_max_log_file
+          - auditd_data_retention_max_log_file_action
+          - var_auditd_max_log_file=6
+          # consider to use this setting in AU-8, as it does not ignore var_auditd_num_logs
+          - var_auditd_max_log_file_action=rotate
       controls:
           - nist_800_53:au-4
+          - nist_800_53:au-11
 
     - id: CR 2.10
       title: Response to audit processing failures
       levels:
           - sl1
-      status: automated
+      status: partial
+      notes: |-
+          AU-5 supplies disk-error/disk-full action checks and the Postfix package.
+          The selected CIS values accept syslog, single, or halt on disk errors
+          and single or halt when the audit disk is full.
       rules: []
       controls:
           - nist_800_53:au-5
@@ -103,27 +192,43 @@ controls:
       title: Timestamps
       levels:
           - sl1
-      status: automated
+      status: pending
+      notes: |-
+          Linux Audit records carry a system-clock timestamp; audit generation
+          and disk logging are selected in CR 2.8. The AU-8 crosswalk has no
+          timestamp-specific RHEL 9 rule, so timestamp fields, time basis, and
+          granularity are not checked here.
       rules: []
-      controls:
-          - nist_800_53:au-8
+      controls: []
 
     - id: CR 2.11 RE(1)
       title: Time synchronization
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          The Chrony package and remote-source configuration come through CR 2.8;
+          the direct service check assesses enablement of the time synchronizer.
+          SC-45(1) supplies the time-synchronization crosswalk, and the CR 2.11
+          baseline is inherited explicitly.
+      rules:
+          # Could extend NIST SC-45(1): enable the configured time synchronizer.
+          - service_chronyd_enabled
       controls:
           - CR 2.11
-          - nist_800_53:au-8.1
+          - nist_800_53:sc-45.1
 
     - id: CR 2.12
       title: Non-repudiation
       levels:
           - sl1
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          The immutable-loginuid rule checks persistent attribution protection;
+          selected action recording is shared through CR 2.8.
+      rules:
+          # Preserve the login identity associated with audited process actions.
+          - audit_immutable_login_uids
       controls:
           - nist_800_53:au-10
 
@@ -131,8 +236,22 @@ controls:
       title: Use of physical diagnostic and test interfaces
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          USBGuard installation, service, policy, and event logging support the
+          selected USB-device policy. General access enforcement and audit-event
+          generation are addressed in CR 2.1 and CR 2.8.
+      rules:
+          # Could extend NIST CM-8(3): log USB authorization events.
+          # USB controls do not cover every factory diagnostic/test interface.
+          - configure_usbguard_auditbackend
+          # Could extend NIST CM-7(9): install USB authorization support.
+          - package_usbguard_installed
+          # Could extend NIST CM-7(9): enable USB device authorization.
+          - service_usbguard_enabled
+          # Initialize a USB device policy.
+          # A nonempty policy still needs review against approved devices.
+          - usbguard_generate_policy
       controls:
-          - nist_800_53:ac-3
-          - nist_800_53:cm-7
+          - nist_800_53:cm-8.3
+          - nist_800_53:sc-41

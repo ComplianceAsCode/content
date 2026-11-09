@@ -5,8 +5,14 @@ controls:
       title: Denial of service protection
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          SC-5's SYN cookies and the TCP invalid-ACK rate limit mitigate selected
+          TCP denial-of-service paths. Additional network-hardening settings are
+          shared through CR 7.6/CM-6; kernel diagnostic restrictions are in CR 3.7.
+      rules:
+          # Could extend NIST SC-5: rate-limit responses to invalid TCP packets.
+          - sysctl_net_ipv4_tcp_invalid_ratelimit
       controls:
           - nist_800_53:sc-5
 
@@ -14,8 +20,15 @@ controls:
       title: Manage communication load from component
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          Shared SL1 network protections and the SSH MaxStartups check constrain
+          selected communication loads. The default 10:30:100 setting caps
+          concurrent unauthenticated inbound SSH connections and applies
+          probabilistic drops; the CR 7.1 baseline is inherited explicitly.
+      rules:
+          # Bound concurrent unauthenticated SSH connections and probabilistic drops.
+          - sshd_set_maxstartups
       controls:
           - CR 7.1
           - nist_800_53:sc-5.2
@@ -24,8 +37,12 @@ controls:
       title: Resource management
       levels:
           - sl1
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          SSH MaxSessions bounds multiplexed sessions per connection.
+      rules:
+          # Limit the resources consumed by multiplexed authenticated SSH sessions.
+          - sshd_set_max_sessions
       controls:
           - nist_800_53:sc-6
 
@@ -33,8 +50,14 @@ controls:
       title: Control system backup
       levels:
           - sl1
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+          The user-data backup rule supplies manual assessment guidance.
+          CP-9 supplies the backup crosswalk; the selected rule has no automated
+          check or remediation.
+      rules:
+          # Manual-only backup review; no existing automated backup-capability check.
+          - configure_user_data_backups
       controls:
           - nist_800_53:cp-9
 
@@ -43,6 +66,10 @@ controls:
       levels:
           - sl2
       status: pending
+      notes: |-
+          CP-9(1) supplies the backup-integrity crosswalk. The selected manual
+          backup assessment is inherited from CR 7.3. A checksum manifest can
+          verify backup data; live RPM/AIDE checks do not verify backup integrity.
       rules: []
       controls:
           - CR 7.3
@@ -53,6 +80,11 @@ controls:
       levels:
           - sl1
       status: pending
+      notes: |-
+          CP-10 supplies the recovery/reconstitution crosswalk. Recovery evidence
+          should cover restoration, PKI/IdP re-enrollment, hardening reapplication,
+          and post-recovery validation. OpenSCAP and AIDE prerequisites are selected
+          in CR 3.3 and CR 3.4.
       rules: []
       controls:
           - nist_800_53:cp-10
@@ -61,27 +93,62 @@ controls:
       title: Network and security configuration settings
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          CM-2/CM-6/SI-16 checks cover selected deployed settings, with OpenSCAP
+          tooling supplied through CR 3.3.
+          These bundles include PAM/authselect, network sysctls, SSH login-grace
+          time, banners, memory hardening, and selected partition/service settings.
+      rules:
+          # Could extend NIST SI-16: check kernel stack-canary protection.
+          - kernel_config_stackprotector_strong
       controls:
           - nist_800_53:cm-2
           - nist_800_53:cm-6
+          - nist_800_53:si-16
 
     - id: CR 7.7
       title: Least functionality
       levels:
           - sl1
-      status: automated
-      rules: []
-      controls:
-          - nist_800_53:cm-7
+      status: partial
+      notes: |-
+          CR 7.6 and selected CM-7 rules provide package, service, and
+          network-function minimization. Direct CM-7 selections cover the
+          FTP/Telnet/TFTP/vsftpd package removals, CUPS/Bluetooth
+          restrictions, and local-only MTA checks. GDM/Xorg removal and the
+          X Window target are omitted to retain GUI/HMI support. Direct checks
+          disable Avahi and check the boot-time debug-shell argument; disabling
+          the standalone debug-shell service still needs separate verification.
+      rules:
+          - package_ftp_removed
+          - package_telnet-server_removed
+          - package_telnet_removed
+          - package_tftp-server_removed
+          - package_tftp_removed
+          - package_vsftpd_removed
+          - has_nonlocal_mta
+          - postfix_network_listening_disabled
+          - var_postfix_inet_interfaces=loopback-only
+          - service_bluetooth_disabled
+          - service_cups_disabled
+          # Could extend NIST CM-7: prevent boot-time root debug shells.
+          # Standalone debug-shell service activation needs separate checking.
+          - grub2_systemd_debug-shell_argument_absent
+          # Could extend NIST CM-7: disable unneeded multicast discovery.
+          - service_avahi-daemon_disabled
+      controls: []
 
     - id: CR 7.8
       title: Control system component inventory
       levels:
           - sl2
       status: pending
+      notes: |-
+          CM-8(1) supplies the inventory-integration crosswalk for component and
+          subcomponent hardware/software identifiers and versions. RPM inventory
+          exports, update review, and Insights integration require separate
+          operational evidence; no inventory capability/workflow rule is selected.
       rules: []
       controls:
-          - nist_800_53:cm-8
           - nist_800_53:cm-8.1

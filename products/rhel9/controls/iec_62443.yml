@@ -5,6 +5,10 @@ id: iec_62443_rhel9
 version: '2018'
 source: https://www.isa.org/products/ansi-isa-62443-4-2-2018-security-for-industrial-au
 
+# Assign each NIST SP 800-53 Rev. 5 control or enhancement to one IEC requirement.
+# Each RE control explicitly inherits its baseline CR/HDR control; RE rules list
+# only additional direct selections. SL2 also inherits SL1 at profile level.
+# NIST enhancements retain the base-control dependencies defined by the NIST policy.
 levels:
     - id: sl1
     - id: sl2

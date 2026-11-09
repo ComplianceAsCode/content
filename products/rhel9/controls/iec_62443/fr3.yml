@@ -5,26 +5,49 @@ controls:
       title: Communication integrity
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          OpenSSL, SSH, and SSSD settings support selected transmission paths.
+          AC-17(2) inherits the CIS crypto module-file check; its RHEL 9 remediation
+          selects a DEFAULT:NO-SHA1-based custom policy. Confidentiality is
+          addressed in CR 4.1 and common cryptographic settings in CR 4.3.
+      rules:
+          # Require modern OpenSSL TLS protocols for applicable consumers.
+          - configure_openssl_tls_crypto_policy
+          # Include the selected SSH cryptographic policy.
+          - sshd_include_crypto_policy
+          # Restrict SSH integrity MACs to the selected list.
+          - sshd_use_strong_macs
+          - sshd_strong_macs=stig_rhel9
+          # Protect applicable LDAP transactions with TLS.
+          - sssd_ldap_start_tls
       controls:
-          - nist_800_53:sc-8
+          - nist_800_53:ac-17.2
 
     - id: CR 3.1 RE(1)
       title: Communication authentication
       levels:
           - sl2
-      status: automated
+      status: partial
+      notes: |-
+          IEC 62443-4-2, 7.3.3 requires authenticity of received information.
+          NIST SC-23(5) supplies the authenticated-TLS crosswalk; the selected
+          communication checks are inherited from CR 3.1. SSSD certificate-path,
+          OCSP-digest, and mapping-configuration checks are shared through CR 1.9.
       rules: []
       controls:
           - CR 3.1
-          - nist_800_53:sc-8.1
+          - nist_800_53:sc-23.5
 
     - id: HDR 3.2
       title: Protection from malicious code
       levels:
           - sl1
-      status: automated
+      status: partial
+      notes: |-
+          SELinux and fapolicyd checks are shared with CR 2.1 and HDR 2.4.
+          SI-3 contributes USB-storage module and autofs restrictions, which assess
+          removable-media and automount configuration.
       rules: []
       controls:
           - nist_800_53:si-3
@@ -33,18 +56,31 @@ controls:
       title: Report version of code protection
       levels:
           - sl2
-      status: automated
+      status: pending
+      notes: |-
+          IEC 62443-4-2, 14.4.3 requires automatic logging of the malware-protection
+          software and file versions. NIST CM-8(2) supports maintaining automated
+          version inventories; general audit-event selection is in CR 2.8.
+          The current rule selections are inherited from HDR 3.2.
       rules: []
       controls:
           - HDR 3.2
-          - nist_800_53:au-2
+          - nist_800_53:cm-8.2
 
     - id: CR 3.3
       title: Security functionality verification
       levels:
           - sl1
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          Scanner/content package checks provide assessment-tool prerequisites.
+          SI-6 supplies the security-functionality verification crosswalk; the
+          direct selections assess OpenSCAP scanner and SCAP content installation.
+      rules:
+          # Tooling prerequisite; security-function tests remain separate.
+          - package_openscap-scanner_installed
+          # Content prerequisite; verify the actual scan profile and results.
+          - package_scap-security-guide_installed
       controls:
           - nist_800_53:si-6
 
@@ -52,25 +88,48 @@ controls:
       title: Software and information integrity
       levels:
           - sl1
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          The AIDE package check assesses installation; selected AIDE configuration
+          checks cover hashing, ACLs, and extended attributes. RPM verification
+          checks installed non-configuration file hashes against package metadata.
+      rules:
+          - package_aide_installed
+          # Could extend NIST SI-7: verify installed non-configuration file digests.
+          - rpm_verify_hashes
+          # Could extend NIST SI-7(1): check AIDE hash and security-metadata coverage.
+          - aide_build_database
+          - aide_use_fips_hashes
+          - aide_verify_acls
+          - aide_verify_ext_attributes
       controls:
-          - nist_800_53:si-7
+          - nist_800_53:si-7.1
 
     - id: CR 3.4 RE(1)
       title: Authenticity of software and information
       levels:
           - sl2
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          HDR 3.10 supplies DNF repository-signature policy and Red Hat keys;
+          local-package signature enforcement is selected here.
+          The CR 3.4 integrity baseline is inherited explicitly.
+      rules:
+          # Could extend NIST SI-7(15): authenticate local RPM installations.
+          - ensure_gpgcheck_local_packages
       controls:
           - CR 3.4
+          - nist_800_53:si-7.15
 
     - id: CR 3.5
       title: Input validation
       levels:
           - sl1
       status: pending
+      notes: |-
+          SI-10 supplies the input-validation crosswalk. OS memory-hardening
+          checks, including ASLR and stack-canary configuration, are selected
+          separately in CR 7.6.
       rules: []
       controls:
           - nist_800_53:si-10
@@ -79,7 +138,12 @@ controls:
       title: Deterministic output
       levels:
           - sl1
-      status: automated
+      status: pending
+      notes: |-
+          The current SC-24 selection only enables journald.
+          POSIX output behavior is an OS-level property claim, not evidence of
+          supplier-defined component outputs after failure; the selected rule
+          assesses journal-service enablement.
       rules: []
       controls:
           - nist_800_53:sc-24
@@ -88,8 +152,16 @@ controls:
       title: Error handling
       levels:
           - sl1
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          Kernel diagnostic/pointer restrictions and silent PAM failure messages
+          limit selected information-disclosure paths.
+      rules:
+          # Could extend NIST SI-11: restrict sensitive kernel diagnostics.
+          - sysctl_kernel_dmesg_restrict
+          - sysctl_kernel_kptr_restrict
+          # Suppress informative PAM failure messages at the login interface.
+          - accounts_passwords_pam_faillock_silent
       controls:
           - nist_800_53:si-11
 
@@ -98,25 +170,37 @@ controls:
       levels:
           - sl2
       status: pending
+      notes: |-
+          SC-23(1) and SC-23(3) provide crosswalks for session-identifier invalidation
+          and system-generated identifiers. Shared transport configuration is
+          selected in CR 3.1 and timeout configuration in CR 2.5/CR 2.6.
       rules: []
       controls:
-          - nist_800_53:sc-23
+          - nist_800_53:sc-23.1
+          - nist_800_53:sc-23.3
 
     - id: CR 3.9
       title: Protection of audit information
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          AU-9(4) and CR 2.8 protect selected audit files, configuration, and tools;
+          the AIDE check adds audit-tool integrity verification configuration.
+      rules:
+          # Check the integrity-monitoring rules for the audit tool binaries.
+          - aide_check_audit_tools
       controls:
-          - nist_800_53:au-9
           - nist_800_53:au-9.4
 
     - id: HDR 3.10
       title: Support for updates
       levels:
           - sl1
-      status: automated
+      status: partial
+      notes: |-
+          DNF signature, repository, and trusted-key settings support the RPM
+          update path.
       rules: []
       controls:
           - nist_800_53:si-2
@@ -125,59 +209,89 @@ controls:
       title: Update authenticity and integrity
       levels:
           - sl2
-      status: automated
+      status: partial
+      notes: |-
+          IEC 62443-4-2, 14.5.3 requires update authenticity and integrity before
+          installation. NIST CM-14 explicitly requires approved digital signatures
+          before installing updates and patches. General software authentication
+          is assigned to CR 3.4 RE(1), and cryptographic policy is in CR 4.3.
+          DNF signature checks are shared through HDR 3.10 and CR 3.4 RE(1).
       rules: []
       controls:
           - HDR 3.10
-          - nist_800_53:si-7
-          - nist_800_53:sc-13.4
+          - nist_800_53:cm-14
 
     - id: HDR 3.11
       title: Physical tamper resistance and detection
       levels:
           - sl2
-      status: automated
+      status: pending
+      notes: |-
+          IEC 62443-4-2, 14.6 concerns physical tamper resistance and detection.
+          NIST PE-3(5) and PE-6 address tamper protection and physical-access
+          monitoring; these are hardware and facility controls not verified by
+          the selected operating-system rules.
       rules: []
       controls:
-          - nist_800_53:pe-3
+          - nist_800_53:pe-3.5
           - nist_800_53:pe-6
-          - nist_800_53:si-4
 
     - id: HDR 3.12
       title: Provisioning product supplier roots of trust
       levels:
           - sl2
       status: pending
+      notes: |-
+          IEC 62443-4-2, 14.7 requires supplier roots of trust to be provisioned
+          and protected at manufacture. NIST SC-12(3) supports the asymmetric
+          signing-key provisioning crosswalk. Red Hat package-key presence is
+          checked in HDR 3.10, and kernel-module signature-verification capability
+          is checked in HDR 3.14; neither verifies manufacture-time provisioning.
       rules: []
       controls:
-          - nist_800_53:sc-12
-          - nist_800_53:sc-17
+          - nist_800_53:sc-12.3
 
     - id: HDR 3.13
       title: Provisioning asset owner roots of trust
       levels:
           - sl2
       status: pending
+      notes: |-
+          IEC 62443-4-2, 14.8 requires protected asset-owner root provisioning
+          without dependencies outside the security zone. NIST IA-5(14) supports
+          owner trust-store management, but its current rule selections are
+          inherited IA-5 password settings.
+          PKI certificate policy and manual trust-anchor assessment are in CR 1.8.
       rules: []
       controls:
-          - nist_800_53:sc-12
-          - nist_800_53:sc-17
+          - nist_800_53:ia-5.14
 
     - id: HDR 3.14
       title: Integrity of the boot process
       levels:
           - sl1
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          CONFIG_MODULE_SIG checks loadable-module signature-verification support.
+          The selected rule assesses kernel build-time capability.
+      rules:
+          # Check signature-verification capability for modules loaded by the kernel.
+          - kernel_config_module_sig
       controls:
-          - nist_800_53:si-7
+          - nist_800_53:si-7.9
 
     - id: HDR 3.14 RE(1)
       title: Authenticity of the boot process
       levels:
           - sl2
       status: pending
+      notes: |-
+          IEC 62443-4-2, 14.9.3 requires boot authenticity verified against supplier
+          roots of trust. NIST SI-7(6) supports digital-signature verification of
+          boot firmware, software, and configuration.
+          The selected module-verification capability check is inherited from
+          HDR 3.14.
       rules: []
       controls:
           - HDR 3.14
-          - nist_800_53:sc-13.4
+          - nist_800_53:si-7.6
