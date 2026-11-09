@@ -300,8 +300,77 @@ When modifying scripts:
 3. Check profile coverage: `compare_profile_rules.py` for each product
 4. Update this README if workflow changes
 
+## Gemara export (ComplyTime / complytime-policies)
+
+`export_to_gemara.py` converts a ComplianceAsCode **control file** into the
+three Gemara layers consumed by [complytime-policies](https://github.com/complytime/complytime-policies):
+a **GuidanceCatalog** (Layer 1), a **ControlCatalog** (Layer 2), and a
+**Policy** (the profile), plus a **MappingDocument** for traceability.
+`generate_policies_pr.py` then lays those out in the complytime-policies
+directory tree (`governance/{guidance,catalogs,policies}` + `bundles/`) and can
+open a PR.
+
+### Framework-agnostic
+
+The exporter is driven by a `Framework` (`gemara/frameworks.py`), so the *same*
+code exports **any** framework — not just NIST 800-53. Pick one with
+`--framework` (NIST is the default and its output is unchanged):
+
+```bash
+# NIST 800-53 (OSCAL-backed shared guidance; families as groups)
+python3 utils/nist_sync/export_to_gemara.py --framework nist --products rhel9 --validate
+
+# DISA STIG (single-file control file, reference_type: stigid)
+python3 utils/nist_sync/export_to_gemara.py --framework stig --products rhel9 --validate
+
+# CIS (split-dir control file)   /   ANSSI (top-level controls/anssi.yml)
+python3 utils/nist_sync/export_to_gemara.py --framework cis   --products rhel9 --validate
+python3 utils/nist_sync/export_to_gemara.py --framework anssi --products rhel9 --validate
+
+# Stage the complytime-policies layout for the exported framework
+python3 utils/nist_sync/generate_policies_pr.py --framework stig --products rhel9 \
+    --output-dir /tmp/stig-staging
+```
+
+Known frameworks: `nist`, `stig`, `cis`, `anssi`. Add more by registering a
+`Framework` instance in `gemara/frameworks.py::_KNOWN` (just naming/wording —
+no new conversion code). The control file is auto-located by convention
+(`products/<product>/controls/<stem>.yml` then `controls/<stem>.yml`, trying
+`<key>_<product>`, `<reference_type>_<product>`, `<key>`, `<reference_type>`);
+override with `--control <stem>`.
+
+### How frameworks differ (and don't)
+
+The conversion (control→rule → assessment-requirement, `var=value` →
+`parameters`, short-CaC-rule-name `requirement-id`, baseline filtering) is
+identical for every framework. Only the **ControlCatalog's identity** differs:
+
+| | NIST | STIG / CIS / ANSSI / … |
+|---|---|---|
+| `controls[].id` | NIST control ids (`ac-1`) | the control file's own ids |
+| `groups` | 20 NIST families | a single `controls` group |
+| `applicability-groups` | low/moderate/high | the control file's `levels` |
+| version | fixed `Revision 5` | the control file's `version:` (e.g. `V2R9`) |
+| guidance | shared, from OSCAL | synthesized per product from the control file |
+
+See `docs/research/gemara_profile_tailoring_conventions.md` for the full
+rationale (Gemara has no "profile"/"tailoring" type; a CaC profile = Policy +
+ControlCatalog + Guidance bundle).
+
+### Tests
+
+```bash
+# NIST export (reads build/gemara output — run export first)
+python3 utils/nist_sync/test_gemara_export.py --products rhel9
+
+# Framework abstraction (builds straight from the control file; no export needed)
+python3 utils/nist_sync/test_gemara_frameworks.py --framework stig --product rhel9
+```
+
 ## References
 
 - NIST OSCAL: https://pages.nist.gov/OSCAL/
 - NIST 800-53: https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final
 - CIS Benchmarks: https://www.cisecurity.org/cis-benchmarks
+- Gemara: https://github.com/gemaraproj/gemara
+- complytime-policies: https://github.com/complytime/complytime-policies
