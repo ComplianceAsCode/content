@@ -369,6 +369,51 @@ value: :code:`Setting={{ varname1 }}`
 {{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*", mode="u-x,g-wx,o-rwx", rule_title=rule_title) }}}
 {{%- endmacro %}}
 
+
+{{#
+    Resolve the configured log_file path from /etc/audit/auditd.conf into an Ansible fact,
+    falling back to /var/log/audit/audit.log when /etc/audit/auditd.conf or log_file is absent.
+
+:param fact_name: Name of the Ansible fact storing the resolved audit log file path
+:type fact_name: str
+:param rule_title: Optional rule title prefix for generated Ansible task names
+:type rule_title: None | str
+
+#}}
+{{%- macro ansible_auditd_set_log_file_fact(fact_name='audit_log_file_path', rule_title=None) %}}
+{{%- set task_prefix = (rule_title ~ ' - ') if rule_title else '' -%}}
+- name: "{{{ task_prefix }}}Set Default Audit Log File Path"
+  ansible.builtin.set_fact:
+      {{{ fact_name }}}: "/var/log/audit/audit.log"
+      audit_log_file_entries: []
+
+- name: "{{{ task_prefix }}}Check if /etc/audit/auditd.conf Exists"
+  ansible.builtin.stat:
+      path: /etc/audit/auditd.conf
+  register: auditd_conf_stat
+
+- name: "{{{ task_prefix }}}Read /etc/audit/auditd.conf"
+  ansible.builtin.slurp:
+      src: /etc/audit/auditd.conf
+  register: auditd_conf_read
+  when: auditd_conf_stat.stat.exists
+
+- name: "{{{ task_prefix }}}Find log_file Entries in /etc/audit/auditd.conf"
+  ansible.builtin.set_fact:
+      audit_log_file_entries: >-
+          {{ auditd_conf_read.content | b64decode
+          | regex_findall('(?im)^[ \t]*log_file[ \t]*=[ \t]*(\S+)') }}
+  when: auditd_conf_read.content is defined
+
+- name: "{{{ task_prefix }}}Set Audit Log File Path From /etc/audit/auditd.conf"
+  ansible.builtin.set_fact:
+      {{{ fact_name }}}: "{{ audit_log_file_entries | last }}"
+  when:
+      - audit_log_file_entries is defined
+      - audit_log_file_entries | length > 0
+{{%- endmacro %}}
+
+
 {{#
   High level macro to set a parameter in /etc/selinux/config.
 

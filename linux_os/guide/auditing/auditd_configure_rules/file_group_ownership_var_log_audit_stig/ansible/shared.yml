@@ -6,34 +6,7 @@
 
 {{{ ansible_auditd_set(parameter="log_group", value="root", rule_title=rule_title) }}}
 
-- name: "{{{ rule_title }}} - Set Default Audit Log File Path"
-  ansible.builtin.set_fact:
-      audit_log_file_path: "/var/log/audit/audit.log"
-
-- name: "{{{ rule_title }}} - Check if /etc/audit/auditd.conf Exists"
-  ansible.builtin.stat:
-      path: /etc/audit/auditd.conf
-  register: auditd_conf_stat
-
-- name: "{{{ rule_title }}} - Read /etc/audit/auditd.conf"
-  ansible.builtin.slurp:
-      src: /etc/audit/auditd.conf
-  register: auditd_conf_read
-  when: auditd_conf_stat.stat.exists
-
-- name: "{{{ rule_title }}} - Find log_file Entries in /etc/audit/auditd.conf"
-  ansible.builtin.set_fact:
-      audit_log_file_entries: >-
-          {{ auditd_conf_read.content | b64decode
-          | regex_findall('(?im)^[ \t]*log_file[ \t]*=[ \t]*(\S+)') }}
-  when: auditd_conf_read.content is defined
-
-- name: "{{{ rule_title }}} - Set Audit Log File Path From /etc/audit/auditd.conf"
-  ansible.builtin.set_fact:
-      audit_log_file_path: "{{ audit_log_file_entries | last }}"
-  when:
-      - audit_log_file_entries is defined
-      - audit_log_file_entries | length > 0
+{{{ ansible_auditd_set_log_file_fact(rule_title=rule_title) }}}
 
 - name: "{{{ rule_title }}} - Find Audit Log Files"
   ansible.builtin.find:
