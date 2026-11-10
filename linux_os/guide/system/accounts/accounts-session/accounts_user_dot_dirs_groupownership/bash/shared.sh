@@ -12,5 +12,5 @@ while IFS=: read -r _ _ _ gid _ home shell; do
     esac
     while IFS= read -r -d '' dot_dir; do
         chgrp "$gid" "$dot_dir"
-    done < <(find "$home" -xdev -mindepth 1 -maxdepth 1 -type d -name '.*' -print0 2>/dev/null)
+    done < <(find "$home" -xdev -mindepth 1 -type d -name '.*' -print0 2>/dev/null)
 done < /etc/passwd

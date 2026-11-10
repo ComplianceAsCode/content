@@ -16,5 +16,5 @@ while IFS=: read -r _ _ _ _ _ home shell; do
         else
             chmod g-w,o-rwx "$dot_dir"
         fi
-    done < <(find "$home" -xdev -mindepth 1 -maxdepth 1 -type d -name '.*' -print0 2>/dev/null)
+    done < <(find "$home" -xdev -mindepth 1 -type d -name '.*' -print0 2>/dev/null)
 done < /etc/passwd
