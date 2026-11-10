@@ -342,3 +342,47 @@ def get_framework(name: str) -> "Framework":
 
 def known_frameworks() -> List[str]:
     return sorted(_KNOWN)
+
+
+def framework_for_control_file(
+    stem: str,
+    product: str,
+    reference_type: str = "",
+    title: str = "",
+) -> "Framework":
+    """Return a Framework for an arbitrary CaC control-file stem.
+
+    Profiles name their backing control file in the resolved profile's
+    ``policies`` field (e.g. ``stig_rhel9``, ``ospp``, ``pcidss_4``,
+    ``nist_800_171``).  Well-known stems map to the pre-wired frameworks;
+    anything else is synthesized as a generic single-group framework keyed on
+    the stem, so every control-file-backed profile gets a catalog keyed on that
+    file's own control ids.
+
+    Args:
+        stem: control-file stem (without .yml), e.g. ``ospp`` or ``cis_rhel9``.
+        product: product id, used to strip a trailing ``_<product>`` from the key.
+        reference_type: the control file's ``reference_type`` (for synthesized).
+        title: the control file's title (for synthesized short/long name).
+    """
+    if stem == "nist_800_53":
+        return get_framework("nist")
+    if stem.startswith("stig"):
+        return get_framework("stig")
+    if stem == "cis" or stem.startswith("cis_"):
+        return get_framework("cis")
+    if stem == "anssi" or stem.startswith("anssi"):
+        return get_framework("anssi")
+
+    key = stem
+    if key.endswith(f"_{product}"):
+        key = key[: -len(product) - 1]
+    short = title or key.replace("_", " ").upper()
+    return Framework(
+        key=key,
+        reference_type=reference_type or key,
+        short_name=short,
+        long_name=title or short,
+        version_label="",
+        guidance_key=None,
+    )
