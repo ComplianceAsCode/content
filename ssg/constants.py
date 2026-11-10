@@ -63,7 +63,8 @@ product_directories = [
     'uosserver25',
     'sle12', 'sle15', 'sle16', 'slmicro5', 'slmicro6',
     'tencentos4',
-    'ubuntu2204', 'ubuntu2404', 'ubuntu2604'
+    'ubuntu2204', 'ubuntu2404', 'ubuntu2604',
+    'uosdesktop25'
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -247,6 +248,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
     "SUSE Linux Enterprise 16": "sle16",
+    "UOS Desktop 25": "uosdesktop25",
     "SUSE Linux Enterprise Micro 5": "slmicro5",
     "SUSE Linux Enterprise Micro 6": "slmicro6",
     "TencentOS Server 4": "tencentos4",
@@ -306,7 +308,7 @@ REFERENCES = dict(
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler", "kylinserver", "kylinsecserver", "hummingbird",
-                       "uosserver",
+                       "uosserver", "uosdesktop",
                        "opensuse", "sle", "tencentos", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro", "almalinux"]
@@ -333,6 +335,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_sle": ["sle12", "sle15", "sle16"],
     "multi_platform_slmicro": ["slmicro5", "slmicro6"],
     "multi_platform_tencentos": ["tencentos4"],
+    "multi_platform_uosdesktop": ["uosdesktop25"],
     "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404", "ubuntu2604"],
     "multi_platform_openembedded": ["openembedded"],
     "multi_platform_al": ["al2023"],
@@ -457,6 +460,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fuse': 'JBoss Fuse',
     'openeuler': 'openEuler',
     'uosserver': 'UOS Server',
+    'uosdesktop': 'UOS Desktop',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
     'slmicro': 'SUSE Linux Enterprise Micro',
