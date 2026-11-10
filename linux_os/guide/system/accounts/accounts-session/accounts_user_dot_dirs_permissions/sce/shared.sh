@@ -17,6 +17,6 @@ while IFS=: read -r _ _ _ _ _ home shell; do
             echo "$dot_dir has mode $mode, which is too permissive."
             result=$XCCDF_RESULT_FAIL
         fi
-    done < <(find "$home" -xdev -mindepth 1 -maxdepth 1 -type d -name '.*' -print0 2>/dev/null)
+    done < <(find "$home" -xdev -mindepth 1 -type d -name '.*' -print0 2>/dev/null)
 done < /etc/passwd
 exit "$result"
