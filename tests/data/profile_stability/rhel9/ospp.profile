@@ -55,6 +55,8 @@ audit_perm_change_failed_ppc64le
 audit_perm_change_success
 audit_perm_change_success_aarch64
 audit_perm_change_success_ppc64le
+audit_service_management
+audit_service_management_ppc64le
 auditd_data_retention_flush
 auditd_freq
 auditd_log_format
