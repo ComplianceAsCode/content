@@ -7,6 +7,9 @@ description: |-
     Make sure to have the <tt>Include /etc/ssh/sshd_config.d/*.conf</tt> line in the <tt>/etc/ssh/sshd_config</tt> file.
     Ideally, don't have any active configuration directives in that file, and distribute the service configuration
     to several files in the <tt>/etc/ssh/sshd_config.d</tt> directory.
+    If the original configuration has been moved to <tt>/etc/ssh/sshd_config.d/sshd_config_original.conf</tt>,
+    make sure that file doesn't include the <tt>/etc/ssh/sshd_config.d</tt> directory again;
+    a configuration file that includes itself prevents sshd from starting or from accepting logins.
 
 rationale: |-
     This form of distributed configuration is considered as a good practice, and as other sshd rules assume that directives in files in the <tt>/etc/ssh/sshd_config.d</tt> config directory are effective, there has to be a rule that ensures this.
@@ -30,3 +33,7 @@ ocil: |-
     To determine whether the SSH server includes configuration files from the right directory, run the following command:
     <pre>$ sudo grep -i '^Include' /etc/ssh/sshd_config</pre>
     If a line <tt>Include /etc/ssh/sshd_config.d/*.conf</tt> is returned, then the configuration file inclusion is set correctly.
+    If the <tt>/etc/ssh/sshd_config.d/sshd_config_original.conf</tt> file exists, run the following command:
+    <pre>$ sudo grep -i '^\s*Include' /etc/ssh/sshd_config.d/sshd_config_original.conf</pre>
+    The command must not return a line that includes files from the <tt>/etc/ssh/sshd_config.d</tt> directory,
+    such as <tt>Include /etc/ssh/sshd_config.d/*.conf</tt>.
