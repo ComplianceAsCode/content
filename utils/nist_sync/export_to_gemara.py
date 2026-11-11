@@ -456,7 +456,11 @@ def export_product(
 
     # Write one ControlCatalog per NIST family (AC, AU, SI, ...) alongside the
     # combined one, matching complytime-policies' split-by-group layout.
+    # Clean by_group first so a previous framework's split catalogs (e.g. a
+    # prior stig export) don't linger and get staged into this framework's tree.
     by_group_dir = product_dir / "by_group"
+    if by_group_dir.exists():
+        shutil.rmtree(by_group_dir)
     by_group_dir.mkdir(parents=True, exist_ok=True)
     for fam_id, fam_catalog in builder.build_by_group().items():
         fam_path = by_group_dir / f"{framework.key}-{product}-{fam_id}-catalog.yaml"
