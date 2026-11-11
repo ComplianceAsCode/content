@@ -14,9 +14,9 @@ name: Gate nist_sync scripts
 
 on:
   merge_group:
-    branches: [ 'master' ]
+    branches: ['master']
   push:
-    branches: [ '*', '!stabilization*', '!stable*', '!master' ]
+    branches: ['*', '!stabilization*', '!stable*', '!master']
     paths: &paths
       - 'utils/nist_sync/**'
       - 'products/rhel8/controls/nist_800_53/**'
@@ -24,7 +24,7 @@ on:
       - 'products/rhel10/controls/nist_800_53/**'
       - '.github/workflows/gate_nist_sync.yml'
   pull_request:
-    branches: [ 'master', 'stabilization*' ]
+    branches: ['master', 'stabilization*']
     paths: *paths
 
 permissions:
@@ -113,12 +113,20 @@ jobs:
       - name: Run the Gemara export test suite
         run: python3 utils/nist_sync/test_gemara_export.py --products "$PRODUCTS"
 
-      - name: Generate a complyctl bundle
+      - name: Generate complyctl bundles
+        shell: bash
         run: |
-          python3 utils/nist_sync/generate_complyctl_bundle.py \
-            --product rhel9 \
-            --gemara-dir "$GEMARA_DIR" \
-            --output-dir /tmp/complyctl-bundle
+          # generate_complyctl_bundle.py builds one product's bundle, so iterate
+          # over every product in PRODUCTS (each into its own output dir).
+          set -euo pipefail
+          IFS=',' read -ra products <<< "$PRODUCTS"
+          for product in "${products[@]}"; do
+            echo "Generating bundle for ${product}"
+            python3 utils/nist_sync/generate_complyctl_bundle.py \
+              --product "$product" \
+              --gemara-dir "$GEMARA_DIR" \
+              --output-dir "/tmp/complyctl-bundle/${product}"
+          done
 
       - name: Stage complytime-policies artifacts
         run: |
