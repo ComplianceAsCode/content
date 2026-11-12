@@ -106,7 +106,7 @@ def load_profiles(product_dir):
             # their pointers are not yet anyone's problem.
             continue
         except Exception as exc:  # noqa: BLE001 - surfaced as a test failure
-            raise RuntimeError("could not parse {0}: {1}".format(path, exc))
+            raise RuntimeError("could not parse {0}: {1}".format(path, exc)) from exc
         metadata = parsed.get("metadata") or {}
         profiles[basename[: -len(".profile")]] = {
             "extends": parsed.get("extends"),
