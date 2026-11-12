@@ -21,7 +21,20 @@ here): the control→rule → ``assessment-requirement`` conversion, variable
 short-CaC-rule-name ``requirement-id`` contract with the OpenSCAP provider.
 """
 
+import re
 from typing import Dict, List, Optional
+
+
+def product_display(product: str) -> str:
+    """Human-readable product label for titles/descriptions.
+
+    'rhel9' -> 'RHEL9' (the conventional uppercase short form), but other
+    products are title-cased so 'fedora' -> 'Fedora' rather than 'FEDORA'.
+    """
+    if re.fullmatch(r"rhel\d+", product):
+        return product.upper()
+    return product[:1].upper() + product[1:]
+
 
 # ---------------------------------------------------------------------------
 # Shared constants
@@ -136,27 +149,27 @@ class Framework:
 
     def catalog_description(self, product: str) -> str:
         return (
-            f"{self.long_name} controls for {product.upper()}, "
+            f"{self.long_name} controls for {product_display(product)}, "
             "generated from ComplianceAsCode"
         )
 
     def catalog_group_description(self, product: str, group_id: str) -> str:
         title = self.group_meta(group_id)["title"]
         return (
-            f"{self.long_name} controls for {product.upper()}, "
+            f"{self.long_name} controls for {product_display(product)}, "
             f"generated from ComplianceAsCode ({title})"
         )
 
     def baseline_group(
         self, product: str, level_id: str, inherits: List[str]
     ) -> Dict[str, str]:
-        desc = f"{self.short_name} {level_id.capitalize()} level for {product.upper()}"
+        desc = f"{self.short_name} {level_id.capitalize()} level for {product_display(product)}"
         if inherits:
             parents = ", ".join(p.capitalize() for p in inherits)
             desc += f" (inherits {parents})"
         return {
             "id": f"{product}-{level_id}",
-            "title": f"{product.upper()} {level_id.capitalize()} Baseline",
+            "title": f"{product_display(product)} {level_id.capitalize()} Baseline",
             "description": desc,
         }
 
@@ -174,7 +187,7 @@ class Framework:
         )
 
     def catalog_ref_title(self, product: str) -> str:
-        return f"{self.short_name} Control Catalog for {product.upper()}"
+        return f"{self.short_name} Control Catalog for {product_display(product)}"
 
     def guidance_ref_title(self) -> str:
         return f"{self.short_name} Guidance Catalog"
@@ -184,16 +197,16 @@ class Framework:
     def mapping_description(self, product: str) -> str:
         return (
             f"Mapping from {self.short_name} controls to ComplianceAsCode "
-            f"rules for {product.upper()}"
+            f"rules for {product_display(product)}"
         )
 
     def mapping_title(self, product: str) -> str:
-        return f"ComplianceAsCode Rules to {self.short_name} for {product.upper()}"
+        return f"ComplianceAsCode Rules to {self.short_name} for {product_display(product)}"
 
     def mapping_catalog_ref_title(self, product: str) -> str:
         return (
             f"ComplianceAsCode {self.short_name} Control Catalog for "
-            f"{product.upper()}"
+            f"{product_display(product)}"
         )
 
     def mapping_catalog_ref_id(self) -> str:
@@ -242,13 +255,13 @@ class NistFramework(Framework):
     def catalog_description(self, product: str) -> str:
         return (
             f"NIST Special Publication 800-53 Revision 5 controls for "
-            f"{product.upper()}, generated from ComplianceAsCode"
+            f"{product_display(product)}, generated from ComplianceAsCode"
         )
 
     def catalog_group_description(self, product: str, group_id: str) -> str:
         return (
             f"NIST Special Publication 800-53 Revision 5 controls for "
-            f"{product.upper()}, generated from ComplianceAsCode "
+            f"{product_display(product)}, generated from ComplianceAsCode "
             f"({group_id.upper()} family)"
         )
 
@@ -257,30 +270,30 @@ class NistFramework(Framework):
     ) -> Dict[str, str]:
         desc = (
             f"NIST 800-53 {level_id.capitalize()} impact baseline for "
-            f"{product.upper()}"
+            f"{product_display(product)}"
         )
         if inherits:
             parents = ", ".join(p.capitalize() for p in inherits)
             desc += f" (inherits {parents})"
         return {
             "id": f"{product}-{level_id}",
-            "title": f"{product.upper()} {level_id.capitalize()} Baseline",
+            "title": f"{product_display(product)} {level_id.capitalize()} Baseline",
             "description": desc,
         }
 
     def mapping_description(self, product: str) -> str:
         return (
             f"Mapping from NIST 800-53 Rev 5 controls to ComplianceAsCode "
-            f"rules for {product.upper()}"
+            f"rules for {product_display(product)}"
         )
 
     def mapping_title(self, product: str) -> str:
-        return f"ComplianceAsCode Rules to NIST 800-53 for {product.upper()}"
+        return f"ComplianceAsCode Rules to NIST 800-53 for {product_display(product)}"
 
     def mapping_catalog_ref_title(self, product: str) -> str:
         return (
             f"ComplianceAsCode NIST 800-53 Rev 5 Control Catalog for "
-            f"{product.upper()}"
+            f"{product_display(product)}"
         )
 
     def mapping_catalog_ref_id(self) -> str:
