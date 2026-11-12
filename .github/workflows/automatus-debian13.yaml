@@ -14,7 +14,7 @@ env:
 jobs:
   build-content:
     name: Build Content
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Install Deps
         run: |
@@ -22,17 +22,7 @@ jobs:
             cmake ninja-build python3-yaml \
             python3-jinja2 git python3-deepdiff \
             python3-requests jq python3-pip \
-            libxml2-utils xsltproc ansible-lint wget \
-            libdbus-1-dev libdbus-glib-1-dev \
-            libcurl4-openssl-dev libgcrypt20-dev \
-            libselinux1-dev libxslt1-dev \
-            libgconf2-dev libacl1-dev libblkid-dev \
-            libcap-dev libxml2-dev libldap2-dev \
-            libpcre3-dev python3 swig \
-            libxml-parser-perl libxml-xpath-perl \
-            libperl-dev libbz2-dev librpm-dev g++ \
-            libyaml-dev libxmlsec1-dev \
-            libxmlsec1-openssl
+            libxml2-utils xsltproc openscap-utils
       - name: Install deps python
         run: pip3 install gitpython xmldiff lxml lxml-stubs requests
       - name: Checkout
@@ -88,17 +78,6 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'product'
-      - name: Download OpenSCAP
-        run: |
-          wget \
-            https://github.com/OpenSCAP/openscap/releases/download/1.3.10/openscap-1.3.10.tar.gz
-      - name: Extract OpenSCAP
-        run: tar xf openscap-1.3.10.tar.gz
-      - name: Build OpenSCAP
-        run: |
-          cd openscap-1.3.10
-          cmake -Bbuild -DCMAKE_INSTALL_PREFIX=/usr .
-          sudo cmake --build build --target install
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product debian13
@@ -110,24 +89,14 @@ jobs:
   validate-ubuntu:
     name: Run Tests
     needs: build-content
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Install Deps
         run: |
           sudo apt update && sudo apt install -y \
             cmake ninja-build libxml2-utils xsltproc \
-            python3-jinja2 python3-yaml ansible-lint \
-            podman wget \
-            libdbus-1-dev libdbus-glib-1-dev \
-            libcurl4-openssl-dev libgcrypt20-dev \
-            libselinux1-dev libxslt1-dev \
-            libgconf2-dev libacl1-dev libblkid-dev \
-            libcap-dev libxml2-dev libldap2-dev \
-            libpcre3-dev python3 swig \
-            libxml-parser-perl libxml-xpath-perl \
-            libperl-dev libbz2-dev librpm-dev g++ \
-            libyaml-dev libxmlsec1-dev \
-            libxmlsec1-openssl
+            python3-jinja2 python3-yaml \
+            openscap-utils podman
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Get cached CTF output
@@ -139,17 +108,6 @@ jobs:
         # that means there are no changes detected
         # by CTF in the previous job
         continue-on-error: true
-      - name: Download OpenSCAP
-        run: |
-          wget \
-            https://github.com/OpenSCAP/openscap/releases/download/1.3.10/openscap-1.3.10.tar.gz
-      - name: Extract OpenSCAP
-        run: tar xf openscap-1.3.10.tar.gz
-      - name: Build OpenSCAP
-        run: |
-          cd openscap-1.3.10
-          cmake -Bbuild -DCMAKE_INSTALL_PREFIX=/usr .
-          sudo cmake --build build --target install
       - name: Test if there are no content changes
         if: >-
           ${{ steps.get_ctf_output.outcome == 'success' }}
@@ -175,15 +133,6 @@ jobs:
             -t ssg_test_suite \
             -f test_suite-debian13
         working-directory: ./Dockerfiles
-      - name: Get oscap-ssh
-        if: >-
-          ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: |
-          wget https://raw.githubusercontent.com/OpenSCAP/openscap/maint-1.3/utils/oscap-ssh
-          sudo chmod 755 oscap-ssh
-          sudo mv -v oscap-ssh /usr/local/bin
-          sudo chown root:root /usr/local/bin/oscap-ssh
-          rm -f oscap-ssh
       - name: Get rule ids to be tested
         if: >-
           ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
