@@ -1,0 +1,136 @@
+name: Gate nist_sync scripts
+
+# PR check that runs the NIST 800-53 / Gemara toolkit end to end, so a broken
+# script is caught before merge instead of only when the scheduled
+# "Export NIST 800-53 Controls to Gemara Format" workflow runs on master.
+#
+# Regression this guards against (#15115): gemara/yaml_output.py was imported
+# but never committed, so every script died with ModuleNotFoundError on a fresh
+# checkout — invisible until the scheduled export failed.
+#
+# Authoritative CUE schema validation lives in export-to-gemara.yml (it pins the
+# cue binary and gemara schema version). This gate stays self-contained and uses
+# the in-Python structural validation (--validate) so it needs no external pins.
+
+on:
+  merge_group:
+    branches: ['master']
+  push:
+    branches: ['*', '!stabilization*', '!stable*', '!master']
+    paths: &paths
+      - 'utils/nist_sync/**'
+      - 'products/rhel8/controls/nist_800_53/**'
+      - 'products/rhel9/controls/nist_800_53/**'
+      - 'products/rhel10/controls/nist_800_53/**'
+      - '.github/workflows/gate_nist_sync.yml'
+  pull_request:
+    branches: ['master', 'stabilization*']
+    paths: *paths
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  nist-sync-scripts:
+    name: Run nist_sync scripts
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      PRODUCTS: rhel8,rhel9,rhel10
+      GEMARA_DIR: build/gemara
+    steps:
+      - name: Install system dependencies
+        run: |
+          dnf install -y \
+            git \
+            python3 \
+            python3-pip \
+            python3-jinja2 \
+            python3-pyyaml \
+            python3-setuptools \
+            curl
+
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
+
+      - name: Configure git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r utils/nist_sync/requirements.txt
+
+      - name: Smoke-test that every script imports
+        shell: bash
+        run: |
+          # Catches a module that was referenced but never committed (#15115):
+          # importing fails here with a clear message instead of a traceback
+          # buried inside a later export run.
+          set -euo pipefail
+          for script in \
+            utils/nist_sync/export_to_gemara.py \
+            utils/nist_sync/generate_complyctl_bundle.py \
+            utils/nist_sync/generate_policies_pr.py \
+            utils/nist_sync/test_gemara_export.py; do
+            echo "Importing ${script}"
+            python3 "${script}" --help >/dev/null
+          done
+
+      - name: Download OSCAL catalog
+        run: python3 utils/nist_sync/download_oscal.py
+
+      - name: Export NIST 800-53 controls to Gemara format
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 utils/nist_sync/export_to_gemara.py \
+            --products "$PRODUCTS" \
+            --output-dir "$GEMARA_DIR" \
+            --oscal-catalog utils/nist_sync/data/nist_800_53_rev5_catalog.json \
+            --data-dir utils/nist_sync/data \
+            --validate \
+            --verbose 2>&1 | tee export.log
+          # export_to_gemara.py reports validation problems as warnings and still
+          # exits 0, so turn those markers into a hard failure for the gate.
+          if grep -Eq '\[WARN\]|\[ERROR\]|  FAIL$' export.log; then
+            echo "::error::Gemara export reported validation problems (see log above)"
+            exit 1
+          fi
+          for f in metadata.json guidance_catalog.yaml; do
+            if [ ! -f "$GEMARA_DIR/$f" ]; then
+              echo "::error::expected output $GEMARA_DIR/$f was not produced"
+              exit 1
+            fi
+          done
+
+      - name: Run the Gemara export test suite
+        run: python3 utils/nist_sync/test_gemara_export.py --products "$PRODUCTS"
+
+      - name: Generate complyctl bundles
+        shell: bash
+        run: |
+          # generate_complyctl_bundle.py builds one product's bundle, so iterate
+          # over every product in PRODUCTS (each into its own output dir).
+          set -euo pipefail
+          IFS=',' read -ra products <<< "$PRODUCTS"
+          for product in "${products[@]}"; do
+            echo "Generating bundle for ${product}"
+            python3 utils/nist_sync/generate_complyctl_bundle.py \
+              --product "$product" \
+              --gemara-dir "$GEMARA_DIR" \
+              --output-dir "/tmp/complyctl-bundle/${product}"
+          done
+
+      - name: Stage complytime-policies artifacts
+        run: |
+          python3 utils/nist_sync/generate_policies_pr.py \
+            --products "$PRODUCTS" \
+            --gemara-dir "$GEMARA_DIR" \
+            --output-dir /tmp/policies-staging
