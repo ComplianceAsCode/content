@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from .frameworks import COMPLIANCEASCODE_AUTHOR, Framework
+from .frameworks import COMPLIANCEASCODE_AUTHOR, Framework, product_display
 from .policy import _humanize_var_name, _rule_content_index  # reuse pairing helpers
 from .schema import GEMARA_VERSION
 
@@ -134,7 +134,7 @@ def generate_profile_policy(
 
     mapping_ref = {
         "id": catalog_id,
-        "title": f"{framework.short_name} Control Catalog for {product.upper()}",
+        "title": f"{framework.short_name} Control Catalog for {product_display(product)}",
         "version": version,
         "url": catalog_url or "https://github.com/ComplianceAsCode/content",
     }
@@ -199,7 +199,7 @@ class AllRulesCatalogBuilder:
             "type": "ControlCatalog",
             "gemara-version": GEMARA_VERSION,
             "description": (
-                f"Generic rule catalog for {self.product.upper()}: every "
+                f"Generic rule catalog for {product_display(self.product)}: every "
                 "ComplianceAsCode rule as a standalone control. Backs profiles "
                 "that are not derived from a framework control file."
             ),
@@ -209,8 +209,8 @@ class AllRulesCatalogBuilder:
             "applicability-groups": [
                 {
                     "id": f"{self.product}-all",
-                    "title": f"{self.product.upper()} (all rules)",
-                    "description": f"All ComplianceAsCode rules for {self.product.upper()}",
+                    "title": f"{product_display(self.product)} (all rules)",
+                    "description": f"All ComplianceAsCode rules for {product_display(self.product)}",
                 }
             ],
         }
@@ -237,7 +237,7 @@ class AllRulesCatalogBuilder:
         ]
         return {
             "metadata": self._metadata(),
-            "title": f"ComplianceAsCode Rules for {self.product.upper()}",
+            "title": f"ComplianceAsCode Rules for {product_display(self.product)}",
             "groups": [
                 {
                     "id": "rules",

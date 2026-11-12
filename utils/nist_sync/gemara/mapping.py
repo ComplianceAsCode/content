@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional
 
 import ssg.controls
 
-from .frameworks import Framework, NistFramework
+from .frameworks import Framework, NistFramework, product_display
 from .schema import GEMARA_VERSION
 from .status_map import (
     has_mapping,
@@ -65,7 +65,7 @@ class GemaraMappingBuilder:
                 },
                 {
                     "id": _RULES_REF_ID,
-                    "title": f"ComplianceAsCode {self.product.upper()} Rules",
+                    "title": f"ComplianceAsCode {product_display(self.product)} Rules",
                     "version": "1.0.0",
                     "url": "https://github.com/ComplianceAsCode/content",
                 },
