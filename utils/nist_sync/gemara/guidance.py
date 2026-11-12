@@ -322,10 +322,12 @@ class GenericGuidanceCatalogBuilder:
             if ctrl.id in seen:
                 continue
             seen.add(ctrl.id)
+            # Schema requires non-empty strings; control files may omit titles.
+            title = ctrl.title or ctrl.id
             guideline = {
                 "id": ctrl.id,
-                "title": ctrl.title,
-                "objective": ctrl.title,
+                "title": title,
+                "objective": title,
                 "group": self.framework.group_for(ctrl.id),
                 "state": "Active",
             }

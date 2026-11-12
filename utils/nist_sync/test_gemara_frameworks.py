@@ -105,6 +105,14 @@ def main() -> None:
     r.check(ctrl_groups <= group_ids, "every control group resolves to a defined group")
     r.check(len(catalog["controls"]) == len(policy_obj.controls),
             f"control count matches source: {len(catalog['controls'])}")
+    # Gemara's CUE schema rejects null/empty title/objective; some control files
+    # (e.g. STIG) leave titles blank, so the builder must fall back to the id.
+    null_titles = [c["id"] for c in catalog["controls"] if not c.get("title")]
+    null_objectives = [c["id"] for c in catalog["controls"] if not c.get("objective")]
+    r.check(not null_titles,
+            f"all controls have a non-empty title ({len(null_titles)} null)")
+    r.check(not null_objectives,
+            f"all controls have a non-empty objective ({len(null_objectives)} null)")
 
     # --- GuidanceCatalog (synthetic) --------------------------------------
     print("\n[2] GuidanceCatalog (synthetic)")
