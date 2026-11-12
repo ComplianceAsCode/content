@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Build and Initialize Tripwire Database'
+
+description: |-
+    Run the following command to generate the initial known-good database,
+    supplying the local passphrase when prompted:
+    <pre>$ sudo tripwire --init</pre>
+    By default the database is written to
+    <tt>/var/lib/tripwire/$(HOSTNAME).twd</tt>, as configured by the
+    <tt>DBFILE</tt> directive in <tt>/etc/tripwire/twcfg.txt</tt>.
+    To run a manual integrity check afterwards:
+    <pre>$ sudo tripwire --check</pre>
+    If the check produces unexpected output, investigate.
+
+rationale: |-
+    For Tripwire to be effective, an initial database of "known-good"
+    information about files must be captured so that installed files can be
+    verified against it.
+
+severity: medium
+
+references:
+    nist: CM-6(a)
+
+warnings:
+    - general: |-
+        This rule doesn't come with a remediation; <tt>tripwire --init</tt>
+        requires the site and local passphrases to be entered interactively
+        and must be run by the administrator.
+
+ocil_clause: 'the Tripwire database file has not been created'
+
+ocil: |-
+    To verify the Tripwire database has been initialized, run:
+    <pre>$ sudo ls -l /var/lib/tripwire/*.twd</pre>
+    A <tt>.twd</tt> database file should be present.
