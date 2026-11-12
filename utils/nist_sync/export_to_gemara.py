@@ -56,6 +56,7 @@ from gemara.frameworks import (
     framework_for_control_file,
     get_framework,
     known_frameworks,
+    product_display,
 )
 from gemara.guidance import (
     GemaraGuidanceCatalogBuilder,
@@ -654,7 +655,8 @@ def export_profiles_for_product(
             catalog_id = catalog["metadata"]["id"]
             framework = Framework(
                 key=sanitize_id(product) + "-rules", reference_type="rule",
-                short_name=f"{product.upper()} Rules", long_name=f"{product.upper()} Rules",
+                short_name=f"{product_display(product)} Rules",
+                long_name=f"{product_display(product)} Rules",
             )
 
         if catalog_id not in written_catalogs:
@@ -663,11 +665,16 @@ def export_profiles_for_product(
             stats["catalogs"] += 1
 
         # --- build + write policy -------------------------------------------
+        # Label the mapping-reference with the *catalog's* version, not the
+        # resolved profile's, so the Policy and the catalog it imports never
+        # disagree (a rebuilt control file can be newer than the resolved
+        # profile's metadata.version).
         rules_with_params = pair_vars_to_rules(resolved.rules, resolved.variables)
         policy = generate_profile_policy(
             product, full_name, resolved, catalog_id,
             catalog_url=f"file://../catalogs/{catalog_id}-catalog.yaml",
             framework=framework, rules_with_params=rules_with_params,
+            version=catalog["metadata"].get("version"),
         )
         if validate:
             errs = validate_policy(policy)

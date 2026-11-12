@@ -101,14 +101,22 @@ def generate_profile_policy(
     catalog_url: Optional[str],
     framework: Framework,
     rules_with_params: List[ProfileRuleEntry],
+    version: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Build a Gemara Policy dict for one resolved profile.
 
     policy id = ``<product>-<profile>-policy`` (hyphenated); assessment-plans are
     the profile's effective rules; parameters are the profile's variable choices.
+
+    ``version`` labels the catalog mapping-reference. Callers should pass the
+    referenced catalog's ``metadata.version`` so the Policy never advertises a
+    different benchmark version than the catalog it imports (the resolved
+    profile's own ``metadata.version`` can lag a rebuilt control file). When
+    ``None``, fall back to the resolved profile's version.
     """
     policy_id = f"{sanitize_id(product)}-{sanitize_id(resolved.name)}-policy"
-    version = resolved.version or framework.version_label
+    if version is None:
+        version = resolved.version or framework.version_label
 
     assessment_plans: List[Dict[str, Any]] = []
     for rule_id, params in rules_with_params:
