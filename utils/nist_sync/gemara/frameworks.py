@@ -19,6 +19,19 @@ What stays framework-independent (and therefore lives in the builders, not
 here): the control→rule → ``assessment-requirement`` conversion, variable
 (``var=value``) → ``parameters`` resolution, baseline filtering, and the
 short-CaC-rule-name ``requirement-id`` contract with the OpenSCAP provider.
+
+Naming / versioning convention:
+
+* Ids carry **no benchmark version** — ``stig-rhel9``, ``cis-rhel9``,
+  ``anssi-rhel9``. A new benchmark release (STIG V2R10 → V2R11, CIS x.y.z) is
+  published under the *same* id/tag, so an update is a transparent, in-place
+  replacement — exactly how CaC profiles are versionless and always resolve to
+  the latest content. The version lives in ``metadata.version`` so it stays
+  visible in every artifact and report.
+* A framework **edition** that changes the control universe keeps it in the id
+  — ``nist-800-53-rev5``. Rev 5 → Rev 6 is a scoping change to be adopted
+  deliberately, not silently inherited; the suffix makes that boundary explicit
+  and lets revisions coexist.
 """
 
 import re
