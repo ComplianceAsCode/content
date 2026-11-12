@@ -110,11 +110,15 @@ class GemaraCatalogBuilder:
     # -- controls -----------------------------------------------------------
 
     def _objective(self, control: ssg.controls.Control) -> str:
-        """Return objective text: OSCAL statement prose, or title as fallback."""
+        """Return objective text: OSCAL statement prose, else title, else id.
+
+        Never returns None: some control files (e.g. STIG) leave titles empty,
+        and the Gemara schema requires a non-empty string here.
+        """
         ctrl_id = control.id.lower()
         if ctrl_id in self._oscal_index:
             return self._oscal_index[ctrl_id]
-        return control.title
+        return control.title or control.id
 
     def _applicability_for(self, control: ssg.controls.Control) -> List[str]:
         """Return non-empty product-scoped applicability list for a control."""
@@ -176,10 +180,13 @@ class GemaraCatalogBuilder:
     def _build_control(self, control: ssg.controls.Control) -> Dict[str, Any]:
         group = self.framework.group_for(control.id)
         cac_status = control.status if control.status else "pending"
+        # Gemara requires non-empty title/objective strings; some control files
+        # leave the title blank, so fall back to the control id.
+        title = control.title or control.id
         return {
             "id": control.id,
-            "title": control.title,
-            "objective": self._objective(control),
+            "title": title,
+            "objective": self._objective(control) or title,
             "group": group,
             "assessment-requirements": self._assessment_requirements(control),
             # #Lifecycle: "Active" | "Draft" | "Deprecated" | "Retired"
