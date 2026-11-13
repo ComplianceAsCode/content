@@ -1,6 +1,7 @@
 #!/bin/bash
 # platform = SUSE Linux Enterprise 15, SUSE Linux Enterprise 16
 
+source common.sh
 useradd --system --shell /bin/bash -u 149 sysuser
 
 key=SYS_UID_MIN

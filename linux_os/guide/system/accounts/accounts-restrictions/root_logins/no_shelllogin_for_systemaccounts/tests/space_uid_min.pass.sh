@@ -1,4 +1,6 @@
 #!/bin/bash
+
+source common.sh
 useradd --system --shell /sbin/nologin -u 999 sysuser
 useradd -u {{{ uid_min }}} testuser
 
