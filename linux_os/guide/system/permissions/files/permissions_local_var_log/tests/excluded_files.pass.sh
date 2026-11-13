@@ -8,7 +8,7 @@ excluded_files=('history.log' 'eipp.log.xz' 'btmp' 'btmp.1' 'btmp-1' 'wtmp' 'wtm
 excluded_files=('btmp' 'btmp.1' 'btmp-1' 'wtmp' 'wtmp.1' 'wtmp-1' 'lastlog' 'lastlog.1'\
                 'cloud-init.log' 'cloud-init.log2' 'localmessages' 'localmessages2' 'waagent.log' 'waagent.log2')
 {{% elif product in ['sle12', 'sle15'] %}}
-excluded_files=('btmp', 'wtmp', 'lastlog')
+excluded_files=('btmp' 'wtmp' 'lastlog')
 {{% endif %}}
 
 for f in ${excluded_files[@]}
