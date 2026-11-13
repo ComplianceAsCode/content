@@ -23,6 +23,7 @@ if(PY_PYTEST)
     ssg_python_unit_tests("utils" "utils" "")
     ssg_python_unit_tests("ssg-module" "." "")
     ssg_python_unit_tests("build-scripts" "." "")
+    ssg_python_unit_tests("tests" "." "")
     ssg_python_unit_tests("ssg_test_suite" "tests" "")
     # CEL rule fixtures evaluated via celctl (skips itself when celctl is absent)
     ssg_python_unit_tests("kubernetes" "." "")
@@ -64,6 +65,15 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_stability.py" "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/data/profile_stability"
 )
 set_tests_properties("stable-profiles" PROPERTIES LABELS quick)
+
+# Reads profile sources rather than ${CMAKE_BINARY_DIR}: this checks the
+# 'extends' pointer of each unversioned profile, which the build resolves away.
+# Scoped to the OpenShift products, which are the ones using the convention.
+add_test(
+    NAME "profile-version-pointers"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_version_pointers.py" "${CMAKE_SOURCE_DIR}/products" --product ocp4 --product rhcos4
+)
+set_tests_properties("profile-version-pointers" PROPERTIES LABELS quick)
 
 add_test(
     NAME "stable-products"
