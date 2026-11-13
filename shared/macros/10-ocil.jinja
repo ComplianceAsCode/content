@@ -1455,7 +1455,7 @@ oc describe clusterrolebinding.rbac
 
 Local roles and bindings can be determined using the follow commands by executing the following:
 
-oc describe rolebinding.rbac
+oc describe rolebinding.rbac --all-namespaces
 
 If these results show users with privileged access that do not require that access, this is a finding.
 {{%- endmacro %}}
