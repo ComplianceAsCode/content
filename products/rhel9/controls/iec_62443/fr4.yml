@@ -5,17 +5,29 @@ controls:
       title: Information confidentiality
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          The CIS SSH cipher subtraction list and inherited DEFAULT-based custom
+          crypto module-file check assess selected transit configuration. TLS/LDAP
+          settings are shared through CR 3.1; the LUKS assessment is manual.
+      rules:
+          # Could extend NIST SC-8(1): configure the selected SSH cipher exclusions.
+          - sshd_use_approved_ciphers
+          - sshd_approved_ciphers=cis_rhel9
+          # Could extend NIST SC-28(1): manually assess LUKS encryption.
+          - encrypt_partitions
       controls:
-          - nist_800_53:sc-8
-          - nist_800_53:sc-28
+          - nist_800_53:sc-8.1
+          - nist_800_53:sc-28.1
 
     - id: CR 4.2
       title: Information persistence
       levels:
           - sl2
       status: pending
+      notes: |-
+          MP-6 supplies the media-sanitization crosswalk for releasing or
+          decommissioning a component and its protected information.
       rules: []
       controls:
           - nist_800_53:mp-6
@@ -24,9 +36,20 @@ controls:
       title: Use of cryptography
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          IEC 62443-4-2, 8.5 concerns approved cryptographic mechanisms, algorithms,
+          and key-management practices. NIST SC-12 and SC-13 are assigned here;
+          transmission integrity is assigned to CR 3.1, and transmission and
+          storage confidentiality are assigned to CR 4.1.
+          The OpenSSL/SSH MAC settings are shared through CR 3.1.
+          Direct checks assess SSH key-exchange configuration and Kerberos
+          integration with the system crypto policy.
+      rules:
+          # Could extend NIST SC-13: restrict SSH key-exchange algorithms.
+          - sshd_use_strong_kex
+          # Could extend NIST SC-13: bind Kerberos to the system crypto policy.
+          - configure_kerberos_crypto_policy
       controls:
-          - nist_800_53:sc-8
           - nist_800_53:sc-12
           - nist_800_53:sc-13

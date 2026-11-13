@@ -5,26 +5,53 @@ controls:
       title: Human user identification and authentication
       levels:
           - sl1
-      status: automated
-      rules: []
-      controls:
-          - nist_800_53:ia-2
+      status: partial
+      notes: |-
+          IEC 62443-4-2, 5.3 permits group-based identification at SL1. PAM
+          integration supports human-user authentication; the unique-user
+          requirement in NIST IA-2 is assigned to CR 1.1 RE(1) at SL2.
+          Direct checks cover SSH PAM integration, GDM automatic-login restrictions
+          where GDM is installed, SSSD's PAM responder, and authentication for the
+          emergency and rescue console targets.
+      rules:
+          # Integrate SSH authentication with the system's PAM account controls.
+          - sshd_enable_pam
+          # Prevent graphical credential bypass where GDM is installed.
+          - gnome_gdm_disable_automatic_login
+          # Support central authentication through the SSSD PAM responder.
+          - sssd_enable_pam_services
+          # Require authentication on the emergency and rescue console paths.
+          - require_emergency_target_auth
+          - require_singleuser_auth
+      controls: []
 
     - id: CR 1.1 RE(1)
       title: Unique identification and authentication
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          IEC 62443-4-2, 5.3.3(1) requires unique human-user identification.
+          NIST IA-2 explicitly requires unique identification and authentication;
+          identifier lifecycle management remains assigned to CR 1.4.
+          The selected checks assess local UID and login-name uniqueness alongside
+          the inherited CR 1.1 authentication settings.
+      rules:
+          # Check unique login names in addition to the inherited NIST UID check.
+          - account_unique_name
       controls:
           - CR 1.1
-          - nist_800_53:ia-4
+          - nist_800_53:ia-2
 
     - id: CR 1.2
       title: Software process and device identification and authentication
       levels:
           - sl2
-      status: automated
+      status: pending
+      notes: |-
+          The inherited IA-3 rules restrict removable media and automounting.
+          They assess USB-storage and GNOME automount configuration rather than
+          host enrollment or software-process/device authentication.
       rules: []
       controls:
           - nist_800_53:ia-3
@@ -33,17 +60,36 @@ controls:
       title: Account management
       levels:
           - sl1
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          Local account authorization and service-account restrictions complement
+          expiry settings in CR 1.4 and account-change auditing in CR 2.8.
+          AC-2(3) and AC-2(4) supply the account-lifecycle crosswalk; the direct
+          checks assess the local-account allowlist and system-account login policy.
+      rules:
+          # Could extend NIST AC-2: check the approved local-account list.
+          - accounts_authorized_local_users
+          - var_accounts_authorized_local_users_regex=rhel9
+          # Restrict local service accounts to their noninteractive purposes.
+          - no_password_auth_for_systemaccounts
+          - no_shelllogin_for_systemaccounts
       controls:
-          - nist_800_53:ac-2
+          - nist_800_53:ac-2.3
+          - nist_800_53:ac-2.4
 
     - id: CR 1.4
       title: Identifier management
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          Unique local group names and GIDs support identifier consistency;
+          IA-4 currently contributes account-expiry settings.
+          Local user UID/name uniqueness is checked in CR 1.1 RE(1) at SL2.
+      rules:
+          # Detect ambiguous local group identifiers and names.
+          - group_unique_id
+          - group_unique_name
       controls:
           - nist_800_53:ia-4
 
@@ -51,7 +97,14 @@ controls:
       title: Authenticator management
       levels:
           - sl1
-      status: automated
+      status: partial
+      notes: |-
+          IA-5 and the access controls in CR 2.1 protect local password stores
+          and configure selected password-management settings.
+          The IA-5 bundle checks selected PAM complexity, password hashing,
+          minimum-age/warning settings, and local password state. It selects
+          var_accounts_maximum_age_login_defs=365 without selecting either
+          maximum-age rule; CM-1's rules are not imported by CR 1.5.
       rules: []
       controls:
           - nist_800_53:ia-5
@@ -60,39 +113,72 @@ controls:
       title: Strength of password-based authentication
       levels:
           - sl1
-      status: automated
+      status: partial
+      notes: |-
+          IA-5(1) checks shared PAM password-strength/history settings; CR 7.6
+          supplies the active-authselect PAM-module checks.
       rules: []
       controls:
-          - nist_800_53:ia-5
           - nist_800_53:ia-5.1
 
     - id: CR 1.8
       title: Public key infrastructure certificates
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: manual
+      notes: |-
+          IEC 62443-4-2, 5.10 applies when PKI is used and requires integration
+          with a system conforming to ISA-62443-3-3 SR 1.8; the asset owner's
+          certificate policy determines trusted CAs. Protected asset-owner root
+          provisioning is addressed in HDR 3.13.
+          The selected sssd_has_trust_anchor rule is manual and SSSD-specific.
+          Its DoD-root example does not verify that approved trust anchors are
+          installed or that every PKI consumer validates them. CR 1.9 addresses
+          certificate authentication and private-key control, but its checks
+          cover only selected LDAP/SSSD and SSH cases. Verify applicable trust
+          paths, revocation, expiry/renewal, and private-key controls against
+          the deployment's PKI policy.
+      rules:
+          # Could extend NIST SC-17: manually review approved SSSD trust anchors.
+          # Assess the asset owner's CA rather than the OCIL's DoD example.
+          - sssd_has_trust_anchor
       controls:
-          - nist_800_53:ia-5.2
           - nist_800_53:sc-17
 
     - id: CR 1.9
       title: Strength of public key-based authentication
       levels:
           - sl2
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          IEC 62443-4-2, 5.11.1 covers certificate validation, private-key control,
+          and identity-to-account mapping, as does NIST IA-5(2). The common
+          algorithm and key-management requirements are assigned to CR 4.3.
+          IA-5(2) inherits password settings. The direct checks assess LDAP server
+          certificate requirements, the SSSD OCSP request digest, certificate-map
+          section presence, and interactive users' SSH client-key passphrases.
+      rules:
+          # Could extend NIST IA-5(2): require valid LDAP server certificates.
+          - sssd_ldap_configure_tls_reqcert
+          # Check SSSD OCSP configuration with the selected request digest.
+          - sssd_certificate_verification
+          - var_sssd_certificate_verification_digest_function=sha512
+          # Check presence of SSSD certificate mapping, not its site-specific correctness.
+          - sssd_enable_certmap
+          # Check passphrase protection of interactive users' SSH client keys.
+          - ssh_keys_passphrase_protected
       controls:
           - nist_800_53:ia-5.2
-          - nist_800_53:ia-7
-          - nist_800_53:sc-12
-          - nist_800_53:sc-13
 
     - id: CR 1.10
       title: Authenticator feedback
       levels:
           - sl1
       status: pending
+      notes: |-
+          IA-6 supplies the authenticator-feedback crosswalk. Terminal password
+          non-echo, generic SSH failures, and masked graphical password input are
+          built-in behaviors.
       rules: []
       controls:
           - nist_800_53:ia-6
@@ -101,8 +187,14 @@ controls:
       title: Unsuccessful login attempts
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          AC-7 supplies PAM failure-count and lock/unlock settings; the interval
+          check adds the configurable window for counting failed attempts.
+          SSH MaxAuthTries configuration is shared through CR 2.8.
+      rules:
+          # Could extend NIST AC-7: check the failed-attempt counting interval.
+          - accounts_passwords_pam_faillock_interval
       controls:
           - nist_800_53:ac-7
 
@@ -110,8 +202,24 @@ controls:
       title: System use notification
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          GNOME, console, and SSH settings support configurable pre-login notices.
+          The console, network, and MOTD text checks use the selected CIS banner
+          presets; MOTD is a supplemental post-login notice.
+      rules:
+          # Keep the text checks consistent with existing CIS banner fixes.
+          # Could extend NIST AC-8: check the console pre-login notice.
+          - banner_etc_issue
+          - login_banner_text=cis_default
+          # Could extend NIST AC-8: check the network pre-login notice.
+          - banner_etc_issue_net
+          - remote_login_banner_text=cis_default
+          # Could extend NIST AC-8: display the network notice at SSH login.
+          - sshd_enable_warning_banner_net
+          # Supplemental post-login notice, not pre-authentication coverage.
+          - banner_etc_motd
+          - motd_banner_text=cis_default
       controls:
           - nist_800_53:ac-8
 
@@ -119,8 +227,18 @@ controls:
       title: Strength of symmetric key-based authentication
       levels:
           - sl2
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+          IEC 62443-4-2, 5.16 specifically concerns shared-secret authentication
+          and protection of symmetric keys. NIST SC-12(2) addresses symmetric-key
+          production, control, and distribution; common cryptographic algorithms
+          and key-management policy are assigned to CR 4.3.
+          The direct checks assess ownership, group ownership, and permissions
+          for the Chrony shared-key file.
+      rules:
+          # Could extend NIST SC-12(2): restrict access to shared NTP keys.
+          - file_owner_etc_chrony_keys
+          - file_groupowner_etc_chrony_keys
+          - file_permissions_etc_chrony_keys
       controls:
-          - nist_800_53:sc-12
-          - nist_800_53:sc-13
+          - nist_800_53:sc-12.2

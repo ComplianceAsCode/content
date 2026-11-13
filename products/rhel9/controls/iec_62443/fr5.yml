@@ -5,8 +5,23 @@ controls:
       title: Network segmentation
       levels:
           - sl1
-      status: automated
-      rules: []
+      status: partial
+      notes: |-
+          Default-drop and loopback zone/rich-rule checks support host network
+          segregation alongside the manual approved-flow review.
+          The default-zone check assesses persistent configuration. SC-7(5)
+          inherits the firewalld package and service checks from SC-7.
+      rules:
+          # Could extend NIST AC-4/SC-7: manually review approved ports/flows.
+          - configure_firewalld_ports
+          # Could extend NIST SC-7(5): manually review active default-deny zones.
+          - configured_firewalld_default_deny
+          # Could extend NIST SC-7(5): use drop as the persistent default zone.
+          # Active interface/source zones and exceptions need separate review.
+          - set_firewalld_default_zone
+          # Separate trusted loopback traffic using explicit firewalld zone/rich rules.
+          - firewalld_loopback_traffic_trusted
+          - firewalld_loopback_traffic_restricted
       controls:
-          - nist_800_53:sc-7
+          - nist_800_53:sc-7.5
           - nist_800_53:ac-4

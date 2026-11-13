@@ -11,3 +11,4 @@ description: |-
 
 selections:
     - iec_62443_rhel9:all:sl1
+    - '!socket_systemd-journal-remote_disabled'
