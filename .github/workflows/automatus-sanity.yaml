@@ -36,6 +36,9 @@ jobs:
     steps:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libxml2-utils xsltproc python3-jinja2 python3-yaml openscap-utils podman
+      - name: Install Ansible
+        # ansible-core 2.19+ fails on Python 3.15 targets (dataclasses._is_type); remove once fixed upstream
+        run: pip install 'ansible<12'
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Generate id_rsa key
