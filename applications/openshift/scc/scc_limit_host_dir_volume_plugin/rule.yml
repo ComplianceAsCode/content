@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'Limit Containers Ability to use the HostDir volume plugin'
 
 description: |-
-    Containers should be allowed to use the <tt>hostPath</tt> volume type unless
+    Containers should not be allowed to use the <tt>hostPath</tt> volume type unless
     necessary. To prevent containers from using the host filesystem
     the appropriate Security Context Constraints (SCCs) should set
     <tt>allowHostDirVolumePlugin</tt> to <tt>false</tt>.
