@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 
-{{% if product == "rhel9" %}}
+{{% if product in ["rhel9", "rhel10"] %}}
 readarray -t systemaccounts < <(awk -F: '($3 > 0 && $3 < 1000 && \
   $1 !~ /^(root|halt|sync|shutdown)$/ && \
   $7 !~ /(nologin|false)$/) \
