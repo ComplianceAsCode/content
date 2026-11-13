@@ -57,6 +57,7 @@ template:
     name: "lineinfile"
     vars:
         text: "enforce_for_root"
+        regex: '^[\\s]*enforce_for_root\\b'
         path: "{{{ pwquality_path }}}"
         filemode: '0644'
     backends:
