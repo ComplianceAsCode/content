@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_ubuntu
 # packages = pam
 # variables = var_password_pam_unix_rounds=65536
 
