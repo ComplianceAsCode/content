@@ -18,6 +18,12 @@ ocil_clause: 'the service is not enabled'
 ocil: |-
     {{{ ocil_service_enabled(service="ufw") }}}
 
+warnings:
+    - general: |-
+        Enabling ufw while connected over the network can lock you out of the
+        system. When the default incoming policy is deny, add a rule that allows
+        SSH, for example "ufw allow OpenSSH", before enabling ufw.
+
 platform: system_with_kernel and package[ufw]
 
 {{%- if 'ubuntu' in product %}}
