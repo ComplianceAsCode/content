@@ -29,24 +29,26 @@
   {{{ oval_config_file_exists_test(sshd_main_config_file, rule_id=rule_id) }}}
   {{{ oval_config_file_exists_object(sshd_main_config_file, rule_id=rule_id) }}}
   {{% endif %}}
-  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_first_parameter" version="2">
-    <ind:path operation="pattern match">/etc/(ssh|ssh/sshd_config.d)</ind:path>
-    <ind:filename operation="pattern match">(sshd_config|.*\.conf)$</ind:filename>
-    <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+(\d+):\d+:\d+\s*$</ind:pattern>
+  {{{ sshd_oval_included_config_dir_variable(rule_id) | indent(2) }}}
+{{%- for position, value_regex in [("first", "(\\d+):\\d+:\\d+"), ("second", "\\d+:(\\d+):\\d+"), ("third", "\\d+:\\d+:(\\d+)")] %}}
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_{{{ position }}}_parameter" version="3">
+    <set>
+      <object_reference>obj_sshd_config_maxstartups_{{{ position }}}_parameter_main_config</object_reference>
+      <object_reference>obj_sshd_config_maxstartups_{{{ position }}}_parameter_config_dir</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_{{{ position }}}_parameter_main_config" version="1">
+    <ind:filepath>{{{ sshd_main_config_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+{{{ value_regex }}}\s*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_second_parameter" version="2">
-    <ind:path operation="pattern match">/etc/(ssh|ssh/sshd_config.d)</ind:path>
-    <ind:filename operation="pattern match">(sshd_config|.*\.conf)$</ind:filename>
-    <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+\d+:(\d+):\d+\s*$</ind:pattern>
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_{{{ position }}}_parameter_config_dir" version="1">
+    <ind:path var_ref="var_{{{ rule_id }}}_sshd_included_config_dir" var_check="at least one" />
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+{{{ value_regex }}}\s*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_third_parameter" version="2">
-    <ind:path operation="pattern match">/etc/(ssh|ssh/sshd_config.d)</ind:path>
-    <ind:filename operation="pattern match">(sshd_config|.*\.conf)$</ind:filename>
-    <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+\d+:\d+:(\d+)\s*$</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
+{{%- endfor %}}
 
   <external_variable id="var_sshd_set_maxstartups" version="1"
     datatype="string" comment="Expected value for MaxStartups parameter"/>
