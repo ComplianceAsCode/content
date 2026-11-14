@@ -17,6 +17,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_RSYSLOG_CAFILE,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         DEFAULT_SSH_RUNTIME_CHECK,
+                        DEFAULT_SSHD_SERVICE_NAME,
                         DEFAULT_SSHD_MAIN_CONFIG_FILE,
                         DEFAULT_SSHD_CONFIG_DIR,
                         DEFAULT_SSHD_HARDENING_CONFIG_BASENAME,
@@ -118,6 +119,9 @@ def _get_implied_properties(existing_properties):
 
     if "sshd_runtime_check" not in existing_properties:
         result["sshd_runtime_check"] = DEFAULT_SSH_RUNTIME_CHECK
+
+    if "sshd_service_name" not in existing_properties:
+        result["sshd_service_name"] = DEFAULT_SSHD_SERVICE_NAME
 
     if "sshd_main_config_file" not in existing_properties:
         result["sshd_main_config_file"] = DEFAULT_SSHD_MAIN_CONFIG_FILE
