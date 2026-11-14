@@ -337,11 +337,19 @@ macro(ssg_build_remediations PRODUCT)
             )
         endif()
         if(ANSIBLE_CHECKS)
+            # RHEL is held to the strict config; other products still carry
+            # legacy violations that are waived in the legacy config.
+            list(FIND ANSIBLE_LINT_STRICT_PRODUCTS "${PRODUCT}" _ANSIBLE_LINT_STRICT_INDEX)
+            if(_ANSIBLE_LINT_STRICT_INDEX EQUAL -1)
+                set(_ANSIBLE_LINT_CONFIG "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config_legacy.yml")
+            else()
+                set(_ANSIBLE_LINT_CONFIG "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml")
+            endif()
             if(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
                 if(ANSIBLE_LINT_EXECUTABLE)
                     add_test(
                         NAME "ansible-playbook-per-rule-ansible-lint-check-${PRODUCT}"
-                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/all" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
+                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/all" "${_ANSIBLE_LINT_CONFIG}"
                     )
                 endif()
                 if(YAMLLINT_EXECUTABLE)
@@ -355,7 +363,7 @@ macro(ssg_build_remediations PRODUCT)
                 if(ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
                     add_test(
                         NAME "ansible-playbook-per-profile-ansible-lint-check-${PRODUCT}"
-                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml" "${PRODUCT}"
+                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${_ANSIBLE_LINT_CONFIG}" "${PRODUCT}"
                     )
                 endif()
                 if(YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")

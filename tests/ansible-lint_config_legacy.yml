@@ -1,0 +1,34 @@
+# Ansible-lint configuration for products other than RHEL.
+#
+# RHEL is linted with the stricter tests/ansible-lint_config.yml because its
+# remediations are shipped as the redhat.rhel_hardening_roles collection and
+# gated on the Automation Hub certification rules. Every other product still
+# carries the legacy violations waived below; as their remediations are
+# updated, the corresponding entries should be removed and the product moved
+# to ANSIBLE_LINT_STRICT_PRODUCTS.
+#
+# Offline mode disables installation of requirements.yml and schema refreshing
+# We can run parallel and runs can take long time, so avoid timeouts and failed
+# tests.
+offline: true
+
+skip_list:
+  - '204' # Lines should be no longer than 160 chars
+  - no-tabs # Rule permissions_local_var_log uses explicit \t character
+  - yaml # There is no use of using ansible-lint to run yamllint as yamllint has own test
+  - fqcn[action-core] # Most playbooks use old format currently, so skip for now.
+  - fqcn[action] # ditto
+  - jinja[spacing] # Too numerous now
+  - key-order[task] # Too numerous now
+  - no-free-form # Too numerous now
+  - name[template] # Style choice to skip this rule
+  # Legacy waivers, not yet addressed outside RHEL:
+  - command-instead-of-module # Raw command tasks are rewritten to the ssg_hardening module during Ansible collection assembly
+  - no-changed-when # Commands should not change things if nothing needs doing (legacy 301)
+  - package-latest # Package installs should not use latest (legacy 403)
+  - no-handler # Tasks that run when changed should likely be handlers (legacy 503)
+  - risky-file-permissions # Almost all rules do not set perms
+  - risky-shell-pipe # Shells that use pipes should set the pipefail option
+
+kinds:
+  - playbook: "**/*.yml"

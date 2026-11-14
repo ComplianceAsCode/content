@@ -27,13 +27,13 @@
   ansible.builtin.getent:
     database: passwd
     key: {{{ own }}}
-  ignore_errors: yes
+  failed_when: false
 {{%- else %}}
 - name: Check that the {{{ own }}} user is defined
   ansible.builtin.getent:
     database: passwd
     key: {{{ own }}}
-  ignore_errors: yes
+  failed_when: false
   when: {{{ _RULE_ID }}}_newown is undefined
 {{%- endif %}}
 - name: Set the {{{ _RULE_ID }}}_newown variable if {{{ own }}} found

@@ -376,6 +376,13 @@ message(STATUS " ")
 # default. Right now these checks are not performed and need to be enabled by adding
 # -DANSIBLE_CHECKS=ON to cmake before running ctest.
 option(ANSIBLE_CHECKS "Set to ON to enable ansible-lint and yamllint checks" OFF)
+
+# Products whose generated Ansible playbooks are linted with the strict
+# tests/ansible-lint_config.yml. Every other product uses
+# tests/ansible-lint_config_legacy.yml, which retains legacy waivers for rules
+# that have not been addressed outside RHEL yet.
+set(ANSIBLE_LINT_STRICT_PRODUCTS "rhel8;rhel9;rhel10" CACHE STRING
+    "Semicolon-separated products linted with the strict ansible-lint config")
 enable_testing()
 
 add_subdirectory("tests")
