@@ -1,21 +1,25 @@
 #!/usr/bin/env python3
 """
-Export ComplianceAsCode NIST 800-53 controls to Gemara format.
+Export ComplianceAsCode content to Gemara format.
 
-Reads product-specific NIST 800-53 control files and produces per product:
-  - control_catalog.yaml  (ControlCatalog: NIST controls → XCCDF rule IDs)
-  - by_group/nist-800-53-rev5-{product}-{family}-catalog.yaml
-                           (same ControlCatalog, split one file per NIST
-                           family — mirrors complytime-policies' layout)
-  - rules_mapping.yaml    (MappingDocument: traceability between layers)
-  - products/{product}/profiles/nist_800_53.profile  (XCCDF tailoring base)
+Two modes (--mode):
 
-Also produces a single platform-independent artifact:
-  - guidance_catalog.yaml (GuidanceCatalog: abstract NIST 800-53 standard text)
+* control-file (default): build a ControlCatalog + MappingDocument (+ guidance)
+  from ONE framework control file. Output per product under build/gemara/:
+    - control_catalog.yaml, by_group/<key>-<product>-<group>-catalog.yaml
+    - rules_mapping.yaml
+    - guidance_catalog.yaml (NIST: shared from OSCAL; others: per product)
+  Use for a framework's canonical catalog + mapping.
+
+* profiles: translate EVERY shipped profile of a product into a Gemara Policy
+  (+ Catalog, reused across profiles) driven by the build-resolved profiles at
+  build/<product>/profiles/<name>.profile. Output is the complytime-policies
+  layout under build/gemara-profiles/. Captures profile unselects + variable
+  overrides. Requires a build first (./build_product <product>).
 
 Usage:
-    python3 utils/nist_sync/export_to_gemara.py --products rhel9 --validate
-    python3 utils/nist_sync/export_to_gemara.py --products rhel8,rhel9,rhel10
+    python3 utils/nist_sync/export_to_gemara.py --framework nist --products rhel9 --validate
+    python3 utils/nist_sync/export_to_gemara.py --mode profiles --products rhel9 --validate --verbose
 """
 
 import argparse
@@ -47,17 +51,47 @@ _REPO_ROOT = _SCRIPT_DIR.parent.parent
 
 sys.path.insert(0, str(_SCRIPT_DIR))
 from gemara.catalog import GemaraCatalogBuilder
-from gemara.guidance import GemaraGuidanceCatalogBuilder
+from gemara.frameworks import (
+    Framework,
+    framework_for_control_file,
+    get_framework,
+    known_frameworks,
+    product_display,
+)
+from gemara.guidance import (
+    GemaraGuidanceCatalogBuilder,
+    GenericGuidanceCatalogBuilder,
+)
 from gemara.mapping import GemaraMappingBuilder
 from gemara.policy import product_full_name
-from gemara.schema import validate_catalog, validate_guidance, validate_mapping
+from gemara.profiles import (
+    AllRulesCatalogBuilder,
+    generate_profile_policy,
+    pair_vars_to_rules,
+    read_resolved_profile,
+    sanitize_id,
+)
+from gemara.schema import (
+    validate_catalog,
+    validate_guidance,
+    validate_mapping,
+    validate_policy,
+)
 from gemara.yaml_output import configure_yaml
 
 
 DEFAULT_PRODUCTS = ["rhel8", "rhel9", "rhel10", "fedora"]
 DEFAULT_OUTPUT_DIR = _REPO_ROOT / "build" / "gemara"
+DEFAULT_PROFILE_OUTPUT_DIR = _REPO_ROOT / "build" / "gemara-profiles"
+DEFAULT_BUILD_DIR = _REPO_ROOT / "build"
 DEFAULT_OSCAL_CATALOG = _SCRIPT_DIR / "data" / "nist_800_53_rev5_catalog.json"
 DEFAULT_DATA_DIR = _SCRIPT_DIR / "data"
+
+# Profiles that are not real compliance baselines (profiles mode skips these):
+#   - 'default' only exists to keep rules in the data stream.
+#   - 'nist_800_53' is a control catalog / mapping target for derived frameworks
+#     (CUI 800-171, 800-172, ...), not a shipped scan profile (testing-only).
+DEFAULT_PROFILE_SKIP = {"default", "nist_800_53"}
 
 
 def _write_xccdf_profile(product: str, repo_root: Path, verbose: bool) -> None:
@@ -99,6 +133,43 @@ def parse_args() -> argparse.Namespace:
         epilog=__doc__,
     )
     parser.add_argument(
+        "--mode",
+        choices=["control-file", "profiles"],
+        default="control-file",
+        help="control-file: one framework control file -> catalog+mapping (+guidance). "
+             "profiles: every shipped profile -> Policy(+Catalog) from resolved "
+             "build profiles. (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--framework",
+        default="nist",
+        choices=known_frameworks(),
+        help="[control-file mode] Compliance framework to export (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--control",
+        default=None,
+        help="[control-file mode] Control-file stem to read (e.g. 'stig_rhel9'). "
+             "Default: inferred from --framework and product.",
+    )
+    parser.add_argument(
+        "--profiles",
+        default=None,
+        help="[profiles mode] Comma-separated subset of profiles (default: all)",
+    )
+    parser.add_argument(
+        "--skip",
+        default="",
+        help="[profiles mode] Extra comma-separated profiles to skip "
+             "(always skipped: default, nist_800_53)",
+    )
+    parser.add_argument(
+        "--build-dir",
+        type=Path,
+        default=DEFAULT_BUILD_DIR,
+        help="[profiles mode] Build dir with resolved profiles (default: %(default)s)",
+    )
+    parser.add_argument(
         "--products",
         default=",".join(DEFAULT_PRODUCTS),
         help="Comma-separated product list (default: %(default)s)",
@@ -106,8 +177,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=DEFAULT_OUTPUT_DIR,
-        help="Output directory (default: %(default)s)",
+        default=None,
+        help="Output directory (default: build/gemara for control-file mode, "
+             "build/gemara-profiles for profiles mode)",
     )
     parser.add_argument(
         "--repo-root",
@@ -172,18 +244,70 @@ def load_oscal_catalog(path: Optional[Path]) -> Optional[Dict[str, Any]]:
         return None
 
 
-def load_policy(product: str, repo_root: Path) -> ssg.controls.Policy:
-    """
-    Load the NIST 800-53 Policy for a product without requiring a build.
+def control_stem_candidates(framework: Framework, product: str) -> List[str]:
+    """Return candidate control-file stems to look up for a framework/product.
 
-    The NIST control files are plain YAML (no Jinja2), so env_yaml=None is safe.
+    E.g. NIST -> ['nist_800_53']; STIG+rhel9 -> ['stig_rhel9', 'stigid_rhel9',
+    'stig']; so the common CaC naming conventions resolve without an explicit
+    --control flag.
     """
-    policy_file = repo_root / "products" / product / "controls" / "nist_800_53.yml"
-    if not policy_file.exists():
+    if framework.reference_type == "nist":
+        return ["nist_800_53"]
+    return [
+        f"{framework.key}_{product}",
+        f"{framework.reference_type}_{product}",
+        framework.key,
+        framework.reference_type,
+    ]
+
+
+def resolve_control_file(
+    product: str, repo_root: Path, stems: List[str]
+) -> Path:
+    """Find a control file, trying product-scoped then top-level controls/."""
+    tried: List[Path] = []
+    for stem in stems:
+        for candidate in (
+            repo_root / "products" / product / "controls" / f"{stem}.yml",
+            repo_root / "controls" / f"{stem}.yml",
+        ):
+            tried.append(candidate)
+            if candidate.exists():
+                return candidate
+    tried_str = "\n  ".join(str(p) for p in tried)
+    raise FileNotFoundError(
+        f"No control file found for {product}. Tried:\n  {tried_str}\n"
+        "Pass --control <stem> to point at a specific control file."
+    )
+
+
+def read_control_version(control_file: Path) -> Optional[str]:
+    """Return the top-level ``version:`` from a control file, if present.
+
+    ssg.controls.Policy does not expose the version, so read the raw YAML.
+    Used to label non-NIST artifacts with the benchmark version (e.g. V2R9).
+    """
+    try:
+        data = ssg.yaml.open_raw(str(control_file))
+    except Exception:
+        return None
+    version = data.get("version") if isinstance(data, dict) else None
+    return str(version) if version else None
+
+
+def load_policy(
+    product: str, repo_root: Path, control_file: Path
+) -> ssg.controls.Policy:
+    """
+    Load a CaC Policy for a product without requiring a build.
+
+    The control files are plain YAML (no Jinja2), so env_yaml=None is safe.
+    """
+    if not control_file.exists():
         raise FileNotFoundError(
-            f"Policy file not found for {product}: {policy_file}"
+            f"Policy file not found for {product}: {control_file}"
         )
-    policy = ssg.controls.Policy(str(policy_file), env_yaml=None)
+    policy = ssg.controls.Policy(str(control_file), env_yaml=None)
     policy.load()
     return policy
 
@@ -289,16 +413,29 @@ def export_product(
     validate: bool,
     gemara_schema: Optional[Path],
     verbose: bool,
+    framework: Framework,
+    control: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Export one product. Returns stats dict."""
     if verbose:
         print(f"  Loading policy for {product}...")
 
-    policy = load_policy(product, repo_root)
+    stems = [control] if control else control_stem_candidates(framework, product)
+    control_file = resolve_control_file(product, repo_root, stems)
+    if verbose:
+        print(f"  Using control file: {control_file}")
+
+    policy = load_policy(product, repo_root, control_file)
     total_controls = len(policy.controls)
 
+    # NIST keeps its fixed "Revision 5" label; other frameworks inherit the
+    # control file's version (e.g. STIG V2R9).
+    version = None if framework.reference_type == "nist" else read_control_version(control_file)
+
     # Build ControlCatalog
-    builder = GemaraCatalogBuilder(product, policy, oscal_catalog)
+    builder = GemaraCatalogBuilder(
+        product, policy, oscal_catalog, framework=framework, version=version
+    )
     catalog = builder.build()
     catalog_id = catalog["metadata"]["id"]
 
@@ -320,16 +457,41 @@ def export_product(
 
     # Write one ControlCatalog per NIST family (AC, AU, SI, ...) alongside the
     # combined one, matching complytime-policies' split-by-group layout.
+    # Clean by_group first so a previous framework's split catalogs (e.g. a
+    # prior stig export) don't linger and get staged into this framework's tree.
     by_group_dir = product_dir / "by_group"
+    if by_group_dir.exists():
+        shutil.rmtree(by_group_dir)
     by_group_dir.mkdir(parents=True, exist_ok=True)
     for fam_id, fam_catalog in builder.build_by_group().items():
-        fam_path = by_group_dir / f"nist-800-53-rev5-{product}-{fam_id}-catalog.yaml"
+        fam_path = by_group_dir / f"{framework.key}-{product}-{fam_id}-catalog.yaml"
         write_yaml(fam_catalog, fam_path)
     if verbose:
-        print(f"  Wrote {by_group_dir}/ ({len(list(by_group_dir.glob('*.yaml')))} family catalogs)")
+        print(f"  Wrote {by_group_dir}/ ({len(list(by_group_dir.glob('*.yaml')))} group catalogs)")
 
-    # Generate the XCCDF tailoring base profile (not committed — see .gitignore)
-    _write_xccdf_profile(product, repo_root, verbose)
+    # NIST ships an auto-generated nist_800_53 profile as the XCCDF tailoring
+    # base (it may not exist yet). Other frameworks (stig, cis, anssi, …) have
+    # real hand-maintained profiles already — never overwrite those.
+    if framework.reference_type == "nist":
+        _write_xccdf_profile(product, repo_root, verbose)
+
+    # Non-NIST frameworks have no OSCAL guidance source, so synthesize a
+    # per-product GuidanceCatalog from the control file.
+    if framework.reference_type != "nist":
+        guidance_id = f"{framework.key}-{product}-guidance"
+        guidance = GenericGuidanceCatalogBuilder(
+            policy, framework, guidance_id=guidance_id, version=version
+        ).build()
+        if validate:
+            errors = validate_guidance(guidance)
+            if errors:
+                sys.stderr.write(f"  [WARN] GuidanceCatalog validation errors for {product}:\n")
+                for e in errors:
+                    sys.stderr.write(f"    - {e}\n")
+        guidance_path = product_dir / "guidance_catalog.yaml"
+        write_yaml(guidance, guidance_path)
+        if verbose:
+            print(f"  Wrote {guidance_path}")
 
     if validate and gemara_schema:
         passed, output = cue_validate(gemara_schema, "#ControlCatalog", catalog_path)
@@ -360,7 +522,9 @@ def export_product(
         return stats
 
     # Build MappingDocument
-    mapping_builder = GemaraMappingBuilder(product, catalog_id, policy)
+    mapping_builder = GemaraMappingBuilder(
+        product, catalog_id, policy, framework=framework, version=version
+    )
     mapping = mapping_builder.build()
 
     if validate:
@@ -390,6 +554,196 @@ def export_product(
     return stats
 
 
+# ---------------------------------------------------------------------------
+# profiles mode — translate every shipped profile into a Gemara Policy
+# ---------------------------------------------------------------------------
+
+def build_framework_catalog(product, repo_root, stem, validate):
+    """Build a ControlCatalog from a control file. Returns (catalog, framework) or None."""
+    try:
+        control_file = resolve_control_file(product, repo_root, [stem])
+    except FileNotFoundError:
+        return None
+    try:
+        policy = load_policy(product, repo_root, control_file)
+        raw = ssg.yaml.open_raw(str(control_file))
+        reference_type = raw.get("reference_type", "") if isinstance(raw, dict) else ""
+        title = raw.get("title", "") if isinstance(raw, dict) else ""
+        version = read_control_version(control_file)
+        framework = framework_for_control_file(stem, product, reference_type, title)
+        catalog = GemaraCatalogBuilder(
+            product, policy, framework=framework, version=version
+        ).build()
+        if validate:
+            errs = validate_catalog(catalog)
+            if errs:
+                sys.stderr.write(f"  [WARN] catalog {stem} validation:\n")
+                for e in errs:
+                    sys.stderr.write(f"    - {e}\n")
+        return catalog, framework
+    except Exception as exc:  # control file unparseable -> caller falls back to generic
+        sys.stderr.write(f"  [WARN] could not build catalog for {stem}: {exc}\n")
+        return None
+
+
+def all_rule_ids_from_datastream(product: str, repo_root: Path) -> List[str]:
+    """Extract the product's rule universe from the built data stream (if present)."""
+    import re
+    ds = repo_root / "build" / f"ssg-{product}-ds.xml"
+    if not ds.exists():
+        return []
+    text = ds.read_text(encoding="utf-8", errors="ignore")
+    ids = re.findall(r'id="xccdf_org\.ssgproject\.content_rule_([^"]+)"', text)
+    return list(dict.fromkeys(ids))
+
+
+def export_profiles_for_product(
+    product: str,
+    repo_root: Path,
+    build_dir: Path,
+    output_dir: Path,
+    profiles_want: Optional[set],
+    skip: set,
+    validate: bool,
+    verbose: bool,
+) -> Dict[str, int]:
+    """Translate every shipped profile of a product into the complytime-policies layout."""
+    prof_dir = build_dir / product / "profiles"
+    if not prof_dir.is_dir():
+        raise FileNotFoundError(
+            f"No resolved profiles at {prof_dir}. Build first: ./build_product {product}"
+        )
+
+    full_name = product_full_name(product)
+    catalogs_dir = output_dir / "governance" / "catalogs"
+    policies_dir = output_dir / "governance" / "policies"
+    bundles_dir = output_dir / "bundles"
+    for d in (catalogs_dir, policies_dir, bundles_dir):
+        d.mkdir(parents=True, exist_ok=True)
+
+    catalog_cache: Dict[str, Any] = {}   # control-file stem -> (catalog, framework) | None
+    written_catalogs: set = set()
+    all_rules_catalog = None
+    stats = {"profiles": 0, "catalogs": 0, "skipped": 0}
+
+    for prof_path in sorted(prof_dir.glob("*.profile")):
+        resolved = read_resolved_profile(prof_path)
+        if resolved.name in skip:
+            stats["skipped"] += 1
+            continue
+        if profiles_want and resolved.name not in profiles_want:
+            continue
+        if resolved.scanner_type or not resolved.rules:  # CEL / empty
+            stats["skipped"] += 1
+            continue
+
+        # --- choose catalog -------------------------------------------------
+        catalog = framework = catalog_id = None
+        stem = resolved.policies[0] if resolved.policies else None
+        if stem:
+            if stem not in catalog_cache:
+                catalog_cache[stem] = build_framework_catalog(product, repo_root, stem, validate)
+            if catalog_cache[stem]:
+                catalog, framework = catalog_cache[stem]
+                catalog_id = catalog["metadata"]["id"]
+
+        if catalog is None:
+            if all_rules_catalog is None:
+                rule_ids = all_rule_ids_from_datastream(product, repo_root) or resolved.rules
+                all_rules_catalog = AllRulesCatalogBuilder(product, rule_ids).build()
+            catalog = all_rules_catalog
+            catalog_id = catalog["metadata"]["id"]
+            framework = Framework(
+                key=sanitize_id(product) + "-rules", reference_type="rule",
+                short_name=f"{product_display(product)} Rules",
+                long_name=f"{product_display(product)} Rules",
+            )
+
+        if catalog_id not in written_catalogs:
+            write_yaml(catalog, catalogs_dir / f"{catalog_id}-catalog.yaml")
+            written_catalogs.add(catalog_id)
+            stats["catalogs"] += 1
+
+        # --- build + write policy -------------------------------------------
+        # Label the mapping-reference with the *catalog's* version, not the
+        # resolved profile's, so the Policy and the catalog it imports never
+        # disagree (a rebuilt control file can be newer than the resolved
+        # profile's metadata.version).
+        rules_with_params = pair_vars_to_rules(resolved.rules, resolved.variables)
+        policy = generate_profile_policy(
+            product, full_name, resolved, catalog_id,
+            catalog_url=f"file://../catalogs/{catalog_id}-catalog.yaml",
+            framework=framework, rules_with_params=rules_with_params,
+            version=catalog["metadata"].get("version"),
+        )
+        if validate:
+            errs = validate_policy(policy)
+            if errs:
+                sys.stderr.write(f"  [WARN] policy {resolved.name} validation:\n")
+                for e in errs:
+                    sys.stderr.write(f"    - {e}\n")
+
+        bundle_stem = f"{sanitize_id(product)}-{sanitize_id(resolved.name)}"
+        write_yaml(policy, policies_dir / f"{bundle_stem}-policy.yaml")
+        write_yaml(
+            {"layers": [
+                f"governance/catalogs/{catalog_id}-catalog.yaml",
+                f"governance/policies/{bundle_stem}-policy.yaml",
+            ]},
+            bundles_dir / f"{bundle_stem}.yaml",
+        )
+        stats["profiles"] += 1
+        if verbose:
+            n_params = sum(1 for _, p in rules_with_params if p)
+            print(f"    {resolved.name:22} -> catalog={catalog_id:24} "
+                  f"rules={len(resolved.rules)} params_on={n_params}")
+
+    return stats
+
+
+def run_profiles_mode(args: argparse.Namespace, products: List[str]) -> None:
+    """profiles mode entrypoint."""
+    output_dir = args.output_dir or DEFAULT_PROFILE_OUTPUT_DIR
+    skip = {s.strip() for s in args.skip.split(",") if s.strip()} | DEFAULT_PROFILE_SKIP
+    want = {s.strip() for s in args.profiles.split(",")} if args.profiles else None
+
+    # Clean our generated subtrees so a changed profile set (e.g. a now-skipped
+    # profile) cannot leave stale policies/catalogs/bundles behind. Only our own
+    # subdirs are removed, never the whole --output-dir.
+    if not want:
+        for sub in ("governance", "bundles"):
+            d = output_dir / sub
+            if d.exists():
+                shutil.rmtree(d)
+
+    print("Exporting profiles to Gemara")
+    print(f"  Products:   {', '.join(products)}")
+    print(f"  Output dir: {output_dir}")
+
+    failed = []
+    for product in products:
+        print(f"\n[{product}]")
+        try:
+            s = export_profiles_for_product(
+                product, args.repo_root, args.build_dir, output_dir,
+                want, skip, args.validate, args.verbose,
+            )
+            print(f"  profiles={s['profiles']}  catalogs={s['catalogs']}  skipped={s['skipped']}")
+        except FileNotFoundError as exc:
+            sys.stderr.write(f"  [SKIP] {exc}\n")
+            failed.append(product)
+        except Exception as exc:
+            sys.stderr.write(f"  [ERROR] {product}: {exc}\n")
+            if args.verbose:
+                import traceback
+                traceback.print_exc()
+            failed.append(product)
+
+    if failed:
+        sys.stderr.write(f"\nFailed/skipped products: {', '.join(failed)}\n")
+        sys.exit(1)
+
+
 def write_metadata(
     output_dir: Path,
     all_stats: List[Dict[str, Any]],
@@ -415,19 +769,31 @@ def write_metadata(
 def main() -> None:
     args = parse_args()
     products = [p.strip() for p in args.products.split(",") if p.strip()]
-    output_dir = args.output_dir
+
+    if args.mode == "profiles":
+        run_profiles_mode(args, products)
+        return
+
+    output_dir = args.output_dir or DEFAULT_OUTPUT_DIR
     include_mapping = not args.no_mapping
     include_guidance = not args.no_guidance
+    framework = get_framework(args.framework)
+    is_nist = framework.reference_type == "nist"
 
-    print("Exporting NIST 800-53 to Gemara format")
+    print(f"Exporting {framework.short_name} to Gemara format")
+    print(f"  Framework:  {args.framework} ({framework.key})")
     print(f"  Products:   {', '.join(products)}")
     print(f"  Output dir: {output_dir}")
 
-    oscal_catalog = load_oscal_catalog(args.oscal_catalog)
-    if oscal_catalog:
-        print(f"  OSCAL:      {args.oscal_catalog} (loaded)")
-    else:
-        print("  OSCAL:      not found — using control titles as objectives")
+    # OSCAL objective enrichment and the shared GuidanceCatalog are NIST-only
+    # (there is no OSCAL source for other frameworks — guidance is synthesized
+    # per product inside export_product instead).
+    oscal_catalog = load_oscal_catalog(args.oscal_catalog) if is_nist else None
+    if is_nist:
+        if oscal_catalog:
+            print(f"  OSCAL:      {args.oscal_catalog} (loaded)")
+        else:
+            print("  OSCAL:      not found — using control titles as objectives")
 
     gemara_schema = args.gemara_schema
     if args.validate:
@@ -459,6 +825,8 @@ def main() -> None:
                 args.validate,
                 gemara_schema,
                 args.verbose,
+                framework,
+                args.control,
             )
             all_stats.append(stats)
             print(
@@ -476,15 +844,21 @@ def main() -> None:
                 import traceback
                 traceback.print_exc()
 
-    # GuidanceCatalog — generated once, platform-independent
+    # Shared GuidanceCatalog — NIST only (generated once, platform-independent,
+    # from OSCAL). Non-NIST frameworks emit a per-product guidance_catalog.yaml
+    # inside export_product instead.
     guidance_stats = None
-    if include_guidance and not oscal_catalog:
+    if include_guidance and not is_nist:
+        print("\n[guidance_catalog]")
+        print("  Per-product guidance_catalog.yaml written by each product above "
+              "(synthesized from the control file).")
+    elif include_guidance and is_nist and not oscal_catalog:
         print("\n[guidance_catalog]")
         print("  [SKIP] OSCAL catalog not available — guidance_catalog.yaml not generated")
         print("         To generate it, download the OSCAL data first:")
         print("           python3 utils/nist_sync/download_oscal.py")
         print(f"         Expected at: {args.oscal_catalog}")
-    elif include_guidance and oscal_catalog:
+    elif include_guidance and is_nist and oscal_catalog:
         print("\n[guidance_catalog]")
         try:
             guidance_stats = export_guidance(

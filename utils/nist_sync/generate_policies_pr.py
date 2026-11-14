@@ -49,11 +49,10 @@ _SCRIPT_DIR = Path(__file__).parent
 _REPO_ROOT = _SCRIPT_DIR.parent.parent
 
 sys.path.insert(0, str(_SCRIPT_DIR))
+from gemara.frameworks import Framework, get_framework, known_frameworks  # noqa: E402
 from gemara.policy import extract_rules_from_catalog, generate_policy  # noqa: E402
 from gemara.schema import validate_policy  # noqa: E402
 from gemara.yaml_output import configure_yaml  # noqa: E402
-
-_GUIDANCE_ID = "nist-800-53-rev5-guidance"
 
 
 def _yaml() -> YAML:
@@ -73,36 +72,77 @@ def dump_yaml(data: Any, path: Path) -> None:
     path.write_text(buf.getvalue(), encoding="utf-8")
 
 
-def policy_id_for(product: str) -> str:
-    return f"nist-800-53-rev5-{product}"
+def policy_id_for(framework: Framework, product: str) -> str:
+    return framework.catalog_id(product)
 
 
-def stage_product(product: str, gemara_dir: Path, output_dir: Path, has_guidance: bool) -> bool:
-    """Stage one product's artifacts into complytime-policies layout."""
+def stage_product(
+    product: str,
+    gemara_dir: Path,
+    output_dir: Path,
+    framework: Framework,
+    has_shared_guidance: bool,
+) -> bool:
+    """Stage one product's artifacts into complytime-policies layout.
+
+    Guidance handling depends on the framework:
+      * NIST — a single shared GuidanceCatalog (staged once by stage_guidance).
+      * other — a per-product GuidanceCatalog synthesized from the control file
+        and emitted next to the catalog by export_to_gemara.py.
+    """
     catalog_path = gemara_dir / product / "control_catalog.yaml"
     if not catalog_path.exists():
         sys.stderr.write(
             f"ERROR: {catalog_path} not found.\n"
-            f"Run first: python3 utils/nist_sync/export_to_gemara.py --products {product}\n"
+            f"Run first: python3 utils/nist_sync/export_to_gemara.py "
+            f"--framework {_fw_cli_name(framework)} --products {product}\n"
         )
         return False
 
-    pid = policy_id_for(product)
+    pid = policy_id_for(framework, product)
     catalog = load_yaml(catalog_path)
     catalog_id = catalog["metadata"]["id"]
+    version = catalog["metadata"].get("version") or None
     rules_with_controls = extract_rules_from_catalog(catalog, product=product)
 
     print(f"\n  [{product.upper()}] {len(rules_with_controls)} rules extracted from catalog")
 
-    guidance_id = _GUIDANCE_ID if has_guidance else None
+    catalogs_dir = output_dir / "governance" / "catalogs"
+    policies_dir = output_dir / "governance" / "policies"
+    guidance_dir = output_dir / "governance" / "guidance"
+    bundles_dir = output_dir / "bundles"
+    for d in (catalogs_dir, policies_dir, bundles_dir):
+        d.mkdir(parents=True, exist_ok=True)
+
+    # Resolve this product's guidance layer.
+    guidance_id = None
+    guidance_url = None
+    guidance_layer = None
+    if framework.reference_type == "nist":
+        if has_shared_guidance:
+            guidance_id = framework.guidance_id()
+            guidance_url = f"file://../guidance/{guidance_id}.yaml"
+            guidance_layer = f"governance/guidance/{guidance_id}.yaml"
+    else:
+        per_product_guidance = gemara_dir / product / "guidance_catalog.yaml"
+        if per_product_guidance.exists():
+            guidance_id = f"{framework.key}-{product}-guidance"
+            guidance_dir.mkdir(parents=True, exist_ok=True)
+            guidance_dest = guidance_dir / f"{guidance_id}.yaml"
+            shutil.copy2(per_product_guidance, guidance_dest)
+            guidance_url = f"file://../guidance/{guidance_id}.yaml"
+            guidance_layer = f"governance/guidance/{guidance_id}.yaml"
+            print(f"  [{product.upper()}] Guidance: {guidance_dest.relative_to(output_dir)}")
+
     catalog_url = f"file://../catalogs/{pid}-catalog.yaml"
-    guidance_url = f"file://../guidance/{_GUIDANCE_ID}.yaml" if has_guidance else None
 
     policy = generate_policy(
         product, catalog_id, rules_with_controls,
         guidance_id=guidance_id,
         catalog_url=catalog_url,
         guidance_url=guidance_url,
+        framework=framework,
+        version=version,
     )
 
     errors = validate_policy(policy)
@@ -112,21 +152,13 @@ def stage_product(product: str, gemara_dir: Path, output_dir: Path, has_guidance
             sys.stderr.write(f"  - {e}\n")
         return False
 
-    catalogs_dir = output_dir / "governance" / "catalogs"
-    policies_dir = output_dir / "governance" / "policies"
-    bundles_dir = output_dir / "bundles"
-
-    catalogs_dir.mkdir(parents=True, exist_ok=True)
-    policies_dir.mkdir(parents=True, exist_ok=True)
-    bundles_dir.mkdir(parents=True, exist_ok=True)
-
     catalog_dest = catalogs_dir / f"{pid}-catalog.yaml"
     shutil.copy2(catalog_path, catalog_dest)
     print(f"  [{product.upper()}] Catalog:  {catalog_dest.relative_to(output_dir)}")
 
     by_group_dir = gemara_dir / product / "by_group"
     if by_group_dir.is_dir():
-        split_dir = catalogs_dir / "nist-800-53" / product / f"nist-800-53-{product}"
+        split_dir = catalogs_dir / framework.key / product / f"{framework.key}-{product}"
         split_dir.mkdir(parents=True, exist_ok=True)
         fam_files = sorted(by_group_dir.glob("*.yaml"))
         for fam_file in fam_files:
@@ -138,8 +170,8 @@ def stage_product(product: str, gemara_dir: Path, output_dir: Path, has_guidance
     print(f"  [{product.upper()}] Policy:   {policy_dest.relative_to(output_dir)}")
 
     layers = []
-    if has_guidance:
-        layers.append(f"governance/guidance/{_GUIDANCE_ID}.yaml")
+    if guidance_layer:
+        layers.append(guidance_layer)
     layers.append(f"governance/catalogs/{pid}-catalog.yaml")
     layers.append(f"governance/policies/{pid}-policy.yaml")
 
@@ -151,8 +183,14 @@ def stage_product(product: str, gemara_dir: Path, output_dir: Path, has_guidance
     return True
 
 
-def stage_guidance(gemara_dir: Path, output_dir: Path) -> bool:
-    """Copy the shared GuidanceCatalog if it exists."""
+def stage_guidance(gemara_dir: Path, output_dir: Path, framework: Framework) -> bool:
+    """Copy the shared (NIST) GuidanceCatalog if it exists.
+
+    Non-NIST frameworks use per-product guidance staged in stage_product.
+    """
+    if framework.reference_type != "nist":
+        return False
+
     guidance_path = gemara_dir / "guidance_catalog.yaml"
     if not guidance_path.exists():
         print("  [GUIDANCE] Not found — bundles will omit the guidance layer")
@@ -160,10 +198,15 @@ def stage_guidance(gemara_dir: Path, output_dir: Path) -> bool:
 
     guidance_dir = output_dir / "governance" / "guidance"
     guidance_dir.mkdir(parents=True, exist_ok=True)
-    dest = guidance_dir / f"{_GUIDANCE_ID}.yaml"
+    dest = guidance_dir / f"{framework.guidance_id()}.yaml"
     shutil.copy2(guidance_path, dest)
     print(f"  [GUIDANCE] {dest.relative_to(output_dir)}")
     return True
+
+
+def _fw_cli_name(framework: Framework) -> str:
+    """Best-effort reverse lookup of the --framework CLI name for messages."""
+    return "nist" if framework.reference_type == "nist" else framework.key
 
 
 def copy_to_repo(output_dir: Path, policies_repo: Path) -> None:
@@ -182,7 +225,12 @@ def copy_to_repo(output_dir: Path, policies_repo: Path) -> None:
             print(f"  Copied: {rel}")
 
 
-def create_pr(policies_repo: Path, products: List[str], branch_name: Optional[str] = None) -> bool:
+def create_pr(
+    policies_repo: Path,
+    products: List[str],
+    framework: Framework,
+    branch_name: Optional[str] = None,
+) -> bool:
     """Create a PR on the complytime-policies repo via gh CLI."""
     gh = shutil.which("gh")
     if not gh:
@@ -194,8 +242,9 @@ def create_pr(policies_repo: Path, products: List[str], branch_name: Optional[st
             ["git", "rev-parse", "--short", "HEAD"],
             cwd=str(_REPO_ROOT), capture_output=True, text=True,
         ).stdout.strip()
-        branch_name = f"update/nist-800-53-from-content-{short_sha}"
+        branch_name = f"update/{framework.key}-from-content-{short_sha}"
 
+    fw = framework.short_name
     products_str = ", ".join(p.upper() for p in products)
 
     subprocess.run(
@@ -215,9 +264,13 @@ def create_pr(policies_repo: Path, products: List[str], branch_name: Optional[st
         print("\n  No changes to commit — complytime-policies is already up to date.")
         return True
 
+    guidance_note = (
+        "GuidanceCatalog (shared)" if framework.reference_type == "nist"
+        else "GuidanceCatalog (per product)"
+    )
     subprocess.run(
         ["git", "commit", "-m",
-         f"chore: update NIST 800-53 artifacts for {products_str}\n\n"
+         f"chore: update {fw} artifacts for {products_str}\n\n"
          f"Generated from ComplianceAsCode/content gemara branch."],
         cwd=str(policies_repo), check=True,
     )
@@ -228,12 +281,12 @@ def create_pr(policies_repo: Path, products: List[str], branch_name: Optional[st
 
     pr_body = (
         "## Summary\n\n"
-        f"Update NIST SP 800-53 Rev 5 Gemara artifacts for: {products_str}.\n\n"
+        f"Update {fw} Gemara artifacts for: {products_str}.\n\n"
         "Generated by `generate_policies_pr.py` from "
         "[ComplianceAsCode/content](https://github.com/ComplianceAsCode/content).\n\n"
         "### Artifacts updated\n\n"
         "- ControlCatalog (per product)\n"
-        "- GuidanceCatalog (shared)\n"
+        f"- {guidance_note}\n"
         "- Policy (per product)\n"
         "- Bundle manifests (per product)\n\n"
         "### Verification\n\n"
@@ -243,7 +296,7 @@ def create_pr(policies_repo: Path, products: List[str], branch_name: Optional[st
 
     subprocess.run(
         [gh, "pr", "create",
-         "--title", f"Update NIST 800-53 artifacts for {products_str}",
+         "--title", f"Update {fw} artifacts for {products_str}",
          "--body", pr_body],
         cwd=str(policies_repo), check=True,
     )
@@ -256,6 +309,13 @@ def parse_args() -> argparse.Namespace:
         description="Stage Gemara artifacts for a PR to complytime-policies",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
+    )
+    parser.add_argument(
+        "--framework",
+        default="nist",
+        choices=known_frameworks(),
+        help="Compliance framework to stage (default: %(default)s). "
+             "Must match the framework used for export_to_gemara.py.",
     )
     parser.add_argument(
         "--products",
@@ -308,16 +368,19 @@ def main() -> None:
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True)
 
+    framework = get_framework(args.framework)
+
     print("Staging Gemara artifacts for complytime-policies PR")
+    print(f"  Framework: {args.framework} ({framework.key})")
     print(f"  Products: {', '.join(products)}")
     print(f"  Source:   {gemara_dir}")
     print(f"  Output:   {output_dir}")
 
-    has_guidance = stage_guidance(gemara_dir, output_dir)
+    has_guidance = stage_guidance(gemara_dir, output_dir, framework)
 
     all_ok = True
     for product in products:
-        ok = stage_product(product, gemara_dir, output_dir, has_guidance)
+        ok = stage_product(product, gemara_dir, output_dir, framework, has_guidance)
         if not ok:
             all_ok = False
 
@@ -336,7 +399,7 @@ def main() -> None:
 
         if args.create_pr:
             print("\nCreating PR ...")
-            create_pr(args.policies_repo, products, branch_name=args.branch)
+            create_pr(args.policies_repo, products, framework, branch_name=args.branch)
 
     print("\nDone.")
 
