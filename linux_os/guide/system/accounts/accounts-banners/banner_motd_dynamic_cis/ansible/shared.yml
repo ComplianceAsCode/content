@@ -1,0 +1,16 @@
+# platform = multi_platform_debian,multi_platform_ubuntu
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+- name: {{{ rule_title }}} - Check if /etc/update-motd.d/10-uname exists
+  ansible.builtin.stat:
+    path: /etc/update-motd.d/10-uname
+  register: result_banner_motd_dynamic_cis
+
+- name: {{{ rule_title }}} - Disable /etc/update-motd.d/10-uname
+  ansible.builtin.file:
+    path: /etc/update-motd.d/10-uname
+    mode: a-x
+  when: result_banner_motd_dynamic_cis.stat.exists
