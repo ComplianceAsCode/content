@@ -513,7 +513,7 @@ INSTALL_COMMANDS = dict(
     rhel10=("dnf", "install", "-y"),
     sles=("zypper", "install", "-y"),
     ubuntu=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
-    debian=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
+    debian=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y", "--no-install-recommends"),
 )
 
 # Commands that ask the repositories of the tested system about a package.
