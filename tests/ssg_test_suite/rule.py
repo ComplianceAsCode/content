@@ -497,6 +497,8 @@ class RuleChecker(oscap.Checker):
     def _check_rule(self, rule, scenarios, remote_dir, state, remediation_available):
         remote_rule_dir = os.path.join(remote_dir, rule.short_id)
         logging.info(rule.id)
+        # A not applicable result only skips the rest of this rule's scenarios
+        self.initial_scan_result = None
 
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
