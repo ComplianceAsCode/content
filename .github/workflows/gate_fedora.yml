@@ -66,15 +66,31 @@ jobs:
       - name: Get Latest Release
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
         with:
+          retries: 1
           script: |
             const fs = require('fs');
             const release = await github.rest.repos.getLatestRelease({owner: 'ComplianceAsCode', repo: 'content'})
             const tag = release.data.tag_name;
             const version = tag.substring(1)
             const builtUrl = `https://github.com/ComplianceAsCode/content/releases/download/${tag}/scap-security-guide-${version}.zip`
-            const downloadedResponse = await fetch(builtUrl);
+            // Retry once on server errors, rate limits and network errors.
+            // Other client errors, such as a missing asset, fail at once.
+            const isTransient = (r) => r.status >= 500 || r.status === 429;
+            let downloadedResponse;
+            try {
+                downloadedResponse = await fetch(builtUrl);
+            } catch (err) {
+                core.warning(`Download failed, retrying: ${err.message}`);
+            }
+            if (!downloadedResponse || isTransient(downloadedResponse)) {
+                if (downloadedResponse) {
+                    core.warning(`Download returned ${downloadedResponse.status} ${downloadedResponse.statusText}, retrying`);
+                }
+                await new Promise(resolve => setTimeout(resolve, 60000));
+                downloadedResponse = await fetch(builtUrl);
+            }
             if (!downloadedResponse.ok) {
-                throw new Error(`Failed to download: ${downloadedResponse.statusText}`);
+                throw new Error(`Failed to download ${builtUrl}: ${downloadedResponse.status} ${downloadedResponse.statusText}`);
             }
             const buffer = await downloadedResponse.arrayBuffer();
             const artifactName = "/__w/content/content/old_release.zip"
