@@ -691,7 +691,7 @@
 
   <ind:textfilecontent54_test id="test_grub2_{{{ ARG_NAME_UNDERSCORED }}}_usr_lib_bootc_kargs_d"
                               comment="Check /usr/lib/bootc/kargs.d/*.toml for {{{ ARG_NAME_VALUE }}}"
-                              check="at least one" check_existence="at_least_one_exists" version="1">
+                              check="all" check_existence="at_least_one_exists" version="1">
     <ind:object object_ref="obj_grub2_{{{ ARG_NAME_UNDERSCORED }}}_usr_lib_bootc_kargs_d" />
     {{%- if has_value %}}
     <ind:state state_ref="state_grub2_{{{ ARG_NAME_UNDERSCORED }}}_argument" />
