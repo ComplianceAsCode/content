@@ -10,10 +10,12 @@
 # active, so that `ansible-lint` run bare (auto-discovering this file) against
 # the generated Ansible roles reports exactly the certification backlog.
 #
-# NOTE: content's own CI lints generated playbooks with an explicit
-# `-c tests/ansible-lint_config.yml` (see cmake/SSGCommon.cmake), so this file
-# does NOT change that gate; it is picked up only by bare `ansible-lint` runs,
-# i.e. when measuring the generated collection against the certification bar.
+# NOTE: content's own CI lints generated playbooks with an explicit config
+# selected per product (see cmake/SSGCommon.cmake): RHEL uses the strict
+# `tests/ansible-lint_config.yml` and all other products use
+# `tests/ansible-lint_config_legacy.yml`, so this file does NOT change that
+# gate; it is picked up only by bare `ansible-lint` runs, i.e. when measuring
+# the generated collection against the certification bar.
 profile: production
 
 exclude_paths:

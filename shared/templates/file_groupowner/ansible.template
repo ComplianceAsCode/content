@@ -26,7 +26,7 @@
   ansible.builtin.getent:
     database: group
     key: {{{ grp }}}
-  ignore_errors: yes
+  failed_when: false
   when: {{{ _RULE_ID }}}_newgroup is undefined
 
 - name: Set the {{{ _RULE_ID }}}_newgroup variable if {{{ grp }}} found

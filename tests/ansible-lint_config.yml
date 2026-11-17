@@ -13,6 +13,7 @@ skip_list:
   - key-order[task] # Too numerous now
   - no-free-form # Too numerous now
   - name[template] # Style choice to skip this rule
+  - command-instead-of-module # Raw command tasks are rewritten to the ssg_hardening module during Ansible collection assembly
 
 kinds:
   - playbook: "**/*.yml"
