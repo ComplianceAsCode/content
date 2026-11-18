@@ -9,10 +9,17 @@ fi
 if LC_ALL=C grep -m 1 -q ^log_group /etc/audit/auditd.conf; then
     GROUP=$(awk -F "=" '/log_group/ {print $2}' /etc/audit/auditd.conf | tr -d ' ')
     if ! [ "$GROUP" == 'root' ] ; then
-       chmod 0640 "$FILE"
+       MODE=0640
     else
-       chmod 0600 "$FILE"
+       MODE=0600
     fi
 else
-    chmod 0600 "$FILE"
+    MODE=0600
 fi
+
+# The check covers the rotated logs too: audit.log.1 and up.
+for f in "$FILE" "$FILE".*; do
+    if [ -f "$f" ]; then
+        chmod "$MODE" "$f"
+    fi
+done
