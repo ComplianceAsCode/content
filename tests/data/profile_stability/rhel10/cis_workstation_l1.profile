@@ -222,6 +222,7 @@ no_rhost_files
 no_shelllogin_for_systemaccounts
 package_aide_installed
 package_bind_removed
+package_chrony_installed
 package_cron_installed
 package_cyrus-imapd_removed
 package_dovecot_removed
