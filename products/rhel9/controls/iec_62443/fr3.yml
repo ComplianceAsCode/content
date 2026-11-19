@@ -94,6 +94,7 @@ controls:
           checks cover hashing, ACLs, and extended attributes. RPM verification
           checks installed non-configuration file hashes against package metadata.
       rules:
+          - package_cron_installed
           - package_aide_installed
           # Could extend NIST SI-7: verify installed non-configuration file digests.
           - rpm_verify_hashes
