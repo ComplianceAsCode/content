@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Ubuntu 26.04
+# platform = multi_platform_ubuntu
 # check-import = stdout
 
 # Read the main file and drop-ins in systemd's precedence order.
