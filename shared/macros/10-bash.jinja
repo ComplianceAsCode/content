@@ -442,7 +442,7 @@ for audit_rules_file in "${files_to_inspect[@]}"
 do
     # Check if audit watch file system object rule for given path already present
 {{% if style == "modern" %}}
-    if grep -q -P -- "^[\s]*-F[\s]+{{{ filter_type }}}={{{ path }}}" "$audit_rules_file"
+    if grep -q -P -- "^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch={{{ arch }}}[\s]+-F[\s]+{{{ filter_type }}}={{{ path }}}([\s]|$)" "$audit_rules_file"
 {{% else %}}
     if grep -q -P -- "^[\s]*-w[\s]+{{{ path }}}" "$audit_rules_file"
 {{% endif %}}
@@ -454,7 +454,7 @@ do
         sp="[[:space:]]"
         # Extract current permission access types (e.g. -p [r|w|x|a] values) from audit rule
 {{% if style == "modern" %}}
-        current_access_bits=$(sed -ne "s#$sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}={{{ path }}}$sp\+-F$sp\+perm=\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
+        current_access_bits=$(sed -ne "s#^$sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}={{{ path }}}$sp\+-F$sp\+perm=\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
 {{% else %}}
         current_access_bits=$(sed -ne "s#$sp*-w$sp\+{{{ path }}} $sp\+-p$sp\+\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
 {{% endif %}}
@@ -474,7 +474,7 @@ do
         # Propagate the updated rule's access bits (original + the required
         # ones) back into the /etc/audit/audit.rules file for that rule
 {{% if style == "modern" %}}
-        sed -i "s#\($sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}={{{ path }}}$sp\+-F$sp\+perm=\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
+        sed -i "s#^\($sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}={{{ path }}}$sp\+-F$sp\+perm=\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
 {{% else %}}
         sed -i "s#\($sp*-w$sp\+{{{ path }}}$sp\+-p$sp\+\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
 {{% endif %}}

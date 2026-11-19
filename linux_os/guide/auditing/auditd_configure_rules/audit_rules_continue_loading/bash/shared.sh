@@ -6,8 +6,10 @@
 # /etc/audit/rules.d/*.rules			(for augenrules case)
 #
 # files to check if '-c' setting is present in that '*.rules' file already.
-# If found, delete such occurrence
-find /etc/audit /etc/audit/rules.d -maxdepth 1 -type f -name '*.rules' -exec sed -i '/-c[[:space:]]\+.*/d' {} ';'
+# If found, delete such occurrence and any previously generated comment.
+find /etc/audit /etc/audit/rules.d -maxdepth 1 -type f -name '*.rules' -exec sed -i \
+	-e '/^[[:space:]]*-c\([[:space:]]\|$\)/d' \
+	-e '/^# Set the audit.rules configuration to continue loading rules in spite of an error$/d' {} ';'
 
 # Insert '-c' requirement at the beginning of both:
 # * /etc/audit/audit.rules file 		(for auditctl case)
@@ -18,7 +20,6 @@ do
 	{
 		echo '# Set the audit.rules configuration to continue loading rules in spite of an error'
 		echo '-c'
-		echo ''
 		cat "$AUDIT_FILE"
 	} > "${AUDIT_FILE}.tmp"
 	mv "${AUDIT_FILE}.tmp" "$AUDIT_FILE"
