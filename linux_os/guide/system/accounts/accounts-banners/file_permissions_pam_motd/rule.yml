@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Verify Permissions on pam_motd File'
+
+description: |-
+    {{{ describe_file_permissions(file="/run/motd.dynamic", perms="0644") }}}
+
+rationale: |-
+    If the pam_motd file does not have the correct access configured, it could be
+    modified by unauthorized users with incorrect or misleading information.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/run/motd.dynamic", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/run/motd.dynamic", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /run/motd.dynamic
+        filemode: '0644'

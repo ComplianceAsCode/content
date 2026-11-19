@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check that /etc/update-motd.d/10-uname, which discloses OS and kernel information through /run/motd.dynamic, is not executable", rule_title=rule_title) }}}
+    <criteria comment="/etc/update-motd.d/10-uname has no execute permission for owner, group, or other">
+      <criterion test_ref="test_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="/etc/update-motd.d/10-uname is executable" id="test_{{{ rule_id }}}" version="1">
+    <unix:object object_ref="object_{{{ rule_id }}}" />
+    <unix:state state_ref="state_{{{ rule_id }}}" />
+  </unix:file_test>
+
+  <unix:file_object id="object_{{{ rule_id }}}" version="1">
+    <unix:filepath>/etc/update-motd.d/10-uname</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_{{{ rule_id }}}" operator="OR" version="1">
+    <unix:uexec operation="equals" datatype="boolean">1</unix:uexec>
+    <unix:gexec operation="equals" datatype="boolean">1</unix:gexec>
+    <unix:oexec operation="equals" datatype="boolean">1</unix:oexec>
+  </unix:file_state>
+</def-group>

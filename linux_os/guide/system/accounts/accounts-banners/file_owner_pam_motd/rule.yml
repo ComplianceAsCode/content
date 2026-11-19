@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Verify Ownership of pam_motd File'
+
+description: |-
+    {{{ describe_file_owner(file="/run/motd.dynamic", owner="root") }}}
+
+rationale: |-
+    If the pam_motd file does not have the correct access configured, it could be
+    modified by unauthorized users with incorrect or misleading information.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/run/motd.dynamic", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/run/motd.dynamic", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /run/motd.dynamic
+        uid_or_name: '0'
