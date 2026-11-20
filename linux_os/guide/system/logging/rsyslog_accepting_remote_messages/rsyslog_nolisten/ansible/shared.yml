@@ -66,7 +66,8 @@
 - name: "{{{ rule_title }}} - Comment Listen Config Lines Wherever Defined Using RainerScript"
   ansible.builtin.replace:
     path: "{{ item }}"
-    regexp: "{{ rsyslog_listen_rainer_regex }}"
+    # [^)]* crosses newlines, so a statement split over several lines is replaced whole.
+    regexp: '^\s*(module|input)\((load|type)="(imtcp|imudp)"[^)]*\).*$'
     replace: '# \1'
   loop: "{{ rsyslog_rainer_remote_listen_files }}"
   register: rsyslog_listen_rainer_comment
