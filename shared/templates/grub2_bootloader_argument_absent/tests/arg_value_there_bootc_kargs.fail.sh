@@ -3,6 +3,10 @@
 # packages = bootc,kernel
 # remediation = bash
 
+# OVAL bootc inventory needs bootc and kernel-core; Bash remediation needs
+# bootc and kernel. Without them the test can fall back to plain GRUB.
+rpm -q bootc kernel kernel-core >&2 || exit 1
+
 # Look like a bootable container image being built: the remediation takes
 # its bootc branch where /run/.containerenv exists, and the check reads
 # /usr/lib/bootc/kargs.d where /run/ostree-booted exists.
