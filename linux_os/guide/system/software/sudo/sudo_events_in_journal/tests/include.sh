@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# The rule needs a running systemd and is not applicable in containers,
+# so there is nothing to set up there.
+if [ -f /.dockerenv ] || [ -f /run/.containerenv ]; then exit 0; fi
+
 # These fixtures replace logging configuration only in the disposable test guest.
 rm -f /etc/rsyslog.d/*.conf
 mkdir -p /etc/rsyslog.d /etc/systemd/journald.conf.d
