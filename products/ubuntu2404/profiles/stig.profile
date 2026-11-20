@@ -17,3 +17,4 @@ description: |-
 
 selections:
     - stig_ubuntu2404:all
+    - sshd_approved_ciphers=legacy

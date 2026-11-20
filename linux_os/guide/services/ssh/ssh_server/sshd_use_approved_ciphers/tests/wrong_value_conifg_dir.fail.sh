@@ -9,5 +9,5 @@ source include.sh
 {{% if product in [ 'sle16', 'slmicro6' ] %}}
 touch "{{{ sshd_main_config_file }}}"
 {{% endif %}}
-echo 'Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,aes192-cbc,aes256-cbc,3des-cbc,rijndael-cbc@lysator.liu.se' >> {{{ sshd_main_config_file }}}
+echo 'Ciphers aes256-gcm@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr' >> {{{ sshd_main_config_file }}}
 echo 'Ciphers weak-cipher' >> "{{{ sshd_config_dir }}}/00-test.conf"
