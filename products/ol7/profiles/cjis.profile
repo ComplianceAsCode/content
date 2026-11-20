@@ -103,6 +103,7 @@ selections:
     - sshd_enable_warning_banner
     - sshd_do_not_permit_user_env
     - sshd_use_approved_ciphers
+    - sshd_approved_ciphers=legacy
     - kernel_module_dccp_disabled
     - kernel_module_sctp_disabled
     - service_firewalld_enabled

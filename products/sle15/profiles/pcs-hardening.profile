@@ -121,6 +121,7 @@ selections:
     - sshd_set_max_sessions
     - sshd_set_maxstartups
     - sshd_use_approved_ciphers
+    - sshd_approved_ciphers=legacy
     - sshd_use_approved_ciphers_ordered_stig
     - sshd_use_approved_macs
     - sshd_use_approved_macs_ordered_stig

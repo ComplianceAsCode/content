@@ -18,6 +18,7 @@ description: |-
 
 selections:
     - pcidss_4:all
+    - sshd_approved_ciphers=legacy
     - '!rpm_verify_permissions'
     - '!package_audit-audispd-plugins_installed'
     - '!service_ntp_enabled'

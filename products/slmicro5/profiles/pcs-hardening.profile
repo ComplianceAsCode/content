@@ -17,6 +17,7 @@ description: |-
     
 selections:
   - stig_slmicro5:all
+  - sshd_approved_ciphers=legacy
   - '!permissions_local_var_log_audit'
   - '!ssh_private_keys_have_passcode'
   - '!set_password_hashing_algorithm_systemauth'
