@@ -1881,7 +1881,8 @@ Part of the grub2_bootloader_argument template.
     path: /etc/default/grub
     regexp: '^\s*GRUB_CMDLINE_LINUX=\s*"?\s*"?\s*$'
     line: 'GRUB_CMDLINE_LINUX="{{{ arg_name_value }}}"'
-  when: (etc_default_grub['content'] | b64decode) is not search('(?m)^\s*GRUB_CMDLINE_LINUX="?\s*[^"\s]')
+  # Match within one line so an empty assignment cannot consume the next setting.
+  when: (etc_default_grub['content'] | b64decode) is not search('(?m)^[ \t]*GRUB_CMDLINE_LINUX=[ \t]*"?[ \t]*[^"\s]')
 
 - name: Check if {{{ arg_name }}} argument is already present
   ansible.builtin.command: /sbin/grubby --info=ALL
