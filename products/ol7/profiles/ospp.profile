@@ -45,6 +45,7 @@ selections:
     - sshd_enable_warning_banner
     - sshd_disable_rhosts_rsa
     - sshd_use_approved_ciphers
+    - sshd_approved_ciphers=legacy
     - sshd_use_approved_macs
 
     # Time Server

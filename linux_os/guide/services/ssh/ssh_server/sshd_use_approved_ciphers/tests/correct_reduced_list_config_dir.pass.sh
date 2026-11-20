@@ -10,4 +10,4 @@ source include.sh
 touch "{{{ sshd_main_config_file }}}"
 {{% endif %}}
 
-echo 'Ciphers aes128-ctr,aes192-ctr' >> "{{{ sshd_config_dir }}}/00-test.conf"
+echo 'Ciphers aes128-ctr,aes256-ctr' >> "{{{ sshd_config_dir }}}/00-test.conf"
