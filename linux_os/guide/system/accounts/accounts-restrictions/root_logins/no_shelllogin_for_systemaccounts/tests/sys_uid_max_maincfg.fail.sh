@@ -1,5 +1,7 @@
 #!/bin/bash
-# platform = multi_platform_all 
+{{% if product in ["rhel9", "rhel10"] %}}
+# platform = Not Applicable
+{{% endif %}}
 
 source common.sh
 useradd --system --shell /bin/bash -u 999 sysuser
