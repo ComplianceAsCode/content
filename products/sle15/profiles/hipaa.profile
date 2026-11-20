@@ -86,5 +86,6 @@ selections:
     - sshd_set_keepalive
     - '!sshd_set_keepalive_0'
     - sshd_use_approved_ciphers
+    - sshd_approved_ciphers=legacy
     - sshd_use_approved_macs
     - sshd_use_priv_separation

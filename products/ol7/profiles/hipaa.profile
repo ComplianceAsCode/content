@@ -69,6 +69,7 @@ selections:
     - sshd_set_keepalive_0
     - encrypt_partitions
     - sshd_use_approved_ciphers
+    - sshd_approved_ciphers=legacy
     - sshd_use_approved_macs
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
