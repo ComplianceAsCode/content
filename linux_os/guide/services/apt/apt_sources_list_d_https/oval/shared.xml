@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("APT repositories in /etc/apt/sources.list.d use HTTPS.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="No legacy repository uses HTTP"
+        test_ref="test_{{{ rule_id }}}_legacy_no_http" />
+      <criterion comment="No deb822 repository uses HTTP"
+        test_ref="test_{{{ rule_id }}}_deb822_no_http" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    id="test_{{{ rule_id }}}_legacy_no_http" version="1"
+    comment="No active legacy deb entry uses HTTP">
+    <ind:object object_ref="obj_{{{ rule_id }}}_legacy_http" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_legacy_http" version="1">
+    <ind:path>/etc/apt/sources.list.d</ind:path>
+    <ind:filename operation="pattern match">.*\.list$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*deb(-src)?[\s]+(\[[^\]]*\][\s]+)?http://.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    id="test_{{{ rule_id }}}_deb822_no_http" version="1"
+    comment="No active deb822 URI uses HTTP">
+    <ind:object object_ref="obj_{{{ rule_id }}}_deb822_http" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_deb822_http" version="1">
+    <ind:path>/etc/apt/sources.list.d</ind:path>
+    <ind:filename operation="pattern match">.*\.sources$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)URIs(?-i):[\s]+[^#\n]*http://.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

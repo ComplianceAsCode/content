@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The update-notifier MOTD timer is disabled and masked.", rule_title=rule_title) }}}
+    <criteria operator="OR">
+      <criterion comment="update-notifier-motd.timer is not installed"
+        test_ref="test_{{{ rule_id }}}_absent" />
+      <criteria operator="AND" comment="timer is inactive and not enabled">
+        <criterion comment="timer is inactive" test_ref="test_{{{ rule_id }}}_inactive" />
+        <criterion comment="timer is not enabled" test_ref="test_{{{ rule_id }}}_not_enabled" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitproperty_test check="all" check_existence="none_exist"
+    id="test_{{{ rule_id }}}_absent" version="1" comment="timer is absent">
+    <linux:object object_ref="obj_{{{ rule_id }}}_active_state" />
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_test check="all" check_existence="at_least_one_exists"
+    id="test_{{{ rule_id }}}_inactive" version="1" comment="timer is inactive">
+    <linux:object object_ref="obj_{{{ rule_id }}}_active_state" />
+    <linux:state state_ref="state_{{{ rule_id }}}_inactive" />
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_test check="all" check_existence="at_least_one_exists"
+    id="test_{{{ rule_id }}}_not_enabled" version="1" comment="timer is not enabled">
+    <linux:object object_ref="obj_{{{ rule_id }}}_unit_file_state" />
+    <linux:state state_ref="state_{{{ rule_id }}}_not_enabled" />
+  </linux:systemdunitproperty_test>
+
+  <linux:systemdunitproperty_object id="obj_{{{ rule_id }}}_active_state" version="1">
+    <linux:unit>update-notifier-motd.timer</linux:unit>
+    <linux:property>ActiveState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_object id="obj_{{{ rule_id }}}_unit_file_state" version="1">
+    <linux:unit>update-notifier-motd.timer</linux:unit>
+    <linux:property>UnitFileState</linux:property>
+  </linux:systemdunitproperty_object>
+
+  <linux:systemdunitproperty_state id="state_{{{ rule_id }}}_inactive" version="1">
+    <linux:value operation="not equal">active</linux:value>
+  </linux:systemdunitproperty_state>
+  <linux:systemdunitproperty_state id="state_{{{ rule_id }}}_not_enabled" version="1">
+    <linux:value operation="pattern match">^(?!enabled).*$</linux:value>
+  </linux:systemdunitproperty_state>
+</def-group>

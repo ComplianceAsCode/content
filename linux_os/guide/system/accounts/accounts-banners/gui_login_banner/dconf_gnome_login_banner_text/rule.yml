@@ -10,7 +10,7 @@ description: |-
     where <i>APPROVED_BANNER</i> is the approved banner for your environment.
     <br /><br />
     To enable, add or edit <tt>banner-message-text</tt> to
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product or product == 'ubuntu2604' %}}
     <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     banner-message-text='<i>APPROVED_BANNER</i>'</pre>
@@ -58,7 +58,7 @@ references:
 ocil_clause: 'it does not'
 
 ocil: |-
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product or product == 'ubuntu2604' %}}
     To ensure the login warning banner text is properly set, run the following:
     <pre>$ grep banner-message-text /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     If properly configured, the proper banner text will appear.

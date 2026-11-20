@@ -1,10 +1,13 @@
 name: coreutils
 packages:
-- coreutils
+  - coreutils
 rules:
-- accounts_user_dot_group_ownership
-- accounts_user_dot_no_world_writable_programs
-- accounts_user_dot_user_ownership
-- accounts_users_home_files_groupownership
-- accounts_users_home_files_ownership
-- accounts_users_home_files_permissions
+  - accounts_user_dot_dirs_groupownership
+  - accounts_user_dot_dirs_ownership
+  - accounts_user_dot_dirs_permissions
+  - accounts_user_dot_group_ownership
+  - accounts_user_dot_no_world_writable_programs
+  - accounts_user_dot_user_ownership
+  - accounts_users_home_files_groupownership
+  - accounts_users_home_files_ownership
+  - accounts_users_home_files_permissions
