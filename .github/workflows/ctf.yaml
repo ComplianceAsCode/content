@@ -49,3 +49,14 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'product'
+      # Publish the CTF result so other workflows (e.g. Contest Merge Gate) can
+      # reuse it instead of recomputing it. The file is uploaded even when empty
+      # (no content changes) so consumers can distinguish "no changes" from
+      # "not available". It is keyed to the PR head SHA via the run that produced it.
+      - name: Upload CTF output
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4
+        with:
+          name: ctf-output
+          path: output.json
+          retention-days: 1
+          if-no-files-found: error
