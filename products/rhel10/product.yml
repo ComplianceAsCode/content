@@ -53,6 +53,11 @@ platform_package_overrides:
 reference_uris:
   cis: 'https://www.cisecurity.org/benchmark/red_hat_linux/'
 
+# CentOS Official Signing Key, shipped as RPM-GPG-KEY-centosofficial-SHA256.
+# https://www.centos.org/keys/
+centos_pkg_release: "5ccc5b19"
+centos_pkg_version: "8483c65d"
+centos_major_version: "10"
 
 journald_conf_dir_path: /etc/systemd/journald.conf.d
 audit_watches_style: modern
