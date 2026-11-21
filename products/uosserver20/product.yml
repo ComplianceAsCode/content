@@ -1,0 +1,26 @@
+product: uosserver20
+full_name: UOS Server 20
+type: platform
+
+families:
+  - uosserver
+
+benchmark_id: UOSSERVER20
+benchmark_root: "../../linux_os/guide"
+components_root: "../../components"
+
+profiles_root: "./profiles"
+
+pkg_manager: "yum"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - uosserver20:
+      name: "cpe:/o:uniontech:uos_server:20:ga:server"
+      title: "UOS Server 20"
+      check_id: installed_OS_is_uosserver20
+
+reference_uris:
+  cis: 'https://www.uniontech.com/'
