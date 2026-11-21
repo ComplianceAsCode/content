@@ -334,8 +334,8 @@ def add_to_the_section(file_contents, yaml_contents, section, new_keys):
     return new_contents
 
 
-def sort_section(file_contents, yaml_contents, section):
-    new_contents = ssg.rule_yaml.sort_section_keys(yaml_contents, file_contents, section)
+def sort_section(file_contents, yaml_contents, section, sort_func=None):
+    new_contents = ssg.rule_yaml.sort_section_keys(yaml_contents, file_contents, section, sort_func)
     return new_contents
 
 
@@ -457,7 +457,7 @@ def add_product_cce(file_contents, yaml_contents, product, cce):
 
     new_contents = add_to_the_section(
         file_contents, yaml_contents, section, {"cce@{product}".format(product=product): cce})
-    new_contents = sort_section(new_contents, yaml_contents, section)
+    new_contents = sort_section(new_contents, yaml_contents, section, sort_func=_human_sort)
     return new_contents
 
 
