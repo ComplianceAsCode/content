@@ -200,9 +200,11 @@ test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"
 :type config_is_distributed: str
 :parameter config_basename: Filename of configuration file when using distributed configuration
 :type config_basename: str
+:parameter fallback_to_main_config: If true and the configuration is distributed, the parameter is set in the drop-in directory only if the main configuration file includes it, otherwise it is set in the main configuration file
+:type fallback_to_main_config: bool
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="", rule_id=None) -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="", rule_id=None, fallback_to_main_config=false) -%}}
 {{%- set sshd_config_path = sshd_main_config_file %}}
 {{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 {{%- set sshd_base_dir = sshd_config_base_dir -%}}
@@ -220,6 +222,7 @@ done
 {{%- set separator_regex = "\s\+" -%}}
 {{%- set hardening_config_basename = config_basename or sshd_hardening_config_basename %}}
 {{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
+{{%- set drop_in_remediation -%}}
 mkdir -p {{{ sshd_drop_in_dir }}}
 chmod 0700 {{{ sshd_drop_in_dir }}}
 touch {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
@@ -238,6 +241,17 @@ chmod 0600 {{{ sshd_drop_in_dir }}}/{{{ hardening_config_basename }}}
         separator_regex=separator_regex,
         prefix_regex=prefix_regex, rule_id=rule_id)
     }}}
+{{%- endset %}}
+{{%- if fallback_to_main_config %}}
+# sshd reads the drop-in directory only if the main configuration file includes it
+if grep -Eqs '{{{ sshd_include_config_dir_regex("ere") }}}' "{{{ sshd_config_path }}}"; then
+{{{ drop_in_remediation | indent(4, true) }}}
+else
+{{{ bash_sshd_config_set(parameter=parameter, value=value, rule_id=rule_id) | indent(4, true) }}}
+fi
+{{%- else %}}
+{{{ drop_in_remediation }}}
+{{%- endif %}}
 {{%- else %}}
 {{{ bash_sshd_config_set(parameter=parameter, value=value, rule_id=rule_id) }}}
 {{%- endif %}}
