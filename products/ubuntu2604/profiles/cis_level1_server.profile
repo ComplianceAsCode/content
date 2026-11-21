@@ -7,6 +7,7 @@ metadata:
         - mpurg
         - dodys
         - alanmcanonical
+        - realstuffie
 
 reference: https://www.cisecurity.org/benchmark/ubuntu_linux
 
