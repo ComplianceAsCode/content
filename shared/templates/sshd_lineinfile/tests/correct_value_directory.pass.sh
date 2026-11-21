@@ -11,4 +11,4 @@ source common.sh
 {{{ bash_replace_or_append("{{{ sshd_main_config_file }}}", "Include", "{{{ sshd_config_dir }}}/*.conf", "%s %s", cce_identifiers=cce_identifiers) }}}
 {{% endif %}}
 
-{{{ bash_sshd_remediation(parameter=PARAMETER, value=CORRECT_VALUE, config_is_distributed=sshd_distributed_config, rule_id=rule_id) -}}}
+{{{ bash_sshd_remediation(parameter=PARAMETER, value=CORRECT_VALUE, config_is_distributed=sshd_distributed_config, rule_id=rule_id, reload_service=false) -}}}
