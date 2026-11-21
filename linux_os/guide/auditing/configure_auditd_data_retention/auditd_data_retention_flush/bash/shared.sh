@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_almalinux
+# platform = Red Hat Virtualization 4,multi_platform_almalinux,multi_platform_ol,multi_platform_rhel,multi_platform_sle,multi_platform_slmicro
 
 {{{ bash_instantiate_variables("var_auditd_flush") }}}
 
@@ -10,7 +10,7 @@ AUDITCONFIG=/etc/audit/auditd.conf
 # the freq param is only used for values 'incremental' and 'incremental_async' and will be
 # commented out if flush != incremental or flush != incremental_async
 #
-# if flush == incremental or flush == incremental_async && freq param is not defined, it 
+# if flush == incremental or flush == incremental_async && freq param is not defined, it
 # will be defined as the package-default value of 20
 
 grep -q ^flush $AUDITCONFIG && \

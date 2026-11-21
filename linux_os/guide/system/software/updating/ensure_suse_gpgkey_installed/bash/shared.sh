@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro
 # The fingerprint below is retrieved from https://www.suse.com/support/security/keys/
 readonly SUSE_RELEASE_FINGERPRINT="{{{ release_key_fingerprint }}}"
 
