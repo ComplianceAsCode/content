@@ -1,4 +1,4 @@
-# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# platform = multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_opensuse,multi_platform_opensuse,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -9,7 +9,7 @@
     regexp: 'ttyS[0-9]'
     state: absent
 
-{{% if product in ['sle16'] %}}
+{{% if product in ['opensuse16', 'sle16', 'slmicro6'] %}}
 {{{ ansible_copy_distro_defaults('/usr/lib/pam.d/login', '/etc/pam.d/login', rule_title=rule_title) }}}
 {{{ ansible_ensure_pam_module_option('/etc/pam.d/login', 'auth', 'required', 'pam_securetty.so', 'noconsole', '', '', rule_id=rule_id, rule_title=rule_title) }}}
 {{% endif %}}
