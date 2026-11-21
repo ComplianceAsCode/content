@@ -1,0 +1,37 @@
+{{%- set option = "AllowDowngradeToInsecureRepositories" -%}}
+{{%- set secure_values = "0|no|false|off|without|disable" -%}}
+{{%- set apt_conf_files = "^/etc/apt/apt\\.conf(?:\\.d/(?:[A-Za-z0-9_-]+|[A-Za-z0-9_.-]+\\.conf))?$" -%}}
+{{%- set option_prefix = "(?i)(?:^[ \\t]*Acquire::|^[ \\t]*Acquire[\\s]*\\{(?:[^}]*?[\\n;])?[ \\t]*)" ~ option ~ "[ \\t]+" -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Acquire::" ~ option ~ " is explicitly set to disabled and no APT configuration file sets it to another value.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="Acquire::{{{ option }}} is explicitly set to disabled"
+        test_ref="test_{{{ rule_id }}}_explicit" />
+      <criterion comment="No APT configuration file sets Acquire::{{{ option }}} to another value"
+        test_ref="test_{{{ rule_id }}}_no_conflict" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    id="test_{{{ rule_id }}}_explicit" version="1"
+    comment="Acquire::{{{ option }}} is explicitly set to disabled">
+    <ind:object object_ref="obj_{{{ rule_id }}}_explicit" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_explicit" version="1">
+    <ind:filepath operation="pattern match">{{{ apt_conf_files }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ option_prefix }}}"?(?:{{{ secure_values }}})"?[ \t]*;</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    id="test_{{{ rule_id }}}_no_conflict" version="1"
+    comment="No APT configuration file sets Acquire::{{{ option }}} to another value">
+    <ind:object object_ref="obj_{{{ rule_id }}}_conflict" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_conflict" version="1">
+    <ind:filepath operation="pattern match">{{{ apt_conf_files }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ option_prefix }}}"?(?!(?:{{{ secure_values }}})"?[ \t]*;)[^"; \t]+"?[ \t]*;</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
