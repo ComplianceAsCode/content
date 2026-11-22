@@ -1,0 +1,86 @@
+#!/bin/bash
+
+setup() {
+    command -v apt-config >/dev/null || skip "apt-config is required"
+    fixture=$(mktemp -d)
+    cd "$fixture" || return 1
+    mkdir -p apt/apt.conf.d
+    export APT_CONFIG="$fixture/paths.conf"
+    printf 'Dir::Etc "%s/apt";\n' "$fixture" > "$APT_CONFIG"
+}
+
+teardown() {
+    if [[ -n ${fixture:-} ]]; then
+        rm -rf -- "$fixture"
+    fi
+}
+
+fix_check_date() {
+    {{{ bash_set_apt_acquire_option("Check-Date", "true") | indent(4) }}}
+}
+
+@test "APT remediation preserves sibling statements, comments and ignored fragments on repeated runs" {
+    cat > apt/apt.conf <<'EOF'
+Acquire { Check-Date false; http::Timeout "30"; };
+Other { Check-Date false; };
+// Acquire::Check-Date "false";
+EOF
+    echo 'Acquire::Check-Date "false";' > apt/apt.conf.d/99-test.conf.bak
+    sed 's/Acquire { Check-Date false/Acquire { Check-Date "true"/' apt/apt.conf > expected
+    cp apt/apt.conf.d/99-test.conf.bak backup
+    fix_check_date
+    cmp expected apt/apt.conf
+    cmp backup apt/apt.conf.d/99-test.conf.bak
+    cp apt/apt.conf.d/99-cis-repository-security managed
+    fix_check_date
+    cmp expected apt/apt.conf
+    cmp managed apt/apt.conf.d/99-cis-repository-security
+}
+
+@test "APT remediation handles quoted keys, dotted .conf symlinks and #clear directives" {
+    printf '"Acquire::Check-Date" "false";\n' > linked.conf
+    chmod 0640 linked.conf
+    ln -s "$fixture/linked.conf" apt/apt.conf.d/99-local.policy.conf
+    printf '#clear Acquire::Check-Date;\n' > apt/apt.conf
+
+    fix_check_date
+    [[ -L apt/apt.conf.d/99-local.policy.conf ]]
+    [[ $(stat -c %a linked.conf) == "640" ]]
+    [[ $(cat linked.conf) == '"Acquire::Check-Date" "true";' ]]
+    [[ $(apt-config shell value 'Acquire::Check-Date') == "value='true'" ]]
+
+    cp apt/apt.conf main_after
+    fix_check_date
+    cmp main_after apt/apt.conf
+}
+
+@test "APT remediation uses the configured main file and parts directory" {
+    mkdir "apt/site parts"
+    echo 'Dir::Etc::parts "site parts";' >> "$APT_CONFIG"
+    cat > "apt/site parts/01-paths" <<'EOF'
+Dir::Etc::main "site's main.conf";
+EOF
+    echo '#clear Acquire::Check-Date;' > "apt/site's main.conf"
+    echo 'Acquire::Check-Date false;' > apt/apt.conf
+    cp apt/apt.conf inactive
+
+    fix_check_date
+    [[ $(apt-config shell value 'Acquire::Check-Date') == "value='true'" ]]
+    [[ -f "apt/site parts/99-cis-repository-security" ]]
+    [[ ! -e apt/apt.conf.d/99-cis-repository-security ]]
+    cmp inactive apt/apt.conf
+    cp "apt/site's main.conf" expected
+    fix_check_date
+    cmp expected "apt/site's main.conf"
+}
+
+@test "APT remediation reports an ineffective override without appending it again" {
+    echo 'Binary::apt-config::Acquire::Check-Date false;' > apt/apt.conf
+    run fix_check_date
+    [[ $status -ne 0 ]]
+    [[ $output == *"APT did not apply Acquire::Check-Date"* ]]
+    cp apt/apt.conf expected
+    run fix_check_date
+    [[ $status -ne 0 ]]
+    cmp expected apt/apt.conf
+}

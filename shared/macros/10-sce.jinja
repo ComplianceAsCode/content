@@ -75,3 +75,18 @@ exit "${XCCDF_RESULT_PASS}"
 {{% macro find_directories(find_parameters, fail_message, exclude_directories="", skip_rpm_owned_files=False) %}}
 {{{ find_command(find_parameters, fail_message, exclude_directories, skip_rpm_owned_files, find_type="-type d") }}}
 {{% endmacro %}}
+
+{{% macro sce_apt_acquire_option(option, enabled) -%}}
+setting=$(
+    {{{ bash_apt_explicit_acquire_value(option) | indent(4) }}}
+) || exit "$XCCDF_RESULT_ERROR"
+
+{{%- set values = "1|true|yes|with|on|enable" if enabled else "0|false|no|without|off|disable" %}}
+shopt -s nocasematch
+if [[ "$setting" =~ ^value=\'({{{ values }}})\'$ ]]; then
+    exit "$XCCDF_RESULT_PASS"
+fi
+
+echo 'Acquire::{{{ option }}} is not explicitly configured with {{% if enabled %}}an enabled{{% else %}}a disabled{{% endif %}} value.'
+exit "$XCCDF_RESULT_FAIL"
+{{%- endmacro %}}

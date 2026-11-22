@@ -1487,3 +1487,16 @@ Create a description text for rules that use the crypto_sub_policies template.
     {{{ key }}} = {{{ value }}}
     </pre>
 {{%- endmacro %}}
+
+{{# Match the entire Enabled field in a single deb822 stanza. APT skips
+   comments, unfolds indented lines and uses the last occurrence of a field. #}}
+{{% macro apt_deb822_disabled_pattern() -%}}
+{{# APT on Ubuntu 24.04 and newer and Debian 13 also parses the 0b prefix. #}}
+{{%- set zero_prefix = "0[xb]" if product in ["ubuntu2404", "ubuntu2604", "debian13"] else "0x" -%}}
+(?imx)^Enabled [^\S\r\n]* : [ \t]*
+(?: \r?\n (?: \#[^\r\n]* \r?\n )* [ \t]+ )*
+(?: no | false | off | without | disable | [+-]?(?:{{{ zero_prefix }}})?0+ ) [ \t]*
+(?: \r?\n (?: \#[^\r\n]* | [ \t]+ ) )*
+(?= \r?\n [^\# \t\r\n] | \r?\z )
+(?! [\s\S]* ^Enabled [^\S\r\n]* : )
+{{%- endmacro %}}

@@ -28,8 +28,18 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_deb822_http" version="1">
     <ind:path>/etc/apt/sources.list.d</ind:path>
-    <ind:filename operation="pattern match">.*\.sources$</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*(?i)URIs(?-i):[\s]+[^#\n]*http://.*$</ind:pattern>
+    <ind:filename operation="pattern match">^[A-Za-z0-9_-][A-Za-z0-9_.-]*\.sources$</ind:filename>
+    <!-- Each item is one stanza. An indented line belongs to the preceding field. -->
+    <ind:pattern operation="pattern match">^[^\r\n]+(?:\r?\n[^\r\n]+)*</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_{{{ rule_id }}}_disabled</filter>
+    <filter action="include">state_{{{ rule_id }}}_http_uri</filter>
   </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_disabled" version="1">
+    <ind:text operation="pattern match">{{{ apt_deb822_disabled_pattern() }}}</ind:text>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_http_uri" version="1">
+    <!-- Skip complete URIs lines only when the field continues on the next line. -->
+    <ind:text operation="pattern match">(?m)^(?i:URIs)[^\S\r\n]*:(?:[^\r\n]*\r?\n(?:#[^\r\n]*\r?\n)*(?=[ \t]))*(?:[^\r\n]*[ \t])?http://</ind:text>
+  </ind:textfilecontent54_state>
 </def-group>
