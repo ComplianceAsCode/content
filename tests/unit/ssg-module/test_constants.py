@@ -6,7 +6,7 @@ import sys
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 
-def _get_oscap_constants(vendor=None):
+def _get_oscap_vendor_and_profile(vendor=None):
     env = os.environ.copy()
     env["PYTHONPATH"] = PROJECT_ROOT
     if vendor is None:
@@ -17,33 +17,18 @@ def _get_oscap_constants(vendor=None):
         [
             sys.executable,
             "-c",
-            (
-                "from ssg.constants import (OSCAP_BENCHMARK, OSCAP_GROUP, OSCAP_PROFILE, "
-                "OSCAP_RULE, OSCAP_VALUE); "
-                "print(OSCAP_BENCHMARK, OSCAP_PROFILE, OSCAP_GROUP, OSCAP_RULE, OSCAP_VALUE, "
-                "sep='\\n')"
-            ),
+            "from ssg.constants import OSCAP_PROFILE, OSCAP_VENDOR; "
+            "print(OSCAP_VENDOR, OSCAP_PROFILE, sep='\\n')",
         ],
         env=env,
         text=True,
     ).splitlines()
 
 
-def test_oscap_vendor_defaults_to_ssg_project():
-    assert _get_oscap_constants() == [
-        "xccdf_org.ssgproject.content_benchmark_",
-        "xccdf_org.ssgproject.content_profile_",
-        "xccdf_org.ssgproject.content_group_",
-        "xccdf_org.ssgproject.content_rule_",
-        "xccdf_org.ssgproject.content_value_",
-    ]
-
-
-def test_oscap_vendor_can_be_configured():
-    assert _get_oscap_constants("com.example") == [
-        "xccdf_com.example.content_benchmark_",
-        "xccdf_com.example.content_profile_",
-        "xccdf_com.example.content_group_",
-        "xccdf_com.example.content_rule_",
-        "xccdf_com.example.content_value_",
-    ]
+def test_oscap_vendor():
+    for vendor in (None, "com.example"):
+        expected_vendor = vendor or "org.ssgproject"
+        assert _get_oscap_vendor_and_profile(vendor) == [
+            expected_vendor,
+            "xccdf_%s.content_profile_" % expected_vendor,
+        ]

@@ -355,17 +355,8 @@ make -j4
 
 ### Configuring the XCCDF vendor
 
-The vendor portion of generated XCCDF identifiers is configurable at build
-time through the `SSG_VENDOR` CMake option. If the option is omitted, it
-defaults to `org.ssgproject`, preserving the standard ComplianceAsCode
-identifier prefix:
-
-```text
-xccdf_org.ssgproject.content
-```
-
-Set `SSG_VENDOR` during CMake configuration to generate content for a different
-vendor:
+XCCDF identifiers use `org.ssgproject` as their vendor by default. Set the
+`SSG_VENDOR` CMake option to use a different vendor:
 
 ```bash
 cd build/
@@ -374,34 +365,11 @@ make -j4
 ```
 
 The vendor may contain ASCII letters, digits, dots, underscores, and hyphens.
-Other characters are rejected during CMake configuration because the vendor is
-embedded in XML identifiers.
-
-The configured value applies consistently to benchmark, profile, group, rule,
-and value identifiers. For example, the configuration above produces IDs such
-as:
+It applies to benchmark, profile, group, rule, and value identifiers. For
+example, the configuration above produces profile identifiers beginning with:
 
 ```text
-xccdf_com.example.content_benchmark_EXAMPLE
-xccdf_com.example.content_profile_example
-xccdf_com.example.content_group_example_group
-xccdf_com.example.content_rule_example_rule
-xccdf_com.example.content_value_example_value
-```
-
-Generated data streams, HTML guides, profile remediation scripts, and related
-build artifacts use the same vendor prefix. Because the vendor is stored in the
-CMake cache, remove the build directory or rerun CMake with a new `SSG_VENDOR`
-value before rebuilding content for another vendor.
-
-The same option can be passed when using one of the development container
-images. Override the container command so the CMake configuration includes the
-vendor setting:
-
-```bash
-docker build -t complianceascode-content -f Dockerfiles/ubuntu .
-docker run --rm complianceascode-content \
-    sh -c 'cmake -G Ninja -DSSG_VENDOR=com.example .. && ninja -j "$BUILD_JOBS"'
+xccdf_com.example.content_profile_
 ```
 
 ### Reproducible Builds

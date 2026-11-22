@@ -22,15 +22,13 @@ def test_thin_ds(path):
     rules = root.findall(".//{http://checklists.nist.gov/xccdf/1.2}Rule")
     assert len(rules) == 1
 
-    rule_id = rules[0].get("id", "NoID").removeprefix("xccdf_org.ssgproject.content_rule_")
+    rule_id = rules[0].get("id", "NoID").rsplit(".content_rule_", 1)[-1]
     assert rule_id in str(path)
 
     profiles = root.findall(".//{http://checklists.nist.gov/xccdf/1.2}Profile")
     assert len(profiles) == 1
 
-    profile_id = (
-        profiles[0].get("id", "NoID").removeprefix("xccdf_org.ssgproject.content_profile_")
-    )
+    profile_id = profiles[0].get("id", "NoID").rsplit(".content_profile_", 1)[-1]
     assert profile_id in str(path)
 
 

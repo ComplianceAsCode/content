@@ -13,7 +13,7 @@ import shutil
 import tempfile
 
 import ssg.utils
-from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
+from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE, OSCAP_VALUE
 from ssg.jinja import process_file
 from ssg.rules import is_rule_dir
 
@@ -72,9 +72,10 @@ def generate_xslt_change_value_template(value_short_id, new_value):
                 <xsl:apply-templates select="node()|@*"/>
             </xsl:copy>
         </xsl:template>
-        <xsl:template match="ds:component/xccdf-1.2:Benchmark//xccdf-1.2:Value[@id='xccdf_org.ssgproject.content_value_{value_short_id}']/xccdf-1.2:value[not(@selector)]/text()">{new_value}</xsl:template>
+        <xsl:template match="ds:component/xccdf-1.2:Benchmark//xccdf-1.2:Value[@id='{value_prefix}{value_short_id}']/xccdf-1.2:value[not(@selector)]/text()">{new_value}</xsl:template>
 </xsl:stylesheet>"""
-    return XSLT_TEMPLATE.format(value_short_id=value_short_id, new_value=new_value)
+    return XSLT_TEMPLATE.format(
+        value_prefix=OSCAP_VALUE, value_short_id=value_short_id, new_value=new_value)
 
 
 def _apply_script(rule_dir, test_env, script):
