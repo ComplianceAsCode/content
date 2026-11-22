@@ -9,6 +9,8 @@ import argparse
 import glob
 from collections import defaultdict
 
+from ssg.constants import OSCAP_BENCHMARK, OSCAP_PROFILE
+
 
 # Maps shortened benchmark IDs to list of profiles that need to be contained
 # in said benchmarks. Delete the predictable prefix of each benchmark ID to get
@@ -29,8 +31,8 @@ BENCHMARK_TO_FILE_STEM = {
 }
 
 
-BENCHMARK_ID_PREFIX = "xccdf_org.ssgproject.content_benchmark_"
-PROFILE_ID_PREFIX = "xccdf_org.ssgproject.content_profile_"
+BENCHMARK_ID_PREFIX = OSCAP_BENCHMARK
+PROFILE_ID_PREFIX = OSCAP_PROFILE
 
 
 def parse_args():

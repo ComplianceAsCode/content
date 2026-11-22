@@ -5,6 +5,8 @@ import os
 import os.path
 import argparse
 
+from ssg.constants import OSCAP_RULE
+
 XCCDF_NS = "http://checklists.nist.gov/xccdf/1.2"
 
 
@@ -27,7 +29,7 @@ def compare_ds_with_playbooks_dir(ds_path, playbooks_dir_path):
             system = fix.get("system")
             if system == "urn:xccdf:fix:script:ansible":
                 id_ = rule.get("id")
-                id_ = id_.replace("xccdf_org.ssgproject.content_rule_", "")
+                id_ = id_.replace(OSCAP_RULE, "")
                 rules_in_ds_with_ansible_fix.append(id_)
     playbooks_in_dir = []
     for filename in os.listdir(playbooks_dir_path):

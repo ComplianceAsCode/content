@@ -110,7 +110,7 @@ stig_refs = 'https://www.cyber.mil/stigs/'
 disa_cciuri = "https://www.cyber.mil/stigs/cci/"
 ssg_version_uri = \
     "https://github.com/ComplianceAsCode/content/releases/latest"
-OSCAP_VENDOR = "org.ssgproject"
+OSCAP_VENDOR = os.environ.get("SSG_VENDOR", "org.ssgproject")
 OSCAP_DS_STRING = "xccdf_%s.content_benchmark_" % OSCAP_VENDOR
 OSCAP_BENCHMARK = "xccdf_%s.content_benchmark_" % OSCAP_VENDOR
 OSCAP_PROFILE = "xccdf_%s.content_profile_" % OSCAP_VENDOR

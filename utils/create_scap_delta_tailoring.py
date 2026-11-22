@@ -32,8 +32,7 @@ def get_profile(product, profile_name, build_root):
             scap=NS["scap"], xccdf=NS["xccdf-1.2"])
     )
 
-    profile_name_fqdn = "xccdf_org.ssgproject.content_profile_{profile_name}".format(
-        profile_name=profile_name)
+    profile_name_fqdn = ssg.constants.OSCAP_PROFILE + profile_name
 
     for profile in profiles:
         if profile.attrib['id'] == profile_name_fqdn:

@@ -6,11 +6,11 @@ import itertools
 
 import ssg.xml
 from ssg.build_renumber import _find_identcce
-from ssg.constants import cce_uri, OSCAP_RULE, XCCDF12_NS
+from ssg.constants import cce_uri, OSCAP_PROFILE, OSCAP_RULE, XCCDF12_NS
 
 
 def match_profile(needle, haystack):
-    start_string = "xccdf_org.ssgproject.content_profile_%s" % needle
+    start_string = OSCAP_PROFILE + needle
     if haystack.startswith(start_string):
         return True
     return False
