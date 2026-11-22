@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 9, Red Hat Enterprise Linux 10,multi_platform_fedora
-# profiles = xccdf_org.ssgproject.content_profile_ospp
+# profiles = ospp
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing

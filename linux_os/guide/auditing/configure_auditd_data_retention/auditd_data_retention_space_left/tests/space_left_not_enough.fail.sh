@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = audit
-# profiles = xccdf_org.ssgproject.content_profile_stig
+# profiles = stig
 # remediation = bash
 
 . $SHARED/auditd_utils.sh

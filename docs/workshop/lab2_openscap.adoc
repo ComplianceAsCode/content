@@ -121,17 +121,17 @@ There are multiple files produced by the build. The file that is going to be use
 ...
     Profiles:
         Title: CIS Ubuntu 24.04 Level 1 Server Benchmark
-            Id: xccdf_org.ssgproject.content_profile_cis_level1_server
+            Id: xccdf_example.content_profile_cis_level1_server
         Title: CIS Ubuntu 24.04 Level 1 Workstation Benchmark
-            Id: xccdf_org.ssgproject.content_profile_cis_level1_workstation
+            Id: xccdf_example.content_profile_cis_level1_workstation
         Title: CIS Ubuntu 24.04 Level 2 Server Benchmark
-            Id: xccdf_org.ssgproject.content_profile_cis_level2_server
+            Id: xccdf_example.content_profile_cis_level2_server
         Title: CIS Ubuntu 24.04 Level 2 Workstation Benchmark
-            Id: xccdf_org.ssgproject.content_profile_cis_level2_workstation
+            Id: xccdf_example.content_profile_cis_level2_workstation
         Title: Standard System Security Profile for Ubuntu 24.04
-            Id: xccdf_org.ssgproject.content_profile_standard
+            Id: xccdf_example.content_profile_standard
         Title: Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG) V1R1
-            Id: xccdf_org.ssgproject.content_profile_stig
+            Id: xccdf_example.content_profile_stig
 ...
 ----
 +
@@ -146,7 +146,7 @@ Therefore, the `scap-security-guide` package in Linux distributions may contain 
 . Perform your first baseline testing scan with the vanilla CIS Workstation Level 1 profile.
 +
 Note in the command below that you can skip the profile ID prefix to make the command simpler.
-The real ID is `xccdf_org.ssgproject.content_profile_cis_level1_workstation`.
+The real ID is `xccdf_example.content_profile_cis_level1_workstation`.
 +
 The scanning command has to be executed by a privileged user using `sudo`, so the scanner can access parts of the system that are off-limits to common users.
 The simplest scanner invocation can look like this:

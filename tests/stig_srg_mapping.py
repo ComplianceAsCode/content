@@ -21,7 +21,6 @@ except ImportError:
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 BINARY_DIR = os.path.join(SSG_ROOT, "build")
-PREFIX = "xccdf_org.ssgproject.content_"
 SRG_GPOS_URL = "https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os"
 SRG_PREFIX = "SRG-OS"
 
@@ -60,7 +59,7 @@ def _parse_args() -> argparse.Namespace:
 def _print_missing(missing):
     if len(missing) != 0:
         for rule in missing:
-            content_id = rule.replace(f"{PREFIX}rule_", "")
+            content_id = rule.replace(ssg.constants.OSCAP_RULE, "")
             print(f"Missing SRG in {content_id}")
         exit(3)
 
@@ -86,7 +85,7 @@ def _get_stig_rules(stig_profile):
 
 
 def _get_stig_profile(root):
-    profile_id = f"{PREFIX}profile_stig"
+    profile_id = ssg.constants.OSCAP_PROFILE + "stig"
     stig_profile = root.find(
         f".//xccdf-1.2:Profile[@id='{profile_id}']", ssg.constants.PREFIX_TO_NS
     )

@@ -57,7 +57,7 @@ testing rule ocp_proxy_has_ca locally
 Title
         None
 Rule
-        xccdf_org.ssgproject.content_rule_ocp_proxy_has_ca
+        xccdf_<vendor>.content_rule_ocp_proxy_has_ca
 Ident
         CCE-84209-6
 Result

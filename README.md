@@ -150,7 +150,7 @@ The `oscap` tool is a low-level command line interface that comes from
 the OpenSCAP project. It can be used to scan the local machine.
 
 ```bash
-oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_ospp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
+oscap xccdf eval --profile ospp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
 ```
 
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
@@ -187,7 +187,7 @@ stored on the local machine. Keep in mind that `oscap` has to be installed on th
 remote machine but the SSG content doesn't need to be.
 
 ```bash
-oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_standard --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
+oscap-ssh root@192.168.1.123 22 xccdf eval --profile standard --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
 ```
 
 ### Ansible

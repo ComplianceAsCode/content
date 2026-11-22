@@ -20,8 +20,7 @@ def test_scenario():
     assert "multi_platform_rhel" in s.script_params["platform"]
     assert "Fedora" in s.script_params["platform"]
     assert len(s.script_params["profiles"]) == 1
-    assert "xccdf_org.ssgproject.content_profile_cis" in \
-        s.script_params["profiles"]
+    assert "cis" in s.script_params["profiles"]
     assert OSCAP_PROFILE_ALL_ID not in s.script_params["profiles"]
     assert len(s.script_params["check"]) == 1
     assert "oval" in s.script_params["check"]
@@ -64,9 +63,8 @@ def test_scenario_defaults():
     assert len(s.script_params["variables"]) == 0
     assert s.matches_platform("rhel10")
     assert s.matches_platform("debian12")
-    s.override_profile("xccdf_org.ssgproject.content_profile_cis")
-    assert "xccdf_org.ssgproject.content_profile_cis" in \
-        s.script_params["profiles"]
+    s.override_profile("cis")
+    assert "cis" in s.script_params["profiles"]
 
 
 class PackagelessTestEnv:

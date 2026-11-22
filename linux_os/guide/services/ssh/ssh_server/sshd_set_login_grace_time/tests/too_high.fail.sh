@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_cis,xccdf_org.ssgproject.content_profile_pci-dss-4
+# profiles = cis,pci-dss-4
 # platform = multi_platform_all
 
 SSHD_CONFIG="{{{ sshd_main_config_file }}}"

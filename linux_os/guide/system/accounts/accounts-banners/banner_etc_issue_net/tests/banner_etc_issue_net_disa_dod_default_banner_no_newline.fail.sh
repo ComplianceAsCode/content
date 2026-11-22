@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
-# profiles = xccdf_org.ssgproject.content_profile_stig
+# profiles = stig
 
 # dod_default banner
 echo "You are accessing a U.S. Government (USG) Information System (IS) that is

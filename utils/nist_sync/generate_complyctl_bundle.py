@@ -5,7 +5,7 @@ Generate a complyctl-compatible OCI bundle from Gemara export artifacts.
 This script:
   1. Reads a Gemara ControlCatalog produced by export_to_gemara.py
   2. Generates a Gemara Policy YAML with SHORT CaC rule names in assessment-plans
-     (the OpenSCAP provider adds the xccdf_org.ssgproject.content_rule_ prefix internally
+     (the OpenSCAP provider adds the configured XCCDF rule prefix internally
      and compares short names against data stream rules after stripping the prefix)
   3. Optionally packages everything into a split-layer OCI artifact using oras and
      pushes it to a local OCI registry
@@ -87,7 +87,7 @@ def generate_complytime_yaml(
 
     Format expected by complyctl v1.0.0-alpha.0:
     - http:// prefix triggers PlainHTTP mode in the OCI client
-    - 'profile' variable: short XCCDF profile name (provider adds xccdf_org.ssgproject.content_profile_ prefix)
+    - 'profile' variable: short XCCDF profile name (provider adds the configured prefix)
     - 'datastream' variable: explicit path to the SCAP data stream, bypassing OS auto-detection
       (the provider's findMatchingDatastream() may pick the wrong file on mixed-OS systems)
     """
@@ -256,7 +256,7 @@ def parse_args() -> argparse.Namespace:
         "--base-profile",
         default="cis",
         help=(
-            "XCCDF base profile for tailoring (short name without xccdf_org.ssgproject.content_profile_ prefix). "
+            "XCCDF base profile for tailoring (short name without the configured prefix). "
             "Must contain all assessment-plan rules. For rhel9 moderate baseline, 'cis' covers all 22 rules. "
             "(default: cis)"
         ),

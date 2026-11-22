@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = gdm,dconf
-# profiles = xccdf_org.ssgproject.content_profile_stig
+# profiles = stig
 
 . $SHARED/dconf_test_functions.sh
 

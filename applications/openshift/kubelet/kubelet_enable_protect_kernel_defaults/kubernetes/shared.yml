@@ -4,7 +4,7 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 metadata:
   annotations:
-    complianceascode.io/depends-on: xccdf_org.ssgproject.content_rule_kubelet_enable_protect_kernel_sysctl
+    complianceascode.io/depends-on: xccdf_{{{ ssg_vendor }}}.content_rule_kubelet_enable_protect_kernel_sysctl
 spec:
   kubeletConfig:
     protectKernelDefaults: true

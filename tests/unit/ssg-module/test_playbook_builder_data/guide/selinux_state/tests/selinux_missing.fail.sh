@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_C2S, xccdf_org.ssgproject.content_profile_ospp
+# profiles = C2S, ospp
 # remediation = none
 
 SELINUX_FILE='/etc/selinux/config'

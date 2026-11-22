@@ -319,7 +319,7 @@ python3 utils/nist_sync/generate_complyctl_bundle.py \
 
 The file complyctl reads to know which rules to evaluate. Each `assessment-plans`
 entry maps to one OpenSCAP rule check. The `id` field **must** be the short CaC
-rule name (no `xccdf_org.ssgproject.content_rule_` prefix).
+rule name (without the configured XCCDF rule prefix).
 
 ```yaml
 title: NIST SP 800-53 Rev 5 for Red Hat Enterprise Linux 9
@@ -330,7 +330,7 @@ metadata:
   description: >
     Automated evaluation policy for NIST SP 800-53 Rev 5 on RHEL9.
     requirement-id values are short CaC rule names (the OpenSCAP provider adds
-    the xccdf_org.ssgproject.content_rule_ prefix).
+    the configured XCCDF rule prefix).
 
 imports:
   catalogs:
@@ -435,8 +435,7 @@ targets:
 ```
 
 **Key gotcha — profile variable constraint:** The `profile` value is validated
-against `^[a-zA-Z0-9-_.]+$`. Use the short name only — do NOT use the full XCCDF ID
-(`xccdf_org.ssgproject.content_profile_nist_800_53`).
+against `^[a-zA-Z0-9-_.]+$`. Use the short name only, not the full XCCDF profile ID.
 
 **Key gotcha — `datastream:` is required:** Without this, the OpenSCAP provider
 reads `ID_LIKE` from `/etc/os-release` to pick the data stream, which can resolve
@@ -487,7 +486,7 @@ complyctl generate --policy-id nist-800-53-rev5-rhel9-moderate
 1. Opens `nist-800-53-rev5-rhel9-moderate/rhel9_policy.yaml`
 2. Extracts all `assessment-plans[*].id` → these are short CaC rule names
 3. Opens `build/ssg-rhel9-ds.xml` (via the `datastream:` variable)
-4. Finds the base profile `xccdf_org.ssgproject.content_profile_nist_800_53`
+4. Finds the base profile `nist_800_53`
 5. Creates a tailoring document that extends the base profile, enabling only
    the 22 rules from the Policy
 

@@ -2,7 +2,7 @@
 
 Generates a Policy YAML that complyctl uses to drive OpenSCAP scans.
 Assessment-plan IDs use SHORT CaC rule names (e.g. 'accounts_tmout');
-the OpenSCAP provider adds the xccdf_org.ssgproject.content_rule_ prefix
+the OpenSCAP provider adds the configured XCCDF rule prefix
 internally via getDsRuleID().
 """
 
@@ -216,7 +216,7 @@ def generate_policy(
             "description": (
                 f"Automated evaluation policy for NIST SP 800-53 Rev 5 on {full_name}, "
                 "using ComplianceAsCode rules. requirement-id values are short CaC rule names "
-                "(the OpenSCAP provider adds the xccdf_org.ssgproject.content_rule_ prefix)."
+                "(the OpenSCAP provider adds the configured XCCDF rule prefix)."
             ),
             "author": {
                 "id": "complianceascode",

@@ -1,5 +1,5 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp
+# profiles = ospp
 
 echo "ocredit=-1" > {{{ pwquality_path }}}

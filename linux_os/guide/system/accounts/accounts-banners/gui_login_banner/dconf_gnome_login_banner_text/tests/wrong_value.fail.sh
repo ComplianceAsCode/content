@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_ol
-# profiles = xccdf_org.ssgproject.content_profile_ncp
+# profiles = ncp
 # packages = dconf,gdm
 
 source $SHARED/dconf_test_functions.sh

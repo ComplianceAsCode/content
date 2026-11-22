@@ -4,6 +4,7 @@ import argparse
 import os
 
 import ssg.build_yaml
+import ssg.yaml
 from utils.template_renderer import render_template, resolve_var_substitutions
 
 TABLE_DIR = os.path.join(os.path.dirname(__file__), "tables")
@@ -42,6 +43,8 @@ if __name__ == "__main__":
         args.build_dir, args.product, "profiles", f"{args.profile}.profile")
     profile = ssg.build_yaml.Profile.from_yaml(profile_filename)
     data["description"] = profile.description
+    build_config = ssg.yaml.open_raw(os.path.join(args.build_dir, "build_config.yml"))
+    data["ssg_vendor"] = build_config["ssg_vendor"]
     data["title"] = profile.title
     data["rules"] = get_rules(args.build_dir, args.product, profile)
     render_template(data, TESTINFO_TEMPLATE, args.output)

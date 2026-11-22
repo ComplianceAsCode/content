@@ -4,7 +4,7 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
   annotations:
-    complianceascode.io/depends-on: xccdf_org.ssgproject.content_rule_package_usbguard_installed
+    complianceascode.io/depends-on: xccdf_{{{ ssg_vendor }}}.content_rule_package_usbguard_installed
 spec:
   config:
     ignition:

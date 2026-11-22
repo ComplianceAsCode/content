@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_stig
+# profiles = stig
 
 . $SHARED/dconf_test_functions.sh
 

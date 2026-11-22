@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = audit
-# profiles = xccdf_org.ssgproject.content_profile_stig
+# profiles = stig
 
 . $SHARED/auditd_utils.sh
 prepare_auditd_test_enviroment

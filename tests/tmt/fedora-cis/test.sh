@@ -73,7 +73,7 @@ function unselect {
 	local ds="$1" rules=("${@:2}")
 	local rule e_args=()
 	for rule in "${rules[@]}"; do
-		e_args+=(-e "/<xccdf-1.2:select idref=\"xccdf_org.ssgproject.content_rule_${rule}\" /s/selected=\"true\"/selected=\"false\"/")
+		e_args+=(-e "/<xccdf-1.2:select idref=\"xccdf_.*\\.content_rule_${rule}\" /s/selected=\"true\"/selected=\"false\"/")
 	done
 	+ sed "${e_args[@]}" "$ds" || fatal "unselect sed failed"
 }
