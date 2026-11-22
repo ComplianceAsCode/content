@@ -50,7 +50,9 @@ def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
             valid_profiles += [ds_profile]
             continue
         for sel_profile in selected_profiles:
-            if ds_profile.endswith(sel_profile):
+            profile_id = sel_profile.rsplit(".content_profile_", 1)[-1]
+            if (ds_profile == sel_profile or
+                    ds_profile.endswith(".content_profile_" + profile_id)):
                 valid_profiles += [ds_profile]
 
     if not valid_profiles:

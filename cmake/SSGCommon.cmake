@@ -1058,16 +1058,9 @@ macro(ssg_build_product PRODUCT)
         add_dependencies(${PRODUCT} ${PRODUCT}-tests)
     endif()
 
-    # Configure kickstarts so their profile IDs use the selected vendor.
+    # grab all the kickstarts (if any) and install them
     file(GLOB KICKSTART_FILES "${CMAKE_CURRENT_SOURCE_DIR}/kickstart/ssg-${PRODUCT}-*-ks.cfg")
-    set(KICKSTART_BUILD_FILES)
-    foreach(KICKSTART_FILE ${KICKSTART_FILES})
-        get_filename_component(KICKSTART_FILENAME "${KICKSTART_FILE}" NAME)
-        set(KICKSTART_BUILD_FILE "${CMAKE_CURRENT_BINARY_DIR}/kickstart/${KICKSTART_FILENAME}")
-        configure_file("${KICKSTART_FILE}" "${KICKSTART_BUILD_FILE}" @ONLY)
-        list(APPEND KICKSTART_BUILD_FILES "${KICKSTART_BUILD_FILE}")
-    endforeach()
-    install(FILES ${KICKSTART_BUILD_FILES}
+    install(FILES ${KICKSTART_FILES}
         DESTINATION "${SSG_KICKSTART_INSTALL_DIR}")
 endmacro()
 
@@ -1450,7 +1443,7 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/Contributors.md" "zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/kickstart"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/rhel*/kickstart/*-ks.cfg" -DDEST="zipfile/${ZIPNAME}/kickstart" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_SOURCE_DIR}/products/rhel*/kickstart/*-ks.cfg" -DDEST="zipfile/${ZIPNAME}/kickstart" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-*-ds.xml" -DDEST="zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/bash"
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/*.sh" -DDEST="zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"

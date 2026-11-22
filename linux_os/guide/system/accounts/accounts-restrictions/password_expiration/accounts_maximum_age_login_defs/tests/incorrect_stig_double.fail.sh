@@ -2,7 +2,7 @@
 {{% if product == "ubuntu2404" %}}
 # platform = Not Applicable
 {{% else %}}
-# profiles = stig
+# profiles = xccdf_org.ssgproject.content_profile_stig
 {{% endif %}}
 # variables = var_accounts_maximum_age_login_defs=60
 

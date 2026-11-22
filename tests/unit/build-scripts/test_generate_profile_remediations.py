@@ -9,10 +9,11 @@ sys.path.insert(
     0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "build-scripts")
 )
 import generate_profile_remediations as gpr
-from ssg.constants import OSCAP_PROFILE, OSCAP_RULE, OSCAP_VALUE
 
 XCCDF_NS = "http://checklists.nist.gov/xccdf/1.2"
 DS_NS = "http://scap.nist.gov/schema/scap/source/1.2"
+OSCAP_PROFILE = "xccdf_org.ssgproject.content_profile_"
+OSCAP_RULE = "xccdf_org.ssgproject.content_rule_"
 BASH_SYSTEM = "urn:xccdf:fix:script:sh"
 ANSIBLE_SYSTEM = "urn:xccdf:fix:script:ansible"
 HUMMINGBIRD_SYSTEM = "urn:xccdf:fix:script:hummingbird"
@@ -365,7 +366,7 @@ MINIMAL_DS_TEMPLATE = """\
 
 RULE_ID = OSCAP_RULE + "test_rule"
 PROFILE_ID = OSCAP_PROFILE + "test_profile"
-VALUE_ID = OSCAP_VALUE + "test_var"
+VALUE_ID = "xccdf_org.ssgproject.content_value_test_var"
 
 
 @pytest.fixture

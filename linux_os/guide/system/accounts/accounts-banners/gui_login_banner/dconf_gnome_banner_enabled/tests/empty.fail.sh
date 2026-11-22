@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = ncp
+# profiles = xccdf_org.ssgproject.content_profile_ncp
 # packages = dconf,gdm
 
 source $SHARED/dconf_test_functions.sh

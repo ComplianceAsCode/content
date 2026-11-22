@@ -14,8 +14,9 @@ from ssg.constants import OSCAP_BENCHMARK, OSCAP_PROFILE
 
 # Maps shortened benchmark IDs to list of profiles that need to be contained
 # in said benchmarks. Delete the predictable prefix of each benchmark ID to get
-# the shortened ID. For example, OSCAP_BENCHMARK + "RHEL-7" becomes just
-# RHEL-7. Apply the same to profile IDs.
+# the shortened ID. For example xccdf_org.ssgproject.content_benchmark_RHEL-7
+# becomes just RHEL-7. Apply the same to profile IDs:
+# xccdf_org.ssgproject.content_profile_ospp42 becomes ospp42
 
 STABLE_PROFILE_IDS = {
     "FEDORA": ["standard", "ospp", "pci-dss"],

@@ -1,7 +1,7 @@
 #!/bin/bash
 # packages = audit
 # platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
-# profiles = ospp
+# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 . $SHARED/auditd_utils.sh
 prepare_auditd_test_enviroment

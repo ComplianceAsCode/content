@@ -10,9 +10,7 @@ import xml.etree.ElementTree as ET
 from ssg.build_cpe import ProductCPEs
 import ssg.build_yaml
 import ssg.entities.common
-from ssg.constants import (
-    OSCAP_PROFILE, OSCAP_VALUE, OSCAP_VENDOR, XCCDF12_NS,
-    cpe_language_namespace, xhtml_namespace)
+from ssg.constants import XCCDF12_NS, cpe_language_namespace, xhtml_namespace
 from ssg.yaml import open_raw
 
 
@@ -56,7 +54,7 @@ def test_add_sub_element_with_sub():
     sub_el = sub_els[0]
     assert len(sub_el) == 0
     assert len(sub_el.attrib) == 2
-    assert sub_el.get("idref") == OSCAP_VALUE + "green"
+    assert sub_el.get("idref") == "xccdf_org.ssgproject.content_value_green"
     assert sub_el.get("use") == "legacy"
 
 
@@ -508,22 +506,21 @@ def test_profile_to_xml_element(profile_ospp):
     profile_el = profile_ospp.to_xml_element()
     with temporary_filename() as real:
         ET.ElementTree(profile_el).write(real)
-        with temporary_filename() as expected:
-            template = open(os.path.join(DATADIR, "ospp.xml")).read()
-            with open(expected, "w") as expected_file:
-                expected_file.write(template.replace("@VENDOR@", OSCAP_VENDOR))
-            assert xmldiff_main.diff_files(real, expected) == []
+        expected = os.path.join(DATADIR, "ospp.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
 
 
 @pytest.fixture
 def profile_ospp_with_extends(profile_ospp):
-    profile_ospp.extends = OSCAP_PROFILE + "standard"
+    profile_ospp.extends = "xccdf_org.ssgproject.content_profile_standard"
     return profile_ospp
 
 
 def test_profile_to_xml_element_extends(profile_ospp_with_extends):
     profile_el = profile_ospp_with_extends.to_xml_element()
-    assert profile_el.get("extends") == OSCAP_PROFILE + "standard"
+    assert profile_el.get("extends") == \
+        "xccdf_org.ssgproject.content_profile_standard"
 
 
 @pytest.fixture

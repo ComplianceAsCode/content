@@ -337,7 +337,7 @@ The rule didn't return the expected result `pass` result during the initial scan
 ```
 ERROR - Script banner_etc_issue_disa_dod_short.pass.sh using profile (all) found issue:
 ERROR - Rule evaluation resulted in fail, instead of expected pass during initial stage 
-ERROR - The initial scan failed for rule 'xccdf_example.content_rule_banner_etc_issue'.
+ERROR - The initial scan failed for rule 'xccdf_org.ssgproject.content_rule_banner_etc_issue'.
 ```
 
 
@@ -358,7 +358,7 @@ This signalizes that the remediation for this rule doesn't work correctly.
 ```
 INFO - Script banner_etc_issue_disa_dod_short.fail.sh using profile (all) OK
 ERROR - Rule evaluation resulted in error, instead of expected fixed during remediation stage 
-ERROR - The remediation failed for rule 'xccdf_example.content_rule_banner_etc_issue'.
+ERROR - The remediation failed for rule 'xccdf_org.ssgproject.content_rule_banner_etc_issue'.
 ```
 
 ## Common Pitfalls

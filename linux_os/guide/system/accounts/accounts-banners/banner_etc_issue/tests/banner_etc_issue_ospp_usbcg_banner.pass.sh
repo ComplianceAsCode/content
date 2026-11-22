@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = stig
+# profiles = xccdf_org.ssgproject.content_profile_stig
 
 # dod_banners banner
 echo "You are accessing a U.S. Government (USG) Information System (IS) that is

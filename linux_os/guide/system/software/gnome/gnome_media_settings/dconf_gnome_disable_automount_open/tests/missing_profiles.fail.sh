@@ -1,7 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_sle,multi_platform_ubuntu
 # packages = gdm,dconf
-# profiles = stig
+# profiles = xccdf_org.ssgproject.content_profile_stig
 
 . $SHARED/dconf_test_functions.sh
 

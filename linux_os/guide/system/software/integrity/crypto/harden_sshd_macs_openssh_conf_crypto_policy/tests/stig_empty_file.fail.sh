@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_fedora
-# profiles = stig
+# profiles = xccdf_org.ssgproject.content_profile_stig
 
 configfile=/etc/crypto-policies/back-ends/openssh.config
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # packages = pam
 # platform = Oracle Linux 7
-# profiles = cis
+# profiles = xccdf_org.ssgproject.content_profile_cis
 
 remember_cnt=24
 control_flag='requisite'

@@ -12,14 +12,14 @@ DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 @pytest.fixture
 def rule_el():
     rule = ET.Element("{%s}Rule" % XCCDF12_NS)
-    rule.set("id", "xccdf_org.example_content_rule_selinux_state")
+    rule.set("id", "xccdf_org.ssgproject_content_rule_selinux_state")
     return rule
 
 
 @pytest.fixture
 def rule_el2():
     rule = ET.Element("{%s}Rule" % XCCDF12_NS)
-    rule.set("id", "xccdf_org.example_content_rule_accounts_tmout")
+    rule.set("id", "xccdf_org.ssgproject_content_rule_accounts_tmout")
     return rule
 
 
@@ -89,7 +89,7 @@ def test_rules_with_ids_generator_single_rule(benchmark_with_single_rule):
     items = list(generator)
     assert len(items) == 1
     id_, rule = items[0]
-    assert id_ == "xccdf_org.example_content_rule_selinux_state"
+    assert id_ == "xccdf_org.ssgproject_content_rule_selinux_state"
     assert rule is not None
     assert rule.tag == "{%s}Rule" % XCCDF12_NS
     assert rule.get("id") == id_
@@ -101,12 +101,12 @@ def test_rules_with_ids_generator_(benchmark_with_many_rules):
     items = list(generator)
     assert len(items) == 2
     id_, rule = items[0]
-    assert id_ == "xccdf_org.example_content_rule_selinux_state"
+    assert id_ == "xccdf_org.ssgproject_content_rule_selinux_state"
     assert rule is not None
     assert rule.tag == "{%s}Rule" % XCCDF12_NS
     assert rule.get("id") == id_
     id_, rule = items[1]
-    assert id_ == "xccdf_org.example_content_rule_accounts_tmout"
+    assert id_ == "xccdf_org.ssgproject_content_rule_accounts_tmout"
     assert rule is not None
     assert rule.tag == "{%s}Rule" % XCCDF12_NS
     assert rule.get("id") == id_
@@ -124,9 +124,9 @@ def test_create_xccdf_id_to_cce_id_mapping(benchmark_with_many_rules_cces):
     mapping = ssg.build_renumber.create_xccdf_id_to_cce_id_mapping(
         benchmark_with_many_rules_cces)
     assert len(mapping) == 2
-    assert mapping["xccdf_org.example_content_rule_selinux_state"] == \
+    assert mapping["xccdf_org.ssgproject_content_rule_selinux_state"] == \
         "CCE-1234-789"
-    assert mapping["xccdf_org.example_content_rule_accounts_tmout"] == \
+    assert mapping["xccdf_org.ssgproject_content_rule_accounts_tmout"] == \
         "CCE-666666"
 
 
@@ -143,7 +143,7 @@ def test_create_xccdf_id_to_cce_id_mapping_2(
     mapping = ssg.build_renumber.create_xccdf_id_to_cce_id_mapping(
         benchmark_with_many_rules_but_not_all_have_cces)
     assert len(mapping) == 1
-    assert mapping["xccdf_org.example_content_rule_accounts_tmout"] == \
+    assert mapping["xccdf_org.ssgproject_content_rule_accounts_tmout"] == \
         "CCE-666666"
 
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = cis, ospp
+# profiles = xccdf_org.ssgproject.content_profile_cis, xccdf_org.ssgproject.content_profile_ospp
 # packages = bash
 
 {{% if 'sle' in product or 'ubuntu' in product or 'debian' in product or product.startswith('slmicro') %}}

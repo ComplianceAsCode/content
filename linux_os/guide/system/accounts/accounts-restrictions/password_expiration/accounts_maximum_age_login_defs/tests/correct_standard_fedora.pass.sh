@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = standard
+# profiles = xccdf_org.ssgproject.content_profile_standard
 # platform = multi_platform_fedora
 # variables = var_accounts_maximum_age_login_defs=90
 

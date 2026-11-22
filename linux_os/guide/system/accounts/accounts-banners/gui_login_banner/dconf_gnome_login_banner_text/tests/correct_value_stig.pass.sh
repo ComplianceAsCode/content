@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_ol,multi_platform_rhel,multi_platform_fedora
-# profiles = stig
+# profiles = xccdf_org.ssgproject.content_profile_stig
 # packages = dconf,gdm
 
 source $SHARED/dconf_test_functions.sh

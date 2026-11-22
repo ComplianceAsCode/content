@@ -1,7 +1,7 @@
 #!/bin/bash
 # packages = pam
 # platform = Oracle Linux 8
-# profiles = stig
+# profiles = xccdf_org.ssgproject.content_profile_stig
 
 authselect create-profile hardening -b sssd
 CUSTOM_PROFILE="custom/hardening"

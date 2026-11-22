@@ -419,7 +419,7 @@ Using Docker:
 ./automatus.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel9-ds.xml sshd_disable_kerb_auth
 ```
 
-Notice we didn't use the full rule name on the command line. The configured XCCDF rule prefix is added if not provided.
+Notice we didn't use full rule name on the command line. The prefix `xccdf_org.ssgproject.content_rule_` is added if not provided.
 
 It is possible to use wildcards, eg `accounts_passwords*` will run test scenarios for all
 rules which ID starts with `accounts_passwords`.
@@ -486,7 +486,7 @@ It will copy your data stream to `/tmp` and unselect rules listed in `rules_list
 ```
 Where:
 - `datastream`: is the data stream to unselect rules from
-- `rules_list`: is a file with list of short rule IDs, one per line
+- `rules_list`: is a file with list of complete rule IDs, one per line
 
 Example usage:
 ```
@@ -521,7 +521,7 @@ you need to use the `profiles` key in the test scenarios metadata to limit test
 scenario so it is executed only when testing profiles listed there.
 
 ```
-# profiles = ID1,ID2,...
+# profiles = xccdf_org.ssgproject.content_profile_ID1,xccdf_org.ssgproject.content_profile_ID2,...
 ```
 
 If a rule doesn't have any test scenario, it will be skipped and a `INFO` message printed at the end.
