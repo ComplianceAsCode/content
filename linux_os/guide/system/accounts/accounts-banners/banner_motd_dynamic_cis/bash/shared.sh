@@ -5,5 +5,5 @@
 # disruption = low
 
 if [ -x /etc/update-motd.d/10-uname ]; then
-    chmod -x /etc/update-motd.d/10-uname
+    chmod a-x /etc/update-motd.d/10-uname
 fi
