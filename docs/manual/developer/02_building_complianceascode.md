@@ -373,6 +373,10 @@ cmake -DSSG_VENDOR=com.example ..
 make -j4
 ```
 
+The vendor may contain ASCII letters, digits, dots, underscores, and hyphens.
+Other characters are rejected during CMake configuration because the vendor is
+embedded in XML identifiers.
+
 The configured value applies consistently to benchmark, profile, group, rule,
 and value identifiers. For example, the configuration above produces IDs such
 as:
@@ -380,6 +384,7 @@ as:
 ```text
 xccdf_com.example.content_benchmark_EXAMPLE
 xccdf_com.example.content_profile_example
+xccdf_com.example.content_group_example_group
 xccdf_com.example.content_rule_example_rule
 xccdf_com.example.content_value_example_value
 ```

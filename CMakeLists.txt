@@ -37,8 +37,10 @@ set(SSG_PATCH_VERSION 84)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "org.ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
-if(SSG_VENDOR STREQUAL "")
-    message(FATAL_ERROR "SSG_VENDOR must not be empty.")
+if(NOT SSG_VENDOR MATCHES "^[A-Za-z0-9._-]+$")
+    message(FATAL_ERROR
+        "SSG_VENDOR must contain only ASCII letters, digits, dots, underscores, and hyphens."
+    )
 endif()
 
 # Define Install Directories, where built content will be stored.
@@ -140,7 +142,6 @@ else()
     set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}")
 endif()
 message(STATUS "PYTHONPATH: $ENV{PYTHONPATH}")
-set(SSG_PYTHON_ENV "PYTHONPATH=$ENV{PYTHONPATH}" "SSG_VENDOR=${SSG_VENDOR}")
 
 # Required Packages
 set(Python_FIND_UNVERSIONED_NAMES FIRST)

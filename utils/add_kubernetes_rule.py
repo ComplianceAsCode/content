@@ -9,8 +9,9 @@ import re
 import time
 import yaml
 
-from ssg.utils import mkdir_p
 from ssg.constants import OSCAP_PROFILE
+from ssg.utils import mkdir_p
+
 
 class JinjaString(str):
     pass

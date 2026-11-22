@@ -50,7 +50,7 @@ set_tests_properties("test-rule-dir-json" PROPERTIES FIXTURES_SETUP "rule-dir-js
 
 add_test(
     NAME "stable-profile-ids"
-    COMMAND env ${SSG_PYTHON_ENV} "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/stable_profile_ids.py" "${CMAKE_BINARY_DIR}"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "SSG_VENDOR=${SSG_VENDOR}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/stable_profile_ids.py" "${CMAKE_BINARY_DIR}"
 )
 set_tests_properties("stable-profile-ids" PROPERTIES LABELS quick)
 
