@@ -5,6 +5,15 @@ title: 'Configure Local Interactive User Dot Directory Ownership'
 description: |-
     Dot directories below each local interactive user's home directory must be
     owned by that user.
+    {{% if "debian" in product %}}
+    <br /><br />
+    Note: The check does not match each dot directory with the user whose home
+    directory contains it. Dot directories below the home directory of a user
+    with UID 0 must be owned by root. Dot directories below other home
+    directories pass when they are owned by any local interactive user other
+    than root, so a dot directory owned by another interactive user is not
+    reported.
+    {{% endif %}}
 
 rationale: |-
     Unexpected ownership can allow one account to control another account's
