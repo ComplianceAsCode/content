@@ -196,7 +196,7 @@ endif()
 if(Python_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
 add_test(
         NAME "test-create_scap_delta_tailoring"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --dry-run --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --reference "stigid"  --output "${CMAKE_BINARY_DIR}/rhel8_stig_tailoring.xml" --product rhel8 --manual  "${RHEL8_DISA_STIG_REF}" -B "${CMAKE_BINARY_DIR}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "SSG_VENDOR=${SSG_VENDOR}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --dry-run --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --reference "stigid"  --output "${CMAKE_BINARY_DIR}/rhel8_stig_tailoring.xml" --product rhel8 --manual  "${RHEL8_DISA_STIG_REF}" -B "${CMAKE_BINARY_DIR}"
 )
 set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES DEPENDS "test-rule-dir-json")
@@ -204,7 +204,7 @@ set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES DEPENDS "test
 
 add_test(
         NAME "test-create_scap_delta_tailoring_resolved"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --dry-run --root "${CMAKE_SOURCE_DIR}" --resolved-rules-dir --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --reference "stigid"  --output "${CMAKE_BINARY_DIR}/rhel8_stig_tailoring.xml" --product rhel8 --manual  "${RHEL8_DISA_STIG_REF}" -B "${CMAKE_BINARY_DIR}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "SSG_VENDOR=${SSG_VENDOR}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --dry-run --root "${CMAKE_SOURCE_DIR}" --resolved-rules-dir --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --reference "stigid"  --output "${CMAKE_BINARY_DIR}/rhel8_stig_tailoring.xml" --product rhel8 --manual  "${RHEL8_DISA_STIG_REF}" -B "${CMAKE_BINARY_DIR}"
 )
 set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES DEPENDS "test-rule-dir-json")
@@ -263,7 +263,7 @@ endmacro()
 macro(stig_srg_mapping_test PRODUCT)
     add_test(
         NAME "stig-srg-mapping-${PRODUCT}"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/stig_srg_mapping.py" --prefix "SRG-OS" --build-root "${CMAKE_BINARY_DIR}" --root "${CMAKE_SOURCE_DIR}" ${PRODUCT}
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "SSG_VENDOR=${SSG_VENDOR}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/stig_srg_mapping.py" --prefix "SRG-OS" --build-root "${CMAKE_BINARY_DIR}" --root "${CMAKE_SOURCE_DIR}" ${PRODUCT}
     )
     set_tests_properties("stig-srg-mapping-${PRODUCT}" PROPERTIES LABELS quick)
 endmacro()
