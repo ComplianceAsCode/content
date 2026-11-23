@@ -1,7 +1,15 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
+# platform = Red Hat Virtualization 4,multi_platform_almalinux,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu
 # reboot = false
 # strategy = unknown
 # complexity = low
 # disruption = medium
 
-{{{ ansible_ini_file_set("/etc/gdm/custom.conf", "xdmcp", "Enable", "false", description=rule_title) }}}
+{{% if 'ubuntu' in product %}}
+{{% set gdm_conf_path = "/etc/gdm3/custom.conf" %}}
+{{% elif 'debian' in product %}}
+{{% set gdm_conf_path = "/etc/gdm3/daemon.conf" %}}
+{{% else %}}
+{{% set gdm_conf_path = "/etc/gdm/custom.conf" %}}
+{{% endif %}}
+
+{{{ ansible_ini_file_set(gdm_conf_path, "xdmcp", "Enable", "false", description=rule_title) }}}
