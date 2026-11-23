@@ -14,7 +14,7 @@
   ansible.builtin.find:
     paths: "{{item.path}}"
     patterns: "{{item.pattern}}"
-    contains: '^\s*\[{{{ SECTION }}}\]'
+    contains: '(?m)^[ \t]*\[{{{ SECTION }}}\]'
     read_whole_file: true
     use_regex: true
   register: systemd_dropin_files_with_section
