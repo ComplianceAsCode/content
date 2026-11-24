@@ -1,0 +1,66 @@
+---
+name: "CodeQL"
+
+on:
+    push:
+        branches:
+            - master
+            - stabilization
+    pull_request:
+        branches:
+            - master
+            - stabilization
+    schedule:
+        - cron: "43 5 * * 5"
+
+permissions: {}
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+    cancel-in-progress: true
+
+jobs:
+    analyze:
+        name: Analyze
+        runs-on: ubuntu-latest
+        permissions:
+            actions: read
+            contents: read
+            security-events: write
+
+        strategy:
+            fail-fast: false
+            matrix:
+                language: ["python", "actions"]
+                # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+            - name: Setup Python
+              uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+              with:
+                  python-version: "3.x"
+
+            - name: Install deps
+              run: |-
+                  sudo apt-get update
+                  sudo apt-get install -y jq util-linux
+
+            # Initializes the CodeQL tools for scanning.
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+              with:
+                  languages: ${{ matrix.language }}
+                  # If you wish to specify custom queries, you can do so here or in a config file.
+                  # By default, queries listed here will override any specified in a config file.
+                  # Prefix the list here with "+" to use these queries and those in the config file.
+
+                  # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+                  queries: +security-and-quality
+
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+              with:
+                  category: "/language:${{matrix.language}}"
