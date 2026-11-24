@@ -34,7 +34,7 @@ rationale: |-
 
 severity: unknown
 
-{{% if product == "ubuntu2604" %}}
+{{% if 'ubuntu' in product %}}
 platform: package[openssh-server]
 {{% endif %}}
 
