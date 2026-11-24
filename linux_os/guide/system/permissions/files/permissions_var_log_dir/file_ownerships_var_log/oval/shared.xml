@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
       {{{ oval_metadata("Owner of /var/log/* should be root or syslog.", rule_title=rule_title) }}}
     <criteria comment="Check file ownership of /var/log/*" operator="OR">
       <criteria operator="AND" comment="a dedicated syslog user exists: /var/log/* must be owned by root or syslog">
@@ -45,16 +45,22 @@
       id="{{{ rule_id }}}_test_file_ownership_var_log_root_only" state_operator="OR" version="1">
     <unix:object object_ref="object_file_ownership_var_log" />
     <unix:state state_ref="state_file_ownership_root_var_log_auth_log"/>
+    {{%- if 'ubuntu' in product or 'debian' in product %}}
+    <unix:state state_ref="state_file_ownership_owner_is_system_user"/>
+    {{%- endif %}}
   </unix:file_test>
 
   <unix:file_test check_existence="any_exist" check="all" comment="/var/log/* owner is root|syslog"
       id="test_file_ownership_var_log" state_operator="OR" version="1">
     <unix:object object_ref="object_file_ownership_var_log" />
-    <unix:state state_ref="state_file_ownership_syslog_var_log_auth_log"/>
-    <unix:state state_ref="state_file_ownership_root_var_log_auth_log"/>
-    {{%- if 'ubuntu' in product %}}
+    <!-- The system user state goes before the syslog one: when there is no syslog
+         user, the empty syslog uid variable stops OpenSCAP from collecting the
+         variables of the states that follow it, and the whole test ends in error. -->
+    {{%- if 'ubuntu' in product or 'debian' in product %}}
     <unix:state state_ref="state_file_ownership_owner_is_system_user"/>
     {{%- endif %}}
+    <unix:state state_ref="state_file_ownership_syslog_var_log_auth_log"/>
+    <unix:state state_ref="state_file_ownership_root_var_log_auth_log"/>
   </unix:file_test>
   <unix:file_object comment="/var/log/*" id="object_file_ownership_var_log" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />

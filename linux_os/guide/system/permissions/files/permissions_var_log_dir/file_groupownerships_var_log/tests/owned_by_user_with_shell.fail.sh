@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_ubuntu
 
 useradd -m -s /bin/bash test_user_with_shell
 

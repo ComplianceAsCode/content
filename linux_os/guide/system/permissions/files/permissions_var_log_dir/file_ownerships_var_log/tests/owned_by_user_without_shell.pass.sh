@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_ubuntu
 
 useradd -m -s /usr/sbin/nologin test_user_no_shell
 

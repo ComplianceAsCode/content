@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
       {{{ oval_metadata("Group owner of /var/log/* should be root or adm.", rule_title=rule_title) }}}
     <criteria comment="Check group ownership of /var/log/*">
      <criterion test_ref="test_group_ownership_var_log" />
@@ -21,7 +21,7 @@
     <unix:object object_ref="object_group_ownership_var_log" />
     <unix:state state_ref="state_group_ownership_adm_var_log_auth_log"/>
     <unix:state state_ref="state_group_ownership_root_var_log_auth_log"/>
-    {{%- if 'ubuntu' in product %}}
+    {{%- if 'ubuntu' in product or 'debian' in product %}}
     <unix:state state_ref="{{{ rule_id }}}_state_owner_is_system_user"/>
     {{%- endif %}}
   </unix:file_test>
@@ -96,7 +96,7 @@
   <unix:file_state id="{{{ rule_id }}}_exclude_files_waagent" version="1">
     <unix:filename operation="pattern match">^waagent\.log.*$</unix:filename>
   </unix:file_state>
-  {{%- if 'ubuntu' in product %}}
+  {{%- if 'ubuntu' in product or 'debian' in product %}}
   <unix:file_state id="{{{ rule_id }}}_state_owner_is_system_user" version="1">
     <unix:group_id datatype="int" operation="equals" var_ref="{{{ rule_id }}}_var_system_gids" var_check="at least one" />
   </unix:file_state>
