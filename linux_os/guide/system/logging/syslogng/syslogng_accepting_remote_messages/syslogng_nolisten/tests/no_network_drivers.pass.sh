@@ -1,5 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_all
+# packages = linux-base
 
 mkdir -p /etc/syslog-ng/conf.d
 
