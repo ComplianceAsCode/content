@@ -8,9 +8,12 @@
 # /etc/audit/rules.d/*.rules			(for augenrules case)
 find /etc/audit /etc/audit/rules.d -maxdepth 1 -type f -name '*.rules' -exec sed -i '/-f[[:space:]]\+.*/d' {} ';'
 
+# Set the audit.rules configuration to halt system upon audit failure per security requirements
 for AUDIT_FILE in "/etc/audit/audit.rules" "/etc/audit/rules.d/immutable.rules"
 do
-	echo '' >> $AUDIT_FILE
-	echo '# Set the audit.rules configuration to halt system upon audit failure per security requirements' >> $AUDIT_FILE
-	echo "-f $var_audit_failure_mode" >> $AUDIT_FILE
+	# Separate the new directive from an unterminated existing line.
+	if [ -s "$AUDIT_FILE" ] && [ -n "$(tail -c 1 "$AUDIT_FILE")" ]; then
+		echo '' >> "$AUDIT_FILE"
+	fi
+	echo "-f $var_audit_failure_mode" >> "$AUDIT_FILE"
 done
