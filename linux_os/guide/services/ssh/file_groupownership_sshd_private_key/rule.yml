@@ -6,7 +6,10 @@ title: 'Verify Group Ownership on SSH Server Private *_key Key Files'
 
 description: |-
     SSH server private keys, files that match the <code>/etc/ssh/*_key</code> glob, must be
-    group-owned by <code>{{{ dedicated_ssh_groupname if dedicated_ssh_groupname else 'root' }}}</code> group.
+    group-owned by
+    {{%- if dedicated_ssh_groupname %}} the <code>{{{ dedicated_ssh_groupname }}}</code> or the <code>root</code> group.
+    {{%- else %}} the <code>root</code> group.
+    {{%- endif %}}
 
 rationale: |-
     If an unauthorized user obtains the private SSH host key file, the host could be impersonated.
@@ -32,7 +35,7 @@ template:
             - /etc/ssh/
         file_regex:
             - ^.*_key$
-        gid_or_name: '{{{ dedicated_ssh_groupname if dedicated_ssh_groupname else '0' }}}'
+        gid_or_name: '{{{ dedicated_ssh_groupname ~ "|root" if dedicated_ssh_groupname else '0' }}}'
 
 warnings:
     - general: |-
