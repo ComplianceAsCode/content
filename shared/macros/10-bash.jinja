@@ -3111,3 +3111,114 @@ systemd-tmpfiles --create
 
 find /run/log/journal /var/log/journal -type f -exec chmod u-x,g-wx,o-rwx {} +
 {{%- endmacro %}}
+
+{{# Apply a filter to an APT file. Preserve symlinks and file attributes and
+   only replace the original once the filter has finished successfully. #}}
+{{% macro bash_apt_filter_file() -%}}
+apt_filter_file() (
+    local file dir tmp lock_fd
+    file=$(readlink -f -- "$1") || exit 1
+    shift
+    dir=$(dirname -- "$file") || exit 1
+    exec {lock_fd}<"$dir" || exit 1
+    flock -x "$lock_fd" || exit 1
+    tmp=$(mktemp -- "$dir/.apt-XXXXXXXX") || exit 1
+    trap 'rm -f -- "$tmp"' EXIT
+    cp --preserve=all -- "$file" "$tmp" || exit 1
+    "$@" < "$file" > "$tmp" || exit 1
+    if ! cmp -s -- "$file" "$tmp"; then
+        mv -fT -- "$tmp" "$file" || exit 1
+    fi
+)
+{{%- endmacro %}}
+
+{{# APT reads APT_CONFIG before the system configuration. Clear the built-in
+   default so only an explicit assignment can satisfy the check. #}}
+{{% macro bash_apt_explicit_acquire_value(option) -%}}
+seed=$(mktemp) || exit 1
+trap 'rm -f -- "$seed"' EXIT
+printf '#clear Acquire::{{{ option }}};\n' > "$seed" || exit 1
+if [[ -f ${APT_CONFIG:-} ]]; then
+    cat -- "$APT_CONFIG" >> "$seed" || exit 1
+fi
+APT_CONFIG="$seed" apt-config shell value 'Acquire::{{{ option }}}'
+{{%- endmacro %}}
+
+{{# Update scalar assignments to one Acquire option, including assignments in
+   braced scopes. Keep sibling statements, comments and list entries intact. #}}
+{{% macro bash_set_apt_acquire_option(option, value) -%}}
+{{{ bash_apt_filter_file() }}}
+
+apt_main=''
+apt_parts=''
+# apt-config shell quotes both paths for the shell, including embedded quotes.
+apt_paths=$(apt-config shell apt_main Dir::Etc::main/f apt_parts Dir::Etc::parts/d) || exit 1
+eval "$apt_paths"
+
+files=("$apt_main")
+managed=
+if [[ -d "$apt_parts" ]]; then
+    managed="${apt_parts%/}/99-cis-repository-security"
+    [[ -e "$managed" ]] || touch -- "$managed" || exit 1
+    files+=("${apt_parts%/}"/*)
+fi
+for file in "${files[@]}"; do
+    [[ -f "$file" ]] || continue
+    [[ "$file" == "$apt_main" || ${file##*/} =~ ^([A-Za-z0-9_-]+|[A-Za-z0-9_-][A-Za-z0-9_.-]*\.conf)$ ]] || continue
+    apt_filter_file "$file" perl -0777 -spe '
+        my @scope;
+        my ($key, $found);
+        # Skip comments and directives. Treat quoted strings as single tokens
+        # so braces, semicolons and comment markers in values have no effect.
+        s{
+            (?: /\* .*? \*/ | // [^\n]* | \#(?:clear|include)\b [^;\n]* ; | \# [^\n]* ) (*SKIP)(*F)
+          | "[^"\n]*" | [;{}] | (?: [^\s"{};/\#] | /(?![*/]) )+
+        }{
+            my $token = $&;
+            if ($token eq "{") {
+                push @scope, $key;
+                undef $key;
+            } elsif ($token eq "}") {
+                pop @scope;
+                undef $key;
+            } elsif ($token eq ";") {
+                undef $key;
+            } elsif (!defined $key) {
+                ($key = $token) =~ s/\A"(.*)"\z/$1/s;
+            } elsif (lc(join("::", @scope, $key)) eq lc("Acquire::{{{ option }}}")) {
+                $token = qq("{{{ value }}}");
+                $found = 1;
+            }
+            $token;
+        }gsex;
+        if ($file eq $managed && !$found) {
+            $_ .= "\n" if length && !/\n\z/;
+            $_ .= qq(Acquire::{{{ option }}} "{{{ value }}}";\n);
+        }
+    ' -- -file="$file" -managed="$managed" || exit 1
+done
+
+# A later #clear or #include can supersede the managed fragment. Check the
+# explicit value and, if needed, put the final assignment in APT's main file.
+apt_explicit_value() (
+    {{{ bash_apt_explicit_acquire_value(option) | indent(4) }}}
+)
+expected="value='{{{ value }}}'"
+setting=$(apt_explicit_value) || exit 1
+if [[ "$setting" != "$expected" ]]; then
+    [[ -e "$apt_main" ]] || touch -- "$apt_main" || exit 1
+    [[ -f "$apt_main" ]] || { printf 'Cannot update APT main file %s\n' "$apt_main" >&2; exit 1; }
+    apt_filter_file "$apt_main" perl -0777 -pe '
+        my $setting = qq(Acquire::{{{ option }}} "{{{ value }}}";);
+        unless (/(?:\A|\n)\Q$setting\E\n?\z/) {
+            $_ .= "\n" if length && !/\n\z/;
+            $_ .= "$setting\n";
+        }
+    ' || exit 1
+    setting=$(apt_explicit_value) || exit 1
+    if [[ "$setting" != "$expected" ]]; then
+        printf 'APT did not apply Acquire::{{{ option }}} from %s\n' "$apt_main" >&2
+        exit 1
+    fi
+fi
+{{%- endmacro %}}

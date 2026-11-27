@@ -25,6 +25,8 @@ warnings:
 ocil_clause: 'an active repository entry uses HTTP'
 
 ocil: |-
-    Search <tt>*.list</tt> files for active <tt>deb http://</tt> entries and
-    <tt>*.sources</tt> files for active <tt>URIs: http://</tt> entries. Neither
-    search may produce output.
+    Check the URI of each active <tt>deb</tt> or <tt>deb-src</tt> entry in
+    <tt>*.list</tt> files. In <tt>*.sources</tt> files, check each URI in the
+    <tt>URIs</tt> field, including indented continuation lines. Skip stanzas
+    disabled by their <tt>Enabled</tt> field. Any active <tt>http://</tt> URI
+    is a finding.
