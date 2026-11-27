@@ -17,3 +17,4 @@ description: |-
 
 selections:
     - stig_slmicro5:all
+    - sshd_approved_ciphers=legacy
