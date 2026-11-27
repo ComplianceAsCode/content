@@ -1,0 +1,77 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Files referenced by active pam_motd.so motd= arguments are owned by root:root and have mode 0644 or more restrictive.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="An active pam_motd entry references a message file"
+        test_ref="test_{{{ rule_id }}}_motd_path" />
+      <criterion comment="Every referenced message file exists"
+        test_ref="test_{{{ rule_id }}}_all_exist" />
+      <criterion comment="Referenced message files are owned by root:root and have mode 0644 or more restrictive"
+        test_ref="test_{{{ rule_id }}}_files" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    id="test_{{{ rule_id }}}_motd_path" version="1"
+    comment="An active pam_motd entry references a message file">
+    <ind:object object_ref="obj_{{{ rule_id }}}_motd_path" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_motd_path" version="1">
+    <ind:path>/etc/pam.d</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">(?i)^[ \t]*session[ \t]+(?:required|optional)[ \t]+pam_motd\.so\b.*?\bmotd=["']?([^"'\s]+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_{{{ rule_id }}}_motd_paths" datatype="string" version="1"
+    comment="Message files referenced by active pam_motd entries">
+    <object_component item_field="subexpression" object_ref="obj_{{{ rule_id }}}_motd_path" />
+  </local_variable>
+
+  <unix:file_test check="all" check_existence="all_exist"
+    id="test_{{{ rule_id }}}_files" version="1"
+    comment="Referenced message files are owned by root:root and have mode 0644 or more restrictive">
+    <unix:object object_ref="obj_{{{ rule_id }}}_files" />
+    <unix:state state_ref="state_{{{ rule_id }}}_files" />
+  </unix:file_test>
+  <unix:file_object id="obj_{{{ rule_id }}}_files" version="1">
+    <unix:filepath var_ref="var_{{{ rule_id }}}_motd_paths" var_check="at least one" />
+  </unix:file_object>
+  <unix:file_state id="state_{{{ rule_id }}}_files" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+    <unix:user_id datatype="int">0</unix:user_id>
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+  <ind:variable_test check="all" check_existence="all_exist"
+    id="test_{{{ rule_id }}}_all_exist" version="1"
+    comment="Every referenced message file exists">
+    <ind:object object_ref="obj_{{{ rule_id }}}_existing_count" />
+    <ind:state state_ref="state_{{{ rule_id }}}_existing_count" />
+  </ind:variable_test>
+  <ind:variable_object id="obj_{{{ rule_id }}}_existing_count" version="1">
+    <ind:var_ref>var_{{{ rule_id }}}_existing_count</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_state id="state_{{{ rule_id }}}_existing_count" version="1">
+    <ind:value datatype="int" operation="equals" var_ref="var_{{{ rule_id }}}_path_count" />
+  </ind:variable_state>
+
+  <local_variable id="var_{{{ rule_id }}}_path_count" datatype="int" version="1"
+    comment="Number of distinct message files referenced by active pam_motd entries">
+    <count>
+      <unique>
+        <object_component item_field="subexpression" object_ref="obj_{{{ rule_id }}}_motd_path" />
+      </unique>
+    </count>
+  </local_variable>
+  <local_variable id="var_{{{ rule_id }}}_existing_count" datatype="int" version="1"
+    comment="Number of referenced message files that exist">
+    <count>
+      <object_component item_field="filepath" object_ref="obj_{{{ rule_id }}}_files" />
+    </count>
+  </local_variable>
+</def-group>

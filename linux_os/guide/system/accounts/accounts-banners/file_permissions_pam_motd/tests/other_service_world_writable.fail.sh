@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_ubuntu
 
 for f in /etc/pam.d/*; do
     [[ -f "$f" ]] && sed -ri '/pam_motd\.so/d' "$f"

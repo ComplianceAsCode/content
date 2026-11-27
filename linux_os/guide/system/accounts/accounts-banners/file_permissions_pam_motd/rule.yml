@@ -14,8 +14,11 @@ severity: medium
 
 platform: package[pam]
 
+{{%- if 'ubuntu' in product %}}
+
 requires:
     - pam_motd_configured
+{{%- endif %}}
 
 ocil_clause: 'a referenced pam_motd file is not root-owned or is more permissive than 0644'
 
