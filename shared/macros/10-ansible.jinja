@@ -903,7 +903,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     mode: 0600
   with_items:
     - { section: sssd, option: domains, value: default}
-{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+{{% if product in ["fedora", "ubuntu2604"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
     - { section: domain/default, option: id_provider, value: proxy }
     - { section: domain/default, option: proxy_lib_name, value: files }
     - { section: domain/default, option: local_auth_policy, value: only }
@@ -925,7 +925,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :type rule_title: str
 #}}
 {{% macro ansible_install_sssd_proxy(rule_title) -%}}
-{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+{{% if product in ["fedora", "ubuntu2604"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
 - name: "{{{ rule_title }}} - Install sssd-proxy for default domain"
   ansible.builtin.package:
     name: sssd-proxy

@@ -1687,7 +1687,7 @@ if ! grep -qsrP '^\s*\[domain\/[^]]*]' "{{{ sssd_conf }}}" "{{{ sssd_conf_dir }}
     cat >> "{{{ sssd_conf }}}" << EOF
 
 [domain/default]
-{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) -%}}
+{{% if product in ["fedora", "ubuntu2604"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) -%}}
 id_provider = proxy
 proxy_lib_name = files
 local_auth_policy = only
@@ -1703,7 +1703,7 @@ fi
     Install sssd-proxy package on products that use proxy id_provider for default domain
 #}}
 {{% macro bash_install_sssd_proxy() -%}}
-{{% if product in ["fedora"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
+{{% if product in ["fedora", "ubuntu2604"] or (('rhel' in product or 'ol' in families) and product not in ['ol7', 'ol8', 'ol9', 'rhel8', 'rhel9']) %}}
 {{{ bash_package_install("sssd-proxy") }}}
 {{% endif %}}
 {{%- endmacro %}}
