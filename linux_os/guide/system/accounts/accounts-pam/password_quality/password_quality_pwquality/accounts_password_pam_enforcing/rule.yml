@@ -50,6 +50,7 @@ template:
     name: "lineinfile"
     vars:
         text: "enforcing = 1"
+        regex: '^[\s]*enforcing[\s]*=[\s]*1\b'
         path: "{{{ pwquality_path }}}"
     oval_extend_definitions:
         - accounts_password_pam_pwquality
