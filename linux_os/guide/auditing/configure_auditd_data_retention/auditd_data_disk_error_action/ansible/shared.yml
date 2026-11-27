@@ -5,12 +5,4 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_auditd_disk_error_action") }}}
 
-- name: Configure auditd Disk Error Action on Disk Error
-  ansible.builtin.lineinfile:
-    dest: /etc/audit/auditd.conf
-    line: "disk_error_action = {{ var_auditd_disk_error_action.split('|')[0] }}"
-    regexp: '^\s*disk_error_action\s*=\s*.*$'
-    state: present
-    create: yes
-    mode: 'u-x,g-wx,o-rwx'
-  #notify: reload auditd
+{{{ ansible_auditd_set(parameter="disk_error_action", value='{{ var_auditd_disk_error_action.split("|")[0] }}', rule_title=rule_title) }}}
