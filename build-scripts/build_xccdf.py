@@ -131,16 +131,16 @@ def get_rules_with_variables(xccdftree):
         check_export_els = rule.findall(".//{%s}check-export" % ssg.constants.XCCDF12_NS)
         for check_export_el in check_export_els:
             var_ids.add(
-                check_export_el.get("value-id").replace("xccdf_org.ssgproject.content_value_", "")
+                check_export_el.get("value-id").replace(ssg.constants.OSCAP_VALUE, "")
             )
         sub_els = rule.findall(".//{%s}sub" % ssg.constants.XCCDF12_NS)
         for sub_el in sub_els:
             var_ids.add(
-                sub_el.get("idref").replace("xccdf_org.ssgproject.content_value_", "")
+                sub_el.get("idref").replace(ssg.constants.OSCAP_VALUE, "")
             )
         get_variables_from_go_templating(rule, var_ids)
         out_var_ids[
-            rule.get("id").replace("xccdf_org.ssgproject.content_rule_", "")
+            rule.get("id").replace(ssg.constants.OSCAP_RULE, "")
         ] = var_ids
     return out_var_ids
 

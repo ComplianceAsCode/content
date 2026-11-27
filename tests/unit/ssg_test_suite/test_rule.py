@@ -1,9 +1,24 @@
 import os
+import xml.etree.ElementTree as ET
+from unittest import mock
 
-from tests.ssg_test_suite.rule import RuleChecker, RuleTestContent, Scenario
+from tests.ssg_test_suite.rule import (
+    RuleChecker, RuleTestContent, Scenario, get_viable_profiles)
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
+
+
+def test_get_viable_profiles_uses_profile_id_suffix():
+    profile_id = "xccdf_com.example.content_profile_cis"
+    profiles = [ET.Element("Profile", {"id": profile_id})]
+    with mock.patch(
+            "tests.ssg_test_suite.rule.xml_operations.get_all_profiles_in_benchmark",
+            return_value=profiles):
+        selected = ["xccdf_org.ssgproject.content_profile_cis"]
+        assert get_viable_profiles(selected, None, None) == [profile_id]
+        assert get_viable_profiles(
+            [OSCAP_PROFILE_ALL_ID], None, None) == [OSCAP_PROFILE_ALL_ID]
 
 
 def test_scenario():

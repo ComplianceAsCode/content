@@ -353,6 +353,25 @@ cmake-gui ../
 make -j4
 ```
 
+### Configuring the XCCDF vendor
+
+XCCDF identifiers use `org.ssgproject` as their vendor by default. Set the
+`SSG_VENDOR` CMake option to use a different vendor:
+
+```bash
+cd build/
+cmake -DSSG_VENDOR=com.example ..
+make -j4
+```
+
+The vendor may contain ASCII letters, digits, dots, underscores, and hyphens.
+It applies to benchmark, profile, group, rule, and value identifiers. For
+example, the configuration above produces profile identifiers beginning with:
+
+```text
+xccdf_com.example.content_profile_
+```
+
 ### Reproducible Builds
 
 Set the environment variable `SOURCE_DATE_EPOCH` to generate [reproducible builds](https://reproducible-builds.org/).

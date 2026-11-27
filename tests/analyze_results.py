@@ -80,7 +80,7 @@ def print_result_differences(json_results):
             continue
         difference = analyze_differences(results)
         if difference:
-            rule_stem = re.sub("xccdf_org.ssgproject.content_rule_(.+)", r"\1", scenario.rule_id)
+            rule_stem = re.sub(r"^xccdf_.+\.content_rule_(.+)$", r"\1", scenario.rule_id)
             assert len(rule_stem) < len(scenario.rule_id), (
                 "The rule ID '{rule_id}' has a strange form, as it doesn't have "
                 "the common rule prefix.".format(rule_id=scenario.rule_id))

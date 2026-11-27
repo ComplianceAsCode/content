@@ -36,7 +36,12 @@ set(SSG_MINOR_VERSION 1)
 set(SSG_PATCH_VERSION 84)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
-set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
+set(SSG_VENDOR "org.ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
+if(NOT "${SSG_VENDOR}" MATCHES "^[A-Za-z0-9._-]+$")
+    message(FATAL_ERROR
+        "SSG_VENDOR must contain only ASCII letters, digits, dots, underscores, and hyphens."
+    )
+endif()
 
 # Define Install Directories, where built content will be stored.
 set(SSG_ANSIBLE_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/ansible")

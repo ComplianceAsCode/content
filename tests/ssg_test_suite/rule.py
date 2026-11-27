@@ -13,7 +13,7 @@ import shutil
 import tempfile
 
 import ssg.utils
-from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
+from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE, OSCAP_VALUE
 from ssg.jinja import process_file
 from ssg.rules import is_rule_dir
 
@@ -50,7 +50,9 @@ def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
             valid_profiles += [ds_profile]
             continue
         for sel_profile in selected_profiles:
-            if ds_profile.endswith(sel_profile):
+            profile_id = sel_profile.rsplit(".content_profile_", 1)[-1]
+            if (ds_profile == sel_profile or
+                    ds_profile.endswith(".content_profile_" + profile_id)):
                 valid_profiles += [ds_profile]
 
     if not valid_profiles:
@@ -72,9 +74,10 @@ def generate_xslt_change_value_template(value_short_id, new_value):
                 <xsl:apply-templates select="node()|@*"/>
             </xsl:copy>
         </xsl:template>
-        <xsl:template match="ds:component/xccdf-1.2:Benchmark//xccdf-1.2:Value[@id='xccdf_org.ssgproject.content_value_{value_short_id}']/xccdf-1.2:value[not(@selector)]/text()">{new_value}</xsl:template>
+        <xsl:template match="ds:component/xccdf-1.2:Benchmark//xccdf-1.2:Value[@id='{value_prefix}{value_short_id}']/xccdf-1.2:value[not(@selector)]/text()">{new_value}</xsl:template>
 </xsl:stylesheet>"""
-    return XSLT_TEMPLATE.format(value_short_id=value_short_id, new_value=new_value)
+    return XSLT_TEMPLATE.format(
+        value_prefix=OSCAP_VALUE, value_short_id=value_short_id, new_value=new_value)
 
 
 def _apply_script(rule_dir, test_env, script):

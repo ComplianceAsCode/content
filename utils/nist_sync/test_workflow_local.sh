@@ -98,11 +98,11 @@ for product in $PRODUCTS; do
         echo "✓ build/ssg-$product-ds.xml ($SIZE)"
 
         # Count profiles in datastream
-        PROFILE_COUNT=$(grep -c 'Profile id="xccdf_org.ssgproject.content_profile_' "build/ssg-$product-ds.xml" || true)
+        PROFILE_COUNT=$(grep -c 'Profile id="xccdf_.*\.content_profile_' "build/ssg-$product-ds.xml" || true)
         echo "  → Contains $PROFILE_COUNT profiles"
 
         # Check if cis_nist profile exists
-        if grep -q 'Profile id="xccdf_org.ssgproject.content_profile_cis_nist"' "build/ssg-$product-ds.xml"; then
+        if grep -q 'Profile id="xccdf_.*\.content_profile_cis_nist"' "build/ssg-$product-ds.xml"; then
             echo "  → cis_nist profile: ✓"
         else
             echo "  → cis_nist profile: NOT FOUND"

@@ -9,7 +9,9 @@ import re
 import time
 import yaml
 
+from ssg.constants import OSCAP_PROFILE
 from ssg.utils import mkdir_p
+
 
 class JinjaString(str):
     pass
@@ -76,7 +78,10 @@ COMPLIANT
 
 OCP_RULE_DIR = 'applications/openshift'
 OSCAP_TEST_IMAGE = 'quay.io/compliance-operator/openscap-ocp:1.3.4'
-OSCAP_CMD_TEMPLATE = 'oscap xccdf eval --verbose %s --fetch-remote-resources --profile xccdf_org.ssgproject.content_profile_test --results-arf /tmp/report-arf.xml /content/ssg-ocp4-ds.xml'
+OSCAP_CMD_TEMPLATE = (
+    'oscap xccdf eval --verbose %s --fetch-remote-resources --profile {profile}'
+    ' --results-arf /tmp/report-arf.xml /content/ssg-ocp4-ds.xml'
+).format(profile=OSCAP_PROFILE + 'test')
 PROFILE_PATH = 'products/ocp4/profiles/test.profile'
 
 MOCK_VERSION = ('''status:
@@ -361,7 +366,7 @@ def clusterTestFunc(args):
 
     # create a single-rule scan
     print("* Running scan with rule '%s'" % args.rule)
-    profile = 'xccdf_org.ssgproject.content_profile_test'
+    profile = OSCAP_PROFILE + 'test'
     apply_cmd = ['oc', 'apply', '-f', '-']
     with subprocess.Popen(apply_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as proc:
         _, err = proc.communicate(

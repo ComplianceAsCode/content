@@ -19,7 +19,7 @@
   </thead>
 {{% for rule in rules %}}
   <tr>
-    <td>{{{ "xccdf_org.ssgproject.content_rule_" + rule.id_ }}}</td>
+    <td>{{{ "xccdf_" + ssg_vendor + ".content_rule_" + rule.id_ }}}</td>
     <td>{{{ rule.severity }}}</td>
     <td>{{{ rule.title }}}</td>
     <td>{{{ rule.rationale }}}</td>

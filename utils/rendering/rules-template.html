@@ -11,7 +11,7 @@
 Used in {{{ rule.in_profiles.__len__() }}} profiles:
   <ul>
   {{% for p in rule.in_profiles %}}
-    <li><a href="https://static.open-scap.org/ssg-guides/ssg-{{{ product }}}-guide-{{{ p.id_ }}}.html#xccdf_org.ssgproject.content_rule_{{{ rule.id_ }}}">{{{ p.title }}}</a></li>
+    <li><a href="https://static.open-scap.org/ssg-guides/ssg-{{{ product }}}-guide-{{{ p.id_ }}}.html#xccdf_{{{ ssg_vendor }}}.content_rule_{{{ rule.id_ }}}">{{{ p.title }}}</a></li>
   {{%- endfor %}}
   </ul>
 {{%- else %}}

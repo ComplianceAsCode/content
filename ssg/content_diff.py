@@ -6,7 +6,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 import ssg.xml
-from ssg.constants import FIX_TYPE_TO_SYSTEM, XCCDF12_NS
+from ssg.constants import FIX_TYPE_TO_SYSTEM, OSCAP_RULE, XCCDF12_NS
 from ssg.utils import mkdir_p
 
 
@@ -205,7 +205,7 @@ class StandardContentDiffer(object):
                                           old_check_file_name, new_check_file_name)
 
             if (self.show_diffs and
-               identifier != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date"):
+               identifier != OSCAP_RULE + "security_patches_up_to_date"):
 
                 old_check_doc, new_check_doc = self.get_check_docs(system, identifier,
                                                                    old_check_file_name,
