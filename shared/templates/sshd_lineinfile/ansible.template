@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{% if product in ['opensuse16', 'sle16', 'slmicro6'] %}}
 {{{ ansible_copy_distro_defaults("/usr/etc/ssh/sshd_config", sshd_main_config_file, rule_title=rule_title) }}}
 - name: Check if SSH {{{ sshd_main_config_file }}} configuration file exists
   ansible.builtin.stat:

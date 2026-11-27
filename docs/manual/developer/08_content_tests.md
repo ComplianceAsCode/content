@@ -104,3 +104,40 @@ You should replace `0.1.76` with the latest release of the project.
 
 The test `test_stig_rules_in_srg_gpos.py` ensures that all rules selected in RHEL 10 STIG profile are also selected in SRG GPOS control files.
 The test prevents data inconsistencies and verifies that the STIG profile remains based on SRG GPOS controls.
+
+## Packit (on Github)
+
+On Github, this project uses [Packit](https://packit.dev/) to build content as a scratch `scap-security-guide` RPM and run additional tests, all configured via `.packit.yaml` in the root of the repository.
+
+Some of these tests execute [Contest](https://github.com/RHSecurityCompliance/contest), an extensive test suite for RHEL / CentOS Stream. Simple test sets are run automatically on a Pull Request push, but bigger runs require manual triggering.
+
+To manually trigger a full set of Contest tests, write a comment that **begins with**:
+
+```
+/packit test -i contest-all
+```
+
+(See also [Packit docs in manual triggering](https://packit.dev/posts/manual-triggering).)
+
+You can also parametrize it further with:
+
+- `PLAN` to override the default `/plans/daily` (tmt plan in Contest)
+  - e.g. `--env PLAN=/plans/default` ([one of Contest tmt plans](https://github.com/RHSecurityCompliance/contest/tree/main/plans))
+- `TESTS` as comma-separated test name fmf-style expressions
+  - e.g. `--env TESTS=/hardening/ansible` or `--env TESTS=/cis$,/cis_server,/cis_workstation`
+  - The fmf-style expressions are based on Python's `re.search()`, so they regex-search anywhere in the test name.
+  - See [the specifis in tmt docs](https://tmt.readthedocs.io/en/stable/overview.html#regular-expressions).
+- `RERUNS` to override the default 1 automatic rerun of every failed test
+  - e.g. `--env RERUN=0` for a quick run if many failures are expected
+- `CONTEST_PR` to test a specific Contest PR instead of the `main` branch
+  - e.g. `--env CONTEST_PR=1234` - useful when a ComplianceAsCode/content PR depends on a specific testing update
+- `NO_EXCLUDES` to run even tests normally incompatible with containers or unsuitable for PR CI
+  - e.g. `--env NO_EXCLUDES=1 --env TESTS=/scanning/disa-alignment` which are normally excluded from the run
+
+You can combine multiple on one `/packit test` command:
+
+```
+/packit test -i contest-all --env ... --env ... --env ...
+```
+
+Please **use this test sparingly** as it uses a LOT of resources and will take several hours to run, ideally run it only on a final version of a Pull Request, not on every small change. Limiting by `TESTS` helps only slightly - the bulk of the runtime is spent setting up the testing environment (a constant cost).

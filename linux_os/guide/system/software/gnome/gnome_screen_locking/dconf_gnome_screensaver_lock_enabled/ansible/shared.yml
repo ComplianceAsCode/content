@@ -56,18 +56,21 @@
 
 - name: "{{{ rule_title }}} - Update GNOME3 screenserver disable-lock-screen false"
   ansible.builtin.command: gsettings set org.gnome.desktop.lockdown disable-lock-screen false
+  changed_when: true
   when:
     - ansible_distribution == 'SLES'
     - cmd_out.stdout != 'false'
 
 - name: "{{{ rule_title }}} - Update dconf database for non-SLES systems"
   ansible.builtin.command: dconf update
+  changed_when: true
   when:
     - ansible_distribution != 'SLES'
     - (screensaver_config is changed or screensaver_lock is changed)
 
 - name: "{{{ rule_title }}} - Update dconf database for SLES systems"
   ansible.builtin.command: dconf update
+  changed_when: true
   when:
     - ansible_distribution == 'SLES'
     - (lockdown_config is changed or lockdown_lock is changed)

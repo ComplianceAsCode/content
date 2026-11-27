@@ -1,4 +1,4 @@
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or product in ['debian12', 'debian13'] %}}
  {{%- set package = "isc-dhcp-server" %}}
 {{% elif product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'sle12', 'sle15'] %}}
  {{%- set package = "dhcp-server" %}}
@@ -29,6 +29,7 @@ identifiers:
     cce@sle15: CCE-85759-9
     cce@sle16: CCE-96301-7
     cce@slmicro5: CCE-93924-9
+    cce@slmicro6: CCE-97909-6
 
 references:
     cis-csc: 11,14,3,9
@@ -48,6 +49,8 @@ template:
     name: package_removed
     vars:
         pkgname: dhcp
+        pkgname@debian12: isc-dhcp-server
+        pkgname@debian13: isc-dhcp-server
         pkgname@rhel8: dhcp-server
         pkgname@rhel9: dhcp-server
         pkgname@ubuntu2204: isc-dhcp-server

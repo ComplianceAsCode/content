@@ -5,11 +5,15 @@
 # disruption = low
 
 - name: {{{ rule_title }}} - Get directories from faillock
-  ansible.builtin.shell: |-
-    grep -oP '^\s*(?:auth.*pam_faillock.so.*)?dir\s*=\s*(\S+)' "{{ item }}" | sed -r 's/.*=\s*(\S+)/\1/'
+  ansible.builtin.shell:
+    cmd: |-
+      set -o pipefail
+      grep -oP '^\s*(?:auth.*pam_faillock.so.*)?dir\s*=\s*(\S+)' "{{ item }}" | sed -r 's/.*=\s*(\S+)/\1/'
+    executable: /bin/bash
   register: faillock_output
   changed_when: false
   check_mode: false
+  failed_when: false
   with_items:
     - /etc/security/faillock.conf
     {{% if 'ol' not in families %}}
@@ -42,6 +46,7 @@
     if ! semanage fcontext -a -t faillog_t "{{ item.item }}(/.*)?"; then
       semanage fcontext -m -t faillog_t "{{ item.item }}(/.*)?"
     fi
+  changed_when: true
   with_items: "{{ faillock_selinux_context.results }}"
   when:
     - item.item != ""
@@ -50,6 +55,7 @@
 
 - name: {{{ rule_title }}} - Restore SELinux context
   ansible.builtin.command: restorecon -R -v "{{ item.item }}"
+  changed_when: true
   with_items: "{{ faillock_selinux_context.results }}"
   when:
     - item.item != ""

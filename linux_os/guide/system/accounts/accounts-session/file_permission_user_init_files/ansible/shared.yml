@@ -18,7 +18,7 @@
     hidden: true
     use_regex: true
   with_dict: "{{ ansible_facts.getent_passwd }}"
-  when: 
+  when:
     - item.value[4] != "/sbin/nologin"
     - item.key not in ["nobody", "nfsnobody"]
     - item.value[1] | int >= {{{ uid_min }}}
@@ -28,6 +28,7 @@
   ansible.builtin.file:
     path: "{{ item.1.path }}"
     mode: u-s,g-wxs,o=
+    follow: false
   loop: "{{ q('ansible.builtin.subelements',
               found_init_files.results,
               'files',

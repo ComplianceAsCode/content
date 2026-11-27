@@ -17,10 +17,12 @@ if [ -d "$DROPIN_DIR" ]; then
     done
 fi
 
+# This code runs inside the profile remediation script, so it must not exit:
+# that would skip the remediation of every rule after this one.
 if [ -d "$DROPIN_DIR" ] && grep -qPzor "$REGEX_DROP_IN" "$DROPIN_DIR"; then
-    exit 0
+    :  # already configured in a drop-in file
 elif [ ! -d "$DROPIN_DIR" ] && grep -qE "$REGEX_TFTP_SERVICE_FILE" "$TFTP_SERVICE_FILE"; then
-    exit 0
+    :  # already configured in the service file
 else
     mkdir -p "$DROPIN_DIR"
     chmod 0755 "$DROPIN_DIR"

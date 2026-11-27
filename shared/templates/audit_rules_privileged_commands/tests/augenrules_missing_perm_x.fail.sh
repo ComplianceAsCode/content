@@ -3,5 +3,7 @@
 
 source common.sh
 
+{{{ setup_augenrules_environment() }}}
+
 echo "-a always,exit -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -k test_key" \
 >> /etc/audit/rules.d/test_key.rules

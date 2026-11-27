@@ -1,10 +1,16 @@
+{{%- if 'ubuntu' in product or 'debian' in product %}}
+  {{%- set package = "openssh-client" %}}
+{{%- else %}}
+  {{%- set package = "openssh-clients" %}}
+{{%- endif %}}
+
 documentation_complete: true
 
 
 title: 'Install OpenSSH client software'
 
 description: |-
-    {{{ describe_package_install(package="openssh-clients") }}}
+    {{{ describe_package_install(package=package) }}}
 
 rationale: |-
     This package includes utilities to make encrypted connections and transfer
@@ -21,15 +27,15 @@ references:
     ospp: FIA_UAU.5,FTP_ITC_EXT.1,FCS_SSH_EXT.1,FCS_SSHC_EXT.1
     srg: SRG-OS-000480-GPOS-00227
 
-{{{ complete_ocil_entry_package_installed("openssh-clients") }}}
+{{{ complete_ocil_entry_package_installed(package) }}}
 
-fixtext: '{{{ fixtext_package_removed("openssh-clients") }}}'
+fixtext: '{{{ fixtext_package_removed(package) }}}'
 
-srg_requirement: '{{{ srg_requirement_package_removed("openssh-clients") }}}'
+srg_requirement: '{{{ srg_requirement_package_removed(package) }}}'
 
 template:
     name: package_installed
     vars:
-        pkgname: openssh-clients
+        pkgname: {{{ package }}}
 
 platform: system_with_kernel

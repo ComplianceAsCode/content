@@ -10,7 +10,7 @@
 {{% else %}}
 # platform = Not Applicable
 {{% endif %}}
-{{%- if 'ubuntu' in product %}}
+{{%- if 'ubuntu' in product or 'suse' in families %}}
 # packages = grub2
 {{%- else %}}
 # packages = grub2,grubby

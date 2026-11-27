@@ -480,8 +480,7 @@ controls:
       rules:
           - var_selinux_policy_name=targeted
           - selinux_policytype
-  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6968
-  #- selinux_confinement_of_daemons
+          - selinux_confinement_of_daemons
           - var_selinux_state=enforcing
           - selinux_state
           - coreos_enable_selinux_kernel_argument
@@ -822,8 +821,7 @@ controls:
 
           https://issues.redhat.com/browse/CMP-115
       rules:
-  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6968
-  #- selinux_confinement_of_daemons
+          - selinux_confinement_of_daemons
           - no_shelllogin_for_systemaccounts
           - sysctl_kernel_perf_event_paranoid
           - sysctl_kernel_unprivileged_bpf_disabled
@@ -4919,8 +4917,7 @@ controls:
           - audit_rules_privileged_commands_userhelper
           - audit_rules_networkconfig_modification
           - audit_rules_etc_shadow_openat
-  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6968
-  #- selinux_confinement_of_daemons
+          - selinux_confinement_of_daemons
           - audit_rules_etc_gshadow_open_by_handle_at
           - audit_rules_etc_gshadow_open
           - var_auditd_space_left_action=syslog
@@ -5166,8 +5163,7 @@ controls:
           - service_bluetooth_disabled
           - kernel_module_tipc_disabled
           - sysctl_net_ipv6_conf_all_accept_redirects
-  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6968
-  #- selinux_confinement_of_daemons
+          - selinux_confinement_of_daemons
           - sysctl_net_ipv4_tcp_syncookies
           - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
           - coreos_vsyscall_kernel_argument

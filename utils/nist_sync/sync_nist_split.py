@@ -70,6 +70,27 @@ class NISTSplitSync:
         'other': 'CIS Items Without NIST Mapping',
     }
 
+    # Per-product rules to always exclude from the generated mapping, even if
+    # the static CIS-to-NIST crosswalk (data/cis_nist_mappings.json) and the
+    # product's CIS control file's *control* structure both still list them.
+    #
+    # rhel9's cis.profile (and cis_server_l1/cis_workstation_l1/l2) explicitly
+    # unselect these three rules via '!rule_id', with the profile comment
+    # "Following rules once had a prodtype incompatible with the rhel9
+    # product". That exclusion lives at the profile level, not in
+    # cis_rhel9.yml's control structure, so load_all_cis_items_from_control_files()
+    # (which only reads the control structure) still reports them as
+    # "selected by CIS" and a plain sync would keep re-adding them here.
+    # rhel8/rhel10 have no such exclusion and legitimately select all three,
+    # so this is scoped to rhel9 only.
+    PRODUCT_RULE_EXCEPTIONS = {
+        'rhel9': {
+            'file_owner_at_allow',
+            'file_ownership_home_directories',
+            'group_unique_name',
+        },
+    }
+
     def __init__(self, repo_root: Path, product: str = None, mode='reference', flat_structure=False):
         """
         Initialize syncer.
@@ -418,6 +439,51 @@ class NISTSplitSync:
 
         return controls
 
+    @staticmethod
+    def _flatten_family_controls(controls_list):
+        """Flatten one family's controls and link enhancements to their base.
+
+        Returns a tuple of (flat controls, enhancement count, inherited level
+        count). Enhancements become top-level controls carrying
+        ``controls: [<parent id>]``; they are no longer nested under the base.
+        """
+        children = defaultdict(list)
+        base_controls = []
+        for ctrl in controls_list:
+            if '.' in ctrl['id']:
+                children[ctrl['id'].rsplit('.', 1)[0]].append(ctrl)
+            else:
+                base_controls.append(ctrl)
+
+        flat = []
+        emitted = set()
+        enhancements = 0
+        levels_inherited = 0
+
+        def emit(ctrl, parent):
+            nonlocal enhancements, levels_inherited
+            if ctrl['id'] in emitted:
+                return
+            emitted.add(ctrl['id'])
+            if parent is not None:
+                if ('levels' not in ctrl or not ctrl['levels']) and parent.get('levels'):
+                    ctrl['levels'] = list(parent['levels'])
+                    levels_inherited += 1
+                refs = ctrl.get('controls') or []
+                ctrl['controls'] = [parent['id']] + [r for r in refs if isinstance(r, str)]
+                enhancements += 1
+            flat.append(ctrl)
+            for child in children.get(ctrl['id'], []):
+                emit(child, ctrl)
+
+        for base in base_controls:
+            emit(base, None)
+        # Defensive: emit any enhancement whose base was not in this family.
+        for ctrl in controls_list:
+            if ctrl['id'] not in emitted:
+                emit(ctrl, None)
+        return flat, enhancements, levels_inherited
+
     def generate_controls(self, verbose=False) -> Dict:
         """Generate control data from OSCAL + CIS mappings."""
         print("Phase 1: Loading OSCAL catalog and baselines...")
@@ -463,8 +529,15 @@ class NISTSplitSync:
             # For product-specific mode: only include rules present in target product
             # For non-product mode: include all rules (legacy behavior)
             if self.product:
-                # Filter rules: only include if in target product's CIS control file
-                filtered_rules = [r for r in mapped_rules if r in all_cis_items]
+                excepted_rules = self.PRODUCT_RULE_EXCEPTIONS.get(self.product, set())
+
+                # Filter rules: only include if in target product's CIS control file,
+                # and not explicitly excepted for this product (see
+                # PRODUCT_RULE_EXCEPTIONS above)
+                filtered_rules = [
+                    r for r in mapped_rules
+                    if r in all_cis_items and r not in excepted_rules
+                ]
 
                 # Filter variables: collect into a set first to deduplicate, then sort.
                 # mapped_vars may contain both bare names ('var_x') and full assignments
@@ -542,32 +615,23 @@ class NISTSplitSync:
             })
             print(f"  Added {len(unmapped_item_names)} unmapped CIS items ({len(unmapped_items_full)} total assignments) to 'other' family")
 
-        # Nest enhancements under their parent base controls
-        total_nested = 0
+        # Emit enhancements as top-level controls that reference their base
+        # requirement. Inheritance is intentionally asymmetric: a base control
+        # does not include its enhancements, but an enhancement cannot be
+        # selected without its base, so each enhancement gets an explicit
+        # 'controls: [<parent id>]' reference.
+        total_enhancements = 0
         total_levels_inherited = 0
+        flat_controls_by_family = {}
         for family, controls_list in controls_by_family.items():
-            base_controls = []
-            enhancement_map = defaultdict(list)
-            for ctrl in controls_list:
-                if '.' in ctrl['id']:
-                    parent_id = ctrl['id'].rsplit('.', 1)[0]
-                    enhancement_map[parent_id].append(ctrl)
-                else:
-                    base_controls.append(ctrl)
-            for base in base_controls:
-                enhancements = enhancement_map.get(base['id'], [])
-                if enhancements:
-                    base_levels = base.get('levels', [])
-                    for enh in enhancements:
-                        if ('levels' not in enh or not enh['levels']) and base_levels:
-                            enh['levels'] = list(base_levels)
-                            total_levels_inherited += 1
-                    base['controls'] = enhancements
-                    total_nested += len(enhancements)
-            controls_by_family[family] = base_controls
+            flat, enhancements, levels_inherited = self._flatten_family_controls(controls_list)
+            flat_controls_by_family[family] = flat
+            total_enhancements += enhancements
+            total_levels_inherited += levels_inherited
+        controls_by_family = flat_controls_by_family
 
-        print(f"  Generated {sum(len(c) for c in controls_by_family.values())} base controls across {len(controls_by_family)} families")
-        print(f"  Nested {total_nested} enhancements, {total_levels_inherited} levels inherited from parent")
+        print(f"  Generated {sum(len(c) for c in controls_by_family.values())} controls across {len(controls_by_family)} families")
+        print(f"  Flattened {total_enhancements} enhancements, {total_levels_inherited} levels inherited from parent")
 
         return controls_by_family
 

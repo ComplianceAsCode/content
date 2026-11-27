@@ -64,3 +64,25 @@ selections:
     - '!package_pam_apparmor_installed'
     - '!audit_rules_mac_modification_etc_selinux'
     - '!no_nis_in_nsswitch'
+
+    # Match RHEL 9: hide other users' processes in /proc
+    - var_mount_option_proc_hidepid=invisible
+
+    # The following packages were never shipped with AlmaLinux OS 9, as with RHEL 9
+    - '!package_rsh-server_removed'
+    - '!package_rsh_removed'
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_xinetd_removed'
+    - '!package_ypbind_removed'
+    - '!package_ypserv_removed'
+
+    # AlmaLinux OS 9, like RHEL 9, unified the GRUB 2 configuration path to /boot/grub2, so the
+    # UEFI-specific duplicates of the grub2 rules selected by R5 and R29 must not be used
+    - '!file_groupowner_efi_grub2_cfg'
+    - '!file_groupowner_efi_user_cfg'
+    - '!file_owner_efi_grub2_cfg'
+    - '!file_owner_efi_user_cfg'
+    - '!file_permissions_efi_grub2_cfg'
+    - '!file_permissions_efi_user_cfg'
+    - '!grub2_uefi_password'

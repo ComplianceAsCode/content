@@ -19,4 +19,5 @@
 
 - name: "{{{ rule_title }}} - Re-apply crypto policy"
   ansible.builtin.command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+  changed_when: true
   when: crypto_policy_check.rc != 0

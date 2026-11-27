@@ -2,7 +2,7 @@
 policy: Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG)
 title: Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide (STIG)
 id: stig_ubuntu2404
-version: V1R5
+version: V1R6
 source: https://www.cyber.mil/stigs/downloads/
 
 levels:
@@ -52,6 +52,7 @@ controls:
           - high
       rules:
           - package_nfs-kernel-server_removed
+          - package_nfs-common_removed
           - service_nfs_disabled
       status: automated
 
@@ -233,6 +234,7 @@ controls:
       levels:
           - medium
       rules:
+          - sshd_approved_macs=stig_ubuntu2404
           - sshd_use_approved_macs_ordered_stig
       status: automated
 

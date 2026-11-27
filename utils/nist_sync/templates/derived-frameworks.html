@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 Control Viewer - Derived Frameworks</title>
+    <!-- SHARED_STYLES_PLACEHOLDER -->
+    <style>
+        .framework-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .framework-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .framework-tab {
+            padding: 10px 18px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #586069;
+            border-bottom: 2px solid transparent;
+        }
+
+        .framework-tab.active {
+            color: #0366d6;
+            border-bottom-color: #0366d6;
+        }
+
+        .framework-panel {
+            display: none;
+        }
+
+        .framework-panel.active {
+            display: block;
+        }
+
+        .derived-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .derived-table th {
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #586069;
+            padding: 8px 10px;
+            border-bottom: 2px solid #e1e4e8;
+        }
+
+        .derived-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e1e4e8;
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+        .derived-table tr:hover {
+            background: #f6f8fa;
+        }
+
+        .req-id {
+            font-weight: 600;
+            color: #24292e;
+            white-space: nowrap;
+        }
+
+        .source-link {
+            display: inline-block;
+            margin-right: 6px;
+            font-size: 12px;
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .source-link:hover {
+            text-decoration: underline;
+        }
+
+        .net-new-badge {
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .mismatch-badge {
+            background: #d73a49;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- SHARED_HEADER_PLACEHOLDER -->
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Derived Frameworks</h2>
+            <p>
+                NIST SP 800-171 (CUI) and NIST SP 800-172 (Enhanced Security Requirements) each
+                derive their requirements from NIST 800-53 controls rather than listing rules
+                directly. This page resolves each requirement against the current product's
+                800-53 controls to show real rule coverage, independent of the requirement's own
+                authored status.
+            </p>
+        </div>
+
+        <div class="framework-summary" id="framework-summary">
+            <!-- Populated by JavaScript -->
+        </div>
+
+        <div class="framework-tabs">
+            <button class="framework-tab active" data-framework="nist_800_171" onclick="switchFramework('nist_800_171')">NIST 800-171 (CUI)</button>
+            <button class="framework-tab" data-framework="nist_800_172" onclick="switchFramework('nist_800_172')">NIST 800-172 (Enhanced)</button>
+        </div>
+
+        <div class="card framework-panel active" id="panel-nist_800_171">
+            <div class="filter-bar">
+                <label><input type="checkbox" id="filter-171-gaps-only"> Show gaps only (no rules)</label>
+            </div>
+            <table class="derived-table" id="table-nist_800_171">
+                <thead>
+                    <tr>
+                        <th>Requirement</th>
+                        <th>Title</th>
+                        <th>Source 800-53 Control(s)</th>
+                        <th>Rules</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="card framework-panel" id="panel-nist_800_172">
+            <div class="filter-bar">
+                <label><input type="checkbox" id="filter-172-gaps-only"> Show gaps only (no rules)</label>
+                <label><input type="checkbox" id="filter-172-net-new-only"> Show net-new vs CUI only</label>
+            </div>
+            <table class="derived-table" id="table-nist_800_172">
+                <thead>
+                    <tr>
+                        <th>Requirement</th>
+                        <th>Title</th>
+                        <th>Source 800-53 Control(s)</th>
+                        <th>Rules</th>
+                        <th>Net new vs CUI</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        /* DATA_PLACEHOLDER */
+
+        const FRAMEWORK_LABELS = {
+            nist_800_171: 'NIST 800-171 (CUI)',
+            nist_800_172: 'NIST 800-172 (Enhanced)',
+        };
+
+        function renderSummary() {
+            const product = CURRENT_PRODUCT;
+            const stats = EMBEDDED_DATA.derived_framework_stats?.[product] || {};
+            const container = document.getElementById('framework-summary');
+
+            let html = '';
+            for (const [fwId, label] of Object.entries(FRAMEWORK_LABELS)) {
+                const s = stats[fwId];
+                if (!s) continue;
+                html += `
+                    <div class="stat-card">
+                        <div class="stat-value">${s.total}</div>
+                        <div class="stat-label">${label} - Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" style="color: #28a745;">${s.with_rules}</div>
+                        <div class="stat-label">${label} - With Rules</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" style="color: #d73a49;">${s.without_rules}</div>
+                        <div class="stat-label">${label} - Gaps</div>
+                    </div>
+                    ${s.status_mismatch > 0 ? `
+                    <div class="stat-card">
+                        <div class="stat-value" style="color: #d73a49;">${s.status_mismatch}</div>
+                        <div class="stat-label">${label} - Status Mismatches</div>
+                    </div>` : ''}
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function sourceLinksHtml(sourceControls) {
+            return sourceControls.map(id =>
+                `<a class="source-link" href="control-detail.html?id=${id}">${id.toUpperCase()}</a>`
+            ).join('');
+        }
+
+        function renderTable(fwId, requirements, filters) {
+            const tbody = document.querySelector(`#table-${fwId} tbody`);
+            let rows = requirements;
+
+            if (filters.gapsOnly) {
+                rows = rows.filter(r => !r.has_rules);
+            }
+            if (filters.netNewOnly) {
+                rows = rows.filter(r => (r.net_new || []).length > 0);
+            }
+
+            if (rows.length === 0) {
+                const colspan = fwId === 'nist_800_172' ? 6 : 5;
+                tbody.innerHTML = `<tr><td colspan="${colspan}" style="text-align: center; color: #586069; padding: 20px;">No requirements match the current filter</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = rows.map(r => {
+                const statusBadge = `<span class="badge badge-${r.status.replace(/ /g, '_')}">${r.status}</span>`;
+                const mismatch = r.status_mismatch ? ' <span class="mismatch-badge">status mismatch</span>' : '';
+                const ruleCount = r.rules.length;
+                let netNewCell = '';
+                if (fwId === 'nist_800_172') {
+                    const netNew = r.net_new || [];
+                    netNewCell = `<td>${netNew.length > 0 ? `<span class="net-new-badge">${netNew.length} new</span>` : '-'}</td>`;
+                }
+                return `
+                    <tr>
+                        <td class="req-id">${r.id}</td>
+                        <td>${r.title}</td>
+                        <td>${sourceLinksHtml(r.source_controls)}</td>
+                        <td>${ruleCount}</td>
+                        ${netNewCell}
+                        <td>${statusBadge}${mismatch}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderFramework(fwId) {
+            const product = CURRENT_PRODUCT;
+            const requirements = EMBEDDED_DATA.derived_frameworks?.[product]?.[fwId] || [];
+            const gapsOnly = document.getElementById(`filter-${fwId === 'nist_800_171' ? '171' : '172'}-gaps-only`).checked;
+            const netNewOnly = fwId === 'nist_800_172'
+                ? document.getElementById('filter-172-net-new-only').checked
+                : false;
+            renderTable(fwId, requirements, { gapsOnly, netNewOnly });
+        }
+
+        function switchFramework(fwId) {
+            document.querySelectorAll('.framework-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.framework-tab[data-framework="${fwId}"]`).classList.add('active');
+            document.querySelectorAll('.framework-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(`panel-${fwId}`).classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!EMBEDDED_DATA || !EMBEDDED_DATA.derived_frameworks) {
+                document.querySelector('.container').innerHTML =
+                    '<div class="empty-state"><h3>Error loading data</h3></div>';
+                return;
+            }
+
+            renderSummary();
+            renderFramework('nist_800_171');
+            renderFramework('nist_800_172');
+
+            document.getElementById('filter-171-gaps-only').addEventListener('change', () => renderFramework('nist_800_171'));
+            document.getElementById('filter-172-gaps-only').addEventListener('change', () => renderFramework('nist_800_172'));
+            document.getElementById('filter-172-net-new-only').addEventListener('change', () => renderFramework('nist_800_172'));
+        });
+    </script>
+</body>
+</html>

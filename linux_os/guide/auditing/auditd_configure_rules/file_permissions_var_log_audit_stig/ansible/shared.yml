@@ -1,0 +1,21 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_auditd_set_log_file_fact(rule_title=rule_title) }}}
+
+- name: "{{{ rule_title }}} - Find All Files in Audit Log Directory"
+  ansible.builtin.find:
+      paths: "{{ audit_log_file_path | dirname }}"
+      file_type: file
+      hidden: true
+  register: audit_log_dir_files
+
+- name: "{{{ rule_title }}} - Ensure Audit Log Files Have Mode 0600 or Less Permissive"
+  ansible.builtin.file:
+      path: "{{ item.path }}"
+      mode: "u-xs,g-rwxs,o-rwxt"
+      state: file
+  loop: "{{ audit_log_dir_files.files }}"

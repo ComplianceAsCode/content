@@ -8,13 +8,15 @@ fixtext: |-
 
     gpgcheck=1
 
+    Note: Any of the following are acceptable: "1", "true", or "yes" (keywords containing letters are case insensitive).
+
 checktext: |-
     Verify {{{ full_name }}} dnf always checks the GPG signature of software packages originating from external software repositories before installation with the following command:
 
     $ sudo grep -w gpgcheck /etc/dnf/dnf.conf
     gpgcheck=1
 
-    If "gpgcheck" is not set to "1", or if the option is missing or commented out, ask the system administrator how the GPG signatures of software packages are being verified.
+    If "gpgcheck" is not set to either "1", "true", or "yes" (keywords containing letters are case insensitive), or if the option is missing or commented out, ask the system administrator how the GPG signatures of software packages are being verified.
 
     If no process to verify GPG signatures has been approved by the organization, this is a finding.
 

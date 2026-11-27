@@ -2,5 +2,5 @@
 # packages = chrony
 # platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux,multi_platform_ubuntu
 
-sed -i "^pool.*" {{{ chrony_conf_path }}}
+sed -i '/^pool.*/d' {{{ chrony_conf_path }}}
 echo "server 0.pool.ntp.org" > {{{ chrony_conf_path }}}

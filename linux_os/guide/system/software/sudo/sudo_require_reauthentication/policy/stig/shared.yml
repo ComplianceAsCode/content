@@ -17,11 +17,13 @@ checktext: |-
 
     If results are returned from more than one file location, this is a finding.
 
-    If "timestamp_timeout" is set to a negative number, is commented out, or no results are returned, this is a finding.
+    If "timestamp_timeout" is set to a value other than "0" (including negative numbers), is commented out, or is missing entirely, this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to reauthenticate "sudo" commands after the specified timeout:
+    Configure {{{ full_name }}} to reauthenticate every invocation of the "sudo" command.
 
     Add the following line to "/etc/sudoers" or a file in "/etc/sudoers.d":
 
     Defaults timestamp_timeout=0
+
+    Remove any duplicate definitions.

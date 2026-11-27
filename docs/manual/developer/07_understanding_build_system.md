@@ -127,6 +127,26 @@ refer to their help text for more information and usage:
 Many of these utilities are simply front-ends over code in the SSG Python
 module located under `ssg/`.
 
+## How Remediations are Collected
+
+Remediations for Bash, Ansible, and the other backends come from two sources:
+static files in the rule directory and content generated from the rule's
+`template:` key. The `collect_remediations.py` script selects one fix per rule
+and language.
+
+Candidates are tried in this order:
+
+1. Static remediation named after the full product ID (e.g. `bash/rhel9.sh`).
+2. Static remediation named after the product family (e.g. `bash/rhel.sh`).
+3. Static `shared` remediation (e.g. `bash/shared.sh`).
+4. Remediation generated from the template.
+
+Each candidate is filtered by the `# platform =` metadata in the file. When the
+product being built is not listed, the candidate yields no fix and the next
+candidate is tried. This means a `shared.*` file that does not apply to the
+product does not shadow the templated remediation. The first candidate that
+yields a fix wins, and the remaining candidates are not used.
+
 ## How OVAL is Built
 
 The build of the OVAL document takes place in two steps.
@@ -148,6 +168,16 @@ Steps of loading the OVAL shorthand:
        - Whether the OVAL definitions are applicable to the product.
        - If there is an OVAL definition in the shorthand with the same id as the given rule_id.
 3. If the OVAL Shorthand object is valid, it is added to the OVAL Document object.
+
+A static OVAL definition therefore shadows a templated definition for the same
+rule when it is applicable. Applicability comes from the affected platforms in
+the definition metadata: `oval_metadata()` emits the product being built by
+default. A static definition intended for only some products should pass
+`affected_platforms` to `oval_metadata`, so that products outside the list fall
+back to the templated OVAL:
+
+    {{{ oval_metadata("Ensure tmp.mount has the nosuid option.",
+                      affected_platforms=["SUSE Linux Enterprise 16", "multi_platform_slmicro"]) }}}
 
 After all OVAL Shorthands are loaded, the affected platforms of the loaded OVAL definitions are completed.
 And then the OVAL document is saved as an XML file in `build/${PRODUCT}/oval-unlinked.xml`.

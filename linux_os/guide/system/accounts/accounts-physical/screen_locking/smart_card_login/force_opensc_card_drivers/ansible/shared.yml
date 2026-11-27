@@ -24,6 +24,7 @@
     - name: "{{{ rule_title }}}"
       ansible.builtin.command: |
         /usr/bin/opensc-tool -S app:default:force_card_driver:{{ var_smartcard_drivers }}
+      changed_when: true
       when:
         - force_card_driver.stdout != var_smartcard_drivers
   when:

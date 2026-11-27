@@ -33,5 +33,6 @@
 
 -   name: "{{{ rule_title }}} - Update crypto-policies"
     ansible.builtin.command: update-crypto-policies --set FIPS:STIG
+    changed_when: true
     when: current_crypto_policy.stdout.strip() != "FIPS:STIG"
 

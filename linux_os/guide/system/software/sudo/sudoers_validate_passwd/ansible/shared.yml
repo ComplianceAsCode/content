@@ -30,6 +30,19 @@
   register: sudoers_file_defaults
 {{%- endmacro %}}
 
+{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{{ ansible_copy_distro_defaults('/usr/etc/sudoers', '/etc/sudoers', rule_title=rule_title) }}}
+{{{
+    ansible_lineinfile(
+        rule_title + " - Remove /usr/etc/sudoers.d include directive from /etc/sudoers",
+        path="/etc/sudoers",
+        regex='^\s*@includedir\s+/usr/etc/sudoers.d',
+        state="absent",
+        when="not ansible_check_mode"
+    )
+}}}
+{{% endif %}}
+
 {{{- delete_line_in_sudoers_d("Defaults targetpw") }}}
 {{{- delete_line_in_sudoers_d("Defaults rootpw") }}}
 {{{- delete_line_in_sudoers_d("Defaults runaspw") }}}
@@ -38,6 +51,6 @@
 {{{- delete_line_in_sudoers_file("Defaults rootpw") }}}
 {{{- delete_line_in_sudoers_file("Defaults runaspw") }}}
 
-{{{ ansible_only_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', line_regex='^Defaults !targetpw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !targetpw', rule_title=rule_title) }}}
-{{{ ansible_only_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', line_regex='^Defaults !rootpw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !rootpw', rule_title=rule_title) }}}
-{{{ ansible_only_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', line_regex='^Defaults !runaspw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !runaspw', rule_title=rule_title) }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', line_regex='^Defaults !targetpw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !targetpw', mode='0440', rule_title=rule_title) }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', line_regex='^Defaults !rootpw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !rootpw', mode='0440', rule_title=rule_title) }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', line_regex='^Defaults !runaspw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !runaspw', mode='0440', rule_title=rule_title) }}}

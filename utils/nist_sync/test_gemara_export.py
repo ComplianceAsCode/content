@@ -15,6 +15,7 @@ Usage:
 """
 
 import argparse
+import io
 import sys
 from pathlib import Path
 from typing import Any, Dict, List
@@ -39,6 +40,7 @@ _YAML = YAML()
 sys.path.insert(0, str(_SCRIPT_DIR))
 from gemara.policy import extract_rules_from_catalog, generate_policy  # noqa: E402
 from gemara.schema import validate_policy  # noqa: E402
+from gemara.yaml_output import configure_yaml  # noqa: E402
 
 
 def load_yaml(path: Path) -> Any:
@@ -75,6 +77,30 @@ class TestResult:
             self.ok(ok_msg)
         else:
             self.fail(fail_msg)
+
+
+def test_yaml_serialization(result: TestResult) -> None:
+    """Keep generated YAML compatible with the shared yamllint defaults."""
+    yaml = configure_yaml(YAML())
+    data = {
+        "layers": ["governance/catalog.yaml"],
+        "metadata": {"groups": [{"id": "ac"}]},
+        "description": "word " * 200,
+    }
+    output = io.StringIO()
+    yaml.dump(data, output)
+    text = output.getvalue()
+
+    result.check(
+        "layers:\n  - governance/catalog.yaml\n" in text,
+        "nested sequences use yamllint-compatible indentation",
+        "nested sequence is not indented beneath its mapping key",
+    )
+    result.check(
+        not any(line.endswith((" ", "\t")) for line in text.splitlines()),
+        "generated YAML has no trailing whitespace",
+        "generated YAML contains trailing whitespace",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -688,6 +714,7 @@ def main() -> None:
     print("Policy validation (product-independent)")
     print(f"{'='*60}")
     validation_result = TestResult()
+    test_yaml_serialization(validation_result)
     test_validate_policy_catches_errors(validation_result)
     test_policy_parameters_from_variables(validation_result)
     all_passed += len(validation_result.passed)

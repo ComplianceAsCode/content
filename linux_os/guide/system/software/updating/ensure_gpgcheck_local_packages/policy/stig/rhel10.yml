@@ -8,13 +8,15 @@ fixtext: |-
 
     localpkg_gpgcheck=1
 
+    Note: Any of the following are acceptable: "1", "true", or "yes" (keywords containing letters are case insensitive).
+
 checktext: |-
     Verify {{{ full_name }}} dnf always checks the GPG signature of locally installed software packages before installation with the following command:
 
     $ sudo grep localpkg_gpgcheck /etc/dnf/dnf.conf
     localpkg_gpgcheck=1
 
-    If "localpkg_gpgcheck" is not set to "1", or if the option is missing or commented out, ask the system administrator how the GPG signatures of local software packages are being verified.
+    If "localpkg_gpgcheck" is not set to either "1", "true", or "yes" (keywords containing letters are case insensitive), or if the option is missing or commented out, ask the system administrator how the GPG signatures of local software packages are being verified.
 
     If no process to verify GPG signatures has been approved by the organization, this is a finding.
 

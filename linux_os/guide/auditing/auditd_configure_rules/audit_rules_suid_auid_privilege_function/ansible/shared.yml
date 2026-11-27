@@ -64,8 +64,11 @@
   register: auditctl_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
 # restarting auditd through systemd doesn't work, see: https://access.redhat.com/solutions/5515011
-- name: Restart Auditd
+# noqa command-instead-of-module: auditd sets RefuseManualStop=yes, so the service/systemd
+# modules cannot restart it; the SysV 'service auditd restart' wrapper is the supported method.
+- name: Restart Auditd  # noqa: command-instead-of-module
   ansible.builtin.command: /usr/sbin/service auditd restart
+  changed_when: true
   when:
     - (augenrules_audit_rules_privilege_function_update_result.changed or
        auditctl_audit_rules_privilege_function_update_result.changed)

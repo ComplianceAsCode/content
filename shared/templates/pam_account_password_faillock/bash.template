@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-{{% if product == 'sle16' %}}
+{{% if product in ['sle16', 'slmicro6'] %}}
 PAM_FAILLOCK_DEFAULTS_FILE_NAME="/usr/etc/security/faillock.conf"
 if ! [ -e "{{{ pam_faillock_conf_path }}}" ] ; then
     cp "${PAM_FAILLOCK_DEFAULTS_FILE_NAME}" "{{{ pam_faillock_conf_path }}}"

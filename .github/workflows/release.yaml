@@ -53,13 +53,13 @@ jobs:
           GITHUB_REF: ${{ github.ref }}
       - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@c9bcd8238b6f41e05561348339429d360b1c0247 # v4
+        uses: mikepenz/release-changelog-builder-action@b0db9d18b53447ef9f940a46c8f31653c4d9f621 # v4
         with:
           configuration: .github/workflows/release-changelog.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
+        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         with:
           draft: True
           name: Content ${{ steps.set_version.outputs.ver }}

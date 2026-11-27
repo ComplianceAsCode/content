@@ -1,6 +1,10 @@
 #!/bin/bash
 
+{{% if 'suse' in families %}}
+# platform = Not Applicable
+{{% else %}}
 # platform = multi_platform_all
+{{% endif %}}
 # packages = grub2
 
 {{%- if ARG_VARIABLE %}}
@@ -18,4 +22,3 @@ echo "GRUB_CMDLINE_LINUX=\"\"" > /etc/default/grub
 
 # --- Make oscap fail: set correct value in /etc/default/grub without updating grub.cfg ---
 echo "GRUB_CMDLINE_LINUX=\"{{{ ARG_NAME_VALUE }}}\"" > /etc/default/grub
-

@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} user account passwords must have a 180-day maximum password lifetime restriction.
+
+vuldiscussion: |-
+    Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.
+
+checktext: |-
+    Verify that {{{ full_name }}} enforces a maximum user password age of 180 days or less.
+
+    Check that {{{ full_name }}} enforces 180 days or less as the maximum user password age with the following command:
+
+    $ sudo awk -F: '$5 > 180 || $5 == "" {print $1 ":" $5}' /etc/shadow
+
+    If any results are returned that are not associated with a system account, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce a maximum password age of each [USER] account to 180 days:
+
+    $ sudo passwd -x 180 [USER]
+
+    The DoW requirement is 180 days.

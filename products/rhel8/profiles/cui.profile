@@ -6,6 +6,8 @@ metadata:
     SMEs:
         - ggbecker
 
+reference: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html
+
 title: 'Unclassified Information in Non-federal Information Systems and Organizations (NIST 800-171)'
 
 description: |-
@@ -25,10 +27,7 @@ description: |-
 
     This profile configures Red Hat Enterprise Linux 8 to the NIST Special
     Publication 800-53 controls identified for securing Controlled Unclassified
-    Information (CUI)."
-
-extends: ospp
+    Information (CUI).
 
 selections:
-    - inactivity_timeout_value=10_minutes
-    - var_system_crypto_policy=fips
+    - nist_800_171:all

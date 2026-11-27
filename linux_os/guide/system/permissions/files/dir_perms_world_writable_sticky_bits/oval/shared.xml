@@ -1,3 +1,4 @@
+{{% if product not in ['ubuntu2204', 'ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The sticky bit should be set for all world-writable directories.", rule_title=rule_title) }}}
@@ -37,3 +38,4 @@
     <unix:object object_ref="object_dir_perms_world_writable_sticky_bits"/>
   </unix:file_test>
 </def-group>
+{{% endif %}}

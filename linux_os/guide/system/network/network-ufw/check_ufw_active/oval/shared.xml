@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Verify ufw is active", rule_title=rule_title) }}}
+    {{{ oval_metadata("Verify ufw is active", affected_platforms=["multi_platform_debian"], rule_title=rule_title) }}}
     <criteria>
       <criterion comment="ufw is enabled in /etc/ufw/ufw.conf"
         test_ref="{{{ rule_id }}}_test_ufw_enabled" />

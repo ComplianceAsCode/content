@@ -1,0 +1,69 @@
+documentation_complete: true
+
+
+title: 'Ensure the TuxCare ESU Repository is Enabled'
+
+description: |-
+    The TuxCare Enterprise Support for AlmaLinux (ESU) repositories deliver
+    the FIPS 140-3 validated cryptographic packages and extended security
+    updates for {{{ full_name }}}. The <tt>tuxcare-esu</tt> repository must be
+    configured and enabled in a repository file under
+    <tt>/etc/yum.repos.d</tt>. The repository is provided by the
+    <tt>tuxcare-release</tt> package, which can be installed with the following
+    command, replacing <tt>9.2</tt> with the ESU release in use (for example
+    <tt>9.6</tt>):
+    <pre>$ sudo dnf -y install https://repo.tuxcare.com/tuxcare/tuxcare-release-latest-9.2.noarch.rpm</pre>
+
+    Access to the repository requires an ESU license key, which is registered
+    with the following command:
+    <pre>$ sudo tuxctl --license-key ESU-XXXXXXXXXXXXXXXXXXX</pre>
+
+rationale: |-
+    Without the TuxCare ESU repository the system cannot receive the
+    FIPS-validated cryptographic modules or the extended security updates
+    required to keep the operating system in a supported and compliant state.
+
+severity: high
+
+references:
+    srg: SRG-OS-000033-GPOS-00014
+
+ocil_clause: 'the tuxcare-esu repository is not configured or is disabled'
+
+ocil: |-
+    Verify that {{{ full_name }}} is using the TuxCare ESU repositories with the following command:
+    <pre>$ dnf repolist | grep tuxcare
+
+    tuxcare-base         TuxCare Enterprise Support for AlmaLinux 9.2 - Base
+    tuxcare-esu          TuxCare Enterprise Support for AlmaLinux 9.2 - ESU</pre>
+
+    The release shown (9.2 or 9.6) depends on the ESU product in use; either is acceptable.
+
+fixtext: |-
+    FIPS-validated packages are available from TuxCare as part of the Enterprise Support for AlmaLinux product line. Access the packages by purchasing an ESU license key.
+
+    Configure {{{ full_name }}} to use the TuxCare ESU repository with the following commands (replace 9.2 with 9.6 if using that ESU release):
+
+    $ sudo dnf -y install https://repo.tuxcare.com/tuxcare/tuxcare-release-latest-9.2.noarch.rpm
+    $ sudo tuxctl --license-key ESU-XXXXXXXXXXXXXXXXXXX
+
+    If the tuxcare-esu repository is configured but disabled, enable it with the following command:
+
+    $ sudo dnf config-manager --set-enabled tuxcare-esu
+
+srg_requirement: '{{{ full_name }}} must use the TuxCare ESU repository.'
+
+checktext: |-
+    Verify that {{{ full_name }}} is using the TuxCare ESU repositories with the following command:
+
+    $ dnf repolist | grep tuxcare
+
+    tuxcare-esu          TuxCare Enterprise Support for AlmaLinux 9.2 - ESU</pre>
+
+    If the tuxcare-esu repository is not enabled, this is a finding.
+
+warnings:
+    - general: |-
+        The remediation only enables a <tt>tuxcare-esu</tt> repository that is
+        already configured. Installing <tt>tuxcare-release</tt> and registering
+        the ESU license key must be done manually.

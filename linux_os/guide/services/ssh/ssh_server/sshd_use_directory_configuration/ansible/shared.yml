@@ -1,0 +1,16 @@
+# platform = multi_platform_opensuse,multi_platform_sle,multi_platform_slmicro
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{% set include_regex = "^\\s*Include\\s+" ~ (sshd_config_dir | replace(".", "\\.")) ~ "/\\*\\.conf" -%}}
+{{{
+    ansible_lineinfile(
+        rule_title + ' - Make sure Include ' + sshd_config_dir + '/*.conf directive is in ' + sshd_main_config_file,
+        path=sshd_main_config_file,
+        regex=include_regex,
+        new_line="Include " ~ sshd_config_dir ~ "/*.conf",
+        state='present'
+    )
+}}}

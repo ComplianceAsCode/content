@@ -1,0 +1,31 @@
+srg_requirement: |-
+    {{{ full_name }}} must be a vendor-supported release.
+
+vuldiscussion: |-
+    An operating system release is considered supported if the vendor continues to provide security patches for the product. With an unsupported release, it will not be possible to resolve security issues discovered in the system software.
+
+    Red Hat offers the Extended Update Support (EUS) add-on to a Red Hat Enterprise Linux subscription, for a fee, for those customers who wish to standardize on a specific minor release for an extended period.
+
+    Note: The life-cycle time spans and dates are subject to adjustment.
+
+    The version is still supported but has been superseded and must be removed from the enclave network or upgraded to a supported version.
+
+    Red Hat Enterprise Linux 8
+    General Availability: May 7, 2019
+    Full Support: May 7, 2019 to May 31, 2024
+    Maintenance Support: Jun 1, 2024 to May 31, 2029
+    Extended Life Cycle (ELC): Jun 1, 2029 to May 31, 2033
+    Long-Life Add-On: Jun 1, 2033 to Ongoing
+    Final Minor Release: 8.10
+
+checktext: |-
+    Verify that the version of {{{ full_name }}} is vendor supported with the following command:
+
+    $ cat /etc/redhat-release
+
+    Red Hat Enterprise Linux release 8.10 (Ootpa)
+
+    If the installed version of {{{ full_name }}} is not supported, this is a finding.
+
+fixtext: |-
+    Upgrade to a supported version of {{{ full_name }}}.

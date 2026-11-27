@@ -28,6 +28,7 @@ identifiers:
     cce@sle15: CCE-85746-6
     cce@sle16: CCE-95954-4
     cce@slmicro5: CCE-93937-1
+    cce@slmicro6: CCE-94854-7
 
 references:
     cis@sle12: 1.6.1
@@ -63,7 +64,7 @@ warnings:
 
 platform: package[systemd]
 
-{{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
+{{% if product in ["ol8", "ol9","ol10", "rhel8", "rhel9", "rhel10"] %}}
 conflicts:
     - sysctl_kernel_core_pattern
 {{% endif %}}

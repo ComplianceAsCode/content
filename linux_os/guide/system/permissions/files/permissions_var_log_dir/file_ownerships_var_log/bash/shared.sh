@@ -1,4 +1,4 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_ubuntu
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -19,8 +19,14 @@ while IFS=: read -r user _ _ _ _ _ shell; do
     fi
 done < /etc/passwd
 
+# On systems without a dedicated 'syslog' user (e.g. syslog-ng instead of
+# rsyslog), 'find -user syslog' would fail outright, so only exclude it
+# when the user actually exists.
+syslog_user_exclude=""
+getent passwd syslog &>/dev/null && syslog_user_exclude='! -user syslog'
+
 find -P /var/log/ -type f -regextype posix-extended \
-    ! -user root ! -user syslog  \
+    ! -user root ${syslog_user_exclude} \
     ! -name 'gdm' ! -name 'gdm3' \
     ! -name 'sssd' ! -name 'SSSD' \
     ! -name 'auth.log' \

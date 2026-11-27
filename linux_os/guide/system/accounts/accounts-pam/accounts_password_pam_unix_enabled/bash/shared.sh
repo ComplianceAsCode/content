@@ -1,4 +1,4 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_ubuntu,multi_platform_debian
 
 {{% if 'ubuntu' in product or 'debian' in product %}}
     {{{ bash_pam_unix_enable() }}}

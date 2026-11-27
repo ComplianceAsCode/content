@@ -5,6 +5,7 @@ default:
   grub_helper_executable: "grubby"
 
 overrides:
+# yamllint disable rule:key-duplicates
 {{% if "rhel-like" in families and major_version_ordinal <= 8 %}}
 {{% if "almalinux" in product %}}
   grub2_uefi_boot_path: "/boot/efi/EFI/almalinux"
@@ -20,6 +21,7 @@ overrides:
 {{% endif %}}
 {{% if "debian-like" in families %}}
   grub2_boot_path: "/boot/grub"
+  grub2_uefi_boot_path: "/boot/grub"
   grub_helper_executable: "update-grub"
 {{% endif %}}
 {{% if "ubuntu" in families %}}
@@ -29,3 +31,4 @@ overrides:
   grub2_uefi_boot_path: "/boot/grub"
 {{% endif %}}
 {{% endif %}}
+# yamllint enable rule:key-duplicates

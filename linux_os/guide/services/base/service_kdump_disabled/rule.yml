@@ -5,6 +5,11 @@ documentation_complete: true
 {{% else -%}}
 {{% set kdump_service = 'kdump' -%}}
 {{% endif -%}}
+{{% if 'ol10' in product -%}}
+{{% set kdump_package = 'kdump-utils' -%}}
+{{% else -%}}
+{{% set kdump_package = 'kexec-tools' -%}}
+{{% endif -%}}
 
 title: 'Disable KDump Kernel Crash Analyzer (kdump)'
 
@@ -64,4 +69,4 @@ template:
     name: service_disabled
     vars:
         servicename: "{{{ kdump_service }}}"
-        packagename: kexec-tools
+        packagename: "{{{ kdump_package }}}"

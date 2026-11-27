@@ -10,6 +10,7 @@
                             separator_regex='\s*:\s*',
                             value='root',
                             create='yes',
+                            mode='0644',
                             register='aliases_postmaster_changed',
                             rule_title=rule_title) }}}
 
@@ -21,6 +22,7 @@
 - name: {{{ rule_title }}} - Update postfix aliases
   ansible.builtin.command:
     cmd: newaliases
+  changed_when: true
   when:
     - result_newaliases_present.stat.exists
     - aliases_postmaster_changed is changed

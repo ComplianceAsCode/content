@@ -1,0 +1,54 @@
+# platform = Red Hat Enterprise Linux 10
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{% set rx_beg = "^[\s]*-a[\s]+always,exit[\s]+" %}}
+{{% set rx_b32 = "-F[\s]+arch=b32[\s]+" %}}
+{{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
+{{% set rx_path_perm = "-F[\s]+path=/usr/bin/gpasswd(?:[\s]+-F[\s]+perm=x)[\s]+" %}}
+{{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
+
+- name: "{{{ rule_title }}} - Service facts"
+  ansible.builtin.service_facts:
+
+- name: "{{{ rule_title }}} - Set gpasswd_audit_rules fact"
+  ansible.builtin.set_fact:
+    gpasswd_audit_rules:
+      - rule: '-a always,exit -F arch=b32 -F path=/usr/bin/gpasswd -F perm=x -k privileged-gpasswd'
+        regex: {{{ rx_beg + rx_b32 + rx_path_perm + rx_end }}}
+      - rule: '-a always,exit -F arch=b64 -F path=/usr/bin/gpasswd -F perm=x -k privileged-gpasswd'
+        regex: {{{ rx_beg + rx_b64 + rx_path_perm + rx_end }}}
+
+- name: "{{{ rule_title }}} - Update /etc/audit/rules.d/audit.rules to audit gpasswd"
+  ansible.builtin.lineinfile:
+    path: /etc/audit/rules.d/audit.rules
+    line: "{{ item.rule }}"
+    regexp: "{{ item.regex }}"
+    create: yes
+    mode: u=rw,g=,o=
+  when:
+    - '"auditd.service" in ansible_facts.services'
+  register: augenrules_gpasswd_update_result
+  with_items: "{{ gpasswd_audit_rules }}"
+
+- name: "{{{ rule_title }}} - Update /etc/audit/audit.rules to audit gpasswd"
+  ansible.builtin.lineinfile:
+    path: /etc/audit/audit.rules
+    line: "{{ item.rule }}"
+    regexp: "{{ item.regex }}"
+    create: yes
+    mode: u=rw,g=,o=
+  when:
+    - '"auditd.service" in ansible_facts.services'
+  register: auditctl_gpasswd_update_result
+  with_items: "{{ gpasswd_audit_rules }}"
+
+# noqa command-instead-of-module: auditd sets RefuseManualStop=yes, so the service/systemd
+# modules cannot restart it; the SysV 'service auditd restart' wrapper is the supported method.
+- name: "{{{ rule_title }}} - Restart auditd"  # noqa: command-instead-of-module
+  ansible.builtin.command: /usr/sbin/service auditd restart
+  changed_when: true
+  when:
+    - augenrules_gpasswd_update_result is changed or auditctl_gpasswd_update_result is changed

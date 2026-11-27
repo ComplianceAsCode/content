@@ -9,4 +9,4 @@
 
 rm -f {{{ login_defs_path }}}
 echo "PASS_MAX_DAYS        60" > {{{ login_defs_path }}}
-echo "PASS_MAX_DAYS        120" >> {{{ login_defs_path }}}
+echo "PASS_MAX_DAYS        240" >> {{{ login_defs_path }}}

@@ -54,7 +54,10 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_dir" version="1">
     <ind:path>/etc/rsyslog.d</ind:path>
-    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <!-- Only *.conf files: rsyslog loads /etc/rsyslog.d/*.conf through the include
+         glob of the stock configuration, so a routing line in a file with any
+         other name is never read by the daemon; the checktext greps *.conf -->
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">{{{ legacy_regex }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -66,7 +69,10 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_dir_rainer" version="1">
     <ind:path>/etc/rsyslog.d</ind:path>
-    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <!-- Only *.conf files: rsyslog loads /etc/rsyslog.d/*.conf through the include
+         glob of the stock configuration, so a routing line in a file with any
+         other name is never read by the daemon; the checktext greps *.conf -->
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">{{{ rainer_cron_regex }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -90,7 +96,10 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_dir_logging_all_facilities" version="1">
     <ind:path>/etc/rsyslog.d</ind:path>
-    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <!-- Only *.conf files: rsyslog loads /etc/rsyslog.d/*.conf through the include
+         glob of the stock configuration, so a routing line in a file with any
+         other name is never read by the daemon; the checktext greps *.conf -->
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">{{{ rainer_logging_regex }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

@@ -66,8 +66,11 @@
         daemon_reload: true
 
     # IMPORTANT: this is necessary to ensure the dropin is loaded and the permissions for /etc/audit/ and /etc/audit/rules.d/ files are set correctly.
-    - name: "{{{ rule_title }}} - Restart auditd.service"
+    # noqa command-instead-of-module: auditd sets RefuseManualStop=yes, so the service/systemd
+    # modules cannot restart it; the SysV 'service auditd restart' wrapper is the supported method.
+    - name: "{{{ rule_title }}} - Restart auditd.service"  # noqa: command-instead-of-module
       ansible.builtin.command: service auditd restart
+      changed_when: true
       when:
         - audit_config_perms.changed or rules_dir_perms.changed
 

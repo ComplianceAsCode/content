@@ -63,3 +63,4 @@ selections:
     - directory_group_ownership_var_log_audit
     - file_sshd_50_redhat_exists
     - journald_forward_to_syslog
+    - sshd_set_keepalive_0

@@ -1,12 +1,12 @@
 documentation_complete: true
 
-platform: ocp4-node and x86_64_arch
+platform: ocp4-node and (x86_64_arch or ppc64le_arch)
 
 title: 'Verify Group Who Owns The Open vSwitch Configuration Database is hugetlbfs'
 
 description: |-
     Check if the group owner of <code>/etc/openvswitch/conf.db</code> is
-    <code>hugetlbfs</code> for <code>x86_64</code>.
+    <code>hugetlbfs</code> for <code>x86_64</code> and <code>ppc64le</code>.
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for

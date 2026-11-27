@@ -102,6 +102,109 @@
             font-size: 12px;
             font-weight: 600;
         }
+
+        .gap-open {
+            font-size: 12px;
+            color: #0366d6;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .gap-open:hover {
+            text-decoration: underline;
+        }
+
+        .gap-meta {
+            font-size: 12px;
+            color: #586069;
+            margin-top: 8px;
+        }
+
+        .gap-meta a.meta-link {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .gap-meta a.meta-link:hover {
+            text-decoration: underline;
+        }
+
+        .gap-details {
+            margin-top: 10px;
+            border-top: 1px solid #e1e4e8;
+            padding-top: 8px;
+        }
+
+        .gap-details > summary {
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #0366d6;
+            list-style: none;
+        }
+
+        .gap-details > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .gap-details > summary::before {
+            content: '\25B8  ';
+        }
+
+        .gap-details[open] > summary::before {
+            content: '\25BE  ';
+        }
+
+        .gap-details-body {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #24292e;
+        }
+
+        .meta-section {
+            margin-bottom: 12px;
+        }
+
+        .meta-section h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #586069;
+            margin: 0 0 4px 0;
+        }
+
+        .meta-section p {
+            margin: 0 0 6px 0;
+        }
+
+        .stmt-list {
+            margin: 4px 0 4px 18px;
+            padding: 0;
+        }
+
+        .meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .meta-tag {
+            background: #f1f8ff;
+            border: 1px solid #c8e1ff;
+            border-radius: 10px;
+            padding: 1px 8px;
+            font-size: 12px;
+        }
+
+        .meta-tag a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .odp {
+            color: #b31d28;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -196,6 +299,9 @@
             const controls = EMBEDDED_DATA.products[product]?.controls || [];
             const gaps = controls.filter(c => !c.has_rules);
 
+            allControlsById = {};
+            controls.forEach(c => { allControlsById[c.id] = c; });
+
             // Count gaps by baseline
             const highGaps = gaps.filter(c => (c.levels || []).includes('high'));
             const moderateGaps = gaps.filter(c => (c.levels || []).includes('moderate') && !(c.levels || []).includes('high'));
@@ -219,6 +325,133 @@
 
             // Render family breakdown
             renderFamilyBreakdown(gaps);
+        }
+
+        let allControlsById = {};
+
+        function escapeHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function controlLink(id) {
+            return `<a class="meta-link" href="control-detail.html?id=${encodeURIComponent(id)}">${escapeHtml(id.toUpperCase())}</a>`;
+        }
+
+        function parentDescription(control) {
+            if (!control.parent_id) {
+                return '';
+            }
+            const parent = allControlsById[control.parent_id];
+            const label = parent
+                ? `${parent.id.toUpperCase()}: ${parent.title}`
+                : control.parent_id.toUpperCase();
+            return `<a class="meta-link" href="control-detail.html?id=${encodeURIComponent(control.parent_id)}">${escapeHtml(label)}</a>`;
+        }
+
+        // Statement prose is already processed HTML (ODP spans, control links)
+        // by generate_nist_viewer.py, so it is intentionally not escaped.
+        function renderStatementItems(items) {
+            if (!items || items.length === 0) {
+                return '';
+            }
+            return '<ul class="stmt-list">' + items.map(item =>
+                `<li>${item.prose}${renderStatementItems(item.items)}</li>`
+            ).join('') + '</ul>';
+        }
+
+        function renderStatement(statement) {
+            if (!statement) {
+                return '';
+            }
+            let html = '';
+            if (statement.prose) {
+                html += `<p>${statement.prose}</p>`;
+            }
+            html += renderStatementItems(statement.items);
+            return html;
+        }
+
+        function renderControlMeta(control) {
+            const sections = [];
+
+            const statementHtml = renderStatement(control.statement);
+            if (statementHtml) {
+                sections.push(
+                    `<div class="meta-section"><h4>Control Statement</h4>${statementHtml}</div>`
+                );
+            }
+
+            if ((control.guidance || []).length > 0) {
+                sections.push(
+                    '<div class="meta-section"><h4>Supplemental Guidance</h4>' +
+                    control.guidance.map(p => `<p>${p}</p>`).join('') +
+                    '</div>'
+                );
+            }
+
+            if ((control.related_controls || []).length > 0) {
+                sections.push(
+                    '<div class="meta-section"><h4>Related Controls</h4><div class="meta-tags">' +
+                    control.related_controls.map(id => `<span class="meta-tag">${controlLink(id)}</span>`).join('') +
+                    '</div></div>'
+                );
+            }
+
+            if ((control.parameters || []).length > 0) {
+                sections.push(
+                    '<div class="meta-section"><h4>Parameters (ODPs)</h4><div class="meta-tags">' +
+                    control.parameters.map(p =>
+                        `<span class="meta-tag" title="${escapeHtml(p.id)}">${escapeHtml(p.label || p.id)}</span>`
+                    ).join('') +
+                    '</div></div>'
+                );
+            }
+
+            if (sections.length === 0) {
+                return '';
+            }
+
+            return '<details class="gap-details"><summary>Control metadata</summary>' +
+                `<div class="gap-details-body">${sections.join('')}</div></details>`;
+        }
+
+        function renderGapMeta(control, familyName, extra) {
+            const parts = [escapeHtml(familyName)];
+            const parent = parentDescription(control);
+            if (parent) {
+                parts.push(`Parent: ${parent}`);
+            }
+            const levels = (control.levels || []).map(l => l.toUpperCase()).join(', ');
+            parts.push(`Baselines: ${levels || 'none'}`);
+            if (extra) {
+                parts.push(extra);
+            }
+            return parts.join(' | ');
+        }
+
+        function renderGapItem(control, familyName, extra, compact) {
+            const title = compact
+                ? `<span class="gap-id" style="font-size: 13px;">${escapeHtml(control.id.toUpperCase())}</span>
+                   <span style="font-size: 13px; color: #24292e;">${escapeHtml(control.title)}</span>`
+                : `<div class="gap-id">${escapeHtml(control.id.toUpperCase())}</div>
+                   <div class="gap-title">${escapeHtml(control.title)}</div>`;
+            const padding = compact ? ' style="padding: 8px 12px; margin-bottom: 4px;"' : '';
+            return `
+                <div class="gap-item"${padding}>
+                    <div class="gap-item-header">
+                        <div>${title}</div>
+                        <a class="gap-open" href="control-detail.html?id=${encodeURIComponent(control.id)}">
+                            Open control &rarr;
+                        </a>
+                    </div>
+                    <div class="gap-meta">${renderGapMeta(control, familyName, extra)}</div>
+                    ${renderControlMeta(control)}
+                </div>
+            `;
         }
 
         function renderGapList(containerId, countId, gaps) {
@@ -245,36 +478,19 @@
             let html = '';
 
             baseGaps.forEach(control => {
-                const levels = (control.levels || []).join(', ').toUpperCase();
-                const familyName = getFamilyName(control.id);
+                const familyName = getFamilyName(control.id.split('-')[0]);
                 const childGaps = enhGapsByParent[control.id] || [];
+                const extra = childGaps.length > 0
+                    ? `${childGaps.length} enhancement gap${childGaps.length > 1 ? 's' : ''}`
+                    : '';
 
-                html += `
-                    <div class="gap-item" onclick="window.location.href='control-detail.html?id=${control.id}'">
-                        <div class="gap-item-header">
-                            <div>
-                                <div class="gap-id">${control.id.toUpperCase()}</div>
-                                <div class="gap-title">${control.title}</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 12px; color: #586069; margin-top: 8px;">
-                            ${familyName} | Baselines: ${levels}
-                            ${childGaps.length > 0 ? ` | ${childGaps.length} enhancement gap${childGaps.length > 1 ? 's' : ''}` : ''}
-                        </div>
-                    </div>
-                `;
+                html += renderGapItem(control, familyName, extra, false);
 
                 if (childGaps.length > 0) {
                     html += '<div style="margin-left: 20px; border-left: 2px solid #e1e4e8; padding-left: 12px;">';
                     childGaps.forEach(enh => {
-                        html += `
-                            <div class="gap-item" style="padding: 8px 12px; margin-bottom: 4px;" onclick="window.location.href='control-detail.html?id=${enh.id}'">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span class="gap-id" style="font-size: 13px;">${enh.id.toUpperCase()}</span>
-                                    <span style="font-size: 13px; color: #24292e;">${enh.title}</span>
-                                </div>
-                            </div>
-                        `;
+                        html += renderGapItem(
+                            enh, getFamilyName(enh.id.split('-')[0]), '', true);
                     });
                     html += '</div>';
                 }
@@ -283,20 +499,8 @@
             // Orphan enhancement gaps (parent not in this gap list)
             const orphanEnhGaps = gaps.filter(c => c.parent_id && !baseGaps.find(b => b.id === c.parent_id));
             orphanEnhGaps.forEach(control => {
-                const levels = (control.levels || []).join(', ').toUpperCase();
-                html += `
-                    <div class="gap-item" onclick="window.location.href='control-detail.html?id=${control.id}'">
-                        <div class="gap-item-header">
-                            <div>
-                                <div class="gap-id">${control.id.toUpperCase()}</div>
-                                <div class="gap-title">${control.title}</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 12px; color: #586069; margin-top: 8px;">
-                            Baselines: ${levels} | Enhancement of ${control.parent_id.toUpperCase()}
-                        </div>
-                    </div>
-                `;
+                html += renderGapItem(
+                    control, getFamilyName(control.id.split('-')[0]), '', false);
             });
 
             container.innerHTML = html;

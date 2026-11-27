@@ -50,6 +50,12 @@
 # ---------------------------------------------------------------------------
 # 2. Configure complyctl on the VM
 # ---------------------------------------------------------------------------
+- name: "[ {{ baseline_name | upper }} ] Create a directory if it does not exist"
+  ansible.builtin.file:
+    path: "{{ complyctl_home }}"
+    state: directory
+    mode: '0755'
+
 - name: "[ {{ baseline_name | upper }} ] Write complytime.yaml on the VM"
   ansible.builtin.template:
     src: "{{ playbook_dir }}/templates/complytime.yaml.j2"

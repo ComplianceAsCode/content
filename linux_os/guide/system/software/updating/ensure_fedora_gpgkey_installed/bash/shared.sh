@@ -18,8 +18,14 @@ function get_release_fingerprint {
     fi
 }
 
-# Location of the key we would like to import (once it's integrity verified)
-readonly REDHAT_RELEASE_KEY="/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-${fedora_version}-primary"
+# Location of the key we would like to import (once it's integrity verified).
+# From Fedora 45, fedora-gpg-keys installs the keys in /usr/share/pki/rpm-gpg
+# instead of /etc/pki/rpm-gpg.
+REDHAT_RELEASE_KEY="/usr/share/pki/rpm-gpg/RPM-GPG-KEY-fedora-${fedora_version}-primary"
+if [ ! -f "${REDHAT_RELEASE_KEY}" ]; then
+    REDHAT_RELEASE_KEY="/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-${fedora_version}-primary"
+fi
+readonly REDHAT_RELEASE_KEY
 
 RPM_GPG_DIR_PERMS=$(stat -c %a "$(dirname "$REDHAT_RELEASE_KEY")")
 

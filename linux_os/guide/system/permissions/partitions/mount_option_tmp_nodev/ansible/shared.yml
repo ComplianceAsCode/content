@@ -1,0 +1,28 @@
+# platform = SUSE Linux Enterprise 16,multi_platform_slmicro
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: '{{{ rule_title }}} - Check if nodev options is configured in /usr/lib/systemd/system/tmp.mount'
+  ansible.builtin.lineinfile:
+    path: /usr/lib/systemd/system/tmp.mount
+    regexp: ^[\s]*Options=[\s]*.*nodev.*$
+    state: absent
+  check_mode: true
+  register: nodev_match
+
+# if no match, collect current options and add nodev
+- name: '{{{ rule_title }}} - Collect previously configured options'
+  ansible.builtin.shell:
+    cmd: sed -n 's/^[\s]*Options=[\s]*\(.*\)$/\1/p' /usr/lib/systemd/system/tmp.mount
+  register: current_options
+  when:
+    - nodev_match is defined and nodev_match.found == 0
+
+
+- name: '{{{ rule_title }}} - Add nodev option to previously configured options'
+  ansible.builtin.shell:
+    cmd: sed -i "s/^Options=.*/Options={{ current_options.stdout }},nodev/g" /usr/lib/systemd/system/tmp.mount
+  when:
+    - nodev_match.found == 0 and current_options is defined

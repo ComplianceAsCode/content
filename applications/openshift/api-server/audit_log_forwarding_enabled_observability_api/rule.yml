@@ -1,4 +1,3 @@
-
 title: Ensure that Audit Log Forwarding Is Enabled
 
 description: |-
@@ -37,15 +36,23 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders", true) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting_suppressed({
+            "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": '[.items[].spec.pipelines[].inputRefs[]]',
+        }) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: /apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders
-    yamlpath: ".items[].spec.pipelines[:].inputRefs[:]"
+    check_existence: "at_least_one_exists"
+    # ClusterLogForwarders is a list of resources (.items[]). Flattening every
+    # forwarder's pipeline inputRefs into a single list with a server-side jq
+    # filter ensures audit forwarding is detected on ANY forwarder, not just the
+    # first item collected by the OVAL yamlfilecontent probe.
+    filepath: "{{{ openshift_filtered_path('/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders', '[.items[].spec.pipelines[].inputRefs[]]') }}}"
+    yamlpath: "[:]"
     entity_check: "at least one"
     values:
     - value: "audit"
       entity_check: "at least one"
+      operation: "pattern match"

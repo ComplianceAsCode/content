@@ -3,4 +3,7 @@
 # packages = aide
 
 systemctl enable dailyaidecheck.service
-systemctl --now disable dailyaidecheck.timer
+systemctl disable dailyaidecheck.timer
+if [[ $(systemctl is-system-running) != "offline" ]]; then
+    systemctl stop dailyaidecheck.timer
+fi

@@ -4,5 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_lineinfile(msg='', path=PATH, new_line=TEXT, create='yes', state='present', insert_after='', insert_before='', rule_title=rule_title) -}}}
+{{%- set _lineinfile_default_mode = FILEMODE if FILEMODE else '0644' %}}
+{{{ ansible_stat("Check the current permissions of " ~ PATH ~ " to preserve them", path=PATH, register="lineinfile_mode_stat") }}}
+{{{ ansible_lineinfile(msg='', path=PATH, new_line=TEXT, create='yes', mode="{{ lineinfile_mode_stat.stat.mode if lineinfile_mode_stat.stat.exists else '" ~ _lineinfile_default_mode ~ "' }}", state='present', insert_after='', insert_before='', rule_title=rule_title) -}}}
 

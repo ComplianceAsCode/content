@@ -32,6 +32,8 @@
     comment="Tests that
     {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "sle16", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     /usr/lib/systemd/systemd-sulogin-shell
+    {{%- elif 'debian' in product -%}}
+    systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
     {{%- endif %}}
@@ -53,6 +55,8 @@
     comment="Tests that
     {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "sle16", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     /usr/lib/systemd/systemd-sulogin-shell
+    {{%- elif 'debian' in product -%}}
+    systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
     {{%- endif %}}
@@ -75,6 +79,8 @@
   <ind:textfilecontent54_state id="state_require_rescue_service" version="1">
     {{%- if product in ["fedora", "rhcos4", "sle12", "sle15", "sle16", "slmicro5", "slmicro6"] or 'ol' in families or 'rhel' in product -%}}
     <ind:subexpression datatype="string" operation="pattern match">.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:subexpression>
+    {{%- elif 'debian' in product -%}}
+    <ind:subexpression datatype="string" operation="pattern match">.*/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:subexpression>
     {{%- else -%}}
     <ind:subexpression datatype="string" operation="pattern match">/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:subexpression>
     {{%- endif -%}}

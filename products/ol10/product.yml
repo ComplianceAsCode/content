@@ -3,6 +3,7 @@ full_name: Oracle Linux 10
 type: platform
 
 families:
+  - rhel-like
   - ol
 
 major_version_ordinal: 10
@@ -19,15 +20,15 @@ init_system: "systemd"
 dconf_gdm_dir: "local.d"
 
 faillock_path: "/var/log/faillock"
-pkg_release: ""
-pkg_version: ""
+pkg_release: "61e772ef"
+pkg_version: "8d8b756f"
 
-aux_pkg_release: ""
-aux_pkg_version: ""
+aux_pkg_release: "61e77439"
+aux_pkg_version: "8b4efbe6"
 
 # OL fingerprints below retrieved from: https://linux.oracle.com/security/gpg/#gpg
-release_key_fingerprint: ""
-auxiliary_key_fingerprint: ""
+release_key_fingerprint: "3E6D826D3FBAB389C2F38E34BC4D06A08D8B756F"
+auxiliary_key_fingerprint: "982231759C7467065D0CE9B2A7DD07088B4EFBE6"
 
 groups:
   dedicated_ssh_keyowner:
@@ -49,3 +50,5 @@ reference_uris:
 rsyslog_cafile: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
 
 sysctl_remediate_drop_in_file: "true"
+audit_watches_style: modern
+sshd_distributed_config: "true"

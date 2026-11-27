@@ -1,0 +1,1 @@
+(((ansible_facts.services | default({}))["{{{ SERVICENAME }}}.service"] | default({})).state | default("")) != "running"

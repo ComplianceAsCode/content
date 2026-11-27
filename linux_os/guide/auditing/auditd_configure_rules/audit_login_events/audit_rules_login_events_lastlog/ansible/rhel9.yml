@@ -47,7 +47,10 @@
   register: auditctl_lastlog_update_result
   with_items: "{{ lastlog_audit_rules }}"
 
-- name: "{{{ rule_title }}} - Restart auditd"
+# noqa command-instead-of-module: auditd sets RefuseManualStop=yes, so the service/systemd
+# modules cannot restart it; the SysV 'service auditd restart' wrapper is the supported method.
+- name: "{{{ rule_title }}} - Restart auditd"  # noqa: command-instead-of-module
   ansible.builtin.command: /usr/sbin/service auditd restart
+  changed_when: true
   when:
     - augenrules_lastlog_update_result is changed or auditctl_lastlog_update_result is changed

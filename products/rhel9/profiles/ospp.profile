@@ -24,6 +24,8 @@ selections:
     - ospp:all
     - enable_authselect
     - var_authselect_profile=minimal
+    - audit_service_management
+    - audit_service_management_ppc64le
     - '!package_dnf-plugin-subscription-manager_installed'
     - '!package_sequoia-sq_installed'
     - '!configure_ssh_crypto_policy'

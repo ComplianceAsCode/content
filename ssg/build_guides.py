@@ -220,7 +220,7 @@ def build_index(benchmarks, input_basename, index_links, index_options,
                 % (benchmark_id)
             index_select_options += "\n".join(index_options[benchmark_id])
             index_select_options += "</optgroup>\n"
-    else:
+    elif len(index_options.keys()) == 1:
         index_select_options += "\n".join(list(index_options.values())[0])
 
     return "".join([

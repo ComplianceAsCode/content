@@ -4,18 +4,20 @@
 # complexity = low
 # disruption = low
 
-- name: "{{{ rule_title }}} - Restore ownership of cronie files"
+# noqa command-instead-of-module: the package module cannot restore RPM-owned file ownership
+# or permissions (rpm --setugids / --setperms); rpm must be invoked directly.
+- name: "{{{ rule_title }}} - Restore ownership of cronie files"  # noqa: command-instead-of-module
   ansible.builtin.command: rpm --setugids cronie
   changed_when: true
 
-- name: "{{{ rule_title }}} - Restore permissions of cronie files"
+- name: "{{{ rule_title }}} - Restore permissions of cronie files"  # noqa: command-instead-of-module
   ansible.builtin.command: rpm --setperms cronie
   changed_when: true
 
-- name: "{{{ rule_title }}} - Restore ownership of crontabs files"
+- name: "{{{ rule_title }}} - Restore ownership of crontabs files"  # noqa: command-instead-of-module
   ansible.builtin.command: rpm --setugids crontabs
   changed_when: true
 
-- name: "{{{ rule_title }}} - Restore permissions of crontabs files"
+- name: "{{{ rule_title }}} - Restore permissions of crontabs files"  # noqa: command-instead-of-module
   ansible.builtin.command: rpm --setperms crontabs
   changed_when: true

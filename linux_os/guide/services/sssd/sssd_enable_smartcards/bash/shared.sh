@@ -18,7 +18,7 @@ SSSD_CONF_DIR="/etc/sssd/conf.d"
 
 umask $OLD_UMASK
 
-{{% if product in ["fedora", "ol8", "ol9"] or 'rhel' in product %}}
+{{% if product in ["fedora", "ol8", "ol9", "ol10"] or 'rhel' in product %}}
 if [ -f /usr/bin/authselect ]; then
     {{{ bash_enable_authselect_feature('with-smartcard') | indent(4) }}}
 else

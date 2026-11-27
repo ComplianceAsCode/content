@@ -21,5 +21,6 @@
   ansible.builtin.command: >
     chage -m {{ var_accounts_minimum_age_login_defs }} {{ item }}
 {{% endif %}}
+  changed_when: true
   with_items: "{{ user_names.stdout_lines }}"
   when: user_names.stdout_lines | length > 0

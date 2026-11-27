@@ -6,14 +6,16 @@
       test_ref="test_no_empty_passwords_etc_shadow" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+  <unix:shadow_test check="all" check_existence="none_exist" version="1"
   id="test_no_empty_passwords_etc_shadow"
   comment="make sure there aren't blank or null passwords in /etc/shadow">
-    <ind:object object_ref="obj_no_empty_passwords_etc_shadow" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_no_empty_passwords_etc_shadow" version="1">
-    <ind:filepath>/etc/shadow</ind:filepath>
-    <ind:pattern operation="pattern match">^[^:]+::.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
+    <unix:object object_ref="obj_no_empty_passwords_etc_shadow" />
+  </unix:shadow_test>
+  <unix:shadow_object id="obj_no_empty_passwords_etc_shadow" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+    <filter action="exclude">state_no_empty_passwords_etc_shadow_nonempty</filter>
+  </unix:shadow_object>
+  <unix:shadow_state id="state_no_empty_passwords_etc_shadow_nonempty" version="1">
+    <unix:password operation="pattern match">.+</unix:password>
+  </unix:shadow_state>
 </def-group>

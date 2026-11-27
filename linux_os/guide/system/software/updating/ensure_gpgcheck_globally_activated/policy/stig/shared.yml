@@ -9,19 +9,20 @@ vuldiscussion: |-
     Verifying the authenticity of software prior to installation validates the integrity of the software package received from a vendor. This verifies the software has not been tampered with and that it has been provided by a trusted vendor.
 
 checktext: |-
-    Verify that dnf always checks the GPG signature of software packages originating from external software repositories before installation:
+    Verify {{{ full_name }}} dnf always checks the GPG signature of software packages originating from external software repositories before installation with the following command:
 
-    $ grep -w gpgcheck /etc/dnf/dnf.conf
-
+    $ sudo grep -w gpgcheck /etc/dnf/dnf.conf
     gpgcheck=1
 
-    If "gpgcheck" is not set to "1", or if the option is missing or commented out, ask the system administrator how the GPG signatures of software packages are being verified.
+    If "gpgcheck" is not set to either "1", "true", or "yes" (keywords containing letters are case insensitive), or if the option is missing or commented out, ask the system administrator (SA) how the GPG signatures of software packages are being verified.
 
-    If there is no process to verify GPG signatures that is approved by the organization, this is a finding.
+    If no process to verify GPG signatures has been approved by the organization, this is a finding.
 
 fixtext: |-
-    Configure dnf to always check the GPG signature of software packages originating from external software repositories before installation.
+    Configure {{{ full_name }}} dnf to always check the GPG signature of software packages originating from external software repositories before installation.
 
-    Add or update the following line in the [main] section of the /etc/dnf/dnf.conf file:
+    Add or update the following line in the [main] section of the "/etc/dnf/dnf.conf" file:
 
     gpgcheck=1
+
+    Note: Any of the following are acceptable: "1", "true", or "yes" (keywords containing letters are case insensitive).

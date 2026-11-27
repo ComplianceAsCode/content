@@ -11,5 +11,6 @@
 
 - name: Lock the password of the user accounts other than root with uid 0
   ansible.builtin.command: passwd -l {{ item.key }}
+  changed_when: true
   loop: "{{ getent_passwd | dict2items | rejectattr('key', 'equalto', 'root') | list }}"
   when: item.value.1  == '0'

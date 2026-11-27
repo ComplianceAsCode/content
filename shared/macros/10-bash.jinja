@@ -260,6 +260,7 @@ cat <<EOF > "{{{ filename }}}"
 {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
 EOF
 chmod 0600 "{{{ filename }}}"
+{{{ bash_audit_load_rules("augenrules") }}}
 {{%- endmacro -%}}
 
 
@@ -313,6 +314,48 @@ chmod 0600 "{{{ filename }}}"
 
 
 {{#
+    Load the audit rules into the running kernel after a remediation changed the
+    audit rules files, so the rules are in effect without waiting for a reboot.
+
+    Nothing is done when:
+    * auditctl is not available or the audit status cannot be read (e.g. in a container),
+    * auditing is not enabled in the kernel ("enabled 0"),
+    * the rules are already locked ("enabled 2", "-e 2"); then only a reboot loads them,
+    * the system loads its audit rules with a different tool than the one given.
+
+    A "-e 2" line is left out of the load, so the rules are not locked in the middle
+    of a remediation run; the lock is applied at the next boot as before.
+
+:param tool: tool whose rules file was edited, either 'auditctl' or 'augenrules'
+:type tool: str
+
+#}}
+{{%- macro bash_audit_load_rules(tool) -%}}
+if command -v auditctl >/dev/null 2>&1 && \
+    [ "$(auditctl -s 2>/dev/null | awk '$1 == "enabled" { print $2 }')" = "1" ]; then
+    audit_rules_loader=""
+    if grep -qsE '^(ExecStart(Post)?=-?(/usr)?/s?bin/augenrules|Requires=augenrules\.service)' \
+        /usr/lib/systemd/system/auditd.service /usr/lib/systemd/system/audit-rules.service; then
+        audit_rules_loader="augenrules"
+    elif grep -qsE '^ExecStart(Post)?=-?(/usr)?/s?bin/auditctl[[:space:]]+-R' \
+        /usr/lib/systemd/system/auditd.service /usr/lib/systemd/system/audit-rules.service; then
+        audit_rules_loader="auditctl"
+    fi
+    if [ "$audit_rules_loader" = "{{{ tool }}}" ]; then
+{{%- if tool == "augenrules" %}}
+        augenrules >/dev/null
+{{%- endif %}}
+        audit_rules_to_load=$(mktemp)
+        grep -vE '^[[:space:]]*-e[[:space:]]+2([[:space:]]|$)' /etc/audit/audit.rules > "$audit_rules_to_load"
+        auditctl -R "$audit_rules_to_load" >/dev/null || \
+            echo "Loading the audit rules failed, they will be loaded at the next boot" >&2
+        rm -f "$audit_rules_to_load"
+    fi
+fi
+{{%- endmacro -%}}
+
+
+{{#
     Macro to fix audit file system object watch rule for given path:
 
     * if rule exists, also verifies the '-w' or '-F path' match the requirements
@@ -341,6 +384,11 @@ chmod 0600 "{{{ filename }}}"
 
 #}}
 {{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key, style="", arch="", filter_type="path") -%}}
+# Escape the expanded path for grep's PCRE and sed's basic regular expressions.
+# Also escape sed's substitution delimiter in the latter.
+audit_watch_path_pcre=$(printf '%s' "{{{ path }}}" | sed 's/[][\\.^$*+?(){}|]/\\&/g')
+audit_watch_path_bre=$(printf '%s' "{{{ path }}}" | sed 's/[][\\.^$*#]/\\&/g')
+
 # Create a list of audit *.rules files that should be inspected for presence and correctness
 # of a particular audit rule. The scheme is as follows:
 #
@@ -363,9 +411,9 @@ files_to_inspect+=('/etc/audit/audit.rules')
 # If rule is defined, add '/etc/audit/rules.d/*.rules' to list of files for inspection.
 # If rule isn't defined, add '/etc/audit/rules.d/{{{ key }}}.rules' to list of files for inspection.
 {{% if style == "modern" %}}
-readarray -t matches < <(grep -HP "[\s]*-F[\s]+{{{ filter_type }}}={{{ path }}}" /etc/audit/rules.d/*.rules)
+readarray -t matches < <(grep -HP "[\s]*-F[\s]+{{{ filter_type }}}=$audit_watch_path_pcre" /etc/audit/rules.d/*.rules)
 {{% else %}}
-readarray -t matches < <(grep -HP "[\s]*-w[\s]+{{{ path }}}" /etc/audit/rules.d/*.rules)
+readarray -t matches < <(grep -HP "[\s]*-w[\s]+$audit_watch_path_pcre" /etc/audit/rules.d/*.rules)
 {{% endif %}}
 
 # For each of the matched entries
@@ -399,9 +447,10 @@ for audit_rules_file in "${files_to_inspect[@]}"
 do
     # Check if audit watch file system object rule for given path already present
 {{% if style == "modern" %}}
-    if grep -q -P -- "^[\s]*-F[\s]+{{{ filter_type }}}={{{ path }}}" "$audit_rules_file"
+    # Only key options may follow permissions: other filters restrict the watch.
+    if grep -q -P -- "^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch={{{ arch }}}[\s]+-F[\s]+{{{ filter_type }}}=${audit_watch_path_pcre}[\s]+-F[\s]+perm=[rxwa]{1,4}([\s]+(-k[\s]+|-F[\s]+key=)[^\s]+)*[\s]*$" "$audit_rules_file"
 {{% else %}}
-    if grep -q -P -- "^[\s]*-w[\s]+{{{ path }}}" "$audit_rules_file"
+    if grep -q -P -- "^[\s]*-w[\s]+$audit_watch_path_pcre" "$audit_rules_file"
 {{% endif %}}
     then
         # Rule is found => verify yet if existing rule definition contains
@@ -411,9 +460,10 @@ do
         sp="[[:space:]]"
         # Extract current permission access types (e.g. -p [r|w|x|a] values) from audit rule
 {{% if style == "modern" %}}
-        current_access_bits=$(sed -ne "s#$sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}={{{ path }}}$sp\+-F$sp\+perm=\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
+        audit_watch_key_suffix="\($sp\+\(-k$sp\+\|-F$sp\+key=\)[^[:space:]]\+\)*$sp*$"
+        current_access_bits=$(sed -ne "s#^$sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}=$audit_watch_path_bre$sp\+-F$sp\+perm=\([rxwa]\{1,4\}\)$audit_watch_key_suffix#\1#p" "$audit_rules_file")
 {{% else %}}
-        current_access_bits=$(sed -ne "s#$sp*-w$sp\+{{{ path }}} $sp\+-p$sp\+\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
+        current_access_bits=$(sed -ne "s#$sp*-w$sp\+$audit_watch_path_bre$sp\+-p$sp\+\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
 {{% endif %}}
         # Split required access bits string into characters array
         # (to check bit's presence for one bit at a time)
@@ -428,24 +478,29 @@ do
                 current_access_bits="$current_access_bits$access_bit"
             fi
         done
+        # Merge permissions from matching rules into a single mask without duplicate bits.
+        current_access_bits=$(printf '%s' "$current_access_bits" | grep -o '[rxwa]' | sort -u | tr -d '\n')
         # Propagate the updated rule's access bits (original + the required
         # ones) back into the /etc/audit/audit.rules file for that rule
 {{% if style == "modern" %}}
-        sed -i "s#\($sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}={{{ path }}}$sp\+-F$sp\+perm=\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
+        sed -i "s#^\($sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+{{{ filter_type }}}=$audit_watch_path_bre$sp\+-F$sp\+perm=\)\([rxwa]\{1,4\}\)\($audit_watch_key_suffix\)#\1$current_access_bits\3#" "$audit_rules_file"
 {{% else %}}
-        sed -i "s#\($sp*-w$sp\+{{{ path }}}$sp\+-p$sp\+\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
+        sed -i "s#\($sp*-w$sp\+$audit_watch_path_bre$sp\+-p$sp\+\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
 {{% endif %}}
     else
         # Rule isn't present yet. Append it at the end of $audit_rules_file file
         # with proper key
+        # Normalize permissions to match the existing-rule branch.
+        normalized_access_bits=$(printf '%s' "{{{ required_access_bits }}}" | grep -o '[rxwa]' | sort -u | tr -d '\n')
 
 {{% if style == "modern" %}}
-        echo "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm={{{ required_access_bits }}} -F key={{{ key }}}" >> "$audit_rules_file"
+        echo "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm=$normalized_access_bits -F key={{{ key }}}" >> "$audit_rules_file"
 {{% else %}}
-        echo "-w {{{ path }}} -p {{{ required_access_bits }}} -k {{{ key }}}" >> "$audit_rules_file"
+        echo "-w {{{ path }}} -p $normalized_access_bits -k {{{ key }}}" >> "$audit_rules_file"
 {{% endif %}}
     fi
 done
+{{{ bash_audit_load_rules(tool) }}}
 {{%- endmacro -%}}
 
 
@@ -545,9 +600,13 @@ fi
       {{{ bash_perform_audit_adjtimex_settimeofday_stime_remediation() }}}
 
 #}}
-{{%- macro bash_perform_audit_adjtimex_settimeofday_stime_remediation() -%}}
+{{%- macro bash_perform_audit_adjtimex_settimeofday_stime_remediation(syscall=None) -%}}
+{{%- if syscall == "stime" %}}
+RULE_ARCHS=("b32")
+{{%- else %}}
 # Retrieve hardware architecture of the underlying system
 [ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
+{{%- endif %}}
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
@@ -555,16 +614,24 @@ do
     if [ ${ARCH} = "b32" ]
     then
         ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+        {{%- if syscall %}}
+        SYSCALL="{{{ syscall }}}"
+        {{%- else %}}
         # stime system call is known at 32-bit arch (see e.g "$ ausyscall i386 stime" 's output)
         # so append it to the list of time group system calls to be audited
         SYSCALL="adjtimex settimeofday stime"
+        {{%- endif %}}
         SYSCALL_GROUPING="adjtimex settimeofday stime"
     elif [ ${ARCH} = "b64" ]
     then
         ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+        {{%- if syscall %}}
+        SYSCALL="{{{ syscall }}}"
+        {{%- else %}}
         # stime system call isn't known at 64-bit arch (see "$ ausyscall x86_64 stime" 's output)
         # therefore don't add it to the list of time group system calls to be audited
         SYSCALL="adjtimex settimeofday"
+        {{%- endif %}}
         SYSCALL_GROUPING="adjtimex settimeofday"
     fi
     OTHER_FILTERS=""
@@ -697,17 +764,14 @@ Macro to enable or disable a particular service.
 
         bash_service_command("enable", "bluetooth")
         bash_service_command("disable", "bluetooth.service")
-        bash_service_command("disable", "rsh.socket", xinetd="rsh")
 
 :param service_state: Desired state of the service
 :type service_state: str
 :param service: The service to change
 :type service: str
-:param xinetd: Set the xinetd for the service. Defaults to empty string.
-:type xinetd: str
 
 #}}
-{{%- macro bash_service_command(service_state, service, xinetd="") -%}}
+{{%- macro bash_service_command(service_state, service) -%}}
 {{#
 # If systemctl is installed, use systemctl command; otherwise, use the
 # service/chkconfig commands
@@ -731,15 +795,6 @@ if /usr/bin/systemctl --failed | grep -q "{{{ service }}}"; then
     /usr/bin/systemctl reset-failed "{{{ service }}}"
 fi
 {{%- endif -%}}
-
-{{%- if xinetd != "" -%}}
-grep -qi disable "/etc/xinetd.d/$xinetd" && \
-    {{%- if service_state == "disable" -%}}
-sed -i "s/disable.*/disable         = no/gI" "/etc/xinetd.d/$xinetd"
-    {{%- else -%}}
-sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
-    {{%- endif -%}}
-{{%- endif -%}}
 {{%- endmacro -%}}
 
 
@@ -753,13 +808,28 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 
 #}}
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
-if ! grep -q '#[[:space:]]*server' "{{{ config_file }}}" ; then
-  for server in $(echo "{{{ servers_list }}}" | tr ',' '\n') ; do
-    printf '\nserver %s' "$server" >> "{{{ config_file }}}"
-  done
-else
-  sed -i 's/#[ \t]*server/server/g' "{{{ config_file }}}"
+IFS="," read -r -a SERVERS <<< "{{{ servers_list }}}"
+
+valid_pattern=""
+for server in "${SERVERS[@]}"; do
+    escaped_server="${server//./\\.}"
+    if [ -z "$valid_pattern" ]; then
+        valid_pattern="${escaped_server}"
+    else
+        valid_pattern="${valid_pattern}|${escaped_server}"
+    fi
+done
+
+if [ -n "$valid_pattern" ]; then
+    sed -i -E "/^[[:space:]]*server[[:space:]]/ { /^[[:space:]]*server[[:space:]]+(${valid_pattern})([[:space:]]|$)/! s/^[[:space:]]*server/# server/ }" "{{{ config_file }}}"
 fi
+
+for server in "${SERVERS[@]}" ; do
+    escaped_server="${server//./\\.}"
+    if ! grep -q "^[[:space:]]*server[[:space:]]\+${escaped_server}\([[:space:]]\|$\)" "{{{ config_file }}}" ; then
+        printf '\nserver %s' "$server" >> "{{{ config_file }}}"
+    fi
+done
 {{{ bash_ensure_nl_at_eof(config_file) }}}
 {{%- endmacro -%}}
 
@@ -826,10 +896,10 @@ authselect enable-feature {{{ feature }}}
 
 #}}
 {{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
-{{% if 'debian' in product or product in ['sle15', 'sle16'] %}}
+{{% if 'debian' in product or product in ['sle15', 'sle16', 'slmicro6'] %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
-    {{% if  product in ['sle15', 'sle16'] %}}
+    {{% if  product in ['sle15', 'sle16', 'slmicro6'] %}}
     # insert before pam_unix.so
     sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
     {{% else %}}
@@ -861,7 +931,7 @@ fi
 
 pam_file="/etc/pam.d/common-account"
 if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
-    {{% if  product in ['sle15', 'sle16'] %}}
+    {{% if  product in ['sle15', 'sle16', 'slmicro6'] %}}
     # insert before pam_unix.so(so only consecutive authentication failures are lock)
     sed -i --follow-symlinks '/^account.*required.*pam_unix\.so.*/i account   required     pam_faillock.so' "$pam_file"
     {{% else %}}
@@ -869,7 +939,7 @@ if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
     {{% endif %}}
 fi
 
-{{% if  product in ['sle15', 'sle16'] %}}
+{{% if  product in ['sle15', 'sle16', 'slmicro6'] %}}
 {{{
     bash_ensure_pam_module_configuration(
     '/etc/pam.d/common-auth',
@@ -953,7 +1023,7 @@ Priority: 1025
 Conflicts: cracklib, pwquality
 Password-Type: Primary
 Password:
-    requisite                   pam_pwquality.so
+    requisite                   pam_pwquality.so retry=3
 EOF
     chmod 0644 /usr/share/pam-configs/"$conf_name"
 fi
@@ -975,9 +1045,10 @@ if [ ! -f "$conf_path"/"$conf_name" ]; then
         if grep -q "$(md5sum "$conf_path"/unix | cut -d ' ' -f 1)" /var/lib/dpkg/info/libpam-runtime.md5sums;then
             cp "$conf_path"/unix "$conf_path"/"$conf_name"
             chmod 0644 "$conf_path"/"$conf_name"
+            sed -i 's/^Name: .*/Name: Unix authentication (ComplianceAsCode)/' "$conf_path"/"$conf_name"
             sed -i 's/Priority: [0-9]\+/Priority: 257\
 Conflicts: unix/' "$conf_path"/"$conf_name"
-            DEBIAN_FRONTEND=noninteractive pam-auth-update
+            DEBIAN_FRONTEND=noninteractive pam-auth-update --enable "$conf_name" --disable unix
         else
             echo "Not applicable - checksum of $conf_path/unix does not match the original." >&2
         fi
@@ -1495,21 +1566,70 @@ fi
 {{%- endmacro %}}
 
 
+{{#
+    Comment out the entries of /etc/sudoers and of the files of /etc/sudoers.d
+    that hold the parameter, each with the lines that a trailing backslash
+    continues it on, to preserve user data. A file changes only when visudo
+    accepts the result.
+
+:param parameter: The parameter, as the messages of the script name it
+:type parameter: str
+:param pattern: The Perl-compatible regular expression of the parameter, for grep -P
+:type pattern: str
+
+#}}
 {{%- macro bash_sudo_remove_config(parameter, pattern) -%}}
+rejected=0
 for f in /etc/sudoers /etc/sudoers.d/* ; do
-  if [ ! -e "$f" ] ; then
+  if [ ! -f "$f" ] ; then
     continue
   fi
-  matching_list=$(grep -P '^(?!#).*[\s]+{{{ pattern }}}.*$' $f | uniq )
-  if ! test -z "$matching_list"; then
-    while IFS= read -r entry; do
-      # comment out "{{{ parameter }}}" matches to preserve user data
-      sed -i "s|^${entry}$|# &|g" $f
-    done <<< "$matching_list"
-
-    /usr/sbin/visudo -cf $f &> /dev/null || echo "Fail to validate $f with visudo"
+  # The entries that hold "{{{ parameter }}}", as first:last line numbers,
+  # read as sudo reads them: a backslash followed only by blanks continues
+  # the entry, another backslash escapes the next character, a double quote
+  # opens or closes a string in a Defaults entry (a command reads it as an
+  # ordinary character), and outside a string a # that starts no user or
+  # group ID begins a comment, which ends the entry at its line.
+  entries=$(awk 'function continues(line, defaults,  i, ch) {
+        for (i = 1; i <= length(line); i++) {
+          ch = substr(line, i, 1)
+          if (ch == "\\") {
+            if (substr(line, i + 1) ~ /^[ \t]*$/)
+              return 1
+            i++
+          } else if (ch == "\"" && defaults) {
+            q = !q
+          } else if (ch == "#" && !q && substr(line, i + 1) !~ /^-?[0-9]/) {
+            return 0
+          }
+        }
+        return 0
+      }
+      {
+        if (c) { t = t " " $0 } else { s = NR; t = $0; q = 0; d = ($0 ~ /^[ \t]*Defaults([ \t:@!>]|$)/) }
+        c = continues($0, d)
+        if (c) { sub(/\\[ \t]*$/, "", t) } else { print s ":" NR ":" t }
+      } END { if (c) print s ":" NR ":" t }' "$f" |
+    grep -P '^\d+:\d+:(?!#).*[\s,=):]{{{ pattern }}}' | cut -d: -f1,2)
+  if [ -z "$entries" ] ; then
+    continue
   fi
+  # The copy sits beside the file, so visudo resolves relative includes.
+  tmp=$(mktemp "$f.XXXXXX")
+  cat "$f" > "$tmp"
+  for range in $entries; do
+    sed -i "${range%:*},${range#*:}s/^/# /" "$tmp"
+  done
+  if /usr/sbin/visudo -cf "$tmp" > /dev/null 2>&1; then
+    cat "$tmp" > "$f"
+    echo "Commented out {{{ parameter }}} in $f"
+  else
+    echo "Fail to validate $f with visudo" >&2
+    rejected=1
+  fi
+  rm -f "$tmp"
 done
+[ "$rejected" -eq 0 ]
 {{%- endmacro -%}}
 
 {{% macro bash_sssd_ldap_config(parameter, value, rule_id=None) -%}}
@@ -2001,7 +2121,9 @@ if [ "$skip" -ne 0 ]; then
         other_string=$([[ {{{ other_filters }}} ]] && echo " {{{ other_filters }}}") || /bin/true
         auid_string=$([[ {{{ auid_filters }}} ]] && echo " {{{ auid_filters }}}") || /bin/true
         full_rule="{{{ action_arch_filters }}}${syscall_string}${other_string}${auid_string} -F key={{{ key }}}" || /bin/true
-        echo "$full_rule" >> "$default_file"
+        if ! grep -Fxq -- "$full_rule" "$default_file" 2>/dev/null; then
+            echo "$full_rule" >> "$default_file"
+        fi
         chmod 0600 ${default_file}
     else
         # Check if the syscalls are declared as a comma separated list or
@@ -2025,6 +2147,7 @@ if [ "$skip" -ne 0 ]; then
         sed -i -e "\#${rule_to_edit}#s#${rule_syscalls_to_edit}#${new_grouped_syscalls}#" "$file_to_edit"
     fi
 fi
+{{{ bash_audit_load_rules(tool) }}}
 {{%- endmacro %}}
 
 
@@ -2072,8 +2195,15 @@ Part of the grub2_bootloader_argument template.
 
 #}}
 {{% macro grub2_bootloader_argument_remediation(arg_name, arg_name_value) %}}
-{{% if 'ubuntu' in product or 'debian' in product or product in ['ol7', 'sle12', 'sle15', 'sle16', 'slmicro5'] %}}
+{{% if 'ubuntu' in product or 'debian' in product or 'sle' in product or 'slmicro' in product or product == 'ol7' %}}
 {{{ update_etc_default_grub_manually(arg_name, arg_name_value) }}}
+{{% elif "grubby" in grub_helper_executable %}}
+# grubby updates GRUB_CMDLINE_LINUX in /etc/default/grub only if it is already set to a non-empty value
+if ! grep -qE '^\s*GRUB_CMDLINE_LINUX="?\s*[^"[:space:]]' '/etc/default/grub' 2>/dev/null ; then
+    # An unquoted or empty GRUB_CMDLINE_LINUX= is not handled by the quoted-form edit below; normalize it first
+    sed -i 's/^\(\s*GRUB_CMDLINE_LINUX=\)[[:space:]]*$/\1""/' '/etc/default/grub'
+    {{{ update_etc_default_grub_manually(arg_name, arg_name_value) | indent(4) }}}
+fi
 {{% endif -%}}
 {{{ grub_command("add", arg_name_value) }}}
 {{% endmacro %}}
@@ -2599,10 +2729,7 @@ if [[ ! $CURRENT_PROFILE == custom/* ]]; then
     authselect create-profile hardening -b $CURRENT_PROFILE
     CURRENT_PROFILE="custom/hardening"
     {{{ bash_apply_authselect_changes('before-hardening-custom-profile') | indent(4) }}}
-    authselect select $CURRENT_PROFILE
-    for feature in $ENABLED_FEATURES; do
-        authselect enable-feature $feature;
-    done
+    authselect select $CURRENT_PROFILE $ENABLED_FEATURES
     {{{ bash_apply_authselect_changes('after-hardening-custom-profile') | indent(4) }}}
 fi
 {{%- endmacro %}}
@@ -2875,7 +3002,7 @@ This macro creates a Bash conditional which checks the system architecture in /p
 #}}
 {{% macro bash_copy_distro_defaults(source, destination) -%}}
 
-{{% if product in ["sle16", "slmicro6"] %}}
+{{% if product in ["opensuse16", "sle16", "slmicro6"] %}}
 if ! [ -e "{{{ destination }}}" ] ; then
     cp -p "{{{ source }}}" "{{{ destination }}}"
 fi
@@ -2898,12 +3025,81 @@ fi
 {{%- set line_regex_absent = "^\s*" + parameter + "\s\+" -%}}
 {{%- set line_regex_replace = "^" + parameter -%}}
 {{%- set login_defs_d_config_dir = "/".join(login_defs_drop_in_path.split("/")[:-1]) -%}}
-
-{{% if product in [ 'slmicro6', 'sle16' ] %}}
+if ! [ -d "{{{ login_defs_d_config_dir }}}" ]; then
+    mkdir -p {{{ login_defs_d_config_dir }}}
+    chmod 0755 {{{ login_defs_d_config_dir }}}
+fi
+{{% if product in ['opensuse16', 'sle16', 'slmicro6'] %}}
 {{{ bash_copy_distro_defaults(login_defs_defaults_path, login_defs_path) }}}
 {{% endif %}}
 
 {{{ lineinfile_absent_in_directory(login_defs_d_config_dir, line_regex_absent, filename_glob="*.defs") }}}
 {{{ bash_replace_or_append(login_defs_drop_in_path, line_regex_replace, value, '%s %s', cce_identifiers=cce_identifiers) }}}
 
+{{%- endmacro %}}
+
+{{#
+    Set the ownership and permissions of the systemd journal directories
+    in tmpfiles.d drop-in.
+
+    The directory entries have to keep the executable bits, otherwise the
+    journal directories cannot be traversed. The journal files must not be
+    executable, so they need their own entries: the tilde only masks bits away,
+    so a recursive Z carrying the directory mode leaves an already executable
+    journal file executable, and the file rule then reports a finding that the
+    remediation cannot fix.
+
+    The file entries match one directory level, which is where journald keeps
+    the journal files. They match %m* rather than %m because a journal
+    namespace stores its files in /var/log/journal/MACHINE_ID.NAMESPACE, and
+    those files would otherwise only be covered by the recursive directory
+    entry and stay executable. tmpfiles.d cannot express more than one level:
+    the glob is matched one path component at a time, so there is no recursive
+    form, and the recursion of Z applies to directories as well, which would
+    strip the     executable bits the journal directories need. A journal file that sits at a
+    greater depth or under an unexpected name is therefore corrected by a find
+    pass instead, because the check scans the trees recursively and would
+    otherwise report a finding that the remediation cannot fix. The tmpfiles.d
+    entries keep the ordinary layout correct across reboots, the find pass
+    repairs whatever else is already on disk.
+
+:parameter permission: permission to set on the journal directories
+:type permission: str
+:parameter file_permission: permission to set on the journal files
+:type file_permission: str
+#}}
+
+{{%- macro bash_set_journal_tmpfiles(permission, file_permission='0640') %}}
+TMPFILES_CONF="/etc/tmpfiles.d/zzz-systemd-stig.conf"
+
+mkdir -p /etc/tmpfiles.d
+touch "$TMPFILES_CONF"
+
+# Drop any previously written journal entries so stale or conflicting settings
+# in this file cannot be applied after the hardened ones.
+sed -i --follow-symlinks -E '/^\s*[zZ][+]*\s+\/(run|var)\/log\/journal/d' "$TMPFILES_CONF"
+
+# A drop-in whose name sorts after this file would be applied last and would
+# undo the hardening. Comment out journal entries in the other administrator
+# drop-ins so the hardened entries below are the effective ones.
+for conf in /etc/tmpfiles.d/*.conf /run/tmpfiles.d/*.conf; do
+    if [ -f "$conf" ] && [ "$conf" != "$TMPFILES_CONF" ]; then
+        sed -i --follow-symlinks -E 's,^(\s*[zZ][+]*\s+/(run|var)/log/journal.*),# \1,' "$conf"
+    fi
+done
+
+cat >>"$TMPFILES_CONF" <<'EOF'
+z /run/log/journal ~{{{ permission }}} root systemd-journal - -
+Z /run/log/journal ~{{{ permission }}} root systemd-journal - -
+z /run/log/journal/%m ~{{{ permission }}} root systemd-journal - -
+z /var/log/journal ~{{{ permission }}} root systemd-journal - -
+Z /var/log/journal ~{{{ permission }}} root systemd-journal - -
+z /var/log/journal/%m ~{{{ permission }}} root systemd-journal - -
+Z /run/log/journal/%m*/*.journal* ~{{{ file_permission }}} root systemd-journal - -
+Z /var/log/journal/%m*/*.journal* ~{{{ file_permission }}} root systemd-journal - -
+EOF
+
+systemd-tmpfiles --create
+
+find /run/log/journal /var/log/journal -type f -exec chmod u-x,g-wx,o-rwx {} +
 {{%- endmacro %}}

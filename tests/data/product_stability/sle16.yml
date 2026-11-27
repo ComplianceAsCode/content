@@ -7,14 +7,19 @@ aide_audit_binaries:
   - aureport
   - audispd
   - augenrules
+  - audisp-syslog
+  - audisp-remote
+  - audispd-zos-remote
 audisp_conf_path: /etc/audit
 audit_binaries:
-  - /sbin/auditctl
-  - /sbin/aureport
-  - /sbin/ausearch
-  - /sbin/auditd
-  - /sbin/augenrules
-  - /sbin/audisp-syslog
+  - /usr/sbin/auditctl
+  - /usr/sbin/aureport
+  - /usr/sbin/ausearch
+  - /usr/sbin/auditd
+  - /usr/sbin/augenrules
+  - /usr/sbin/audisp-syslog
+  - /usr/sbin/audisp-remote
+  - /usr/sbin/audispd-zos-remote
 audit_watches_style: legacy
 auid: 1000
 basic_properties_derived: true
@@ -54,7 +59,9 @@ openssh_server_crypto_policy_config_file: /etc/crypto-policies/back-ends/openssh
 pam_faillock_conf_path: /etc/security/faillock.conf
 pkg_manager: zypper
 pkg_manager_config_file: /etc/zypp/zypp.conf
+pkg_release: 66c5d91a
 pkg_system: rpm
+pkg_version: 39db7c82
 platform_package_overrides:
   aarch64_arch: null
   crontabs: cronie
@@ -84,7 +91,8 @@ reference_uris:
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cobit5: https://www.isaca.org/resources/cobit
-  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
+  cui: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html
+  cui_enhanced: https://csrc.nist.gov/pubs/sp/800/172/r3/final
   dcid: not_officially_available
   disa: https://www.cyber.mil/stigs/cci/
   hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
@@ -103,14 +111,15 @@ reference_uris:
   stigref: https://www.cyber.mil/stigs/srg-stig-tools/
   stigref_vulnerability_id: https://www.cyber.mil/stigs/srg-stig-tools#vulnerability_id
   suse-base-sle16: not_publicly_available
+release_key_fingerprint: FEAB502539D846DB2C0961CA70AF9E8139DB7C82
 rsyslog_cafile: /etc/pki/tls/cert.pem
 ssh_client_config_dir: /etc/ssh/ssh_config.d
 ssh_client_main_config_file: /etc/ssh/ssh_config
-sshd_config_base_dir: /usr/etc/ssh
+sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
 sshd_distributed_config: 'true'
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
-sshd_main_config_file: /usr/etc/ssh/sshd_config
+sshd_main_config_file: /etc/ssh/sshd_config
 sshd_runtime_check: 'false'
 sshd_sysconfig_file: /etc/sysconfig/sshd
 sysctl_remediate_drop_in_file: 'true'

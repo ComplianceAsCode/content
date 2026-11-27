@@ -6,12 +6,4 @@
 
 {{{ ansible_instantiate_variables("var_password_hashing_algorithm_pam") }}}
 
-- name: "{{{ rule_title }}} - Set Password Hashing Algorithm in /etc/libuser.conf"
-  ansible.builtin.lineinfile:
-    dest: /etc/libuser.conf
-    insertafter: '^\s*\[defaults]'
-    regexp: ^#?crypt_style
-    line: crypt_style = {{ var_password_hashing_algorithm_pam }}
-    state: present
-    create: true
-    mode: 0644
+{{{ ansible_ini_file_set("/etc/libuser.conf", "defaults", "crypt_style", "{{ var_password_hashing_algorithm_pam }}", description="Set Password Hashing Algorithm in /etc/libuser.conf") }}}

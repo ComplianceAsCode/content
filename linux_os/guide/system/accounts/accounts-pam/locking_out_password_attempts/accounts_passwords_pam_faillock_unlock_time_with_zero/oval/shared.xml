@@ -2,6 +2,45 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="6">
     {{{ oval_metadata(DESCRIPTION, rule_title=rule_title) }}}
 
+    {{% if 'debian' in product or 'ubuntu' in product or 'sle' in product or 'slmicro' in product %}}
+
+    <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
+      <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
+        <!-- pam_unix.so is a control module present in all realistic scenarios and also used
+             as reference for the correct position of pam_faillock.so in auth section. If the
+             system is properly configured, it must appear only once in auth section. -->
+        <criterion test_ref="test_{{{ rule_id }}}_common_pam_unix_auth"
+		   comment="pam_unix.so appears only once in auth section of common-auth"/>
+        <criterion test_ref="test_{{{ rule_id }}}_common_pam_faillock_auth"
+		   comment="pam_faillock.so is properly defined in auth section of common-auth"/>
+        <criterion test_ref="test_{{{ rule_id }}}_common_pam_faillock_account"
+		   comment="pam_faillock.so is properly defined in common-account"/>
+      </criteria>
+
+      <!-- pam_faillock.so parameters should be defined in {{{ pam_faillock_conf_path }}} whenever
+           possible. But due to backwards compatibility, they are also allowed in pam files
+           directly. In case they are defined in both places, pam files have precedence and this
+           may confuse the assessment. The following tests ensure only one option is used. -->
+      <criteria operator="OR" comment="Check expected value for pam_faillock.so unlock_time parameter">
+        <criteria operator="AND"
+		  comment="Check expected pam_faillock.so unlock_time parameter in pam files">
+          <criterion test_ref="test_{{{ rule_id }}}_parameter_pamd_common"
+		     comment="Check the unlock_time parameter is present common-auth file"/>
+          <criterion test_ref="test_{{{ rule_id }}}_parameter_no_faillock_conf"
+		     comment="Ensure the unlock_time parameter is not present in {{{ pam_faillock_conf_path }}}"/>
+        </criteria>
+        <criteria operator="AND"
+		  comment="Check expected pam_faillock.so unlock_time parameter in {{{ pam_faillock_conf_path }}}">
+          <criterion test_ref="test_{{{ rule_id }}}_parameter_no_pamd_common"
+		     comment="Check the unlock_time parameter is not present common-auth file"/>
+          <criterion test_ref="test_{{{ rule_id }}}_parameter_faillock_conf"
+		     comment="Ensure the unlock_time parameter is present in {{{ pam_faillock_conf_path }}}"/>
+        </criteria>
+      </criteria>
+    </criteria>
+
+    {{% else %}}
+
     <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
       <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
         <!-- pam_unix.so is a control module present in all realistic scenarios and also used
@@ -68,6 +107,7 @@
       </criteria>
     </criteria>
 
+    {{% endif %}}
   </definition>
 
   <!-- The following tests demand complex regex which are necessary more than once.
@@ -82,14 +122,22 @@
       id="var_{{{ rule_id }}}_pam_faillock_auth_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entries in auth section of pam files">
+    {{% if 'debian' in product or 'ubuntu' in product or 'sle' in product or 'slmicro' in product %}}
+    <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
+    {{% else %}}
     <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)(?=.*?\bnew_authtok_reqd=done\b)(?=.*?\bdefault=ignore\b).*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
+    {{% endif %}}
   </constant_variable>
 
   <constant_variable
       id="var_{{{ rule_id }}}_pam_faillock_account_regex"
       datatype="string" version="2"
       comment="regex to identify pam_faillock.so entry in account section of pam files">
+    {{% if 'debian' in product or 'ubuntu' in product or 'sle' in product or 'slmicro' in product %}}
+    <value>^\s*account\s+required\s+pam_faillock\.so\s*(#.*)?$</value>
+    {{% else %}}
     <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_unix\.so</value>
+    {{% endif %}}
   </constant_variable>
 
   <constant_variable

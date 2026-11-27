@@ -9,6 +9,11 @@ if grep -x '^{{{line}}}$' /etc/sudoers.d/*; then
 fi
 {{%- endmacro %}}
 
+{{% if product in [ 'sle16', 'slmicro6'] %}}
+{{{ bash_copy_distro_defaults("/usr/etc/sudoers", "/etc/sudoers") }}}
+{{{ lineinfile_absent("/etc/sudoers", "^\s*@includedir\s*/usr/etc/sudoers\.d", sed_path_separator="#", rule_id=rule_id) }}}
+{{% endif %}}
+
 {{{- delete_line_in_sudoers_d("Defaults targetpw") }}}
 {{{- delete_line_in_sudoers_d("Defaults rootpw") }}}
 {{{- delete_line_in_sudoers_d("Defaults runaspw") }}}

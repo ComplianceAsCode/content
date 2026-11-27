@@ -4,15 +4,25 @@
     <criteria operator="AND">
       <criterion comment="NOPASSWD is not configured in /etc/sudoers" test_ref="test_nopasswd_etc_sudoers" />
       <criterion comment="NOPASSWD is not configured in /etc/sudoers.d" test_ref="test_nopasswd_etc_sudoers_d" />
+      {{% if product in [ 'sle16', 'slmicro6' ] %}}
+      <criterion
+          comment="test if configuration file /etc/sudoers exists for {{{ rule_id }}}"
+          test_ref="test_{{{ rule_id }}}_config_file_exists"/>
+      {{% endif %}}
     </criteria>
   </definition>
+
+  {{% if product in [ 'sle16', 'slmicro6' ] %}}
+  {{{ oval_config_file_exists_test('/etc/sudoers', rule_id=rule_id) }}}
+  {{{ oval_config_file_exists_object('/etc/sudoers', rule_id=rule_id) }}}
+  {{% endif %}}
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="NOPASSWD does not exist /etc/sudoers" id="test_nopasswd_etc_sudoers" version="1">
     <ind:object object_ref="object_nopasswd_etc_sudoers" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_nopasswd_etc_sudoers" version="1">
     <ind:filepath>/etc/sudoers</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!#).*[\s]+NOPASSWD[\s]*\:.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!#).*[\s,=):]NOPASSWD[\s]*\:.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -22,7 +32,7 @@
   <ind:textfilecontent54_object id="object_nopasswd_etc_sudoers_d" version="1">
     <ind:path>/etc/sudoers.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^(?!#).*[\s]+NOPASSWD[\s]*\:.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!#).*[\s,=):]NOPASSWD[\s]*\:.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

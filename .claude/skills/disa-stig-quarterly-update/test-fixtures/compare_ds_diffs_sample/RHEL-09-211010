@@ -1,0 +1,33 @@
+--- RHEL-09-211010
++++ RHEL-09-211010
+@@ -1,29 +1,29 @@
+ [severity]:
+ high
+ 
+ [version]:
+ RHEL-09-211010
+ 
+ [title]:
+-RHEL 9 must be a vendor-supported release.
++RHEL 9 must be a vendor supported release.
+ 
+ [description]:
+ <VulnDiscussion>An operating system release is considered "supported" if the vendor continues to provide security patches for the product. With an unsupported release, it will not be possible to resolve security issues discovered in the system software.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>
+ 
+ [reference]:
+ DPMS Target Red Hat Enterprise Linux 9DISADPMS TargetRed Hat Enterprise Linux 95551
+ 
+ [ident]:
+ CCI-000366
+ 
+ [fixtext]:
+ Upgrade to a supported version of RHEL 9.
+ 
+ [check]:
+ Verify the version or RHEL 9 is vendor supported with the following command:
+ 
+ $ cat /etc/redhat-release
+ 
+ Red Hat Enterprise Linux release 9.6 (Plow)
+ 
+ If the installed version of RHEL 9 is not supported, this is a finding.

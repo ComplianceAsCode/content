@@ -10,6 +10,7 @@ The viewer is a multi-page web application with the following pages:
 - **controls.html** - Controls list with advanced filtering
 - **control-detail.html** - Individual control details with OSCAL metadata and TODO management
 - **gaps.html** - Gap analysis showing controls without rules
+- **derived-frameworks.html** - NIST 800-171/800-172 requirement coverage resolved against 800-53 controls
 - **statistics.html** - Detailed statistics and metrics
 - **family.html** - Control family breakdown and family-specific views
 
@@ -58,8 +59,17 @@ All pages share:
 ### Gap Analysis (gaps.html)
 - **Gap Summary**: Total gaps broken down by baseline level (high, moderate, low)
 - **Priority Sections**: Gaps organized by baseline priority
+- **Inline Control Metadata**: Each gap item expands to show its OSCAL control statement, supplemental guidance, related controls (linked into control-detail.html), and parameters (ODPs), so gaps can be assessed without navigating away
 - **Family Breakdown**: Which control families have the most gaps
-- **Quick Navigation**: Click any gap to view control details
+- **Quick Navigation**: Each gap has an explicit "Open control" link to its detail page
+
+### Derived Frameworks (derived-frameworks.html)
+- **Framework Tabs**: Side-by-side views of NIST 800-171 (CUI) and NIST 800-172 (Enhanced Security Requirements)
+- **Requirement Resolution**: Each requirement lists `nist_800_53:<id>` cross-references instead of direct rules; its resolved rule set is the union of those 800-53 controls' rules for the current product
+- **Gap Detection**: A requirement is a gap when its resolved rule set is empty, mirroring the gaps.html definition for 800-53
+- **Status Mismatch Flagging**: Highlights requirements marked `status: automated` that resolve to no rules (the class of bug fixed in `nist_800_171.yml` where 68 of 97 controls were wrongly marked automated)
+- **Net-New Analysis (800-172)**: Which enhanced requirements contribute rules beyond what NIST 800-171 already resolves, i.e. what `cui_enhanced` actually adds over `cui`
+- **Filtering**: Gaps-only filter for both frameworks, plus a net-new-only filter for 800-172
 
 ### Statistics (statistics.html)
 - **Product Overview**: Comprehensive metrics for current product
@@ -92,6 +102,7 @@ ninja nist-viewer
 #   │   ├── controls.html            (Controls browser)
 #   │   ├── control-detail.html      (Control details)
 #   │   ├── gaps.html                (Gap analysis)
+#   │   ├── derived-frameworks.html  (Derived frameworks)
 #   │   ├── statistics.html          (Statistics)
 #   │   └── family.html              (Families)
 #   ├── rhel9/
@@ -175,9 +186,30 @@ The data structure contains:
       "without_rules": 296
     }
   },
+  "derived_frameworks": {
+    "rhel9": {
+      "nist_800_171": [
+        {
+          "id": "03.01.01",
+          "title": "...",
+          "status": "automated",
+          "source_controls": ["ac-1"],
+          "rules": ["rule_id_1"],
+          "has_rules": true,
+          "status_mismatch": false
+        }
+      ],
+      "nist_800_172": [ /* same shape, plus "net_new": rules not in any 800-171 requirement */ ]
+    }
+  },
   "families": [ /* 21 control families */ ]
 }
 ```
+
+The `derived_frameworks` data is resolved per product from the product-agnostic
+`controls/nist_800_171.yml` and `controls/nist_800_172.yml` policy files (see ADR-0005):
+each requirement's `controls: [nist_800_53:<id>, ...]` cross-references are looked
+up in that product's merged 800-53 controls and their rules unioned.
 
 ## Gap Analysis Features
 
@@ -223,6 +255,7 @@ Edit files in `utils/nist_sync/templates/` to customize:
 - **controls.html** - Controls browser page
 - **control-detail.html** - Individual control detail page
 - **gaps.html** - Gap analysis page
+- **derived-frameworks.html** - Derived frameworks (NIST 800-171/800-172) page
 - **statistics.html** - Statistics page
 - **family.html** - Control families page
 
@@ -287,7 +320,7 @@ No external dependencies - all functionality is self-contained in a single HTML 
 - Verify you're using a modern browser (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
 
 ### Navigation not working
-- Ensure all 6 HTML files are in the same directory
+- Ensure all 8 HTML files are in the same directory
 - Check that file paths are relative (not absolute)
 - If hosting on a web server, verify all files are accessible
 

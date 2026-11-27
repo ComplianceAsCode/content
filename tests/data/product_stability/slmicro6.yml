@@ -8,6 +8,7 @@ aide_audit_binaries:
   - autrace
   - audispd
   - augenrules
+  - audisp-syslog
 audisp_conf_path: /etc/audit
 audit_binaries:
   - /sbin/auditctl
@@ -89,7 +90,8 @@ reference_uris:
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cobit5: https://www.isaca.org/resources/cobit
-  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
+  cui: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html
+  cui_enhanced: https://csrc.nist.gov/pubs/sp/800/172/r3/final
   dcid: not_officially_available
   disa: https://www.cyber.mil/stigs/cci/
   hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
@@ -113,7 +115,7 @@ ssh_client_config_dir: /etc/ssh/ssh_config.d
 ssh_client_main_config_file: /etc/ssh/ssh_config
 sshd_config_base_dir: /etc/ssh
 sshd_config_dir: /etc/ssh/sshd_config.d
-sshd_distributed_config: 'false'
+sshd_distributed_config: 'true'
 sshd_hardening_config_basename: 00-complianceascode-hardening.conf
 sshd_main_config_file: /etc/ssh/sshd_config
 sshd_runtime_check: 'false'

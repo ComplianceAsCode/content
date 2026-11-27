@@ -1,11 +1,11 @@
 name: Gate
 on:
   merge_group:
-    branches: [ 'master' ]
+    branches: ['master']
   push:
-    branches: ['*', '!stabilization*', '!stable*', '!master' ]
+    branches: ['*', '!stabilization*', '!stable*', '!master']
   pull_request:
-    branches: [ 'master', 'stabilization*', 'oscal-update-*' ]
+    branches: ['master', 'stabilization*', 'oscal-update-*']
 permissions:
   contents: read
 concurrency:
@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Update CA certificates
         run: update-ca-certificates
-      - name: Zypper add factory repo - to install bats and ShellCheck
+      - name: Zypper add factory repo - to install bats
         run: zypper --non-interactive ar  https://download.opensuse.org/repositories/openSUSE:/Backports:/SLE-15-SP5/standard/openSUSE:Backports:SLE-15-SP5.repo
       - name: Zypper auto import keys
         run: zypper  --gpg-auto-import-keys --non-interactive ref
@@ -29,11 +29,11 @@ jobs:
       - name: Zypper refresh
         run: zypper refresh
       - name: Install Deps
-        run: zypper install -y git cmake make bats openscap-utils python3 python3-rpm python3-pip python3-devel python3-PyYAML python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
+        run: zypper install -y git cmake make bats openscap-utils python3 python3-rpm python3-pip python3-devel python3-PyYAML python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools
       - name: Upgrade pip python
         run: pip install pip --upgrade
       - name: Install deps python
-        run: pip install pytest pytest-cov
+        run: pip install pytest pytest-cov shellcheck-py==0.11.0.1
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
       - name: Build
@@ -140,7 +140,7 @@ jobs:
           ./build_product ubuntu2604
       - name: Test
         run: ctest -j$(nproc) --output-on-failure -E unique-stigids
-        working-directory: ./build        
+        working-directory: ./build
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
@@ -148,19 +148,19 @@ jobs:
     container:
       image: registry.fedoraproject.org/fedora:rawhide
     steps:
-      -   name: Run Updates
-          run: dnf update -y
-      -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel python3-setuptools gawk
-      -   name: Checkout
-          uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
-      -   name: Install deps python
-          run: pip install -r requirements-base.txt -r test-requirements.txt
-      -   name: Build
-          run: |-
-            ./build_product al2023 alinux2 alinux3 anolis23 anolis8 fedora firefox ocp4 rhcos4 rhel8 rhel9 rhel10
-          env:
-            ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
-      -   name: Test
-          run: ctest -j$(nproc) --output-on-failure -E unique-stigids
-          working-directory: ./build
+      - name: Run Updates
+        run: dnf update -y
+      - name: Install Deps
+        run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel python3-setuptools gawk
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
+      - name: Install deps python
+        run: pip install -r requirements-base.txt -r test-requirements.txt
+      - name: Build
+        run: |-
+          ./build_product al2023 alinux2 alinux3 anolis23 anolis8 fedora firefox ocp4 rhcos4 rhel8 rhel9 rhel10
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+      - name: Test
+        run: ctest -j$(nproc) --output-on-failure -E unique-stigids
+        working-directory: ./build

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chmod -R 640 /var/log
+find /var/log -type f -exec chmod 640 {} +
 mkdir -p /var/log/testme
 touch /var/log/testme/test.log
 chmod 640 /var/log/testme/test.log

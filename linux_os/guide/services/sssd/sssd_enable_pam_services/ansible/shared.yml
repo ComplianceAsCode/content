@@ -55,6 +55,7 @@
     section: sssd
     option: services
     value: pam
+    mode: '0600'
   when:
   - not modify_lines_sssd_conf_d_files.changed
   - not modify_lines_sssd_conf_file.changed

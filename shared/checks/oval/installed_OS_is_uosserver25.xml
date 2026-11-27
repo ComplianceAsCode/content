@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_uosserver25" version="1">
+    <metadata>
+      <title>UOS Server 25</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The operating system installed on the system is UOS Server 25.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="UOS Server 25 is installed" test_ref="test_uosserver25_installed" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="UOS Server 25 is installed" id="test_uosserver25_installed" version="1">
+    <linux:object object_ref="obj_uosserver25_installed" />
+    <linux:state state_ref="state_uosserver25_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_uosserver25_installed" version="1">
+    <linux:version operation="pattern match">^25.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_uosserver25_installed" version="1">
+    <linux:name>uos-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

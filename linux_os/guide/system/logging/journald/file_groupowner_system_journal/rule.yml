@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Verify Group Who Owns the system journal'
 
 description: |-
@@ -24,7 +23,6 @@ rationale: |-
     messages to unauthorized personnel or their designated representatives.
     {{%- else %}}
     RHCOS must protect system journal file from any type of unauthorized access by setting file group ownership.
-
     {{%- endif %}}
 
 identifiers:
@@ -35,12 +33,15 @@ severity: medium
 fixtext: |
     {{%- if 'ubuntu' in product %}}
     Configure the system to set the appropriate group-ownership to the files
-    used by the systemd journal:
-    Add or modify the following lines in the "/etc/tmpfiles.d/systemd.conf" file:
+    used by the systemd journal.
+    Create the drop-in file "/etc/tmpfiles.d/zzz-systemd-stig.conf" with the
+    following content:
     <pre>
+    Z /run/log/journal/%m ~0640 root systemd-journal - -
+    z /var/log/journal/%m 0640 root systemd-journal - -
     z /var/log/journal/%m/system.journal 0640 root systemd-journal - -
     </pre>
-    Restart the system for the changes to take effect.
+    Note: Restart the system for these settings to take eﬀect.
     {{%- endif %}}
 
 references:
@@ -56,15 +57,15 @@ template:
     vars:
         {{%- if 'ubuntu' in product %}}
         filepath:
-          - /run/log/journal/
-          - /var/log/journal/
+            - /run/log/journal/
+            - /var/log/journal/
+        file_regex:
+            - ^.*$
+            - ^.*$
         recursive: 'true'
-        file_regex: ^.*$
         gid_or_name: systemd-journal
-
         {{%- else %}}
         filepath: ^/var/log/journal/.*/system.journal$
         gid_or_name: systemd-journal
         filepath_is_regex: "true"
-
         {{%- endif %}}

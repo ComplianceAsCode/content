@@ -244,12 +244,17 @@ class PlaybookToRoleConverter():
     @memoize
     def platform_version(self):
         platform = self.product
-        # Check to see if this is RHEL product
+        # Report the specific EL major version the role targets, derived from
+        # the trailing digits of the product id (rhel10 -> "10", rhel8 -> "8",
+        # and likewise for other EL-family products such as ol9 -> "9").
+        # NOTE: ansible-lint's schema[meta] rejects EL versions newer than the
+        # enum bundled in the installed linter (24.12.2 caps at "9"), so RHEL 10
+        # roles fail that check until the linter schema catches up. Accurate
+        # platform metadata is intentionally preferred over passing that check.
         if platform in PRODUCT_ALLOWLIST:
-            # For RHEL, we can get what version
-            if 'rhel' in platform:
-                return platform[-1]
-            return "7\n    - 8"
+            match = re.search(r"\d+$", platform)
+            if match:
+                return match.group()
         return "TBD"
 
     @property

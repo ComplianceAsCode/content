@@ -23,6 +23,7 @@ if(PY_PYTEST)
     ssg_python_unit_tests("utils" "utils" "")
     ssg_python_unit_tests("ssg-module" "." "")
     ssg_python_unit_tests("build-scripts" "." "")
+    ssg_python_unit_tests("tests" "." "")
     ssg_python_unit_tests("ssg_test_suite" "tests" "")
     # CEL rule fixtures evaluated via celctl (skips itself when celctl is absent)
     ssg_python_unit_tests("kubernetes" "." "")
@@ -33,6 +34,12 @@ add_test(
     COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/ensure_paths_are_short.py"
 )
 set_tests_properties("max-path-len" PROPERTIES LABELS quick)
+
+add_test(
+    NAME "bash-remediations-no-exit"
+    COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/ensure_bash_remediations_do_not_exit.py"
+)
+set_tests_properties("bash-remediations-no-exit" PROPERTIES LABELS quick)
 
 add_test(
     NAME "test-rule-dir-json"
@@ -58,6 +65,15 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_stability.py" "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/data/profile_stability"
 )
 set_tests_properties("stable-profiles" PROPERTIES LABELS quick)
+
+# Reads profile sources rather than ${CMAKE_BINARY_DIR}: this checks the
+# 'extends' pointer of each unversioned profile, which the build resolves away.
+# Scoped to the OpenShift products, which are the ones using the convention.
+add_test(
+    NAME "profile-version-pointers"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_version_pointers.py" "${CMAKE_SOURCE_DIR}/products" --product ocp4 --product rhcos4
+)
+set_tests_properties("profile-version-pointers" PROPERTIES LABELS quick)
 
 add_test(
     NAME "stable-products"
@@ -105,6 +121,7 @@ endmacro()
 
 mypy_test("utils/import_srg_spreadsheet.py" "skip")
 mypy_test("utils/check_eof.py" "normal")
+mypy_test("utils/check_smart_quotes.py" "normal")
 mypy_test("utils/import_disa_stig.py" "skip")
 mypy_test("tests/cces-removed.py" "normal")
 mypy_test("utils/build_control_from_reference.py" "skip")
@@ -272,6 +289,9 @@ macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
     endif()
 endmacro()
 
+if(SSG_PRODUCT_ALMALINUX9)
+    ssg_controlrefcheck_test("almalinux9" "stig_almalinux9" "stigid")
+endif()
 if(SSG_PRODUCT_RHEL8)
     ssg_controlrefcheck_test("rhel8" "cis_rhel8" "cis")
 endif()
@@ -285,6 +305,10 @@ if(Python_VERSION_MAJOR GREATER 2)
     add_test(
         NAME "test-check-eof"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/check_eof.py" "${CMAKE_SOURCE_DIR}/ssg" "${CMAKE_SOURCE_DIR}/linux_os" "${CMAKE_SOURCE_DIR}/utils" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/products" "${CMAKE_SOURCE_DIR}/shared" "${CMAKE_SOURCE_DIR}/docs" "${CMAKE_SOURCE_DIR}/applications" "${CMAKE_SOURCE_DIR}/build-scripts" "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_SOURCE_DIR}/Dockerfiles" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/controls" "${CMAKE_SOURCE_DIR}/.github"
+    )
+    add_test(
+        NAME "test-check-smart-quotes"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/check_smart_quotes.py" "--extensions=profile" "${CMAKE_SOURCE_DIR}/products"
     )
 endif()
 

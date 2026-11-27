@@ -7,6 +7,8 @@ metadata:
         - rhmdnd
         - yuumasato
 
+status: deprecated
+
 reference: https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_RH_OpenShift_Container_Platform_4-x_V2R3_STIG.zip
 
 title: 'DISA STIG for Red Hat Enterprise Linux CoreOS'
@@ -14,6 +16,9 @@ title: 'DISA STIG for Red Hat Enterprise Linux CoreOS'
 description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat Enterprise Linux CoreOS 4.
+
+# Kubevirt rules are not applicable to RHCOS
+filter_rules: '"kubevirt" not in id_'
 
 selections:
     - stig_ocp4:all

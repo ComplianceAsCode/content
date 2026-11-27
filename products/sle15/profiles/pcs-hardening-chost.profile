@@ -110,7 +110,6 @@ selections:
     - disable_ctrlaltdel_burstaction
     - display_login_attempts
     - ensure_gpgcheck_globally_activated
-    - file_etc_security_opasswd
     - file_groupownership_system_commands_dirs
     - file_permissions_home_directories
     - inactivity_timeout_value=15_minutes
@@ -181,7 +180,6 @@ selections:
     - kernel_module_hfsplus_disabled
     - kernel_module_jffs2_disabled
     - kernel_module_squashfs_disabled
-    - kernel_module_udf_disabled
     - sshd_set_max_auth_tries
     - sshd_max_auth_tries_value=4
     - aide_periodic_checking_systemd_timer

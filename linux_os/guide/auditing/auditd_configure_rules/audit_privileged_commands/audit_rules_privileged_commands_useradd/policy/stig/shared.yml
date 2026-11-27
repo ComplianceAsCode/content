@@ -1,0 +1,33 @@
+srg_requirement: |-
+    {{{ full_name }}} must generate audit records for all uses of the useradd command.
+
+vuldiscussion: |-
+    Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+
+    Audit records can be generated from various components within the information system (e.g., module or policy filter).
+
+checktext: |-
+    Verify {{{ full_name }}} generates an audit record for any use of the "useradd" command with the following command:
+
+    $ sudo auditctl -l | grep -w '/usr/sbin/useradd'
+
+    -a always,exit -S all -F path=/usr/sbin/useradd -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=-1 -k privileged-useradd
+
+    If the command does not return any output, this is a finding.
+
+    Note: The "-k" allows for specifying an arbitrary identifier. The string following "-k" does not need to match the example output above.
+
+fixtext: |-
+    Configure {{{ full_name }}} to generate an audit record for all uses of the "useradd" command.
+
+    Add or update the following rules in the "/etc/audit/rules.d/audit.rules" file:
+
+    -a always,exit -F path=/usr/sbin/useradd -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-useradd
+
+    To reload the rules file, restart the audit daemon:
+
+    $ sudo systemctl restart auditd.service
+
+    or issue the following command:
+
+    $ sudo augenrules --load

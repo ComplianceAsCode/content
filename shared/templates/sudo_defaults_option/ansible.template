@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{% if product in [ 'sle16', 'slmicro6' ] %}}
+{{% if product in ['opensuse16', 'sle16', 'slmicro6'] %}}
 {{{ ansible_copy_distro_defaults('/usr/etc/sudoers', '/etc/sudoers', rule_title=rule_title) }}}
 {{{
     ansible_lineinfile(

@@ -42,7 +42,7 @@ full_name: Debian 13
 gid_min: 1000
 groups: {}
 grub2_boot_path: /boot/grub
-grub2_uefi_boot_path: /boot/grub2
+grub2_uefi_boot_path: /boot/grub
 grub_helper_executable: update-grub
 init_system: systemd
 login_defs_defaults_path: /usr/etc/login.defs
@@ -60,6 +60,8 @@ pkg_system: dpkg
 platform_package_overrides:
   aarch64_arch: null
   audit: auditd
+  crontabs: cron
+  dconf: dconf-cli
   gdm: gdm3
   grub2: grub2-common
   login_defs: login
@@ -90,7 +92,8 @@ reference_uris:
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cobit5: https://www.isaca.org/resources/cobit
-  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
+  cui: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html
+  cui_enhanced: https://csrc.nist.gov/pubs/sp/800/172/r3/final
   dcid: not_officially_available
   disa: https://www.cyber.mil/stigs/cci/
   hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
@@ -118,7 +121,7 @@ sshd_hardening_config_basename: 00-complianceascode-hardening.conf
 sshd_main_config_file: /etc/ssh/sshd_config
 sshd_runtime_check: 'false'
 sshd_sysconfig_file: /etc/sysconfig/sshd
-sysctl_remediate_drop_in_file: 'false'
+sysctl_remediate_drop_in_file: 'true'
 target_oval_version:
   - 5
   - 11

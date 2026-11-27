@@ -5,18 +5,17 @@ Generate an Ansible collection from ComplianceAsCode Ansible roles.
 Takes Ansible roles (generated from profile playbooks via ansible_playbook_to_role.py)
 and bundles them into an Ansible collection for publishing to Ansible Galaxy.
 
-Modules from community.general and ansible.posix that are used in the roles are
-vendored into the collection to eliminate external runtime dependencies.
+Modules from community.general that are used in the roles are vendored into the
+collection. Other collection requirements are declared in galaxy.yml.
 
 Usage:
   python3 utils/ansible_roles_to_collection.py \\
       --roles-dir build/ansible_roles \\
       --output-dir /tmp/collection \\
       [--version 0.1.82]  # defaults to the SSG project version from CMakeLists.txt \\
-      [--namespace redhatofficial] \\
+      [--target galaxy|hub] \\
       [--collection rhel_hardening_roles] \\
       [--community-general community-general-X.Y.Z.tar.gz] \\
-      [--ansible-posix ansible-posix-X.Y.Z.tar.gz] \\
       [--build]
 
   # Multiple --roles-dir flags merge roles from several builds before packaging:
@@ -70,21 +69,57 @@ def _get_ssg_version():
 
 SSG_VERSION = _get_ssg_version()
 
-COLLECTION_NAMESPACE = "redhatofficial"
 COLLECTION_NAME = "rhel_hardening_roles"
-COLLECTION_AUTHORS = [
-    "ComplianceAsCode development team"
-]
-COLLECTION_DESCRIPTION = (
-    "Ansible roles for RHEL system hardening, generated from ComplianceAsCode content."
-)
-COLLECTION_LICENSE = ["BSD-3-Clause"]
+COLLECTION_DEPENDENCIES = {"ansible.posix": ">=2.2.0"}
 COLLECTION_REPOSITORY = "https://github.com/ComplianceAsCode/content"
 COLLECTION_HOMEPAGE = "https://github.com/ComplianceAsCode/content"
-COLLECTION_ISSUES = "https://github.com/ComplianceAsCode/content/issues"
+COLLECTION_MIN_PYTHON_VERSION = "3.12"
 COLLECTION_TAGS = [
     "security", "compliance", "hardening", "rhel", "scap", "openscap", "complianceascode"
 ]
+
+# Target-specific metadata used by the collection registries. Keeping these values together
+# avoids requiring release commands to pass URLs containing shell metacharacters such as '!'.
+COLLECTION_TARGETS = {
+    "galaxy": {
+        "namespace": "redhatofficial",
+        "author": "ComplianceAsCode development team",
+        "description": "Ansible roles for RHEL system hardening, generated from ComplianceAsCode content.",
+        "documentation": None,
+        "homepage": COLLECTION_HOMEPAGE,
+        "issues": "https://github.com/ComplianceAsCode/content/issues",
+        "installation_server": "https://galaxy.ansible.com/",
+        "license_name": "BSD-3-Clause",
+    },
+    "hub": {
+        "namespace": "redhat",
+        "author": "Red Hat",
+        "description": "Ansible collection providing hardening roles for Red Hat Enterprise Linux.",
+        "documentation": (
+            "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/"
+            "security_hardening/scanning-the-system-for-configuration-compliance"
+            "#remediating-the-system-to-align-with-a-specific-baseline-using-an-ssg-ansible-playbook"
+        ),
+        "homepage": COLLECTION_HOMEPAGE,
+        "issues": (
+            "https://redhat.atlassian.net/secure/CreateIssueDetails!init.jspa?pid=10390"
+            "&issuetype=10016&components=18915"
+        ),
+        "installation_server": "https://console.redhat.com/api/automation-hub/",
+        "license_name": "BSD-3-Clause",
+    },
+}
+
+# Generic constants retain the public defaults used by the generation helpers.
+COLLECTION_NAMESPACE = COLLECTION_TARGETS["galaxy"]["namespace"]
+COLLECTION_AUTHOR = COLLECTION_TARGETS["galaxy"]["author"]
+COLLECTION_AUTHORS = [COLLECTION_AUTHOR]
+COLLECTION_DESCRIPTION = COLLECTION_TARGETS["galaxy"]["description"]
+COLLECTION_DOCUMENTATION = COLLECTION_TARGETS["galaxy"]["documentation"]
+COLLECTION_ISSUES = COLLECTION_TARGETS["galaxy"]["issues"]
+COLLECTION_INSTALL_SERVER = COLLECTION_TARGETS["galaxy"]["installation_server"]
+COLLECTION_LICENSE_NAME = COLLECTION_TARGETS["galaxy"]["license_name"]
+COLLECTION_LICENSE = [COLLECTION_LICENSE_NAME]
 
 # Ansible Galaxy API endpoint for querying latest versions
 GALAXY_VERSIONS_URL = (
@@ -97,11 +132,9 @@ GALAXY_ARTIFACT_URL = (
 )
 
 # Collections whose modules will be vendored when found in the roles.
-# Adding a collection here is enough — the script auto-detects which modules
-# from it are actually referenced and only downloads those.
+# Collections used by the roles but not listed here remain external dependencies.
 COLLECTIONS_TO_VENDOR = [
     "community.general",
-    "ansible.posix",
 ]
 
 def detect_modules_to_bundle(roles_dirs, collections_to_vendor):
@@ -109,7 +142,7 @@ def detect_modules_to_bundle(roles_dirs, collections_to_vendor):
     Scan role YAML files across one or more role directories and return which
     modules from each vendored collection are actually referenced.
 
-    Returns a dict: {"community.general": ["ini_file", ...], "ansible.posix": [...]}
+    Returns a dict: {"community.general": ["ini_file", ...]}
     """
     fqcn_re = re.compile(
         r"(?:" + "|".join(re.escape(c) for c in collections_to_vendor) + r")\.\w+"
@@ -160,13 +193,101 @@ generated from [ComplianceAsCode/content](https://github.com/ComplianceAsCode/co
     - {namespace}.{collection_name}.rhel9_stig
 ```
 
+## Requirements
+
+- `ansible-core >= {min_ansible_version}`
+- `Python >= {min_python_version}`
+- `{ansible_posix_requirement}`
+
+## Installation
+
+Install this collection from [Red Hat Ansible Automation Hub](https://console.redhat.com/ansible/automation-hub):
+
+```console
+ansible-galaxy collection install \
+  --server {installation_server} \
+  {namespace}.{collection_name}
+```
+
+For an offline installation, install the generated
+`{namespace}-{collection_name}-{version}.tar.gz` artifact.
+
+## Changelog
+
+See the [ComplianceAsCode release notes](https://github.com/ComplianceAsCode/content/releases).
+
+## Support
+
+As Red Hat Ansible Certified Content, this collection is entitled to support
+through Ansible Automation Platform (AAP) using the Create issue button on the
+top right corner of Automation Hub. If a support case cannot be opened with
+Red Hat and the collection has been obtained either from Galaxy or GitHub,
+there may be community help available on the Ansible Forum
+(https://forum.ansible.com/).
+
+For project issues, use the [collection issue tracker]({issues}).
+
 ## License
 
-BSD-3-Clause
+{license_name}
 
 ## Author
 
-ComplianceAsCode development team
+{author}
+"""
+
+CHANGELOG_TEMPLATE = """\
+# Changelog
+
+## {version}
+
+- Generated collection containing hardening roles for supported Red Hat Enterprise Linux releases.
+"""
+
+CHANGELOGS_README = """\
+# Changelogs
+
+See the [ComplianceAsCode release notes](https://github.com/ComplianceAsCode/content/releases) for the collection release notes.
+"""
+
+
+# Ansible Lint configuration bundled into the collection root so that it travels
+# inside the built tarball. ansible-lint auto-discovers a .ansible-lint in the
+# collection directory, so this makes the waivers apply both to the GitHub
+# partner-certification-checker and to galaxy-importer when the tarball is
+# uploaded directly to Red Hat Automation Hub.
+ANSIBLE_LINT_CONFIG = """\
+---
+# Ansible Lint configuration for the generated hardening collection.
+#
+# This file is emitted by utils/ansible_roles_to_collection.py so it is bundled
+# inside the collection tarball; do not edit it in the published collection, edit
+# ANSIBLE_LINT_CONFIG in that script instead.
+#
+# Automation Hub certification requires the "production" profile. The roles are
+# machine-generated from the SCAP remediations in ComplianceAsCode/content, so
+# the waivers below are inherent to that generation, not authored defects.
+profile: production
+
+# Generated collection metadata that should not be linted as playbook content.
+exclude_paths:
+  - changelogs
+  - .ansible
+  - .github
+
+skip_list:
+  # Waived upstream in ComplianceAsCode/content CI:
+  - yaml                       # yamllint is run separately upstream
+  - no-free-form               # generated set_fact/command use free-form
+  - jinja[spacing]
+  - key-order[task]
+  - fqcn[action-core]
+  - name[template]
+  - no-tabs
+  # Enforced under the production profile; tripped by generated content:
+  - var-naming[no-role-prefix] # SCAP variable names are not role-prefixed
+  - var-naming[pattern]        # SCAP variable names
+  - ignore-errors
 """
 
 
@@ -190,9 +311,10 @@ def parse_args():
         help="Destination directory for the generated collection structure."
     )
     parser.add_argument(
-        "--namespace", "-n",
-        default=COLLECTION_NAMESPACE,
-        help=f"Collection namespace. Defaults to '{COLLECTION_NAMESPACE}'."
+        "--target",
+        choices=COLLECTION_TARGETS,
+        default="galaxy",
+        help="Collection registry target. Selects the namespace, metadata, and installation server."
     )
     parser.add_argument(
         "--collection", "-c",
@@ -212,25 +334,11 @@ def parse_args():
              "Downloaded from Ansible Galaxy if not provided."
     )
     parser.add_argument(
-        "--ansible-posix",
-        metavar="TARBALL",
-        dest="ansible_posix",
-        help="Path to an ansible.posix collection tarball. "
-             "Downloaded from Ansible Galaxy if not provided."
-    )
-    parser.add_argument(
         "--community-general-version",
         default="latest",
         dest="community_general_version",
         metavar="VERSION",
         help="Version of community.general to download when --community-general is not provided."
-    )
-    parser.add_argument(
-        "--ansible-posix-version",
-        default="latest",
-        dest="ansible_posix_version",
-        metavar="VERSION",
-        help="Version of ansible.posix to download when --ansible-posix is not provided."
     )
     parser.add_argument(
         "--build",
@@ -251,30 +359,10 @@ def parse_args():
         metavar="URL",
         help="Ansible Galaxy server URL. Defaults to https://galaxy.ansible.com/."
     )
-    parser.add_argument(
-        "--description",
-        default=COLLECTION_DESCRIPTION,
-        help="Collection description written into galaxy.yml."
-    )
-    parser.add_argument(
-        "--documentation",
-        default=None,
-        metavar="URL",
-        help="Documentation URL written into galaxy.yml."
-    )
-    parser.add_argument(
-        "--homepage",
-        default=COLLECTION_HOMEPAGE,
-        metavar="URL",
-        help=f"Collection homepage URL. Defaults to '{COLLECTION_HOMEPAGE}'."
-    )
-    parser.add_argument(
-        "--issues",
-        default=COLLECTION_ISSUES,
-        metavar="URL",
-        help=f"Issue tracker URL. Defaults to '{COLLECTION_ISSUES}'."
-    )
-    return parser.parse_args()
+    args = parser.parse_args()
+    for name, value in COLLECTION_TARGETS[args.target].items():
+        setattr(args, name, value)
+    return args
 
 
 def _get_latest_collection_version(namespace, name):
@@ -332,9 +420,46 @@ def extract_modules_from_collection(tarball_path, namespace, name, module_names,
             dest_path = os.path.join(dest_dir, f"{module_name}.py")
             with open(dest_path, "wb") as out:
                 out.write(f.read())
+            _make_vendored_module_self_contained(module_name, dest_path)
             extracted[module_name] = dest_path
             print(f"  Extracted {namespace}.{name}.{module_name}")
     return extracted
+
+
+def _make_vendored_module_self_contained(module_name, module_path):
+    """Inline documentation from external fragments used by vendored modules."""
+    with open(module_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    fragment_reference = "  - community.general.attributes\n"
+    if fragment_reference not in content:
+        return
+    if module_name != "ini_file":
+        raise ValueError(
+            f"Unsupported external documentation fragment in vendored module {module_name}"
+        )
+
+    content = content.replace(fragment_reference, "", 1)
+    fragment_fields = """  check_mode:
+    support: full
+  diff_mode:
+    support: full
+"""
+    inline_fields = """  check_mode:
+    description:
+      - Can run in C(check_mode) and return changed status prediction without modifying target.
+    support: full
+  diff_mode:
+    description:
+      - Returns details on what has changed (or possibly needs changing in C(check_mode)), when in diff mode.
+    support: full
+"""
+    if fragment_fields not in content:
+        raise ValueError(f"Unexpected documentation layout in vendored module {module_name}")
+    content = content.replace(fragment_fields, inline_fields, 1)
+
+    with open(module_path, "w", encoding="utf-8") as f:
+        f.write(content)
 
 
 def create_collection_dirs(output_dir, namespace, collection_name):
@@ -347,9 +472,23 @@ def create_collection_dirs(output_dir, namespace, collection_name):
     return collection_dir
 
 
+def _collection_ansible_requirement():
+    """Return a PEP 440 ``requires_ansible`` specifier with an explicit patch level.
+
+    Ansible partner certification tooling expects the lower bound to be a full
+    ``X.Y.Z`` version (for example ``>=2.16.0``). ``min_ansible_version`` is kept
+    as ``X.Y`` for the role metadata and the runtime pre-task check, so pad it to
+    three components when generating the collection runtime metadata.
+    """
+    parts = min_ansible_version.split(".")
+    while len(parts) < 3:
+        parts.append("0")
+    return ">=%s" % ".".join(parts)
+
+
 def generate_runtime_yml(collection_dir):
     """Write meta/runtime.yml declaring the minimum required Ansible version."""
-    runtime_data = {"requires_ansible": ">=%s" % min_ansible_version}
+    runtime_data = {"requires_ansible": _collection_ansible_requirement()}
     runtime_yml_path = os.path.join(collection_dir, "meta", "runtime.yml")
     with open(runtime_yml_path, "w", encoding="utf-8") as f:
         yaml.dump(runtime_data, f, default_flow_style=False, allow_unicode=True)
@@ -358,8 +497,9 @@ def generate_runtime_yml(collection_dir):
 
 def generate_galaxy_yml(
     collection_dir, namespace, collection_name, version,
-    description=COLLECTION_DESCRIPTION, documentation=None,
-    homepage=COLLECTION_HOMEPAGE, issues=COLLECTION_ISSUES,
+    description=COLLECTION_DESCRIPTION, documentation=COLLECTION_DOCUMENTATION,
+    homepage=COLLECTION_HOMEPAGE, issues=COLLECTION_ISSUES, authors=COLLECTION_AUTHORS,
+    licenses=COLLECTION_LICENSE, dependencies=COLLECTION_DEPENDENCIES,
 ):
     """Write the galaxy.yml manifest for the collection."""
     galaxy_data = {
@@ -367,9 +507,10 @@ def generate_galaxy_yml(
         "name": collection_name,
         "version": version,
         "readme": "README.md",
-        "authors": COLLECTION_AUTHORS,
+        "authors": authors,
         "description": description,
-        "license": COLLECTION_LICENSE,
+        "license": licenses,
+        "dependencies": dependencies,
         "tags": COLLECTION_TAGS,
         "repository": COLLECTION_REPOSITORY,
         "homepage": homepage,
@@ -384,18 +525,69 @@ def generate_galaxy_yml(
     print("Generated galaxy.yml")
 
 
-def generate_readme(collection_dir, namespace, collection_name, roles):
+def generate_readme(
+    collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+    license_name=COLLECTION_LICENSE_NAME,
+):
     """Write the collection README.md."""
     roles_list = "\n".join(f"- `{namespace}.{collection_name}.{r}`" for r in sorted(roles))
+    # Keep the documented runtime dependency in sync with the declared galaxy.yml
+    # dependency so the README never drifts from what the collection requires.
+    posix_version = COLLECTION_DEPENDENCIES["ansible.posix"].replace(">=", ">= ")
+    ansible_posix_requirement = f"ansible.posix {posix_version}"
     content = README_TEMPLATE.format(
         namespace=namespace,
         collection_name=collection_name,
+        version=version,
         roles_list=roles_list,
+        issues=issues,
+        installation_server=installation_server,
+        min_ansible_version=min_ansible_version,
+        min_python_version=COLLECTION_MIN_PYTHON_VERSION,
+        ansible_posix_requirement=ansible_posix_requirement,
+        author=author,
+        license_name=license_name,
     )
     readme_path = os.path.join(collection_dir, "README.md")
     with open(readme_path, "w", encoding="utf-8") as f:
         f.write(content)
     print("Generated README.md")
+
+
+def generate_ansible_lint(collection_dir):
+    """Write .ansible-lint into the collection root so it ships in the tarball."""
+    ansible_lint_path = os.path.join(collection_dir, ".ansible-lint")
+    with open(ansible_lint_path, "w", encoding="utf-8") as f:
+        f.write(ANSIBLE_LINT_CONFIG)
+    print("Generated .ansible-lint")
+
+
+def generate_collection_docs(
+    collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+    license_name=COLLECTION_LICENSE_NAME,
+):
+    """Write collection documentation and the license file."""
+    generate_readme(
+        collection_dir, namespace, collection_name, version, roles, issues, installation_server, author,
+        license_name,
+    )
+
+    changelog_path = os.path.join(collection_dir, "CHANGELOG.md")
+    with open(changelog_path, "w", encoding="utf-8") as f:
+        f.write(CHANGELOG_TEMPLATE.format(version=version))
+    print("Generated CHANGELOG.md")
+
+    changelogs_dir = os.path.join(collection_dir, "changelogs")
+    os.makedirs(changelogs_dir, exist_ok=True)
+    changelogs_readme_path = os.path.join(changelogs_dir, "README.md")
+    with open(changelogs_readme_path, "w", encoding="utf-8") as f:
+        f.write(CHANGELOGS_README)
+    print("Generated changelogs/README.md")
+
+    generate_ansible_lint(collection_dir)
+
+    shutil.copy2(os.path.join(SSG_ROOT, "LICENSE"), collection_dir)
+    print("Copied LICENSE")
 
 
 def _remove_bundled_collection_deps(meta_path, bundled_collections):
@@ -517,6 +709,196 @@ def bundle_modules(extracted_modules, collection_dir):
         dest_path = os.path.join(modules_dest, f"{module_name}.py")
         shutil.copy2(src_path, dest_path)
     print(f"Bundled {len(extracted_modules)} modules into plugins/modules/.")
+
+
+# Custom modules shipped with this repository (not vendored from Galaxy). These
+# encapsulate the few hardening steps that otherwise require a raw command/shell
+# task so the generated collection never shells out for them.
+LOCAL_MODULES_DIR = os.path.join(_UTILS_DIR, "ansible_modules")
+
+
+def bundle_local_modules(collection_dir):
+    """Copy repository-local custom modules into plugins/modules/."""
+    if not os.path.isdir(LOCAL_MODULES_DIR):
+        return []
+    modules_dest = os.path.join(collection_dir, "plugins", "modules")
+    bundled = []
+    for filename in sorted(os.listdir(LOCAL_MODULES_DIR)):
+        if not filename.endswith(".py") or filename.startswith("_"):
+            continue
+        shutil.copy2(
+            os.path.join(LOCAL_MODULES_DIR, filename),
+            os.path.join(modules_dest, filename),
+        )
+        bundled.append(filename[:-3])
+    print(f"Bundled {len(bundled)} local module(s) into plugins/modules/: "
+          f"{', '.join(bundled)}")
+    return bundled
+
+
+# --- Rewrite raw command/shell tasks to the vendored ssg_hardening module -----
+
+_COMMAND_KEYS = (
+    "ansible.builtin.command", "command", "ansible.builtin.shell", "shell",
+)
+
+_SERVICE_RE = re.compile(r"^(?:/usr/sbin/)?service (\S+) restart$")
+_RPM_VA_RE = re.compile(r"^rpm -Va\b\s*(.*)$")
+_RPM_QF_RE = re.compile(r"^rpm -qf (.+)$")
+_RPM_QV_RE = re.compile(r"^rpm -qV (.+)$")
+_RPM_RESTORE_RE = re.compile(r"^rpm --restore (.+)$")
+_RPM_SETPERMS_RE = re.compile(r"^rpm --setperms (.+)$")
+_RPM_SETUGIDS_RE = re.compile(r"^rpm --setugids (.+)$")
+_RPM_IMPORT_RE = re.compile(r"^rpm --import (.+)$")
+# rsyslog range deletion ('/^start/,/end/d'), single file and *.conf glob.
+_RSYSLOG_RANGE_FILE_RE = re.compile(r"^sed -i '/\^(.+?)/,/(.+?)/d' (\S+)$")
+_RSYSLOG_RANGE_GLOB_RE = re.compile(
+    r"^find (\S+) -type f -name \"\*\.conf\" -exec sed -i "
+    r"'/\^(.+?)/,/(.+?)/d' \{\} \+$")
+# rsyslog conditional block deletion, single file and *.conf glob.
+_RSYSLOG_BLOCK_FILE_RE = re.compile(
+    r"^sed -i '/\^\[\[:space:\]\]\*(\w+)\(/ \{ :a; N; /\)/!ba; /(.+?)/d \}' (\S+)$")
+_RSYSLOG_BLOCK_GLOB_RE = re.compile(
+    r"^find (\S+) -type f -name \"\*\.conf\" -exec sed -i "
+    r"'/\^\[\[:space:\]\]\*(\w+)\(/ \{ :a; N; /\)/!ba; /(.+?)/d \}' \{\} \+$")
+
+
+def _unquote(token):
+    """Strip one layer of matching surrounding quotes from a shell argument."""
+    token = token.strip()
+    if len(token) >= 2 and token[0] == token[-1] and token[0] in "\"'":
+        return token[1:-1]
+    return token
+
+
+def _match_command_to_ssg(cmd):
+    """Map a normalized command/shell string to ssg_hardening module args, or
+    None if the task should be left as-is."""
+    m = _SERVICE_RE.match(cmd)
+    if m:
+        return {"operation": "service_restart", "name": m.group(1)}
+    m = _RPM_VA_RE.match(cmd)
+    if m:
+        args = {"operation": "rpm_verify_all"}
+        flags = m.group(1).split()
+        if flags:
+            args["flags"] = flags
+        return args
+    m = _RPM_QV_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_verify_package", "name": _unquote(m.group(1))}
+    m = _RPM_QF_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_query_file", "path": _unquote(m.group(1))}
+    m = _RPM_RESTORE_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_restore", "path": _unquote(m.group(1))}
+    m = _RPM_SETPERMS_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_setperms", "name": _unquote(m.group(1))}
+    m = _RPM_SETUGIDS_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_setugids", "name": _unquote(m.group(1))}
+    m = _RPM_IMPORT_RE.match(cmd)
+    if m:
+        return {"operation": "rpm_import", "path": _unquote(m.group(1))}
+    m = _RSYSLOG_RANGE_FILE_RE.match(cmd)
+    if m:
+        return {"operation": "rsyslog_remove", "mode": "range",
+                "start": "^" + m.group(1), "end": m.group(2), "path": m.group(3)}
+    m = _RSYSLOG_RANGE_GLOB_RE.match(cmd)
+    if m:
+        return {"operation": "rsyslog_remove", "mode": "range",
+                "start": "^" + m.group(2), "end": m.group(3),
+                "paths_glob": m.group(1).rstrip("/") + "/*.conf"}
+    m = _RSYSLOG_BLOCK_FILE_RE.match(cmd)
+    if m:
+        return {"operation": "rsyslog_remove", "mode": "block",
+                "block_type": m.group(1), "pattern": m.group(2), "path": m.group(3)}
+    m = _RSYSLOG_BLOCK_GLOB_RE.match(cmd)
+    if m:
+        return {"operation": "rsyslog_remove", "mode": "block",
+                "block_type": m.group(2), "pattern": m.group(3),
+                "paths_glob": m.group(1).rstrip("/") + "/*.conf"}
+    return None
+
+
+def _rewrite_task(task, module_fqcn):
+    """Rewrite a single task in place if it is a flagged command/shell task.
+    Returns True when the task was rewritten."""
+    for key in _COMMAND_KEYS:
+        if key not in task:
+            continue
+        value = task[key]
+        if isinstance(value, dict):
+            cmd = value.get("cmd") or " ".join(value.get("argv", []))
+        else:
+            cmd = value
+        if not isinstance(cmd, str):
+            return False
+        cmd = " ".join(cmd.split())
+        module_args = _match_command_to_ssg(cmd)
+        if module_args is None:
+            return False
+        # Replace the command/shell key with the module call, keeping it in the
+        # same position and preserving all sibling keys (register, when, loop,
+        # changed_when, failed_when, check_mode, ...).
+        new_task = {}
+        for k, v in task.items():
+            if k == key:
+                new_task[module_fqcn + ".ssg_hardening"] = module_args
+            else:
+                new_task[k] = v
+        task.clear()
+        task.update(new_task)
+        return True
+    return False
+
+
+def _rewrite_task_list(tasks, module_fqcn):
+    count = 0
+    for task in tasks or []:
+        if not isinstance(task, dict):
+            continue
+        if _rewrite_task(task, module_fqcn):
+            count += 1
+            continue
+        # Recurse into block/rescue/always structures.
+        for nested in ("block", "rescue", "always"):
+            if isinstance(task.get(nested), list):
+                count += _rewrite_task_list(task[nested], module_fqcn)
+    return count
+
+
+def rewrite_command_tasks_to_module(collection_dir, module_fqcn):
+    """Replace flagged command/shell tasks in the collection's roles with calls
+    to the vendored ssg_hardening module."""
+    roles_dir = os.path.join(collection_dir, "roles")
+    total = 0
+    files_changed = 0
+    for root, _dirs, files in os.walk(roles_dir):
+        if os.path.basename(root) not in ("tasks", "handlers"):
+            continue
+        for filename in files:
+            if not filename.endswith((".yml", ".yaml")):
+                continue
+            filepath = os.path.join(root, filename)
+            with open(filepath, "r", encoding="utf-8") as f:
+                tasks = yaml.safe_load(f)
+            if not isinstance(tasks, list):
+                continue
+            changed = _rewrite_task_list(tasks, module_fqcn)
+            if changed:
+                with open(filepath, "w", encoding="utf-8") as f:
+                    yaml.safe_dump(
+                        tasks, f, sort_keys=False, default_flow_style=False,
+                        width=4096, allow_unicode=True,
+                    )
+                total += changed
+                files_changed += 1
+    print(f"Rewrote {total} command/shell task(s) to {module_fqcn}.ssg_hardening "
+          f"across {files_changed} file(s).")
+    return total
 
 
 def _rewrite_file_fqcns(filepath, fqcn_map):
@@ -642,18 +1024,15 @@ def main():
         # Map collection FQCN to (namespace, name) for downloading
         collection_coords = {
             "community.general": ("community", "general"),
-            "ansible.posix": ("ansible", "posix"),
         }
 
         # Resolve or download only the collection tarballs we actually need
         collection_tarballs = {}
         tarball_overrides = {
             "community.general": args.community_general,
-            "ansible.posix": args.ansible_posix,
         }
         tarball_versions = {
             "community.general": args.community_general_version,
-            "ansible.posix": args.ansible_posix_version,
         }
         for collection_fqcn in modules_to_bundle:
             ns, name = collection_coords[collection_fqcn]
@@ -689,10 +1068,18 @@ def main():
         # Copy vendored modules into plugins/modules/
         bundle_modules(extracted_modules, collection_dir)
 
+        # Copy repository-local custom modules into plugins/modules/
+        bundle_local_modules(collection_dir)
+
         # Build the FQCN rewrite map: old prefix -> new FQCN for this collection
         new_fqcn = f"{args.namespace}.{args.collection}"
         fqcn_map = {source: new_fqcn for source in modules_to_bundle}
         rewrite_fqcns(collection_dir, fqcn_map)
+
+        # Replace the remaining raw command/shell remediations that have no stock
+        # module equivalent with calls to the vendored ssg_hardening module, so
+        # the collection carries no command-instead-of-module violations.
+        rewrite_command_tasks_to_module(collection_dir, new_fqcn)
 
         # Generate collection metadata
         generate_galaxy_yml(
@@ -701,9 +1088,21 @@ def main():
             documentation=args.documentation,
             homepage=args.homepage,
             issues=args.issues,
+            authors=[args.author],
+            licenses=[args.license_name],
         )
         generate_runtime_yml(collection_dir)
-        generate_readme(collection_dir, args.namespace, args.collection, roles)
+        generate_collection_docs(
+            collection_dir,
+            args.namespace,
+            args.collection,
+            args.version,
+            roles,
+            args.issues,
+            args.installation_server,
+            args.author,
+            args.license_name,
+        )
 
     artifact_path = None
     if args.build or args.galaxy_token:

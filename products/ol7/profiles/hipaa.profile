@@ -5,7 +5,7 @@ reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 title: 'Health Insurance Portability and Accountability Act (HIPAA)'
 
 description: |-
-    The HIPAA Security Rule establishes U.S. national standards to protect individuals’
+    The HIPAA Security Rule establishes U.S. national standards to protect individuals'
     electronic personal health information that is created, received, used, or
     maintained by a covered entity. The Security Rule requires appropriate
     administrative, physical and technical safeguards to ensure the
@@ -69,6 +69,7 @@ selections:
     - sshd_set_keepalive_0
     - encrypt_partitions
     - sshd_use_approved_ciphers
+    - sshd_approved_ciphers=legacy
     - sshd_use_approved_macs
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing

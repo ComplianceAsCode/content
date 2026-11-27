@@ -66,25 +66,26 @@ def prepare_output_dirs(output_dir, remediation_types):
     return output_dirs
 
 
-def find_remediation(
+def find_remediation_candidates(
         fixes_from_templates_dir, rule_dir, lang, product, expected_file_name):
+    """
+    Returns remediation candidates for a rule and language in priority order.
+
+    Static remediations from the rule directory take precedence over content
+    generated from templates. The templated remediation is appended as the
+    lowest-priority candidate so that a static remediation whose ``# platform``
+    metadata does not include the product being built does not shadow an
+    applicable templated remediation.
+    """
+    candidates = list(
+        remediation.get_rule_dir_remediations(rule_dir, lang, product))
     language_fixes_from_templates_dir = os.path.join(
         fixes_from_templates_dir, lang)
-    fix_path = None
-    # first look for a static remediation
-    rule_dir_remediations = remediation.get_rule_dir_remediations(
-        rule_dir, lang, product)
-    if len(rule_dir_remediations) > 0:
-        # first item in the list has the highest priority
-        fix_path = rule_dir_remediations[0]
-    if fix_path is None:
-        # check if we have a templated remediation instead
-        if os.path.isdir(language_fixes_from_templates_dir):
-            templated_fix_path = os.path.join(
-                language_fixes_from_templates_dir, expected_file_name)
-            if os.path.exists(templated_fix_path):
-                fix_path = templated_fix_path
-    return fix_path
+    templated_fix_path = os.path.join(
+        language_fixes_from_templates_dir, expected_file_name)
+    if os.path.exists(templated_fix_path) and templated_fix_path not in candidates:
+        candidates.append(templated_fix_path)
+    return candidates
 
 
 def process_remediation(
@@ -96,6 +97,7 @@ def process_remediation(
     if fix:
         output_file_path = os.path.join(output_dirs[lang], expected_file_name)
         remediation.write_fix_to_file(fix, output_file_path)
+    return fix
 
 
 def collect_remediations(
@@ -105,20 +107,24 @@ def collect_remediations(
     for lang in langs:
         ext = remediation.REMEDIATION_TO_EXT_MAP[lang]
         expected_file_name = rule.id_ + ext
-        fix_path = find_remediation(
+        candidates = find_remediation_candidates(
             fixes_from_templates_dir, rule_dir, lang, product,
             expected_file_name)
-        if fix_path is None:
-            # neither static nor templated remediation found
-            continue
-        try:
-            process_remediation(
-                rule, fix_path, lang, output_dirs, expected_file_name, env_yaml, cpe_platforms)
-        except Exception as exc:
-            msg = (
-                "Failed to dispatch {lang} remediation for {rule_id}: {error}"
-                .format(lang=lang, rule_id=rule.id_, error=str(exc)))
-            raise RuntimeError(msg) from exc
+        for fix_path in candidates:
+            try:
+                fix = process_remediation(
+                    rule, fix_path, lang, output_dirs, expected_file_name,
+                    env_yaml, cpe_platforms)
+            except Exception as exc:
+                msg = (
+                    "Failed to dispatch {lang} remediation for {rule_id}: {error}"
+                    .format(lang=lang, rule_id=rule.id_, error=str(exc)))
+                raise RuntimeError(msg) from exc
+            # The static remediation was filtered out because its platform does
+            # not match this product; try the next candidate, e.g. templated
+            # content.
+            if fix:
+                break
 
 
 def main():

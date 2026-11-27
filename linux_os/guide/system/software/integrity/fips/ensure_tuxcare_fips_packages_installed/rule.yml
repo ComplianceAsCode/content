@@ -1,0 +1,67 @@
+documentation_complete: true
+
+
+title: 'Ensure the TuxCare FIPS-Validated Cryptographic Packages are Installed'
+
+description: |-
+    The FIPS 140-3 validated builds of the cryptographic modules for
+    {{{ full_name }}} are provided by TuxCare through the Enterprise Support for
+    AlmaLinux (ESU) repositories, available for both the 9.2 and 9.6 ESU
+    releases. Every installed build of the
+    <tt>gnutls</tt>, <tt>nettle</tt>, <tt>nss</tt>, <tt>openssl</tt>,
+    <tt>libgcrypt</tt> and <tt>kernel</tt> packages must be the TuxCare build,
+    which carries <tt>tuxcare</tt> in its release string. After the TuxCare
+    ESU repository has been configured, upgrade the packages and reboot:
+    <pre>$ sudo dnf -y upgrade
+    $ sudo reboot</pre>
+
+    After rebooting into the FIPS kernel, remove the remaining default kernel
+    packages, for example:
+    <pre>$ sudo dnf remove kernel-5.14.0-284.11.1.el9_2.x86_64
+    $ sudo dnf autoremove</pre>
+
+rationale: |-
+    Only the TuxCare builds of the cryptographic modules carry FIPS 140-3
+    validation. Using the default distribution packages means the system does
+    not employ validated cryptography even when FIPS mode is enabled.
+
+severity: high
+
+references:
+    srg: SRG-OS-000033-GPOS-00014
+
+ocil_clause: 'any of the listed packages is not the TuxCare build'
+
+ocil: |-
+    Verify that {{{ full_name }}} is using the TuxCare FIPS packages with the following command:
+    <pre>$ rpm -qa | grep -E '^(gnutls|nettle|nss|openssl|libgcrypt|kernel)-[0-9]+' | grep -v tuxcare</pre>
+
+    If the command returns anything, this is a finding.
+
+fixtext: |-
+    Ensure FIPS-validated packages are in use instead of the OS defaults using the following commands:
+
+    $ sudo dnf -y upgrade
+    $ sudo reboot
+
+    After rebooting into a FIPS kernel, remove the OS default kernel packages, using for example:
+
+    $ sudo dnf remove kernel-5.14.0-284.11.1.el9_2.x86_64 kernel-5.14.0-284.30.1.el9_2.x86_64
+    $ sudo dnf autoremove
+
+srg_requirement: '{{{ full_name }}} must use the TuxCare FIPS packages and not the default encryption packages.'
+
+checktext: |-
+    Verify that {{{ full_name }}} is using the TuxCare FIPS packages with the following command:
+
+    $ rpm -qa | grep -E '^(gnutls|nettle|nss|openssl|libgcrypt|kernel)-[0-9]+' | grep -v tuxcare
+
+    If the command returns anything, this is a finding.
+
+warnings:
+    - general: |-
+        The remediation upgrades the packages from the configured repositories.
+        It only results in the TuxCare builds when the TuxCare ESU repository is
+        configured and licensed. A reboot into the new kernel is required, and
+        the previously installed default kernel packages must then be removed
+        manually.

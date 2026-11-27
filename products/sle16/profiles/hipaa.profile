@@ -64,5 +64,6 @@ selections:
     - '!service_ypbind_disabled'
     - '!service_zebra_disabled'
     - '!sshd_disable_rhosts_rsa'
+    - '!sshd_set_keepalive_0'
     - '!sshd_use_approved_ciphers'
     - '!sshd_use_approved_macs'

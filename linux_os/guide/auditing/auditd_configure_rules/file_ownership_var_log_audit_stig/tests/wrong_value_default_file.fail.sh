@@ -1,9 +1,11 @@
 #!/bin/bash
-# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux,multi_platform_ubuntu
 # packages = audit
 
 sed -i "/^\s*log_file.*/d" /etc/audit/auditd.conf
+
 useradd testuser_123
+mkdir -p /var/log/audit
 touch "/var/log/audit/audit2.log"
 touch "/var/log/audit/audit.log"
 

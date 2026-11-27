@@ -698,7 +698,7 @@ class Benchmark(XCCDFEntity):
         """
         selected_variables = set()
         for rule in rule_ids:
-            selected_variables.update(rules_and_variables_dict.get(rule))
+            selected_variables.update(rules_and_variables_dict.get(rule, set()))
         for profile in profiles:
             selected_variables.update(profile.variables.keys())
         return selected_variables

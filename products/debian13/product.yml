@@ -23,6 +23,10 @@ chrony_conf_path: "/etc/chrony/chrony.conf"
 chrony_d_path: "/etc/chrony/chrony.d/"
 aide_conf_path: "/etc/aide/aide.conf"
 
+# systemd-sysctl on Debian 13 no longer reads /etc/sysctl.conf, so sysctl
+# remediations have to write to /etc/sysctl.d to survive a reboot.
+sysctl_remediate_drop_in_file: "true"
+
 cpes_root: "../../shared/applicability"
 cpes:
   - debian13:
@@ -35,6 +39,7 @@ reference_uris:
 
 # Mapping of CPE platform to package
 platform_package_overrides:
+  dconf: dconf-cli
   gdm: gdm3
   grub2: grub2-common
   net-snmp: snmp
@@ -43,4 +48,4 @@ platform_package_overrides:
   shadow: login
   sssd: sssd-common
   audit: auditd
-
+  crontabs: cron

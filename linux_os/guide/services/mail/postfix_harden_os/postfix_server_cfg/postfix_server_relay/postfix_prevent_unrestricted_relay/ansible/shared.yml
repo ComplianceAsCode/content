@@ -8,6 +8,7 @@
                   parameter="smtpd_client_restrictions",
                   value="permit_mynetworks,reject",
                   create=true,
+                  mode='0644',
                   separator=" = ",
                   separator_regex="\s*=\s*",
                   prefix_regex="^[ \\t]*", rule_title=rule_title) }}}

@@ -20,6 +20,8 @@ description: |-
 selections:
     - ospp:all
     - var_authselect_profile=local
+    - audit_service_management
+    - audit_service_management_ppc64le
 
     - '!package_screen_installed'
     - '!package_dnf-plugin-subscription-manager_installed'

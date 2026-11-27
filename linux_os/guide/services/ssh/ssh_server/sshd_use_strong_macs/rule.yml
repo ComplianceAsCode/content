@@ -34,6 +34,13 @@ references:
 
 ocil_clause: 'MACs option is commented out or not using strong hash algorithms'
 
+{{%- if 'rhel' in families %}}
+warnings:
+    - functionality: |-
+        This rule is a legacy rule and it is recommended to use system-wide cryptographic policies. 
+        Use rule <tt>configure_crypto_policy</tt> to configure the system-wide cryptographic policy.
+{{%- endif %}}
+
 ocil: |-
     Only strong MACs should be used. To verify that only strong
     MACs are in use, run the following command:

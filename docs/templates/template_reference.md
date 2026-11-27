@@ -350,6 +350,13 @@
         list of possible group names separated by |, e.g. "syslog|root".
         gids cannot be used with the '|' operator.
 
+    -   **filemode** - optional, affects the Ansible remediation only. If set
+        (e.g. `'0644'`) the generated task manages the file mode: an existing
+        file keeps its current mode and this value is applied when the file is
+        created. Set it to give the Ansible `ansible.builtin.file` task an
+        explicit `mode` so it satisfies ansible-lint's `risky-file-permissions`
+        rule. If unset, the remediation does not manage the mode.
+
 -   Languages: Ansible, Bash, OVAL
 
 Note that the interaction between **filepath** and **file_regex** is as such:
@@ -392,6 +399,13 @@ they must be of the same length.
 
     - **no_remediation** - this is a hint for templated test scenarios that the rule does not have remediation.
         In this case, test scenarios are modified so that they do not expect the rule to be remediated.
+
+    -   **filemode** - optional, affects the Ansible remediation only. If set
+        (e.g. `'0644'`) the generated task manages the file mode: an existing
+        file keeps its current mode and this value is applied when the file is
+        created. Set it to give the Ansible `ansible.builtin.file` task an
+        explicit `mode` so it satisfies ansible-lint's `risky-file-permissions`
+        rule. If unset, the remediation does not manage the mode.
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -561,6 +575,10 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
         **sed_path_separator** - optional, default is `/`, sets the sed path separator. Set this
         to a character like `#` if `/` is in use in your text.
 
+    -   **filemode** - optional, default `0644`, affects the Ansible remediation
+        only. Mode applied when the file is created; an existing file keeps its
+        current mode.
+
 -   Languages: Ansible, Bash, OVAL
 
 
@@ -705,6 +723,9 @@ When the remediation is applied duplicate occurrences of `key` are removed.
     - **test_wrong_value** - optional. If set, this value will be used in test scenarios as an incorrect value.
       If not set, a string "wrong_value" will be used.
       This parameter can be used in case that the value has to be chosen from strictly defined set of options.
+
+    - **filemode** - optional, default `0644`, affects the Ansible remediation only.
+      Mode applied when the file is created; an existing file keeps its current mode.
 
 #### pam_account_password_faillock
 -   Checks if the pam_faillock is enabled in PAM and if the specified

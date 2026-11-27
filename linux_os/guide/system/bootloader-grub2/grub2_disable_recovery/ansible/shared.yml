@@ -15,8 +15,10 @@
 {{% if product in ['sle12', 'sle15'] %}}
 - name: {{{ rule_title }}} - Update grub defaults and the bootloader menu
   ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+  changed_when: true
 {{% else %}}
 - name: {{{ rule_title }}} - Update grub defaults and the bootloader menu
   ansible.builtin.command: /sbin/grubby --update-kernel=ALL
+  changed_when: true
   when: grub_config_changed is changed
 {{% endif -%}}

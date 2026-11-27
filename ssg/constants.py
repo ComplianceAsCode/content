@@ -19,7 +19,8 @@ SSG_REF_URIS = {
     'cobit5': 'https://www.isaca.org/resources/cobit',
     'cis-csc': 'https://www.cisecurity.org/controls/',
     'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
-    'cui': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
+    'cui': 'https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html',
+    'cui_enhanced': 'https://csrc.nist.gov/pubs/sp/800/172/r3/final',
     'dcid': 'not_officially_available',
     'disa': 'https://www.cyber.mil/stigs/cci/',
     'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
@@ -55,13 +56,16 @@ product_directories = [
     'rhcos4',
     'ol7', 'ol8', 'ol9', 'ol10',
     'openeuler2203',
-    'opensuse',
+    'opensuse', 'opensuse16',
     'openembedded',
     'rhel8', 'rhel9', 'rhel10',
     'rhv4',
+    'uosserver25',
     'sle12', 'sle15', 'sle16', 'slmicro5', 'slmicro6',
     'tencentos4',
-    'ubuntu2204', 'ubuntu2404', 'ubuntu2604'
+    'ubuntu2204', 'ubuntu2404', 'ubuntu2604',
+    'uosdesktop20',
+    'uosdesktop25'
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -100,7 +104,8 @@ hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-tit
 anssi_ns = "https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf"
 ospp_ns = "https://www.niap-ccevs.org/Profile/PP.cfm"
 pcidss4_ns = "https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf"
-cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf'
+cui_ns = 'https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html'
+cui_enhanced_ns = 'https://csrc.nist.gov/pubs/sp/800/172/r3/final'
 stig_refs = 'https://www.cyber.mil/stigs/'
 disa_cciuri = "https://www.cyber.mil/stigs/cci/"
 ssg_version_uri = \
@@ -119,7 +124,7 @@ OSCAP_PATH = "oscap"
 OSCAP_PROFILE_ALL_ID = "(all)"
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
-min_ansible_version = "2.9"
+min_ansible_version = "2.16"
 ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
 standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
@@ -234,7 +239,9 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Oracle Linux 9": "ol9",
     "Oracle Linux 10": "ol10",
     "openEuler 2203": "openeuler2203",
+    "UOS Server 25": "uosserver25",
     "openSUSE": "opensuse",
+    "openSUSE 16": "opensuse16",
     "Red Hat Enterprise Linux 8": "rhel8",
     "Red Hat Enterprise Linux 9": "rhel9",
     "Red Hat Enterprise Linux 10": "rhel10",
@@ -242,12 +249,14 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
     "SUSE Linux Enterprise 16": "sle16",
+    "UOS Desktop 25": "uosdesktop25",
     "SUSE Linux Enterprise Micro 5": "slmicro5",
     "SUSE Linux Enterprise Micro 6": "slmicro6",
     "TencentOS Server 4": "tencentos4",
     "Ubuntu 22.04": "ubuntu2204",
     "Ubuntu 24.04": "ubuntu2404",
     "Ubuntu 26.04": "ubuntu2604",
+    "UOS Desktop 20": "uosdesktop20",
     "OpenEmbedded": "openembedded",
     "Not Applicable": "example",
 }
@@ -255,6 +264,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 REF_PREFIX_MAP = {
     "nist": "NIST-800-53",
     "cui": "NIST-800-171",
+    "cui_enhanced": "NIST-800-172",
     "pcidss": "PCI-DSS",
     "pcidss4": "PCI-DSSv4",
     "cjis": "CJIS",
@@ -275,6 +285,9 @@ REFERENCES = dict(
         regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     cui=Reference(
         id="cui", name=REF_PREFIX_MAP["cui"], url=cui_ns,
+        regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    cui_enhanced=Reference(
+        id="cui_enhanced", name=REF_PREFIX_MAP["cui_enhanced"], url=cui_enhanced_ns,
         regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     nist=Reference(
         id="nist", name=REF_PREFIX_MAP["nist"], url="",
@@ -297,6 +310,7 @@ REFERENCES = dict(
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler", "kylinserver", "kylinsecserver", "hummingbird",
+                       "uosserver", "uosdesktop",
                        "opensuse", "sle", "tencentos", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro", "almalinux"]
@@ -313,7 +327,8 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_kylinserver": ["kylinserver10"],
     "multi_platform_kylinsecserver": ["kylinsecserver6"],
     "multi_platform_openeuler": ["openeuler2203"],
-    "multi_platform_opensuse": ["opensuse"],
+    "multi_platform_uosserver": ["uosserver25"],
+    "multi_platform_opensuse": ["opensuse", "opensuse16"],
     "multi_platform_ol": ["ol7", "ol8", "ol9", "ol10"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
@@ -322,6 +337,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_sle": ["sle12", "sle15", "sle16"],
     "multi_platform_slmicro": ["slmicro5", "slmicro6"],
     "multi_platform_tencentos": ["tencentos4"],
+    "multi_platform_uosdesktop": ["uosdesktop20", "uosdesktop25"],
     "multi_platform_ubuntu": ["ubuntu2204", "ubuntu2404", "ubuntu2604"],
     "multi_platform_openembedded": ["openembedded"],
     "multi_platform_al": ["al2023"],
@@ -445,6 +461,8 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
     'openeuler': 'openEuler',
+    'uosserver': 'UOS Server',
+    'uosdesktop': 'UOS Desktop',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
     'slmicro': 'SUSE Linux Enterprise Micro',

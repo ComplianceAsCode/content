@@ -5,9 +5,7 @@ reference: https://www.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-syst
 title: 'DRAFT - STIG with GUI for Oracle Linux 10'
 
 description: |-
-    This is a draft profile for experimental purposes.
-    It is not based on the DISA STIG for OL 10, because it was not available at time of
-    the release.
+    This profile contains configuration checks that align to the [DRAFT] DISA STIG for Oracle Linux 10.
 
 extends: stig
 
