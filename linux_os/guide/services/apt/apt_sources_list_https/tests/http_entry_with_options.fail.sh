@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_ubuntu
 
 # Parse the URI after an optional deb options block.
 cat > /etc/apt/sources.list <<'EOF'

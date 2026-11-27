@@ -1,0 +1,56 @@
+{{%- set option = "AllowWeakRepositories" -%}}
+{{%- set secure_values = "0|no|false|off|without|disable" -%}}
+{{#- Files APT reads: apt.conf, and files in apt.conf.d that do not start with a dot and have no extension or the .conf extension. -#}}
+{{%- set apt_conf_files = '^/etc/apt/apt\\.conf(?:\\.d/(?:[A-Za-z0-9_-]+|[A-Za-z0-9_-][A-Za-z0-9_.-]*\\.conf))?$' -%}}
+{{#- Strings and comments, which APT ignores when it looks for statements. -#}}
+{{%- set apt_string = '"[^"\\n]*+"' -%}}
+{{%- set apt_comment = '/\\*(?:[\\s\\S]*?\\*/|[\\s\\S]*+)|//[^\\n]*+|#[^\\n]*+' -%}}
+{{#- Group 1 matches a block with balanced braces. -#}}
+{{%- set apt_block_def = '(?(DEFINE)(\\{(?>' ~ apt_string ~ '|' ~ apt_comment ~ '|[^"/#{}]++|/(?![*/])|(?1))*+\\}))' -%}}
+{{#- Strings, comments and blocks other than "Acquire { ... }" are skipped as a whole. -#}}
+{{%- set apt_skip = '(?>' ~ apt_string ~ '|' ~ apt_comment ~ '|(?&lt;![^\\s;{}])(?!Acquire\\s*\\{)[\\w:.+-]+\\s*(?1))(*SKIP)(*FAIL)' -%}}
+{{#- One token inside "Acquire { ... }". A string, a comment or a nested block is one token. -#}}
+{{%- set apt_token = '(?>' ~ apt_string ~ '|' ~ apt_comment ~ '|(?1)|[^"/#{};\\n]++|[;\\n]|/(?![*/]))' -%}}
+{{#- A statement starts at the start of a line, or after ";", "{", "}" or the end of a comment. -#}}
+{{%- set apt_statement_start = '(?:^|(?&lt;=[;{}])|(?&lt;=\\*/))' -%}}
+{{#- Acquire::<option> set to a value that matches the value regex, as a top-level statement
+     or as a statement directly inside "Acquire { ... }". Inside the block, tokens are consumed
+     possessively until the statement starts, so the match depth does not grow with the block size. -#}}
+{{%- macro apt_acquire_statement(value) -%}}
+{{%- set statement = option ~ '\\s+' ~ value -%}}
+{{%- set block_statement = '(?:(?&lt;=[{;}\\n])|(?&lt;=\\*/))\\s*' ~ statement -%}}
+(?im){{{ apt_block_def }}}{{{ apt_skip }}}|{{{ apt_statement_start }}}\s*+(?:Acquire::{{{ statement }}}|Acquire\s*\{(?>(?!{{{ block_statement }}}){{{ apt_token }}})*+{{{ block_statement }}})
+{{%- endmacro -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Acquire::" ~ option ~ " is explicitly set to disabled and no APT configuration file sets it to another value.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="Acquire::{{{ option }}} is explicitly set to disabled"
+        test_ref="test_{{{ rule_id }}}_explicit" />
+      <criterion comment="No APT configuration file sets Acquire::{{{ option }}} to another value"
+        test_ref="test_{{{ rule_id }}}_no_conflict" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    id="test_{{{ rule_id }}}_explicit" version="1"
+    comment="Acquire::{{{ option }}} is explicitly set to disabled">
+    <ind:object object_ref="obj_{{{ rule_id }}}_explicit" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_explicit" version="1">
+    <ind:filepath operation="pattern match">{{{ apt_conf_files }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ apt_acquire_statement('"?(?:' ~ secure_values ~ ')"?\\s*;') }}}</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    id="test_{{{ rule_id }}}_no_conflict" version="1"
+    comment="No APT configuration file sets Acquire::{{{ option }}} to another value">
+    <ind:object object_ref="obj_{{{ rule_id }}}_conflict" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_conflict" version="1">
+    <ind:filepath operation="pattern match">{{{ apt_conf_files }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ apt_acquire_statement('"?(?!(?:' ~ secure_values ~ ')"?\\s*;)[^";\\s]+"?\\s*;') }}}</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
