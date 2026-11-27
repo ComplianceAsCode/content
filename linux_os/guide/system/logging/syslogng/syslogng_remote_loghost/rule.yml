@@ -1,0 +1,50 @@
+documentation_complete: true
+
+title: 'Ensure Logs Sent To Remote Host Using syslog-ng'
+
+description: |-
+    To configure syslog-ng to send logs to a remote log server, add a
+    <tt>destination</tt> statement that uses a network driver
+    (<tt>network()</tt>, <tt>syslog()</tt>, <tt>tcp()</tt>, <tt>udp()</tt>,
+    <tt>tcp6()</tt> or <tt>udp6()</tt>) to
+    <tt>/etc/syslog-ng/syslog-ng.conf</tt> or to a file in
+    <tt>/etc/syslog-ng/conf.d/</tt>, and reference it from a <tt>log</tt>
+    statement:
+    <pre>destination d_remote { network("<i>loghost.example.com</i>" transport("tcp") port(514)); };
+    log { source(s_src); destination(d_remote); };</pre>
+    Replace <tt>s_src</tt> with the name of the source defined in the
+    distribution configuration. The choice of transport depends on the
+    environment of the system; although TCP and TLS provide more reliable
+    message delivery, they may not be supported in all environments.
+    <br /><br />
+    The check reads <tt>/etc/syslog-ng/syslog-ng.conf</tt> and the
+    <tt>*.conf</tt> files in <tt>/etc/syslog-ng/conf.d/</tt> whose names do
+    not start with a dot, which are the files syslog-ng reads by default.
+
+rationale: |-
+    A log server (loghost) receives syslog messages from one or more
+    systems. This data can be used as an additional log source in the event a
+    system is compromised and its local logs are suspect. Forwarding log
+    messages to a remote loghost also provides system administrators with a
+    centralized place to view the status of multiple hosts within the
+    enterprise.
+
+severity: medium
+
+references:
+    nist: CM-6(a),AU-4(1),AU-9(2)
+
+ocil_clause: 'no evidence that the logs are being off-loaded to another system'
+
+ocil: |-
+    Run the following command:
+    <pre># grep -rE '^[^#]*\b(destination|network|syslog|tcp6?|udp6?)[[:space:]]*[({]' /etc/syslog-ng/syslog-ng.conf /etc/syslog-ng/conf.d/</pre>
+    Verify that a <tt>destination</tt> statement uses a network driver with
+    the address of a remote log server, and that a <tt>log</tt> statement
+    references that destination.
+
+warnings:
+    - general: |-
+        This rule doesn't come with a remediation. The remote log server, the
+        transport and the source name depend on the environment and must be
+        configured by the administrator.

@@ -1,0 +1,53 @@
+{{#- Files syslog-ng reads by default: syslog-ng.conf, and *.conf files in conf.d that do not start with a dot. -#}}
+{{%- set sng_conf_files = '^/etc/syslog-ng/(?:syslog-ng\\.conf|conf\\.d/[^/.][^/]*\\.conf)$' -%}}
+{{#- Strings and comments, which syslog-ng ignores when it parses statements. -#}}
+{{%- set sng_skip = '(?>"(?:[^"\\\\]|\\\\.)*+"|\'[^\']*+\'|#[^\\n]*+)(*SKIP)(*FAIL)' -%}}
+{{#- One token inside a destination block: a string, a comment, a word or other characters except braces. -#}}
+{{%- set sng_token = '(?>"(?:[^"\\\\]|\\\\.)*+"|\'[^\']*+\'|#[^\\n]*+|[^"\'#{}\\w.-]++|[\\w.-]++)' -%}}
+{{#- A network driver called with a host address. -#}}
+{{%- set sng_net_driver = '(?&lt;![\\w.-])(?:network|syslog|tcp6?|udp6?)(?![\\w.-])\\s*\\(\\s*(?:"[^"]+"|\'[^\']+\'|[\\w.:-]+)' -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("syslog-ng sends logs to a remote host through a destination that a log statement uses.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="A destination uses a network driver with a host address"
+        test_ref="test_{{{ rule_id }}}_destination" />
+      <criterion comment="A log statement uses that destination"
+        test_ref="test_{{{ rule_id }}}_log" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    id="test_{{{ rule_id }}}_destination" version="1"
+    comment="A destination uses a network driver with a host address">
+    <ind:object object_ref="obj_{{{ rule_id }}}_destination" />
+  </ind:textfilecontent54_test>
+  <!-- The subexpression is the name of the destination. The block is read token by
+       token, so a driver name inside a string or a comment is not matched. -->
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_destination" version="1">
+    <ind:filepath operation="pattern match">{{{ sng_conf_files }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ sng_skip }}}|(?&lt;![\w.-])destination\s+([\w.-]+)\s*\{(?>(?!{{{ sng_net_driver }}}){{{ sng_token }}})*+{{{ sng_net_driver }}}</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+    id="test_{{{ rule_id }}}_log" version="1"
+    comment="A log statement uses a destination with a network driver">
+    <ind:object object_ref="obj_{{{ rule_id }}}_log" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_log" version="1">
+    <ind:filepath operation="pattern match">{{{ sng_conf_files }}}</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_{{{ rule_id }}}_log_regex" var_check="at least one" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <local_variable id="var_{{{ rule_id }}}_log_regex" datatype="string" version="1"
+    comment="Regular expressions that match a reference to each destination with a network driver">
+    <concat>
+      <literal_component>{{{ sng_skip }}}|(?&lt;![\w.-])destination\s*\(\s*</literal_component>
+      <escape_regex>
+        <object_component item_field="subexpression" object_ref="obj_{{{ rule_id }}}_destination" />
+      </escape_regex>
+      <literal_component>\s*\)</literal_component>
+    </concat>
+  </local_variable>
+</def-group>
