@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import ssg.products
 
+from .frameworks import Framework, NistFramework
 from .schema import GEMARA_VERSION
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -137,6 +138,8 @@ def generate_policy(
     guidance_id: Optional[str] = None,
     catalog_url: Optional[str] = None,
     guidance_url: Optional[str] = None,
+    framework: Optional[Framework] = None,
+    version: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Build a Gemara Policy YAML dict.
 
@@ -147,14 +150,17 @@ def generate_policy(
         guidance_id: Optional GuidanceCatalog ID to import.
         catalog_url: Optional file:// URL for the catalog mapping-reference.
         guidance_url: Optional file:// URL for the guidance mapping-reference.
+        framework: Framework driver (defaults to NIST 800-53).
 
     When catalog_url/guidance_url are provided (complytime-policies mode),
     the Policy includes relative file:// URLs in mapping-references and an
     imports.guidance section.  When omitted (local Vagrant mode), those
     fields are absent — matching the existing local-push behavior.
     """
+    framework = framework or NistFramework()
+    version = version or framework.version_label
     full_name = product_full_name(product)
-    policy_id = f"nist-800-53-rev5-{product}-policy"
+    policy_id = framework.policy_id(product)
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     assessment_plans = []
@@ -186,16 +192,16 @@ def generate_policy(
     mapping_refs = [
         {
             "id": catalog_id,
-            "title": f"NIST SP 800-53 Rev 5 Control Catalog for {product.upper()}",
-            "version": "Revision 5",
+            "title": framework.catalog_ref_title(product),
+            "version": version,
             "url": catalog_url or "https://github.com/ComplianceAsCode/content",
         }
     ]
     if guidance_id:
         ref = {
             "id": guidance_id,
-            "title": "NIST SP 800-53 Rev 5 Guidance Catalog",
-            "version": "Revision 5",
+            "title": framework.guidance_ref_title(),
+            "version": version,
         }
         if guidance_url:
             ref["url"] = guidance_url
@@ -208,22 +214,13 @@ def generate_policy(
         imports["guidance"] = [{"reference-id": guidance_id}]
 
     return {
-        "title": f"NIST SP 800-53 Rev 5 for {full_name}",
+        "title": framework.policy_title(full_name),
         "metadata": {
             "id": policy_id,
             "type": "Policy",
             "gemara-version": GEMARA_VERSION,
-            "description": (
-                f"Automated evaluation policy for NIST SP 800-53 Rev 5 on {full_name}, "
-                "using ComplianceAsCode rules. requirement-id values are short CaC rule names "
-                "(the OpenSCAP provider adds the xccdf_org.ssgproject.content_rule_ prefix)."
-            ),
-            "author": {
-                "id": "complianceascode",
-                "name": "ComplianceAsCode Project",
-                "type": "Software",
-                "uri": "https://github.com/ComplianceAsCode/content",
-            },
+            "description": framework.policy_description(full_name),
+            "author": dict(framework.author),
             "date": now_iso,
             "mapping-references": mapping_refs,
         },

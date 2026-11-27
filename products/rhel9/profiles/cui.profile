@@ -2,7 +2,7 @@
 documentation_complete: true
 
 metadata:
-    version: TBD
+    version: Revision 3
     SMEs:
         - ggbecker
 
