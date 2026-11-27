@@ -1487,3 +1487,29 @@ Create a description text for rules that use the crypto_sub_policies template.
     {{{ key }}} = {{{ value }}}
     </pre>
 {{%- endmacro %}}
+
+
+{{#
+    Regular expression matching an Include directive of the main sshd configuration file
+    which includes the "*.conf" files of the sshd drop-in directory, referenced either by
+    its absolute path or by its path relative to the sshd configuration base directory.
+    In the "pcre" flavor, the first capturing group holds the relative path of the drop-in directory.
+
+:param flavor: Either "ere" (POSIX extended regular expression for grep -E) or "pcre" (for OVAL)
+:type flavor: str
+
+#}}
+{{%- macro sshd_include_config_dir_regex(flavor) -%}}
+{{%- set base_prefix = sshd_config_base_dir ~ "/" -%}}
+{{%- if not sshd_config_dir.startswith(base_prefix) -%}}
+{{{ raise("The sshd_config_dir (" ~ sshd_config_dir ~ ") is not located in sshd_config_base_dir (" ~ sshd_config_base_dir ~ ")") }}}
+{{%- endif -%}}
+{{%- set relative_dir = sshd_config_dir[base_prefix | length:] -%}}
+{{%- if flavor == "ere" -%}}
+^[[:blank:]]*[Ii][Nn][Cc][Ll][Uu][Dd][Ee][[:blank:]]+([^#]*[[:blank:]])?"?({{{ base_prefix | replace(".", "\\.") }}})?{{{ relative_dir | replace(".", "\\.") }}}/\*\.conf"?([[:blank:]]|$)
+{{%- elif flavor == "pcre" -%}}
+^[ \t]*(?i)include(?-i)[ \t]+(?:[^#\n]*[ \t])?"?(?:{{{ base_prefix | escape_regex }}})?({{{ relative_dir | escape_regex }}})/\*\.conf"?(?:[ \t]|$)
+{{%- else -%}}
+{{{ raise("Unknown regular expression flavor: " ~ flavor) }}}
+{{%- endif -%}}
+{{%- endmacro -%}}

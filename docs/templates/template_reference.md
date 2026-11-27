@@ -945,6 +945,10 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 -   Checks SSH server configuration items in `/etc/ssh/sshd_config` or
     `/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf` in case
     of Fedora or RHEL9 and newer.
+    The `/etc/ssh/sshd_config.d` directory is checked and remediated only if
+    `/etc/ssh/sshd_config` includes its `*.conf` files, because otherwise sshd
+    ignores it. In that case, the item is checked and remediated in
+    `/etc/ssh/sshd_config`.
 
 -   Parameters:
 

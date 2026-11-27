@@ -259,9 +259,11 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type filename_regex: str
 :param id_stem: The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 :type id_stem: str
+:param path_var_ref: If specified together with `filename_regex`, the `path` is taken from the OVAL variable with this ID instead of the first argument. If the variable has no value, the object does not exist.
+:type path_var_ref: str
 
 #}}
-{{%- macro oval_line_in_file_object(path_or_filepath='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filename_regex='', id_stem='', rule_id=None) -%}}
+{{%- macro oval_line_in_file_object(path_or_filepath='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filename_regex='', id_stem='', rule_id=None, path_var_ref='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if multi_value -%}}
@@ -297,8 +299,14 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endif %}}
 <ind:textfilecontent54_object id="obj_{{{ id_stem }}}{{{ suffix_id }}}" version="1">
 {{%- if filename_regex %}}
+{{%- if path_var_ref %}}
+  <ind:path var_ref="{{{ path_var_ref }}}" var_check="at least one" />
+{{%- else %}}
   <ind:path>{{{ path_or_filepath }}}</ind:path>
+{{%- endif %}}
   <ind:filename operation="pattern match">{{{ filename_regex }}}</ind:filename>
+{{%- elif path_var_ref %}}
+{{{ raise("The path_var_ref parameter requires the filename_regex parameter") }}}
 {{%- else %}}
   <ind:filepath>{{{ path_or_filepath }}}</ind:filepath>
 {{%- endif %}}
@@ -362,8 +370,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endmacro %}}
 
 
-{{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, rule_id=None) -%}}
-{{{- oval_line_in_file_object(path_or_filepath=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filename_regex=".*\.conf$", id_stem=rule_id ~ "_config_dir", rule_id=rule_id) -}}}
+{{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, rule_id=None, path_var_ref='') -%}}
+{{{- oval_line_in_file_object(path_or_filepath=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filename_regex=".*\.conf$", id_stem=rule_id ~ "_config_dir", rule_id=rule_id, path_var_ref=path_var_ref) -}}}
 {{%- endmacro %}}
 
 
@@ -1017,6 +1025,34 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 
 {{#
+    Define an OVAL local variable holding the sshd drop-in directory if the main sshd
+    configuration file includes its "*.conf" files, and no value otherwise.
+    A drop-in directory object which takes its path from this variable
+    (var_ref="var_<id_stem>_sshd_included_config_dir" var_check="at least one")
+    does not exist unless sshd reads the drop-in directory.
+
+:param id_stem: Unique stem of the IDs of the defined OVAL entities, typically the rule ID
+:type id_stem: str
+
+#}}
+{{%- macro sshd_oval_included_config_dir_variable(id_stem) -%}}
+<ind:textfilecontent54_object id="obj_{{{ id_stem }}}_sshd_includes_config_dir" version="1"
+  comment="Include of the {{{ sshd_config_dir }}} directory in {{{ sshd_main_config_file }}}">
+  <ind:filepath>{{{ sshd_main_config_file }}}</ind:filepath>
+  <ind:pattern operation="pattern match">{{{ sshd_include_config_dir_regex("pcre") }}}</ind:pattern>
+  <ind:instance datatype="int" operation="equals">1</ind:instance>
+</ind:textfilecontent54_object>
+<local_variable id="var_{{{ id_stem }}}_sshd_included_config_dir" datatype="string" version="1"
+  comment="The {{{ sshd_config_dir }}} directory if {{{ sshd_main_config_file }}} includes it">
+  <concat>
+    <literal_component>{{{ sshd_config_base_dir }}}/</literal_component>
+    <object_component item_field="subexpression" object_ref="obj_{{{ id_stem }}}_sshd_includes_config_dir" />
+  </concat>
+</local_variable>
+{{%- endmacro %}}
+
+
+{{#
     Create a full OVAL check for an sshd parameter and value.
 
 :param parameter: Parameter to check
@@ -1031,13 +1067,16 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type xccdf_variable: str
 :param datatype: a data type of the value
 :type datatype: str
+:param fallback_to_main_config: If true and the configuration is distributed, files in the drop-in directory are checked only if the main configuration file includes them
+:type fallback_to_main_config: bool
 
 #}}
-{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, runtime_check="false", xccdf_variable="", datatype="", rule_id=None, rule_title=None) -%}}
+{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, runtime_check="false", xccdf_variable="", datatype="", rule_id=None, rule_title=None, fallback_to_main_config=false) -%}}
 {{%- set sshd_main_config = sshd_main_config_file %}}
 {{%- set sshd_drop_in_dir = sshd_config_dir -%}}
 {{%- set sshd_base_dir = sshd_config_base_dir -%}}
 {{%- set sshd_runtime_path = "/tmp/runtime/sshd_effective_config" -%}}
+{{%- set check_included_dir = config_is_distributed == "true" and fallback_to_main_config -%}}
 {{%- if xccdf_variable -%}}
 {{%- set description = "Ensure '" ~ parameter ~ "' is configured with value configured in " ~ xccdf_variable ~ " variable in " ~ sshd_main_config %}}
 {{%- else -%}}
@@ -1045,6 +1084,9 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endif -%}}
 {{%- if config_is_distributed == "true" %}}
 {{%- set description = description  ~ " or in " ~ sshd_drop_in_dir -%}}
+{{%- if check_included_dir %}}
+{{%- set description = description ~ " if " ~ sshd_main_config ~ " includes it" -%}}
+{{%- endif %}}
 {{%- endif %}}
 {{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
 
@@ -1154,8 +1196,11 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{%- endif -%}}
 
   {{%- if config_is_distributed == "true" %}}
+  {{%- if check_included_dir %}}
+  {{{ sshd_oval_included_config_dir_variable(rule_id) | indent (2) }}}
+  {{%- endif %}}
   {{{ oval_line_in_directory_test(sshd_drop_in_dir, parameter, avoid_conflicting=true, rule_id=rule_id) | indent (2) }}}
-  {{{ oval_line_in_directory_object(sshd_drop_in_dir, parameter=parameter, rule_id=rule_id, ** case_insensitivity_kwargs) | indent (2) }}}
+  {{{ oval_line_in_directory_object(sshd_drop_in_dir, parameter=parameter, rule_id=rule_id, path_var_ref=("var_" ~ rule_id ~ "_sshd_included_config_dir") if check_included_dir else "", ** case_insensitivity_kwargs) | indent (2) }}}
   {{%- if xccdf_variable -%}}
   {{{ oval_line_in_directory_state_xccdf_variable(xccdf_variable, datatype, rule_id=rule_id) | indent (2) }}}
   {{%- else -%}}

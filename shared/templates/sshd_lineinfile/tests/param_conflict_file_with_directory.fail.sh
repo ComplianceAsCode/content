@@ -8,6 +8,7 @@
 
 mkdir -p "{{{ sshd_config_dir }}}"
 touch "{{{ sshd_config_dir }}}/nothing"
+{{{ bash_copy_distro_defaults("/usr/etc/ssh/sshd_config", sshd_main_config_file) }}}
 
 declare -a SSHD_PATHS=({{{ sshd_main_config_file }}} {{{ sshd_config_dir }}}/*)
 
