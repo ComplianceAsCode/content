@@ -1,49 +1,31 @@
+{{#- Files syslog-ng reads by default: syslog-ng.conf, and *.conf files in conf.d that do not start with a dot. -#}}
+{{%- set sng_conf_files = '^/etc/syslog-ng/(?:syslog-ng\\.conf|conf\\.d/[^/.][^/]*\\.conf)$' -%}}
+{{#- Strings and comments, which syslog-ng ignores when it parses statements. -#}}
+{{%- set sng_skip = '(?>"(?:[^"\\\\]|\\\\.)*+"|\'[^\']*+\'|#[^\\n]*+)(*SKIP)(*FAIL)' -%}}
+{{#- One token inside a source block: a string, a comment, a word or other characters except braces. -#}}
+{{%- set sng_token = '(?>"(?:[^"\\\\]|\\\\.)*+"|\'[^\']*+\'|#[^\\n]*+|[^"\'#{}\\w.-]++|[\\w.-]++)' -%}}
+{{#- A source driver that receives messages from the network. -#}}
+{{%- set sng_net_driver = '(?&lt;![\\w.-])(?:network|syslog|tcp6?|udp6?)(?![\\w.-])\\s*\\(' -%}}
 <def-group>
-    <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("syslog-ng should not accept remote messages unless acting as a log server", rule_title=rule_title) }}}
-        <criteria operator="AND">
-            <criterion test_ref="test_syslogng_nolisten_tcp"
-                comment="syslog-ng is not configured to accept TCP messages"/>
-            <criterion test_ref="test_syslogng_nolisten_udp"
-                comment="syslog-ng is not configured to accept UDP messages"/>
-            <criterion test_ref="test_syslogng_nolisten_network"
-                comment="syslog-ng is not configured to accept generic network messages"/>
-        </criteria>
-    </definition>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("syslog-ng should not accept remote messages unless acting as a log server", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="No source block uses a network driver"
+        test_ref="test_{{{ rule_id }}}_source" />
+    </criteria>
+  </definition>
 
-    <ind:textfilecontent54_test id="test_syslogng_nolisten_tcp" version="1"
-        check="all" check_existence="none_exist"
-        comment="syslog-ng configuration files don't contain tcp() source driver">
-        <ind:object object_ref="object_syslogng_nolisten_tcp"/>
-    </ind:textfilecontent54_test>
-
-    <ind:textfilecontent54_object id="object_syslogng_nolisten_tcp" version="1">
-        <ind:filepath operation="pattern match">^/etc/syslog-ng/(syslog-ng\.conf|conf\.d/.*\.conf)$</ind:filepath>
-        <ind:pattern operation="pattern match">^\s*tcp\(</ind:pattern>
-        <ind:instance datatype="int">1</ind:instance>
-    </ind:textfilecontent54_object>
-
-    <ind:textfilecontent54_test id="test_syslogng_nolisten_udp" version="1"
-        check="all" check_existence="none_exist"
-        comment="syslog-ng configuration files don't contain udp() source driver">
-        <ind:object object_ref="object_syslogng_nolisten_udp"/>
-    </ind:textfilecontent54_test>
-
-    <ind:textfilecontent54_object id="object_syslogng_nolisten_udp" version="1">
-        <ind:filepath operation="pattern match">^/etc/syslog-ng/(syslog-ng\.conf|conf\.d/.*\.conf)$</ind:filepath>
-        <ind:pattern operation="pattern match">^\s*udp\(</ind:pattern>
-        <ind:instance datatype="int">1</ind:instance>
-    </ind:textfilecontent54_object>
-
-    <ind:textfilecontent54_test id="test_syslogng_nolisten_network" version="1"
-        check="all" check_existence="none_exist"
-        comment="syslog-ng configuration files don't contain network() source driver">
-        <ind:object object_ref="object_syslogng_nolisten_network"/>
-    </ind:textfilecontent54_test>
-
-    <ind:textfilecontent54_object id="object_syslogng_nolisten_network" version="1">
-        <ind:filepath operation="pattern match">^/etc/syslog-ng/(syslog-ng\.conf|conf\.d/.*\.conf)$</ind:filepath>
-        <ind:pattern operation="pattern match">^\s*network\(</ind:pattern>
-        <ind:instance datatype="int">1</ind:instance>
-    </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    id="test_{{{ rule_id }}}_source" version="1"
+    comment="No source block uses a network driver">
+    <ind:object object_ref="obj_{{{ rule_id }}}_source" />
+  </ind:textfilecontent54_test>
+  <!-- Only source blocks are checked: a network driver in a destination block sends
+       messages and does not listen. The block is read token by token, so a driver
+       name inside a string or a comment is not matched. -->
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_source" version="1">
+    <ind:filepath operation="pattern match">{{{ sng_conf_files }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ sng_skip }}}|(?&lt;![\w.-])source\s+([\w.-]+)\s*\{(?>(?!{{{ sng_net_driver }}}){{{ sng_token }}})*+{{{ sng_net_driver }}}</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
 </def-group>

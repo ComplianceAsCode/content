@@ -5,11 +5,16 @@ title: 'Ensure syslog-ng Does Not Accept Remote Messages Unless Acting As Log Se
 description: |-
     The <tt>syslog-ng</tt> daemon should not accept remote messages unless the
     system acts as a log server. To ensure that it is not listening on the
-    network, verify that none of the following source driver calls appear
-    uncommented in <tt>syslog-ng</tt> configuration files:
-    <pre>tcp()
+    network, verify that no <tt>source</tt> block in the <tt>syslog-ng</tt>
+    configuration files uses any of the following network drivers:
+    <pre>network()
+    syslog()
+    tcp()
+    tcp6()
     udp()
-    network()</pre>
+    udp6()</pre>
+    The same drivers in a <tt>destination</tt> block send messages to a remote
+    host and do not make syslog-ng listen on the network.
 
 rationale: |-
     Any process which receives messages from the network incurs some risk of
@@ -28,13 +33,14 @@ ocil: |-
     unless it is documented as a log aggregation server.
     Display the contents of the syslog-ng configuration files:
     <pre>find /etc/syslog-ng -name "*.conf" -exec cat '{}' \;</pre>
-    If any <tt>source</tt> block contains <tt>tcp()</tt>, <tt>udp()</tt>, or
-    <tt>network()</tt> source drivers, ask to see the documentation for the
-    system being used for log aggregation.
+    If any <tt>source</tt> block contains <tt>network()</tt>, <tt>syslog()</tt>,
+    <tt>tcp()</tt>, <tt>tcp6()</tt>, <tt>udp()</tt> or <tt>udp6()</tt> drivers,
+    ask to see the documentation for the system being used for log aggregation.
 
 fixtext: |-
     Edit the syslog-ng configuration files under <tt>/etc/syslog-ng/</tt> and
-    comment out or remove any <tt>tcp()</tt>, <tt>udp()</tt>, or
-    <tt>network()</tt> driver entries from <tt>source</tt> blocks.
+    comment out or remove any <tt>network()</tt>, <tt>syslog()</tt>,
+    <tt>tcp()</tt>, <tt>tcp6()</tt>, <tt>udp()</tt> or <tt>udp6()</tt> driver
+    entries from <tt>source</tt> blocks.
     Restart the service:
     <pre># systemctl restart syslog-ng.service</pre>
