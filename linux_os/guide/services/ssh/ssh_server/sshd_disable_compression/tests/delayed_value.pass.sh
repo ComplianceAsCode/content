@@ -5,4 +5,4 @@
 
 source common.sh
 
-{{{ bash_sshd_remediation(parameter="Compression", value="delayed", config_is_distributed=sshd_distributed_config, rule_id=rule_id) -}}}
+{{{ bash_sshd_remediation(parameter="Compression", value="delayed", config_is_distributed=sshd_distributed_config, rule_id=rule_id, reload_service=false) -}}}
