@@ -8,9 +8,9 @@ args:
     pkgname: aide
   apparmor:
     {{% if product in ["sle12", "sle15"] %}}
-      pkgname: apparmor-profiles
+    pkgname: apparmor-profiles
     {{% else %}}
-      pkgname: apparmor
+    pkgname: apparmor  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   apport:
     pkgname: apport
@@ -18,7 +18,7 @@ args:
     {{% if pkg_system == "rpm" %}}
     pkgname: audit
     {{% else %}}
-    pkgname: auditd
+    pkgname: auditd  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   autofs:
     pkgname: autofs
@@ -26,7 +26,7 @@ args:
     {{% if 'ubuntu' in product or product in ['debian12', 'debian13'] %}}
     pkgname: avahi-daemon
     {{% else %}}
-    pkgname: avahi
+    pkgname: avahi  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   bash:
     pkgname: bash
@@ -38,7 +38,7 @@ args:
     {{% if product == "fedora" %}}
     pkgname: dnf5
     {{% else %}}
-    pkgname: dnf
+    pkgname: dnf  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   firewalld:
     pkgname: firewalld
@@ -46,7 +46,7 @@ args:
     {{% if pkg_system == "rpm" %}}
     pkgname: gdm
     {{% else %}}
-    pkgname: gdm3
+    pkgname: gdm3  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   iptables:
     pkgname: iptables
@@ -54,19 +54,19 @@ args:
     {{% if 'suse' in families %}}
     pkgname: krb5
     {{% else %}}
-    pkgname: krb5-libs
+    pkgname: krb5-libs  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   libpwquality:
     {{% if 'debian' in product or 'suse' in families or 'ubuntu' in product %}}
     pkgname: libpwquality1
     {{% else %}}
-    pkgname: libpwquality
+    pkgname: libpwquality  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   libreswan:
     {{% if product in  ["opensuse16", "sle15", "sle16"] %}}
     pkgname: strongswan-ipsec
     {{% else %}}
-    pkgname: libreswan
+    pkgname: libreswan  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   libuser:
     pkgname: libuser
@@ -74,29 +74,29 @@ args:
     pkgname: logrotate
   net-snmp:
     {{% if pkg_system == "rpm" %}}
-      pkgname: net-snmp
+    pkgname: net-snmp
     {{% else %}}
-      pkgname: snmp
+    pkgname: snmp  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   networkmanager:
     {{% if product in ["ubuntu2204", "ubuntu2404", "ubuntu2604"] %}}
     pkgname: network-manager
     {{% else %}}
-    pkgname: NetworkManager
+    pkgname: NetworkManager  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   nftables:
-      pkgname: nftables
+    pkgname: nftables
   nss-pam-ldapd:
     {{% if pkg_system == "rpm" %}}
-      pkgname: nss-pam-ldapd
+    pkgname: nss-pam-ldapd
     {{% else %}}
-      pkgname: libpam-ldapd
+    pkgname: libpam-ldapd  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   ntp:
     {{% if product == "debian13" %}}
     pkgname: ntpsec
     {{% else %}}
-    pkgname: ntp
+    pkgname: ntp  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
     title: NTP daemon and utilities
   openssh:
@@ -105,7 +105,7 @@ args:
     {{% if pkg_system == "dpkg" %}}
     pkgname: openssh-client
     {{% else %}}
-    pkgname: openssh-clients
+    pkgname: openssh-clients  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   openssh-server:
     pkgname: openssh-server
@@ -113,9 +113,13 @@ args:
     pkgname: openssl
   pam:
     {{% if pkg_system == "rpm" %}}
-      pkgname: pam
+    {{% if product in ["openembedded"] %}}
+    pkgname: libpam-runtime
     {{% else %}}
-      pkgname: libpam-runtime
+    pkgname: pam  # yamllint disable-line rule:key-duplicates
+    {{% endif %}}
+    {{% else %}}
+    pkgname: libpam-runtime  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   pam_apparmor:
     pkgname: pam_apparmor
@@ -128,28 +132,28 @@ args:
   shadow-utils:
     {{% if pkg_system == "rpm" %}}
     {{% if 'suse' in families or product in ["kylinserver10", "kylinsecserver6", "openeuler2203", "uosserver25"] %}}
-      pkgname: shadow
+    pkgname: shadow
     {{% elif product in ["openembedded"] %}}
-      pkgname: shadow-base
+    pkgname: shadow-base  # yamllint disable-line rule:key-duplicates
     {{% else %}}
-      pkgname: shadow-utils
+    pkgname: shadow-utils  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
     {{% else %}}
-      pkgname: login
+    pkgname: login  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   snmpd:
     {{% if 'debian' in product or product == 'ubuntu2604' %}}
     pkgname: snmpd
     {{% else %}}
-    pkgname: net-snmp
+    pkgname: net-snmp  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   squid:
     pkgname: squid
   sssd:
     {{% if 'sle' in product or 'ubuntu' in product %}}
-      pkgname: sssd
+    pkgname: sssd
     {{% else %}}
-      pkgname: sssd-common
+    pkgname: sssd-common  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   sudo:
     pkgname: sudo
@@ -163,7 +167,7 @@ args:
     {{% if product in ['debian13'] %}}
     pkgname: inetutils-telnetd
     {{% else %}}
-    pkgname: telnet-server
+    pkgname: telnet-server  # yamllint disable-line rule:key-duplicates
     {{% endif %}}
   tftp-server:
     pkgname: tftp-server
