@@ -1,0 +1,29 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Postfix forwards all outbound mail through the configured relay host", rule_title=rule_title) }}}
+    <criteria>
+      <criterion comment="Every relayhost line in /etc/postfix/main.cf is set to the configured relay host"
+        test_ref="test_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}" check="all" check_existence="at_least_one_exists"
+    comment="Every relayhost line in /etc/postfix/main.cf is set to the configured relay host" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <!-- A Postfix parameter starts at the beginning of a line. A line that starts
+       with whitespace continues the previous parameter. -->
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>/etc/postfix/main.cf</ind:filepath>
+    <ind:pattern operation="pattern match">^relayhost[ \t]*=[ \t]*(.*?)[ \t]*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:subexpression datatype="string" operation="equals" var_ref="var_postfix_relayhost" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="Postfix relay host" datatype="string" id="var_postfix_relayhost" version="1" />
+</def-group>
