@@ -1,0 +1,24 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Check whether {{{ chrony_conf_path }}} exists"
+  ansible.builtin.stat:
+    path: "{{{ chrony_conf_path }}}"
+  register: chrony_conf_stat
+
+- name: "{{{ rule_title }}} - Set every user directive to _chrony"
+  ansible.builtin.replace:
+    path: "{{{ chrony_conf_path }}}"
+    regexp: '^\s*user(?:\s.*)?$'
+    replace: 'user _chrony'
+  when: chrony_conf_stat.stat.exists
+
+- name: "{{{ rule_title }}} - Ensure a user directive is present"
+  ansible.builtin.lineinfile:
+    path: "{{{ chrony_conf_path }}}"
+    regexp: '^\s*user(?:\s|$)'
+    line: 'user _chrony'
+  when: chrony_conf_stat.stat.exists
