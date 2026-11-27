@@ -20,7 +20,8 @@ fi
 
 if [ ${#rainer_targets[@]} -gt 0 ]; then
     for target in "${rainer_targets[@]}"; do
-        sed -E -i "/$rainer_regex/ s/^/# /" "$target"
+        # Comment the whole statement: join lines up to its closing parenthesis.
+        sed -E -i "/$rainer_regex/ {:a; /\)/! {N; ba;}; s/^/# /; s/\n/\n# /g;}" "$target"
     done
     config_changed=true
 fi
