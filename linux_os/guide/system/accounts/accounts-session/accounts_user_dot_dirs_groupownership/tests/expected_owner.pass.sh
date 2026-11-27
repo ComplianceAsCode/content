@@ -1,5 +1,6 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_ubuntu
+# packages = linux-base
 
 USER="cac_user"
 useradd -m $USER

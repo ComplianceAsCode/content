@@ -5,6 +5,16 @@ title: 'Configure Local Interactive User Dot Directory Group Ownership'
 description: |-
     Dot directories below each local interactive user's home directory must be
     group-owned by that user's primary group.
+    {{% if "debian" in product %}}
+    <br /><br />
+    Note: The check does not match each dot directory with the user whose home
+    directory contains it. Dot directories below the home directory of a user
+    with UID 0 must be group-owned by the primary group of a user with UID 0.
+    Dot directories below other home directories pass when they are group-owned
+    by the primary group of any local interactive user other than root, so a dot
+    directory group-owned by the primary group of another interactive user is
+    not reported.
+    {{% endif %}}
 
 rationale: |-
     Unexpected group ownership can expose private user configuration and

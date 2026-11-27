@@ -1,0 +1,127 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Dot directories below local interactive user home directories are mode 0750 or more restrictive, and .ssh directories are mode 0700 or more restrictive.", rule_title=rule_title) }}}
+    <criteria operator="AND">
+      <criterion comment="Dot directories other than .ssh are mode 0750 or more restrictive"
+        test_ref="test_{{{ rule_id }}}_dot_dirs" />
+      <criterion comment=".ssh directories are mode 0700 or more restrictive"
+        test_ref="test_{{{ rule_id }}}_ssh_dirs" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist"
+    id="test_{{{ rule_id }}}_dot_dirs" version="1"
+    comment="Dot directories other than .ssh are mode 0750 or more restrictive">
+    <unix:object object_ref="obj_{{{ rule_id }}}_dot_dirs" />
+    <unix:state state_ref="state_{{{ rule_id }}}_mode_0750" />
+  </unix:file_test>
+
+  <unix:file_test check="all" check_existence="any_exist"
+    id="test_{{{ rule_id }}}_ssh_dirs" version="1"
+    comment=".ssh directories are mode 0700 or more restrictive">
+    <unix:object object_ref="obj_{{{ rule_id }}}_ssh_dirs" />
+    <unix:state state_ref="state_{{{ rule_id }}}_mode_0700" />
+  </unix:file_test>
+
+  <unix:file_state id="state_{{{ rule_id }}}_mode_0750" version="1">
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+  <unix:file_state id="state_{{{ rule_id }}}_mode_0700" version="1">
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+  <unix:file_object id="obj_{{{ rule_id }}}_dot_dirs" version="1"
+    comment="Dot directories other than .ssh below local interactive user home directories">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="defined" />
+    <unix:path var_ref="var_{{{ rule_id }}}_local_home_dirs" var_check="at least one" />
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_{{{ rule_id }}}_dot_dir</filter>
+    <filter action="exclude">state_{{{ rule_id }}}_ssh_dir</filter>
+  </unix:file_object>
+
+  <unix:file_object id="obj_{{{ rule_id }}}_ssh_dirs" version="1"
+    comment=".ssh directories below local interactive user home directories">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+      recurse_file_system="defined" />
+    <unix:path var_ref="var_{{{ rule_id }}}_local_home_dirs" var_check="at least one" />
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_{{{ rule_id }}}_dot_dir</filter>
+    <filter action="include">state_{{{ rule_id }}}_ssh_dir</filter>
+  </unix:file_object>
+
+  <!-- Dot directories strictly below a home directory, so that a home
+       directory whose name starts with a dot is not checked itself.
+       "/?(?<=/)" accepts home directories with or without a trailing slash. -->
+  <unix:file_state id="state_{{{ rule_id }}}_dot_dir" version="1">
+    <unix:path operation="pattern match" var_ref="var_{{{ rule_id }}}_dot_dirs_regex" var_check="at least one" />
+  </unix:file_state>
+  <local_variable id="var_{{{ rule_id }}}_dot_dirs_regex" datatype="string" version="1"
+    comment="Regular expressions that match dot directories below local interactive user home directories">
+    <concat>
+      <literal_component>^</literal_component>
+      <escape_regex>
+        <variable_component var_ref="var_{{{ rule_id }}}_home_dirs" />
+      </escape_regex>
+      <literal_component>/?(?&lt;=/)(?:[^/]+/)*\.[^/]+$</literal_component>
+    </concat>
+  </local_variable>
+  <unix:file_state id="state_{{{ rule_id }}}_ssh_dir" version="1">
+    <unix:path operation="pattern match">/\.ssh$</unix:path>
+  </unix:file_state>
+
+  <!-- Local interactive users: /etc/passwd entries whose shell is listed in
+       /etc/shells and is not nologin or false. -->
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_shells" version="1">
+    <ind:filepath>/etc/shells</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(/[^\s#]+)[ \t]*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_{{{ rule_id }}}_nologin_shells</filter>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_nologin_shells" version="1">
+    <ind:subexpression operation="pattern match">/(?:nologin|false)$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <local_variable id="var_{{{ rule_id }}}_home_dirs_regex" datatype="string" version="1"
+    comment="Regular expressions that capture the home directories of local interactive users">
+    <concat>
+      <literal_component>^(?:[^:]*:){5}([^:]+):</literal_component>
+      <escape_regex>
+        <object_component item_field="subexpression" object_ref="obj_{{{ rule_id }}}_shells" />
+      </escape_regex>
+      <literal_component>$</literal_component>
+    </concat>
+  </local_variable>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_home_dirs" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_{{{ rule_id }}}_home_dirs_regex" var_check="at least one" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_{{{ rule_id }}}_home_dirs" datatype="string" version="1"
+    comment="Home directories of local interactive users">
+    <object_component item_field="subexpression" object_ref="obj_{{{ rule_id }}}_home_dirs" />
+  </local_variable>
+
+  <!-- Home directories on local filesystems. The recursive objects use
+       recurse_file_system="defined" from these paths, so they do not cross
+       into other filesystems mounted below a home directory. -->
+  <unix:file_object id="obj_{{{ rule_id }}}_local_home_dirs" version="1"
+    comment="Local interactive user home directories on local filesystems">
+    <unix:behaviors recurse_file_system="local" />
+    <unix:path var_ref="var_{{{ rule_id }}}_home_dirs" var_check="at least one" />
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+  <local_variable id="var_{{{ rule_id }}}_local_home_dirs" datatype="string" version="1"
+    comment="Local interactive user home directories on local filesystems">
+    <object_component item_field="path" object_ref="obj_{{{ rule_id }}}_local_home_dirs" />
+  </local_variable>
+</def-group>
