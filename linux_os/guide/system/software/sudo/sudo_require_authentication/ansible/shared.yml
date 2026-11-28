@@ -17,6 +17,8 @@
 }}}
 {{% endif %}}
 
-{{{ ansible_sudo_remove_config("NOPASSWD", "NOPASSWD[\s]*\:") }}}
-
+{{# !authenticate goes first: the visudo of sudo-rs rejects a file that still holds it, so
+    no other change to that file would pass. #}}
 {{{ ansible_sudo_remove_config("!authenticate", "\!authenticate") }}}
+
+{{{ ansible_sudo_remove_config("NOPASSWD", "NOPASSWD[\s]*\:") }}}
