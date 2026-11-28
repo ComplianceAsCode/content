@@ -2,8 +2,16 @@ documentation_complete: true
 
 title: Disable XWayland
 
+{{% if 'debian' in product %}}
+{{% set gdm_conf_path = '/etc/gdm3/daemon.conf' %}}
+{{% elif 'ubuntu' in product %}}
+{{% set gdm_conf_path = '/etc/gdm3/custom.conf' %}}
+{{% else %}}
+{{% set gdm_conf_path = '/etc/gdm/custom.conf' %}}
+{{% endif %}}
+
 description: |-
-  Edit the file <tt>/etc/gdm/custom.conf</tt> and add or modify the following line in the
+  Edit the file <tt>{{{ gdm_conf_path }}}</tt> and add or modify the following line in the
   <tt>[daemon]</tt> block:
   <pre>
   [daemon]
@@ -31,11 +39,11 @@ identifiers:
   cce@rhel10: CCE-87228-3
 
 ocil_clause: |-
-  The WaylandEnable parameter is not set to false in the [daemon] section of the /etc/gdm/custom.conf file.
+  The WaylandEnable parameter is not set to false in the [daemon] section of the {{{ gdm_conf_path }}} file.
 
 ocil: |-
   To verify that XWayland is disabled, run the following command:
-  <pre>sed -n '/\[daemon\]/,/\[/p' /etc/gdm/custom.conf | grep -Psi '^\h*waylandenable\b'</pre>
+  <pre>sed -n '/\[daemon\]/,/\[/p' {{{ gdm_conf_path }}} | grep -Psi '^\h*waylandenable\b'</pre>
   The output should return the following:
   <pre>
   [daemon]

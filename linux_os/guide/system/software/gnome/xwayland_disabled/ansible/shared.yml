@@ -4,9 +4,17 @@
 # complexity = low
 # disruption = low
 
+{{% if 'debian' in product %}}
+{{% set gdm_conf_path = '/etc/gdm3/daemon.conf' %}}
+{{% elif 'ubuntu' in product %}}
+{{% set gdm_conf_path = '/etc/gdm3/custom.conf' %}}
+{{% else %}}
+{{% set gdm_conf_path = '/etc/gdm/custom.conf' %}}
+{{% endif %}}
+
 - name: "{{{ rule_title }}}: Disable XWayland"
   community.general.ini_file:
-    path: /etc/gdm/custom.conf
+    path: {{{ gdm_conf_path }}}
     section: daemon
     option: WaylandEnable
     value: "false"

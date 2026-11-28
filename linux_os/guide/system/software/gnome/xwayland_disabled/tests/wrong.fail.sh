@@ -1,6 +1,7 @@
 #!/bin/bash
 # packages = gdm
-cat <<EOF >/etc/gdm/custom.conf
+{{% set gdm_conf_path = '/etc/gdm3/daemon.conf' if 'debian' in product else '/etc/gdm3/custom.conf' if 'ubuntu' in product else '/etc/gdm/custom.conf' -%}}
+cat <<EOF >{{{ gdm_conf_path }}}
 # GDM configuration storage
 
 [daemon]
