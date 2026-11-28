@@ -63,11 +63,17 @@
   when: find_correct_value.stdout_lines | length == 0 or find_all_values.stdout_lines | length > find_correct_value.stdout_lines | length
 
 {{% if product in [ "ubuntu2204", "ubuntu2404", "ubuntu2604"] %}}
+- name: {{{ rule_title }}} - Check if /etc/ufw/sysctl.conf exists
+  ansible.builtin.stat:
+    path: /etc/ufw/sysctl.conf
+  register: ufw_sysctl_conf_stat
+
 - name: {{{ rule_title }}} - Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/ufw/sysctl.conf
   ansible.builtin.replace:
     path: "/etc/ufw/sysctl.conf"
     regexp: '(^[\s]*{{{ SYSCTLVAR }}}.*$)'
     replace: '# \1'
+  when: ufw_sysctl_conf_stat.stat.exists
 {{% endif %}}
 
 {{% if sysctl_remediate_drop_in_file == "true" %}}
