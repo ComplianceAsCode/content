@@ -1570,7 +1570,10 @@ fi
     Comment out the entries of /etc/sudoers and of the files of /etc/sudoers.d
     that hold the parameter, each with the lines that a trailing backslash
     continues it on, to preserve user data. A file changes only when visudo
-    accepts the result.
+    accepts the result. The files of /etc/sudoers.d go first: visudo checks
+    /etc/sudoers together with the files it includes, and the visudo of sudo-rs
+    rejects settings that sudo accepts, such as !authenticate, so /etc/sudoers
+    only passes once its drop-ins are fixed.
 
 :param parameter: The parameter, as the messages of the script name it
 :type parameter: str
@@ -1580,7 +1583,7 @@ fi
 #}}
 {{%- macro bash_sudo_remove_config(parameter, pattern) -%}}
 rejected=0
-for f in /etc/sudoers /etc/sudoers.d/* ; do
+for f in /etc/sudoers.d/* /etc/sudoers ; do
   if [ ! -f "$f" ] ; then
     continue
   fi

@@ -952,7 +952,8 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{#
     Comment out the entries of /etc/sudoers and of the files of /etc/sudoers.d
     that hold the parameter, each with the lines that a trailing backslash
-    continues it on. A file changes only when visudo accepts the result. The
+    continues it on. A file changes only when visudo accepts the result, so
+    the files of /etc/sudoers.d go first, as in bash_sudo_remove_config. The
     script is a copy of the one of bash_sudo_remove_config, since the macros
     of 10-bash.jinja load after this file.
 
@@ -969,7 +970,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: |
       set -o pipefail
       rejected=0
-      for f in /etc/sudoers /etc/sudoers.d/* ; do
+      for f in /etc/sudoers.d/* /etc/sudoers ; do
         if [ ! -f "$f" ] ; then
           continue
         fi
